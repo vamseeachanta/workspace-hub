@@ -76,8 +76,8 @@
       <div class="step"><strong>Authorize</strong><br><span class="small">Exact schema-0.2 private registry row; ingestion remains disabled.</span></div>
       <div class="step"><strong>Snapshot</strong><br><span class="small">Replacement-free committed Git tree/blob inventory.</span></div>
       <div class="step"><strong>Render</strong><br><span class="small">Descriptor-relative exclusive creation; no tar or rehearsal.</span></div>
-      <div class="step"><strong>Attest</strong><br><span class="small">External mode-0600 manifest with identities, modes, sizes, SHA-256.</span></div>
-      <div class="step"><strong>Finalize</strong><br><span class="small">Re-attest, commit, push exact remote, verify PRIVATE/unarchived.</span></div>
+      <div class="step"><strong>Attest</strong><br><span class="small">Untrusted external manifest with identities, modes, sizes, SHA-256.</span></div>
+      <div class="step"><strong>Finalize</strong><br><span class="small">Independently rebuild expected content, then commit and push a literal OID.</span></div>
     </div>
   </section>
 
@@ -98,7 +98,7 @@
       <thead><tr><th>Concern</th><th>Required control</th><th>Verification</th></tr></thead>
       <tbody>
         <tr><td>Config</td><td><code>GIT_CONFIG=/dev/null</code>, system/global disabled, caller Git variables dropped</td><td>Malicious local/global controls cannot affect behavior</td></tr>
-        <tr><td>Clone config</td><td>Parse held <code>.git/config</code> via <code>/proc/self/fd</code> and <code>--no-includes</code></td><td>Reject includes, rewrites, duplicates, corrupt HEAD</td></tr>
+        <tr><td>Clone config</td><td>Pass held <code>.git/config</code> fd into child; parse via <code>/proc/self/fd</code> and <code>--no-includes</code></td><td>Reject includes, rewrites, duplicates, corrupt HEAD</td></tr>
         <tr><td>Objects</td><td><code>GIT_NO_REPLACE_OBJECTS=1</code>; exact committed tree/blob IDs</td><td>Active replacement ref and dirty worktree are ignored</td></tr>
         <tr><td>Author</td><td>Require <code>CLIENT_WIKI_GIT_AUTHOR_NAME</code> and <code>..._EMAIL</code></td><td>Ambient Git config cannot supply identity</td></tr>
         <tr><td>Credentials</td><td>Fixed command-scoped <code>gh auth git-credential</code></td><td>Unavailable credentials fail before registry mutation</td></tr>
@@ -112,8 +112,8 @@
     <table>
       <thead><tr><th>Observed state</th><th>Permitted action</th></tr></thead>
       <tbody>
-        <tr><td>Symbolic unborn HEAD + exact rendered manifest</td><td>Stage manifest-listed files, commit, push, re-attest</td></tr>
-        <tr><td>Exact expected local commit + remote absent</td><td>Push and re-attest</td></tr>
+        <tr><td>Symbolic unborn HEAD + independently reconstructed exact render</td><td>Stage expected files, commit, retain OID, push literal OID, re-attest</td></tr>
+        <tr><td>Exact parentless local root commit + remote absent</td><td>Retain and push its literal OID, then re-attest</td></tr>
         <tr><td>Exact expected local commit + equal remote main</td><td>Return idempotent success after re-attestation</td></tr>
         <tr><td>Any identity, origin, index, worktree, commit, or SHA mismatch</td><td>Fail without mutation; preserve and report residue</td></tr>
       </tbody>

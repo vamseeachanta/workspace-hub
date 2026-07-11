@@ -10,7 +10,7 @@
 > **Execution mode:** parallel-readonly for resource intelligence and review; serialized implementation after approval
 > **Design authority:** `docs/reports/2026-07-11-issue-3449-python-native-residue-finalizer-design.html`
 > **Prior defect evidence:** `scripts/review/results/2026-07-11-issue-3449-code-review-r1.md`
-> **Planned review artifacts:** `scripts/review/results/2026-07-11-plan-3449-{claude,codex,gemini}-r3.md` and `scripts/review/results/2026-07-11-plan-3449-disagreement-r3.md`
+> **Review artifacts:** blocking round `scripts/review/results/2026-07-11-plan-3449-{claude,codex,gemini}-r3.md`; final round planned at `scripts/review/results/2026-07-11-plan-3449-{claude,codex}-r4.md` plus `scripts/review/results/2026-07-11-plan-3449-disagreement-r4.md`
 
 ---
 
@@ -20,7 +20,7 @@
 
 - Live issue #3449 is open with `status:needs-plan`, `gate:completeness`, and exactly one compute lane, `lane:codex`.
 - The user selected amended design Option 1: a pure-Python renderer and descriptor-bound finalizer that never performs automatic pathname cleanup. That design approval authorizes this revised plan, not implementation.
-- The previous plan, its README row, and `.planning/plan-approved/3449.md` describe a superseded staging/cleanup contract. This revision will remove that stale marker and return local plan state to `draft` before review.
+- The previous plan, its README row, and `.planning/plan-approved/3449.md` described a superseded staging/cleanup contract. Commit `ce93d8eae` removed that stale marker and returned local plan state to `draft` before review.
 - Follow-on issue #3464 records the generalizable safe-filesystem-mutation defect class found during code review.
 - Candidate implementation exists on this branch. Discovery found the original schema/renderer/contract modules and tests, but the code review proved that the candidate is not safe to ship. Implementation will amend it through TDD rather than assume prior scope is complete.
 
@@ -43,7 +43,7 @@ Coding constraints are maximum 400 lines per file and 50 lines per function. Pyt
 - [Follow-on #3464](https://github.com/vamseeachanta/workspace-hub/issues/3464), which preserves the generalizable mutation-safety finding.
 - `docs/reports/2026-07-11-issue-3449-python-native-residue-finalizer-design.html` — approved design boundary and implementation stop gate.
 - `scripts/review/results/2026-07-11-issue-3449-code-review-r1.md` — concrete MAJOR defects in the prior candidate.
-- `docs/plans/_template-issue-plan.md`, `docs/plans/README.md`, and `.claude/skills/coordination/issue-planning-mode/SKILL.md` — lifecycle and evidence contract.
+- `docs/plans/_template-issue-plan.md`, `docs/plans/README.md`, and `.claude/skills/coordination/issue-planning-mode/SKILL.md` — lifecycle and evidence contract; the skill was read from the canonical full checkout because this sparse worktree omits it.
 - `docs/standards/HARD-STOP-POLICY.md` and `docs/standards/PARALLEL_FIRST_EXECUTION.md` — approval, TDD, review, and execution-mode requirements.
 - `.claude/rules/wiki-sibling-routing.md` — `Client: N/A` is correct because this issue changes workspace-hub infrastructure, not wiki content.
 - `config/client-wikis.yml` — public relocation stub; it will not become client authority.
@@ -125,22 +125,24 @@ GIT_CONFIG_GLOBAL=/dev/null
 GIT_NO_REPLACE_OBJECTS=1
 ```
 
-Caller `GIT_*` variables will be discarded except fixed command-scoped variables created by the contract. The finalizer will require `CLIENT_WIKI_GIT_AUTHOR_NAME` and `CLIENT_WIKI_GIT_AUTHOR_EMAIL`; it will translate them into command-scoped author/committer values without persisting identity in Git config. Network operations will use the fixed command-scoped helper `gh auth git-credential`, restrict accepted remote spellings to the registered GitHub repository, and verify the remote `main` SHA after push.
+Caller `GIT_*` variables will be discarded except fixed command-scoped variables created by the contract. The allowlist will preserve only the execution/runtime variables needed to launch Git plus `HOME`, `XDG_CONFIG_HOME`, `GH_CONFIG_DIR`, `GH_HOST`, `GH_TOKEN`, or `GITHUB_TOKEN` when already set; tests will prove unrelated environment and credential-helper variables are dropped. The finalizer will require `CLIENT_WIKI_GIT_AUTHOR_NAME` and `CLIENT_WIKI_GIT_AUTHOR_EMAIL`; it will translate them into command-scoped author/committer values without persisting identity in Git config. Network operations will use the fixed command-scoped helper `gh auth git-credential`, restrict accepted remote spellings to the registered GitHub repository, and verify the remote `main` SHA after push.
 
-The clone's held `.git/config` descriptor will be parsed with `git config --file /proc/self/fd/<fd> --null --list --no-includes`. The parser will preserve whitespace and NUL records, require exactly one independently allowed fetch URL and one independently allowed push URL, and reject `include.*`, `includeIf.*`, `url.*.insteadOf`, `url.*.pushInsteadOf`, and ambiguous duplicates. A dangling/corrupt symbolic HEAD will fail closed.
+The clone's held `.git/config` descriptor will be inherited by the Git child with `pass_fds=(config_fd,)` and parsed there with `git config --file /proc/self/fd/<child-visible-fd> --null --list --no-includes`; `/proc/self` will intentionally refer to that child process. The parser will preserve whitespace and NUL records, require exactly one independently allowed fetch URL and one independently allowed push URL, and reject `include.*`, `includeIf.*`, `url.*.insteadOf`, `url.*.pushInsteadOf`, and ambiguous duplicates. A dangling/corrupt symbolic HEAD will fail closed.
 
 ### Snapshot and render manifest
 
 The renderer will walk the committed template tree through Git object plumbing with replacement objects disabled. It will accept only trees and regular/executable blobs, reject duplicates and special/link modes, read each blob by exact object ID, and never use a tar archive or the mutable working-tree bytes.
 
-The external manifest path will be outside the target clone, supplied explicitly, opened without following the final path component, and rejected if it is a symlink or non-regular file. It will be precreated mode `0600`; the renderer will write a complete versioned JSON document atomically and sync it before success. The manifest will contain:
+The external manifest path will be outside the target clone, supplied explicitly, and treated as untrusted progress/evidence—not as finalization authority. Its parent directory will be opened and retained by descriptor; any pre-existing final component will be opened no-follow and rejected unless it is the expected regular mode-`0600` placeholder. The renderer will create an exclusive adjacent mode-`0600` temporary file through the held parent, write and `fdatasync` one complete versioned JSON document, use descriptor-relative `os.replace(..., src_dir_fd=parent_fd, dst_dir_fd=parent_fd)` to atomically publish it into that same bound directory, `fsync` the parent, reopen the final entry no-follow, and verify expected bytes/identity before success. Crash-before-replace may leave only the bounded temporary residue; crash-after-replace yields the complete JSON entry. The manifest will contain:
 
 - parent, clone root, `.git`, and `.git/config` device/inode/type identities;
 - registered repo identity, exact allowed origins, and pinned template commit/tree;
 - every rendered relative path with type, normalized mode, byte size, and SHA-256;
 - the expected firewall files and complete directory membership.
 
-Directories will be attested but only regular files will be staged. Validation will reject partial JSON, unexpected members, path traversal, duplicate paths, type changes, same-length byte changes, size changes, mode changes, firewall mutation, identity substitution, and target/config replacement.
+Directories will be attested but only regular files will be staged. Validation will reject partial JSON, unexpected members, path traversal, duplicate paths, type changes, same-length byte changes, size changes, mode changes, firewall mutation, identity substitution, target/config replacement, and manifest-parent rename/substitution.
+
+At finalization, the manifest will not authorize content. The finalizer will independently re-authorize the registry row, pin the current trusted canonical workspace commit, rebuild the expected replacement-free template snapshot and substitutions, and compare that independent expectation with both the manifest and clone. A manifest template commit that differs from the independently pinned commit will fail without mutation. The trust boundary is the operator-controlled workspace checkout, private registry, process environment, and `gh` credential store; the concurrently mutable target clone and external manifest are untrusted. A same-UID actor able to alter those named trust roots is out of scope because no same-UID file-permission boundary can make them unforgeable.
 
 ### Residue and finalization
 
@@ -157,13 +159,13 @@ The finalizer will reopen and bind the authorized parent/root/`.git`/config, val
 | State | Action |
 |---|---|
 | symbolic unborn HEAD + exact render | stage manifest-listed files, commit, push, re-attest |
-| exact expected local commit + remote absent | push, re-attest |
-| exact expected local commit + equal remote `main` | return idempotent success after re-attestation |
+| independently validated exact local root commit + remote absent | retain its object ID, push that literal OID, re-attest |
+| independently validated exact local root commit + equal remote `main` | retain its object ID and return idempotent success after re-attestation |
 | any index/worktree/tree/message/author/origin/identity/SHA mismatch | fail without mutation; preserve/report residue |
 
-The expected commit will be validated semantically—exact tree, message, and author—not by precomputing a SHA whose timestamp is not deterministic. The final success boundary will revalidate the manifest, query GitHub for exact identity/PRIVATE/unarchived posture, verify remote `main` equals local HEAD, then emit fixed JSON. Registry mutation remains a later factory step and will not occur on any failed finalizer result.
+The acceptable recovery commit will be a parentless root commit whose tree exactly matches the independently reconstructed scaffold, with exact message, exact author and committer names/emails, syntactically valid author/committer timestamps, and no optional/extra headers such as `gpgsig`, `encoding`, or `mergetag`. Timestamps will be validated but will not be part of semantic equality because they are intentionally nondeterministic; safety comes from the independently reconstructed exact tree plus fixed identities/message/shape. Once validated or created, its literal object ID will be retained in memory; every push will use `<attested_oid>:refs/heads/main`, local symbolic HEAD must equal that OID immediately before and after transport, and remote `main` must equal that OID. A push that succeeds but is followed by a different remote SHA will return a distinct `pushed_remote_advanced` residue stage containing the retained/pushed and observed OIDs, never a generic pre-push mismatch. The final success boundary will independently reconstruct and validate content again, query GitHub for exact identity/PRIVATE/unarchived posture, and emit fixed JSON. Registry mutation remains a later factory step and will not occur on any failed finalizer result.
 
-Production code will not expose an un-attested arbitrary callback boundary. Tests may inject named operations/failpoints; the finalizer will attest immediately after each injection and immediately before returning.
+Production code will not expose an un-attested arbitrary callback boundary. Tests may inject named operations/failpoints through internal test-only interfaces; the public CLI and production entrypoint will reject any caller-supplied failpoint/callback parameter. The finalizer will attest immediately after each internal injection and immediately before returning.
 
 ---
 
@@ -195,6 +197,8 @@ function render_scaffold(registry, slug, manifest_path):
     on BaseException, preserve residue and emit structured failure
 
 function validate_manifest(bound_clone, manifest):
+    independently pin trusted workspace HEAD and reconstruct expected snapshot
+    require manifest template/tree/member claims equal independent expectation
     require exact parent/root/.git/config identities
     enumerate target without following links
     require exact member set, types, modes, sizes, and SHA-256 values
@@ -206,9 +210,10 @@ function finalize_scaffold(registry, slug, manifest):
     validate manifest immediately
     classify unborn/local-only/remote-equal/mismatch state
     before and after each Git mutation, revalidate bound identities and manifest
-    stage only manifest-listed regular files and commit semantic contract
-    push exact HEAD to registered HTTPS remote main using fixed credentials
-    verify remote main SHA, GitHub PRIVATE/unarchived posture, and manifest again
+    stage only independently expected regular files and create/validate exact root commit
+    retain attested commit OID; require HEAD equals it before and after transport
+    push attested_oid:refs/heads/main to registered HTTPS remote using fixed credentials
+    verify remote main equals attested OID, GitHub PRIVATE/unarchived posture, and independent snapshot again
     return fixed success JSON; otherwise preserve/report residue without cleanup
 ```
 
@@ -227,6 +232,7 @@ function finalize_scaffold(registry, slug, manifest):
 | Add | `scripts/client_llm_wiki/bootstrap_layout.py` | Keep layout derivation separate so CLI and finalizer remain within size limits. |
 | Modify | `scripts/client_llm_wiki/bootstrap_contract.py` | Expose validation/render/finalize commands and fixed JSON/error taxonomy. |
 | Modify/Add | `tests/client_llm_wiki/test_bootstrap_*.py` | Add RED-first schema, Git, snapshot, residue, manifest, finalizer, and CLI coverage. |
+| Add | `scripts/enforcement/check_python_function_lengths.py` and `tests/enforcement/test_python_function_lengths.py` | Enforce the 50-line function guardrail mechanically. |
 | Modify | `scripts/enforcement/check-client-wiki-registry.sh` | Delegate clone semantics to Python and preserve dependency/error taxonomy. |
 | Modify | `tests/enforcement/test_client_wiki_registry*.{py,sh}` | Cover checker fail-closed edges and delegation. |
 | Modify | `.claude/skills/coordination/client-llm-wiki-factory/SKILL.md` | Replace pathname Git workflow with render/finalize/private-registry sequence. |
@@ -243,12 +249,12 @@ Each task will begin with the named focused tests failing for the intended missi
 
 ### Task 1 — Close schema and protected-root fail-open paths
 
-**Tests:** add `test_legacy_numeric_version_rejects_empty_raw_roots`, `test_legacy_numeric_version_rejects_current_state_fields`, and `test_validate_registry_rejects_each_module_anchored_protected_root`; extend checker tests for non-boolean archived state and protected-overlap-before-availability.
+**Tests:** add `test_legacy_numeric_version_rejects_empty_raw_roots`, `test_legacy_numeric_version_rejects_current_state_fields`, and `test_validate_registry_rejects_each_module_anchored_protected_root`; extend checker tests for non-boolean archived state and protected-overlap-before-availability. Add RED tests for a 51-line function, nested/async functions, decorators, comments/blank lines, and valid 50-line functions before implementing the function-length checker.
 
 ```bash
 uv run --frozen pytest tests/client_llm_wiki/test_bootstrap_schema.py -q
 uv run --frozen pytest tests/enforcement/test_client_wiki_registry.py -q
-git commit -m "fix(client-wiki): close bootstrap schema downgrade paths" -- scripts/client_llm_wiki/bootstrap_schema.py tests/client_llm_wiki/test_bootstrap_schema.py scripts/enforcement/check-client-wiki-registry.sh tests/enforcement/test_client_wiki_registry.py
+git commit -m "fix(client-wiki): close bootstrap schema downgrade paths" -- scripts/client_llm_wiki/bootstrap_schema.py tests/client_llm_wiki/test_bootstrap_schema.py scripts/enforcement/check-client-wiki-registry.sh tests/enforcement/test_client_wiki_registry.py scripts/enforcement/check_python_function_lengths.py tests/enforcement/test_python_function_lengths.py
 ```
 
 ### Task 2 — Isolate Git and bind clone configuration
@@ -271,7 +277,7 @@ git commit -m "feat(client-wiki): snapshot exact committed template blobs" -- sc
 
 ### Task 4 — Preserve and report render residue
 
-**Tests:** inject failure at create, bind/fstat, ledger update, write, chmod, and final validation; prove residue remains and no cleanup `unlink`/`rmdir`/`rename`/truncate operation occurs; cover `KeyboardInterrupt` and `SystemExit`; require a bounded structured residue record; prove no rehearsal stage and no retry into a failed partial clone.
+**Tests:** inject failure at create, bind/fstat, ledger update, write, chmod, and final validation; prove residue remains and no Python-level cleanup `unlink`/`rmdir`/`rename`/truncate primitive is invoked; cover `KeyboardInterrupt` and `SystemExit`; require a bounded structured residue record; prove no rehearsal stage and no retry into a failed partial clone; prove public CLI/entrypoint rejects caller-supplied failpoints or callbacks.
 
 ```bash
 uv run --frozen pytest tests/client_llm_wiki/test_bootstrap_renderer.py tests/client_llm_wiki/test_bootstrap_contract_security.py -q
@@ -280,7 +286,7 @@ git commit -m "fix(client-wiki): preserve failed render residue" -- scripts/clie
 
 ### Task 5 — Persist and attest the complete render manifest
 
-**Tests:** cover parent/root/`.git`/config identities and every path type/mode/size/SHA-256; reject same-length byte, size, mode, firewall, unexpected-member, target-parent, and config substitutions; validate after every injected operation and immediately before return; reject inside-target, partial, non-0600, non-regular, and symlink manifest paths.
+**Tests:** cover parent/root/`.git`/config identities and every path type/mode/size/SHA-256; reject same-length byte, size, mode, firewall, unexpected-member, target-parent, config, manifest-parent, and final manifest substitutions; validate after every injected operation and immediately before return; reject inside-target, partial, non-0600, non-regular, and symlink manifest paths; prove file and held parent are synced around atomic publication.
 
 ```bash
 uv run --frozen pytest tests/client_llm_wiki/test_bootstrap_manifest.py tests/client_llm_wiki/test_bootstrap_renderer.py -q
@@ -289,7 +295,7 @@ git commit -m "feat(client-wiki): attest complete render manifests" -- scripts/c
 
 ### Task 6 — Add descriptor-bound finalization and recovery
 
-**Tests:** in new `test_bootstrap_finalizer.py`, cover initial success, local-commit/remote-absent recovery, idempotent remote-equal success, and rejection without mutation for different HEAD/index/worktree/identity/origin/remote SHA. Require author variables, unavailable credentials failure, first commit with global/system config disabled, exact success JSON, GitHub PRIVATE/unarchived re-attestation, and immediate manifest checks around every injected operation.
+**Tests:** in new `test_bootstrap_finalizer.py`, cover initial success, local-commit/remote-absent recovery, idempotent remote-equal success, and rejection without mutation for different HEAD/index/worktree/identity/origin/remote SHA. Forge a self-consistent replacement manifest/clone and prove independent template reconstruction rejects it. Require a parentless root commit, exact tree/message/author/committer, valid-but-nondeterministic timestamps, no optional headers, and negative controls for a parent, wrong committer, extra header, and independently fabricated semantic lookalike with a wrong tree. Inject HEAD/ref substitution before transport and prove the literal retained OID—not symbolic HEAD—is pushed. Simulate a successful push followed by remote advancement and require the distinct `pushed_remote_advanced` residue record. Require author variables, unavailable credentials failure, first commit with global/system config disabled, exact success JSON, GitHub PRIVATE/unarchived re-attestation, and immediate independent snapshot/manifest checks around every injected operation.
 
 ```bash
 uv run --frozen pytest tests/client_llm_wiki/test_bootstrap_finalizer.py tests/client_llm_wiki/test_bootstrap_contract.py -q
@@ -298,7 +304,7 @@ git commit -m "feat(client-wiki): finalize scaffold through bound descriptors" -
 
 ### Task 7 — Delegate checker semantics and migrate the factory
 
-**Tests:** prove the checker delegates clone/config inspection to Python, accepts valid mixed fetch/push forms, rejects includes/rewrites/non-boolean archived values, and checks protected overlap before availability. Replace substring-only factory assertions with an executable fake-tool flow proving render → finalize → registry update ordering, registry update suppression on any finalizer/attestation failure, required author variables/credential helper, authoritative private registry guidance, and absence of pathname `git add`, `git commit`, or `git push` instructions.
+**Tests:** prove the checker delegates clone/config inspection to Python, accepts valid mixed fetch/push forms, rejects includes/rewrites/non-boolean archived values, and checks protected overlap before availability. Replace substring-only factory assertions with an executable fake-tool flow proving render writes directly to the explicit external manifest path (never stdout piped through `tee`) → finalize consumes that path → registry update ordering, registry update suppression on any finalizer/attestation failure, required author variables/credential helper, authoritative private registry guidance, and absence of pathname `git add`, `git commit`, or `git push` instructions.
 
 ```bash
 uv run --frozen pytest tests/enforcement/test_client_wiki_registry.py tests/client_llm_wiki/test_client_llm_wiki_factory_artifacts.py -q
@@ -315,7 +321,10 @@ bash tests/enforcement/test_client_wiki_registry.sh
 uv run --frozen pytest -q
 bash scripts/legal/legal-sanity-scan.sh --diff-only
 find scripts/client_llm_wiki -name '*.py' -print0 | xargs -0 wc -l
+uv run --no-project python scripts/enforcement/check_python_function_lengths.py scripts/client_llm_wiki tests/client_llm_wiki
 ```
+
+Task 1 will add the currently absent `scripts/enforcement/check_python_function_lengths.py` as a deterministic AST/tokenize-based checker with focused tests before production modules grow. The implementation will not substitute manual inspection for the 50-line acceptance criterion.
 
 The implementation will then receive T3 adversarial code/artifact review from Claude, Codex, and Gemini. Any MAJOR will be fixed through a new RED/GREEN cycle and re-reviewed. The completeness gate and pre-completion cleanup audit will run before closeout, not during this planning gate.
 
@@ -329,8 +338,8 @@ The implementation will then receive T3 adversarial code/artifact review from Cl
 | Git config | Includes/rewrites/duplicates rejected; exact mixed origins accepted | Malicious include target has an observable side effect if opened/applied. |
 | Snapshot | Exact committed object inventory | Working-tree mutation and active replacement ref differ from committed bytes. |
 | Residue | Every failure class preserves created objects | Spies fail the test if cleanup syscalls/helpers are invoked. |
-| Manifest | Complete identities and member hashes/modes | Same-size mutation, mode-only mutation, unexpected file, and substitution controls. |
-| Finalizer | Three allowed recovery states only | Every mismatch asserts no Git or registry mutation. |
+| Manifest | Complete identities and member hashes/modes | Same-size mutation, mode-only mutation, unexpected file, manifest-parent/final-entry substitution controls. |
+| Finalizer | Independent template reconstruction and three allowed recovery states only | Forged manifest, commit-shape, and ref-substitution controls assert no unauthorized OID or registry mutation. |
 | Credentials | Explicit author and fixed helper | Ambient config contains tempting but invalid author/helper values. |
 | Factory | Correct executable sequence | Fake tools fail if registry update precedes verified finalization. |
 
@@ -345,12 +354,14 @@ Hermetic tests can prove parser boundaries, malicious-include semantics, determi
 - [ ] No code, test fixture, plan, report, or factory instruction contains a client identifier, private raw path, secret, or invented raw-data location.
 - [ ] Every Git command uses the isolated environment; local/global/system includes, URL rewrites, caller Git variables, and replacement refs cannot influence behavior.
 - [ ] The snapshot is derived from exact committed tree/blob objects and rejects links, gitlinks, specials, duplicates, traversal, and unsupported modes.
-- [ ] Rendering uses held descriptors and exclusive no-follow creation, with no tar, rehearsal stage, or automatic pathname cleanup.
+- [ ] Rendering uses held descriptors and exclusive no-follow creation, with no tar or rehearsal stage; no Python-level pathname cleanup primitive is invoked on failure (universal syscall absence remains outside hermetic proof without a tracer).
 - [ ] Every failure including `KeyboardInterrupt`/`SystemExit` preserves residue and emits a bounded structured manual-disposition record.
-- [ ] The external mode-0600 manifest binds parent/root/`.git`/config and every rendered member's type/mode/size/SHA-256, and rejects partial or substituted state.
+- [ ] The external mode-0600 manifest uses a bound/synced parent and binds parent/root/`.git`/config plus every rendered member's type/mode/size/SHA-256, but never serves as finalization authority.
+- [ ] Finalization independently reconstructs the expected scaffold from the trusted canonical workspace commit and rejects a forged self-consistent manifest/clone.
 - [ ] `finalize-scaffold` accepts only the three specified recovery states and performs no mutation on any mismatch.
 - [ ] Author identity comes only from required `CLIENT_WIKI_GIT_AUTHOR_NAME`/`EMAIL`; credentials use only fixed command-scoped `gh auth git-credential`.
-- [ ] Final success requires exact remote `main` SHA, registered GitHub identity, `PRIVATE`, unarchived state, and a final manifest attestation.
+- [ ] The acceptable commit is a parentless exact root commit with exact tree/message/author/committer and no optional headers; push uses its retained literal OID and detects symbolic-ref substitution.
+- [ ] Final success requires remote `main` equal to the retained OID, registered GitHub identity, `PRIVATE`, unarchived state, and final independent content plus manifest attestation.
 - [ ] Factory behavior is executable under fake tools, updates the registry only after verified finalization, and contains no pathname Git add/commit/push workflow.
 - [ ] The public registry remains a non-authoritative relocation stub; no private registry or client wiki is edited by this issue.
 - [ ] All focused tests, the full `tests/client_llm_wiki` suite, checker suites, and repository test suite pass.
@@ -376,10 +387,10 @@ Any MAJOR will keep the plan at `draft`, trigger an inline revision, and require
 
 | Risk | Mitigation |
 |---|---|
-| Same-UID concurrent mutation during render/finalize | Descriptor/no-follow binding plus full re-attestation; preserve residue and fail on identity/member drift. No claim of universal race freedom. |
+| Same-UID concurrent mutation during render/finalize | Treat target/manifest as untrusted; independently reconstruct from named operator trust roots, use descriptor/no-follow binding and literal OID push, then fully re-attest. No claim protects trust roots from the same UID. |
 | Git behavior leaks through config or environment | Central allowlisted environment, held-config parsing with `--no-includes`, rewrite rejection, real malicious controls. |
 | Retry mutates an ambiguous partial clone | Explicit recovery classifier; partial render is never retried and mismatch states are non-mutating. |
-| Manifest itself becomes an attack surface | External no-follow regular mode-0600 file, strict version/schema, atomic complete write, bounded size/member count. |
+| Manifest itself becomes an attack surface | Bind/sync its parent and entry, bound its schema/size, and never trust it as content authority; compare it to an independently reconstructed snapshot. |
 | Test doubles conceal production order | Executable factory test plus semantic Git repositories/fake transport; optional live integration remains explicit and non-gating. |
 | Module growth violates guardrails | Split by authority before adding behavior; check line/function sizes during each task. |
 | Private data leaks into public artifacts | Registry contents and client paths remain out of scope; legal scan plus deny-list review gates closeout. |
