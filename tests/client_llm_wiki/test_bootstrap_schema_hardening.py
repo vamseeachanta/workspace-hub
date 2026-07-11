@@ -33,7 +33,10 @@ def _entry(**overrides: object) -> dict[str, object]:
 
 def _registry(entries: list[dict[str, object]] | None = None) -> str:
     return yaml.safe_dump(
-        {"registry_version": "0.2", "wikis": entries or [_entry()]},
+        {
+            "registry_version": "0.2",
+            "wikis": entries if entries is not None else [_entry()],
+        },
         sort_keys=False,
     )
 
