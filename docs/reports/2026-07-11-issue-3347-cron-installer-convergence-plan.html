@@ -14,7 +14,7 @@
 </head>
 <body>
   <h1>#3347 — Converge setup-cron on the transactional installer</h1>
-  <p><strong>Status:</strong> draft · <strong>Complexity:</strong> T2 · <strong>Lane:</strong> Codex</p>
+  <p><strong>Status:</strong> plan-review · <strong>Complexity:</strong> T2 · <strong>Lane:</strong> Codex</p>
   <div class="evidence">
     <strong>Live read-only reproduction:</strong> legacy setup lists 56 desired entries without comparing live ownership. Transactional preview fails closed on two duplicate Deckhand presence-sync lines. The live crontab also contains duplicate notification purge lines; equality refresh was manually repaired at its current six-hour cadence.
   </div>

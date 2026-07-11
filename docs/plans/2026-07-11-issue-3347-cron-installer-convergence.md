@@ -1,6 +1,6 @@
 # Plan for #3347: Converge setup-cron on the transactional installer
 
-> **Status:** adversarial-reviewed
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-07-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3347
