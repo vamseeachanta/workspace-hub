@@ -1,12 +1,12 @@
 """Fail-closed registry schema tests for issue #3449."""
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import pytest
 import yaml
 
+from client_llm_wiki import bootstrap_schema
 from client_llm_wiki.bootstrap_schema import (
     BootstrapMode,
     RegistryKind,
@@ -268,17 +268,16 @@ def test_unknown_entry_fields_are_allowed_without_conferring_authority():
 
 
 def test_schema_parsing_never_touches_raw_root_filesystem(monkeypatch):
-    def forbidden(*_args, **_kwargs):
-        raise AssertionError("schema touched the filesystem")
+    class ForbiddenPath:
+        def __init__(self, *_args, **_kwargs):
+            raise AssertionError("schema touched the filesystem through Path")
 
-    monkeypatch.setattr(Path, "stat", forbidden)
-    monkeypatch.setattr(Path, "lstat", forbidden)
-    monkeypatch.setattr(Path, "resolve", forbidden)
-    monkeypatch.setattr(Path, "iterdir", forbidden)
-    monkeypatch.setattr(os, "stat", forbidden)
-    monkeypatch.setattr(os, "lstat", forbidden)
-    monkeypatch.setattr(os, "open", forbidden)
-    monkeypatch.setattr(os, "scandir", forbidden)
+    class ForbiddenOS:
+        def __getattr__(self, _name):
+            raise AssertionError("schema touched the filesystem through os")
+
+    monkeypatch.setattr(bootstrap_schema, "Path", ForbiddenPath)
+    monkeypatch.setattr(bootstrap_schema, "os", ForbiddenOS())
 
     registry = parse_registry(
         _registry(

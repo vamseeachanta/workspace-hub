@@ -18,7 +18,6 @@ CHECKER = REPO_ROOT / "scripts" / "enforcement" / "check-client-wiki-registry.sh
 REPO_SLUG = "example-org/llm-wiki-example-client"
 YQ = shutil.which("yq")
 
-
 def _entry(**overrides: object) -> dict[str, object]:
     entry: dict[str, object] = {
         "short_name": "example-client",
@@ -138,10 +137,11 @@ def _gh_args(log: Path) -> list[str]:
         return []
     return [part.decode() for part in log.read_bytes().split(b"\0") if part]
 
-
 def _make_clone(tmp_path: Path, origin: str) -> Path:
     clone = tmp_path / "clone"
     subprocess.run(["git", "init", str(clone)], check=True, capture_output=True)
+    command = ["git", "-C", str(clone), "config", "core.hooksPath", "/dev/null"]
+    subprocess.run(command, check=True)
     subprocess.run(
         ["git", "-C", str(clone), "remote", "add", "origin", origin],
         check=True,

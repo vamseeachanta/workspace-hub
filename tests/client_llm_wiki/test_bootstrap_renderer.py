@@ -47,6 +47,7 @@ def _template_repo(tmp_path: Path, readme: str | None = None) -> Path:
     script.write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
     script.chmod(0o755)
     subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
+    _git(repo, "config", "core.hooksPath", "/dev/null")
     _git(repo, "config", "user.email", "test@example.invalid")
     _git(repo, "config", "user.name", "Test Operator")
     _git(repo, "add", "templates/client-llm-wiki")

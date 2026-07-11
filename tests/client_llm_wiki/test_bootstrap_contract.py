@@ -39,6 +39,7 @@ def _workspace(tmp_path: Path) -> Path:
     (template / ".claude" / "CLAUDE.md").write_text("private\n", encoding="utf-8")
     (template / "README.md").write_text("# <CLIENT_SHORT_NAME>\n", encoding="utf-8")
     subprocess.run(["git", "init", str(repo)], check=True, capture_output=True)
+    _git(repo, "config", "core.hooksPath", "/dev/null")
     _git(repo, "config", "user.email", "test@example.invalid")
     _git(repo, "config", "user.name", "Test Operator")
     _git(repo, "add", "templates/client-llm-wiki")
@@ -99,6 +100,7 @@ def _legacy_registry(tmp_path: Path) -> Path:
 
 def _init_target(path: Path, origin: str | None = None) -> Path:
     subprocess.run(["git", "init", str(path)], check=True, capture_output=True)
+    _git(path, "config", "core.hooksPath", "/dev/null")
     if origin is not None:
         _git(path, "remote", "add", "origin", origin)
     return path
