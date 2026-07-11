@@ -12,6 +12,12 @@ import subprocess
 import sys
 from typing import Callable, Sequence
 
+from .bootstrap_finalizer import (
+    BootstrapFinalizerError,
+    finalize_scaffold,
+    residue_json,
+)
+
 from .bootstrap_renderer import (
     BootstrapRenderError,
     BoundClone,
@@ -329,6 +335,12 @@ def _verify_command(args: argparse.Namespace) -> int:
     return 0
 
 
+def _finalize_command(args: argparse.Namespace) -> int:
+    result = finalize_scaffold(args.registry, args.short_name, args.manifest)
+    print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+    return 0
+
+
 def _add_registry_argument(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--registry", required=True, type=Path)
 
@@ -347,6 +359,11 @@ def build_parser() -> argparse.ArgumentParser:
     _add_registry_argument(render)
     render.add_argument("--short-name", required=True)
     render.set_defaults(handler=_render_command)
+    finalize = commands.add_parser("finalize-scaffold")
+    _add_registry_argument(finalize)
+    finalize.add_argument("--short-name", required=True)
+    finalize.add_argument("--manifest", required=True, type=Path)
+    finalize.set_defaults(handler=_finalize_command)
     verify = commands.add_parser("verify-private-repo")
     verify.add_argument("--repo", required=True)
     verify.set_defaults(handler=_verify_command)
@@ -357,6 +374,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         return int(args.handler(args))
+    except BootstrapFinalizerError as exc:
+        print(residue_json(exc), file=sys.stderr)
+        return 1
     except (BootstrapSchemaError, BootstrapRenderError, BootstrapContractError) as exc:
         residue = getattr(exc, "residue", None)
         if residue is not None:
