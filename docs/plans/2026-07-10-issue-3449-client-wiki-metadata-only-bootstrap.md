@@ -1,6 +1,6 @@
 # Plan for #3449: Client-wiki metadata-only bootstrap
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T3
 > **Date:** 2026-07-10
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3449
