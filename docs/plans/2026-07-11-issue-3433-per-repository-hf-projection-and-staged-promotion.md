@@ -1,6 +1,6 @@
 # Plan for [#3433](https://github.com/vamseeachanta/workspace-hub/issues/3433): Per-Repository Hugging Face Projection and Staged Promotion
 
-> **Status:** plan-approved (owner-approved 2026-07-11); hardened through Claude r1 + Codex r2 (both MAJOR→remediated) + Claude r3 verification (NO-MAJOR, all findings closed)
+> **Status:** plan-approved (owner-approved 2026-07-11); review gate CLEARED — Claude r1 + Codex r2 (both MAJOR→remediated) + Claude r3 (NO-MAJOR); owner accepted the T3→T2 depth reduction (Gemini unavailable on this machine). Implementation gated only by the upstream #3427 + #3428–#3432 merge.
 > **Complexity:** T3
 > **Date:** 2026-07-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3433
@@ -570,8 +570,9 @@ r1 was a Claude self-review; r2 was a substantive Codex review that found genuin
 defects r1 missed (the Publication-ledger residency being the deepest) — vindicating the
 multi-provider gate; r3 confirmed the r2 remediations closed cleanly. Gemini remains subject to
 noninteractive-auth availability on this machine and was not run; **no unavailable provider result
-is interpreted as approval**, and the T3→T2 depth reduction (Gemini absent) is disclosed for
-explicit owner acceptance, consistent with the parent.
+is interpreted as approval**. The T3→T2 depth reduction (Gemini absent) was disclosed to and
+**explicitly accepted by the owner on 2026-07-11**, consistent with the parent. The review gate is
+cleared; implementation is gated only by the upstream #3427 + #3428–#3432 merge to `main`.
 
 ---
 
