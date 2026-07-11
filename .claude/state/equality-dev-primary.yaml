@@ -1,4 +1,4 @@
-generated_at: "2026-07-11T16:09:35"
+generated_at: "2026-07-11T18:50:09"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
@@ -7,13 +7,13 @@ status: active
 provenance:
   checkout_sha: "cb02c6c21"
   dirty: false
-  behind_main: 64
+  behind_main: 120
   ahead_main: 15
   origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 20303, disk_avail_gb: 704}
+    headroom: {ram_avail_mib: 20768, disk_avail_gb: 704}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -30,7 +30,7 @@ dimensions:
     python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-1.yaml
     readiness_overall: fail
-  skills: {repo_skill_count: 421}
+  skills: {repo_skill_count: 422}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
@@ -70,10 +70,10 @@ dimensions:
     has_parity_review: true
     job_count: 63
   session_curation:
-    last_curated_at: "2026-07-11T17:47:06+00:00"
-    sessions_24h: 397
+    last_curated_at: "2026-07-11T23:48:26+00:00"
+    sessions_24h: 454
     providers_active: "claude,codex,gemini,hermes"
-    memory_files_changed: 3
+    memory_files_changed: 0
   skill_currency:
     audited_at: "2026-07-11T17:47:44+00:00"
     canonical_count: 44
