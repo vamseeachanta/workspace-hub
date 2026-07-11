@@ -90,6 +90,8 @@ docs/
 
 ### Standards & Compliance
 
+- [Algorithm Run Dataset Contract](architecture/algorithm-run-dataset-contract.yaml) - machine-readable public run-ledger invariants, ownership, records, and issue graph
+- [Algorithm Run Dataset Decision Manual](governance/2026-07-10-algorithm-run-dataset-decision-manual.html) - human-readable architecture, reporting, and promotion rules
 - [AI Review Routing Policy](standards/AI_REVIEW_ROUTING_POLICY.md) — provider roles, review defaults, Gemini trigger rules
 - [Control-Plane Contract](standards/CONTROL_PLANE_CONTRACT.md) — canonical entry points and provider adapters
 - [Tier-1 Indexing and Code-Placement Contract](standards/TIER1_INDEXING_AND_CODE_PLACEMENT_CONTRACT.md) — trusted routing surfaces, repo-vs-bulk-artifact-store placement, and freshness rules
