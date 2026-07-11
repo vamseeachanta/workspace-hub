@@ -1,19 +1,19 @@
-generated_at: "2026-07-11T12:47:50"
+generated_at: "2026-07-11T16:09:35"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "e6853de3b"
+  checkout_sha: "cb02c6c21"
   dirty: false
-  behind_main: 58
-  ahead_main: 14
+  behind_main: 64
+  ahead_main: 15
   origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 20552, disk_avail_gb: 704}
+    headroom: {ram_avail_mib: 20303, disk_avail_gb: 704}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
