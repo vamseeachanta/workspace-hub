@@ -12,6 +12,7 @@ from typing import Iterator
 
 @dataclass(frozen=True, slots=True)
 class BoundCloneLayout:
+    parent_fd: int
     root_fd: int
     git_fd: int
     config_fd: int
@@ -34,7 +35,10 @@ def bind_clone(target: Path) -> Iterator[BoundCloneLayout]:
     """Hold the clone root, Git directory, and exact config regular file."""
     descriptors: list[int] = []
     try:
-        root_fd = _open_directory(Path(target))
+        target = Path(target).absolute()
+        parent_fd = _open_directory(target.parent)
+        descriptors.append(parent_fd)
+        root_fd = _open_directory(target.name, dir_fd=parent_fd)
         descriptors.append(root_fd)
         git_fd = _open_directory(".git", dir_fd=root_fd)
         descriptors.append(git_fd)
@@ -42,7 +46,7 @@ def bind_clone(target: Path) -> Iterator[BoundCloneLayout]:
         descriptors.append(config_fd)
         if not stat.S_ISREG(os.fstat(config_fd).st_mode):
             raise OSError("clone config is not a regular file")
-        yield BoundCloneLayout(root_fd, git_fd, config_fd)
+        yield BoundCloneLayout(parent_fd, root_fd, git_fd, config_fd)
     finally:
         for descriptor in reversed(descriptors):
             os.close(descriptor)

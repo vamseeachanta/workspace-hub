@@ -3,13 +3,17 @@
 from __future__ import annotations
 
 import inspect
+import hashlib
+import json
 from pathlib import Path
 import subprocess
 
+import pytest
 import yaml
 
-from client_llm_wiki import bootstrap_contract, bootstrap_finalizer
+from client_llm_wiki import bootstrap_contract, bootstrap_finalizer, bootstrap_remote
 from client_llm_wiki.bootstrap_manifest import persist_render_manifest
+from client_llm_wiki.bootstrap_layout import bind_clone
 from client_llm_wiki.bootstrap_renderer import RenderTokens, bind_empty_clone, render_committed_template
 
 
@@ -85,6 +89,59 @@ def test_initial_success_constructs_exact_root_commit_and_index(tmp_path, monkey
     assert raw.endswith(b"\n\nchore: initialize metadata-only client wiki\n")
 
 
+def test_forged_self_consistent_manifest_and_clone_are_rejected(tmp_path, monkeypatch):
+    workspace, clone, registry, manifest = _fixture(tmp_path)
+    forged = b"# forged but self-consistent\n"
+    (clone / "README.md").write_bytes(forged)
+    claims = json.loads(manifest.read_bytes())
+    claims["members"]["README.md"].update(
+        size=len(forged), sha256=hashlib.sha256(forged).hexdigest(),
+    )
+    manifest.write_text(json.dumps(claims, sort_keys=True, separators=(",", ":")) + "\n")
+    monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
+    monkeypatch.setenv("CLIENT_WIKI_GIT_AUTHOR_NAME", "Client Wiki Bot")
+    monkeypatch.setenv("CLIENT_WIKI_GIT_AUTHOR_EMAIL", "client-wiki@example.com")
+
+    with pytest.raises(bootstrap_finalizer.BootstrapFinalizerError):
+        bootstrap_finalizer.finalize_scaffold(registry, "client", manifest)
+
+    head = subprocess.run(
+        ["git", "-C", str(clone), "rev-parse", "--verify", "HEAD"],
+        check=False, capture_output=True,
+    )
+    assert head.returncode != 0
+
+
+def test_exact_local_only_retry_repairs_index_then_pushes(tmp_path, monkeypatch):
+    workspace, clone, registry, manifest = _fixture(tmp_path)
+    monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
+    monkeypatch.setenv("CLIENT_WIKI_GIT_AUTHOR_NAME", "Client Wiki Bot")
+    monkeypatch.setenv("CLIENT_WIKI_GIT_AUTHOR_EMAIL", "client-wiki@example.com")
+    states = iter((("absent", None), ("absent", None), ("equal", None)))
+    monkeypatch.setattr(bootstrap_finalizer, "_remote", lambda *_args: next(states))
+    monkeypatch.setattr(bootstrap_finalizer, "_push", lambda *_args: None)
+    first = bootstrap_finalizer.finalize_scaffold(registry, "client", manifest)
+    _git(clone, "read-tree", "--empty")
+    pushed = []
+    states = iter((("absent", None), ("equal", first["commit_oid"])))
+    monkeypatch.setattr(bootstrap_finalizer, "_remote", lambda *_args: next(states))
+    monkeypatch.setattr(
+        bootstrap_finalizer, "_push", lambda _context, _repo, oid: pushed.append(oid),
+    )
+
+    retried = bootstrap_finalizer.finalize_scaffold(registry, "client", manifest)
+
+    assert retried == first
+    assert pushed == [first["commit_oid"]]
+    assert _git(clone, "write-tree") == first["tree_oid"]
+    states = iter((("equal", first["commit_oid"]), ("equal", first["commit_oid"])))
+    monkeypatch.setattr(bootstrap_finalizer, "_remote", lambda *_args: next(states))
+    pushed.clear()
+    idempotent = bootstrap_finalizer.finalize_scaffold(registry, "client", manifest)
+    assert idempotent == first
+    assert pushed == []
+
+
 def test_cli_exposes_exact_finalize_arguments():
     args = bootstrap_contract.build_parser().parse_args([
         "finalize-scaffold", "--registry", "registry.yml", "--short-name", "client",
@@ -92,3 +149,251 @@ def test_cli_exposes_exact_finalize_arguments():
     ])
     assert str(args.registry) == "registry.yml"
     assert str(args.manifest) == "render.json"
+
+
+def test_author_name_rejects_surrounding_whitespace(monkeypatch):
+    monkeypatch.setenv("CLIENT_WIKI_GIT_AUTHOR_NAME", " Client Wiki Bot")
+    monkeypatch.setenv("CLIENT_WIKI_GIT_AUTHOR_EMAIL", "client-wiki@example.com")
+    with pytest.raises(bootstrap_finalizer.BootstrapFinalizerError, match="name grammar"):
+        bootstrap_finalizer._identity()
+
+
+@pytest.mark.parametrize("oid", ["a" * 40, "b" * 64])
+def test_zero_old_oid_matches_repository_object_width(oid):
+    assert bootstrap_finalizer._zero_oid(oid) == "0" * len(oid)
+
+
+TREE = "a" * 40
+PERSON = b"Client Wiki Bot <client-wiki@example.com> 1 +0000"
+
+
+def _raw_commit(*headers: bytes, message: bytes = bootstrap_finalizer.MESSAGE) -> bytes:
+    return b"\n".join(headers) + b"\n\n" + message
+
+
+@pytest.mark.parametrize("raw", [
+    _raw_commit(b"author " + PERSON, b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"tree " + TREE.encode(),
+                b"author " + PERSON, b"committer " + PERSON),
+    _raw_commit(b"author " + PERSON, b"tree " + TREE.encode(), b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"committer " + PERSON, b"author " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"author " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"author " + PERSON, b"committer Other <x@y.z> 1 +0000"),
+    _raw_commit(b"tree " + TREE.encode(), b"parent " + b"b" * 40,
+                b"author " + PERSON, b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"encoding UTF-8",
+                b"author " + PERSON, b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"gpgsig forged",
+                b" continuation", b"author " + PERSON, b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"author " + PERSON, b"committer " + PERSON,
+                message=b"\n" + bootstrap_finalizer.MESSAGE),
+    _raw_commit(b"tree " + TREE.encode(), b"author " + PERSON, b"committer " + PERSON) + b"\0",
+    _raw_commit(b"tree " + TREE.encode(), b"author " + PERSON, b"committer " + PERSON).replace(b"\n", b"\r\n", 1),
+    _raw_commit(b"tree " + b"b" * 40, b"author " + PERSON, b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"author malformed", b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"author Client Wiki Bot <client-wiki@example.com> 1 +2400", b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"author Client Wiki Bot <client-wiki@example.com> 1 +0060", b"committer " + PERSON),
+    _raw_commit(b"tree " + TREE.encode(), b"author Client Wiki Bot <client-wiki@example.com> 9223372036854775808 +0000", b"committer " + PERSON),
+])
+def test_recovery_rejects_every_noncanonical_raw_commit(monkeypatch, raw):
+    monkeypatch.setattr(bootstrap_finalizer, "_git", lambda *_args, **_kwargs: raw)
+    with pytest.raises(bootstrap_finalizer.BootstrapFinalizerError):
+        bootstrap_finalizer._validate_commit(
+            object(), "c" * 40, TREE, ("Client Wiki Bot", "client-wiki@example.com"),
+        )
+
+
+def test_recovery_accepts_exact_raw_root_commit(monkeypatch):
+    raw = _raw_commit(
+        b"tree " + TREE.encode(), b"author " + PERSON,
+        b"committer Client Wiki Bot <client-wiki@example.com> 2 +0130",
+    )
+    monkeypatch.setattr(bootstrap_finalizer, "_git", lambda *_args, **_kwargs: raw)
+    bootstrap_finalizer._validate_commit(
+        object(), "c" * 40, TREE, ("Client Wiki Bot", "client-wiki@example.com"),
+    )
+
+
+@pytest.mark.parametrize(("repo_status", "branch_status", "sha", "expected"), [
+    (200, 404, None, "absent"),
+    (200, 200, "d" * 40, "equal"),
+    (200, 200, "e" * 40, "different"),
+    (401, 404, None, "unknown"),
+    (403, 404, None, "unknown"),
+    (404, 404, None, "unknown"),
+    (200, 500, None, "unknown"),
+    (200, 200, "malformed", "unknown"),
+])
+def test_remote_state_mapping_is_fail_closed(
+    monkeypatch, repo_status, branch_status, sha, expected,
+):
+    repo = {"name": "llm-wiki-client", "owner": {"login": "org"},
+            "private": True, "archived": False}
+    replies = iter(((repo_status, repo), (branch_status, {"object": {"sha": sha}})))
+    monkeypatch.setattr(bootstrap_remote, "github_api", lambda *_args: next(replies))
+    assert bootstrap_remote.remote_state("org/llm-wiki-client", "d" * 40)[0] == expected
+
+
+def test_github_api_uses_literal_host_and_isolated_environment(monkeypatch):
+    seen = {}
+
+    def run(command):
+        seen["command"] = command
+        seen["env"] = bootstrap_remote.isolated_env()
+        return subprocess.CompletedProcess(command, 1, b"", b"failed")
+
+    monkeypatch.setenv("GH_HOST", "attacker.invalid")
+    monkeypatch.setenv("GIT_CONFIG", "/tmp/hostile")
+    monkeypatch.setattr(bootstrap_remote, "_run", run)
+    assert bootstrap_remote.github_api("repos/org/llm-wiki-client") == (0, {})
+    assert seen["command"][0:5] == ["gh", "api", "--hostname", "github.com", "--include"]
+    assert "GH_HOST" not in seen["env"]
+    assert seen["env"]["GIT_CONFIG"] == "/dev/null"
+
+
+@pytest.mark.parametrize("surface", [
+    "alternates", "http-alternates", "grafts", "shallow", "hook", "loose-replace",
+    "packed-replace", "malformed-replace",
+])
+def test_forbidden_git_authority_surface_is_rejected(tmp_path, surface):
+    clone = tmp_path / "clone"
+    subprocess.run(["git", "init", "-b", "main", str(clone)], check=True, capture_output=True)
+    git = clone / ".git"
+    paths = {
+        "alternates": git / "objects/info/alternates",
+        "http-alternates": git / "objects/info/http-alternates",
+        "grafts": git / "info/grafts",
+        "shallow": git / "shallow",
+        "hook": git / "hooks/pre-commit",
+        "loose-replace": git / f"refs/replace/{'a' * 40}",
+        "packed-replace": git / "packed-refs",
+        "malformed-replace": git / "packed-refs",
+    }
+    path = paths[surface]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    data = "x\n"
+    if surface == "packed-replace":
+        data = f"{'b' * 40} refs/replace/{'a' * 40}\n"
+    elif surface == "malformed-replace":
+        data = f"{'b' * 40} refs/replace\n"
+    path.write_text(data)
+    if surface == "hook":
+        path.chmod(0o755)
+    with bind_clone(clone) as bound:
+        with pytest.raises(bootstrap_finalizer.BootstrapFinalizerError):
+            bootstrap_finalizer._reject_git_surfaces(bound)
+
+
+def _initial_unit(monkeypatch, failing: str | None = None):
+    calls = []
+    commit, tree = "c" * 64, "t" * 64
+    monkeypatch.setattr(bootstrap_finalizer, "_remote", lambda *_args: ("absent", None))
+    monkeypatch.setattr(bootstrap_finalizer, "_build_tree", lambda *_args: ("b" * 64, tree))
+    monkeypatch.setattr(bootstrap_finalizer, "_independent_attestation", lambda *_args: calls.append("attest"))
+
+    def git(_bound, *args, **_kwargs):
+        calls.append(args)
+        if args[0] == failing:
+            raise bootstrap_finalizer.BootstrapFinalizerError("injected")
+        if args[0] == "commit-tree":
+            return (commit + "\n").encode()
+        return b""
+
+    monkeypatch.setattr(bootstrap_finalizer, "_git", git)
+    entry = type("Entry", (), {"repo": "org/llm-wiki-client"})()
+    context = type("Context", (), {"clone": object()})()
+    return calls, commit, tree, entry, context
+
+
+def test_cas_precedes_index_and_uses_object_width_zero(monkeypatch):
+    calls, commit, tree, entry, context = _initial_unit(monkeypatch)
+    bootstrap_finalizer._initial_commit(
+        context, entry, object(), (), tree,
+    )
+    update = next(call for call in calls if isinstance(call, tuple) and call[0] == "update-ref")
+    assert update == ("update-ref", "refs/heads/main", commit, "0" * 64)
+    assert calls.index(update) < calls.index(("read-tree", tree))
+
+
+@pytest.mark.parametrize(("failure", "kind"), [
+    ("update-ref", "git_objects_cas_failed"),
+    ("read-tree", "local_commit_index_incomplete"),
+])
+def test_object_and_index_failure_have_exact_bounded_residue(monkeypatch, failure, kind):
+    calls, _commit, tree, entry, context = _initial_unit(monkeypatch, failure)
+    with pytest.raises(bootstrap_finalizer.BootstrapFinalizerError) as caught:
+        bootstrap_finalizer._initial_commit(
+            context, entry, object(), (), tree,
+        )
+    assert caught.value.residue.kind == kind
+    assert caught.value.residue.object_oids == ("b" * 64, tree, "c" * 64)
+
+
+def test_transport_pushes_retained_literal_oid_and_attests_boundaries(monkeypatch):
+    commit, tree = "c" * 40, "t" * 40
+    states = iter((("absent", None), ("equal", commit)))
+    pushed, attestations = [], []
+    monkeypatch.setattr(bootstrap_finalizer, "_remote", lambda *_args: next(states))
+    monkeypatch.setattr(bootstrap_finalizer, "_head", lambda *_args: commit)
+    monkeypatch.setattr(bootstrap_finalizer, "_push", lambda _b, _r, oid: pushed.append(oid))
+    monkeypatch.setattr(bootstrap_finalizer, "_independent_attestation", lambda *_args: attestations.append(1))
+    entry = type("Entry", (), {"repo": "org/llm-wiki-client"})()
+    context = type("Context", (), {"clone": object()})()
+    bootstrap_finalizer._transport(
+        context, entry, object(), commit, tree,
+    )
+    assert pushed == [commit]
+    assert len(attestations) == 7
+
+
+def test_head_substitution_after_transport_fails(monkeypatch):
+    commit, tree = "c" * 40, "t" * 40
+    heads = iter((commit, "d" * 40))
+    monkeypatch.setattr(bootstrap_finalizer, "_head", lambda *_args: next(heads))
+    monkeypatch.setattr(bootstrap_finalizer, "_remote", lambda *_args: ("absent", None))
+    monkeypatch.setattr(bootstrap_finalizer, "_push", lambda *_args: None)
+    monkeypatch.setattr(bootstrap_finalizer, "_independent_attestation", lambda *_args: None)
+    entry = type("Entry", (), {"repo": "org/llm-wiki-client"})()
+    context = type("Context", (), {"clone": object()})()
+    with pytest.raises(bootstrap_finalizer.BootstrapFinalizerError, match="HEAD changed"):
+        bootstrap_finalizer._transport(
+            context, entry, object(), commit, tree,
+        )
+
+
+def test_each_named_operation_is_independently_attested(monkeypatch):
+    events = []
+    context = object()
+    monkeypatch.setattr(
+        bootstrap_finalizer, "_independent_attestation",
+        lambda current: events.append(("attest", current)),
+    )
+
+    result = bootstrap_finalizer._with_attestation(
+        context, "hash_object", lambda: events.append(("call", context)) or b"ok",
+    )
+
+    assert result == b"ok"
+    assert events == [("attest", context), ("call", context), ("attest", context)]
+
+
+def test_named_operation_attests_after_exception(monkeypatch):
+    events = []
+    monkeypatch.setattr(
+        bootstrap_finalizer, "_independent_attestation", lambda _context: events.append("attest"),
+    )
+
+    with pytest.raises(RuntimeError, match="injected"):
+        bootstrap_finalizer._with_attestation(
+            object(), "push", lambda: (_ for _ in ()).throw(RuntimeError("injected")),
+        )
+
+    assert events == ["attest", "attest"]
+
+
+def test_operation_seams_are_private_and_named():
+    expected = {
+        "hash_object", "mktree", "commit_tree", "cas", "read_tree",
+        "push", "api_query", "final_return",
+    }
+    assert expected <= bootstrap_finalizer._ATTESTED_OPERATIONS

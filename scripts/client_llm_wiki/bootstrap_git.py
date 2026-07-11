@@ -173,3 +173,8 @@ def validate_clone_git(bound: BoundCloneLayout, repo_slug: str) -> dict[str, str
     parsed = _validate_records(_read_config(bound), repo_slug)
     _validate_head(bound)
     return parsed
+
+
+def validate_clone_config(bound: BoundCloneLayout, repo_slug: str) -> dict[str, str]:
+    """Validate only the held config; callers classify HEAD separately."""
+    return _validate_records(_read_config(bound), repo_slug)

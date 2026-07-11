@@ -43,7 +43,7 @@ def _open_config(clone: BoundClone) -> int:
     return descriptor
 def _config_evidence(clone: BoundClone, descriptor: int, repo: str) -> dict[str, Any]:
     before = os.fstat(descriptor)
-    layout = BoundCloneLayout(clone.root_fd, clone.git_fd, descriptor)
+    layout = BoundCloneLayout(clone.parent_fd, clone.root_fd, clone.git_fd, descriptor)
     try:
         parsed = validate_clone_git(layout, repo)
     except BootstrapGitError as exc:
