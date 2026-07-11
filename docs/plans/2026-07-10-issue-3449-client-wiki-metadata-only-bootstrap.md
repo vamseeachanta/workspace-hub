@@ -143,7 +143,7 @@ The clone's held `.git/config` descriptor will be inherited by the Git child wit
 | `branch.main.remote` | zero or one literal `origin` |
 | `branch.main.merge` | zero or one literal `refs/heads/main` |
 
-Every other key or value—including include/includeIf, URL rewrites, aliases, hooksPath, fsmonitor, sshCommand, signing, filters, credential helpers, and extensions—will fail closed. A dangling/corrupt symbolic HEAD will fail closed.
+Every other key or value—including include/includeIf, URL rewrites, aliases, hooksPath, fsmonitor, sshCommand, signing, filters, credential helpers, and extensions—will fail closed. A symbolic `HEAD` exactly naming `refs/heads/main` with no loose or packed `main` ref is the one authorized unborn state. A present `main` ref that does not resolve to a commit, corrupt ref data, or any other symbolic target is dangling/corrupt and will fail closed.
 
 All mutating Git commands will use plumbing with fixed `-c core.hooksPath=/dev/null`; no porcelain commit command will run. Before mutation, the finalizer will reject `.git/objects/info/alternates`, `.git/objects/info/http-alternates`, `.git/info/grafts`, `.git/shallow`, every loose `.git/refs/replace/*` entry, every `refs/replace/*` entry parsed from `packed-refs`, malformed/mixed replacement namespaces, and every alternate-object environment variable. It will verify that `.git/hooks` contains no executable or non-regular entry; hook samples may exist but will never be invoked because the fixed null hooks path applies to object creation and push.
 
