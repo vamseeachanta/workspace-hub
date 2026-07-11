@@ -1,0 +1,341 @@
+"""Fail-closed registry schema tests for issue #3449."""
+from __future__ import annotations
+
+import os
+from pathlib import Path
+
+import pytest
+import yaml
+
+from client_llm_wiki.bootstrap_schema import (
+    BootstrapMode,
+    RegistryKind,
+    RegistryOperationError,
+    RegistryParseError,
+    RegistryValidationError,
+    get_entry,
+    parse_registry,
+    validate_root_disjointness,
+)
+
+
+def _entry(**overrides: object) -> dict[str, object]:
+    entry: dict[str, object] = {
+        "short_name": "example-co",
+        "repo": "example-org/llm-wiki-example-co",
+        "visibility": "PRIVATE",
+        "posture": "client-private",
+        "status": "planned",
+        "raw_roots": [],
+        "raw_source_status": "not-mounted",
+        "ingestion_enabled": False,
+    }
+    entry.update(overrides)
+    return entry
+
+
+def _registry(entries: list[dict[str, object]] | None = None, **overrides: object) -> str:
+    doc: dict[str, object] = {
+        "registry_version": "0.2",
+        "wikis": entries if entries is not None else [_entry()],
+    }
+    doc.update(overrides)
+    return yaml.safe_dump(doc, sort_keys=False)
+
+
+@pytest.mark.parametrize(
+    ("roots", "source_status", "mode"),
+    [
+        ([], "not-mounted", BootstrapMode.METADATA_ONLY),
+        (["/authorized/source"], "mounted", BootstrapMode.SOURCE_REGISTERED_DISABLED),
+    ],
+)
+def test_current_registry_classifies_only_disabled_modes(roots, source_status, mode):
+    registry = parse_registry(
+        _registry([_entry(raw_roots=roots, raw_source_status=source_status)])
+    )
+
+    assert registry.kind is RegistryKind.CURRENT
+    assert get_entry(registry, "example-co").mode is mode
+
+
+@pytest.mark.parametrize(
+    ("roots", "source_status"),
+    [
+        ([], "not-mounted"),
+        (["/authorized/source"], "mounted"),
+        ([], "mounted"),
+        (["/authorized/source"], "not-mounted"),
+    ],
+)
+def test_every_enabled_ingestion_state_is_rejected(roots, source_status):
+    text = _registry(
+        [
+            _entry(
+                raw_roots=roots,
+                raw_source_status=source_status,
+                ingestion_enabled=True,
+            )
+        ]
+    )
+
+    with pytest.raises(RegistryValidationError, match="ingestion_enabled"):
+        parse_registry(text)
+
+
+@pytest.mark.parametrize(
+    ("roots", "source_status"),
+    [([], "mounted"), (["/authorized/source"], "not-mounted")],
+)
+def test_disabled_state_rejects_root_status_mismatches(roots, source_status):
+    with pytest.raises(RegistryValidationError, match="raw_source_status"):
+        parse_registry(
+            _registry(
+                [
+                    _entry(
+                        raw_roots=roots,
+                        raw_source_status=source_status,
+                    )
+                ]
+            )
+        )
+
+
+@pytest.mark.parametrize("value", [0.2, "0.1", 1, None, True])
+def test_current_version_requires_exact_string(value):
+    with pytest.raises(RegistryValidationError, match="registry_version"):
+        parse_registry(_registry(registry_version=value))
+
+
+def test_duplicate_yaml_keys_are_rejected_before_mapping_validation():
+    text = """registry_version: "0.2"
+wikis:
+  - short_name: example-co
+    short_name: shadow-name
+"""
+
+    with pytest.raises(RegistryParseError, match="duplicate"):
+        parse_registry(text)
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "wikis: []\n",
+        "- registry_version\n- '0.2'\n",
+        "registry_version: '0.2'\nwikis: not-a-sequence\n",
+        "registry_version: ['unterminated'\n",
+    ],
+)
+def test_missing_or_malformed_document_shapes_fail_closed(text):
+    with pytest.raises((RegistryParseError, RegistryValidationError)):
+        parse_registry(text)
+
+
+def test_exact_public_stub_is_audit_only():
+    text = yaml.safe_dump(
+        {"registry_version": "0.2", "relocated": True, "wikis": []},
+        sort_keys=False,
+    )
+    registry = parse_registry(text)
+
+    assert registry.kind is RegistryKind.PUBLIC_STUB
+    with pytest.raises(RegistryOperationError):
+        get_entry(registry, "example-co")
+
+
+@pytest.mark.parametrize(
+    "doc",
+    [
+        {"registry_version": "0.2", "wikis": []},
+        {"registry_version": "0.2", "relocated": True, "wikis": [_entry()]},
+        {
+            "registry_version": "0.2",
+            "relocated": True,
+            "wikis": [],
+            "authority": "unexpected",
+        },
+    ],
+)
+def test_stub_lookalikes_fail_closed(doc):
+    with pytest.raises(RegistryValidationError):
+        parse_registry(yaml.safe_dump(doc, sort_keys=False))
+
+
+def test_legacy_numeric_version_is_audit_only():
+    legacy_entry = {
+        "short_name": "example-co",
+        "repo": "example-org/llm-wiki-example-co",
+        "visibility": "PRIVATE",
+        "posture": "client-private",
+        "status": "planned",
+        "raw_roots": ["/authorized/legacy-source/"],
+    }
+    text = yaml.safe_dump({"registry_version": 0.1, "wikis": [legacy_entry]})
+    registry = parse_registry(text)
+
+    assert registry.kind is RegistryKind.LEGACY_AUDIT
+    assert registry.warnings
+    with pytest.raises(RegistryOperationError):
+        get_entry(registry, "example-co")
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("short_name", "Example Co"),
+        ("short_name", "example_co"),
+        ("short_name", "éxample"),
+        ("repo", "https://example.invalid/repo"),
+        ("repo", "example-org/other-name"),
+        ("repo", "example-org/llm-wiki-example-co.git"),
+        ("visibility", "PUBLIC"),
+        ("posture", "public"),
+        ("status", "unknown"),
+        ("raw_roots", "not-a-list"),
+        ("raw_source_status", "unknown"),
+        ("ingestion_enabled", 0),
+        ("ingestion_enabled", "false"),
+        ("ingestion_enabled", None),
+    ],
+)
+def test_current_entry_rejects_invalid_identity_types_and_enums(field, value):
+    with pytest.raises(RegistryValidationError):
+        parse_registry(_registry([_entry(**{field: value})]))
+
+
+@pytest.mark.parametrize(
+    "root",
+    [
+        "relative/source",
+        "/authorized/source/",
+        "/authorized/../escape",
+        "/authorized//source",
+        "/",
+        "/authorized/\x00source",
+    ],
+)
+def test_source_registered_roots_reject_noncanonical_or_unsafe_paths(root):
+    entry = _entry(
+        raw_roots=[root],
+        raw_source_status="mounted",
+    )
+
+    with pytest.raises(RegistryValidationError, match="raw_roots"):
+        parse_registry(_registry([entry]))
+
+
+def test_duplicate_roots_and_short_names_are_rejected():
+    duplicate_roots = _entry(
+        raw_roots=["/authorized/source", "/authorized/source"],
+        raw_source_status="mounted",
+    )
+    with pytest.raises(RegistryValidationError, match="duplicate raw_roots"):
+        parse_registry(_registry([duplicate_roots]))
+
+    with pytest.raises(RegistryValidationError, match="duplicate short_name"):
+        parse_registry(
+            _registry(
+                [
+                    _entry(),
+                    _entry(repo="second-org/llm-wiki-example-co"),
+                ]
+            )
+        )
+
+
+def test_missing_required_fields_fail_closed():
+    for field in (
+        "short_name",
+        "repo",
+        "visibility",
+        "posture",
+        "status",
+        "raw_roots",
+        "raw_source_status",
+        "ingestion_enabled",
+    ):
+        entry = _entry()
+        del entry[field]
+        with pytest.raises(RegistryValidationError, match=field):
+            parse_registry(_registry([entry]))
+
+
+def test_unknown_entry_fields_are_allowed_without_conferring_authority():
+    registry = parse_registry(_registry([_entry(notes="historical context")]))
+
+    assert get_entry(registry, "example-co").mode is BootstrapMode.METADATA_ONLY
+
+
+def test_schema_parsing_never_touches_raw_root_filesystem(monkeypatch):
+    def forbidden(*_args, **_kwargs):
+        raise AssertionError("schema touched the filesystem")
+
+    monkeypatch.setattr(Path, "stat", forbidden)
+    monkeypatch.setattr(Path, "lstat", forbidden)
+    monkeypatch.setattr(Path, "resolve", forbidden)
+    monkeypatch.setattr(Path, "iterdir", forbidden)
+    monkeypatch.setattr(os, "stat", forbidden)
+    monkeypatch.setattr(os, "lstat", forbidden)
+    monkeypatch.setattr(os, "open", forbidden)
+    monkeypatch.setattr(os, "scandir", forbidden)
+
+    registry = parse_registry(
+        _registry(
+            [
+                _entry(
+                    raw_roots=["/authorized/source"],
+                    raw_source_status="mounted",
+                )
+            ]
+        )
+    )
+    assert registry.entries[0].raw_roots == ("/authorized/source",)
+
+
+@pytest.mark.parametrize(
+    "protected",
+    [
+        "/workspace/private",
+        "/workspace/private/raw",
+        "/workspace/private/raw/cache",
+    ],
+)
+def test_lexical_overlap_is_rejected_in_both_directions(protected):
+    entry = parse_registry(
+        _registry(
+            [
+                _entry(
+                    raw_roots=["/workspace/private/raw"],
+                    raw_source_status="mounted",
+                )
+            ]
+        )
+    ).entries[0]
+
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(Path, "resolve", lambda *_args, **_kwargs: pytest.fail("resolved"))
+        with pytest.raises(RegistryValidationError, match="overlaps"):
+            validate_root_disjointness(entry, [protected])
+
+
+def test_lexical_prefix_neighbor_is_not_an_overlap():
+    entry = parse_registry(
+        _registry(
+            [
+                _entry(
+                    raw_roots=["/workspace/private/raw"],
+                    raw_source_status="mounted",
+                )
+            ]
+        )
+    ).entries[0]
+
+    validate_root_disjointness(entry, ["/workspace/privately"])
+
+
+def test_get_entry_fails_for_missing_identity():
+    registry = parse_registry(_registry())
+
+    with pytest.raises(RegistryOperationError, match="not found"):
+        get_entry(registry, "missing")
