@@ -219,3 +219,13 @@ def test_state_dir_must_be_controlled_repo_relative(tmp_path, path):
     runtime = _load_runtime()
     with pytest.raises(ValueError):
         runtime.resolve_controlled_path(tmp_path, path)
+
+
+def test_controlled_path_rejects_symlink_component(tmp_path):
+    runtime = _load_runtime()
+    real = tmp_path / "real"
+    real.mkdir()
+    (tmp_path / "linked").symlink_to(real, target_is_directory=True)
+
+    with pytest.raises(ValueError):
+        runtime.resolve_controlled_path(tmp_path, "linked/task")

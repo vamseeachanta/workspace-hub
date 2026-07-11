@@ -131,7 +131,7 @@ FIRST_TASK=true
 
 RUNTIME_SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../cron" && pwd)/cron_runtime.py"
 
-while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is_claude stale_after_hours runtime_contract description; do
+while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler _is_claude stale_after_hours runtime_contract _description; do
     # Skip Windows-scheduler tasks on Linux
     if [[ "$scheduler" == "windows-task-scheduler" ]]; then
         continue
@@ -316,12 +316,12 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
         DETAILS="${DETAILS}; last-run: ${LAST_RUN_AGO}, errors: 0"
     fi
     if [[ "$runtime_contract" != "null" && -n "$runtime_contract" ]]; then
-        if ! RUNTIME_JSON=$(uv run --script "$RUNTIME_SCRIPT" inspect \
+        RUNTIME_OUTPUT=""
+        if ! RUNTIME_OUTPUT=$(uv run --script "$RUNTIME_SCRIPT" inspect --format tsv \
             --schedule-file "$SCHEDULE_FILE" --workspace "$WS_HUB" --task-id "$tid" 2>/dev/null); then
-            RUNTIME_JSON='{"status":"unknown"}'
+            RUNTIME_OUTPUT=$'unknown\t{"status":"unknown"}'
         fi
-        RUNTIME_STATUS=$(printf '%s' "$RUNTIME_JSON" | uv run --no-project python -c \
-            'import json,sys; print(json.load(sys.stdin).get("status", "unknown"))' 2>/dev/null || echo unknown)
+        IFS=$'\t' read -r RUNTIME_STATUS RUNTIME_JSON <<< "$RUNTIME_OUTPUT"
         DETAILS="${DETAILS:+${DETAILS}; }runtime: ${RUNTIME_STATUS}"
         RUNTIME_FAILURE=""
         case "$RUNTIME_STATUS" in

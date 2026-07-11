@@ -388,7 +388,7 @@ def test_real_dev_primary_cutover_keeps_bridge_schedule_staggers():
 
 def test_real_cutover_replaces_stale_bridge_only_via_explicit_fingerprint():
     stale = (
-        "25 4 * * * cd /mnt/local-analysis/workspace-hub && "
+        "25 4 * * * cd /mnt/local-analysis/workspace-hub && "  # abs-path-allowed
         "bash scripts/memory/bridge-hermes-claude.sh\n"
     )
 

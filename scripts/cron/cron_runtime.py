@@ -8,7 +8,6 @@
 from __future__ import annotations
 
 import argparse
-import errno
 import fcntl
 import json
 import os
@@ -32,6 +31,11 @@ def resolve_controlled_path(workspace: Path, relative: str) -> Path:
     if candidate.is_absolute() or ".." in candidate.parts or not candidate.parts:
         raise ValueError(f"path must be controlled and repo-relative: {relative}")
     root = workspace.resolve()
+    cursor = root
+    for part in candidate.parts:
+        cursor /= part
+        if cursor.is_symlink():
+            raise ValueError(f"path contains a symlink component: {relative}")
     resolved = (root / candidate).resolve()
     if resolved != root and root not in resolved.parents:
         raise ValueError(f"path escapes workspace: {relative}")
@@ -227,7 +231,8 @@ def _inspect_command(args: argparse.Namespace) -> int:
         contract["max_seconds"],
         contract.get("filesystem_wait_wchans", []),
     )
-    print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+    encoded = json.dumps(result, sort_keys=True, separators=(",", ":"))
+    print(f"{result['status']}\t{encoded}" if args.format == "tsv" else encoded)
     return 0
 
 
@@ -244,6 +249,7 @@ def _parser() -> argparse.ArgumentParser:
     inspect.add_argument("--schedule-file", type=Path, required=True)
     inspect.add_argument("--workspace", type=Path, required=True)
     inspect.add_argument("--task-id", required=True)
+    inspect.add_argument("--format", choices=("json", "tsv"), default="json")
     return parser
 
 
