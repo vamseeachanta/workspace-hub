@@ -1,6 +1,6 @@
 # Plan for #3470: Scheduler Mutation Safety Contract
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T3
 > **Date:** 2026-07-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3470
@@ -88,6 +88,7 @@ Distinct sources consulted: issue body, #3347 plan, current mutation code, cron 
 |---|---|
 | This plan | `docs/plans/2026-07-11-issue-3470-scheduler-mutation-safety-contract.md` |
 | Human audit report | `docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html` |
+| Human plan view | `docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety-plan.html` |
 | Machine-readable registry | `config/scheduled-tasks/mutation-surfaces.yaml` |
 | Enforcement script | `scripts/enforcement/check-scheduler-mutation-surfaces.py` |
 | Enforcement tests | `tests/enforcement/test_scheduler_mutation_surfaces.py` |
@@ -270,8 +271,10 @@ No production scheduler writer will be behaviorally modified in this issue. Befo
 | Fallback schedule audit r2 | MAJOR → patched | Required path-restricted sentinels, exact input provenance, parsed blocking-workflow semantics, and offline-only issue claims. |
 | Codex r2 | MAJOR → patched | Required substring branches to remain migration-required and split preservation verification from exact-state verification. |
 | Codex r3 | APPROVE | Verified both Codex r2 blockers against source at revision `89a3ef860`. |
+| Fallback governance audit r4 | APPROVE | Verified operation-level targets, branch-set completeness, closed evaluator IDs, and status lattice at `1779e930e`. |
+| Fallback schedule audit r4 | APPROVE | Verified dual targets, framed provenance, NUL-safe index transport, and derived-only status at `1779e930e`. |
 
-**Overall result:** FAIL — fallback r2 reviews returned MAJOR; revisions above require fresh re-review.
+**Overall result:** PASS — Codex r3 and both focused fallback r4 reviews returned APPROVE. Claude and Gemini are documented unavailable; no implementation is authorized before user approval.
 
 Revisions made based on r1:
 
