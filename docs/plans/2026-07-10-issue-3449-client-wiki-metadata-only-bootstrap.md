@@ -153,7 +153,7 @@ After the final pre-mutation attestation, initial finalization will deliberately
 
 The renderer will walk the committed template tree through Git object plumbing with replacement objects disabled. It will accept only trees and regular/executable blobs, reject duplicates and special/link modes, read each blob by exact object ID, and never use a tar archive or the mutable working-tree bytes.
 
-The external manifest path will be outside the target clone, supplied explicitly, and treated as untrusted progress/evidence—not as finalization authority. Its parent directory will be opened and retained by descriptor; any pre-existing final component will be opened no-follow and rejected unless it is the expected regular mode-`0600` placeholder. The renderer will create an exclusive adjacent mode-`0600` temporary file through the held parent, write and `fdatasync` one complete versioned JSON document, use descriptor-relative `os.replace(..., src_dir_fd=parent_fd, dst_dir_fd=parent_fd)` to atomically publish it into that same bound directory, `fsync` the parent, reopen the final entry no-follow, and verify expected bytes/identity before success. Crash-before-replace may leave only the bounded temporary residue; crash-after-replace yields the complete JSON entry. The manifest will contain:
+The external manifest path will be outside the target clone, supplied explicitly, and treated as untrusted progress/evidence—not as finalization authority. Its parent directory will be opened and retained by descriptor, and the final component must be absent; placeholders and every pre-existing entry will fail closed. The renderer will create an exclusive adjacent mode-`0600` backing file through the held parent, write and `fdatasync` one complete versioned JSON document, then use descriptor-relative `os.link(..., src_dir_fd=parent_fd, dst_dir_fd=parent_fd, follow_symlinks=False)` to publish the final entry atomically without replacement. It will `fsync` the parent, retain both hard-link names intentionally, reopen the final entry no-follow, require the same device/inode/link-count/content/mode, and verify expected bytes before success. The backing link is bounded, named in structured output, and preserved on both success and failure; no unlink cleanup is attempted. A concurrent final-entry substitution makes `os.link` fail rather than overwrite it. Crash-before-link leaves only the bounded backing residue; crash-after-link yields two names for the same complete inode. This amendment was explicitly approved by the user on 2026-07-11 after Task 5 review proved `os.replace` could overwrite a substituted victim. The manifest will contain:
 
 - parent, clone root, `.git`, and `.git/config` device/inode/type identities;
 - registered repo identity, exact allowed origins, and pinned template commit/tree;
@@ -224,7 +224,8 @@ function render_scaffold(registry, slug, manifest_path):
     materialize exact snapshot via held directory descriptors
     after each create/write/chmod, record bounded residue progress
     validate complete member inventory and firewall
-    atomically write and sync complete manifest
+    write/sync complete backing inode and atomically hard-link final name without replacement
+    preserve both backing and final names; bind/verify same inode and link count
     on BaseException, preserve residue and emit structured failure
 
 function validate_manifest(bound_clone, manifest):
@@ -319,7 +320,7 @@ git commit -m "fix(client-wiki): preserve failed render residue" -- scripts/clie
 
 ### Task 5 — Persist and attest the complete render manifest
 
-**Tests:** cover parent/root/`.git`/config identities and every path type/mode/size/SHA-256; reject same-length byte, size, mode, firewall, unexpected-member, target-parent, config, manifest-parent, and final manifest substitutions; validate after every injected operation and immediately before return; reject inside-target, partial, non-0600, non-regular, and symlink manifest paths; prove file and held parent are synced around atomic publication.
+**Tests:** cover parent/root/`.git`/config identities and every path type/mode/size/SHA-256; reject same-length byte, size, mode, firewall, unexpected-member, target-parent, config, manifest-parent, and final manifest substitutions; validate after every injected operation and immediately before return; reject inside-target, partial, non-0600, non-regular, symlink, placeholder, or any pre-existing final path; prove file and held parent are synced; prove descriptor-relative hard-link publication never overwrites a concurrent final entry and intentionally preserves the same-inode backing link on success/failure.
 
 ```bash
 uv run --frozen pytest tests/client_llm_wiki/test_bootstrap_manifest.py tests/client_llm_wiki/test_bootstrap_renderer.py -q
@@ -390,7 +391,7 @@ Hermetic tests can prove parser boundaries, malicious-include semantics, determi
 - [ ] The snapshot is derived from exact committed tree/blob objects and rejects links, gitlinks, specials, duplicates, traversal, and unsupported modes.
 - [ ] Rendering uses held descriptors and exclusive no-follow creation, with no tar or rehearsal stage; no Python-level pathname cleanup primitive is invoked on failure (universal syscall absence remains outside hermetic proof without a tracer).
 - [ ] Every failure including `KeyboardInterrupt`/`SystemExit` preserves residue and emits a bounded structured manual-disposition record.
-- [ ] The external mode-0600 manifest uses a bound/synced parent and binds parent/root/`.git`/config plus every rendered member's type/mode/size/SHA-256, but never serves as finalization authority.
+- [ ] The external mode-0600 manifest uses a bound/synced parent and atomic no-replace hard-link publication; its same-inode backing link is intentionally preserved and reported, and the manifest binds parent/root/`.git`/config plus every rendered member's type/mode/size/SHA-256 without serving as finalization authority.
 - [ ] Finalization independently reconstructs the expected scaffold from the trusted current template-subtree tree OID and rejects a forged self-consistent manifest/clone while tolerating unrelated workspace commits.
 - [ ] `finalize-scaffold` accepts only the three success/recovery states; pre-mutation mismatches are non-mutating, while post-object/CAS failures preserve exactly classified Git residue and recover only through an independently validated exact local commit.
 - [ ] Author identity comes only from required `CLIENT_WIKI_GIT_AUTHOR_NAME`/`EMAIL`; credentials use only fixed command-scoped `gh auth git-credential`.
