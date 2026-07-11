@@ -161,15 +161,10 @@ def test_failed_final_origin_validation_preserves_created_tree(tmp_path, monkeyp
     monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
     real_render = bootstrap_contract.render_committed_template
 
-    def mutate_before_final_validation(clone, template, tokens, **kwargs):
-        validator = kwargs["_final_validator"]
-
-        def reject_changed_origin(bound):
-            _git(target, "remote", "set-url", "origin", "https://example.invalid/other")
-            validator(bound)
-
-        kwargs["_final_validator"] = reject_changed_origin
-        return real_render(clone, template, tokens, **kwargs)
+    def mutate_before_final_validation(clone, template, tokens):
+        manifest = real_render(clone, template, tokens)
+        _git(target, "remote", "set-url", "origin", "https://example.invalid/other")
+        return manifest
 
     monkeypatch.setattr(bootstrap_contract, "render_committed_template", mutate_before_final_validation)
     with pytest.raises(BootstrapContractError, match="origin") as raised:
@@ -188,17 +183,12 @@ def test_final_validation_rejects_post_bind_git_directory_swap(tmp_path, monkeyp
     monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
     real_render = bootstrap_contract.render_committed_template
 
-    def swap_before_final_validation(clone, template, tokens, **kwargs):
-        validator = kwargs["_final_validator"]
-
-        def reject_swapped_git(bound):
-            (target / ".git").rename(target / ".git-held")
-            subprocess.run(["git", "init", str(target)], check=True, capture_output=True)
-            _git(target, "remote", "add", "origin", f"https://github.com/{REPO_SLUG}.git")
-            validator(bound)
-
-        kwargs["_final_validator"] = reject_swapped_git
-        return real_render(clone, template, tokens, **kwargs)
+    def swap_before_final_validation(clone, template, tokens):
+        manifest = real_render(clone, template, tokens)
+        (target / ".git").rename(target / ".git-held")
+        subprocess.run(["git", "init", str(target)], check=True, capture_output=True)
+        _git(target, "remote", "add", "origin", f"https://github.com/{REPO_SLUG}.git")
+        return manifest
 
     monkeypatch.setattr(bootstrap_contract, "render_committed_template", swap_before_final_validation)
     with pytest.raises(BootstrapContractError, match=".git identity"):
@@ -270,3 +260,23 @@ def test_public_cli_rejects_injection_authority(option):
 def test_execute_render_rejects_failpoint_authority():
     with pytest.raises(TypeError):
         execute_render(Path("registry.yml"), "example-co", failpoint="write")
+
+
+def test_cli_residue_json_uses_fixed_error_and_policy(monkeypatch, capsys):
+    residue = bootstrap_contract.RenderResidue(
+        "a" * 40, 1, 2, ("README.md",), None, "write",
+    )
+
+    def fail_execute(*_args, **_kwargs):
+        raise BootstrapContractError("secret-ish\x00\n" + "x" * 10_000, residue=residue)
+
+    monkeypatch.setattr(bootstrap_contract, "execute_render", fail_execute)
+    result = bootstrap_contract.main(
+        ["render", "--registry", "registry.yml", "--short-name", "example-co"]
+    )
+    payload = json.loads(capsys.readouterr().err)
+
+    assert result == 1
+    assert payload["error"] == "render_failed"
+    assert payload["residue"]["template_commit"] == "a" * 40
+    assert payload["residue"]["residue_policy"] == "preserved"

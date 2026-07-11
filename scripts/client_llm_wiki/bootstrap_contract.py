@@ -16,6 +16,7 @@ from .bootstrap_renderer import (
     BootstrapRenderError,
     BoundClone,
     RenderManifest,
+    RenderResidue,
     RenderTokens,
     bind_empty_clone,
     render_committed_template,
@@ -265,12 +266,20 @@ def execute_render(
     try:
         with bind_empty_clone(layout.target) as clone:
             _verify_bound_clone(clone, entry.repo)
-            return render_committed_template(
-                clone,
-                template,
-                tokens,
-                _final_validator=lambda bound: _verify_bound_clone(bound, entry.repo, require_empty=False),
-            )
+            manifest = render_committed_template(clone, template, tokens)
+            try:
+                _verify_bound_clone(clone, entry.repo, require_empty=False)
+            except BootstrapContractError as exc:
+                residue = RenderResidue(
+                    manifest.template_commit,
+                    manifest.clone_device,
+                    manifest.clone_inode,
+                    manifest.created_paths,
+                    None,
+                    "final_validation",
+                )
+                raise BootstrapContractError(str(exc), residue=residue) from exc
+            return manifest
     except BootstrapRenderError as exc:
         raise BootstrapContractError(str(exc), residue=exc.residue) from exc
 
@@ -349,7 +358,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     except (BootstrapSchemaError, BootstrapRenderError, BootstrapContractError) as exc:
         residue = getattr(exc, "residue", None)
         if residue is not None:
-            print(json.dumps({"error": str(exc), "residue": asdict(residue)}, sort_keys=True), file=sys.stderr)
+            print(json.dumps({"error": "render_failed", "residue": asdict(residue)}, sort_keys=True), file=sys.stderr)
         else:
             print(f"FAIL: {exc}", file=sys.stderr)
         return 1

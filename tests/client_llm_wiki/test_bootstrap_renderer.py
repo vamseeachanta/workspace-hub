@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import inspect
+import json
 import os
 from pathlib import Path
 import stat
@@ -73,12 +75,20 @@ def _tokens() -> RenderTokens:
 
 def _render(repo: Path, clone: Path, failpoint=None):
     with bind_empty_clone(clone) as bound:
-        return render_committed_template(
-            bound,
-            repo,
-            _tokens(),
-            _failpoint=failpoint,
+        if failpoint is None:
+            return render_committed_template(bound, repo, _tokens())
+        return bootstrap_renderer._render_committed_template_for_test(
+            bound, repo, _tokens(), failpoint=failpoint,
         )
+
+
+def test_public_renderer_has_no_injection_or_callback_boundary():
+    signature = inspect.signature(render_committed_template)
+    assert tuple(signature.parameters) == ("clone", "template_worktree", "tokens")
+    with pytest.raises(TypeError):
+        render_committed_template(None, None, None, failpoint="write")
+    with pytest.raises(TypeError):
+        render_committed_template(None, None, None, callback=lambda: None)
 
 
 def test_render_uses_committed_head_and_normalizes_modes(tmp_path):
@@ -124,9 +134,7 @@ def test_render_consumes_exact_snapshot_without_archive(tmp_path, monkeypatch):
 def test_render_has_no_rehearsal_or_staging_tree(tmp_path):
     repo = _template_repo(tmp_path)
     clone = _empty_clone(tmp_path)
-
     _render(repo, clone)
-
     assert not hasattr(bootstrap_renderer, "_bound_stage")
     assert not list(tmp_path.glob(".client-wiki-stage-*"))
 
@@ -238,10 +246,117 @@ def test_failure_preserves_bounded_structured_residue(tmp_path, monkeypatch, sta
     residue = raised.value.residue
     assert residue is not None
     assert (residue.clone_device, residue.clone_inode) == (clone.stat().st_dev, clone.stat().st_ino)
-    assert len(residue.completed_members) <= 128
+    assert len(residue.completed_members) <= bootstrap_renderer._RESIDUE_MEMBER_LIMIT
     assert residue.failure_stage == stage
+    assert residue.template_commit == _git(repo, "rev-parse", "HEAD")
+    assert residue.residue_policy == "preserved"
     assert "Do not retry" in residue.instruction
     assert sorted(path.name for path in clone.iterdir()) != [".git"]
+    if stage == "final_validation":
+        expected = {
+            str(path.relative_to(clone))
+            for path in clone.rglob("*")
+            if path != clone / ".git" and clone / ".git" not in path.parents
+        }
+        assert set(residue.completed_members) == expected
+
+
+@pytest.mark.parametrize(
+    ("primitive", "stage"),
+    [
+        ("mkdir", "create"),
+        ("open", "create"),
+        ("fstat", "bind"),
+        ("record", "record"),
+        ("write", "write"),
+        ("fchmod", "chmod"),
+    ],
+)
+def test_real_primitive_failure_reports_exact_stage(tmp_path, monkeypatch, primitive, stage):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+
+    def fail(*_args, **_kwargs):
+        raise OSError("primitive failure")
+
+    if primitive == "record":
+        monkeypatch.setattr(bootstrap_renderer, "_record_artifact", fail)
+    elif primitive == "open":
+        real_open = bootstrap_renderer.os.open
+
+        def fail_created_file(name, *args, **kwargs):
+            if name == ".gitignore":
+                raise OSError("primitive failure")
+            return real_open(name, *args, **kwargs)
+
+        monkeypatch.setattr(bootstrap_renderer.os, "open", fail_created_file)
+    elif primitive == "fstat":
+        real_fstat = bootstrap_renderer.os.fstat
+
+        def fail_created_descriptor(descriptor):
+            if os.readlink(f"/proc/self/fd/{descriptor}").endswith(("/.claude", "/docs")):
+                raise OSError("primitive failure")
+            return real_fstat(descriptor)
+
+        monkeypatch.setattr(bootstrap_renderer.os, "fstat", fail_created_descriptor)
+    else:
+        monkeypatch.setattr(bootstrap_renderer.os, primitive, fail)
+
+    with pytest.raises(BootstrapRenderError) as raised:
+        _render(repo, clone)
+
+    assert raised.value.residue.failure_stage == stage
+
+
+@pytest.mark.parametrize("failure", [RuntimeError("stop"), KeyboardInterrupt("stop"), SystemExit(9)])
+def test_bound_directory_fd_closes_for_each_base_exception(tmp_path, monkeypatch, failure):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+    opened: list[int] = []
+    real_open = bootstrap_renderer.os.open
+    real_fstat = bootstrap_renderer.os.fstat
+
+    def recording_open(*args, **kwargs):
+        descriptor = real_open(*args, **kwargs)
+        if args and args[0] in {".claude", "docs"}:
+            opened.append(descriptor)
+        return descriptor
+
+    def interrupt_fstat(descriptor):
+        if descriptor in opened:
+            raise failure
+        return real_fstat(descriptor)
+
+    monkeypatch.setattr(bootstrap_renderer.os, "open", recording_open)
+    monkeypatch.setattr(bootstrap_renderer.os, "fstat", interrupt_fstat)
+    with pytest.raises(BootstrapRenderError):
+        _render(repo, clone)
+
+    assert opened
+    for descriptor in opened:
+        with pytest.raises(OSError):
+            real_fstat(descriptor)
+
+
+def test_exception_payload_is_not_exposed_and_residue_json_is_bounded(tmp_path, monkeypatch):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+    payload = "secret-ish\x00\n" + "x" * 10_000
+    def fail_write(_descriptor, _data):
+        raise RuntimeError(payload)
+
+    monkeypatch.setattr(bootstrap_renderer, "_write_all", fail_write)
+    with pytest.raises(BootstrapRenderError) as raised:
+        _render(repo, clone)
+
+    assert "secret-ish" not in str(raised.value)
+    assert len(str(raised.value)) < 100
+    encoded = json.dumps(raised.value.residue.__dict__ if hasattr(raised.value.residue, "__dict__") else {
+        "template_commit": raised.value.residue.template_commit,
+        "residue_policy": raised.value.residue.residue_policy,
+        "failure_stage": raised.value.residue.failure_stage,
+    })
+    assert "\\u0000" not in encoded and "secret-ish" not in encoded
     with pytest.raises(BootstrapRenderError, match="only a real .git"):
         _render(repo, clone)
 

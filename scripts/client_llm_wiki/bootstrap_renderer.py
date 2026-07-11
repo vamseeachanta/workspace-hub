@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 from contextlib import contextmanager
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import os
 from pathlib import Path, PurePosixPath
 import re
 import stat
-from typing import Callable, Iterator, Mapping
+from typing import Iterator, Mapping
 
 from .bootstrap_snapshot import (
     BootstrapSnapshotError,
@@ -18,11 +18,13 @@ from .bootstrap_snapshot import (
 
 @dataclass(frozen=True, slots=True)
 class RenderResidue:
+    template_commit: str
     clone_device: int
     clone_inode: int
     completed_members: tuple[str, ...]
     uncertain_member: str | None
     failure_stage: str
+    residue_policy: str = "preserved"
     instruction: str = "Do not retry this clone; inspect and dispose of residue manually."
 
 
@@ -75,22 +77,26 @@ class _CreatedArtifact:
 class _RenderProgress:
     current: str | None = None
     stage: str = "snapshot_or_validation"
-    completed: list[str] | None = None
+    completed: list[str] = field(default_factory=list)
 
-    def __post_init__(self) -> None:
-        self.completed = []
-
-FinalValidator = Callable[[BoundClone], None]
 _DIR_FLAGS = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC
+_RESIDUE_MEMBER_LIMIT = 8192
 
 
 _FAILPOINTS = {"create", "bind", "record", "write", "chmod", "final_validation"}
 
 
-def _inject(selected: str | None, progress: _RenderProgress, stage: str) -> None:
+def _set_stage(progress: _RenderProgress, stage: str) -> None:
     progress.stage = stage
+
+
+def _inject(selected: str | None, stage: str) -> None:
     if selected == stage:
         raise RuntimeError(f"injected {stage} failure")
+
+
+def _record_artifact(ledger: list[_CreatedArtifact], artifact: _CreatedArtifact) -> None:
+    ledger.append(artifact)
 
 def _identity(info: os.stat_result) -> FileIdentity:
     return FileIdentity(info.st_dev, info.st_ino, stat.S_IFMT(info.st_mode))
@@ -107,11 +113,14 @@ def _open_bound_directory(parent_fd: int, name: str) -> tuple[int, FileIdentity]
     if not stat.S_ISDIR(before.st_mode):
         raise BootstrapRenderError(f"not a directory: {name}")
     descriptor = os.open(name, _DIR_FLAGS, dir_fd=parent_fd)
-    identity = _identity(os.fstat(descriptor))
-    if identity != _identity(before):
+    try:
+        identity = _identity(os.fstat(descriptor))
+        if identity != _identity(before):
+            raise BootstrapRenderError(f"directory identity changed while binding: {name}")
+        return descriptor, identity
+    except BaseException:
         os.close(descriptor)
-        raise BootstrapRenderError(f"directory identity changed while binding: {name}")
-    return descriptor, identity
+        raise
 
 
 @contextmanager
@@ -173,20 +182,25 @@ def _create_directories(root_fd: int, members: tuple[_TemplateMember, ...], ledg
         parent = "" if parent == "." else parent
         parent_fd = directory_fds[parent]
         progress.current = relative
+        _set_stage(progress, "create")
         os.mkdir(name, 0o755, dir_fd=parent_fd)
-        _inject(failpoint, progress, "create")
+        _inject(failpoint, "create")
+        _set_stage(progress, "bind")
         descriptor, identity = _open_bound_directory(parent_fd, name)
         try:
-            _inject(failpoint, progress, "bind")
+            _inject(failpoint, "bind")
+            directory_fds[relative] = descriptor
+            _set_stage(progress, "record")
+            _record_artifact(ledger, _CreatedArtifact(relative, parent_fd, name, identity, True))
+            _inject(failpoint, "record")
+            _set_stage(progress, "chmod")
+            os.fchmod(descriptor, 0o755)
+            _inject(failpoint, "chmod")
+            progress.completed.append(relative)
         except BaseException:
-            os.close(descriptor)
+            if relative not in directory_fds:
+                os.close(descriptor)
             raise
-        directory_fds[relative] = descriptor
-        ledger.append(_CreatedArtifact(relative, parent_fd, name, identity, True))
-        _inject(failpoint, progress, "record")
-        os.fchmod(descriptor, 0o755)
-        _inject(failpoint, progress, "chmod")
-        progress.completed.append(relative)
 
 
 def _create_files(members: tuple[_TemplateMember, ...], ledger: list[_CreatedArtifact], directory_fds: Mapping[str, int], failpoint: str | None, progress: _RenderProgress) -> None:
@@ -198,17 +212,22 @@ def _create_files(members: tuple[_TemplateMember, ...], ledger: list[_CreatedArt
         parent_fd = directory_fds[parent]
         flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW | os.O_CLOEXEC
         progress.current = member.path
+        _set_stage(progress, "create")
         descriptor = os.open(path.name, flags, member.mode, dir_fd=parent_fd)
-        _inject(failpoint, progress, "create")
         try:
+            _inject(failpoint, "create")
+            _set_stage(progress, "bind")
             identity = _identity(os.fstat(descriptor))
-            _inject(failpoint, progress, "bind")
-            ledger.append(_CreatedArtifact(member.path, parent_fd, path.name, identity, False))
-            _inject(failpoint, progress, "record")
+            _inject(failpoint, "bind")
+            _set_stage(progress, "record")
+            _record_artifact(ledger, _CreatedArtifact(member.path, parent_fd, path.name, identity, False))
+            _inject(failpoint, "record")
+            _set_stage(progress, "write")
             _write_all(descriptor, member.data)
-            _inject(failpoint, progress, "write")
+            _inject(failpoint, "write")
+            _set_stage(progress, "chmod")
             os.fchmod(descriptor, member.mode)
-            _inject(failpoint, progress, "chmod")
+            _inject(failpoint, "chmod")
             progress.completed.append(member.path)
         finally:
             os.close(descriptor)
@@ -235,10 +254,10 @@ def _revalidate_clone(clone: BoundClone, ledger: list[_CreatedArtifact], directo
         raise BootstrapRenderError("rendered inventory contains unexpected members")
 
 
-def render_committed_template(
-    clone: BoundClone, template_worktree: Path, tokens: RenderTokens, *, _failpoint: str | None = None, _final_validator: FinalValidator | None = None
+def _render_committed_template(
+    clone: BoundClone, template_worktree: Path, tokens: RenderTokens, failpoint: str | None,
 ) -> RenderManifest:
-    if _failpoint is not None and _failpoint not in _FAILPOINTS:
+    if failpoint is not None and failpoint not in _FAILPOINTS:
         raise TypeError("_failpoint must be an internal named failpoint")
     ledger: list[_CreatedArtifact] = []
     directory_fds = {"": clone.root_fd}
@@ -250,26 +269,42 @@ def render_committed_template(
         if any(member is None or member.data is None or member.mode != 0o644 for member in firewall):
             raise BootstrapRenderError("committed template has an invalid privacy firewall")
         rendered = tuple(_render_member(member, tokens) for member in snapshot.members)
-        _create_directories(clone.root_fd, rendered, ledger, directory_fds, _failpoint, progress)
-        _create_files(rendered, ledger, directory_fds, _failpoint, progress)
+        if len(rendered) > _RESIDUE_MEMBER_LIMIT:
+            raise BootstrapRenderError("template exceeds residue member limit")
+        _create_directories(clone.root_fd, rendered, ledger, directory_fds, failpoint, progress)
+        _create_files(rendered, ledger, directory_fds, failpoint, progress)
         progress.current = None
-        _inject(_failpoint, progress, "final_validation")
+        _set_stage(progress, "final_validation")
+        _inject(failpoint, "final_validation")
         _revalidate_clone(clone, ledger, [fd for path, fd in directory_fds.items() if path])
-        if _final_validator is not None:
-            _final_validator(clone)
         return RenderManifest(snapshot.commit_oid, clone.root_id.device, clone.root_id.inode, tuple(artifact.relative_path for artifact in ledger))
     except BaseException as exc:
-        uncertain = progress.current
-        completed = tuple(progress.completed)[-128:]
+        if "snapshot" not in locals() or progress.stage == "snapshot_or_validation":
+            if isinstance(exc, BootstrapRenderError):
+                raise
+            if isinstance(exc, BootstrapSnapshotError):
+                raise BootstrapRenderError(str(exc)) from exc
+            raise BootstrapRenderError("template validation failed") from exc
         residue = RenderResidue(
-            clone.root_id.device, clone.root_id.inode, completed, uncertain, progress.stage,
+            snapshot.commit_oid, clone.root_id.device, clone.root_id.inode,
+            tuple(progress.completed), progress.current, progress.stage,
         )
-        message = str(exc)
-        if isinstance(exc, BootstrapSnapshotError):
-            message = str(exc)
+        message = f"render failed at {progress.stage} ({type(exc).__name__})"
         raise BootstrapRenderError(message, residue=residue) from exc
     finally:
         for path, descriptor in reversed(tuple(directory_fds.items())):
             if not path:
                 continue
             os.close(descriptor)
+
+
+def render_committed_template(
+    clone: BoundClone, template_worktree: Path, tokens: RenderTokens,
+) -> RenderManifest:
+    return _render_committed_template(clone, template_worktree, tokens, None)
+
+
+def _render_committed_template_for_test(
+    clone: BoundClone, template_worktree: Path, tokens: RenderTokens, *, failpoint: str,
+) -> RenderManifest:
+    return _render_committed_template(clone, template_worktree, tokens, failpoint)
