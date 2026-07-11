@@ -26,8 +26,6 @@ from .bootstrap_remote import remote_state as _remote
 from .bootstrap_renderer import RenderTokens, _render_member
 from .bootstrap_schema import get_entry, load_registry, validate_root_disjointness
 from .bootstrap_snapshot import TemplateMember, load_committed_snapshot
-
-
 MESSAGE = b"chore: initialize metadata-only client wiki\n"
 _OID = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})")
 _EMAIL = re.compile(
@@ -48,6 +46,9 @@ class BootstrapFinalizerError(RuntimeError):
     def __init__(self, message: str, *, residue: FinalizeResidue | None = None):
         super().__init__(message)
         self.residue = residue
+def _object_error(kind: str, message: str, objects, tree=None):
+    residue = FinalizeResidue(kind, None, tree, tuple(objects))
+    return BootstrapFinalizerError(message, residue=residue)
 def _run(command: list[str], *, env: dict[str, str], fds: tuple[int, ...],
          input: bytes | None = None, timeout: int = 15) -> subprocess.CompletedProcess[bytes]:
     """Private fixed operation seam; all children remain bounded and isolated."""
@@ -99,11 +100,10 @@ def _rendered_members(template: Path, entry) -> tuple[object, tuple[TemplateMemb
     return snapshot, rendered
 def _independent_attestation(context: BoundValidationContext) -> None:
     try:
+        _reject_git_surfaces(context.clone)
         validate_bound_context(context)
     except Exception as exc:
         raise BootstrapFinalizerError("independent bound attestation failed") from exc
-
-
 def _with_attestation(context, operation: str, callback):
     """Private named seam bracketing one external or mutating operation."""
     try:
@@ -154,8 +154,6 @@ def _reject_replacements(bound: BoundCloneLayout) -> None:
         os.close(packed)
     if len(data) > 8 * 1024 * 1024 or b"refs/replace" in data:
         raise BootstrapFinalizerError("packed or malformed replacement refs rejected")
-
-
 def _build_tree(context: BoundValidationContext, members: tuple[TemplateMember, ...]) -> tuple[str, ...]:
     bound = context.clone
     blobs: dict[str, tuple[int, str]] = {}
@@ -163,17 +161,25 @@ def _build_tree(context: BoundValidationContext, members: tuple[TemplateMember, 
     for member in members:
         if member.data is None:
             continue
-        oid = _with_attestation(context, "hash_object", lambda: _git(
-            bound, "hash-object", "-w", "--stdin", input=member.data,
-        )).strip().decode()
+        try:
+            oid = _with_attestation(context, "hash_object", lambda: _git(
+                bound, "hash-object", "-w", "--stdin", input=member.data,
+            )).strip().decode()
+        except BaseException as exc:
+            raise _object_error(
+                "git_objects_hash_object_failed", "blob creation failed", created,
+            ) from exc
         if _OID.fullmatch(oid) is None:
             raise BootstrapFinalizerError("Git returned malformed blob OID")
         blobs[member.path] = (member.mode, oid)
         created.append(oid)
-    tree = _mktree(context, blobs, "", created)
+    try:
+        tree = _mktree(context, blobs, "", created)
+    except BaseException as exc:
+        raise _object_error(
+            "git_objects_mktree_failed", "tree creation failed", created,
+        ) from exc
     return (*created, tree)
-
-
 def _expected_tree(context: BoundValidationContext,
                    members: tuple[TemplateMember, ...]) -> str:
     bound = context.clone
@@ -185,8 +191,6 @@ def _expected_tree(context: BoundValidationContext,
         return expected_tree(algorithm, members)
     except ValueError as exc:
         raise BootstrapFinalizerError("repository object format is unsupported") from exc
-
-
 def _mktree(context: BoundValidationContext, blobs: dict[str, tuple[int, str]], prefix: str,
             created: list[str]) -> str:
     bound = context.clone
@@ -207,8 +211,6 @@ def _mktree(context: BoundValidationContext, blobs: dict[str, tuple[int, str]], 
         raise BootstrapFinalizerError("Git returned malformed tree OID")
     created.append(oid)
     return oid
-
-
 def _head(context: BoundValidationContext) -> str | None:
     bound = context.clone
     try:
@@ -233,8 +235,6 @@ def _head(context: BoundValidationContext) -> str | None:
     if _OID.fullmatch(oid) is None:
         raise BootstrapFinalizerError("local HEAD OID is malformed")
     return oid
-
-
 def _validate_commit(context: BoundValidationContext, oid: str, tree: str,
                      identity: tuple[str, str]) -> None:
     raw = _with_attestation(
@@ -250,8 +250,6 @@ def _validate_commit(context: BoundValidationContext, oid: str, tree: str,
     expected = f"{identity[0]} <{identity[1]}>"
     _person(lines[1], b"author ", expected)
     _person(lines[2], b"committer ", expected)
-
-
 def _person(line: bytes, prefix: bytes, expected: str) -> tuple[str, str]:
     try:
         text = line.removeprefix(prefix).decode("utf-8")
@@ -267,8 +265,6 @@ def _person(line: bytes, prefix: bytes, expected: str) -> tuple[str, str]:
     if not -(2**63) <= timestamp <= 2**63 - 1 or hour > 23 or minute > 59:
         raise BootstrapFinalizerError("root commit timestamp is malformed")
     return match.group(1), match.group(2) + " " + zone
-
-
 def _index_exact(context: BoundValidationContext, tree: str) -> bool:
     bound = context.clone
     result = _with_attestation(context, "index_tree", lambda: _run(
@@ -276,8 +272,6 @@ def _index_exact(context: BoundValidationContext, tree: str) -> bool:
         fds=(bound.git_fd,),
     ))
     return result.returncode == 0 and result.stdout.strip().decode() == tree
-
-
 def _push(context: BoundValidationContext, repo: str, oid: str) -> None:
     bound = context.clone
     try:
@@ -285,12 +279,8 @@ def _push(context: BoundValidationContext, repo: str, oid: str) -> None:
              fds=(bound.git_fd,), timeout=60)
     except BaseException:
         pass
-
-
 def _remote_attested(context: BoundValidationContext, repo: str, expected: str | None):
     return _with_attestation(context, "api_query", lambda: _remote(repo, expected))
-
-
 def _initial_commit(context: BoundValidationContext,
                     entry, snapshot, members, tree: str) -> tuple[str, tuple[str, ...]]:
     bound = context.clone
@@ -303,9 +293,14 @@ def _initial_commit(context: BoundValidationContext,
     objects = _build_tree(context, members)
     if objects[-1] != tree:
         raise BootstrapFinalizerError("constructed tree differs from independent tree")
-    commit = _with_attestation(context, "commit_tree", lambda: _git(
-        bound, "commit-tree", tree, input=MESSAGE, author=True,
-    )).strip().decode()
+    try:
+        commit = _with_attestation(context, "commit_tree", lambda: _git(
+            bound, "commit-tree", tree, input=MESSAGE, author=True,
+        )).strip().decode()
+    except BaseException as exc:
+        raise _object_error(
+            "git_objects_commit_tree_failed", "commit creation failed", objects, tree,
+        ) from exc
     objects = (*objects, commit)
     try:
         _with_attestation(context, "cas", lambda: _git(

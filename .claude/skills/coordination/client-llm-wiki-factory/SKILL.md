@@ -84,7 +84,7 @@ REPO="$(yq -r '.repo' <<<"$PREFLIGHT")"
 TARGET="$(yq -r '.target' <<<"$PREFLIGHT")"
 STATUS="$(yq -r '.status' <<<"$PREFLIGHT")"
 test "$STATUS" = "planned"
-gh repo create "$REPO" --private --description "Private client knowledge wiki"
+env -u GH_HOST -u GH_CONFIG_DIR gh repo create "$REPO" --hostname github.com --private --description "Private client knowledge wiki"
 uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
   verify-private-repo --repo "$REPO"
 git clone "https://github.com/$REPO.git" "$TARGET"
@@ -120,7 +120,7 @@ checkout path in shell, pass a destination override, or edit the public stub.
 ### 2. Create the remote as private
 
 ```bash
-gh repo create "$REPO" --private --description "Private client knowledge wiki"
+env -u GH_HOST -u GH_CONFIG_DIR gh repo create "$REPO" --hostname github.com --private --description "Private client knowledge wiki"
 ```
 
 Immediately attest the live state:

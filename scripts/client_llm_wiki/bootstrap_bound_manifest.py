@@ -8,6 +8,7 @@ import hashlib
 import os
 from pathlib import Path
 import stat
+import re
 from typing import Iterator
 
 from . import bootstrap_attestation as attestation
@@ -81,16 +82,19 @@ def bind_validation_context(
         data = _read(final)
         claims = _strict_claims(data)
         backing_name = claims.get("backing_name")
-        if not isinstance(backing_name, str) or "/" in backing_name:
+        final_name = Path(manifest).name
+        pattern = rf"\.{re.escape(final_name)}\.backing-[1-9][0-9]*-[0-9a-f]{{16}}"
+        if not isinstance(backing_name, str) or re.fullmatch(pattern, backing_name) is None:
             raise BoundManifestError("manifest backing name is invalid")
         backing = os.open(backing_name, _FILE_FLAGS, dir_fd=parent)
         descriptors.append(backing)
         expected_files = {
             member.path: {
-                "type": "file", "mode": member.mode, "size": len(member.data),
-                "sha256": hashlib.sha256(member.data).hexdigest(),
+                "type": "directory" if member.data is None else "file",
+                "mode": member.mode, "size": 0 if member.data is None else len(member.data),
+                "sha256": None if member.data is None else hashlib.sha256(member.data).hexdigest(),
             }
-            for member in rendered_members if member.data is not None
+            for member in rendered_members
         }
         parsed_config = validate_clone_config(clone, repo)
         context = BoundValidationContext(
@@ -150,6 +154,16 @@ def validate_bound_context(context: BoundValidationContext) -> None:
     members, memberships = attestation.snapshot_clone(context.clone.root_fd)
     if claims.get("members") != members or claims.get("memberships") != memberships:
         raise BoundManifestError("independent scaffold reconstruction differs")
-    actual_files = {path: value for path, value in members.items() if value["type"] == "file"}
-    if context.expected_files and actual_files != context.expected_files:
+    if context.expected_files and members != context.expected_files:
         raise BoundManifestError("trusted rendered scaffold differs")
+    expected_memberships: dict[str, list[str]] = {"": [".git"]}
+    for path, record in context.expected_files.items():
+        parent, _, name = path.rpartition("/")
+        expected_memberships.setdefault(parent, []).append(name)
+        if record["type"] == "directory":
+            expected_memberships.setdefault(path, [])
+    expected_memberships = {
+        path: sorted(names) for path, names in expected_memberships.items()
+    }
+    if memberships != expected_memberships:
+        raise BoundManifestError("trusted scaffold memberships differ")

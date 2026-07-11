@@ -106,3 +106,4 @@ def test_factory_static_authorization_and_mutation_order():
     assert checker < render < finalize < attest_final < update
     assert "WIKI_SIBLING_REGISTRY_PATH" in text
     assert "--private" in text
+    assert text.count("--hostname github.com") >= 2

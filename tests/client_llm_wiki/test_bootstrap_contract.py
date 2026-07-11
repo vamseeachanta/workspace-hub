@@ -101,10 +101,28 @@ def _legacy_registry(tmp_path: Path) -> Path:
 
 def _init_target(path: Path, origin: str | None = None) -> Path:
     subprocess.run(["git", "init", str(path)], check=True, capture_output=True)
-    _git(path, "config", "core.hooksPath", "/dev/null")
+    _git(path, "symbolic-ref", "HEAD", "refs/heads/main")
     if origin is not None:
         _git(path, "remote", "add", "origin", origin)
     return path
+
+
+def test_unborn_clone_rejects_noncanonical_origin_and_non_main(tmp_path):
+    target = _init_target(tmp_path / "clone", f"https://github.com/{REPO_SLUG}")
+    with pytest.raises(BootstrapContractError):
+        verify_unborn_clone(target, REPO_SLUG)
+    _git(target, "remote", "set-url", "origin", f"https://github.com/{REPO_SLUG}.git")
+    _git(target, "symbolic-ref", "HEAD", "refs/heads/topic")
+    with pytest.raises(BootstrapContractError):
+        verify_unborn_clone(target, REPO_SLUG)
+
+
+def test_private_repo_query_pins_host_and_isolates_environment(monkeypatch):
+    monkeypatch.setenv("GH_HOST", "evil.invalid")
+    runner = RecordingRunner({"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": False})
+    verify_private_repo(REPO_SLUG, runner=runner)
+    assert runner.calls[0][-2:] == ["--hostname", "github.com"]
+    assert "GH_HOST" not in runner.kwargs[0]["env"]
 
 
 class RecordingRunner:
@@ -112,9 +130,11 @@ class RecordingRunner:
         self.payload = payload
         self.returncode = returncode
         self.calls: list[list[str]] = []
+        self.kwargs: list[dict] = []
 
-    def __call__(self, args, **_kwargs):
+    def __call__(self, args, **kwargs):
         self.calls.append(list(args))
+        self.kwargs.append(kwargs)
         stdout = self.payload if isinstance(self.payload, str) else json.dumps(self.payload)
         return subprocess.CompletedProcess(args, self.returncode, stdout, "lookup failed")
 
@@ -170,14 +190,16 @@ def test_private_verification_fails_closed(payload, returncode):
     with pytest.raises(BootstrapContractError):
         verify_private_repo(REPO_SLUG, runner=runner)
 
-    assert runner.calls == [
+        assert runner.calls == [
         [
             "gh",
             "repo",
             "view",
             f"github.com/{REPO_SLUG}",
             "--json",
-            "nameWithOwner,visibility,isArchived",
+                "nameWithOwner,visibility,isArchived",
+                "--hostname",
+                "github.com",
         ]
     ]
 
@@ -201,7 +223,6 @@ def test_private_verification_maps_missing_gh_to_contract_error():
 @pytest.mark.parametrize(
     "origin",
     [
-        "https://github.com/example-org/llm-wiki-example-co",
         "https://github.com/example-org/llm-wiki-example-co.git",
         "git@github.com:example-org/llm-wiki-example-co.git",
     ],

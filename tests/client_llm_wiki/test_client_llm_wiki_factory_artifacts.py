@@ -159,6 +159,8 @@ def _assert_propagation(calls, tmp_path: Path) -> None:
         "repo",
         "create",
         REPO,
+        "--hostname",
+        "github.com",
         "--private",
         "--description",
         "Private client knowledge wiki",

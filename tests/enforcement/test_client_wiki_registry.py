@@ -96,7 +96,7 @@ import sys
 args = sys.argv[1:]
 with open(os.environ["FAKE_GH_LOG"], "ab") as stream:
     stream.write(b"\\0".join(arg.encode() for arg in args) + b"\\0")
-expected = ["repo", "view", "github.com/" + {REPO_SLUG!r}, "--json", "nameWithOwner,visibility,isArchived"]
+expected = ["repo", "view", "github.com/" + {REPO_SLUG!r}, "--hostname", "github.com", "--json", "nameWithOwner,visibility,isArchived"]
 if args != expected:
     print("unexpected gh arguments", file=sys.stderr)
     raise SystemExit(97)
@@ -290,6 +290,8 @@ def test_live_rows_use_exact_gh_contract(tmp_path, status, payload, gh_rc, expec
         "repo",
         "view",
         f"github.com/{REPO_SLUG}",
+        "--hostname",
+        "github.com",
         "--json",
         "nameWithOwner,visibility,isArchived",
     ]

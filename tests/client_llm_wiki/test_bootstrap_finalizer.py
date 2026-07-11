@@ -312,6 +312,24 @@ def test_object_and_index_failure_have_exact_bounded_residue(monkeypatch, failur
     assert caught.value.residue.object_oids == ("b" * 64, tree, "c" * 64)
 
 
+def test_attestation_rechecks_forbidden_git_surfaces(monkeypatch):
+    checked = []
+    context = type("Context", (), {"clone": object()})()
+    monkeypatch.setattr(bootstrap_finalizer, "validate_bound_context", lambda _c: None)
+    monkeypatch.setattr(bootstrap_finalizer, "_reject_git_surfaces", lambda bound: checked.append(bound))
+    bootstrap_finalizer._independent_attestation(context)
+    assert checked == [context.clone]
+
+
+def test_commit_tree_failure_preserves_constructed_objects(monkeypatch):
+    _calls, _commit, tree, entry, context = _initial_unit(monkeypatch, "commit-tree")
+    with pytest.raises(bootstrap_finalizer.BootstrapFinalizerError) as caught:
+        bootstrap_finalizer._initial_commit(context, entry, object(), (), tree)
+    assert caught.value.residue.kind == "git_objects_commit_tree_failed"
+    assert caught.value.residue.tree_oid == tree
+    assert caught.value.residue.object_oids == ("b" * 64, tree)
+
+
 def test_transport_pushes_retained_literal_oid_and_attests_boundaries(monkeypatch):
     commit, tree = "c" * 40, "t" * 40
     states = iter((("absent", None), ("equal", commit)))

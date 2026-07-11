@@ -8,7 +8,6 @@ from client_llm_wiki import bootstrap_contract
 from client_llm_wiki.bootstrap_attestation import BootstrapManifestError
 from tests.client_llm_wiki.test_bootstrap_contract_security import (
     REPO_SLUG,
-    _git,
     _init_target,
     _registry_file,
     _workspace,
@@ -20,8 +19,6 @@ def _authorized_render(tmp_path, monkeypatch):
     registry = _registry_file(tmp_path)
     target = workspace.parent / "llm-wiki-example-co"
     _init_target(target, f"https://github.com/{REPO_SLUG}.git")
-    _git(target, "config", "--unset", "core.hooksPath")
-    _git(target, "symbolic-ref", "HEAD", "refs/heads/main")
     monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
     monkeypatch.setattr(
         bootstrap_contract, "verify_private_repo", lambda *_a, **_k: None

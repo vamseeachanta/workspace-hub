@@ -13,7 +13,10 @@ from typing import Callable, Sequence
 
 from .bootstrap_attestation import BootstrapManifestError
 from .bootstrap_finalizer import finalize_scaffold as finalize_scaffold
-from .bootstrap_git import accepted_origins
+from .bootstrap_git import (
+    BootstrapGitError, accepted_origins, isolated_env, validate_clone_git,
+)
+from .bootstrap_layout import BoundCloneLayout
 from .bootstrap_manifest import PersistedRenderManifest, persist_render_manifest
 
 from .bootstrap_renderer import (
@@ -69,23 +72,12 @@ class WorkspaceLayout:
 
 
 CommandRunner = Callable[..., subprocess.CompletedProcess[str]]
-_ORIGIN_TEMPLATES = (
-    "https://github.com/{repo}",
-    "https://github.com/{repo}.git",
-    "git@github.com:{repo}.git",
-)
-
-
 def _template_worktree() -> Path:
     return Path(__file__).resolve().parents[2]
 
 
 def _git_env() -> dict[str, str]:
-    env = {
-        key: value for key, value in os.environ.items() if not key.startswith("GIT_")
-    }
-    env.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
-    return env
+    return isolated_env()
 
 
 def _run_text(args: list[str]) -> subprocess.CompletedProcess[str]:
@@ -164,9 +156,13 @@ def verify_private_repo(
         f"github.com/{repo_slug}",
         "--json",
         "nameWithOwner,visibility,isArchived",
+        "--hostname",
+        "github.com",
     ]
     try:
-        result = runner(args, check=False, capture_output=True, text=True)
+        result = runner(
+            args, check=False, capture_output=True, text=True, env=isolated_env()
+        )
     except OSError as exc:
         raise BootstrapContractError(f"GitHub CLI unavailable: {exc}") from exc
     if result.returncode != 0:
@@ -230,37 +226,25 @@ def _verify_bound_clone(
     clone: BoundClone, repo_slug: str, *, require_empty: bool = True
 ) -> None:
     _verify_named_git(clone)
-    expected = {template.format(repo=repo_slug) for template in _ORIGIN_TEMPLATES}
-    fetch = _require_bound_git(
-        clone, "remote", "get-url", "--all", "origin"
-    ).splitlines()
-    push = _require_bound_git(
-        clone, "remote", "get-url", "--push", "--all", "origin"
-    ).splitlines()
-    if (
-        len(fetch) != 1
-        or len(push) != 1
-        or fetch[0] not in expected
-        or push[0] not in expected
-    ):
-        raise BootstrapContractError(
-            "clone origin does not match registered repository"
+    try:
+        config_fd = os.open(
+            "config", os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC,
+            dir_fd=clone.git_fd,
         )
+        try:
+            bound = BoundCloneLayout(
+                clone.parent_fd, clone.root_fd, clone.git_fd, config_fd,
+            )
+            validate_clone_git(bound, repo_slug)
+        finally:
+            os.close(config_fd)
+    except (OSError, BootstrapGitError) as exc:
+        raise BootstrapContractError("clone origin/config authorization failed") from exc
     top = _require_bound_git(clone, "rev-parse", "--show-toplevel")
     top_info = os.stat(top)
     root_info = os.fstat(clone.root_fd)
     if (top_info.st_dev, top_info.st_ino) != (root_info.st_dev, root_info.st_ino):
         raise BootstrapContractError("clone toplevel does not match bound target")
-    symbolic = _run_bound_git(clone, "symbolic-ref", "-q", "HEAD")
-    if symbolic.returncode != 0 or not symbolic.stdout.strip().startswith(
-        "refs/heads/"
-    ):
-        raise BootstrapContractError("clone HEAD is not a valid symbolic branch")
-    head = _run_bound_git(clone, "rev-parse", "--verify", "HEAD")
-    if head.returncode == 0:
-        raise BootstrapContractError("clone HEAD must be unborn")
-    if head.returncode not in {1, 128}:
-        raise BootstrapContractError("clone HEAD query failed unexpectedly")
     if require_empty:
         status_text = _require_bound_git(
             clone, "status", "--porcelain=v1", "--untracked-files=all"

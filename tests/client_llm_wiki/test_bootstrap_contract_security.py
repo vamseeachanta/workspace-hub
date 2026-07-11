@@ -78,7 +78,7 @@ def _registry_file(tmp_path: Path, entry: dict[str, object] | None = None) -> Pa
 
 def _init_target(path: Path, origin: str | None = None) -> Path:
     subprocess.run(["git", "init", str(path)], check=True, capture_output=True)
-    _git(path, "config", "core.hooksPath", "/dev/null")
+    _git(path, "symbolic-ref", "HEAD", "refs/heads/main")
     if origin is not None:
         _git(path, "remote", "add", "origin", origin)
     return path
@@ -299,8 +299,6 @@ def test_cli_render_persists_explicit_external_manifest(tmp_path, monkeypatch, c
     registry = _registry_file(tmp_path)
     target = workspace.parent / "llm-wiki-example-co"
     _init_target(target, f"https://github.com/{REPO_SLUG}.git")
-    _git(target, "config", "--unset", "core.hooksPath")
-    _git(target, "symbolic-ref", "HEAD", "refs/heads/main")
     evidence = tmp_path / "evidence"
     evidence.mkdir()
     manifest_path = evidence / "render.json"

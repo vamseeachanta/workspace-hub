@@ -137,7 +137,7 @@ check_live_repo() {
     echo >&2 "FAIL: gh is required for bootstrapped/live registry rows"
     return 2
   fi
-  if ! json="$($GH_PATH repo view "github.com/$repo" --json nameWithOwner,visibility,isArchived 2>/dev/null)"; then
+  if ! json="$(env -u GH_HOST -u GH_CONFIG_DIR "$GH_PATH" repo view "github.com/$repo" --hostname github.com --json nameWithOwner,visibility,isArchived 2>/dev/null)"; then
     echo >&2 "FAIL: $short repo $repo not found on GH"
     return 1
   fi
