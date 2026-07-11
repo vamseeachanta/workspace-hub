@@ -2061,11 +2061,11 @@ cards:
       - documentation
       - enhancement
       - priority:medium
+      - status:plan-review
       - cat:documentation
       - domain:knowledge-management
       - llm-wiki
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -808,3 +808,36 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3456
+    title: 'security(local-analysis): make parent runtime-config permissions enforceable on fuseblk'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3456
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - domain:automation
+      - machine:dev-primary
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3458
+    title: 'bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3458
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - domain:automation
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

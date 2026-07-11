@@ -22719,6 +22719,10 @@ cards:
       - cat:harness
       - domain:workflow-html
       - domain:security
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -22785,7 +22789,9 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - status:needs-plan
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -22808,6 +22814,34 @@ cards:
     gh_labels:
       - enhancement
       - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3459
+    title: 'bug(enforcement): check-no-abs-paths fails before scanning in sparse checkouts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3459
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:harness/ops
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3460
+    title: 'bug(hooks): post-commit learning hook fails from sparse linked worktrees'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3460
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:harness/ops
+      - status:needs-plan
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []

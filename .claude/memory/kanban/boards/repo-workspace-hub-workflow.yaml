@@ -919,3 +919,17 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3457
+    title: 'fix(worktrees): fail closed on an absent sparse-worktree index'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3457
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

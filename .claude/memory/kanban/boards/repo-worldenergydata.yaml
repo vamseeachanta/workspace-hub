@@ -3230,7 +3230,7 @@ cards:
     title: 'EPIC: Field-development data foundation — terrain/bathymetry sources + past-projects registry'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/929
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:high
       - cat:data
@@ -3341,6 +3341,19 @@ cards:
       - lane:claude
       - epic
       - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#954
+    title: "Flaky CI: performance tracker sqlite 'database is locked' under pytest-xdist"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/954
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:ci
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -1438,13 +1438,13 @@ cards:
     title: 'feat(global-spine): wave 1 — global roster federation into Explorer feed + GoM play backfill'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/947
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
+      - status:plan-approved
       - domain:ingest
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1468,6 +1468,21 @@ cards:
     title: 'feat(lenses): landman onshore — TX RRC lease/county ingest (blocker #709)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/951
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#955
+    title: 'data(bsee): Atlas of GoA Gas & Oil Sands — field play/chronozone ingest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/955
     gh_state: open
     gh_labels:
       - enhancement

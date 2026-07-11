@@ -843,9 +843,9 @@ cards:
       - bug
       - priority:high
       - cat:engineering
+      - status:plan-approved
       - domain:quality
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []

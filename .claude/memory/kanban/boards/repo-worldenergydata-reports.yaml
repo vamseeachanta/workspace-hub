@@ -357,7 +357,10 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - status:plan-approved
       - domain:reports
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1343,9 +1346,9 @@ cards:
       - enhancement
       - priority:high
       - cat:data
+      - status:plan-approved
       - domain:reports
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -1450,13 +1453,13 @@ cards:
     title: 'feat(explorer-shell): tracer — Jack/St Malo + Big Foot end-to-end in the one-page shell'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/946
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
+      - status:plan-approved
       - domain:reports
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
