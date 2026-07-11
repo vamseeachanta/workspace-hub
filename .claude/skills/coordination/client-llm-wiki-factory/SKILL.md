@@ -53,6 +53,54 @@ raw path is accepted as a command-line argument.
 
 Run the steps in this order. Stop on every failed command.
 
+The following is the complete executable workflow; do not run isolated excerpts.
+
+```bash
+# FACTORY_WORKFLOW_V2
+set -euo pipefail
+while IFS='=' read -r name _; do
+  [[ "$name" == GIT_* ]] && unset "$name"
+done < <(env)
+export GIT_CONFIG_NOSYSTEM=1
+export GIT_CONFIG_GLOBAL=/dev/null
+WORKSPACE_HUB="$(git rev-parse --show-toplevel)"
+REGISTRY="${WIKI_SIBLING_REGISTRY_PATH:?set the authoritative private registry path}"
+SHORT="${CLIENT_WIKI_SHORT_NAME:?set the approved registry short_name}"
+AUTHOR_NAME="${CLIENT_WIKI_GIT_AUTHOR_NAME:?set the approved author name}"
+AUTHOR_EMAIL="${CLIENT_WIKI_GIT_AUTHOR_EMAIL:?set the approved author email}"
+MANIFEST_DIR="${CLIENT_WIKI_MANIFEST_DIR:?set an external private evidence directory}"
+REGISTRY_UPDATE_TOOL="${CLIENT_WIKI_REGISTRY_UPDATE_TOOL:?set the authoritative registry updater}"
+export CLIENT_WIKI_GIT_AUTHOR_NAME="$AUTHOR_NAME"
+export CLIENT_WIKI_GIT_AUTHOR_EMAIL="$AUTHOR_EMAIL"
+export PYTHONPATH="$WORKSPACE_HUB/scripts${PYTHONPATH:+:$PYTHONPATH}"
+test -d "$MANIFEST_DIR"
+test ! -L "$MANIFEST_DIR"
+test -x "$REGISTRY_UPDATE_TOOL"
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
+  validate-registry --registry "$REGISTRY"
+PREFLIGHT="$(uv run --directory "$WORKSPACE_HUB" --frozen python -m \
+  client_llm_wiki.bootstrap_contract classify --registry "$REGISTRY" --short-name "$SHORT")"
+REPO="$(yq -r '.repo' <<<"$PREFLIGHT")"
+TARGET="$(yq -r '.target' <<<"$PREFLIGHT")"
+STATUS="$(yq -r '.status' <<<"$PREFLIGHT")"
+test "$STATUS" = "planned"
+gh repo create "$REPO" --private --description "Private client knowledge wiki"
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
+  verify-private-repo --repo "$REPO"
+git clone "https://github.com/$REPO.git" "$TARGET"
+REGISTRY_PATH="$REGISTRY" "$WORKSPACE_HUB/scripts/enforcement/check-client-wiki-registry.sh"
+MANIFEST="$(mktemp -u --tmpdir="$MANIFEST_DIR" 'client-wiki-render.XXXXXXXX.json')"
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
+  render --registry "$REGISTRY" --short-name "$SHORT" --manifest "$MANIFEST"
+test -s "$MANIFEST"
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
+  finalize-scaffold --registry "$REGISTRY" --short-name "$SHORT" --manifest "$MANIFEST"
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
+  verify-private-repo --repo "$REPO"
+"$REGISTRY_UPDATE_TOOL" --registry "$REGISTRY" --short-name "$SHORT" \
+  --status bootstrapped --local-working-clone "$TARGET"
+```
+
 ### 1. Validate and classify registered state
 
 ```bash

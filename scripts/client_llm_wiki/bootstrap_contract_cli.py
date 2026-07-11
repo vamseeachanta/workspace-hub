@@ -9,6 +9,7 @@ from pathlib import Path
 import sys
 from typing import Sequence
 
+from .bootstrap_attestation import BootstrapManifestError
 from .bootstrap_finalizer import (
     BootstrapFinalizerError,
     residue_json,
@@ -78,7 +79,9 @@ def _verify(args: argparse.Namespace) -> int:
 
 
 def _finalize(args: argparse.Namespace) -> int:
-    result = _contract().finalize_scaffold(args.registry, args.short_name, args.manifest)
+    result = _contract().finalize_scaffold(
+        args.registry, args.short_name, args.manifest
+    )
     print(json.dumps(result, sort_keys=True, separators=(",", ":")))
     return 0
 
@@ -117,6 +120,15 @@ def main(argv: Sequence[str] | None = None) -> int:
         return int(args.handler(args))
     except BootstrapFinalizerError as exc:
         print(residue_json(exc), file=sys.stderr)
+    except (contract.ManifestPersistenceError, BootstrapManifestError) as exc:
+        backing = getattr(exc, "backing_name", None)
+        payload = {
+            "error": "manifest_persistence_failed",
+            "residue": {"backing_name": backing, "residue_policy": "preserved"},
+        }
+        print(
+            json.dumps(payload, sort_keys=True, separators=(",", ":")), file=sys.stderr
+        )
     except (
         contract.BootstrapSchemaError,
         contract.BootstrapRenderError,

@@ -10,7 +10,8 @@ import stat
 import subprocess
 from typing import Callable, Sequence
 
-from .bootstrap_finalizer import finalize_scaffold
+from .bootstrap_attestation import BootstrapManifestError
+from .bootstrap_finalizer import finalize_scaffold as finalize_scaffold
 from .bootstrap_git import accepted_origins
 from .bootstrap_manifest import PersistedRenderManifest, persist_render_manifest
 
@@ -39,6 +40,17 @@ class BootstrapContractError(RuntimeError):
     def __init__(self, message: str, *, residue=None):
         super().__init__(message)
         self.residue = residue
+
+
+class ManifestPersistenceError(BootstrapContractError):
+    """Manifest publication failed without exposing raw exception text."""
+
+    def __init__(self, backing_name: str | None):
+        safe = backing_name
+        if not isinstance(safe, str) or len(safe.encode("utf-8")) > 255:
+            safe = None
+        super().__init__("manifest persistence failed")
+        self.backing_name = safe
 
 
 @dataclass(frozen=True, slots=True)
@@ -286,8 +298,29 @@ def _persist_render(
     )
 
 
+def _validate_rendered_clone(
+    clone: BoundClone, manifest: RenderManifest, repo: str
+) -> None:
+    try:
+        _verify_bound_clone(clone, repo, require_empty=False)
+    except BaseException as exc:
+        residue = RenderResidue(
+            manifest.template_commit,
+            manifest.clone_device,
+            manifest.clone_inode,
+            manifest.created_paths,
+            None,
+            "final_validation",
+        )
+        raise BootstrapContractError(
+            "render final validation failed",
+            residue=residue,
+        ) from exc
+
+
 def execute_render(
-    registry_path: Path, short_name: str,
+    registry_path: Path,
+    short_name: str,
     *,
     runner: CommandRunner = subprocess.run,
     _manifest_path: Path | None = None,
@@ -316,24 +349,12 @@ def execute_render(
         with bind_empty_clone(layout.target) as clone:
             _verify_bound_clone(clone, entry.repo)
             manifest = render_committed_template(clone, template, tokens)
-            try:
-                _verify_bound_clone(clone, entry.repo, require_empty=False)
-            except BaseException as exc:
-                residue = RenderResidue(
-                    manifest.template_commit,
-                    manifest.clone_device,
-                    manifest.clone_inode,
-                    manifest.created_paths,
-                    None,
-                    "final_validation",
-                )
-                raise BootstrapContractError(
-                    "render final validation failed",
-                    residue=residue,
-                ) from exc
+            _validate_rendered_clone(clone, manifest, entry.repo)
             if _manifest_path is not None:
                 return manifest, _persist_render(clone, _manifest_path, entry, manifest)
             return manifest
+    except BootstrapManifestError as exc:
+        raise ManifestPersistenceError(exc.backing_name) from exc
     except BootstrapRenderError as exc:
         raise BootstrapContractError(str(exc), residue=exc.residue) from exc
 
