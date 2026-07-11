@@ -1,6 +1,6 @@
 # Plan for #3449: Client-wiki metadata-only bootstrap
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T3
 > **Date:** 2026-07-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3449
@@ -10,7 +10,7 @@
 > **Execution mode:** parallel-readonly for resource intelligence and review; serialized implementation after approval
 > **Design authority:** `docs/reports/2026-07-11-issue-3449-python-native-residue-finalizer-design.html`
 > **Prior defect evidence:** `scripts/review/results/2026-07-11-issue-3449-code-review-r1.md`
-> **Review artifacts:** blocking rounds `scripts/review/results/2026-07-11-plan-3449-{claude,codex,gemini}-r3.md` and `scripts/review/results/2026-07-11-plan-3449-{claude,codex}-r4.md`; final round planned at `scripts/review/results/2026-07-11-plan-3449-{claude,codex}-r5.md` plus `scripts/review/results/2026-07-11-plan-3449-disagreement-r5.md`
+> **Review artifacts:** blocking rounds `scripts/review/results/2026-07-11-plan-3449-{claude,codex,gemini}-r3.md`, `scripts/review/results/2026-07-11-plan-3449-{claude,codex}-r4.md`, and `scripts/review/results/2026-07-11-plan-3449-{claude,codex}-r5.md`; final full-file APPROVE at `scripts/review/results/2026-07-11-plan-3449-final-subagent-r7.md`; disposition at `scripts/review/results/2026-07-11-plan-3449-disagreement-r7.md`
 
 ---
 
@@ -125,7 +125,9 @@ GIT_CONFIG_GLOBAL=/dev/null
 GIT_NO_REPLACE_OBJECTS=1
 ```
 
-Caller `GIT_*` variables will be discarded except fixed command-scoped variables created by the contract. The literal inherited-key allowlist will be `PATH`, `HOME`, `XDG_CONFIG_HOME`, `GH_CONFIG_DIR`, `GH_HOST`, `GH_TOKEN`, `GITHUB_TOKEN`, `LANG`, `LC_ALL`, `LC_CTYPE`, `TMPDIR`, `TEMP`, and `TMP` when already set; subprocesses will receive no other inherited key. Tests will explicitly drop `LD_PRELOAD`, `LD_LIBRARY_PATH`, `PYTHONPATH`, `PYTHONHOME`, `GIT_EXEC_PATH`, `GIT_ASKPASS`, `SSH_ASKPASS`, and unrelated credential/helper variables. The finalizer will require `CLIENT_WIKI_GIT_AUTHOR_NAME` and `CLIENT_WIKI_GIT_AUTHOR_EMAIL`; it will translate them into command-scoped author/committer values without persisting identity in Git config. Network operations will use the fixed command-scoped helper `gh auth git-credential`, restrict accepted remote spellings to the registered GitHub repository, and verify the remote `main` SHA after push.
+Caller `GIT_*` variables will be discarded except fixed command-scoped variables created by the contract. The literal inherited-key allowlist will be `PATH`, `HOME`, `XDG_CONFIG_HOME`, `GH_CONFIG_DIR`, `GH_TOKEN`, `GITHUB_TOKEN`, `LANG`, `LC_ALL`, `LC_CTYPE`, `TMPDIR`, `TEMP`, and `TMP` when already set; `GH_HOST` will be dropped and subprocesses will receive no other inherited key. Tests will explicitly drop hostile `GH_HOST`, `LD_PRELOAD`, `LD_LIBRARY_PATH`, `PYTHONPATH`, `PYTHONHOME`, `GIT_EXEC_PATH`, `GIT_ASKPASS`, `SSH_ASKPASS`, and unrelated credential/helper variables. The finalizer will require `CLIENT_WIKI_GIT_AUTHOR_NAME` and `CLIENT_WIKI_GIT_AUTHOR_EMAIL`; it will translate them into command-scoped author/committer values without persisting identity in Git config. The actual push will always target the canonical literal HTTPS URL with command-scoped `-c credential.helper=` followed by `-c credential.helper=!gh auth git-credential`; it will never push through an SSH spelling found in clone config. Every direct `gh` call will pass literal `--hostname github.com`; clone-origin spellings will be limited to the exact registered repository forms below.
+
+For registered `owner/llm-wiki-slug`, the only accepted origin values will be the literal strings `https://github.com/owner/llm-wiki-slug.git` and `git@github.com:owner/llm-wiki-slug.git`, after substituting the already schema-validated owner/repository components. No case folding, percent decoding, slash normalization, credential/userinfo, port, query, fragment, alternate hostname, missing `.git`, or other canonicalization will occur. Fetch and push may independently choose either of those two exact forms, but both must name the same registered owner/repository on `github.com`.
 
 The clone's held `.git/config` descriptor will be inherited by the Git child with `pass_fds=(config_fd,)` and parsed there with `git config --file /proc/self/fd/<child-visible-fd> --null --list --no-includes`; `/proc/self` will intentionally refer to that child process. The parser will preserve whitespace and NUL records and use this closed key/value contract, with no duplicate scalar key:
 
@@ -135,15 +137,17 @@ The clone's held `.git/config` descriptor will be inherited by the Git child wit
 | `core.bare` | exactly one canonical boolean `false` |
 | `core.filemode` | zero or one canonical boolean `true` or `false` |
 | `core.logallrefupdates` | zero or one canonical boolean `true` |
-| `remote.origin.url` | exactly one independently allowed registered HTTPS or SSH URL |
-| `remote.origin.pushurl` | zero or one independently allowed registered HTTPS or SSH URL; absence means the fetch URL is also push URL |
+| `remote.origin.url` | exactly one of the two literal registered URL forms defined above |
+| `remote.origin.pushurl` | zero or one of those same two literal forms; absence means the fetch URL is also push URL |
 | `remote.origin.fetch` | exactly one literal `+refs/heads/*:refs/remotes/origin/*` |
 | `branch.main.remote` | zero or one literal `origin` |
 | `branch.main.merge` | zero or one literal `refs/heads/main` |
 
 Every other key or value—including include/includeIf, URL rewrites, aliases, hooksPath, fsmonitor, sshCommand, signing, filters, credential helpers, and extensions—will fail closed. A dangling/corrupt symbolic HEAD will fail closed.
 
-All mutating Git commands will use plumbing with fixed `-c core.hooksPath=/dev/null`; no porcelain commit command will run. Before mutation, the finalizer will reject `.git/objects/info/alternates`, `.git/objects/info/http-alternates`, `.git/info/grafts`, `.git/shallow`, every loose `.git/refs/replace/*` entry, every `refs/replace/*` entry parsed from `packed-refs`, malformed/mixed replacement namespaces, and every alternate-object environment variable. It will verify that `.git/hooks` contains no executable or non-regular entry; hook samples may exist but will never be invoked because the fixed null hooks path applies to object creation and push. The independent expected tree will be materialized with `hash-object -w`, `mktree`, and `commit-tree` only after these checks; push will use the literal OID and explicit registered URL, never a repository-configured remote name or forced refspec.
+All mutating Git commands will use plumbing with fixed `-c core.hooksPath=/dev/null`; no porcelain commit command will run. Before mutation, the finalizer will reject `.git/objects/info/alternates`, `.git/objects/info/http-alternates`, `.git/info/grafts`, `.git/shallow`, every loose `.git/refs/replace/*` entry, every `refs/replace/*` entry parsed from `packed-refs`, malformed/mixed replacement namespaces, and every alternate-object environment variable. It will verify that `.git/hooks` contains no executable or non-regular entry; hook samples may exist but will never be invoked because the fixed null hooks path applies to object creation and push.
+
+After the final pre-mutation attestation, initial finalization will deliberately permit bounded Git residue: `hash-object -w`, `mktree`, and `commit-tree` may create exact unreachable objects; `update-ref refs/heads/main <attested-oid> <all-zero-old-oid>` will then CAS-create the branch; only after CAS success will `read-tree <exact-tree-oid>` populate the index. If CAS fails because `main` appeared, the finalizer will not touch the index or ref and will report `git_objects_cas_failed` with the exact created OIDs. If CAS succeeds but index population fails, it will report `local_commit_index_incomplete` with the exact branch/tree/OIDs. It will never delete created objects or roll back the ref by pathname. HEAD/index/worktree will be re-attested before transport. Push will use the literal OID and canonical registered HTTPS URL, never a repository-configured remote name, SSH transport, or forced refspec.
 
 ### Snapshot and render manifest
 
@@ -174,16 +178,23 @@ The finalizer will reopen and bind the authorized parent/root/`.git`/config, val
 
 | State | Action |
 |---|---|
-| symbolic unborn HEAD + exact independent render + remote `main` absent | stage independently expected files, commit, non-force push, re-attest |
-| independently validated exact local root commit + remote absent | retain its object ID, push that literal OID, re-attest |
-| independently validated exact local root commit + equal remote `main` | retain its object ID and return idempotent success after re-attestation |
-| unborn clone with existing remote `main`, or any index/worktree/tree/message/author/origin/identity/SHA mismatch | fail without mutation; preserve/report residue |
+| symbolic unborn HEAD + exact independent render + remote `main` absent + no unexpected index state | construct exact tree/root commit, CAS-create branch, populate index, non-force push, re-attest |
+| independently validated exact local root commit + exact worktree + remote absent | repair index from exact tree if needed, retain literal OID, push, re-attest |
+| independently validated exact local root commit + exact worktree + equal remote `main` | repair index from exact tree if needed, retain literal OID, return idempotent success after re-attestation |
+| pre-mutation unborn clone with existing remote `main`, unexpected index, or any worktree/tree/message/author/origin/identity/SHA mismatch | fail without mutation; preserve/report residue |
+| mismatch first observed after exact object creation/CAS | preserve bounded `git_objects_cas_failed` or `local_commit_index_incomplete` residue; use only the exact recovery rows above on retry |
 
-The commit message byte literal will be `chore: initialize metadata-only client wiki\n` encoded as UTF-8. Author and committer will use the same validated identity. Name input will be NFC-normalized UTF-8, 1–100 Unicode scalar values, unchanged by surrounding-whitespace stripping, and contain no control, NUL, CR, LF, `<`, or `>`. Email input will be ASCII, 3–254 bytes, match the conservative dot/plus/hyphen local-part plus DNS-label domain grammar enforced by a single documented regex, and contain no whitespace/control/NUL/CR/LF/angle bracket. Raw headers will encode exactly `<name> <email> <timestamp> <timezone>` without quoting or escaping.
+The commit message byte literal will be `chore: initialize metadata-only client wiki\n` encoded as UTF-8. Author and committer will use the same validated identity. Name input will be NFC-normalized UTF-8, 1–100 Unicode scalar values, unchanged by surrounding-whitespace stripping, and contain no control, NUL, CR, LF, `<`, or `>`. Email input will be ASCII, 3–254 bytes, contain no whitespace/control/NUL/CR/LF/angle bracket, and match this full regex:
+
+```text
+^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$
+```
+
+Raw headers will encode exactly `<name> <email> <timestamp> <timezone>` without quoting or escaping.
 
 The acceptable recovery commit parser will consume the raw commit object, reject NUL/CR, and require exactly these records in this order: one `tree <40-or-64-hex>` header; one `author <exact validated identity> <timestamp> <timezone>` header; one `committer <same exact validated identity> <timestamp> <timezone>` header; one empty separator line; and the fixed commit-message byte literal. It will reject parent headers, missing/duplicate/reordered tree/author/committer headers, continuation lines, multiple separators, unknown/optional headers (`gpgsig`, `encoding`, `mergetag`, or any other), malformed identities, out-of-range signed timestamps, and timezones outside valid `-2359..+2359` hour/minute form. The referenced tree must equal the independently reconstructed tree. Timestamps will be validated but will not be part of semantic equality because they are intentionally nondeterministic; safety comes from the independently reconstructed exact tree plus fixed identities/message/shape.
 
-Once the commit is validated or created, its literal object ID will be retained in memory; every push will use `<attested_oid>:refs/heads/main`, local symbolic HEAD must equal that OID immediately before and after transport, and remote `main` must equal that OID. After every transport return—success, nonzero exit, timeout, or exception—the finalizer will query the GitHub REST API through `gh api` (never clone-local config or `git ls-remote`) for remote `main` and classify it as `equal`, `absent`, `different`, or `unknown`. `equal` may recover an accepted-but-locally-reported-failed push; `different` after an attempted push will return `pushed_remote_advanced` with retained and observed OIDs; `unknown` will preserve residue and prohibit retry claims. The final success boundary will independently reconstruct and validate content again, query the same API for exact identity/PRIVATE/unarchived posture, and emit fixed JSON. Registry mutation remains a later factory step and will not occur on any failed finalizer result.
+Once the commit is validated or created, its literal object ID will be retained in memory; every push will use `<attested_oid>:refs/heads/main`, local symbolic HEAD must equal that OID immediately before and after transport, and remote `main` must equal that OID. After every transport return—success, nonzero exit, timeout, or exception—the finalizer will query the GitHub REST API with `gh api --hostname github.com` (never clone-local config or `git ls-remote`). It will first require `GET /repos/<owner>/<repo>` to return HTTP 200, exact name/owner identity, `private: true`, and `archived: false`; any 401/403/404, transport failure, timeout, or invalid/missing JSON field is `unknown`, never absence. Only after that posture query succeeds will `GET /repos/<owner>/<repo>/git/ref/heads/main` map 200 plus one valid object SHA to `equal` or `different`, and branch-specific 404 to `absent`; every other status/error is `unknown`. `equal` may recover an accepted-but-locally-reported-failed push; `different` after an attempted push will return `pushed_remote_advanced` with retained and observed OIDs; `unknown` will preserve residue and prohibit retry claims. The final success boundary will independently reconstruct and validate content again and repeat these API checks before emitting fixed JSON. Registry mutation remains a later factory step and will not occur on any failed finalizer result.
 
 Production code will not expose an un-attested arbitrary callback boundary. Tests may inject named operations/failpoints through internal test-only interfaces; the public CLI and production entrypoint will reject any caller-supplied failpoint/callback parameter. The finalizer will attest immediately after each internal injection and immediately before returning.
 
@@ -230,7 +241,8 @@ function finalize_scaffold(registry, slug, manifest):
     validate manifest immediately
     classify unborn/local-only/remote-equal/mismatch state
     before and after each Git mutation, revalidate bound identities and manifest
-    stage only independently expected regular files and create/validate exact root commit
+    construct exact tree/root commit from independently expected regular files
+    CAS-create main only if old OID is zero, then populate index from exact tree
     retain attested commit OID; require HEAD equals it before and after transport
     push attested_oid:refs/heads/main to registered HTTPS remote using fixed credentials
     verify remote main equals attested OID, GitHub PRIVATE/unarchived posture, and independent snapshot again
@@ -274,6 +286,7 @@ Each task will begin with the named focused tests failing for the intended missi
 ```bash
 uv run --frozen pytest tests/client_llm_wiki/test_bootstrap_schema.py -q
 uv run --frozen pytest tests/enforcement/test_client_wiki_registry.py -q
+uv run --no-project pytest tests/enforcement/test_python_function_lengths.py -q
 git commit -m "fix(client-wiki): close bootstrap schema downgrade paths" -- scripts/client_llm_wiki/bootstrap_schema.py tests/client_llm_wiki/test_bootstrap_schema.py scripts/enforcement/check-client-wiki-registry.sh tests/enforcement/test_client_wiki_registry.py scripts/enforcement/check_python_function_lengths.py tests/enforcement/test_python_function_lengths.py
 ```
 
@@ -315,7 +328,7 @@ git commit -m "feat(client-wiki): attest complete render manifests" -- scripts/c
 
 ### Task 6 — Add descriptor-bound finalization and recovery
 
-**Tests:** in new `test_bootstrap_finalizer.py`, cover initial success, local-commit/remote-absent recovery, idempotent remote-equal success, and rejection without mutation for different HEAD/index/worktree/identity/origin/remote SHA. Forge a self-consistent replacement manifest/clone and prove independent template reconstruction rejects it. Install an executable hook and each alternate/graft/shallow surface; add separate loose, packed, mixed, and malformed `refs/replace` controls; prove the finalizer neither executes nor accepts any of them. Require the exact raw root-commit grammar and fixed message/identity grammar above, with separate negative controls for missing/duplicate/reordered tree/author/committer, parent, wrong committer, unknown/optional header, continuation, multiple separator, NUL/CR, malformed identity/timestamp/timezone, and semantic lookalike with a wrong tree. Inject HEAD/ref substitution before transport and prove the literal retained OID—not symbolic HEAD—is pushed. Simulate success, failure-after-server-accept, timeout, exception, remote advancement, absence, and lookup failure; require the exact `equal`/`absent`/`different`/`unknown` residue classification. Require author variables, unavailable credentials failure, first commit with global/system config disabled, exact success JSON, GitHub PRIVATE/unarchived re-attestation, and immediate independent snapshot/manifest checks around every injected operation.
+**Tests:** in new `test_bootstrap_finalizer.py`, cover initial success, local-commit/remote-absent recovery, idempotent remote-equal success, and pre-mutation rejection without mutation for different HEAD/index/worktree/identity/origin/remote SHA. Forge a self-consistent replacement manifest/clone and prove independent template reconstruction rejects it. Install an executable hook and each alternate/graft/shallow surface; add separate loose, packed, mixed, and malformed `refs/replace` controls; prove the finalizer neither executes nor accepts any of them. Require the exact raw root-commit grammar and fixed message/identity grammar above, with separate negative controls for missing/duplicate/reordered tree/author/committer, parent, wrong committer, unknown/optional header, continuation, multiple separator, NUL/CR, malformed identity/timestamp/timezone, and semantic lookalike with a wrong tree. Prove zero-old-OID `update-ref` runs before `read-tree`; concurrent `main` creation leaves the preexisting index/ref untouched plus exact `git_objects_cas_failed` residue; post-CAS index failure leaves exact `local_commit_index_incomplete` residue; and retry from an exact local commit repairs the index before push. Inject HEAD/ref substitution before transport and prove the literal retained OID—not symbolic HEAD—is pushed. Simulate success, failure-after-server-accept, timeout, exception, remote advancement, absence, hostile `GH_HOST`/GH config, repo-level 401/403/404, branch 404, malformed JSON, and lookup failure; require the exact `equal`/`absent`/`different`/`unknown` mapping and literal `--hostname github.com`. Require author variables, unavailable credentials failure, first commit with global/system config disabled, exact success JSON, GitHub PRIVATE/unarchived re-attestation, and immediate independent snapshot/manifest checks around every injected operation.
 
 ```bash
 uv run --frozen pytest tests/client_llm_wiki/test_bootstrap_finalizer.py tests/client_llm_wiki/test_bootstrap_contract.py -q
@@ -379,7 +392,7 @@ Hermetic tests can prove parser boundaries, malicious-include semantics, determi
 - [ ] Every failure including `KeyboardInterrupt`/`SystemExit` preserves residue and emits a bounded structured manual-disposition record.
 - [ ] The external mode-0600 manifest uses a bound/synced parent and binds parent/root/`.git`/config plus every rendered member's type/mode/size/SHA-256, but never serves as finalization authority.
 - [ ] Finalization independently reconstructs the expected scaffold from the trusted current template-subtree tree OID and rejects a forged self-consistent manifest/clone while tolerating unrelated workspace commits.
-- [ ] `finalize-scaffold` accepts only the three specified recovery states and performs no mutation on any mismatch.
+- [ ] `finalize-scaffold` accepts only the three success/recovery states; pre-mutation mismatches are non-mutating, while post-object/CAS failures preserve exactly classified Git residue and recover only through an independently validated exact local commit.
 - [ ] Author identity comes only from required `CLIENT_WIKI_GIT_AUTHOR_NAME`/`EMAIL`; credentials use only fixed command-scoped `gh auth git-credential`.
 - [ ] The acceptable commit matches the exact raw grammar, fixed message bytes, validated identical author/committer identity, valid timestamps, exact tree, and no parent/optional/unknown header.
 - [ ] Push uses a retained literal OID in a non-force fully qualified refspec, detects symbolic-ref substitution, and rejects an unborn clone when remote `main` already exists.

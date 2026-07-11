@@ -50,12 +50,12 @@
       <div class="eyebrow">Issue #3449 · revised T3 plan</div>
       <h1>Metadata-only bootstrap, with residue-safe finalization</h1>
       <p class="lede">Render an exact committed client-wiki template into an authorized empty PRIVATE clone, preserve every failed result for manual disposition, and commit/push only through a descriptor-bound manifest attestation.</p>
-      <div class="meta"><span class="pill">Status: draft</span><span class="pill">Lane: Codex</span><span class="pill">Client: N/A</span><span class="pill">Date: 2026-07-11</span></div>
+      <div class="meta"><span class="pill">Status: plan-review</span><span class="pill">Lane: Codex</span><span class="pill">Client: N/A</span><span class="pill">Date: 2026-07-11</span></div>
     </div>
     <aside class="gate">
       <div class="eyebrow">Current gate</div>
-      <strong>Plan review pending</strong>
-      <p>The user approved the amended design, not implementation. T3 adversarial review must reach no-MAJOR, then the reviewed plan returns for explicit approval.</p>
+      <strong>Awaiting user approval</strong>
+      <p>Adversarial review reached full-file APPROVE after resolving all MAJOR findings. The user approved the amended design, not implementation; this reviewed plan still needs explicit approval.</p>
     </aside>
   </header>
 
@@ -112,10 +112,10 @@
     <table>
       <thead><tr><th>Observed state</th><th>Permitted action</th></tr></thead>
       <tbody>
-        <tr><td>Symbolic unborn HEAD + independently reconstructed exact render</td><td>Stage expected files, commit, retain OID, push literal OID, re-attest</td></tr>
-        <tr><td>Exact parentless local root commit + remote absent</td><td>Retain and push its literal OID, then re-attest</td></tr>
-        <tr><td>Exact expected local commit + equal remote main</td><td>Verify through the GitHub API and return idempotent success</td></tr>
-        <tr><td>Any identity, origin, index, worktree, commit, or SHA mismatch</td><td>Fail without mutation; preserve and report residue</td></tr>
+        <tr><td>Symbolic unborn HEAD + independently reconstructed exact render</td><td>Create exact objects, CAS-create main, populate index, push literal OID, re-attest</td></tr>
+        <tr><td>Exact parentless local root commit + remote absent</td><td>Repair exact index if needed, retain and push literal OID, then re-attest</td></tr>
+        <tr><td>Exact expected local commit + equal remote main</td><td>Repair exact index if needed, verify through GitHub API, return idempotent success</td></tr>
+        <tr><td>Pre-mutation mismatch</td><td>Fail without mutation; post-object/CAS failures preserve classified Git residue</td></tr>
       </tbody>
     </table>
   </section>
