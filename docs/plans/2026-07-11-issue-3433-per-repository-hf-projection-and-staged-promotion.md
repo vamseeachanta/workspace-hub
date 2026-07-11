@@ -1,6 +1,6 @@
 # Plan for [#3433](https://github.com/vamseeachanta/workspace-hub/issues/3433): Per-Repository Hugging Face Projection and Staged Promotion
 
-> **Status:** plan-review (adversarial self-review r1 remediated + r2-verified NO-MAJOR; owner-reviewed the two placement/namespace decisions)
+> **Status:** plan-approved (owner-approved 2026-07-11); hardened through Claude r1 + Codex r2 (both MAJOR→remediated) + Claude r3 verification (NO-MAJOR, all findings closed)
 > **Complexity:** T3
 > **Date:** 2026-07-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3433
@@ -233,17 +233,36 @@ the envelope's best-effort `git_sha`.
 One dataset per source repo (`aceengineer/digitalmodel-runs`, `aceengineer/worldenergydata-runs`);
 a separate global catalog **indexes** datasets and never merges domain-native records.
 
+**HF dataset (data plane)** — one dataset per source repo:
+
 ```text
-<dataset-root>/
+<dataset-root>/                  # aceengineer/{digitalmodel,worldenergydata}-runs
   README.md                      # dataset card: metadata, schema versions, license summary
-  runs/       part-*.parquet      # append-only shards, one row per run (identity + status + refs); eligibility gated by publications/
+  runs/       part-*.parquet      # append-only shards, one row per run (identity + status + refs)
   inputs/     part-*.parquet      # replay-critical inputs (JSONL fallback for deeply nested payloads)
   outputs/    part-*.parquet      # curated native outputs (JSONL where schema is non-tabular)
   metrics/    part-*.parquet      # metric observations (succeeded runs only)
-  publications/ part-*.jsonl      # append-only Publication acceptance records (see §3)
   objects/<sha256[:2]>/<sha256>   # content-addressed blob store; deduplicated within dataset
-  catalog-index.json (global catalog side) # points at each dataset revision; no combined run table
 ```
+
+**Source repo (authority plane)** — NOT in the HF dataset:
+
+```text
+<source-repo>/
+  reports/<algorithm>/report.html                  # one rolling report per algorithm; pins exact HF revisions
+  reports/<algorithm>/publications.jsonl           # APPEND-ONLY Publication acceptance ledger (§3) — SOLE eligibility authority
+  <catalog side> catalog-index.json                # global catalog: points at each dataset revision; no combined run table
+```
+
+The Publication acceptance ledger lives in the **source repo, not the HF dataset** (Codex r2): a
+run row is committed into HF revision R1 at HF_CANDIDATE (state 5), but acceptance is decided only
+after cross-verification (state 7). Writing acceptance back into HF would require a second commit
+R2 that the report never pinned and Gate C never scanned — an unverified byte set. Because
+acceptance is a source-repository *authority* act (the parent contract keeps the rolling report
+and authority in the source repo), the append-only `publications.jsonl` ledger is committed to the
+source repo via ordinary atomic git commits. HF stays a pure content-addressed **data** store; the
+source repo is the **authority**. A run's analysis eligibility is read from `publications.jsonl`,
+never inferred from HF visibility.
 
 Parquet is the default (columnar, HF-recommended); JSONL is the escape hatch for nested
 engineering payloads that would lose meaning if flattened (e.g. dm #1528's synchronized
@@ -264,40 +283,62 @@ HF candidate is authoritative for *nothing* until the append-only Publication re
 (4) REVIEW_APPROVED explicit human promotion review recorded; UNAVAILABLE review channel != approval
 (5) HF_CANDIDATE    egress Gate C re-scans dataset card + all upload bytes (fail-closed) BEFORE commit;
                     immutable single-commit HF revision created; exact commit sha captured;
-                    EVERY content-addressed object re-downloaded + re-hashed                -> still INELIGIBLE
-(6) REPORT_PINNED   source-repo rolling report updated to pin the EXACT verified revision
+                    EVERY uploaded byte (objects + shards + card) re-downloaded + re-hashed   -> still INELIGIBLE
+(6) REPORT_PINNED   source-repo report updated to pin EXACT rev; egress Gate D re-scans FINAL pinned
+                    report bytes (fail-closed); committed as a PROVISIONAL pin ("pending acceptance")
 (7) CROSS_VERIFIED  cross-system check: HF objects resolve at the revision AND report links resolve to it
-(8) ACCEPTED        append-only Publication record written                                  -> analysis-ELIGIBLE
+(8) ACCEPTED        Publication writer validates the evidence-bearing journal proofs for states 0–7,
+                    scans the record, appends it to source-repo publications.jsonl                -> ELIGIBLE
+
+Terminal failure states (explicitly modeled, not prose):
+(Q) QUARANTINED     any pre-HF-commit failure; no HF write occurred; resumable or abortable
+(A) ABANDONED       R1 irreparably corrupt (post-upload object/shard/card re-hash mismatch, or a
+                    permanently unavailable object) — R1 cannot be repaired; candidate is terminal;
+                    a corrective revision R2 re-publishes the same run_id (never an overwrite: R1 was
+                    never accepted). Reader prefers the accepted revision; ABANDONED candidates are inert.
 ```
 
 Run records are written once and **never mutate** from candidate to accepted; acceptance is a
-*separate* append-only Publication row. Only the Publication record confers analysis eligibility.
-Every transition requires its predecessor — there is no bypass edge to ACCEPTED.
+*separate* append-only Publication row in the **source repo**. Only the Publication record confers
+analysis eligibility, and the **Publication writer is not a directly callable append** (Codex r2):
+it validates the evidence-bearing journal — each of states 0–7 recorded a verifiable proof (scan
+digests, replay-equality proof, captured revision, post-upload re-hash results, cross-verify
+result) — rejects a malformed, skipped, or manually constructed journal, and refuses to write
+acceptance absent complete proofs. Every transition requires its predecessor; there is no bypass
+edge to ACCEPTED, and topology alone is not trusted — the writer re-checks the proofs.
 
 ### 4. Immutable HF revision + object verification
 
 - `create_commit` produces a single commit whose returned revision (commit SHA) is captured
   verbatim into the candidate record. The publisher **never** force-pushes, deletes, or
   overwrites; new runs are additive shards + new content objects.
-- Immediately after upload, every content-addressed object referenced by the candidate is
-  re-fetched from the dataset revision and re-hashed; any mismatch fails the candidate before
-  REPORT_PINNED (the candidate stays ineligible; see recovery below).
+- Immediately after upload, **every uploaded byte** referenced by the candidate — content-addressed
+  objects **and** the Parquet/JSONL shards **and** the dataset card/README — is re-fetched from the
+  dataset revision and re-hashed against the staged bytes (Codex r2: object-only re-hashing left
+  shards and card unverified). Any mismatch, or a permanently unavailable object, marks the candidate
+  **ABANDONED** (R1 is immutable and cannot be repaired) and triggers a corrective revision R2; it
+  never advances to REPORT_PINNED.
 - The source-repo rolling report is finalized only after it pins the exact verified revision;
   a moving/`main` reference (not an immutable revision) fails CROSS_VERIFIED.
 
 ### 5. Public-egress / legal / secret validation
 
-The egress gate is one composed check invoked at **three** enforcement points, because the bytes
-it must cover are produced at different states: source records exist at state 1, the rolling report
-is rendered at state 3, and the dataset card + upload shards are assembled at state 5. Scanning
-only at state 1 would let a secret introduced during report rendering or card assembly reach
-Hugging Face. Every invocation fails closed:
+The egress gate is one composed check invoked at **four gates** (Gate D fires before *each*
+source-repo commit — the pinned report at state 6 and the Publication record at state 8), because
+public bytes are produced (and *mutated*) at different states; each invocation scans the bytes at
+the last moment before they become public and fails closed. Scanning only early would let a secret introduced during
+report rendering, card assembly, or the report-pin edit reach a public surface:
 
 - **Gate A — at VALIDATED (state 1):** over projection records, every replay-critical input, and
   every content-addressed artifact (the source bytes).
-- **Gate B — immediately after REPORT_DRAFTED (state 3):** over the rendered rolling HTML report.
+- **Gate B — immediately after REPORT_DRAFTED (state 3):** over the rendered rolling HTML report draft.
 - **Gate C — immediately before `create_commit` (state 5):** over the dataset card/README and
-  **every byte staged for upload** (shards + new content objects), so nothing unscanned is committed.
+  **every byte staged for upload** (Parquet/JSONL shards + new content objects), so nothing
+  unscanned is committed to HF.
+- **Gate D — immediately before the source-repo commit at REPORT_PINNED (state 6) (Codex r2):** over
+  the **final pinned report bytes** (state 6 mutates the report to insert the revision pin *after*
+  Gate B scanned the draft) **and** the Publication acceptance record before it is appended to
+  `publications.jsonl` at ACCEPTED (state 8). No byte reaches a public git surface unscanned.
 
 The composed check runs, at each point:
 
@@ -326,25 +367,32 @@ actual repo.
 
 ### 6. Rollback / resume behavior
 
-A durable append-only **promotion journal** (local, per run) records each stage's completion and
-an idempotency key. On restart the workflow replays from the last completed stage; every stage is
-idempotent (re-running EMITTED/VALIDATED/REPLAYED recomputes deterministically; re-running
-HF_CANDIDATE reuses the captured revision rather than committing twice).
+A durable append-only **evidence-bearing promotion journal** (local, per run) records, for each
+stage, not merely an ordinal but a **verifiable proof** (scan digests, replay-equality proof,
+captured revision, post-upload re-hash results, cross-verify result) plus an idempotency key. On
+restart the workflow **validates the recorded proofs** and resumes from the last *proven* stage — it
+does not trust a bare `stage` ordinal (Codex r2: a corrupted or advanced-without-evidence journal
+must not be believed). Every stage is idempotent (EMITTED/VALIDATED/REPLAYED recompute
+deterministically; HF_CANDIDATE reuses the captured revision rather than committing twice).
 
-- **Failure before HF_CANDIDATE:** no HF write occurred; quarantine locally and resume/abort. No
-  partially-accepted run is ever exposed.
-- **HF_CANDIDATE succeeds, then REPORT_PINNED fails, or CROSS_VERIFIED fails (either sub-check:
-  HF objects not resolving at the revision, or report links not resolving to it):** the candidate
-  revision is immutable and cannot be deleted atomically, so it **remains** but no Publication
-  record is written → it stays analysis-ineligible. Because the `runs/` row for this deterministic
-  `run_id` is already committed at revision R1, recovery is **retry pin/verify against R1 only** —
-  it does **not** create a second candidate, which would either duplicate the `run_id` row across
-  shards (violating the no-attempt-record / no-overwrite invariant) or be blocked by no-overwrite.
-  Supersession is reserved for failures **before** a successful `create_commit`. The dataset reader
-  deduplicates run rows by `run_id` across shards, and the Publication record is the **sole**
-  authority for "accepted", so an un-accepted R1 is inert regardless of visibility.
-- **Interrupted mid-stage:** the journal + idempotency keys guarantee replay never double-commits
-  and never advances past an unverified gate.
+- **Failure before HF_CANDIDATE → QUARANTINED:** no HF write occurred; quarantine locally and
+  resume/abort. No partially-accepted run is ever exposed.
+- **HF_CANDIDATE succeeds, then a TRANSIENT downstream failure (REPORT_PINNED edit fails, a link
+  temporarily unresolvable, a network CROSS_VERIFY hiccup):** R1 is intact and immutable, so recovery
+  is **retry pin/verify against R1** — it does **not** create a second candidate, which would
+  duplicate the `run_id` row (violating no-attempt-record / no-overwrite). No Publication record
+  exists yet, so R1 is inert.
+- **HF_CANDIDATE succeeds, then R1 is IRREPARABLE (post-upload object/shard/card re-hash mismatch, or
+  a permanently unavailable object) → ABANDONED:** R1 cannot be repaired (immutable, no atomic
+  delete), so the candidate is marked **terminal ABANDONED** and a **corrective revision R2**
+  re-publishes the same `run_id`. This is **not** an overwrite — R1 was never accepted (no Publication
+  record), so the no-overwrite invariant (which protects *accepted* runs) is not violated, and no
+  attempt record is created. The dataset reader deduplicates run rows by `run_id` and prefers the
+  revision named by the Publication ledger; ABANDONED R1 is inert.
+- **The Publication ledger is the SOLE authority for "accepted"** (source repo), so any un-accepted
+  R1 — transient-pending or ABANDONED — is analysis-ineligible regardless of HF visibility.
+- **Interrupted mid-stage:** the journal proofs + idempotency keys guarantee replay never
+  double-commits and never advances past an unproven gate.
 
 ---
 
@@ -355,28 +403,34 @@ load per-repo publication.yml (dataset target, algorithm->report map)   # no cre
 resolve HF + GitHub tokens from environment ONLY; assert namespace ownership preflight (no secret persisted)
 
 for each locally emitted RunProjection:
-    journal = open_or_resume_journal(run_id)                # idempotent replay
-    if journal.stage < VALIDATED:
+    journal = open_or_resume_journal(run_id)          # resume from last PROVEN stage; validate proofs, not ordinals
+    if not journal.proven(VALIDATED):
         assert strict identity (clean commit, schema vers, env digest, seed, exec params)   # #3428
         assert inputs public-admissible (redistributable, pinned, hashed, schema-valid, complete)  # #3430
         assert artifacts content-addressed + residency-legal (#3429); outputs curated + native (#3431)
         egress GATE A: legal + secret + abs-path + per-input license (+ #3013 validator | fail-closed shim) over source bytes
-        FAIL CLOSED on any miss
-    if journal.stage < REPLAYED:
-        deterministic reproduce OR exact-equality verify; mismatch -> reject (no overwrite)
+        FAIL CLOSED on any miss -> QUARANTINED; record proof(scan digests, identity)
+    if not journal.proven(REPLAYED):
+        deterministic reproduce OR exact-equality verify; mismatch -> reject (no overwrite); record replay proof
         failed-but-reproducible -> normalized failure evidence; EXCLUDE from metrics/insights/decisions
-    if journal.stage < REPORT_DRAFTED:
+    if not journal.proven(REPORT_DRAFTED):
         render rolling HTML draft (unpinned)
-        egress GATE B: legal + secret + abs-path over the rendered report; FAIL CLOSED
-    if journal.stage < REVIEW_APPROVED: require explicit human review; UNAVAILABLE channel != approval -> stop
-    if journal.stage < HF_CANDIDATE:
-        egress GATE C: legal + secret + abs-path over dataset card + EVERY byte staged for upload; FAIL CLOSED
+        egress GATE B: scan the rendered draft; FAIL CLOSED
+    if not journal.proven(REVIEW_APPROVED): require explicit human review; ABSENT/UNAVAILABLE channel != approval -> stop
+    if not journal.proven(HF_CANDIDATE):
+        egress GATE C: scan dataset card + EVERY byte staged for upload (shards + objects); FAIL CLOSED
         rev = hf.create_commit(dataset_target, additive shards + new content objects)   # immutable single commit
-        capture rev verbatim; re-download + re-hash EVERY content object; mismatch -> fail (candidate stays ineligible)
-    if journal.stage < REPORT_PINNED:   update source report to pin EXACT rev (moving ref -> fail)
-    if journal.stage < CROSS_VERIFIED:  verify HF objects @rev AND report links @rev
-    append Publication acceptance record (append-only) -> run becomes analysis-ELIGIBLE
-    # Run record itself never mutated candidate->accepted
+        capture rev verbatim; re-download + re-hash EVERY uploaded byte (objects + shards + card)
+        mismatch/unavailable -> mark ABANDONED, emit corrective revision R2 (same run_id, not an overwrite); record proof(rev, rehash)
+    if not journal.proven(REPORT_PINNED):
+        update source report to pin EXACT rev (moving ref -> fail)
+        egress GATE D: scan FINAL pinned report bytes; FAIL CLOSED; commit PROVISIONAL pin to source repo
+    if not journal.proven(CROSS_VERIFIED):
+        verify HF objects @rev AND report links @rev; transient fail -> retry against R1; record proof
+    # ACCEPTED: Publication writer re-validates journal proofs for states 0-7, scans the record (GATE D),
+    #           then appends it to source-repo publications.jsonl  -> run becomes analysis-ELIGIBLE
+    publication_writer.accept(journal)   # rejects malformed/skipped/hand-built journals; NOT a bare append
+    # Run record itself never mutated candidate->accepted; eligibility read from publications.jsonl only
 ```
 
 ---
@@ -387,14 +441,15 @@ for each locally emitted RunProjection:
 |---|---|---|
 | Create | `assetutilities/…/workflow_api/publication/projection.py` (DECIDED home) | build `RunProjection` from `ResultEnvelope` + record contracts; bind strict identity |
 | Create | `…/publication/dataset_schema.py` | Parquet/JSONL table writers + content-addressed object store + integrity re-reader |
-| Create | `…/publication/promotion.py` | nine-state machine + durable idempotent promotion journal |
-| Create | `…/publication/hf_client.py` | env-backed auth, single-commit revision, post-upload object re-verification, token redaction |
-| Create | `…/publication/egress.py` | compose legal + secret + abs-path + license gate; #3013 validator or bounded shim |
-| Create | `…/publication/report_pin.py` | pin source-repo rolling report to the exact verified revision |
-| Create | `…/publication/publication_record.py` | append-only Publication acceptance log; sole eligibility authority |
+| Create | `…/publication/promotion.py` | 9-state machine + terminal QUARANTINED/ABANDONED states + evidence-bearing, proof-validating journal |
+| Create | `…/publication/hf_client.py` | env-backed auth, single-commit revision, post-upload re-verification of **all uploaded bytes**, corrective-R2 path, token redaction |
+| Create | `…/publication/egress.py` | compose legal + secret + abs-path + license gate at Gates A/B/C/D; #3013 validator or fail-closed shim |
+| Create | `…/publication/report_pin.py` | pin source-repo rolling report to the exact verified revision (provisional pin + Gate D) |
+| Create | `…/publication/publication_record.py` | Publication writer: re-validates journal proofs, appends to **source-repo** `publications.jsonl`; sole eligibility authority (NOT a bare append) |
 | Create | `…/publication/cli.py` | thin CLI; policy in helper modules |
 | Create | `…/publication/schemas/*.schema.json` | projection/dataset record schemas |
 | Create | `<repo>/docs/registry/publication.yml` (dm, wed) | dataset target + algorithm→report mappings; credential-free |
+| Create | `<source-repo>/reports/<algorithm>/{report.html,publications.jsonl}` (at pilot time, dm #1505 / wed #927) | rolling report + append-only Publication acceptance ledger in the **source repo** (authority plane) |
 | Create | `assetutilities/tests/workflow_api/publication/` | TDD suite (below) |
 | Create | `workspace-hub docs/governance/2026-07-11-hf-projection-staged-promotion-notes.md` | design companion, bound to parent contract version |
 | Update | `docs/plans/README.md` | plan index status |
@@ -431,8 +486,21 @@ wed #927), each under its own approval gate — **not** under this planning issu
 | `test_tokens_never_reach_logs_or_reports` | env-backed auth; redaction | token in env | absent from all emitted text |
 | `test_egress_validator_composes_when_present_and_shims_fail_closed_when_absent` | #3013 present → composed; absent → shim enforces covered subset fail-closed + names uncovered checks | validator-present + validator-absent fixtures | present: real validator invoked; absent: `egress_validator.available=false`, `uncovered[...]` recorded, covered subset still fails closed |
 | `test_legal_and_abs_path_scans_pass` | no restricted ids/secrets/machine paths | changed paths | scanners exit 0 |
+| `test_publication_ledger_lives_in_source_repo_not_hf_dataset` | acceptance record in source-repo `publications.jsonl`; no `publications/` in HF dataset; no R2 for acceptance | dataset + source-repo fixtures | ledger in source repo; HF revision unchanged by acceptance |
+| `test_publication_writer_rejects_malformed_or_hand_built_journal` | writer re-validates state 0–7 proofs; manual/skipped-journal acceptance refused | forged/incomplete journals | acceptance rejected; topology-only bypass blocked |
+| `test_irreparable_R1_abandons_and_corrective_R2_republishes` | post-upload rehash mismatch/unavailable object → ABANDONED terminal + R2 same `run_id`, not an overwrite | corrupt-R1 fixture | R1 ABANDONED + inert; R2 accepted; no attempt record |
+| `test_journal_resume_validates_proofs_not_ordinals` | corrupted/advanced-without-evidence journal not trusted; resume re-checks proofs | tampered-journal fixture | unproven stage re-run; no advance past unproven gate |
+| `test_egress_gate_D_scans_final_pinned_report_and_publication_record` | state-6 report-pin mutation + the Publication record are scanned before their source-repo commit | secret-in-pinned-report + secret-in-record fixtures | Gate D fails closed; nothing committed |
+| `test_post_upload_verifies_all_bytes_not_only_objects` | shards + card re-hashed at revision, not just content objects | tampered-shard + tampered-card fixtures | mismatch → ABANDONED |
+| `test_exact_repeat_creates_no_attempt_record` | exact repeat resolves to same `run_id`, adds no row/attempt | repeat fixture | no new run/attempt row |
+| `test_failed_runs_excluded_from_insights_and_decisions` | reproducible failures excluded from insights + decisions, not only metrics | failed-run fixture | absent from insight/decision populations |
+| `test_dataset_backed_data_as_of_run_timestamp_fails` | dataset-backed algorithm whose `data_as_of` is a run timestamp (not a pinned snapshot) fails admission | wed-style fixture | rejected (per #3430) |
+| `test_admission_rejects_invalid_schema_missing_input_and_nondeterministic_replay` | invalid schema, missing replay input, nondeterministic replay all fail closed | admission fixtures | each rejected |
+| `test_absent_human_approval_blocks` | absent (not merely unavailable) promotion approval blocks acceptance | no-approval fixture | promotion stops |
 
-Tests are written first and fail before implementation exists.
+Tests are written first and fail before implementation exists. Non-testable process gates (full-suite
+green, legal-scan closeout, substantive multi-provider review) are explicitly classified as
+process/CI gates rather than unit tests, and enforced at closeout — not silently dropped.
 
 ---
 
@@ -449,8 +517,8 @@ Tests are written first and fail before implementation exists.
       from metrics, insights, and decisions.
 - [ ] Exact repeats resolve to the deterministic `run_id`, create no attempt record, and never
       overwrite immutable outputs.
-- [ ] Publication captures the exact HF commit/revision and re-verifies every content-addressed
-      object after upload.
+- [ ] Publication captures the exact HF commit/revision and re-verifies **every uploaded byte**
+      (content-addressed objects, Parquet/JSONL shards, and the dataset card) after upload.
 - [ ] The source-repository rolling HTML report is finalized only after it pins the exact verified
       dataset revision.
 - [ ] Interrupted promotion is resumable or rolls back without exposing a partially accepted run,
@@ -478,8 +546,9 @@ not authorize it.** Implementation is additionally sequenced behind:
 3. Authenticated HF namespace ownership preflight (no persisted secret) — owned here, run at
    implementation start, not during planning.
 
-The issue stays at `status:needs-plan` until adversarial review completes and the user approves.
-The uploader is **not** implemented under this plan.
+The issue is **`status:plan-approved`** (owner-approved 2026-07-11). The uploader is **not**
+implemented under this plan, and implementation does not begin until the confirming r3 review closes
+the Codex r2 findings and the sequencing preconditions (1)–(3) above are met.
 
 ---
 
@@ -487,13 +556,22 @@ The uploader is **not** implemented under this plan.
 
 | Round | Reviewer | Verdict | Findings | Result |
 |---|---|---|---|---|
-| r1 | Claude (adversarial self-review) | **BLOCK → remediated** | 1 MAJOR (egress gate scanned report + upload bytes before they existed; no pre-upload re-gate), 5 MINOR (untested cross-verify recovery; supersession vs deterministic `run_id` conflict; missing tests for AC1/AC2/AC10 compose-when-present; cross-repo scan location; #3013 shim must fail-closed on covered subset) | All applied in this revision: three-point egress gate (A/B/C); retry-against-R1-only recovery + reader dedup by `run_id`; four new failing-first tests; library-home made a hard precondition covering scan invocation; shim fails closed + names uncovered checks |
+| r1 | Claude (adversarial self-review) | **BLOCK → remediated** | 1 MAJOR (egress gate scanned report + upload bytes before they existed; no pre-upload re-gate), 5 MINOR (untested cross-verify recovery; supersession vs deterministic `run_id` conflict; missing tests for AC1/AC2/AC10 compose-when-present; cross-repo scan location; #3013 shim must fail-closed on covered subset) | Applied: three-point egress gate; retry-against-R1 recovery; four new tests; library-home hard precondition; shim fails closed + names uncovered checks |
+| r2 | Codex (`codex exec`, structured) | **MAJOR → remediated** | Publication ledger wrongly inside the HF dataset (would need an unverified R2); ACCEPTED appendable without proof re-validation; irreparable-R1 had no terminal recovery; failure states were prose not modeled; post-scan gaps (state-6 report-pin edit + the Publication record unscanned; post-upload re-hash covered only objects, not shards/card); admission + AC 1:1 test gaps | Applied in this revision: **Publication ledger moved to the source repo** (HF = data plane, source repo = authority plane); Publication writer re-validates evidence-bearing journal proofs (not a bare append); terminal **QUARANTINED / ABANDONED** states + corrective-R2 recovery; **Gate D** scans final pinned report + the Publication record; post-upload re-hash extended to **all uploaded bytes**; 12 new failing-first tests (ledger location, writer proof-validation, ABANDONED/R2, proof-validating resume, Gate D, all-byte verify, no-attempt-record, insights/decisions exclusion, `data_as_of`, invalid-schema/missing-input/nondeterministic, absent-approval); non-testable gates classified |
 
-r1 was a single-provider adversarial self-review. Before implementation, the plan targets the
-standard multi-provider gate (Claude + Codex substantive; Gemini subject to noninteractive-auth
-availability on this machine). **No unavailable provider result will be interpreted as approval**,
-and any T3→T2 review-depth reduction will be disclosed in the approval packet for explicit owner
-acceptance, consistent with the parent.
+r1 was a Claude self-review; r2 was a substantive Codex review that found genuine architecture
+defects r1 missed (the Publication-ledger residency being the deepest) — vindicating the
+multi-provider gate. Gemini remains subject to noninteractive-auth availability on this machine and
+was not run; **no unavailable provider result is interpreted as approval**, and the T3→T2 depth
+reduction (Gemini absent) is disclosed for explicit owner acceptance, consistent with the parent.
+| r3 | Claude (verification) | **NO-MAJOR** | Confirmed all six Codex r2 findings CLOSED with matching design/pseudocode/test text; caught one residual MINOR — two lines still said "every content-addressed object" (narrower than the authoritative "every uploaded byte") | Both lines corrected to "every uploaded byte (objects + shards + card)"; Gate-count wording tightened |
+
+r1 was a Claude self-review; r2 was a substantive Codex review that found genuine architecture
+defects r1 missed (the Publication-ledger residency being the deepest) — vindicating the
+multi-provider gate; r3 confirmed the r2 remediations closed cleanly. Gemini remains subject to
+noninteractive-auth availability on this machine and was not run; **no unavailable provider result
+is interpreted as approval**, and the T3→T2 depth reduction (Gemini absent) is disclosed for
+explicit owner acceptance, consistent with the parent.
 
 ---
 
