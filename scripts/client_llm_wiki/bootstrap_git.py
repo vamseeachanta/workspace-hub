@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
+import pwd
 import re
 import subprocess
 from typing import Mapping
@@ -15,9 +17,10 @@ class BootstrapGitError(RuntimeError):
 
 
 _INHERITED_ENV = (
-    "PATH", "HOME", "XDG_CONFIG_HOME", "GH_CONFIG_DIR", "GH_TOKEN",
+    "HOME", "GH_TOKEN",
     "GITHUB_TOKEN", "LANG", "LC_ALL", "LC_CTYPE", "TMPDIR", "TEMP", "TMP",
 )
+_TRUSTED_PATH = "/usr/local/bin:/usr/bin:/bin"
 
 
 def isolated_env(source: Mapping[str, str] | None = None) -> dict[str, str]:
@@ -25,12 +28,26 @@ def isolated_env(source: Mapping[str, str] | None = None) -> dict[str, str]:
     inherited = os.environ if source is None else source
     env = {key: inherited[key] for key in _INHERITED_ENV if key in inherited}
     env.update(
+        PATH=_TRUSTED_PATH,
         GIT_CONFIG=os.devnull,
         GIT_CONFIG_NOSYSTEM="1",
         GIT_CONFIG_GLOBAL=os.devnull,
         GIT_NO_REPLACE_OBJECTS="1",
     )
     return env
+
+
+def trusted_executable(name: str) -> str:
+    """Resolve a fixed operational tool without consulting ambient PATH/HOME."""
+    if name not in {"gh", "git"}:
+        raise BootstrapGitError("operational executable is not allowlisted")
+    home = Path(pwd.getpwuid(os.getuid()).pw_dir)
+    candidates = (Path("/usr/local/bin"), Path("/usr/bin"), Path("/bin"), home / ".local/bin")
+    for directory in candidates:
+        candidate = directory / name
+        if candidate.is_file() and os.access(candidate, os.X_OK):
+            return str(candidate)
+    raise BootstrapGitError(f"required operational executable is unavailable: {name}")
 
 
 def author_env(source: Mapping[str, str] | None = None) -> dict[str, str]:
@@ -46,6 +63,8 @@ def author_env(source: Mapping[str, str] | None = None) -> dict[str, str]:
         GIT_AUTHOR_EMAIL=email,
         GIT_COMMITTER_NAME=name,
         GIT_COMMITTER_EMAIL=email,
+        GIT_AUTHOR_DATE="@0 +0000",
+        GIT_COMMITTER_DATE="@0 +0000",
     )
     return env
 
@@ -112,8 +131,7 @@ def _read_config(bound: BoundCloneLayout) -> list[tuple[str, str]]:
 
 def _value_contract(origins: frozenset[str]) -> dict[str, frozenset[str]]:
     return {
-        "core.repositoryformatversion": frozenset({"0", "1"}),
-        "extensions.objectformat": frozenset({"sha256"}),
+        "core.repositoryformatversion": frozenset({"0"}),
         "core.bare": frozenset({"false"}),
         "core.filemode": frozenset({"true", "false"}),
         "core.logallrefupdates": frozenset({"true"}),
@@ -142,11 +160,6 @@ def _validate_records(records: list[tuple[str, str]], repo_slug: str) -> dict[st
     }
     if not required <= parsed.keys():
         raise BootstrapGitError("clone config is missing a required key")
-    sha256 = parsed.get("extensions.objectformat") == "sha256"
-    if sha256 and parsed["core.repositoryformatversion"] != "1":
-        raise BootstrapGitError("clone config key is forbidden for repository format")
-    if not sha256 and parsed["core.repositoryformatversion"] != "0":
-        raise BootstrapGitError("clone config value is forbidden for repository format")
     return parsed
 
 

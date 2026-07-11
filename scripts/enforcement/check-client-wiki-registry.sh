@@ -14,7 +14,6 @@ REPO_ROOT="$(cd "$SELF_DIR/../.." && pwd -P)"
 REGISTRY="${REGISTRY_PATH:-${WIKI_SIBLING_REGISTRY_PATH:-}}"
 YQ_BIN="${YQ_BIN:-yq}"
 UV_BIN="${UV_BIN:-uv}"
-GH_BIN="${GH_BIN:-gh}"
 
 if [[ -z "$REGISTRY" ]]; then
   if [[ -f "${REPO_ROOT}/config/.client-wikis.local.yml" ]]; then
@@ -122,44 +121,26 @@ elif [[ $VALIDATION_RC -ne 0 ]]; then
 fi
 
 FAILED=0
-GH_PATH=""
 PUBLIC_WIKI_PATTERN='/llm-wiki(/|$)'
 
 check_live_repo() {
-  local short="$1" repo="$2" status="$3" json identity visibility archived archived_tag
+  local short="$1" repo="$2" status="$3" output rc
   if [[ "$status" != "bootstrapped" && "$status" != "live" ]]; then
     return 0
   fi
-  if [[ -z "$GH_PATH" ]]; then
-    GH_PATH="$(resolve_tool "$GH_BIN" || true)"
-  fi
-  if [[ -z "$GH_PATH" ]]; then
-    echo >&2 "FAIL: gh is required for bootstrapped/live registry rows"
-    return 2
-  fi
-  if ! json="$(env -u GH_HOST -u GH_CONFIG_DIR "$GH_PATH" repo view "github.com/$repo" --hostname github.com --json nameWithOwner,visibility,isArchived 2>/dev/null)"; then
-    echo >&2 "FAIL: $short repo $repo not found on GH"
+  set +e
+  output="$($UV_PATH run --directory "$REPO_ROOT" --frozen python -m \
+    client_llm_wiki.bootstrap_contract verify-private-repo --repo "$repo" 2>&1)"
+  rc=$?
+  set -e
+  [[ -z "$output" ]] || printf '%s\n' "$output" >&2
+  if [[ $rc -eq 0 ]]; then return 0; fi
+  if [[ $rc -eq 1 ]]; then
+    echo >&2 "FAIL: $short repo $repo is not the required private live repository"
     return 1
   fi
-  if ! identity="$(printf '%s' "$json" | "$YQ_PATH" -r '.nameWithOwner' - 2>/dev/null)" \
-    || ! visibility="$(printf '%s' "$json" | "$YQ_PATH" -r '.visibility' - 2>/dev/null)" \
-    || ! archived="$(printf '%s' "$json" | "$YQ_PATH" -r '.isArchived' - 2>/dev/null)" \
-    || ! archived_tag="$(printf '%s' "$json" | "$YQ_PATH" -r '.isArchived | tag' - 2>/dev/null)"; then
-    echo >&2 "FAIL: yq could not parse the live repository response"
-    return 2
-  fi
-  if [[ "$identity" != "$repo" ]]; then
-    echo >&2 "FAIL: $short live repository identity does not match the registry"
-    return 1
-  elif [[ "$visibility" != "PRIVATE" ]]; then
-    echo >&2 "FAIL: $short posture=client-private but visibility=$visibility"
-    return 1
-  fi
-  if [[ "$archived_tag" != "!!bool" || "$archived" != "false" ]]; then
-    echo >&2 "FAIL: $short status=$status but repo is archived or malformed"
-    return 1
-  fi
-  return 0
+  echo >&2 "FAIL: bootstrap contract dependency error (exit $rc)"
+  return 2
 }
 
 check_clone() {

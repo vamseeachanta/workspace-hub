@@ -35,15 +35,16 @@ def test_isolated_env_inherits_only_literal_allowlist(monkeypatch):
 
     env = isolated_env()
 
-    assert env["PATH"] == "/trusted/bin"
+    assert env["PATH"] == "/usr/local/bin:/usr/bin:/bin"
     assert env["GH_TOKEN"] == "token"
     assert set(env) <= {
-        "PATH", "HOME", "XDG_CONFIG_HOME", "GH_CONFIG_DIR", "GH_TOKEN",
+        "PATH", "HOME", "GH_TOKEN",
         "GITHUB_TOKEN", "LANG", "LC_ALL", "LC_CTYPE", "TMPDIR", "TEMP", "TMP",
         "GIT_CONFIG", "GIT_CONFIG_NOSYSTEM", "GIT_CONFIG_GLOBAL",
         "GIT_NO_REPLACE_OBJECTS",
     }
     assert not set(env) & {"GH_HOST", "LD_PRELOAD", "PYTHONPATH", "GIT_ASKPASS"}
+    assert "GH_CONFIG_DIR" not in env
 
 
 def _git(repo: Path, *args: str) -> None:
@@ -148,6 +149,14 @@ def test_config_rejects_wrong_literal_values(tmp_path, key, value):
     clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
     _git(clone, "config", "--replace-all", key, value)
     with bind_clone(clone) as bound, pytest.raises(BootstrapGitError, match="value"):
+        validate_clone_git(bound, REPO)
+
+
+def test_repository_format_one_is_rejected_even_with_sha256_extension(tmp_path):
+    clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
+    _git(clone, "config", "core.repositoryformatversion", "1")
+    _git(clone, "config", "extensions.objectformat", "sha256")
+    with bind_clone(clone) as bound, pytest.raises(BootstrapGitError):
         validate_clone_git(bound, REPO)
 
 

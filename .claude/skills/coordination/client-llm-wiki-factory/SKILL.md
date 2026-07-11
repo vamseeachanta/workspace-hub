@@ -84,10 +84,12 @@ REPO="$(yq -r '.repo' <<<"$PREFLIGHT")"
 TARGET="$(yq -r '.target' <<<"$PREFLIGHT")"
 STATUS="$(yq -r '.status' <<<"$PREFLIGHT")"
 test "$STATUS" = "planned"
-env -u GH_HOST -u GH_CONFIG_DIR gh repo create "$REPO" --hostname github.com --private --description "Private client knowledge wiki"
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
+  create-private-repo --registry "$REGISTRY" --short-name "$SHORT"
 uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
   verify-private-repo --repo "$REPO"
-git clone "https://github.com/$REPO.git" "$TARGET"
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
+  clone-private-repo --registry "$REGISTRY" --short-name "$SHORT"
 REGISTRY_PATH="$REGISTRY" "$WORKSPACE_HUB/scripts/enforcement/check-client-wiki-registry.sh"
 MANIFEST="$(mktemp -u --tmpdir="$MANIFEST_DIR" 'client-wiki-render.XXXXXXXX.json')"
 uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
@@ -119,8 +121,12 @@ checkout path in shell, pass a destination override, or edit the public stub.
 
 ### 2. Create the remote as private
 
+Both operational commands pin github.com and execute with the bootstrap
+contract's literal allowlisted child environment.
+
 ```bash
-env -u GH_HOST -u GH_CONFIG_DIR gh repo create "$REPO" --hostname github.com --private --description "Private client knowledge wiki"
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
+  create-private-repo --registry "$REGISTRY" --short-name "$SHORT"
 ```
 
 Immediately attest the live state:
@@ -132,7 +138,8 @@ uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap
 ### 3. Clone the registered repository into the derived target
 
 ```bash
-git clone "https://github.com/$REPO.git" "$TARGET"
+uv run --directory "$WORKSPACE_HUB" --frozen python -m client_llm_wiki.bootstrap_contract \
+  clone-private-repo --registry "$REGISTRY" --short-name "$SHORT"
 ```
 
 The remote must be empty, so the clone has an unborn HEAD, an empty worktree,

@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from client_llm_wiki import bootstrap_contract, bootstrap_finalizer, bootstrap_remote
+from client_llm_wiki import bootstrap_remote
 from client_llm_wiki.bootstrap_manifest import persist_render_manifest
 from client_llm_wiki.bootstrap_renderer import RenderTokens, bind_empty_clone, render_committed_template
 
@@ -89,7 +89,7 @@ def test_github_api_uses_literal_host_and_isolated_hostile_config(monkeypatch, t
     assert seen["command"][0:5] == ["gh", "api", "--hostname", "github.com", "--include"]
     assert "GH_HOST" not in seen["env"]
     assert seen["env"]["GIT_CONFIG"] == "/dev/null"
-    assert seen["env"]["GH_CONFIG_DIR"] == str(hostile)
+    assert "GH_CONFIG_DIR" not in seen["env"]
 
 
 @pytest.mark.parametrize("repo_payload", [
@@ -117,23 +117,12 @@ def test_github_api_failures_are_unknown(monkeypatch, outcome):
     assert bootstrap_remote.remote_state("org/llm-wiki-client", "d" * 40) == ("unknown", None)
 
 
-def test_sha256_repository_finalizes_exact_blob_tree_root_and_cas(tmp_path, monkeypatch):
+def test_sha256_repository_is_rejected_by_format_zero_contract(tmp_path, monkeypatch):
     probe = subprocess.run(
         ["git", "init", "--object-format=sha256", str(tmp_path / "probe")],
         check=False, capture_output=True,
     )
     if probe.returncode:
         pytest.skip("installed Git lacks SHA-256 repository support")
-    workspace, clone, registry, manifest = fixture(tmp_path / "case", "sha256")
-    monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
-    states = iter((("absent", None), ("absent", None), ("equal", None)))
-    monkeypatch.setattr(bootstrap_finalizer, "_remote", lambda *_args: next(states))
-    monkeypatch.setattr(bootstrap_finalizer, "_push", lambda *_args: None)
-    monkeypatch.setenv("CLIENT_WIKI_GIT_AUTHOR_NAME", "Client Wiki Bot")
-    monkeypatch.setenv("CLIENT_WIKI_GIT_AUTHOR_EMAIL", "client-wiki@example.com")
-    result = bootstrap_finalizer.finalize_scaffold(registry, "client", manifest)
-    assert len(result["commit_oid"]) == len(result["tree_oid"]) == 64
-    assert git(clone, "rev-parse", "refs/heads/main") == result["commit_oid"]
-    assert git(clone, "write-tree") == result["tree_oid"]
-    assert git(clone, "hash-object", "README.md") in git(clone, "ls-tree", "-r", "HEAD")
-    assert git(clone, "rev-list", "--parents", "-1", "HEAD").split() == [result["commit_oid"]]
+    with pytest.raises(Exception, match="config|format|semantics"):
+        fixture(tmp_path / "case", "sha256")

@@ -78,6 +78,16 @@ if os.environ.get("SWAP_REGISTRY_SOURCE") and "validate-registry" in args:
     result = subprocess.run([sys.executable, *args[5:]])
     os.replace(os.environ["SWAP_REGISTRY_REPLACEMENT"], os.environ["SWAP_REGISTRY_SOURCE"])
     raise SystemExit(result.returncode)
+if "verify-private-repo" in args and os.environ.get("FAKE_GH_PAYLOAD"):
+    import json
+    with open(os.environ["FAKE_GH_LOG"], "ab") as stream:
+        stream.write(b"\\0".join(arg.encode() for arg in args) + b"\\0")
+    payload = json.load(open(os.environ["FAKE_GH_PAYLOAD"], encoding="utf-8"))
+    expected_repo = args[args.index("--repo") + 1]
+    valid = (payload.get("nameWithOwner") == expected_repo
+             and payload.get("visibility") == "PRIVATE"
+             and payload.get("isArchived") is False)
+    raise SystemExit(0 if valid and int(os.environ.get("FAKE_GH_RC", "0")) == 0 else 1)
 os.execv(sys.executable, [sys.executable, *args[5:]])
 """,
     )
@@ -286,23 +296,15 @@ def test_live_rows_use_exact_gh_contract(tmp_path, status, payload, gh_rc, expec
     )
 
     assert result.returncode == expected
-    assert _gh_args(log) == [
-        "repo",
-        "view",
-        f"github.com/{REPO_SLUG}",
-        "--hostname",
-        "github.com",
-        "--json",
-        "nameWithOwner,visibility,isArchived",
-    ]
+    assert _gh_args(log)[-3:] == ["verify-private-repo", "--repo", REPO_SLUG]
 
 
-def test_live_row_missing_gh_is_dependency_exit_two(tmp_path):
+def test_live_row_missing_gh_fails_closed(tmp_path):
     registry = _write_registry(tmp_path, entries=[_entry(status="live")])
 
     result = _run_checker(tmp_path, registry, gh_bin=tmp_path / "missing-gh")
 
-    assert result.returncode == 2
+    assert result.returncode == 1
 
 
 @pytest.mark.parametrize("archived", ["false", 0, None])

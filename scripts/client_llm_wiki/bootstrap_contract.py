@@ -14,7 +14,8 @@ from typing import Callable, Sequence
 from .bootstrap_attestation import BootstrapManifestError
 from .bootstrap_finalizer import finalize_scaffold as finalize_scaffold
 from .bootstrap_git import (
-    BootstrapGitError, accepted_origins, isolated_env, validate_clone_git,
+    BootstrapGitError, accepted_origins, isolated_env, trusted_executable,
+    validate_clone_git,
 )
 from .bootstrap_layout import BoundCloneLayout
 from .bootstrap_manifest import PersistedRenderManifest, persist_render_manifest
@@ -182,6 +183,38 @@ def verify_private_repo(
         raise BootstrapContractError(
             "repository identity must match and be PRIVATE/unarchived"
         )
+
+
+def _operational_run(tool: str, args: list[str], runner: CommandRunner) -> None:
+    try:
+        executable = trusted_executable(tool)
+        result = runner(
+            [executable, *args], check=False, capture_output=True, text=True,
+            env=isolated_env(),
+        )
+    except (OSError, BootstrapGitError) as exc:
+        raise BootstrapContractError("operational command unavailable") from exc
+    if result.returncode != 0:
+        raise BootstrapContractError("operational command rejected")
+
+
+def create_private_repo(repo_slug: str, *, runner: CommandRunner = subprocess.run) -> None:
+    """Create exactly one registered-shape private repository on github.com."""
+    accepted_origins(repo_slug)
+    _operational_run("gh", [
+        "repo", "create", repo_slug, "--hostname", "github.com", "--private",
+        "--description", "Private client knowledge wiki",
+    ], runner)
+
+
+def clone_private_repo(
+    repo_slug: str, target: Path, *, runner: CommandRunner = subprocess.run,
+) -> None:
+    """Clone the exact HTTPS origin into the authority-derived target."""
+    accepted_origins(repo_slug)
+    _operational_run(
+        "git", ["clone", f"https://github.com/{repo_slug}.git", str(target)], runner,
+    )
 
 
 def _run_bound_git(clone: BoundClone, *args: str) -> subprocess.CompletedProcess[str]:

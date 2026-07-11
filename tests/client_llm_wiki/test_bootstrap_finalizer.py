@@ -1,13 +1,10 @@
 """Descriptor-bound finalization and recovery for issue #3449."""
-
 from __future__ import annotations
-
 import inspect
 import hashlib
 import json
 from pathlib import Path
 import subprocess
-
 import pytest
 import yaml
 
@@ -269,9 +266,12 @@ def test_forbidden_git_authority_surface_is_rejected(tmp_path, surface):
 
 def _initial_unit(monkeypatch, failing: str | None = None):
     calls = []
-    commit, tree = "c" * 64, "t" * 64
+    monkeypatch.setenv("CLIENT_WIKI_GIT_AUTHOR_NAME", "Client Wiki Bot")
+    monkeypatch.setenv("CLIENT_WIKI_GIT_AUTHOR_EMAIL", "client-wiki@example.com")
+    tree = "a" * 40
+    commit = bootstrap_finalizer._expected_commit(tree)
     monkeypatch.setattr(bootstrap_finalizer, "_remote", lambda *_args: ("absent", None))
-    monkeypatch.setattr(bootstrap_finalizer, "_build_tree", lambda *_args: ("b" * 64, tree))
+    monkeypatch.setattr(bootstrap_finalizer, "_build_tree", lambda *_args: ("b" * 40, tree))
     monkeypatch.setattr(bootstrap_finalizer, "_independent_attestation", lambda *_args: calls.append("attest"))
 
     def git(_bound, *args, **_kwargs):
@@ -294,7 +294,7 @@ def test_cas_precedes_index_and_uses_object_width_zero(monkeypatch):
         context, entry, object(), (), tree,
     )
     update = next(call for call in calls if isinstance(call, tuple) and call[0] == "update-ref")
-    assert update == ("update-ref", "refs/heads/main", commit, "0" * 64)
+    assert update == ("update-ref", "refs/heads/main", commit, "0" * 40)
     assert calls.index(update) < calls.index(("read-tree", tree))
 
 
@@ -309,7 +309,7 @@ def test_object_and_index_failure_have_exact_bounded_residue(monkeypatch, failur
             context, entry, object(), (), tree,
         )
     assert caught.value.residue.kind == kind
-    assert caught.value.residue.object_oids == ("b" * 64, tree, "c" * 64)
+    assert caught.value.residue.object_oids == ("b" * 40, tree, _commit)
 
 
 def test_attestation_rechecks_forbidden_git_surfaces(monkeypatch):
@@ -327,7 +327,7 @@ def test_commit_tree_failure_preserves_constructed_objects(monkeypatch):
         bootstrap_finalizer._initial_commit(context, entry, object(), (), tree)
     assert caught.value.residue.kind == "git_objects_commit_tree_failed"
     assert caught.value.residue.tree_oid == tree
-    assert caught.value.residue.object_oids == ("b" * 64, tree)
+    assert caught.value.residue.object_oids == ("b" * 40, tree)
 
 
 def test_transport_pushes_retained_literal_oid_and_attests_boundaries(monkeypatch):

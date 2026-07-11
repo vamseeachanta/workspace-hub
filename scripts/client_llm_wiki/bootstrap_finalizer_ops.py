@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+import hashlib
 from typing import TypeVar
 import re
 
@@ -32,3 +33,26 @@ def zero_oid(oid: str) -> str:
     if _OID.fullmatch(oid) is None:
         raise ValueError("CAS object ID is malformed")
     return "0" * len(oid)
+
+
+def write_oid(context, expected: str, callback: Callable[[], bytes], attest: Callable,
+              created: list[str]) -> str:
+    """Capture an independently known OID before post-write attestation."""
+    attest(context)
+    raw = callback()
+    created.append(expected)
+    attest(context)
+    try:
+        observed = raw.strip().decode()
+    except (AttributeError, UnicodeError) as exc:
+        raise ValueError("Git returned malformed object OID") from exc
+    if observed != expected:
+        raise ValueError("Git returned unexpected object OID")
+    return expected
+
+
+def expected_commit_oid(tree: str, name: str, email: str, message: bytes) -> str:
+    person = f"{name} <{email}> 0 +0000"
+    data = f"tree {tree}\nauthor {person}\ncommitter {person}\n\n".encode() + message
+    framed = f"commit {len(data)}\0".encode() + data
+    return hashlib.sha1(framed).hexdigest()

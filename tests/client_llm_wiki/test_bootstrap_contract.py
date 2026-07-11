@@ -19,6 +19,23 @@ from client_llm_wiki.bootstrap_contract import (
 )
 
 
+def test_operational_children_use_fixed_host_and_isolated_environment(tmp_path, monkeypatch):
+    calls = []
+    def runner(args, **kwargs):
+        calls.append((args, kwargs))
+        return subprocess.CompletedProcess(args, 0, "", "")
+    bootstrap_contract.create_private_repo("org/llm-wiki-client", runner=runner)
+    bootstrap_contract.clone_private_repo(
+        "org/llm-wiki-client", tmp_path / "clone", runner=runner,
+    )
+    assert calls[0][0][1:] == ["repo", "create", "org/llm-wiki-client", "--hostname", "github.com", "--private", "--description", "Private client knowledge wiki"]
+    assert calls[1][0][1:] == ["clone", "https://github.com/org/llm-wiki-client.git", str(tmp_path / "clone")]
+    for _args, kwargs in calls:
+        assert kwargs["env"]["PATH"] == "/usr/local/bin:/usr/bin:/bin"
+        assert "LD_PRELOAD" not in kwargs["env"]
+        assert "GH_CONFIG_DIR" not in kwargs["env"]
+
+
 REPO_SLUG = "example-org/llm-wiki-example-co"
 
 

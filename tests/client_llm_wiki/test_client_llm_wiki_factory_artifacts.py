@@ -41,25 +41,25 @@ def record(stage):
 if name == "git":
     if args[:2] == ["rev-parse", "--show-toplevel"]:
         record("workspace"); print(os.environ["FAKE_WORKSPACE"])
-    elif args and args[0] == "clone":
-        record("clone"); target = pathlib.Path(args[2]); target.mkdir()
-        (target / ".gitignore").write_text("private-output/\n")
-        (target / ".claude").mkdir(); (target / ".claude/CLAUDE.md").write_text("safe\n")
     else: raise SystemExit(97)
-elif name == "gh": record("create")
 elif name == "yq":
     payload = json.load(sys.stdin); print(payload[args[1].removeprefix(".")])
 elif name == "uv":
-    command = next(item for item in ("validate-registry", "classify", "verify-private-repo",
-                                      "render", "finalize-scaffold") if item in args)
+    command = next(item for item in ("validate-registry", "classify", "create-private-repo", "clone-private-repo", "verify-private-repo", "render", "finalize-scaffold") if item in args)
     if command == "verify-private-repo":
         count = sum(json.loads(line)["stage"].startswith("attest") for line in log.read_text().splitlines()) if log.exists() else 0
         stage = "attest-first" if count == 0 else "attest-final"
+    elif command == "create-private-repo": stage = "create"
+    elif command == "clone-private-repo": stage = "clone"
     else: stage = command
     record(stage)
     if command == "classify":
         print(json.dumps({"repo": os.environ["EXPECTED_REPO"], "target": os.environ["EXPECTED_TARGET"],
                           "status": "wrong" if os.environ.get("FAIL_STAGE") == "status" else "planned"}))
+    elif command == "clone-private-repo":
+        target = pathlib.Path(os.environ["EXPECTED_TARGET"]); target.mkdir()
+        (target / ".gitignore").write_text("private-output/\n"); (target / ".claude").mkdir()
+        (target / ".claude/CLAUDE.md").write_text("safe\n")
     elif command == "render":
         destination = pathlib.Path(args[args.index("--manifest") + 1])
         if os.environ.get("FAIL_STAGE") == "manifest-persistence": raise SystemExit(24)
@@ -155,25 +155,16 @@ def _assert_propagation(calls, tmp_path: Path) -> None:
         "--short-name",
         SHORT,
     ]
-    assert calls[3]["argv"] == [
-        "repo",
-        "create",
-        REPO,
-        "--hostname",
-        "github.com",
-        "--private",
-        "--description",
-        "Private client knowledge wiki",
+    assert calls[3]["argv"][-5:] == [
+        "create-private-repo", "--registry", REGISTRY, "--short-name", SHORT,
     ]
     assert calls[4]["argv"][-3:] == ["verify-private-repo", "--repo", REPO]
     assert calls[9]["argv"][-3:] == ["verify-private-repo", "--repo", REPO]
     for call in (calls[7], calls[8]):
         assert call["argv"][call["argv"].index("--registry") + 1] == REGISTRY
         assert call["argv"][call["argv"].index("--short-name") + 1] == SHORT
-    assert calls[5]["argv"] == [
-        "clone",
-        f"https://github.com/{REPO}.git",
-        str(tmp_path / "llm-wiki-example"),
+    assert calls[5]["argv"][-5:] == [
+        "clone-private-repo", "--registry", REGISTRY, "--short-name", SHORT,
     ]
     assert calls[6]["registry_path"] == REGISTRY
 

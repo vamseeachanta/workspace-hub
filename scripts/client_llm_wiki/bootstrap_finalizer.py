@@ -1,7 +1,5 @@
 """Descriptor-bound, manifest-attested first-commit finalization."""
-
 from __future__ import annotations
-
 from dataclasses import asdict, dataclass
 import json
 import os
@@ -10,7 +8,6 @@ import re
 import stat
 import subprocess
 import unicodedata
-
 from .bootstrap_git import (
     BootstrapGitError, author_env, isolated_env, mutation_command, push_command,
     validate_clone_config,
@@ -20,8 +17,10 @@ from .bootstrap_bound_manifest import (
     BoundManifestError, BoundValidationContext, bind_validation_context,
     validate_bound_context,
 )
-from .bootstrap_objects import expected_tree
-from .bootstrap_finalizer_ops import ATTESTED_OPERATIONS, attested, zero_oid
+from .bootstrap_objects import expected_tree, object_oid
+from .bootstrap_finalizer_ops import (
+    ATTESTED_OPERATIONS, attested, expected_commit_oid, write_oid, zero_oid,
+)
 from .bootstrap_remote import remote_state as _remote
 from .bootstrap_renderer import RenderTokens, _render_member
 from .bootstrap_schema import get_entry, load_registry, validate_root_disjointness
@@ -161,18 +160,16 @@ def _build_tree(context: BoundValidationContext, members: tuple[TemplateMember, 
     for member in members:
         if member.data is None:
             continue
+        expected = object_oid("sha1", "blob", member.data)
         try:
-            oid = _with_attestation(context, "hash_object", lambda: _git(
+            oid = write_oid(context, expected, lambda: _git(
                 bound, "hash-object", "-w", "--stdin", input=member.data,
-            )).strip().decode()
+            ), _independent_attestation, created)
         except BaseException as exc:
             raise _object_error(
                 "git_objects_hash_object_failed", "blob creation failed", created,
             ) from exc
-        if _OID.fullmatch(oid) is None:
-            raise BootstrapFinalizerError("Git returned malformed blob OID")
         blobs[member.path] = (member.mode, oid)
-        created.append(oid)
     try:
         tree = _mktree(context, blobs, "", created)
     except BaseException as exc:
@@ -194,23 +191,36 @@ def _expected_tree(context: BoundValidationContext,
 def _mktree(context: BoundValidationContext, blobs: dict[str, tuple[int, str]], prefix: str,
             created: list[str]) -> str:
     bound = context.clone
-    files: list[bytes] = []
+    files: list[tuple[bytes, bytes, bytes]] = []
     directories = sorted({PurePosixPath(path[len(prefix):]).parts[0] for path in blobs
                           if path.startswith(prefix) and "/" in path[len(prefix):]})
     for name in directories:
         oid = _mktree(context, blobs, f"{prefix}{name}/", created)
-        files.append(f"040000 tree {oid}\t{name}\0".encode())
+        files.append((name.encode() + b"/", f"040000 tree {oid}\t{name}\0".encode(),
+                      b"40000 " + name.encode() + b"\0" + bytes.fromhex(oid)))
     for path, (mode, oid) in sorted(blobs.items()):
         suffix = path[len(prefix):] if path.startswith(prefix) else path
         if "/" not in suffix:
-            files.append(f"{mode:o} blob {oid}\t{suffix}\0".encode())
-    oid = _with_attestation(context, "mktree", lambda: _git(
-        bound, "mktree", "-z", input=b"".join(files),
-    )).strip().decode()
-    if _OID.fullmatch(oid) is None:
-        raise BootstrapFinalizerError("Git returned malformed tree OID")
-    created.append(oid)
-    return oid
+            name = suffix.encode()
+            files.append((name, f"{mode:o} blob {oid}\t{suffix}\0".encode(),
+                          f"{mode:o} ".encode() + name + b"\0" + bytes.fromhex(oid)))
+    ordered = sorted(files, key=lambda item: item[0])
+    expected = object_oid("sha1", "tree", b"".join(item[2] for item in ordered))
+    try:
+        return write_oid(context, expected, lambda: _git(
+            bound, "mktree", "-z", input=b"".join(item[1] for item in ordered),
+        ), _independent_attestation, created)
+    except BaseException as exc:
+        raise _object_error(
+            "git_objects_mktree_failed", "tree creation failed", created,
+        ) from exc
+
+
+def _expected_commit(tree: str) -> str:
+    env = author_env()
+    return expected_commit_oid(
+        tree, env["GIT_AUTHOR_NAME"], env["GIT_AUTHOR_EMAIL"], MESSAGE,
+    )
 def _head(context: BoundValidationContext) -> str | None:
     bound = context.clone
     try:
@@ -293,15 +303,16 @@ def _initial_commit(context: BoundValidationContext,
     objects = _build_tree(context, members)
     if objects[-1] != tree:
         raise BootstrapFinalizerError("constructed tree differs from independent tree")
+    mutable_objects = list(objects)
     try:
-        commit = _with_attestation(context, "commit_tree", lambda: _git(
+        commit = write_oid(context, _expected_commit(tree), lambda: _git(
             bound, "commit-tree", tree, input=MESSAGE, author=True,
-        )).strip().decode()
+        ), _independent_attestation, mutable_objects)
     except BaseException as exc:
         raise _object_error(
-            "git_objects_commit_tree_failed", "commit creation failed", objects, tree,
+            "git_objects_commit_tree_failed", "commit creation failed", mutable_objects, tree,
         ) from exc
-    objects = (*objects, commit)
+    objects = tuple(mutable_objects)
     try:
         _with_attestation(context, "cas", lambda: _git(
             bound, "update-ref", "refs/heads/main", commit, _zero_oid(commit),
@@ -315,8 +326,6 @@ def _initial_commit(context: BoundValidationContext,
         residue = FinalizeResidue("local_commit_index_incomplete", commit, tree, objects)
         raise BootstrapFinalizerError("index population failed", residue=residue) from exc
     return commit, objects
-
-
 def _recover_commit(context: BoundValidationContext, head: str, tree: str,
                     identity: tuple[str, str]) -> str:
     bound = context.clone
@@ -330,8 +339,6 @@ def _recover_commit(context: BoundValidationContext, head: str, tree: str,
     if not _index_exact(context, tree):
         _with_attestation(context, "read_tree", lambda: _git(bound, "read-tree", tree))
     return head
-
-
 def _transport(context: BoundValidationContext,
                entry, snapshot, commit: str, tree: str) -> None:
     _independent_attestation(context)
@@ -384,8 +391,6 @@ def finalize_scaffold(registry_path: Path, short_name: str,
             raise BootstrapFinalizerError("bound manifest validation failed") from exc
     return {"commit_oid": commit, "remote": "equal", "repo": entry.repo,
             "short_name": entry.short_name, "status": "finalized", "tree_oid": tree}
-
-
 def residue_json(error: BootstrapFinalizerError) -> str:
     payload = {"error": "finalize_failed"}
     if error.residue is not None:

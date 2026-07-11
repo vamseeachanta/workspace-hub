@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 
 import yaml
 
@@ -93,9 +94,9 @@ def test_factory_static_authorization_and_mutation_order():
     validate = text.index("validate-registry", start)
     classify = text.index(" classify ", validate)
     status = text.index('test "$STATUS" = "planned"', classify)
-    create = text.index("gh repo create", status)
+    create = text.index(" create-private-repo ", status)
     attest_first = text.index("verify-private-repo", create)
-    clone = text.index("git clone", attest_first)
+    clone = text.index(" clone-private-repo ", attest_first)
     checker = text.index("check-client-wiki-registry.sh", clone)
     render = text.index(" render ", checker)
     finalize = text.index("finalize-scaffold", render)
@@ -105,5 +106,12 @@ def test_factory_static_authorization_and_mutation_order():
     assert validate < classify < status < create < attest_first < clone < checker
     assert checker < render < finalize < attest_final < update
     assert "WIKI_SIBLING_REGISTRY_PATH" in text
-    assert "--private" in text
-    assert text.count("--hostname github.com") >= 2
+    assert "Create the remote as private" in text
+    assert "Both operational commands pin github.com" in text
+
+
+def test_factory_has_no_direct_operational_git_or_gh_children():
+    text = FACTORY.read_text(encoding="utf-8")
+    assert "env -u GH_HOST" not in text
+    assert "gh repo create" not in text
+    assert not re.search(r"(?m)^git clone ", text)

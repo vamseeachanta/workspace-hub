@@ -78,6 +78,30 @@ def _verify(args: argparse.Namespace) -> int:
     return 0
 
 
+def _planned(args: argparse.Namespace):
+    contract = _contract()
+    entry = contract.get_entry(contract.load_registry(args.registry), args.short_name)
+    if entry.status != "planned":
+        raise contract.BootstrapContractError("operation requires planned registry state")
+    layout = contract.derive_workspace_layout(contract._template_worktree(), entry.repo)
+    contract.validate_root_disjointness(
+        entry, [str(layout.template_worktree), str(layout.canonical_checkout), str(layout.target)],
+    )
+    return contract, entry, layout
+
+
+def _create(args: argparse.Namespace) -> int:
+    contract, entry, _layout = _planned(args)
+    contract.create_private_repo(entry.repo)
+    return 0
+
+
+def _clone(args: argparse.Namespace) -> int:
+    contract, entry, layout = _planned(args)
+    contract.clone_private_repo(entry.repo, layout.target)
+    return 0
+
+
 def _finalize(args: argparse.Namespace) -> int:
     result = _contract().finalize_scaffold(
         args.registry, args.short_name, args.manifest
@@ -98,6 +122,8 @@ def build_parser() -> argparse.ArgumentParser:
         ("classify", _classify),
         ("render", _render),
         ("finalize-scaffold", _finalize),
+        ("create-private-repo", _create),
+        ("clone-private-repo", _clone),
     )
     for name, handler in handlers:
         command = commands.add_parser(name)
