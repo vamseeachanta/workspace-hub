@@ -280,13 +280,41 @@ def load_registry(path: str | os.PathLike[str]) -> Registry:
         raise RegistryParseError(f"cannot read registry: {source}") from exc
     registry = parse_registry(text, source=str(source))
     if registry.kind is RegistryKind.CURRENT:
-        template = Path(__file__).absolute().parents[2]
+        template, canonical = _module_checkout_roots()
         for entry in registry.entries:
             validate_root_disjointness(
                 entry,
-                (str(template), str(template.parent / f"llm-wiki-{entry.short_name}")),
+                (
+                    str(template),
+                    str(canonical),
+                    str(canonical.parent / f"llm-wiki-{entry.short_name}"),
+                ),
             )
     return registry
+
+
+def _module_checkout_roots() -> tuple[Path, Path]:
+    """Return active and canonical checkouts from module-anchored Git metadata."""
+    active = Path(__file__).absolute().parents[2]
+    dot_git = active / ".git"
+    if dot_git.is_dir():
+        return active, active
+    try:
+        marker = dot_git.read_text(encoding="utf-8").splitlines()
+        if len(marker) != 1 or not marker[0].startswith("gitdir: "):
+            raise ValueError("invalid linked-worktree .git marker")
+        git_dir = Path(marker[0].removeprefix("gitdir: "))
+        if not git_dir.is_absolute():
+            git_dir = Path(os.path.abspath(active / git_dir))
+        common_text = (git_dir / "commondir").read_text(encoding="utf-8").strip()
+        common = Path(common_text)
+        if not common.is_absolute():
+            common = Path(os.path.abspath(git_dir / common))
+    except (OSError, UnicodeError, ValueError) as exc:
+        raise RegistryValidationError("module Git layout is invalid") from exc
+    if common.name != ".git":
+        raise RegistryValidationError("module Git common directory must be .git")
+    return active, common.parent
 
 
 def classify_entry(entry: WikiEntry) -> BootstrapMode:

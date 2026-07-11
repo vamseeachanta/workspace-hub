@@ -400,21 +400,27 @@ def test_lexical_prefix_neighbor_is_not_an_overlap():
     validate_root_disjointness(entry, ["/workspace/privately"])
 
 
-@pytest.mark.parametrize(
-    "protected",
-    [
-        "/module/workspace-hub",
-        "/module/llm-wiki-example-co",
-    ],
-)
-def test_validate_registry_rejects_each_module_anchored_protected_root(tmp_path, monkeypatch, protected):
-    module = tmp_path / "module" / "workspace-hub" / "scripts" / "client_llm_wiki"
+@pytest.mark.parametrize("protected_kind", ["active", "canonical", "target"])
+def test_validate_registry_rejects_each_linked_worktree_protected_root(
+    tmp_path, monkeypatch, protected_kind
+):
+    active = tmp_path / "worktrees" / "active"
+    canonical = tmp_path / "workspace" / "workspace-hub"
+    git_dir = canonical / ".git" / "worktrees" / "active"
+    module = active / "scripts" / "client_llm_wiki"
     module.mkdir(parents=True)
+    git_dir.mkdir(parents=True)
+    (active / ".git").write_text(f"gitdir: {git_dir}\n", encoding="utf-8")
+    (git_dir / "commondir").write_text("../..\n", encoding="utf-8")
     monkeypatch.setattr(bootstrap_schema, "__file__", str(module / "bootstrap_schema.py"))
     registry = tmp_path / "registry.yml"
-    root = protected.replace("/module", str(tmp_path / "module"), 1)
+    root = {
+        "active": active,
+        "canonical": canonical,
+        "target": canonical.parent / "llm-wiki-example-co",
+    }[protected_kind]
     registry.write_text(
-        _registry([_entry(raw_roots=[root], raw_source_status="mounted")]),
+        _registry([_entry(raw_roots=[str(root)], raw_source_status="mounted")]),
         encoding="utf-8",
     )
 

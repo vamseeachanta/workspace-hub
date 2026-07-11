@@ -406,8 +406,17 @@ def test_clone_under_absent_parent_warns_and_skips(tmp_path):
     assert "WARN" in result.stderr
 
 
-def test_protected_overlap_fails_before_raw_root_availability_skip(tmp_path):
-    root = REPO_ROOT / "absent-protected-parent" / "raw"
+@pytest.mark.parametrize("protected_kind", ["canonical", "target"])
+def test_protected_overlap_fails_before_raw_root_availability_skip(tmp_path, protected_kind):
+    common = subprocess.run(
+        ["git", "-C", str(REPO_ROOT), "rev-parse", "--path-format=absolute", "--git-common-dir"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    canonical = Path(common.stdout.strip()).parent
+    protected = canonical if protected_kind == "canonical" else canonical.parent / "llm-wiki-example-client"
+    root = protected / "absent" / "raw"
     registry = _write_registry(
         tmp_path,
         entries=[_entry(raw_roots=[str(root)], raw_source_status="mounted")],
