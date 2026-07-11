@@ -154,14 +154,47 @@ def _wait_for_group(pgid: int, timeout: float = 30.0) -> None:
         time.sleep(0.05)
 
 
-def run_task(
-    *,
-    task_id: str,
-    argv: list[str],
-    workspace: Path,
-    log_path: Path,
-    state_dir: Path,
-) -> int:
+def _execute_child(task_id: str, argv: list[str], workspace: Path, log_path: Path, state_dir: Path) -> int:
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with log_path.open("a", encoding="utf-8") as log_handle:
+        child = subprocess.Popen(argv, cwd=workspace, stdout=log_handle, stderr=subprocess.STDOUT, start_new_session=True)
+        identity = _process_identity(child.pid)
+        if identity is None:
+            child.terminate()
+            child.wait()
+            raise RuntimeError("child identity unavailable")
+        active = {
+            "task_id": task_id,
+            "supervisor_pid": os.getpid(),
+            "child_pid": child.pid,
+            "child_pgid": os.getpgid(child.pid),
+            "child_start_token": identity["start_token"],
+            "started_at": time.time(),
+        }
+        _atomic_json(state_dir / "active.json", active)
+        received: list[int] = []
+
+        def forward(signum: int, _frame: object) -> None:
+            received.append(signum)
+            try:
+                os.killpg(active["child_pgid"], signum)
+            except ProcessLookupError:
+                pass
+
+        previous = {sig: signal.signal(sig, forward) for sig in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP)}
+        try:
+            child_code = child.wait()
+            _wait_for_group(active["child_pgid"])
+        finally:
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
+        exit_code = 128 + received[-1] if received else child_code
+    _atomic_json(state_dir / "last-result.json", {"task_id": task_id, "finished_at": time.time(), "exit_code": exit_code})
+    (state_dir / "active.json").unlink(missing_ok=True)
+    return exit_code
+
+
+def run_task(*, task_id: str, argv: list[str], workspace: Path, log_path: Path, state_dir: Path) -> int:
     """Run argv under a task singleton and publish atomic lifecycle evidence."""
     state_dir.mkdir(parents=True, exist_ok=True)
     lock_fd = _open_lock(state_dir / "runtime.lock")
@@ -171,46 +204,7 @@ def run_task(
         except BlockingIOError:
             _atomic_json(state_dir / "contention.json", {"task_id": task_id, "observed_at": time.time()})
             return CONTENTION_EXIT
-        log_path.parent.mkdir(parents=True, exist_ok=True)
-        with log_path.open("a", encoding="utf-8") as log_handle:
-            child = subprocess.Popen(argv, cwd=workspace, stdout=log_handle, stderr=subprocess.STDOUT, start_new_session=True)
-            identity = _process_identity(child.pid)
-            if identity is None:
-                child.terminate()
-                child.wait()
-                raise RuntimeError("child identity unavailable")
-            active = {
-                "task_id": task_id,
-                "supervisor_pid": os.getpid(),
-                "child_pid": child.pid,
-                "child_pgid": os.getpgid(child.pid),
-                "child_start_token": identity["start_token"],
-                "started_at": time.time(),
-            }
-            _atomic_json(state_dir / "active.json", active)
-            received: list[int] = []
-
-            def forward(signum: int, _frame: object) -> None:
-                received.append(signum)
-                try:
-                    os.killpg(active["child_pgid"], signum)
-                except ProcessLookupError:
-                    pass
-
-            previous = {sig: signal.signal(sig, forward) for sig in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP)}
-            try:
-                child_code = child.wait()
-                _wait_for_group(active["child_pgid"])
-            finally:
-                for sig, handler in previous.items():
-                    signal.signal(sig, handler)
-            exit_code = 128 + received[-1] if received else child_code
-            _atomic_json(
-                state_dir / "last-result.json",
-                {"task_id": task_id, "finished_at": time.time(), "exit_code": exit_code},
-            )
-            (state_dir / "active.json").unlink(missing_ok=True)
-            return exit_code
+        return _execute_child(task_id, argv, workspace, log_path, state_dir)
     finally:
         os.close(lock_fd)
 
@@ -225,6 +219,19 @@ def _run_command(args: argparse.Namespace) -> int:
     return run_task(task_id=args.task_id, argv=args.argv, workspace=workspace, log_path=log_path, state_dir=state_dir)
 
 
+def _inspect_command(args: argparse.Namespace) -> int:
+    workspace = args.workspace.resolve()
+    contract = _load_contract(args.schedule_file, args.task_id)
+    state_dir = resolve_controlled_path(workspace, contract["state_dir"])
+    result = inspect_runtime(
+        state_dir,
+        contract["max_seconds"],
+        contract.get("filesystem_wait_wchans", []),
+    )
+    print(json.dumps(result, sort_keys=True, separators=(",", ":")))
+    return 0
+
+
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -234,15 +241,19 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("--task-id", required=True)
     run.add_argument("--log", required=True)
     run.add_argument("argv", nargs=argparse.REMAINDER)
+    inspect = subparsers.add_parser("inspect")
+    inspect.add_argument("--schedule-file", type=Path, required=True)
+    inspect.add_argument("--workspace", type=Path, required=True)
+    inspect.add_argument("--task-id", required=True)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
-    if args.argv and args.argv[0] == "--":
+    if getattr(args, "argv", None) and args.argv[0] == "--":
         args.argv = args.argv[1:]
     try:
-        return _run_command(args)
+        return _run_command(args) if args.command == "run" else _inspect_command(args)
     except (OSError, ValueError, RuntimeError, yaml.YAMLError) as exc:
         print(f"cron-runtime: {exc}", file=sys.stderr)
         return 2

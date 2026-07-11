@@ -51,6 +51,7 @@ fi
 # ── Parse schedule YAML ──────────────────────────────────────────────────────
 # Use Python to parse YAML and emit task records as tab-separated lines
 TASK_RECORDS=$(uv run --no-project python - "$SCHEDULE_FILE" <<'PY'
+import json
 import sys
 from pathlib import Path
 
@@ -72,7 +73,9 @@ for task in data.get('tasks', []):
     stale_after_hours = task.get('stale_after_hours', '')
     log_str = str(log_pattern) if log_pattern is not None else 'null'
     machines_str = ','.join(machines)
-    print(f'{tid}\t{label}\t{schedule}\t{machines_str}\t{log_str}\t{scheduler}\t{is_claude}\t{stale_after_hours}\t{description}')
+    stale_str = str(stale_after_hours) if stale_after_hours != '' else '-'
+    runtime_str = json.dumps(task.get('runtime'), separators=(',', ':'))
+    print(f'{tid}\t{label}\t{schedule}\t{machines_str}\t{log_str}\t{scheduler}\t{is_claude}\t{stale_str}\t{runtime_str}\t{description}')
 PY
 )
 if [[ -z "$TASK_RECORDS" ]]; then
@@ -135,7 +138,9 @@ HAS_FAILURES=false
 JSON_TASKS="["
 FIRST_TASK=true
 
-while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is_claude stale_after_hours description; do
+RUNTIME_SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../cron" && pwd)/cron_runtime.py"
+
+while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is_claude stale_after_hours runtime_contract description; do
     # Skip Windows-scheduler tasks on Linux
     if [[ "$scheduler" == "windows-task-scheduler" ]]; then
         continue
@@ -312,13 +317,50 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
             fi
         fi
 
-        if [[ "$STATUS" == "OK" ]]; then
-            HEALTHY_TASKS=$((HEALTHY_TASKS + 1))
-            DETAILS="last-run: ${LAST_RUN_AGO}, errors: 0"
-        elif [[ "$STATUS" == "WARN" ]]; then
-            HEALTHY_TASKS=$((HEALTHY_TASKS + 1))
-            DETAILS="${DETAILS}; last-run: ${LAST_RUN_AGO}, errors: 0"
+    fi
+
+    # ── Runtime status is independent from log status ───────────────────────
+    LOG_STATUS="$STATUS"
+    RUNTIME_JSON='{"status":"not_configured"}'
+    RUNTIME_STATUS="not_configured"
+    if [[ "$LOG_STATUS" == "OK" ]]; then
+        DETAILS="last-run: ${LAST_RUN_AGO}, errors: 0"
+    elif [[ "$LOG_STATUS" == "WARN" ]]; then
+        DETAILS="${DETAILS}; last-run: ${LAST_RUN_AGO}, errors: 0"
+    fi
+    if [[ "$runtime_contract" != "null" && -n "$runtime_contract" ]]; then
+        if ! RUNTIME_JSON=$(uv run --script "$RUNTIME_SCRIPT" inspect \
+            --schedule-file "$SCHEDULE_FILE" --workspace "$WS_HUB" --task-id "$tid" 2>/dev/null); then
+            RUNTIME_JSON='{"status":"unknown"}'
         fi
+        RUNTIME_STATUS=$(printf '%s' "$RUNTIME_JSON" | uv run --no-project python -c \
+            'import json,sys; print(json.load(sys.stdin).get("status", "unknown"))' 2>/dev/null || echo unknown)
+        DETAILS="${DETAILS:+${DETAILS}; }runtime: ${RUNTIME_STATUS}"
+        case "$RUNTIME_STATUS" in
+            completed_failure|invalid_state|stale_or_reused_pid|orphan_contention|unknown|never_started)
+                [[ "$LOG_STATUS" == "OK" || "$LOG_STATUS" == "WARN" ]] && PROBLEM_TASKS=$((PROBLEM_TASKS + 1))
+                STATUS="RUNTIME_ERROR"
+                HAS_FAILURES=true
+                ;;
+            overlap)
+                [[ "$LOG_STATUS" == "OK" || "$LOG_STATUS" == "WARN" ]] && PROBLEM_TASKS=$((PROBLEM_TASKS + 1))
+                STATUS="OVERLAP"
+                HAS_FAILURES=true
+                ;;
+            excessive_runtime)
+                [[ "$LOG_STATUS" == "OK" || "$LOG_STATUS" == "WARN" ]] && PROBLEM_TASKS=$((PROBLEM_TASKS + 1))
+                STATUS="LONGRUN"
+                HAS_FAILURES=true
+                ;;
+            filesystem_wait)
+                [[ "$LOG_STATUS" == "OK" || "$LOG_STATUS" == "WARN" ]] && PROBLEM_TASKS=$((PROBLEM_TASKS + 1))
+                STATUS="FSWAIT"
+                HAS_FAILURES=true
+                ;;
+        esac
+    fi
+    if [[ "$STATUS" == "OK" || "$STATUS" == "WARN" ]]; then
+        HEALTHY_TASKS=$((HEALTHY_TASKS + 1))
     fi
 
     # ── Print status line ───────────────────────────────────────────────────
@@ -342,6 +384,9 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
     "id": "${tid}",
     "label": "${label}",
     "status": "${STATUS}",
+    "log_status": "${LOG_STATUS}",
+    "runtime_status": "${RUNTIME_STATUS}",
+    "runtime": ${RUNTIME_JSON},
     "details": "${details_escaped}",
     "errors_found": ${ERRORS_FOUND},
     "last_log": "${log_escaped}",

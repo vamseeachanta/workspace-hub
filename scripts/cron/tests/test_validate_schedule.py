@@ -318,7 +318,8 @@ def test_setup_cron_dry_run_expands_workspace_hub_and_log(tmp_path):
     assert "$WORKSPACE_HUB" not in result.stdout
     assert "$LOG" not in result.stdout
     assert str(REPO_ROOT) in result.stdout
-    assert "/tmp/workspace-hub-cron.log" in result.stdout
+    assert "scripts/cron-repository-sync.sh" in result.stdout
+    assert "/tmp/workspace-hub-cron.log" not in result.stdout
 
 
 def test_setup_cron_renderer_failure_aborts_before_crontab_write(tmp_path):

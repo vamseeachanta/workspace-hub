@@ -850,13 +850,12 @@ tasks:
       state_dir: .claude/state/cron-runtime/repository-sync
       filesystem_wait_wchans: [request_wait_answer]
     command: >-
+      PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
       bash scripts/cron-repository-sync.sh
-      >> $LOG 2>&1
     log: logs/repository-sync-*.log
     is_claude_task: false
     description: Pull from remotes, push derived state; every 4 hours.
-    # NOTE: $LOG is set by setup-cron.sh per machine variant
 
   # ── Windows: contribute-minimal ──────────────────────────────────────────
 
