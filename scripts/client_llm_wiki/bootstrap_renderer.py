@@ -264,9 +264,10 @@ def render_committed_template(
     try:
         failpoint("clone_bound", None, clone.root_fd)
         snapshot = load_committed_snapshot(Path(template_worktree))
-        paths = {member.path for member in snapshot.members}
-        if not {".gitignore", ".claude/CLAUDE.md"} <= paths:
-            raise BootstrapRenderError("committed template is missing the privacy firewall")
+        members = {member.path: member for member in snapshot.members}
+        firewall = (members.get(".gitignore"), members.get(".claude/CLAUDE.md"))
+        if any(member is None or member.data is None or member.mode != 0o644 for member in firewall):
+            raise BootstrapRenderError("committed template has an invalid privacy firewall")
         rendered = tuple(_render_member(member, tokens) for member in snapshot.members)
         with _bound_stage(clone, failpoint) as stage_fd:
             stage_ledger, stage_fds = _materialize(stage_fd, rendered, "stage_member_bound", failpoint)

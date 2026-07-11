@@ -191,6 +191,29 @@ def test_missing_privacy_firewall_is_rejected_before_clone_writes(tmp_path):
     assert sorted(path.name for path in clone.iterdir()) == [".git"]
 
 
+@pytest.mark.parametrize(
+    ("required_path", "replacement"),
+    [(path, kind) for path in (".gitignore", ".claude/CLAUDE.md") for kind in ("directory", "executable")],
+)
+def test_privacy_firewall_requires_regular_non_executable_blobs(tmp_path, required_path, replacement):
+    repo = _template_repo(tmp_path)
+    firewall = repo / "templates/client-llm-wiki" / required_path
+    if replacement == "directory":
+        firewall.unlink()
+        firewall.mkdir()
+        (firewall / "child").write_text("not a firewall\n", encoding="utf-8")
+    else:
+        firewall.chmod(0o755)
+    _git(repo, "add", "-A", "templates/client-llm-wiki")
+    _git(repo, "commit", "-m", f"test: invalid {required_path}")
+    clone = _empty_clone(tmp_path)
+
+    with pytest.raises(BootstrapRenderError, match="privacy firewall"):
+        _render(repo, clone)
+
+    assert sorted(path.name for path in clone.iterdir()) == [".git"]
+
+
 def test_post_bind_clone_replacement_cannot_redirect_writes(tmp_path):
     repo = _template_repo(tmp_path)
     clone = _empty_clone(tmp_path)
