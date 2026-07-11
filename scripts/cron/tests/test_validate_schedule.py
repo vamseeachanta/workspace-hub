@@ -227,6 +227,13 @@ def test_runtime_state_dir_rejects_absolute_and_traversal(state_dir):
     assert any("state_dir" in error for error in errors)
 
 
+@pytest.mark.parametrize("log_path", ["logs/bad path.log", "../logs/x.log", "/tmp/x.log", "logs/{a,b}.log"])
+def test_log_path_rejects_shell_splitting_and_unsafe_globs(log_path):
+    validator = _load_module("validate_schedule_log_path", VALIDATOR)
+
+    assert validator.validate_log_path("task-a", log_path)
+
+
 def test_repo_ecosystem_hygiene_task_contract(tasks):
     task = next((t for t in tasks if t["id"] == "repo-ecosystem-hygiene"), None)
     assert task is not None, "repo-ecosystem-hygiene task not found"

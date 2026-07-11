@@ -76,6 +76,19 @@ def _load_valid_roles() -> set[str]:
 VALID_ROLES = _load_valid_roles()
 
 
+def validate_log_path(tid: str, value: object) -> list[str]:
+    """Require a repo-relative glob that shell iteration cannot split."""
+    if value is None:
+        return []
+    if not isinstance(value, str):
+        return [f"{tid}: log must be a string or null"]
+    path = Path(value)
+    unsafe = any(char.isspace() or char in "{}[]" for char in value)
+    if not value or path.is_absolute() or ".." in path.parts or unsafe:
+        return [f"{tid}: log must be a controlled repo-relative glob without whitespace or brace/class expansion"]
+    return []
+
+
 def validate_runtime_contract(tid: str, runtime: object, state_dirs: set[str]) -> list[str]:
     """Validate the optional bounded runtime-health contract."""
     if runtime is None:
@@ -195,6 +208,7 @@ def main() -> int:
         if scheduler != "cron" and task.get("runtime") is not None:
             errors.append(f"{tid}: runtime metadata is supported only for cron tasks")
         errors.extend(validate_runtime_contract(tid, task.get("runtime"), state_dirs))
+        errors.extend(validate_log_path(tid, task.get("log")))
 
         # Check if command invokes claude CLI (not just .claude/ paths)
         import re

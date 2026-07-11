@@ -62,7 +62,13 @@ def test_runtime_rejects_reused_child_pid(tmp_path):
     proc_root = tmp_path / "proc"
     _write_json(
         state_dir / "active.json",
-        {"started_at": 10, "child_pid": 321, "child_pgid": 321, "child_start_token": 111},
+        {
+            "started_at": 10,
+            "supervisor_pid": 100,
+            "child_pid": 321,
+            "child_pgid": 321,
+            "child_start_token": 111,
+        },
     )
     _write_proc(proc_root, 321, start_token=222, state="S", wchan="do_wait")
 
@@ -70,6 +76,48 @@ def test_runtime_rejects_reused_child_pid(tmp_path):
 
     assert result["status"] == "stale_or_reused_pid"
     assert result["child_pid"] == 321
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"started_at": "bad", "child_pid": 1, "child_pgid": 1, "child_start_token": 1},
+        {"started_at": 1, "child_pid": "bad", "child_pgid": 1, "child_start_token": 1},
+        {"started_at": 1, "child_pid": 1, "child_pgid": 1},
+    ],
+)
+def test_runtime_rejects_malformed_active_field_types(tmp_path, payload):
+    runtime = _load_runtime()
+    state_dir = tmp_path / "state"
+    _write_json(state_dir / "active.json", payload)
+
+    result = runtime.inspect_runtime(state_dir, 60, [], proc_root=tmp_path / "proc", now=20)
+
+    assert result["status"] == "invalid_state"
+
+
+def test_runtime_classifies_draining_group_from_live_supervisor(tmp_path):
+    runtime = _load_runtime()
+    state_dir = tmp_path / "state"
+    proc_root = tmp_path / "proc"
+    _write_json(
+        state_dir / "active.json",
+        {
+            "started_at": 10,
+            "supervisor_pid": 100,
+            "supervisor_start_token": 444,
+            "child_pid": 654,
+            "child_pgid": 654,
+            "child_start_token": 333,
+            "phase": "group_draining",
+        },
+    )
+    _write_proc(proc_root, 100, start_token=444, state="S", wchan="do_wait")
+
+    result = runtime.inspect_runtime(state_dir, 60, [], proc_root=proc_root, now=20)
+
+    assert result["status"] == "active_within_budget"
+    assert result["process_state"] == "S"
 
 
 def test_runtime_classifies_configured_filesystem_wait_from_child(tmp_path):
