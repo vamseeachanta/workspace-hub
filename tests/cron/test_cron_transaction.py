@@ -142,11 +142,10 @@ def test_match_fingerprint_partial_mismatch_is_false():
     )
 
 
-def test_match_fingerprint_owner_repo_like_command_contains():
+def test_match_fingerprint_rejects_descriptive_owner_repo_field():
     line = "0 1 * * * cd /mnt/local-analysis/deckhand && run"
-    assert ct.match_fingerprint(line, {"owner_repo": "deckhand"})
-    assert ct.match_fingerprint(line, {"owner_repo": ["deckhand", "run"]})
-    assert not ct.match_fingerprint(line, {"owner_repo": ["deckhand", "absent"]})
+
+    assert not ct.match_fingerprint(line, {"owner_repo": "deckhand"})
 
 
 # --- classify_line ---------------------------------------------------------

@@ -85,7 +85,7 @@ def validate_installed_fingerprint(tid: str, value: object) -> list[str]:
         return [f"{tid}: installed_fingerprint must be a non-empty mapping"]
     allowed = {
         "command_contains", "command_tokens", "cwd_contains", "cwd_basename",
-        "script_basename", "owner_repo",
+        "script_basename",
     }
     errors: list[str] = []
     unknown = set(value) - allowed

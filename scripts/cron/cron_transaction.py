@@ -43,7 +43,6 @@ _FINGERPRINT_KEYS = {
     "cwd_contains",
     "cwd_basename",
     "script_basename",
-    "owner_repo",
 }
 
 
@@ -145,7 +144,6 @@ def match_fingerprint(line: str, fp: dict) -> bool:
       command_contains: str | list[str]  every item must be a substring of line
       cwd_contains: str                   substring of line
       script_basename: str                substring of line
-      owner_repo: str | list[str]         treated like command_contains
     An empty fingerprint never matches (returns False).
     """
     if not fp:
@@ -170,10 +168,6 @@ def match_fingerprint(line: str, fp: dict) -> bool:
             return False
         width = len(wanted)
         if width == 0 or not any(tokens[i : i + width] == wanted for i in range(len(tokens) - width + 1)):
-            return False
-    if "owner_repo" in fp:
-        checked_any = True
-        if not _all_substrings(fp["owner_repo"]):
             return False
     if "cwd_contains" in fp:
         checked_any = True

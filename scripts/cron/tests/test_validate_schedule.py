@@ -339,7 +339,7 @@ def _install_empty_crontab_shim(tmp_path: Path) -> None:
 def test_setup_cron_and_cron_apply_use_shared_renderer_for_same_task(tmp_path):
     _install_empty_crontab_shim(tmp_path)
     hostname_shim = tmp_path / "hostname"
-    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-2\\n'\n")
+    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-1\\n'\n")
     hostname_shim.chmod(0o755)
     env = os.environ.copy()
     env["PATH"] = f"{tmp_path}:{env['PATH']}"
@@ -360,9 +360,9 @@ def test_setup_cron_and_cron_apply_use_shared_renderer_for_same_task(tmp_path):
     catalog = yaml.safe_load(SCHEDULE_FILE.read_text(encoding="utf-8"))
     registry = yaml.safe_load(REGISTRY_FILE.read_text(encoding="utf-8"))
     repo_sync = next(task for task in catalog["tasks"] if task["id"] == "repository-sync")
-    context = render.build_context("ace-linux-2", registry=registry, workspace_hub=REPO_ROOT)
+    context = render.build_context("ace-linux-1", registry=registry, workspace_hub=REPO_ROOT)
     expected_line = render.render_task(repo_sync, context)["line"]
-    apply_plan = cron_apply.run_cutover("ace-linux-2", apply=False, ts="t", _read=lambda: "")
+    apply_plan = cron_apply.run_cutover("ace-linux-1", apply=False, ts="t", _read=lambda: "")
 
     assert expected_line in result.stdout
     assert expected_line in apply_plan["new_text"]
@@ -378,7 +378,7 @@ def test_setup_cron_delegates_placeholder_rendering_to_shared_renderer():
 def test_setup_cron_dry_run_expands_workspace_hub_and_log(tmp_path):
     _install_empty_crontab_shim(tmp_path)
     hostname_shim = tmp_path / "hostname"
-    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-2\\n'\n")
+    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-1\\n'\n")
     hostname_shim.chmod(0o755)
     env = os.environ.copy()
     env["PATH"] = f"{tmp_path}:{env['PATH']}"

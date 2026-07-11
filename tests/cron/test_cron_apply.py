@@ -21,6 +21,18 @@ DECKHAND = ("30 7 * * * cd /mnt/local-analysis/deckhand && uv run --with teletho
             "scripts/deckhand/member-audit-cron.py >> $HOME/.hermes/logs/member-audit.log 2>&1")
 
 
+def test_cli_rejects_remote_machine_before_cutover(monkeypatch, capsys):
+    called = []
+    monkeypatch.setattr(ca.socket, "gethostname", lambda: "ace-linux-1")
+    monkeypatch.setattr(ca, "run_cutover", lambda *_a, **_k: called.append(True))
+
+    rc = ca.main(["--machine", "ace-linux-2", "--apply", "--json"])
+
+    assert rc == 2
+    assert called == []
+    assert "refusing local crontab" in capsys.readouterr().out
+
+
 # ── code-review MAJOR fixes (#2969 round 2) ──────────────────────────────────
 def test_read_crontab_fails_closed_on_error(monkeypatch):
     # a REAL crontab -l error (not "no crontab") must raise, never return "" (#2 fix)

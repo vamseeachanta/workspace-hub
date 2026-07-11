@@ -307,6 +307,16 @@ def main(argv=None) -> int:
     host = args.machine or socket.gethostname().split(".")[0]
     registry = _load(REGISTRY)
     mid = cr.build_context(host, registry=registry)["machine_id"]
+    physical_host = socket.gethostname().split(".")[0]
+    physical_mid = cr.build_context(physical_host, registry=registry)["machine_id"]
+    if mid != physical_mid:
+        res = {
+            "status": "abort",
+            "reason": f"refusing local crontab reconciliation for remote machine {mid}",
+            "machine": mid,
+        }
+        print(json.dumps(res, indent=2) if args.json else f"cron-apply {mid}: abort — {res['reason']}")
+        return 2
     res = run_cutover(mid, args.apply, args.ts, allow_live_reload=args.allow_live_reload)
     if args.json:
         print(json.dumps(res, indent=2))
