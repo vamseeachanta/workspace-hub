@@ -8,6 +8,7 @@ import os
 from pathlib import Path, PurePosixPath
 import posixpath
 import re
+import stat
 from typing import Any, Mapping
 
 from ruamel.yaml import YAML
@@ -297,24 +298,44 @@ def _module_checkout_roots() -> tuple[Path, Path]:
     """Return active and canonical checkouts from module-anchored Git metadata."""
     active = Path(__file__).absolute().parents[2]
     dot_git = active / ".git"
-    if dot_git.is_dir():
+    if _is_real_kind(dot_git, directory=True):
         return active, active
     try:
-        marker = dot_git.read_text(encoding="utf-8").splitlines()
-        if len(marker) != 1 or not marker[0].startswith("gitdir: "):
+        marker = _metadata_line(dot_git)
+        if not marker.startswith("gitdir: "):
             raise ValueError("invalid linked-worktree .git marker")
-        git_dir = Path(marker[0].removeprefix("gitdir: "))
+        git_dir = Path(marker.removeprefix("gitdir: "))
         if not git_dir.is_absolute():
             git_dir = Path(os.path.abspath(active / git_dir))
-        common_text = (git_dir / "commondir").read_text(encoding="utf-8").strip()
+        if not _is_real_kind(git_dir, directory=True):
+            raise ValueError("Git directory is not a real directory")
+        common_text = _metadata_line(git_dir / "commondir")
         common = Path(common_text)
         if not common.is_absolute():
             common = Path(os.path.abspath(git_dir / common))
     except (OSError, UnicodeError, ValueError) as exc:
         raise RegistryValidationError("module Git layout is invalid") from exc
-    if common.name != ".git":
+    if common.name != ".git" or not _is_real_kind(common, directory=True):
         raise RegistryValidationError("module Git common directory must be .git")
     return active, common.parent
+
+
+def _is_real_kind(path: Path, *, directory: bool) -> bool:
+    try:
+        info = path.lstat()
+    except OSError:
+        return False
+    expected = stat.S_ISDIR if directory else stat.S_ISREG
+    return expected(info.st_mode) and not stat.S_ISLNK(info.st_mode)
+
+
+def _metadata_line(path: Path) -> str:
+    if not _is_real_kind(path, directory=False):
+        raise ValueError("Git metadata is not a real regular file")
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if len(lines) != 1 or not lines[0] or any(ord(char) < 32 or ord(char) == 127 for char in lines[0]):
+        raise ValueError("Git metadata must contain one safe line")
+    return lines[0]
 
 
 def classify_entry(entry: WikiEntry) -> BootstrapMode:
