@@ -1,12 +1,12 @@
 # Plan for #3347: Converge setup-cron on the transactional installer
 
-> **Status:** draft
+> **Status:** adversarial-reviewed
 > **Complexity:** T2
 > **Date:** 2026-07-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3347
 > **Client:** N/A
 > **Lane:** lane:codex
-> **Review artifacts:** `scripts/review/results/2026-07-11-plan-3347-claude.md` | `scripts/review/results/2026-07-11-plan-3347-codex.md` | `scripts/review/results/2026-07-11-plan-3347-gemini.md`
+> **Review artifacts:** `scripts/review/results/2026-07-11-plan-3347-claude.md` | `scripts/review/results/2026-07-11-plan-3347-codex.md` | `scripts/review/results/2026-07-11-plan-3347-codex-r2.md` | `scripts/review/results/2026-07-11-plan-3347-gemini.md`
 
 ---
 
@@ -201,7 +201,7 @@ unique_backup_tag():
 - [ ] Repeated default applies will create distinct, non-overwritten backup artifacts or fail explicitly on a forced collision.
 - [ ] `uv run pytest tests/cron/test_setup_cron.py tests/cron/test_cron_apply.py tests/cron/test_cron_transaction.py tests/cron/test_a1_preserved.py scripts/cron/tests/test_validate_schedule.py -q` will pass.
 - [ ] The broader issue-scoped cron suite `uv run pytest tests/cron scripts/cron/tests -q` will pass without excluding the real-catalog test.
-- [ ] `bash -n scripts/cron/setup-cron.sh`, `shellcheck scripts/cron/setup-cron.sh`, schedule validation, `git diff --check`, and `scripts/legal/legal-sanity-scan.sh --diff-only` will pass.
+- [ ] `bash -n scripts/cron/setup-cron.sh`, `shellcheck scripts/cron/setup-cron.sh`, `uv run --no-project python scripts/cron/validate-schedule.py`, `git diff --check`, and `scripts/legal/legal-sanity-scan.sh --diff-only` will pass.
 - [ ] Code/artifact adversarial review will complete with no unresolved MAJOR findings.
 - [ ] Implementation evidence will be posted to #3347 before closure.
 - [ ] Live crontab mutation will remain a separate operator-approved step after a fresh bounded preview; this implementation issue will not silently apply the cutover.
@@ -212,11 +212,11 @@ unique_backup_tag():
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | — |
-| Codex | MAJOR (r1) | Required enforceable token matching, unique backups, twice-invoked wrapper integration, pre-branch machine routing, fail-closed schema validation, and inclusion of the failing real-catalog test. |
+| Claude | UNAVAILABLE (r1) | Isolated checkout was not trusted by Claude CLI; no user-level trust settings were changed. |
+| Codex | MAJOR (r1) → MINOR (r2) | r1 required enforceable token matching, unique backups, twice-invoked wrapper integration, pre-branch machine routing, fail-closed schema validation, and the real-catalog test. r2 verified those fixes and requested only exact schedule-validator syntax plus review-state reconciliation. |
 | Gemini | UNAVAILABLE (r1) | No configured non-interactive authentication. |
 
-**Overall result:** PENDING
+**Overall result:** PASS with review-diversity degradation — Codex has no unresolved MAJOR findings; Claude and Gemini were unavailable and produced no substantive signal.
 
 Revisions made after r1:
 
@@ -227,6 +227,7 @@ Revisions made after r1:
 - Expanded fingerprint schema validation to types, non-empty members, allowed fields, and conjunctive identity.
 - Brought `test_a1_preserved.py` into scope for a narrow semantic repair and the required suite.
 - Replaced the vague ShellCheck gate with an exact command.
+- Replaced the remaining generic schedule-validation phrase with its exact command and reconciled Claude's unavailable status after Codex r2 MINOR.
 
 ---
 
