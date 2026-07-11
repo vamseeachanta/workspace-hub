@@ -1497,7 +1497,9 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - status:plan-approved
       - domain:knowledge-management
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 0
@@ -1560,7 +1562,9 @@ cards:
     gh_labels:
       - priority:medium
       - cat:engineering-methodology
+      - status:plan-approved
       - domain:knowledge-management
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 0

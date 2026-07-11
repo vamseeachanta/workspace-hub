@@ -183,7 +183,10 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/12
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

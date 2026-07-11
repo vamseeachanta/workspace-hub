@@ -294,6 +294,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:high
+      - status:plan-approved
       - domain:ingest-batch-extraction
       - lane:codex
     initial_status: triage

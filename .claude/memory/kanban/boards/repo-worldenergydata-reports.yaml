@@ -1441,7 +1441,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - status:plan-review
+      - status:plan-approved
       - domain:reports
       - lane:claude
       - epic

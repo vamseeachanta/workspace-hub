@@ -1260,9 +1260,10 @@ cards:
     gh_labels:
       - bug
       - priority:P2
-      - status:scoping
+      - status:plan-approved
       - domain:operations-governance
       - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -38,6 +38,7 @@ cards:
       - machine:dev-primary
       - content
       - design-system
+      - status:plan-approved
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -160,6 +161,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:high
+      - status:plan-approved
       - lane:claude
     initial_status: triage
     priority: 1
@@ -354,6 +356,8 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - status:plan-approved
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 0

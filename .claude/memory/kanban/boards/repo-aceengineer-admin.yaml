@@ -170,6 +170,7 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - domain:rd-program
+      - lane:codex
       - lane:claude
     gh_assignees: []
     initial_status: triage

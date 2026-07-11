@@ -22602,8 +22602,9 @@ cards:
       - priority:high
       - cat:data-pipeline
       - domain:audit-trail
-      - status:plan-review
+      - status:plan-approved
       - type:follow-up
+      - gate:completeness
       - lane:codex
     initial_status: triage
     priority: 1
@@ -22887,5 +22888,19 @@ cards:
       - lane:codex
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3467
+    title: Build an independent retained-input bootstrap for structured cross-provider review evidence
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3467
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
