@@ -37,9 +37,12 @@ fi
 if [[ -z "$TARGET_MACHINE" ]]; then
   TARGET_MACHINE="$(hostname -s 2>/dev/null || hostname | cut -d. -f1)"
 fi
+PHYSICAL_HOST="$(hostname -s 2>/dev/null || hostname | cut -d. -f1)"
 
 CANONICAL_MACHINE="$(uv run --no-project python "$CRON_RENDER" \
   --machine "$TARGET_MACHINE" --field machine_id)"
+PHYSICAL_MACHINE="$(uv run --no-project python "$CRON_RENDER" \
+  --machine "$PHYSICAL_HOST" --field machine_id)"
 SCHEDULE_VARIANT="$(uv run --no-project python "$CRON_RENDER" \
   --machine "$TARGET_MACHINE" --field schedule_variant)"
 
@@ -47,6 +50,11 @@ echo "Host: ${TARGET_MACHINE} → machine: ${CANONICAL_MACHINE} → cron_variant
 if [[ "$SCHEDULE_VARIANT" == "contribute-minimal" ]]; then
   echo "This machine uses Windows Task Scheduler; Linux cron reconciliation is skipped."
   exit 0
+fi
+if [[ "$CANONICAL_MACHINE" != "$PHYSICAL_MACHINE" ]]; then
+  echo "ERROR: refusing to reconcile local crontab for remote machine ${CANONICAL_MACHINE}" >&2
+  echo "Run setup-cron.sh on that machine instead." >&2
+  exit 2
 fi
 
 APPLY_ARGS=(--machine "$CANONICAL_MACHINE")

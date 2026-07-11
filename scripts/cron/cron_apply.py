@@ -102,8 +102,8 @@ def write_crontab(text: str, _run=subprocess.run) -> None:
     _run(["crontab", "-"], input=text, text=True, check=True)
 
 
-def reserve_backup_path(machine_id: str, tag: str | None) -> Path:
-    """Reserve a unique backup path without overwriting recovery evidence."""
+def create_backup(machine_id: str, tag: str | None, text: str) -> Path:
+    """Atomically create backup content without overwriting recovery evidence."""
     BACKUP_DIR.mkdir(parents=True, exist_ok=True)
     if tag is None:
         stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
@@ -111,8 +111,10 @@ def reserve_backup_path(machine_id: str, tag: str | None) -> Path:
     if not re.fullmatch(r"[A-Za-z0-9_.-]+", tag):
         raise ValueError("backup tag contains unsafe characters")
     path = BACKUP_DIR / f"{machine_id}-{tag}.crontab"
-    with path.open("x", encoding="utf-8"):
-        pass
+    with path.open("x", encoding="utf-8") as handle:
+        handle.write(text)
+        handle.flush()
+        os.fsync(handle.fileno())
     return path
 
 
@@ -260,8 +262,7 @@ def run_cutover(machine_id: str, apply: bool, ts: str | None,
         if current != A:                          # changed since we planned → plan is stale
             return {"status": "abort",
                     "reason": "crontab changed during cutover (CAS) — re-run", "backup": None}
-        backup = reserve_backup_path(canonical_id, ts)
-        backup.write_text(A)                       # reserved exclusively; A is verified-intact
+        backup = create_backup(canonical_id, ts, A)
         _write(plan["new_text"])
         after = _read()
 
@@ -280,7 +281,14 @@ def run_cutover(machine_id: str, apply: bool, ts: str | None,
     for line, n in need.items():
         if after_counts[line] < n:
             with _flock(LOCKFILE):
-                _write(A)                          # rollback to verified-intact A
+                current = _read()
+                if current != after:
+                    return {
+                        "status": "rollback-aborted",
+                        "reason": "concurrent crontab change detected; refusing stale rollback",
+                        "backup": str(backup),
+                    }
+                _write(A)                          # CAS-verified rollback to intact A
             return {"status": "rolled-back", "reason": f"preserved line lost: {line!r}",
                     "backup": str(backup)}
     result["status"] = "applied"

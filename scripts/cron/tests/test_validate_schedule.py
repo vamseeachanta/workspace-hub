@@ -205,7 +205,10 @@ def test_deckhand_presence_sync_has_exact_installed_fingerprint(tasks):
     task = next(t for t in tasks if t["id"] == "deckhand-api-presence-sync")
 
     assert task["installed_fingerprint"] == {
-        "command_token": ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py",
+        "command_tokens": [
+            "python",
+            ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py",
+        ],
         "cwd_basename": "workspace-hub",
     }
 
@@ -216,16 +219,18 @@ def test_installed_fingerprint_schema_rejects_broad_or_malformed_values():
     invalid = [
         {},
         {"command_contains": "deckhand"},
-        {"command_token": "x.py"},
-        {"command_token": [], "cwd_basename": "workspace-hub"},
-        {"command_token": "x.py", "cwd_basename": ""},
-        {"command_token": "x.py", "cwd_basename": "workspace-hub", "unknown": "x"},
+        {"command_token": "x.py", "cwd_basename": "workspace-hub"},
+        {"command_tokens": ["python", "x.py"]},
+        {"command_tokens": [], "cwd_basename": "workspace-hub"},
+        {"command_tokens": ["python", "x.py"], "cwd_basename": ""},
+        {"command_tokens": ["python", "x.py"], "owner_repo": "workspace-hub"},
+        {"command_tokens": ["python", "x.py"], "cwd_basename": "workspace-hub", "unknown": "x"},
     ]
     for fingerprint in invalid:
         assert validator.validate_installed_fingerprint("task-a", fingerprint)
 
     assert validator.validate_installed_fingerprint(
-        "task-a", {"command_token": "x.py", "cwd_basename": "workspace-hub"}
+        "task-a", {"command_tokens": ["python", "x.py"], "cwd_basename": "workspace-hub"}
     ) == []
 
 

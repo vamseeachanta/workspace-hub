@@ -1,6 +1,6 @@
 # Plan for #3347: Converge setup-cron on the transactional installer
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-07-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3347
@@ -135,7 +135,7 @@ transactional_preview(live_crontab, selected_catalog):
     return deterministic new_text without writing
 
 catalog_ownership(deckhand_presence_sync):
-    require a command_token predicate with shell-token boundaries for catalog_delta.py
+    require adjacent command_tokens [python, catalog_delta.py] after shell tokenization
     require workspace-hub cwd basename
     reject merely similar commands or repository names
 
@@ -153,7 +153,7 @@ unique_backup_tag():
 |---|---|---|
 | Modify | `scripts/cron/setup-cron.sh` | Remove the append-only fingerprint loop and delegate Linux preview/apply to `cron_apply.py` while preserving safe CLI compatibility. |
 | Modify | `scripts/cron/cron_apply.py` | Generate collision-resistant default backup tags and refuse backup overwrite. |
-| Modify | `scripts/cron/cron_transaction.py` | Add enforceable token-boundary matching for `command_token`. |
+| Modify | `scripts/cron/cron_transaction.py` | Add enforceable adjacent shell-token matching for `command_tokens`. |
 | Modify | `config/scheduled-tasks/schedule-tasks.yaml` | Add an exact installed fingerprint for `deckhand-api-presence-sync`. |
 | Modify | `scripts/cron/validate-schedule.py` | Validate field names/types/non-empty values and require a conjunctive command-plus-cwd installed identity. |
 | Create | `tests/cron/test_setup_cron.py` | Test compatibility routing, no direct crontab writes, exit propagation, and dry-run/apply argument mapping. |
@@ -179,7 +179,7 @@ unique_backup_tag():
 | `test_setup_cron_machine_linux_passes_canonical_id` | aliases resolve before delegation | `--machine ace-linux-1` | transaction receives `--machine dev-primary` |
 | `test_deckhand_presence_fingerprint_matches_exact_owned_line` | remaining live duplicates become catalog-attributable | current exact command and cwd | catalog-owned classification |
 | `test_deckhand_presence_fingerprint_rejects_similar_external_line` | ownership remains fail-closed | similar basename/repository | uncataloged or preserved external, never catalog-owned |
-| `test_command_token_requires_shell_token_boundaries` | suffix/prefix/path-lookalikes cannot satisfy ownership | exact token and mutated neighboring characters | exact matches; lookalikes reject |
+| `test_command_tokens_require_adjacent_shell_tokens` | assignment, redirection, suffix/prefix, and path lookalikes cannot satisfy ownership | exact Python/path sequence and misleading alternatives | exact sequence matches; alternatives reject |
 | `test_cutover_converges_all_known_duplicate_families` | equality/manual repair, notification ×2, Deckhand ×2 converge | bounded live-shape fixture | one rendered entry per selected task; comments/external lines preserved |
 | `test_second_cutover_plan_is_byte_identical` | repeated setup cannot ADD again | first plan output as second input | identical `new_text`; zero duplicate growth |
 | `test_unknown_line_still_aborts` | convergence does not weaken external safety | fixture plus unknown cron | abort, no write |
@@ -201,7 +201,7 @@ unique_backup_tag():
 - [ ] Repeated default applies will create distinct, non-overwritten backup artifacts or fail explicitly on a forced collision.
 - [ ] `uv run pytest tests/cron/test_setup_cron.py tests/cron/test_cron_apply.py tests/cron/test_cron_transaction.py tests/cron/test_a1_preserved.py scripts/cron/tests/test_validate_schedule.py -q` will pass.
 - [ ] The broader issue-scoped cron suite `uv run pytest tests/cron scripts/cron/tests -q` will pass without excluding the real-catalog test.
-- [ ] `bash -n scripts/cron/setup-cron.sh`, `shellcheck scripts/cron/setup-cron.sh`, `uv run --no-project python scripts/cron/validate-schedule.py`, `git diff --check`, and `scripts/legal/legal-sanity-scan.sh --diff-only` will pass.
+- [ ] `bash -n scripts/cron/setup-cron.sh`, `shellcheck scripts/cron/setup-cron.sh`, `uv run --no-project python scripts/cron/validate-schedule.py`, `git diff --check`, and `bash scripts/legal/legal-sanity-scan.sh --diff-only` will pass.
 - [ ] Code/artifact adversarial review will complete with no unresolved MAJOR findings.
 - [ ] Implementation evidence will be posted to #3347 before closure.
 - [ ] Live crontab mutation will remain a separate operator-approved step after a fresh bounded preview; this implementation issue will not silently apply the cutover.
@@ -228,6 +228,7 @@ Revisions made after r1:
 - Brought `test_a1_preserved.py` into scope for a narrow semantic repair and the required suite.
 - Replaced the vague ShellCheck gate with an exact command.
 - Replaced the remaining generic schedule-validation phrase with its exact command and reconciled Claude's unavailable status after Codex r2 MINOR.
+- Code review r1 required four safety corrections: physical-host equality for Linux reconciliation, CAS-protected rollback, adjacent shell-token ownership instead of character boundaries, and removal of `owner_repo` as cwd proof. These corrections will be recorded in the implementation review artifacts and regression suite.
 
 ---
 

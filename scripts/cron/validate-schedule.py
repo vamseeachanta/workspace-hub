@@ -84,7 +84,7 @@ def validate_installed_fingerprint(tid: str, value: object) -> list[str]:
     if not isinstance(value, dict) or not value:
         return [f"{tid}: installed_fingerprint must be a non-empty mapping"]
     allowed = {
-        "command_contains", "command_token", "cwd_contains", "cwd_basename",
+        "command_contains", "command_tokens", "cwd_contains", "cwd_basename",
         "script_basename", "owner_repo",
     }
     errors: list[str] = []
@@ -95,8 +95,8 @@ def validate_installed_fingerprint(tid: str, value: object) -> list[str]:
         items = item if isinstance(item, list) else [item]
         if not items or any(not isinstance(part, str) or not part.strip() for part in items):
             errors.append(f"{tid}: installed_fingerprint.{key} must contain non-empty strings")
-    command_keys = {"command_contains", "command_token", "script_basename"}
-    cwd_keys = {"cwd_contains", "cwd_basename", "owner_repo"}
+    command_keys = {"command_contains", "command_tokens", "script_basename"}
+    cwd_keys = {"cwd_contains", "cwd_basename"}
     if not (set(value) & command_keys and set(value) & cwd_keys):
         errors.append(f"{tid}: installed_fingerprint requires command and cwd identity")
     return errors

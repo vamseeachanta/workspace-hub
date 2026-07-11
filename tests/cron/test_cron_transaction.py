@@ -110,13 +110,16 @@ def test_match_fingerprint_command_contains_str():
     assert not ct.match_fingerprint(line, {"command_contains": "nope"})
 
 
-def test_match_fingerprint_command_token_requires_boundaries():
+def test_match_fingerprint_command_tokens_require_adjacent_shell_tokens():
     token = ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py"
     line = f"0 5 * * 0 uv run python {token} >> logs/out.log"
 
-    assert ct.match_fingerprint(line, {"command_token": token})
-    assert not ct.match_fingerprint(line.replace(token, f"prefix{token}"), {"command_token": token})
-    assert not ct.match_fingerprint(line.replace(token, f"{token}.bak"), {"command_token": token})
+    fingerprint = {"command_tokens": ["python", token]}
+    assert ct.match_fingerprint(line, fingerprint)
+    assert not ct.match_fingerprint(line.replace(token, f"prefix{token}"), fingerprint)
+    assert not ct.match_fingerprint(line.replace(token, f"{token}.bak"), fingerprint)
+    assert not ct.match_fingerprint(f"0 * * * * echo --input={token}", fingerprint)
+    assert not ct.match_fingerprint(f"0 * * * * printf x > {token}", fingerprint)
 
 
 def test_match_fingerprint_cwd_and_basename():

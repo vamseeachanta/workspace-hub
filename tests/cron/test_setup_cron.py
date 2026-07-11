@@ -68,6 +68,16 @@ def test_setup_cron_machine_windows_exits_before_linux_transaction(tmp_path):
     assert installed == ""
 
 
+def test_setup_cron_rejects_remote_linux_machine(tmp_path):
+    result, installed = _run_setup(
+        tmp_path, "--machine", "ace-linux-2", "--allow-live-reload"
+    )
+
+    assert result.returncode != 0
+    assert "refusing to reconcile local crontab" in result.stderr
+    assert installed == ""
+
+
 def test_setup_cron_entrypoint_twice_is_idempotent(tmp_path):
     notification = (
         "30 4 * * * cd /mnt/local-analysis/workspace-hub && "
