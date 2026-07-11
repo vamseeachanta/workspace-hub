@@ -7464,8 +7464,10 @@ cards:
     title: 'diffraction: emit the standardized per-run HTML report from the solve/postprocess pipeline (not just benchmarks)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1537
-    gh_state: open
-    gh_labels: []
+    gh_state: closed
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7474,6 +7476,16 @@ cards:
     title: 'installation_pamphlet: BokaLift actual RAO basis (T3 ship_proxy → actual) + roll-damping sensitivity band in §3'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1538
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1540
+    title: 'Unify the Hugging Face run-manifest schema across #1528 (CFD) and the #3427/#3433/#1505 canonical chain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1540
     gh_state: open
     gh_labels: []
     initial_status: triage

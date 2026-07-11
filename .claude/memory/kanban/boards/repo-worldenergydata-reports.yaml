@@ -1011,7 +1011,7 @@ cards:
     title: 'feat(hub): concept/development as a hub subsection (FDP portfolio via crosswalk)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/759
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering
@@ -1441,10 +1441,10 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - status:plan-review
       - domain:reports
       - lane:claude
       - epic
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1489,6 +1489,51 @@ cards:
       - status:plan-approved
       - domain:reports
       - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#962
+    title: 'docs(fdp): author FDP portfolio pages for the 7 remaining LT fields'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/962
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#965
+    title: 'feat(explorer): export Field Explorer results as HF-consumable dataset projection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/965
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#966
+    title: 'feat(explorer): render Explorer visualizations via a Hugging Face API call'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/966
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:automation
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []

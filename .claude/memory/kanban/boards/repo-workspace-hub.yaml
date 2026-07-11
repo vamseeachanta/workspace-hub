@@ -22602,8 +22602,8 @@ cards:
       - priority:high
       - cat:data-pipeline
       - domain:audit-trail
+      - status:plan-review
       - type:follow-up
-      - status:needs-plan
       - lane:codex
     initial_status: triage
     priority: 1
@@ -22790,7 +22790,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - status:plan-approved
+      - status:needs-plan
       - gate:completeness
       - lane:codex
     initial_status: triage
@@ -22854,6 +22854,36 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3463
+    title: 'bug(cron): prevent overlapping jobs and add bounded runtime-health detection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3463
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:operations
+      - domain:infrastructure
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3464
+    title: Harden descriptor-bound Git and filesystem enforcement primitives
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3464
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:needs-plan
       - lane:codex
     initial_status: triage
     priority: 0
