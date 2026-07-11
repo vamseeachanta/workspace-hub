@@ -6,6 +6,7 @@ import pytest
 import yaml
 
 from client_llm_wiki import bootstrap_remote
+from client_llm_wiki.bootstrap_git import trusted_executable
 from client_llm_wiki.bootstrap_manifest import persist_render_manifest
 from client_llm_wiki.bootstrap_renderer import RenderTokens, bind_empty_clone, render_committed_template
 
@@ -86,7 +87,9 @@ def test_github_api_uses_literal_host_and_isolated_hostile_config(monkeypatch, t
     monkeypatch.setenv("GIT_CONFIG", "/tmp/hostile")
     monkeypatch.setattr(bootstrap_remote, "_run", run)
     assert bootstrap_remote.github_api("repos/org/llm-wiki-client") == (0, {})
-    assert seen["command"][0:5] == ["gh", "api", "--hostname", "github.com", "--include"]
+    assert seen["command"][0:5] == [
+        trusted_executable("gh"), "api", "--hostname", "github.com", "--include",
+    ]
     assert "GH_HOST" not in seen["env"]
     assert seen["env"]["GIT_CONFIG"] == "/dev/null"
     assert "GH_CONFIG_DIR" not in seen["env"]

@@ -37,10 +37,10 @@ def zero_oid(oid: str) -> str:
 
 def write_oid(context, expected: str, callback: Callable[[], bytes], attest: Callable,
               created: list[str]) -> str:
-    """Capture an independently known OID before post-write attestation."""
+    """Record the independently known OID immediately before the write attempt."""
     attest(context)
-    raw = callback()
     created.append(expected)
+    raw = callback()
     attest(context)
     try:
         observed = raw.strip().decode()

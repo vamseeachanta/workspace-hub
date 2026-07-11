@@ -13,7 +13,7 @@ import tempfile
 from typing import Iterator
 import unicodedata
 
-from .bootstrap_git import isolated_env
+from .bootstrap_git import isolated_env, trusted_executable
 
 
 class BootstrapSnapshotError(RuntimeError):
@@ -97,7 +97,7 @@ def _initial_git(
     budget.commands += 1
     if budget.commands > _COMMAND_LIMIT:
         raise BootstrapSnapshotError("template snapshot exceeds command limit")
-    command = ["git", "-C", f"/proc/self/fd/{worktree_fd}", *args]
+    command = [trusted_executable("git"), "-C", f"/proc/self/fd/{worktree_fd}", *args]
     return _execute(command, (worktree_fd,), limit)
 
 
@@ -108,7 +108,7 @@ def _run_git(
     if budget.commands > _COMMAND_LIMIT:
         raise BootstrapSnapshotError("template snapshot exceeds command limit")
     command = [
-        "git", f"--git-dir=/proc/self/fd/{bound.git_fd}",
+        trusted_executable("git"), f"--git-dir=/proc/self/fd/{bound.git_fd}",
         f"--work-tree=/proc/self/fd/{bound.worktree_fd}", *args,
     ]
     return _execute(command, (bound.git_fd, bound.worktree_fd), limit)

@@ -83,7 +83,7 @@ def accepted_origins(repo_slug: str) -> frozenset[str]:
 def mutation_command(git_fd: int, *args: str) -> list[str]:
     """Build a descriptor-bound plumbing command with hooks disabled."""
     return [
-        "git", f"--git-dir=/proc/self/fd/{git_fd}",
+        trusted_executable("git"), f"--git-dir=/proc/self/fd/{git_fd}",
         "-c", f"core.hooksPath={os.devnull}", *args,
     ]
 
@@ -105,7 +105,7 @@ def push_command(git_fd: int, repo_slug: str, object_id: str) -> list[str]:
 
 def _read_config(bound: BoundCloneLayout) -> list[tuple[str, str]]:
     command = [
-        "git", "config", "--file", f"/proc/self/fd/{bound.config_fd}",
+        trusted_executable("git"), "config", "--file", f"/proc/self/fd/{bound.config_fd}",
         "--null", "--list", "--no-includes",
     ]
     try:
@@ -179,7 +179,7 @@ def _run_head_git(
 ) -> subprocess.CompletedProcess:
     try:
         return subprocess.run(
-            ["git", f"--git-dir=/proc/self/fd/{bound.git_fd}", *args],
+            [trusted_executable("git"), f"--git-dir=/proc/self/fd/{bound.git_fd}", *args],
             check=False, capture_output=True, text=text, pass_fds=(bound.git_fd,),
             env=isolated_env(), timeout=5,
         )

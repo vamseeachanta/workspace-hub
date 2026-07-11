@@ -53,8 +53,6 @@ def sanitize_backing_name(final_name: str, candidate: object) -> str | None:
         return None
     pattern = rf"\.{re.escape(final_name)}\.backing-[1-9][0-9]*-[0-9a-f]{{16}}"
     return candidate if re.fullmatch(pattern, candidate) else None
-
-
 class ManifestPersistenceError(BootstrapContractError):
     """Manifest publication failed without exposing raw exception text."""
 
@@ -62,25 +60,22 @@ class ManifestPersistenceError(BootstrapContractError):
         safe = sanitize_backing_name(final_name, backing_name)
         super().__init__("manifest persistence failed")
         self.backing_name = safe
-
-
 @dataclass(frozen=True, slots=True)
 class WorkspaceLayout:
     template_worktree: Path
     canonical_checkout: Path
     checkout_parent: Path
     target: Path
-
-
 CommandRunner = Callable[..., subprocess.CompletedProcess[str]]
 def _template_worktree() -> Path:
     return Path(__file__).resolve().parents[2]
-
-
 def _git_env() -> dict[str, str]:
     return isolated_env()
-
-
+def _contract_executable(tool: str, message: str) -> str:
+    try:
+        return trusted_executable(tool)
+    except BootstrapGitError as exc:
+        raise BootstrapContractError(message) from exc
 def _run_text(args: list[str]) -> subprocess.CompletedProcess[str]:
     try:
         return subprocess.run(
@@ -88,17 +83,15 @@ def _run_text(args: list[str]) -> subprocess.CompletedProcess[str]:
         )
     except OSError as exc:
         raise BootstrapContractError(f"Git command unavailable: {exc}") from exc
-
-
 def _git_text(worktree: Path, *args: str) -> str:
-    result = _run_text(["git", "-C", str(worktree), *args])
+    command = [_contract_executable("git", "Git command unavailable"),
+               "-C", str(worktree), *args]
+    result = _run_text(command)
     if result.returncode != 0:
         raise BootstrapContractError(
             f"Git layout query failed: {result.stderr.strip()}"
         )
     return result.stdout.strip()
-
-
 def _same_directory(first: Path, second: Path) -> bool:
     try:
         left, right = first.stat(), second.stat()
@@ -109,8 +102,6 @@ def _same_directory(first: Path, second: Path) -> bool:
         and stat.S_ISDIR(right.st_mode)
         and (left.st_dev, left.st_ino) == (right.st_dev, right.st_ino)
     )
-
-
 def _require_real_directory(path: Path, label: str) -> None:
     try:
         info = path.lstat()
@@ -151,7 +142,7 @@ def verify_private_repo(
     repo_slug: str, *, runner: CommandRunner = subprocess.run
 ) -> None:
     args = [
-        "gh",
+        _contract_executable("gh", "GitHub CLI unavailable"),
         "repo",
         "view",
         f"github.com/{repo_slug}",
@@ -219,7 +210,7 @@ def clone_private_repo(
 
 def _run_bound_git(clone: BoundClone, *args: str) -> subprocess.CompletedProcess[str]:
     command = [
-        "git",
+        _contract_executable("git", "clone Git command unavailable"),
         f"--git-dir=/proc/self/fd/{clone.git_fd}",
         f"--work-tree=/proc/self/fd/{clone.root_fd}",
         *args,

@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import re
 import subprocess
-from .bootstrap_git import isolated_env
+from .bootstrap_git import isolated_env, trusted_executable
 _OID = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})")
 
 
@@ -14,7 +14,7 @@ def _run(command: list[str]) -> subprocess.CompletedProcess[bytes]:
 
 
 def github_api(endpoint: str) -> tuple[int, dict]:
-    command = ["gh", "api", "--hostname", "github.com", "--include", endpoint]
+    command = [trusted_executable("gh"), "api", "--hostname", "github.com", "--include", endpoint]
     try:
         result = _run(command)
     except BaseException:

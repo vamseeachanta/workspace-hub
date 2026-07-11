@@ -16,6 +16,7 @@ from client_llm_wiki.bootstrap_git import (
     isolated_env,
     mutation_command,
     push_command,
+    trusted_executable,
     validate_clone_git,
 )
 from client_llm_wiki.bootstrap_layout import bind_clone
@@ -253,11 +254,11 @@ def test_author_env_requires_both_values_and_does_not_persist_config():
 
 def test_mutation_and_push_commands_fix_hooks_credentials_and_https_target():
     assert mutation_command(9, "hash-object", "-w", "--stdin") == [
-        "git", "--git-dir=/proc/self/fd/9", "-c", "core.hooksPath=/dev/null",
+        trusted_executable("git"), "--git-dir=/proc/self/fd/9", "-c", "core.hooksPath=/dev/null",
         "hash-object", "-w", "--stdin",
     ]
     assert push_command(9, REPO, "a" * 40) == [
-        "git", "--git-dir=/proc/self/fd/9", "-c", "core.hooksPath=/dev/null",
+        trusted_executable("git"), "--git-dir=/proc/self/fd/9", "-c", "core.hooksPath=/dev/null",
         "-c", "credential.helper=", "-c", "credential.helper=!gh auth git-credential",
         "push", "https://github.com/owner/llm-wiki-slug.git",
         f"{'a' * 40}:refs/heads/main",

@@ -320,14 +320,14 @@ def test_attestation_rechecks_forbidden_git_surfaces(monkeypatch):
     bootstrap_finalizer._independent_attestation(context)
     assert checked == [context.clone]
 
-
 def test_commit_tree_failure_preserves_constructed_objects(monkeypatch):
     _calls, _commit, tree, entry, context = _initial_unit(monkeypatch, "commit-tree")
     with pytest.raises(bootstrap_finalizer.BootstrapFinalizerError) as caught:
         bootstrap_finalizer._initial_commit(context, entry, object(), (), tree)
     assert caught.value.residue.kind == "git_objects_commit_tree_failed"
     assert caught.value.residue.tree_oid == tree
-    assert caught.value.residue.object_oids == ("b" * 40, tree)
+    assert caught.value.residue.object_oids[:2] == ("b" * 40, tree)
+    assert caught.value.residue.object_oids[2] == bootstrap_finalizer._expected_commit(tree)
 
 
 def test_transport_pushes_retained_literal_oid_and_attests_boundaries(monkeypatch):

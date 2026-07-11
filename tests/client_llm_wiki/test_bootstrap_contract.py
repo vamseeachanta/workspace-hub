@@ -17,6 +17,7 @@ from client_llm_wiki.bootstrap_contract import (
     verify_private_repo,
     verify_unborn_clone,
 )
+from client_llm_wiki.bootstrap_git import trusted_executable
 
 
 def test_operational_children_use_fixed_host_and_isolated_environment(tmp_path, monkeypatch):
@@ -207,9 +208,9 @@ def test_private_verification_fails_closed(payload, returncode):
     with pytest.raises(BootstrapContractError):
         verify_private_repo(REPO_SLUG, runner=runner)
 
-        assert runner.calls == [
+    assert runner.calls == [
         [
-            "gh",
+            trusted_executable("gh"),
             "repo",
             "view",
             f"github.com/{REPO_SLUG}",
