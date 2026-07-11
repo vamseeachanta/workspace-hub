@@ -1,4 +1,5 @@
 """CLI and authorization boundary for client-wiki metadata bootstrap."""
+
 from __future__ import annotations
 
 import argparse
@@ -21,8 +22,10 @@ from .bootstrap_renderer import (
 )
 from .bootstrap_schema import (
     BootstrapSchemaError,
+    RegistryValidationError,
     get_entry,
     load_registry,
+    validate_repo_slug,
     validate_root_disjointness,
 )
 
@@ -51,8 +54,17 @@ def _template_worktree() -> Path:
     return Path(__file__).resolve().parents[2]
 
 
+def _git_env() -> dict[str, str]:
+    env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+    env.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL=os.devnull)
+    return env
+
+
 def _run_text(args: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(args, check=False, capture_output=True, text=True)
+    try:
+        return subprocess.run(args, check=False, capture_output=True, text=True, env=_git_env())
+    except OSError as exc:
+        raise BootstrapContractError(f"Git command unavailable: {exc}") from exc
 
 
 def _git_text(worktree: Path, *args: str) -> str:
@@ -74,37 +86,51 @@ def _same_directory(first: Path, second: Path) -> bool:
     )
 
 
+def _require_real_directory(path: Path, label: str) -> None:
+    try:
+        info = path.lstat()
+    except OSError as exc:
+        raise BootstrapContractError(f"{label} unavailable: {exc}") from exc
+    if not stat.S_ISDIR(info.st_mode) or path.is_symlink():
+        raise BootstrapContractError(f"{label} must be a real non-symlink directory")
+
+
 def derive_workspace_layout(template_worktree: Path, repo_slug: str) -> WorkspaceLayout:
     """Derive the target from the canonical Git common-directory owner."""
     worktree = Path(template_worktree).absolute()
-    basename = repo_slug.rsplit("/", 1)[-1]
-    if "/" not in repo_slug or basename != f"llm-wiki-{basename.removeprefix('llm-wiki-')}":
-        raise BootstrapContractError("registered repository slug is invalid")
-    common_text = _git_text(
-        worktree, "rev-parse", "--path-format=absolute", "--git-common-dir"
-    )
+    try:
+        short_name = validate_repo_slug(repo_slug)
+    except RegistryValidationError as exc:
+        raise BootstrapContractError("registered repository slug is invalid") from exc
+    basename = f"llm-wiki-{short_name}"
+    top = Path(_git_text(worktree, "rev-parse", "--show-toplevel"))
+    _require_real_directory(worktree, "active template worktree")
+    if not _same_directory(worktree, top):
+        raise BootstrapContractError("active template worktree is not its Git toplevel")
+    common_text = _git_text(worktree, "rev-parse", "--path-format=absolute", "--git-common-dir")
     common = Path(common_text)
-    if common.name != ".git" or not common.is_dir():
+    if not common.is_absolute() or common.name != ".git":
         raise BootstrapContractError("Git common directory must be a real .git directory")
+    _require_real_directory(common, "Git common directory .git")
     canonical = common.parent
-    if not _same_directory(common, canonical / ".git"):
-        raise BootstrapContractError("Git common directory owner is ambiguous")
+    _require_real_directory(canonical, "canonical checkout")
     parent = canonical.parent
     return WorkspaceLayout(worktree, canonical, parent, parent / basename)
 
 
-def verify_private_repo(
-    repo_slug: str, *, runner: CommandRunner = subprocess.run
-) -> None:
+def verify_private_repo(repo_slug: str, *, runner: CommandRunner = subprocess.run) -> None:
     args = [
         "gh",
         "repo",
         "view",
-        repo_slug,
+        f"github.com/{repo_slug}",
         "--json",
-        "visibility,isArchived",
+        "nameWithOwner,visibility,isArchived",
     ]
-    result = runner(args, check=False, capture_output=True, text=True)
+    try:
+        result = runner(args, check=False, capture_output=True, text=True)
+    except OSError as exc:
+        raise BootstrapContractError(f"GitHub CLI unavailable: {exc}") from exc
     if result.returncode != 0:
         raise BootstrapContractError("GitHub repository lookup failed")
     try:
@@ -113,18 +139,33 @@ def verify_private_repo(
         raise BootstrapContractError("GitHub repository response is malformed") from exc
     if not isinstance(payload, dict):
         raise BootstrapContractError("GitHub repository response is malformed")
-    if payload.get("visibility") != "PRIVATE" or payload.get("isArchived") is not False:
-        raise BootstrapContractError("repository must be PRIVATE and unarchived")
+    valid = (
+        payload.get("nameWithOwner") == repo_slug
+        and payload.get("visibility") == "PRIVATE"
+        and payload.get("isArchived") is False
+    )
+    if not valid:
+        raise BootstrapContractError("repository identity must match and be PRIVATE/unarchived")
 
 
 def _run_bound_git(clone: BoundClone, *args: str) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(
-        ["git", "-C", f"/proc/self/fd/{clone.root_fd}", *args],
-        check=False,
-        capture_output=True,
-        text=True,
-        pass_fds=(clone.root_fd,),
-    )
+    command = [
+        "git",
+        f"--git-dir=/proc/self/fd/{clone.git_fd}",
+        f"--work-tree=/proc/self/fd/{clone.root_fd}",
+        *args,
+    ]
+    try:
+        return subprocess.run(
+            command,
+            check=False,
+            capture_output=True,
+            text=True,
+            pass_fds=(clone.root_fd, clone.git_fd),
+            env=_git_env(),
+        )
+    except OSError as exc:
+        raise BootstrapContractError(f"clone Git command unavailable: {exc}") from exc
 
 
 def _require_bound_git(clone: BoundClone, *args: str) -> str:
@@ -134,26 +175,42 @@ def _require_bound_git(clone: BoundClone, *args: str) -> str:
     return result.stdout.strip()
 
 
-def _verify_bound_clone(
-    clone: BoundClone, repo_slug: str, *, require_empty: bool = True
-) -> None:
+def _verify_named_git(clone: BoundClone) -> None:
+    try:
+        info = os.stat(".git", dir_fd=clone.root_fd, follow_symlinks=False)
+    except OSError as exc:
+        raise BootstrapContractError(f".git identity unavailable: {exc}") from exc
+    identity = (info.st_dev, info.st_ino, stat.S_IFMT(info.st_mode))
+    expected = (clone.git_id.device, clone.git_id.inode, clone.git_id.file_type)
+    if identity != expected:
+        raise BootstrapContractError(".git identity changed after descriptor binding")
+
+
+def _verify_bound_clone(clone: BoundClone, repo_slug: str, *, require_empty: bool = True) -> None:
+    _verify_named_git(clone)
     expected = {template.format(repo=repo_slug) for template in _ORIGIN_TEMPLATES}
-    origin = _require_bound_git(clone, "config", "--get", "remote.origin.url")
-    if origin not in expected:
+    fetch = _require_bound_git(clone, "remote", "get-url", "--all", "origin").splitlines()
+    push = _require_bound_git(clone, "remote", "get-url", "--push", "--all", "origin").splitlines()
+    if len(fetch) != 1 or len(push) != 1 or fetch[0] not in expected or push[0] not in expected:
         raise BootstrapContractError("clone origin does not match registered repository")
     top = _require_bound_git(clone, "rev-parse", "--show-toplevel")
     top_info = os.stat(top)
     root_info = os.fstat(clone.root_fd)
     if (top_info.st_dev, top_info.st_ino) != (root_info.st_dev, root_info.st_ino):
         raise BootstrapContractError("clone toplevel does not match bound target")
-    if _run_bound_git(clone, "rev-parse", "--verify", "HEAD").returncode == 0:
+    symbolic = _run_bound_git(clone, "symbolic-ref", "-q", "HEAD")
+    if symbolic.returncode != 0 or not symbolic.stdout.strip().startswith("refs/heads/"):
+        raise BootstrapContractError("clone HEAD is not a valid symbolic branch")
+    head = _run_bound_git(clone, "rev-parse", "--verify", "HEAD")
+    if head.returncode == 0:
         raise BootstrapContractError("clone HEAD must be unborn")
+    if head.returncode not in {1, 128}:
+        raise BootstrapContractError("clone HEAD query failed unexpectedly")
     if require_empty:
-        status_text = _require_bound_git(
-            clone, "status", "--porcelain=v1", "--untracked-files=all"
-        )
+        status_text = _require_bound_git(clone, "status", "--porcelain=v1", "--untracked-files=all")
         if status_text:
             raise BootstrapContractError("clone must be clean and empty")
+    _verify_named_git(clone)
 
 
 def verify_unborn_clone(target: Path, repo_slug: str) -> None:
@@ -179,16 +236,19 @@ def execute_render(
     registry_path: Path,
     short_name: str,
     *,
-    template_worktree: Path | None = None,
     runner: CommandRunner = subprocess.run,
 ) -> RenderManifest:
     """Authorize and render with one continuously bound clone descriptor."""
     entry = _load_planned_entry(Path(registry_path), short_name)
-    template = Path(template_worktree or _template_worktree()).absolute()
+    template = _template_worktree().absolute()
     layout = derive_workspace_layout(template, entry.repo)
     validate_root_disjointness(
         entry,
-        [str(layout.template_worktree), str(layout.canonical_checkout), str(layout.target)],
+        [
+            str(layout.template_worktree),
+            str(layout.canonical_checkout),
+            str(layout.target),
+        ],
     )
     verify_private_repo(entry.repo, runner=runner)
     tokens = RenderTokens(
@@ -201,9 +261,12 @@ def execute_render(
     try:
         with bind_empty_clone(layout.target) as clone:
             _verify_bound_clone(clone, entry.repo)
-            manifest = render_committed_template(clone, template, tokens)
-            _verify_bound_clone(clone, entry.repo, require_empty=False)
-            return manifest
+            return render_committed_template(
+                clone,
+                template,
+                tokens,
+                _final_validator=lambda bound: _verify_bound_clone(bound, entry.repo, require_empty=False),
+            )
     except BootstrapRenderError as exc:
         raise BootstrapContractError(str(exc)) from exc
 
@@ -222,12 +285,17 @@ def _classify_command(args: argparse.Namespace) -> int:
     layout = derive_workspace_layout(_template_worktree(), entry.repo)
     validate_root_disjointness(
         entry,
-        [str(layout.template_worktree), str(layout.canonical_checkout), str(layout.target)],
+        [
+            str(layout.template_worktree),
+            str(layout.canonical_checkout),
+            str(layout.target),
+        ],
     )
     payload = {
         "mode": entry.mode.value,
         "repo": entry.repo,
         "short_name": entry.short_name,
+        "status": entry.status,
         "target": str(layout.target),
     }
     print(json.dumps(payload, sort_keys=True))

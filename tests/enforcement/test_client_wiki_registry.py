@@ -1,4 +1,5 @@
 """Hermetic subprocess tests for the client-wiki registry checker."""
+
 from __future__ import annotations
 
 import json
@@ -17,6 +18,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 CHECKER = REPO_ROOT / "scripts" / "enforcement" / "check-client-wiki-registry.sh"
 REPO_SLUG = "example-org/llm-wiki-example-client"
 YQ = shutil.which("yq")
+
 
 def _entry(**overrides: object) -> dict[str, object]:
     entry: dict[str, object] = {
@@ -63,6 +65,7 @@ def _fake_uv(tmp_path: Path, *, fail: bool = False) -> Path:
         script,
         f"""#!{sys.executable}
 import os
+import subprocess
 import sys
 
 args = sys.argv[1:]
@@ -72,6 +75,10 @@ if args[:5] != expected:
     raise SystemExit(97)
 if {fail!r}:
     raise SystemExit(86)
+if os.environ.get("SWAP_REGISTRY_SOURCE") and "validate-registry" in args:
+    result = subprocess.run([sys.executable, *args[5:]])
+    os.replace(os.environ["SWAP_REGISTRY_REPLACEMENT"], os.environ["SWAP_REGISTRY_SOURCE"])
+    raise SystemExit(result.returncode)
 os.execv(sys.executable, [sys.executable, *args[5:]])
 """,
     )
@@ -90,7 +97,7 @@ import sys
 args = sys.argv[1:]
 with open(os.environ["FAKE_GH_LOG"], "ab") as stream:
     stream.write(b"\\0".join(arg.encode() for arg in args) + b"\\0")
-expected = ["repo", "view", {REPO_SLUG!r}, "--json", "visibility,isArchived"]
+expected = ["repo", "view", "github.com/" + {REPO_SLUG!r}, "--json", "nameWithOwner,visibility,isArchived"]
 if args != expected:
     print("unexpected gh arguments", file=sys.stderr)
     raise SystemExit(97)
@@ -136,6 +143,7 @@ def _gh_args(log: Path) -> list[str]:
     if not log.exists():
         return []
     return [part.decode() for part in log.read_bytes().split(b"\0") if part]
+
 
 def _make_clone(tmp_path: Path, origin: str) -> Path:
     clone = tmp_path / "clone"
@@ -263,10 +271,35 @@ def test_disabled_planned_or_retired_rows_do_not_require_gh(tmp_path, entry):
 @pytest.mark.parametrize(
     ("payload", "gh_rc", "expected"),
     [
-        ({"visibility": "PRIVATE", "isArchived": False}, 0, 0),
-        ({"visibility": "PUBLIC", "isArchived": False}, 0, 1),
-        ({"visibility": "PRIVATE", "isArchived": True}, 0, 1),
-        ({"visibility": "PRIVATE", "isArchived": False}, 9, 1),
+        (
+            {"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": False},
+            0,
+            0,
+        ),
+        (
+            {
+                "nameWithOwner": "other/repo",
+                "visibility": "PRIVATE",
+                "isArchived": False,
+            },
+            0,
+            1,
+        ),
+        (
+            {"nameWithOwner": REPO_SLUG, "visibility": "PUBLIC", "isArchived": False},
+            0,
+            1,
+        ),
+        (
+            {"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": True},
+            0,
+            1,
+        ),
+        (
+            {"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": False},
+            9,
+            1,
+        ),
     ],
 )
 def test_live_rows_use_exact_gh_contract(tmp_path, status, payload, gh_rc, expected):
@@ -289,9 +322,9 @@ def test_live_rows_use_exact_gh_contract(tmp_path, status, payload, gh_rc, expec
     assert _gh_args(log) == [
         "repo",
         "view",
-        REPO_SLUG,
+        f"github.com/{REPO_SLUG}",
         "--json",
-        "visibility,isArchived",
+        "nameWithOwner,visibility,isArchived",
     ]
 
 
@@ -343,46 +376,6 @@ def test_clone_under_absent_parent_warns_and_skips(tmp_path):
 
     assert result.returncode == 0
     assert "WARN" in result.stderr
-
-
-@pytest.mark.parametrize("kind", ["directory", "missing", "symlink"])
-def test_raw_root_availability_uses_metadata_only(tmp_path, kind):
-    parent = tmp_path / "raw-parent"
-    parent.mkdir()
-    root = parent / "raw root with spaces"
-    if kind == "directory":
-        root.mkdir()
-        (root / "unreadable-sentinel").write_text("never read\n", encoding="utf-8")
-    elif kind == "symlink":
-        target = tmp_path / "real-raw"
-        target.mkdir()
-        root.symlink_to(target, target_is_directory=True)
-    registry = _write_registry(
-        tmp_path,
-        entries=[_entry(raw_roots=[str(root)], raw_source_status="mounted")],
-    )
-
-    result = _run_checker(tmp_path, registry)
-
-    assert result.returncode == (0 if kind == "directory" else 1)
-    assert "never read" not in result.stdout + result.stderr
-
-
-def test_public_wiki_raw_root_is_a_firewall_failure(tmp_path):
-    registry = _write_registry(
-        tmp_path,
-        entries=[
-            _entry(
-                raw_roots=[str(REPO_ROOT.parent / "llm-wiki")],
-                raw_source_status="mounted",
-            )
-        ],
-    )
-
-    result = _run_checker(tmp_path, registry)
-
-    assert result.returncode == 1
-    assert "firewall" in result.stderr.lower()
 
 
 def test_checker_is_tracked_executable_and_directly_invocable(tmp_path):

@@ -1,4 +1,5 @@
 """Fail-closed client-wiki bootstrap registry schema."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -62,7 +63,7 @@ class Registry:
 
 
 _SLUG = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*", re.ASCII)
-_REPO_COMPONENT = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?", re.ASCII)
+_GITHUB_OWNER = re.compile(r"[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?", re.ASCII)
 _STATUSES = frozenset({"planned", "bootstrapped", "live", "retired"})
 _REQUIRED = (
     "short_name",
@@ -99,11 +100,10 @@ def _legacy_registry(document: Mapping[str, Any]) -> Registry:
     names: set[str] = set()
     for index, row in enumerate(rows):
         mapping = _require_mapping(row, f"wikis[{index}]")
-        name = mapping.get("short_name")
-        if isinstance(name, str) and name in names:
+        name = _validate_legacy_row(mapping, f"wikis[{index}]")
+        if name in names:
             raise RegistryValidationError(f"duplicate short_name: {name}")
-        if isinstance(name, str):
-            names.add(name)
+        names.add(name)
     warning = "legacy numeric registry_version 0.1 is audit-only; operations denied"
     return Registry(RegistryKind.LEGACY_AUDIT, "0.1", (), (warning,))
 
@@ -124,15 +124,46 @@ def _string(mapping: Mapping[str, Any], field: str, label: str) -> str:
     return value
 
 
+def _validate_legacy_row(mapping: Mapping[str, Any], label: str) -> str:
+    short_name = _string(mapping, "short_name", label)
+    _string(mapping, "repo", label)
+    visibility = _string(mapping, "visibility", label)
+    posture = _string(mapping, "posture", label)
+    status = _string(mapping, "status", label)
+    roots = mapping.get("raw_roots")
+    if visibility != "PRIVATE" or posture != "client-private" or status not in _STATUSES:
+        raise RegistryValidationError(f"{label} has invalid historical posture/state")
+    if not isinstance(roots, list) or any(not isinstance(root, str) or not root for root in roots):
+        raise RegistryValidationError(f"{label}.raw_roots must be a string sequence")
+    return short_name
+
+
+def validate_repo_slug(repo_slug: str) -> str:
+    """Return the client short name from an exact GitHub repository slug."""
+    if not isinstance(repo_slug, str):
+        raise RegistryValidationError("repository slug must be a string")
+    parts = repo_slug.split("/")
+    owner = parts[0] if len(parts) == 2 else ""
+    if _GITHUB_OWNER.fullmatch(owner) is None or "--" in owner:
+        raise RegistryValidationError("repository owner is not GitHub-safe")
+    basename = parts[1]
+    prefix = "llm-wiki-"
+    short_name = basename.removeprefix(prefix)
+    if not basename.startswith(prefix) or _SLUG.fullmatch(short_name) is None:
+        raise RegistryValidationError("repository basename must be llm-wiki-<short-name>")
+    return short_name
+
+
 def _validate_identity(mapping: Mapping[str, Any], label: str) -> tuple[str, str]:
     short_name = _string(mapping, "short_name", label)
     repo = _string(mapping, "repo", label)
     if _SLUG.fullmatch(short_name) is None:
         raise RegistryValidationError(f"{label}.short_name must be an ASCII slug")
-    parts = repo.split("/")
-    if len(parts) != 2 or any(_REPO_COMPONENT.fullmatch(part) is None for part in parts):
-        raise RegistryValidationError(f"{label}.repo must be an owner/repository slug")
-    if parts[1] != f"llm-wiki-{short_name}":
+    try:
+        repo_short_name = validate_repo_slug(repo)
+    except RegistryValidationError as exc:
+        raise RegistryValidationError(f"{label}.repo is invalid: {exc}") from exc
+    if repo_short_name != short_name:
         raise RegistryValidationError(f"{label}.repo basename must match short_name")
     return short_name, repo
 
@@ -166,9 +197,7 @@ def _validate_roots(mapping: Mapping[str, Any], label: str) -> tuple[str, ...]:
     return roots
 
 
-def _classify_disabled(
-    roots: tuple[str, ...], source_status: str, enabled: bool, label: str
-) -> BootstrapMode:
+def _classify_disabled(roots: tuple[str, ...], source_status: str, enabled: bool, label: str) -> BootstrapMode:
     if enabled:
         raise RegistryValidationError(f"{label}.ingestion_enabled true is unsupported")
     if not roots and source_status == "not-mounted":
@@ -197,7 +226,15 @@ def _validate_entry(row: Any, index: int) -> WikiEntry:
         raise RegistryValidationError(f"{label}.ingestion_enabled must be a boolean")
     mode = _classify_disabled(roots, source_status, enabled, label)
     return WikiEntry(
-        short_name, repo, visibility, posture, status, roots, source_status, enabled, mode
+        short_name,
+        repo,
+        visibility,
+        posture,
+        status,
+        roots,
+        source_status,
+        enabled,
+        mode,
     )
 
 
@@ -205,8 +242,8 @@ def _current_registry(document: Mapping[str, Any]) -> Registry:
     rows = document.get("wikis")
     if not isinstance(rows, list) or not rows:
         raise RegistryValidationError("current registry wikis must be a non-empty sequence")
-    if document.get("relocated") is True:
-        raise RegistryValidationError("non-empty registry cannot be relocated")
+    if "relocated" in document and document.get("relocated") is not False:
+        raise RegistryValidationError("authoritative registry relocated must be false or absent")
     entries = tuple(_validate_entry(row, index) for index, row in enumerate(rows))
     names = [entry.short_name for entry in entries]
     if len(set(names)) != len(names):
@@ -256,15 +293,11 @@ def _paths_overlap(first: str, second: str) -> bool:
     return left == right or left in right.parents or right in left.parents
 
 
-def validate_root_disjointness(
-    entry: WikiEntry, protected_paths: list[str] | tuple[str, ...]
-) -> None:
+def validate_root_disjointness(entry: WikiEntry, protected_paths: list[str] | tuple[str, ...]) -> None:
     for root in entry.raw_roots:
         for protected in protected_paths:
             if _paths_overlap(root, os.fspath(protected)):
-                raise RegistryValidationError(
-                    f"raw root overlaps protected path for {entry.short_name}"
-                )
+                raise RegistryValidationError(f"raw root overlaps protected path for {entry.short_name}")
 
 
 __all__ = [
@@ -280,5 +313,6 @@ __all__ = [
     "get_entry",
     "load_registry",
     "parse_registry",
+    "validate_repo_slug",
     "validate_root_disjointness",
 ]

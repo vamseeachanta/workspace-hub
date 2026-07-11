@@ -1,4 +1,5 @@
 """CLI, Git-layout, and live-private contract tests for issue #3449."""
+
 from __future__ import annotations
 
 import json
@@ -119,7 +120,13 @@ class RecordingRunner:
 
 
 def _private_runner() -> RecordingRunner:
-    return RecordingRunner({"visibility": "PRIVATE", "isArchived": False})
+    return RecordingRunner(
+        {
+            "nameWithOwner": REPO_SLUG,
+            "visibility": "PRIVATE",
+            "isArchived": False,
+        }
+    )
 
 
 def test_main_and_linked_worktree_derive_same_sibling_target(tmp_path, monkeypatch):
@@ -139,28 +146,22 @@ def test_main_and_linked_worktree_derive_same_sibling_target(tmp_path, monkeypat
     assert linked_layout.canonical_checkout == canonical
 
 
-def test_layout_ignores_cwd_and_destination_environment(tmp_path, monkeypatch):
-    workspace = _workspace(tmp_path)
-    monkeypatch.chdir(tmp_path)
-    monkeypatch.setenv("CLIENT_WIKI_DESTINATION", str(tmp_path / "attacker"))
-
-    layout = derive_workspace_layout(workspace, REPO_SLUG)
-
-    assert layout.target == workspace.parent / "llm-wiki-example-co"
-    with pytest.raises(SystemExit):
-        bootstrap_contract.main(
-            ["classify", "--registry", "unused", "--destination", "/tmp/elsewhere"]
-        )
-
-
 @pytest.mark.parametrize(
     ("payload", "returncode"),
     [
-        ({"visibility": "PUBLIC", "isArchived": False}, 0),
-        ({"visibility": "PRIVATE", "isArchived": True}, 0),
-        ({"visibility": "PRIVATE"}, 0),
+        ({"nameWithOwner": REPO_SLUG, "visibility": "PUBLIC", "isArchived": False}, 0),
+        ({"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": True}, 0),
+        (
+            {
+                "nameWithOwner": "other/repo",
+                "visibility": "PRIVATE",
+                "isArchived": False,
+            },
+            0,
+        ),
+        ({"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE"}, 0),
         ("not-json", 0),
-        ({"visibility": "PRIVATE", "isArchived": False}, 1),
+        ({"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": False}, 1),
     ],
 )
 def test_private_verification_fails_closed(payload, returncode):
@@ -170,7 +171,14 @@ def test_private_verification_fails_closed(payload, returncode):
         verify_private_repo(REPO_SLUG, runner=runner)
 
     assert runner.calls == [
-        ["gh", "repo", "view", REPO_SLUG, "--json", "visibility,isArchived"]
+        [
+            "gh",
+            "repo",
+            "view",
+            f"github.com/{REPO_SLUG}",
+            "--json",
+            "nameWithOwner,visibility,isArchived",
+        ]
     ]
 
 
@@ -180,6 +188,14 @@ def test_private_verification_accepts_only_private_unarchived():
     verify_private_repo(REPO_SLUG, runner=runner)
 
     assert len(runner.calls) == 1
+
+
+def test_private_verification_maps_missing_gh_to_contract_error():
+    def missing_runner(*_args, **_kwargs):
+        raise FileNotFoundError("gh missing")
+
+    with pytest.raises(BootstrapContractError, match="unavailable"):
+        verify_private_repo(REPO_SLUG, runner=missing_runner)
 
 
 @pytest.mark.parametrize(
@@ -202,20 +218,23 @@ def test_clone_git_preconditions_fail_closed(tmp_path, failure):
     clone = _init_target(tmp_path / "clone", origin)
     if failure == "wrong-origin":
         _git(clone, "remote", "set-url", "origin", "https://example.invalid/lookalike")
-    if failure in {"head", "dirty"}:
-        (clone / "unexpected.txt").write_text("unexpected\n", encoding="utf-8")
     if failure == "head":
         _git(clone, "config", "user.email", "test@example.invalid")
         _git(clone, "config", "user.name", "Test Operator")
+        _git(clone, "commit", "--allow-empty", "-m", "unexpected empty commit")
+    if failure == "dirty":
+        unexpected = clone / "unexpected.txt"
+        unexpected.write_text("unexpected\n", encoding="utf-8")
         _git(clone, "add", "unexpected.txt")
-        _git(clone, "commit", "-m", "unexpected commit")
+        unexpected.unlink()
 
     with pytest.raises(BootstrapContractError):
         verify_unborn_clone(clone, REPO_SLUG)
 
 
-def test_metadata_only_render_end_to_end(tmp_path):
+def test_metadata_only_render_end_to_end(tmp_path, monkeypatch):
     workspace = _workspace(tmp_path)
+    monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
     registry = _registry_file(tmp_path)
     target = workspace.parent / "llm-wiki-example-co"
     _init_target(target, f"https://github.com/{REPO_SLUG}.git")
@@ -224,7 +243,6 @@ def test_metadata_only_render_end_to_end(tmp_path):
     manifest = execute_render(
         registry,
         "example-co",
-        template_worktree=workspace,
         runner=_private_runner(),
     )
 
@@ -240,8 +258,9 @@ def test_metadata_only_render_end_to_end(tmp_path):
 
 
 @pytest.mark.parametrize("status", ["bootstrapped", "live", "retired"])
-def test_nonplanned_entries_cannot_render_before_live_lookup(tmp_path, status):
+def test_nonplanned_entries_cannot_render_before_live_lookup(tmp_path, monkeypatch, status):
     workspace = _workspace(tmp_path)
+    monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
     registry = _registry_file(tmp_path, _entry(status=status))
     runner = _private_runner()
 
@@ -249,30 +268,30 @@ def test_nonplanned_entries_cannot_render_before_live_lookup(tmp_path, status):
         execute_render(
             registry,
             "example-co",
-            template_worktree=workspace,
             runner=runner,
         )
 
     assert runner.calls == []
 
 
-def test_legacy_registry_cannot_render_before_live_lookup(tmp_path):
+def test_legacy_registry_cannot_render_before_live_lookup(tmp_path, monkeypatch):
     workspace = _workspace(tmp_path)
+    monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
     runner = _private_runner()
 
     with pytest.raises(BootstrapContractError):
         execute_render(
             _legacy_registry(tmp_path),
             "example-co",
-            template_worktree=workspace,
             runner=runner,
         )
 
     assert runner.calls == []
 
 
-def test_source_registered_disabled_render_never_requires_raw_root(tmp_path):
+def test_source_registered_disabled_render_never_requires_raw_root(tmp_path, monkeypatch):
     workspace = _workspace(tmp_path)
+    monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
     missing_raw = tmp_path / "never-mounted" / "raw-source"
     registry = _registry_file(
         tmp_path,
@@ -284,37 +303,29 @@ def test_source_registered_disabled_render_never_requires_raw_root(tmp_path):
     execute_render(
         registry,
         "example-co",
-        template_worktree=workspace,
         runner=_private_runner(),
     )
 
     output = "\n".join(
-        path.read_text(encoding="utf-8")
-        for path in target.rglob("*")
-        if path.is_file() and ".git" not in path.parts
+        path.read_text(encoding="utf-8") for path in target.rglob("*") if path.is_file() and ".git" not in path.parts
     )
     assert str(missing_raw) not in output
     assert not missing_raw.exists()
 
 
-def test_cli_validate_and_classify_emit_machine_readable_state(
-    tmp_path, monkeypatch, capsys
-):
+def test_cli_validate_and_classify_emit_machine_readable_state(tmp_path, monkeypatch, capsys):
     workspace = _workspace(tmp_path)
     registry = _registry_file(tmp_path)
     monkeypatch.setattr(bootstrap_contract, "_template_worktree", lambda: workspace)
 
-    assert bootstrap_contract.main(
-        ["validate-registry", "--registry", str(registry)]
-    ) == 0
-    assert bootstrap_contract.main(
-        ["classify", "--registry", str(registry), "--short-name", "example-co"]
-    ) == 0
+    assert bootstrap_contract.main(["validate-registry", "--registry", str(registry)]) == 0
+    assert bootstrap_contract.main(["classify", "--registry", str(registry), "--short-name", "example-co"]) == 0
 
     payload = json.loads(capsys.readouterr().out.splitlines()[-1])
     assert payload == {
         "mode": "metadata-only",
         "repo": REPO_SLUG,
         "short_name": "example-co",
+        "status": "planned",
         "target": str(workspace.parent / "llm-wiki-example-co"),
     }

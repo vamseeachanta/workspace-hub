@@ -1,4 +1,5 @@
 """Fail-closed registry schema tests for issue #3449."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -51,9 +52,7 @@ def _registry(entries: list[dict[str, object]] | None = None, **overrides: objec
     ],
 )
 def test_current_registry_classifies_only_disabled_modes(roots, source_status, mode):
-    registry = parse_registry(
-        _registry([_entry(raw_roots=roots, raw_source_status=source_status)])
-    )
+    registry = parse_registry(_registry([_entry(raw_roots=roots, raw_source_status=source_status)]))
 
     assert registry.kind is RegistryKind.CURRENT
     assert get_entry(registry, "example-co").mode is mode
@@ -162,6 +161,12 @@ def test_stub_lookalikes_fail_closed(doc):
         parse_registry(yaml.safe_dump(doc, sort_keys=False))
 
 
+@pytest.mark.parametrize("relocated", [1, "true", None, {}, []])
+def test_authoritative_registry_rejects_malformed_relocated_values(relocated):
+    with pytest.raises(RegistryValidationError, match="relocated"):
+        parse_registry(_registry(relocated=relocated))
+
+
 def test_legacy_numeric_version_is_audit_only():
     legacy_entry = {
         "short_name": "example-co",
@@ -183,10 +188,41 @@ def test_legacy_numeric_version_is_audit_only():
 @pytest.mark.parametrize(
     ("field", "value"),
     [
+        ("short_name", None),
+        ("repo", 7),
+        ("visibility", "PUBLIC"),
+        ("posture", "public"),
+        ("status", "unknown"),
+        ("raw_roots", "not-a-list"),
+        ("raw_roots", [7]),
+    ],
+)
+def test_legacy_audit_still_requires_historical_row_shape(field, value):
+    row = {
+        "short_name": "example-co",
+        "repo": "example-org/llm-wiki-example-co",
+        "visibility": "PRIVATE",
+        "posture": "client-private",
+        "status": "planned",
+        "raw_roots": ["/authorized/legacy-source/"],
+    }
+    row[field] = value
+
+    with pytest.raises(RegistryValidationError):
+        parse_registry(yaml.safe_dump({"registry_version": 0.1, "wikis": [row]}))
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
         ("short_name", "Example Co"),
         ("short_name", "example_co"),
         ("short_name", "éxample"),
         ("repo", "https://example.invalid/repo"),
+        ("repo", "bad_owner/llm-wiki-example-co"),
+        ("repo", "-owner/llm-wiki-example-co"),
+        ("repo", "owner--name/llm-wiki-example-co"),
+        ("repo", f"{'a' * 40}/llm-wiki-example-co"),
         ("repo", "example-org/other-name"),
         ("repo", "example-org/llm-wiki-example-co.git"),
         ("visibility", "PUBLIC"),

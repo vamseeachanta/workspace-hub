@@ -3,6 +3,12 @@
 
 set -euo pipefail
 
+while IFS='=' read -r name _; do
+  [[ "$name" == GIT_* ]] && unset "$name"
+done < <(env)
+export GIT_CONFIG_NOSYSTEM=1
+export GIT_CONFIG_GLOBAL=/dev/null
+
 SELF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SELF_DIR/../.." && pwd -P)"
 REGISTRY="${REGISTRY_PATH:-${WIKI_SIBLING_REGISTRY_PATH:-}}"
@@ -22,6 +28,16 @@ if [[ ! -f "$REGISTRY" ]]; then
   echo >&2 "WARN: registry not found at $REGISTRY — skipping (private authority not provisioned)"
   exit 0
 fi
+
+REGISTRY_SOURCE="$REGISTRY"
+REGISTRY_SNAPSHOT="$(mktemp)"
+trap 'rm -f "$REGISTRY_SNAPSHOT"' EXIT
+if ! cp -- "$REGISTRY_SOURCE" "$REGISTRY_SNAPSHOT"; then
+  echo >&2 "FAIL: registry snapshot could not be created"
+  exit 1
+fi
+chmod 600 "$REGISTRY_SNAPSHOT"
+REGISTRY="$REGISTRY_SNAPSHOT"
 
 resolve_tool() {
   local requested="$1" resolved
@@ -69,7 +85,7 @@ if [[ "$VERSION_TAG" == "!!str" && "$VERSION" == "0.2" \
   EXACT_STUB=1
 fi
 if [[ $EXACT_STUB -eq 1 ]]; then
-  echo "INFO: registry at $REGISTRY is the exact relocated public stub — skipping validation."
+  echo "INFO: registry at $REGISTRY_SOURCE is the exact relocated public stub — skipping validation."
   exit 0
 fi
 if [[ "$RELOCATED" == "true" || "$WIKIS_TAG" != "!!seq" || "$WIKIS_LEN" == "0" ]]; then
@@ -110,7 +126,7 @@ GH_PATH=""
 PUBLIC_WIKI_PATTERN='/llm-wiki(/|$)'
 
 check_live_repo() {
-  local short="$1" repo="$2" status="$3" json visibility archived
+  local short="$1" repo="$2" status="$3" json identity visibility archived
   if [[ "$status" != "bootstrapped" && "$status" != "live" ]]; then
     return 0
   fi
@@ -121,13 +137,20 @@ check_live_repo() {
     echo >&2 "FAIL: gh is required for bootstrapped/live registry rows"
     return 2
   fi
-  if ! json="$($GH_PATH repo view "$repo" --json visibility,isArchived 2>/dev/null)"; then
+  if ! json="$($GH_PATH repo view "github.com/$repo" --json nameWithOwner,visibility,isArchived 2>/dev/null)"; then
     echo >&2 "FAIL: $short repo $repo not found on GH"
     return 1
   fi
-  visibility="$(printf '%s' "$json" | "$YQ_PATH" -r '.visibility' - 2>/dev/null || true)"
-  archived="$(printf '%s' "$json" | "$YQ_PATH" -r '.isArchived' - 2>/dev/null || true)"
-  if [[ "$visibility" != "PRIVATE" ]]; then
+  if ! identity="$(printf '%s' "$json" | "$YQ_PATH" -r '.nameWithOwner' - 2>/dev/null)" \
+    || ! visibility="$(printf '%s' "$json" | "$YQ_PATH" -r '.visibility' - 2>/dev/null)" \
+    || ! archived="$(printf '%s' "$json" | "$YQ_PATH" -r '.isArchived' - 2>/dev/null)"; then
+    echo >&2 "FAIL: yq could not parse the live repository response"
+    return 2
+  fi
+  if [[ "$identity" != "$repo" ]]; then
+    echo >&2 "FAIL: $short live repository identity does not match the registry"
+    return 1
+  elif [[ "$visibility" != "PRIVATE" ]]; then
     echo >&2 "FAIL: $short posture=client-private but visibility=$visibility"
     return 1
   fi
@@ -139,7 +162,7 @@ check_live_repo() {
 }
 
 check_clone() {
-  local short="$1" repo="$2" clone="$3" parent remote expected
+  local short="$1" repo="$2" clone="$3" parent fetch push expected
   [[ -n "$clone" && "$clone" != "null" ]] || return 0
   parent="$(dirname "$clone")"
   if [[ ! -d "$parent" ]]; then
@@ -150,12 +173,20 @@ check_clone() {
     echo >&2 "FAIL: $short clone $clone missing or not a real Git working tree"
     return 1
   fi
-  remote="$(git -C "$clone" config --get remote.origin.url 2>/dev/null || true)"
+  if ! fetch="$(git -C "$clone" remote get-url --all origin 2>/dev/null)" \
+    || ! push="$(git -C "$clone" remote get-url --push --all origin 2>/dev/null)"; then
+    echo >&2 "FAIL: $short clone origin is unavailable"
+    return 1
+  fi
+  if [[ "$fetch" == *$'\n'* || "$push" == *$'\n'* ]]; then
+    echo >&2 "FAIL: $short clone has multiple effective origin destinations"
+    return 1
+  fi
   for expected in \
     "https://github.com/$repo" \
     "https://github.com/$repo.git" \
     "git@github.com:$repo.git"; do
-    [[ "$remote" == "$expected" ]] && return 0
+    [[ "$fetch" == "$expected" && "$push" == "$expected" ]] && return 0
   done
   echo >&2 "FAIL: $short clone origin does not match $repo"
   return 1
@@ -179,13 +210,20 @@ check_raw_root() {
   return 0
 }
 
+if ! INDICES="$(yq_value '.wikis | keys | .[]')"; then
+  echo >&2 "FAIL: yq failed while reading validated registry entries"
+  exit 2
+fi
 while IFS= read -r index; do
   [[ -n "$index" ]] || continue
-  SHORT="$(yq_value ".wikis[$index].short_name // \"\"")"
-  REPO="$(yq_value ".wikis[$index].repo // \"\"")"
-  POSTURE="$(yq_value ".wikis[$index].posture // \"\"")"
-  STATUS="$(yq_value ".wikis[$index].status // \"\"")"
-  CLONE="$(yq_value ".wikis[$index].local_working_clone // \"\"")"
+  if ! SHORT="$(yq_value ".wikis[$index].short_name // \"\"")" \
+    || ! REPO="$(yq_value ".wikis[$index].repo // \"\"")" \
+    || ! POSTURE="$(yq_value ".wikis[$index].posture // \"\"")" \
+    || ! STATUS="$(yq_value ".wikis[$index].status // \"\"")" \
+    || ! CLONE="$(yq_value ".wikis[$index].local_working_clone // \"\"")"; then
+    echo >&2 "FAIL: yq failed while reading validated registry fields"
+    exit 2
+  fi
   if [[ -z "$SHORT" || -z "$REPO" || "$POSTURE" != "client-private" || -z "$STATUS" ]]; then
     echo >&2 "FAIL: entry index=$index missing required identity/posture/status"
     FAILED=1
@@ -203,12 +241,16 @@ while IFS= read -r index; do
   if ! check_clone "$SHORT" "$REPO" "$CLONE"; then
     FAILED=1
   fi
+  if ! ROOTS="$(yq_value ".wikis[$index].raw_roots[]")"; then
+    echo >&2 "FAIL: yq failed while reading validated raw roots"
+    exit 2
+  fi
   while IFS= read -r root; do
     [[ -n "$root" ]] || continue
     if ! check_raw_root "$SHORT" "$root"; then
       FAILED=1
     fi
-  done < <(yq_value ".wikis[$index].raw_roots[]" 2>/dev/null || true)
-done < <(yq_value '.wikis | keys | .[]')
+  done <<< "$ROOTS"
+done <<< "$INDICES"
 
 exit "$FAILED"

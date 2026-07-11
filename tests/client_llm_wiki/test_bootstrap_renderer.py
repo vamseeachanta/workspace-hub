@@ -1,14 +1,16 @@
 """Pinned-snapshot and descriptor-bound renderer tests for issue #3449."""
+
 from __future__ import annotations
 
 import io
+import os
 from pathlib import Path
 import stat
 import subprocess
 import tarfile
 
 import pytest
-
+from client_llm_wiki import bootstrap_renderer
 from client_llm_wiki.bootstrap_renderer import (
     BootstrapRenderError,
     RenderTokens,
@@ -103,13 +105,27 @@ def test_render_uses_committed_head_and_normalizes_modes(tmp_path):
     manifest = _render(repo, clone)
 
     assert manifest.template_commit == commit
-    assert (clone / "README.md").read_text() == (
-        "# example-co\nexample-org/llm-wiki-example-co\n"
-    )
+    assert (clone / "README.md").read_text() == ("# example-co\nexample-org/llm-wiki-example-co\n")
     assert not (clone / "untracked.txt").exists()
     assert stat.S_IMODE((clone / "README.md").stat().st_mode) == 0o644
     assert stat.S_IMODE((clone / "verify.sh").stat().st_mode) == 0o755
     assert (clone / ".git" / "sentinel").read_text() == "git metadata\n"
+
+
+def test_template_snapshot_ignores_hostile_ambient_git_environment(tmp_path, monkeypatch):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+    decoy = tmp_path / "decoy"
+    subprocess.run(["git", "init", str(decoy)], check=True, capture_output=True)
+    monkeypatch.setenv("GIT_DIR", str(decoy / ".git"))
+    monkeypatch.setenv("GIT_WORK_TREE", str(decoy))
+    monkeypatch.setenv("GIT_CONFIG_COUNT", "1")
+    monkeypatch.setenv("GIT_CONFIG_KEY_0", "core.bare")
+    monkeypatch.setenv("GIT_CONFIG_VALUE_0", "true")
+
+    _render(repo, clone)
+
+    assert (clone / "README.md").read_text().startswith("# example-co")
 
 
 def test_allowlisted_tokens_resolve_and_project_token_survives(tmp_path):
@@ -124,8 +140,7 @@ def test_allowlisted_tokens_resolve_and_project_token_survives(tmp_path):
     _render(repo, clone)
 
     assert (clone / "README.md").read_text() == (
-        "example-co|EXAMPLE-CO|example-org/llm-wiki-example-co|"
-        "not-mounted|false|<PROJECT_SHORT_NAME>\n"
+        "example-co|EXAMPLE-CO|example-org/llm-wiki-example-co|not-mounted|false|<PROJECT_SHORT_NAME>\n"
     )
 
 
@@ -148,6 +163,20 @@ def test_git_symlink_is_rejected_before_clone_writes(tmp_path):
     clone = _empty_clone(tmp_path)
 
     with pytest.raises(BootstrapRenderError, match="symlink|mode"):
+        _render(repo, clone)
+
+    assert sorted(path.name for path in clone.iterdir()) == [".git"]
+
+
+def test_missing_privacy_firewall_is_rejected_before_clone_writes(tmp_path):
+    repo = _template_repo(tmp_path)
+    firewall = repo / "templates" / "client-llm-wiki" / ".gitignore"
+    firewall.unlink()
+    _git(repo, "add", "templates/client-llm-wiki/.gitignore")
+    _git(repo, "commit", "-m", "test: remove required firewall")
+    clone = _empty_clone(tmp_path)
+
+    with pytest.raises(BootstrapRenderError, match="firewall"):
         _render(repo, clone)
 
     assert sorted(path.name for path in clone.iterdir()) == [".git"]
@@ -220,6 +249,77 @@ def test_forced_failure_removes_only_matching_created_entries(tmp_path):
     assert sorted(path.name for path in clone.iterdir()) == [".git"]
 
 
+def test_stage_bound_failure_removes_the_bound_stage(tmp_path):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+
+    def fail_stage(event, _relative_path, _fd):
+        if event == "stage_bound":
+            raise RuntimeError("stage bind failure")
+
+    with pytest.raises(BootstrapRenderError, match="stage bind failure"):
+        _render(repo, clone, fail_stage)
+
+    assert sorted(path.name for path in clone.iterdir()) == [".git"]
+    assert not list(tmp_path.glob(".client-wiki-stage-*"))
+
+
+def test_partial_write_failure_is_removed_from_the_ledger(tmp_path, monkeypatch):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+
+    def fail_after_partial_write(descriptor, data):
+        os.write(descriptor, data[:1])
+        raise OSError("simulated disk full")
+
+    monkeypatch.setattr(bootstrap_renderer, "_write_all", fail_after_partial_write)
+    with pytest.raises(BootstrapRenderError, match="simulated disk full"):
+        _render(repo, clone)
+
+    assert sorted(path.name for path in clone.iterdir()) == [".git"]
+    assert not list(tmp_path.glob(".client-wiki-stage-*"))
+
+
+def test_directory_chmod_failure_is_removed_from_the_ledger(tmp_path, monkeypatch):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+    real_fchmod = os.fchmod
+    failed = False
+
+    def fail_first_directory(descriptor, mode):
+        nonlocal failed
+        if not failed and stat.S_ISDIR(os.fstat(descriptor).st_mode):
+            failed = True
+            raise OSError("simulated chmod failure")
+        real_fchmod(descriptor, mode)
+
+    monkeypatch.setattr(bootstrap_renderer.os, "fchmod", fail_first_directory)
+    with pytest.raises(BootstrapRenderError, match="simulated chmod failure"):
+        _render(repo, clone)
+
+    assert sorted(path.name for path in clone.iterdir()) == [".git"]
+    assert not list(tmp_path.glob(".client-wiki-stage-*"))
+
+
+def test_stage_interference_aborts_before_target_install(tmp_path):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+
+    def add_foreign_stage_child(event, relative_path, descriptor):
+        if event != "stage_member_bound" or relative_path != "docs":
+            return
+        child = os.open("foreign", os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600, dir_fd=descriptor)
+        os.close(child)
+
+    with pytest.raises(BootstrapRenderError, match="stage cleanup"):
+        _render(repo, clone, add_foreign_stage_child)
+
+    assert sorted(path.name for path in clone.iterdir()) == [".git"]
+    residue = list(tmp_path.glob(".client-wiki-stage-*"))
+    assert len(residue) == 1
+    assert (residue[0] / "docs" / "foreign").exists()
+
+
 def test_replaced_bound_file_and_victim_are_never_deleted(tmp_path):
     repo = _template_repo(tmp_path)
     clone = _empty_clone(tmp_path)
@@ -255,6 +355,33 @@ def test_nonempty_created_directory_is_left_as_bounded_residue(tmp_path):
 
     assert (clone / "docs" / "intruder").read_text() == "foreign\n"
     assert (clone / ".git" / "sentinel").read_text() == "git metadata\n"
+
+
+def test_unexpected_post_bind_member_causes_final_inventory_failure(tmp_path):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+
+    def add_unexpected(event, _relative_path, _fd):
+        if event == "before_final_revalidation":
+            (clone / "unexpected").write_text("foreign\n", encoding="utf-8")
+
+    with pytest.raises(BootstrapRenderError, match="inventory"):
+        _render(repo, clone, add_unexpected)
+
+    assert (clone / "unexpected").read_text() == "foreign\n"
+    assert (clone / ".git" / "sentinel").read_text() == "git metadata\n"
+
+
+def test_directory_modes_are_normalized_despite_umask(tmp_path):
+    repo = _template_repo(tmp_path)
+    clone = _empty_clone(tmp_path)
+    previous = os.umask(0o077)
+    try:
+        _render(repo, clone)
+    finally:
+        os.umask(previous)
+
+    assert stat.S_IMODE((clone / "docs").stat().st_mode) == 0o755
 
 
 def test_bind_rejects_symlink_clone(tmp_path):
