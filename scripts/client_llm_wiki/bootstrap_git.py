@@ -145,23 +145,27 @@ def _validate_records(records: list[tuple[str, str]], repo_slug: str) -> dict[st
 
 
 def _validate_head(bound: BoundCloneLayout) -> None:
-    result = subprocess.run(
-        ["git", f"--git-dir=/proc/self/fd/{bound.git_fd}", "symbolic-ref", "-q", "HEAD"],
-        check=False, capture_output=True, text=True, pass_fds=(bound.git_fd,),
-        env=isolated_env(),
-    )
+    result = _run_head_git(bound, "symbolic-ref", "-q", "HEAD", text=True)
     if result.returncode != 0 or result.stdout != "refs/heads/main\n":
         raise BootstrapGitError("clone HEAD must be the symbolic main branch")
-    branch = subprocess.run(
-        [
-            "git", f"--git-dir=/proc/self/fd/{bound.git_fd}",
-            "show-ref", "--verify", "--quiet", "refs/heads/main",
-        ],
-        check=False, capture_output=True, pass_fds=(bound.git_fd,),
-        env=isolated_env(),
+    branch = _run_head_git(
+        bound, "show-ref", "--verify", "--quiet", "refs/heads/main",
     )
     if branch.returncode != 1:
         raise BootstrapGitError("clone HEAD main branch must be truly unborn")
+
+
+def _run_head_git(
+    bound: BoundCloneLayout, *args: str, text: bool = False,
+) -> subprocess.CompletedProcess:
+    try:
+        return subprocess.run(
+            ["git", f"--git-dir=/proc/self/fd/{bound.git_fd}", *args],
+            check=False, capture_output=True, text=text, pass_fds=(bound.git_fd,),
+            env=isolated_env(), timeout=5,
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise BootstrapGitError("clone HEAD validation timed out") from exc
 
 
 def validate_clone_git(bound: BoundCloneLayout, repo_slug: str) -> dict[str, str]:

@@ -6,6 +6,7 @@ import os
 import errno
 from pathlib import Path
 import subprocess
+import time
 
 import pytest
 
@@ -212,6 +213,21 @@ def test_clone_rejects_valid_born_main(tmp_path):
     _git(clone, "-c", "user.name=Test", "-c", "user.email=test@example.invalid", "commit", "--allow-empty", "-m", "born")
     with bind_clone(clone) as bound, pytest.raises(BootstrapGitError, match="unborn"):
         validate_clone_git(bound, REPO)
+
+
+@pytest.mark.parametrize("fifo_location", ["HEAD", "main-ref"])
+def test_clone_fifo_git_ref_state_fails_within_fixed_bound(tmp_path, fifo_location):
+    clone = _clone(tmp_path, "https://github.com/owner/llm-wiki-slug.git")
+    fifo = clone / ".git" / "HEAD"
+    if fifo_location == "main-ref":
+        fifo = clone / ".git" / "refs" / "heads" / "main"
+    fifo.unlink(missing_ok=True)
+    os.mkfifo(fifo)
+
+    started = time.monotonic()
+    with bind_clone(clone) as bound, pytest.raises(BootstrapGitError, match="timed out"):
+        validate_clone_git(bound, REPO)
+    assert time.monotonic() - started < 7
 
 
 def test_author_env_requires_both_values_and_does_not_persist_config():
