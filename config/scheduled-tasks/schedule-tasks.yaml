@@ -843,7 +843,12 @@ tasks:
     schedule: "0 */4 * * *"
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
     roles: [control-plane, comms-dispatch, sim-worker]
-    requires: [bash, git]
+    requires: [bash, git, uv, python3]
+    runtime:
+      singleton: true
+      max_seconds: 10800
+      state_dir: .claude/state/cron-runtime/repository-sync
+      filesystem_wait_wchans: [request_wait_answer]
     command: >-
       cd $WORKSPACE_HUB &&
       bash scripts/cron-repository-sync.sh

@@ -178,6 +178,43 @@ def test_repo_sync_on_all_linux(tasks):
     assert "dev-secondary" in machines
 
 
+def test_repository_sync_runtime_contract_is_bounded_and_singleton(tasks):
+    task = next(t for t in tasks if t["id"] == "repository-sync")
+    runtime = task["runtime"]
+    assert runtime == {
+        "singleton": True,
+        "max_seconds": 10800,
+        "state_dir": ".claude/state/cron-runtime/repository-sync",
+        "filesystem_wait_wchans": ["request_wait_answer"],
+    }
+
+
+@pytest.mark.parametrize("max_seconds", [59, 604801, 0, "10800"])
+def test_runtime_max_seconds_must_be_integer_in_fixed_range(max_seconds):
+    validator = _load_module("validate_schedule_runtime", VALIDATOR)
+    errors = validator.validate_runtime_contract(
+        "task-a",
+        {
+            "singleton": True,
+            "max_seconds": max_seconds,
+            "state_dir": ".claude/state/cron-runtime/task-a",
+        },
+        set(),
+    )
+    assert any("max_seconds" in error for error in errors)
+
+
+@pytest.mark.parametrize("state_dir", ["/tmp/state", "../state", ".state/../escape"])
+def test_runtime_state_dir_rejects_absolute_and_traversal(state_dir):
+    validator = _load_module("validate_schedule_runtime_path", VALIDATOR)
+    errors = validator.validate_runtime_contract(
+        "task-a",
+        {"singleton": True, "max_seconds": 60, "state_dir": state_dir},
+        set(),
+    )
+    assert any("state_dir" in error for error in errors)
+
+
 def test_repo_ecosystem_hygiene_task_contract(tasks):
     task = next((t for t in tasks if t["id"] == "repo-ecosystem-hygiene"), None)
     assert task is not None, "repo-ecosystem-hygiene task not found"
