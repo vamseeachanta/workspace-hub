@@ -22791,7 +22791,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - status:needs-plan
+      - status:plan-review
       - gate:completeness
       - lane:codex
     initial_status: triage

@@ -1438,7 +1438,7 @@ cards:
     title: 'epic(client-layer): client presentation — provenance, PDF export, guided demo path'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/945
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - status:plan-approved
