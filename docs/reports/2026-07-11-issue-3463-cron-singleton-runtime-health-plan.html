@@ -23,7 +23,7 @@
   <p>Repository sync will become a tested singleton. Cron health will report runtime and log evidence independently, validate PID identity without broad process or filesystem scans, and expose safe operator evidence without terminating anything automatically.</p>
 
   <h2>Chosen design</h2>
-  <p>A task-owned runtime record and nonblocking lock will replace heuristic <code>pgrep -f</code> identity. Each record will carry task ID, PID, process-group/session IDs, process start token, start time, and result state. PID start-token validation will reject stale or reused PIDs.</p>
+  <p>Separate task-owned active, contention, and last-result records plus a nonblocking lock will replace heuristic <code>pgrep -f</code> identity. Each active record will carry task ID, PID, process-group/session IDs, process start token, start time, process state, and wait channel. PID start-token validation will reject stale or reused PIDs without conflating a completed run with stale evidence.</p>
   <table><thead><tr><th>Approach</th><th>Decision</th><th>Reason</th></tr></thead><tbody>
     <tr><td>Task-owned state + lock</td><td class="good">Use</td><td>Bounded, exact, testable, reusable</td></tr>
     <tr><td>Substring <code>pgrep -f</code></td><td class="stop">Reject</td><td>Self-matches and confuses descendants</td></tr>
@@ -33,7 +33,7 @@
   <h2>Implementation slices</h2>
   <ol>
     <li>Write RED runtime-contract and schedule-schema tests.</li>
-    <li>Implement the minimal atomic runtime runner and PID validation.</li>
+    <li>Implement the minimal atomic runtime runner, PID validation, signal forwarding, and lock retention until the child group exits.</li>
     <li>Enforce repository-sync singleton and reconcile its declared/rendered log.</li>
     <li>Add independent runtime states to cron-health console and JSON output.</li>
     <li>Test transactional reconciliation of stale catalog entries and preserved external entries.</li>
