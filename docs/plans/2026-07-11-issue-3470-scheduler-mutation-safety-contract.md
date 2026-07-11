@@ -109,7 +109,8 @@ A fail-closed registry, enforcement check, policy, and HTML audit report will en
 ```text
 function discover_mutation_surfaces(repo):
     obtain NUL-delimited tracked paths from git ls-files -z
-    read index bytes with git cat-file --batch, never dirty working-tree bytes
+    read index bytes with git cat-file --batch-command -Z, never dirty working-tree bytes
+    fail closed with a minimum-Git diagnostic when -Z is unavailable
     pass normalized (path, index_bytes) records to a pure scanner
     discover direct primitives and reviewed call edges separately
     honor the forensic sentinel only in the exact checker/test allowlist paths
@@ -120,11 +121,12 @@ function validate_registry(registry, discovered):
     reject duplicate, missing, or non-existent paths
     require target_kind, execution_host_binding, scheduler_identity, ownership_authority
     require each direct surface to enumerate operations and every authority branch
-    require typed enums and booleans for target, branch strength, and transaction fields
+    require typed enums and booleans for operation target, branch strength, and transaction fields
     reject unknown keys, empty attestations, and descriptive owner/note authority
     for each true guarantee, run a closed checker-owned attestation evaluator
     reject registry-defined regexes, tokens, line numbers, or prose as truth predicates
-    compute surface status from the worst destructive branch and transaction guarantee
+    run a checker-owned operation/authority-branch-set evaluator for shared classifiers/backends
+    derive surface status from the closed worst-case lattice; do not store authored status
     for migration-required, allow false or unknown guarantees but require a distinct disposition issue
     validate offline issue coordinates as this repository + numeric issue + non-self reference
     validate disposition groups cover an exact declared set of migration surfaces
@@ -134,7 +136,7 @@ function render_audit(registry, discovered, output):
     call the same registry validator before rendering
     group surfaces by scheduler identity and compliance status
     deterministically show every row once with exact gaps and follow-up links
-    embed input_digest = sha256(registry bytes + sorted path/NUL/index-bytes records)
+    embed input_digest from the versioned length-framed byte serialization below
     state that registry inclusion is not approval to mutate live scheduler state
 
 command check-scheduler-mutation-surfaces.py:
@@ -149,14 +151,38 @@ Each registry surface will use this closed structure; unknown keys will fail:
 
 | Level | Required fields / closed values |
 |---|---|
-| Surface | `path`, `kind: direct-owner|transitive-entrypoint`, `target_kind: current-user-cron|root-cron|systemd-user|windows-current-user-task`, `execution_host_binding: physical-local|explicit-remote-transport`, `operations`, `computed_status` |
-| Operation | `id`, `primitive: crontab-replace|systemd-user-unit-write|windows-task-set|windows-task-unregister-register`, `destructive`, `authority_branches`, `transaction` |
+| Surface | `path`, `kind: direct-owner|transitive-entrypoint`, `operations`; authored status is forbidden because status is derived |
+| Operation | `id`, `primitive: crontab-replace|systemd-user-unit-write|systemd-user-enable-disable|windows-task-set|windows-task-unregister-register`, `target_kind: current-user-cron|root-cron|systemd-user|windows-current-user-task`, `scheduler_identity`, `execution_host_binding: physical-local|explicit-remote-transport`, optional closed `selection_condition`, `destructive`, `authority_branches`, `transaction` |
 | Authority branch | `id`, `mechanism: managed-block-exact|exact-sentinel|command-tokens-adjacent|command-substring|catalog-key-substring|fixed-task-path-name|unknown`, `config_source`, `destructive`, `strength: exact|parsed|substring|unknown` |
 | Transaction | booleans for `lock`, `baseline_snapshot`, `backup`, `pre_write_cas`, `post_write_preservation_verify`, `post_write_exact_state_verify`, `rollback_cas`; every `true` field requires one checker-owned attestation ID |
 | Transitive edge | `callee`, `call_form: literal-exec|literal-bash|constant-path-exec`, `mutation_mode: default|flag-gated`, `target_guard_attestation` |
 | Disposition group | `group_id`, one GitHub issue coordinate, exact member paths, and one defect-class enum; issue reuse is allowed only within that exact group |
 
-Closed attestation IDs will be implemented in checker code, not configured as regexes. Initial evaluators will include `python-physical-host-equality-guard-v1`, `python-prewrite-baseline-cas-v1`, `python-postwrite-preservation-multiset-v1`, `python-postwrite-exact-state-v1`, `python-rollback-after-cas-v1`, `cron-command-tokens-adjacent-v1`, `managed-block-exact-v1`, `shell-exact-sentinel-v1`, and scheduler-specific fixed-name evaluators. Each evaluator will parse the relevant source/config shape conservatively and return `unknown` on unsupported syntax. Mutation tests will alter the required source shape and prove the attestation fails. `cron_apply.py` will enumerate separate authority branches for preserved-entry promotion, installed fingerprints, and catalog-key fallback; substring branches will force its destructive-identity status to `migration-required`. Its preservation verifier will not be mislabeled as exact intended-state verification.
+Closed attestation IDs will be implemented in checker code, not configured as regexes. Initial evaluators will be exactly: `python-physical-host-equality-guard-v1`, `python-prewrite-baseline-cas-v1`, `python-postwrite-preservation-multiset-v1`, `python-postwrite-exact-state-v1`, `python-rollback-after-cas-v1`, `cron-command-tokens-adjacent-v1`, `managed-block-exact-v1`, `shell-exact-sentinel-v1`, `cron-classifier-destructive-branches-v1`, `kanban-backend-operation-set-v1`, `crontab-current-user-target-v1`, `crontab-root-target-v1`, `systemd-user-unit-name-v1`, `systemd-user-enable-disable-v1`, `windows-task-path-name-v1`, `windows-current-user-principal-v1`, `windows-task-set-operation-v1`, and `windows-task-unregister-register-v1`. Unknown IDs fail. Each evaluator will parse its fixed source/config shape conservatively and return `unknown` on unsupported syntax. Mutation tests will alter the required source shape and prove the attestation fails. The classifier/backend set evaluators will derive the complete destructive branch or operation IDs; registry equality with that derived set will be mandatory, so a future fourth branch cannot be omitted. `cron_apply.py` will enumerate separate authority branches for preserved-entry promotion, installed fingerprints, and catalog-key fallback; substring branches will force its destructive-identity status to `migration-required`. Its preservation verifier will not be mislabeled as exact intended-state verification.
+
+The kanban surface will remain one unique direct-owner path with at least three distinct operations: systemd unit-file write, systemd enable/disable, and current-user crontab replacement. Each operation will carry its own target and selection condition, and `kanban-backend-operation-set-v1` will prove neither capability branch is omitted.
+
+The derived status lattice will be deterministic:
+
+1. `migration-required` when any destructive authority branch has `substring|unknown` strength, any target/branch-set attestation is false/unknown, or any required transaction guarantee is false/unknown.
+2. `compliant` only when every destructive branch is `exact|parsed`, all target and completeness attestations pass, and every required transaction guarantee passes.
+3. Non-destructive preservation-only substring branches will be reported as warnings but will not alone downgrade status.
+
+There will be no authored `computed_status`; the checker and HTML renderer will use only the derived value.
+
+### Canonical provenance serialization
+
+The report digest preimage will be versioned and collision-free at record boundaries:
+
+```text
+ASCII "scheduler-mutation-input-v1\0"
+u64be(registry_length) || registry_bytes
+u64be(record_count)
+for each record sorted by raw path bytes:
+    u64be(path_length) || raw_path_bytes || u64be(blob_length) || index_blob_bytes
+```
+
+The included record set will be the union of all registered direct/transitive paths, every registry-referenced config/source path, the checker, its test, and `.github/workflows/enforcement-gate.yml`. Paths will remain raw bytes through `git ls-files -z`, `git cat-file --batch-command -Z`, bytewise sorting, and framing; decoding is presentation-only. `-Z` support is mandatory and absence fails closed. Tests will cover newline, tab, leading dash, non-UTF-8 path bytes, record-order stability, and adversarial boundary-collision pairs.
 
 ---
 
@@ -194,6 +220,9 @@ No production scheduler writer will be behaviorally modified in this issue. Befo
 | `test_compliant_claims_require_source_attestation` | Registry booleans cannot certify behavior without matching source evidence. | Truthy guarantee with absent/mismatched evidence | Schema/attestation failure. |
 | `test_closed_attestation_evaluators_reject_mutated_source_shapes` | Registry prose/regex cannot define truth and each supported guarantee has an executable checker-owned predicate. | Wrong path, comment-only token, stale shape, reused unrelated attestation | Attestation returns unknown/failure. |
 | `test_mixed_authority_branches_compute_worst_case_status` | Safe CAS cannot hide substring-based destructive identity. | `cron_apply.py` branch matrix | Surface becomes `migration-required` until every destructive branch is semantic. |
+| `test_classifier_branch_set_is_complete` | A new destructive classifier route cannot be omitted from the registry. | Mutated classifier with fourth route | Derived branch-set mismatch/unknown failure. |
+| `test_dual_backend_owner_has_all_operation_targets` | One kanban owner represents systemd file/state and crontab branches without duplicate path rows. | Current kanban source + registry | Three operations and both target kinds required. |
+| `test_status_lattice_is_deterministic` | Worst-case status has one closed result for branch/target/transaction combinations. | Parametrized exact/substring/unknown and true/false matrix | Expected `compliant|migration-required`. |
 | `test_preservation_verification_is_not_exact_state_verification` | A multiset preservation check cannot certify the rendered intended state. | Current `cron_apply.py` evaluator | Preservation true; exact-state false/unknown. |
 | `test_migration_required_has_traced_follow_up` | Grandfathered gaps cannot become permanent anonymous exceptions. | Migration entry without issue URL | Schema failure. |
 | `test_follow_up_coordinates_reject_self_wrong_repo_and_duplicates` | Offline issue references cannot point to #3470, another repo, or violate reuse policy. | Adversarial disposition fixtures | Schema failure. |
@@ -202,6 +231,8 @@ No production scheduler writer will be behaviorally modified in this issue. Befo
 | `test_forensic_sentinel_cannot_suppress_production_mutator` | The narrow sentinel cannot become a production bypass. | Sentinelled mutation line outside exact checker/test allowlist | Mutation is still discovered. |
 | `test_html_is_deterministic_and_registry_complete` | Every registry row/status/link appears once and exact source provenance remains current. | Registry + index records | Byte-stable HTML, exact row parity, exact input digest. |
 | `test_stale_html_input_digest_fails` | CI cannot normalize away stale evidence. | HTML with prior digest | Parity failure. |
+| `test_digest_framing_is_unambiguous_and_byte_sorted` | Distinct record boundaries/order cannot share a preimage. | Collision-pair, path-order, odd-byte fixtures | Distinct/stable digests. |
+| `test_cat_file_transport_requires_nul_mode` | Newline/non-UTF-8 paths cannot corrupt index reads. | Fake Git with/without `-Z` support | Correct bytes or fail-closed version diagnostic. |
 | `test_enforcement_workflow_is_failure_propagating` | The new check cannot remain unused/advisory/commented out. | Parsed `.github/workflows/enforcement-gate.yml` | Active PR job runs validation and parity; no `continue-on-error`, `|| true`, or swallowed nonzero. |
 | `test_recognized_call_grammar_and_unknown_indirection` | Literal/constant wrapper calls are modeled and unsupported scheduler indirection fails for review. | Direct and variable-indirection wrapper fixtures | Known edge or explicit unknown-edge failure, never silent omission. |
 | `test_cli_reports_machine_readable_failures` | CI and operators receive deterministic diagnostics. | Invalid registry fixture | Stable JSON/text error and non-zero exit. |
@@ -211,7 +242,7 @@ No production scheduler writer will be behaviorally modified in this issue. Befo
 ## Acceptance Criteria
 
 - [ ] Tests will be written first and will fail before the registry/check exists.
-- [ ] The registry will enumerate exactly eight direct primitive owners plus three transitive entrypoints/call edges with exact scheduler identities and no broad filesystem scan.
+- [ ] The registry will enumerate exactly eight unique direct-owner paths plus three transitive entrypoints/call edges; multi-backend owners will carry operation-level targets and complete backend operations without duplicate path rows.
 - [ ] The enforcement check will fail on unregistered mutation primitives and invalid/incomplete safety contracts.
 - [ ] Reference/compliant guarantees will require closed checker-owned source attestations. `cron_apply.py` will enumerate every destructive authority branch; substring catalog/fingerprint branches will force worst-case identity status to `migration-required` while host/CAS guarantees remain independently attested.
 - [ ] Every non-compliant surface will have `migration-required` status plus a linked GitHub follow-up issue; registry inclusion alone will not waive the gap.
@@ -238,6 +269,7 @@ No production scheduler writer will be behaviorally modified in this issue. Befo
 | Fallback governance audit r2 | MAJOR → patched | Required operation/authority-branch modeling, worst-case status, and closed checker-owned evaluators. |
 | Fallback schedule audit r2 | MAJOR → patched | Required path-restricted sentinels, exact input provenance, parsed blocking-workflow semantics, and offline-only issue claims. |
 | Codex r2 | MAJOR → patched | Required substring branches to remain migration-required and split preservation verification from exact-state verification. |
+| Codex r3 | APPROVE | Verified both Codex r2 blockers against source at revision `89a3ef860`. |
 
 **Overall result:** FAIL — fallback r2 reviews returned MAJOR; revisions above require fresh re-review.
 
@@ -250,6 +282,7 @@ Revisions made based on r1:
 - Follow-up issue creation and offline validation boundaries are explicit.
 - R2 replaces path-level certification with operation/authority-branch modeling and worst-case status.
 - R2 defines closed checker-owned attestation IDs, exact index-byte authority, path-restricted forensic sentinels, exact input-digest provenance, and parsed failure-propagating workflow semantics.
+- R3 moves target identity to operations, adds classifier/backend completeness evaluators, closes Windows/systemd IDs and the status lattice, and defines `cat-file -Z` plus length-framed byte provenance.
 
 ---
 
