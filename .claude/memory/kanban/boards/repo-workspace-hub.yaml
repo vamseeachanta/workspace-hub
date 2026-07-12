@@ -23132,3 +23132,20 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3500
+    title: 'bug(pre-push): equivalence-state publish loops full tier-1 suite forever — remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3500
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:harness
+      - domain:git-hygiene
+      - machine:dev-primary
+      - status:plan-review
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
