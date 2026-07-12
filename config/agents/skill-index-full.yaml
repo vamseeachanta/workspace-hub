@@ -704,11 +704,11 @@ skills:
   name: claude-worker-patch-loop
   when_to_use: 'Choose this pattern when: - the work is non-trivial but file-local or small-batch - you want Claude to make edits directly, not just give advice - you already know the target file(s) - you want an external worker to improve wording/structure while preserving orchestration discipline Do not use this pattern when: - the task needs user interaction mid-stream - the file ownership is unclear - many files have overlapping edits that require central conflict resolution first'
   when_to_use_source: section
-- description: Operator checklist for instantiating a new per-client private llm-wiki repo under workspace-hub [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) + [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4 (amended) naming convention `llm-wiki-<client>`.
+- description: Bootstrap a registered private client wiki from the committed generic template.
   family: coordination
   id: coordination/client-llm-wiki-factory
   name: client-llm-wiki-factory
-  when_to_use: client-llm-wiki-factory Operator checklist for instantiating a new per-client private llm-wiki repo under workspace-hub [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) + [#2731](https://github.com/vamseeachanta/workspace-hub/issues/2731) D4 (amended) naming convention `llm-wiki-<client>`. coordination
+  when_to_use: client-llm-wiki-factory Bootstrap a registered private client wiki from the committed generic template. coordination
   when_to_use_source: backfill
 - description: Reopen and re-drive a previously closed GitHub plan issue after review/governance blockers are fixed, without prematurely restoring approval state.
   family: coordination
@@ -1510,6 +1510,12 @@ skills:
   name: excel-workbook-to-python-v2
   when_to_use: excel-workbook-to-python-v2 Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Proven superior quality vs Linux openpyxl extraction (24 vs 7 functions, 81 vs 53 tests). Validated on Ballymore jumper installation analysis. data
   when_to_use_source: backfill
+- description: Save/publish analysis or computation results from ANY ecosystem repo to Hugging Face as a queryable, viewer-renderable dataset. Use when the user wants to "save results to hugging face", "publish dataset to HF", "hugging face data saving", "save analysis results", "hf dataset", "make results queryable", or "render via datasets-server API". Reshapes nested results into flat parquet tables, writes a dataset card with a viewer `configs:` block and provenance, applies license/public-vs-private routing, enforces a domain data-quality gate (faithful-to-source != correct), publishes to `aceengineer/<repo>-<projection>`, and verifies via the datasets-server API.
+  family: data
+  id: data/hf-dataset-publishing
+  name: hf-dataset-publishing
+  when_to_use: '- You have analysis output (JSON, dicts, dataframes, a results folder) and want to save it somewhere queryable and viz-renderable, not just a file on disk. - You want a shareable, indexable surface for a set of computed results (per field / per well / per country / per run-summary, etc.). - Someone says "publish this to Hugging Face" / "save these results as an HF dataset". **Do NOT use this** to record algorithm-run identity/replay ledgers — that is the separate `aceengineer/<repo>-runs` contract (workspace-hub#3433). See Conventions below.'
+  when_to_use_source: section
 - description: Workflow for maintaining workspace-hub knowledge and learning pipelines across scripts/knowledge, scripts/learning, and docs/superpowers, including indexing, archive synthesis, issue updates, and pipeline troubleshooting.
   family: data
   id: data/knowledge-pipeline
