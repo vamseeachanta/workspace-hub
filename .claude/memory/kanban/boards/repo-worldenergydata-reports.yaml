@@ -1566,3 +1566,17 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#972
+    title: 'design(explorer): decide where Field Explorer visualizations are hosted'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/972
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:reports
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

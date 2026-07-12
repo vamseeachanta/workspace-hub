@@ -22795,11 +22795,12 @@ cards:
     title: 'Client-wiki factory: support metadata-only bootstrap without invented raw bucket'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3449
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
       - lane:codex
     initial_status: triage
     priority: 0
@@ -22916,6 +22917,78 @@ cards:
     title: 'audit(scheduler): enforce local-target identity and semantic ownership across mutation CLIs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3470
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3474
+    title: 'chore(skills): regenerate skill-index-full.yaml for hf-dataset-publishing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3474
+    gh_state: open
+    gh_labels:
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3475
+    title: 'fix(cron): make reconciler deletion identity semantic and verify exact post-write state'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3475
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3476
+    title: 'refactor(cron): migrate three legacy marker installers to transactional reconciliation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3476
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3477
+    title: 'fix(scheduler): make kanban loader timer transactional across systemd-user and cron'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3477
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3478
+    title: 'refactor(windows): add semantic ownership and recovery to scheduled-task installers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3478
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3479
+    title: 'fix(harness-update): propagate or explicitly surface cron reconciliation failure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3479
     gh_state: open
     gh_labels:
       - status:needs-plan

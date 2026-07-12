@@ -7493,3 +7493,36 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1548
+    title: Low-frequency diffraction RAO artifact for install_bokalift_2 (heave/sway blow up at freq ≤ 0.35 rad/s, non-beam headings)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1548
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1549
+    title: dm#1528 anti-roll assessment needs conduit-inertia term before publish
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1549
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1550
+    title: 'Added-mass/damping units inconsistency in DiffractionResults: matrix labeled kg/kg·m² but magnitudes consistent with te/te·m² (~1000× off)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1550
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
