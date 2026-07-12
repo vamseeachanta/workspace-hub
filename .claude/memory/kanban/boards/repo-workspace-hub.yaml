@@ -23144,6 +23144,25 @@ cards:
       - domain:git-hygiene
       - machine:dev-primary
       - status:plan-review
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3502
+    title: 'feat(equivalence): fleet publish-health monitoring in the equality matrix — detect gate-stalled/absent fingerprint publishes on all daily-cron machines (follow-on to #3500)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3502
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:operations
+      - cat:harness
+      - machine:multi
+      - status:plan-review
       - lane:claude
     initial_status: triage
     priority: 1

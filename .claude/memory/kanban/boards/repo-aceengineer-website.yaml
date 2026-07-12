@@ -413,7 +413,7 @@ cards:
     title: 'feat(capabilities): /capabilities index + card grid from registry [C3]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/51
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:tooling
     initial_status: triage
@@ -424,7 +424,7 @@ cards:
     title: 'feat(capabilities): per-capability detail template (table+chart+provenance) [C4]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/52
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:tooling
     initial_status: triage
