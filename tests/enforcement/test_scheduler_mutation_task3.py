@@ -407,11 +407,13 @@ def test_wrapper_attestations_reject_self_refreshed_reachability_bypass(source, 
 def _dead_transaction_source(records, mutation):
     tree = ast.parse(records[b"scripts/cron/cron_apply.py"])
     functions = {node.name: node for node in tree.body if isinstance(node, ast.FunctionDef)}
-    if mutation in {"run-lock", "run-helper"}:
+    if mutation in {"run-lock", "run-helper", "run-return"}:
         run = functions["run_cutover"]
         lock = next(node for node in run.body if isinstance(node, ast.With))
         index = run.body.index(lock)
-        if mutation == "run-lock":
+        if mutation == "run-return":
+            run.body.insert(index, ast.parse("return {'status': 'applied'}").body[0])
+        elif mutation == "run-lock":
             run.body[index] = ast.If(test=ast.Constant(False), body=[lock], orelse=[])
         else:
             run.body[index] = ast.FunctionDef(
@@ -419,24 +421,33 @@ def _dead_transaction_source(records, mutation):
                 kwonlyargs=[], kw_defaults=[], defaults=[]), body=[lock],
                 decorator_list=[]
             )
-        run.body.insert(index + 1, ast.parse(
-            "observation = _write_observation(plan['new_text'], _read, _write)"
-        ).body[0])
-    elif mutation == "finish-exact":
+        if mutation != "run-return":
+            run.body.insert(index + 1, ast.parse(
+                "observation = _write_observation(plan['new_text'], _read, _write)"
+            ).body[0])
+    elif mutation in {"finish-exact", "finish-return"}:
         finish = functions["_finish_exact"]
         guarded = next(node for node in finish.body if isinstance(node, ast.If)
                        and "observed == B" in ast.unparse(node.test))
         index = finish.body.index(guarded)
-        finish.body[index] = ast.If(test=ast.Constant(False), body=[guarded], orelse=[])
-        finish.body.insert(index + 1, ast.parse(
-            "return _transaction_result('applied', backup, expected=B)"
-        ).body[0])
+        if mutation == "finish-return":
+            finish.body.insert(index, ast.parse(
+                "return _transaction_result('applied', backup, expected=B)"
+            ).body[0])
+        else:
+            finish.body[index] = ast.If(test=ast.Constant(False), body=[guarded], orelse=[])
+            finish.body.insert(index + 1, ast.parse(
+                "return _transaction_result('applied', backup, expected=B)"
+            ).body[0])
     else:
         rollback = functions["_rollback"]
         lock = next(node for node in rollback.body if isinstance(node, ast.With))
         index = rollback.body.index(lock)
-        rollback.body[index] = ast.If(test=ast.Constant(False), body=[lock], orelse=[])
-        rollback.body.insert(index + 1, ast.parse("_write(A)").body[0])
+        if mutation == "rollback-raise":
+            rollback.body.insert(index, ast.parse("raise RuntimeError('stop')").body[0])
+        else:
+            rollback.body[index] = ast.If(test=ast.Constant(False), body=[lock], orelse=[])
+            rollback.body.insert(index + 1, ast.parse("_write(A)").body[0])
     ast.fix_missing_locations(tree)
     return ast.unparse(tree).encode()
 
@@ -448,9 +459,14 @@ def _dead_transaction_source(records, mutation):
                       "python-backup-baseline-v1"]),
         ("run-helper", ["python-lock-scope-v1", "python-prewrite-cas-v1",
                         "python-backup-baseline-v1"]),
+        ("run-return", ["python-lock-scope-v1", "python-prewrite-cas-v1",
+                        "python-backup-baseline-v1"]),
         ("finish-exact", ["python-postwrite-exact-state-v1"]),
+        ("finish-return", ["python-postwrite-exact-state-v1"]),
         ("rollback", ["python-rollback-after-cas-v1",
                       "python-rollback-exact-baseline-v1"]),
+        ("rollback-raise", ["python-rollback-after-cas-v1",
+                            "python-rollback-exact-baseline-v1"]),
     ],
 )
 def test_transaction_attestations_reject_dead_safe_path_with_unsafe_live_path(
