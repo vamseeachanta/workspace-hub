@@ -6,7 +6,7 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3490
 > **Client:** N/A
 > **Lane:** lane:codex
-> **Review artifacts:** `scripts/review/results/2026-07-12-plan-3490-claude.md` | `scripts/review/results/2026-07-12-plan-3490-codex.md`
+> **Planned review artifacts:** `scripts/review/results/2026-07-12-plan-3490-claude.md` | `scripts/review/results/2026-07-12-plan-3490-codex.md`
 
 ---
 
@@ -158,6 +158,7 @@ remove resolved #3490 debt wording from operations documentation
 | Modify | `config/scheduled-tasks/mutation-surfaces.yaml` | Record dry-run propagation and decouple unchanged Windows best-effort skip from #3490 |
 | Modify | `scripts/enforcement/scheduler_mutation_delegation.py` | Require the revised exact mode contract |
 | Modify | `scripts/enforcement/scheduler_mutation_wrapper_attestations.py` | Require reachable propagation source shape and refresh the staged-blob pin |
+| Modify | `scripts/enforcement/scheduler_mutation_report.py` | Remove the resolved `swallow-3490` hyperlink special case so dead debt rendering cannot mask contract drift |
 | Modify | `tests/enforcement/test_scheduler_mutation_task3.py` | Add registry/source mutation regressions and remove active #3490 debt assertions |
 | Update | `docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html` | Refresh deterministic mode rendering |
 | Update | `docs/ops/scheduled-tasks.md` | Document resolved dry-run propagation and retained Windows boundary |
@@ -208,9 +209,9 @@ remove resolved #3490 debt wording from operations documentation
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | PENDING | Review not yet run |
-| Codex | PENDING | Review not yet run |
+| Codex | MINOR | Add the report renderer to transition scope and label not-yet-created review paths as planned |
 
-**Overall result:** PENDING — implementation remains blocked pending adversarial review and user approval.
+**Overall result:** PENDING — Codex MINOR corrections are incorporated; Claude review and final re-review remain pending. Implementation remains blocked.
 
 ---
 
