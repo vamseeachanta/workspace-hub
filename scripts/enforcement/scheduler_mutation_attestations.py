@@ -131,44 +131,24 @@ def derive_cron_classifier_branches(records: dict[bytes, bytes]) -> set[str] | N
     fn = _function(tree, "classify_line_detail")
     if fn is None:
         return None
-    reasons = []
-    for node in ast.walk(fn):
-        if not isinstance(node, ast.Return) or not isinstance(node.value, ast.Dict):
-            continue
-        values = {
-            key.value: value.value
-            for key, value in zip(node.value.keys, node.value.values)
-            if isinstance(key, ast.Constant) and isinstance(value, ast.Constant)
-        }
-        if values.get("class") == "cataloged":
-            reasons.append(values.get("reason"))
-    expected = ["catalog-owned-preserved-entry", "catalog-fingerprint", "catalog-command"]
-    module_count = sum(
+    text = ast.unparse(fn)
+    required = (
+        "identity = ownership_context.get('line_identities', {}).get(line)",
+        "'class': 'cataloged'", "'reason': identity['source']",
+        "return {'line': line, 'class': 'uncataloged', 'reason': 'no-match'}",
+    )
+    cataloged_returns = sum(
         "'class': 'cataloged'" in ast.unparse(node)
         for node in ast.walk(tree)
         if isinstance(node, ast.Dict)
     )
-    if sorted(reasons) != sorted(expected) or module_count != 3:
+    if not all(token in text for token in required) or cataloged_returns != 1:
         return None
-    return {
-        "preserved-promotion", "installed-fingerprint-token",
-        "installed-fingerprint-substring", "catalog-key-fallback",
-    }
+    return {"canonical-exact-line", "legacy-exact-line"}
 
 
 def derive_installed_fingerprint_branches(records: dict[bytes, bytes]) -> set[str]:
-    try:
-        tasks = (yaml.safe_load(records[SCHEDULE]) or {}).get("tasks", [])
-    except (KeyError, yaml.YAMLError):
-        return set()
-    result = set()
-    for task in tasks:
-        fingerprint = task.get("installed_fingerprint") or {}
-        if "command_tokens" in fingerprint:
-            result.add("installed-fingerprint-token")
-        if fingerprint and "command_tokens" not in fingerprint:
-            result.add("installed-fingerprint-substring")
-    return result
+    return set()
 
 
 def forensic_literal_lines(body: bytes) -> set[int]:
@@ -277,20 +257,52 @@ def evaluate_python(name: str, records: dict[bytes, bytes], source: bytes) -> bo
         guard = next((stmt for stmt in main.body if _abort_if(stmt, "mid", "physical_mid")), None)
         call = next((stmt for stmt in main.body if "run_cutover(" in ast.unparse(stmt)), None)
         return bool(guard and call and guard.lineno < call.lineno)
-    if name in {"python-lock-scope-v1", "python-baseline-snapshot-v1", "python-backup-baseline-v1", "python-prewrite-cas-v1"}:
-        return _prewrite_shape(records)
+    run_text = ast.unparse(run) if run else ""
+    lock = next((node for node in ast.walk(run) if isinstance(node, ast.With)
+                 and "_flock(LOCKFILE)" in ast.unparse(node)), None) if run else None
+    lock_text = ast.unparse(lock) if lock else ""
+    common = all(token in lock_text for token in (
+        "current = _read()", "current != A",
+        "create_backup(canonical_id, ts, A)",
+        "_write_observation(plan['new_text'], _read, _write)",
+    ))
+    if name == "python-lock-scope-v1":
+        return common
+    if name == "python-baseline-snapshot-v1":
+        return common and "A, plan = _build_cutover(selection, classes, ownership, _read)" in run_text
+    if name == "python-prewrite-cas-v1":
+        return common and "if current != A:\n            return" in run_text
+    if name == "python-backup-baseline-v1":
+        backup = run_text.find("backup = create_backup(canonical_id, ts, A)")
+        write = run_text.find("observation = _write_observation(plan['new_text'], _read, _write)")
+        return common and 0 <= backup < write
     if name == "python-postwrite-preservation-multiset-v1":
-        text = ast.unparse(run) if run else ""
-        return "after_counts = Counter" in text and "after_counts[line] < n" in text
+        finish = _function(tree, "_finish_exact")
+        text = ast.unparse(finish) if finish else ""
+        return "observed == B" in text and "_rollback(A, observed, backup, _read, _write)" in text
     if name == "python-postwrite-exact-state-v1":
-        return False
+        finish = _function(tree, "_finish_exact")
+        text = ast.unparse(finish) if finish else ""
+        return "not write_failed and observed == B" in text
     if name == "python-rollback-after-cas-v1":
-        return _rollback_shape(records)
+        rollback = _function(tree, "_rollback")
+        lock = next((node for node in ast.walk(rollback) if isinstance(node, ast.With)
+                     and "_flock(LOCKFILE)" in ast.unparse(node)), None) if rollback else None
+        text = ast.unparse(lock) if lock else ""
+        return "current != C" in text and "_write(A)" in text
+    if name == "python-rollback-exact-baseline-v1":
+        rollback = _function(tree, "_rollback")
+        text = ast.unparse(rollback) if rollback else ""
+        return "'rolled-back' if restored == A else 'rollback-failed'" in text
     if name == "cron-command-tokens-adjacent-v1":
         text = ast.unparse(_function(tree, "match_fingerprint")) if tree else ""
         return "shlex.split(line)" in text and "tokens[i:i + width] == wanted" in text
     if name == "cron-classifier-destructive-branches-v1":
         return derive_cron_classifier_branches(records) is not None
+    if name == "cron-canonical-legacy-exact-authority-v1":
+        return derive_cron_classifier_branches(records) == {
+            "canonical-exact-line", "legacy-exact-line"
+        }
     if name == "crontab-current-user-target-v1":
         fn = _function(tree, "write_crontab")
         needle = "_run([" + repr("crontab") + ", " + repr("-") + "]"

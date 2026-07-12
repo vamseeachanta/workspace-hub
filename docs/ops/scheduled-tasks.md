@@ -12,17 +12,27 @@ cron, systemd-user, and Windows Task Scheduler writers plus reviewed transitive
 entrypoints. Its checker derives status from tracked index bytes and does not
 authorize live scheduler changes.
 
+Direct cron ownership is restricted to canonical and declared legacy exact
+lines. Transitive entrypoints declare their complete delegation chain,
+terminal operation, mode arguments, target, exit behavior, and source
+attestation. The onboarding preview gap remains visible as #3490, while the
+harness-update error-swallowing disposition remains #3479.
+
 ```bash
 # Validate inventory, source attestations, and dispositions
 uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
+
+# Verify the deterministic exact-identity inventory
+uv run python scripts/cron/build-cron-identity-inventory.py --check
 
 # Verify the committed human audit is byte-current
 uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py \
   --check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html
 ```
 
-The human audit links migration issues
-[#3475](https://github.com/vamseeachanta/workspace-hub/issues/3475) through
+The human audit records [#3475](https://github.com/vamseeachanta/workspace-hub/issues/3475)
+as resolved and links active migration issues
+[#3476](https://github.com/vamseeachanta/workspace-hub/issues/3476) through
 [#3479](https://github.com/vamseeachanta/workspace-hub/issues/3479). Issue
 coordinates are checked offline; their live state is informational and does
 not convert a `migration-required` row into compliance.

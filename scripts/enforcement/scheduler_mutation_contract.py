@@ -31,6 +31,8 @@ TARGETS = {
     "windows-current-user-task",
 }
 MECHANISMS = {
+    "canonical-exact-line",
+    "legacy-exact-line",
     "managed-block-exact",
     "exact-sentinel",
     "command-tokens-adjacent",
@@ -55,10 +57,6 @@ DEFECT_CLASSES = {
     "transitive-mutation-error-swallowing",
 }
 DISPOSITION_CONTRACT = {
-    "cron-catalog-migration": (
-        3475, "mixed-destructive-ownership-authority",
-        {"scripts/cron/cron_apply.py", "scripts/cron/setup-cron.sh", "scripts/setup/new-machine-setup.sh"},
-    ),
     "legacy-crontab-writers": (
         3476, "untransactional-whole-crontab-replacement",
         {"scripts/coordination/context/setup_cron.sh", "scripts/operations/maintenance/setup_maintenance_cron.sh", "scripts/setup/setup-engineering-update-cron.sh"},
@@ -86,6 +84,8 @@ ATT_SOURCES = {
     "python-prewrite-cas-v1": b"scripts/cron/cron_apply.py",
     "python-postwrite-preservation-multiset-v1": b"scripts/cron/cron_apply.py",
     "python-postwrite-exact-state-v1": b"scripts/cron/cron_apply.py",
+    "python-rollback-exact-baseline-v1": b"scripts/cron/cron_apply.py",
+    "cron-canonical-legacy-exact-authority-v1": b"scripts/cron/cron_transaction.py",
     "python-rollback-after-cas-v1": b"scripts/cron/cron_apply.py",
     "cron-command-tokens-adjacent-v1": b"scripts/cron/cron_transaction.py",
     "cron-classifier-destructive-branches-v1": b"scripts/cron/cron_transaction.py",
@@ -102,6 +102,16 @@ ATT_SOURCES = {
     "context-windows-principal-v1": b"scripts/coordination/context/setup_scheduled_task.ps1",
     "context-windows-task-path-name-v1": b"scripts/coordination/context/setup_scheduled_task.ps1",
     "solver-windows-task-name-v1": b"scripts/solver/setup-scheduler.ps1",
+    "setup-default-apply-v1": b"scripts/cron/setup-cron.sh",
+    "setup-dry-run-v1": b"scripts/cron/setup-cron.sh",
+    "setup-live-reload-v1": b"scripts/cron/setup-cron.sh",
+    "setup-remote-reject-v1": b"scripts/cron/setup-cron.sh",
+    "setup-windows-skip-v1": b"scripts/cron/setup-cron.sh",
+    "new-machine-default-v1": b"scripts/setup/new-machine-setup.sh",
+    "new-machine-dry-run-v1": b"scripts/setup/new-machine-setup.sh",
+    "new-machine-windows-v1": b"scripts/setup/new-machine-setup.sh",
+    "harness-default-v1": b"scripts/cron/harness-update.sh",
+    "harness-dry-run-v1": b"scripts/cron/harness-update.sh",
 }
 
 
@@ -163,7 +173,7 @@ def digest_record_union(
     }
     for row in registry["surfaces"]:
         paths.add(row["path"].encode())
-        for operation in row["operations"]:
+        for operation in row.get("operations", []):
             paths.update(
                 branch["config_source"].encode()
                 for branch in operation["authority_branches"]
@@ -173,9 +183,17 @@ def digest_record_union(
                 if not source:
                     raise ValueError(f"attestation has no digest source: {name}")
                 paths.add(source)
-        guard = row.get("edge", {}).get("target_guard_attestation")
-        if guard:
-            paths.add(attestation_source(guard) or row["path"].encode())
+        for mode in row.get("delegation", {}).get("modes", []):
+            paths.add(attestation_source(mode["source_attestation"]) or row["path"].encode())
+    paths.update({
+        b"scripts/cron/build-cron-identity-inventory.py",
+        b"scripts/cron/cron_identity.py",
+        b"docs/reports/issue-3475-command-identity-inventory.json",
+        b"config/workstations/harness-state-classes.yaml",
+        b"config/workstations/registry.yaml",
+        b"config/scheduled-tasks/schedule-tasks.yaml",
+        b"tests/enforcement/test_scheduler_mutation_task3.py",
+    })
     missing = paths - records.keys()
     if missing:
         raise KeyError(f"digest source missing: {sorted(missing)!r}")
@@ -187,25 +205,26 @@ def validate_closed_schema(
     tracked_paths: set[bytes],
     primitives: set[str],
 ) -> list[str]:
-    if set(registry) != {"schema_version", "surfaces", "disposition_groups"}:
+    if set(registry) != {"schema_version", "surfaces", "disposition_groups", "resolved_dispositions"}:
         return ["registry top-level schema is invalid"]
-    if registry.get("schema_version") != 1:
-        return ["registry schema_version must be 1"]
+    if registry.get("schema_version") != 2:
+        return ["registry schema_version must be 2"]
     errors: list[str] = []
     for row in registry.get("surfaces", []):
         errors.extend(_validate_surface(row, tracked_paths, primitives))
     for group in registry.get("disposition_groups", []):
         errors.extend(_validate_group(group))
+    errors.extend(_validate_resolved(registry.get("resolved_dispositions")))
     return errors
 
 
 def _validate_surface(
     row: dict[str, Any], tracked_paths: set[bytes], primitives: set[str]
 ) -> list[str]:
-    allowed = {"path", "kind", "operations", "edge", "disposition_group"}
+    allowed = {"path", "kind", "operations", "delegation", "disposition_group"}
     path = row.get("path", "")
     errors: list[str] = []
-    required = {"path", "kind", "operations", "disposition_group"}
+    required = {"path", "kind"}
     if not required <= set(row) or set(row) - allowed or row.get("kind") not in {
         "direct-owner",
         "transitive-entrypoint",
@@ -213,15 +232,18 @@ def _validate_surface(
         errors.append(f"{path}: invalid surface schema")
     if path.encode() not in tracked_paths:
         errors.append(f"{path}: path is not tracked")
-    operations = row.get("operations")
-    if not isinstance(operations, list) or not operations:
-        return errors + [f"{path}: operations required"]
-    for operation in operations:
-        errors.extend(_validate_operation_schema(path, operation, primitives))
-    if row.get("kind") == "transitive-entrypoint":
-        errors.extend(_validate_edge(path, row.get("edge")))
-    elif "edge" in row:
-        errors.append(f"{path}: direct owner cannot declare edge")
+    if row.get("kind") == "direct-owner":
+        operations = row.get("operations")
+        if not isinstance(operations, list) or not operations:
+            return errors + [f"{path}: operations required"]
+        for operation in operations:
+            errors.extend(_validate_operation_schema(path, operation, primitives))
+        if "delegation" in row:
+            errors.append(f"{path}: direct owner cannot declare delegation")
+    else:
+        if "operations" in row:
+            errors.append(f"{path}: transitive surface cannot declare operations")
+        errors.extend(_validate_delegation(path, row.get("delegation")))
     return errors
 
 
@@ -279,16 +301,46 @@ def _validate_branch(path: str, branch: dict[str, Any]) -> list[str]:
     return errors
 
 
-def _validate_edge(path: str, edge: Any) -> list[str]:
-    required = {"callee", "call_form", "mutation_mode", "target_guard_attestation"}
-    if not isinstance(edge, dict) or set(edge) != required:
-        return [f"{path}: invalid edge schema"]
-    errors: list[str] = []
-    if edge.get("call_form") not in CALL_FORMS:
-        errors.append(f"{path}: invalid edge call form")
-    if edge.get("mutation_mode") not in MUTATION_MODES:
-        errors.append(f"{path}: invalid edge mutation mode")
+def _validate_delegation(path: str, delegation: Any) -> list[str]:
+    if not isinstance(delegation, dict) or set(delegation) != {"immediate_callee", "terminal", "modes"}:
+        return [f"{path}: invalid delegation schema"]
+    terminal = delegation.get("terminal")
+    errors = []
+    if not isinstance(terminal, dict) or set(terminal) != {"path", "operation"}:
+        errors.append(f"{path}: invalid terminal schema")
+    modes = delegation.get("modes")
+    if not isinstance(modes, list) or not modes:
+        return errors + [f"{path}: delegation modes required"]
+    required = {"id", "mutation_mode", "args", "target", "exit", "source_attestation"}
+    for mode in modes:
+        if not isinstance(mode, dict) or set(mode) != required:
+            errors.append(f"{path}: invalid delegation mode schema")
+            continue
+        if mode.get("mutation_mode") not in {"destructive", "non-mutating"}:
+            errors.append(f"{path}: invalid delegation mutation mode")
+        if not isinstance(mode.get("args"), list) or not all(isinstance(v, str) for v in mode["args"]):
+            errors.append(f"{path}: invalid delegation args")
+        if mode.get("target") not in {"physical-local", "platform-selected"}:
+            errors.append(f"{path}: invalid delegation target")
+        if mode.get("exit") not in {"propagate", "reject", "skip", "swallow-3490", "swallow-3479"}:
+            errors.append(f"{path}: invalid delegation exit")
     return errors
+
+
+def _validate_resolved(rows: Any) -> list[str]:
+    if not isinstance(rows, list) or len(rows) != 1:
+        return ["resolved dispositions must contain exactly #3475"]
+    row = rows[0]
+    required = {"issue", "members", "resolved_on", "pull_request", "source_digest"}
+    expected_members = ["scripts/cron/cron_apply.py", "scripts/cron/setup-cron.sh", "scripts/setup/new-machine-setup.sh"]
+    if set(row) != required or row.get("issue") != 3475 or row.get("members") != expected_members:
+        return ["resolved #3475 disposition contract mismatch"]
+    if row.get("resolved_on") != "2026-07-12" or row.get("pull_request") != 3492:
+        return ["resolved #3475 date/PR mismatch"]
+    digest = row.get("source_digest")
+    if not isinstance(digest, str) or len(digest) != 64:
+        return ["resolved #3475 source digest invalid"]
+    return []
 
 
 def _validate_group(group: dict[str, Any]) -> list[str]:

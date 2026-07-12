@@ -204,8 +204,7 @@ def test_classifier_branch_set_is_complete_and_exact():
     checker, records, registry = current_contract()
     expected = checker.derive_cron_classifier_branches(records)
     assert expected == {
-        "installed-fingerprint-token", "installed-fingerprint-substring",
-        "catalog-key-fallback", "preserved-promotion",
+        "canonical-exact-line", "legacy-exact-line",
     }
     cron = next(row for row in registry["surfaces"] if row["path"] == "scripts/cron/cron_apply.py")
     cron["operations"][0]["authority_branches"].pop()
@@ -236,8 +235,8 @@ def test_config_sources_are_tracked_connected_and_corrected():
     checker, records, registry = current_contract()
     cron = next(row for row in registry["surfaces"] if row["path"] == "scripts/cron/cron_apply.py")
     branches = {b["id"]: b for b in cron["operations"][0]["authority_branches"]}
-    assert branches["preserved-promotion"]["config_source"] == "config/workstations/harness-state-classes.yaml"
-    branches["preserved-promotion"]["config_source"] = "missing.yaml"
+    assert branches["legacy-exact-line"]["config_source"] == "docs/reports/issue-3475-command-identity-inventory.json"
+    branches["legacy-exact-line"]["config_source"] = "missing.yaml"
     result = checker.validate_registry(registry, checker.discover_mutation_surfaces(records), records)
     assert any("config_source" in error for error in result.errors)
 
@@ -300,9 +299,9 @@ def test_cat_file_transport_handles_odd_path_bytes(tmp_path):
 def test_transitive_guard_and_unknown_indirection_fail_closed():
     checker, records, registry = current_contract()
     wrapper = next(row for row in registry["surfaces"] if row["kind"] == "transitive-entrypoint")
-    wrapper["edge"]["target_guard_attestation"] = "unknown-id"
+    wrapper["delegation"]["modes"][0]["source_attestation"] = "unknown-id"
     result = checker.validate_registry(registry, checker.discover_mutation_surfaces(records), records)
-    assert any("target_guard" in error for error in result.errors)
+    assert any("delegation attestation" in error for error in result.errors)
     found = checker.discover_mutation_surfaces({b"scripts/x.sh": b"$SCHEDULER_INSTALLER --apply\n"})
     assert "scripts/x.sh" in found.unknown_edges
 
@@ -319,7 +318,6 @@ def test_dedicated_disposition_coordinates_are_exact():
     _, _, registry = current_contract()
     groups = {g["group_id"]: g["issue"]["number"] for g in registry["disposition_groups"]}
     assert groups == {
-        "cron-catalog-migration": 3475, "legacy-crontab-writers": 3476,
-        "kanban-dual-backend": 3477, "windows-task-writers": 3478,
+            "legacy-crontab-writers": 3476, "kanban-dual-backend": 3477, "windows-task-writers": 3478,
         "harness-update": 3479,
     }

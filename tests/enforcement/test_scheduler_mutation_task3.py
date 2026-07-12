@@ -84,7 +84,7 @@ def test_cron_authority_is_exact_and_3475_is_resolved():
             "source_digest": inventory_digest,
         }
     ]
-    assert {group["issue"] for group in registry["disposition_groups"]} == {
+    assert {group["issue"]["number"] for group in registry["disposition_groups"]} == {
         3476, 3477, 3478, 3479
     }
 
@@ -179,7 +179,9 @@ def test_state_classes_inventory_and_workflow_are_fail_closed():
     assert any("identity inventory" in error.lower() for error in result.errors)
 
     invalid = copy.deepcopy(records)
-    invalid[b"config/workstations/harness-state-classes.yaml"] = b"schema_version: 1\n"
+    invalid[b"config/workstations/harness-state-classes.yaml"] = (
+        b"preserved_external: not-a-list\npreserved_local: []\n"
+    )
     result = checker.validate_registry(registry, discovered, invalid)
     assert any("state class" in error.lower() for error in result.errors)
 
