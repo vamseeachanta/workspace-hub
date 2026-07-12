@@ -283,11 +283,15 @@ def _finish_exact(A, B, backup, observation, _read, _write) -> dict:
 
 
 # ── the transaction ──────────────────────────────────────────────────────────
-def _build_cutover(machine_id, _read):
+def _load_cutover_context(machine_id):
     catalog = _load(CATALOG)
     classes = _load(STATE_CLASSES)
     registry = _load(REGISTRY)
     selection = _selection_context(catalog, registry, machine_id)
+    return selection, classes
+
+
+def _build_cutover(selection, classes, _read):
     selected = selection["selected"]
     cat_cmds = _combine_keys(
         ct.catalog_command_keys(selection["selected_raw"], include_fingerprinted=False),
@@ -303,19 +307,20 @@ def _build_cutover(machine_id, _read):
         selected_task_ids=selection["selected_task_ids"],
         catalog_fingerprints=catalog_fingerprints(selection["selected_raw"]),
     )
-    return selection, baseline, plan
+    return baseline, plan
 
 
 def run_cutover(machine_id: str, apply: bool, ts: str | None,
                 _read=read_crontab, _write=write_crontab,
                 _daemons=None, allow_live_reload: bool = False) -> dict:
-    selection, A, plan = _build_cutover(machine_id, _read)
+    selection, classes = _load_cutover_context(machine_id)
     canonical_id = selection["machine_id"]
     roles = selection["roles"]
     selected = selection["selected"]
     conflicts = selection["conflicts"]
     if not roles and not selected:
         return {"status": "skip", "reason": f"{canonical_id} has no harness_profile.roles or machine-pinned cron tasks"}
+    A, plan = _build_cutover(selection, classes, _read)
     if plan.get("abort_reason"):
         return {"status": "abort", "reason": plan["abort_reason"],
                 "uncataloged": plan.get("uncataloged", []), "conflicts": conflicts,
