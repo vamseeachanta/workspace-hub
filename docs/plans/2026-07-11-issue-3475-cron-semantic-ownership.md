@@ -67,7 +67,22 @@ status=ok; direct includes scripts/cron/cron_apply.py; transitive includes
 scripts/cron/setup-cron.sh and scripts/setup/new-machine-setup.sh
 ```
 
-The defect will be reproduced hermetically before implementation by adding a fake `_write` that stores `plan["new_text"] + unexpected_line` while retaining every required preserved line. On the current implementation the RED test will observe `status == "applied"`; no live crontab will be read or written.
+Runtime defect reproduced hermetically at 2026-07-12T03:35Z. The command imported `cron_apply`, replaced `_read`, `_write`, `_load`, `_selection_context`, `_flock`, `create_backup`, and `plan_cutover` with in-memory seams, then made `_write` store `plan["new_text"] + unexpected_line` while retaining the required `# keep` line. No live crontab command was invoked.
+
+```text
+$ PYTHONPATH=scripts/cron uv run python - <<'PY'
+# in-memory run_cutover fixture; _write appends unexpected-injected-line
+...
+result = ca.run_cutover("dev-primary", apply=True, ts="repro",
+                        _read=read, _write=write, _daemons=[])
+print({"status": result["status"],
+       "planned_equals_observed": planned == state["text"],
+       "write_count": len(state["writes"])})
+PY
+{'status': 'applied', 'planned_equals_observed': False, 'write_count': 1}
+```
+
+Failure mode observed matches issue claim: **YES** — current code reports success for a non-exact post-write state.
 
 ---
 
@@ -78,9 +93,10 @@ The defect will be reproduced hermetically before implementation by adding a fak
 | This plan | `docs/plans/2026-07-11-issue-3475-cron-semantic-ownership.md` |
 | Human plan | `docs/reports/2026-07-11-issue-3475-cron-semantic-ownership-plan.html` |
 | Transaction and classifier | `scripts/cron/cron_apply.py`, `scripts/cron/cron_transaction.py` |
+| Read-only audit consumer | `scripts/cron/cron-audit.py` |
 | Catalog identities | `config/scheduled-tasks/schedule-tasks.yaml`, `config/workstations/harness-state-classes.yaml` |
 | Registry contract | `config/scheduled-tasks/mutation-surfaces.yaml` |
-| Tests | `tests/cron/test_cron_apply.py`, `tests/cron/test_cron_transaction.py`, `tests/cron/test_setup_cron.py`, `tests/enforcement/test_scheduler_mutation_surfaces.py` |
+| Tests | `tests/cron/test_cron_apply.py`, `tests/cron/test_cron_transaction.py`, `tests/cron/test_cron_audit.py`, `tests/cron/test_setup_cron.py`, `tests/enforcement/test_scheduler_mutation_surfaces.py` |
 | Generated audit | `docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html` |
 | Plan reviews | `scripts/review/results/2026-07-11-plan-3475-*.md` |
 | Code reviews | `scripts/review/results/2026-07-11-code-3475-*.md` |
@@ -98,26 +114,31 @@ The canonical cron reconciler will authorize deletion only through a closed pars
 
 ### 1. Closed semantic identity
 
-The implementation will introduce one destructive identity schema, named `command_identity`, with only:
+The implementation will introduce one destructive identity schema, named `command_identity`, which represents an allowlisted normalized top-level shell command structure rather than an adjacent token fragment:
 
-- `command_tokens`: a non-empty ordered token sequence that must occur as adjacent shell tokens;
-- optional `cwd_basename`: an exact parsed `cd` operand basename or the canonical `$WORKSPACE_HUB` token;
+- `segments`: a non-empty ordered list of simple-command segments; each segment will declare its executable token, exact ordered argv, and allowed leading environment assignments;
+- `operators`: the exact ordered top-level separators/control operators between segments (`;`, `&&`, `||`, or `|`); redirections will be parsed as structure rather than searched as strings;
+- optional `cwd`: either the literal trusted `$WORKSPACE_HUB`/`${WORKSPACE_HUB}` token or a `machine-workspace-root` value resolved from the selected machine context/registry; basename-only matching will be forbidden;
 - optional `catalog_task_id`: metadata used only to bind a selected legacy identity to a catalog task.
 
-`command_contains`, `cwd_contains`, and `script_basename` may remain available only for non-destructive keep-verbatim classification. Passing them through a destructive catalog or selected-promotion route will fail closed. Unknown keys, empty tokens, malformed shell syntax, ambiguous `cd`, or more than one matching catalog task will fail closed.
+The parser will never execute or expand shell input. It will reject command substitution, backticks, nested `sh -c`/`bash -c` strings, functions, subshells, unsupported control grammar, malformed quoting, ambiguous/multiple working-directory changes, and any identity whose executable position cannot be proven. Thus `echo python task.py`, `printf '%s' 'python task.py'`, `other | python task.py`, and a matching token sequence on the wrong side of `&&`/`||` will not match an identity unless that entire operator/segment structure is explicitly allowlisted.
+
+`command_contains`, `cwd_contains`, and `script_basename` may remain available only for non-destructive keep-verbatim classification. Schema validation will forbid `catalog_task_id` on any preservation row unless its fingerprint is a valid `command_identity`; this closes the future-promotion inverse, not only the current `notification-purge` fixture. Unknown keys, empty identities, unsupported grammar, arbitrary same-basename directories, or more than one matching catalog task will fail closed.
 
 ```text
-parse_cron_command(line):
+parse_cron_command(line, trusted_machine_context):
     split the five cron schedule fields from the command without evaluating shell text
-    tokenize command using a punctuation-aware shell lexer
-    reject malformed quoting or unsupported/ambiguous grammar
-    return immutable tokens and parsed cd operands
+    lex punctuation and redirection tokens without expansion
+    build a closed top-level list of simple-command segments and operators
+    identify executable position after declared environment assignments
+    resolve cwd only from trusted workspace tokens or the selected machine registry root
+    reject nested strings, substitution, unsupported operators, and ambiguous cd
+    return an immutable normalized command structure
 
 matches_command_identity(parsed, identity):
     validate closed identity schema
-    require exact adjacent command_tokens
-    when cwd_basename exists, require one exact parsed cd target
-    return true only when every identity field matches
+    require exact normalized segments, executable positions, argv, operators, and cwd
+    return true only when the whole allowlisted structure matches
 
 classify_line_detail(...):
     keep comments/env/blank as ignore
@@ -128,12 +149,12 @@ classify_line_detail(...):
     otherwise return uncataloged so cutover aborts
 ```
 
-Canonical rendered tasks inside the managed marker block will remain structurally owned by the exact begin/end sentinels. Out-of-block legacy lines will be removable only when an explicit or deterministically catalog-derived `command_identity` matches. Derivation will use parsed rendered command tokens, not string containment, and collisions will abort rather than select a winner.
+Canonical rendered tasks inside the managed marker block will remain structurally owned by the exact begin/end sentinels. Out-of-block legacy lines will be removable only when an explicit or deterministically catalog-derived `command_identity` matches the complete normalized top-level structure. Derivation will parse the rendered catalog command under the same closed grammar; tasks outside that grammar will require explicit allowlisted legacy structures or will fail closed. Collisions will abort rather than select a winner.
 
 ### 2. Catalog and selected-promotion migration
 
-- `hermes-claude-bridge` and `repository-sync` will migrate from `command_contains` to adjacent `command_tokens` plus exact `cwd_basename`.
-- The `notification-purge` selected-promotion row will migrate to an explicit semantic identity covering the stable `find logs/notifications/ ... -delete` token sequence plus workspace-hub cwd identity.
+- `hermes-claude-bridge` and `repository-sync` will migrate from `command_contains` to complete normalized command structures plus trusted workspace-root identity.
+- The `notification-purge` selected-promotion row will migrate to an explicit semantic structure covering the intended `find` executable/argv/operator chain plus trusted workspace-root identity.
 - Non-fingerprinted catalog tasks will receive deterministic parsed identities from their rendered catalog command; the old `catalog_command_keys(...)->cmd in line` destructive fallback will be removed from the apply path.
 - External/private and machine-local rows without `catalog_task_id` will remain keep-verbatim preservation rules even when their matching language is substring-based; they will never authorize deletion or replacement.
 
@@ -163,7 +184,27 @@ return applied only when observed_C == planned_B
 
 The equality contract will be byte-for-byte text equality, including ordering, multiplicity, comments, environment lines, and trailing newline. The result will not emit full crontab content; diagnostics will report bounded hashes/counts and the backup path. Rollback restoration will be re-read and verified before reporting `rolled-back`.
 
-### 4. Registry and enforcement
+Post-backup exceptions will use a fail-closed state machine:
+
+| Failure | Safe observation | Result/action |
+|---|---|---|
+| Initial write raises | Re-read equals A | `write-failed-no-change`; retain backup; no rollback write |
+| Initial write raises | Re-read equals B | non-success `write-error-state-exact`; retain backup for operator review |
+| Initial write raises | Re-read returns other C | CAS-guarded rollback from C |
+| Initial write raises | Re-read also raises | `verification-indeterminate`; never blind-rollback |
+| Post-write verification read raises | State cannot be established | `verification-indeterminate`; never blind-rollback |
+| Rollback write raises | Re-read equals A | `rolled-back-with-write-error`, preserving diagnostic |
+| Rollback write raises | Re-read equals original C | `rollback-failed`; A was not restored |
+| Rollback write raises | Re-read is third state | `rollback-aborted`; concurrent state is preserved |
+| Rollback verification read raises | Restoration cannot be established | `rollback-indeterminate` |
+
+All exception results will be nonzero CLI outcomes except a verified exact ordinary apply. The implementation will never claim `applied` without an observed exact B and will never restore A without first observing a CAS value it owns.
+
+### 4. Audit/apply parity
+
+`scripts/cron/cron-audit.py` will consume the same parsed identity builder and classifier inputs as `cron_apply.py`. It will stop building destructive `catalog_commands` substring keys. Shared fixture tests will feed the same lines/context to both consumers and require identical `cataloged`, `preserved_external`, `ignore`, and `uncataloged` decisions. The audit will remain read-only.
+
+### 5. Registry and enforcement
 
 - The registry will replace the three substring destructive branches with parsed identities, remove `catalog-key-fallback`, set `post_write_exact_state_verify: true`, and add checker-owned attestations for parsed destructive identity, exact post-write equality, and verified rollback restoration.
 - The enforcement checker will derive those claims from source/config and will continue to fail closed on missing branches, unsupported aliases, stale HTML, or self-disposition coordinates.
@@ -177,12 +218,14 @@ The equality contract will be byte-for-byte text equality, including ordering, m
 |---|---|---|
 | Modify | `scripts/cron/cron_transaction.py` | Add closed parsed identity matching and remove destructive substring fallback |
 | Modify | `scripts/cron/cron_apply.py` | Use semantic identities and exact post-write/rollback-restoration verification |
+| Modify | `scripts/cron/cron-audit.py` | Consume the same semantic identity context and remove audit-side substring ownership |
 | Modify | `config/scheduled-tasks/schedule-tasks.yaml` | Migrate two installed identities to token-based schema |
 | Modify | `config/workstations/harness-state-classes.yaml` | Migrate the selected notification-purge promotion identity |
 | Modify | `config/scheduled-tasks/mutation-surfaces.yaml` | Record the new derived authority and transaction guarantees |
 | Modify | `scripts/enforcement/scheduler_mutation_attestations.py` | Add closed source attestations required by the registry |
 | Modify | `tests/cron/test_cron_transaction.py` | Add semantic identity/collision/grammar regressions |
 | Modify | `tests/cron/test_cron_apply.py` | Add exact-state and rollback verification RED/GREEN cases |
+| Modify | `tests/cron/test_cron_audit.py` | Prove audit/apply classification parity and retain read-only behavior |
 | Modify | `tests/cron/test_setup_cron.py` | Preserve wrapper delegation and nonzero failure propagation |
 | Modify | `tests/enforcement/test_scheduler_mutation_surfaces.py` | Prove registry/source/report transition without weakening other groups |
 | Update | `docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html` | Refresh deterministic audit matrix |
@@ -206,20 +249,24 @@ Tests will be committed in RED state before implementation and split into two GR
 | `test_rollback_restore_is_reread_and_verified` | A failed restore is not reported as successful rollback | `rollback-failed` with backup evidence |
 | `test_exact_post_write_match_applies_once` | Exact B succeeds without extra writes | `applied`; one write |
 | `test_command_identity_rejects_unknown_or_substring_fields` | Destructive schema is closed | Validation error/fail closed |
-| `test_command_identity_requires_adjacent_tokens` | Prefix/suffix/path-substring collisions cannot authorize deletion | Unrelated lines remain uncataloged |
-| `test_command_identity_parses_exact_workspace_cwd` | `$WORKSPACE_HUB` and exact basename variants are supported without path substring | Intended legacy variants match |
-| `test_malformed_or_ambiguous_shell_command_fails_closed` | Quoting, multiple `cd`, and unsupported grammar do not silently match | Uncataloged/explicit error |
+| `test_command_identity_requires_executable_segment_and_exact_structure` | Tokens used as `echo`/`printf` data, wrong pipeline/control side, or nested shell strings cannot authorize deletion | Unrelated lines remain uncataloged |
+| `test_command_identity_binds_trusted_workspace_root` | Trusted workspace token and selected-machine registry root work; arbitrary `/tmp/workspace-hub` and same-basename paths fail | Only intended legacy variants match |
+| `test_malformed_or_ambiguous_shell_command_fails_closed` | Quoting, substitutions, nested shells, multiple `cd`, and unsupported grammar do not silently match | Uncataloged/explicit error |
 | `test_catalog_key_substring_no_longer_deletes` | The old `cmd in line` route is absent | Collision aborts cutover |
 | `test_selected_promotion_requires_semantic_identity` | `notification-purge` promotion cannot use `command_contains` | Exact variant cataloged; collisions not cataloged |
-| `test_non_destructive_preservation_substrings_never_promote` | Keep-verbatim rows remain safe and cannot become deletion authority | Always `preserved_external` |
+| `test_catalog_task_id_rejected_on_substring_preservation_identity` | Future metadata cannot reactivate destructive substring promotion | Config validation fails closed |
+| `test_non_destructive_preservation_substrings_never_promote` | Keep-verbatim rows without catalog identity remain safe | Always `preserved_external` |
 | `test_all_selected_cron_tasks_have_unique_destructive_identity` | Derived/explicit identities are non-empty and collision-free per machine context | No duplicate owner for fixture matrix |
+| `test_audit_and_apply_share_semantic_classification` | Read-only audit and mutator cannot drift on ownership | Identical classifications for adversarial fixture matrix |
+| `test_write_and_post_write_read_exception_contract` | Partial writes and indeterminate reads never claim success or blind-rollback | Exact state-machine statuses and nonzero CLI |
+| `test_rollback_write_and_read_exception_contract` | Rollback exceptions preserve concurrent state and report verification truthfully | `rolled-back-with-write-error`, `rollback-failed`, `rollback-aborted`, or `rollback-indeterminate` as observed |
 | `test_registry_advances_only_cron_catalog_group` | Checker derives new guarantees without waiving unrelated gaps | cron group compliant; #3476–#3479 remain migration-required |
 | `test_setup_cron_surfaces_exact_state_failure` | Wrapper preserves nonzero status from direct owner | Fake-only invocation exits nonzero |
 
 Focused commands:
 
 ```bash
-uv run pytest tests/cron/test_cron_transaction.py tests/cron/test_cron_apply.py tests/cron/test_setup_cron.py -v
+uv run pytest tests/cron/test_cron_transaction.py tests/cron/test_cron_apply.py tests/cron/test_cron_audit.py tests/cron/test_setup_cron.py -v
 uv run pytest tests/enforcement/test_scheduler_mutation_surfaces.py -v
 uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
 uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py --check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html
@@ -231,10 +278,13 @@ uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py --check-h
 
 - [ ] RED evidence will show the current code reports `applied` for at least one exact-state corruption while every preserved line survives.
 - [ ] `applied` will require byte-for-byte equality between the observed post-write crontab and `plan["new_text"]`.
-- [ ] Every mismatch will enter CAS-guarded rollback; a restore will be reported successful only after re-read equality with baseline A.
-- [ ] No destructive ownership branch will use substring matching. Closed parsed identity, exact marker ownership, or fail-closed unknown classification will be the only outcomes.
+- [ ] Every observed mismatch C will enter CAS-guarded rollback; indeterminate reads will never trigger a blind restore, and restoration success will require re-read equality with baseline A.
+- [ ] Initial-write, post-write-read, rollback-write, and rollback-read exceptions will follow the documented non-success state machine and retain bounded backup diagnostics.
+- [ ] No destructive ownership branch will use substring matching. Complete normalized top-level command structure, exact marker ownership, or fail-closed unknown classification will be the only outcomes.
 - [ ] Catalog-key substring fallback will be absent from the destructive apply path.
-- [ ] `hermes-claude-bridge`, `repository-sync`, and selected `notification-purge` legacy identity will be migrated without broadening ownership.
+- [ ] `hermes-claude-bridge`, `repository-sync`, and selected `notification-purge` legacy identity will be migrated without broadening ownership or accepting arbitrary same-basename working directories.
+- [ ] Audit and apply will share the semantic classifier and will produce identical ownership decisions for the same machine context.
+- [ ] `catalog_task_id` will be invalid on substring-based preservation identities, preventing future promotion bypasses.
 - [ ] Non-destructive external/local preservation rules will remain keep-verbatim and will not be treated as proof of destructive ownership.
 - [ ] Ambiguous, malformed, colliding, or unknown live lines will abort before backup/write.
 - [ ] Physical-local host binding, lock, exclusive fsynced backup, pre-write CAS, preservation behavior, rollback CAS, daemon guard, dry-run default, Windows skip, and transitive delegation will remain covered.
@@ -248,7 +298,7 @@ uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py --check-h
 
 ## Risks and Open Questions
 
-- **Shell grammar risk:** `shlex` is not a full shell parser. The implementation will define and test a closed supported grammar and fail closed on ambiguity rather than pretending to parse arbitrary shell.
+- **Shell grammar risk:** a lexer is not a full shell parser. The implementation will accept only an explicit top-level simple-command/operator grammar, prove executable positions, and fail closed on nested or unsupported constructs rather than pretending to understand arbitrary shell.
 - **Migration compatibility risk:** old absolute-path invocations may differ from catalog rendering. Only explicit semantic legacy identities will cover known variants; unknown variants will abort and require operator review.
 - **Identity collision risk:** token sequences such as `python script.py` may be shared. Machine-context validation will require unique matches after optional exact cwd identity; ambiguity will block the cutover.
 - **Preservation inversion risk:** converting every substring preservation row would conflate keep-verbatim recognition with destructive authority. This plan will migrate only rows that can promote to selected catalog ownership.
@@ -263,8 +313,17 @@ No unresolved product decision blocks plan review. The supported grammar and leg
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | Adversarial review not yet run |
-| Codex | PENDING | Adversarial review not yet run |
-| Gemini | PENDING | Adversarial review not yet run |
+| Claude | UNAVAILABLE | Fresh-clone trust dialog blocked non-interactive review |
+| Codex | MAJOR | Required actual reproduction, full command-structure semantics, trusted cwd identity, audit/apply parity, exception state machine, and promotion-schema closure |
+| Gemini | UNAVAILABLE | Non-interactive authentication was not configured |
 
-**Overall result:** PENDING — implementation remains blocked.
+**Overall result:** MAJOR — patched for focused r2 review; implementation remains blocked.
+
+Revisions made after r1:
+
+- Added the actual hermetic false-`applied` reproduction and output.
+- Replaced adjacent-token/basename matching with a complete normalized top-level command structure and trusted machine-context workspace root.
+- Added executable-position, operator, nested-shell, cwd-spoof, and ambiguity tests.
+- Added `cron-audit.py` migration plus audit/apply parity tests.
+- Defined non-success behavior for initial-write, verification-read, rollback-write, and rollback-read exceptions.
+- Forbade `catalog_task_id` on substring preservation identities.
