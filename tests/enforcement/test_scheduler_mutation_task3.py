@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 import yaml
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -288,3 +289,37 @@ def test_3490_gap_is_linked_in_render_and_docs():
     url = "https://github.com/vamseeachanta/workspace-hub/issues/3490"
     assert f'href="{url}"' in rendered
     assert f"[#3490]({url})" in records[b"docs/ops/scheduled-tasks.md"].decode()
+
+
+@pytest.mark.parametrize(
+    ("attestation", "old", "new"),
+    [
+        ("setup-default-apply-v1", b'APPLY_ARGS=(--machine "$CANONICAL_MACHINE")', b'APPLY_ARGS=(--machine wrong)'),
+        ("setup-default-apply-v1", b'"${APPLY_ARGS[@]}"', b'--machine "$CANONICAL_MACHINE"'),
+        ("setup-default-apply-v1", b'if [[ "$DRY_RUN" == false ]]', b'if [[ "$DRY_RUN" == true ]]'),
+        ("setup-dry-run-v1", b'APPLY_ARGS+=(--json)', b'APPLY_ARGS+=(--apply)'),
+        ("setup-live-reload-v1", b'if [[ "$ALLOW_LIVE_RELOAD" == true ]]', b'if [[ "$ALLOW_LIVE_RELOAD" == false ]]'),
+        ("setup-live-reload-v1", b'APPLY_ARGS+=(--allow-live-reload)', b'APPLY_ARGS+=(--json)'),
+        ("setup-remote-reject-v1", b'if [[ "$CANONICAL_MACHINE" != "$PHYSICAL_MACHINE" ]]', b'if [[ "$CANONICAL_MACHINE" == "$PHYSICAL_MACHINE" ]]'),
+        ("setup-remote-reject-v1", b'echo "Run setup-cron.sh on that machine instead." >&2\n  exit 2', b'echo "Run setup-cron.sh on that machine instead." >&2\n  exit 0'),
+        ("setup-windows-skip-v1", b'if [[ "$SCHEDULE_VARIANT" == "contribute-minimal" ]]', b'if [[ "$SCHEDULE_VARIANT" != "contribute-minimal" ]]'),
+        ("setup-windows-skip-v1", b'echo "This machine uses Windows Task Scheduler; Linux cron reconciliation is skipped."\n  exit 0', b'echo "This machine uses Windows Task Scheduler; Linux cron reconciliation is skipped."\n  exit 2'),
+        ("new-machine-default-v1", b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"\nfi', b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh" || true\nfi'),
+        ("new-machine-dry-run-v1", b'setup-cron.sh" --dry-run || true', b'setup-cron.sh" || true'),
+        ("new-machine-dry-run-v1", b'setup-cron.sh" --dry-run || true', b'setup-cron.sh" --dry-run'),
+        ("new-machine-windows-v1", b'setup-cron.sh" || true\nelse', b'setup-cron.sh" --dry-run || true\nelse'),
+        ("new-machine-windows-v1", b'setup-cron.sh" || true\nelse', b'setup-cron.sh"\nelse'),
+        ("harness-default-v1", b'out=$(bash "$installer" 2>&1) || true', b'out=$(bash "$installer" --dry-run 2>&1) || true'),
+        ("harness-default-v1", b'out=$(bash "$installer" 2>&1) || true', b'out=$(bash "$installer" 2>&1)'),
+        ("harness-dry-run-v1", b'bash "$installer" --dry-run 2>/dev/null', b'bash "$installer" 2>/dev/null'),
+        ("harness-dry-run-v1", b"| grep -cE '^[[:space:]]+[0-9*]' || true", b"| grep -cE '^[[:space:]]+[0-9*]'"),
+    ],
+)
+def test_wrapper_attestations_reject_live_source_mutations(attestation, old, new):
+    checker, records, _registry, _discovered = current_contract()
+    source = checker.attestation_source(attestation)
+    body = records[source]
+    mutated = body.replace(old, new, 1)
+    assert mutated != body, (attestation, old)
+    records[source] = mutated
+    assert not checker.evaluate_attestation(attestation, records, source)
