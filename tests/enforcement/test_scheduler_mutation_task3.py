@@ -323,3 +323,57 @@ def test_wrapper_attestations_reject_live_source_mutations(attestation, old, new
     assert mutated != body, (attestation, old)
     records[source] = mutated
     assert not checker.evaluate_attestation(attestation, records, source)
+
+
+WRAPPER_MUTATIONS = {
+    b"scripts/cron/setup-cron.sh": (
+        "setup-default-apply-v1",
+        b'if [[ "$DRY_RUN" == false ]]',
+        b'if [[ "$DRY_RUN" == true ]]',
+    ),
+    b"scripts/setup/new-machine-setup.sh": (
+        "new-machine-default-v1",
+        b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"\nfi',
+        b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh" || true\nfi',
+    ),
+    b"scripts/cron/harness-update.sh": (
+        "harness-default-v1",
+        b'out=$(bash "$installer" 2>&1) || true',
+        b'out=$(bash "$installer" 2>&1)',
+    ),
+}
+
+
+def _decoy(kind, original):
+    if kind == "comment":
+        return b"\n" + b"\n".join(b"# " + line for line in original.splitlines())
+    if kind == "heredoc":
+        return b"\n: <<'SCHEDULER_DECOY'\n" + original + b"\nSCHEDULER_DECOY\n"
+    if kind == "dead-function":
+        return b"\nscheduler_decoy() {\n: <<'BODY'\n" + original + b"\nBODY\n}\n"
+    return b"\nif false; then\n: <<'BODY'\n" + original + b"\nBODY\nfi\n"
+
+
+@pytest.mark.parametrize("source", sorted(WRAPPER_MUTATIONS))
+@pytest.mark.parametrize("decoy", ["comment", "heredoc", "dead-function", "if-false"])
+def test_wrapper_attestations_reject_dead_scope_and_fragment_decoys(source, decoy):
+    checker, records, _registry, _discovered = current_contract()
+    attestation, old, new = WRAPPER_MUTATIONS[source]
+    original = records[source]
+    mutated = original.replace(old, new, 1) + _decoy(decoy, original)
+    assert mutated != original
+    records[source] = mutated
+    assert not checker.evaluate_attestation(attestation, records, source)
+
+
+def test_wrapper_digest_pins_are_exact_complete_and_fail_closed():
+    checker, records, _registry, _discovered = current_contract()
+    wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
+    assert set(wrapper_module.WRAPPER_SHA256) == set(WRAPPER_MUTATIONS)
+    for source, (attestation, _old, _new) in WRAPPER_MUTATIONS.items():
+        original = wrapper_module.WRAPPER_SHA256[source]
+        wrapper_module.WRAPPER_SHA256[source] = "0" * 64
+        assert not checker.evaluate_attestation(attestation, records, source)
+        del wrapper_module.WRAPPER_SHA256[source]
+        assert not checker.evaluate_attestation(attestation, records, source)
+        wrapper_module.WRAPPER_SHA256[source] = original
