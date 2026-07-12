@@ -452,6 +452,66 @@ def _dead_transaction_source(records, mutation):
     return ast.unparse(tree).encode()
 
 
+def _split_transaction_source(records, mutation):
+    tree = ast.parse(records[b"scripts/cron/cron_apply.py"])
+    functions = {node.name: node for node in tree.body if isinstance(node, ast.FunctionDef)}
+    if mutation == "run-graph-split":
+        run = functions["run_cutover"]
+        build = next(node for node in run.body if "_build_cutover(" in ast.unparse(node))
+        lock = next(node for node in run.body if isinstance(node, ast.With))
+        finish = next(node for node in run.body if "_finish_exact(" in ast.unparse(node))
+        index = min(run.body.index(node) for node in (build, lock, finish))
+        run.body.remove(build)
+        run.body.remove(lock)
+        run.body.remove(finish)
+        run.body.insert(index, ast.If(test=ast.Name(id="split", ctx=ast.Load()),
+                                     body=[build, lock], orelse=[finish]))
+    elif mutation == "finish-exact-split":
+        finish = functions["_finish_exact"]
+        exact = next(node for node in finish.body if isinstance(node, ast.If)
+                     and "observed == B" in ast.unparse(node.test))
+        index = finish.body.index(exact)
+        success = exact.body[0]
+        exact.body = [ast.Pass()]
+        finish.body[index] = ast.If(test=ast.Name(id="split", ctx=ast.Load()),
+                                    body=[exact], orelse=[success])
+    else:
+        rollback = functions["_rollback"]
+        lock = next(node for node in rollback.body if isinstance(node, ast.With))
+        current, check, write, restored = lock.body
+        if mutation == "rollback-cas-split":
+            lock.body = [ast.If(test=ast.Name(id="split", ctx=ast.Load()),
+                                body=[current, check], orelse=[write, restored])]
+        else:
+            lock.body = [ast.Try(body=[current, check], handlers=[ast.ExceptHandler(
+                type=ast.Name(id="Exception", ctx=ast.Load()), name=None,
+                body=[write, restored])], orelse=[], finalbody=[])]
+    ast.fix_missing_locations(tree)
+    return ast.unparse(tree).encode()
+
+
+@pytest.mark.parametrize(
+    ("mutation", "attestations"),
+    [
+        ("run-graph-split", ["python-lock-scope-v1"]),
+        ("finish-exact-split", ["python-postwrite-exact-state-v1"]),
+        ("rollback-cas-split", ["python-rollback-after-cas-v1",
+                                "python-rollback-exact-baseline-v1"]),
+        ("rollback-try-split", ["python-rollback-after-cas-v1",
+                                "python-rollback-exact-baseline-v1"]),
+    ],
+)
+def test_transaction_attestations_reject_mutually_exclusive_evidence(
+    mutation, attestations
+):
+    checker, records, _registry, _discovered = current_contract()
+    records[b"scripts/cron/cron_apply.py"] = _split_transaction_source(records, mutation)
+    for attestation in attestations:
+        assert not checker.evaluate_attestation(
+            attestation, records, b"scripts/cron/cron_apply.py"
+        )
+
+
 @pytest.mark.parametrize(
     ("mutation", "attestations"),
     [
