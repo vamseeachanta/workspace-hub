@@ -446,7 +446,10 @@ def test_setup_cron_and_cron_apply_use_shared_renderer_for_same_task(tmp_path):
     catalog = yaml.safe_load(SCHEDULE_FILE.read_text(encoding="utf-8"))
     registry = yaml.safe_load(REGISTRY_FILE.read_text(encoding="utf-8"))
     repo_sync = next(task for task in catalog["tasks"] if task["id"] == "repository-sync")
-    context = render.build_context("ace-linux-1", registry=registry, workspace_hub=REPO_ROOT)
+    workspace_root = registry["machines"]["dev-primary"]["workspace_root"]
+    context = render.build_context(
+        "ace-linux-1", registry=registry, workspace_hub=workspace_root
+    )
     expected_line = render.render_task(repo_sync, context)["line"]
     apply_plan = cron_apply.run_cutover("ace-linux-1", apply=False, ts="t", _read=lambda: "")
 
@@ -481,7 +484,8 @@ def test_setup_cron_dry_run_expands_workspace_hub_and_log(tmp_path):
     assert result.returncode == 0, result.stderr + result.stdout
     assert "$WORKSPACE_HUB" not in result.stdout
     assert "$LOG" not in result.stdout
-    assert str(REPO_ROOT) in result.stdout
+    registry = yaml.safe_load(REGISTRY_FILE.read_text(encoding="utf-8"))
+    assert registry["machines"]["dev-primary"]["workspace_root"] in result.stdout
     assert "scripts/cron-repository-sync.sh" in result.stdout
     assert "/tmp/workspace-hub-cron.log" not in result.stdout
 

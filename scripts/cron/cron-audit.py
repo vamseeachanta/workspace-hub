@@ -119,7 +119,11 @@ def _machine_roles(registry: dict, machine_id: str) -> list[str]:
 def _selected_for_machine(catalog: dict, registry: dict, machine_id: str) -> dict:
     ct = load_cron_transaction()
     render = load_cron_render()
-    context = render.build_context(machine_id, registry=registry)
+    resolved = render.resolve_machine(machine_id, registry=registry)
+    workspace_hub = resolved["machine"].get("workspace_root")
+    context = render.build_context(
+        machine_id, registry=registry, workspace_hub=workspace_hub
+    )
     roles = _machine_roles(registry, context["machine_id"])
     selected_raw, conflicts = ct.select_tasks(
         catalog.get("tasks", []) or [],
@@ -326,7 +330,6 @@ def main(argv: list[str] | None = None) -> int:
         "--json", action="store_true", help="emit machine-readable JSON instead of text"
     )
     args = parser.parse_args(argv)
-
     ct = load_cron_transaction()
     context = build_audit_context(args.machine)
     try:
@@ -344,7 +347,6 @@ def main(argv: list[str] | None = None) -> int:
         else:
             print(f"FAIL: {payload['reason']}: {payload['stderr']}")
         return 2
-
     audit = audit_crontab(
         crontab_text,
         context["catalog_commands"],
@@ -354,7 +356,6 @@ def main(argv: list[str] | None = None) -> int:
         catalog_fingerprints=context.get("catalog_fingerprints", []),
         ownership_context=context["ownership_context"],
     )
-
     if args.json:
         print(
             json.dumps(
@@ -370,7 +371,6 @@ def main(argv: list[str] | None = None) -> int:
         )
     else:
         print_human(args.machine, audit)
-
     # Fail-closed: any uncataloged live line blocks a cutover.
     return 1 if audit["uncataloged"] else 0
 

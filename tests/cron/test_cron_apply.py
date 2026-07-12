@@ -58,7 +58,8 @@ def test_read_crontab_empty_when_no_crontab(monkeypatch):
 
 def test_flock_is_real():
     # the lock context manager actually exists and acquires a lock (no exception)
-    import tempfile, os
+    import tempfile
+
     p = Path(tempfile.mkdtemp()) / "lock"
     with ca._flock(p):
         assert p.exists()
@@ -506,6 +507,28 @@ def test_sensitive_catalog_tasks_use_rendered_exact_identities():
     )["canonical_exact_lines"]
     assert exact["hermes-claude-bridge"]
     assert exact["repository-sync"]
+
+
+def test_selection_and_ownership_use_registry_workspace_root(monkeypatch):
+    catalog = {"tasks": [{
+        "id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
+        "command": "$WORKSPACE_HUB/scripts/run.sh", "machines": ["linux-a"],
+        "roles": [],
+    }]}
+    registry = {"machines": {"linux-a": {
+        "hostname": "host-a", "os": "linux",
+        "workspace_root": "/canonical/workspace-hub",
+        "harness_profile": {"roles": []},
+    }}}
+    classes = {"preserved_external": [], "preserved_local": []}
+    monkeypatch.setenv("WORKSPACE_HUB", "/temporary/worktree")
+
+    selection = ca._selection_context(catalog, registry, "linux-a")
+    ownership = ca.build_ownership_context(catalog, registry, classes, "linux-a")
+
+    expected = "0 1 * * * /canonical/workspace-hub/scripts/run.sh"
+    assert selection["selected"][0]["line"] == expected
+    assert ownership["canonical_exact_lines"]["one"] == [expected]
 
 
 def test_real_dev_secondary_preview_does_not_use_ace_linux_1_bridge_staggers():

@@ -155,7 +155,11 @@ def _combine_keys(*groups: list[str]) -> list[str]:
 
 
 def _selection_context(catalog: dict, registry: dict, machine_id: str) -> dict:
-    context = cr.build_context(machine_id, registry=registry)
+    resolved = cr.resolve_machine(machine_id, registry=registry)
+    workspace_hub = resolved["machine"].get("workspace_root")
+    context = cr.build_context(
+        machine_id, registry=registry, workspace_hub=workspace_hub
+    )
     canonical_id = context["machine_id"]
     roles = machine_roles(registry, canonical_id)
     selected_raw, conflicts = ct.select_tasks(

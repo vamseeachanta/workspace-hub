@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from cron_render import build_context, render_task
+from cron_render import build_context, render_task, resolve_machine
 
 STATE_CLASS_KEYS = {"classes", "hooks_known", "preserved_external", "preserved_local"}
 PRESERVED_ROW_KEYS = {"owner", "note", "fingerprint", "catalog_task_id", "legacy_exact_lines"}
@@ -188,6 +188,9 @@ def build_ownership_context(
     *, workspace_hub: str | None = None, fail_on_collision: bool = True,
 ) -> dict[str, Any]:
     """Render selected tasks and bind complete canonical and legacy lines."""
+    if workspace_hub is None:
+        resolved = resolve_machine(machine_id, registry=registry)
+        workspace_hub = resolved["machine"].get("workspace_root")
     context = build_context(machine_id, registry=registry, workspace_hub=workspace_hub)
     machine_id = context["machine_id"]
     roles = _roles(registry, machine_id)
