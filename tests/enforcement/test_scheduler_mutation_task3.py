@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import ast
 import importlib.util
 import json
 import sys
@@ -198,3 +199,88 @@ def test_renderer_supports_delegate_rows_and_preserves_migration_issues():
     for issue in (3476, 3477, 3478, 3479):
         assert f"#{issue}" in rendered
     assert "active disposition: #3475" not in rendered
+
+
+EXPECTED_MODES = {
+    "scripts/cron/setup-cron.sh": [
+        {"id": "default-apply", "mutation_mode": "destructive", "args": ["--machine=<canonical>", "--apply"], "target": "physical-local", "exit": "propagate", "source_attestation": "setup-default-apply-v1"},
+        {"id": "dry-run", "mutation_mode": "non-mutating", "args": ["--machine=<canonical>", "--json"], "target": "physical-local", "exit": "propagate", "source_attestation": "setup-dry-run-v1"},
+        {"id": "live-reload", "mutation_mode": "destructive", "args": ["--machine=<canonical>", "--apply", "--allow-live-reload"], "target": "physical-local", "exit": "propagate", "source_attestation": "setup-live-reload-v1"},
+        {"id": "remote-rejection", "mutation_mode": "non-mutating", "args": ["--machine=<remote>"], "target": "physical-local", "exit": "reject", "source_attestation": "setup-remote-reject-v1"},
+        {"id": "windows-skip", "mutation_mode": "non-mutating", "args": ["--machine=<windows>"], "target": "platform-selected", "exit": "skip", "source_attestation": "setup-windows-skip-v1"},
+    ],
+    "scripts/setup/new-machine-setup.sh": [
+        {"id": "default-linux", "mutation_mode": "destructive", "args": ["setup-cron"], "target": "physical-local", "exit": "propagate", "source_attestation": "new-machine-default-v1"},
+        {"id": "dry-run-preview", "mutation_mode": "non-mutating", "args": ["setup-cron", "--dry-run"], "target": "physical-local", "exit": "swallow-3490", "source_attestation": "new-machine-dry-run-v1"},
+        {"id": "windows-skip", "mutation_mode": "non-mutating", "args": ["setup-cron"], "target": "platform-selected", "exit": "swallow-3490", "source_attestation": "new-machine-windows-v1"},
+    ],
+    "scripts/cron/harness-update.sh": [
+        {"id": "scheduled-sync", "mutation_mode": "destructive", "args": ["setup-cron"], "target": "physical-local", "exit": "swallow-3479", "source_attestation": "harness-default-v1"},
+        {"id": "dry-run-sync", "mutation_mode": "non-mutating", "args": ["setup-cron", "--dry-run"], "target": "physical-local", "exit": "swallow-3479", "source_attestation": "harness-dry-run-v1"},
+    ],
+}
+
+
+def test_wrapper_mode_contracts_are_exact_and_source_bound():
+    checker, records, registry, discovered = current_contract()
+    rows = by_path(registry)
+    for path, expected in EXPECTED_MODES.items():
+        assert rows[path]["delegation"]["modes"] == expected
+        removed = copy.deepcopy(registry)
+        by_path(removed)[path]["delegation"]["modes"].pop()
+        result = checker.validate_registry(removed, discovered, records)
+        assert result.errors or result.statuses[path] != "compliant"
+        for field in ("id", "mutation_mode", "args", "target", "exit", "source_attestation"):
+            changed = copy.deepcopy(registry)
+            mode = by_path(changed)[path]["delegation"]["modes"][0]
+            mode[field] = ["wrong"] if field == "args" else f"wrong-{field}"
+            result = checker.validate_registry(changed, discovered, records)
+            assert result.errors or result.statuses[path] != "compliant", (path, field)
+
+
+def test_preservation_attestation_proves_plan_reconstruction():
+    checker, records, _registry, _discovered = current_contract()
+    name = "python-postwrite-preservation-multiset-v1"
+    source = checker.attestation_source(name)
+    assert source == b"scripts/cron/cron_transaction.py"
+    assert checker.evaluate_attestation(name, records, source)
+    body = records[source]
+    mutations = (
+        body.replace(b'if cls == "ignore":\n            preserved.append(line)', b'if cls == "ignore":\n            continue', 1),
+        body.replace(b'elif cls == "preserved_external":\n            preserved.append(line)', b'elif cls == "preserved_external":\n            continue', 1),
+        body.replace(b'out.append(line)', b'continue', 1),
+        body.replace(b'_filter(parsed["before"]) + block + _filter(parsed["after"])', b'block', 1),
+    )
+    for mutated in mutations:
+        changed = copy.deepcopy(records)
+        changed[source] = mutated
+        assert mutated != body
+        assert not checker.evaluate_attestation(name, changed, source)
+
+
+def test_enforcement_modules_obey_size_limits_and_extract_responsibilities():
+    required = {
+        "scripts/enforcement/scheduler_mutation_report.py",
+        "scripts/enforcement/scheduler_mutation_delegation.py",
+    }
+    for relative in required:
+        assert (ROOT / relative).is_file()
+    production = list((ROOT / "scripts/enforcement").glob("scheduler_mutation*.py"))
+    production.append(CHECKER)
+    for path in set(production):
+        assert len(path.read_text().splitlines()) <= 400, path
+        tree = ast.parse(path.read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                assert node.end_lineno - node.lineno + 1 <= 50, (path, node.name)
+    checker = load_checker()
+    assert checker.render_html.__module__ == "scheduler_mutation_report"
+
+
+def test_3490_gap_is_linked_in_render_and_docs():
+    checker, records, registry, discovered = current_contract()
+    result = checker.validate_registry(registry, discovered, records)
+    rendered = checker.render_html(registry, discovered, result, "f" * 64).decode()
+    url = "https://github.com/vamseeachanta/workspace-hub/issues/3490"
+    assert f'href="{url}"' in rendered
+    assert f"[#3490]({url})" in records[b"docs/ops/scheduled-tasks.md"].decode()
