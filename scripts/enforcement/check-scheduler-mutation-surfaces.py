@@ -285,19 +285,50 @@ def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
         errors.append("dispositions must exactly cover migration-required surfaces")
 
 
+def _render_operation(path: str, operation: dict[str, Any]) -> str:
+    key = html.escape(f'{path}::{operation["id"]}', quote=True)
+    target = html.escape(operation["target_kind"], quote=True)
+    identity = html.escape(operation["scheduler_identity"], quote=True)
+    binding = html.escape(operation["execution_host_binding"], quote=True)
+    authorities = []
+    for branch in operation["authority_branches"]:
+        branch_id = branch["id"]
+        mechanism = html.escape(branch["mechanism"], quote=True)
+        strength = html.escape(branch["strength"], quote=True)
+        authority_key = html.escape(f"{key}::{branch_id}", quote=True)
+        label = html.escape(f"{branch_id}:{branch['mechanism']}/{branch['strength']}")
+        authorities.append(
+            f'<li data-authority="{authority_key}" data-mechanism="{mechanism}" '
+            f'data-strength="{strength}">{label}</li>'
+        )
+    gaps = [name for name, value in operation["transaction"].items() if not value]
+    gap_text = ", ".join(f"{name}=false" for name in gaps) or "none"
+    return (
+        f'<section class="operation" data-operation="{key}" data-target-kind="{target}" '
+        f'data-scheduler-identity="{identity}" data-execution-host-binding="{binding}">'
+        f'<strong>{html.escape(operation["id"])}</strong><br>Target: {target}; '
+        f'identity: {identity}; binding: {binding}<br>Authority:<ul>{"".join(authorities)}</ul>'
+        f'Transaction gaps: <span class="transaction-gaps" '
+        f'data-transaction-for="{key}">{gap_text}</span></section>'
+    )
+
+
 def render_html(registry, discovery, validation, digest: str) -> bytes:
     groups = {group["group_id"]: group for group in registry["disposition_groups"]}
     rows = []
     for surface in sorted(registry["surfaces"], key=lambda row: row["path"]):
         group = groups[surface["disposition_group"]]
         issue = group["issue"]["number"]
-        operations = ", ".join(operation["id"] for operation in surface["operations"])
+        operations = "".join(
+            _render_operation(surface["path"], operation)
+            for operation in surface["operations"]
+        )
         path = html.escape(surface["path"], quote=True)
         rows.append(
             f'<tr data-surface="{path}"><td><code>{path}</code></td>'
             f'<td>{html.escape(surface["kind"])}</td>'
             f'<td>{html.escape(validation.statuses[surface["path"]])}</td>'
-            f'<td>{html.escape(operations)}</td><td>'
+            f'<td>{operations}</td><td>'
             f'<a href="https://github.com/vamseeachanta/workspace-hub/issues/{issue}">#{issue}</a>'
             f'</td></tr>'
         )

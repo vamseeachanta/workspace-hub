@@ -156,6 +156,7 @@ def digest_record_union(
         b"scripts/enforcement/scheduler_mutation_attestations.py",
         b"tests/enforcement/test_scheduler_mutation_surfaces.py",
         b"tests/enforcement/test_scheduler_mutation_hardening.py",
+        b"tests/enforcement/test_scheduler_mutation_delivery.py",
         b".github/workflows/enforcement-gate.yml",
     }
     for row in registry["surfaces"]:

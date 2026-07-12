@@ -27,6 +27,15 @@ The human audit links migration issues
 coordinates are checked offline; their live state is informational and does
 not convert a `migration-required` row into compliance.
 
+### Scheduler identity and host binding
+
+- `current-user-cron` is the crontab owned by the invoking local user.
+- `root-cron` is the local root crontab and requires explicit root execution.
+- `systemd-user` is the invoking user's local systemd manager and unit namespace.
+- `windows-current-user-task` is the current Windows user's Task Scheduler namespace.
+- `physical-local` binds mutation to the physical host running the writer, not a machine alias or workspace path.
+- `explicit-remote-transport` is required for intentional mutation through a declared remote transport; remote targeting must never be inferred.
+
 ## Machine Roles
 
 | Hostname | Aliases | Cron Variant | Scheduler |
