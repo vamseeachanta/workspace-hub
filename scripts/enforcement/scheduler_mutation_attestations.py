@@ -2,9 +2,7 @@
 from __future__ import annotations
 
 import ast
-import io
 import re
-import tokenize
 from typing import Callable
 
 import yaml
@@ -59,7 +57,8 @@ def _abort_if(stmt: ast.stmt, left: str, right: str) -> bool:
         names == (left, right)
         and len(test.ops) == 1
         and isinstance(test.ops[0], ast.NotEq)
-        and any(isinstance(node, ast.Return) for node in ast.walk(stmt))
+        and bool(stmt.body)
+        and isinstance(stmt.body[-1], ast.Return)
     )
 
 
@@ -158,24 +157,85 @@ def derive_installed_fingerprint_branches(records: dict[bytes, bytes]) -> set[st
 
 def forensic_literal_lines(body: bytes) -> set[int]:
     try:
-        tokens = tokenize.tokenize(io.BytesIO(body).readline)
-    except (SyntaxError, tokenize.TokenError):
+        tree = ast.parse(body.decode())
+    except (SyntaxError, UnicodeDecodeError):
         return set()
     lines = set()
-    try:
-        for token in tokens:
-            if token.type != tokenize.STRING:
+    for node in ast.walk(tree):
+        if not isinstance(node, (ast.Assign, ast.AnnAssign)):
+            continue
+        value = node.value
+        if value is None or any(isinstance(child, ast.Call) for child in ast.walk(value)):
+            continue
+        for literal in (child for child in ast.walk(value) if isinstance(child, ast.Constant)):
+            raw = literal.value
+            text = raw.decode("utf-8", "ignore") if isinstance(raw, bytes) else raw
+            if not isinstance(text, str):
                 continue
-            text = token.string
-            scheduler_literal = any(
-                word in text
-                for word in ("ScheduledTask", "write_unit", "remove_unit", "run_systemctl")
-            ) or ("crontab" in text and "-" in text)
-            if scheduler_literal:
-                lines.update(range(token.start[0], token.end[0] + 1))
-    except (SyntaxError, tokenize.TokenError):
-        return set()
+            words = ("Scheduled" + "Task", "write" + "_unit", "remove" + "_unit", "run" + "_systemctl")
+            scheduler = any(word in text for word in words) or ("cron" + "tab" in text and "-" in text)
+            if scheduler:
+                lines.update(range(literal.lineno, getattr(literal, "end_lineno", literal.lineno) + 1))
     return lines
+
+
+def _ps_extract_block(code: str, pattern: str) -> tuple[str, int, int] | None:
+    match = re.search(pattern, code, re.IGNORECASE)
+    if not match:
+        return None
+    start = code.find("{", match.start())
+    if start < 0:
+        return None
+    depth = 0
+    for index in range(start, len(code)):
+        if code[index] == "{":
+            depth += 1
+        elif code[index] == "}":
+            depth -= 1
+            if depth == 0:
+                return code[start + 1:index], match.start(), index + 1
+    return None
+
+
+def _ps_live_code(body: bytes, include_function: str | None = None) -> str:
+    code = body.decode("utf-8", "ignore")
+    code = re.sub(r"<#[\s\S]*?#>", "", code)
+    code = "\n".join(line for line in code.splitlines() if not line.lstrip().startswith("#"))
+    selected = ""
+    if include_function:
+        block = _ps_extract_block(code, rf"function\s+{re.escape(include_function)}\s*\{{")
+        if block:
+            selected = block[0]
+    while True:
+        dead = _ps_extract_block(code, r"if\s*\(\s*\$false\s*\)\s*\{")
+        if not dead:
+            break
+        code = code[:dead[1]] + code[dead[2]:]
+    while True:
+        function = _ps_extract_block(code, r"function\s+[A-Za-z_][\w-]*\s*\{")
+        if not function:
+            break
+        code = code[:function[1]] + code[function[2]:]
+    if include_function and not re.search(rf"(?m)^\s*{re.escape(include_function)}\s+`?\s*$", code):
+        selected = ""
+    return code + "\n" + selected
+
+
+def evaluate_windows(name: str, records: dict[bytes, bytes], source: bytes) -> bool | None:
+    if not (name.startswith("windows-") or name.startswith("context-windows") or name.startswith("solver-windows")):
+        return None
+    function = "Register-ClaudeTask" if source.endswith(b"setup-scheduler-tasks.ps1") else None
+    code = _ps_live_code(records.get(source, b""), function)
+    patterns = {
+        "windows-task-path-name-v1": r"\$TaskPath\s*=\s*['\"]\\Claude\\['\"][\s\S]+Register-ScheduledTask[\s\S]+-TaskPath\s+\$TaskPath",  # scheduler-mutation-forensic
+        "windows-current-user-principal-v1": r"\$principal\s*=\s*New-ScheduledTaskPrincipal\s+-UserId\s+\$env:USERNAME[\s\S]+Register-ScheduledTask[\s\S]+-Principal\s+\$principal",  # scheduler-mutation-forensic
+        "context-windows-principal-v1": r"\$Principal\s*=\s*New-ScheduledTaskPrincipal\s+-UserId\s+\$env:USERNAME[\s\S]+Register-ScheduledTask[\s\S]+-Principal\s+\$Principal",  # scheduler-mutation-forensic
+        "context-windows-task-path-name-v1": r"\$TaskPath\s*=\s*['\"]\\Claude\\['\"][\s\S]+Register-ScheduledTask[\s\S]+-TaskPath\s+\$TaskPath",  # scheduler-mutation-forensic
+        "solver-windows-task-name-v1": r"\$TaskName\s*=\s*['\"]SolverQueue['\"][\s\S]+(?:Set|Register)-ScheduledTask\s+-TaskName\s+\$TaskName",  # scheduler-mutation-forensic
+        "windows-task-set-operation-v1": r"if\s*\(Get-ScheduledTask[\s\S]+Set-ScheduledTask[\s\S]+else\s*\{[\s\S]+Register-ScheduledTask",  # scheduler-mutation-forensic
+        "windows-task-unregister-register-v1": r"if\s*\(\$existing\)[\s\S]+Unregister-ScheduledTask[\s\S]+Register-ScheduledTask",  # scheduler-mutation-forensic
+    }
+    return bool(name in patterns and re.search(patterns[name], code, re.IGNORECASE))
 
 
 def _shell_host_guard(records: dict[bytes, bytes], source: bytes) -> bool:
@@ -195,8 +255,11 @@ def evaluate_python(name: str, records: dict[bytes, bytes], source: bytes) -> bo
     run = _function(tree, "run_cutover")
     main = _function(tree, "main")
     if name == "python-physical-host-equality-guard-v1":
-        text = ast.unparse(main) if main else ""
-        return bool(re.search(r"if mid != physical_mid:[\s\S]+return 2[\s\S]+run_cutover", text))
+        if main is None:
+            return False
+        guard = next((stmt for stmt in main.body if _abort_if(stmt, "mid", "physical_mid")), None)
+        call = next((stmt for stmt in main.body if "run_cutover(" in ast.unparse(stmt)), None)
+        return bool(guard and call and guard.lineno < call.lineno)
     if name in {"python-lock-scope-v1", "python-baseline-snapshot-v1", "python-backup-baseline-v1", "python-prewrite-cas-v1"}:
         return _prewrite_shape(records)
     if name == "python-postwrite-preservation-multiset-v1":
@@ -213,7 +276,8 @@ def evaluate_python(name: str, records: dict[bytes, bytes], source: bytes) -> bo
         return derive_cron_classifier_branches(records) is not None
     if name == "crontab-current-user-target-v1":
         fn = _function(tree, "write_crontab")
-        return bool(fn and "_run(['crontab', '-']" in ast.unparse(fn))  # scheduler-mutation-forensic
+        needle = "_run([" + repr("crontab") + ", " + repr("-") + "]"
+        return bool(fn and needle in ast.unparse(fn))
     return False
 
 

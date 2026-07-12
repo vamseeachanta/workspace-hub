@@ -32,6 +32,7 @@ from scheduler_mutation_attestations import (  # noqa: E402
     derive_installed_fingerprint_branches,
     evaluate_python,
     evaluate_shell_guard,
+    evaluate_windows,
     forensic_literal_lines,
 )
 
@@ -47,6 +48,7 @@ PRIMITIVE_PATTERNS = {
     "crontab-replace": (
         rb"(?:^|[|;\(\s])(?:run_)?crontab[ \t]+-(?:[ \t]|$)",  # scheduler-mutation-forensic
         rb"\[[ \t]*['\"]crontab['\"][ \t]*,[ \t]*['\"]-['\"]",  # scheduler-mutation-forensic
+        rb"['\"]crontab[ \t]+-['\"]",  # scheduler-mutation-forensic
     ),  # scheduler-mutation-forensic
     "systemd-user-unit-write": (
         rb"\b(?:write_unit|remove_unit)[ \t]+",  # scheduler-mutation-forensic
@@ -182,6 +184,9 @@ def evaluate_attestation(name: str, records: dict[bytes, bytes], operation_sourc
     shell_guard = evaluate_shell_guard(name, records, source)
     if shell_guard is not None:
         return shell_guard
+    windows = evaluate_windows(name, records, source)
+    if windows is not None:
+        return windows
     code = _code(records.get(source, b""))
     if name == "kanban-backend-operation-set-v1":
         return len(derive_kanban_operations(records)) == 6
@@ -190,13 +195,6 @@ def evaluate_attestation(name: str, records: dict[bytes, bytes], operation_sourc
         "crontab-root-target-v1": rb"EUID -ne 0[\s\S]+crontab -",
         "systemd-user-unit-name-v1": rb"UNIT_NAME=\"kanban-loader-sync\"",
         "systemd-user-enable-disable-v1": rb"run_systemctl enable --now[\s\S]+run_systemctl disable --now",  # scheduler-mutation-forensic
-        "windows-task-path-name-v1": rb"\$TaskPath = \"\\Claude\\\"[\s\S]+Register-ScheduledTask[\s\S]+-TaskPath \$TaskPath",  # scheduler-mutation-forensic
-        "windows-current-user-principal-v1": rb"-UserId \$env:USERNAME[\s\S]+Register-ScheduledTask[\s\S]+-Principal \$principal",  # scheduler-mutation-forensic
-        "context-windows-principal-v1": rb"-UserId \$env:USERNAME[\s\S]+Register-ScheduledTask[\s\S]+-Principal \$Principal",  # scheduler-mutation-forensic
-        "context-windows-task-path-name-v1": rb"\$TaskPath = \"\\Claude\\\"[\s\S]+Register-ScheduledTask[\s\S]+-TaskPath \$TaskPath",  # scheduler-mutation-forensic
-        "solver-windows-task-name-v1": rb"\$TaskName = \"SolverQueue\"[\s\S]+(?:Set|Register)-ScheduledTask -TaskName \$TaskName",
-        "windows-task-set-operation-v1": rb"Get-ScheduledTask[\s\S]+Set-ScheduledTask[\s\S]+else \{[\s\S]+Register-ScheduledTask",  # scheduler-mutation-forensic
-        "windows-task-unregister-register-v1": rb"if \(\$existing\)[\s\S]+Unregister-ScheduledTask[\s\S]+Register-ScheduledTask",  # scheduler-mutation-forensic
     }
     return bool(name in patterns and re.search(patterns[name], code))
 

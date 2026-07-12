@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import re
 import sys
 from pathlib import Path
 
@@ -168,3 +169,69 @@ def test_digest_union_excludes_registry_record_and_rejects_missing_mapping():
     registry["surfaces"][0]["operations"][0]["attestations"].append("missing-id")
     with pytest.raises((KeyError, ValueError)):
         checker.digest_record_union(registry, records)
+
+
+@pytest.mark.parametrize("shape", ["nested", "try"])
+def test_prewrite_and_rollback_reject_conditional_abort_fallthrough(shape):
+    checker, records, _ = current_contract()
+    source = b"scripts/cron/cron_apply.py"
+    text = records[source].decode()
+    for left, name in (("A", "python-prewrite-cas-v1"), ("after", "python-rollback-after-cas-v1")):
+        original = f"if current != {left}:"
+        if shape == "nested":
+            replacement = original + "\n                    if False:" if left == "after" else original + "\n                if False:"
+        else:
+            replacement = original + "\n                    try:" if left == "after" else original + "\n                try:"
+        mutated = text.replace(original, replacement, 1)
+        records[source] = mutated.encode()
+        assert not checker.evaluate_attestation(name, records, source)
+        records[source] = text.encode()
+
+
+@pytest.mark.parametrize("shape", ["nested", "try"])
+def test_python_host_guard_rejects_conditional_return_fallthrough(shape):
+    checker, records, _ = current_contract()
+    source = b"scripts/cron/cron_apply.py"
+    text = records[source].decode()
+    marker = "if mid != physical_mid:"
+    insertion = "\n        if False:" if shape == "nested" else "\n        try:"
+    records[source] = text.replace(marker, marker + insertion, 1).encode()
+    assert not checker.evaluate_attestation("python-physical-host-equality-guard-v1", records, source)
+
+
+def test_executable_single_string_sentinel_is_not_suppressed():
+    checker = load_checker()
+    body = b'import subprocess\nsubprocess.run("crontab -", shell=True)  # scheduler-mutation-forensic\n'
+    found = checker.discover_mutation_surfaces({checker.CHECKER: body})
+    assert found.direct == {checker.CHECKER.decode()}
+
+
+@pytest.mark.parametrize(
+    ("source", "attestation", "decoy"),
+    [
+        (
+            b"scripts/windows/setup-scheduler-tasks.ps1",
+            "windows-current-user-principal-v1",
+            b'if ($false) { $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME; Register-ScheduledTask -TaskName X -Principal $principal }\n',
+        ),
+        (
+            b"scripts/coordination/context/setup_scheduled_task.ps1",
+            "context-windows-task-path-name-v1",
+            b'function NeverCalled { $TaskPath = "\\Claude\\"; Register-ScheduledTask -TaskName X -TaskPath $TaskPath }\n',
+        ),
+        (
+            b"scripts/solver/setup-scheduler.ps1",
+            "windows-task-set-operation-v1",
+            b'if ($false) { if (Get-ScheduledTask -TaskName X) { Set-ScheduledTask -TaskName X } else { Register-ScheduledTask -TaskName X } }\n',
+        ),
+    ],
+)
+def test_windows_attestations_reject_dead_scope_decoys(source, attestation, decoy):
+    checker, records, _ = current_contract()
+    live = records[source]
+    records[source] = re.sub(
+        rb"(?m)^(?!\s*#).*?(?:Register|Unregister|Set)-ScheduledTask.*$",
+        b"Write-Host removed-live-mutation",
+        live,
+    ) + decoy
+    assert not checker.evaluate_attestation(attestation, records, source)
