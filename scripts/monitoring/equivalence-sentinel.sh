@@ -30,8 +30,31 @@ role="$($PY -c "import json,sys;print(json.load(open(sys.argv[1]))['role'])" "$f
 # check emits "ERROR: directory not found" for them. Downgrade that benign token
 # here (not in the shared check-all.sh) so cron-health does not false-flag this
 # job — real publish failures keep their error wording.
+#
+# Publish-health (#3502): the publish is timed and recorded so the equality
+# matrix can flag a gate-length publish (#3500 signature). The PREVIOUS cycle's
+# duration is stamped into this cycle's fingerprint so it travels in the ref
+# and is visible fleet-centrally.
+publish_health="$REPO_ROOT/.claude/state/equivalence/publish-health.json"
+$PY - "$fp_local" "$publish_health" <<'PY'
+import json, sys
+fp_path, ph_path = sys.argv[1], sys.argv[2]
+try:
+    dur = json.load(open(ph_path)).get("duration_s")
+except Exception:
+    dur = None
+if isinstance(dur, (int, float)) and not isinstance(dur, bool):
+    fp = json.load(open(fp_path))
+    fp["last_publish_duration_s"] = dur
+    json.dump(fp, open(fp_path, "w"), indent=1)
+PY
+publish_start="$(date +%s)"
 $PY "$MON/equivalence_state.py" publish --repo "$REPO_ROOT" --role "$role" --file "$fp_local" 2>&1 \
   | sed -e 's/^/[publish] /' -e 's/ERROR: directory not found:/SKIP (absent sibling):/'
+publish_rc="${PIPESTATUS[0]}"
+publish_dur="$(( $(date +%s) - publish_start ))"
+printf '{"ts": "%s", "duration_s": %s, "rc": %s}\n' \
+  "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$publish_dur" "$publish_rc" > "$publish_health"
 
 # 3. collect + 4. compare (in one python pass)
 report="$REPO_ROOT/.claude/state/equivalence/divergences-latest.json"
@@ -44,7 +67,11 @@ try:
 except store.StoreUnavailable as e:
     print(f"[collect] store unavailable: {e}", file=sys.stderr)
     sys.exit(3)
-divs = cmp.compare(fps)
+# Roster-aware (#3502): machines that run the daily cron but have no
+# fingerprint in the ref are flagged (absence = gate-blocked publish or
+# sentinel not installed). Degrades open if the registry is unreadable.
+roster = cmp.load_expected_machines("config/workstations/registry.yaml")
+divs = cmp.compare(fps, expected_machines=roster or None)
 json.dump({"boxes": len(fps), "divergences": divs}, open(sys.argv[1], "w"), indent=1)
 print(f"[compare] {len(fps)} box(es), {len(divs)} divergence(s)")
 for d in divs:

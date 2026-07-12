@@ -373,6 +373,23 @@ else
 fi
 provider_harness_yaml="$(printf '%s\n' "$provider_harness_yaml" | sed 's/^/    /')"
 
+# ── publish_health (#3502): last equivalence-state publish outcome, written by
+#    equivalence-sentinel.sh. A gate-length duration or a stale/missing record is
+#    the #3500 pre-push-deadlock signature; the matrix renders it per machine.
+ph_file="${WS}/.claude/state/equivalence/publish-health.json"
+ph_ts="missing"; ph_dur="null"; ph_rc="null"
+if [[ -f "$ph_file" ]] && have python3; then
+  read -r ph_ts ph_dur ph_rc < <(python3 - "$ph_file" <<'PY' 2>/dev/null || echo "missing null null"
+import json, sys
+try:
+    d = json.load(open(sys.argv[1]))
+    print(d.get("ts") or "missing", d.get("duration_s", "null"), d.get("rc", "null"))
+except Exception:
+    print("missing null null")
+PY
+) || true
+fi
+
 # ── emit (generated_at + headroom + mtime + job_count + checkout_sha are EXCLUDED from the
 #          hash; dirty + behind_main + origin_ref_age_h ARE hashed — A1/BC5: exclude the pure
 #          churn (sha) ONLY, so every freshness-state field stays live in the committed report
@@ -439,6 +456,10 @@ ${provider_harness_yaml}
     healthy: ${slh_healthy}
     repairable: ${slh_repairable}
     worst_state: ${slh_worst}
+  publish_health:
+    last_publish_at: "$(yesc "$ph_ts")"
+    last_publish_duration_s: ${ph_dur}
+    last_publish_rc: ${ph_rc}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 
