@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plan — #3490 Cron preview failure</title>
+<style>body{margin:0;background:#0f1419;color:#e6edf3;font:15px/1.55 system-ui,sans-serif}.wrap{max-width:960px;margin:auto;padding:32px 22px}h1,h2{line-height:1.2}code,pre{background:#0b0f14;border:1px solid #30363d;border-radius:6px}code{padding:2px 5px}pre{padding:14px;overflow:auto}.card{border:1px solid #30363d;border-radius:8px;padding:16px;margin:14px 0}.gate{border-left:4px solid #d29922}.safe{border-left:4px solid #3fb950}li{margin:.35rem 0}.muted{color:#9da7b1}</style>
+</head><body><main class="wrap">
+<p class="muted">Issue #3490 · T2 · lane:codex · draft</p>
+<h1>Surface cron preview failure during new-machine dry-run</h1>
+<section class="card"><h2>Observed defect</h2><p>The onboarding dry-run will currently append <code>|| true</code> to the cron preview. A child failure can therefore be followed by <code>Setup complete!</code> and process exit 0.</p><pre>cron preview: exit 42
+current onboarding result: exit 0 + completion banner</pre></section>
+<section class="card safe"><h2>Proposed contract</h2><ul><li>Linux dry-run will invoke <code>setup-cron.sh --dry-run</code>.</li><li>A failure will remain visible, return the exact child status, and stop later steps.</li><li>A successful preview will continue the onboarding dry-run.</li><li>Default Linux apply and Windows best-effort behavior will remain unchanged.</li><li>Fixture tests will prevent any live crontab access.</li></ul></section>
+<section class="card"><h2>Governance boundary</h2><p>The registry, staged-blob source attestation, mutation tests, operations documentation, and generated scheduler report will move together from <code>swallow-3490</code> to the resolved mode contract. The unrelated harness-update debt in issue #3479 will remain untouched.</p></section>
+<section class="card"><h2>Verification</h2><ul><li>Hermetic executable tests for failure, success, exact arguments, no-cron, and scheduler sentinel.</li><li>Adversarial mutations for reintroduced swallowing, missing dry-run, generic status replacement, and branch drift.</li><li>Scheduler checker and deterministic HTML parity.</li><li>Ruff, legal diff scan, 400/50 limits, PR checks, and T2 code review.</li></ul></section>
+<section class="card gate"><h2>Gate</h2><p>Implementation will remain blocked until adversarial plan review finishes and the user applies <code>status:plan-approved</code>. No live scheduler or process action will be authorized by this plan.</p></section>
+<p>Canonical detail: <code>docs/plans/2026-07-12-issue-3490-onboarding-cron-preview-failure.md</code></p>
+</main></body></html>
