@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import importlib.util
+import copy
+import os
 import json
 import subprocess
 import sys
@@ -65,12 +67,11 @@ def test_cli_reports_machine_readable_failures_and_success():
     )
     assert completed.returncode == 0, completed.stdout + completed.stderr
     payload = json.loads(completed.stdout)
-    assert payload == {
-        "direct": sorted(DIRECT),
-        "errors": [],
-        "status": "ok",
-        "transitive": sorted(TRANSITIVE),
-    }
+    assert payload["direct"] == sorted(DIRECT)
+    assert payload["transitive"] == sorted(TRANSITIVE)
+    assert payload["errors"] == []
+    assert payload["status"] == "ok"
+    assert len(payload["input_digest"]) == 64
 
 
 @pytest.mark.parametrize(
@@ -158,3 +159,149 @@ def test_cat_file_transport_requires_nul_mode(tmp_path):
     git.chmod(0o755)
     with pytest.raises(checker.GitTransportError, match="Git.*-Z"):
         checker.read_index_records(tmp_path, git_command=str(git))
+
+
+def current_contract():
+    checker = load_checker()
+    records = checker.read_index_records(REPO_ROOT)
+    registry = yaml.safe_load(REGISTRY.read_bytes())
+    return checker, records, registry
+
+
+@pytest.mark.parametrize(
+    ("attestation", "unsafe"),
+    [
+        ("python-physical-host-equality-guard-v1", b"# refusing local crontab reconciliation\n"),
+        ("python-prewrite-baseline-cas-v1", b"# if current != A\n_write(new)\n"),
+        ("python-rollback-after-cas-v1", b"# if current != after\n_write(A)\n"),
+        ("windows-current-user-principal-v1", b"# -UserId $env:USERNAME\nRegister-ScheduledTask -TaskName X\n"),
+        ("windows-task-set-operation-v1", b"# Set-ScheduledTask -TaskName\n"),
+        ("shell-exact-sentinel-v1", b"# grep -vF \"$CRON_SENTINEL\"\nrun_crontab -\n"),
+    ],
+)
+def test_closed_attestation_evaluators_reject_mutated_source_shapes(attestation, unsafe):
+    checker, records, _ = current_contract()
+    source = checker.attestation_source(attestation)
+    records[source] = unsafe
+    assert checker.evaluate_attestation(attestation, records, source) is False
+
+
+def test_classifier_branch_set_is_complete_and_exact():
+    checker, records, registry = current_contract()
+    expected = checker.derive_cron_classifier_branches(records)
+    assert expected == {"installed-fingerprint", "catalog-key-fallback", "preserved-promotion"}
+    cron = next(row for row in registry["surfaces"] if row["path"] == "scripts/cron/cron_apply.py")
+    cron["operations"][0]["authority_branches"].pop()
+    result = checker.validate_registry(registry, checker.discover_mutation_surfaces(records), records)
+    assert any("branch set" in error for error in result.errors)
+    records[b"scripts/cron/cron_transaction.py"] += b"\nif extra_route: return {'class': 'cataloged'}\n"
+    assert checker.derive_cron_classifier_branches(records) is None
+
+
+def test_discovery_covers_every_declared_primitive():
+    checker = load_checker()
+    records = {
+        b"scripts/a.sh": b"printf x | run_crontab -\n",
+        b"scripts/b.sh": b"write_unit \"$SERVICE_PATH\"\nremove_unit \"$SERVICE_PATH\"\n",
+        b"scripts/c.sh": b"run_systemctl enable --now x.timer\n",
+        b"scripts/d.ps1": b"Set-ScheduledTask -TaskName X\n",
+    }
+    found = checker.discover_mutation_surfaces(records)
+    assert found.primitives == {
+        "scripts/a.sh": {"crontab-replace"},
+        "scripts/b.sh": {"systemd-user-unit-write"},
+        "scripts/c.sh": {"systemd-user-enable-disable"},
+        "scripts/d.ps1": {"windows-task-set"},
+    }
+
+
+def test_config_sources_are_tracked_connected_and_corrected():
+    checker, records, registry = current_contract()
+    cron = next(row for row in registry["surfaces"] if row["path"] == "scripts/cron/cron_apply.py")
+    branches = {b["id"]: b for b in cron["operations"][0]["authority_branches"]}
+    assert branches["preserved-promotion"]["config_source"] == "config/workstations/harness-state-classes.yaml"
+    branches["preserved-promotion"]["config_source"] = "missing.yaml"
+    result = checker.validate_registry(registry, checker.discover_mutation_surfaces(records), records)
+    assert any("config_source" in error for error in result.errors)
+
+
+def test_kanban_backend_operation_set_includes_install_and_uninstall():
+    checker, records, _ = current_contract()
+    operations = checker.derive_kanban_operations(records)
+    assert operations == {
+        "install:systemd-unit-write", "install:systemd-enable",
+        "install:crontab-replace", "uninstall:systemd-unit-remove",
+        "uninstall:systemd-disable", "uninstall:crontab-replace",
+    }
+    records[b"scripts/install/setup-kanban-loader-timer.sh"] = records[b"scripts/install/setup-kanban-loader-timer.sh"].replace(b"remove_unit \"$SERVICE_PATH\"", b":")
+    assert checker.derive_kanban_operations(records) != operations
+
+
+def test_true_transaction_guarantees_require_specific_attestations():
+    checker, records, registry = current_contract()
+    cron = next(row for row in registry["surfaces"] if row["path"] == "scripts/cron/cron_apply.py")
+    cron["operations"][0]["attestations"].remove("python-prewrite-baseline-cas-v1")
+    result = checker.validate_registry(registry, checker.discover_mutation_surfaces(records), records)
+    assert any("pre_write_cas" in error for error in result.errors)
+
+
+def test_digest_uses_exact_plan_defined_union_and_cli_emits_it():
+    checker, records, registry = current_contract()
+    selected = checker.digest_record_union(registry, records)
+    assert b".github/workflows/enforcement-gate.yml" in selected
+    assert b"scripts/enforcement/check-scheduler-mutation-surfaces.py" in selected
+    completed = subprocess.run([sys.executable, str(CHECKER), "--json"], cwd=REPO_ROOT, text=True, capture_output=True)
+    payload = json.loads(completed.stdout)
+    assert payload["input_digest"] == checker.input_digest(REGISTRY.read_bytes(), selected)
+
+
+def test_index_bytes_win_over_dirty_worktree(tmp_path):
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    path = tmp_path / "tracked.sh"
+    path.write_text("indexed\n")
+    subprocess.run(["git", "add", "tracked.sh"], cwd=tmp_path, check=True)
+    path.write_text("dirty\n")
+    assert load_checker().read_index_records(tmp_path)[b"tracked.sh"] == b"indexed\n"
+
+
+def test_cat_file_transport_handles_odd_path_bytes(tmp_path):
+    subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
+    root = os.fsencode(tmp_path)
+    fixtures = {
+        b"line\nname.sh": b"newline", b"tab\tname.sh": b"tab",
+        b"-leading.sh": b"dash", b"nonutf8-\xff.sh": b"bytes",
+    }
+    for name, body in fixtures.items():
+        fd = os.open(root + b"/" + name, os.O_WRONLY | os.O_CREAT, 0o644)
+        os.write(fd, body); os.close(fd)
+        subprocess.run([b"git", b"add", b"--", name], cwd=root, check=True)
+    records = load_checker().read_index_records(tmp_path)
+    assert {name: records[name] for name in fixtures} == fixtures
+
+
+def test_transitive_guard_and_unknown_indirection_fail_closed():
+    checker, records, registry = current_contract()
+    wrapper = next(row for row in registry["surfaces"] if row["kind"] == "transitive-entrypoint")
+    wrapper["edge"]["target_guard_attestation"] = "unknown-id"
+    result = checker.validate_registry(registry, checker.discover_mutation_surfaces(records), records)
+    assert any("target_guard" in error for error in result.errors)
+    found = checker.discover_mutation_surfaces({b"scripts/x.sh": b"$SCHEDULER_INSTALLER --apply\n"})
+    assert "scripts/x.sh" in found.unknown_edges
+
+
+def test_duplicate_operation_ids_are_rejected():
+    checker, records, registry = current_contract()
+    row = registry["surfaces"][0]
+    row["operations"].append(copy.deepcopy(row["operations"][0]))
+    result = checker.validate_registry(registry, checker.discover_mutation_surfaces(records), records)
+    assert any("duplicate operation" in error for error in result.errors)
+
+
+def test_dedicated_disposition_coordinates_are_exact():
+    _, _, registry = current_contract()
+    groups = {g["group_id"]: g["issue"]["number"] for g in registry["disposition_groups"]}
+    assert groups == {
+        "cron-catalog-migration": 3475, "legacy-crontab-writers": 3476,
+        "kanban-dual-backend": 3477, "windows-task-writers": 3478,
+        "harness-update": 3479,
+    }

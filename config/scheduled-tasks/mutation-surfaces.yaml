@@ -14,7 +14,7 @@ surfaces:
         authority_branches:
           - {id: installed-fingerprint, mechanism: command-tokens-adjacent, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: parsed}
           - {id: catalog-key-fallback, mechanism: catalog-key-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
-          - {id: preserved-promotion, mechanism: command-substring, config_source: config/scheduled-tasks/external-cron-allowlist.yaml, destructive: true, strength: substring}
+          - {id: preserved-promotion, mechanism: command-substring, config_source: config/workstations/harness-state-classes.yaml, destructive: true, strength: substring}
         transaction: &reference_transaction
           lock: true
           baseline_snapshot: true
@@ -47,7 +47,7 @@ surfaces:
           - {id: marker-filter, mechanism: command-substring, config_source: scripts/coordination/context/setup_cron.sh, destructive: true, strength: substring}
         transaction: &missing_transaction
           lock: false
-          baseline_snapshot: true
+          baseline_snapshot: false
           backup: false
           pre_write_cas: false
           post_write_preservation_verify: false
@@ -82,7 +82,7 @@ surfaces:
     kind: direct-owner
     disposition_group: kanban-dual-backend
     operations:
-      - id: systemd-unit-write
+      - id: install:systemd-unit-write
         primitive: systemd-user-unit-write
         target_kind: systemd-user
         scheduler_identity: local-user-systemd-kanban-loader-sync
@@ -93,7 +93,7 @@ surfaces:
           - {id: fixed-unit, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
         transaction: *missing_transaction
         attestations: [systemd-user-unit-name-v1, kanban-backend-operation-set-v1]
-      - id: systemd-enable-disable
+      - id: install:systemd-enable
         primitive: systemd-user-enable-disable
         target_kind: systemd-user
         scheduler_identity: local-user-systemd-kanban-loader-sync
@@ -104,12 +104,45 @@ surfaces:
           - {id: fixed-unit, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
         transaction: *missing_transaction
         attestations: [systemd-user-enable-disable-v1, kanban-backend-operation-set-v1]
-      - id: crontab-replace
+      - id: install:crontab-replace
         primitive: crontab-replace
         target_kind: current-user-cron
         scheduler_identity: local-current-user-crontab-kanban-loader-sync
         execution_host_binding: physical-local
         selection_condition: systemd-unavailable
+        destructive: true
+        authority_branches:
+          - {id: exact-sentinel, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [shell-exact-sentinel-v1, kanban-backend-operation-set-v1]
+      - id: uninstall:systemd-unit-remove
+        primitive: systemd-user-unit-write
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-kanban-loader-sync
+        execution_host_binding: physical-local
+        selection_condition: systemd-available-uninstall
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-unit-name-v1, kanban-backend-operation-set-v1]
+      - id: uninstall:systemd-disable
+        primitive: systemd-user-enable-disable
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-kanban-loader-sync
+        execution_host_binding: physical-local
+        selection_condition: systemd-available-uninstall
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-enable-disable-v1, kanban-backend-operation-set-v1]
+      - id: uninstall:crontab-replace
+        primitive: crontab-replace
+        target_kind: current-user-cron
+        scheduler_identity: local-current-user-crontab-kanban-loader-sync
+        execution_host_binding: physical-local
+        selection_condition: systemd-unavailable-uninstall
         destructive: true
         authority_branches:
           - {id: exact-sentinel, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
@@ -140,7 +173,7 @@ surfaces:
         scheduler_identity: local-windows-task-scheduler-context-management
         authority_branches:
           - {id: task-path-name, mechanism: fixed-task-path-name, config_source: scripts/coordination/context/setup_scheduled_task.ps1, destructive: true, strength: exact}
-        attestations: []
+        attestations: [context-windows-principal-v1]
 
   - path: scripts/solver/setup-scheduler.ps1
     kind: direct-owner
@@ -179,7 +212,7 @@ surfaces:
 
   - path: scripts/cron/harness-update.sh
     kind: transitive-entrypoint
-    disposition_group: cron-catalog-migration
+    disposition_group: harness-update
     edge: {callee: scripts/cron/setup-cron.sh, call_form: constant-path-exec, mutation_mode: default, target_guard_attestation: crontab-current-user-target-v1}
     operations:
       - <<: *legacy_current_user_operation
@@ -189,18 +222,22 @@ surfaces:
 
 disposition_groups:
   - group_id: cron-catalog-migration
-    issue: {repository: vamseeachanta/workspace-hub, number: 87}
-    members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh, scripts/cron/harness-update.sh]
+    issue: {repository: vamseeachanta/workspace-hub, number: 3475}
+    members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     defect_class: catalog-identity-and-transaction
   - group_id: legacy-crontab-writers
-    issue: {repository: vamseeachanta/workspace-hub, number: 2762}
+    issue: {repository: vamseeachanta/workspace-hub, number: 3476}
     members: [scripts/coordination/context/setup_cron.sh, scripts/operations/maintenance/setup_maintenance_cron.sh, scripts/setup/setup-engineering-update-cron.sh]
     defect_class: substring-ownership-no-transaction
   - group_id: kanban-dual-backend
-    issue: {repository: vamseeachanta/workspace-hub, number: 2827}
+    issue: {repository: vamseeachanta/workspace-hub, number: 3477}
     members: [scripts/install/setup-kanban-loader-timer.sh]
     defect_class: dual-backend-no-transaction
   - group_id: windows-task-writers
-    issue: {repository: vamseeachanta/workspace-hub, number: 2815}
+    issue: {repository: vamseeachanta/workspace-hub, number: 3478}
     members: [scripts/windows/setup-scheduler-tasks.ps1, scripts/coordination/context/setup_scheduled_task.ps1, scripts/solver/setup-scheduler.ps1]
     defect_class: windows-no-shared-transaction
+  - group_id: harness-update
+    issue: {repository: vamseeachanta/workspace-hub, number: 3479}
+    members: [scripts/cron/harness-update.sh]
+    defect_class: implicit-nightly-scheduler-mutation
