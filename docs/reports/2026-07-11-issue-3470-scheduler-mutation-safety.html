@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" data-input-digest="b26ac32011825c09ea13ce107f93062973b5183ad54df622c7d05e53c08f302e"><head><meta charset="utf-8">
+<title>Scheduler Mutation Safety Audit</title>
+<style>body{font:16px system-ui;max-width:1200px;margin:2rem auto;padding:0 1rem}table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbb;padding:.5rem;text-align:left}code{font-size:.9em}.warning{border-left:4px solid #b45309;padding:1rem;background:#fff7ed}</style></head>
+<body><h1>Scheduler Mutation Safety Audit</h1>
+<p><strong>Input digest:</strong> <code>b26ac32011825c09ea13ce107f93062973b5183ad54df622c7d05e53c08f302e</code></p>
+<p class="warning">Registry inclusion does not authorize live scheduler mutation.</p>
+<table><thead><tr><th>Surface</th><th>Kind</th><th>Derived status</th><th>Operations</th><th>Disposition</th></tr></thead><tbody>
+<tr data-surface="scripts/coordination/context/setup_cron.sh"><td><code>scripts/coordination/context/setup_cron.sh</code></td><td>direct-owner</td><td>migration-required</td><td>marker-filtered-crontab-replace</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3476">#3476</a></td></tr>
+<tr data-surface="scripts/coordination/context/setup_scheduled_task.ps1"><td><code>scripts/coordination/context/setup_scheduled_task.ps1</code></td><td>direct-owner</td><td>migration-required</td><td>unregister-register-fixed-task</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3478">#3478</a></td></tr>
+<tr data-surface="scripts/cron/cron_apply.py"><td><code>scripts/cron/cron_apply.py</code></td><td>direct-owner</td><td>migration-required</td><td>reconcile-current-user-crontab</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3475">#3475</a></td></tr>
+<tr data-surface="scripts/cron/harness-update.sh"><td><code>scripts/cron/harness-update.sh</code></td><td>transitive-entrypoint</td><td>migration-required</td><td>nightly-crontab-self-sync</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3479">#3479</a></td></tr>
+<tr data-surface="scripts/cron/setup-cron.sh"><td><code>scripts/cron/setup-cron.sh</code></td><td>transitive-entrypoint</td><td>migration-required</td><td>catalog-install-entrypoint</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3475">#3475</a></td></tr>
+<tr data-surface="scripts/install/setup-kanban-loader-timer.sh"><td><code>scripts/install/setup-kanban-loader-timer.sh</code></td><td>direct-owner</td><td>migration-required</td><td>install:systemd-unit-write, install:systemd-enable, install:crontab-replace, uninstall:systemd-unit-remove, uninstall:systemd-disable, uninstall:crontab-replace</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3477">#3477</a></td></tr>
+<tr data-surface="scripts/operations/maintenance/setup_maintenance_cron.sh"><td><code>scripts/operations/maintenance/setup_maintenance_cron.sh</code></td><td>direct-owner</td><td>migration-required</td><td>marker-filtered-crontab-replace</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3476">#3476</a></td></tr>
+<tr data-surface="scripts/setup/new-machine-setup.sh"><td><code>scripts/setup/new-machine-setup.sh</code></td><td>transitive-entrypoint</td><td>migration-required</td><td>onboarding-crontab-install</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3475">#3475</a></td></tr>
+<tr data-surface="scripts/setup/setup-engineering-update-cron.sh"><td><code>scripts/setup/setup-engineering-update-cron.sh</code></td><td>direct-owner</td><td>migration-required</td><td>root-marker-filtered-crontab-replace</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3476">#3476</a></td></tr>
+<tr data-surface="scripts/solver/setup-scheduler.ps1"><td><code>scripts/solver/setup-scheduler.ps1</code></td><td>direct-owner</td><td>migration-required</td><td>set-or-register-solver-queue</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3478">#3478</a></td></tr>
+<tr data-surface="scripts/windows/setup-scheduler-tasks.ps1"><td><code>scripts/windows/setup-scheduler-tasks.ps1</code></td><td>direct-owner</td><td>migration-required</td><td>unregister-register-fixed-task</td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3478">#3478</a></td></tr>
+</tbody></table>
+<h2>Limitations</h2><ul><li>Issue coordinates are validated offline; live issue state is non-authoritative.</li><li>Windows runtime behavior is source-audited on Linux and requires Windows-capable migration verification.</li><li>Branch-protection registration is outside this artifact.</li></ul>
+<p>Discovered direct owners: 8; transitive entrypoints: 3.</p>
+</body></html>

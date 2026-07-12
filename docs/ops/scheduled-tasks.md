@@ -4,6 +4,29 @@
 > Installer: `scripts/cron/setup-cron.sh` (compatibility wrapper over the transactional `cron_apply.py` engine)
 > Validator: `scripts/cron/validate-schedule.py`
 
+## Mutation Safety Audit
+
+Scheduler mutation ownership is cataloged separately from task cadence in
+`config/scheduled-tasks/mutation-surfaces.yaml`. The registry covers direct
+cron, systemd-user, and Windows Task Scheduler writers plus reviewed transitive
+entrypoints. Its checker derives status from tracked index bytes and does not
+authorize live scheduler changes.
+
+```bash
+# Validate inventory, source attestations, and dispositions
+uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
+
+# Verify the committed human audit is byte-current
+uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py \
+  --check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html
+```
+
+The human audit links migration issues
+[#3475](https://github.com/vamseeachanta/workspace-hub/issues/3475) through
+[#3479](https://github.com/vamseeachanta/workspace-hub/issues/3479). Issue
+coordinates are checked offline; their live state is informational and does
+not convert a `migration-required` row into compliance.
+
 ## Machine Roles
 
 | Hostname | Aliases | Cron Variant | Scheduler |

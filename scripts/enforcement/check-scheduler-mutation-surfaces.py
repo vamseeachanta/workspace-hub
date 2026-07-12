@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import html
 import json
 import re
 import subprocess
@@ -284,9 +285,46 @@ def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
         errors.append("dispositions must exactly cover migration-required surfaces")
 
 
+def render_html(registry, discovery, validation, digest: str) -> bytes:
+    groups = {group["group_id"]: group for group in registry["disposition_groups"]}
+    rows = []
+    for surface in sorted(registry["surfaces"], key=lambda row: row["path"]):
+        group = groups[surface["disposition_group"]]
+        issue = group["issue"]["number"]
+        operations = ", ".join(operation["id"] for operation in surface["operations"])
+        path = html.escape(surface["path"], quote=True)
+        rows.append(
+            f'<tr data-surface="{path}"><td><code>{path}</code></td>'
+            f'<td>{html.escape(surface["kind"])}</td>'
+            f'<td>{html.escape(validation.statuses[surface["path"]])}</td>'
+            f'<td>{html.escape(operations)}</td><td>'
+            f'<a href="https://github.com/vamseeachanta/workspace-hub/issues/{issue}">#{issue}</a>'
+            f'</td></tr>'
+        )
+    body = "\n".join(rows)
+    document = f"""<!doctype html>
+<html lang="en" data-input-digest="{digest}"><head><meta charset="utf-8">
+<title>Scheduler Mutation Safety Audit</title>
+<style>body{{font:16px system-ui;max-width:1200px;margin:2rem auto;padding:0 1rem}}table{{border-collapse:collapse;width:100%}}th,td{{border:1px solid #bbb;padding:.5rem;text-align:left}}code{{font-size:.9em}}.warning{{border-left:4px solid #b45309;padding:1rem;background:#fff7ed}}</style></head>
+<body><h1>Scheduler Mutation Safety Audit</h1>
+<p><strong>Input digest:</strong> <code>{digest}</code></p>
+<p class="warning">Registry inclusion does not authorize live scheduler mutation.</p>
+<table><thead><tr><th>Surface</th><th>Kind</th><th>Derived status</th><th>Operations</th><th>Disposition</th></tr></thead><tbody>
+{body}
+</tbody></table>
+<h2>Limitations</h2><ul><li>Issue coordinates are validated offline; live issue state is non-authoritative.</li><li>Windows runtime behavior is source-audited on Linux and requires Windows-capable migration verification.</li><li>Branch-protection registration is outside this artifact.</li></ul>
+<p>Discovered direct owners: {len(discovery.direct)}; transitive entrypoints: {len(discovery.transitive)}.</p>
+</body></html>
+"""
+    return document.encode("utf-8")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--json", action="store_true")
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--render-html", type=Path)
+    modes.add_argument("--check-html", type=Path)
     args = parser.parse_args(argv)
     try:
         records = read_index_records(ROOT)
@@ -299,6 +337,15 @@ def main(argv: list[str] | None = None) -> int:
         discovery = Discovery(set(), set(), {}, {}, set())
         result = ValidationResult([str(exc)], {})
         digest = ""
+    rendered = b""
+    if not result.errors and (args.render_html or args.check_html):
+        rendered = render_html(registry, discovery, result, digest)
+    if args.render_html and not result.errors:
+        args.render_html.parent.mkdir(parents=True, exist_ok=True)
+        args.render_html.write_bytes(rendered)
+    if args.check_html and not result.errors:
+        if not args.check_html.is_file() or args.check_html.read_bytes() != rendered:
+            result.errors.append(f"HTML audit is stale: {args.check_html}")
     payload = {
         "direct": sorted(discovery.direct),
         "errors": result.errors,
