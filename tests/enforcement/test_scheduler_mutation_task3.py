@@ -248,7 +248,11 @@ def test_preservation_attestation_proves_plan_reconstruction():
     mutations = (
         body.replace(b'if cls == "ignore":\n            preserved.append(line)', b'if cls == "ignore":\n            continue', 1),
         body.replace(b'elif cls == "preserved_external":\n            preserved.append(line)', b'elif cls == "preserved_external":\n            continue', 1),
-        body.replace(b'out.append(line)', b'continue', 1),
+        body.replace(
+            b'if cls == "cataloged":\n                continue\n            out.append(line)',
+            b'if cls == "cataloged":\n                continue\n            continue',
+            1,
+        ),
         body.replace(b'_filter(parsed["before"]) + block + _filter(parsed["after"])', b'block', 1),
     )
     for mutated in mutations:

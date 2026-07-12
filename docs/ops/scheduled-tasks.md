@@ -15,7 +15,8 @@ authorize live scheduler changes.
 Direct cron ownership is restricted to canonical and declared legacy exact
 lines. Transitive entrypoints declare their complete delegation chain,
 terminal operation, mode arguments, target, exit behavior, and source
-attestation. The onboarding preview gap remains visible as #3490, while the
+attestation. The onboarding preview gap remains visible as
+[#3490](https://github.com/vamseeachanta/workspace-hub/issues/3490), while the
 harness-update error-swallowing disposition remains #3479.
 
 ```bash

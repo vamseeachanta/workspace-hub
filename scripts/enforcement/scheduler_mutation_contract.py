@@ -6,6 +6,8 @@ import struct
 from dataclasses import dataclass
 from typing import Any
 
+from scheduler_mutation_delegation import validate_delegation_schema
+
 TX_FIELDS = (
     "lock",
     "baseline_snapshot",
@@ -24,12 +26,7 @@ TX_ATTEST = {
     "post_write_exact_state_verify": "python-postwrite-exact-state-v1",
     "rollback_cas": "python-rollback-after-cas-v1",
 }
-TARGETS = {
-    "current-user-cron",
-    "root-cron",
-    "systemd-user",
-    "windows-current-user-task",
-}
+TARGETS = {"current-user-cron", "root-cron", "systemd-user", "windows-current-user-task"}
 MECHANISMS = {
     "canonical-exact-line",
     "legacy-exact-line",
@@ -42,8 +39,6 @@ MECHANISMS = {
     "unknown",
 }
 STRENGTHS = {"exact", "parsed", "substring", "unknown"}
-CALL_FORMS = {"literal-exec", "literal-bash", "constant-path-exec"}
-MUTATION_MODES = {"default", "flag-gated"}
 SELECTION_CONDITIONS = {
     "systemd-available", "systemd-unavailable",
     "systemd-available-uninstall", "systemd-unavailable-uninstall",
@@ -82,7 +77,7 @@ ATT_SOURCES = {
     "python-baseline-snapshot-v1": b"scripts/cron/cron_apply.py",
     "python-backup-baseline-v1": b"scripts/cron/cron_apply.py",
     "python-prewrite-cas-v1": b"scripts/cron/cron_apply.py",
-    "python-postwrite-preservation-multiset-v1": b"scripts/cron/cron_apply.py",
+    "python-postwrite-preservation-multiset-v1": b"scripts/cron/cron_transaction.py",
     "python-postwrite-exact-state-v1": b"scripts/cron/cron_apply.py",
     "python-rollback-exact-baseline-v1": b"scripts/cron/cron_apply.py",
     "cron-canonical-legacy-exact-authority-v1": b"scripts/cron/cron_transaction.py",
@@ -166,6 +161,8 @@ def digest_record_union(
         b"scripts/enforcement/scheduler_mutation_contract.py",
         b"scripts/enforcement/scheduler_mutation_attestations.py",
         b"scripts/enforcement/scheduler_mutation_discovery.py",
+        b"scripts/enforcement/scheduler_mutation_delegation.py",
+        b"scripts/enforcement/scheduler_mutation_report.py",
         b"tests/enforcement/test_scheduler_mutation_surfaces.py",
         b"tests/enforcement/test_scheduler_mutation_hardening.py",
         b"tests/enforcement/test_scheduler_mutation_delivery.py",
@@ -243,7 +240,7 @@ def _validate_surface(
     else:
         if "operations" in row:
             errors.append(f"{path}: transitive surface cannot declare operations")
-        errors.extend(_validate_delegation(path, row.get("delegation")))
+        errors.extend(validate_delegation_schema(path, row.get("delegation")))
     return errors
 
 
@@ -298,32 +295,6 @@ def _validate_branch(path: str, branch: dict[str, Any]) -> list[str]:
         errors.append(f"{path}: invalid authority strength")
     if not isinstance(branch.get("destructive"), bool):
         errors.append(f"{path}: branch destructive must be boolean")
-    return errors
-
-
-def _validate_delegation(path: str, delegation: Any) -> list[str]:
-    if not isinstance(delegation, dict) or set(delegation) != {"immediate_callee", "terminal", "modes"}:
-        return [f"{path}: invalid delegation schema"]
-    terminal = delegation.get("terminal")
-    errors = []
-    if not isinstance(terminal, dict) or set(terminal) != {"path", "operation"}:
-        errors.append(f"{path}: invalid terminal schema")
-    modes = delegation.get("modes")
-    if not isinstance(modes, list) or not modes:
-        return errors + [f"{path}: delegation modes required"]
-    required = {"id", "mutation_mode", "args", "target", "exit", "source_attestation"}
-    for mode in modes:
-        if not isinstance(mode, dict) or set(mode) != required:
-            errors.append(f"{path}: invalid delegation mode schema")
-            continue
-        if mode.get("mutation_mode") not in {"destructive", "non-mutating"}:
-            errors.append(f"{path}: invalid delegation mutation mode")
-        if not isinstance(mode.get("args"), list) or not all(isinstance(v, str) for v in mode["args"]):
-            errors.append(f"{path}: invalid delegation args")
-        if mode.get("target") not in {"physical-local", "platform-selected"}:
-            errors.append(f"{path}: invalid delegation target")
-        if mode.get("exit") not in {"propagate", "reject", "skip", "swallow-3490", "swallow-3479"}:
-            errors.append(f"{path}: invalid delegation exit")
     return errors
 
 

@@ -3,11 +3,8 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
-import html
 import json
 import re
-import struct
 import subprocess
 import sys
 from pathlib import Path
@@ -37,12 +34,16 @@ from scheduler_mutation_discovery import (  # noqa: E402
 )
 from scheduler_mutation_attestations import (  # noqa: E402
     derive_cron_classifier_branches,
-    derive_installed_fingerprint_branches,
     evaluate_python,
     evaluate_shell_guard,
     evaluate_windows,
     forensic_literal_lines,
 )
+from scheduler_mutation_delegation import (  # noqa: E402
+    validate_delegation_graph,
+    validate_identity_inputs,
+)
+from scheduler_mutation_report import render_html  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRY = b"config/scheduled-tasks/mutation-surfaces.yaml"
@@ -218,123 +219,65 @@ def validate_registry(registry: dict[str, Any], discovery: Discovery, records: d
     rows: dict[str, dict[str, Any]] = {}
     statuses: dict[str, str] = {}
     for row in registry["surfaces"]:
-        path = row.get("path", "")
-        if path in rows:
-            errors.append(f"duplicate surface: {path}")
-        rows[path] = row
-        operation_ids = [operation.get("id") for operation in row.get("operations", [])]
-        if len(operation_ids) != len(set(operation_ids)):
-            errors.append(f"{path}: duplicate operation id")
-        branches: list[dict[str, Any]] = []
-        attestations: list[bool] = []
-        transactions: list[bool] = []
-        for operation in row.get("operations", []):
-            operation_errors, bs, ats, txs = validate_operation_contract(
-                path, operation, records, evaluate_attestation
-            )
-            errors += operation_errors
-            branches += bs
-            attestations += ats
-            transactions += txs
-        if row.get("kind") == "direct-owner":
-            statuses[path] = derive_status(branches, attestations or [False], transactions)
-        declared_primitives = {operation.get("primitive") for operation in row.get("operations", [])}
-        observed = set(discovery.primitives.get(path, set()))
-        # windows-task-set is the closed update-or-register primitive.
-        if "windows-task-set" in observed:
-            observed.discard("windows-task-unregister-register")
-        if row.get("kind") == "direct-owner" and observed != declared_primitives:
-            errors.append(f"{path}: discovered/declared primitive mismatch")
-        if row.get("kind") == "transitive-entrypoint":
-            edge = row.get("delegation", {})
-            actual = discovery.edges.get(path)
-            if actual is None or actual[0] != edge.get("immediate_callee"):
-                errors.append(f"{path}: immediate callee mismatch")
-            if discovery.primitives.get(path):
-                errors.append(f"{path}: direct primitive wrapper cannot inherit compliance")
-            mode_results = []
-            for mode in edge.get("modes", []):
-                attestation = mode.get("source_attestation", "")
-                passed = attestation in ATT_SOURCES and evaluate_attestation(
-                    attestation, records, path.encode()
-                )
-                mode_results.append(passed)
-                if not passed:
-                    errors.append(f"{path}: delegation attestation failed: {attestation}")
-            statuses[path] = "compliant" if mode_results and all(mode_results) else "migration-required"
-            if row.get("disposition_group"):
-                statuses[path] = "migration-required"
-    _validate_delegation_graph(rows, statuses, errors)
-    _validate_identity_inputs(registry, records, errors)
+        _validate_surface(row, rows, statuses, discovery, records, errors)
+    validate_delegation_graph(rows, statuses, errors)
+    validate_identity_inputs(ROOT, registry, records, errors)
     _validate_global_sets(registry, rows, statuses, discovery, records, errors)
     return ValidationResult(errors, statuses)
 
 
-def _validate_delegation_graph(rows, statuses, errors):
-    for path, row in rows.items():
-        if row.get("kind") != "transitive-entrypoint":
-            continue
-        terminal = row.get("delegation", {}).get("terminal", {})
-        current = path
-        seen = set()
-        while rows.get(current, {}).get("kind") == "transitive-entrypoint":
-            if current in seen:
-                errors.append(f"{path}: delegation cycle")
-                break
-            seen.add(current)
-            current = rows[current].get("delegation", {}).get("immediate_callee", "")
-            if current not in rows:
-                errors.append(f"{path}: missing delegation target {current}")
-                break
-        if current != terminal.get("path"):
-            errors.append(f"{path}: terminal path does not resolve")
-            continue
-        operations = {op.get("id") for op in rows.get(current, {}).get("operations", [])}
-        if terminal.get("operation") not in operations:
-            errors.append(f"{path}: terminal operation is missing or ambiguous")
-        if statuses.get(current) != "compliant" and not row.get("disposition_group"):
-            statuses[path] = "migration-required"
-
-
-def _validate_identity_inputs(registry, records, errors):
-    try:
-        catalog = yaml.safe_load(records[b"config/scheduled-tasks/schedule-tasks.yaml"]) or {}
-        classes = yaml.safe_load(records[b"config/workstations/harness-state-classes.yaml"])
-        cron_dir = ROOT / "scripts/cron"
-        if str(cron_dir) not in sys.path:
-            sys.path.insert(0, str(cron_dir))
-        from cron_identity import validate_state_classes
-        state_errors = validate_state_classes(
-            classes, {task.get("id") for task in catalog.get("tasks") or []}
+def _validate_surface(row, rows, statuses, discovery, records, errors):
+    path = row.get("path", "")
+    if path in rows:
+        errors.append(f"duplicate surface: {path}")
+    rows[path] = row
+    operation_ids = [operation.get("id") for operation in row.get("operations", [])]
+    if len(operation_ids) != len(set(operation_ids)):
+        errors.append(f"{path}: duplicate operation id")
+    branches, attestations, transactions = [], [], []
+    for operation in row.get("operations", []):
+        operation_errors, bs, ats, txs = validate_operation_contract(
+            path, operation, records, evaluate_attestation
         )
-        errors.extend(f"state class: {error}" for error in state_errors)
-        raw = records[b"docs/reports/issue-3475-command-identity-inventory.json"]
-        inventory = json.loads(raw)
-        canonical = (json.dumps(inventory, sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n").encode()
-        if raw != canonical:
-            errors.append("identity inventory is not canonical/stale")
-        sources = [
-            b"config/scheduled-tasks/schedule-tasks.yaml",
-            b"config/workstations/registry.yaml",
-            b"config/workstations/harness-state-classes.yaml",
-            b"scripts/cron/build-cron-identity-inventory.py",
-            b"scripts/cron/cron_render.py", b"scripts/cron/cron_transaction.py",
-            b"scripts/cron/cron_identity.py",
-        ]
-        digest = hashlib.sha256(b"cron-identity-input-v1\0")
-        for source in sorted(sources):
-            digest.update(struct.pack(">Q", len(source)))
-            digest.update(source)
-            body = records[source]
-            digest.update(struct.pack(">Q", len(body)))
-            digest.update(body)
-        if inventory.get("input_digest") != digest.hexdigest():
-            errors.append("identity inventory input digest is stale")
-        resolved = registry.get("resolved_dispositions", [{}])[0]
-        if resolved.get("source_digest") != inventory.get("input_digest"):
-            errors.append("resolved #3475 source digest does not match identity inventory")
-    except (KeyError, TypeError, ValueError, json.JSONDecodeError, yaml.YAMLError) as exc:
-        errors.append(f"identity inventory/state class validation failed: {exc}")
+        errors.extend(operation_errors)
+        branches.extend(bs)
+        attestations.extend(ats)
+        transactions.extend(txs)
+    if row.get("kind") == "direct-owner":
+        statuses[path] = derive_status(branches, attestations or [False], transactions)
+        _validate_direct_primitives(path, row, discovery, errors)
+    else:
+        _validate_transitive(path, row, statuses, discovery, records, errors)
+
+
+def _validate_direct_primitives(path, row, discovery, errors):
+    declared = {operation.get("primitive") for operation in row.get("operations", [])}
+    observed = set(discovery.primitives.get(path, set()))
+    if "windows-task-set" in observed:
+        observed.discard("windows-task-unregister-register")
+    if observed != declared:
+        errors.append(f"{path}: discovered/declared primitive mismatch")
+
+
+def _validate_transitive(path, row, statuses, discovery, records, errors):
+    edge = row.get("delegation", {})
+    actual = discovery.edges.get(path)
+    if actual is None or actual[0] != edge.get("immediate_callee"):
+        errors.append(f"{path}: immediate callee mismatch")
+    if discovery.primitives.get(path):
+        errors.append(f"{path}: direct primitive wrapper cannot inherit compliance")
+    results = []
+    for mode in edge.get("modes", []):
+        attestation = mode.get("source_attestation", "")
+        passed = attestation in ATT_SOURCES and evaluate_attestation(attestation, records, path.encode())
+        results.append(passed)
+        if not passed:
+            errors.append(f"{path}: delegation attestation failed: {attestation}")
+    statuses[path] = "compliant" if results and all(results) else "migration-required"
+    if row.get("disposition_group"):
+        statuses[path] = "migration-required"
+
+
 
 
 def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
@@ -379,91 +322,6 @@ def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
             errors.append(f"{path}: compliant surface cannot have active disposition")
     if covered != migration:
         errors.append("dispositions must exactly cover migration-required surfaces")
-
-
-def _render_operation(path: str, operation: dict[str, Any]) -> str:
-    key = html.escape(f'{path}::{operation["id"]}', quote=True)
-    target = html.escape(operation["target_kind"], quote=True)
-    identity = html.escape(operation["scheduler_identity"], quote=True)
-    binding = html.escape(operation["execution_host_binding"], quote=True)
-    authorities = []
-    for branch in operation["authority_branches"]:
-        branch_id = branch["id"]
-        mechanism = html.escape(branch["mechanism"], quote=True)
-        strength = html.escape(branch["strength"], quote=True)
-        authority_key = html.escape(f"{key}::{branch_id}", quote=True)
-        label = html.escape(f"{branch_id}:{branch['mechanism']}/{branch['strength']}")
-        authorities.append(
-            f'<li data-authority="{authority_key}" data-mechanism="{mechanism}" '
-            f'data-strength="{strength}">{label}</li>'
-        )
-    gaps = [name for name, value in operation["transaction"].items() if not value]
-    gap_text = ", ".join(f"{name}=false" for name in gaps) or "none"
-    return (
-        f'<section class="operation" data-operation="{key}" data-target-kind="{target}" '
-        f'data-scheduler-identity="{identity}" data-execution-host-binding="{binding}">'
-        f'<strong>{html.escape(operation["id"])}</strong><br>Target: {target}; '
-        f'identity: {identity}; binding: {binding}<br>Authority:<ul>{"".join(authorities)}</ul>'
-        f'Transaction gaps: <span class="transaction-gaps" '
-        f'data-transaction-for="{key}">{gap_text}</span></section>'
-    )
-
-
-def _render_delegation(path: str, delegation: dict[str, Any]) -> str:
-    terminal = delegation["terminal"]
-    modes = "".join(
-        "<li>" + html.escape(
-            f"{mode['id']}: {mode['mutation_mode']}; args={mode['args']}; "
-            f"target={mode['target']}; exit={mode['exit']}"
-        ) + "</li>"
-        for mode in delegation["modes"]
-    )
-    return (
-        f"<section class=\"delegation\"><strong>Delegate</strong><br>Immediate: "
-        f"{html.escape(delegation['immediate_callee'])}<br>Terminal: "
-        f"{html.escape(terminal['path'])}::{html.escape(terminal['operation'])}"
-        f"<ul>{modes}</ul></section>"
-    )
-
-
-def render_html(registry, discovery, validation, digest: str) -> bytes:
-    groups = {group["group_id"]: group for group in registry["disposition_groups"]}
-    rows = []
-    for surface in sorted(registry["surfaces"], key=lambda row: row["path"]):
-        group = groups.get(surface.get("disposition_group"))
-        issue = group["issue"]["number"] if group else None
-        operations = "".join(
-            _render_operation(surface["path"], operation)
-            for operation in surface.get("operations", [])
-        )
-        if surface.get("delegation"):
-            operations += _render_delegation(surface["path"], surface["delegation"])
-        path = html.escape(surface["path"], quote=True)
-        rows.append(
-            f'<tr data-surface="{path}"><td><code>{path}</code></td>'
-            f'<td>{html.escape(surface["kind"])}</td>'
-            f'<td>{html.escape(validation.statuses[surface["path"]])}</td>'
-            f'<td>{operations}</td><td>'
-            + (f'<a href="https://github.com/vamseeachanta/workspace-hub/issues/{issue}">#{issue}</a>' if issue else "resolved")
-            +
-            f'</td></tr>'
-        )
-    body = "\n".join(rows)
-    document = f"""<!doctype html>
-<html lang="en" data-input-digest="{digest}"><head><meta charset="utf-8">
-<title>Scheduler Mutation Safety Audit</title>
-<style>body{{font:16px system-ui;max-width:1200px;margin:2rem auto;padding:0 1rem}}table{{border-collapse:collapse;width:100%}}th,td{{border:1px solid #bbb;padding:.5rem;text-align:left}}code{{font-size:.9em}}.warning{{border-left:4px solid #b45309;padding:1rem;background:#fff7ed}}</style></head>
-<body><h1>Scheduler Mutation Safety Audit</h1>
-<p><strong>Input digest:</strong> <code>{digest}</code></p>
-<p class="warning">Registry inclusion does not authorize live scheduler mutation.</p>
-<table><thead><tr><th>Surface</th><th>Kind</th><th>Derived status</th><th>Operations</th><th>Disposition</th></tr></thead><tbody>
-{body}
-</tbody></table>
-<h2>Limitations</h2><ul><li>Issue coordinates are validated offline; live issue state is non-authoritative.</li><li>Windows runtime behavior is source-audited on Linux and requires Windows-capable migration verification.</li><li>Branch-protection registration is outside this artifact.</li></ul>
-<p>Discovered direct owners: {len(discovery.direct)}; transitive entrypoints: {len(discovery.transitive)}.</p>
-</body></html>
-"""
-    return document.encode("utf-8")
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -5,8 +5,6 @@ import ast
 import re
 from typing import Callable
 
-import yaml
-
 CRON_APPLY = b"scripts/cron/cron_apply.py"
 CRON_TRANSACTION = b"scripts/cron/cron_transaction.py"
 SCHEDULE = b"config/scheduled-tasks/schedule-tasks.yaml"
@@ -257,6 +255,15 @@ def evaluate_python(name: str, records: dict[bytes, bytes], source: bytes) -> bo
         guard = next((stmt for stmt in main.body if _abort_if(stmt, "mid", "physical_mid")), None)
         call = next((stmt for stmt in main.body if "run_cutover(" in ast.unparse(stmt)), None)
         return bool(guard and call and guard.lineno < call.lineno)
+    transaction = _evaluate_transaction_attestation(name, tree, run)
+    if transaction is not None:
+        return transaction
+    if name == "python-postwrite-preservation-multiset-v1":
+        return _preservation_shape(tree)
+    return _evaluate_cron_attestation(name, tree, records)
+
+
+def _evaluate_transaction_attestation(name, tree, run):
     run_text = ast.unparse(run) if run else ""
     lock = next((node for node in ast.walk(run) if isinstance(node, ast.With)
                  and "_flock(LOCKFILE)" in ast.unparse(node)), None) if run else None
@@ -277,9 +284,7 @@ def evaluate_python(name: str, records: dict[bytes, bytes], source: bytes) -> bo
         write = run_text.find("observation = _write_observation(plan['new_text'], _read, _write)")
         return common and 0 <= backup < write
     if name == "python-postwrite-preservation-multiset-v1":
-        finish = _function(tree, "_finish_exact")
-        text = ast.unparse(finish) if finish else ""
-        return "observed == B" in text and "_rollback(A, observed, backup, _read, _write)" in text
+        return None
     if name == "python-postwrite-exact-state-v1":
         finish = _function(tree, "_finish_exact")
         text = ast.unparse(finish) if finish else ""
@@ -294,6 +299,23 @@ def evaluate_python(name: str, records: dict[bytes, bytes], source: bytes) -> bo
         rollback = _function(tree, "_rollback")
         text = ast.unparse(rollback) if rollback else ""
         return "'rolled-back' if restored == A else 'rollback-failed'" in text
+    return None
+
+
+def _preservation_shape(tree):
+    plan = _function(tree, "plan_cutover")
+    text = ast.unparse(plan) if plan else ""
+    required = (
+        "if cls == 'ignore':\n            preserved.append(line)",
+        "elif cls == 'preserved_external':\n            preserved.append(line)",
+        "if cls == 'cataloged':\n                continue\n            out.append(line)",
+        "new_lines = _filter(parsed['before']) + block + _filter(parsed['after'])",
+        "new_lines = _filter(parsed['before']) + block",
+    )
+    return all(token in text for token in required)
+
+
+def _evaluate_cron_attestation(name, tree, records):
     if name == "cron-command-tokens-adjacent-v1":
         text = ast.unparse(_function(tree, "match_fingerprint")) if tree else ""
         return "shlex.split(line)" in text and "tokens[i:i + width] == wanted" in text
