@@ -1,6 +1,6 @@
 # Plan for #3475: Make cron deletion identity semantic and verify exact post-write state
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T3
 > **Date:** 2026-07-11
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3475
@@ -376,8 +376,10 @@ No unresolved product decision blocks plan review. Canonical renderer coverage, 
 | Gemini | UNAVAILABLE | Non-interactive authentication was not configured |
 | Fallback cron audit | MAJOR | Required catalog-wide feasibility, closed grammar, rollback-CAS exception, and mode-aware delegation; plan pivoted from parsing to exact-line identity |
 | Fallback governance audit | MAJOR | Required full enforcement schema/file scope, multi-hop edges, validators, disposition resolution, gate activation, detailed parity, and distinct rollback fixtures |
+| Fallback cron audit r5 | APPROVE | Verified exact-line inventory coverage, canonical workstation contexts, alias safety, and absence of stale parser requirements |
+| Fallback governance audit r5 | APPROVE | Verified non-circular resolution evidence, deterministic inventory producer/check/CI, and unavoidable state-class validation |
 
-**Overall result:** MAJOR — r3 exact-line/schema revisions require focused fallback re-review; implementation remains blocked.
+**Overall result:** PASS — Codex r3 plus both focused fallback r5 reviews APPROVE. Implementation remains blocked pending user approval.
 
 Revisions made after r1:
 
@@ -401,3 +403,11 @@ R3 corrections after fallback review:
 - Added enforcement contract/checker/renderer/delivery/hardening files and schedule/state-class validators to implementation scope.
 - Defined active-to-resolved disposition transition and explicit completeness-label verification.
 - Tightened audit/apply parity to full shared context and detailed result equality.
+
+R4/r5 closeout:
+
+- Corrected the workstation registry path and canonical-id/alias enumeration rule.
+- Replaced circular merge-SHA traceability with issue/PR/source-digest evidence.
+- Added the deterministic inventory generator, versioned input digest, byte-parity `--check`, and PR workflow invocation.
+- Made state-class promotion validation mandatory through normal schedule validation, inventory generation, and enforcement.
+- Both focused r5 reviewers returned APPROVE.
