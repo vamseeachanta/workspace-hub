@@ -3374,3 +3374,14 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#983
+    title: 'bug: Spain-cores adapter tests fail on main → blocks all PRs (Test PR gate)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/983
+    gh_state: open
+    gh_labels:
+      - bug
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

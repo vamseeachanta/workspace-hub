@@ -22942,10 +22942,11 @@ cards:
     title: 'fix(cron): make reconciler deletion identity semantic and verify exact post-write state'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3475
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
       - lane:codex
     initial_status: triage
     priority: 0
@@ -23053,7 +23054,8 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3490
     gh_state: open
     gh_labels:
-      - status:needs-plan
+      - status:plan-approved
+      - gate:completeness
       - lane:codex
     initial_status: triage
     priority: 0
@@ -23067,5 +23069,66 @@ cards:
     gh_labels: []
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3494
+    title: 'design(capabilities): reconcile existing per-repo GitHub Pages capabilities pages with the HF-backed aceengineer.com surface [C10]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3494
+    gh_state: open
+    gh_labels:
+      - cat:documentation
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3495
+    title: 'test(enforcement): make hash-pinned semantic mutation tests exercise refreshed pins'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3495
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3497
+    title: 'EPIC: Fleet dispatch ecosystem — ace-linux-1 single dispatch surface; all other machines headless'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3497
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:work-queue-infrastructure
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3498
+    title: 'Machine-ecosystem map: roles, data-source access, services — admin-tier extension of the equality matrix'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3498
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:infrastructure
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3499
+    title: Zero-touch repo hygiene on all headless nodes (generalized ff-sync watchdog + fleet health in equality matrix)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3499
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:infrastructure
+      - cat:maintenance
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

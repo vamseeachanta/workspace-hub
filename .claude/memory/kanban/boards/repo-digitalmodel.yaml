@@ -7557,7 +7557,7 @@ cards:
     title: 'feat(orcaflex): licensed orcaflex-run-batch — N-parallel dynamic time-domain batch sized to ~90% of host cores [#1553 A]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1554
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - cat:engineering
@@ -7572,7 +7572,7 @@ cards:
     title: 'feat(orcawave): wire thread_count input.yml → RunnerConfig, default ~90% host cores [#1553 B]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1555
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - feature
       - cat:engineering
@@ -7607,6 +7607,16 @@ cards:
       - cat:engineering
       - domain:naval-architecture
       - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1560
+    title: Land CFD execution surface on main + openfoam-run-batch saturating workflow
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1560
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []
