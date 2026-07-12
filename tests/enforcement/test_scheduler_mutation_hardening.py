@@ -180,7 +180,7 @@ def test_transaction_attestations_reject_reorder_decoy_and_wrong_scope():
 
 def test_classifier_rejects_fourth_route_reusing_existing_reason():
     checker, records, _ = current_contract()
-    source = b"scripts/cron/cron_transaction.py"
+    source = b"scripts/cron/cron_line_model.py"
     needle = b"    return {\"line\": line, \"class\": \"uncataloged\", \"reason\": \"no-match\"}"
     extra = b"    if line == 'extra':\n        return {'line': line, 'class': 'cataloged', 'reason': 'catalog-command'}\n"
     records[source] = records[source].replace(needle, extra + needle)

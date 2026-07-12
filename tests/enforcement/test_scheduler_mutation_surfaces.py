@@ -210,7 +210,7 @@ def test_classifier_branch_set_is_complete_and_exact():
     cron["operations"][0]["authority_branches"].pop()
     result = checker.validate_registry(registry, checker.discover_mutation_surfaces(records), records)
     assert any("branch set" in error for error in result.errors)
-    records[b"scripts/cron/cron_transaction.py"] += b"\nif extra_route: return {'class': 'cataloged'}\n"
+    records[b"scripts/cron/cron_line_model.py"] += b"\nif extra_route: return {'class': 'cataloged'}\n"
     assert checker.derive_cron_classifier_branches(records) is None
 
 
@@ -235,7 +235,7 @@ def test_config_sources_are_tracked_connected_and_corrected():
     checker, records, registry = current_contract()
     cron = next(row for row in registry["surfaces"] if row["path"] == "scripts/cron/cron_apply.py")
     branches = {b["id"]: b for b in cron["operations"][0]["authority_branches"]}
-    assert branches["legacy-exact-line"]["config_source"] == "docs/reports/issue-3475-command-identity-inventory.json"
+    assert branches["legacy-exact-line"]["config_source"] == "config/workstations/harness-state-classes.yaml"
     branches["legacy-exact-line"]["config_source"] = "missing.yaml"
     result = checker.validate_registry(registry, checker.discover_mutation_surfaces(records), records)
     assert any("config_source" in error for error in result.errors)

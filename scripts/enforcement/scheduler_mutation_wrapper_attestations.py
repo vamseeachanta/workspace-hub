@@ -29,24 +29,51 @@ WRAPPER_SHA256 = {
 
 def evaluate_wrapper_attestation(name: str, records: dict[bytes, bytes]) -> bool | None:
     if name in SETUP_ATTESTATIONS:
-        if not _pinned(SETUP, records):
+        body = records.get(SETUP, b"")
+        if not _pinned(SETUP, records) or not _reachable_script(
+            body, b'exec uv run --script "$CRON_APPLY"'
+        ):
             return False
-        return _setup_shape(records.get(SETUP, b""))
+        return _setup_shape(body)
     if name in NEW_MACHINE_ATTESTATIONS:
-        if not _pinned(NEW_MACHINE, records):
+        body = records.get(NEW_MACHINE, b"")
+        if not _pinned(NEW_MACHINE, records) or not _reachable_script(
+            body, b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"'
+        ):
             return False
-        return _new_machine_shape(records.get(NEW_MACHINE, b""))
+        return _new_machine_shape(body)
     if name in HARNESS_ATTESTATIONS:
-        if not _pinned(HARNESS, records):
+        body = records.get(HARNESS, b"")
+        if not _pinned(HARNESS, records) or not _reachable_script(
+            body, b"\nsync_crontab\n"
+        ):
             return False
-        return _harness_shape(records.get(HARNESS, b""))
+        return _harness_shape(body)
     return None
 
 
 def _pinned(source: bytes, records: dict[bytes, bytes]) -> bool:
+    # Pins are a staged-blob drift alarm, not an authorization anchor. The
+    # reachable source contract below must pass independently, so refreshing a
+    # neighboring hash cannot authorize an early-exit or dead-scope wrapper.
     expected = WRAPPER_SHA256.get(source)
     body = records.get(source)
     return bool(expected and body is not None and hashlib.sha256(body).hexdigest() == expected)
+
+
+def _reachable_script(body: bytes, terminal: bytes) -> bool:
+    first = next((line.strip() for line in body.splitlines()
+                  if line.strip() and not line.lstrip().startswith(b"#")), b"")
+    terminal_at = body.find(terminal)
+    offset, early_exit = 0, None
+    for line in body.splitlines(keepends=True):
+        stripped = line.strip()
+        if line == line.lstrip() and stripped.startswith((b"exit", b"return")):
+            early_exit = offset
+            break
+        offset += len(line)
+    return (first.startswith(b"set -") and first not in {b"set +e", b"set +u"}
+            and terminal_at >= 0 and (early_exit is None or early_exit > terminal_at))
 
 
 def _setup_shape(body: bytes) -> bool:
@@ -60,7 +87,9 @@ def _setup_shape(body: bytes) -> bool:
         b'if [[ "$ALLOW_LIVE_RELOAD" == true ]]; then\n  APPLY_ARGS+=(--allow-live-reload)\nfi',
         b'exec uv run --script "$CRON_APPLY" "${APPLY_ARGS[@]}"',
     ]
-    return _ordered(body, required) and body.count(b'exec uv run --script "$CRON_APPLY"') == 1
+    terminal = b'\nexec uv run --script "$CRON_APPLY" "${APPLY_ARGS[@]}"\n'
+    return (_ordered(body, required) and body.count(terminal) == 1
+            and body.rstrip().endswith(terminal.strip()))
 
 
 def _new_machine_shape(body: bytes) -> bool:

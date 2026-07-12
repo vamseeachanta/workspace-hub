@@ -7,7 +7,6 @@ from dataclasses import dataclass
 from typing import Any
 
 from scheduler_mutation_delegation import validate_delegation_schema
-
 TX_FIELDS = (
     "lock",
     "baseline_snapshot",
@@ -80,7 +79,7 @@ ATT_SOURCES = {
     "python-postwrite-preservation-multiset-v1": b"scripts/cron/cron_transaction.py",
     "python-postwrite-exact-state-v1": b"scripts/cron/cron_apply.py",
     "python-rollback-exact-baseline-v1": b"scripts/cron/cron_apply.py",
-    "cron-canonical-legacy-exact-authority-v1": b"scripts/cron/cron_transaction.py",
+    "cron-canonical-legacy-exact-authority-v1": b"scripts/cron/cron_line_model.py",
     "python-rollback-after-cas-v1": b"scripts/cron/cron_apply.py",
     "cron-command-tokens-adjacent-v1": b"scripts/cron/cron_transaction.py",
     "cron-classifier-destructive-branches-v1": b"scripts/cron/cron_transaction.py",
@@ -160,6 +159,7 @@ def digest_record_union(
         b"scripts/enforcement/check-scheduler-mutation-surfaces.py",
         b"scripts/enforcement/scheduler_mutation_contract.py",
         b"scripts/enforcement/scheduler_mutation_attestations.py",
+        b"scripts/enforcement/scheduler_mutation_python_flow.py",
         b"scripts/enforcement/scheduler_mutation_discovery.py",
         b"scripts/enforcement/scheduler_mutation_delegation.py",
         b"scripts/enforcement/scheduler_mutation_report.py",
@@ -186,6 +186,7 @@ def digest_record_union(
     paths.update({
         b"scripts/cron/build-cron-identity-inventory.py",
         b"scripts/cron/cron_identity.py",
+        b"scripts/cron/cron_line_model.py",
         b"docs/reports/issue-3475-command-identity-inventory.json",
         b"config/workstations/harness-state-classes.yaml",
         b"config/workstations/registry.yaml",
@@ -216,9 +217,8 @@ def validate_closed_schema(
     return errors
 
 
-def _validate_surface(
-    row: dict[str, Any], tracked_paths: set[bytes], primitives: set[str]
-) -> list[str]:
+def _validate_surface(row: dict[str, Any], tracked_paths: set[bytes],
+                      primitives: set[str]) -> list[str]:
     allowed = {"path", "kind", "operations", "delegation", "disposition_group"}
     path = row.get("path", "")
     errors: list[str] = []

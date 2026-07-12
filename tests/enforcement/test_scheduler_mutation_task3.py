@@ -61,7 +61,7 @@ def test_cron_authority_is_exact_and_3475_is_resolved():
         {
             "id": "legacy-exact-line",
             "mechanism": "legacy-exact-line",
-            "config_source": "docs/reports/issue-3475-command-identity-inventory.json",
+                "config_source": "config/workstations/harness-state-classes.yaml",
             "destructive": True,
             "strength": "exact",
         },
@@ -248,14 +248,14 @@ def test_preservation_attestation_proves_plan_reconstruction():
     assert checker.evaluate_attestation(name, records, source)
     body = records[source]
     mutations = (
-        body.replace(b'if cls == "ignore":\n            preserved.append(line)', b'if cls == "ignore":\n            continue', 1),
-        body.replace(b'elif cls == "preserved_external":\n            preserved.append(line)', b'elif cls == "preserved_external":\n            continue', 1),
-        body.replace(
-            b'if cls == "cataloged":\n                continue\n            out.append(line)',
-            b'if cls == "cataloged":\n                continue\n            continue',
-            1,
-        ),
-        body.replace(b'_filter(parsed["before"]) + block + _filter(parsed["after"])', b'block', 1),
+            body.replace(b'if line_class in ("ignore", "preserved_external"):\n            preserved.append(line)', b'if line_class in ("ignore", "preserved_external"):\n            continue', 1),
+            body.replace(b'elif line_class != "cataloged":\n            uncataloged.append(line)', b'elif line_class != "cataloged":\n            continue', 1),
+            body.replace(
+                b'before = [line for line in parsed["before"] if classify(line) != "cataloged"]',
+                b'before = []',
+                1,
+            ),
+            body.replace(b'return before + block + after', b'return block', 1),
     )
     for mutated in mutations:
         changed = copy.deepcopy(records)
@@ -389,9 +389,10 @@ def test_wrapper_attestations_reject_self_refreshed_reachability_bypass(source, 
     original_body = records[source]
     original_pin = wrapper_module.WRAPPER_SHA256[source]
     if bypass == "early-exit":
-        mutated = original_body.replace(
-            b"set -euo pipefail\n", b"set -euo pipefail\nexit 0\n", 1
-        )
+        lines = original_body.splitlines(keepends=True)
+        index = next(i for i, line in enumerate(lines) if line.strip().startswith(b"set -"))
+        lines.insert(index + 1, b"exit 0\n")
+        mutated = b"".join(lines)
     else:
         nested = b"\n".join(b"  " + line for line in original_body.splitlines())
         mutated = b"if false; then\n" + nested + b"\nfi\nexit 0\n"
@@ -406,11 +407,18 @@ def test_wrapper_attestations_reject_self_refreshed_reachability_bypass(source, 
 def _dead_transaction_source(records, mutation):
     tree = ast.parse(records[b"scripts/cron/cron_apply.py"])
     functions = {node.name: node for node in tree.body if isinstance(node, ast.FunctionDef)}
-    if mutation == "run-lock":
+    if mutation in {"run-lock", "run-helper"}:
         run = functions["run_cutover"]
         lock = next(node for node in run.body if isinstance(node, ast.With))
         index = run.body.index(lock)
-        run.body[index] = ast.If(test=ast.Constant(False), body=[lock], orelse=[])
+        if mutation == "run-lock":
+            run.body[index] = ast.If(test=ast.Constant(False), body=[lock], orelse=[])
+        else:
+            run.body[index] = ast.FunctionDef(
+                name="never_called", args=ast.arguments(posonlyargs=[], args=[],
+                kwonlyargs=[], kw_defaults=[], defaults=[]), body=[lock],
+                decorator_list=[]
+            )
         run.body.insert(index + 1, ast.parse(
             "observation = _write_observation(plan['new_text'], _read, _write)"
         ).body[0])
@@ -438,6 +446,8 @@ def _dead_transaction_source(records, mutation):
     [
         ("run-lock", ["python-lock-scope-v1", "python-prewrite-cas-v1",
                       "python-backup-baseline-v1"]),
+        ("run-helper", ["python-lock-scope-v1", "python-prewrite-cas-v1",
+                        "python-backup-baseline-v1"]),
         ("finish-exact", ["python-postwrite-exact-state-v1"]),
         ("rollback", ["python-rollback-after-cas-v1",
                       "python-rollback-exact-baseline-v1"]),

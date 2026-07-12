@@ -5,8 +5,11 @@ import ast
 import re
 from typing import Callable
 
+from scheduler_mutation_python_flow import evaluate_transaction
+
 CRON_APPLY = b"scripts/cron/cron_apply.py"
 CRON_TRANSACTION = b"scripts/cron/cron_transaction.py"
+CRON_LINE_MODEL = b"scripts/cron/cron_line_model.py"
 SCHEDULE = b"config/scheduled-tasks/schedule-tasks.yaml"
 
 
@@ -125,14 +128,16 @@ def _rollback_shape(records: dict[bytes, bytes]) -> bool:
 
 
 def derive_cron_classifier_branches(records: dict[bytes, bytes]) -> set[str] | None:
-    tree = _tree(records, CRON_TRANSACTION)
+    tree = _tree(records, CRON_LINE_MODEL)
     fn = _function(tree, "classify_line_detail")
-    if fn is None:
+    fallback = _function(tree, "_classify_preserved")
+    if fn is None or fallback is None:
         return None
-    text = ast.unparse(fn)
+    text = ast.unparse(fn) + "\n" + ast.unparse(fallback)
     required = (
         "identity = ownership_context.get('line_identities', {}).get(line)",
         "'class': 'cataloged'", "'reason': identity['source']",
+        "return _classify_preserved(line, external_fingerprints)",
         "return {'line': line, 'class': 'uncataloged', 'reason': 'no-match'}",
     )
     cataloged_returns = sum(
@@ -264,53 +269,24 @@ def evaluate_python(name: str, records: dict[bytes, bytes], source: bytes) -> bo
 
 
 def _evaluate_transaction_attestation(name, tree, run):
-    run_text = ast.unparse(run) if run else ""
-    lock = next((node for node in ast.walk(run) if isinstance(node, ast.With)
-                 and "_flock(LOCKFILE)" in ast.unparse(node)), None) if run else None
-    lock_text = ast.unparse(lock) if lock else ""
-    common = all(token in lock_text for token in (
-        "current = _read()", "current != A",
-        "create_backup(canonical_id, ts, A)",
-        "_write_observation(plan['new_text'], _read, _write)",
-    ))
-    if name == "python-lock-scope-v1":
-        return common
-    if name == "python-baseline-snapshot-v1":
-        return common and "A, plan = _build_cutover(selection, classes, ownership, _read)" in run_text
-    if name == "python-prewrite-cas-v1":
-        return common and "if current != A:\n            return" in run_text
-    if name == "python-backup-baseline-v1":
-        backup = run_text.find("backup = create_backup(canonical_id, ts, A)")
-        write = run_text.find("observation = _write_observation(plan['new_text'], _read, _write)")
-        return common and 0 <= backup < write
     if name == "python-postwrite-preservation-multiset-v1":
         return None
-    if name == "python-postwrite-exact-state-v1":
-        finish = _function(tree, "_finish_exact")
-        text = ast.unparse(finish) if finish else ""
-        return "not write_failed and observed == B" in text
-    if name == "python-rollback-after-cas-v1":
-        rollback = _function(tree, "_rollback")
-        lock = next((node for node in ast.walk(rollback) if isinstance(node, ast.With)
-                     and "_flock(LOCKFILE)" in ast.unparse(node)), None) if rollback else None
-        text = ast.unparse(lock) if lock else ""
-        return "current != C" in text and "_write(A)" in text
-    if name == "python-rollback-exact-baseline-v1":
-        rollback = _function(tree, "_rollback")
-        text = ast.unparse(rollback) if rollback else ""
-        return "'rolled-back' if restored == A else 'rollback-failed'" in text
-    return None
+    return evaluate_transaction(name, tree)
 
 
 def _preservation_shape(tree):
     plan = _function(tree, "plan_cutover")
-    text = ast.unparse(plan) if plan else ""
+    classify = _function(tree, "_classify_nonmanaged")
+    rebuild = _function(tree, "_rebuild_lines")
+    text = "\n".join(ast.unparse(fn) for fn in (plan, classify, rebuild) if fn)
     required = (
-        "if cls == 'ignore':\n            preserved.append(line)",
-        "elif cls == 'preserved_external':\n            preserved.append(line)",
-        "if cls == 'cataloged':\n                continue\n            out.append(line)",
-        "new_lines = _filter(parsed['before']) + block + _filter(parsed['after'])",
-        "new_lines = _filter(parsed['before']) + block",
+        "line_class in ('ignore', 'preserved_external')",
+        "preserved.append(line)", "line_class != 'cataloged'",
+        "uncataloged.append(line)",
+        "before = [line for line in parsed['before'] if classify(line) != 'cataloged']",
+        "after = [line for line in parsed['after'] if classify(line) != 'cataloged']",
+        "return before + block", "return before + block + after",
+        "_classify_nonmanaged(parsed, classify)", "_rebuild_lines(",
     )
     return all(token in text for token in required)
 
