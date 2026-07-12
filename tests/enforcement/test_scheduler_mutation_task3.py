@@ -482,10 +482,18 @@ def _split_transaction_source(records, mutation):
         if mutation == "rollback-cas-split":
             lock.body = [ast.If(test=ast.Name(id="split", ctx=ast.Load()),
                                 body=[current, check], orelse=[write, restored])]
-        else:
+        elif mutation == "rollback-try-split":
             lock.body = [ast.Try(body=[current, check], handlers=[ast.ExceptHandler(
                 type=ast.Name(id="Exception", ctx=ast.Load()), name=None,
                 body=[write, restored])], orelse=[], finalbody=[])]
+        else:
+            index = rollback.body.index(lock)
+            exact = rollback.body[index + 1:]
+            rollback.body[index:] = [ast.If(
+                test=ast.Name(id="split", ctx=ast.Load()),
+                body=[lock, ast.Return(value=ast.Dict(keys=[], values=[]))],
+                orelse=exact,
+            )]
     ast.fix_missing_locations(tree)
     return ast.unparse(tree).encode()
 
@@ -499,6 +507,7 @@ def _split_transaction_source(records, mutation):
                                 "python-rollback-exact-baseline-v1"]),
         ("rollback-try-split", ["python-rollback-after-cas-v1",
                                 "python-rollback-exact-baseline-v1"]),
+        ("rollback-outer-split", ["python-rollback-exact-baseline-v1"]),
     ],
 )
 def test_transaction_attestations_reject_mutually_exclusive_evidence(
