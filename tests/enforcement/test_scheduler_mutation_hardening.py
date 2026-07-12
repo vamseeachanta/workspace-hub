@@ -235,3 +235,55 @@ def test_windows_attestations_reject_dead_scope_decoys(source, attestation, deco
         live,
     ) + decoy
     assert not checker.evaluate_attestation(attestation, records, source)
+
+
+@pytest.mark.parametrize("container", ["if False:", "def never_called():"])
+@pytest.mark.parametrize(
+    ("attestation", "block"),
+    [
+        (
+            "python-prewrite-cas-v1",
+            """with _flock(LOCKFILE):
+    current = _read()
+    if current != A:
+        return {}
+    backup = create_backup(canonical_id, ts, A)
+    _write(plan['new_text'])
+    after = _read()
+""",
+        ),
+        (
+            "python-rollback-after-cas-v1",
+            """with _flock(LOCKFILE):
+    current = _read()
+    if current != after:
+        return {}
+    _write(A)
+""",
+        ),
+    ],
+)
+def test_transaction_attestations_reject_entire_dead_lock(container, attestation, block):
+    checker = load_checker()
+    indented = "\n".join(f"        {line}" for line in block.splitlines())
+    source = (
+        "def run_cutover():\n"
+        "    A = _read()\n"
+        f"    {container}\n"
+        f"{indented}\n"
+    ).encode()
+    records = {b"scripts/cron/cron_apply.py": source}
+    assert not checker.evaluate_attestation(
+        attestation, records, b"scripts/cron/cron_apply.py"
+    )
+
+
+def test_adjacent_inert_literal_does_not_authorize_sentinel_suppression():
+    checker = load_checker()
+    body = (
+        b'PATTERN = "ScheduledTask"\n'
+        b'subprocess.run("crontab -", shell=True)  '
+        b'# scheduler-mutation-forensic\n'
+    )
+    found = checker.discover_mutation_surfaces({checker.CHECKER: body})
+    assert found.direct == {checker.CHECKER.decode()}

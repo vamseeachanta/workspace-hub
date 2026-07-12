@@ -135,7 +135,7 @@ def discover_mutation_surfaces(records: dict[bytes, bytes]) -> Discovery:
             forensic_literal = (
                 raw in FORENSIC
                 and SENTINEL in line
-                and any(abs(line_number - literal_line) <= 1 for literal_line in literal_lines)
+                and line_number in literal_lines
             )
             if line.lstrip().startswith(b"#") or forensic_literal:
                 continue

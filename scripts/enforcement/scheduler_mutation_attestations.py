@@ -72,12 +72,28 @@ def _ordered_indices(body: list[ast.stmt], predicates: list[Callable[[ast.stmt],
     return positions == sorted(positions) and len(set(positions)) == len(positions)
 
 
+def _live_withs(body: list[ast.stmt]) -> list[ast.With]:
+    locks = []
+    for stmt in body:
+        if isinstance(stmt, ast.With):
+            locks.append(stmt)
+        elif isinstance(stmt, (ast.For, ast.AsyncFor)):
+            locks.extend(_live_withs(stmt.body))
+            locks.extend(_live_withs(stmt.orelse))
+        elif isinstance(stmt, ast.If):
+            if not (isinstance(stmt.test, ast.Constant) and stmt.test.value is False):
+                locks.extend(_live_withs(stmt.body))
+            if not (isinstance(stmt.test, ast.Constant) and stmt.test.value is True):
+                locks.extend(_live_withs(stmt.orelse))
+    return locks
+
+
 def _prewrite_shape(records: dict[bytes, bytes]) -> bool:
     run = _function(_tree(records, CRON_APPLY), "run_cutover")
     if run is None:
         return False
     baseline = next((s for s in run.body if _assign_call(s, "A", "_read", [])), None)
-    locks = [node for node in ast.walk(run) if isinstance(node, ast.With)]
+    locks = [stmt for stmt in run.body if isinstance(stmt, ast.With)]
     for lock in locks:
         if "_flock(LOCKFILE)" not in ast.unparse(lock.items[0].context_expr):
             continue
@@ -97,7 +113,7 @@ def _rollback_shape(records: dict[bytes, bytes]) -> bool:
     run = _function(_tree(records, CRON_APPLY), "run_cutover")
     if run is None:
         return False
-    for lock in (node for node in ast.walk(run) if isinstance(node, ast.With)):
+    for lock in _live_withs(run.body):
         if "_flock(LOCKFILE)" not in ast.unparse(lock.items[0].context_expr):
             continue
         predicates = [
@@ -173,7 +189,8 @@ def forensic_literal_lines(body: bytes) -> set[int]:
             if not isinstance(text, str):
                 continue
             words = ("Scheduled" + "Task", "write" + "_unit", "remove" + "_unit", "run" + "_systemctl")
-            scheduler = any(word in text for word in words) or ("cron" + "tab" in text and "-" in text)
+            systemd = ".config/systemd/user" in text or "SYSTEMD_USER_DIR" in text
+            scheduler = systemd or any(word in text for word in words) or ("cron" + "tab" in text and "-" in text)
             if scheduler:
                 lines.update(range(literal.lineno, getattr(literal, "end_lineno", literal.lineno) + 1))
     return lines
