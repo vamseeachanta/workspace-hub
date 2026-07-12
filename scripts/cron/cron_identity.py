@@ -21,10 +21,30 @@ def _validate_fingerprint(label: str, value: object) -> list[str]:
     if unknown:
         errors.append(f"{label}: unknown fingerprint keys {sorted(unknown)}")
     for key, raw in value.items():
-        items = raw if isinstance(raw, list) else [raw]
-        if not items or any(not isinstance(item, str) or not item for item in items):
-            errors.append(f"{label}: fingerprint.{key} must contain non-empty strings")
+        if key not in FINGERPRINT_KEYS:
+            continue
+        if key == "command_tokens":
+            valid = isinstance(raw, list) and bool(raw) and all(
+                isinstance(item, str) and bool(item) for item in raw
+            )
+            expected = "a non-empty list of strings"
+        elif key == "command_contains":
+            valid = _string_or_string_list(raw)
+            expected = "a string or non-empty list of strings"
+        else:
+            valid = isinstance(raw, str) and bool(raw)
+            expected = "a non-empty string"
+        if not valid:
+            errors.append(f"{label}: fingerprint.{key} must be {expected}")
     return errors
+
+
+def _string_or_string_list(value: object) -> bool:
+    if isinstance(value, str):
+        return bool(value)
+    return isinstance(value, list) and bool(value) and all(
+        isinstance(item, str) and bool(item) for item in value
+    )
 
 
 def _validate_preserved_row(label: str, row: object, task_ids: set[str]) -> list[str]:

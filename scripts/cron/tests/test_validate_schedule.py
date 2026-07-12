@@ -92,6 +92,41 @@ def test_state_class_schema_is_closed():
         assert validator.validate_state_classes(classes, task_ids), classes
 
 
+@pytest.mark.parametrize(
+    "fingerprint",
+    [
+        {"command_tokens": "python x.py"},
+        {"command_tokens": []},
+        {"command_tokens": ["python", True]},
+        {"cwd_contains": ["/repo"]},
+        {"cwd_contains": True},
+        {"cwd_basename": ["repo"]},
+        {"script_basename": ["x.py"]},
+        {"command_contains": True},
+        {"command_contains": 7},
+        {"command_contains": []},
+        {"command_contains": ["x", False]},
+    ],
+)
+def test_normal_validation_rejects_runtime_incompatible_fingerprint_types(
+    tmp_path, fingerprint
+):
+    catalog = tmp_path / "catalog.yaml"
+    classes = tmp_path / "classes.yaml"
+    catalog.write_text(SCHEDULE_FILE.read_text(), encoding="utf-8")
+    classes.write_text(yaml.safe_dump({
+        "preserved_external": [{"owner": "external", "fingerprint": fingerprint}],
+        "preserved_local": [],
+    }), encoding="utf-8")
+    completed = subprocess.run(
+        [sys.executable, str(VALIDATOR), "--catalog", str(catalog),
+         "--state-classes", str(classes)],
+        cwd=REPO_ROOT, text=True, capture_output=True,
+    )
+    assert completed.returncode != 0
+    assert "fingerprint" in completed.stdout
+
+
 @pytest.fixture(scope="module")
 def schedule_data():
     assert SCHEDULE_FILE.exists(), f"{SCHEDULE_FILE} does not exist"

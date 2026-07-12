@@ -193,3 +193,30 @@ def test_inventory_rejects_legacy_lines_without_task_binding(tmp_path):
     assert completed.returncode != 0
     assert "legacy_exact_lines requires catalog_task_id" in completed.stderr
     assert not output.exists()
+
+
+@pytest.mark.parametrize(
+    "fingerprint",
+    [
+        {"command_tokens": "python x.py"},
+        {"command_tokens": ["python", True]},
+        {"cwd_contains": ["/repo"]},
+        {"cwd_basename": False},
+        {"script_basename": ["x.py"]},
+        {"command_contains": 7},
+        {"command_contains": []},
+    ],
+)
+def test_inventory_rejects_runtime_incompatible_fingerprint_types(
+    tmp_path, fingerprint
+):
+    task = {"id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
+            "command": "echo one", "machines": ["linux-a"], "roles": []}
+    classes = {"preserved_external": [{
+        "owner": "external", "fingerprint": fingerprint,
+    }], "preserved_local": []}
+    _catalog, _classes, output, command = fixture_paths(tmp_path, [task], classes)
+    completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+    assert completed.returncode != 0
+    assert "fingerprint" in completed.stderr
+    assert not output.exists()
