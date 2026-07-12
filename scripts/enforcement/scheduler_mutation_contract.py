@@ -45,6 +45,7 @@ MUTATION_MODES = {"default", "flag-gated"}
 SELECTION_CONDITIONS = {
     "systemd-available", "systemd-unavailable",
     "systemd-available-uninstall", "systemd-unavailable-uninstall",
+    "remove-mode", "replace-mode",
 }
 DEFECT_CLASSES = {
     "mixed-destructive-ownership-authority",
@@ -154,6 +155,7 @@ def digest_record_union(
         b"scripts/enforcement/check-scheduler-mutation-surfaces.py",
         b"scripts/enforcement/scheduler_mutation_contract.py",
         b"scripts/enforcement/scheduler_mutation_attestations.py",
+        b"scripts/enforcement/scheduler_mutation_discovery.py",
         b"tests/enforcement/test_scheduler_mutation_surfaces.py",
         b"tests/enforcement/test_scheduler_mutation_hardening.py",
         b"tests/enforcement/test_scheduler_mutation_delivery.py",

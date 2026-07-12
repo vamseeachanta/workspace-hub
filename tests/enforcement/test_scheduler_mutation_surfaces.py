@@ -74,6 +74,20 @@ def test_cli_reports_machine_readable_failures_and_success():
     assert len(payload["input_digest"]) == 64
 
 
+@pytest.mark.parametrize("registry", [None, 7, ["not", "a", "mapping"]])
+def test_cli_reports_malformed_yaml_root_as_json(monkeypatch, capsys, registry):
+    checker = load_checker()
+    records = checker.read_index_records(REPO_ROOT)
+    records[checker.REGISTRY] = yaml.safe_dump(registry).encode()
+    monkeypatch.setattr(checker, "read_index_records", lambda _root: records)
+    assert checker.main(["--json"]) == 1
+    captured = capsys.readouterr()
+    payload = json.loads(captured.out)
+    assert payload["status"] == "error"
+    assert payload["errors"] == ["registry root must be a mapping"]
+    assert "Traceback" not in captured.err
+
+
 @pytest.mark.parametrize(
     ("path", "body", "kind"),
     [

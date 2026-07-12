@@ -157,12 +157,24 @@ surfaces:
     kind: direct-owner
     disposition_group: windows-task-writers
     operations:
-      - &windows_unregister_register
-        id: unregister-register-fixed-task
+      - id: remove:unregister-fixed-task
         primitive: windows-task-unregister-register
         target_kind: windows-current-user-task
         scheduler_identity: local-windows-task-scheduler-claude-folder
         execution_host_binding: physical-local
+        selection_condition: remove-mode
+        destructive: true
+        authority_branches:
+          - {id: task-path-name, mechanism: fixed-task-path-name, config_source: scripts/windows/setup-scheduler-tasks.ps1, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [windows-task-path-name-v1, windows-current-user-principal-v1]
+      - &windows_unregister_register
+        id: replace:unregister-register-fixed-task
+        primitive: windows-task-unregister-register
+        target_kind: windows-current-user-task
+        scheduler_identity: local-windows-task-scheduler-claude-folder
+        execution_host_binding: physical-local
+        selection_condition: replace-mode
         destructive: true
         authority_branches:
           - {id: task-path-name, mechanism: fixed-task-path-name, config_source: scripts/windows/setup-scheduler-tasks.ps1, destructive: true, strength: exact}

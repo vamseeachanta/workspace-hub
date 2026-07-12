@@ -28,6 +28,11 @@ from scheduler_mutation_contract import (  # noqa: E402
     validate_closed_schema,
     validate_operation_contract,
 )
+from scheduler_mutation_discovery import (  # noqa: E402
+    derive_kanban_operations,
+    derive_windows_task_operations,
+    has_primitive_alias_call,
+)
 from scheduler_mutation_attestations import (  # noqa: E402
     derive_cron_classifier_branches,
     derive_installed_fingerprint_branches,
@@ -43,7 +48,8 @@ CHECKER = b"scripts/enforcement/check-scheduler-mutation-surfaces.py"
 TEST = b"tests/enforcement/test_scheduler_mutation_surfaces.py"
 HARDENING_TEST = b"tests/enforcement/test_scheduler_mutation_hardening.py"
 ATTESTATIONS = b"scripts/enforcement/scheduler_mutation_attestations.py"
-FORENSIC = {CHECKER, TEST, HARDENING_TEST, ATTESTATIONS}
+DISCOVERY_HELPER = b"scripts/enforcement/scheduler_mutation_discovery.py"
+FORENSIC = {CHECKER, TEST, HARDENING_TEST, ATTESTATIONS, DISCOVERY_HELPER}
 SENTINEL = b"scheduler-mutation-forensic"
 PRIMITIVE_PATTERNS = {
     "crontab-replace": (
@@ -159,23 +165,12 @@ def discover_mutation_surfaces(records: dict[bytes, bytes]) -> Discovery:
             rb"(?m)^\s*\$[A-Za-z_]*(?:SCHEDUL|CRON)[A-Za-z_]*\b", code
         ):
             unknown.add(path)
+        if raw not in FORENSIC and has_primitive_alias_call(code):
+            unknown.add(path)
         # Variable calls are unknown only when that variable was assigned a
         # scheduler entrypoint. Ordinary shell scripts routinely execute other
         # variable-held tools and are outside this scanner's scope.
     return Discovery(direct, transitive, edges, primitives, unknown)
-
-
-def derive_kanban_operations(records: dict[bytes, bytes]) -> set[str]:
-    code = _code(records.get(b"scripts/install/setup-kanban-loader-timer.sh", b""))
-    checks = {
-        "install:systemd-unit-write": rb"do_install\(\)[\s\S]+service_body \| write_unit",
-        "install:systemd-enable": rb"do_install\(\)[\s\S]+run_systemctl enable --now",  # scheduler-mutation-forensic
-        "install:crontab-replace": rb"do_install\(\)[\s\S]+run_crontab -",
-        "uninstall:systemd-unit-remove": rb"do_uninstall\(\)[\s\S]+remove_unit \"\$SERVICE_PATH\"",  # scheduler-mutation-forensic
-        "uninstall:systemd-disable": rb"do_uninstall\(\)[\s\S]+run_systemctl disable --now",  # scheduler-mutation-forensic
-        "uninstall:crontab-replace": rb"do_uninstall\(\)[\s\S]+run_crontab -",
-    }
-    return {name for name, pattern in checks.items() if re.search(pattern, code)}
 
 
 def evaluate_attestation(name: str, records: dict[bytes, bytes], operation_source: bytes = b"") -> bool:
@@ -266,6 +261,10 @@ def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
     kanban = rows.get("scripts/install/setup-kanban-loader-timer.sh", {})
     if derive_kanban_operations(records) != {operation["id"] for operation in kanban.get("operations", [])}:
         errors.append("kanban backend operation set mismatch")
+    windows = rows.get("scripts/windows/setup-scheduler-tasks.ps1", {})
+    declared_windows = {operation["id"] for operation in windows.get("operations", [])}
+    if derive_windows_task_operations(records) != declared_windows:
+        errors.append("Windows operation set mismatch")
     migration = {path for path, status in statuses.items() if status == "migration-required"}
     covered: set[str] = set()
     group_ids: set[str] = set()
@@ -361,6 +360,8 @@ def main(argv: list[str] | None = None) -> int:
         records = read_index_records(ROOT)
         raw = records[REGISTRY]
         registry = yaml.safe_load(raw)
+        if not isinstance(registry, dict):
+            raise ValueError("registry root must be a mapping")
         discovery = discover_mutation_surfaces(records)
         result = validate_registry(registry, discovery, records)
         digest = input_digest(raw, digest_record_union(registry, records))

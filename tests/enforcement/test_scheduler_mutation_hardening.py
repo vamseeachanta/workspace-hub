@@ -59,6 +59,42 @@ def test_declared_operations_equal_discovered_primitives_per_path():
     assert any("primitive" in error for error in validate_changed(mutate).errors)
 
 
+@pytest.mark.parametrize(
+    "body",
+    [
+        b'writer=crontab\nprintf x | "$writer" -\n',
+        b"$writer = 'Register-ScheduledTask'\n& $writer -TaskName X\n",
+        b"$writer = 'Unregister-ScheduledTask'\nInvoke-Expression \"$writer -TaskName X\"\n",
+    ],
+)
+def test_neutral_scheduler_primitive_aliases_fail_closed(body):
+    checker = load_checker()
+    found = checker.discover_mutation_surfaces({b"scripts/neutral-alias.sh": body})
+    assert found.unknown_edges == {"scripts/neutral-alias.sh"}
+
+
+def test_windows_operation_set_includes_remove_and_replace_routes():
+    checker, records, registry = current_contract()
+    expected = {"remove:unregister-fixed-task", "replace:unregister-register-fixed-task"}
+    assert checker.derive_windows_task_operations(records) == expected
+    row = next(
+        item for item in registry["surfaces"]
+        if item["path"] == "scripts/windows/setup-scheduler-tasks.ps1"
+    )
+    assert {operation["id"] for operation in row["operations"]} == expected
+
+
+def test_windows_operation_set_rejects_omitted_same_primitive_route():
+    def mutate(_checker, _records, registry):
+        row = next(
+            item for item in registry["surfaces"]
+            if item["path"] == "scripts/windows/setup-scheduler-tasks.ps1"
+        )
+        row["operations"] = row["operations"][:1]
+
+    assert any("Windows operation set" in error for error in validate_changed(mutate).errors)
+
+
 def test_transaction_attestations_reject_semantic_inversions():
     checker, records, _ = current_contract()
     source = b"scripts/cron/cron_apply.py"
