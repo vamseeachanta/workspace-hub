@@ -1,0 +1,259 @@
+schema_version: 1
+
+surfaces:
+  - path: scripts/cron/cron_apply.py
+    kind: direct-owner
+    disposition_group: cron-catalog-migration
+    operations:
+      - id: reconcile-current-user-crontab
+        primitive: crontab-replace
+        target_kind: current-user-cron
+        scheduler_identity: local-current-user-crontab
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: installed-fingerprint-token, mechanism: command-tokens-adjacent, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: parsed}
+          - {id: installed-fingerprint-substring, mechanism: command-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
+          - {id: catalog-key-fallback, mechanism: catalog-key-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
+          - {id: preserved-promotion, mechanism: command-substring, config_source: config/workstations/harness-state-classes.yaml, destructive: true, strength: substring}
+        transaction: &reference_transaction
+          lock: true
+          baseline_snapshot: true
+          backup: true
+          pre_write_cas: true
+          post_write_preservation_verify: true
+          post_write_exact_state_verify: false
+          rollback_cas: true
+        attestations:
+          - python-physical-host-equality-guard-v1
+          - python-lock-scope-v1
+          - python-baseline-snapshot-v1
+          - python-backup-baseline-v1
+          - python-prewrite-cas-v1
+          - python-postwrite-preservation-multiset-v1
+          - python-rollback-after-cas-v1
+          - cron-command-tokens-adjacent-v1
+          - cron-classifier-destructive-branches-v1
+          - crontab-current-user-target-v1
+
+  - path: scripts/coordination/context/setup_cron.sh
+    kind: direct-owner
+    disposition_group: legacy-crontab-writers
+    operations:
+      - &legacy_current_user_operation
+        id: marker-filtered-crontab-replace
+        primitive: crontab-replace
+        target_kind: current-user-cron
+        scheduler_identity: local-current-user-crontab
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: marker-filter, mechanism: command-substring, config_source: scripts/coordination/context/setup_cron.sh, destructive: true, strength: substring}
+        transaction: &missing_transaction
+          lock: false
+          baseline_snapshot: false
+          backup: false
+          pre_write_cas: false
+          post_write_preservation_verify: false
+          post_write_exact_state_verify: false
+          rollback_cas: false
+        attestations: []
+
+  - path: scripts/operations/maintenance/setup_maintenance_cron.sh
+    kind: direct-owner
+    disposition_group: legacy-crontab-writers
+    operations:
+      - <<: *legacy_current_user_operation
+        authority_branches:
+          - {id: marker-filter, mechanism: command-substring, config_source: scripts/operations/maintenance/setup_maintenance_cron.sh, destructive: true, strength: substring}
+
+  - path: scripts/setup/setup-engineering-update-cron.sh
+    kind: direct-owner
+    disposition_group: legacy-crontab-writers
+    operations:
+      - id: root-marker-filtered-crontab-replace
+        primitive: crontab-replace
+        target_kind: root-cron
+        scheduler_identity: local-root-crontab
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: marker-filter, mechanism: command-substring, config_source: scripts/setup/setup-engineering-update-cron.sh, destructive: true, strength: substring}
+        transaction: *missing_transaction
+        attestations: [crontab-root-target-v1]
+
+  - path: scripts/install/setup-kanban-loader-timer.sh
+    kind: direct-owner
+    disposition_group: kanban-dual-backend
+    operations:
+      - id: install:systemd-unit-write
+        primitive: systemd-user-unit-write
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-kanban-loader-sync
+        execution_host_binding: physical-local
+        selection_condition: systemd-available
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-unit-name-v1, kanban-backend-operation-set-v1]
+      - id: install:systemd-enable
+        primitive: systemd-user-enable-disable
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-kanban-loader-sync
+        execution_host_binding: physical-local
+        selection_condition: systemd-available
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-enable-disable-v1, kanban-backend-operation-set-v1]
+      - id: install:crontab-replace
+        primitive: crontab-replace
+        target_kind: current-user-cron
+        scheduler_identity: local-current-user-crontab-kanban-loader-sync
+        execution_host_binding: physical-local
+        selection_condition: systemd-unavailable
+        destructive: true
+        authority_branches:
+          - {id: exact-sentinel, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [shell-exact-sentinel-v1, kanban-backend-operation-set-v1]
+      - id: uninstall:systemd-unit-remove
+        primitive: systemd-user-unit-write
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-kanban-loader-sync
+        execution_host_binding: physical-local
+        selection_condition: systemd-available-uninstall
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-unit-name-v1, kanban-backend-operation-set-v1]
+      - id: uninstall:systemd-disable
+        primitive: systemd-user-enable-disable
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-kanban-loader-sync
+        execution_host_binding: physical-local
+        selection_condition: systemd-available-uninstall
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-enable-disable-v1, kanban-backend-operation-set-v1]
+      - id: uninstall:crontab-replace
+        primitive: crontab-replace
+        target_kind: current-user-cron
+        scheduler_identity: local-current-user-crontab-kanban-loader-sync
+        execution_host_binding: physical-local
+        selection_condition: systemd-unavailable-uninstall
+        destructive: true
+        authority_branches:
+          - {id: exact-sentinel, mechanism: exact-sentinel, config_source: scripts/install/setup-kanban-loader-timer.sh, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [shell-exact-sentinel-v1, kanban-backend-operation-set-v1]
+
+  - path: scripts/windows/setup-scheduler-tasks.ps1
+    kind: direct-owner
+    disposition_group: windows-task-writers
+    operations:
+      - id: remove:unregister-fixed-task
+        primitive: windows-task-unregister-register
+        target_kind: windows-current-user-task
+        scheduler_identity: local-windows-task-scheduler-claude-folder
+        execution_host_binding: physical-local
+        selection_condition: remove-mode
+        destructive: true
+        authority_branches:
+          - {id: task-path-name, mechanism: fixed-task-path-name, config_source: scripts/windows/setup-scheduler-tasks.ps1, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [windows-task-path-name-v1, windows-current-user-principal-v1]
+      - &windows_unregister_register
+        id: replace:unregister-register-fixed-task
+        primitive: windows-task-unregister-register
+        target_kind: windows-current-user-task
+        scheduler_identity: local-windows-task-scheduler-claude-folder
+        execution_host_binding: physical-local
+        selection_condition: replace-mode
+        destructive: true
+        authority_branches:
+          - {id: task-path-name, mechanism: fixed-task-path-name, config_source: scripts/windows/setup-scheduler-tasks.ps1, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [windows-task-path-name-v1, windows-current-user-principal-v1, windows-task-unregister-register-v1]
+
+  - path: scripts/coordination/context/setup_scheduled_task.ps1
+    kind: direct-owner
+    disposition_group: windows-task-writers
+    operations:
+      - <<: *windows_unregister_register
+        scheduler_identity: local-windows-task-scheduler-context-management
+        authority_branches:
+          - {id: task-path-name, mechanism: fixed-task-path-name, config_source: scripts/coordination/context/setup_scheduled_task.ps1, destructive: true, strength: exact}
+        attestations: [context-windows-principal-v1, context-windows-task-path-name-v1]
+
+  - path: scripts/solver/setup-scheduler.ps1
+    kind: direct-owner
+    disposition_group: windows-task-writers
+    operations:
+      - id: set-or-register-solver-queue
+        primitive: windows-task-set
+        target_kind: windows-current-user-task
+        scheduler_identity: local-windows-task-scheduler-solver-queue
+        execution_host_binding: physical-local
+        destructive: true
+        authority_branches:
+          - {id: fixed-task-name, mechanism: fixed-task-path-name, config_source: scripts/solver/setup-scheduler.ps1, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [windows-task-set-operation-v1, solver-windows-task-name-v1]
+
+  - path: scripts/cron/setup-cron.sh
+    kind: transitive-entrypoint
+    disposition_group: cron-catalog-migration
+    edge: {callee: scripts/cron/cron_apply.py, call_form: constant-path-exec, mutation_mode: flag-gated, target_guard_attestation: shell-physical-host-equality-guard-v1}
+    operations:
+      - <<: *legacy_current_user_operation
+        id: catalog-install-entrypoint
+        authority_branches:
+          - {id: schedule-and-basename, mechanism: catalog-key-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
+
+  - path: scripts/setup/new-machine-setup.sh
+    kind: transitive-entrypoint
+    disposition_group: cron-catalog-migration
+    edge: {callee: scripts/cron/setup-cron.sh, call_form: literal-bash, mutation_mode: default, target_guard_attestation: shell-local-delegation-v1}
+    operations:
+      - <<: *legacy_current_user_operation
+        id: onboarding-crontab-install
+        authority_branches:
+          - {id: delegated-catalog, mechanism: catalog-key-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
+
+  - path: scripts/cron/harness-update.sh
+    kind: transitive-entrypoint
+    disposition_group: harness-update
+    edge: {callee: scripts/cron/setup-cron.sh, call_form: constant-path-exec, mutation_mode: default, target_guard_attestation: shell-local-delegation-v1}
+    operations:
+      - <<: *legacy_current_user_operation
+        id: nightly-crontab-self-sync
+        authority_branches:
+          - {id: delegated-catalog, mechanism: catalog-key-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
+
+disposition_groups:
+  - group_id: cron-catalog-migration
+    issue: {repository: vamseeachanta/workspace-hub, number: 3475}
+    members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
+    defect_class: mixed-destructive-ownership-authority
+  - group_id: legacy-crontab-writers
+    issue: {repository: vamseeachanta/workspace-hub, number: 3476}
+    members: [scripts/coordination/context/setup_cron.sh, scripts/operations/maintenance/setup_maintenance_cron.sh, scripts/setup/setup-engineering-update-cron.sh]
+    defect_class: untransactional-whole-crontab-replacement
+  - group_id: kanban-dual-backend
+    issue: {repository: vamseeachanta/workspace-hub, number: 3477}
+    members: [scripts/install/setup-kanban-loader-timer.sh]
+    defect_class: untransactional-dual-backend-replacement
+  - group_id: windows-task-writers
+    issue: {repository: vamseeachanta/workspace-hub, number: 3478}
+    members: [scripts/windows/setup-scheduler-tasks.ps1, scripts/coordination/context/setup_scheduled_task.ps1, scripts/solver/setup-scheduler.ps1]
+    defect_class: windows-task-mutation-without-verified-transaction
+  - group_id: harness-update
+    issue: {repository: vamseeachanta/workspace-hub, number: 3479}
+    members: [scripts/cron/harness-update.sh]
+    defect_class: transitive-mutation-error-swallowing
