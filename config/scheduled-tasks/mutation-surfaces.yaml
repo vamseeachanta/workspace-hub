@@ -25,7 +25,10 @@ surfaces:
           rollback_cas: true
         attestations:
           - python-physical-host-equality-guard-v1
-          - python-prewrite-baseline-cas-v1
+          - python-lock-scope-v1
+          - python-baseline-snapshot-v1
+          - python-backup-baseline-v1
+          - python-prewrite-cas-v1
           - python-postwrite-preservation-multiset-v1
           - python-rollback-after-cas-v1
           - cron-command-tokens-adjacent-v1
@@ -173,7 +176,7 @@ surfaces:
         scheduler_identity: local-windows-task-scheduler-context-management
         authority_branches:
           - {id: task-path-name, mechanism: fixed-task-path-name, config_source: scripts/coordination/context/setup_scheduled_task.ps1, destructive: true, strength: exact}
-        attestations: [context-windows-principal-v1]
+        attestations: [context-windows-principal-v1, context-windows-task-path-name-v1]
 
   - path: scripts/solver/setup-scheduler.ps1
     kind: direct-owner
@@ -188,12 +191,12 @@ surfaces:
         authority_branches:
           - {id: fixed-task-name, mechanism: fixed-task-path-name, config_source: scripts/solver/setup-scheduler.ps1, destructive: true, strength: exact}
         transaction: *missing_transaction
-        attestations: [windows-task-set-operation-v1]
+        attestations: [windows-task-set-operation-v1, solver-windows-task-name-v1]
 
   - path: scripts/cron/setup-cron.sh
     kind: transitive-entrypoint
     disposition_group: cron-catalog-migration
-    edge: {callee: scripts/cron/cron_apply.py, call_form: literal-exec, mutation_mode: flag-gated, target_guard_attestation: python-physical-host-equality-guard-v1}
+    edge: {callee: scripts/cron/cron_apply.py, call_form: constant-path-exec, mutation_mode: flag-gated, target_guard_attestation: shell-physical-host-equality-guard-v1}
     operations:
       - <<: *legacy_current_user_operation
         id: catalog-install-entrypoint
@@ -203,7 +206,7 @@ surfaces:
   - path: scripts/setup/new-machine-setup.sh
     kind: transitive-entrypoint
     disposition_group: cron-catalog-migration
-    edge: {callee: scripts/cron/setup-cron.sh, call_form: literal-bash, mutation_mode: default, target_guard_attestation: crontab-current-user-target-v1}
+    edge: {callee: scripts/cron/setup-cron.sh, call_form: literal-bash, mutation_mode: default, target_guard_attestation: shell-local-delegation-v1}
     operations:
       - <<: *legacy_current_user_operation
         id: onboarding-crontab-install
@@ -213,7 +216,7 @@ surfaces:
   - path: scripts/cron/harness-update.sh
     kind: transitive-entrypoint
     disposition_group: harness-update
-    edge: {callee: scripts/cron/setup-cron.sh, call_form: constant-path-exec, mutation_mode: default, target_guard_attestation: crontab-current-user-target-v1}
+    edge: {callee: scripts/cron/setup-cron.sh, call_form: constant-path-exec, mutation_mode: default, target_guard_attestation: shell-local-delegation-v1}
     operations:
       - <<: *legacy_current_user_operation
         id: nightly-crontab-self-sync
@@ -224,20 +227,20 @@ disposition_groups:
   - group_id: cron-catalog-migration
     issue: {repository: vamseeachanta/workspace-hub, number: 3475}
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
-    defect_class: catalog-identity-and-transaction
+    defect_class: mixed-destructive-ownership-authority
   - group_id: legacy-crontab-writers
     issue: {repository: vamseeachanta/workspace-hub, number: 3476}
     members: [scripts/coordination/context/setup_cron.sh, scripts/operations/maintenance/setup_maintenance_cron.sh, scripts/setup/setup-engineering-update-cron.sh]
-    defect_class: substring-ownership-no-transaction
+    defect_class: untransactional-whole-crontab-replacement
   - group_id: kanban-dual-backend
     issue: {repository: vamseeachanta/workspace-hub, number: 3477}
     members: [scripts/install/setup-kanban-loader-timer.sh]
-    defect_class: dual-backend-no-transaction
+    defect_class: untransactional-dual-backend-replacement
   - group_id: windows-task-writers
     issue: {repository: vamseeachanta/workspace-hub, number: 3478}
     members: [scripts/windows/setup-scheduler-tasks.ps1, scripts/coordination/context/setup_scheduled_task.ps1, scripts/solver/setup-scheduler.ps1]
-    defect_class: windows-no-shared-transaction
+    defect_class: windows-task-mutation-without-verified-transaction
   - group_id: harness-update
     issue: {repository: vamseeachanta/workspace-hub, number: 3479}
     members: [scripts/cron/harness-update.sh]
-    defect_class: implicit-nightly-scheduler-mutation
+    defect_class: transitive-mutation-error-swallowing

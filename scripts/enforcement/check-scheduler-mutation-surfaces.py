@@ -2,214 +2,397 @@
 """Fail-closed, index-backed scheduler mutation inventory validator."""
 from __future__ import annotations
 
-import argparse, ast, hashlib, json, re, struct, subprocess, sys
-from dataclasses import dataclass
+import argparse
+import ast
+import json
+import re
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
+
 import yaml
+
+MODULE_DIR = Path(__file__).resolve().parent
+if str(MODULE_DIR) not in sys.path:
+    sys.path.insert(0, str(MODULE_DIR))
+
+from scheduler_mutation_contract import (  # noqa: E402
+    ATT_SOURCES,
+    Discovery,
+    ValidationResult,
+    attestation_source,
+    derive_status,
+    digest_record_union,
+    input_digest,
+    validate_closed_schema,
+    validate_operation_contract,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRY = b"config/scheduled-tasks/mutation-surfaces.yaml"
-FORENSIC = {b"scripts/enforcement/check-scheduler-mutation-surfaces.py", b"tests/enforcement/test_scheduler_mutation_surfaces.py"}
+CHECKER = b"scripts/enforcement/check-scheduler-mutation-surfaces.py"
+TEST = b"tests/enforcement/test_scheduler_mutation_surfaces.py"
+FORENSIC = {CHECKER, TEST}
 SENTINEL = b"scheduler-mutation-forensic"
 PRIMITIVE_PATTERNS = {
-    "crontab-replace": (rb"(?:^|[|;(\s])(?:run_)?crontab[ \t]+-(?:[ \t]|$)", rb"\[['\"]crontab['\"],[ \t]*['\"]-['\"]\]"),  # scheduler-mutation-forensic
-    "systemd-user-unit-write": (rb"\b(?:write_unit|remove_unit)[ \t]+",),  # scheduler-mutation-forensic
-    "systemd-user-enable-disable": (rb"\b(?:run_systemctl|systemctl[ \t]+--user)[ \t]+(?:enable|disable)\b",),  # scheduler-mutation-forensic
+    "crontab-replace": (
+        rb"(?:^|[|;\(\s])(?:run_)?crontab[ \t]+-(?:[ \t]|$)",
+        rb"\[[ \t]*['\"]crontab['\"][ \t]*,[ \t]*['\"]-['\"]",
+    ),  # scheduler-mutation-forensic
+    "systemd-user-unit-write": (
+        rb"\b(?:write_unit|remove_unit)[ \t]+",
+        rb"(?:cat|printf)[^\n]*(?:\.config/systemd/user|SYSTEMD_USER_DIR)",  # scheduler-mutation-forensic
+    ),  # scheduler-mutation-forensic
+    "systemd-user-enable-disable": (
+        rb"\b(?:run_systemctl|systemctl[ \t]+--user)[ \t]+(?:enable|disable)\b",
+    ),  # scheduler-mutation-forensic
     "windows-task-set": (rb"\bSet-ScheduledTask\b",),  # scheduler-mutation-forensic
-    "windows-task-unregister-register": (rb"\b(?:Register|Unregister)-ScheduledTask\b",),  # scheduler-mutation-forensic
+    "windows-task-unregister-register": (
+        rb"\b(?:Register|Unregister)-ScheduledTask\b",
+    ),  # scheduler-mutation-forensic
 }
-CALLEES = (b"scripts/cron/cron_apply.py", b"scripts/cron/setup-cron.sh")
-TX_FIELDS = ("lock", "baseline_snapshot", "backup", "pre_write_cas", "post_write_preservation_verify", "post_write_exact_state_verify", "rollback_cas")
-TX_ATTEST = {"lock": "python-prewrite-baseline-cas-v1", "baseline_snapshot": "python-prewrite-baseline-cas-v1", "backup": "python-prewrite-baseline-cas-v1", "pre_write_cas": "python-prewrite-baseline-cas-v1", "post_write_preservation_verify": "python-postwrite-preservation-multiset-v1", "post_write_exact_state_verify": "python-postwrite-exact-state-v1", "rollback_cas": "python-rollback-after-cas-v1"}
-ATT_SOURCES = {
-    "python-physical-host-equality-guard-v1": b"scripts/cron/cron_apply.py", "python-prewrite-baseline-cas-v1": b"scripts/cron/cron_apply.py",
-    "python-postwrite-preservation-multiset-v1": b"scripts/cron/cron_apply.py", "python-postwrite-exact-state-v1": b"scripts/cron/cron_apply.py",
-    "python-rollback-after-cas-v1": b"scripts/cron/cron_apply.py", "cron-command-tokens-adjacent-v1": b"scripts/cron/cron_transaction.py",
-    "cron-classifier-destructive-branches-v1": b"scripts/cron/cron_transaction.py", "shell-exact-sentinel-v1": b"scripts/install/setup-kanban-loader-timer.sh",
-    "kanban-backend-operation-set-v1": b"scripts/install/setup-kanban-loader-timer.sh", "crontab-current-user-target-v1": b"scripts/cron/cron_apply.py",
-    "crontab-root-target-v1": b"scripts/setup/setup-engineering-update-cron.sh", "systemd-user-unit-name-v1": b"scripts/install/setup-kanban-loader-timer.sh",
-    "systemd-user-enable-disable-v1": b"scripts/install/setup-kanban-loader-timer.sh", "windows-task-path-name-v1": b"scripts/windows/setup-scheduler-tasks.ps1",
-    "windows-current-user-principal-v1": b"scripts/windows/setup-scheduler-tasks.ps1", "windows-task-set-operation-v1": b"scripts/solver/setup-scheduler.ps1",
-    "windows-task-unregister-register-v1": b"scripts/windows/setup-scheduler-tasks.ps1", "context-windows-principal-v1": b"scripts/coordination/context/setup_scheduled_task.ps1",
-}
+PRIMITIVES = set(PRIMITIVE_PATTERNS)
+class GitTransportError(RuntimeError):
+    pass
+def _s(path: bytes) -> str:
+    return path.decode("utf-8", "surrogateescape")
+def _code(body: bytes) -> bytes:
+    return b"\n".join(line for line in body.splitlines() if not line.lstrip().startswith(b"#"))
 
-class GitTransportError(RuntimeError): pass
-@dataclass(frozen=True)
-class Discovery:
-    direct: set[str]; transitive: set[str]; edges: set[tuple[str, str]]; primitives: dict[str, set[str]]; unknown_edges: set[str]
-@dataclass(frozen=True)
-class ValidationResult:
-    errors: list[str]; statuses: dict[str, str]
-
-def _s(path: bytes) -> str: return path.decode("utf-8", "surrogateescape")
-def _code(body: bytes) -> bytes: return b"\n".join(x for x in body.splitlines() if not x.lstrip().startswith(b"#"))
-def attestation_source(name: str) -> bytes: return ATT_SOURCES.get(name, b"")
 
 def read_index_records(repo: Path, git_command: str = "git") -> dict[bytes, bytes]:
-    ls = subprocess.run([git_command, "ls-files", "-z"], cwd=repo, capture_output=True)
-    if ls.returncode: raise GitTransportError("git ls-files -z failed")
-    paths = [p for p in ls.stdout.split(b"\0") if p]
-    cmd = b"".join(b"contents :" + p + b"\0" for p in paths)
-    out = subprocess.run([git_command, "cat-file", "--batch-command", "-Z"], cwd=repo, input=cmd, capture_output=True)
-    if out.returncode: raise GitTransportError("Git cat-file --batch-command -Z support is required")
-    records, pos = {}, 0
+    listed = subprocess.run([git_command, "ls-files", "-z"], cwd=repo, capture_output=True)
+    if listed.returncode:
+        raise GitTransportError("git ls-files -z failed")
+    paths = [path for path in listed.stdout.split(b"\0") if path]
+    commands = b"".join(b"contents :" + path + b"\0" for path in paths)
+    read = subprocess.run(
+        [git_command, "cat-file", "--batch-command", "-Z"],
+        cwd=repo, input=commands, capture_output=True,
+    )
+    if read.returncode:
+        raise GitTransportError("Git cat-file --batch-command -Z support is required")
+    records: dict[bytes, bytes] = {}
+    offset = 0
     for path in paths:
-        end = out.stdout.find(b"\0", pos)
-        if end < 0: raise GitTransportError("truncated NUL header")
-        header, pos = out.stdout[pos:end], end + 1
-        parts = header.rsplit(b" ", 2)
-        if len(parts) != 3 or parts[1] != b"blob": raise GitTransportError(f"missing index blob: {_s(path)}")
-        size = int(parts[2]); blob = out.stdout[pos:pos + size]; pos += size
-        if len(blob) != size or out.stdout[pos:pos + 1] != b"\0": raise GitTransportError("truncated NUL content")
-        records[path], pos = blob, pos + 1
+        end = read.stdout.find(b"\0", offset)
+        if end < 0:
+            raise GitTransportError("truncated NUL header")
+        parts = read.stdout[offset:end].rsplit(b" ", 2)
+        offset = end + 1
+        if len(parts) != 3 or parts[1] != b"blob":
+            raise GitTransportError(f"missing index blob: {_s(path)}")
+        size = int(parts[2])
+        blob = read.stdout[offset:offset + size]
+        offset += size
+        if len(blob) != size or read.stdout[offset:offset + 1] != b"\0":
+            raise GitTransportError("truncated NUL content")
+        records[path] = blob
+        offset += 1
     return records
 
+
+def _known_call(raw: bytes, code: bytes) -> tuple[str, str] | None:
+    if raw == b"scripts/cron/setup-cron.sh":
+        shape = rb"CRON_APPLY=.*scripts/cron/cron_apply\.py[\s\S]+exec uv run --script \"\$CRON_APPLY\""
+        return ("scripts/cron/cron_apply.py", "constant-path-exec") if re.search(shape, code) else None
+    if raw == b"scripts/setup/new-machine-setup.sh":
+        shape = rb"bash \"\$\{WORKSPACE_HUB\}/scripts/cron/setup-cron\.sh\""
+        return ("scripts/cron/setup-cron.sh", "literal-bash") if re.search(shape, code) else None
+    if raw == b"scripts/cron/harness-update.sh":
+        shape = rb"installer=.*scripts/cron/setup-cron\.sh[\s\S]+bash \"\$installer\""
+        return ("scripts/cron/setup-cron.sh", "constant-path-exec") if re.search(shape, code) else None
+    literal = re.search(rb"(?m)^\s*bash\s+[^\n]*(scripts/cron/(?:setup-cron\.sh|cron_apply\.py))", code)
+    if literal:
+        return (_s(literal.group(1)), "literal-bash")
+    return None
+
+
 def discover_mutation_surfaces(records: dict[bytes, bytes]) -> Discovery:
-    direct, transitive, edges, primitives, unknown = set(), set(), set(), {}, set()
+    direct: set[str] = set()
+    transitive: set[str] = set()
+    primitives: dict[str, set[str]] = {}
+    edges: dict[str, tuple[str, str]] = {}
+    unknown: set[str] = set()
     for raw, body in records.items():
-        if not raw.startswith(b"scripts/") or not raw.endswith((b".sh", b".py", b".ps1")): continue
-        path, code = _s(raw), _code(body)
-        found = set()
+        if not raw.startswith(b"scripts/") or not raw.endswith((b".sh", b".py", b".ps1")):
+            continue
+        path = _s(raw)
+        found: set[str] = set()
         for line in body.splitlines():
-            if line.lstrip().startswith(b"#") or (raw in FORENSIC and SENTINEL in line): continue
+            if line.lstrip().startswith(b"#") or (raw in FORENSIC and SENTINEL in line):
+                continue
             for primitive, patterns in PRIMITIVE_PATTERNS.items():
-                if any(re.search(p, line) for p in patterns): found.add(primitive)
-        if found: direct.add(path); primitives[path] = found
-        if raw not in FORENSIC:
-            for callee in CALLEES:
-                literal = re.search(rb"(?m)^[ \t]*(?:\w+=\$\()?[ \t]*bash[ \t]+[^\n]*" + re.escape(callee), code)
-                constant = raw == b"scripts/cron/harness-update.sh" and callee.endswith(b"setup-cron.sh") and b'bash "$installer"' in code
-                reviewed = raw == b"scripts/cron/setup-cron.sh" and callee.endswith(b"cron_apply.py") and callee in code
-                if raw != callee and (literal or constant or reviewed): transitive.add(path); edges.add((path, _s(callee)))
-            if re.search(rb"(?m)^\s*\$[A-Z_]*(?:SCHEDUL|CRON)[A-Z_]*\b", code): unknown.add(path)
+                if any(re.search(pattern, line) for pattern in patterns):
+                    found.add(primitive)
+        if found:
+            direct.add(path)
+            primitives[path] = found
+        code = _code(body)
+        call = _known_call(raw, code) if raw not in FORENSIC else None
+        if call:
+            transitive.add(path)
+            edges[path] = call
+        assignments = re.findall(rb"(?m)^\s*([A-Za-z_]\w*)=([^\n]*(?:setup-cron|cron_apply)[^\n]*)", code)
+        for variable, _value in assignments:
+            if call is None and re.search(rb"(?:bash|exec|--script)\s+\"?\$\{?" + variable + rb"\}?", code):
+                unknown.add(path)
+        if call is None and re.search(
+            rb"(?m)^\s*\$[A-Za-z_]*(?:SCHEDUL|CRON)[A-Za-z_]*\b", code
+        ):
+            unknown.add(path)
+        # Variable calls are unknown only when that variable was assigned a
+        # scheduler entrypoint. Ordinary shell scripts routinely execute other
+        # variable-held tools and are outside this scanner's scope.
     return Discovery(direct, transitive, edges, primitives, unknown)
+def _tree(records: dict[bytes, bytes], source: bytes) -> ast.Module | None:
+    try:
+        return ast.parse(records[source].decode())
+    except (KeyError, UnicodeDecodeError, SyntaxError):
+        return None
+def _function(tree: ast.Module | None, name: str) -> ast.FunctionDef | None:
+    if tree is None:
+        return None
+    return next((node for node in ast.walk(tree) if isinstance(node, ast.FunctionDef) and node.name == name), None)
 
-def _python_tree(records, source):
-    try: return ast.parse(records[source].decode())
-    except (KeyError, UnicodeDecodeError, SyntaxError): return None
-def _function(tree, name): return next((n for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name == name), None) if tree else None
-def _calls(node, name): return [n for n in ast.walk(node) if isinstance(n, ast.Call) and ((isinstance(n.func, ast.Name) and n.func.id == name) or (isinstance(n.func, ast.Attribute) and n.func.attr == name))]
 
-def _eval_python(name, records, source):
-    tree = _python_tree(records, source)
-    run, main = _function(tree, "run_cutover"), _function(tree, "main")
-    text = ast.unparse(tree) if tree else ""
-    if name == "python-physical-host-equality-guard-v1": return bool(main and re.search(r"if mid != physical_mid:[\s\S]+return 2[\s\S]+run_cutover", ast.unparse(main)))
-    if name == "python-prewrite-baseline-cas-v1": return bool(run and re.search(r"with _flock\(LOCKFILE\):[\s\S]+if current != A:[\s\S]+return [\s\S]+create_backup[\s\S]+_write", ast.unparse(run)))
-    if name == "python-postwrite-preservation-multiset-v1": return bool(run and "after_counts = Counter" in ast.unparse(run) and "after_counts[line] < n" in ast.unparse(run))
-    if name == "python-postwrite-exact-state-v1": return False
-    if name == "python-rollback-after-cas-v1": return bool(run and re.search(r"if current != after:[\s\S]+return [\s\S]+_write\(A\)", ast.unparse(run)))
-    if name == "cron-command-tokens-adjacent-v1": return bool(_function(tree, "match_fingerprint") and "shlex.split(line)" in text and "tokens[i:i + width] == wanted" in text)
-    if name == "cron-classifier-destructive-branches-v1": return derive_cron_classifier_branches(records) is not None
-    if name == "crontab-current-user-target-v1": return bool(_function(tree, "write_crontab") and re.search(r"_run\(\['crontab', '-'\]", ast.unparse(_function(tree, "write_crontab"))))  # scheduler-mutation-forensic
+def _assignment_call(fn: ast.FunctionDef | None, variable: str, call: str) -> bool:
+    if fn is None:
+        return False
+    return any(
+        isinstance(node, ast.Assign)
+        and any(isinstance(target, ast.Name) and target.id == variable for target in node.targets)
+        and isinstance(node.value, ast.Call)
+        and isinstance(node.value.func, ast.Name)
+        and node.value.func.id == call
+        for node in ast.walk(fn)
+    )
+
+
+def _call_args(fn: ast.FunctionDef | None, call: str, args: list[str]) -> bool:
+    if fn is None:
+        return False
+    for node in ast.walk(fn):
+        if not isinstance(node, ast.Call) or not isinstance(node.func, ast.Name) or node.func.id != call:
+            continue
+        rendered = [ast.unparse(arg) for arg in node.args]
+        if rendered == args:
+            return True
     return False
 
-def derive_cron_classifier_branches(records):
-    tree = _python_tree(records, b"scripts/cron/cron_transaction.py"); fn = _function(tree, "classify_line_detail")
-    if not fn: return None
-    reasons, module_reasons = set(), set()
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.Dict): continue
-        values = {k.value: v.value for k, v in zip(node.keys, node.values) if isinstance(k, ast.Constant) and isinstance(k.value, str) and isinstance(v, ast.Constant)}
-        if values.get("class") == "cataloged": module_reasons.add(values.get("reason"))
+
+def _eval_python(name: str, records: dict[bytes, bytes], source: bytes) -> bool:
+    tree = _tree(records, source)
+    run = _function(tree, "run_cutover")
+    main = _function(tree, "main")
+    run_text = ast.unparse(run) if run else ""
+    main_text = ast.unparse(main) if main else ""
+    if name == "python-physical-host-equality-guard-v1":
+        return bool(re.search(r"if mid != physical_mid:[\s\S]+return 2[\s\S]+run_cutover", main_text))
+    if name == "python-baseline-snapshot-v1":
+        return _assignment_call(run, "A", "_read")
+    if name == "python-lock-scope-v1":
+        return bool(re.search(r"with _flock\(LOCKFILE\):[\s\S]+_write\(plan\['new_text'\]\)", run_text))
+    if name == "python-backup-baseline-v1":
+        return _call_args(run, "create_backup", ["canonical_id", "ts", "A"])
+    if name == "python-prewrite-cas-v1":
+        return bool(re.search(r"current = _read\(\)[\s\S]+if current != A:[\s\S]+return[\s\S]+_write", run_text))
+    if name == "python-postwrite-preservation-multiset-v1":
+        return "after_counts = Counter" in run_text and "after_counts[line] < n" in run_text
+    if name == "python-postwrite-exact-state-v1":
+        return False
+    if name == "python-rollback-after-cas-v1":
+        return bool(re.search(r"current = _read\(\)[\s\S]+if current != after:[\s\S]+return[\s\S]+_write\(A\)", run_text))
+    if name == "cron-command-tokens-adjacent-v1":
+        text = ast.unparse(_function(tree, "match_fingerprint")) if tree else ""
+        return "shlex.split(line)" in text and "tokens[i:i + width] == wanted" in text
+    if name == "cron-classifier-destructive-branches-v1":
+        return derive_cron_classifier_branches(records) is not None
+    if name == "crontab-current-user-target-v1":
+        return _call_args(_function(tree, "write_crontab"), "_run", ["['crontab', '-']"])  # scheduler-mutation-forensic
+    return False
+
+
+def derive_cron_classifier_branches(records: dict[bytes, bytes]) -> set[str] | None:
+    tree = _tree(records, b"scripts/cron/cron_transaction.py")
+    fn = _function(tree, "classify_line_detail")
+    if fn is None:
+        return None
+    returns: list[str] = []
     for node in ast.walk(fn):
+        if not isinstance(node, ast.Return) or not isinstance(node.value, ast.Dict):
+            continue
+        values = {
+            key.value: value.value
+            for key, value in zip(node.value.keys, node.value.values)
+            if isinstance(key, ast.Constant) and isinstance(value, ast.Constant)
+        }
+        if values.get("class") == "cataloged":
+            returns.append(values.get("reason"))
+    module_cataloged = 0
+    for node in ast.walk(tree):
         if isinstance(node, ast.Dict):
-            values = {k.value: v.value for k, v in zip(node.keys, node.values) if isinstance(k, ast.Constant) and isinstance(k.value, str) and isinstance(v, ast.Constant)}
-            if values.get("class") == "cataloged": reasons.add(values.get("reason"))
-    expected = {"catalog-owned-preserved-entry", "catalog-fingerprint", "catalog-command"}
-    if reasons != expected or module_reasons != expected: return None
+            rendered = ast.unparse(node)
+            if "'class': 'cataloged'" in rendered or '"class": "cataloged"' in rendered:
+                module_cataloged += 1
+    expected = ["catalog-owned-preserved-entry", "catalog-fingerprint", "catalog-command"]
+    if sorted(returns) != sorted(expected) or module_cataloged != 3:
+        return None
     return {"preserved-promotion", "installed-fingerprint", "catalog-key-fallback"}
 
-def derive_kanban_operations(records):
-    code = _code(records.get(b"scripts/install/setup-kanban-loader-timer.sh", b""))
-    checks = {"install:systemd-unit-write": b'write_unit "$SERVICE_PATH"', "install:systemd-enable": b"run_systemctl enable --now", "install:crontab-replace": b"run_crontab -", "uninstall:systemd-unit-remove": b'remove_unit "$SERVICE_PATH"', "uninstall:systemd-disable": b"run_systemctl disable --now", "uninstall:crontab-replace": b"sed '/^$/d' | run_crontab -"}  # scheduler-mutation-forensic
-    return {key for key, token in checks.items() if token in code}
 
-def evaluate_attestation(name, records, operation_source=b""):
-    source = attestation_source(name) or operation_source; code = _code(records.get(source, b""))
-    if name.startswith("python-") or name.startswith("cron-") or name == "crontab-current-user-target-v1": return _eval_python(name, records, source)
-    if name == "kanban-backend-operation-set-v1": return len(derive_kanban_operations(records)) == 6
-    exact = {
-        "shell-exact-sentinel-v1": rb"grep -vF [\"']\$CRON_SENTINEL[\"'][\s\S]+run_crontab -", "crontab-root-target-v1": rb"if \[\[ \$EUID -ne 0 \]\];[\s\S]+crontab -",  # scheduler-mutation-forensic
-        "systemd-user-unit-name-v1": rb"UNIT_NAME=[\"']kanban-loader-sync[\"']", "systemd-user-enable-disable-v1": rb"run_systemctl enable --now[\s\S]+run_systemctl disable --now",  # scheduler-mutation-forensic
-        "windows-task-path-name-v1": rb"\$TaskPath = [\"']\\Claude\\[\"'][\s\S]+Register-ScheduledTask[\s\S]+-TaskPath \$TaskPath",  # scheduler-mutation-forensic
-        "windows-current-user-principal-v1": rb"\$principal = New-ScheduledTaskPrincipal -UserId \$env:USERNAME[\s\S]+Register-ScheduledTask[\s\S]+-Principal \$principal",  # scheduler-mutation-forensic
-        "context-windows-principal-v1": rb"\$Principal = New-ScheduledTaskPrincipal -UserId \$env:USERNAME[\s\S]+Register-ScheduledTask[\s\S]+-Principal \$Principal",  # scheduler-mutation-forensic
-        "windows-task-set-operation-v1": rb"if \(Get-ScheduledTask[\s\S]+Set-ScheduledTask[\s\S]+else \{[\s\S]+Register-ScheduledTask",  # scheduler-mutation-forensic
+def derive_kanban_operations(records: dict[bytes, bytes]) -> set[str]:
+    code = _code(records.get(b"scripts/install/setup-kanban-loader-timer.sh", b""))
+    checks = {
+        "install:systemd-unit-write": rb"do_install\(\)[\s\S]+service_body \| write_unit",
+        "install:systemd-enable": rb"do_install\(\)[\s\S]+run_systemctl enable --now",  # scheduler-mutation-forensic
+        "install:crontab-replace": rb"do_install\(\)[\s\S]+run_crontab -",
+        "uninstall:systemd-unit-remove": rb"do_uninstall\(\)[\s\S]+remove_unit \"\$SERVICE_PATH\"",  # scheduler-mutation-forensic
+        "uninstall:systemd-disable": rb"do_uninstall\(\)[\s\S]+run_systemctl disable --now",  # scheduler-mutation-forensic
+        "uninstall:crontab-replace": rb"do_uninstall\(\)[\s\S]+run_crontab -",
+    }
+    return {name for name, pattern in checks.items() if re.search(pattern, code)}
+
+
+def evaluate_attestation(name: str, records: dict[bytes, bytes], operation_source: bytes = b"") -> bool:
+    source = attestation_source(name) or operation_source
+    if name.startswith("python-") or name.startswith("cron-") or name == "crontab-current-user-target-v1":
+        return _eval_python(name, records, source)
+    code = _code(records.get(source, b""))
+    if name == "shell-physical-host-equality-guard-v1":
+        required = (
+            b"CANONICAL_MACHINE=", b"PHYSICAL_MACHINE=",
+            b'if [[ "$CANONICAL_MACHINE" != "$PHYSICAL_MACHINE" ]]', b"exit 2",
+        )
+        positions = [code.find(token) for token in required]
+        guard = positions[2]
+        return (
+            all(position >= 0 for position in positions[:3])
+            and positions[:3] == sorted(positions[:3])
+            and code.find(b"exit 2", guard) > guard
+        )
+    if name == "shell-local-delegation-v1":
+        return b"--machine" not in code and b"ssh " not in code
+    if name == "kanban-backend-operation-set-v1":
+        return len(derive_kanban_operations(records)) == 6
+    patterns = {
+        "shell-exact-sentinel-v1": rb"grep -vF \"\$CRON_SENTINEL\"[\s\S]+run_crontab -",
+        "crontab-root-target-v1": rb"EUID -ne 0[\s\S]+crontab -",
+        "systemd-user-unit-name-v1": rb"UNIT_NAME=\"kanban-loader-sync\"",
+        "systemd-user-enable-disable-v1": rb"run_systemctl enable --now[\s\S]+run_systemctl disable --now",  # scheduler-mutation-forensic
+        "windows-task-path-name-v1": rb"\$TaskPath = \"\\Claude\\\"[\s\S]+Register-ScheduledTask[\s\S]+-TaskPath \$TaskPath",  # scheduler-mutation-forensic
+        "windows-current-user-principal-v1": rb"-UserId \$env:USERNAME[\s\S]+Register-ScheduledTask[\s\S]+-Principal \$principal",  # scheduler-mutation-forensic
+        "context-windows-principal-v1": rb"-UserId \$env:USERNAME[\s\S]+Register-ScheduledTask[\s\S]+-Principal \$Principal",  # scheduler-mutation-forensic
+        "context-windows-task-path-name-v1": rb"\$TaskPath = \"\\Claude\\\"[\s\S]+Register-ScheduledTask[\s\S]+-TaskPath \$TaskPath",  # scheduler-mutation-forensic
+        "solver-windows-task-name-v1": rb"\$TaskName = \"SolverQueue\"[\s\S]+(?:Set|Register)-ScheduledTask -TaskName \$TaskName",
+        "windows-task-set-operation-v1": rb"Get-ScheduledTask[\s\S]+Set-ScheduledTask[\s\S]+else \{[\s\S]+Register-ScheduledTask",  # scheduler-mutation-forensic
         "windows-task-unregister-register-v1": rb"if \(\$existing\)[\s\S]+Unregister-ScheduledTask[\s\S]+Register-ScheduledTask",  # scheduler-mutation-forensic
     }
-    return bool(name in exact and re.search(exact[name], code))
+    return bool(name in patterns and re.search(patterns[name], code))
 
-def derive_status(branches, attestations, required_transactions):
-    weak = any(b.get("destructive") and b.get("strength") in {"substring", "unknown"} for b in branches)
-    return "migration-required" if weak or not all(attestations) or not all(required_transactions) else "compliant"
-def input_digest(registry_bytes, records):
-    data = bytearray(b"scheduler-mutation-input-v1\0" + struct.pack(">Q", len(registry_bytes)) + registry_bytes + struct.pack(">Q", len(records)))
-    for path, blob in sorted(records.items()): data += struct.pack(">Q", len(path)) + path + struct.pack(">Q", len(blob)) + blob
-    return hashlib.sha256(data).hexdigest()
 
-def digest_record_union(registry, records):
-    paths = {REGISTRY, b"scripts/enforcement/check-scheduler-mutation-surfaces.py", b"tests/enforcement/test_scheduler_mutation_surfaces.py", b".github/workflows/enforcement-gate.yml"}
-    for row in registry.get("surfaces", []):
-        paths.add(row["path"].encode())
-        for op in row.get("operations", []):
-            paths |= {b["config_source"].encode() for b in op.get("authority_branches", [])}
-            paths |= {attestation_source(a) for a in op.get("attestations", [])}
-        if row.get("edge", {}).get("target_guard_attestation"): paths.add(attestation_source(row["edge"]["target_guard_attestation"]))
-    return {p: records[p] for p in paths if p}
-
-def _validate_operation(path, op, records, errors):
-    ids = [b.get("id") for b in op.get("authority_branches", [])]
-    for branch in op.get("authority_branches", []):
-        source = branch.get("config_source", "").encode()
-        if source not in records: errors.append(f"{path}: config_source is not tracked: {_s(source)}")
-        if branch.get("id") == "preserved-promotion" and source != b"config/workstations/harness-state-classes.yaml": errors.append(f"{path}: config_source not structurally connected")
-    tx, attest = op.get("transaction", {}), op.get("attestations", [])
-    if set(tx) != set(TX_FIELDS): errors.append(f"{path}: complete transaction contract required")
-    for field, value in tx.items():
-        needed = TX_ATTEST[field]
-        if value and needed not in attest: errors.append(f"{path}: true {field} requires {needed}")
-    for name in attest:
-        if name not in ATT_SOURCES: errors.append(f"{path}: unknown attestation {name}")
-        elif not evaluate_attestation(name, records, path.encode()) and any(tx.values()): errors.append(f"{path}: attestation failed: {name}")
-    return ids, [b for b in op.get("authority_branches", [])], [evaluate_attestation(a, records, path.encode()) for a in attest], [bool(tx.get(f)) for f in TX_FIELDS]
-
-def validate_registry(registry, discovery, records):
-    errors, statuses, rows = [], {}, {}
-    for row in registry.get("surfaces", []):
-        path = row.get("path", ""); rows[path] = row; op_ids = [o.get("id") for o in row.get("operations", [])]
-        if len(op_ids) != len(set(op_ids)): errors.append(f"{path}: duplicate operation id")
-        branches, attest, txs = [], [], []
-        for op in row.get("operations", []):
-            _, bs, ats, ts = _validate_operation(path, op, records, errors); branches += bs; attest += ats; txs += ts
-        statuses[path] = derive_status(branches, attest or [False], txs)
+def validate_registry(registry: dict[str, Any], discovery: Discovery, records: dict[bytes, bytes]) -> ValidationResult:
+    errors = validate_closed_schema(registry, set(records), PRIMITIVES)
+    if errors and ("surfaces" not in registry or not isinstance(registry.get("surfaces"), list)):
+        return ValidationResult(errors, {})
+    rows: dict[str, dict[str, Any]] = {}
+    statuses: dict[str, str] = {}
+    for row in registry["surfaces"]:
+        path = row.get("path", "")
+        if path in rows:
+            errors.append(f"duplicate surface: {path}")
+        rows[path] = row
+        operation_ids = [operation.get("id") for operation in row.get("operations", [])]
+        if len(operation_ids) != len(set(operation_ids)):
+            errors.append(f"{path}: duplicate operation id")
+        branches: list[dict[str, Any]] = []
+        attestations: list[bool] = []
+        transactions: list[bool] = []
+        for operation in row.get("operations", []):
+            operation_errors, bs, ats, txs = validate_operation_contract(
+                path, operation, records, evaluate_attestation
+            )
+            errors += operation_errors
+            branches += bs
+            attestations += ats
+            transactions += txs
+        statuses[path] = derive_status(branches, attestations or [False], transactions)
+        declared_primitives = {operation.get("primitive") for operation in row.get("operations", [])}
+        observed = set(discovery.primitives.get(path, set()))
+        # windows-task-set is the closed update-or-register primitive.
+        if "windows-task-set" in observed:
+            observed.discard("windows-task-unregister-register")
+        if row.get("kind") == "direct-owner" and observed != declared_primitives:
+            errors.append(f"{path}: discovered/declared primitive mismatch")
         if row.get("kind") == "transitive-entrypoint":
-            edge = row.get("edge", {}); guard = edge.get("target_guard_attestation", "")
-            if edge.get("call_form") not in {"literal-exec", "literal-bash", "constant-path-exec"} or (path, edge.get("callee", "")) not in discovery.edges: errors.append(f"{path}: unrecognized call grammar")
-            if guard not in ATT_SOURCES or not evaluate_attestation(guard, records, path.encode()): errors.append(f"{path}: target_guard_attestation failed")
-    registered_direct = {p for p, r in rows.items() if r.get("kind") == "direct-owner"}; registered_trans = set(rows) - registered_direct
-    for p in sorted(discovery.direct ^ registered_direct): errors.append(f"direct inventory mismatch: {p}")
-    for p in sorted(discovery.transitive ^ registered_trans): errors.append(f"transitive inventory mismatch: {p}")
-    for p in discovery.unknown_edges: errors.append(f"unknown scheduler indirection: {p}")
-    cron = rows.get("scripts/cron/cron_apply.py", {}); actual = {b["id"] for o in cron.get("operations", []) for b in o.get("authority_branches", [])}
-    if derive_cron_classifier_branches(records) != actual: errors.append("cron destructive classifier branch set mismatch")
-    kanban = rows.get("scripts/install/setup-kanban-loader-timer.sh", {}); declared = {o["id"] for o in kanban.get("operations", [])}
-    if declared != derive_kanban_operations(records): errors.append("kanban backend operation set mismatch")
-    migration = {p for p, s in statuses.items() if s == "migration-required"}; covered = {p for g in registry.get("disposition_groups", []) for p in g.get("members", [])}
-    if migration != covered: errors.append("dispositions must exactly cover migration-required surfaces")
+            edge = row.get("edge", {})
+            actual = discovery.edges.get(path)
+            if actual != (edge.get("callee"), edge.get("call_form")):
+                errors.append(f"{path}: call form/callee mismatch")
+            guard = edge.get("target_guard_attestation", "")
+            if guard not in ATT_SOURCES or not evaluate_attestation(guard, records, path.encode()):
+                errors.append(f"{path}: wrapper-local target_guard attestation failed")
+    _validate_global_sets(registry, rows, statuses, discovery, records, errors)
     return ValidationResult(errors, statuses)
 
-def main(argv=None):
-    parser = argparse.ArgumentParser(); parser.add_argument("--json", action="store_true"); args = parser.parse_args(argv)
+
+def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
+    direct = {path for path, row in rows.items() if row.get("kind") == "direct-owner"}
+    transitive = {path for path, row in rows.items() if row.get("kind") == "transitive-entrypoint"}
+    for path in sorted(discovery.direct ^ direct):
+        errors.append(f"direct inventory mismatch: {path}")
+    for path in sorted(discovery.transitive ^ transitive):
+        errors.append(f"transitive inventory mismatch: {path}")
+    for path in sorted(discovery.unknown_edges):
+        errors.append(f"unknown scheduler indirection: {path}")
+    cron = rows.get("scripts/cron/cron_apply.py", {})
+    declared = {branch["id"] for operation in cron.get("operations", []) for branch in operation.get("authority_branches", [])}
+    if derive_cron_classifier_branches(records) != declared:
+        errors.append("cron destructive classifier branch set mismatch")
+    kanban = rows.get("scripts/install/setup-kanban-loader-timer.sh", {})
+    if derive_kanban_operations(records) != {operation["id"] for operation in kanban.get("operations", [])}:
+        errors.append("kanban backend operation set mismatch")
+    migration = {path for path, status in statuses.items() if status == "migration-required"}
+    covered: set[str] = set()
+    for group in registry.get("disposition_groups", []):
+        members = set(group.get("members", []))
+        if covered & members:
+            errors.append(f"{group.get('group_id')}: duplicate disposition member")
+        covered |= members
+    if covered != migration:
+        errors.append("dispositions must exactly cover migration-required surfaces")
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args(argv)
     try:
-        records = read_index_records(ROOT); raw = records[REGISTRY]; registry = yaml.safe_load(raw); found = discover_mutation_surfaces(records); result = validate_registry(registry, found, records)
+        records = read_index_records(ROOT)
+        raw = records[REGISTRY]
+        registry = yaml.safe_load(raw)
+        discovery = discover_mutation_surfaces(records)
+        result = validate_registry(registry, discovery, records)
         digest = input_digest(raw, digest_record_union(registry, records))
-    except (GitTransportError, KeyError, yaml.YAMLError) as exc:
-        found, result, digest = Discovery(set(), set(), set(), {}, set()), ValidationResult([str(exc)], {}), ""
-    payload = {"direct": sorted(found.direct), "errors": result.errors, "input_digest": digest, "status": "ok" if not result.errors else "error", "transitive": sorted(found.transitive)}
-    if args.json: print(json.dumps(payload, sort_keys=True))
+    except (GitTransportError, KeyError, ValueError, yaml.YAMLError) as exc:
+        discovery = Discovery(set(), set(), {}, {}, set())
+        result = ValidationResult([str(exc)], {})
+        digest = ""
+    payload = {
+        "direct": sorted(discovery.direct),
+        "errors": result.errors,
+        "input_digest": digest,
+        "status": "ok" if not result.errors else "error",
+        "transitive": sorted(discovery.transitive),
+    }
+    if args.json:
+        print(json.dumps(payload, sort_keys=True))
     else:
-        for error in result.errors: print(f"ERROR: {error}", file=sys.stderr)
-    return bool(result.errors)
-if __name__ == "__main__": raise SystemExit(main())
+        for error in result.errors:
+            print(f"ERROR: {error}", file=sys.stderr)
+    return 1 if result.errors else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
