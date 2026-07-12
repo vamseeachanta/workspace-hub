@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 
@@ -22,9 +23,18 @@ class StoreUnavailable(RuntimeError):
     pass
 
 
-def _git(repo, *args, _input=None):
+def _git(repo, *args, _input=None, _env=None):
+    env = {**os.environ, **_env} if _env else None
     return subprocess.run(["git", "-C", repo, *args], input=_input,
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, env=env)
+
+
+# The equivalence-state ref is a disconnected plumbing-built chain: the
+# pre-push hook can never attribute its diff (no merge-base with main) and
+# gates every publish as a new-branch RUN_ALL — a 60+ min full-suite run that
+# keeps the ref from ever landing (#3500, sub-case of #3198). Push with the
+# hook's audited soft bypass; each use is logged to pre-push-bypass.jsonl.
+_PUSH_ENV = {"GIT_PRE_PUSH_SKIP": "1"}
 
 
 def _fetch_tip(repo, remote, ref):
@@ -94,9 +104,11 @@ def publish(repo, role, content, *, remote="origin", ref=DEFAULT_REF, retries=3)
         commit = c.stdout.strip()
         if parent:
             push = _git(repo, "push", remote, f"{commit}:refs/heads/{ref}",
-                        f"--force-with-lease=refs/heads/{ref}:{parent}")
+                        f"--force-with-lease=refs/heads/{ref}:{parent}",
+                        _env=_PUSH_ENV)
         else:
-            push = _git(repo, "push", remote, f"{commit}:refs/heads/{ref}")
+            push = _git(repo, "push", remote, f"{commit}:refs/heads/{ref}",
+                        _env=_PUSH_ENV)
         if push.returncode == 0:
             return True
         blob = (push.stdout + push.stderr).lower()
