@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import ast
 import json
 import re
 import subprocess
@@ -28,28 +27,37 @@ from scheduler_mutation_contract import (  # noqa: E402
     validate_closed_schema,
     validate_operation_contract,
 )
+from scheduler_mutation_attestations import (  # noqa: E402
+    derive_cron_classifier_branches,
+    derive_installed_fingerprint_branches,
+    evaluate_python,
+    evaluate_shell_guard,
+    forensic_literal_lines,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRY = b"config/scheduled-tasks/mutation-surfaces.yaml"
 CHECKER = b"scripts/enforcement/check-scheduler-mutation-surfaces.py"
 TEST = b"tests/enforcement/test_scheduler_mutation_surfaces.py"
-FORENSIC = {CHECKER, TEST}
+HARDENING_TEST = b"tests/enforcement/test_scheduler_mutation_hardening.py"
+ATTESTATIONS = b"scripts/enforcement/scheduler_mutation_attestations.py"
+FORENSIC = {CHECKER, TEST, HARDENING_TEST, ATTESTATIONS}
 SENTINEL = b"scheduler-mutation-forensic"
 PRIMITIVE_PATTERNS = {
     "crontab-replace": (
-        rb"(?:^|[|;\(\s])(?:run_)?crontab[ \t]+-(?:[ \t]|$)",
-        rb"\[[ \t]*['\"]crontab['\"][ \t]*,[ \t]*['\"]-['\"]",
+        rb"(?:^|[|;\(\s])(?:run_)?crontab[ \t]+-(?:[ \t]|$)",  # scheduler-mutation-forensic
+        rb"\[[ \t]*['\"]crontab['\"][ \t]*,[ \t]*['\"]-['\"]",  # scheduler-mutation-forensic
     ),  # scheduler-mutation-forensic
     "systemd-user-unit-write": (
-        rb"\b(?:write_unit|remove_unit)[ \t]+",
+        rb"\b(?:write_unit|remove_unit)[ \t]+",  # scheduler-mutation-forensic
         rb"(?:cat|printf)[^\n]*(?:\.config/systemd/user|SYSTEMD_USER_DIR)",  # scheduler-mutation-forensic
     ),  # scheduler-mutation-forensic
     "systemd-user-enable-disable": (
-        rb"\b(?:run_systemctl|systemctl[ \t]+--user)[ \t]+(?:enable|disable)\b",
+        rb"\b(?:run_systemctl|systemctl[ \t]+--user)[ \t]+(?:enable|disable)\b",  # scheduler-mutation-forensic
     ),  # scheduler-mutation-forensic
     "windows-task-set": (rb"\bSet-ScheduledTask\b",),  # scheduler-mutation-forensic
     "windows-task-unregister-register": (
-        rb"\b(?:Register|Unregister)-ScheduledTask\b",
+        rb"\b(?:Register|Unregister)-ScheduledTask\b",  # scheduler-mutation-forensic
     ),  # scheduler-mutation-forensic
 }
 PRIMITIVES = set(PRIMITIVE_PATTERNS)
@@ -120,8 +128,14 @@ def discover_mutation_surfaces(records: dict[bytes, bytes]) -> Discovery:
             continue
         path = _s(raw)
         found: set[str] = set()
-        for line in body.splitlines():
-            if line.lstrip().startswith(b"#") or (raw in FORENSIC and SENTINEL in line):
+        literal_lines = forensic_literal_lines(body) if raw in FORENSIC else set()
+        for line_number, line in enumerate(body.splitlines(), 1):
+            forensic_literal = (
+                raw in FORENSIC
+                and SENTINEL in line
+                and any(abs(line_number - literal_line) <= 1 for literal_line in literal_lines)
+            )
+            if line.lstrip().startswith(b"#") or forensic_literal:
                 continue
             for primitive, patterns in PRIMITIVE_PATTERNS.items():
                 if any(re.search(pattern, line) for pattern in patterns):
@@ -146,100 +160,6 @@ def discover_mutation_surfaces(records: dict[bytes, bytes]) -> Discovery:
         # scheduler entrypoint. Ordinary shell scripts routinely execute other
         # variable-held tools and are outside this scanner's scope.
     return Discovery(direct, transitive, edges, primitives, unknown)
-def _tree(records: dict[bytes, bytes], source: bytes) -> ast.Module | None:
-    try:
-        return ast.parse(records[source].decode())
-    except (KeyError, UnicodeDecodeError, SyntaxError):
-        return None
-def _function(tree: ast.Module | None, name: str) -> ast.FunctionDef | None:
-    if tree is None:
-        return None
-    return next((node for node in ast.walk(tree) if isinstance(node, ast.FunctionDef) and node.name == name), None)
-
-
-def _assignment_call(fn: ast.FunctionDef | None, variable: str, call: str) -> bool:
-    if fn is None:
-        return False
-    return any(
-        isinstance(node, ast.Assign)
-        and any(isinstance(target, ast.Name) and target.id == variable for target in node.targets)
-        and isinstance(node.value, ast.Call)
-        and isinstance(node.value.func, ast.Name)
-        and node.value.func.id == call
-        for node in ast.walk(fn)
-    )
-
-
-def _call_args(fn: ast.FunctionDef | None, call: str, args: list[str]) -> bool:
-    if fn is None:
-        return False
-    for node in ast.walk(fn):
-        if not isinstance(node, ast.Call) or not isinstance(node.func, ast.Name) or node.func.id != call:
-            continue
-        rendered = [ast.unparse(arg) for arg in node.args]
-        if rendered == args:
-            return True
-    return False
-
-
-def _eval_python(name: str, records: dict[bytes, bytes], source: bytes) -> bool:
-    tree = _tree(records, source)
-    run = _function(tree, "run_cutover")
-    main = _function(tree, "main")
-    run_text = ast.unparse(run) if run else ""
-    main_text = ast.unparse(main) if main else ""
-    if name == "python-physical-host-equality-guard-v1":
-        return bool(re.search(r"if mid != physical_mid:[\s\S]+return 2[\s\S]+run_cutover", main_text))
-    if name == "python-baseline-snapshot-v1":
-        return _assignment_call(run, "A", "_read")
-    if name == "python-lock-scope-v1":
-        return bool(re.search(r"with _flock\(LOCKFILE\):[\s\S]+_write\(plan\['new_text'\]\)", run_text))
-    if name == "python-backup-baseline-v1":
-        return _call_args(run, "create_backup", ["canonical_id", "ts", "A"])
-    if name == "python-prewrite-cas-v1":
-        return bool(re.search(r"current = _read\(\)[\s\S]+if current != A:[\s\S]+return[\s\S]+_write", run_text))
-    if name == "python-postwrite-preservation-multiset-v1":
-        return "after_counts = Counter" in run_text and "after_counts[line] < n" in run_text
-    if name == "python-postwrite-exact-state-v1":
-        return False
-    if name == "python-rollback-after-cas-v1":
-        return bool(re.search(r"current = _read\(\)[\s\S]+if current != after:[\s\S]+return[\s\S]+_write\(A\)", run_text))
-    if name == "cron-command-tokens-adjacent-v1":
-        text = ast.unparse(_function(tree, "match_fingerprint")) if tree else ""
-        return "shlex.split(line)" in text and "tokens[i:i + width] == wanted" in text
-    if name == "cron-classifier-destructive-branches-v1":
-        return derive_cron_classifier_branches(records) is not None
-    if name == "crontab-current-user-target-v1":
-        return _call_args(_function(tree, "write_crontab"), "_run", ["['crontab', '-']"])  # scheduler-mutation-forensic
-    return False
-
-
-def derive_cron_classifier_branches(records: dict[bytes, bytes]) -> set[str] | None:
-    tree = _tree(records, b"scripts/cron/cron_transaction.py")
-    fn = _function(tree, "classify_line_detail")
-    if fn is None:
-        return None
-    returns: list[str] = []
-    for node in ast.walk(fn):
-        if not isinstance(node, ast.Return) or not isinstance(node.value, ast.Dict):
-            continue
-        values = {
-            key.value: value.value
-            for key, value in zip(node.value.keys, node.value.values)
-            if isinstance(key, ast.Constant) and isinstance(value, ast.Constant)
-        }
-        if values.get("class") == "cataloged":
-            returns.append(values.get("reason"))
-    module_cataloged = 0
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Dict):
-            rendered = ast.unparse(node)
-            if "'class': 'cataloged'" in rendered or '"class": "cataloged"' in rendered:
-                module_cataloged += 1
-    expected = ["catalog-owned-preserved-entry", "catalog-fingerprint", "catalog-command"]
-    if sorted(returns) != sorted(expected) or module_cataloged != 3:
-        return None
-    return {"preserved-promotion", "installed-fingerprint", "catalog-key-fallback"}
 
 
 def derive_kanban_operations(records: dict[bytes, bytes]) -> set[str]:
@@ -258,22 +178,11 @@ def derive_kanban_operations(records: dict[bytes, bytes]) -> set[str]:
 def evaluate_attestation(name: str, records: dict[bytes, bytes], operation_source: bytes = b"") -> bool:
     source = attestation_source(name) or operation_source
     if name.startswith("python-") or name.startswith("cron-") or name == "crontab-current-user-target-v1":
-        return _eval_python(name, records, source)
+        return evaluate_python(name, records, source)
+    shell_guard = evaluate_shell_guard(name, records, source)
+    if shell_guard is not None:
+        return shell_guard
     code = _code(records.get(source, b""))
-    if name == "shell-physical-host-equality-guard-v1":
-        required = (
-            b"CANONICAL_MACHINE=", b"PHYSICAL_MACHINE=",
-            b'if [[ "$CANONICAL_MACHINE" != "$PHYSICAL_MACHINE" ]]', b"exit 2",
-        )
-        positions = [code.find(token) for token in required]
-        guard = positions[2]
-        return (
-            all(position >= 0 for position in positions[:3])
-            and positions[:3] == sorted(positions[:3])
-            and code.find(b"exit 2", guard) > guard
-        )
-    if name == "shell-local-delegation-v1":
-        return b"--machine" not in code and b"ssh " not in code
     if name == "kanban-backend-operation-set-v1":
         return len(derive_kanban_operations(records)) == 6
     patterns = {
@@ -350,16 +259,29 @@ def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
     declared = {branch["id"] for operation in cron.get("operations", []) for branch in operation.get("authority_branches", [])}
     if derive_cron_classifier_branches(records) != declared:
         errors.append("cron destructive classifier branch set mismatch")
+    fingerprint_branches = {
+        branch for branch in declared if branch.startswith("installed-fingerprint-")
+    }
+    if derive_installed_fingerprint_branches(records) != fingerprint_branches:
+        errors.append("installed fingerprint mechanism set mismatch")
     kanban = rows.get("scripts/install/setup-kanban-loader-timer.sh", {})
     if derive_kanban_operations(records) != {operation["id"] for operation in kanban.get("operations", [])}:
         errors.append("kanban backend operation set mismatch")
     migration = {path for path, status in statuses.items() if status == "migration-required"}
     covered: set[str] = set()
+    group_ids: set[str] = set()
     for group in registry.get("disposition_groups", []):
+        group_id = group.get("group_id")
+        if group_id in group_ids:
+            errors.append(f"{group_id}: duplicate disposition group")
+        group_ids.add(group_id)
         members = set(group.get("members", []))
         if covered & members:
             errors.append(f"{group.get('group_id')}: duplicate disposition member")
         covered |= members
+        for member in members:
+            if rows.get(member, {}).get("disposition_group") != group_id:
+                errors.append(f"{member}: disposition row/group mismatch")
     if covered != migration:
         errors.append("dispositions must exactly cover migration-required surfaces")
 

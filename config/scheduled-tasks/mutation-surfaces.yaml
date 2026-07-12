@@ -12,7 +12,8 @@ surfaces:
         execution_host_binding: physical-local
         destructive: true
         authority_branches:
-          - {id: installed-fingerprint, mechanism: command-tokens-adjacent, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: parsed}
+          - {id: installed-fingerprint-token, mechanism: command-tokens-adjacent, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: parsed}
+          - {id: installed-fingerprint-substring, mechanism: command-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
           - {id: catalog-key-fallback, mechanism: catalog-key-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
           - {id: preserved-promotion, mechanism: command-substring, config_source: config/workstations/harness-state-classes.yaml, destructive: true, strength: substring}
         transaction: &reference_transaction

@@ -108,7 +108,7 @@ def test_read_only_crontab_helpers_are_not_mutators():
 
 def test_forensic_sentinel_is_path_restricted():
     checker = load_checker()
-    literal = b"Register-ScheduledTask -TaskName X # scheduler-mutation-forensic\n"
+    literal = b'pattern = "Register-ScheduledTask -TaskName X"  # scheduler-mutation-forensic\n'
     allowed = checker.discover_mutation_surfaces(
         {b"tests/enforcement/test_scheduler_mutation_surfaces.py": literal}
     )
@@ -189,7 +189,10 @@ def test_closed_attestation_evaluators_reject_mutated_source_shapes(attestation,
 def test_classifier_branch_set_is_complete_and_exact():
     checker, records, registry = current_contract()
     expected = checker.derive_cron_classifier_branches(records)
-    assert expected == {"installed-fingerprint", "catalog-key-fallback", "preserved-promotion"}
+    assert expected == {
+        "installed-fingerprint-token", "installed-fingerprint-substring",
+        "catalog-key-fallback", "preserved-promotion",
+    }
     cron = next(row for row in registry["surfaces"] if row["path"] == "scripts/cron/cron_apply.py")
     cron["operations"][0]["authority_branches"].pop()
     result = checker.validate_registry(registry, checker.discover_mutation_surfaces(records), records)
@@ -305,134 +308,4 @@ def test_dedicated_disposition_coordinates_are_exact():
         "cron-catalog-migration": 3475, "legacy-crontab-writers": 3476,
         "kanban-dual-backend": 3477, "windows-task-writers": 3478,
         "harness-update": 3479,
-    }
-
-
-def validate_changed(mutator):
-    checker, records, registry = current_contract()
-    mutator(checker, records, registry)
-    return checker.validate_registry(
-        registry, checker.discover_mutation_surfaces(records), records
-    )
-
-
-@pytest.mark.parametrize(
-    "mutator",
-    [
-        lambda _c, _r, x: x.update(schema_version=2),
-        lambda _c, _r, x: x["surfaces"][0].update(owner="descriptive"),
-        lambda _c, _r, x: x["surfaces"][0]["operations"][0].update(
-            target_kind="remote-magic"
-        ),
-        lambda _c, _r, x: x["surfaces"][0]["operations"][0][
-            "authority_branches"
-        ][0].update(strength="trusted-because-note"),
-        lambda _c, _r, x: x["disposition_groups"][0]["issue"].update(number=3470),
-    ],
-)
-def test_closed_schema_rejects_unknown_versions_keys_enums_and_self_issue(mutator):
-    assert validate_changed(mutator).errors
-
-
-def test_declared_operations_equal_discovered_primitives_per_path():
-    def mutate(_checker, records, _registry):
-        records[b"scripts/windows/setup-scheduler-tasks.ps1"] += (
-            b"\nSet-ScheduledTask -TaskName Added\n"
-        )
-
-    result = validate_changed(mutate)
-    assert any("primitive" in error for error in result.errors)
-
-
-def test_transaction_attestations_reject_semantic_inversions():
-    checker, records, _ = current_contract()
-    source = b"scripts/cron/cron_apply.py"
-    body = records[source]
-    records[source] = body.replace(b"A = _read()", b"A = ''")
-    assert not checker.evaluate_attestation(
-        "python-baseline-snapshot-v1", records, source
-    )
-    records[source] = body.replace(b"current = _read()", b"current = A", 1)
-    assert not checker.evaluate_attestation("python-prewrite-cas-v1", records, source)
-    records[source] = body.replace(
-        b"backup = create_backup(canonical_id, ts, A)",
-        b"backup = create_backup(canonical_id, ts, '')",
-    )
-    assert not checker.evaluate_attestation("python-backup-baseline-v1", records, source)
-
-
-def test_classifier_rejects_fourth_route_reusing_existing_reason():
-    checker, records, _ = current_contract()
-    source = b"scripts/cron/cron_transaction.py"
-    body = records[source]
-    needle = b"    return {\"line\": line, \"class\": \"uncataloged\", \"reason\": \"no-match\"}"
-    extra = (
-        b"    if line == 'extra':\n"
-        b"        return {'line': line, 'class': 'cataloged', "
-        b"'reason': 'catalog-command'}\n"
-    )
-    records[source] = body.replace(needle, extra + needle)
-    assert checker.derive_cron_classifier_branches(records) is None
-
-
-def test_branch_strength_requires_source_attestation_and_duplicate_ids_fail():
-    def mutate(_checker, _records, registry):
-        windows = next(
-            row for row in registry["surfaces"]
-            if row["path"] == "scripts/coordination/context/setup_scheduled_task.ps1"
-        )
-        branch = windows["operations"][0]["authority_branches"][0]
-        windows["operations"][0]["authority_branches"].append(copy.deepcopy(branch))
-
-    result = validate_changed(mutate)
-    assert any("branch" in error for error in result.errors)
-
-
-def test_wrapper_call_form_and_local_guard_are_source_attested():
-    def mutate(_checker, records, _registry):
-        source = b"scripts/cron/setup-cron.sh"
-        records[source] = records[source].replace(
-            b'exec uv run --script "$CRON_APPLY"', b'echo "$CRON_APPLY"'
-        )
-
-    result = validate_changed(mutate)
-    assert any("call" in error or "guard" in error for error in result.errors)
-    checker = load_checker()
-    found = checker.discover_mutation_surfaces(
-        {b"scripts/x.sh": b'runner=scripts/cron/setup-cron.sh\nbash "$runner"\n'}
-    )
-    assert "scripts/x.sh" in found.unknown_edges
-
-
-def test_production_sentinel_and_raw_systemd_writer_cannot_bypass_discovery():
-    checker = load_checker()
-    found = checker.discover_mutation_surfaces(
-        {
-            b"scripts/prod.sh": (
-                b'cat > "$HOME/.config/systemd/user/x.service" '
-                b'# scheduler-mutation-forensic\n'
-            )
-        }
-    )
-    assert found.direct == {"scripts/prod.sh"}
-    assert found.primitives["scripts/prod.sh"] == {"systemd-user-unit-write"}
-
-
-def test_digest_union_excludes_registry_record_and_rejects_missing_mapping():
-    checker, records, registry = current_contract()
-    selected = checker.digest_record_union(registry, records)
-    assert checker.REGISTRY not in selected
-    registry["surfaces"][0]["operations"][0]["attestations"].append("missing-id")
-    with pytest.raises((KeyError, ValueError)):
-        checker.digest_record_union(registry, records)
-
-
-def test_disposition_defect_classes_match_dedicated_issues():
-    _, _, registry = current_contract()
-    assert {g["group_id"]: g["defect_class"] for g in registry["disposition_groups"]} == {
-        "cron-catalog-migration": "mixed-destructive-ownership-authority",
-        "legacy-crontab-writers": "untransactional-whole-crontab-replacement",
-        "kanban-dual-backend": "untransactional-dual-backend-replacement",
-        "windows-task-writers": "windows-task-mutation-without-verified-transaction",
-        "harness-update": "transitive-mutation-error-swallowing",
     }

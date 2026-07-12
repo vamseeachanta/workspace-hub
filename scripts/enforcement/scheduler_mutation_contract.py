@@ -42,12 +42,38 @@ MECHANISMS = {
 STRENGTHS = {"exact", "parsed", "substring", "unknown"}
 CALL_FORMS = {"literal-exec", "literal-bash", "constant-path-exec"}
 MUTATION_MODES = {"default", "flag-gated"}
+SELECTION_CONDITIONS = {
+    "systemd-available", "systemd-unavailable",
+    "systemd-available-uninstall", "systemd-unavailable-uninstall",
+}
 DEFECT_CLASSES = {
     "mixed-destructive-ownership-authority",
     "untransactional-whole-crontab-replacement",
     "untransactional-dual-backend-replacement",
     "windows-task-mutation-without-verified-transaction",
     "transitive-mutation-error-swallowing",
+}
+DISPOSITION_CONTRACT = {
+    "cron-catalog-migration": (
+        3475, "mixed-destructive-ownership-authority",
+        {"scripts/cron/cron_apply.py", "scripts/cron/setup-cron.sh", "scripts/setup/new-machine-setup.sh"},
+    ),
+    "legacy-crontab-writers": (
+        3476, "untransactional-whole-crontab-replacement",
+        {"scripts/coordination/context/setup_cron.sh", "scripts/operations/maintenance/setup_maintenance_cron.sh", "scripts/setup/setup-engineering-update-cron.sh"},
+    ),
+    "kanban-dual-backend": (
+        3477, "untransactional-dual-backend-replacement",
+        {"scripts/install/setup-kanban-loader-timer.sh"},
+    ),
+    "windows-task-writers": (
+        3478, "windows-task-mutation-without-verified-transaction",
+        {"scripts/windows/setup-scheduler-tasks.ps1", "scripts/coordination/context/setup_scheduled_task.ps1", "scripts/solver/setup-scheduler.ps1"},
+    ),
+    "harness-update": (
+        3479, "transitive-mutation-error-swallowing",
+        {"scripts/cron/harness-update.sh"},
+    ),
 }
 ATT_SOURCES = {
     "python-physical-host-equality-guard-v1": b"scripts/cron/cron_apply.py",
@@ -127,7 +153,9 @@ def digest_record_union(
     paths = {
         b"scripts/enforcement/check-scheduler-mutation-surfaces.py",
         b"scripts/enforcement/scheduler_mutation_contract.py",
+        b"scripts/enforcement/scheduler_mutation_attestations.py",
         b"tests/enforcement/test_scheduler_mutation_surfaces.py",
+        b"tests/enforcement/test_scheduler_mutation_hardening.py",
         b".github/workflows/enforcement-gate.yml",
     }
     for row in registry["surfaces"]:
@@ -174,7 +202,8 @@ def _validate_surface(
     allowed = {"path", "kind", "operations", "edge", "disposition_group"}
     path = row.get("path", "")
     errors: list[str] = []
-    if set(row) - allowed or row.get("kind") not in {
+    required = {"path", "kind", "operations", "disposition_group"}
+    if not required <= set(row) or set(row) - allowed or row.get("kind") not in {
         "direct-owner",
         "transitive-entrypoint",
     }:
@@ -202,7 +231,8 @@ def _validate_operation_schema(
         "authority_branches", "transaction", "attestations",
     }
     errors: list[str] = []
-    if set(operation) - allowed or operation.get("primitive") not in primitives:
+    required = allowed - {"selection_condition"}
+    if not required <= set(operation) or set(operation) - allowed or operation.get("primitive") not in primitives:
         errors.append(f"{path}: invalid operation schema/primitive")
     if operation.get("target_kind") not in TARGETS or not operation.get("scheduler_identity"):
         errors.append(f"{path}: invalid target/scheduler identity")
@@ -213,6 +243,9 @@ def _validate_operation_schema(
         errors.append(f"{path}: invalid execution-host binding")
     if not isinstance(operation.get("destructive"), bool):
         errors.append(f"{path}: destructive must be boolean")
+    selection = operation.get("selection_condition")
+    if selection is not None and selection not in SELECTION_CONDITIONS:
+        errors.append(f"{path}: invalid selection condition")
     branches = operation.get("authority_branches")
     if not isinstance(branches, list) or not branches:
         errors.append(f"{path}: authority branches required")
@@ -271,6 +304,10 @@ def _validate_group(group: dict[str, Any]) -> list[str]:
         errors.append(f"{group.get('group_id')}: invalid issue coordinate")
     if not isinstance(group.get("members"), list) or not group.get("members"):
         errors.append(f"{group.get('group_id')}: members required")
+    expected = DISPOSITION_CONTRACT.get(group.get("group_id"))
+    actual = (issue.get("number"), group.get("defect_class"), set(group.get("members", [])))
+    if expected is None or actual != expected:
+        errors.append(f"{group.get('group_id')}: disposition contract mismatch")
     return errors
 
 
