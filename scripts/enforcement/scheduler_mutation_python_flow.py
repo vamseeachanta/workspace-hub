@@ -10,26 +10,50 @@ def _functions(tree: ast.AST) -> dict[str, ast.FunctionDef]:
 
 
 def _live_nodes(statements: list[ast.stmt]):
+    nodes, _falls_through = _walk_block(statements)
+    yield from nodes
+
+
+def _walk_block(statements: list[ast.stmt]) -> tuple[list[ast.stmt], bool]:
+    nodes: list[ast.stmt] = []
     for statement in statements:
         if isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
             continue
-        if isinstance(statement, ast.If) and isinstance(statement.test, ast.Constant):
+        statement_nodes, falls_through = _walk_statement(statement)
+        nodes.extend(statement_nodes)
+        if not falls_through:
+            return nodes, False
+    return nodes, True
+
+
+def _walk_statement(statement: ast.stmt) -> tuple[list[ast.stmt], bool]:
+    if isinstance(statement, (ast.Return, ast.Raise, ast.Break, ast.Continue)):
+        return [statement], False
+    if isinstance(statement, ast.If):
+        if isinstance(statement.test, ast.Constant):
             branch = statement.body if statement.test.value else statement.orelse
-            yield from _live_nodes(branch)
-            continue
-        yield statement
-        if isinstance(statement, ast.If):
-            yield from _live_nodes(statement.body)
-            yield from _live_nodes(statement.orelse)
-        elif isinstance(statement, (ast.With, ast.For, ast.While)):
-            yield from _live_nodes(statement.body)
-            yield from _live_nodes(getattr(statement, "orelse", []))
-        elif isinstance(statement, ast.Try):
-            yield from _live_nodes(statement.body)
-            for handler in statement.handlers:
-                yield from _live_nodes(handler.body)
-            yield from _live_nodes(statement.orelse)
-            yield from _live_nodes(statement.finalbody)
+            return _walk_block(branch)
+        body, body_falls = _walk_block(statement.body)
+        other, other_falls = _walk_block(statement.orelse)
+        return [statement, *body, *other], body_falls or other_falls
+    if isinstance(statement, ast.With):
+        body, falls = _walk_block(statement.body)
+        return [statement, *body], falls
+    if isinstance(statement, ast.Try):
+        body, body_falls = _walk_block(statement.body)
+        handlers = [_walk_block(handler.body) for handler in statement.handlers]
+        final, final_falls = _walk_block(statement.finalbody)
+        nodes = [statement, *body]
+        for handler_nodes, _handler_falls in handlers:
+            nodes.extend(handler_nodes)
+        nodes.extend(final)
+        handler_falls = any(falls for _nodes, falls in handlers) if handlers else True
+        return nodes, final_falls and (body_falls or handler_falls)
+    if isinstance(statement, (ast.For, ast.While)):
+        # Loop execution/fallthrough is path-dependent. Retain no body evidence;
+        # transaction guarantees must be established outside ambiguous loops.
+        return [statement], True
+    return [statement], True
 
 
 def _live_text(function: ast.FunctionDef | None) -> str:
