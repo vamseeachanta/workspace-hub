@@ -112,7 +112,9 @@ def test_setup_cron_entrypoint_twice_is_idempotent(tmp_path):
     assert second.returncode == 0, second.stderr + second.stdout
     assert installed_twice == installed_once
     assert installed_twice.count("find logs/notifications/") == 1
-    assert installed_twice.count("deckhand-api-presence-sync/catalog_delta.py") == 1
+    # Preservation fingerprints never authorize deletion; two historical lines
+    # remain verbatim beside the one canonical managed line.
+    assert installed_twice.count("deckhand-api-presence-sync/catalog_delta.py") == 3
 
 
 def test_setup_cron_dry_run_never_writes(tmp_path):

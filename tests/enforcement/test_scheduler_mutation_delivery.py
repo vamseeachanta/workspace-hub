@@ -49,7 +49,7 @@ def test_html_is_deterministic_complete_and_linked():
     assert "Registry inclusion does not authorize live scheduler mutation" in text
     for row in registry["surfaces"]:
         assert text.count(f'data-surface="{row["path"]}"') == 1
-        for operation in row["operations"]:
+        for operation in row.get("operations", []):
             key = html.escape(f'{row["path"]}::{operation["id"]}', quote=True)
             opening = (
                 f'<section class="operation" data-operation="{key}" '
@@ -74,7 +74,10 @@ def test_html_is_deterministic_complete_and_linked():
             expected = ", ".join(f"{name}=false" for name in gaps) or "none"
             gap = f'<span class="transaction-gaps" data-transaction-for="{key}">{expected}</span>'
             assert text.count(gap) == 1
-    for issue in range(3475, 3480):
+        if row.get("delegation"):
+            assert row["delegation"]["immediate_callee"] in text
+    assert 'issues/3475"' not in text
+    for issue in range(3476, 3480):
         assert f'href="https://github.com/vamseeachanta/workspace-hub/issues/{issue}"' in text
 
 

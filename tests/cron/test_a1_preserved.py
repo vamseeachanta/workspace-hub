@@ -48,25 +48,23 @@ A1_NOTIFICATION_PURGE_LINE = (
 def _classify(line: str) -> str:
     catalog = yaml.safe_load((REPO / "config" / "scheduled-tasks" / "schedule-tasks.yaml").read_text())
     classes = yaml.safe_load((REPO / "config" / "workstations" / "harness-state-classes.yaml").read_text())
-    cat_cmds = ca.catalog_commands(catalog)
-    ext_fps = ca.external_fingerprints(classes)
-    return ct.classify_line(line, cat_cmds, ext_fps)
+    registry = yaml.safe_load((REPO / "config" / "workstations" / "registry.yaml").read_text())
+    ownership = ca.build_ownership_context(catalog, registry, classes, "dev-primary")
+    return ct.classify_line_detail(line, ownership_context=ownership)["class"]
 
 
 def test_llm_wiki_corpus_ingest_is_preserved():
     assert _classify(A1_LLM_WIKI_LINE) == "preserved_external"
 
 
-def test_notification_purge_local_is_preserved():
-    # Sanity: without the new entry this would be "uncataloged" (the absolute-path cd
-    # defeats the 60-char `cd $WORKSPACE_HUB && find ...` catalog key).
-    assert _classify(A1_NOTIFICATION_PURGE_LINE) == "preserved_external"
+def test_notification_purge_local_is_exactly_cataloged():
+    assert _classify(A1_NOTIFICATION_PURGE_LINE) == "cataloged"
 
 
-def test_duplicated_notification_purge_line_also_preserved():
+def test_duplicated_notification_purge_line_also_cataloged():
     # The a1 crontab has this line twice; both instances must classify the same.
-    assert _classify(A1_NOTIFICATION_PURGE_LINE) == "preserved_external"
-    assert _classify(A1_NOTIFICATION_PURGE_LINE) == "preserved_external"
+    assert _classify(A1_NOTIFICATION_PURGE_LINE) == "cataloged"
+    assert _classify(A1_NOTIFICATION_PURGE_LINE) == "cataloged"
 
 
 def test_notification_purge_catalog_owned_line_is_deduped_without_apply_rollback(monkeypatch, tmp_path):

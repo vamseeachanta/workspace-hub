@@ -16,8 +16,8 @@ Transaction (Codex MAJOR fold):
   4. backup A to logs/cron-backups/<host>-<ts>.crontab.
   5. compare-and-swap: B = re-read crontab; if B != A → ABORT (something changed under us).
   6. write new crontab.
-  7. post-cutover: re-read; assert every preserved_external/ignore line from A is still
-     present (zero net removal); on failure → restore backup, exit non-zero.
+  7. re-read and require byte-for-byte equality with the planned crontab.
+  8. on mismatch, restore A only after a rollback CAS and verify the restoration.
 
 Default is --dry-run (prints the plan, writes nothing, creates no artifact). --apply commits.
 """
@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import contextlib
 import fcntl
+import hashlib
 import importlib.util
 import json
 import os
@@ -34,7 +35,6 @@ import secrets
 import socket
 import subprocess
 import sys
-from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -57,6 +57,7 @@ _spec = importlib.util.spec_from_file_location(
 ct = importlib.util.module_from_spec(_spec)
 sys.modules["cron_transaction"] = ct
 _spec.loader.exec_module(ct)
+build_ownership_context = ct.build_ownership_context
 
 try:
     import yaml
@@ -154,7 +155,11 @@ def _combine_keys(*groups: list[str]) -> list[str]:
 
 
 def _selection_context(catalog: dict, registry: dict, machine_id: str) -> dict:
-    context = cr.build_context(machine_id, registry=registry)
+    resolved = cr.resolve_machine(machine_id, registry=registry)
+    workspace_hub = resolved["machine"].get("workspace_root")
+    context = cr.build_context(
+        machine_id, registry=registry, workspace_hub=workspace_hub
+    )
     canonical_id = context["machine_id"]
     roles = machine_roles(registry, canonical_id)
     selected_raw, conflicts = ct.select_tasks(
@@ -203,39 +208,126 @@ def external_fingerprints(state_classes: dict) -> list[dict]:
     return ct.normalize_preserved_entries(entries)
 
 
+def _state_diagnostics(text: str) -> dict:
+    encoded = text.encode("utf-8")
+    return {
+        "sha256": hashlib.sha256(encoded).hexdigest(),
+        "bytes": len(encoded),
+        "lines": len(text.splitlines()),
+    }
+
+
+def _transaction_result(status: str, backup: Path, **states: str) -> dict:
+    result = {"status": status, "backup": str(backup)}
+    result.update({name: _state_diagnostics(text) for name, text in states.items()})
+    return result
+
+
+def _observe_rollback_error(A, C, backup, _read) -> dict:
+    try:
+        observed = _read()
+    except Exception:
+        return _transaction_result("rollback-indeterminate", backup, expected=A)
+    if observed == A:
+        return _transaction_result(
+            "rolled-back-with-write-error", backup, expected=A, observed=observed
+        )
+    status = "rollback-failed" if observed == C else "rollback-aborted"
+    return _transaction_result(status, backup, expected=A, observed=observed)
+
+
+def _rollback(A, C, backup, _read, _write) -> dict:
+    with _flock(LOCKFILE):
+        try:
+            current = _read()
+        except Exception:
+            return _transaction_result("rollback-indeterminate", backup, expected=A)
+        if current != C:
+            result = _transaction_result(
+                "rollback-aborted", backup, expected=A, observed=current
+            )
+            result["reason"] = "concurrent crontab change; rollback not attempted"
+            return result
+        try:
+            _write(A)
+        except Exception:
+            return _observe_rollback_error(A, C, backup, _read)
+        try:
+            restored = _read()
+        except Exception:
+            return _transaction_result("rollback-indeterminate", backup, expected=A)
+    status = "rolled-back" if restored == A else "rollback-failed"
+    return _transaction_result(status, backup, expected=A, observed=restored)
+
+
+def _write_observation(B, _read, _write) -> tuple[bool, bool, str | None]:
+    write_failed = False
+    try:
+        _write(B)
+    except Exception:
+        write_failed = True
+    try:
+        observed = _read()
+    except Exception:
+        return write_failed, True, None
+    return write_failed, False, observed
+
+
+def _finish_exact(A, B, backup, observation, _read, _write) -> dict:
+    write_failed, read_failed, observed = observation
+    if read_failed:
+        return _transaction_result("verification-indeterminate", backup, expected=B)
+    if not write_failed and observed == B:
+        return _transaction_result("applied", backup, expected=B, observed=observed)
+    if write_failed and observed in (A, B):
+        status = "write-failed-no-change" if observed == A else "write-error-state-exact"
+        return _transaction_result(status, backup, expected=B, observed=observed)
+    result = _rollback(A, observed, backup, _read, _write)
+    result["planned"] = _state_diagnostics(B)
+    return result
+
+
 # ── the transaction ──────────────────────────────────────────────────────────
-def run_cutover(machine_id: str, apply: bool, ts: str | None,
-                _read=read_crontab, _write=write_crontab,
-                _daemons=None, allow_live_reload: bool = False) -> dict:
+def _load_cutover_context(machine_id):
     catalog = _load(CATALOG)
     classes = _load(STATE_CLASSES)
     registry = _load(REGISTRY)
     selection = _selection_context(catalog, registry, machine_id)
-    canonical_id = selection["machine_id"]
-    roles = selection["roles"]
-    selected = selection["selected"]
-    selected_ids = selection["selected_task_ids"]
-    conflicts = selection["conflicts"]
-    if not roles and not selected:
-        return {"status": "skip", "reason": f"{canonical_id} has no harness_profile.roles or machine-pinned cron tasks"}
+    ownership = build_ownership_context(catalog, registry, classes, machine_id)
+    return selection, classes, ownership
 
+
+def _build_cutover(selection, classes, ownership, _read):
+    selected = selection["selected"]
     cat_cmds = _combine_keys(
         ct.catalog_command_keys(selection["selected_raw"], include_fingerprinted=False),
         ct.catalog_command_keys(selected, include_fingerprinted=False),
     )
-    cat_fps = catalog_fingerprints(selection["selected_raw"])
-    ext_fps = external_fingerprints(classes)
-
-    A = _read()
+    baseline = _read()
     plan = ct.plan_cutover(
-        A,
+        baseline,
         selected,
-        roles,
+        selection["roles"],
         cat_cmds,
-        ext_fps,
-        selected_task_ids=selected_ids,
-        catalog_fingerprints=cat_fps,
+        external_fingerprints(classes),
+        selected_task_ids=selection["selected_task_ids"],
+        catalog_fingerprints=catalog_fingerprints(selection["selected_raw"]),
+        ownership_context=ownership,
     )
+    return baseline, plan
+
+
+def run_cutover(machine_id: str, apply: bool, ts: str | None,
+                _read=read_crontab, _write=write_crontab,
+                _daemons=None, allow_live_reload: bool = False) -> dict:
+    selection, classes, ownership = _load_cutover_context(machine_id)
+    canonical_id = selection["machine_id"]
+    roles = selection["roles"]
+    selected = selection["selected"]
+    conflicts = selection["conflicts"]
+    if not roles and not selected:
+        return {"status": "skip", "reason": f"{canonical_id} has no harness_profile.roles or machine-pinned cron tasks"}
+    A, plan = _build_cutover(selection, classes, ownership, _read)
     if plan.get("abort_reason"):
         return {"status": "abort", "reason": plan["abort_reason"],
                 "uncataloged": plan.get("uncataloged", []), "conflicts": conflicts,
@@ -263,36 +355,11 @@ def run_cutover(machine_id: str, apply: bool, ts: str | None,
             return {"status": "abort",
                     "reason": "crontab changed during cutover (CAS) — re-run", "backup": None}
         backup = create_backup(canonical_id, ts, A)
-        _write(plan["new_text"])
-        after = _read()
-
-    # post-cutover: every preserved/ignore line present BEFORE must still be present, by
-    # LINE IDENTITY + multiplicity, not substring (#2969 code-review MAJOR #4).
-    after_counts = Counter(after.splitlines())
-    need = Counter(ln for ln in A.splitlines()
-                   if ln.strip()
-                   and ct.classify_line_detail(
-                       ln,
-                       cat_cmds,
-                       ext_fps,
-                       selected_task_ids=selected_ids,
-                       catalog_fingerprints=cat_fps,
-                   )["class"] in ("preserved_external", "ignore"))
-    for line, n in need.items():
-        if after_counts[line] < n:
-            with _flock(LOCKFILE):
-                current = _read()
-                if current != after:
-                    return {
-                        "status": "rollback-aborted",
-                        "reason": "concurrent crontab change detected; refusing stale rollback",
-                        "backup": str(backup),
-                    }
-                _write(A)                          # CAS-verified rollback to intact A
-            return {"status": "rolled-back", "reason": f"preserved line lost: {line!r}",
-                    "backup": str(backup)}
-    result["status"] = "applied"
-    result["backup"] = str(backup)
+        observation = _write_observation(plan["new_text"], _read, _write)
+    transaction = _finish_exact(
+        A, plan["new_text"], backup, observation, _read, _write
+    )
+    result.update(transaction)
     return result
 
 

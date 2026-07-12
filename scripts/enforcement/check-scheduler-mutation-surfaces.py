@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import html
 import json
 import re
 import subprocess
@@ -35,11 +34,18 @@ from scheduler_mutation_discovery import (  # noqa: E402
 )
 from scheduler_mutation_attestations import (  # noqa: E402
     derive_cron_classifier_branches,
-    derive_installed_fingerprint_branches,
     evaluate_python,
     evaluate_shell_guard,
     evaluate_windows,
     forensic_literal_lines,
+)
+from scheduler_mutation_delegation import (  # noqa: E402
+    validate_delegation_graph,
+    validate_identity_inputs,
+)
+from scheduler_mutation_report import render_html  # noqa: E402
+from scheduler_mutation_wrapper_attestations import (  # noqa: E402
+    evaluate_wrapper_attestation,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -49,7 +55,8 @@ TEST = b"tests/enforcement/test_scheduler_mutation_surfaces.py"
 HARDENING_TEST = b"tests/enforcement/test_scheduler_mutation_hardening.py"
 ATTESTATIONS = b"scripts/enforcement/scheduler_mutation_attestations.py"
 DISCOVERY_HELPER = b"scripts/enforcement/scheduler_mutation_discovery.py"
-FORENSIC = {CHECKER, TEST, HARDENING_TEST, ATTESTATIONS, DISCOVERY_HELPER}
+WRAPPER_ATTESTATIONS = b"scripts/enforcement/scheduler_mutation_wrapper_attestations.py"
+FORENSIC = {CHECKER, TEST, HARDENING_TEST, ATTESTATIONS, DISCOVERY_HELPER, WRAPPER_ATTESTATIONS}
 SENTINEL = b"scheduler-mutation-forensic"
 PRIMITIVE_PATTERNS = {
     "crontab-replace": (
@@ -183,6 +190,9 @@ def evaluate_attestation(name: str, records: dict[bytes, bytes], operation_sourc
     windows = evaluate_windows(name, records, source)
     if windows is not None:
         return windows
+    wrapper = evaluate_wrapper_attestation(name, records)
+    if wrapper is not None:
+        return wrapper
     code = _code(records.get(source, b""))
     if name == "kanban-backend-operation-set-v1":
         return len(derive_kanban_operations(records)) == 6
@@ -202,42 +212,65 @@ def validate_registry(registry: dict[str, Any], discovery: Discovery, records: d
     rows: dict[str, dict[str, Any]] = {}
     statuses: dict[str, str] = {}
     for row in registry["surfaces"]:
-        path = row.get("path", "")
-        if path in rows:
-            errors.append(f"duplicate surface: {path}")
-        rows[path] = row
-        operation_ids = [operation.get("id") for operation in row.get("operations", [])]
-        if len(operation_ids) != len(set(operation_ids)):
-            errors.append(f"{path}: duplicate operation id")
-        branches: list[dict[str, Any]] = []
-        attestations: list[bool] = []
-        transactions: list[bool] = []
-        for operation in row.get("operations", []):
-            operation_errors, bs, ats, txs = validate_operation_contract(
-                path, operation, records, evaluate_attestation
-            )
-            errors += operation_errors
-            branches += bs
-            attestations += ats
-            transactions += txs
-        statuses[path] = derive_status(branches, attestations or [False], transactions)
-        declared_primitives = {operation.get("primitive") for operation in row.get("operations", [])}
-        observed = set(discovery.primitives.get(path, set()))
-        # windows-task-set is the closed update-or-register primitive.
-        if "windows-task-set" in observed:
-            observed.discard("windows-task-unregister-register")
-        if row.get("kind") == "direct-owner" and observed != declared_primitives:
-            errors.append(f"{path}: discovered/declared primitive mismatch")
-        if row.get("kind") == "transitive-entrypoint":
-            edge = row.get("edge", {})
-            actual = discovery.edges.get(path)
-            if actual != (edge.get("callee"), edge.get("call_form")):
-                errors.append(f"{path}: call form/callee mismatch")
-            guard = edge.get("target_guard_attestation", "")
-            if guard not in ATT_SOURCES or not evaluate_attestation(guard, records, path.encode()):
-                errors.append(f"{path}: wrapper-local target_guard attestation failed")
+        _validate_surface(row, rows, statuses, discovery, records, errors)
+    validate_delegation_graph(rows, statuses, errors)
+    validate_identity_inputs(ROOT, registry, records, errors)
     _validate_global_sets(registry, rows, statuses, discovery, records, errors)
     return ValidationResult(errors, statuses)
+
+
+def _validate_surface(row, rows, statuses, discovery, records, errors):
+    path = row.get("path", "")
+    if path in rows:
+        errors.append(f"duplicate surface: {path}")
+    rows[path] = row
+    operation_ids = [operation.get("id") for operation in row.get("operations", [])]
+    if len(operation_ids) != len(set(operation_ids)):
+        errors.append(f"{path}: duplicate operation id")
+    branches, attestations, transactions = [], [], []
+    for operation in row.get("operations", []):
+        operation_errors, bs, ats, txs = validate_operation_contract(
+            path, operation, records, evaluate_attestation
+        )
+        errors.extend(operation_errors)
+        branches.extend(bs)
+        attestations.extend(ats)
+        transactions.extend(txs)
+    if row.get("kind") == "direct-owner":
+        statuses[path] = derive_status(branches, attestations or [False], transactions)
+        _validate_direct_primitives(path, row, discovery, errors)
+    else:
+        _validate_transitive(path, row, statuses, discovery, records, errors)
+
+
+def _validate_direct_primitives(path, row, discovery, errors):
+    declared = {operation.get("primitive") for operation in row.get("operations", [])}
+    observed = set(discovery.primitives.get(path, set()))
+    if "windows-task-set" in observed:
+        observed.discard("windows-task-unregister-register")
+    if observed != declared:
+        errors.append(f"{path}: discovered/declared primitive mismatch")
+
+
+def _validate_transitive(path, row, statuses, discovery, records, errors):
+    edge = row.get("delegation", {})
+    actual = discovery.edges.get(path)
+    if actual is None or actual[0] != edge.get("immediate_callee"):
+        errors.append(f"{path}: immediate callee mismatch")
+    if discovery.primitives.get(path):
+        errors.append(f"{path}: direct primitive wrapper cannot inherit compliance")
+    results = []
+    for mode in edge.get("modes", []):
+        attestation = mode.get("source_attestation", "")
+        passed = attestation in ATT_SOURCES and evaluate_attestation(attestation, records, path.encode())
+        results.append(passed)
+        if not passed:
+            errors.append(f"{path}: delegation attestation failed: {attestation}")
+    statuses[path] = "compliant" if results and all(results) else "migration-required"
+    if row.get("disposition_group"):
+        statuses[path] = "migration-required"
+
+
 
 
 def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
@@ -253,11 +286,6 @@ def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
     declared = {branch["id"] for operation in cron.get("operations", []) for branch in operation.get("authority_branches", [])}
     if derive_cron_classifier_branches(records) != declared:
         errors.append("cron destructive classifier branch set mismatch")
-    fingerprint_branches = {
-        branch for branch in declared if branch.startswith("installed-fingerprint-")
-    }
-    if derive_installed_fingerprint_branches(records) != fingerprint_branches:
-        errors.append("installed fingerprint mechanism set mismatch")
     kanban = rows.get("scripts/install/setup-kanban-loader-timer.sh", {})
     if derive_kanban_operations(records) != {operation["id"] for operation in kanban.get("operations", [])}:
         errors.append("kanban backend operation set mismatch")
@@ -280,73 +308,13 @@ def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
         for member in members:
             if rows.get(member, {}).get("disposition_group") != group_id:
                 errors.append(f"{member}: disposition row/group mismatch")
+            if statuses.get(member) == "compliant":
+                errors.append(f"{member}: compliant surface cannot have active disposition")
+    for path, row in rows.items():
+        if row.get("disposition_group") and statuses.get(path) == "compliant":
+            errors.append(f"{path}: compliant surface cannot have active disposition")
     if covered != migration:
         errors.append("dispositions must exactly cover migration-required surfaces")
-
-
-def _render_operation(path: str, operation: dict[str, Any]) -> str:
-    key = html.escape(f'{path}::{operation["id"]}', quote=True)
-    target = html.escape(operation["target_kind"], quote=True)
-    identity = html.escape(operation["scheduler_identity"], quote=True)
-    binding = html.escape(operation["execution_host_binding"], quote=True)
-    authorities = []
-    for branch in operation["authority_branches"]:
-        branch_id = branch["id"]
-        mechanism = html.escape(branch["mechanism"], quote=True)
-        strength = html.escape(branch["strength"], quote=True)
-        authority_key = html.escape(f"{key}::{branch_id}", quote=True)
-        label = html.escape(f"{branch_id}:{branch['mechanism']}/{branch['strength']}")
-        authorities.append(
-            f'<li data-authority="{authority_key}" data-mechanism="{mechanism}" '
-            f'data-strength="{strength}">{label}</li>'
-        )
-    gaps = [name for name, value in operation["transaction"].items() if not value]
-    gap_text = ", ".join(f"{name}=false" for name in gaps) or "none"
-    return (
-        f'<section class="operation" data-operation="{key}" data-target-kind="{target}" '
-        f'data-scheduler-identity="{identity}" data-execution-host-binding="{binding}">'
-        f'<strong>{html.escape(operation["id"])}</strong><br>Target: {target}; '
-        f'identity: {identity}; binding: {binding}<br>Authority:<ul>{"".join(authorities)}</ul>'
-        f'Transaction gaps: <span class="transaction-gaps" '
-        f'data-transaction-for="{key}">{gap_text}</span></section>'
-    )
-
-
-def render_html(registry, discovery, validation, digest: str) -> bytes:
-    groups = {group["group_id"]: group for group in registry["disposition_groups"]}
-    rows = []
-    for surface in sorted(registry["surfaces"], key=lambda row: row["path"]):
-        group = groups[surface["disposition_group"]]
-        issue = group["issue"]["number"]
-        operations = "".join(
-            _render_operation(surface["path"], operation)
-            for operation in surface["operations"]
-        )
-        path = html.escape(surface["path"], quote=True)
-        rows.append(
-            f'<tr data-surface="{path}"><td><code>{path}</code></td>'
-            f'<td>{html.escape(surface["kind"])}</td>'
-            f'<td>{html.escape(validation.statuses[surface["path"]])}</td>'
-            f'<td>{operations}</td><td>'
-            f'<a href="https://github.com/vamseeachanta/workspace-hub/issues/{issue}">#{issue}</a>'
-            f'</td></tr>'
-        )
-    body = "\n".join(rows)
-    document = f"""<!doctype html>
-<html lang="en" data-input-digest="{digest}"><head><meta charset="utf-8">
-<title>Scheduler Mutation Safety Audit</title>
-<style>body{{font:16px system-ui;max-width:1200px;margin:2rem auto;padding:0 1rem}}table{{border-collapse:collapse;width:100%}}th,td{{border:1px solid #bbb;padding:.5rem;text-align:left}}code{{font-size:.9em}}.warning{{border-left:4px solid #b45309;padding:1rem;background:#fff7ed}}</style></head>
-<body><h1>Scheduler Mutation Safety Audit</h1>
-<p><strong>Input digest:</strong> <code>{digest}</code></p>
-<p class="warning">Registry inclusion does not authorize live scheduler mutation.</p>
-<table><thead><tr><th>Surface</th><th>Kind</th><th>Derived status</th><th>Operations</th><th>Disposition</th></tr></thead><tbody>
-{body}
-</tbody></table>
-<h2>Limitations</h2><ul><li>Issue coordinates are validated offline; live issue state is non-authoritative.</li><li>Windows runtime behavior is source-audited on Linux and requires Windows-capable migration verification.</li><li>Branch-protection registration is outside this artifact.</li></ul>
-<p>Discovered direct owners: {len(discovery.direct)}; transitive entrypoints: {len(discovery.transitive)}.</p>
-</body></html>
-"""
-    return document.encode("utf-8")
 
 
 def main(argv: list[str] | None = None) -> int:

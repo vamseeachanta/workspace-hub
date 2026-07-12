@@ -76,15 +76,9 @@ def test_deckhand_match_survives_path_log_and_wrapper_changes(audit, ct):
 
 
 def test_catalog_line_is_cataloged(audit, ct):
-    cmds = audit.load_catalog_commands()
-    assert cmds, "catalog commands must be loaded"
-    # A real live line invoking a catalogued script (with $WORKSPACE_HUB expanded).
-    line = (
-        "30 1 * * * PATH=/home/u/.local/bin:/bin; cd /home/u/workspace-hub && "
-        "bash scripts/testing/run-benchmarks.sh >> /home/u/workspace-hub/logs/quality/benchmark.log 2>&1"
-    )
-    fps = audit.load_external_fingerprints()
-    assert ct.classify_line(line, cmds, fps) == "cataloged"
+    context = audit.build_audit_context("ace-linux-1")["ownership_context"]
+    line = context["canonical_exact_lines"]["benchmark-regression"][0]
+    assert ct.classify_line_detail(line, ownership_context=context)["class"] == "cataloged"
 
 
 def test_random_line_is_uncataloged(audit, ct):
@@ -94,17 +88,13 @@ def test_random_line_is_uncataloged(audit, ct):
     assert ct.classify_line(line, cmds, fps) == "uncataloged"
 
 
-def test_audit_context_uses_explicit_fingerprints_for_sensitive_tasks(audit):
+def test_audit_context_uses_exact_lines_for_sensitive_tasks(audit):
     context = audit.build_audit_context("ace-linux-1")
-    keys = context["catalog_commands"]
-    fingerprints = context["catalog_fingerprints"]
-
-    assert "scripts/memory/bridge-hermes-claude.sh" not in keys
-    assert "scripts/cron-repository-sync.sh" not in keys
-    assert {entry["catalog_task_id"] for entry in fingerprints} >= {
-        "hermes-claude-bridge",
-        "repository-sync",
-    }
+    exact = context["ownership_context"]["canonical_exact_lines"]
+    assert exact["hermes-claude-bridge"]
+    assert exact["repository-sync"]
+    ids = {entry["catalog_task_id"] for entry in context["catalog_fingerprints"]}
+    assert not {"hermes-claude-bridge", "repository-sync"} & ids
 
 
 def test_audit_crontab_fails_closed_on_uncataloged(audit, ct):
@@ -227,11 +217,8 @@ def test_cron_audit_json_cli_smoke_uses_shared_classifier(monkeypatch, capsys, a
         "30 4 * * * cd /mnt/local-analysis/workspace-hub && "
         'find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true'
     )
-    entry = {
-        "owner": "ace-linux-1",
-        "catalog_task_id": "notification-purge",
-        "fingerprint": {"command_contains": ["find logs/notifications/", "-delete"]},
-    }
+    identity = {line: {"catalog_task_id": "notification-purge",
+                       "source": "legacy-exact-line", "variant_id": "a1"}}
     monkeypatch.setattr(audit, "read_live_crontab", lambda: line + "\n")
     monkeypatch.setattr(
         audit,
@@ -239,8 +226,10 @@ def test_cron_audit_json_cli_smoke_uses_shared_classifier(monkeypatch, capsys, a
         lambda machine_id=None: {
             "machine": "dev-primary",
             "catalog_commands": [],
-            "external_fingerprints": [entry],
+            "external_fingerprints": [],
             "selected_task_ids": {"notification-purge"},
+            "ownership_context": {"line_identities": identity,
+                                  "preservation_fingerprints": []},
         },
         raising=False,
     )
@@ -259,11 +248,8 @@ def test_cron_audit_json_default_machine_uses_selected_task_ids(monkeypatch, cap
         "30 4 * * * cd /mnt/local-analysis/workspace-hub && "
         'find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true'
     )
-    entry = {
-        "owner": "ace-linux-1",
-        "catalog_task_id": "notification-purge",
-        "fingerprint": {"command_contains": ["find logs/notifications/", "-delete"]},
-    }
+    identity = {line: {"catalog_task_id": "notification-purge",
+                       "source": "legacy-exact-line", "variant_id": "a1"}}
 
     class FakeRender:
         @staticmethod
@@ -283,7 +269,13 @@ def test_cron_audit_json_default_machine_uses_selected_task_ids(monkeypatch, cap
             "conflicts": [],
         },
     )
-    monkeypatch.setattr(audit, "load_external_fingerprints", lambda path=audit.CLASSES_PATH: [entry])
+    monkeypatch.setattr(audit, "load_external_fingerprints", lambda path=audit.CLASSES_PATH: [])
+    monkeypatch.setattr(
+        audit, "build_ownership_context",
+        lambda catalog, registry, classes, machine: {
+            "line_identities": identity, "preservation_fingerprints": []
+        },
+    )
     monkeypatch.setattr(audit, "read_live_crontab", lambda: line + "\n")
 
     rc = audit.main(["--json"])

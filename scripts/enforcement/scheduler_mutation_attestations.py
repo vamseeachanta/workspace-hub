@@ -5,10 +5,11 @@ import ast
 import re
 from typing import Callable
 
-import yaml
+from scheduler_mutation_python_flow import evaluate_transaction
 
 CRON_APPLY = b"scripts/cron/cron_apply.py"
 CRON_TRANSACTION = b"scripts/cron/cron_transaction.py"
+CRON_LINE_MODEL = b"scripts/cron/cron_line_model.py"
 SCHEDULE = b"config/scheduled-tasks/schedule-tasks.yaml"
 
 
@@ -127,48 +128,30 @@ def _rollback_shape(records: dict[bytes, bytes]) -> bool:
 
 
 def derive_cron_classifier_branches(records: dict[bytes, bytes]) -> set[str] | None:
-    tree = _tree(records, CRON_TRANSACTION)
+    tree = _tree(records, CRON_LINE_MODEL)
     fn = _function(tree, "classify_line_detail")
-    if fn is None:
+    fallback = _function(tree, "_classify_preserved")
+    if fn is None or fallback is None:
         return None
-    reasons = []
-    for node in ast.walk(fn):
-        if not isinstance(node, ast.Return) or not isinstance(node.value, ast.Dict):
-            continue
-        values = {
-            key.value: value.value
-            for key, value in zip(node.value.keys, node.value.values)
-            if isinstance(key, ast.Constant) and isinstance(value, ast.Constant)
-        }
-        if values.get("class") == "cataloged":
-            reasons.append(values.get("reason"))
-    expected = ["catalog-owned-preserved-entry", "catalog-fingerprint", "catalog-command"]
-    module_count = sum(
+    text = ast.unparse(fn) + "\n" + ast.unparse(fallback)
+    required = (
+        "identity = ownership_context.get('line_identities', {}).get(line)",
+        "'class': 'cataloged'", "'reason': identity['source']",
+        "return _classify_preserved(line, external_fingerprints)",
+        "return {'line': line, 'class': 'uncataloged', 'reason': 'no-match'}",
+    )
+    cataloged_returns = sum(
         "'class': 'cataloged'" in ast.unparse(node)
         for node in ast.walk(tree)
         if isinstance(node, ast.Dict)
     )
-    if sorted(reasons) != sorted(expected) or module_count != 3:
+    if not all(token in text for token in required) or cataloged_returns != 1:
         return None
-    return {
-        "preserved-promotion", "installed-fingerprint-token",
-        "installed-fingerprint-substring", "catalog-key-fallback",
-    }
+    return {"canonical-exact-line", "legacy-exact-line"}
 
 
 def derive_installed_fingerprint_branches(records: dict[bytes, bytes]) -> set[str]:
-    try:
-        tasks = (yaml.safe_load(records[SCHEDULE]) or {}).get("tasks", [])
-    except (KeyError, yaml.YAMLError):
-        return set()
-    result = set()
-    for task in tasks:
-        fingerprint = task.get("installed_fingerprint") or {}
-        if "command_tokens" in fingerprint:
-            result.add("installed-fingerprint-token")
-        if fingerprint and "command_tokens" not in fingerprint:
-            result.add("installed-fingerprint-substring")
-    return result
+    return set()
 
 
 def forensic_literal_lines(body: bytes) -> set[int]:
@@ -277,20 +260,47 @@ def evaluate_python(name: str, records: dict[bytes, bytes], source: bytes) -> bo
         guard = next((stmt for stmt in main.body if _abort_if(stmt, "mid", "physical_mid")), None)
         call = next((stmt for stmt in main.body if "run_cutover(" in ast.unparse(stmt)), None)
         return bool(guard and call and guard.lineno < call.lineno)
-    if name in {"python-lock-scope-v1", "python-baseline-snapshot-v1", "python-backup-baseline-v1", "python-prewrite-cas-v1"}:
-        return _prewrite_shape(records)
+    transaction = _evaluate_transaction_attestation(name, tree, run)
+    if transaction is not None:
+        return transaction
     if name == "python-postwrite-preservation-multiset-v1":
-        text = ast.unparse(run) if run else ""
-        return "after_counts = Counter" in text and "after_counts[line] < n" in text
-    if name == "python-postwrite-exact-state-v1":
-        return False
-    if name == "python-rollback-after-cas-v1":
-        return _rollback_shape(records)
+        return _preservation_shape(tree)
+    return _evaluate_cron_attestation(name, tree, records)
+
+
+def _evaluate_transaction_attestation(name, tree, run):
+    if name == "python-postwrite-preservation-multiset-v1":
+        return None
+    return evaluate_transaction(name, tree)
+
+
+def _preservation_shape(tree):
+    plan = _function(tree, "plan_cutover")
+    classify = _function(tree, "_classify_nonmanaged")
+    rebuild = _function(tree, "_rebuild_lines")
+    text = "\n".join(ast.unparse(fn) for fn in (plan, classify, rebuild) if fn)
+    required = (
+        "line_class in ('ignore', 'preserved_external')",
+        "preserved.append(line)", "line_class != 'cataloged'",
+        "uncataloged.append(line)",
+        "before = [line for line in parsed['before'] if classify(line) != 'cataloged']",
+        "after = [line for line in parsed['after'] if classify(line) != 'cataloged']",
+        "return before + block", "return before + block + after",
+        "_classify_nonmanaged(parsed, classify)", "_rebuild_lines(",
+    )
+    return all(token in text for token in required)
+
+
+def _evaluate_cron_attestation(name, tree, records):
     if name == "cron-command-tokens-adjacent-v1":
         text = ast.unparse(_function(tree, "match_fingerprint")) if tree else ""
         return "shlex.split(line)" in text and "tokens[i:i + width] == wanted" in text
     if name == "cron-classifier-destructive-branches-v1":
         return derive_cron_classifier_branches(records) is not None
+    if name == "cron-canonical-legacy-exact-authority-v1":
+        return derive_cron_classifier_branches(records) == {
+            "canonical-exact-line", "legacy-exact-line"
+        }
     if name == "crontab-current-user-target-v1":
         fn = _function(tree, "write_crontab")
         needle = "_run([" + repr("crontab") + ", " + repr("-") + "]"

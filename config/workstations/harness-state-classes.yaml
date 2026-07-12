@@ -157,5 +157,6 @@ preserved_local:
       it as catalog-owned when `notification-purge` is selected, deduping old live copies into the
       managed block. Stable bits: the find target + the -delete action, not the cd path or stderr
       redirect.
-    fingerprint:
-      command_contains: ["find logs/notifications/", "-delete"]
+    legacy_exact_lines:
+      - id: ace-linux-1-absolute-workspace
+        line: '30 4 * * * cd /mnt/local-analysis/workspace-hub && find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true'

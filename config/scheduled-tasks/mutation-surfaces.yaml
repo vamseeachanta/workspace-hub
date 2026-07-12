@@ -1,9 +1,8 @@
-schema_version: 1
+schema_version: 2
 
 surfaces:
   - path: scripts/cron/cron_apply.py
     kind: direct-owner
-    disposition_group: cron-catalog-migration
     operations:
       - id: reconcile-current-user-crontab
         primitive: crontab-replace
@@ -12,17 +11,15 @@ surfaces:
         execution_host_binding: physical-local
         destructive: true
         authority_branches:
-          - {id: installed-fingerprint-token, mechanism: command-tokens-adjacent, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: parsed}
-          - {id: installed-fingerprint-substring, mechanism: command-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
-          - {id: catalog-key-fallback, mechanism: catalog-key-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
-          - {id: preserved-promotion, mechanism: command-substring, config_source: config/workstations/harness-state-classes.yaml, destructive: true, strength: substring}
+          - {id: canonical-exact-line, mechanism: canonical-exact-line, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: exact}
+          - {id: legacy-exact-line, mechanism: legacy-exact-line, config_source: config/workstations/harness-state-classes.yaml, destructive: true, strength: exact}
         transaction: &reference_transaction
           lock: true
           baseline_snapshot: true
           backup: true
           pre_write_cas: true
           post_write_preservation_verify: true
-          post_write_exact_state_verify: false
+          post_write_exact_state_verify: true
           rollback_cas: true
         attestations:
           - python-physical-host-equality-guard-v1
@@ -31,9 +28,10 @@ surfaces:
           - python-backup-baseline-v1
           - python-prewrite-cas-v1
           - python-postwrite-preservation-multiset-v1
+          - python-postwrite-exact-state-v1
           - python-rollback-after-cas-v1
-          - cron-command-tokens-adjacent-v1
-          - cron-classifier-destructive-branches-v1
+          - python-rollback-exact-baseline-v1
+          - cron-canonical-legacy-exact-authority-v1
           - crontab-current-user-target-v1
 
   - path: scripts/coordination/context/setup_cron.sh
@@ -208,39 +206,37 @@ surfaces:
 
   - path: scripts/cron/setup-cron.sh
     kind: transitive-entrypoint
-    disposition_group: cron-catalog-migration
-    edge: {callee: scripts/cron/cron_apply.py, call_form: constant-path-exec, mutation_mode: flag-gated, target_guard_attestation: shell-physical-host-equality-guard-v1}
-    operations:
-      - <<: *legacy_current_user_operation
-        id: catalog-install-entrypoint
-        authority_branches:
-          - {id: schedule-and-basename, mechanism: catalog-key-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
+    delegation:
+      immediate_callee: scripts/cron/cron_apply.py
+      terminal: {path: scripts/cron/cron_apply.py, operation: reconcile-current-user-crontab}
+      modes:
+        - {id: default-apply, mutation_mode: destructive, args: ["--machine=<canonical>", --apply], target: physical-local, exit: propagate, source_attestation: setup-default-apply-v1}
+        - {id: dry-run, mutation_mode: non-mutating, args: ["--machine=<canonical>", --json], target: physical-local, exit: propagate, source_attestation: setup-dry-run-v1}
+        - {id: live-reload, mutation_mode: destructive, args: ["--machine=<canonical>", --apply, --allow-live-reload], target: physical-local, exit: propagate, source_attestation: setup-live-reload-v1}
+        - {id: remote-rejection, mutation_mode: non-mutating, args: ["--machine=<remote>"], target: physical-local, exit: reject, source_attestation: setup-remote-reject-v1}
+        - {id: windows-skip, mutation_mode: non-mutating, args: ["--machine=<windows>"], target: platform-selected, exit: skip, source_attestation: setup-windows-skip-v1}
 
   - path: scripts/setup/new-machine-setup.sh
     kind: transitive-entrypoint
-    disposition_group: cron-catalog-migration
-    edge: {callee: scripts/cron/setup-cron.sh, call_form: literal-bash, mutation_mode: default, target_guard_attestation: shell-local-delegation-v1}
-    operations:
-      - <<: *legacy_current_user_operation
-        id: onboarding-crontab-install
-        authority_branches:
-          - {id: delegated-catalog, mechanism: catalog-key-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
+    delegation:
+      immediate_callee: scripts/cron/setup-cron.sh
+      terminal: {path: scripts/cron/cron_apply.py, operation: reconcile-current-user-crontab}
+      modes:
+        - {id: default-linux, mutation_mode: destructive, args: [setup-cron], target: physical-local, exit: propagate, source_attestation: new-machine-default-v1}
+        - {id: dry-run-preview, mutation_mode: non-mutating, args: [setup-cron, --dry-run], target: physical-local, exit: swallow-3490, source_attestation: new-machine-dry-run-v1}
+        - {id: windows-skip, mutation_mode: non-mutating, args: [setup-cron], target: platform-selected, exit: swallow-3490, source_attestation: new-machine-windows-v1}
 
   - path: scripts/cron/harness-update.sh
     kind: transitive-entrypoint
     disposition_group: harness-update
-    edge: {callee: scripts/cron/setup-cron.sh, call_form: constant-path-exec, mutation_mode: default, target_guard_attestation: shell-local-delegation-v1}
-    operations:
-      - <<: *legacy_current_user_operation
-        id: nightly-crontab-self-sync
-        authority_branches:
-          - {id: delegated-catalog, mechanism: catalog-key-substring, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: substring}
+    delegation:
+      immediate_callee: scripts/cron/setup-cron.sh
+      terminal: {path: scripts/cron/cron_apply.py, operation: reconcile-current-user-crontab}
+      modes:
+        - {id: scheduled-sync, mutation_mode: destructive, args: [setup-cron], target: physical-local, exit: swallow-3479, source_attestation: harness-default-v1}
+        - {id: dry-run-sync, mutation_mode: non-mutating, args: [setup-cron, --dry-run], target: physical-local, exit: swallow-3479, source_attestation: harness-dry-run-v1}
 
 disposition_groups:
-  - group_id: cron-catalog-migration
-    issue: {repository: vamseeachanta/workspace-hub, number: 3475}
-    members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
-    defect_class: mixed-destructive-ownership-authority
   - group_id: legacy-crontab-writers
     issue: {repository: vamseeachanta/workspace-hub, number: 3476}
     members: [scripts/coordination/context/setup_cron.sh, scripts/operations/maintenance/setup_maintenance_cron.sh, scripts/setup/setup-engineering-update-cron.sh]
@@ -257,3 +253,10 @@ disposition_groups:
     issue: {repository: vamseeachanta/workspace-hub, number: 3479}
     members: [scripts/cron/harness-update.sh]
     defect_class: transitive-mutation-error-swallowing
+
+resolved_dispositions:
+  - issue: 3475
+    members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
+    resolved_on: "2026-07-12"
+    pull_request: 3492
+    source_digest: bb7dff4898333e8a09efc8183e253f18d36a28732f3b38f0aca771b92712390f

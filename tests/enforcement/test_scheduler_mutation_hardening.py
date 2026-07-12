@@ -41,7 +41,7 @@ def validate_changed(mutator):
 @pytest.mark.parametrize(
     "mutator",
     [
-        lambda _c, _r, x: x.update(schema_version=2),
+        lambda _c, _r, x: x.update(schema_version=1),
         lambda _c, _r, x: x["surfaces"][0].update(owner="descriptive"),
         lambda _c, _r, x: x["surfaces"][0]["operations"][0].update(target_kind="remote-magic"),
         lambda _c, _r, x: x["surfaces"][0]["operations"][0]["authority_branches"][0].update(strength="trusted-because-note"),
@@ -149,14 +149,19 @@ def test_transaction_attestations_reject_semantic_inversions():
     source = b"scripts/cron/cron_apply.py"
     body = records[source]
     mutations = [
-        body.replace(b"A = _read()", b"A = ''"),
-        body.replace(b"current = _read()", b"current = A", 1),
+        body.replace(b"A, plan = _build_cutover(selection, classes, ownership, _read)", b"A, plan = '', {}"),
+        body.replace(
+            b"with _flock(LOCKFILE):\n        current = _read()",
+            b"with _flock(LOCKFILE):\n        current = A",
+            1,
+        ),
         body.replace(b"backup = create_backup(canonical_id, ts, A)", b"backup = create_backup(canonical_id, ts, '')"),
     ]
     names = ["python-baseline-snapshot-v1", "python-prewrite-cas-v1", "python-backup-baseline-v1"]
     for name, mutated in zip(names, mutations):
         records[source] = mutated
         assert not checker.evaluate_attestation(name, records, source)
+        records[source] = body
 
 
 def test_transaction_attestations_reject_reorder_decoy_and_wrong_scope():
@@ -164,18 +169,18 @@ def test_transaction_attestations_reject_reorder_decoy_and_wrong_scope():
     source = b"scripts/cron/cron_apply.py"
     body = records[source]
     backup = b"        backup = create_backup(canonical_id, ts, A)\n"
-    write = b"        _write(plan[\"new_text\"])\n"
+    write = b"        observation = _write_observation(plan[\"new_text\"], _read, _write)\n"
     records[source] = body.replace(backup + write, write + backup)
     assert not checker.evaluate_attestation("python-backup-baseline-v1", records, source)
-    records[source] = body.replace(b"        _write(plan[\"new_text\"])\n", b"    _write(plan[\"new_text\"])\n")
+    records[source] = body.replace(write, b"    observation = _write_observation(plan[\"new_text\"], _read, _write)\n")
     assert not checker.evaluate_attestation("python-lock-scope-v1", records, source)
-    records[source] = body.replace(b"                _write(A)", b"            _write(A)")
+    records[source] = body.replace(b"            _write(A)", b"        _write(A)")
     assert not checker.evaluate_attestation("python-rollback-after-cas-v1", records, source)
 
 
 def test_classifier_rejects_fourth_route_reusing_existing_reason():
     checker, records, _ = current_contract()
-    source = b"scripts/cron/cron_transaction.py"
+    source = b"scripts/cron/cron_line_model.py"
     needle = b"    return {\"line\": line, \"class\": \"uncataloged\", \"reason\": \"no-match\"}"
     extra = b"    if line == 'extra':\n        return {'line': line, 'class': 'cataloged', 'reason': 'catalog-command'}\n"
     records[source] = records[source].replace(needle, extra + needle)
@@ -184,12 +189,12 @@ def test_classifier_rejects_fourth_route_reusing_existing_reason():
 
 def test_installed_fingerprint_mechanisms_are_derived_from_catalog():
     checker, records, registry = current_contract()
-    assert checker.derive_installed_fingerprint_branches(records) == {
-        "installed-fingerprint-token", "installed-fingerprint-substring"
+    assert checker.derive_cron_classifier_branches(records) == {
+        "canonical-exact-line", "legacy-exact-line"
     }
     cron = next(row for row in registry["surfaces"] if row["path"] == "scripts/cron/cron_apply.py")
     ids = {branch["id"] for branch in cron["operations"][0]["authority_branches"]}
-    assert {"installed-fingerprint-token", "installed-fingerprint-substring"} <= ids
+    assert ids == {"canonical-exact-line", "legacy-exact-line"}
 
 
 def test_wrapper_guard_must_precede_mutation_exec_and_reject_decoy():
@@ -261,12 +266,12 @@ def test_prewrite_and_rollback_reject_conditional_abort_fallthrough(shape):
     checker, records, _ = current_contract()
     source = b"scripts/cron/cron_apply.py"
     text = records[source].decode()
-    for left, name in (("A", "python-prewrite-cas-v1"), ("after", "python-rollback-after-cas-v1")):
+    for left, name in (("A", "python-prewrite-cas-v1"), ("C", "python-rollback-after-cas-v1")):
         original = f"if current != {left}:"
         if shape == "nested":
-            replacement = original + "\n                    if False:" if left == "after" else original + "\n                if False:"
+            replacement = original + "\n            if False:" if left == "C" else original + "\n                if False:"
         else:
-            replacement = original + "\n                    try:" if left == "after" else original + "\n                try:"
+            replacement = original + "\n            try:" if left == "C" else original + "\n                try:"
         mutated = text.replace(original, replacement, 1)
         records[source] = mutated.encode()
         assert not checker.evaluate_attestation(name, records, source)
