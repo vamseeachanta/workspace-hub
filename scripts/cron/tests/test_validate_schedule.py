@@ -15,6 +15,7 @@ VALIDATOR = REPO_ROOT / "scripts" / "cron" / "validate-schedule.py"
 SETUP_CRON = REPO_ROOT / "scripts" / "cron" / "setup-cron.sh"
 CRON_RENDER = REPO_ROOT / "scripts" / "cron" / "cron_render.py"
 CRON_APPLY = REPO_ROOT / "scripts" / "cron" / "cron_apply.py"
+STATE_CLASSES = REPO_ROOT / "config" / "workstations" / "harness-state-classes.yaml"
 
 REQUIRED_TASK_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
@@ -33,6 +34,25 @@ def _valid_machines_from_registry() -> set[str]:
 
 
 VALID_MACHINES = _valid_machines_from_registry()
+
+
+def test_normal_validation_rejects_catalog_task_on_substring_identity(tmp_path):
+    catalog = tmp_path / "catalog.yaml"
+    classes = tmp_path / "classes.yaml"
+    catalog.write_text(SCHEDULE_FILE.read_text(), encoding="utf-8")
+    classes.write_text(
+        "preserved_external: []\npreserved_local:\n"
+        "  - owner: local\n    catalog_task_id: notification-purge\n"
+        "    fingerprint: {command_contains: notification}\n",
+        encoding="utf-8",
+    )
+    completed = subprocess.run(
+        [sys.executable, str(VALIDATOR), "--catalog", str(catalog),
+         "--state-classes", str(classes)],
+        cwd=REPO_ROOT, text=True, capture_output=True,
+    )
+    assert completed.returncode != 0
+    assert "catalog_task_id requires legacy_exact_lines" in completed.stdout
 
 
 @pytest.fixture(scope="module")
