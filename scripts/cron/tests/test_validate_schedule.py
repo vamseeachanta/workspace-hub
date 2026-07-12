@@ -207,18 +207,12 @@ def test_repository_sync_runtime_contract_is_bounded_and_singleton(tasks):
         "state_dir": ".claude/state/cron-runtime/repository-sync",
         "filesystem_wait_wchans": ["request_wait_answer"],
     }
-    assert task["installed_fingerprint"] == {
-        "command_contains": "scripts/cron-repository-sync.sh",
-        "cwd_basename": "workspace-hub",
-    }
+    assert "installed_fingerprint" not in task
 
 
-def test_hermes_bridge_has_explicit_installed_fingerprint(tasks):
+def test_hermes_bridge_uses_canonical_rendered_identity(tasks):
     task = next(t for t in tasks if t["id"] == "hermes-claude-bridge")
-    assert task["installed_fingerprint"] == {
-        "command_contains": "scripts/memory/bridge-hermes-claude.sh",
-        "cwd_basename": "workspace-hub",
-    }
+    assert "installed_fingerprint" not in task
 
 
 def test_deckhand_presence_sync_has_exact_installed_fingerprint(tasks):

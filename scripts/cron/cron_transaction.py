@@ -22,7 +22,8 @@ THIS_DIR = Path(__file__).resolve().parent
 if str(THIS_DIR) not in sys.path:
     sys.path.insert(0, str(THIS_DIR))
 
-from cron_render import render_cron_line
+from cron_render import render_cron_line  # noqa: E402
+from cron_identity import build_ownership_context  # noqa: E402,F401
 
 # --- Marker constants ------------------------------------------------------
 
@@ -228,27 +229,27 @@ def _is_ignore_line(line: str) -> bool:
 
 def classify_line_detail(
     line: str,
-    catalog_commands: list[str],
-    external_fingerprints: list[dict],
+    catalog_commands: list[str] | None = None,
+    external_fingerprints: list[dict] | None = None,
     selected_task_ids: set[str] | None = None,
     catalog_fingerprints: list[dict] | None = None,
+    ownership_context: dict | None = None,
 ) -> dict:
     """Classify a crontab line with metadata for audit/cutover callers."""
     if _is_ignore_line(line):
         return {"line": line, "class": "ignore", "reason": "ignore"}
 
-    selected = set(selected_task_ids or set())
+    if ownership_context is not None:
+        identity = ownership_context.get("line_identities", {}).get(line)
+        if identity:
+            return {"line": line, "class": "cataloged", "reason": identity["source"],
+                    "catalog_task_id": identity["catalog_task_id"],
+                    "variant_id": identity.get("variant_id", "")}
+        external_fingerprints = ownership_context.get("preservation_fingerprints", [])
+
     for entry in normalize_preserved_entries(external_fingerprints):
         if match_fingerprint(line, entry.get("fingerprint", {})):
             catalog_task_id = entry.get("catalog_task_id")
-            if catalog_task_id and catalog_task_id in selected:
-                return {
-                    "line": line,
-                    "class": "cataloged",
-                    "reason": "catalog-owned-preserved-entry",
-                    "catalog_task_id": catalog_task_id,
-                    "preserved_entry": entry,
-                }
             return {
                 "line": line,
                 "class": "preserved_external",
@@ -257,23 +258,6 @@ def classify_line_detail(
                 "preserved_entry": entry,
             }
 
-    for entry in normalize_preserved_entries(catalog_fingerprints):
-        if match_fingerprint(line, entry.get("fingerprint", {})):
-            return {
-                "line": line,
-                "class": "cataloged",
-                "reason": "catalog-fingerprint",
-                "catalog_task_id": entry.get("catalog_task_id"),
-            }
-
-    for cmd in catalog_commands or []:
-        if cmd and cmd in line:
-            return {
-                "line": line,
-                "class": "cataloged",
-                "reason": "catalog-command",
-                "catalog_key": cmd,
-            }
     return {"line": line, "class": "uncataloged", "reason": "no-match"}
 
 
@@ -448,6 +432,7 @@ def plan_cutover(
     external_fingerprints: list[dict],
     selected_task_ids: set[str] | None = None,
     catalog_fingerprints: list[dict] | None = None,
+    ownership_context: dict | None = None,
 ) -> dict:
     """Plan a fail-closed crontab cutover.
 
@@ -479,9 +464,6 @@ def plan_cutover(
             "abort_reason": parsed["error"],
         }
 
-    had_block = bool(parsed["before"]) or bool(parsed["after"]) or bool(
-        parsed["managed"]
-    ) or parsed["roles"] is not None
     # We detect whether a block existed by whether parse split anything into
     # `after` or whether roles is not None (a real begin marker was seen).
     block_existed = parsed["roles"] is not None
@@ -497,6 +479,7 @@ def plan_cutover(
             external_fingerprints,
             selected_task_ids=selected_task_ids,
             catalog_fingerprints=catalog_fingerprints,
+            ownership_context=ownership_context,
         )["class"]
         if cls == "ignore":
             preserved.append(line)
@@ -531,6 +514,7 @@ def plan_cutover(
                 external_fingerprints,
                 selected_task_ids=selected_task_ids,
                 catalog_fingerprints=catalog_fingerprints,
+                ownership_context=ownership_context,
             )["class"]
             if cls == "cataloged":
                 continue

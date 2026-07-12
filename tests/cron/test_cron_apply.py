@@ -483,7 +483,7 @@ def test_real_dev_primary_cutover_keeps_bridge_schedule_staggers():
     assert hermes.startswith("25 4 * * * ")
 
 
-def test_real_cutover_replaces_stale_bridge_only_via_explicit_fingerprint():
+def test_real_cutover_rejects_non_exact_stale_bridge_line():
     stale = (
         "25 4 * * * cd /mnt/local-analysis/workspace-hub && "  # abs-path-allowed
         "bash scripts/memory/bridge-hermes-claude.sh\n"
@@ -493,27 +493,19 @@ def test_real_cutover_replaces_stale_bridge_only_via_explicit_fingerprint():
         "dev-primary", apply=False, ts="t", _read=lambda: stale
     )
 
-    assert result["status"] == "dry-run"
-    assert stale.strip() not in result["new_text"].splitlines()
-    bridge = next(
-        line for line in result["new_text"].splitlines()
-        if "scripts/memory/bridge-hermes-claude.sh" in line
-    )
-    assert "--commit" in bridge
+    assert result["status"] == "abort"
+    assert stale.strip() in result["reason"]
 
 
-def test_fingerprinted_catalog_tasks_are_excluded_from_substring_keys():
+def test_sensitive_catalog_tasks_use_rendered_exact_identities():
     catalog = ca._load(ca.CATALOG)
     registry = ca._load(ca.REGISTRY)
-    keys = ca.catalog_commands(catalog, registry=registry, machine_id="dev-primary")
-    fingerprints = ca.catalog_fingerprints(catalog["tasks"])
-
-    assert "scripts/memory/bridge-hermes-claude.sh" not in keys
-    assert "scripts/cron-repository-sync.sh" not in keys
-    assert {entry["catalog_task_id"] for entry in fingerprints} >= {
-        "hermes-claude-bridge",
-        "repository-sync",
-    }
+    classes = ca._load(ca.STATE_CLASSES)
+    exact = ca.build_ownership_context(
+        catalog, registry, classes, "dev-primary"
+    )["canonical_exact_lines"]
+    assert exact["hermes-claude-bridge"]
+    assert exact["repository-sync"]
 
 
 def test_real_dev_secondary_preview_does_not_use_ace_linux_1_bridge_staggers():

@@ -150,9 +150,9 @@ def test_match_fingerprint_rejects_descriptive_owner_repo_field():
 
 # --- classify_line ---------------------------------------------------------
 
-def test_classify_cataloged():
+def test_catalog_substring_does_not_authorize_destructive_identity():
     line = "0 1 * * * /opt/wshub/run-task.sh foo"
-    assert ct.classify_line(line, ["run-task.sh"], []) == "cataloged"
+    assert ct.classify_line(line, ["run-task.sh"], []) == "uncataloged"
 
 
 def test_classify_preserved_external():
@@ -166,7 +166,7 @@ def test_classify_uncataloged():
     assert ct.classify_line(line, ["run-task.sh"], []) == "uncataloged"
 
 
-def test_catalog_fingerprint_requires_all_fields_not_bare_script_substring():
+def test_catalog_fingerprint_never_authorizes_destructive_identity():
     fingerprint = [{
         "catalog_task_id": "repository-sync",
         "fingerprint": {
@@ -184,8 +184,7 @@ def test_catalog_fingerprint_requires_all_fields_not_bare_script_substring():
         external, [], [], catalog_fingerprints=fingerprint
     )
 
-    assert owned_detail["class"] == "cataloged"
-    assert owned_detail["catalog_task_id"] == "repository-sync"
+    assert owned_detail["class"] == "uncataloged"
     assert external_detail["class"] == "uncataloged"
 
 
@@ -200,11 +199,11 @@ def test_catalog_cwd_regex_does_not_claim_similar_repo_name():
     owned = "0 * * * * cd /srv/workspace-hub && bash scripts/cron-repository-sync.sh"
     unrelated = "0 * * * * cd /tmp/not-workspace-hub && bash scripts/cron-repository-sync.sh"
 
-    assert ct.classify_line_detail(owned, [], [], catalog_fingerprints=fingerprint)["class"] == "cataloged"
+    assert ct.classify_line_detail(owned, [], [], catalog_fingerprints=fingerprint)["class"] == "uncataloged"
     assert ct.classify_line_detail(unrelated, [], [], catalog_fingerprints=fingerprint)["class"] == "uncataloged"
 
 
-def test_plan_cutover_drops_only_explicitly_owned_stale_duplicate():
+def test_plan_cutover_drops_only_exactly_owned_stale_duplicate():
     fingerprint = [{
         "catalog_task_id": "hermes-claude-bridge",
         "fingerprint": {
@@ -226,6 +225,11 @@ def test_plan_cutover_drops_only_explicitly_owned_stale_duplicate():
         catalog_commands=[],
         external_fingerprints=[],
         catalog_fingerprints=fingerprint,
+        ownership_context={
+            "line_identities": {stale: {"catalog_task_id": "hermes-claude-bridge",
+                                        "source": "legacy-exact-line", "variant_id": "old"}},
+            "preservation_fingerprints": [],
+        },
     )
 
     assert plan["abort_reason"] is None
@@ -479,7 +483,7 @@ def test_preserved_fingerprint_entries_retain_catalog_task_id_metadata():
         external_fingerprints=entries,
         selected_task_ids={"notification-purge"},
     )
-    assert detail["class"] == "cataloged"
+    assert detail["class"] == "preserved_external"
     assert detail["catalog_task_id"] == "notification-purge"
 
 

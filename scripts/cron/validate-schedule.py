@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 """Validate schedule-tasks.yaml — parse, check required fields, cron expressions."""
 
+import argparse
 import re
 import sys
 from pathlib import Path
 
 import yaml
 
+CRON_DIR = Path(__file__).resolve().parent
+if str(CRON_DIR) not in sys.path:
+    sys.path.insert(0, str(CRON_DIR))
+from cron_identity import validate_state_classes  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEDULE_FILE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 REGISTRY_FILE = REPO_ROOT / "config" / "workstations" / "registry.yaml"
 ROLES_FILE = REPO_ROOT / "config" / "workstations" / "harness-roles.yaml"
+STATE_CLASSES_FILE = REPO_ROOT / "config" / "workstations" / "harness-state-classes.yaml"
 
 REQUIRED_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
@@ -179,12 +186,16 @@ def validate_cron_expression(expr: str) -> list[str]:
     return errors
 
 
-def main() -> int:
-    if not SCHEDULE_FILE.exists():
-        print(f"FAIL: {SCHEDULE_FILE} not found")
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--catalog", type=Path, default=SCHEDULE_FILE)
+    parser.add_argument("--state-classes", type=Path, default=STATE_CLASSES_FILE)
+    args = parser.parse_args(argv)
+    if not args.catalog.exists():
+        print(f"FAIL: {args.catalog} not found")
         return 1
 
-    with open(SCHEDULE_FILE) as f:
+    with open(args.catalog) as f:
         data = yaml.safe_load(f)
 
     if "tasks" not in data or not isinstance(data["tasks"], list):
@@ -195,6 +206,8 @@ def main() -> int:
     errors = []
     ids_seen = set()
     state_dirs: set[str] = set()
+    classes = yaml.safe_load(args.state_classes.read_text(encoding="utf-8"))
+    errors.extend(validate_state_classes(classes, {task.get("id") for task in tasks}))
 
     for i, task in enumerate(tasks):
         tid = task.get("id", f"<index-{i}>")
@@ -245,12 +258,12 @@ def main() -> int:
                 errors.append(f"{tid}: invokes claude CLI but is_claude_task != true")
 
     if errors:
-        print(f"FAIL: {len(errors)} error(s) in {SCHEDULE_FILE.name}:")
+        print(f"FAIL: {len(errors)} error(s) in {args.catalog.name}:")
         for e in errors:
             print(f"  - {e}")
         return 1
 
-    print(f"OK: {len(tasks)} tasks validated in {SCHEDULE_FILE.name}")
+    print(f"OK: {len(tasks)} tasks validated in {args.catalog.name}")
     return 0
 
 

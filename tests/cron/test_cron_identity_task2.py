@@ -41,7 +41,7 @@ def fixture_context():
             "legacy_exact_lines": [{"id": "old", "line": "0 1 * * * cd /old && echo 'a|b' >> /tmp/log"}],
         }],
         "preserved_external": [{
-            "owner": "external", "fingerprint": {"command_contains": "echo 'a|b'"},
+            "owner": "external", "fingerprint": {"command_contains": "echo"},
         }],
     }
     return catalog, registry, classes
@@ -85,3 +85,16 @@ def test_apply_and_audit_build_identical_ownership_context():
     catalog, registry, classes = fixture_context()
     expected = apply.build_ownership_context(catalog, registry, classes, "linux-a")
     assert audit.build_ownership_context(catalog, registry, classes, "linux-a") == expected
+
+
+def test_audit_preserves_full_shared_classification_detail():
+    ct = load("cron_transaction_parity_task2", "scripts/cron/cron_transaction.py")
+    audit = load("cron_audit_parity_task2", "scripts/cron/cron-audit.py")
+    catalog, registry, classes = fixture_context()
+    context = ct.build_ownership_context(catalog, registry, classes, "linux-a")
+    line = "0 1 * * * cd /old && echo 'a|b' >> /tmp/log"
+    expected = ct.classify_line_detail(line, ownership_context=context)
+    result = audit.audit_crontab(
+        line, [], [], ct.classify_line_detail, ownership_context=context
+    )
+    assert result["lines"] == [expected]

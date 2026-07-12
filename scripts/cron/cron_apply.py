@@ -57,6 +57,7 @@ _spec = importlib.util.spec_from_file_location(
 ct = importlib.util.module_from_spec(_spec)
 sys.modules["cron_transaction"] = ct
 _spec.loader.exec_module(ct)
+build_ownership_context = ct.build_ownership_context
 
 try:
     import yaml
@@ -288,10 +289,11 @@ def _load_cutover_context(machine_id):
     classes = _load(STATE_CLASSES)
     registry = _load(REGISTRY)
     selection = _selection_context(catalog, registry, machine_id)
-    return selection, classes
+    ownership = build_ownership_context(catalog, registry, classes, machine_id)
+    return selection, classes, ownership
 
 
-def _build_cutover(selection, classes, _read):
+def _build_cutover(selection, classes, ownership, _read):
     selected = selection["selected"]
     cat_cmds = _combine_keys(
         ct.catalog_command_keys(selection["selected_raw"], include_fingerprinted=False),
@@ -306,6 +308,7 @@ def _build_cutover(selection, classes, _read):
         external_fingerprints(classes),
         selected_task_ids=selection["selected_task_ids"],
         catalog_fingerprints=catalog_fingerprints(selection["selected_raw"]),
+        ownership_context=ownership,
     )
     return baseline, plan
 
@@ -313,14 +316,14 @@ def _build_cutover(selection, classes, _read):
 def run_cutover(machine_id: str, apply: bool, ts: str | None,
                 _read=read_crontab, _write=write_crontab,
                 _daemons=None, allow_live_reload: bool = False) -> dict:
-    selection, classes = _load_cutover_context(machine_id)
+    selection, classes, ownership = _load_cutover_context(machine_id)
     canonical_id = selection["machine_id"]
     roles = selection["roles"]
     selected = selection["selected"]
     conflicts = selection["conflicts"]
     if not roles and not selected:
         return {"status": "skip", "reason": f"{canonical_id} has no harness_profile.roles or machine-pinned cron tasks"}
-    A, plan = _build_cutover(selection, classes, _read)
+    A, plan = _build_cutover(selection, classes, ownership, _read)
     if plan.get("abort_reason"):
         return {"status": "abort", "reason": plan["abort_reason"],
                 "uncataloged": plan.get("uncataloged", []), "conflicts": conflicts,

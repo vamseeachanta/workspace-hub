@@ -62,6 +62,12 @@ def load_cron_transaction(path: Path = CRON_TRANSACTION_PATH):
     return module
 
 
+def build_ownership_context(catalog, registry, state_classes, machine_id):
+    return load_cron_transaction().build_ownership_context(
+        catalog, registry, state_classes, machine_id
+    )
+
+
 def load_cron_render(path: Path = CRON_RENDER_PATH):
     if not path.exists():
         raise FileNotFoundError(f"cron_render.py not found at {path}")
@@ -214,6 +220,7 @@ def audit_crontab(
     classify_line,
     selected_task_ids: set[str] | None = None,
     catalog_fingerprints: list[dict] | None = None,
+    ownership_context: dict | None = None,
 ) -> dict:
     """Classify every line; return a structured result."""
     results: list[dict] = []
@@ -231,6 +238,7 @@ def audit_crontab(
                 external_fingerprints,
                 selected_task_ids=selected_task_ids,
                 catalog_fingerprints=catalog_fingerprints,
+                ownership_context=ownership_context,
             )
             if isinstance(detail, str):
                 detail = {"line": line, "class": detail}
@@ -240,10 +248,9 @@ def audit_crontab(
         counts[cls] = counts.get(cls, 0) + 1
         if cls == "ignore":
             continue
-        result = {"line": line, "class": cls}
-        for key in ("reason", "catalog_task_id", "catalog_key"):
-            if detail.get(key) is not None:
-                result[key] = detail[key]
+        result = dict(detail)
+        result.setdefault("line", line)
+        result.setdefault("class", cls)
         results.append(result)
     return {
         "lines": results,
@@ -269,12 +276,17 @@ def build_audit_context(machine_id: str | None = None) -> dict:
     )
     selected_task_ids = selected["selected_task_ids"]
     machine = selected["context"]["machine_id"]
+    state_classes = yaml.safe_load(CLASSES_PATH.read_text(encoding="utf-8")) if CLASSES_PATH.exists() else {}
+    ownership = build_ownership_context(
+        catalog or {}, registry or {}, state_classes or {}, machine
+    )
     return {
         "machine": machine,
         "catalog_commands": catalog_commands,
         "catalog_fingerprints": ct.catalog_owned_fingerprints(selected["selected_raw"]),
         "external_fingerprints": load_external_fingerprints(),
         "selected_task_ids": selected_task_ids,
+        "ownership_context": ownership,
     }
 
 
@@ -340,6 +352,7 @@ def main(argv: list[str] | None = None) -> int:
         ct.classify_line_detail,
         selected_task_ids=context["selected_task_ids"],
         catalog_fingerprints=context.get("catalog_fingerprints", []),
+        ownership_context=context["ownership_context"],
     )
 
     if args.json:
