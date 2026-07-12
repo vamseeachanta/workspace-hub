@@ -44,6 +44,9 @@ from scheduler_mutation_delegation import (  # noqa: E402
     validate_identity_inputs,
 )
 from scheduler_mutation_report import render_html  # noqa: E402
+from scheduler_mutation_wrapper_attestations import (  # noqa: E402
+    evaluate_wrapper_attestation,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRY = b"config/scheduled-tasks/mutation-surfaces.yaml"
@@ -52,7 +55,8 @@ TEST = b"tests/enforcement/test_scheduler_mutation_surfaces.py"
 HARDENING_TEST = b"tests/enforcement/test_scheduler_mutation_hardening.py"
 ATTESTATIONS = b"scripts/enforcement/scheduler_mutation_attestations.py"
 DISCOVERY_HELPER = b"scripts/enforcement/scheduler_mutation_discovery.py"
-FORENSIC = {CHECKER, TEST, HARDENING_TEST, ATTESTATIONS, DISCOVERY_HELPER}
+WRAPPER_ATTESTATIONS = b"scripts/enforcement/scheduler_mutation_wrapper_attestations.py"
+FORENSIC = {CHECKER, TEST, HARDENING_TEST, ATTESTATIONS, DISCOVERY_HELPER, WRAPPER_ATTESTATIONS}
 SENTINEL = b"scheduler-mutation-forensic"
 PRIMITIVE_PATTERNS = {
     "crontab-replace": (
@@ -186,21 +190,10 @@ def evaluate_attestation(name: str, records: dict[bytes, bytes], operation_sourc
     windows = evaluate_windows(name, records, source)
     if windows is not None:
         return windows
+    wrapper = evaluate_wrapper_attestation(name, records)
+    if wrapper is not None:
+        return wrapper
     code = _code(records.get(source, b""))
-    delegation_patterns = {
-        "setup-default-apply-v1": rb"ARGS\+=\(--apply\)[\s\S]+exec uv run --script \"\$CRON_APPLY\"",
-        "setup-dry-run-v1": rb"--dry-run[\s\S]+ARGS\+=\(--json\)",
-        "setup-live-reload-v1": rb"--allow-live-reload[\s\S]+ARGS\+=\(--allow-live-reload\)",
-        "setup-remote-reject-v1": rb"CANONICAL_MACHINE[\s\S]+PHYSICAL_MACHINE[\s\S]+exit 2",
-        "setup-windows-skip-v1": rb"Windows[\s\S]+exit 0",
-        "new-machine-default-v1": rb"bash \"\$\{WORKSPACE_HUB\}/scripts/cron/setup-cron\.sh\"\s*$",
-        "new-machine-dry-run-v1": rb"setup-cron\.sh\" --dry-run \|\| true",
-        "new-machine-windows-v1": rb"setup-cron\.sh\" \|\| true",
-        "harness-default-v1": rb"out=\$\(bash \"\$installer\" 2>&1\) \|\| true",
-        "harness-dry-run-v1": rb"bash \"\$installer\" --dry-run[\s\S]+\|\| true",
-    }
-    if name in delegation_patterns:
-        return bool(re.search(delegation_patterns[name], code, re.MULTILINE))
     if name == "kanban-backend-operation-set-v1":
         return len(derive_kanban_operations(records)) == 6
     patterns = {

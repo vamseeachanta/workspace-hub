@@ -163,6 +163,7 @@ def digest_record_union(
         b"scripts/enforcement/scheduler_mutation_discovery.py",
         b"scripts/enforcement/scheduler_mutation_delegation.py",
         b"scripts/enforcement/scheduler_mutation_report.py",
+        b"scripts/enforcement/scheduler_mutation_wrapper_attestations.py",
         b"tests/enforcement/test_scheduler_mutation_surfaces.py",
         b"tests/enforcement/test_scheduler_mutation_hardening.py",
         b"tests/enforcement/test_scheduler_mutation_delivery.py",
