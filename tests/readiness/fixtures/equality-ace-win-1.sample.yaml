@@ -108,3 +108,7 @@ dimensions:
     healthy: 42
     repairable: 0
     worst_state: HEALTHY
+  publish_health:
+    last_publish_at: "2026-05-30T03:55:12Z"
+    last_publish_duration_s: 2
+    last_publish_rc: 0

@@ -39,13 +39,76 @@ def _parse_ts(s):
         return None
 
 
-def compare(fps, *, behind_warn=10, stale_h=6.0, learning_max_h=48.0):
+def _parse_registry_minimal(text):
+    """No-pyyaml fallback for the registry: extracts only what the roster needs
+    (machines/<name>/{hostname, hostname_aliases, schedule_variant}). The sentinel
+    runs under ``uv run --no-project`` where pyyaml is not guaranteed."""
+    machines, cur, in_machines = {}, None, False
+    for raw in text.splitlines():
+        line = raw.split("#", 1)[0].rstrip()
+        if not line.strip():
+            continue
+        indent = len(line) - len(line.lstrip())
+        key, _, val = line.strip().partition(":")
+        val = val.strip()
+        if indent == 0:
+            in_machines, cur = (key == "machines"), None
+            continue
+        if not in_machines:
+            continue
+        if indent == 2 and not val:
+            cur = key
+            machines[cur] = {}
+        elif indent == 4 and cur and val:
+            if val.startswith("[") and val.endswith("]"):
+                machines[cur][key] = [v.strip().strip("'\"")
+                                      for v in val[1:-1].split(",") if v.strip()]
+            else:
+                machines[cur][key] = val.strip("'\"")
+    return {"machines": machines}
+
+
+def load_expected_machines(registry_path):
+    """Roster of machines expected to publish: ``config/workstations/registry.yaml``
+    entries whose ``schedule_variant`` is set and not ``none`` (i.e. they run the
+    daily cron). Degrades open (empty roster → check skipped) on any failure so a
+    missing/unparseable registry never turns the sentinel into a false alarm."""
+    try:
+        with open(registry_path) as fh:
+            text = fh.read()
+        try:
+            import yaml
+            data = yaml.safe_load(text) or {}
+        except ImportError:
+            data = _parse_registry_minimal(text)
+        roster = []
+        for name, m in sorted((data.get("machines") or {}).items()):
+            m = m or {}
+            if str(m.get("schedule_variant") or "none").lower() == "none":
+                continue
+            roster.append({"machine": name, "hostname": m.get("hostname"),
+                           "aliases": list(m.get("hostname_aliases") or [])})
+        return roster
+    except Exception as e:  # noqa: BLE001 — degrade open by design
+        print(f"WARN: expected-machines roster unavailable ({e}); "
+              f"absent-fingerprint check skipped", file=sys.stderr)
+        return []
+
+
+def compare(fps, *, behind_warn=10, stale_h=6.0, learning_max_h=48.0,
+            expected_machines=None, publish_slow_s=60.0):
     """Compare fingerprint dicts; return divergences sorted worst-first.
 
     A divergence is ``{severity, code, detail, boxes}``. Empty list == equivalent.
     Role-aware: cron *set* differences between roles are expected and NOT flagged;
     only registry/harness equivalence, clone lag, hub-cron freshness, and
     reporting staleness are checked.
+
+    ``expected_machines`` (#3502): roster from ``load_expected_machines`` — any
+    roster machine with no fingerprint in the store is flagged; a box whose
+    publish is gate-blocked (#3500) can never land its fingerprint, so absence
+    IS the deadlock symptom. ``publish_slow_s`` flags publishes that landed but
+    took gate-length time (re-emergent hook gating).
     """
     out: list[dict] = []
     if not fps:
@@ -144,6 +207,35 @@ def compare(fps, *, behind_warn=10, stale_h=6.0, learning_max_h=48.0):
                             f"{r}: orphan .git/index.lock ~{age:.0f} min old with no holder — git automation may be frozen",
                             {r: round(float(age), 1)}))
 
+    # 9. roster machine absent from the store -> WARNING (#3502). A gate-blocked
+    # publish (#3500) can never land its fingerprint — absence IS the symptom;
+    # the other possibility (sentinel not installed) equally needs surfacing.
+    if expected_machines:
+        seen = {str(f.get("hostname") or "").lower() for f in fps}
+        seen |= {str(r).lower() for r in roles}
+        seen.discard("")
+        for m in expected_machines:
+            names = {str(m.get("hostname") or "").lower(),
+                     str(m.get("machine") or "").lower()}
+            names |= {str(a).lower() for a in (m.get("aliases") or [])}
+            names.discard("")
+            if names and not (names & seen):
+                label = m.get("machine") or m.get("hostname") or "?"
+                out.append(_div(WARNING, "absent-fingerprint",
+                                f"{label}: no fingerprint in equivalence-state — publish may be "
+                                f"gate-blocked (#3500) or the sentinel is not running there",
+                                {label: "absent"}))
+
+    # 10. publish landed but took gate-length time -> WARNING (#3502). Detects a
+    # re-emergent pre-push gate even when the push eventually succeeds.
+    for r, f in zip(roles, fps):
+        dur = f.get("last_publish_duration_s")
+        if isinstance(dur, (int, float)) and not isinstance(dur, bool) and dur > publish_slow_s:
+            out.append(_div(WARNING, "publish-slow",
+                            f"{r}: last equivalence publish took {dur:.0f}s "
+                            f"(> {publish_slow_s:.0f}s) — pre-push gate suspected (#3500)",
+                            {r: round(float(dur), 1)}))
+
     out.sort(key=lambda d: _SEV_RANK[d["severity"]])
     return out
 
@@ -172,11 +264,16 @@ def main(argv=None):
     ap.add_argument("--behind-warn", type=int, default=10)
     ap.add_argument("--stale-h", type=float, default=6.0)
     ap.add_argument("--learning-max-h", type=float, default=48.0)
+    ap.add_argument("--publish-slow-s", type=float, default=60.0)
+    ap.add_argument("--registry", default=None,
+                    help="config/workstations/registry.yaml — enables absent-fingerprint check")
     ap.add_argument("--json", action="store_true", help="emit JSON")
     a = ap.parse_args(argv)
     fps = load_dir(a.dir)
+    expected = load_expected_machines(a.registry) if a.registry else None
     divs = compare(fps, behind_warn=a.behind_warn, stale_h=a.stale_h,
-                   learning_max_h=a.learning_max_h)
+                   learning_max_h=a.learning_max_h,
+                   expected_machines=expected, publish_slow_s=a.publish_slow_s)
     if a.json:
         print(json.dumps({"boxes": len(fps), "divergences": divs}, indent=2))
     else:

@@ -59,7 +59,8 @@ def _win1_baseline() -> dict:
 # ════════════════════════════════════════════════════════════════════════════
 EXPECTED_DIMS = {"compute", "data_access", "solvers", "harness", "skills",
                  "kanban", "memory", "behavior", "scheduler", "provider_harness",
-                 "session_curation", "skill_currency", "memory_freshness", "skill_link_health"}
+                 "session_curation", "skill_currency", "memory_freshness", "skill_link_health",
+                 "publish_health"}
 
 
 def test_ps1_sample_output_parses_schema_v4_with_provider_harness():

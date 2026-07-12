@@ -346,6 +346,48 @@ def skill_link_health_verdict(report: dict) -> str:
     return "SKILL-LINKS-DRIFTED" if repairable > 0 else "SKILL-LINKS-OK"
 
 
+# ── publish-health verdict (#3502) — is the equivalence publish landing, fast? ──
+PUBLISH_SLOW_S = 60.0      # gate-length publish = the #3500 pre-push RUN_ALL signature
+PUBLISH_STALE_H = 26.0     # daily cron + 2h grace
+
+
+def publish_health_verdict(report: dict, now: datetime | None = None) -> str:
+    """Grade the last equivalence-state publish (written by equivalence-sentinel.sh).
+    PUBLISH-GATED on a failed or gate-length (>60s) publish — the #3500 pre-push
+    deadlock signature; PUBLISH-STALE when the last publish predates the daily-cron
+    window (sentinel dead or blocked); PUBLISH-OK otherwise. Fail-closed
+    MISSING-EVIDENCE on missing/garbled/future evidence — a box that never
+    published has no record, which is exactly the #3500 absent case."""
+    ph = report.get("dimensions", {}).get("publish_health")
+    if not isinstance(ph, dict):
+        return "MISSING-EVIDENCE"
+    stamp = ph.get("last_publish_at")
+    if not isinstance(stamp, str):
+        return "MISSING-EVIDENCE"
+    try:
+        ts = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    except ValueError:
+        return "MISSING-EVIDENCE"     # includes the collector's "missing" sentinel
+    now = now or datetime.now(timezone.utc)
+    if ts.tzinfo is None:
+        ts = ts.replace(tzinfo=timezone.utc)
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    age_h = (now - ts).total_seconds() / 3600.0
+    if age_h < 0:                     # future stamp ⇒ untrustworthy
+        return "MISSING-EVIDENCE"
+    rc = ph.get("last_publish_rc")
+    dur = ph.get("last_publish_duration_s")
+    failed = isinstance(rc, int) and not isinstance(rc, bool) and rc != 0
+    gated = (isinstance(dur, (int, float)) and not isinstance(dur, bool)
+             and dur > PUBLISH_SLOW_S)
+    if failed or gated:
+        return "PUBLISH-GATED"
+    if age_h > PUBLISH_STALE_H:
+        return "PUBLISH-STALE"
+    return "PUBLISH-OK"
+
+
 # ── value extraction for uniform dims ────────────────────────────────────────
 def extract_value(dim: str, report: dict):
     d = report.get("dimensions", {})
@@ -462,6 +504,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return memory_freshness_verdict(rep)
     if dim == "skill_link_health":          # shared-skill-link propagation — per-box facts
         return skill_link_health_verdict(rep)
+    if dim == "publish_health":             # equivalence publish landing/speed — per-box facts
+        return publish_health_verdict(rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -491,7 +535,8 @@ def load_reports() -> dict[str, dict]:
 
 BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
                      "kanban", "memory", "behavior", "scheduler", "session_curation",
-                     "skill_currency", "memory_freshness", "skill_link_health"]
+                     "skill_currency", "memory_freshness", "skill_link_health",
+                     "publish_health"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 # ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
@@ -514,6 +559,8 @@ GROUPS = [
     ("skills-currency", "Skill currency — all providers up to date vs canonical", ["skill_currency"]),
     ("memory-freshness", "Memory freshness — memory surfaces refreshed recently", ["memory_freshness"]),
     ("skill-links", "Skill-link health — shared skills propagated to ecosystem repos", ["skill_link_health"]),
+    ("publish-health", "Publish health — equivalence fingerprint publish landing fast on every box",
+        ["publish_health"]),
 ]
 
 # Worst-of severity for the collapsed group rollup. Higher = more operator attention.
@@ -521,13 +568,14 @@ GROUPS = [
 # all-good group collapses to a single green "OK" so a clean box reads at a glance.
 ROLLUP_SEVERITY = {
     "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6, "MEMORY-EXPIRED": 6,
+    "PUBLISH-GATED": 6,
     "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5, "MEMORY-STALE": 5,
-    "SKILL-LINKS-DRIFTED": 5,
+    "SKILL-LINKS-DRIFTED": 5, "PUBLISH-STALE": 5,
     "MISSING-EVIDENCE": 4, "PENDING": 4,
     "STALE-CHECKOUT": 3,
     "EXPECTED-DIFF": 1, "EXPECTED-DIVERGENCE": 1, "UNREACHABLE": 1, "ABSENT": 1,
     "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0, "SKILLS-CURRENT": 0, "MEMORY-FRESH": 0,
-    "SKILL-LINKS-OK": 0,
+    "SKILL-LINKS-OK": 0, "PUBLISH-OK": 0,
 }
 
 
@@ -546,7 +594,7 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
 #    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
 OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
                "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT", "MEMORY-FRESH",
-               "SKILL-LINKS-OK"}
+               "SKILL-LINKS-OK", "PUBLISH-OK"}
 
 
 def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
@@ -608,6 +656,15 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
         return ("shared-skill links are missing/broken on ecosystem repos (froze at link time) — "
                 "re-sync via scripts/skills/resync-skill-links.sh --apply (or propagate-ecosystem.sh "
                 "--skills-only)", "this box", False)
+    if verdict == "PUBLISH-GATED":
+        return ("last equivalence publish failed or took gate-length time (>60s) — the wh#3500 "
+                "pre-push RUN_ALL deadlock signature; check the box's pre-push hook and that "
+                "equivalence_state.py pushes with GIT_PRE_PUSH_SKIP=1 (skill "
+                "equivalence-publish-health)", "this box", False)
+    if verdict == "PUBLISH-STALE":
+        return ("no equivalence publish in >26h — the sentinel cron is dead or blocked on this box; "
+                "run scripts/monitoring/equivalence-sentinel.sh manually and check its cron/logs",
+                "this box", False)
     return ("investigate this cell's report", "operator", False)
 
 
@@ -727,7 +784,7 @@ def main() -> None:
 <style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem;max-width:1100px}}table{{border-collapse:collapse;width:100%}}
 th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem;text-align:center}}thead th{{background:#2d3748;color:#fff}}
 tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok,.curated-fresh,.skills-current,.memory-fresh{{background:#c6f6d5}}.ok{{font-weight:700}}
-.below-baseline,.diverges,.curated-expired,.skills-drifted,.memory-expired{{background:#fed7d7}}.no-majority,.missing-baseline,.curated-stale,.skills-index-stale,.memory-stale,.skill-links-drifted{{background:#feebc8}}.skill-links-ok{{background:#c6f6d5}}
+.below-baseline,.diverges,.curated-expired,.skills-drifted,.memory-expired,.publish-gated{{background:#fed7d7}}.no-majority,.missing-baseline,.curated-stale,.skills-index-stale,.memory-stale,.skill-links-drifted,.publish-stale{{background:#feebc8}}.skill-links-ok,.publish-ok{{background:#c6f6d5}}
 .expected-diff,.expected-divergence{{background:#e9d8fd}}
 .pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent,.na{{background:#f7fafc;color:#a0aec0}}
 .stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}
