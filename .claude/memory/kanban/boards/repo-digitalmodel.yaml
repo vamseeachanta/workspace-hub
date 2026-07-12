@@ -7631,3 +7631,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1564
+    title: 'orcaflex_run_batch: missing engine base-config yml (same rc-1 gap as openfoam #1560)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1564
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

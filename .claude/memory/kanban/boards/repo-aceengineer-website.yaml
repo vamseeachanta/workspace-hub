@@ -446,7 +446,7 @@ cards:
     title: 'feat(capabilities): going-forward contract + CI gate on registry [C7]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/54
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:tooling
     initial_status: triage
