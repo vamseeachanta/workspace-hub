@@ -1605,3 +1605,14 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#982
+    title: 'refactor(economics): field_economics_<slug>.md reports V50-only — drop frozen-V30 dual columns'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/982
+    gh_state: open
+    gh_labels:
+      - domain:reports
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

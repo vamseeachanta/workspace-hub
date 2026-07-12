@@ -401,7 +401,7 @@ cards:
     title: 'feat(capabilities): build-time Hugging Face client in build.js [C2]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/50
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:data
       - cat:tooling

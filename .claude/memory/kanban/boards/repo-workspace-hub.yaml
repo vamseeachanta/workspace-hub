@@ -22944,7 +22944,8 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3475
     gh_state: open
     gh_labels:
-      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - lane:codex
     initial_status: triage
     priority: 0

@@ -7508,7 +7508,7 @@ cards:
     title: dm#1528 anti-roll assessment needs conduit-inertia term before publish
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1549
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:data
     initial_status: triage
