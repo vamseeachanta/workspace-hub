@@ -411,7 +411,7 @@ cards:
     title: 'ops(local-analysis): preserve exact interactive cleanup ledger and verification evidence'
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/37
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
