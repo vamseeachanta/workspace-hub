@@ -9,57 +9,72 @@ def _functions(tree: ast.AST) -> dict[str, ast.FunctionDef]:
             if isinstance(node, ast.FunctionDef)}
 
 
-def _live_nodes(statements: list[ast.stmt]):
-    nodes, _falls_through = _walk_block(statements)
-    yield from nodes
+Path = tuple[list[ast.stmt], bool]
 
 
-def _walk_block(statements: list[ast.stmt]) -> tuple[list[ast.stmt], bool]:
-    nodes: list[ast.stmt] = []
+def _walk_block(statements: list[ast.stmt]) -> list[Path]:
+    paths: list[Path] = [([], True)]
     for statement in statements:
         if isinstance(statement, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
             continue
-        statement_nodes, falls_through = _walk_statement(statement)
-        nodes.extend(statement_nodes)
-        if not falls_through:
-            return nodes, False
-    return nodes, True
+        paths = _extend_paths(paths, _walk_statement(statement))
+    return paths
 
 
-def _walk_statement(statement: ast.stmt) -> tuple[list[ast.stmt], bool]:
+def _extend_paths(prefixes: list[Path], suffixes: list[Path]) -> list[Path]:
+    result: list[Path] = []
+    for prefix, prefix_falls in prefixes:
+        if not prefix_falls:
+            result.append((prefix, False))
+            continue
+        for suffix, suffix_falls in suffixes:
+            result.append((prefix + suffix, suffix_falls))
+    return result
+
+
+def _walk_statement(statement: ast.stmt) -> list[Path]:
     if isinstance(statement, (ast.Return, ast.Raise, ast.Break, ast.Continue)):
-        return [statement], False
+        return [([statement], False)]
     if isinstance(statement, ast.If):
         if isinstance(statement.test, ast.Constant):
             branch = statement.body if statement.test.value else statement.orelse
             return _walk_block(branch)
-        body, body_falls = _walk_block(statement.body)
-        other, other_falls = _walk_block(statement.orelse)
-        return [statement, *body, *other], body_falls or other_falls
+        branches = _walk_block(statement.body) + _walk_block(statement.orelse)
+        return [([statement, *nodes], falls) for nodes, falls in branches]
     if isinstance(statement, ast.With):
-        body, falls = _walk_block(statement.body)
-        return [statement, *body], falls
+        return [([statement, *nodes], falls) for nodes, falls in _walk_block(statement.body)]
     if isinstance(statement, ast.Try):
-        body, body_falls = _walk_block(statement.body)
-        handlers = [_walk_block(handler.body) for handler in statement.handlers]
-        final, final_falls = _walk_block(statement.finalbody)
-        nodes = [statement, *body]
-        for handler_nodes, _handler_falls in handlers:
-            nodes.extend(handler_nodes)
-        nodes.extend(final)
-        handler_falls = any(falls for _nodes, falls in handlers) if handlers else True
-        return nodes, final_falls and (body_falls or handler_falls)
+        normal = _extend_paths(_walk_block(statement.body), _walk_block(statement.orelse))
+        handlers = [path for handler in statement.handlers
+                    for path in _walk_block(handler.body)]
+        alternatives = normal + handlers
+        return _append_finally(statement, alternatives)
     if isinstance(statement, (ast.For, ast.While)):
         # Loop execution/fallthrough is path-dependent. Retain no body evidence;
         # transaction guarantees must be established outside ambiguous loops.
-        return [statement], True
-    return [statement], True
+        return [([statement], True)]
+    return [([statement], True)]
 
 
-def _live_text(function: ast.FunctionDef | None) -> str:
+def _append_finally(statement: ast.Try, paths: list[Path]) -> list[Path]:
+    if not statement.finalbody:
+        return [([statement, *nodes], falls) for nodes, falls in paths]
+    final_paths = _walk_block(statement.finalbody)
+    result: list[Path] = []
+    for nodes, falls in paths:
+        for final, final_falls in final_paths:
+            result.append(([statement, *nodes, *final], falls and final_falls))
+    return result
+
+
+def _live_texts(function: ast.FunctionDef | None) -> list[str]:
     if function is None:
-        return ""
-    return "\n".join(_statement_text(node) for node in _live_nodes(function.body))
+        return []
+    return [_path_text(path) for path, _falls in _walk_block(function.body)]
+
+
+def _path_text(path: list[ast.stmt]) -> str:
+    return "\n".join(_statement_text(node) for node in path)
 
 
 def _statement_text(node: ast.stmt) -> str:
@@ -77,22 +92,38 @@ def _statement_text(node: ast.stmt) -> str:
     return ast.unparse(node)
 
 
-def _live_locks(function: ast.FunctionDef | None) -> list[ast.With]:
+def _lock_texts(function: ast.FunctionDef | None) -> list[str]:
     if function is None:
         return []
-    return [node for node in _live_nodes(function.body) if isinstance(node, ast.With)
-            and "_flock(LOCKFILE)" in ast.unparse(node.items[0].context_expr)]
+    locks = {id(node): node for path, _falls in _walk_block(function.body) for node in path
+             if isinstance(node, ast.With)
+             and "_flock(LOCKFILE)" in ast.unparse(node.items[0].context_expr)}
+    return [_path_text(path) for lock in locks.values()
+            for path, _falls in _walk_block(lock.body)]
+
+
+def _has_tokens(texts: list[str], tokens: tuple[str, ...]) -> bool:
+    return any(all(token in text for token in tokens) for text in texts)
+
+
+def _has_ordered(texts: list[str], tokens: tuple[str, ...]) -> bool:
+    for text in texts:
+        positions = [text.find(token) for token in tokens]
+        if all(position >= 0 for position in positions) and positions == sorted(positions):
+            return True
+    return False
 
 
 def _transaction_graph(functions: dict[str, ast.FunctionDef]) -> bool:
-    run = _live_text(functions.get("run_cutover"))
-    build = _live_text(functions.get("_build_cutover"))
-    finish = _live_text(functions.get("_finish_exact"))
-    return all(token in run for token in (
+    run = _live_texts(functions.get("run_cutover"))
+    build = _live_texts(functions.get("_build_cutover"))
+    finish = _live_texts(functions.get("_finish_exact"))
+    return _has_ordered(run, (
         "_build_cutover(selection, classes, ownership, _read)",
         "_write_observation(plan['new_text'], _read, _write)",
         "_finish_exact(A, plan['new_text'], backup, observation, _read, _write)",
-    )) and "ct.plan_cutover(" in build and "_rollback(" in finish
+    )) and _has_tokens(build, ("ct.plan_cutover(",)) and _has_tokens(
+        finish, ("_rollback(",))
 
 
 def evaluate_transaction(name: str, tree: ast.AST) -> bool | None:
@@ -108,39 +139,32 @@ def evaluate_transaction(name: str, tree: ast.AST) -> bool | None:
     if not _transaction_graph(functions):
         return False
     run = functions.get("run_cutover")
-    locks = _live_locks(run)
-    lock_text = "\n".join(_live_text_from_block(lock.body) for lock in locks)
     sequence = (
         "current = _read()", "current != A",
         "backup = create_backup(canonical_id, ts, A)",
         "observation = _write_observation(plan['new_text'], _read, _write)",
     )
-    positions = [lock_text.find(token) for token in sequence]
-    common = all(position >= 0 for position in positions) and positions == sorted(positions)
+    common = _has_ordered(_lock_texts(run), sequence)
     if name in {"python-lock-scope-v1", "python-baseline-snapshot-v1",
                 "python-prewrite-cas-v1", "python-backup-baseline-v1"}:
         return common
     if name == "python-postwrite-exact-state-v1":
-        observe = _live_text(functions.get("_write_observation"))
-        finish = _live_text(functions.get("_finish_exact"))
-        return all(token in observe for token in ("_write(B)", "observed = _read()")) and all(
-            token in finish for token in (
+        observe = _live_texts(functions.get("_write_observation"))
+        finish = _live_texts(functions.get("_finish_exact"))
+        return _has_ordered(observe, ("_write(B)", "observed = _read()")) and _has_ordered(
+            finish, (
                 "if not write_failed and observed == B:",
                 "_transaction_result('applied', backup, expected=B, observed=observed)",
             )
         )
     if name in {"python-rollback-after-cas-v1", "python-rollback-exact-baseline-v1"}:
         rollback = functions.get("_rollback")
-        text = "\n".join(_live_text_from_block(lock.body) for lock in _live_locks(rollback))
-        exact = _live_text(rollback)
-        cas = all(token in text for token in (
+        paths = _live_texts(rollback)
+        cas = _has_ordered(_lock_texts(rollback), (
             "current = _read()", "if current != C:", "_write(A)", "restored = _read()",
         ))
         if name == "python-rollback-after-cas-v1":
             return cas
-        return cas and "'rolled-back' if restored == A else 'rollback-failed'" in exact
+        return cas and _has_tokens(
+            paths, ("'rolled-back' if restored == A else 'rollback-failed'",))
     return None
-
-
-def _live_text_from_block(statements: list[ast.stmt]) -> str:
-    return "\n".join(_statement_text(node) for node in _live_nodes(statements))
