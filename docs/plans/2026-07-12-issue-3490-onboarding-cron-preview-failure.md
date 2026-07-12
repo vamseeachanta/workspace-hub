@@ -130,8 +130,12 @@ The implementation will use a `set -e`-safe positive conditional: `if bash ...; 
 create temporary repo-shaped fixture
 copy new-machine-setup.sh into fixture
 write stub scripts/cron/setup-cron.sh that records argv and exits 42
-provide temporary HOME and fake uname/hostname/crontab commands
-run fixture wrapper --dry-run
+provide isolated HOME with a fake SSH-key sentinel and no real user config
+prepend a controlled bin directory with fake uname, hostname, crontab, git, claude, npm, tmux, ssh-keygen, and other discovered host commands
+stub every absolute fixture script/source reachable before Step 6
+stub bootstrap, provider-install/auth/config libraries, machine-status, tmux, and verification surfaces needed by Windows continuation after Step 6
+record every stub invocation in an allowlisted ledger; make unexpected host-tool/script invocation fail the test
+run fixture wrapper in dry-run, default-Linux, and fake-Windows modes as required
 assert callee argv is exactly --dry-run
 assert wrapper exit is 42
 assert failure context is visible
@@ -200,6 +204,7 @@ remove resolved #3490 debt wording from operations documentation
 - [ ] GREEN returns the exact fake status 42 and stops before Step 7/completion output.
 - [ ] Successful dry-run and `--no-cron --dry-run` remain covered.
 - [ ] Hermetic default-Linux and Windows executions assert exact child arguments, exact result/continuation behavior, and completion-output boundaries.
+- [ ] Non-dry-run preservation fixtures use isolated `HOME`, controlled `PATH`, stub every reachable setup script/library, and fail on any unexpected host git/config/install/process/scheduler invocation.
 - [ ] No test invokes live `crontab`, process signaling, or scheduler mutation.
 - [ ] Registry, source attestation, operations documentation, and deterministic scheduler HTML describe the same mode contract.
 - [ ] Semantic wrapper mutations refresh the test pin before evaluation; independent stale/missing-pin tests also pass.
