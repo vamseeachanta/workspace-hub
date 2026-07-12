@@ -4278,6 +4278,12 @@ skills:
   name: ecosystem-terminology
   when_to_use: 'ecosystem-terminology Canonical names, abbreviations, and relationship vocabulary for the workspace-hub ecosystem. Load this when naming repos, modules, machines, files, or expanding acronyms to ensure consistency across humans and agents. type: reference workspace-hub'
   when_to_use_source: backfill
+- description: Diagnose and fix a machine whose equivalence-state fingerprint publish is absent, stale, or gate-length slow (the wh#3500 pre-push RUN_ALL deadlock signature). Use when the equality matrix shows PUBLISH-GATED / PUBLISH-STALE / MISSING-EVIDENCE on the publish-health row, or the sentinel reports absent-fingerprint / publish-slow divergences.
+  family: workspace-hub
+  id: workspace-hub/equivalence-publish-health
+  name: equivalence-publish-health
+  when_to_use: equivalence-publish-health Diagnose and fix a machine whose equivalence-state fingerprint publish is absent, stale, or gate-length slow (the wh#3500 pre-push RUN_ALL deadlock signature). Use when the equality matrix shows PUBLISH-GATED / PUBLISH-STALE / MISSING-EVIDENCE on the publish-health row, or the sentinel reports absent-fingerprint / publish-slow divergences. workspace-hub
+  when_to_use_source: backfill
 - description: Fix false-positive pre-commit failures where workspace-hub's CLAUDE.md line-limit hook blocks edits to auto-generated wiki schema files under knowledge/wikis/.
   family: workspace-hub
   id: workspace-hub/exclude-wiki-claude-md-from-harness-line-limit-hook
