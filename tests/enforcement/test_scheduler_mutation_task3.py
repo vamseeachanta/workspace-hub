@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import ast
+import hashlib
 import importlib.util
 import json
 import sys
@@ -377,3 +378,75 @@ def test_wrapper_digest_pins_are_exact_complete_and_fail_closed():
         del wrapper_module.WRAPPER_SHA256[source]
         assert not checker.evaluate_attestation(attestation, records, source)
         wrapper_module.WRAPPER_SHA256[source] = original
+
+
+@pytest.mark.parametrize("source", sorted(WRAPPER_MUTATIONS))
+@pytest.mark.parametrize("bypass", ["early-exit", "dead-script"])
+def test_wrapper_attestations_reject_self_refreshed_reachability_bypass(source, bypass):
+    checker, records, _registry, _discovered = current_contract()
+    wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
+    attestation = WRAPPER_MUTATIONS[source][0]
+    original_body = records[source]
+    original_pin = wrapper_module.WRAPPER_SHA256[source]
+    if bypass == "early-exit":
+        mutated = b"exit 0\n" + original_body
+    else:
+        nested = b"\n".join(b"  " + line for line in original_body.splitlines())
+        mutated = b"if false; then\n" + nested + b"\nfi\nexit 0\n"
+    records[source] = mutated
+    wrapper_module.WRAPPER_SHA256[source] = hashlib.sha256(mutated).hexdigest()
+    try:
+        assert not checker.evaluate_attestation(attestation, records, source)
+    finally:
+        wrapper_module.WRAPPER_SHA256[source] = original_pin
+
+
+def _dead_transaction_source(records, mutation):
+    tree = ast.parse(records[b"scripts/cron/cron_apply.py"])
+    functions = {node.name: node for node in tree.body if isinstance(node, ast.FunctionDef)}
+    if mutation == "run-lock":
+        run = functions["run_cutover"]
+        lock = next(node for node in run.body if isinstance(node, ast.With))
+        index = run.body.index(lock)
+        run.body[index] = ast.If(test=ast.Constant(False), body=[lock], orelse=[])
+        run.body.insert(index + 1, ast.parse(
+            "observation = _write_observation(plan['new_text'], _read, _write)"
+        ).body[0])
+    elif mutation == "finish-exact":
+        finish = functions["_finish_exact"]
+        guarded = next(node for node in finish.body if isinstance(node, ast.If)
+                       and "observed == B" in ast.unparse(node.test))
+        index = finish.body.index(guarded)
+        finish.body[index] = ast.If(test=ast.Constant(False), body=[guarded], orelse=[])
+        finish.body.insert(index + 1, ast.parse(
+            "return _transaction_result('applied', backup, expected=B)"
+        ).body[0])
+    else:
+        rollback = functions["_rollback"]
+        lock = next(node for node in rollback.body if isinstance(node, ast.With))
+        index = rollback.body.index(lock)
+        rollback.body[index] = ast.If(test=ast.Constant(False), body=[lock], orelse=[])
+        rollback.body.insert(index + 1, ast.parse("_write(A)").body[0])
+    ast.fix_missing_locations(tree)
+    return ast.unparse(tree).encode()
+
+
+@pytest.mark.parametrize(
+    ("mutation", "attestations"),
+    [
+        ("run-lock", ["python-lock-scope-v1", "python-prewrite-cas-v1",
+                      "python-backup-baseline-v1"]),
+        ("finish-exact", ["python-postwrite-exact-state-v1"]),
+        ("rollback", ["python-rollback-after-cas-v1",
+                      "python-rollback-exact-baseline-v1"]),
+    ],
+)
+def test_transaction_attestations_reject_dead_safe_path_with_unsafe_live_path(
+    mutation, attestations
+):
+    checker, records, _registry, _discovered = current_contract()
+    records[b"scripts/cron/cron_apply.py"] = _dead_transaction_source(records, mutation)
+    for attestation in attestations:
+        assert not checker.evaluate_attestation(
+            attestation, records, b"scripts/cron/cron_apply.py"
+        )
