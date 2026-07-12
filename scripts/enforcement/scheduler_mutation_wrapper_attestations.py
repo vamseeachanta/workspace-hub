@@ -1,6 +1,8 @@
 """Fail-closed source-shape attestations for scheduler wrapper modes."""
 from __future__ import annotations
 
+import hashlib
+
 SETUP = b"scripts/cron/setup-cron.sh"
 NEW_MACHINE = b"scripts/setup/new-machine-setup.sh"
 HARNESS = b"scripts/cron/harness-update.sh"
@@ -18,16 +20,33 @@ NEW_MACHINE_ATTESTATIONS = {
     "new-machine-windows-v1",
 }
 HARNESS_ATTESTATIONS = {"harness-default-v1", "harness-dry-run-v1"}
+WRAPPER_SHA256 = {
+    SETUP: "582d12ed794e9b7ad1b809ff99c32dd844178bfd7eed4f85f9de70edd14ec83d",
+    NEW_MACHINE: "5120de77dcec9349fc2b24f5d6889d53c88f357efcf4ca4874479471a9a53d5c",
+    HARNESS: "a698b7a44194ef92dfbdf9a4d0e5b5550b21ceadb86de2055f634f59b8a1d0c8",
+}
 
 
 def evaluate_wrapper_attestation(name: str, records: dict[bytes, bytes]) -> bool | None:
     if name in SETUP_ATTESTATIONS:
+        if not _pinned(SETUP, records):
+            return False
         return _setup_shape(records.get(SETUP, b""))
     if name in NEW_MACHINE_ATTESTATIONS:
+        if not _pinned(NEW_MACHINE, records):
+            return False
         return _new_machine_shape(records.get(NEW_MACHINE, b""))
     if name in HARNESS_ATTESTATIONS:
+        if not _pinned(HARNESS, records):
+            return False
         return _harness_shape(records.get(HARNESS, b""))
     return None
+
+
+def _pinned(source: bytes, records: dict[bytes, bytes]) -> bool:
+    expected = WRAPPER_SHA256.get(source)
+    body = records.get(source)
+    return bool(expected and body is not None and hashlib.sha256(body).hexdigest() == expected)
 
 
 def _setup_shape(body: bytes) -> bool:
