@@ -3362,3 +3362,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#978
+    title: 'data(economics): re-enable NPV/breakeven on HF behind the CI gate now that #971 is fixed [C9]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/978
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

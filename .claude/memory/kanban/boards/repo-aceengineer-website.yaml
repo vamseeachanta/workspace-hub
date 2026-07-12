@@ -385,3 +385,71 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#49
+    title: 'feat(capabilities): registry SSOT — capabilities.yaml drives HF-backed pages [C1]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/49
+    gh_state: closed
+    gh_labels:
+      - cat:data
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#50
+    title: 'feat(capabilities): build-time Hugging Face client in build.js [C2]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/50
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#51
+    title: 'feat(capabilities): /capabilities index + card grid from registry [C3]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/51
+    gh_state: open
+    gh_labels:
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#52
+    title: 'feat(capabilities): per-capability detail template (table+chart+provenance) [C4]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/52
+    gh_state: open
+    gh_labels:
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#53
+    title: 'feat(capabilities): CSP + optional client-side live refresh [C6]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/53
+    gh_state: open
+    gh_labels:
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#54
+    title: 'feat(capabilities): going-forward contract + CI gate on registry [C7]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/54
+    gh_state: open
+    gh_labels:
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

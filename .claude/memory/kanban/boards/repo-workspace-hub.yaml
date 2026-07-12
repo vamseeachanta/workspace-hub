@@ -22917,10 +22917,11 @@ cards:
     title: 'audit(scheduler): enforce local-target identity and semantic ownership across mutation CLIs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3470
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - status:plan-approved
       - gate:completeness
+      - status:completeness-verified
       - lane:codex
     initial_status: triage
     priority: 0
@@ -22943,7 +22944,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3475
     gh_state: open
     gh_labels:
-      - status:needs-plan
+      - status:plan-review
       - lane:codex
     initial_status: triage
     priority: 0
@@ -22993,6 +22994,76 @@ cards:
     gh_labels:
       - status:needs-plan
       - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3480
+    title: 'Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3480
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3483
+    title: "save_results_to_hf.py: --public is a silent no-op on an EXISTING dataset (create_repo exist_ok doesn't change visibility)"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3483
+    gh_state: open
+    gh_labels:
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3485
+    title: 'epic: Live HF-backed capability surfaces on aceengineer.com — self-perpetuating algorithm showcase'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3485
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data-pipeline
+      - cat:tooling
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3488
+    title: 'feat(hf): rebuild-on-publish — Vercel Deploy Hook from publishing skill [C5]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3488
+    gh_state: open
+    gh_labels:
+      - cat:data-pipeline
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3490
+    title: 'fix(onboarding): surface cron preview failure during new-machine dry-run'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3490
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3491
+    title: 'chore(solver-queue): reconcile legacy solver-queue issues (#2641/#1586/#2524) with the live deckhand licensed-run lane [dm#1553 H]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3491
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -998,7 +998,7 @@ cards:
       - feature
       - priority:high
       - cat:data
-      - status:plan-review
+      - status:plan-approved
       - domain:core
       - lane:codex
     initial_status: triage

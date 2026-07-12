@@ -1363,9 +1363,9 @@ cards:
       - priority:high
       - cat:data
       - cat:automation
+      - status:plan-approved
       - domain:reports
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -1556,7 +1556,7 @@ cards:
     title: 'fix(economics): LT field NPV/breakeven implausible — all-negative NPV, $79–380 breakevens'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/971
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:high
       - cat:data
@@ -1576,6 +1576,31 @@ cards:
       - domain:reports
       - lane:claude
       - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#973
+    title: 'data(economics): validate eur_mmbbl (decline-fit extrapolation) before any full-cycle NPV recompute — gates #971 Tier 1'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/973
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:reports
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#974
+    title: "fix(capabilities): economics-<slug> envelopes falsely claim 'sanctioned V30 / full-cycle' + advertise uncomputed MIRR/IRR"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/974
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - domain:reports
     initial_status: triage
     priority: 0
     gh_assignees: []

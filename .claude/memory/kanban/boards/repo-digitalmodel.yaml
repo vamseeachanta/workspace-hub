@@ -7526,3 +7526,88 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1551
+    title: "feat(hf): digitalmodel's first HF dataset + registry entry (proves the contract) [C8]"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1551
+    gh_state: open
+    gh_labels:
+      - cat:automation
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1553
+    title: 'EPIC: Continuous batch mini-runs on ace-win-1 (OrcaFlex multi-batch + OrcaWave threaded) → operability conclusions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1553
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:licensed-win-1
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1554
+    title: 'feat(orcaflex): licensed orcaflex-run-batch — N-parallel dynamic time-domain batch sized to ~90% of host cores [#1553 A]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1554
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:licensed-win-1
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1555
+    title: 'feat(orcawave): wire thread_count input.yml → RunnerConfig, default ~90% host cores [#1553 B]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1555
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - domain:naval-architecture
+      - machine:licensed-win-1
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1556
+    title: 'feat(operability): rollup workflow — batch run results → envelopes, weather windows, go/no-go report + HF dataset [#1553 C]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1556
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - domain:naval-architecture
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1557
+    title: 'feat(sweeps): standing mini-run sweep catalog (YAML) + licensed-run batch-manifest generator [#1553 D]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1557
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - domain:naval-architecture
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
