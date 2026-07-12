@@ -172,7 +172,9 @@ classify_line_detail(line, ownership_context):
 
 ### 2. Catalog-wide migration inventory
 
-Planning has selected exact-line identity precisely because every canonical catalog task is already renderable as complete bytes, regardless of shell complexity. Implementation will first produce `docs/reports/issue-3475-command-identity-inventory.json` by rendering every cron-scheduler task for every Linux machine context in `config/machines/registry.yaml`. The inventory will record task id, machine id, canonical line digest, uniqueness result, and any explicit historical variant id; it will not contain live crontab data.
+Planning has selected exact-line identity precisely because every canonical catalog task is already renderable as complete bytes, regardless of shell complexity. Implementation will first create `scripts/cron/build-cron-identity-inventory.py` and use it to produce `docs/reports/issue-3475-command-identity-inventory.json` by rendering every cron-scheduler task for every canonical Linux machine id in `config/workstations/registry.yaml`. Aliases will be consumed only by the existing `build_context()` resolution and will not be counted as additional machines. The inventory will record task id, canonical machine id, canonical line digest, uniqueness result, and any explicit historical variant id; it will not contain live crontab data.
+
+The generator will have write mode and `--check` byte-parity mode. Its exact input union will be `config/scheduled-tasks/schedule-tasks.yaml`, `config/workstations/registry.yaml`, `config/workstations/harness-state-classes.yaml`, and the tracked renderer/context source files. Output will use sorted keys/rows, UTF-8, stable separators/newline, and a versioned length-framed SHA-256 input digest. `--check` will regenerate in memory and fail on stale bytes, unsupported renders, duplicate exact lines, aliases enumerated as machines, or legacy variants not bound to exactly one selected task. The Scheduler Mutation Surface Guard workflow will invoke `--check` so the load-bearing inventory cannot be manually asserted or drift silently.
 
 The supported canonical set will therefore be **all successfully rendered selected cron tasks**. The unsupported set will be named in the inventory and must be empty before classifier changes proceed; render failures or duplicate exact lines will stop implementation and force plan revision. Unknown live out-of-block lines are intentionally unsupported and will continue to abort.
 
@@ -238,7 +240,8 @@ All exception results will be nonzero CLI outcomes except a verified exact ordin
 - Transitive entries will be forbidden from declaring independent authority/transaction fields unless discovery proves a scheduler primitive. A wrapper that gains such a primitive will fail closed as an unregistered direct owner.
 - `scripts/enforcement/scheduler_mutation_contract.py`, `check-scheduler-mutation-surfaces.py`, the HTML renderer, delivery tests, and hardening tests will all migrate to this closed multi-hop schema; renderer and status derivation will not assume every transitive row owns an operation.
 - The enforcement checker will derive those claims from source/config and will continue to fail closed on missing branches, unsupported aliases, stale HTML, or self-disposition coordinates.
-- On compliance, active `cron-catalog-migration` will be removed from `disposition_groups` and its three rows will drop active disposition references. A separate non-authoritative `resolved_dispositions` ledger entry will preserve issue #3475, the three members, resolution date, and merged commit; schema validation will forbid active disposition coordinates on compliant rows. Unrelated #3476–#3479 dispositions will remain active and exact.
+- On compliance, active `cron-catalog-migration` will be removed from `disposition_groups` and its three rows will drop active disposition references. A separate non-authoritative `resolved_dispositions` ledger entry will preserve issue #3475, the three members, resolution date, the implementation PR number (known before merge), and the deterministic source/input digest—never a self-referential final commit SHA. Schema validation will forbid active disposition coordinates on compliant rows. Unrelated #3476–#3479 dispositions will remain active and exact.
+- `scripts/cron/validate-schedule.py` will load both the schedule catalog and `config/workstations/harness-state-classes.yaml` on every normal invocation (with explicit `--catalog` and `--state-classes` overrides for fixtures). It will validate exact legacy-line schema and reject `catalog_task_id` beside any substring/token/basename fingerprint. The enforcement checker and identity-inventory generator will call the same validation function, making the rule unavoidable through both the existing schedule validation command and the PR guard.
 - The generated #3470 scheduler-safety HTML will be refreshed deterministically. Every #3475 member will resolve to the same exact-identity/exact-state direct-owner contract; no member may retain destructive substring authority or `post_write_exact_state_verify: false`.
 - Before completeness closeout, automation or the operator will verify that `gate:completeness` has been auto-applied when the issue reaches `status:plan-approved`; if absent, closeout will stop and request owner/repository action rather than claiming server enforcement.
 
@@ -258,6 +261,7 @@ All exception results will be nonzero CLI outcomes except a verified exact ordin
 | Modify | `scripts/enforcement/scheduler_mutation_contract.py` | Validate exact identities, multi-hop delegation, resolved dispositions, cycles, and terminal operations |
 | Modify | `scripts/enforcement/check-scheduler-mutation-surfaces.py` | Derive and render direct operations/transitive delegation modes without assuming operations on every row |
 | Modify | `scripts/cron/validate-schedule.py` | Validate exact legacy identity schema and forbid promotable substring rows |
+| Create | `scripts/cron/build-cron-identity-inventory.py` | Deterministically render/check every canonical Linux context and exact identity input digest |
 | Modify | `tests/cron/test_cron_transaction.py` | Add exact identity/collision/near-match regressions |
 | Modify | `tests/cron/test_cron_apply.py` | Add exact-state and rollback verification RED/GREEN cases |
 | Modify | `tests/cron/test_cron_audit.py` | Prove audit/apply classification parity and retain read-only behavior |
@@ -267,6 +271,7 @@ All exception results will be nonzero CLI outcomes except a verified exact ordin
 | Modify | `tests/enforcement/test_scheduler_mutation_delivery.py` | Prove delegated rows render and workflow parity remains failure-propagating |
 | Modify | `tests/enforcement/test_scheduler_mutation_hardening.py` | Test chain/cycle/terminal/disposition and source-attestation bypasses |
 | Create | `docs/reports/issue-3475-command-identity-inventory.json` | Record catalog-wide render/uniqueness coverage without live state |
+| Modify | `.github/workflows/enforcement-gate.yml` | Run identity inventory `--check` in the existing scheduler mutation guard |
 | Update | `docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html` | Refresh deterministic audit matrix |
 | Update | `docs/ops/scheduled-tasks.md` | Document semantic destructive identity and exact-state failure handling |
 | Update | `docs/plans/README.md` | Index this plan and reconcile completed #3470 state |
@@ -289,6 +294,8 @@ Tests will be committed in RED state before implementation and split into two GR
 | `test_exact_post_write_match_applies_once` | Exact B succeeds without extra writes | `applied`; one write |
 | `test_exact_identity_requires_complete_line_bytes` | Token-as-data, operator, quoting, cwd, redirect, schedule, and newline near-misses cannot authorize deletion | Only complete allowlisted line matches |
 | `test_catalog_identity_inventory_covers_every_linux_context` | Every selected cron task renders uniquely for every Linux machine context | Empty unsupported/collision sets |
+| `test_identity_inventory_is_deterministic_digest_bound_and_alias_safe` | Canonical serialization/input digest are stable and aliases are not double-counted | Same bytes across runs; source/config change makes `--check` fail |
+| `test_normal_schedule_validation_loads_state_classes` | Promotion-schema validation cannot be skipped by the normal command | Substring row plus `catalog_task_id` fails normal validator and enforcement |
 | `test_known_legacy_identity_is_exact_and_task_bound` | Notification-purge absolute-path variant is supported without matching near variants | Exact variant cataloged; all near misses uncataloged |
 | `test_catalog_key_substring_no_longer_deletes` | The old `cmd in line` route is absent | Collision aborts cutover |
 | `test_selected_promotion_requires_exact_identity` | `notification-purge` promotion cannot use `command_contains` | Exact variant cataloged; collisions not cataloged |
@@ -337,7 +344,9 @@ uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py --check-h
 - [ ] The registry checker will derive compliance for the cron catalog group and will retain exact follow-up coordinates for [#3476](https://github.com/vamseeachanta/workspace-hub/issues/3476), [#3477](https://github.com/vamseeachanta/workspace-hub/issues/3477), [#3478](https://github.com/vamseeachanta/workspace-hub/issues/3478), and [#3479](https://github.com/vamseeachanta/workspace-hub/issues/3479).
 - [ ] `setup-cron.sh` and `new-machine-setup.sh` registry rows will be attested pure delegation edges resolving to the direct-owner operation; they will carry no copied legacy substring branch or false exact-state transaction field, and any future direct primitive will fail discovery.
 - [ ] Delegation resolution will be immediate-callee/multi-hop/mode aware, cycle-safe, terminal-operation exact, and will preserve the #3479 and #3490 wrapper observability gaps rather than inheriting blanket compliance.
-- [ ] The active #3475 disposition group will be removed only after all members comply; historical issue/member/commit traceability will move to the validated resolved-disposition ledger.
+- [ ] The active #3475 disposition group will be removed only after all members comply; historical issue/member/PR/source-digest traceability will move to the validated non-circular resolved-disposition ledger.
+- [ ] The exact-identity inventory will be produced deterministically from the declared input union, digest-bound, alias-safe, and enforced through `--check` in the PR scheduler guard.
+- [ ] Normal schedule validation and enforcement will both load state classes and reject `catalog_task_id` on every non-exact fingerprint route.
 - [ ] Focused cron and enforcement suites, Ruff, shell syntax/ShellCheck where touched, deterministic HTML parity, and `scripts/legal/legal-sanity-scan.sh --diff-only` will pass.
 - [ ] T3 code-stage adversarial review will complete before merge.
 - [ ] `gate:completeness` presence will be verified after plan approval; a completeness record and HTML report will reach the configured threshold and await owner-only `status:completeness-verified` before closure.
@@ -354,7 +363,7 @@ uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py --check-h
 - **Rollback diagnostics risk:** full crontab content may contain sensitive command arguments. Results will use bounded hashes/counts and existing backup coordinates rather than embedding content.
 - **Downstream dependency:** [issue #3476](https://github.com/vamseeachanta/workspace-hub/issues/3476) should consume this hardened transaction only after #3475 lands. #3477 and #3478 are independent backends; #3479 and [#3490](https://github.com/vamseeachanta/workspace-hub/issues/3490) remain wrapper observability follow-ups.
 
-No unresolved product decision blocks plan review. The supported grammar and legacy identity set remain correctness-critical review targets.
+No unresolved product decision blocks plan review. Canonical renderer coverage, exact legacy-line scope, and deterministic inventory parity remain correctness-critical review targets.
 
 ---
 
