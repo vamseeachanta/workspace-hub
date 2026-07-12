@@ -71,8 +71,38 @@ Runtime defect reproduced hermetically at 2026-07-12T03:35Z. The command importe
 
 ```text
 $ PYTHONPATH=scripts/cron uv run python - <<'PY'
-# in-memory run_cutover fixture; _write appends unexpected-injected-line
-...
+from contextlib import contextmanager
+from pathlib import Path
+import cron_apply as ca
+
+state = {"text": "# keep\n", "writes": []}
+planned = "# keep\n# workspace-hub managed begin roles=control-plane\n0 1 * * * run-managed\n# workspace-hub managed end\n"
+
+def read():
+    return state["text"]
+
+def write(text):
+    state["writes"].append(text)
+    state["text"] = text + "0 9 * * * unexpected-injected-line\n"
+
+@contextmanager
+def no_lock(_path):
+    yield
+
+ca._load = lambda _path: {}
+ca._selection_context = lambda *_a, **_k: {
+    "machine_id": "dev-primary", "roles": ["control-plane"],
+    "selected_raw": [], "selected": [], "selected_task_ids": set(), "conflicts": []
+}
+ca.ct.catalog_command_keys = lambda *_a, **_k: []
+ca.catalog_fingerprints = lambda *_a, **_k: []
+ca.external_fingerprints = lambda *_a, **_k: []
+ca.ct.plan_cutover = lambda *_a, **_k: {
+    "new_text": planned, "preserved": ["# keep"], "uncataloged": [],
+    "conflicts": [], "abort_reason": None
+}
+ca._flock = no_lock
+ca.create_backup = lambda *_a, **_k: Path("/tmp/hermetic-backup")
 result = ca.run_cutover("dev-primary", apply=True, ts="repro",
                         _read=read, _write=write, _daemons=[])
 print({"status": result["status"],
@@ -207,8 +237,10 @@ All exception results will be nonzero CLI outcomes except a verified exact ordin
 ### 5. Registry and enforcement
 
 - The registry will replace the three substring destructive branches with parsed identities, remove `catalog-key-fallback`, set `post_write_exact_state_verify: true`, and add checker-owned attestations for parsed destructive identity, exact post-write equality, and verified rollback restoration.
+- `scripts/cron/setup-cron.sh` and `scripts/setup/new-machine-setup.sh` will no longer copy `*legacy_current_user_operation`. The registry schema will represent each as a pure transitive delegation edge with `delegates_operation: {callee_path, operation_id}`. The checker will resolve that edge to `scripts/cron/cron_apply.py#reconcile-current-user-crontab`, require a source-attested literal/constant call path and flag propagation, and inherit the callee operation's authority and transaction status rather than duplicating stale substring/false transaction fields.
+- Transitive delegation entries will be forbidden from declaring independent `authority_branches` or transaction booleans unless source discovery proves that the wrapper itself invokes a scheduler mutation primitive. A wrapper that gains such a primitive will fail closed as an unregistered direct owner instead of inheriting compliance.
 - The enforcement checker will derive those claims from source/config and will continue to fail closed on missing branches, unsupported aliases, stale HTML, or self-disposition coordinates.
-- The generated #3470 scheduler-safety HTML will be refreshed deterministically. Only the `cron-catalog-migration` group may advance to compliant; unrelated #3476–#3479 dispositions will remain migration-required.
+- The generated #3470 scheduler-safety HTML will be refreshed deterministically. Every `cron-catalog-migration` member will resolve to the same parsed-identity/exact-state direct-owner contract; no member may retain destructive substring authority or `post_write_exact_state_verify: false`. Only this group may advance to compliant; unrelated #3476–#3479 dispositions will remain migration-required.
 
 ---
 
@@ -261,6 +293,8 @@ Tests will be committed in RED state before implementation and split into two GR
 | `test_write_and_post_write_read_exception_contract` | Partial writes and indeterminate reads never claim success or blind-rollback | Exact state-machine statuses and nonzero CLI |
 | `test_rollback_write_and_read_exception_contract` | Rollback exceptions preserve concurrent state and report verification truthfully | `rolled-back-with-write-error`, `rollback-failed`, `rollback-aborted`, or `rollback-indeterminate` as observed |
 | `test_registry_advances_only_cron_catalog_group` | Checker derives new guarantees without waiving unrelated gaps | cron group compliant; #3476–#3479 remain migration-required |
+| `test_transitive_cron_members_inherit_one_direct_owner_contract` | setup/onboarding wrappers cannot retain copied legacy authority/transaction fields | Both edges resolve to cron_apply operation; no substring/false exact-state member remains |
+| `test_transitive_delegate_with_direct_primitive_fails_closed` | A wrapper cannot hide a new scheduler write behind inherited compliance | Discovery reports unregistered direct ownership |
 | `test_setup_cron_surfaces_exact_state_failure` | Wrapper preserves nonzero status from direct owner | Fake-only invocation exits nonzero |
 
 Focused commands:
@@ -289,6 +323,7 @@ uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py --check-h
 - [ ] Ambiguous, malformed, colliding, or unknown live lines will abort before backup/write.
 - [ ] Physical-local host binding, lock, exclusive fsynced backup, pre-write CAS, preservation behavior, rollback CAS, daemon guard, dry-run default, Windows skip, and transitive delegation will remain covered.
 - [ ] The registry checker will derive compliance for the cron catalog group and will retain exact follow-up coordinates for [#3476](https://github.com/vamseeachanta/workspace-hub/issues/3476), [#3477](https://github.com/vamseeachanta/workspace-hub/issues/3477), [#3478](https://github.com/vamseeachanta/workspace-hub/issues/3478), and [#3479](https://github.com/vamseeachanta/workspace-hub/issues/3479).
+- [ ] `setup-cron.sh` and `new-machine-setup.sh` registry rows will be attested pure delegation edges resolving to the direct-owner operation; they will carry no copied legacy substring branch or false exact-state transaction field, and any future direct primitive will fail discovery.
 - [ ] Focused cron and enforcement suites, Ruff, shell syntax/ShellCheck where touched, deterministic HTML parity, and `scripts/legal/legal-sanity-scan.sh --diff-only` will pass.
 - [ ] T3 code-stage adversarial review will complete before merge.
 - [ ] A completeness record and HTML report will reach the configured threshold and await owner-only `status:completeness-verified` before closure.
@@ -327,3 +362,8 @@ Revisions made after r1:
 - Added `cron-audit.py` migration plus audit/apply parity tests.
 - Defined non-success behavior for initial-write, verification-read, rollback-write, and rollback-read exceptions.
 - Forbade `catalog_task_id` on substring preservation identities.
+
+R2 corrections:
+
+- Embedded the full replayable in-memory reproduction command instead of an elided fixture.
+- Replaced copied legacy operations on both #3475 transitive members with a proposed attested `delegates_operation` relation that inherits exactly one direct-owner contract and fails closed if a wrapper gains a scheduler primitive.
