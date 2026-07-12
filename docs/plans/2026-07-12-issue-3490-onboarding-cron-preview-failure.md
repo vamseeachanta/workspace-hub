@@ -6,7 +6,7 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3490
 > **Client:** N/A
 > **Lane:** lane:codex
-> **Planned review artifacts:** `scripts/review/results/2026-07-12-plan-3490-claude.md` | `scripts/review/results/2026-07-12-plan-3490-codex.md`
+> **Review artifacts:** `scripts/review/results/2026-07-12-plan-3490-claude.md` | `scripts/review/results/2026-07-12-plan-3490-codex.md` | `scripts/review/results/2026-07-12-plan-3490-fallback.md`
 
 ---
 
@@ -35,6 +35,7 @@ No engineering standard or domain wiki applies to this infrastructure-only wrapp
 - [Issue #3490](https://github.com/vamseeachanta/workspace-hub/issues/3490) limits the change to dry-run result/exit observability while preserving default Linux and Windows behavior.
 - `docs/plans/2026-07-11-issue-3475-cron-semantic-ownership.md` requires the `new-machine-setup.sh` dry-run mode to remain explicit and promotes this failure-swallowing debt to #3490.
 - `docs/plans/2026-07-11-issue-3470-scheduler-mutation-safety-contract.md` establishes mode-specific transitive delegation, source attestations, staged provenance, and deterministic HTML parity.
+- [Issue #3495](https://github.com/vamseeachanta/workspace-hub/issues/3495) will audit the broader class of vacuous hash-pinned semantic mutation tests; #3490 will fix only the directly scoped new-machine wrapper cases.
 - Drive-index query `cron onboarding dry-run preview` returned only unrelated CAD filename collisions. No relevant operational drive file was found. The `master_document_index` coverage gap reported reason `unreachable`; `cad_readability` was 16 days stale and `master_document_index` was 86 days stale, so repo evidence will remain authoritative.
 
 ### Parallel-work check
@@ -108,10 +109,12 @@ if no_cron:
     report skip and continue
 else if dry_run:
     print exact preview command
-    invoke setup-cron.sh --dry-run
-    if preview fails:
+    if setup-cron.sh --dry-run succeeds:
+        continue
+    else:
+        capture child status immediately from $?
         emit concise cron-preview failure context to stderr
-        exit with the callee's exact nonzero status
+        exit with captured child status
 else if windows:
     print Task Scheduler instructions
     retain existing best-effort setup-cron invocation
@@ -119,7 +122,7 @@ else:
     invoke setup-cron.sh and propagate its status
 ```
 
-The implementation will not aggregate a failed preview into a later zero exit. It will preserve the callee's exact status rather than replacing it with a generic code. The Windows source branch will retain `|| true`; only its registry label will be decoupled from #3490 and described as a platform-specific best-effort skip.
+The implementation will use a `set -e`-safe positive conditional: `if bash ...; then :; else rc=$?; ...; exit "$rc"; fi`. It will not use `if ! bash ...; then rc=$?`, because negation would replace the child's status with the condition status. It will not aggregate a failed preview into a later zero exit or replace the callee status with a generic code. The Windows source branch will retain `|| true`; only its registry label will be decoupled from #3490 and described as a platform-specific best-effort skip.
 
 ### Hermetic executable test
 
@@ -142,7 +145,9 @@ assert fake crontab sentinel was never called
 change dry-run-preview exit from swallow-3490 to propagate
 retain Windows source behavior and rename its exit policy to best-effort-skip
 update the pinned staged-blob source attestation
-mutation-test removal of --dry-run, reintroduced swallowing, status replacement, and Windows/default drift
+for semantic mutations, recompute and temporarily install the mutated wrapper SHA pin before evaluation
+mutation-test removal of --dry-run, reintroduced swallowing, negated/generic status handling, and Windows/default drift
+retain separate stale/missing-pin rejection tests
 regenerate scheduler HTML and require byte parity
 remove resolved #3490 debt wording from operations documentation
 ```
@@ -162,7 +167,6 @@ remove resolved #3490 debt wording from operations documentation
 | Modify | `tests/enforcement/test_scheduler_mutation_task3.py` | Add registry/source mutation regressions and remove active #3490 debt assertions |
 | Update | `docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html` | Refresh deterministic mode rendering |
 | Update | `docs/ops/scheduled-tasks.md` | Document resolved dry-run propagation and retained Windows boundary |
-| Update | `docs/plans/README.md` | Index this plan and reconcile parent #3475 completion state |
 
 `scripts/cron/setup-cron.sh` and `cron_apply.py` will remain verification surfaces, not implementation edits.
 
@@ -178,12 +182,15 @@ remove resolved #3490 debt wording from operations documentation
 | `test_dry_run_never_invokes_crontab_sentinel` | Fixture cannot touch live scheduler state | Sentinel call count remains zero |
 | `test_dry_run_success_continues_to_completion` | Successful preview retains normal dry-run flow | Exit 0 and completion banner |
 | `test_no_cron_dry_run_skips_preview` | `--no-cron --dry-run` keeps explicit skip | Stub is not invoked; exit 0 |
-| `test_default_linux_source_still_propagates` | Default destructive branch is not weakened | No `|| true` on default Linux call |
-| `test_windows_source_remains_best_effort` | Out-of-scope Windows behavior is unchanged | Windows branch retains `|| true` |
+| `test_default_linux_runtime_still_propagates` | Fake default-Linux child receives no dry-run arg and exits 43 | Exact args; wrapper exits 43 and stops |
+| `test_windows_runtime_remains_best_effort` | Fake Windows child exits 44 | Exact args; wrapper continues to zero completion |
 | `test_registry_declares_dry_run_propagation` | Governance matches executable contract | `exit: propagate` for dry-run preview |
-| `test_attestation_rejects_reintroduced_swallow` | Source-shape checker cannot be bypassed | `|| true` mutation fails attestation |
-| `test_attestation_rejects_generic_status_replacement` | Exact callee status remains observable | `exit 1`/masked status mutation fails |
+| `test_registry_decouples_windows_from_3490` | Unchanged Windows mode has an issue-independent contract | Registry/delegation require `best-effort-skip` and reject `swallow-3490` |
+| `test_attestation_rejects_reintroduced_swallow_after_pin_refresh` | Semantic source check cannot pass only because the hash is stale | Refresh mutated pin; `|| true` mutation still fails attestation |
+| `test_attestation_rejects_negated_or_generic_status_after_pin_refresh` | Exact callee status remains observable | Refresh mutated pin; `if !` and `exit 1` mutations fail |
+| `test_attestation_rejects_stale_or_missing_pin` | Provenance drift alarm remains independent | Stale/missing pin fails before semantic evaluation |
 | `test_scheduler_html_has_no_active_3490_debt_link` | Generated report reflects resolution | No `swallow-3490` or active #3490 link |
+| `test_renderer_source_has_no_3490_special_case` | Dead renderer logic cannot hide reintroduced debt | `scheduler_mutation_report.py` contains no `swallow-3490`/issue-3490 branch |
 
 ---
 
@@ -191,9 +198,12 @@ remove resolved #3490 debt wording from operations documentation
 
 - [ ] Hermetic RED proves the current wrapper exits 0 after a fake preview exits 42.
 - [ ] GREEN returns the exact fake status 42 and stops before Step 7/completion output.
-- [ ] Successful dry-run, `--no-cron --dry-run`, default Linux apply source shape, and Windows best-effort source shape remain covered.
+- [ ] Successful dry-run and `--no-cron --dry-run` remain covered.
+- [ ] Hermetic default-Linux and Windows executions assert exact child arguments, exact result/continuation behavior, and completion-output boundaries.
 - [ ] No test invokes live `crontab`, process signaling, or scheduler mutation.
 - [ ] Registry, source attestation, operations documentation, and deterministic scheduler HTML describe the same mode contract.
+- [ ] Semantic wrapper mutations refresh the test pin before evaluation; independent stale/missing-pin tests also pass.
+- [ ] The renderer source contains no hard-coded #3490/`swallow-3490` special case.
 - [ ] `uv run pytest -q tests/setup/test_new_machine_setup.py` passes.
 - [ ] Relevant scheduler enforcement tests pass, including staged-blob mutation cases.
 - [ ] `uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py --json` reports `status=ok`.
@@ -208,10 +218,11 @@ remove resolved #3490 debt wording from operations documentation
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | Review not yet run |
-| Codex | MINOR | Add the report renderer to transition scope and label not-yet-created review paths as planned |
+| Claude | UNAVAILABLE | Trusted-root long and short CLI reviews timed out without a verdict |
+| Codex | MINOR | Renderer/delegation transition needs direct fail-closed tests |
+| Fallback audit | MAJOR | Pin-refresh semantic tests, executable preservation branches, and safe `set -e` capture were missing |
 
-**Overall result:** PENDING — Codex MINOR corrections are incorporated; Claude review and final re-review remain pending. Implementation remains blocked.
+**Overall result:** FAIL pending re-review — findings are incorporated, but Codex and fallback audit must return no MAJOR before the plan can advance. Implementation remains blocked.
 
 ---
 
