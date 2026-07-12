@@ -254,7 +254,9 @@ def test_rollback_aborts_if_crontab_changed_after_failed_verification(monkeypatc
             "conflicts": [], "abort_reason": None,
         },
     )
-    reads = iter(["# keep\n", "# keep\n", "new\n", "new\n# concurrent\n"])
+    reads = iter([
+        "# keep\n", "# keep\n", "new\n# corrupt\n", "new\n# concurrent\n"
+    ])
     writes: list[str] = []
 
     result = ca.run_cutover(
@@ -277,7 +279,10 @@ def test_rollback_restores_baseline_only_when_post_write_state_is_unchanged(monk
             "conflicts": [], "abort_reason": None,
         },
     )
-    reads = iter(["# keep\n", "# keep\n", "new\n", "new\n"])
+    reads = iter([
+        "# keep\n", "# keep\n", "new\n# corrupt\n",
+        "new\n# corrupt\n", "# keep\n",
+    ])
     writes: list[str] = []
 
     result = ca.run_cutover(
@@ -518,3 +523,225 @@ def test_real_linux_cutover_filters_named_windows_scheduler_tasks_and_dev_second
     assert windows_task_ids.isdisjoint(secondary["selected"])
     assert "solver-watch-results" not in secondary["selected"]
     assert "solver-dashboard" not in secondary["selected"]
+
+
+def _transaction_fixture(monkeypatch, tmp_path, reads, write_fn=None):
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "backups")
+    monkeypatch.setattr(
+        ca.ct,
+        "plan_cutover",
+        lambda *_a, **_k: {
+            "new_text": "planned\n", "preserved": [], "uncataloged": [],
+            "conflicts": [], "abort_reason": None,
+        },
+    )
+    iterator = iter(reads)
+    writes = []
+
+    def _write(text):
+        writes.append(text)
+        if write_fn:
+            write_fn(text, len(writes))
+
+    result = ca.run_cutover(
+        "dev-primary", apply=True, ts="transaction",
+        _read=lambda: next(iterator), _write=_write,
+        _daemons=lambda _pattern: False,
+    )
+    return result, writes
+
+
+def test_applied_requires_exact_post_write_bytes(monkeypatch, tmp_path):
+    result, writes = _transaction_fixture(
+        monkeypatch, tmp_path,
+        ["baseline\n", "baseline\n", "planned\nextra\n", "planned\nextra\n", "baseline\n"],
+    )
+
+    assert result["status"] == "rolled-back"
+    assert writes == ["planned\n", "baseline\n"]
+    assert "planned\n" not in str(result)
+    assert result["planned"]["bytes"] == len("planned\n".encode())
+
+
+def test_persistent_corruption_reports_failed_verified_rollback(monkeypatch, tmp_path):
+    result, writes = _transaction_fixture(
+        monkeypatch, tmp_path,
+        ["baseline\n", "baseline\n", "corrupt\n", "corrupt\n", "corrupt\n"],
+    )
+
+    assert result["status"] == "rollback-failed"
+    assert writes == ["planned\n", "baseline\n"]
+
+
+def test_concurrent_corruption_aborts_without_rollback_write(monkeypatch, tmp_path):
+    result, writes = _transaction_fixture(
+        monkeypatch, tmp_path,
+        ["baseline\n", "baseline\n", "corrupt\n", "third-party\n"],
+    )
+
+    assert result["status"] == "rollback-aborted"
+    assert writes == ["planned\n"]
+
+
+def test_rollback_cas_read_exception_is_indeterminate(monkeypatch, tmp_path):
+    reads = iter(["baseline\n", "baseline\n", "corrupt\n"])
+
+    def _read():
+        try:
+            return next(reads)
+        except StopIteration as exc:
+            raise ca.CronReadError("secret crontab text") from exc
+
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "backups")
+    monkeypatch.setattr(ca.ct, "plan_cutover", lambda *_a, **_k: {
+        "new_text": "planned\n", "preserved": [], "abort_reason": None,
+    })
+    writes = []
+
+    result = ca.run_cutover(
+        "dev-primary", True, "cas-read", _read=_read, _write=writes.append,
+        _daemons=lambda _pattern: False,
+    )
+
+    assert result["status"] == "rollback-indeterminate"
+    assert writes == ["planned\n"]
+    assert "secret crontab text" not in str(result)
+
+
+@pytest.mark.parametrize(
+    ("observed", "expected_status"),
+    [
+        ("baseline\n", "write-failed-no-change"),
+        ("planned\n", "write-error-state-exact"),
+    ],
+)
+def test_initial_write_exception_reports_observed_state(
+    monkeypatch, tmp_path, observed, expected_status
+):
+    def fail_initial_write(_text, call_number):
+        if call_number == 1:
+            raise OSError("write detail must stay bounded")
+
+    result, writes = _transaction_fixture(
+        monkeypatch, tmp_path, ["baseline\n", "baseline\n", observed],
+        fail_initial_write,
+    )
+
+    assert result["status"] == expected_status
+    assert len(writes) == 1
+    assert "write detail must stay bounded" not in str(result)
+
+
+def test_initial_write_exception_with_partial_state_rolls_back(monkeypatch, tmp_path):
+    def fail_initial_write(_text, call_number):
+        if call_number == 1:
+            raise OSError("partial write")
+
+    result, writes = _transaction_fixture(
+        monkeypatch, tmp_path,
+        ["baseline\n", "baseline\n", "partial\n", "partial\n", "baseline\n"],
+        fail_initial_write,
+    )
+
+    assert result["status"] == "rolled-back"
+    assert writes == ["planned\n", "baseline\n"]
+
+
+def test_initial_write_and_observation_read_exceptions_are_indeterminate(
+    monkeypatch, tmp_path
+):
+    reads = iter(["baseline\n", "baseline\n"])
+
+    def _read():
+        try:
+            return next(reads)
+        except StopIteration as exc:
+            raise ca.CronReadError("unbounded read detail") from exc
+
+    def _write(_text):
+        raise OSError("unbounded write detail")
+
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "backups")
+    monkeypatch.setattr(ca.ct, "plan_cutover", lambda *_a, **_k: {
+        "new_text": "planned\n", "preserved": [], "abort_reason": None,
+    })
+    result = ca.run_cutover(
+        "dev-primary", True, "double-error", _read=_read, _write=_write,
+        _daemons=lambda _pattern: False,
+    )
+
+    assert result["status"] == "verification-indeterminate"
+    assert "unbounded" not in str(result)
+
+
+def test_post_write_verification_read_exception_is_indeterminate(monkeypatch, tmp_path):
+    reads = iter(["baseline\n", "baseline\n"])
+
+    def _read():
+        try:
+            return next(reads)
+        except StopIteration as exc:
+            raise ca.CronReadError("private contents") from exc
+
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "backups")
+    monkeypatch.setattr(ca.ct, "plan_cutover", lambda *_a, **_k: {
+        "new_text": "planned\n", "preserved": [], "abort_reason": None,
+    })
+    writes = []
+    result = ca.run_cutover(
+        "dev-primary", True, "verify-read", _read=_read,
+        _write=writes.append, _daemons=lambda _pattern: False,
+    )
+
+    assert result["status"] == "verification-indeterminate"
+    assert writes == ["planned\n"]
+    assert "private contents" not in str(result)
+
+
+@pytest.mark.parametrize(
+    ("after_error", "expected_status"),
+    [
+        ("baseline\n", "rolled-back-with-write-error"),
+        ("corrupt\n", "rollback-failed"),
+        ("third-party\n", "rollback-aborted"),
+    ],
+)
+def test_rollback_write_exception_reports_observed_state(
+    monkeypatch, tmp_path, after_error, expected_status
+):
+    def fail_rollback(_text, call_number):
+        if call_number == 2:
+            raise OSError("rollback write failed")
+
+    result, writes = _transaction_fixture(
+        monkeypatch, tmp_path,
+        ["baseline\n", "baseline\n", "corrupt\n", "corrupt\n", after_error],
+        fail_rollback,
+    )
+
+    assert result["status"] == expected_status
+    assert len(writes) == 2
+
+
+def test_rollback_verification_read_exception_is_indeterminate(monkeypatch, tmp_path):
+    reads = iter(["baseline\n", "baseline\n", "corrupt\n", "corrupt\n"])
+
+    def _read():
+        try:
+            return next(reads)
+        except StopIteration as exc:
+            raise ca.CronReadError("rollback read detail") from exc
+
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "backups")
+    monkeypatch.setattr(ca.ct, "plan_cutover", lambda *_a, **_k: {
+        "new_text": "planned\n", "preserved": [], "abort_reason": None,
+    })
+    writes = []
+    result = ca.run_cutover(
+        "dev-primary", True, "rollback-read", _read=_read,
+        _write=writes.append, _daemons=lambda _pattern: False,
+    )
+
+    assert result["status"] == "rollback-indeterminate"
+    assert writes == ["planned\n", "baseline\n"]
+    assert "rollback read detail" not in str(result)
