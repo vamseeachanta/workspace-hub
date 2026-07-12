@@ -30,6 +30,7 @@ def fixture_paths(tmp_path: Path, tasks: list[dict], classes: object | None = No
     write_yaml(catalog, {"tasks": tasks})
     write_yaml(registry, {"machines": {"linux-a": {
         "hostname": "host-a", "hostname_aliases": ["alias-a"], "os": "linux",
+        "workspace_root": "/canonical/workspace-hub",
         "harness_profile": {"roles": []},
     }}})
     write_yaml(state_classes, classes if classes is not None else {
@@ -56,6 +57,7 @@ def test_inventory_is_deterministic_alias_safe_and_check_bound(tmp_path):
     }]})
     write_yaml(registry, {"machines": {"linux-a": {
         "hostname": "host-a", "hostname_aliases": ["alias-a"], "os": "linux",
+        "workspace_root": "/canonical/workspace-hub",
         "harness_profile": {"roles": []},
     }}})
     write_yaml(classes, {"preserved_external": [], "preserved_local": []})
@@ -72,6 +74,26 @@ def test_inventory_is_deterministic_alias_safe_and_check_bound(tmp_path):
     assert subprocess.run(command + ["--check"], cwd=ROOT).returncode == 0
     catalog.write_text(catalog.read_text() + "\n", encoding="utf-8")
     assert subprocess.run(command + ["--check"], cwd=ROOT).returncode != 0
+
+
+def test_inventory_uses_registry_workspace_not_checkout_environment(tmp_path, monkeypatch):
+    generator = load_generator()
+    catalog, classes, _output, _command = fixture_paths(tmp_path, [{
+        "id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
+        "command": "$WORKSPACE_HUB/scripts/run.sh", "machines": ["linux-a"],
+        "roles": [],
+    }])
+    registry = tmp_path / "registry.yaml"
+    registry_data = yaml.safe_load(registry.read_text(encoding="utf-8"))
+    registry_data["machines"]["linux-a"]["workspace_root"] = "/canonical/workspace-hub"
+    write_yaml(registry, registry_data)
+
+    monkeypatch.setenv("WORKSPACE_HUB", "/checkout/one")
+    first = generator.build(catalog, registry, classes)
+    monkeypatch.setenv("WORKSPACE_HUB", "/checkout/two")
+    second = generator.build(catalog, registry, classes)
+
+    assert first == second
 
 
 def test_generator_source_is_in_versioned_digest_union(tmp_path):

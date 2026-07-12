@@ -93,12 +93,22 @@ def build(catalog_path: Path, registry_path: Path, classes_path: Path) -> dict:
 
 def _build_machine(catalog, registry, classes, machine_id, rows, unsupported,
                    collisions, bound_legacy):
+    workspace_root = (registry.get("machines") or {}).get(machine_id, {}).get(
+        "workspace_root"
+    )
     try:
         context = build_ownership_context(
-            catalog, registry, classes, machine_id, fail_on_collision=False
+            catalog, registry, classes, machine_id,
+            workspace_hub=workspace_root or "/", fail_on_collision=False,
         )
     except (KeyError, TypeError, ValueError) as exc:
         unsupported.append({"machine_id": machine_id, "error": str(exc)})
+        return
+    if context["selected_tasks"] and not workspace_root:
+        unsupported.append({
+            "machine_id": machine_id,
+            "error": "selected cron tasks require registry workspace_root",
+        })
         return
     collision_lines = {item["line"] for item in context["identity_collisions"]}
     for collision in context["identity_collisions"]:
