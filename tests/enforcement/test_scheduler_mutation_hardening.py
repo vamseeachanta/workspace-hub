@@ -64,6 +64,8 @@ def test_declared_operations_equal_discovered_primitives_per_path():
     [
         b'writer=crontab\nprintf x | "$writer" -\n',
         b'writer=crontab; printf x | "$writer" -\n',
+        b'writer=crontab && command "$writer" -\n',
+        b'writer=crontab || builtin "$writer" -\n',
         b'writer=crontab\nprintf x | command "$writer" -\n',
         b'writer=crontab\nbuiltin "$writer" - < input\n',
         b'writer=crontab\nenv MODE=safe "$writer" -\n',

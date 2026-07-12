@@ -24,8 +24,8 @@ def has_primitive_alias_call(code: bytes) -> bool:
     cron_name = rb"cron" + rb"tab"
     task_name = rb"Scheduled" + rb"Task"
     shell = re.findall(
-        rb"(?m)(?:^|;)\s*([A-Za-z_]\w*)\s*=\s*['\"]?(" + cron_name
-        + rb")[" + rb"'\"]?\s*(?=;|$)",
+        rb"(?m)(?:^|;|&&|\|\|)\s*([A-Za-z_]\w*)\s*=\s*['\"]?(" + cron_name
+        + rb")[" + rb"'\"]?\s*(?=;|&&|\|\||$)",
         code,
     )
     powershell = re.findall(
