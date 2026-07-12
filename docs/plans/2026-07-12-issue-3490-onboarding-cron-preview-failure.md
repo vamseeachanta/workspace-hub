@@ -1,6 +1,6 @@
 # Plan for #3490: Surface cron preview failure during new-machine dry-run
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-07-12
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3490
@@ -224,10 +224,10 @@ remove resolved #3490 debt wording from operations documentation
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | UNAVAILABLE | Trusted-root long and short CLI reviews timed out without a verdict |
-| Codex | MINOR | Renderer/delegation transition needs direct fail-closed tests |
-| Fallback audit | MAJOR | Pin-refresh semantic tests, executable preservation branches, and safe `set -e` capture were missing |
+| Codex | APPROVE | Final focused review verified all prior findings and the fully isolated fixture contract |
+| Fallback audit | APPROVE | Final review verified pin-refresh semantics, executable branch preservation, safe status capture, and host isolation |
 
-**Overall result:** FAIL pending re-review — findings are incorporated, but Codex and fallback audit must return no MAJOR before the plan can advance. Implementation remains blocked.
+**Overall result:** PASS with provider-availability disclosure — Codex and independent fallback audit approve; Claude timed out and Gemini required interactive authentication. Implementation remains blocked pending user approval.
 
 ---
 

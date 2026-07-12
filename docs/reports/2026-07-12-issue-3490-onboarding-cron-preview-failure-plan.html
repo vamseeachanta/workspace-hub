@@ -3,7 +3,7 @@
 <title>Plan — #3490 Cron preview failure</title>
 <style>body{margin:0;background:#0f1419;color:#e6edf3;font:15px/1.55 system-ui,sans-serif}.wrap{max-width:960px;margin:auto;padding:32px 22px}h1,h2{line-height:1.2}code,pre{background:#0b0f14;border:1px solid #30363d;border-radius:6px}code{padding:2px 5px}pre{padding:14px;overflow:auto}.card{border:1px solid #30363d;border-radius:8px;padding:16px;margin:14px 0}.gate{border-left:4px solid #d29922}.safe{border-left:4px solid #3fb950}li{margin:.35rem 0}.muted{color:#9da7b1}</style>
 </head><body><main class="wrap">
-<p class="muted">Issue #3490 · T2 · lane:codex · draft</p>
+<p class="muted">Issue #3490 · T2 · lane:codex · plan-review</p>
 <h1>Surface cron preview failure during new-machine dry-run</h1>
 <section class="card"><h2>Observed defect</h2><p>The onboarding dry-run will currently append <code>|| true</code> to the cron preview. A child failure can therefore be followed by <code>Setup complete!</code> and process exit 0.</p><pre>cron preview: exit 42
 current onboarding result: exit 0 + completion banner</pre></section>
