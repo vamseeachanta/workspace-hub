@@ -55,6 +55,43 @@ def test_normal_validation_rejects_catalog_task_on_substring_identity(tmp_path):
     assert "catalog_task_id requires legacy_exact_lines" in completed.stdout
 
 
+def test_normal_validation_rejects_unbound_legacy_exact_lines(tmp_path):
+    catalog = tmp_path / "catalog.yaml"
+    classes = tmp_path / "classes.yaml"
+    catalog.write_text(SCHEDULE_FILE.read_text(), encoding="utf-8")
+    classes.write_text(
+        "preserved_external: []\npreserved_local:\n"
+        "  - owner: local\n"
+        "    legacy_exact_lines: [{id: old, line: '0 1 * * * echo old'}]\n",
+        encoding="utf-8",
+    )
+    completed = subprocess.run(
+        [sys.executable, str(VALIDATOR), "--catalog", str(catalog),
+         "--state-classes", str(classes)],
+        cwd=REPO_ROOT, text=True, capture_output=True,
+    )
+    assert completed.returncode != 0
+    assert "legacy_exact_lines requires catalog_task_id" in completed.stdout
+
+
+def test_state_class_schema_is_closed():
+    validator = _load_module("validate_schedule_state_classes", VALIDATOR)
+    task_ids = {"owned"}
+    invalid = [
+        {"unknown_top": []},
+        {"preserved_external": [{"owner": "x", "fingerprint": {
+            "command_contains": "x"}, "unknown": True}]},
+        {"preserved_external": [{"owner": "x", "fingerprint": {
+            "unknown_key": "x"}}]},
+        {"preserved_external": [{"owner": "x", "fingerprint": {
+            "command_contains": []}}]},
+        {"preserved_local": [{"owner": "x", "legacy_exact_lines": [
+            {"id": "old", "line": "0 1 * * * echo old"}]}]},
+    ]
+    for classes in invalid:
+        assert validator.validate_state_classes(classes, task_ids), classes
+
+
 @pytest.fixture(scope="module")
 def schedule_data():
     assert SCHEDULE_FILE.exists(), f"{SCHEDULE_FILE} does not exist"

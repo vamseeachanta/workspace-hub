@@ -100,8 +100,9 @@ def test_duplicate_exact_lines_emit_collision_and_non_unique_rows(tmp_path):
 
 
 def test_unsupported_render_is_named_and_fails(tmp_path):
-    task = {"scheduler": "cron", "schedule": "0 1 * * *", "command": "echo bad",
-            "machines": ["linux-a"], "roles": []}
+    task = {"id": "bad", "scheduler": "cron", "schedule": "0 1 * * *",
+            "command": "echo bad", "machines": ["linux-a"],
+            "roles": [{"unsupported": "mapping"}]}
     _catalog, _classes, output, command = fixture_paths(tmp_path, [task])
     assert subprocess.run(command, cwd=ROOT).returncode != 0
     assert json.loads(output.read_bytes())["unsupported"]
@@ -132,3 +133,63 @@ def test_malformed_state_classes_fail_without_traceback(tmp_path, malformed):
     assert not output.exists()
     assert "state classes root must be a mapping" in completed.stderr
     assert "Traceback" not in completed.stderr
+
+
+@pytest.mark.parametrize(
+    ("catalog_data", "registry_data", "message"),
+    [
+        (None, {"machines": {"linux-a": {"os": "linux"}}}, "catalog root"),
+        ({}, {"machines": {"linux-a": {"os": "linux"}}}, "non-empty tasks"),
+        ({"tasks": []}, {"machines": {"linux-a": {"os": "linux"}}}, "non-empty tasks"),
+        ({"tasks": [{"id": "one"}]}, None, "registry root"),
+        ({"tasks": [{"id": "one"}]}, {}, "canonical Linux machine"),
+        ({"tasks": [{"id": "one"}]}, {"machines": {}}, "canonical Linux machine"),
+        ({"tasks": [{"id": "one"}]}, {"machines": {"win": {"os": "windows"}}},
+         "canonical Linux machine"),
+    ],
+)
+def test_inventory_rejects_empty_or_missing_required_roots(
+    tmp_path, catalog_data, registry_data, message
+):
+    catalog = tmp_path / "catalog.yaml"
+    registry = tmp_path / "registry.yaml"
+    classes = tmp_path / "classes.yaml"
+    output = tmp_path / "inventory.json"
+    write_yaml(catalog, catalog_data)
+    write_yaml(registry, registry_data)
+    write_yaml(classes, {"preserved_external": [], "preserved_local": []})
+    command = [sys.executable, str(SCRIPT), "--catalog", str(catalog),
+               "--registry", str(registry), "--state-classes", str(classes),
+               "--output", str(output)]
+    completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+    assert completed.returncode != 0
+    assert message in completed.stderr
+    assert not output.exists()
+
+
+def test_inventory_rejects_duplicate_task_ids_in_write_and_check_modes(tmp_path):
+    task = {"id": "duplicate", "scheduler": "cron", "schedule": "0 1 * * *",
+            "command": "echo one", "machines": ["linux-a"], "roles": []}
+    catalog, _classes, output, command = fixture_paths(tmp_path, [task, dict(task)])
+    completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+    assert completed.returncode != 0
+    assert "duplicate task id" in completed.stderr
+    assert not output.exists()
+    output.write_text("{}\n", encoding="utf-8")
+    checked = subprocess.run(command + ["--check"], cwd=ROOT, text=True, capture_output=True)
+    assert checked.returncode != 0
+    assert "duplicate task id" in checked.stderr
+
+
+def test_inventory_rejects_legacy_lines_without_task_binding(tmp_path):
+    task = {"id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
+            "command": "echo one", "machines": ["linux-a"], "roles": []}
+    classes = {"preserved_external": [], "preserved_local": [{
+        "owner": "local",
+        "legacy_exact_lines": [{"id": "old", "line": "0 1 * * * echo old"}],
+    }]}
+    _catalog, _classes, output, command = fixture_paths(tmp_path, [task], classes)
+    completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+    assert completed.returncode != 0
+    assert "legacy_exact_lines requires catalog_task_id" in completed.stderr
+    assert not output.exists()

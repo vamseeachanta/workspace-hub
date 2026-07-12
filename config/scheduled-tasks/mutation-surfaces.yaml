@@ -12,7 +12,7 @@ surfaces:
         destructive: true
         authority_branches:
           - {id: canonical-exact-line, mechanism: canonical-exact-line, config_source: config/scheduled-tasks/schedule-tasks.yaml, destructive: true, strength: exact}
-          - {id: legacy-exact-line, mechanism: legacy-exact-line, config_source: docs/reports/issue-3475-command-identity-inventory.json, destructive: true, strength: exact}
+          - {id: legacy-exact-line, mechanism: legacy-exact-line, config_source: config/workstations/harness-state-classes.yaml, destructive: true, strength: exact}
         transaction: &reference_transaction
           lock: true
           baseline_snapshot: true
