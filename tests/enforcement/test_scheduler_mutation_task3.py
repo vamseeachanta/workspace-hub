@@ -389,7 +389,9 @@ def test_wrapper_attestations_reject_self_refreshed_reachability_bypass(source, 
     original_body = records[source]
     original_pin = wrapper_module.WRAPPER_SHA256[source]
     if bypass == "early-exit":
-        mutated = b"exit 0\n" + original_body
+        mutated = original_body.replace(
+            b"set -euo pipefail\n", b"set -euo pipefail\nexit 0\n", 1
+        )
     else:
         nested = b"\n".join(b"  " + line for line in original_body.splitlines())
         mutated = b"if false; then\n" + nested + b"\nfi\nexit 0\n"
