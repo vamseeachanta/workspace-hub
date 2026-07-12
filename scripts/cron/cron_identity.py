@@ -72,7 +72,7 @@ def _selected(tasks: list[dict], roles: list[str], tokens: set[str]) -> list[dic
 
 def build_ownership_context(
     catalog: dict, registry: dict, state_classes: dict, machine_id: str,
-    *, workspace_hub: str | None = None,
+    *, workspace_hub: str | None = None, fail_on_collision: bool = True,
 ) -> dict[str, Any]:
     """Render selected tasks and bind complete canonical and legacy lines."""
     context = build_context(machine_id, registry=registry, workspace_hub=workspace_hub)
@@ -84,13 +84,20 @@ def build_ownership_context(
     canonical: dict[str, list[str]] = {}
     legacy: dict[str, list[dict[str, str]]] = {}
     identities: dict[str, dict[str, str]] = {}
+    collisions: list[dict[str, Any]] = []
 
     def bind(line: str, task_id: str, source: str, variant_id: str = "") -> None:
         if not isinstance(line, str) or not line:
             raise ValueError(f"{task_id}: exact cron line must be non-empty")
         prior = identities.get(line)
         if prior and prior["catalog_task_id"] != task_id:
-            raise ValueError(f"exact cron line collision: {task_id}")
+            collision = {"line": line,
+                         "task_ids": sorted([prior["catalog_task_id"], task_id]),
+                         "sources": sorted([prior["source"], source])}
+            collisions.append(collision)
+            if fail_on_collision:
+                raise ValueError(f"exact cron line collision: {task_id}")
+            return
         identities[line] = {"catalog_task_id": task_id, "source": source,
                             "variant_id": variant_id}
 
@@ -116,4 +123,5 @@ def build_ownership_context(
     return {"machine_id": machine_id, "roles": roles, "selected_tasks": rendered,
             "selected_task_ids": selected_ids, "canonical_exact_lines": canonical,
             "legacy_exact_lines": legacy, "line_identities": identities,
-            "preservation_fingerprints": preservation}
+            "preservation_fingerprints": preservation,
+            "identity_collisions": collisions}

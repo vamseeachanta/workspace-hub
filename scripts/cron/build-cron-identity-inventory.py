@@ -23,6 +23,7 @@ DEFAULT_REGISTRY = ROOT / "config/workstations/registry.yaml"
 DEFAULT_CLASSES = ROOT / "config/workstations/harness-state-classes.yaml"
 DEFAULT_OUTPUT = ROOT / "docs/reports/issue-3475-command-identity-inventory.json"
 SOURCE_PATHS = (
+    Path(__file__).resolve(),
     ROOT / "scripts/cron/cron_render.py",
     ROOT / "scripts/cron/cron_transaction.py",
     ROOT / "scripts/cron/cron_identity.py",
@@ -52,7 +53,7 @@ def input_digest(paths: list[Path]) -> str:
 def build(catalog_path: Path, registry_path: Path, classes_path: Path) -> dict:
     catalog = yaml.safe_load(catalog_path.read_text(encoding="utf-8")) or {}
     registry = yaml.safe_load(registry_path.read_text(encoding="utf-8")) or {}
-    classes = yaml.safe_load(classes_path.read_text(encoding="utf-8")) or {}
+    classes = yaml.safe_load(classes_path.read_text(encoding="utf-8"))
     schema_errors = validate_state_classes(
         classes, {task.get("id") for task in catalog.get("tasks") or []}
     )
@@ -68,24 +69,30 @@ def build(catalog_path: Path, registry_path: Path, classes_path: Path) -> dict:
     bound_legacy: set[tuple[str, str]] = set()
     for machine_id in machines:
         try:
-            context = build_ownership_context(catalog, registry, classes, machine_id)
+            context = build_ownership_context(
+                catalog, registry, classes, machine_id, fail_on_collision=False
+            )
         except (KeyError, TypeError, ValueError) as exc:
             unsupported.append({"machine_id": machine_id, "error": str(exc)})
             continue
-        seen: dict[str, str] = {}
+        collision_lines = {item["line"] for item in context["identity_collisions"]}
+        for collision in context["identity_collisions"]:
+            collisions.append({
+                "machine_id": machine_id,
+                "task_ids": collision["task_ids"],
+                "line_sha256": hashlib.sha256(
+                    collision["line"].encode("utf-8")
+                ).hexdigest(),
+            })
         for task_id, lines in sorted(context["canonical_exact_lines"].items()):
             for line in lines:
                 line_digest = hashlib.sha256(line.encode("utf-8")).hexdigest()
-                if line in seen and seen[line] != task_id:
-                    collisions.append({"machine_id": machine_id, "task_ids": sorted([seen[line], task_id]),
-                                       "line_sha256": line_digest})
-                seen[line] = task_id
                 variants = [item["id"] for item in context["legacy_exact_lines"].get(task_id, [])]
                 bound_legacy.update((task_id, variant) for variant in variants)
                 rows.append({"canonical_line_sha256": line_digest,
                              "legacy_variant_ids": sorted(variants),
                              "machine_id": machine_id, "task_id": task_id,
-                             "unique": True})
+                             "unique": line not in collision_lines})
     declared_legacy = {
         (row["catalog_task_id"], variant["id"])
         for group in ("preserved_external", "preserved_local")
