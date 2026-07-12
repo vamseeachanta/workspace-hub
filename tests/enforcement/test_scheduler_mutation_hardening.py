@@ -63,7 +63,13 @@ def test_declared_operations_equal_discovered_primitives_per_path():
     "body",
     [
         b'writer=crontab\nprintf x | "$writer" -\n',
+        b'writer=crontab; printf x | "$writer" -\n',
+        b'writer=crontab\nprintf x | command "$writer" -\n',
+        b'writer=crontab\nbuiltin "$writer" - < input\n',
+        b'writer=crontab\nenv MODE=safe "$writer" -\n',
         b"$writer = 'Register-ScheduledTask'\n& $writer -TaskName X\n",
+        b'$writer = "Register-ScheduledTask"; & "$writer" -TaskName X\n',
+        b"$writer = 'Set-ScheduledTask'\n. $writer -TaskName X\n",
         b"$writer = 'Unregister-ScheduledTask'\nInvoke-Expression \"$writer -TaskName X\"\n",
     ],
 )
@@ -93,6 +99,47 @@ def test_windows_operation_set_rejects_omitted_same_primitive_route():
         row["operations"] = row["operations"][:1]
 
     assert any("Windows operation set" in error for error in validate_changed(mutate).errors)
+
+
+@pytest.mark.parametrize(
+    ("old", "new", "missing"),
+    [
+        (
+            b"Unregister-ScheduledTask -TaskName $Name -TaskPath $TaskPath -Confirm:$false",
+            b"Write-Host removed-route-unregister",
+            "remove:unregister-fixed-task",
+        ),
+        (
+            b"        Unregister-ScheduledTask -TaskName $Name -TaskPath $TaskPath -Confirm:$false\n",
+            b"        Write-Host removed-replacement-unregister\n",
+            "replace:unregister-register-fixed-task",
+        ),
+        (
+            b"        Register-ScheduledTask `\n",
+            b"        Write-Host removed-replacement-register `\n",
+            "replace:unregister-register-fixed-task",
+        ),
+    ],
+)
+def test_windows_operation_derivation_is_route_bounded(old, new, missing):
+    checker, records, _registry = current_contract()
+    source = b"scripts/windows/setup-scheduler-tasks.ps1"
+    body = records[source]
+    if missing == "remove:unregister-fixed-task":
+        start = body.index(b"if ($RemoveMode)")
+        end = body.index(b"    if ($PSCmdlet.ParameterSetName", start)
+        records[source] = body[:start] + body[start:end].replace(old, new, 1) + body[end:]
+    else:
+        remove_end = body.index(b"    if ($PSCmdlet.ParameterSetName", body.index(b"if ($RemoveMode)"))
+        start = body.index(b"    $existing = Get-ScheduledTask", remove_end)
+        records[source] = body[:start] + body[start:].replace(old, new, 1)
+    derived = checker.derive_windows_task_operations(records)
+    assert missing not in derived
+    other = {
+        "remove:unregister-fixed-task",
+        "replace:unregister-register-fixed-task",
+    } - {missing}
+    assert other <= derived
 
 
 def test_transaction_attestations_reject_semantic_inversions():
