@@ -12,7 +12,7 @@
  a{color:var(--acc)} ul{margin:6px 0;padding-left:20px} li{margin:3px 0} .pill{font-size:12px;padding:1px 7px;border-radius:10px;background:rgba(130,140,160,.16)}
 </style></head><body>
 <h1>Session handoff — BokaLift diffraction → pamphlet → band → Hugging Face</h1>
-<p class="sub">2026-07-11 → 07-12 · repos: digitalmodel, llm-wiki-acma, workspace-hub, deckhand-licensed-runs-queue · HF: aceengineer · <span class="pill">no processes left running</span></p>
+<p class="sub">2026-07-11 → 07-12 · repos: digitalmodel, client-wiki (private), workspace-hub, deckhand-licensed-runs-queue · HF: aceengineer · <span class="pill">no processes left running</span></p>
 
 <h2>Outcome</h2>
 <p>End-to-end: fixed the BokaLift 2 OrcaWave diffraction run (mesh → real inertia → roll-damping sensitivity), standardized the diffraction HTML report, wired the real vessel RAO into the installation pamphlet with a ζ=5–10% roll-damping <b>band</b>, de-identified the RAOs to a vessel_db ID, and published them as a <b>public, queryable Hugging Face dataset</b> — with a data-quality gate that withheld two physically-wrong-but-faithful data products.</p>
@@ -21,7 +21,7 @@
 <table>
 <tr><th>Repo</th><th>Merged</th><th>Open / tracked</th></tr>
 <tr><td>digitalmodel</td><td>#1539 report+results-json · #1541 pamphlet RAO discovery · #1543 band fn · #1545 band wiring</td><td>#1538 pamphlet (core done) · #1540 HF manifest reconcile · #1548, #1550 (cat:data gate catches)</td></tr>
-<tr><td>llm-wiki-acma</td><td>#219/#220/#222/#223 mesh→inertia→damping→sensitivity · #232/#233 ζ5% capture+restore · #235 persist artifacts · #236 de-identify · (#218 CLOSED)</td><td>—</td></tr>
+<tr><td>client-wiki (private)</td><td>#219/#220/#222/#223 mesh→inertia→damping→sensitivity · #232/#233 ζ5% capture+restore · #235 persist artifacts · #236 de-identify · (#218 CLOSED)</td><td>—</td></tr>
 <tr><td>workspace-hub</td><td>#3481 HF publisher: --card-note + mean/neg stats + 9 tests · (#3480 CLOSED)</td><td>#3483 tool bug: --public no-op on existing repo</td></tr>
 <tr><td>deckhand</td><td>—</td><td>#527, #545 (satisfied by #1539) — coordination only</td></tr>
 </table>
