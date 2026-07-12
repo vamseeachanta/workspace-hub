@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (212)
+## Feedback — execution lessons & hazards (209)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -66,8 +66,6 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [cross-review-finds-what-self-review-misses](feedback_cross_review_finds_what_self_review_misses.md) — "Code-stage adversarial cross-review consistently finds defects that the implementing session's self-review misses — never skip the cross-review gate post-implementation, even when feeling confident"
 - [Cross-review catches real issues](feedback_cross_review_valuable.md) — User values cross-review for identifying platform limitations and design gaps
 - [Dark intelligence for Excel calculation extraction](feedback_dark_intelligence_excel.md) — Use dark intelligence archive to extract calculation logic from legacy Excel files — strips client context, preserves engineering methodology, avoids legal issues
-- [feedback_delegate_heavy_work_to_codex_for_tokens](feedback_delegate_heavy_work_to_codex_for_tokens.md) — "Delegate heavy work (reviews, analysis, implementation) to the Codex broker + fresh-context subagents to conserve main-session Claude tokens."
-- [feedback_delegate_token_heavy_to_codex](feedback_delegate_token_heavy_to_codex.md) — Standing preference — delegate token-heavy work to Codex where feasible
 - [feedback_dependabot_merge_no_rebase_trust_clean](feedback_dependabot_merge_no_rebase_trust_clean.md) — "When batch-merging PRs, don't rebase under non-strict rulesets (it cancels queued CI) and merge only on GitHub's mergeStateStatus==CLEAN, never by counting gh pr checks"
 - [feedback_dev_primary_equality_green_is_self_healing](feedback_dev_primary_equality_green_is_self_healing.md) — "Don't manually chase dev-primary's equality-matrix \"green\" — STALE-CHECKOUT is a lagging, self-healing indicator; chasing it on the shared churning checkout risks clobbering concurrent cron/session work"
 - [feedback_digitalmodel_reports_dir_gitignored](feedback_digitalmodel_reports_dir_gitignored.md) — "digitalmodel .gitignore ignores any reports/ dir — completeness HTML must go to a tracked path, not docs/reports/"
@@ -129,7 +127,6 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [Serialize commit phase when parallel agents touch shared index files](feedback_multi_agent_commit_serialization.md) — Parallel agents editing the same index/README/shared file (e.g., docs/plans/README.md) race on git index lock; commits merge into whichever agent won the race, losing per-plan attribution. Serialize the commit phase or use per-agent worktrees
 - [Multi-session /whats-next swarm — pattern, recovery, and arbitration](feedback_multi_session_swarm.md) — Two or more concurrent Claude Code sessions running /whats-next on the same machine produce healthy non-colliding plan work; the wip-label gate prevents same-issue collision and auto-sync arbitrates push contention. Don't block, coordinate.
 - [n-night-blocker-promote-to-replan](feedback_n_night_blocker_promote_to_replan.md) — "When a closure-first / overnight agent reports the SAME blocker on the SAME issue 3+ nights in a row, stop re-running and escalate to a design-replan instead of continuing the polling pattern"
-- [Naive secret-scan false-positive cascade](feedback_naive_secret_scan_false_positive_cascade.md) — Agent-prompt regex `(api_key|token|secret|password)` matches benign prose; rely on hardened pre-commit hook for workspace-hub paths instead of duplicating naive scans
 - [feedback_narrow_grep_false_dead_before_deletion](feedback_narrow_grep_false_dead_before_deletion.md) — "A scope-limited grep can return a confident false-\"dead\" reading and nearly greenlight deleting a LIVE subsystem — always re-grep wide (adversarially) before any archival/deletion."
 - [Never offer to self-label status:plan-approved](feedback_never_offer_to_self_label_plan_approved.md) — When presenting a plan for user approval, provide links + CLI commands only — never offer to run the label-transition command on the user's behalf
 - [No fluffing around](feedback_no_fluff.md) — User wants direct execution, not excessive process overhead
@@ -220,10 +217,12 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [worktree-materialization-variance-workspace-hub](feedback_worktree_materialization_variance.md) — "workspace-hub git worktree add materialization is indeterminate — 17 min one run, 1h+ stalled another, depending on parallel agent I/O load"
 - [x11vnc-vs-tigervnc-headless-rule](feedback_x11vnc_vs_tigervnc_headless.md) — On a headless Ubuntu host (no graphical login), x11vnc is the wrong tool — it crashloops because there's no display to mirror; use TigerVNC vncserver on its own display number instead
 
-## Reference — external/pointer knowledge (2)
+## Reference — external/pointer knowledge (4)
 
 - [ai-orchestration-models-agents-and-cross-review](ai-orchestration.md) — "Model routing, provider constraints, quota management, cross-AI review patterns, and Hermes config.yaml mapping"
 - [network-machines](network_machines.md) — LAN machines — IPs, SSH access, credentials, and data sync status for ace-linux-1/2, home-win, macbook-portable, licensed-win-1
+- [reference_ace_win_1_equality_evidence_stale](reference_ace_win_1_equality_evidence_stale.md) — ace-win-1 (acma-ansys05) equality evidence is stale — last collected 2026-06-28; it self-publishes under Git Bash so a Linux box cannot refresh it. Records its last-known capabilities + the exact remediation.
+- [reference_crossprovider_feed_activity_2026_07](reference_crossprovider_feed_activity_2026_07.md) — "As of 2026-07-11 only Claude+Codex actively feed the cross-provider dream; Gemini dormant since 07-07, Hermes daemon-alive but no new conversation sessions since 06-10 — so distiller learnings=0 for those two is expected, not a bug"
 
 ## User — profile & preferences (1)
 
@@ -236,3 +235,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 ## Other (1)
 
 - [shell-git-patterns](shell-git-patterns.md)
+
+## Project-Memory (1)
+
+- [cfd-execution-box](cfd-execution-box.md) — Current dedicated CFD execution node and routing evidence
