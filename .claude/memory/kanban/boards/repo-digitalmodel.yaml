@@ -7655,7 +7655,7 @@ cards:
     title: Fix AQWA GDF triangles, frequency ordering, and v261 discovery
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1571
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:engineering
       - status:plan-approved

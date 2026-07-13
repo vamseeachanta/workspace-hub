@@ -1597,7 +1597,7 @@ cards:
     title: "fix(capabilities): economics-<slug> envelopes falsely claim 'sanctioned V30 / full-cycle' + advertise uncomputed MIRR/IRR"
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/974
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - priority:medium
       - domain:reports
