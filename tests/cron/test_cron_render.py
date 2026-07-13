@@ -153,3 +153,22 @@ def test_expand_command_only_replaces_exact_workspace_and_log_variables(monkeypa
     assert f"{REPO}_BACKUP" not in expanded
     assert f"echo /tmp/workspace-hub-cron.log /tmp/workspace-hub-cron.log" in expanded
     assert f" {REPO} {REPO} " in expanded
+
+
+def test_build_context_exposes_registry_os_for_scheduler_routing():
+    """#3507 gpu-claw incident: setup-cron.sh skipped Linux cron reconciliation for
+    ANY contribute-minimal machine, equating the schedule variant with Windows.
+    The discriminator must be the registry os field, exposed via build_context."""
+    registry = {"machines": {
+        "gpu-claw": {"hostname": "gpu-claw", "os": "linux",
+                     "schedule_variant": "contribute-minimal"},
+        "ace-win-1": {"hostname": "acma-ansys05", "os": "windows",
+                      "schedule_variant": "contribute-minimal"},
+        "legacy-box": {"hostname": "legacy-box",
+                       "schedule_variant": "contribute"},
+    }}
+    render = _load_renderer()
+    assert render.build_context("gpu-claw", registry=registry)["os"] == "linux"
+    assert render.build_context("ace-win-1", registry=registry)["os"] == "windows"
+    # missing os defaults to linux — cron reconciliation must not silently skip
+    assert render.build_context("legacy-box", registry=registry)["os"] == "linux"

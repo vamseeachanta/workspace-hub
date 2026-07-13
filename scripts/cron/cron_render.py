@@ -113,6 +113,10 @@ def build_context(
         "log": str(log),
         "schedule_variant": schedule_variant,
         "schedule_tokens": ordered_schedule_tokens,
+        # Scheduler routing (#3507): setup-cron.sh must key its Windows-Task-Scheduler
+        # skip on the registry os, not the schedule variant. Default linux — a missing
+        # os must not silently skip cron reconciliation.
+        "os": str(entry.get("os") or "linux").lower(),
     }
 
 
@@ -209,7 +213,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--cron-lines", action="store_true")
     parser.add_argument(
         "--field",
-        choices=["machine_id", "schedule_variant", "workspace_hub", "log", "known"],
+        choices=["machine_id", "schedule_variant", "workspace_hub", "log", "known", "os"],
         default=None,
     )
     args = parser.parse_args(argv)

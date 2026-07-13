@@ -47,7 +47,11 @@ SCHEDULE_VARIANT="$(uv run --no-project python "$CRON_RENDER" \
   --machine "$TARGET_MACHINE" --field schedule_variant)"
 
 echo "Host: ${TARGET_MACHINE} → machine: ${CANONICAL_MACHINE} → cron_variant: ${SCHEDULE_VARIANT}"
-if [[ "$SCHEDULE_VARIANT" == "contribute-minimal" ]]; then
+# #3507: key the Task-Scheduler skip on the registry os field, NOT the schedule
+# variant — gpu-claw is a linux contribute-minimal box and must get real crons.
+MACHINE_OS="$(uv run --no-project python "$CRON_RENDER" \
+  --machine "$TARGET_MACHINE" --field os)"
+if [[ "$MACHINE_OS" == "windows" ]]; then
   echo "This machine uses Windows Task Scheduler; Linux cron reconciliation is skipped."
   exit 0
 fi
