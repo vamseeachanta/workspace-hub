@@ -2,12 +2,12 @@
  "fingerprint_version": 1,
  "role": "contribute",
  "hostname": "ace-linux-2",
- "ts": "2026-07-13T03:47:10.225901+00:00",
+ "ts": "2026-07-13T14:27:10.714670+00:00",
  "clone_head": "796940647",
- "behind_origin": 0,
+ "behind_origin": 13,
  "ahead_origin": 0,
- "harness_version": null,
- "harness_install": null,
+ "harness_version": "2.1.207",
+ "harness_install": "npm-global",
  "registry_sha256": "d5047010128b230def073584f747cf57e4a2e7bd1aafeed893389f2417c74b21",
  "learning_cron_ages_h": {
   "comprehensive-learning-nightly": null,
@@ -21,5 +21,6 @@
   "gemini": "8a66816baad17782"
  },
  "on_main": true,
- "index_lock_stale_min": null
+ "index_lock_stale_min": null,
+ "last_publish_duration_s": 0
 }
