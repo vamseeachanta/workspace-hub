@@ -23252,3 +23252,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3514
+    title: 'Compliance alert: W29 — 0% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3514
+    gh_state: open
+    gh_labels:
+      - priority:critical
+      - compliance-alert
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
