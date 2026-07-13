@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plan #3518 — Scheduler wrapper attestation synchronization</title>
+<style>body{font:16px/1.55 system-ui,sans-serif;max-width:980px;margin:40px auto;padding:0 24px;color:#14213d}h1,h2{line-height:1.2}.gate{border-left:5px solid #a61b1b;padding:12px 18px;background:#fff7f7}table{border-collapse:collapse;width:100%}th,td{border:1px solid #d8dee9;padding:9px;text-align:left;vertical-align:top}th{background:#eef2f7}code{background:#eef2f7;padding:1px 4px}.ok{color:#166534}</style>
+</head><body>
+<h1>Plan #3518: Scheduler wrapper attestation synchronization</h1>
+<p><strong>Status:</strong> plan-review · <strong>Complexity:</strong> T2 · <strong>Lane:</strong> Claude</p>
+<div class="gate"><strong>Implementation gate:</strong> planning and review may proceed; code changes remain blocked until explicit user approval.</div>
+<h2>Observed regression</h2>
+<p>PR #3515 correctly changed Linux/Windows selection from a schedule-variant shortcut to the registry <code>os</code> field. The enforcement pin and semantic source-shape contract still describe the removed branch, causing all five setup-wrapper attestations to fail.</p>
+<h2>Proposed repair</h2>
+<ol><li>Write a named RED baseline test plus mutants that temporarily self-pin the imported wrapper module in <code>try/finally</code>, so failures exercise semantic shape rather than the stale production pin.</li><li>Cover the registry OS lookup, exact Windows predicate, partial dead scope, indented early exit, OS-variable overwrite, remote/mode/reload ordering, and reachable unconditional terminal delegation.</li><li>Update and stage the semantic shape while deliberately retaining the stale production pin; prove semantic tests pass while only the exact-pin test remains RED.</li><li>Load the exact source record through <code>checker.read_index_records(ROOT)</code>, prove staged bytes equal the working source, derive the final pin, and verify it again on the PR merge ref.</li><li>Run the task-3 suite, full scheduler guard, legal scan, and cross-provider adversarial code review.</li></ol>
+<h2>Files</h2>
+<table><thead><tr><th>Path</th><th>Disposition</th></tr></thead><tbody>
+<tr><td><code>tests/enforcement/test_scheduler_mutation_task3.py</code></td><td>RED/GREEN mutation coverage</td></tr>
+<tr><td><code>scripts/enforcement/scheduler_mutation_wrapper_attestations.py</code></td><td>Current source shape and exact pin</td></tr>
+<tr><td><code>scripts/cron/setup-cron.sh</code></td><td class="ok">No change; runtime behavior stays byte-identical</td></tr>
+</tbody></table>
+<h2>Delivery and safety</h2>
+<p>After approval, implementation will land on an independent #3518 branch and PR. Draft PR #3517 will rebase after #3518 merges and rerun its generated inventory and scheduler guard; #3518 acceptance will not depend on #3517. No live scheduler, crontab, or daemon mutation is in scope.</p>
+</body></html>
