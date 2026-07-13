@@ -63,3 +63,52 @@ def test_refuses_runs_target(monkeypatch):
     with pytest.raises(SystemExit) as exc:
         srhf.main()
     assert "runs" in str(exc.value).lower()
+
+
+# --- C5 (wh#3488): rebuild-on-publish Vercel Deploy Hook trigger ---
+
+class _FakeResp:
+    status = 200
+    def __enter__(self): return self
+    def __exit__(self, *a): return False
+
+
+def test_trigger_deploy_hook_fires_when_env_set(monkeypatch):
+    calls = {}
+    def fake_urlopen(req, timeout=None):
+        calls["url"] = req.full_url
+        calls["method"] = req.get_method()
+        return _FakeResp()
+    monkeypatch.setenv("VERCEL_DEPLOY_HOOK_URL", "https://hook.example/deploy/abc")
+    monkeypatch.setattr(srhf.urllib.request, "urlopen", fake_urlopen)
+    status = srhf.trigger_deploy_hook()
+    assert status == 200
+    assert calls["url"] == "https://hook.example/deploy/abc"
+    assert calls["method"] == "POST"  # deploy hooks require POST
+
+
+def test_trigger_deploy_hook_skips_when_env_unset(monkeypatch):
+    monkeypatch.delenv("VERCEL_DEPLOY_HOOK_URL", raising=False)
+    called = {"n": 0}
+    monkeypatch.setattr(srhf.urllib.request, "urlopen",
+                        lambda *a, **k: called.__setitem__("n", called["n"] + 1))
+    assert srhf.trigger_deploy_hook() is None
+    assert called["n"] == 0  # no network call when the hook isn't configured
+
+
+def test_trigger_deploy_hook_disabled_flag_skips(monkeypatch):
+    monkeypatch.setenv("VERCEL_DEPLOY_HOOK_URL", "https://hook.example/deploy/abc")
+    called = {"n": 0}
+    monkeypatch.setattr(srhf.urllib.request, "urlopen",
+                        lambda *a, **k: called.__setitem__("n", called["n"] + 1))
+    assert srhf.trigger_deploy_hook(enabled=False) is None
+    assert called["n"] == 0
+
+
+def test_trigger_deploy_hook_never_raises_on_failure(monkeypatch):
+    monkeypatch.setenv("VERCEL_DEPLOY_HOOK_URL", "https://hook.example/deploy/abc")
+    def boom(*a, **k):
+        raise OSError("network down")
+    monkeypatch.setattr(srhf.urllib.request, "urlopen", boom)
+    # a failed rebuild trigger must NEVER fail an otherwise-successful publish
+    assert srhf.trigger_deploy_hook() is None
