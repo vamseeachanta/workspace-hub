@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Regression: the 2 a1 uncataloged live cron lines must classify as preserved (#2988 F2).
+"""Regressions for exact ownership of legacy ace-linux-1 cron lines (#2988, #3384).
 
-The F2 cron cutover on ace-linux-1 fail-closed-blocked on 2 live cron lines that no class
-in harness-state-classes.yaml + the role catalog (schedule-tasks.yaml) recognised. This test
-loads the REAL catalog + REAL state-classes, builds catalog_commands + fingerprints exactly as
-cron_apply.py does, and asserts both lines classify as "preserved_external" (the keep-verbatim
-return value of classify_line) — NOT "uncataloged".
+The tests load the real catalog and state classes, build ownership exactly as cron_apply.py does,
+and prove externally owned lines remain preserved while catalog-owned legacy variants are
+deduplicated into the generated managed block.
 
 Run: uv run --no-project --with pyyaml pytest tests/cron/test_a1_preserved.py
 """
@@ -43,6 +41,20 @@ A1_NOTIFICATION_PURGE_LINE = (
     "30 4 * * * cd /mnt/local-analysis/workspace-hub && "
     'find logs/notifications/ -name "*.jsonl" -mtime +7 -delete 2>/dev/null || true'
 )
+A1_SESSION_CURATION_LINE = (
+    "47 */6 * * * mkdir -p $WORKSPACE_HUB/logs/monitoring && "
+    "PATH=$HOME/.local/bin:$PATH; cd /mnt/local-analysis/workspace-hub && "
+    "bash scripts/curation/curate-session-memory.sh >> "
+    "/mnt/local-analysis/workspace-hub/logs/monitoring/"
+    "session-curation-$(date +\\%Y-\\%m-\\%d).log 2>&1"
+)
+A1_EQUALITY_REFRESH_LINE = (
+    "50 */6 * * * PATH=$HOME/.local/bin:$PATH; "
+    "cd /mnt/local-analysis/workspace-hub && "
+    "bash scripts/readiness/equality-matrix-cron.sh >> "
+    "/mnt/local-analysis/workspace-hub/logs/quality/"
+    "equality-refresh-$(date +\\%Y-\\%m-\\%d).log 2>&1"
+)
 
 
 def _classify(line: str) -> str:
@@ -51,6 +63,14 @@ def _classify(line: str) -> str:
     registry = yaml.safe_load((REPO / "config" / "workstations" / "registry.yaml").read_text())
     ownership = ca.build_ownership_context(catalog, registry, classes, "dev-primary")
     return ct.classify_line_detail(line, ownership_context=ownership)["class"]
+
+
+def _classify_detail(line: str) -> dict:
+    catalog = yaml.safe_load((REPO / "config" / "scheduled-tasks" / "schedule-tasks.yaml").read_text())
+    classes = yaml.safe_load((REPO / "config" / "workstations" / "harness-state-classes.yaml").read_text())
+    registry = yaml.safe_load((REPO / "config" / "workstations" / "registry.yaml").read_text())
+    ownership = ca.build_ownership_context(catalog, registry, classes, "dev-primary")
+    return ct.classify_line_detail(line, ownership_context=ownership)
 
 
 def test_llm_wiki_corpus_ingest_is_preserved():
@@ -64,7 +84,39 @@ def test_notification_purge_local_is_exactly_cataloged():
 def test_duplicated_notification_purge_line_also_cataloged():
     # The a1 crontab has this line twice; both instances must classify the same.
     assert _classify(A1_NOTIFICATION_PURGE_LINE) == "cataloged"
-    assert _classify(A1_NOTIFICATION_PURGE_LINE) == "cataloged"
+
+
+def test_recent_a1_catalog_duplicates_are_exactly_owned():
+    for line, task_id in (
+        (A1_SESSION_CURATION_LINE, "session-curation"),
+        (A1_EQUALITY_REFRESH_LINE, "equality-matrix-refresh"),
+    ):
+        assert _classify_detail(line) == {
+            "line": line,
+            "class": "cataloged",
+            "reason": "legacy-exact-line",
+            "catalog_task_id": task_id,
+            "variant_id": "ace-linux-1-pre-managed-block",
+        }
+
+
+def test_recent_a1_catalog_duplicates_are_deduped_into_managed_block():
+    live = A1_SESSION_CURATION_LINE + "\n" + A1_EQUALITY_REFRESH_LINE + "\n"
+    result = ca.run_cutover(
+        "dev-primary", apply=False, ts="recent-a1-duplicates", _read=lambda: live
+    )
+
+    assert result["status"] == "dry-run"
+    assert result["new_text"].count("curate-session-memory.sh") == 1
+    assert result["new_text"].count("equality-refresh-$(date") == 1
+    assert A1_SESSION_CURATION_LINE not in result["new_text"]
+    assert A1_EQUALITY_REFRESH_LINE not in result["new_text"]
+
+    rerun = ca.run_cutover(
+        "dev-primary", apply=False, ts="recent-a1-idempotent", _read=lambda: result["new_text"]
+    )
+    assert rerun["status"] == "dry-run"
+    assert rerun["new_text"] == result["new_text"]
 
 
 def test_notification_purge_catalog_owned_line_is_deduped_without_apply_rollback(monkeypatch, tmp_path):
@@ -98,8 +150,10 @@ def test_state_classes_still_parses_with_expected_counts():
         entry.get("catalog_task_id") == "notification-purge"
         for entry in classes.get("preserved_local", [])
     )
-    # preserved_local: 2 a2 + 1 new a1 = 3
-    assert len(classes["preserved_local"]) == 3
+    # preserved_local: 2 a2 + 3 a1 catalog-owned legacy variants = 5
+    assert len(classes["preserved_local"]) == 5
     owners_loc = [e["owner"] for e in classes["preserved_local"]]
     assert owners_loc.count("ace-linux-2") == 2
-    assert "ace-linux-1" in owners_loc
+    assert owners_loc.count("ace-linux-1") == 3
+    catalog_ids = {e.get("catalog_task_id") for e in classes["preserved_local"]}
+    assert {"notification-purge", "session-curation", "equality-matrix-refresh"} <= catalog_ids
