@@ -3385,3 +3385,16 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#998
+    title: 'feat(vessel_fleet): rig-selection analytics + insights capability — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/998
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -23040,7 +23040,7 @@ cards:
     title: 'feat(hf): rebuild-on-publish — Vercel Deploy Hook from publishing skill [C5]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3488
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:data-pipeline
       - cat:tooling
@@ -23172,7 +23172,7 @@ cards:
     title: 'ops(dev-secondary): equivalence fingerprint ABSENT — sentinel not publishing from ace-linux-2 (flagged by #3502 monitoring)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3504
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
       - cat:operations
@@ -23200,6 +23200,20 @@ cards:
     title: 'ops(ace-win-2): equivalence fingerprint ABSENT — sentinel not publishing from acma-ws014 (flagged by #3502 monitoring)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3506
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:operations
+      - machine:multi
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3507
+    title: 'ops(gpu-claw): enroll in machine-equivalence matrix — workspace-hub clone + uv + sentinel cron (4th absent machine; sibling of #3504-#3506)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3507
     gh_state: open
     gh_labels:
       - bug

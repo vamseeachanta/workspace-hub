@@ -7615,7 +7615,7 @@ cards:
     title: Land CFD execution surface on main + openfoam-run-batch saturating workflow
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1560
-    gh_state: open
+    gh_state: closed
     gh_labels: []
     initial_status: triage
     priority: 0

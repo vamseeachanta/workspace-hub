@@ -1524,3 +1524,129 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#987
+    title: 'data(vessel_fleet): ingest contractor rig-summary PDFs → populate spec dimensions (moonpool, draft, VDL) — Noble Valiant worked example'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/987
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#988
+    title: 'data(vessel_fleet): myshiptracking.com as vessel-particulars source family (IMO/MMSI, dimensions, tonnage) for non-rig vessels'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/988
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#991
+    title: 'epic(vessel_fleet): drilling-rig spec database — all leading contractors, all rig classes, → rig-selection insights'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/991
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#992
+    title: 'data(vessel_fleet): Transocean fleet spec ingestion (drillships + HE semis) — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/992
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#993
+    title: 'data(vessel_fleet): Valaris fleet spec ingestion (DS drillships, DPS semis, jackups) — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/993
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#994
+    title: 'data(vessel_fleet): Seadrill fleet spec ingestion (West * units) — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/994
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#995
+    title: 'data(vessel_fleet): jackup specialists — Borr, Shelf Drilling, ADES spec ingestion — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/995
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#996
+    title: 'data(vessel_fleet): other floater contractors — Stena, Odfjell, Saipem, COSL, Vantage — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/996
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#997
+    title: 'data(vessel_fleet): onshore drilling rigs — H&P, Nabors, Patterson-UTI, Precision — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/997
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
