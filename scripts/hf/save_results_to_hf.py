@@ -26,8 +26,38 @@ outliers; withhold implausible columns + file an issue before trusting a public 
 See workspace-hub/.claude/skills/data/hf-dataset-publishing/ and the license routing rule
 .claude/rules/codes-standards-data-routing.md before going --public.
 """
-import argparse, hashlib, json, math, sys
+import argparse, hashlib, json, math, os, sys, urllib.request
 from pathlib import Path
+
+DEPLOY_HOOK_ENV = "VERCEL_DEPLOY_HOOK_URL"
+
+
+def trigger_deploy_hook(enabled=True, url_env=DEPLOY_HOOK_ENV, timeout=15):
+    """Rebuild-on-publish (C5, workspace-hub#3488): POST the Vercel Deploy Hook so the
+    website rebuilds with the freshly-published rows. The hook URL is a SECRET read from
+    the environment ($VERCEL_DEPLOY_HOOK_URL) — never committed. Setting that env var on
+    a publishing host is itself the opt-in ("publishes from here refresh the site").
+
+    No-op (returns None) when disabled or the env var is unset. NEVER raises — a failed
+    rebuild trigger must not fail an otherwise-successful publish.
+    """
+    if not enabled:
+        return None
+    url = os.environ.get(url_env)
+    if not url:
+        print(f"deploy-hook: ${url_env} not set — skipping site rebuild trigger")
+        return None
+    try:
+        req = urllib.request.Request(
+            url, data=b"{}", method="POST",
+            headers={"content-type": "application/json"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            print(f"deploy-hook: triggered site rebuild (HTTP {resp.status})")
+            return resp.status
+    except Exception as e:  # noqa: BLE001 — deliberately swallow; publish already succeeded
+        print(f"deploy-hook: trigger failed ({e.__class__.__name__}: {e}) — "
+              "publish still succeeded")
+        return None
 
 
 def _flatten(rec, prefix="", out=None):
@@ -196,6 +226,9 @@ def main():
                     help="URL of the cat:data/bug issue filed for the withheld columns (shown in the card)")
     ap.add_argument("--out", default=None, help="staging dir (default: temp)")
     ap.add_argument("--dry-run", action="store_true", help="build + report, do NOT publish")
+    ap.add_argument("--no-deploy-hook", action="store_true",
+                    help="do NOT POST the Vercel Deploy Hook after publish (default: trigger a "
+                         f"site rebuild when ${DEPLOY_HOOK_ENV} is set — see workspace-hub#3488)")
     args = ap.parse_args()
     withhold = {c.strip() for c in (args.withhold or "").split(",") if c.strip()}
 
@@ -291,6 +324,9 @@ def main():
     if missing:
         sys.exit(f"VERIFY FAILED: expected files missing at revision {rev}: {sorted(missing)}")
     print(f"verified {len(expected)} files on the remote at revision {rev}.")
+    # C5 (workspace-hub#3488): kick a website rebuild so the new rows go live. Best-effort
+    # — a failed/absent hook never fails the (already-verified) publish.
+    trigger_deploy_hook(enabled=not args.no_deploy_hook)
     print(f"is-valid (indexing lags a few min — poll, don't assume failure): "
           f"https://datasets-server.huggingface.co/is-valid?dataset={args.repo_id}")
     for t in tables_meta:

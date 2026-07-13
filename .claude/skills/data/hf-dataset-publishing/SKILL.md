@@ -178,6 +178,24 @@ labeled, queryable surface is a natural audit trigger, so audit here.
 - Org **Gradio/Docker Spaces need a paid HF plan** (datasets are free). Relevant only if this
   data later gets a viz **Space** — the dataset itself costs nothing.
 
+## Rebuild-on-publish (C5, workspace-hub#3488)
+
+Publishing a **registered** dataset (one that has a `config/capabilities.yaml` entry in
+`aceengineer-website`) should refresh the live site automatically — "live" data without a
+live runtime dependency.
+
+- `save_results_to_hf.py` POSTs a **Vercel Deploy Hook** after a verified publish, so the
+  site rebuilds and picks up the new rows (the build re-fetches HF and re-bakes snapshots).
+- The hook URL is a **secret**, read from `$VERCEL_DEPLOY_HOOK_URL` — **never committed**.
+  Setting that env var on a publishing host is the opt-in ("publishes from here refresh the
+  site"). Unset → the publish still succeeds, it just doesn't trigger a rebuild.
+- Suppress per-run with `--no-deploy-hook`. A failed/absent hook never fails the publish.
+- **Backstop:** `aceengineer-website/.github/workflows/nightly-rebuild.yml` triggers a nightly
+  rebuild (covers datasets updated out-of-band), reading the same URL from a GH Actions secret.
+- Owner setup (once): Vercel → project **Settings → Git → Deploy Hooks** → create a `main`
+  hook → store the URL as `$VERCEL_DEPLOY_HOOK_URL` (publishing hosts) **and** as the
+  `VERCEL_DEPLOY_HOOK_URL` GitHub Actions secret in `aceengineer-website`.
+
 ## Bundled resources
 
 - **`publish_analysis_to_hf.py`** — reusable helper: verifies `hf auth whoami`, creates the
