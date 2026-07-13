@@ -23224,3 +23224,31 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3511
+    title: 'bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3511
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3513
+    title: 'bug(harness): Windows soul installer reports LINK for ordinary file and accumulates backups'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3513
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:harness
+      - machine:multi
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

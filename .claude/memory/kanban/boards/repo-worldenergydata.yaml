@@ -3389,7 +3389,7 @@ cards:
     title: 'feat(vessel_fleet): rig-selection analytics + insights capability — #991 child'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/998
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:engineering

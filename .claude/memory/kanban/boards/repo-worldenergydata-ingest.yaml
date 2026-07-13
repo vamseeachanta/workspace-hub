@@ -1584,7 +1584,7 @@ cards:
     title: 'data(vessel_fleet): Valaris fleet spec ingestion (DS drillships, DPS semis, jackups) — #991 child'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/993
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -1598,7 +1598,7 @@ cards:
     title: 'data(vessel_fleet): Seadrill fleet spec ingestion (West * units) — #991 child'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/994
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -1612,7 +1612,7 @@ cards:
     title: 'data(vessel_fleet): jackup specialists — Borr, Shelf Drilling, ADES spec ingestion — #991 child'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/995
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
@@ -1648,5 +1648,19 @@ cards:
       - domain:ingest
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1006
+    title: 'data(vessel_fleet): equipment-level capability fields — cranes, generation, MPD, dual activity, quarters (#991 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1006
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

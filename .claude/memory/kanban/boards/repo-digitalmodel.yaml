@@ -7651,3 +7651,66 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1571
+    title: Fix AQWA GDF triangles, frequency ordering, and v261 discovery
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1571
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:plan-approved
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1574
+    title: Remove project-specific identifiers from reusable sloshing modules
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1574
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1575
+    title: 'OpenFOAM batch runner: preserve full case-definition contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1575
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1576
+    title: 'OpenFOAM MPI runner: emit post-processing and VTK artifacts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1576
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1577
+    title: 'Sloshing harmonic reducer: normalize roll damping and stiffness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1577
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1578
+    title: 'Coupled roll response: consume sloshing moment coefficients'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1578
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
