@@ -4,7 +4,7 @@
 Mirrors the proven ``dispatch_leader.py`` GitLeaderStateStore idiom: state lives in
 a dedicated ref (``equivalence-state``) written with git plumbing (hash-object /
 mktree / commit-tree) and pushed with ``--force-with-lease`` — so it never churns
-``main``. The ref's tree holds one ``<role>.json`` blob per box.
+``main``. The ref's tree holds one ``<machine_id>.json`` blob per box (#3516).
 
 Part of the machine-equivalence drift sentinel (#3059, epic #3058).
 """
@@ -17,6 +17,39 @@ import subprocess
 import sys
 
 DEFAULT_REF = "equivalence-state"
+
+# Pre-#3516 blobs were keyed by ROLE — two same-role boxes (ace-win-1/2, both
+# contribute-minimal) would silently clobber each other. Blobs are now keyed by
+# registry machine id; these legacy names are self-cleaned on each publish.
+LEGACY_ROLE_NAMES = {"full", "contribute", "contribute-minimal", "none", "unknown"}
+
+
+def resolve_identity(registry_path, hostname):
+    """(machine_id, role) for a hostname from config/workstations/registry.yaml.
+    Matches hostname or hostname_aliases case-insensitively; role = schedule_variant.
+    Collision-safe fallback ("unknown-<hostname>", "unknown") on any failure so two
+    unregistered boxes can never share a blob name (#3516)."""
+    fallback = (f"unknown-{hostname}", "unknown")
+    try:
+        with open(registry_path) as fh:
+            text = fh.read()
+        try:
+            import yaml
+            data = yaml.safe_load(text) or {}
+        except ImportError:
+            sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+            from equivalence_compare import _parse_registry_minimal
+            data = _parse_registry_minimal(text)
+        want = str(hostname).lower()
+        for machine_id, m in sorted((data.get("machines") or {}).items()):
+            m = m or {}
+            names = {str(m.get("hostname") or "").lower(), str(machine_id).lower()}
+            names |= {str(a).lower() for a in (m.get("hostname_aliases") or [])}
+            if want in names:
+                return (machine_id, str(m.get("schedule_variant") or "unknown"))
+        return fallback
+    except Exception:  # noqa: BLE001 — degrade to collision-safe fallback by design
+        return fallback
 
 
 class StoreUnavailable(RuntimeError):
@@ -80,12 +113,30 @@ def collect(repo, *, remote="origin", ref=DEFAULT_REF):
     return fps
 
 
-def publish(repo, role, content, *, remote="origin", ref=DEFAULT_REF, retries=3):
-    """Publish this box's fingerprint as <role>.json into the ref. CAS with retry."""
-    name = f"{role}.json"
+def publish(repo, machine, content, *, remote="origin", ref=DEFAULT_REF, retries=3):
+    """Publish this box's fingerprint as <machine>.json into the ref. CAS with retry.
+
+    Migration (#3516): any LEGACY role-named blob whose fingerprint hostname matches
+    THIS box's hostname is dropped from the tree — self-cleaning, no manual step.
+    Other boxes' legacy blobs are left for their own next publish to clean."""
+    name = f"{machine}.json"
+    try:
+        own_host = str(json.loads(content).get("hostname") or "").lower()
+    except ValueError:
+        own_host = ""
     for _ in range(retries):
         parent = _fetch_tip(repo, remote, ref)
         entries = _tree_entries(repo, parent)
+        if own_host:
+            for legacy in [n for n in entries
+                           if n[:-len(".json")] in LEGACY_ROLE_NAMES and n != name]:
+                show = _git(repo, "cat-file", "-p", entries[legacy])
+                if show.returncode == 0:
+                    try:
+                        if str(json.loads(show.stdout).get("hostname") or "").lower() == own_host:
+                            del entries[legacy]
+                    except ValueError:
+                        pass
         h = _git(repo, "hash-object", "-w", "--stdin", _input=content)
         if h.returncode != 0:
             raise StoreUnavailable(f"hash-object failed: {h.stderr.strip()[:200]}")
@@ -95,7 +146,7 @@ def publish(repo, role, content, *, remote="origin", ref=DEFAULT_REF, retries=3)
         if mk.returncode != 0:
             raise StoreUnavailable(f"mktree failed: {mk.stderr.strip()[:200]}")
         tree = mk.stdout.strip()
-        commit_args = ["commit-tree", tree, "-m", f"chore(equivalence): {role} fingerprint"]
+        commit_args = ["commit-tree", tree, "-m", f"chore(equivalence): {machine} fingerprint"]
         if parent:
             commit_args += ["-p", parent]
         c = _git(repo, *commit_args)
@@ -121,19 +172,29 @@ def publish(repo, role, content, *, remote="origin", ref=DEFAULT_REF, retries=3)
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Publish/collect equivalence fingerprints via git ref")
-    ap.add_argument("cmd", choices=["publish", "collect"])
+    ap.add_argument("cmd", choices=["publish", "collect", "resolve-identity"])
     ap.add_argument("--repo", default=".")
-    ap.add_argument("--role", help="role for publish (e.g. full, contribute)")
+    ap.add_argument("--machine", help="machine id for publish blob name (#3516)")
+    ap.add_argument("--role", help="DEPRECATED for publish (used as blob key when --machine absent)")
+    ap.add_argument("--registry", help="registry.yaml for resolve-identity")
+    ap.add_argument("--hostname", help="hostname for resolve-identity")
     ap.add_argument("--file", help="fingerprint JSON file to publish")
     ap.add_argument("--remote", default="origin")
     ap.add_argument("--ref", default=DEFAULT_REF)
     a = ap.parse_args(argv)
     try:
+        if a.cmd == "resolve-identity":
+            if not a.registry or not a.hostname:
+                ap.error("resolve-identity requires --registry and --hostname")
+            machine, role = resolve_identity(a.registry, a.hostname)
+            print(f"{machine} {role}")
+            return 0
         if a.cmd == "publish":
-            if not a.role or not a.file:
-                ap.error("publish requires --role and --file")
+            key = a.machine or a.role
+            if not key or not a.file:
+                ap.error("publish requires --machine (or legacy --role) and --file")
             content = open(a.file).read()
-            ok = publish(a.repo, a.role, content, remote=a.remote, ref=a.ref)
+            ok = publish(a.repo, key, content, remote=a.remote, ref=a.ref)
             print("published" if ok else "publish lost CAS race after retries", file=sys.stderr)
             return 0 if ok else 1
         fps = collect(a.repo, remote=a.remote, ref=a.ref)

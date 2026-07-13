@@ -230,3 +230,15 @@ def test_minimal_registry_parser_matches_needed_fields():
     assert m["dev-primary"]["hostname_aliases"] == ["vamsee-linux1"]
     assert m["dev-primary"]["schedule_variant"] == "full"
     assert m["macbook-portable"]["schedule_variant"] == "none"
+
+
+def test_same_role_boxes_keep_distinct_labels_via_machine_id():
+    """#3516: divergence 'boxes' dicts key by label — two contribute-minimal boxes
+    must not collapse into one key. machine_id wins over role."""
+    fps = [_fp("contribute-minimal", hostname="acma-ansys05",
+               machine_id="ace-win-1", last_publish_duration_s=500.0),
+           _fp("contribute-minimal", hostname="acma-ws014",
+               machine_id="ace-win-2", last_publish_duration_s=700.0)]
+    slow = [d for d in ec.compare(fps) if d["code"] == "publish-slow"]
+    assert len(slow) == 2
+    assert {list(d["boxes"].keys())[0] for d in slow} == {"ace-win-1", "ace-win-2"}

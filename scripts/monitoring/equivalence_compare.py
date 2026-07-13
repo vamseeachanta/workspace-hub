@@ -113,7 +113,9 @@ def compare(fps, *, behind_warn=10, stale_h=6.0, learning_max_h=48.0,
     out: list[dict] = []
     if not fps:
         return out
-    roles = [f.get("role") or f.get("hostname") or "?" for f in fps]
+    # #3516: label boxes by machine_id first — two same-role boxes (ace-win-1/2)
+    # must not merge into one key in divergence "boxes" dicts.
+    roles = [f.get("machine_id") or f.get("role") or f.get("hostname") or "?" for f in fps]
 
     # 1. model-registry divergence across boxes -> CRITICAL (config not equivalent)
     reg = {f.get("registry_sha256") for f in fps if f.get("registry_sha256")}
