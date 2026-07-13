@@ -61,6 +61,15 @@ workstations:
     compute_floor: {cores_min: 8, ram_gib_min: 8}
     required_data_access: [assetutilities, digitalmodel, worldenergydata, assethold]
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
+  gpu-claw:
+    ws_hub_path: /home/undi/ws/workspace-hub
+    ssh_target: gpu-claw
+    report_path: .claude/state/harness-readiness-gpu-claw.yaml
+    role: linux-execution
+    # GPU executor (2x RTX 3090, 64 GiB); only digitalmodel required — CFD lane, not full tier-1
+    compute_floor: {cores_min: 8, ram_gib_min: 32}
+    required_data_access: [digitalmodel]
+    solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
   ace-win-1:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
