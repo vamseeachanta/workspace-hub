@@ -23155,7 +23155,7 @@ cards:
     title: 'feat(equivalence): fleet publish-health monitoring in the equality matrix — detect gate-stalled/absent fingerprint publishes on all daily-cron machines (follow-on to #3500)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3502
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -23166,5 +23166,47 @@ cards:
       - lane:claude
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3504
+    title: 'ops(dev-secondary): equivalence fingerprint ABSENT — sentinel not publishing from ace-linux-2 (flagged by #3502 monitoring)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3504
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:operations
+      - machine:multi
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3505
+    title: 'ops(ace-win-1): equivalence fingerprint ABSENT — sentinel not publishing from acma-ansys05 (flagged by #3502 monitoring)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3505
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:operations
+      - machine:multi
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3506
+    title: 'ops(ace-win-2): equivalence fingerprint ABSENT — sentinel not publishing from acma-ws014 (flagged by #3502 monitoring)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3506
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:operations
+      - machine:multi
+      - lane:claude
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

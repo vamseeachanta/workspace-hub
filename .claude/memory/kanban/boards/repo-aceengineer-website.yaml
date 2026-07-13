@@ -435,7 +435,7 @@ cards:
     title: 'feat(capabilities): CSP + optional client-side live refresh [C6]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-website/issues/53
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:tooling
     initial_status: triage
