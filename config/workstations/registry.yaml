@@ -292,6 +292,37 @@ machines:
     notes: >
       Secondary Windows workstation. Mirrors ace-win-1 capabilities.
 
+  gpu-claw:
+    hostname: gpu-claw
+    hostname_aliases: []
+    os: linux
+    role: gpu-executor
+    workspace_root: /home/undi/ws/workspace-hub   # relocation-plan target (HANDOVER.md on box); clone pending
+    tier1_repo_root: /home/undi/ws
+    repo_layout: sibling
+    schedule_variant: contribute-minimal
+    harness_profile:
+      roles: [sim-worker]
+      managed: true
+    ssh: gpu-claw
+    capabilities:
+      agent_clis: [claude]
+      languages: [python3, bash]
+      tools: [git, gh, npm]                        # uv NOT installed yet — onboarding step
+      gpu: nvidia-rtx3090-x2
+    storage:
+      local: /home/undi
+      knowledge: null
+      remote_mounts: []
+    repos:
+      - digitalmodel
+    notes: >
+      GPU executor (2x RTX 3090, 64 GiB, 8 cores; Ubuntu 24.04). First Linux
+      executor of the fleet-dispatch ladder (deckhand#557). Equivalence
+      onboarding PENDING: workspace-hub clone (relocation plan step 2), uv
+      install, sentinel cron. Registered with schedule_variant contribute-minimal
+      so the publish-health matrix row (#3502) shows the gap until onboarded.
+
   macbook-portable:
     hostname: Vamsees-MacBook-Air
     hostname_aliases: [Vamsees-MacBook-Air.local]
