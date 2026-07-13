@@ -1,0 +1,25 @@
+{
+ "fingerprint_version": 1,
+ "role": "contribute",
+ "hostname": "ace-linux-2",
+ "ts": "2026-07-13T03:42:35.011127+00:00",
+ "clone_head": "8129fb927",
+ "behind_origin": 113,
+ "ahead_origin": 0,
+ "harness_version": null,
+ "harness_install": null,
+ "registry_sha256": "d5047010128b230def073584f747cf57e4a2e7bd1aafeed893389f2417c74b21",
+ "learning_cron_ages_h": {
+  "comprehensive-learning-nightly": null,
+  "session-analysis": null
+ },
+ "provider_soul_hashes": {
+  "hermes": "885ab4e39749de36",
+  "claude": "20dcbcf597c209c1",
+  "codex": "96a21f7919217ad5",
+  "codex_agents": "4b685d36d5e4b6ec",
+  "gemini": "8a66816baad17782"
+ },
+ "on_main": true,
+ "index_lock_stale_min": null
+}
