@@ -1,6 +1,6 @@
 {
   "machine": "ace-win-1",
-  "last_curated_at": "2026-07-13T09:33:17+00:00",
+  "last_curated_at": "2026-07-13T09:36:09+00:00",
   "providers": {
     "claude": 30,
     "codex": 20,
@@ -12,7 +12,7 @@
     "claude",
     "codex"
   ],
-  "memory_files_changed": 4,
+  "memory_files_changed": 0,
   "digest_ref": "session-curation-state",
   "schema_version": 1
 }
