@@ -23289,6 +23289,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

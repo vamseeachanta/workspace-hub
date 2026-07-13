@@ -7714,3 +7714,39 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1579
+    title: Make diffraction inertia-tensor origin strict and consistent across backends
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1579
+    gh_state: open
+    gh_labels:
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1580
+    title: Define a solver-neutral diffraction restoring-stiffness contract
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1580
+    gh_state: open
+    gh_labels:
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1581
+    title: Support typed interior and damping-lid surfaces in diffraction cases
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1581
+    gh_state: open
+    gh_labels:
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

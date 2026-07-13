@@ -1339,3 +1339,115 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#166
+    title: 'Floorhand: establish a rights-aware manufacturing evidence ledger'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/166
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:pilots-data
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#167
+    title: 'Floorhand Proof A: demonstrate human-governed job-packet release preflight'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/167
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:product
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#168
+    title: 'Floorhand Proof B: demonstrate comparable-job estimate-versus-actual preflight'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/168
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:commercial
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#169
+    title: 'Floorhand Proof C: demonstrate a cited parametric engineering batch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/169
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:product
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#170
+    title: 'Floorhand Proof D: verify a neutral CAD pipeline spike'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/170
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:product
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#171
+    title: 'Floorhand: produce the evidence-led Sun manufacturing roadmap package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/171
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:gtm
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#172
+    title: 'Sun engagement: prepare preliminary data and client-machine readiness pack'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/172
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:operations-governance
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#173
+    title: 'Floorhand/Sun: run adversarial claim, confidentiality, security, and artifact review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/173
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:operations-governance
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

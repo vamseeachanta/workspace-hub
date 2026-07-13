@@ -1654,7 +1654,7 @@ cards:
     title: 'data(vessel_fleet): equipment-level capability fields — cranes, generation, MPD, dual activity, quarters (#991 child)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1006
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
