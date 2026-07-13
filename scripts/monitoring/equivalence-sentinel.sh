@@ -24,6 +24,9 @@ mkdir -p "$(dirname "$fp_local")"
 # 1. fingerprint this box
 bash "$MON/equivalence-fingerprint.sh" --out "$fp_local" 2>/dev/null || { echo "fingerprint failed"; exit 1; }
 role="$($PY -c "import json,sys;print(json.load(open(sys.argv[1]))['role'])" "$fp_local" 2>/dev/null || echo unknown)"
+# #3516: blobs are keyed by machine_id (same-role boxes must not clobber).
+machine="$($PY -c "import json,sys;print(json.load(open(sys.argv[1])).get('machine_id') or '')" "$fp_local" 2>/dev/null || echo "")"
+[ -z "$machine" ] && machine="$role"
 
 # 2. publish to the shared git ref (soft — network/auth issues must not crash the cron)
 # Absent sibling repos are EXPECTED on single-repo machines; the underlying
@@ -49,7 +52,7 @@ if isinstance(dur, (int, float)) and not isinstance(dur, bool):
     json.dump(fp, open(fp_path, "w"), indent=1)
 PY
 publish_start="$(date +%s)"
-$PY "$MON/equivalence_state.py" publish --repo "$REPO_ROOT" --role "$role" --file "$fp_local" 2>&1 \
+$PY "$MON/equivalence_state.py" publish --repo "$REPO_ROOT" --machine "$machine" --file "$fp_local" 2>&1 \
   | sed -e 's/^/[publish] /' -e 's/ERROR: directory not found:/SKIP (absent sibling):/'
 publish_rc="${PIPESTATUS[0]}"
 publish_dur="$(( $(date +%s) - publish_start ))"

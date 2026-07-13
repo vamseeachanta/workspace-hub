@@ -18,15 +18,19 @@ OUT=""
 
 host="$(hostname 2>/dev/null || echo unknown)"
 
-# Role: env override, else map known hosts to setup-cron.sh roles, else unknown.
+# Identity (#3516): env overrides, else resolve machine_id + role from the
+# workstation registry (schedule_variant = role). Collision-safe fallback
+# unknown-<host> keeps two unregistered boxes from ever sharing a blob name.
 role="${EQUIV_ROLE:-}"
-if [ -z "$role" ]; then
-  case "$host" in
-    ace-linux-1) role="full" ;;        # dev-primary / orchestration hub
-    ace-linux-2) role="contribute" ;;  # dev-secondary
-    *) role="unknown" ;;
-  esac
+machine="${EQUIV_MACHINE:-}"
+if [ -z "$role" ] || [ -z "$machine" ]; then
+  ident="$(python3 "$REPO_ROOT/scripts/monitoring/equivalence_state.py" resolve-identity \
+    --registry "$REPO_ROOT/config/workstations/registry.yaml" --hostname "$host" 2>/dev/null || true)"
+  [ -z "$machine" ] && machine="${ident%% *}"
+  [ -z "$role" ] && role="${ident##* }"
 fi
+[ -z "$machine" ] && machine="unknown-$host"
+[ -z "$role" ] && role="unknown"
 
 # Clone position vs origin/main (best-effort fetch; soft on network failure).
 git fetch -q origin main 2>/dev/null
@@ -74,10 +78,10 @@ if [ -e "$lock" ] && ! pgrep -x git >/dev/null 2>&1; then
 fi
 
 # Emit JSON via python for safe quoting.
-python3 - "$role" "$host" "$clone_head" "$behind" "$ahead" "$hv" "$hinstall" "$reg_sha" "$age_learning" "$age_session" "$on_main" "$lock_stale" <<'PY' > "${OUT:-/dev/stdout}"
+python3 - "$role" "$host" "$machine" "$clone_head" "$behind" "$ahead" "$hv" "$hinstall" "$reg_sha" "$age_learning" "$age_session" "$on_main" "$lock_stale" <<'PY' > "${OUT:-/dev/stdout}"
 import json, sys, hashlib, os
 from datetime import datetime, timezone
-role, host, head, behind, ahead, hv, hinstall, reg, al, as_, on_main_s, lock_stale_s = sys.argv[1:13]
+role, host, machine, head, behind, ahead, hv, hinstall, reg, al, as_, on_main_s, lock_stale_s = sys.argv[1:14]
 def fhash(path):
     try:
         with open(path, "rb") as fh:
@@ -103,7 +107,7 @@ def num(x):
 def s(x): return None if x in ("null", "") else x
 fp = {
     "fingerprint_version": 1,
-    "role": role, "hostname": host,
+    "role": role, "hostname": host, "machine_id": machine,
     "ts": datetime.now(timezone.utc).isoformat(),
     "clone_head": s(head),
     "behind_origin": num(behind), "ahead_origin": num(ahead),
