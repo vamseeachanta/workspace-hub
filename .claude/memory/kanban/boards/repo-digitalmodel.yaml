@@ -7750,3 +7750,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1582
+    title: Normalize diffraction matrix units across AQWA and OrcaWave backends
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1582
+    gh_state: open
+    gh_labels:
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
