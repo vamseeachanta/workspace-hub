@@ -31,7 +31,7 @@ tasks:
   - id: equality-report
     label: Machine-equality self-report (#2801)
     schedule: "30 4 * * 1"
-    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2]
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2, gpu-claw]
     roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, python3, uv, git]
     command: >-
@@ -128,8 +128,11 @@ tasks:
   - id: equivalence-sentinel
     label: Machine-equivalence drift sentinel (#3059)
     schedule: "17 */6 * * *"
-    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
-    roles: [control-plane, comms-dispatch]
+    # #3505/#3506 root cause: the win boxes were roster-EXPECTED to publish
+    # (#3502 absent-fingerprint) but never in this machines list — the sentinel
+    # was simply not scheduled there. gpu-claw added at enrollment (#3507).
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2, gpu-claw]
+    roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, python3, uv, git, claude]
     command: >-
       PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
