@@ -76,6 +76,10 @@ if [[ -z "$MACHINE" ]]; then
   esac
 fi
 have() { command -v "$1" >/dev/null 2>&1; }
+PYTHON_CMD=()
+if ! source "${SCRIPT_DIR}/../lib/python-resolver.sh" 2>/dev/null; then
+  PYTHON_CMD=()
+fi
 # CC1/GC1: escape a value for a YAML double-quoted scalar (backslash, quote; strip CR/LF).
 yesc() { printf '%s' "$1" | tr -d '\r\n' | sed 's/\\/\\\\/g; s/"/\\"/g'; }
 # #2816 W5: validate an EQ_* compute override is a clean non-negative integer (counts/MiB/GiB).
@@ -405,12 +409,14 @@ provider_harness_yaml="$(printf '%s\n' "$provider_harness_yaml" | sed 's/^/    /
 #    the #3500 pre-push-deadlock signature; the matrix renders it per machine.
 ph_file="${WS}/.claude/state/equivalence/publish-health.json"
 ph_ts="missing"; ph_dur="null"; ph_rc="null"
-if [[ -f "$ph_file" ]] && have python3; then
-  read -r ph_ts ph_dur ph_rc < <(python3 - "$ph_file" <<'PY' 2>/dev/null || echo "missing null null"
+if [[ -f "$ph_file" && "${#PYTHON_CMD[@]}" -gt 0 ]]; then
+  read -r ph_ts ph_dur ph_rc < <("${PYTHON_CMD[@]}" - "$ph_file" "${SCRIPT_DIR}/../monitoring" <<'PY' 2>/dev/null || echo "missing null null"
 import json, sys
+sys.path.insert(0, sys.argv[2])
+from equivalence_state import validate_publish_health
 try:
-    d = json.load(open(sys.argv[1]))
-    print(d.get("ts") or "missing", d.get("duration_s", "null"), d.get("rc", "null"))
+    d = validate_publish_health(open(sys.argv[1]).read())
+    print(d["ts"], d["duration_s"], d["rc"])
 except Exception:
     print("missing null null")
 PY

@@ -18,6 +18,7 @@ hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py 
 from __future__ import annotations
 
 import json
+import math
 import re
 import sys
 from collections import Counter
@@ -362,15 +363,16 @@ def publish_health_verdict(report: dict, now: datetime | None = None) -> str:
     if not isinstance(ph, dict):
         return "MISSING-EVIDENCE"
     stamp = ph.get("last_publish_at")
-    if not isinstance(stamp, str):
+    if (not isinstance(stamp, str) or
+            not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})", stamp)):
         return "MISSING-EVIDENCE"
     try:
         ts = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
     except ValueError:
         return "MISSING-EVIDENCE"     # includes the collector's "missing" sentinel
     now = now or datetime.now(timezone.utc)
-    if ts.tzinfo is None:
-        ts = ts.replace(tzinfo=timezone.utc)
+    if ts.tzinfo is None or ts.utcoffset() is None:
+        return "MISSING-EVIDENCE"
     if now.tzinfo is None:
         now = now.replace(tzinfo=timezone.utc)
     age_h = (now - ts).total_seconds() / 3600.0
@@ -378,9 +380,13 @@ def publish_health_verdict(report: dict, now: datetime | None = None) -> str:
         return "MISSING-EVIDENCE"
     rc = ph.get("last_publish_rc")
     dur = ph.get("last_publish_duration_s")
-    failed = isinstance(rc, int) and not isinstance(rc, bool) and rc != 0
-    gated = (isinstance(dur, (int, float)) and not isinstance(dur, bool)
-             and dur > PUBLISH_SLOW_S)
+    if isinstance(rc, bool) or not isinstance(rc, int) or not 0 <= rc <= 4:
+        return "MISSING-EVIDENCE"
+    if (isinstance(dur, bool) or not isinstance(dur, (int, float))
+            or not math.isfinite(dur) or dur < 0):
+        return "MISSING-EVIDENCE"
+    failed = rc != 0
+    gated = dur > PUBLISH_SLOW_S
     if failed or gated:
         return "PUBLISH-GATED"
     if age_h > PUBLISH_STALE_H:

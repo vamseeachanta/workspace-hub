@@ -151,7 +151,8 @@ tasks:
     # was simply not scheduled there. gpu-claw added at enrollment (#3507).
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2, gpu-claw]
     roles: [control-plane, comms-dispatch, sim-worker]
-    requires: [bash, python3, uv, git, claude]
+    requires: [bash, uv, git, claude]
+    windows_script: scripts/windows/equivalence-sentinel.ps1
     command: >-
       PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
       cd $WORKSPACE_HUB &&
