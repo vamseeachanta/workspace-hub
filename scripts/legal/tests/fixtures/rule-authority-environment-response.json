@@ -1,0 +1,1 @@
+{"deployment_branch_policy":{"custom_branch_policies":false,"protected_branches":true},"name":"legal-rule-authority","protection_rules":[{"reviewers":[{"reviewer":{"login":"vamseeachanta"}}],"type":"required_reviewers"}]}

@@ -10,67 +10,55 @@ sys.path.insert(0, str(ROOT / "scripts" / "legal"))
 from rule_authority import codec, protection  # noqa: E402
 
 
-def test_live_environment_and_ruleset_readback_matches_preview():
+def test_normalized_environment_and_ruleset_readback_matches_preview():
+    fixture = ROOT / "scripts/legal/tests/fixtures"
     preview = codec.parse_canonical(
-        (
-            ROOT
-            / "docs/plans/evidence/2026-07-14-issue-3522-phase-a-protection-preview.json"
-        ).read_bytes()
+        (fixture / "rule-authority-protection-preview.json").read_bytes()
     )
-    environment = {
-        "name": "legal-rule-authority",
-        "deployment_branch_policy": {
-            "protected_branches": True,
-            "custom_branch_policies": False,
-        },
-        "protection_rules": [
-            {
-                "type": "required_reviewers",
-                "reviewers": [{"reviewer": {"login": "vamseeachanta"}}],
-            }
-        ],
-    }
-    ruleset = {
-        "name": "legal-rule-authority-main",
-        "target": "branch",
-        "enforcement": "active",
-        "bypass_actors": [],
-        "conditions": {"ref_name": {"include": ["refs/heads/main"], "exclude": []}},
-        "rules": [
-            {
-                "type": "pull_request",
-                "parameters": {
-                    "required_approving_review_count": 1,
-                    "require_code_owner_review": True,
-                },
-            },
-            {
-                "type": "required_status_checks",
-                "parameters": {
-                    "required_status_checks": [
-                        {
-                            "context": "Legal Rule Authority / strict-scan / authority",
-                            "integration_id": "github-actions",
-                        }
-                    ]
-                },
-            },
-            {
-                "type": "required_workflows",
-                "parameters": {
-                    "workflows": [
-                        {
-                            "path": ".github/workflows/legal-rule-authority-gate.yml",
-                            "ref": "refs/heads/main",
-                            "repository": "vamseeachanta/workspace-hub",
-                        }
-                    ]
-                },
-            },
-            {"type": "update", "parameters": {"allows_direct_updates": False}},
-        ],
-    }
+    environment = codec.parse_canonical(
+        (fixture / "rule-authority-environment-response.json").read_bytes()
+    )
+    ruleset = codec.parse_canonical(
+        (fixture / "rule-authority-ruleset-response.json").read_bytes()
+    )
     assert protection.verify_readback(preview, environment, ruleset)
     ruleset["bypass_actors"] = [{"actor_id": 1}]
+    with pytest.raises(codec.AuthorityError, match="integrity"):
+        protection.verify_readback(preview, environment, ruleset)
+
+
+def test_ruleset_fixture_uses_official_normalized_rest_shapes():
+    fixture = ROOT / "scripts/legal/tests/fixtures"
+    ruleset = codec.parse_canonical(
+        (fixture / "rule-authority-ruleset-response.json").read_bytes()
+    )
+    required_workflows = next(
+        rule for rule in ruleset["rules"] if rule["type"] == "required_workflows"
+    )
+    assert "parameters" not in required_workflows
+    workflow = required_workflows["workflows"][0]
+    assert isinstance(workflow["repository_id"], int)
+    checks = next(
+        rule for rule in ruleset["rules"] if rule["type"] == "required_status_checks"
+    )["parameters"]["required_status_checks"]
+    assert isinstance(checks[0]["integration_id"], int)
+
+
+@pytest.mark.parametrize("field", ["repository_id", "integration_id"])
+def test_ruleset_readback_rejects_non_integer_rest_ids(field):
+    fixture = ROOT / "scripts/legal/tests/fixtures"
+    preview = codec.parse_canonical(
+        (fixture / "rule-authority-protection-preview.json").read_bytes()
+    )
+    environment = codec.parse_canonical(
+        (fixture / "rule-authority-environment-response.json").read_bytes()
+    )
+    ruleset = codec.parse_canonical(
+        (fixture / "rule-authority-ruleset-response.json").read_bytes()
+    )
+    if field == "repository_id":
+        preview["ruleset"]["required_workflow"][field] = "123456789"
+    else:
+        preview["ruleset"]["required_integration_id"] = "15368"
     with pytest.raises(codec.AuthorityError, match="integrity"):
         protection.verify_readback(preview, environment, ruleset)
