@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Lane:** lane:codex
 > **Execution:** `parallel-readonly` planning/review; `single-lane` implementation in this isolated worktree
-> **Review artifacts:** `scripts/review/results/2026-07-13-plan-3521-{claude,codex,gemini}.md`
+> **Review artifacts:** `scripts/review/results/2026-07-13-plan-3521-{claude,codex,gemini}-rN.md`
 
 ---
 
@@ -77,8 +77,9 @@ project identifiers and does not change domain knowledge.
   deletion, rename, symlink, gitlink, binary, large, or archive entries.
 - No post-scan verifier detects index, HEAD, tool, or rule drift before commit.
 - No public-safe receipt or narrow forensic mechanism exists for strict mode.
-- No stable public rule-ID/private-pattern authority exists; #3522 must provide
-  it before strict-mode implementation or activation.
+- No stable public rule-ID/private-pattern authority exists. #3522 must own and
+  merge its schemas, registry, policy, private-map contract, and migration before
+  any #3521 implementation begins.
 
 ### Evidence (embedded verification)
 
@@ -122,7 +123,8 @@ prior/related issues, control-plane/rules docs, and drive-index query (9+).
 | Strict scanner/helper | `scripts/legal/scan_staged_blobs.py` |
 | Strict package | `scripts/legal/staged_scan/{model,git_transport,rules,receipt,cli}.py` |
 | Focused tests | `scripts/legal/tests/test_staged_scan_{contract,transport,policy}.py` |
-| Versioned schemas | `schemas/legal-staged-scan-{request,receipt,rule-registry,rule-map}.schema.json` |
+| Versioned transaction schemas | `schemas/legal-staged-scan-{request,private-receipt,public-receipt}.schema.json` |
+| Rule authority dependency | #3522-owned registry/map schemas, registry, and authority policy |
 | Non-sensitive strict policy | `config/legal-staged-scan-policy.yaml` |
 | Contract documentation | `docs/standards/LEGAL_STAGED_SCAN_CONTRACT.md` |
 | User documentation | `.claude/docs/legal-scanning.md` |
@@ -133,10 +135,10 @@ prior/related issues, control-plane/rules docs, and drive-index query (9+).
 
 ## Deliverable
 
-A versioned, fail-closed staged-request/receipt mode that scans immutable Git
-blobs and raw paths, independently regenerates receipts, and detects scan-to-
-commit drift against the resulting commit tree. Legacy modes remain explicitly
-non-attesting.
+A versioned, fail-closed staged-request/private-receipt/public-projection mode
+that scans immutable Git blobs and raw paths, independently regenerates evidence,
+and detects scan-to-commit drift against the resulting commit tree. Legacy mode
+bytes remain compatible and are documented separately as non-attesting.
 
 ---
 
@@ -147,10 +149,11 @@ rule authority, edge/exit table, atomic-output rules, receipt regeneration, and
 post-commit tree verification are frozen in
 `docs/plans/evidence/2026-07-13-issue-3521-staged-scan-contract.md`.
 
-V1 accepts an external NUL pathset or an explicit `all-staged` generator. Every
-declared path must resolve to the staged delta; untracked/intent-to-add entries
-fail closed. Receipts use opaque ordinals and a nonce-salted request commitment,
-never path hashes, repository hashes, rule digests, patterns, or snippets.
+V1 accepts an external NUL pathset or `all-staged`. Every declared path resolves
+to the staged delta; untracked/intent-to-add entries fail closed. Private
+evidence retains exact identities. The public projection uses keyed opaque IDs
+and never exposes paths, Git/content/repository hashes, request commitments,
+rule/map digests, patterns, or snippets.
 
 ---
 
@@ -158,23 +161,22 @@ never path hashes, repository hashes, rule digests, patterns, or snippets.
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | `scripts/legal/legal-sanity-scan.sh` | Add strict-mode dispatch and compatibility help; no binary logic in shell. |
+| Modify | `scripts/legal/legal-sanity-scan.sh` | Add strict-mode dispatch without changing legacy help/output bytes. |
 | Create | `scripts/legal/scan_staged_blobs.py` | Binary-safe request, scan, canonical receipt, and verifier. |
 | Create | `scripts/legal/staged_scan/*.py` | Split model, Git transport, rule matching, receipt, and CLI below size limits. |
 | Create | `scripts/legal/tests/test_staged_scan_*.py` | Hermetic contract/transport/policy TDD matrices. |
 | Create | `schemas/legal-staged-scan-request.schema.json` | Freeze caller-to-scanner contract. |
-| Create | `schemas/legal-staged-scan-receipt.schema.json` | Freeze evidence/exit contract. |
-| Create | `schemas/legal-staged-scan-rule-map.schema.json` | Freeze stable public IDs to private pattern map. |
-| Create | `schemas/legal-staged-scan-rule-registry.schema.json` | Freeze non-sensitive ID/target/severity/mode authority. |
-| Create | `config/legal-staged-scan-policy.yaml` | Non-sensitive media, limit, sentinel, destination policy. |
+| Create | `schemas/legal-staged-scan-private-receipt.schema.json` | Freeze private evidence contract. |
+| Create | `schemas/legal-staged-scan-public-receipt.schema.json` | Freeze non-enumerable public projection. |
 | Create | `docs/standards/LEGAL_STAGED_SCAN_CONTRACT.md` | Durable attestation/threat model. |
 | Modify | `.claude/docs/legal-scanning.md` | Mark legacy modes non-attesting; document exact commands. |
 | Update | `docs/plans/README.md` | Index plan and review state. |
 
-`.legal-deny-list.yaml` and pre-commit callers are out of scope. #3522 must first
-land the stable non-sensitive registry/private rule map consumed here. After
-#3521 merges, #3398 must be re-planned/re-reviewed against this strict CLI; no
-concurrent wrapper/docs edits are permitted.
+`.legal-deny-list.yaml`, rule-authority schemas/policy, and pre-commit callers are
+out of scope. #3522 must first merge those authorities. This plan will then pin
+its exact merge SHA/blob digests and repeat adversarial review plus user approval
+before implementation. After #3521 merges, #3398 must be re-planned/re-reviewed
+against this strict CLI; no concurrent wrapper/docs edits are permitted.
 
 ---
 
@@ -190,10 +192,12 @@ concurrent wrapper/docs edits are permitted.
 | `test_identity_drift_fails_closed` | HEAD/index/tool/policy/rule mutation before or during scan returns rc3. |
 | `test_git_errors_and_rules_fail_closed` | Missing blobs, Git errors, and missing/empty/malformed rules return rc2/3, never pass. |
 | `test_index_edge_matrix` | Old/new mode/OID/null invariants cover add/modify/delete/type-change/rename-as-D+A. |
+| `test_raw_transport_zero_oid_normalization` | A-old/D-new zero transport normalizes; schema zero OIDs reject. |
+| `test_chmod_is_modify` | 100644↔100755 remains M; only type-class changes are T. |
 | `test_symlink_and_gitlink_policy` | Symlink target blob is scanned without dereference; gitlink rejects. |
 | `test_media_policy_matrix` | Preflight caps precede contents; binary scans; magic-detected archive/oversize reject. |
 | `test_path_rules_cover_all_entry_kinds` | Raw add/delete/symlink paths are scanned without reversible public identifiers. |
-| `test_receipt_is_canonical_and_public_safe` | Same request repeats bytes; only ordinals/revision IDs/findings are public. |
+| `test_private_receipt_and_public_projection` | Exact evidence stays private; public output resists known-value enumeration. |
 | `test_forged_receipt_is_rejected` | Verify independently rescans/regenerates; forged verdict/findings/hash cannot pass. |
 | `test_receipt_cannot_self_reference` | In-repo/staged request or receipt paths reject; external receipt binds request only. |
 | `test_forensic_policy_is_narrow` | Exact same-line rule-ID sentinel/prefix works; wrong/adjacent/whole-file/arbitrary bypasses fail. |
@@ -201,7 +205,12 @@ concurrent wrapper/docs edits are permitted.
 | `test_post_commit_tree_binding` | Parent/tree/delta match request; mutation after verify is caught on resulting commit. |
 | `test_cat_file_protocol_is_strict` | Truncated/wrong/reordered/extra headers or content and boundary collisions fail. |
 | `test_atomic_evidence_output` | 0700 dir/0600 files, no-follow/no-overwrite/link-publish/fsync, crash cleanup, rc4 failure. |
-| `test_legacy_cli_compatibility` | Existing all/repo/diff/json/quiet modes remain callable and labeled non-attesting. |
+| `test_atomic_pathset_output` | Retained dirfd defeats parent swap; failed dir-fsync output is unusable. |
+| `test_complete_index_commit` | No-pathspec commit contains staged OID when worktree differs. |
+| `test_legacy_cli_compatibility` | Existing help/stdout/stderr/json/exits remain byte-identical. |
+| `test_golden_digest_vectors` | Exact field order/framing/null/ordering produces frozen digests. |
+| `test_authority_cannot_weaken` | Pinned revision and compiled maxima reject stable pre-request weakening. |
+| `test_severity_exit_matrix` | block→rc1, warning-only→rc0, unknown enum→rc2, overflow→rc3. |
 | `test_python_size_limits` | New Python files stay ≤400 lines and functions ≤50 lines. |
 
 Tests will create isolated Git repositories and synthetic rules at runtime; no
@@ -211,15 +220,18 @@ real client/project/person value will enter source, fixtures, logs, or receipts.
 
 ## Implementation Sequence
 
-1. Add RED schema/CLI/request-set tests; confirm assertion failures, not import
-   or fixture failures.
-2. Implement canonical request creation and exact old/new staged-delta parsing.
-3. Add RED immutable-blob/path/edge tests; implement batch `cat-file -Z` reads.
-4. After #3522 merges, add RED rule/path/media/forensic tests and byte scanning.
-5. Add RED receipt/TOCTOU/public-safety tests; implement rescan and commit verify.
-6. Wire the shell wrapper and legacy compatibility tests.
-7. Update contract/user docs and run the full acceptance sequence.
-8. Run T3 adversarial code/artifact review; any later change invalidates the
+1. Wait for approved/merged #3522; pin its merge SHA and authority blob digests
+   into this plan, rerun T3 plan review, and obtain fresh explicit user approval.
+2. Add RED schema/CLI/request-set/delta-framing tests; confirm assertion failures,
+   not import or fixture failures.
+3. Implement canonical request creation and raw old/new staged-delta parsing.
+4. Add RED immutable-blob/path/edge tests; implement batch `cat-file -Z` reads.
+5. Add RED rule/path/media/forensic tests and byte scanning.
+6. Add RED private/public evidence, atomic-output, TOCTOU, and commit tests;
+   implement independent rescan and commit verification.
+7. Wire the shell strict dispatch and golden legacy compatibility tests.
+8. Update contract/user docs and run the full acceptance sequence.
+9. Run T3 adversarial code/artifact review; any later change invalidates the
    staged receipt and requires a fresh request/scan/verify cycle.
 
 ---
@@ -227,24 +239,25 @@ real client/project/person value will enter source, fixtures, logs, or receipts.
 ## Acceptance Criteria
 
 - [ ] RED evidence is captured per task before implementation.
-- [ ] #3522 is approved/merged and supplies the stable public-ID/private-map
-      contract; exact commits/digests are frozen before implementation.
+- [ ] #3522 is approved/merged; this plan pins its SHA/digests and has fresh T3
+      plan review plus explicit user reapproval before any RED test is written.
 - [ ] `uv run --no-project pytest -q scripts/legal/tests/test_staged_scan_*.py`
       passes, including every named edge/threat fixture.
 - [ ] `uv run --no-project pytest -q scripts/legal/tests
       tests/enforcement/test_check_no_conflict_markers.py` passes.
 - [ ] `uv run --no-project python -m compileall -q scripts/legal` passes.
-- [ ] Contract commands succeed on an exact synthetic staged set; forged receipt
-      or mutation after final pre-commit verify fails rescan/post-commit rc3.
+- [ ] Contract commands succeed on the complete staged index; a no-pathspec
+      commit contains the attested staged OID despite divergent worktree bytes.
+- [ ] Forged private/public evidence or mutation after final verify returns rc3.
 - [ ] Strict mode never opens a worktree target, follows a symlink, suppresses a
       Git/search/rule error, skips a large/binary/archive silently, or echoes a
       pattern/snippet.
 - [ ] Schemas reject unknown versions, fields, invalid base64, abbreviated OIDs,
       non-canonical JSON, and request/receipt self-inclusion.
-- [ ] Legacy mode compatibility tests pass and documentation calls those modes
-      non-attesting.
-- [ ] `bash -n scripts/legal/legal-sanity-scan.sh`, schema validation, compileall,
-      focused tests, and the 47-test baseline pass with their documented codes.
+- [ ] Legacy golden bytes pass; new documentation calls legacy modes non-attesting.
+- [ ] The exact normative acceptance commands pass: Bash syntax, Ruff, schema/
+      digest tests, compileall, focused/baseline/function-size/absolute-path/legal
+      checks, plus hermetic rc0/1/2/3/4 strict transactions.
 - [ ] Strict `pathset → request → scan → verify → commit → verify-commit` scans
       the exact staged implementation transaction; legacy scan is compatibility
       evidence only and cannot satisfy self-scan acceptance.
@@ -260,7 +273,9 @@ real client/project/person value will enter source, fixtures, logs, or receipts.
 | Claude r1 | MAJOR | receipt trust, commit TOCTOU, public disclosure, rule/self-scan, framing/limits incomplete |
 | Codex r1 | MAJOR | edge schema, rule/path authority, framing/exits, dependencies, modularity incomplete |
 | Gemini r1 | UNAVAILABLE | noninteractive OAuth rc41 |
-| r2 | pending | exact revised plan and normative protocol require review |
+| Claude r2 | MAJOR | pathspec commit, zero OID, public enumeration, dependency/authority, rule schema, framing, legacy contradiction |
+| Codex r2 | MAJOR | same consensus plus chmod M, pathset atomicity, dirfd, exact commands, old non-blob, push claim |
+| Gemini r2 | UNAVAILABLE | noninteractive OAuth rc41 |
 
 **Overall result:** draft; implementation is blocked pending review and explicit
 user approval. No agent may apply `status:plan-approved` or create its marker.
@@ -269,8 +284,9 @@ user approval. No agent may apply `status:plan-approved` or create its marker.
 
 ## Risks and Open Questions
 
-- **Security incident:** #3522 owns private-rule migration/history assessment;
-  it is a hard dependency and this issue must not echo or expand the exposure.
+- **Security incident:** #3522 exclusively owns authority schemas/policy,
+  migration/history assessment, and private provisioning. It is a hard dependency
+  and this issue must not echo or expand exposure.
 - **Adoption overlap:** #3521 lands first; then #3398 is revised/re-reviewed to
   consume this CLI/schema. #3521 will not edit tier-1 pre-commit configs.
 - **Git portability:** implementation will assert minimum Git support for
