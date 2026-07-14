@@ -6,8 +6,8 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3518
 > **Client:** N/A
 > **Lane:** lane:claude
-> **Execution mode:** parallel-readonly planning; single-lane implementation on an independent #3518 branch after approval
-> **Review artifacts:** `scripts/review/results/2026-07-13-plan-3518-claude.md` | `scripts/review/results/2026-07-13-plan-3518-codex.md` | `scripts/review/results/2026-07-13-plan-3518-gemini.md`
+> **Execution mode:** parallel-readonly planning; single-lane two-file implementation carried by draft PR #3517 after fresh approval
+> **Review artifacts:** original TDD review `scripts/review/results/2026-07-13-plan-3518-{claude,codex,gemini}.md` | topology delta `scripts/review/results/2026-07-13-plan-3518-topology-r2-{claude,codex,disagreement}.md`
 
 ---
 
@@ -19,6 +19,7 @@
 - `scripts/enforcement/scheduler_mutation_wrapper_attestations.py` still pins the pre-#3515 wrapper hash and its setup shape still requires the removed schedule-variant branch.
 - `tests/enforcement/test_scheduler_mutation_task3.py` already has digest, reachability, dead-scope, early-exit, and mode mutants, but its live-source mutants leave the old digest pin in place. They can therefore reject at `_pinned()` without exercising `_setup_shape()`.
 - `scripts/enforcement/check-scheduler-mutation-surfaces.py` reads staged/index blobs. RED/GREEN proof will therefore explicitly stage each path-scoped state instead of relying on working-tree edits.
+- Current `origin/main` also has a stale generated identity inventory. Draft PR #3517 already owns the coherent source/inventory refresh, so the full checker can become green only when the #3518 wrapper fix is evaluated on that carrier state.
 
 ### Standards and wiki
 
@@ -30,6 +31,7 @@
 - [Issue #3518](https://github.com/vamseeachanta/workspace-hub/issues/3518) records the inherited wrapper-attestation regression and is open with `bug` and `lane:claude`.
 - [PR #3515](https://github.com/vamseeachanta/workspace-hub/pull/3515) merged the correct registry-OS behavior at `60f8c6f043039a40bba2f3e9cd51b673acbfdff3` while its Scheduler Mutation Surface Guard was failing.
 - [Issue #3475](https://github.com/vamseeachanta/workspace-hub/issues/3475) and its plan establish the adjacent deterministic inventory/source-digest and source-attestation guard that #3518 must preserve; the issue is closed.
+- [PR #3517](https://github.com/vamseeachanta/workspace-hub/pull/3517) at head `a8128e84c111f5ea54a35b4fda14ae6419b82262` owns the approved #3384 inventory/source changes. Its required guard has no stale-inventory error and is blocked only by the five wrapper attestations plus their derived disposition.
 - `docs/document-intelligence/README.md` is the repository intelligence entry point. It identifies the drive index as the broad cross-source search surface; no scheduler-wrapper authority document was found there.
 - Drive-index query `scheduler mutation wrapper attestation setup-cron` via `scripts/data/drive-index-search/search.py ... --json --caller plan-resource-intel` returned no relevant workspace-hub material; unrelated engineering-title matches were discarded and no external file content will be consumed.
 
@@ -38,6 +40,7 @@
 - The setup wrapper pin and semantic shape do not describe current `main`.
 - Existing semantic mutation tests can be masked by digest mismatch instead of proving `_setup_shape()` rejects unsafe behavior.
 - Existing reachability coverage does not independently reject partial dead scope, an indented early exit, an OS-variable overwrite, or terminal delegation moved into conditional/dead scope.
+- A standalone main-based #3518 branch cannot satisfy the approved full-suite/guard GREEN criteria because `origin/main` has a separate stale identity inventory. Delivery must preserve the coherent #3517 inventory pair without duplicating it in #3518.
 
 ### Evidence
 
@@ -47,6 +50,7 @@
 #3518 OPEN — fix(scheduler): keep setup-cron wrapper attestation pin synchronized
 #3475 CLOSED — fix(cron): make reconciler deletion identity semantic and verify exact post-write state
 PR #3515 MERGED — merge commit 60f8c6f043039a40bba2f3e9cd51b673acbfdff3
+PR #3517 OPEN DRAFT — head chore/3384-memory-cron-reconcile at a8128e84c111f5ea54a35b4fda14ae6419b82262
 ```
 
 **File existence** (verified 2026-07-13):
@@ -79,6 +83,26 @@ ERROR: dispositions must exactly cover migration-required surfaces
 - Failure mode observed matches issue claim: **YES**.
 - Distinct sources consulted: issue #3518, PR #3515, issue/plan #3475, the four affected code/test paths, the document-intelligence entry point, and the drive index.
 
+**Topology-revision proof** (2026-07-13, `origin/main` `0c879ce709c58120bab14aa9bdd09186d0dfcb07`):
+
+```text
+$ uv run python scripts/cron/build-cron-identity-inventory.py --check
+ERROR: stale identity inventory: .../docs/reports/issue-3475-command-identity-inventory.json
+exit 1
+
+$ uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
+ERROR: scripts/cron/setup-cron.sh: delegation attestation failed: setup-default-apply-v1
+ERROR: scripts/cron/setup-cron.sh: delegation attestation failed: setup-dry-run-v1
+ERROR: scripts/cron/setup-cron.sh: delegation attestation failed: setup-live-reload-v1
+ERROR: scripts/cron/setup-cron.sh: delegation attestation failed: setup-remote-reject-v1
+ERROR: scripts/cron/setup-cron.sh: delegation attestation failed: setup-windows-skip-v1
+ERROR: identity inventory input digest is stale
+ERROR: dispositions must exactly cover migration-required surfaces
+exit 1
+```
+
+The same checker at PR #3517 head omits `identity inventory input digest is stale`; therefore the carrier owns a coherent inventory pair and #3518 must not regenerate or duplicate it.
+
 ---
 
 ## Artifact Map
@@ -90,8 +114,8 @@ ERROR: dispositions must exactly cover migration-required surfaces
 | Tests | `tests/enforcement/test_scheduler_mutation_task3.py` |
 | Implementation | `scripts/enforcement/scheduler_mutation_wrapper_attestations.py` |
 | Runtime source, read-only | `scripts/cron/setup-cron.sh` |
-| Reviews | `scripts/review/results/2026-07-13-plan-3518-{claude,codex,gemini}.md` |
-| Delivery | independent #3518 branch/PR; draft PR #3517 will rebase after #3518 merges |
+| Reviews | original `scripts/review/results/2026-07-13-plan-3518-{claude,codex,gemini}.md`; topology delta `scripts/review/results/2026-07-13-plan-3518-topology-r2-*.md` |
+| Delivery | path-scoped #3518 implementation commit appended to `chore/3384-memory-cron-reconcile` / draft PR #3517 |
 
 ---
 
@@ -139,13 +163,19 @@ concrete mutant constructions include:
     wrap the final exec line beneath b'if [[ "$DRY_RUN" == impossible ]]; then\n...\nfi\n'
 
 update setup source-shape attestation:
-    require reachable registry os lookup before an exact Windows predicate and exit 0
+    require exact assignment MACHINE_OS="$(... --field os)" before the platform branch
+    require exact predicate if [[ "$MACHINE_OS" == "windows" ]]; then
+    require exact skip message followed by exit 0 and fi
     require remote-host rejection after the platform skip
     retain dry-run/apply/live-reload and reachable terminal-exec ordering
     reject decoys, partial dead scope, variable overwrite, and conditional delegation
 ```
 
+The positive `_setup_shape()` target is therefore the current registry `os` lookup plus the exact `MACHINE_OS == windows` skip block in `scripts/cron/setup-cron.sh`; the obsolete `SCHEDULE_VARIANT == contribute-minimal` token will be removed from the shape. #3518 will update `WRAPPER_SHA256[SETUP]` in the enforcement module. PR #3517, not #3518, owns the separate inventory `source_digest` in `mutation-surfaces.yaml`; these digests attest different contracts and will not overwrite each other.
+
 ### Index-backed RED/GREEN sequence
+
+0. The primary implementing session will execute the carrier preflight as a blocking shell gate in a clean isolated worktree and post its SHA/error-set evidence to issue #3518 before RED. It will resolve `CARRIER_SHA=$(gh pr view 3517 --json headRefOid --jq .headRefOid)`, fetch the carrier branch, and create the worktree/implementation branch at that exact SHA. It will assert `git rev-parse HEAD == "$CARRIER_SHA"`, `git status --porcelain` is empty, and `git diff --cached --quiet`. Only then will it run `build-cron-identity-inventory.py --check` and the full guard. The preflight must show a coherent inventory and exactly the five setup-wrapper failures plus the derived disposition. Any carrier-head drift or baseline mismatch will stop implementation for replanning.
 
 1. Add `test_setup_self_pinned_baseline_accepts_registry_os_gate`, the self-pinned mutants, and the exact-pin assertion; stage **only** `tests/enforcement/test_scheduler_mutation_task3.py`. `git add` copies the working test bytes into the index but does not change filesystem import resolution: pytest always imports Python from the working-tree path. With no implementation working-tree edit yet, pytest imports the unchanged implementation. `current_contract()` separately executes `git ls-files -z` plus `git cat-file --batch-command -Z`, so its `records` come from the index. Capture RED specifically at the named baseline test because current `_setup_shape()` still requires the removed schedule-variant predicate.
 2. Edit and stage `scripts/enforcement/scheduler_mutation_wrapper_attestations.py` with the new semantic shape while deliberately retaining the stale production pin. The staged blob and working file are identical immediately after `git add`; pytest imports that working file, while `current_contract()` loads the identical staged implementation/source records. Each test calls `load_checker()` afresh, obtains that checker's wrapper module from `sys.modules`, mutates only its `WRAPPER_SHA256[source]` dictionary entry, and restores it in `finally`. Run named semantic tests without xdist: they will pass; only the exact production-pin assertion will remain RED.
@@ -162,6 +192,8 @@ update setup source-shape attestation:
 | Modify | `tests/enforcement/test_scheduler_mutation_task3.py` | Add self-pinned RED coverage for current behavior and unsafe reachability/semantic mutants |
 | Modify | `scripts/enforcement/scheduler_mutation_wrapper_attestations.py` | Attest the current reachable platform gate and refresh the exact staged-source digest |
 | No change | `scripts/cron/setup-cron.sh` | Preserve the already-merged runtime behavior byte-for-byte |
+| No change by #3518 | `config/scheduled-tasks/mutation-surfaces.yaml` | Preserve PR #3517's pre-existing source-digest disposition update |
+| No change by #3518 | `docs/reports/issue-3475-command-identity-inventory.json` | Preserve PR #3517's coherent generated inventory; do not duplicate regeneration |
 | Update | `docs/plans/README.md` | Index the reviewed plan |
 | Create | `docs/reports/2026-07-13-issue-3518-scheduler-wrapper-attestation-plan.html` | Human-facing plan |
 | Create | `scripts/review/results/2026-07-13-plan-3518-*.md` | Preserve cross-provider adversarial review evidence |
@@ -180,7 +212,7 @@ update setup source-shape attestation:
 | self-pinned indented-exit/overwrite mutants | Indented early exit and OS overwrite cannot bypass the gate | Coverage absent | Mutants fail shape |
 | self-pinned terminal-delegation mutants | Terminal exec remains reachable and unconditional | Coverage only covers whole-script dead scope | Conditional/dead terminal exec fails shape |
 | `test_setup_wrapper_pin_matches_exact_staged_blob` | Constant equals SHA-256 of `current_contract()`'s index record and staged bytes equal working source | Current pin is stale | Staged blob, working source, and pin agree |
-| existing task-3 suite | All mutation-surface contracts remain fail-closed | Current setup attestations fail | Suite passes |
+| existing task-3 suite on PR #3517 carrier | All mutation-surface contracts remain fail-closed on the combined index | Five setup attestations fail; inventory is coherent | Suite passes after the two-file #3518 fix |
 
 ---
 
@@ -188,24 +220,29 @@ update setup source-shape attestation:
 
 ### Plan-review readiness
 
-- [ ] Independent Claude and Codex plan-review artifacts contain no unresolved MAJOR findings; Gemini unavailability is preserved in its artifact and does not reduce the T2 minimum below two available providers.
+- [ ] Fresh Claude and Codex delta-review artifacts approve the revised carrier topology with no unresolved MAJOR findings; prior approvals remain valid only for the unchanged TDD design. Gemini unavailability is preserved.
 
 ### Implementation and closeout gates (future; run only after user approval)
 
 - [ ] RED is captured after staging only the new tests: `git add -- tests/enforcement/test_scheduler_mutation_task3.py && uv run pytest tests/enforcement/test_scheduler_mutation_task3.py::test_setup_self_pinned_baseline_accepts_registry_os_gate -q`; expected exit `1` because unchanged `_setup_shape()` requires the removed schedule-variant predicate.
+- [ ] Carrier preflight binds execution to remote state: `CARRIER_SHA=$(gh pr view 3517 --json headRefOid --jq .headRefOid)`, the isolated worktree asserts `test "$(git rev-parse HEAD)" = "$CARRIER_SHA"`, `test -z "$(git status --porcelain)"`, and `git diff --cached --quiet`; inventory `--check` exits `0`, and the baseline guard has no identity-inventory error.
 - [ ] The unmodified setup source self-pinned to its own SHA passes all five setup attestations before mutant assertions run.
 - [ ] Every OS-field, assignment-target, predicate, exit, remote-rejection, mode-split, live-reload, reachability, overwrite, and terminal-exec mutant is self-pinned to its own exact bytes and fails semantic shape independently of `_pinned()`.
 - [ ] Before the production pin changes, the staged semantic implementation passes the self-pinned baseline/mutant subset, while `uv run pytest tests/enforcement/test_scheduler_mutation_task3.py::test_setup_wrapper_pin_matches_exact_staged_blob -q` exits `1` on the stale constant.
 - [ ] `test_setup_wrapper_pin_matches_exact_staged_blob` obtains `records` through `checker.read_index_records(ROOT)`, defines `source = checker.attestation_source("setup-default-apply-v1")`, asserts `records[source] == (ROOT / source.decode()).read_bytes()`, and asserts `wrapper_module.WRAPPER_SHA256[source] == hashlib.sha256(records[source]).hexdigest()`; it passes on the final PR merge ref.
-- [ ] The #3518 implementation commit changes only the two enforcement/test files; governance commits may change only the plan, plan index, HTML report, and review artifacts enumerated above.
-- [ ] Runtime source remains unchanged: `BASE_SHA=$(git merge-base HEAD origin/main) && git diff --exit-code "$BASE_SHA" -- scripts/cron/setup-cron.sh` exits `0`.
+- [ ] The #3518 implementation commit changes only the two enforcement/test files; aggregate PR #3517 retains its separately approved #3384 changes, and governance commits may change only the plan, plan index, HTML report, and review artifacts.
+- [ ] Immediately after the path-scoped implementation commit, the primary session records `IMPL_SHA=$(git rev-parse HEAD)` on issue #3518 and asserts `git rev-parse HEAD == "$IMPL_SHA"` before push; no later local commit may be added to the carrier branch during this delivery. Any HEAD drift stops the push.
+- [ ] Exact implementation pathscope is machine-checked against the recorded commit: `EXPECTED=$(printf '%s\n' scripts/enforcement/scheduler_mutation_wrapper_attestations.py tests/enforcement/test_scheduler_mutation_task3.py | sort); ACTUAL=$(git diff-tree --no-commit-id --name-only -r "$IMPL_SHA" | sort); test "$ACTUAL" = "$EXPECTED"` exits `0`.
+- [ ] Runtime/inventory sources remain unchanged by #3518: `git diff --exit-code "$CARRIER_SHA" "$IMPL_SHA" -- scripts/cron/setup-cron.sh config/scheduled-tasks/mutation-surfaces.yaml docs/reports/issue-3475-command-identity-inventory.json` exits `0`.
 - [ ] Focused GREEN passes: `uv run pytest tests/enforcement/test_scheduler_mutation_task3.py -q` exits `0`.
 - [ ] Guard GREEN passes: `uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py` exits `0` with no `ERROR:` lines.
-- [ ] The tested synthetic merge ref is recorded deterministically: `PR_NUMBER=$(gh pr view --json number --jq .number) && git fetch origin "pull/${PR_NUMBER}/merge" && MERGE_SHA=$(git rev-parse FETCH_HEAD) && printf 'PR=%s MERGE_SHA=%s\n' "$PR_NUMBER" "$MERGE_SHA"` exits `0`.
-- [ ] Required PR checks pass: `PR_NUMBER=$(gh pr view --json number --jq .number) && gh pr checks "$PR_NUMBER" --watch` exits `0`; `gh pr checks "$PR_NUMBER" --json name,state,link` supplies the check URLs recorded with `MERGE_SHA` on issue #3518.
+- [ ] Before push, `gh pr view 3517 --json headRefOid --jq .headRefOid` still equals `CARRIER_SHA`; the fast-forward push `git push origin HEAD:chore/3384-memory-cron-reconcile` succeeds without force, and `FINAL_HEAD=$(gh pr view 3517 --json headRefOid --jq .headRefOid)` equals local `IMPL_SHA`.
+- [ ] The tested PR #3517 synthetic merge ref is bound to that head: `PR_NUMBER=3517 && git fetch origin "pull/${PR_NUMBER}/merge" && MERGE_SHA=$(git rev-parse FETCH_HEAD)`; `git merge-base --is-ancestor "$FINAL_HEAD" "$MERGE_SHA"` exits `0`.
+- [ ] Required combined-carrier checks pass: `gh pr checks 3517 --watch` exits `0`; `gh api "repos/vamseeachanta/workspace-hub/commits/${MERGE_SHA}/check-runs"` shows every required check on that exact merge SHA with `conclusion=success`.
+- [ ] After checks, `gh pr view 3517 --json headRefOid --jq .headRefOid` still equals `FINAL_HEAD`; an isolated detached worktree at `MERGE_SHA` runs inventory `--check`, `uv run pytest tests/enforcement/test_scheduler_mutation_task3.py -q`, and the scheduler guard with exit `0`, then is removed before issue evidence is posted.
 - [ ] Legal scan passes: `scripts/legal/legal-sanity-scan.sh --diff-only` exits `0`.
 - [ ] T2 cross-provider code review from Claude and Codex has no unresolved MAJOR findings. Gemini will be included if non-interactive authentication is restored; otherwise its `UNAVAILABLE` artifact will be preserved and the two-provider minimum will remain Claude + Codex.
-- [ ] After #3518 merges, draft PR #3517 will rebase onto the fix and rerun its guard; #3518 acceptance will not depend on #3517 changes.
+- [ ] PR #3517 carries the reviewed #3518 implementation commit and cannot be marked ready or merged until #3518 tests, reviews, and required checks pass; issue #3518 receives a comment linking the exact implementation commit and PR #3517.
 - [ ] No live crontab, daemon, or scheduler state is mutated.
 
 ---
@@ -214,21 +251,22 @@ update setup source-shape attestation:
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | APPROVE after revision | Three rounds resolved staged-record mechanics, state isolation, concrete mutants, provider gates, and named executable TDD checkpoints |
-| Codex | APPROVE after revision | Resolved self-pinned mutants, partial-dead-scope coverage, staged TDD order, and staged-blob digest provenance |
+| Claude | APPROVE on topology delta | Verified recorded IMPL_SHA, exact pathscope, blocking primary-session preflight, evidence sink, and all prior topology criteria |
+| Codex | APPROVE on topology delta | Verified carrier binding, exact pathscope/no-inventory boundary, drift gates, and merge-SHA-bound verification |
 | Gemini | UNAVAILABLE | No non-interactive Gemini auth is configured; provider artifact records the failed invocation |
 
-**Overall result:** PASS — Claude + Codex satisfy T2; Gemini unavailability is documented.
+**Overall result:** PASS — Claude + Codex approve the topology delta; implementation remains blocked until the user reapproves this exact revision.
 
 Revisions made after the first Codex review wave:
 
 - Every semantic mutant will carry its own refreshed digest, with an unmodified self-pinned baseline assertion.
 - Partial dead scope, indented early exit, OS overwrite, and conditional/dead terminal delegation are explicit required mutants.
 - The index-backed RED/GREEN staging order and exact staged-blob pin provenance are executable gates.
-- #3518 delivery is independent; #3517 will rebase after this fix instead of carrying it.
+- The earlier independent-delivery claim is superseded by live evidence: #3518 will be a path-scoped implementation commit carried by PR #3517, without duplicating its inventory artifacts.
 - Immutable reproduction SHA, exact command, universal intelligence entry point, issue/file evidence, and exact acceptance commands are recorded.
 - The self-pinning helper will use the imported wrapper module's global dictionary with `try/finally`; `current_contract()`'s exact index loader, working-tree import behavior, named RED test, and same-sequence pin refresh checkpoint are explicit.
 - Gemini is unavailable. The T2 plan-review gate will use independent Claude and Codex verdicts, and the separately labeled implementation-closeout section defines the later T2 code-review route with the same two available providers.
+- Delta review will occur before renewed user approval; the reviewed plan is the subject, while separate Claude/Codex result artifacts are the required verdict evidence.
 
 ---
 
@@ -236,12 +274,12 @@ Revisions made after the first Codex review wave:
 
 - **Parser/reachability risk:** byte-fragment ordering alone cannot prove semantic reachability. Implementation will remain blocked if the planned self-pinned mutants require a parser-sized redesign; that would trigger replanning rather than a broad ad hoc checker.
 - **Self-refresh risk:** changing only the hash could bless unsafe behavior. Shape tests will pass with the stale production pin before the exact staged-blob pin is refreshed.
-- **Branch drift risk:** the final pin will be derived from the final staged blob and reverified on the PR merge ref, never copied from this plan's reproduction digest.
-- **Integration risk:** #3517 may need a rebase and regenerated identity inventory after #3518 merges; that is downstream integration, not #3518 acceptance.
+- **Carrier drift risk:** the latest PR #3517 head and baseline error set will be reverified immediately before RED. Any change to the two #3518 files, inventory coherence, or expected errors will stop implementation.
+- **Shared-PR coupling:** #3518 depends on PR #3517's already-generated inventory state. The implementation commit will remain path-scoped and serialized; it will not regenerate or duplicate inventory artifacts.
 - **Live-state risk:** none in scope; implementation will not execute `setup-cron.sh` or modify crontab.
 
 ---
 
 ## Complexity: T2
 
-Two enforcement/test files will change. The repair is security-adjacent, index-backed, and independently deliverable without changing runtime behavior.
+Two #3518 enforcement/test files will change. The repair is security-adjacent and index-backed; delivery is coupled to PR #3517's already-generated coherent inventory state without changing runtime behavior.
