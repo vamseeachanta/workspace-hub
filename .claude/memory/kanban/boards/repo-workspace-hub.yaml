@@ -23344,7 +23344,8 @@ cards:
       - cat:operations
       - domain:workstations
       - machine:multi
-      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - lane:codex
     initial_status: triage
     priority: 0
@@ -23359,7 +23360,8 @@ cards:
       - priority:medium
       - cat:ai-orchestration
       - wrk-item
-      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 0
@@ -23547,6 +23549,19 @@ cards:
     gh_state: open
     gh_labels:
       - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3544
+    title: 'security(legal): correct and operationalize Phase A authority activation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3544
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - gate:completeness
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
