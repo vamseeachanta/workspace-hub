@@ -1,0 +1,28 @@
+{
+  "codeowners_required_paths": [
+    ".github/workflows/legal-rule-authority-gate.yml",
+    ".github/workflows/legal-rule-authority-reusable.yml",
+    "config/legal-rule-authority-policy.json",
+    "config/legal-rule-registry.json",
+    "schemas/legal-rule-*.schema.json",
+    "scripts/legal/manage_rule_authority.py",
+    "scripts/legal/rule_authority/**"
+  ],
+  "environment": {
+    "deployment_branch_policy": "main-only",
+    "name": "legal-rule-authority",
+    "required_reviewers": ["repository-owner"]
+  },
+  "issue": 3522,
+  "phase": "A-owner-transaction-preview-only",
+  "ruleset": {
+    "bypass_actors": [],
+    "direct_updates_allowed": false,
+    "name": "legal-rule-authority-main",
+    "required_check": "legal-rule-authority / strict-scan",
+    "required_integration": "github-actions",
+    "target": "refs/heads/main"
+  },
+  "schema_id": "legal-rule-phase-a-protection-preview-v1",
+  "tool_sha": "cc4bbc1e42aed2df573b0abd5ee94dd91a5a811c"
+}

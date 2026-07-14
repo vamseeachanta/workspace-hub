@@ -47,4 +47,3 @@ jobs:
           uv run --no-project python scripts/legal/manage_rule_authority.py validate-public
           --registry config/legal-rule-registry.json
           --policy config/legal-rule-authority-policy.json
-
