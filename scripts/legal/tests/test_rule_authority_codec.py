@@ -113,6 +113,25 @@ def test_map_rejects_noncanonical_base64_and_unknown_rule():
     bad["rules"][0]["pattern_b64"] = "c3ludGhldGljLWZvcmJpZGRlbi12YWx1ZQ"
     with pytest.raises(codec.AuthorityError):
         codec.parse_map(canonical(bad), registry())
+
+
+def test_map_rejects_total_decoded_patterns_over_16k():
+    second_id = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
+    reg = registry()
+    reg["rules"].append(
+        {
+            "match_mode": "exact-bytes",
+            "rule_id": second_id,
+            "severity": "block",
+            "target": "content",
+        }
+    )
+    mapped = private_map(pattern=b"a" * 9000)
+    mapped["rules"].append(
+        {"pattern_b64": base64.b64encode(b"b" * 9000).decode(), "rule_id": second_id}
+    )
+    with pytest.raises(codec.AuthorityError):
+        codec.parse_map(canonical(mapped), reg)
     bad = private_map()
     bad["rules"][0]["rule_id"] = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
     with pytest.raises(codec.AuthorityError):
@@ -123,14 +142,54 @@ def test_verify_rejects_rollback_revision_reuse_and_tamper():
     key = bytes(range(32))
     manifest = authority.build_manifest(registry(), policy(), private_map(), key)
     anchor = authority.make_anchor(manifest, "f" * 40)
-    authority.verify_bundle(registry(), policy(), private_map(), manifest, key, anchor)
+    ledger = authority.new_ledger("synthetic-key", manifest, key)
+    authority.verify_bundle(
+        registry(), policy(), private_map(), manifest, key, anchor, ledger, "f" * 40
+    )
     old = dict(anchor)
     old["generation"] = 2
     with pytest.raises(codec.AuthorityError, match="integrity"):
-        authority.verify_bundle(registry(), policy(), private_map(), manifest, key, old)
+        authority.verify_bundle(
+            registry(), policy(), private_map(), manifest, key, old, ledger, "f" * 40
+        )
     tampered = private_map(pattern=b"different")
     with pytest.raises(codec.AuthorityError, match="integrity"):
-        authority.verify_bundle(registry(), policy(), tampered, manifest, key, anchor)
+        authority.verify_bundle(
+            registry(), policy(), tampered, manifest, key, anchor, ledger, "f" * 40
+        )
+
+
+def test_verify_binds_ledger_tool_sha_and_pending_head():
+    key = bytes(range(32))
+    manifest = authority.build_manifest(registry(), policy(), private_map(), key)
+    ledger = authority.new_ledger("synthetic-key", manifest, key)
+    anchor = authority.make_anchor(
+        manifest, "f" * 40, slot="pending", expected_head_oid="e" * 40
+    )
+    authority.verify_bundle(
+        registry(),
+        policy(),
+        private_map(),
+        manifest,
+        key,
+        anchor,
+        ledger,
+        "f" * 40,
+        "e" * 40,
+    )
+    for tool, head in (("d" * 40, "e" * 40), ("f" * 40, "d" * 40)):
+        with pytest.raises(codec.AuthorityError, match="integrity"):
+            authority.verify_bundle(
+                registry(),
+                policy(),
+                private_map(),
+                manifest,
+                key,
+                anchor,
+                ledger,
+                tool,
+                head,
+            )
 
 
 def test_structural_scan_rejects_secret_artifacts_under_arbitrary_names(tmp_path):
@@ -140,7 +199,8 @@ def test_structural_scan_rejects_secret_artifacts_under_arbitrary_names(tmp_path
     target = tmp_path / "innocent.bin"
     target.write_bytes(b"prefix" + artifacts[0] + b"suffix")
     findings = authority.scan_paths([target], artifacts)
-    assert findings == [str(target)]
+    assert findings == 1
+    assert str(target) not in str(findings)
 
 
 def test_generation_ledger_append_is_authenticated_and_monotonic():

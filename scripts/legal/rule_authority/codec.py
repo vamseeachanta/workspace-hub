@@ -189,10 +189,33 @@ def parse_map(data: bytes, registry: dict):
         ):
             raise AuthorityError("schema")
         decoded.append((rule["rule_id"], pattern))
+    if sum(len(item[1]) for item in decoded) > 16384:
+        raise AuthorityError("schema")
     if [x[0] for x in decoded] != sorted(expected) or len(
         {x[1] for x in decoded}
     ) != len(expected):
         raise AuthorityError("schema")
+    return value
+
+
+def parse_ledger(data: bytes):
+    value = parse_canonical(data)
+    _exact_keys(value, {"entries", "key_id", "ledger_mac", "schema_id"})
+    if (
+        value["schema_id"] != "legal-rule-generation-ledger-v1"
+        or not isinstance(value["key_id"], str)
+        or not value["key_id"]
+        or not HEX64.fullmatch(value["ledger_mac"])
+    ):
+        raise AuthorityError("schema")
+    if not isinstance(value["entries"], list) or not value["entries"]:
+        raise AuthorityError("schema")
+    for entry in value["entries"]:
+        _exact_keys(entry, {"authority_revision", "generation", "manifest_mac"})
+        _uuid4(entry["authority_revision"])
+        _generation(entry["generation"])
+        if not HEX64.fullmatch(entry["manifest_mac"]):
+            raise AuthorityError("schema")
     return value
 
 

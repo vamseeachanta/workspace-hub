@@ -9,24 +9,30 @@ import os
 import sys
 from pathlib import Path
 
-from rule_authority import authority, codec
+from rule_authority import audit, authority, codec, envelope, private_io
 
 
 def _read(path, maximum=codec.MAX_DOC):
-    data = Path(path).read_bytes()
-    if len(data) > maximum:
+    target = Path(path)
+    if target.is_symlink() or target.stat().st_size > maximum:
         raise codec.AuthorityError("schema")
-    return data
+    return target.read_bytes()
 
 
 def _key(args):
     if bool(getattr(args, "key_file", None)) == bool(getattr(args, "key_env", None)):
         raise codec.AuthorityError("config")
-    encoded = (
-        _read(args.key_file, 128).rstrip(b"\n")
-        if args.key_file
-        else os.environ.get(args.key_env, "").encode("ascii")
-    )
+    if args.key_file:
+        target = Path(args.key_file)
+        if os.name != "nt":
+            if target.stat().st_mode & 0o077 or target.parent.stat().st_mode & 0o077:
+                raise codec.AuthorityError("config")
+        raw = _read(args.key_file, 128)
+        if not raw.endswith(b"\n") or raw.endswith(b"\n\n"):
+            raise codec.AuthorityError("config")
+        encoded = raw[:-1]
+    else:
+        encoded = os.environ.get(args.key_env, "").encode("ascii")
     try:
         value = base64.b64decode(encoded, validate=True)
     except Exception as exc:
@@ -64,8 +70,19 @@ def cmd_verify(args):
     private_map = codec.parse_map(_read(args.map, codec.MAX_MAP), registry)
     manifest = codec.parse_manifest(_read(args.manifest))
     anchor = codec.parse_anchor(_read(args.anchor))
+    ledger = codec.parse_ledger(_read(args.ledger))
     key = _key(args)
-    authority.verify_bundle(registry, policy, private_map, manifest, key, anchor)
+    authority.verify_bundle(
+        registry,
+        policy,
+        private_map,
+        manifest,
+        key,
+        anchor,
+        ledger,
+        args.tool_sha,
+        args.head_oid,
+    )
     print(
         f"command=verify generation={manifest['generation']} revision={manifest['authority_revision']} verdict=verified rc=0"
     )
@@ -77,8 +94,12 @@ def cmd_seal(args):
     key = _key(args)
     manifest = authority.build_manifest(registry, policy, private_map, key)
     anchor = codec.parse_anchor(_read(args.current_anchor))
-    ledger = codec.parse_canonical(_read(args.ledger))
+    ledger = codec.parse_ledger(_read(args.ledger))
     authority.verify_ledger(ledger, key)
+    tip = ledger["entries"][-1]
+    identity = ("generation", "authority_revision", "manifest_mac")
+    if any(anchor[key] != tip[key] for key in identity):
+        raise codec.AuthorityError("integrity")
     if manifest["generation"] != anchor["generation"] + 1:
         raise codec.AuthorityError("integrity")
     new_ledger = authority.append_ledger(ledger, manifest, key)
@@ -88,6 +109,77 @@ def cmd_seal(args):
     print(
         f"command=seal generation={manifest['generation']} revision={manifest['authority_revision']} verdict=sealed rc=0"
     )
+
+
+def _authority_dir(args):
+    directory = Path(args.authority_dir)
+    registry = codec.parse_registry(_read(args.registry))
+    policy = codec.parse_policy(_read(args.policy))
+    private_map = codec.parse_map(
+        _read(directory / "map.json", codec.MAX_MAP), registry
+    )
+    manifest = codec.parse_manifest(_read(directory / "manifest.json"))
+    anchor = codec.parse_anchor(_read(directory / "anchor.json"))
+    ledger = codec.parse_ledger(_read(directory / "ledger.json"))
+    args.key_file = directory / "key.b64"
+    key = _key(args)
+    tool_sha = getattr(args, "tool_sha", None) or anchor["tool_sha"]
+    head_oid = getattr(args, "commit", None)
+    authority.verify_bundle(
+        registry, policy, private_map, manifest, key, anchor, ledger, tool_sha, head_oid
+    )
+    patterns = [base64.b64decode(item["pattern_b64"]) for item in private_map["rules"]]
+    return registry, policy, manifest, key, patterns
+
+
+def cmd_audit_tree(args):
+    _registry, policy, manifest, key, patterns = _authority_dir(args)
+    result = audit.audit_tree(
+        args.repo, args.commit, args.required_ref, patterns, policy["limits"]
+    )
+    transaction = private_io.write_complete_transaction(
+        Path(args.out_dir),
+        args.transaction_id,
+        {"tree-report.json": codec.canonical_bytes(result)},
+        key,
+        manifest,
+    )
+    verdict = "finding" if result["findings"] else "clean"
+    print(
+        f"command=audit-tree generation={manifest['generation']} objects={result['objects_examined']} coverage=complete verdict={verdict} rc={1 if result['findings'] else 0}"
+    )
+    if result["findings"]:
+        raise SystemExit(1)
+    return transaction
+
+
+def cmd_cleanup(args):
+    private_io.cleanup_incomplete(Path(args.parent), args.transaction_id)
+    print("command=cleanup-incomplete verdict=complete rc=0")
+
+
+def cmd_audit_history(args):
+    _registry, policy, manifest, key, patterns = _authority_dir(args)
+    remote = os.environ.get(args.remote_url_env, "")
+    result = audit.audit_history(
+        remote, Path(args.mirror_dir), patterns, policy["limits"]
+    )
+    private_io.write_complete_transaction(
+        Path(args.out_dir),
+        args.transaction_id,
+        {"history-report.json": codec.canonical_bytes(result)},
+        key,
+        manifest,
+    )
+    print(
+        f"command=audit-history generation={manifest['generation']} objects={result['objects_examined']} coverage=residual verdict=unknown rc=3"
+    )
+    raise codec.AuthorityError("integrity")
+
+
+def cmd_materialize(args):
+    envelope.materialize(_read(args.envelope, 32768), args.out_dir)
+    print("command=materialize-envelope verdict=complete rc=0")
 
 
 def _common(parser):
@@ -103,8 +195,9 @@ def build_parser():
     validate.set_defaults(func=cmd_validate)
     verify = sub.add_parser("verify")
     _common(verify)
-    for name in ("map", "manifest", "anchor"):
+    for name in ("map", "manifest", "anchor", "ledger", "tool-sha"):
         verify.add_argument(f"--{name}", required=True)
+    verify.add_argument("--head-oid")
     keys = verify.add_mutually_exclusive_group(required=True)
     keys.add_argument("--key-file")
     keys.add_argument("--key-env")
@@ -115,12 +208,47 @@ def build_parser():
         seal.add_argument(f"--{name}", required=True)
     seal.add_argument("--key-file", required=True)
     seal.set_defaults(func=cmd_seal)
+    tree = sub.add_parser("audit-tree")
+    _common(tree)
+    for name in (
+        "repo",
+        "commit",
+        "required-ref",
+        "authority-dir",
+        "out-dir",
+        "transaction-id",
+        "tool-sha",
+    ):
+        tree.add_argument(f"--{name}", required=True)
+    tree.set_defaults(func=cmd_audit_tree)
+    cleanup = sub.add_parser("cleanup-incomplete")
+    cleanup.add_argument("--parent", required=True)
+    cleanup.add_argument("--transaction-id", required=True)
+    cleanup.set_defaults(func=cmd_cleanup)
+    history = sub.add_parser("audit-history")
+    _common(history)
+    for name in (
+        "remote-url-env",
+        "github-repo",
+        "authority-dir",
+        "mirror-dir",
+        "out-dir",
+        "github-token-env",
+        "transaction-id",
+    ):
+        history.add_argument(f"--{name}", required=True)
+    history.set_defaults(func=cmd_audit_history)
+    materialize = sub.add_parser("materialize-envelope")
+    materialize.add_argument("--envelope", required=True)
+    materialize.add_argument("--out-dir", required=True)
+    materialize.set_defaults(func=cmd_materialize)
     return parser
 
 
 def main(argv=None):
     try:
-        build_parser().parse_args(argv).func(build_parser().parse_args(argv))
+        args = build_parser().parse_args(argv)
+        args.func(args)
         return 0
     except codec.AuthorityError as exc:
         category = str(exc) if str(exc) in {"schema", "config"} else "integrity"

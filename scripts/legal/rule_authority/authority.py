@@ -66,12 +66,31 @@ def make_anchor(manifest, tool_sha, slot="current", expected_head_oid=None):
     }
 
 
-def verify_bundle(registry, policy, private_map, manifest, key, anchor):
+def verify_bundle(
+    registry,
+    policy,
+    private_map,
+    manifest,
+    key,
+    anchor,
+    ledger,
+    tool_sha,
+    head_oid=None,
+):
     expected = build_manifest(registry, policy, private_map, key)
     identity = ("authority_revision", "generation", "manifest_mac")
-    if not hmac.compare_digest(
+    verify_ledger(ledger, key)
+    tip = ledger["entries"][-1]
+    invalid = not hmac.compare_digest(
         codec.canonical_bytes(expected), codec.canonical_bytes(manifest)
-    ) or any(anchor.get(k) != manifest.get(k) for k in identity):
+    )
+    invalid |= any(anchor.get(k) != manifest.get(k) for k in identity)
+    invalid |= any(tip.get(k) != manifest.get(k) for k in identity)
+    invalid |= anchor.get("tool_sha") != tool_sha
+    invalid |= (
+        anchor.get("slot") == "pending" and anchor.get("expected_head_oid") != head_oid
+    )
+    if invalid:
         raise codec.AuthorityError("integrity")
     codec.parse_anchor(codec.canonical_bytes(anchor))
     return True
@@ -99,6 +118,7 @@ def new_ledger(key_id, manifest, key):
 
 
 def verify_ledger(ledger, key):
+    codec.parse_ledger(codec.canonical_bytes(ledger))
     if (
         set(ledger) != {"entries", "key_id", "schema_id", "ledger_mac"}
         or ledger["schema_id"] != "legal-rule-generation-ledger-v1"
@@ -134,7 +154,7 @@ def append_ledger(ledger, manifest, key):
     return {**bare, "ledger_mac": _ledger_mac(bare, key)}
 
 
-def structural_tokens(private_map, manifest, key):
+def structural_tokens(private_map, manifest, key, anchor=None, ledger=None):
     patterns = [base64.b64decode(x["pattern_b64"]) for x in private_map["rules"]]
     tokens = [
         codec.canonical_bytes(private_map),
@@ -147,13 +167,29 @@ def structural_tokens(private_map, manifest, key):
         b"legal-rule-generation-ledger-v1",
         b"legal-rule-complete-v1",
     ]
+    artifacts = [value for value in (anchor, ledger) if value]
+    tokens.extend(codec.canonical_bytes(value) for value in artifacts)
+    for value in (manifest, *artifacts):
+        tokens.extend(
+            str(item).encode("ascii")
+            for item in value.values()
+            if isinstance(item, (str, int))
+        )
+    tokens.extend(
+        [
+            b"PACK",
+            b"\xfftOc",
+            b"repositoryformatversion",
+            b"legal-rule-private-report-v1",
+        ]
+    )
     return tokens + patterns + [base64.b64encode(value) for value in patterns]
 
 
 def scan_paths(paths, tokens):
-    findings = []
+    findings = 0
     for path in paths:
         data = Path(path).read_bytes()
         if any(token and token in data for token in tokens):
-            findings.append(str(path))
+            findings += 1
     return findings

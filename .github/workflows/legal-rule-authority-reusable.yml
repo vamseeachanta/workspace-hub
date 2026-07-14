@@ -3,47 +3,54 @@ name: Legal Rule Authority Reusable
 on:
   workflow_call:
     inputs:
-      head_oid:
-        required: true
-        type: string
+      head_oid: {required: true, type: string}
+      is_fork: {required: true, type: boolean}
+      tool_sha: {required: true, type: string}
     secrets:
-      LEGAL_SCAN_AUTH_CURRENT:
-        required: true
+      LEGAL_SCAN_AUTH_CURRENT: {required: false}
 
 permissions:
   contents: read
 
 jobs:
-  strict-scan:
+  fork-denied:
     name: strict-scan
+    if: inputs.is_fork
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "owner review required" && exit 1
+
+  authority:
+    name: strict-scan
+    if: ${{ !inputs.is_fork }}
     environment: legal-rule-authority
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Validate immutable object id
-        env:
-          HEAD_OID: ${{ inputs.head_oid }}
+      - name: Validate immutable object ids
+        env: {HEAD_OID: "${{ inputs.head_oid }}", TOOL_SHA: "${{ inputs.tool_sha }}"}
         run: |
           [[ "$HEAD_OID" =~ ^[0-9a-f]{40}$ ]] || exit 2
-      - name: Checkout trusted authority tooling
+          [[ "$TOOL_SHA" =~ ^[0-9a-f]{40}$ ]] || exit 2
+      - name: Checkout immutable trusted tooling
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ github.workflow_sha }}
+          ref: ${{ inputs.tool_sha }}
           persist-credentials: false
           fetch-depth: 1
-      - name: Install uv
-        uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc
+      - uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc
       - name: Materialize protected envelope
-        shell: bash
-        env:
-          AUTH_ENVELOPE: ${{ secrets.LEGAL_SCAN_AUTH_CURRENT }}
+        env: {AUTH_ENVELOPE: "${{ secrets.LEGAL_SCAN_AUTH_CURRENT }}"}
         run: |
-          set +x
-          umask 077
+          set +x; umask 077
           test -n "$AUTH_ENVELOPE"
-          printf '%s' "$AUTH_ENVELOPE" > "$RUNNER_TEMP/authority-envelope"
-      - name: Validate public authority
-        run: >-
-          uv run --no-project python scripts/legal/manage_rule_authority.py validate-public
-          --registry config/legal-rule-registry.json
-          --policy config/legal-rule-authority-policy.json
+          mkdir -m 700 "$RUNNER_TEMP/authority" "$RUNNER_TEMP/report"
+          printf '%s' "$AUTH_ENVELOPE" > "$RUNNER_TEMP/authority/envelope.json"
+      - name: Verify authority and audit inert PR objects
+        env: {HEAD_OID: "${{ inputs.head_oid }}", TOOL_SHA: "${{ inputs.tool_sha }}"}
+        run: |
+          git init --bare "$RUNNER_TEMP/audit.git"
+          git --git-dir="$RUNNER_TEMP/audit.git" -c credential.helper= -c core.hooksPath=/dev/null fetch --no-tags https://github.com/vamseeachanta/workspace-hub.git "$HEAD_OID:refs/audit/head"
+          uv run --no-project python scripts/legal/manage_rule_authority.py materialize-envelope --envelope "$RUNNER_TEMP/authority/envelope.json" --out-dir "$RUNNER_TEMP/authority"
+          uv run --no-project python scripts/legal/manage_rule_authority.py verify --registry config/legal-rule-registry.json --policy config/legal-rule-authority-policy.json --map "$RUNNER_TEMP/authority/map.json" --manifest "$RUNNER_TEMP/authority/manifest.json" --anchor "$RUNNER_TEMP/authority/anchor.json" --ledger "$RUNNER_TEMP/authority/ledger.json" --key-file "$RUNNER_TEMP/authority/key.b64" --tool-sha "$TOOL_SHA" --head-oid "$HEAD_OID"
+          uv run --no-project python scripts/legal/manage_rule_authority.py audit-tree --repo "$RUNNER_TEMP/audit.git" --commit "$HEAD_OID" --required-ref refs/audit/head --registry config/legal-rule-registry.json --policy config/legal-rule-authority-policy.json --authority-dir "$RUNNER_TEMP/authority" --out-dir "$RUNNER_TEMP/report" --transaction-id 12345678-1234-4234-9234-123456789abc --tool-sha "$TOOL_SHA"

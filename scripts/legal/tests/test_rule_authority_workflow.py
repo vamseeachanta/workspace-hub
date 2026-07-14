@@ -22,15 +22,18 @@ def test_reusable_workflow_is_secret_owner_and_caller_is_pinned():
         caller,
     )
     assert "secrets: inherit" not in caller
+    assert "ref: ${{ inputs.tool_sha }}" in reusable
+    assert "audit-tree" in reusable and "verify" in reusable
 
 
 def test_fork_path_is_constant_and_precedes_private_scan():
-    caller = (ROOT / ".github/workflows/legal-rule-authority-gate.yml").read_text(
+    reusable = (ROOT / ".github/workflows/legal-rule-authority-reusable.yml").read_text(
         encoding="utf-8"
     )
-    fork = caller.index("owner review required")
-    invoke = caller.index("legal-rule-authority-reusable.yml")
-    assert fork < invoke
+    fork = reusable.index("owner review required")
+    private = reusable.index("environment: legal-rule-authority")
+    assert fork < private
+    assert "if: inputs.is_fork" in reusable
 
 
 def test_public_config_contains_no_pattern_or_locator_fields():
