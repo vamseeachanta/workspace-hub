@@ -14,6 +14,12 @@ class CompleteIntegrityError(ValueError):
     """A COMPLETE transaction failed authentication."""
 
 
+def _require_key(key: bytes) -> None:
+    """Require an exact 32-byte COMPLETE authentication key."""
+    if type(key) is not bytes or len(key) != 32:
+        raise CompleteIntegrityError("invalid key")
+
+
 def complete_mac_input(unsigned: dict) -> bytes:
     """Return domain-separated bytes for a COMPLETE document without its MAC."""
     if "complete_mac" in unsigned:
@@ -23,8 +29,7 @@ def complete_mac_input(unsigned: dict) -> bytes:
 
 def create_complete(unsigned: dict, key: bytes) -> dict:
     """Create a strict authenticated COMPLETE document."""
-    if len(key) != 32:
-        raise CompleteIntegrityError("invalid key")
+    _require_key(key)
     document = dict(unsigned)
     document["complete_mac"] = "0" * 64
     encode_document("complete", document)
@@ -35,8 +40,7 @@ def create_complete(unsigned: dict, key: bytes) -> dict:
 
 def verify_complete(raw: bytes, key: bytes) -> dict:
     """Decode and authenticate a COMPLETE document."""
-    if len(key) != 32:
-        raise CompleteIntegrityError("invalid key")
+    _require_key(key)
     document = decode_document("complete", raw)
     unsigned = {name: value for name, value in document.items() if name != "complete_mac"}
     expected = hmac.new(key, complete_mac_input(unsigned), hashlib.sha256).hexdigest()
