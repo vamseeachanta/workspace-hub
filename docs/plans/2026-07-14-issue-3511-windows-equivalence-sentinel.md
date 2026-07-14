@@ -1,13 +1,13 @@
 # Plan for #3511: Fail-closed Windows equivalence sentinel and exact state publishing
 
-> **Status:** draft — adversarial review pending; implementation is not authorized
+> **Status:** plan-review — adversarial review complete; waiting for user approval; implementation is not authorized
 > **Complexity:** T3
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3511
 > **Client:** N/A
 > **Lane:** lane:claude
 > **Execution mode:** planning = parallel-readonly; implementation = isolated single-writer worktree with read-only review lanes
-> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3511-claude.md` | `scripts/review/results/2026-07-14-plan-3511-codex.md` | `scripts/review/results/2026-07-14-plan-3511-gemini.md`
+> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3511-claude.md` | `scripts/review/results/2026-07-14-plan-3511-codex.md` | `scripts/review/results/2026-07-14-plan-3511-gemini.md` | `scripts/review/results/2026-07-14-plan-3511-independent.md`
 
 ---
 
@@ -121,7 +121,7 @@ Distinct sources consulted: issue state, current implementation, current tests, 
 | State-store tests | `tests/monitoring/test_equivalence_state.py` |
 | Scheduler tests | `tests/readiness/test_windows_scheduler_single_source.py` |
 | Collector tests | `tests/readiness/test_collect_equality.py` |
-| Plan reviews | `scripts/review/results/2026-07-14-plan-3511-{claude,codex,gemini}.md` |
+| Plan reviews | `scripts/review/results/2026-07-14-plan-3511-{claude,codex,gemini,independent}.md` plus preserved Codex r1/r2/unavailable history |
 
 ---
 
@@ -247,9 +247,11 @@ sentinel_cycle():
     run atomic fingerprint generation
     independently parse and validate the generated file, including the null duration field
     on failure: persist phase=fingerprint publish-health failure and exit before publish
-    read the prior health record only when it passes the exact health schema;
-      copy its finite nonnegative duration into the fingerprint, otherwise retain null
-    atomically rewrite and revalidate the final publishable fingerprint
+    read the prior health record only when it passes the exact health schema and phase=publish;
+      copy its finite nonnegative duration into a same-directory fingerprint temp,
+      otherwise retain null
+    validate the enriched temp before atomically replacing the generated fingerprint;
+      on enrichment/write/validation failure preserve the generated valid file and exit before publish
     run publisher
     create a same-directory health temp file, serialize + validate it, flush/close it,
       then atomically replace publish-health.json
@@ -315,7 +317,7 @@ No implementation file will be modified until the reviewed plan receives explici
 | `test_schema_rejects_wrong_types_version_and_key_set` | null/bool/string identity/version values plus missing/extra keys | validation error before Git write |
 | `test_schema_rejects_bad_timestamp_and_nonfinite_numbers` | naive/invalid timestamp and NaN/Infinity/negative numeric fields | validation error before Git write |
 | `test_schema_accepts_nullable_optional_telemetry` | documented null telemetry with otherwise exact v1 payload | validation succeeds |
-| `test_generator_and_sentinel_duration_preparation_order` | generator emits `last_publish_duration_s=null`; valid prior health supplies a finite duration; invalid/missing prior health does not | generated and final payloads each pass the same exact schema; final payload is revalidated before publish |
+| `test_generator_and_sentinel_duration_preparation_order` | generator emits `last_publish_duration_s=null`; only valid `phase=publish` prior health supplies a finite duration; fingerprint-phase/invalid/missing health does not; injected enriched-temp validation failure | generated and final payloads each pass the same exact schema; temp is validated before atomic replacement; a failed enrichment preserves the generated valid file and blocks publish |
 | `test_validate_cli_is_side_effect_free` | invoke `equivalence_state.py validate <fingerprint>` against valid and invalid fixtures while Git commands are trapped | valid returns zero; invalid returns nonzero; neither path invokes Git or mutates files |
 | `test_publish_rejects_empty_json_before_git_write` | empty payload | validation error; no hash/commit/push invocation |
 | `test_publish_rejects_malformed_or_nonobject_json` | malformed/list payload | validation error; ref unchanged |
@@ -335,7 +337,7 @@ No implementation file will be modified until the reviewed plan receives explici
 | `test_windows_renderer_rejects_unsafe_wrapper_path` | absolute/traversal/missing `windows_script` | fail closed before registration |
 | `test_windows_sentinel_machine_roster_and_remove` | included/excluded host plus `-Remove` | correct install/skip/removal behavior |
 | `test_windows_publish_health_uses_working_interpreter` | Store stub plus working fallback | equality output contains fresh timestamp/duration/rc |
-| expanded `tests/readiness/test_publish_health_verdict.py` freshness/schema cases | absent/sentinel, invalid-syntax, timezone-naive, future, and older-than-26-hour timestamps plus missing/wrong-type rc and duration | matrix remains fail-closed (`MISSING-EVIDENCE` or `PUBLISH-STALE`), never green |
+| expanded `tests/readiness/test_publish_health_verdict.py` freshness/schema cases | absent/sentinel, invalid-syntax, timezone-naive, future, and older-than-26-hour timestamps plus missing/wrong-type rc and duration, explicitly including booleans | matrix remains fail-closed (`MISSING-EVIDENCE` or `PUBLISH-STALE`), never green |
 | existing equivalence, scheduler, schedule-validator, and matrix suites | regression | all pass |
 
 Tests that require invalid JSON or corrupt-name fixtures will use temporary directories and isolated bare repositories. No fixture will touch the production `equivalence-state` ref, and no blanket enforcement exemption will be added.
@@ -353,7 +355,7 @@ Tests that require invalid JSON or corrupt-name fixtures will use temporary dire
 - [ ] `config/scheduled-tasks/schedule-tasks.yaml` remains the only cadence/action source for the Windows sentinel; its repo-relative `windows_script` resolves through a tested wrapper without parsing the folded Linux command.
 - [ ] `setup-scheduler-tasks.ps1 -WhatIf -MachineIdOverride <host>` deterministically renders `\Claude\EquivalenceSentinel` at minute 17 every six hours for each of `ace-win-1` and `ace-win-2`; the override is rejected for any live mutation.
 - [ ] Any publish-health persistence failure returns exit 4 and cannot be masked by comparison success or a stale prior health record.
-- [ ] Expanded matrix freshness/schema tests prove absent/sentinel, invalid-syntax, timezone-naive, future, and older-than-26-hour timestamps plus missing/wrong-type rc and duration facts cannot render `PUBLISH-OK`.
+- [ ] Expanded matrix freshness/schema tests prove absent/sentinel, invalid-syntax, timezone-naive, future, and older-than-26-hour timestamps plus missing/wrong-type/boolean rc and duration facts cannot render `PUBLISH-OK`.
 - [ ] Focused tests pass, plus `uv run --no-project python scripts/cron/validate-schedule.py` and affected monitoring/readiness suites.
 - [ ] `scripts/legal/legal-sanity-scan.sh --diff-only` passes on the implementation diff.
 - [ ] Code/artifact adversarial review completes at T3 depth; unavailable providers are recorded rather than treated as approvals.
@@ -371,9 +373,9 @@ Tests that require invalid JSON or corrupt-name fixtures will use temporary dire
 | Claude | UNAVAILABLE | initial and focused reruns timed out without a usable review |
 | Codex | MINOR (r3) | no blockers; requested explicit provider-key enumeration and explicit retention of stale/missing publish-health matrix tests |
 | Gemini | UNAVAILABLE | no non-interactive Gemini authentication configured |
-| Independent read-only lane | MAJOR (r1) | corrected the five-key provider schema, duration preparation/validation order, and incomplete freshness-test claim in revision 4 |
+| Independent read-only lane | MINOR (r2) | r1 blockers resolved; r2 precision fixes restrict enrichment to publish-phase health and validate temp content before atomic replacement |
 
-**Overall result:** FAIL pending focused re-review — Codex r3 has no blockers; Claude timed out and Gemini lacks non-interactive authentication. The independent read-only lane found provider-key and duration-order blockers in revision 3; revision 4 corrects them and requires focused confirmation before `status:plan-review`.
+**Overall result:** PASS with provider degradation — Codex r3 and independent r2 report no blockers. Claude timed out and Gemini lacks non-interactive authentication; both remain `UNAVAILABLE`, not approvals. All MAJOR findings and final MINOR precision findings are incorporated.
 
 Revisions made after Codex r1:
 
@@ -386,6 +388,7 @@ Revisions made after Codex r1:
 - Corrected the exact provider hash set to include the producer's `codex_agents` key.
 - Made the generator emit a null duration, then required sentinel enrichment plus atomic final revalidation before publish.
 - Expanded fail-closed publish-health tests for invalid/naive timestamps and missing or wrong-type rc/duration facts.
+- Restricted duration enrichment to prior publish-phase health and required enriched-temp validation before atomic replacement; boolean health facts are explicit invalid-type cases.
 
 ---
 
