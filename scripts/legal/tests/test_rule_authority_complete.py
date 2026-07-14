@@ -75,6 +75,44 @@ def test_complete_tamper_and_key_size_reject():
         complete.create_complete(unsigned_complete(), KEY[:-1])
 
 
+class DerivedBytes(bytes):
+    """A bytes subclass is not an exact bytes key."""
+
+
+INVALID_COMPLETE_KEYS = (
+    pytest.param(bytearray(KEY), id="bytearray"),
+    pytest.param(memoryview(KEY), id="memoryview"),
+    pytest.param("x" * 32, id="str"),
+    pytest.param(None, id="none"),
+    pytest.param(b"x", id="one-byte"),
+    pytest.param(b"x" * 31, id="short"),
+    pytest.param(b"x" * 33, id="long"),
+    pytest.param(DerivedBytes(KEY), id="bytes-subclass"),
+)
+
+
+def _forbid_hmac(*_args, **_kwargs):
+    raise AssertionError("invalid COMPLETE key reached HMAC")
+
+
+@pytest.mark.parametrize("invalid_key", INVALID_COMPLETE_KEYS)
+def test_create_complete_rejects_invalid_key_before_hmac(monkeypatch, invalid_key):
+    _, complete = modules()
+    monkeypatch.setattr(complete.hmac, "new", _forbid_hmac)
+    with pytest.raises(complete.CompleteIntegrityError, match="invalid key"):
+        complete.create_complete(unsigned_complete(), invalid_key)
+
+
+@pytest.mark.parametrize("invalid_key", INVALID_COMPLETE_KEYS)
+def test_verify_complete_rejects_invalid_key_before_hmac(monkeypatch, invalid_key):
+    codec, complete = modules()
+    raw = codec.encode_document(
+        "complete", complete.create_complete(unsigned_complete(), KEY))
+    monkeypatch.setattr(complete.hmac, "new", _forbid_hmac)
+    with pytest.raises(complete.CompleteIntegrityError, match="invalid key"):
+        complete.verify_complete(raw, invalid_key)
+
+
 def test_complete_schema_requires_mac_field():
     jsonschema = pytest.importorskip("jsonschema")
     schema = __import__("json").loads(
