@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Session handoff — Windows Terminal default directory (2026-07-14)</title>
+<style>
+ :root{--fg:#1a1f2b;--muted:#5a6472;--line:#e3e8ef;--ok:#137a4b;--acc:#1b5fb0;--bg:#fff}
+ @media(prefers-color-scheme:dark){:root{--fg:#e6eaf0;--muted:#9aa5b4;--line:#2a323d;--ok:#4ec98a;--acc:#6da3ef;--bg:#12151b}}
+ body{font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif;color:var(--fg);background:var(--bg);max-width:900px;margin:0 auto;padding:28px}
+ h1{font-size:22px;margin:0 0 4px} h2{font-size:16px;margin:26px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
+ .sub{color:var(--muted);margin:0 0 18px} table{border-collapse:collapse;width:100%;margin:6px 0;font-size:14px}
+ th,td{text-align:left;padding:6px 9px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-weight:600}
+ code{background:rgba(130,140,160,.14);padding:1px 5px;border-radius:4px;font-size:13px} .ok{color:var(--ok)}
+ ul{margin:6px 0;padding-left:20px} li{margin:3px 0} .pill{font-size:12px;padding:1px 7px;border-radius:10px;background:rgba(130,140,160,.16)}
+</style>
+</head>
+<body>
+<h1>Session handoff — Windows Terminal default directory</h1>
+<p class="sub">2026-07-14 · host: Windows · scope: local terminal configuration · <span class="pill">exit-ready</span></p>
+
+<h2>Outcome</h2>
+<p><span class="ok"><b>Verified:</b></span> Windows Terminal already defaults to <code>C:\ws</code>. No host-setting change was required.</p>
+
+<h2>Evidence</h2>
+<table>
+<tr><th>Check</th><th>Observed state</th></tr>
+<tr><td>Active terminal</td><td>Windows Terminal (<code>WT_SESSION</code> present), PowerShell 7.6.3</td></tr>
+<tr><td>Settings file</td><td><code>%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json</code></td></tr>
+<tr><td>Global profile default</td><td><code>profiles.defaults.startingDirectory = C:\ws</code></td></tr>
+<tr><td>Profile coverage</td><td>7 profiles inspected; 7 resolve to <code>C:\ws</code>; 0 conflicting overrides</td></tr>
+<tr><td>JSON validation</td><td>Parsed successfully with PowerShell <code>ConvertFrom-Json</code></td></tr>
+<tr><td>Settings mutation</td><td>None; file timestamp remained 2026-07-11 06:11:48 local</td></tr>
+</table>
+
+<h2>Preserved state</h2>
+<ul>
+<li>The primary <code>C:\ws\workspace-hub</code> checkout had unrelated modified and untracked files from another active session and was 42 commits behind <code>origin/main</code> at inspection time.</li>
+<li>No files in that checkout were edited, staged, committed, or cleaned.</li>
+<li>This handoff was prepared in an isolated worktree based on current <code>origin/main</code>.</li>
+</ul>
+
+<h2>External actions</h2>
+<p>None. No messages, issues, pull requests, or host configuration changes were made during the terminal-default task.</p>
+
+<h2>Blockers and next checkpoint</h2>
+<p><b>Blockers:</b> none. <b>Next checkpoint:</b> open a new Windows Terminal window or tab; it should start in <code>C:\ws</code>. An explicit command-line directory override such as <code>wt -d ...</code> may intentionally supersede the profile default.</p>
+</body>
+</html>
