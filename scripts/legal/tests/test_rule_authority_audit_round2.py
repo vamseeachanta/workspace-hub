@@ -238,4 +238,5 @@ def test_index_edge_budget_accepts_documented_entry_limit(tmp_path: Path) -> Non
     _git(source, "add", "--", "file-0", "file-1", "file-2", "file-3")
     result = audit_git.audit_index(source, SENSITIVE, max_entries=5, max_blob_bytes=100)
     assert result.verdict == "clean"
-    assert result.objects_examined == 5
+    assert result.objects_examined == 1
+    assert len(result.edges) == 10
