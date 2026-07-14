@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import io
 import sys
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -33,6 +35,7 @@ def _empty_pages() -> dict[str, list[audit_github.ApiPage]]:
 
 
 def test_inventory_requires_every_surface_and_records_bytes() -> None:
+    assert {"commits", "git-trees", "rulesets"} <= set(audit_github.REQUIRED_SURFACES)
     pages = _empty_pages()
     pages["issues"] = [audit_github.ApiPage(b"synthetic bytes", None, "etag-1", 1)]
     report = audit_github.inventory(FixtureAdapter(pages), max_pages=30, max_bytes=1000)
@@ -89,3 +92,40 @@ def test_inventory_rejects_missing_surface() -> None:
     pages.pop("wiki")
     with pytest.raises(audit_github.CoverageError):
         audit_github.inventory(FixtureAdapter(pages), max_pages=30, max_bytes=1000)
+
+
+def _zip(entries: dict[str, bytes]) -> bytes:
+    output = io.BytesIO()
+    with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as archive:
+        for name, payload in entries.items():
+            archive.writestr(name, payload)
+    return output.getvalue()
+
+
+def test_archive_adapter_is_bounded_and_rejects_traversal() -> None:
+    result = audit_github.scan_zip(
+        _zip({"safe.txt": b"safe"}), max_entries=2, max_expanded_bytes=10,
+        max_ratio=20, max_depth=2,
+    )
+    assert result == {"safe.txt": b"safe"}
+    with pytest.raises(audit_github.CoverageError):
+        audit_github.scan_zip(
+            _zip({"../escape": b"x"}), max_entries=2, max_expanded_bytes=10,
+            max_ratio=20, max_depth=2,
+        )
+
+
+def test_archive_adapter_rejects_count_size_ratio_and_depth_caps() -> None:
+    cases = [
+        (_zip({"a": b"a", "b": b"b"}), {"max_entries": 1, "max_expanded_bytes": 10,
+                                             "max_ratio": 20, "max_depth": 2}),
+        (_zip({"a": b"abc"}), {"max_entries": 2, "max_expanded_bytes": 2,
+                                  "max_ratio": 20, "max_depth": 2}),
+        (_zip({"a": b"a" * 1000}), {"max_entries": 2, "max_expanded_bytes": 2000,
+                                       "max_ratio": 2, "max_depth": 2}),
+        (_zip({"a/b/c": b"x"}), {"max_entries": 2, "max_expanded_bytes": 10,
+                                    "max_ratio": 20, "max_depth": 2}),
+    ]
+    for raw, limits in cases:
+        with pytest.raises(audit_github.CoverageError):
+            audit_github.scan_zip(raw, **limits)
