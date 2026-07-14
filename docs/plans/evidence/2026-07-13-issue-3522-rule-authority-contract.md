@@ -27,12 +27,12 @@ The active anchor uses `legal-json-v1`, maximum 2 KiB:
 
 ```text
 {"authority_revision":UUIDv4,"generation":u64,"manifest_mac":hex64,
- "schema_id":"<private anchor schema marker; see canonical schema>","slot":"current"|"pending",
+ "schema_id":"legal-rule-active-anchor-v1","slot":"current"|"pending",
  "tool_sha":full lowercase Git OID,"expected_head_oid":full Git OID|null}
 ```
 
 The private generation ledger is canonical JSON, maximum 2 MiB. It has
-The private ledger schema marker (defined in the canonical schema), a key ID, entries sorted by
+`schema_id=legal-rule-generation-ledger-v1`, a key ID, entries sorted by
 generation with `{generation,authority_revision,manifest_mac}`, and a
 domain-separated HMAC over the document without `ledger_mac`. Genesis is a
 separately approved owner transaction. Every later seal requires the ledger,
@@ -64,7 +64,7 @@ complete CI envelope remains below GitHub's 48 KiB secret limit.
     "severity": "block" | "warn",
     "target": "path" | "content" | "both"
   }],
-  "schema_id": "<public registry schema ID; see canonical config>"
+  "schema_id": "legal-rule-registry-v1"
 }
 ```
 
@@ -84,7 +84,7 @@ IDs are unique. Registry must be nonempty.
     "max_findings": 1..1000,
     "max_request_bytes": 1..104857600
   },
-  "schema_id": "<public policy schema ID; see canonical config>"
+  "schema_id": "legal-rule-policy-v1"
 }
 ```
 
@@ -98,7 +98,7 @@ nonempty, relative, contain no `.`/`..` segment, and sort by raw ASCII bytes.
   "authority_revision": UUIDv4,
   "generation": u64,
   "rules": [{"pattern_b64": canonical padded RFC4648, "rule_id": UUIDv4}],
-  "schema_id": "<private map schema marker; see canonical schema>"
+  "schema_id": "legal-rule-map-v1"
 }
 ```
 
@@ -119,7 +119,7 @@ The manifest is:
   "map_sha256": 64 lowercase hex,
   "policy_sha256": 64 lowercase hex,
   "registry_sha256": 64 lowercase hex,
-  "schema_id": "<private manifest schema marker; see canonical schema>"
+  "schema_id": "legal-rule-authority-manifest-v1"
 }
 ```
 

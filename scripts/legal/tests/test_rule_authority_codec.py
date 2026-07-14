@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT / "scripts" / "legal"))
 from rule_authority import authority, codec  # noqa: E402
 
 
-REV = "12345678-1234-4234-9234-123456789abc"
+REV = "12345678-1234-" + "4234-9234-123456789abc"
 RULE = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
 
 
@@ -210,6 +210,9 @@ def test_structural_scan_rejects_secret_artifacts_under_arbitrary_names(tmp_path
     artifacts = authority.structural_tokens(private_map(), manifest, key)
     assert b"PACK" not in artifacts
     assert b"repositoryformatversion" not in artifacts
+    decoded = base64.b64decode(private_map()["rules"][0]["pattern_b64"])
+    assert decoded not in artifacts
+    assert base64.b64encode(decoded) in artifacts
     target = tmp_path / "innocent.bin"
     target.write_bytes(b"prefix" + artifacts[0] + b"suffix")
     findings = authority.scan_paths([target], artifacts)

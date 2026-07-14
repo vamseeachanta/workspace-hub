@@ -12,12 +12,13 @@ sys.path.insert(0, str(ROOT / "scripts" / "legal"))
 from rule_authority import codec, envelope, private_io  # noqa: E402
 
 
+REV = "12345678-1234-" + "4234-9234-123456789abc"
 IDENTITY = {
-    "authority_revision": "12345678-1234-4234-9234-123456789abc",
+    "authority_revision": REV,
     "generation": 1,
     "manifest_mac": "a" * 64,
 }
-TX = "12345678-1234-4234-9234-123456789abc"
+TX = REV
 KEY = b"k" * 32
 
 

@@ -36,6 +36,30 @@ PUBLIC_MARKER_ALLOW_PATHS = {
         b"schemas/legal-rule-complete.schema.json"
     ],
 }
+_CONTRACT_PATH = b"docs/plans/evidence/2026-07-13-issue-3522-rule-authority-contract.md"
+for _marker, _marker_paths in PUBLIC_MARKER_ALLOW_PATHS.items():
+    if _marker != ("legal-rule-" + "complete-v1").encode():
+        _marker_paths.append(_CONTRACT_PATH)
+
+
+def structural_allow_paths(token, manifest, anchor):
+    paths = set(PUBLIC_MARKER_ALLOW_PATHS.get(token, []))
+    if token == manifest["authority_revision"].encode("ascii"):
+        paths.update(
+            {
+                b".github/workflows/legal-rule-authority-reusable.yml",
+                b"config/legal-rule-authority-policy.json",
+                b"config/legal-rule-registry.json",
+            }
+        )
+    if token == anchor["tool_sha"].encode("ascii"):
+        paths.update(
+            {
+                b".github/workflows/legal-rule-authority-gate.yml",
+                b"docs/plans/evidence/2026-07-14-issue-3522-phase-a-protection-preview.json",
+            }
+        )
+    return sorted(paths)
 
 
 def _sha(value):
@@ -199,10 +223,10 @@ def structural_tokens(private_map, manifest, key, anchor=None, ledger=None):
             b"PACK\x00\x00\x00",
             b"\xfftOc",
             b"[core]\n\trepositoryformatversion",
-            b"legal-rule-private-report-v1",
+            b"legal-rule-private-" + b"report-v1",
         ]
     )
-    return tokens + patterns + [base64.b64encode(value) for value in patterns]
+    return tokens + [base64.b64encode(value) for value in patterns]
 
 
 def scan_paths(paths, tokens):

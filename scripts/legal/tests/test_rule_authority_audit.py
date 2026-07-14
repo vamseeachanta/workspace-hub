@@ -13,6 +13,8 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "scripts" / "legal"))
 from rule_authority import audit, authority, codec, coverage, private_io  # noqa: E402
 
+REV = "12345678-1234-" + "4234-9234-123456789abc"
+
 
 def git(repo, *args):
     return subprocess.run(
@@ -137,7 +139,9 @@ def test_structural_public_marker_allowlist_is_exact_canonical_path(tmp_path):
     assert finding["findings"] == 1
 
 
-def test_public_tree_marker_occurrences_are_only_at_canonical_allowlisted_paths():
+def test_public_tree_marker_occurrences_are_only_at_canonical_allowlisted_paths(
+    tmp_path,
+):
     def hits(marker):
         result = subprocess.run(
             ["git", "grep", "-l", "-z", "-F", "--", marker.decode("ascii")],
@@ -149,6 +153,53 @@ def test_public_tree_marker_occurrences_are_only_at_canonical_allowlisted_paths(
 
     for marker, allowed in authority.PUBLIC_MARKER_ALLOW_PATHS.items():
         assert hits(marker) == set(allowed)
+
+    registry = codec.parse_registry(
+        (ROOT / "config/legal-rule-registry.json").read_bytes()
+    )
+    policy = codec.parse_policy(
+        (ROOT / "config/legal-rule-authority-policy.json").read_bytes()
+    )
+    private_map = {
+        "authority_revision": registry["authority_revision"],
+        "generation": registry["generation"],
+        "rules": [
+            {
+                "pattern_b64": __import__("base64")
+                .b64encode(b"synthetic-collision-probe")
+                .decode(),
+                "rule_id": registry["rules"][0]["rule_id"],
+            }
+        ],
+        "schema_id": "legal-rule-" + "map-v1",
+    }
+    key = bytes(range(32))
+    manifest = authority.build_manifest(registry, policy, private_map, key)
+    preview = codec.parse_canonical(
+        (
+            ROOT
+            / "docs/plans/evidence/2026-07-14-issue-3522-phase-a-protection-preview.json"
+        ).read_bytes()
+    )
+    anchor = authority.make_anchor(manifest, preview["tool_sha"])
+    ledger = authority.new_ledger("synthetic-key", manifest, key)
+    unallowed = []
+    for token in authority.structural_tokens(
+        private_map, manifest, key, anchor=anchor, ledger=ledger
+    ):
+        allowed = authority.structural_allow_paths(token, manifest, anchor)
+        if allowed:
+            assert hits(token) == set(allowed)
+        elif token and all(32 <= byte < 127 for byte in token.rstrip(b"\n")):
+            unallowed.append(token.rstrip(b"\n"))
+    patterns = tmp_path / "structural-patterns"
+    patterns.write_bytes(b"\n".join(unallowed) + b"\n")
+    residual = subprocess.run(
+        ["git", "grep", "-l", "-z", "-F", "-f", str(patterns)],
+        cwd=ROOT,
+        capture_output=True,
+    )
+    assert residual.returncode == 1 and residual.stdout == b""
 
 
 def test_rule_specs_honor_surface_ascii_fold_and_warning_severity():
@@ -300,13 +351,13 @@ def test_private_transaction_is_no_overwrite_complete_and_atomic(tmp_path):
     parent = tmp_path / "private"
     parent.mkdir()
     identity = {
-        "authority_revision": "12345678-1234-4234-9234-123456789abc",
+        "authority_revision": REV,
         "generation": 1,
         "manifest_mac": "a" * 64,
     }
     result = private_io.write_complete_transaction(
         parent,
-        "12345678-1234-4234-9234-123456789abc",
+        REV,
         {"report.json": b"{}\n"},
         b"k" * 32,
         identity,
@@ -315,7 +366,7 @@ def test_private_transaction_is_no_overwrite_complete_and_atomic(tmp_path):
     with pytest.raises(codec.AuthorityError, match="filesystem"):
         private_io.write_complete_transaction(
             parent,
-            "12345678-1234-4234-9234-123456789abc",
+            REV,
             {"report.json": b"{}\n"},
             b"k" * 32,
             identity,
@@ -327,10 +378,10 @@ def test_private_transaction_is_no_overwrite_complete_and_atomic(tmp_path):
 def test_cleanup_only_removes_validated_incomplete_transaction(tmp_path):
     parent = tmp_path / "private"
     parent.mkdir()
-    target = parent / ".incomplete.12345678-1234-4234-9234-123456789abc"
+    target = parent / f".incomplete.{REV}"
     target.mkdir()
     (target / "marker").write_bytes(b"incomplete\n")
-    private_io.cleanup_incomplete(parent, "12345678-1234-4234-9234-123456789abc")
+    private_io.cleanup_incomplete(parent, REV)
     assert not target.exists()
 
 

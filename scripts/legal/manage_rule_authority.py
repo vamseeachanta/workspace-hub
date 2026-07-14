@@ -152,7 +152,7 @@ def _authority_dir(args):
     rules = [{**item, "pattern": mapped[item["rule_id"]]} for item in registry["rules"]]
     rules.extend(
         {
-            "allow_paths": authority.PUBLIC_MARKER_ALLOW_PATHS.get(token, []),
+            "allow_paths": authority.structural_allow_paths(token, manifest, anchor),
             "match_mode": "exact-bytes",
             "pattern": token,
             "rule_id": "structural",
