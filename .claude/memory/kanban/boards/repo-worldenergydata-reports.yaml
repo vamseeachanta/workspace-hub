@@ -1616,3 +1616,15 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1017
+    title: 'present(cost): stakeholder presentation of the cost-basis time-series — least-assumptions first, approval-gated sequence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1017
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:reports
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

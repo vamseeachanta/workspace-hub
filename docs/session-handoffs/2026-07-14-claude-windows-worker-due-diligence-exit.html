@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Windows worker due diligence — 2026-07-14</title>
+</head>
+<body>
+  <main>
+    <h1>Claude Windows worker due diligence</h1>
+    <p><strong>Date:</strong> 2026-07-14 (America/Chicago)</p>
+
+    <h2>Active task</h2>
+    <p>Determine whether this Windows machine can be registered under a colleague's separate Claude/Anthropic account for remote agentic jobs, schedules, triggers, and safe use of local repositories, tools, credentials, and compute.</p>
+
+    <h2>Completed actions</h2>
+    <ul>
+      <li>Ran the user-supplied discovery prompt through the installed Claude CLI with <code>-p</code> and <code>--no-session-persistence</code>. The latter disables saved Claude sessions; it does not prevent filesystem writes.</li>
+      <li>Inspected local Claude CLI and Desktop versions and read-only help surfaces.</li>
+      <li>Cross-checked decisive product, authentication, service-account, scheduling, and credential-sharing claims against current official Anthropic documentation.</li>
+      <li>Made no installation, authentication, account, scheduler, or Claude configuration changes.</li>
+    </ul>
+
+    <h2>Verified local state</h2>
+    <ul>
+      <li>Claude Code CLI version: <code>2.1.209</code>.</li>
+      <li>Claude Desktop version: <code>1.20186.9.0</code>.</li>
+      <li><code>claude remote-control</code> supports server mode, <code>--spawn worktree</code>, and a default capacity of 32 concurrent sessions.</li>
+      <li><code>claude -p</code> supports non-interactive automation.</li>
+    </ul>
+
+    <h2>Decision</h2>
+    <p><strong>No-go:</strong> do not register this machine by sharing a colleague's separate individual account, password, session cookie, OAuth token, or personal API key. Anthropic documents Remote Control as requiring the same account and organization used by terminal Claude Code, and its Consumer Terms prohibit sharing account credentials.</p>
+    <p>No current supported Anthropic feature provides cross-account cloud-to-local dispatch into this Windows machine. Remote Control is same-account only and rejects service-account/WIF authentication; Cloud Routines and ordinary GitHub-hosted Actions do not dispatch into local state; Desktop schedules require the app to be open and the machine awake.</p>
+    <p><strong>Recommended:</strong> if local-machine access is essential, build a small isolated API/Agent SDK runner. Each human will retain an individual identity; the runner will use a dedicated workspace-scoped non-human service account with Workload Identity Federation. It will run under a low-privilege Windows account with an authenticated queue, worktree isolation, bounded concurrency, structured logs, workspace spending limits, and explicit machine wake handling. It will not use Remote Control. If local access is unnecessary, use Cloud Routines or GitHub Actions instead.</p>
+
+    <h2>Ranked options</h2>
+    <ol>
+      <li><strong>Cloud Routines or GitHub Actions:</strong> preferred when a fresh repository clone and cloud/CI tools are sufficient.</li>
+      <li><strong>Isolated local API/Agent SDK runner:</strong> preferred only when jobs require this machine's local-only state.</li>
+      <li><strong>Same-account Remote Control:</strong> supported for the legitimate holder of the same account and organization, but it does not satisfy the separate-colleague-account requirement.</li>
+      <li><strong>Shared human credentials:</strong> rejected.</li>
+    </ol>
+
+    <h2>Key evidence</h2>
+    <ul>
+      <li><a href="https://code.claude.com/docs/en/remote-control">Remote Control</a> runs Claude Code locally and exposes local files and tools through web/mobile, but requires subscription OAuth and the same account and organization.</li>
+      <li><a href="https://code.claude.com/docs/en/desktop-scheduled-tasks">Desktop scheduled tasks</a> can access local state only while Desktop is open and the computer is awake.</li>
+      <li><a href="https://code.claude.com/docs/en/routines">Cloud Routines</a> support schedules, API triggers, and GitHub events but run on Anthropic-managed infrastructure and are not shared between individual accounts.</li>
+      <li><a href="https://platform.claude.com/docs/en/manage-claude/wif-admin-api">Workload Identity Federation</a> provides non-human service accounts and short-lived workspace-scoped automation credentials.</li>
+      <li><a href="https://platform.claude.com/docs/en/manage-claude/workspaces">Console workspaces</a> provide the supported boundary for scoped credentials, limits, and spending controls.</li>
+      <li><a href="https://www.anthropic.com/legal/consumer-terms">Consumer Terms</a> prohibit sharing account login information, API keys, or account credentials.</li>
+    </ul>
+
+    <h2>Implementation estimate if local access is required</h2>
+    <p>A controlled prototype is approximately 2–5 engineering days. A hardened unattended runner is approximately 1–2 weeks and carries ongoing medium operational burden for patching, credential policy, queue failures, logs, spending, and wake reliability.</p>
+
+    <h2>Repository and external state</h2>
+    <p>No task-related GitHub issue, comment, email, Anthropic account change, scheduler change, or product configuration action was created. Claude briefly wrote <code>~/.claude/plans/investigate-whether-i-can-effervescent-flame.md</code> despite the discovery-only instruction; it was removed and an explicit existence check returned false.</p>
+    <p>The canonical <code>workspace-hub</code> checkout was on <code>main</code>, 42 commits behind <code>origin/main</code>, with unrelated parallel state. The following modified paths were preserved unchanged:</p>
+    <ul>
+      <li><code>.claude/memory/agents.md</code></li>
+      <li><code>.claude/memory/topics/INDEX.md</code></li>
+      <li><code>.claude/state/corrections/.edit_sequence_counter</code></li>
+      <li><code>.claude/state/corrections/.recent_edits</code></li>
+      <li><code>.claude/state/readiness-issues.md</code></li>
+      <li><code>.claude/state/session-health.yaml</code></li>
+      <li><code>.claude/state/session-signals/ai-readiness.jsonl</code></li>
+      <li><code>.claude/state/session-signals/smoke-tests.jsonl</code></li>
+      <li><code>docs/reports/sessions/index.html</code></li>
+      <li><code>docs/reports/sessions/manifest.json</code></li>
+    </ul>
+    <p>Two unrelated untracked artifacts were also preserved: <code>.claude/state/session-signals/2026-07-14.jsonl</code> and <code>docs/reports/sessions/2026-07-14-main.html</code>, plus another session's <code>docs/session-handoffs/2026-07-14-ws014-rdp-microphone-handoff.html</code>. Existing stash <code>stash@{0}: On main: reconcile-ace-win-2-preserve-2026-07-13T0503-CDT</code> was not changed. This handoff will be serialized and pushed from a clean temporary worktree based on current <code>origin/main</code>, without rebasing or committing the canonical checkout's parallel state.</p>
+
+    <h2>Exact next checkpoint</h2>
+    <ol>
+      <li>Decide whether jobs truly require this machine's local-only state.</li>
+      <li>If no, select Cloud Routines or GitHub Actions and stop.</li>
+      <li>If yes, open an implementation issue for the isolated runner architecture and take it through the repository's plan-approval and TDD gates before changing the machine.</li>
+    </ol>
+  </main>
+</body>
+</html>

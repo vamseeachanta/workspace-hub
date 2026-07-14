@@ -15,6 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 SETUP_PS1 = REPO_ROOT / "scripts" / "windows" / "setup-scheduler-tasks.ps1"
 WRAPPER_PS1 = REPO_ROOT / "scripts" / "windows" / "equality-report.ps1"
 CURATION_PS1 = REPO_ROOT / "scripts" / "curation" / "curate-session-memory.ps1"
+SCHEDULE_SH = REPO_ROOT / "scripts" / "windows" / "schedule-equivalence-tasks.sh"
 SCHEDULE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 
 
@@ -173,3 +174,11 @@ def test_reconcile_log_prefers_public_machine_label():
     text = (REPO_ROOT / "scripts" / "windows" / "reconcile-ecosystem.ps1").read_text()
     assert "$Machine.ToLowerInvariant()" in text
     assert "$env:RECONCILE_MACHINE.ToLowerInvariant()" in text
+
+
+def test_shell_scheduler_wrapper_is_equivalence_only_and_report_first():
+    text = SCHEDULE_SH.read_text()
+    assert "-EquivalenceOnly" in text
+    assert "RECONCILE_MACHINE" in text
+    assert "--what-if" in text
+    assert "--apply" not in text

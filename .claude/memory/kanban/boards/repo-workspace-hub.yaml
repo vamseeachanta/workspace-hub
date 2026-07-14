@@ -23233,7 +23233,8 @@ cards:
       - bug
       - cat:harness
       - machine:multi
-      - status:needs-plan
+      - status:plan-review
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -23342,8 +23343,138 @@ cards:
       - cat:operations
       - domain:workstations
       - machine:multi
+      - status:plan-review
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3525
+    title: '[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3525
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:ai-orchestration
+      - wrk-item
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3526
+    title: 'feat(windows): daily report-only ecosystem reconciliation audit'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3526
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - machine:ace-win-2
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3527
+    title: 'fix(scheduler): reconcile identity inventory after merge-base race'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3527
+    gh_state: open
+    gh_labels:
+      - bug
+      - status:plan-review
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3528
+    title: Krishna daily schedule — calendar rails + family Telegram comms (epic)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3528
+    gh_state: open
+    gh_labels:
+      - cat:personal
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3529
+    title: "Krishna schedule: recurring Google Calendar events on parents' calendar"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3529
+    gh_state: open
+    gh_labels:
+      - cat:personal
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3530
+    title: 'Krishna schedule: post to family Telegram channel via Deckhand'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3530
+    gh_state: open
+    gh_labels:
+      - cat:personal
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3531
+    title: "Krishna schedule: optional daily 6:00 AM 'today's plan' Telegram auto-post"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3531
+    gh_state: open
+    gh_labels:
+      - cat:personal
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3532
+    title: 'fix(memory): reserve cross-provider runtime budget for operational feedback'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3532
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-review
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3533
+    title: Make standards registries edition, amendment, access, and rights aware
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3533
+    gh_state: open
+    gh_labels:
+      - bug
+      - domain:standards-tooling
       - status:needs-plan
       - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3534
+    title: 'secure(main): require latest-base checks and block unchecked direct pushes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3534
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
