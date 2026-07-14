@@ -1,13 +1,13 @@
 # Plan for #3525: Investigate safe remote Claude job dispatch to ACMA-WS014
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3525
 > **Client:** N/A
 > **Lane:** lane:claude
 > **Execution mode:** parallel-readonly
-> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3525-claude.md` | `scripts/review/results/2026-07-14-plan-3525-codex.md` | `scripts/review/results/2026-07-14-plan-3525-gemini.md`
+> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3525-claude.md` | `scripts/review/results/2026-07-14-plan-3525-codex.md` | `scripts/review/results/2026-07-14-plan-3525-gemini.md` | `scripts/review/results/2026-07-14-plan-3525-disagreement.md` | `scripts/review/results/2026-07-14-plan-3525-codex-inline-final.md`
 
 ---
 
@@ -116,6 +116,7 @@ The zero-hit result will not be interpreted as proof that no past work exists be
 | Plan review — Codex | `scripts/review/results/2026-07-14-plan-3525-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-07-14-plan-3525-gemini.md` |
 | Plan review — disagreement history | `scripts/review/results/2026-07-14-plan-3525-disagreement.md` |
+| Plan review — final inline remediation verification | `scripts/review/results/2026-07-14-plan-3525-codex-inline-final.md` |
 | Plan index | `docs/plans/README.md` |
 
 ---
@@ -135,7 +136,9 @@ define requested capabilities = registration, remote trigger, scheduling, unatte
                                 cross-account delegation, local resource use
 
 write report-contract tests first and confirm they fail because the report is absent
-attest that the observation host is ACMA-WS014 before any local command runs; otherwise stop
+load the registry canonical hostname and aliases for ace-win-2
+case-fold the observed hostname and accept it only if it matches the canonical name or an alias
+if host attestation fails, record the blocked lane and stop local commands
 collect non-sensitive local version/help/process metadata using a predeclared read-only command allowlist
 never open auth files, print environment secrets, sign in, pair, install, or mutate configuration
 collect current official Anthropic sources and record URL, title, access date, supported claim
@@ -160,7 +163,7 @@ The RED tests will pin the report structure before the report is written:
 - Official-source links will be limited to HTTPS URLs on `code.claude.com`, `support.claude.com`, `platform.claude.com`, `docs.anthropic.com`, `anthropic.com`, `www.anthropic.com`, `claude.ai`, `claude.com`, or `www.claude.com`.
 - Each option row will carry `data-rank`, `data-size`, `data-ops-burden`, and `data-confidence` attributes.
 - The decision block will carry one `data-decision` value from `use-existing-feature`, `build-small-runner`, or `defer`.
-- The local-observation section will carry `data-lane-status="completed|blocked"`. A completed lane will record `ACMA-WS014`, observation timestamp, allowlisted command names, and the registry-canonical `ace-win-2` versus physical-host alias distinction. A blocked lane will record only the observed hostname and blocker reason.
+- The local-observation section will carry `data-lane-status="completed|blocked"`. A completed lane will record the observed hostname, observation timestamp, allowlisted command names, and the registry-canonical `ace-win-2` versus physical-host alias distinction. A blocked lane will record only the observed hostname and blocker reason. Host matching will be case-insensitive against the registry canonical hostname plus all aliases.
 - Prohibited credential-sharing practices will use the exact `data-rejected-practice` values `password-sharing`, `session-cookie-sharing`, `raw-oauth-sharing`, and `personal-api-key-sharing`.
 - Required fallback safeguards will use the exact `data-control` values `dedicated-os-account`, `isolated-auth-config`, `least-privilege`, `authenticated-pull-queue`, `repo-action-allowlist`, `audit-log`, `concurrency-lock`, `spend-rate-limit`, `failure-quarantine`, and `wake-handling`.
 
@@ -217,7 +220,7 @@ No scheduler, account, authentication, registry, firewall, OS-user, repository c
 | `test_fallback_controls_are_complete` | The fallback will cover the full safety envelope | The pinned `data-control` set will cover isolation, least privilege, authenticated queue, allowlists, logs, concurrency, spend, failure quarantine, and wake handling |
 | `test_report_contains_no_secret_material` | Report will contain no token/key/cookie values or local auth paths | Secret-pattern and forbidden-path scan will pass |
 | `test_local_observations_are_host_bound_and_scrubbed` | Observations will be host-bound or explicitly blocked without raw diagnostics | `data-lane-status` will be valid; completed status will require `ACMA-WS014`, alias/canonical-host note, allowlisted command names, and scrubbed summaries |
-| `test_report_contains_no_client_identifier_markers` | Public artifact will remain de-identified by construction | Public prose will use machine alias and neutral account/product terminology only |
+| `test_report_contains_no_client_identifier_markers` | Public artifact will remain de-identified by construction | Proper nouns will be limited to the issue-approved machine alias and official vendor/product names; no person, colleague, client, project, or repository names will appear |
 | `test_options_include_size_and_burden` | Each viable option will include bounded implementation and operations estimates | Size, assumptions, confidence, and recurring burden will be present |
 
 The RED checkpoint will be the focused test failing because the report does not yet exist. The GREEN checkpoint will be the same test passing after the report is written.
@@ -226,7 +229,7 @@ The RED checkpoint will be the focused test failing because the report does not 
 
 ## Acceptance Criteria
 
-- [ ] The approved run will attest `hostname == ACMA-WS014` before local observations; a different host will produce a `data-lane-status="blocked"` appendix row and will not run any further local command.
+- [ ] The approved run will case-fold the observed hostname and compare it with the registry canonical hostname plus aliases for `ace-win-2`; a non-match will produce a `data-lane-status="blocked"` appendix row and will not run any further local command.
 - [ ] Read-only local observations will capture only product names, versions, documented help/capability output, and non-sensitive process/install presence through a predeclared command allowlist.
 - [ ] No auth file, credential store, environment secret, session cookie, OAuth token, personal API key, account membership, or billing data will be read or displayed.
 - [ ] Every verified product, security, and terms claim will have a direct official Anthropic source and 2026-07-14-or-later access date; unsupported claims will be labeled unresolved.
@@ -237,8 +240,9 @@ The RED checkpoint will be the focused test failing because the report does not 
 - [ ] Any runner option will specify a dedicated OS account, isolated auth/config, authenticated pull queue, repo/action allowlists, logs, concurrency lock, spend/rate limit, failure quarantine, and wake/sleep handling.
 - [ ] Each viable option will include implementation size, assumptions, confidence, and ongoing operational burden.
 - [ ] Each cited official page will be fetched read-only during research and will record retrieval status/date; offline tests will validate the pinned domain/markup contract without network access.
-- [ ] Focused report tests and `uv run python scripts/legal/check-client-pii.py --strict docs/reports/2026-07-14-issue-3525-claude-remote-worker-discovery.html` will pass.
+- [ ] The report will contain only official vendor/product names, neutral account terminology, and the issue-approved machine alias; it will contain no person, colleague, client, project, or repository names.
 - [ ] The report and its focused test will be staged explicitly before `scripts/legal/legal-sanity-scan.sh --diff-only` runs in the isolated issue worktree, so the scanner cannot omit the newly created report.
+- [ ] Code/artifact adversarial review will explicitly attest that the staged report contains no client identifiers. The private-map scanner will not be claimed because neither its default map nor `LEGAL_CLIENT_MAP` is present on this host, and discovery scope forbids provisioning configuration.
 - [ ] No install, update, login, pairing, scheduler/config mutation, webhook setup, test dispatch, or paid request will occur.
 - [ ] Any recommended implementation will be filed as a separate issue and will require its own plan, adversarial review, explicit user approval, and TDD.
 
@@ -248,11 +252,12 @@ The RED checkpoint will be the focused test failing because the report does not 
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MINOR (r2) | Requested host-binding, exact command, semantic HTML, and review-state refinements; incorporated before r3. |
-| Codex | MAJOR (r2) | Required removal of undefined UI inspection, strict/scoped legal scanning, and expanded official-domain coverage; incorporated before r3. |
+| Claude | MINOR (r3) | No blockers; requested review-artifact persistence and case-insensitive hostname semantics. |
+| Codex CLI | MAJOR (r3, sustained minority) | Flagged canonical-or-alias matching and the absent private PII map; both were patched inline without a fourth review cycle. |
+| Codex main session | MINOR (final inline verification) | Verified both r3 blockers are resolved and review evidence is force-added; no remaining blocker. |
 | Gemini | UNAVAILABLE | Non-interactive Gemini authentication is not configured on this machine; T3 review degraded to T2 with Claude + Codex. |
 
-**Overall result:** FAIL pending focused r3 — the plan will remain draft until final no-MAJOR Claude/Codex artifacts exist.
+**Overall result:** PASS with disclosed consensus split — Claude remained MINOR while Codex CLI returned MAJOR for three rounds. The two final r3 findings were concrete and were patched inline; the main Codex session verified the patched text and did not dispatch a prohibited fourth automatic cycle.
 
 Revisions made through r2:
 
@@ -262,6 +267,9 @@ Revisions made through r2:
 - Pinned semantic HTML attributes for evidence, options, decision, rejected credential practices, and fallback controls.
 - Separated read-only live source retrieval from offline link-contract tests.
 - Required strict artifact-scoped client-PII checking and explicit staging before the diff-based legal scan.
+- Replaced exact physical-host matching with case-insensitive registry canonical-or-alias resolution.
+- Recorded that the private PII map is absent and replaced the non-executable strict scan claim with source minimization, staged legal scanning, and an explicit artifact-review attestation; no configuration will be provisioned.
+- Preserved the provider, disagreement, and final inline-remediation artifacts with force-add because `scripts/review/results/` is ignored by default.
 
 ---
 
@@ -270,6 +278,7 @@ Revisions made through r2:
 - **Risk — discovery becomes configuration:** even harmless-looking UI navigation can trigger sign-in, pairing, updates, or settings writes. The approved run will use only the exact command allowlist above and will perform no UI navigation.
 - **Risk — wrong execution host:** registry evidence is not proof that observations ran on ACMA-WS014. The local lane will fail closed unless the hostname attestation matches, and the report appendix will record that attestation.
 - **Risk — auth leakage:** CLI diagnostics can reveal account identifiers or paths. Commands and captured excerpts will be allowlisted; raw output will be summarized and scrubbed before entering the public report.
+- **Risk — private PII map unavailable:** the strict private-map scanner cannot run on this host without provisioning configuration, which is outside discovery scope. The report will minimize inputs to official public sources plus allowlisted local fields, will pass the staged legal scan, and will receive an explicit no-client-identifier artifact review before completion.
 - **Risk — absence-of-documentation inference:** failure to find an official feature will not prove that it does not exist. The report will say “not documented in sources checked” and list the exact source coverage.
 - **Risk — product drift:** Anthropic features and terms can change. Every official source will carry an access date and the conclusion will be time-bounded.
 - **Risk — feature-name conflation:** Remote Control, Trusted Devices, Dispatch, Channels, cloud web, and Desktop scheduled tasks have different execution and identity boundaries. The report will evaluate them as separate rows before considering a combined workflow.
