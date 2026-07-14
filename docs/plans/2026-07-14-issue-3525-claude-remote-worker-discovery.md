@@ -1,6 +1,6 @@
 # Plan for #3525: Investigate safe remote Claude job dispatch to ACMA-WS014
 
-> **Status:** plan-approved
+> **Status:** completed
 > **Complexity:** T2
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3525
@@ -229,22 +229,22 @@ The RED checkpoint will be the focused test failing because the report does not 
 
 ## Acceptance Criteria
 
-- [ ] The approved run will case-fold the observed hostname and compare it with the registry canonical hostname plus aliases for `ace-win-2`; a non-match will produce a `data-lane-status="blocked"` appendix row and will not run any further local command.
-- [ ] Read-only local observations will capture only product names, versions, documented help/capability output, and non-sensitive process/install presence through a predeclared command allowlist.
-- [ ] No auth file, credential store, environment secret, session cookie, OAuth token, personal API key, account membership, or billing data will be read or displayed.
-- [ ] Every verified product, security, and terms claim will have a direct official Anthropic source and 2026-07-14-or-later access date; unsupported claims will be labeled unresolved.
-- [ ] The report will answer all six issue questions and distinguish separate individual accounts, same account, Team, Enterprise, and API automation.
-- [ ] The report will assess whether an official supported feature solves trusted-machine registration, remote trigger, scheduling, unattended execution, and local-resource use as one coherent workflow.
-- [ ] Account/password/session-cookie/raw-OAuth/personal-key sharing will be rejected explicitly.
-- [ ] Ranked options will include one recommendation and one explicit decision: use an existing feature, build a small runner, or defer.
-- [ ] Any runner option will specify a dedicated OS account, isolated auth/config, authenticated pull queue, repo/action allowlists, logs, concurrency lock, spend/rate limit, failure quarantine, and wake/sleep handling.
-- [ ] Each viable option will include implementation size, assumptions, confidence, and ongoing operational burden.
-- [ ] Each cited official page will be fetched read-only during research and will record retrieval status/date; offline tests will validate the pinned domain/markup contract without network access.
-- [ ] The report will contain only official vendor/product names, neutral account terminology, and the issue-approved machine alias; it will contain no person, colleague, client, project, or repository names.
-- [ ] The report and its focused test will be staged explicitly before `scripts/legal/legal-sanity-scan.sh --diff-only` runs in the isolated issue worktree, so the scanner cannot omit the newly created report.
-- [ ] Code/artifact adversarial review will explicitly attest that the staged report contains no client identifiers. The private-map scanner will not be claimed because neither its default map nor `LEGAL_CLIENT_MAP` is present on this host, and discovery scope forbids provisioning configuration.
-- [ ] No install, update, login, pairing, scheduler/config mutation, webhook setup, test dispatch, or paid request will occur.
-- [ ] Any recommended implementation will be filed as a separate issue and will require its own plan, adversarial review, explicit user approval, and TDD.
+- [x] The approved run will case-fold the observed hostname and compare it with the registry canonical hostname plus aliases for `ace-win-2`; a non-match will produce a `data-lane-status="blocked"` appendix row and will not run any further local command.
+- [x] Read-only local observations will capture only product names, versions, documented help/capability output, and non-sensitive process/install presence through a predeclared command allowlist.
+- [x] No auth file, credential store, environment secret, session cookie, OAuth token, personal API key, account membership, or billing data will be read or displayed.
+- [x] Every verified product, security, and terms claim will have a direct official Anthropic source and 2026-07-14-or-later access date; unsupported claims will be labeled unresolved.
+- [x] The report will answer all six issue questions and distinguish separate individual accounts, same account, Team, Enterprise, and API automation.
+- [x] The report will assess whether an official supported feature solves trusted-machine registration, remote trigger, scheduling, unattended execution, and local-resource use as one coherent workflow.
+- [x] Account/password/session-cookie/raw-OAuth/personal-key sharing will be rejected explicitly.
+- [x] Ranked options will include one recommendation and one explicit decision: use an existing feature, build a small runner, or defer.
+- [x] Any runner option will specify a dedicated OS account, isolated auth/config, authenticated pull queue, repo/action allowlists, logs, concurrency lock, spend/rate limit, failure quarantine, and wake/sleep handling.
+- [x] Each viable option will include implementation size, assumptions, confidence, and ongoing operational burden.
+- [x] Each cited official page will be fetched read-only during research and will record retrieval status/date; offline tests will validate the pinned domain/markup contract without network access.
+- [x] The report will contain only official vendor/product names, neutral account terminology, and the issue-approved machine alias; it will contain no person, colleague, client, project, or repository names.
+- [x] The report and its focused test will be staged explicitly before `scripts/legal/legal-sanity-scan.sh --diff-only` runs in the isolated issue worktree, so the scanner cannot omit the newly created report.
+- [x] Code/artifact adversarial review will explicitly attest that the staged report contains no client identifiers. The private-map scanner will not be claimed because neither its default map nor `LEGAL_CLIENT_MAP` is present on this host, and discovery scope forbids provisioning configuration.
+- [x] No install, update, login, pairing, scheduler/config mutation, webhook setup, test dispatch, or paid request will occur.
+- [x] Any recommended implementation will be filed as a separate issue and will require its own plan, adversarial review, explicit user approval, and TDD.
 
 ---
 
