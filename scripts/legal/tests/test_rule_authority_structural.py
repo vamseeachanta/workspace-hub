@@ -1,4 +1,5 @@
 """Structural-secret and private-filesystem contract tests."""
+# AUTHORITY_FORENSIC_DEFINITION: synthetic detector vectors only.
 
 from __future__ import annotations
 

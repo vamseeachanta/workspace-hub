@@ -8,7 +8,6 @@ on:
       head_repository: {required: true, type: string}
       base_ref: {required: true, type: string}
       head_sha: {required: true, type: string}
-      tool_sha: {required: true, type: string}
 
 permissions:
   contents: read
@@ -26,9 +25,12 @@ jobs:
       - name: Checkout immutable Phase A tooling
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ inputs.tool_sha }}
+          repository: vamseeachanta/workspace-hub
+          ref: 0e4acc752bdae9ce962e461b3dcced1b44e1c0da
           fetch-depth: 1
           persist-credentials: false
+      - name: Install pinned uv
+        uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc
       - name: Validate trusted workflow context
         env:
           EVENT_NAME: ${{ inputs.event_name }}
@@ -36,14 +38,13 @@ jobs:
           HEAD_REPOSITORY: ${{ inputs.head_repository }}
           BASE_REF: ${{ inputs.base_ref }}
           HEAD_SHA: ${{ inputs.head_sha }}
-          TOOL_SHA: ${{ inputs.tool_sha }}
         run: |
-          python3 scripts/legal/manage_rule_authority.py validate-workflow-context \
+          uv run --no-project python scripts/legal/manage_rule_authority.py validate-workflow-context \
             --event-name "$EVENT_NAME" --repository "$REPOSITORY" \
             --head-repository "$HEAD_REPOSITORY" --base-ref "$BASE_REF" \
-            --head-sha "$HEAD_SHA" --tool-sha "$TOOL_SHA"
+            --head-sha "$HEAD_SHA"
       - name: Validate synthetic public authority bootstrap
         run: |
-          python3 scripts/legal/manage_rule_authority.py validate-public \
+          uv run --no-project python scripts/legal/manage_rule_authority.py validate-public \
             --registry config/legal-rule-registry.json \
             --policy config/legal-rule-authority-policy.json

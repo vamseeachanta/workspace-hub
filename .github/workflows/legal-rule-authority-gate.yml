@@ -30,4 +30,3 @@ jobs:
       head_repository: ${{ github.event.pull_request.head.repo.full_name }}
       base_ref: refs/heads/main
       head_sha: ${{ github.event.pull_request.head.sha }}
-      tool_sha: 0e4acc752bdae9ce962e461b3dcced1b44e1c0da

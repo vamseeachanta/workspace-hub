@@ -1,4 +1,5 @@
 """Additional fail-closed regressions found during A2 fix hardening."""
+# AUTHORITY_FORENSIC_DEFINITION: synthetic detector vectors only.
 
 from __future__ import annotations
 

@@ -1,4 +1,5 @@
 """Consolidated regressions from the Phase A T3 adversarial review."""
+# AUTHORITY_FORENSIC_DEFINITION: synthetic detector vectors only.
 
 from __future__ import annotations
 
@@ -215,7 +216,11 @@ def test_reusable_has_fixed_tool_identity_and_pinned_uv_runtime() -> None:
     caller = (ROOT / ".github/workflows/legal-rule-authority-gate.yml").read_text()
     reusable = (ROOT / ".github/workflows/legal-rule-authority-reusable.yml").read_text()
     pin = re.search(r"reusable\.yml@([0-9a-f]{40})", caller).group(1)
-    assert pin == ci.APPROVED_TOOL_SHA and f"ref: {pin}" in reusable
+    assert f"ref: {ci.APPROVED_TOOL_SHA}" in reusable
+    subprocess.run(["git", "cat-file", "-e", f"{pin}:.github/workflows/legal-rule-authority-reusable.yml"],
+                   cwd=ROOT, check=True)
+    subprocess.run(["git", "cat-file", "-e", f"{ci.APPROVED_TOOL_SHA}:scripts/legal/manage_rule_authority.py"],
+                   cwd=ROOT, check=True)
     assert "tool_sha:" not in caller and "tool_sha:" not in reusable
     assert re.search(r"astral-sh/setup-uv@[0-9a-f]{40}", reusable)
     assert "uv run --no-project python" in reusable and "python3 " not in reusable

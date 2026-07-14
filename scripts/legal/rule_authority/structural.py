@@ -1,4 +1,5 @@
 """Closed-encoding detection for structurally private authority artifacts."""
+# AUTHORITY_FORENSIC_DEFINITION: detector signatures, never authority data.
 
 from __future__ import annotations
 
@@ -12,6 +13,7 @@ PRIVATE_MARKERS = (
     b"PACK\x00\x00\x00\x02",
     b"\xfftOc",
 )
+DEFINITION_SENTINEL = b"AUTHORITY_FORENSIC_DEFINITION"
 CANONICAL_MARKERS = {
     b"legal-rule-registry-v1": frozenset({
         "config/legal-rule-registry.json", "schemas/legal-rule-registry.schema.json"}),
@@ -52,9 +54,19 @@ def _sensitive_encodings(sensitive: SensitiveArtifacts) -> tuple[bytes, ...]:
     return tuple(value for value in encoded if value)
 
 
-def _has_private_bytes(payload: bytes, sensitive: SensitiveArtifacts) -> bool:
-    candidates = (*PRIVATE_MARKERS, *_sensitive_encodings(sensitive))
+def _has_private_bytes(payload: bytes, sensitive: SensitiveArtifacts,
+                       *, definitions: bool = False) -> bool:
+    candidates = _sensitive_encodings(sensitive)
+    if not definitions:
+        candidates = (*PRIVATE_MARKERS, *candidates)
     return any(candidate in payload for candidate in candidates)
+
+
+def _definition_surface(path: str, payload: bytes) -> bool:
+    allowed = (path == "docs/plans/evidence/2026-07-13-issue-3522-rule-authority-contract.md" or
+               path.startswith("scripts/legal/rule_authority/") or
+               path.startswith("scripts/legal/tests/test_rule_authority_"))
+    return allowed and DEFINITION_SENTINEL in b"\n".join(payload.splitlines()[:5])
 
 
 def _misplaced_public_marker(path: str, payload: bytes) -> bool:
@@ -70,9 +82,10 @@ def contains_sensitive(path: bytes, payload: bytes,
     basename = path.rsplit(b"/", 1)[-1]
     prohibited = {name.encode("ascii") for name in sensitive.prohibited_basenames}
     public_path = path.decode("ascii", errors="surrogateescape")
+    definitions = _definition_surface(public_path, payload)
     return (basename in prohibited or _has_private_bytes(path, sensitive) or
-            _has_private_bytes(payload, sensitive) or
-            _misplaced_public_marker(public_path, payload))
+            _has_private_bytes(payload, sensitive, definitions=definitions) or
+            (not definitions and _misplaced_public_marker(public_path, payload)))
 
 
 def scan_blobs(blobs: dict[str, bytes], sensitive: SensitiveArtifacts) -> list[str]:

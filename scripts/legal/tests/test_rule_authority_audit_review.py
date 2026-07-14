@@ -1,4 +1,5 @@
 """Adversarial regressions from the Phase A2 code review."""
+# AUTHORITY_FORENSIC_DEFINITION: synthetic detector vectors only.
 
 from __future__ import annotations
 

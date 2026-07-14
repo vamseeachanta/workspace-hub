@@ -244,6 +244,24 @@ def scan_zip(raw: bytes, sensitive: SensitiveArtifacts, *, max_entries: int,
             files = {name: archive.read(info) for name, info in zip(names, infos)}
     except (zipfile.BadZipFile, RuntimeError, OSError) as exc:
         raise CoverageError("invalid archive") from exc
-    findings = tuple(name.encode() for name, payload in files.items()
-                     if contains_sensitive(name.encode(), payload, sensitive))
-    return ArchiveResult(files, findings, len(raw), sum(map(len, files.values())))
+    findings: list[bytes] = []
+    expanded, entries = sum(map(len, files.values())), len(files)
+    for name, payload in files.items():
+        label = name.encode()
+        if payload.startswith((b"PK\x03\x04", b"PK\x05\x06")):
+            if max_depth == 1:
+                raise CoverageError("archive nesting cap exceeded")
+            nested = scan_zip(
+                payload, sensitive, max_entries=max_entries - entries,
+                max_compressed_bytes=max_compressed_bytes - len(raw),
+                max_expanded_bytes=max_expanded_bytes - expanded,
+                max_ratio=max_ratio, max_depth=max_depth - 1,
+            )
+            entries += len(nested.files)
+            expanded += nested.expanded_bytes
+            if entries > max_entries or expanded > max_expanded_bytes:
+                raise CoverageError("archive expansion cap exceeded")
+            findings.extend(label + b"!" + item for item in nested.private_findings)
+        elif contains_sensitive(label, payload, sensitive):
+            findings.append(label)
+    return ArchiveResult(files, tuple(findings), len(raw), expanded)

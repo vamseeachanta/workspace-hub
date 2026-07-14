@@ -1,4 +1,5 @@
 # Issue 3522 Normative Rule-Authority Contract
+<!-- AUTHORITY_FORENSIC_DEFINITION: contract vocabulary, never authority data. -->
 
 This contract is normative. Synthetic examples use no real rule value.
 

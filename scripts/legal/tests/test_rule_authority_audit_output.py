@@ -1,4 +1,5 @@
 """Public result withholding and private report transaction tests."""
+# AUTHORITY_FORENSIC_DEFINITION: synthetic detector vectors only.
 
 from __future__ import annotations
 

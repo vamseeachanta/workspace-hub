@@ -1,4 +1,5 @@
 """Strict semantic validation for legal rule-authority documents."""
+# AUTHORITY_FORENSIC_DEFINITION: static schema vocabulary, never authority data.
 
 from __future__ import annotations
 
@@ -79,7 +80,8 @@ def validate_registry(value: object) -> None:
 
 
 def _prefix(value: object) -> str:
-    if not isinstance(value, str) or not value or not value.isascii() or not value.endswith("/"):
+    if (not isinstance(value, str) or not value or not value.endswith("/") or
+            any(not 0x21 <= ord(character) <= 0x7E for character in value)):
         raise ModelError("invalid forensic prefix")
     parts = value[:-1].split("/")
     if value.startswith("/") or any(part in {"", ".", ".."} for part in parts):

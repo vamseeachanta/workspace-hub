@@ -1,4 +1,5 @@
 """Contract tests for canonical public/private authority documents."""
+# AUTHORITY_FORENSIC_DEFINITION: synthetic detector vectors only.
 
 from __future__ import annotations
 

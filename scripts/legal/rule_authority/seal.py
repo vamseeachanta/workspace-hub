@@ -1,4 +1,5 @@
 """Synthetic sealing and anti-rollback verification primitives."""
+# AUTHORITY_FORENSIC_DEFINITION: static schema vocabulary, never authority data.
 
 from __future__ import annotations
 

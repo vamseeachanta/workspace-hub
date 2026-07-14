@@ -1,4 +1,5 @@
 """Authenticated COMPLETE transaction codec vectors."""
+# AUTHORITY_FORENSIC_DEFINITION: synthetic detector vectors only.
 
 from __future__ import annotations
 

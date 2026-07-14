@@ -136,9 +136,9 @@ def test_fork_oracle_stops_before_authority_loader() -> None:
 def test_trusted_event_ref_and_sha_are_closed() -> None:
     ci = importlib.import_module("rule_authority.ci_contract")
     request = {
-        "event_name": "pull_request_target", "repository": "owner/repo",
-        "head_repository": "owner/repo", "base_ref": "refs/heads/main",
-        "head_sha": "a" * 40, "tool_sha": "b" * 40,
+        "event_name": "pull_request_target", "repository": ci.APPROVED_REPOSITORY,
+        "head_repository": ci.APPROVED_REPOSITORY, "base_ref": "refs/heads/main",
+        "head_sha": "a" * 40,
     }
     assert ci.validate_workflow_context(request)["head_sha"] == "a" * 40
     for key, value in (("event_name", "pull_request"), ("base_ref", "main"),

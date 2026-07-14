@@ -1,4 +1,5 @@
 """Adversarial cross-document and structural authority tests."""
+# AUTHORITY_FORENSIC_DEFINITION: synthetic detector vectors only.
 
 from __future__ import annotations
 

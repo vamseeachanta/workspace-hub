@@ -1,4 +1,5 @@
 """Fresh RED tests for the second Phase-A1 correction slice."""
+# AUTHORITY_FORENSIC_DEFINITION: synthetic detector vectors only.
 
 from __future__ import annotations
 

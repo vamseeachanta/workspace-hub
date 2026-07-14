@@ -22,10 +22,10 @@ def expected_readback(preview: object) -> dict:
     return {name: document[name] for name in ("codeowners", "environment", "ruleset")}
 
 
-def parse_readback_fixture(value: object) -> dict:
+def parse_readback_fixture(value: object, preview: object) -> dict:
     """Normalize captured API fixtures without performing any provider request."""
     document = _fields(value, {"codeowners", "environment", "ruleset"}, "fixture")
-    environment = _fields(
+    _fields(
         document["environment"],
         {"deployment_branch_policy", "name", "prevent_self_review", "reviewers"},
         "environment",
@@ -33,12 +33,16 @@ def parse_readback_fixture(value: object) -> dict:
     ruleset = _fields(
         document["ruleset"],
         {"block_deletions", "block_non_fast_forward", "bypass_actors", "conditions",
-         "enforcement", "name", "required_check", "required_pull_request", "target"},
+         "enforcement", "name", "pull_request", "required_check", "target"},
         "ruleset",
     )
     check = _fields(ruleset["required_check"], {"context", "integration_id"}, "check")
-    if (environment["reviewers"] != ["vamseeachanta"] or
-            check != {"context": "legal-rule-authority / strict-scan",
-                      "integration_id": 15368} or ruleset["bypass_actors"] != []):
+    _fields(ruleset["pull_request"], {
+        "dismiss_stale_reviews_on_push", "require_code_owner_review",
+        "require_last_push_approval", "required_approving_review_count",
+        "required_review_thread_resolution"}, "pull request")
+    if check != {"context": "legal-rule-authority / strict-scan", "integration_id": 15368}:
+        raise ValueError("readback differs from owner preview")
+    if document != expected_readback(preview):
         raise ValueError("readback differs from owner preview")
     return document

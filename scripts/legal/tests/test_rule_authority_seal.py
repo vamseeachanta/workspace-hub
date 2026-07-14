@@ -1,4 +1,5 @@
 """Synthetic MAC, anchor, ledger, and rollback contract tests."""
+# AUTHORITY_FORENSIC_DEFINITION: synthetic detector vectors only.
 
 from __future__ import annotations
 
