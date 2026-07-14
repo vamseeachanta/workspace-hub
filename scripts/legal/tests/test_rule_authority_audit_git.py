@@ -137,6 +137,18 @@ def test_git_runner_uses_argv_and_sanitized_environment(tmp_path: Path) -> None:
     assert not (repo / "injected").exists()
 
 
+def test_git_runner_retains_repository_dirfd_across_path_swap(tmp_path: Path) -> None:
+    repo, oid = _repo(tmp_path)
+    runner = audit_git.GitRunner(repo)
+    moved = tmp_path / "original"
+    repo.rename(moved)
+    repo.mkdir()
+    try:
+        assert runner.run("cat-file", "-t", oid).strip() == b"commit"
+    finally:
+        runner.close()
+
+
 def _bare_history(tmp_path: Path) -> tuple[Path, audit_git.RefSnapshot]:
     source, oid = _repo(tmp_path)
     _git(source, "tag", "-a", "v1", "-m", "synthetic-block-value")
