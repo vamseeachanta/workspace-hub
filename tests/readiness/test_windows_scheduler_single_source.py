@@ -107,6 +107,7 @@ def test_wrapper_invokes_collector_builder_and_state_sync():
     assert "git" in text
     assert "commit" in text
     assert "push" in text
+    assert 'Test-CommandAvailable -Name "bash"' not in text
 
 
 def test_wrapper_recovers_existing_equality_commits_only():

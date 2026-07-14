@@ -320,7 +320,6 @@ try {
     $transcriptStarted = Invoke-EqualityTranscript -Machine $machine
 
     Test-CommandAvailable -Name "git"
-    Test-CommandAvailable -Name "bash"
     if (-not (Get-Command "uv" -ErrorAction SilentlyContinue)) {
         Test-CommandAvailable -Name "python"
     }
