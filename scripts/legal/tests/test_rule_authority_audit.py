@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import os
+import base64
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -41,7 +43,12 @@ def test_audit_tree_scans_raw_paths_blobs_and_commit_bytes(tmp_path):
             "max_request_bytes": 4096,
         },
     )
-    assert result == {"coverage": "complete", "findings": 1, "objects_examined": 2}
+    assert result == {
+        "coverage": "complete",
+        "findings": 1,
+        "warnings": 0,
+        "objects_examined": 2,
+    }
 
 
 def test_audit_tree_rejects_subset_ref_and_caps(tmp_path):
@@ -56,6 +63,151 @@ def test_audit_tree_rejects_subset_ref_and_caps(tmp_path):
                 "max_entries": 1,
                 "max_findings": 1,
                 "max_request_bytes": 1,
+            },
+        )
+
+
+def test_rule_specs_honor_surface_ascii_fold_and_warning_severity():
+    rules = [
+        {
+            "pattern": b"Secret.PDF",
+            "match_mode": "ascii-fold",
+            "severity": "block",
+            "target": "path",
+        },
+        {
+            "pattern": b"caution",
+            "match_mode": "exact-bytes",
+            "severity": "warn",
+            "target": "content",
+        },
+    ]
+    assert audit._matches(b"docs/SECRET.pdf", rules, "path") == (1, 0)
+    assert audit._matches(b"caution", rules, "content") == (0, 1)
+    assert audit._matches(b"secret.pdf caution", rules, "content") == (0, 1)
+
+
+def test_scan_mirror_scans_raw_objects_and_retains_reverse_edges(tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    git(repo, "init", "-q")
+    git(repo, "config", "user.email", "synthetic@example.invalid")
+    git(repo, "config", "user.name", "Synthetic")
+    (repo / "Raw-Path.bin").write_bytes(b"content marker")
+    git(repo, "add", ".")
+    git(repo, "commit", "-qm", "commit marker")
+    git(repo, "tag", "-a", "v1", "-m", "tag marker")
+    mirror = tmp_path / "mirror.git"
+    subprocess.run(
+        ["git", "clone", "--mirror", str(repo), str(mirror)],
+        check=True,
+        capture_output=True,
+    )
+    refs = [
+        (git(repo, "rev-parse", "HEAD").encode(), b"refs/heads/master"),
+        (git(repo, "rev-parse", "v1").encode(), b"refs/tags/v1"),
+    ]
+    rules = [
+        {
+            "pattern": value,
+            "match_mode": "exact-bytes",
+            "severity": "block",
+            "target": target,
+        }
+        for value, target in (
+            (b"Raw-Path.bin", "path"),
+            (b"content marker", "content"),
+            (b"commit marker", "content"),
+            (b"tag marker", "content"),
+            (b"refs/tags/v1", "path"),
+        )
+    ]
+    result = audit._scan_mirror(
+        mirror,
+        refs,
+        rules,
+        {
+            "max_blob_bytes": 4096,
+            "max_entries": 100,
+            "max_findings": 20,
+            "max_request_bytes": 65536,
+        },
+    )
+    assert result["findings"] >= 5
+    assert result["warnings"] == 0
+    assert result["objects_examined"] >= 4
+    assert result["edges_examined"] == len(result["reverse_edges"])
+    edge_kinds = {edge["source_kind"] for edge in result["reverse_edges"]}
+    assert edge_kinds == {"commit", "path", "ref"}
+    assert any(
+        edge.get("source_value") == base64.b64encode(b"Raw-Path.bin").decode()
+        for edge in result["reverse_edges"]
+    )
+
+
+def test_scan_mirror_fails_closed_on_object_and_edge_caps(tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    git(repo, "init", "-q")
+    git(repo, "config", "user.email", "synthetic@example.invalid")
+    git(repo, "config", "user.name", "Synthetic")
+    (repo / "one").write_text("one")
+    git(repo, "add", ".")
+    git(repo, "commit", "-qm", "one")
+    mirror = tmp_path / "mirror.git"
+    subprocess.run(
+        ["git", "clone", "--mirror", str(repo), str(mirror)],
+        check=True,
+        capture_output=True,
+    )
+    refs = [(git(repo, "rev-parse", "HEAD").encode(), b"refs/heads/master")]
+    tiny = {
+        "max_blob_bytes": 4096,
+        "max_entries": 1,
+        "max_findings": 20,
+        "max_request_bytes": 65536,
+    }
+    with pytest.raises(codec.AuthorityError, match="integrity"):
+        audit._scan_mirror(mirror, refs, [], tiny)
+
+
+def test_remote_snapshot_includes_advertised_and_explicit_pull_refs(monkeypatch):
+    oid = b"a" * 40
+    calls = []
+
+    def fake_run(argv, **kwargs):
+        calls.append(argv)
+        if len(calls) == 1:
+            return SimpleNamespace(stdout=oid + b"\trefs/heads/main\n")
+        return SimpleNamespace(stdout=oid + b"\trefs/pull/7/head\n")
+
+    monkeypatch.setattr(audit.subprocess, "run", fake_run)
+    snapshot = audit._snapshot_remote("https://example.invalid/o/r.git", {})
+    assert snapshot == (
+        (oid, b"refs/heads/main"),
+        (oid, b"refs/pull/7/head"),
+    )
+    assert calls[0] == ["git", "ls-remote", "https://example.invalid/o/r.git"]
+    assert calls[1][-2:] == ["refs/pull/*/head", "refs/pull/*/merge"]
+
+
+def test_audit_history_fails_closed_on_snapshot_drift(monkeypatch, tmp_path):
+    snapshots = [
+        ((b"a" * 40, b"refs/heads/main"),),
+        ((b"b" * 40, b"refs/heads/main"),),
+    ]
+    monkeypatch.setattr(audit, "_snapshot_remote", lambda *_args: snapshots.pop(0))
+    monkeypatch.setattr(audit, "_fetch_snapshot", lambda *_args: None)
+    with pytest.raises(codec.AuthorityError, match="integrity"):
+        audit.audit_history(
+            "https://example.invalid/o/r.git",
+            tmp_path / "mirror.git",
+            [],
+            {
+                "max_blob_bytes": 4096,
+                "max_entries": 10,
+                "max_findings": 10,
+                "max_request_bytes": 65536,
             },
         )
 
