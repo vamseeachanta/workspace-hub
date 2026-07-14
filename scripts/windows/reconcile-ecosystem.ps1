@@ -80,7 +80,15 @@ if (-not $bash) {
 $posixHub = '/' + $hub.Substring(0, 1).ToLowerInvariant() + ($hub.Substring(2) -replace '\\', '/')
 
 # --- machine label (for the log name) + log path ---
-$machine = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { 'windows' }
+$machine = if (-not [string]::IsNullOrWhiteSpace($Machine)) {
+    $Machine.ToLowerInvariant()
+} elseif ($env:RECONCILE_MACHINE) {
+    $env:RECONCILE_MACHINE.ToLowerInvariant()
+} elseif ($env:COMPUTERNAME) {
+    $env:COMPUTERNAME.ToLowerInvariant()
+} else {
+    'windows'
+}
 $logDir = Join-Path $hub 'logs\quality'
 New-Item -ItemType Directory -Force -Path $logDir | Out-Null
 $log = Join-Path $logDir ("reconcile-{0}-{1}.log" -f $machine, (Get-Date -Format 'yyyy-MM-dd'))

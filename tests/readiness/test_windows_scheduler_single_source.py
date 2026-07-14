@@ -167,3 +167,9 @@ def test_curation_restores_generated_matrix_preview():
     assert "generated matrix path was already dirty before curation" in text
     assert "git restore --worktree -- $report" in text
     assert "Remove-Item -LiteralPath $report -Force" in text
+
+
+def test_reconcile_log_prefers_public_machine_label():
+    text = (REPO_ROOT / "scripts" / "windows" / "reconcile-ecosystem.ps1").read_text()
+    assert "$Machine.ToLowerInvariant()" in text
+    assert "$env:RECONCILE_MACHINE.ToLowerInvariant()" in text
