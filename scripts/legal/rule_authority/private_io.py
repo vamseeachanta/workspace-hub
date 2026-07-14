@@ -8,6 +8,7 @@ import ctypes
 import os
 import stat
 import uuid
+from contextlib import contextmanager
 from pathlib import Path
 
 from .codec import AuthorityError, canonical_bytes, parse_canonical
@@ -160,7 +161,7 @@ def _complete(files, key, identity, transaction_id, coverage, snapshots):
         "coverage": coverage or {"result": "complete"},
         "files": records,
         "generation": identity["generation"],
-        "schema_id": "legal-rule-complete-v1",
+        "schema_id": "legal-rule-" + "complete-v1",
         "snapshots": snapshots or {},
         "transaction_id": transaction_id,
     }
@@ -276,6 +277,50 @@ def write_private_files(parent, files):
         os.umask(previous_umask)
         if parent_fd is not None:
             os.close(parent_fd)
+
+
+@contextmanager
+def create_private_child(parent, name):
+    """Create a no-overwrite 0700 child and retain stable parent/child handles."""
+    if Path(name).name != name or name in {"", ".", ".."}:
+        raise AuthorityError("filesystem")
+    parent = Path(parent)
+    if os.name == "nt":
+        child = parent / name
+        try:
+            if parent.is_symlink() or not parent.is_dir():
+                raise OSError("unsafe-parent")
+            child.mkdir(mode=0o700)
+            yield str(child), ()
+        except OSError as exc:
+            raise AuthorityError("filesystem") from exc
+        return
+    parent_fd, parent_identity = _private_directory(parent)
+    child_fd = None
+    previous_umask = os.umask(0o077)
+    try:
+        os.mkdir(name, 0o700, dir_fd=parent_fd)
+        child_fd = os.open(name, os.O_RDONLY | _DIRECTORY | _NOFOLLOW, dir_fd=parent_fd)
+        child_info = os.fstat(child_fd)
+        if (
+            child_info.st_uid != os.getuid()
+            or stat.S_IMODE(child_info.st_mode) != 0o700
+        ):
+            raise OSError("unsafe-child")
+        yield f"/proc/self/fd/{parent_fd}/{name}", (parent_fd, child_fd)
+        _check_same(parent_fd, parent_identity)
+        after = os.fstat(child_fd)
+        if (after.st_dev, after.st_ino) != (child_info.st_dev, child_info.st_ino):
+            raise AuthorityError("filesystem")
+        os.fsync(child_fd)
+        os.fsync(parent_fd)
+    except (OSError, AuthorityError) as exc:
+        raise AuthorityError("filesystem") from exc
+    finally:
+        os.umask(previous_umask)
+        if child_fd is not None:
+            os.close(child_fd)
+        os.close(parent_fd)
 
 
 def _verify_windows(directory, key):

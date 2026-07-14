@@ -14,6 +14,7 @@ from rule_authority import (
     audit,
     authority,
     codec,
+    coverage,
     envelope,
     private_io,
     promotion,
@@ -151,6 +152,7 @@ def _authority_dir(args):
     rules = [{**item, "pattern": mapped[item["rule_id"]]} for item in registry["rules"]]
     rules.extend(
         {
+            "allow_paths": authority.PUBLIC_MARKER_ALLOW_PATHS.get(token, []),
             "match_mode": "exact-bytes",
             "pattern": token,
             "rule_id": "structural",
@@ -196,10 +198,9 @@ def cmd_audit_history(args):
     _registry, policy, manifest, key, rules = _authority_dir(args)
     remote = os.environ.get(args.remote_url_env, "")
     result = audit.audit_history(remote, Path(args.mirror_dir), rules, policy["limits"])
-    result["github_coverage"] = {
-        "state": "unknown-residual",
-        "reason": "bounded-adapters-unavailable",
-    }
+    result["github_coverage"] = coverage.github_residual_matrix(
+        "bounded-adapters-unavailable"
+    )
     private_io.write_complete_transaction(
         Path(args.out_dir),
         args.transaction_id,

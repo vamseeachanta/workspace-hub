@@ -22,6 +22,23 @@ REQUIRED_SURFACES = {
 }
 
 
+def github_residual_matrix(reason):
+    if reason != "bounded-adapters-unavailable":
+        raise AuthorityError("integrity")
+    return {
+        surface: {
+            "bytes_examined": 0,
+            "downloads_examined": 0,
+            "pages_examined": 0,
+            "permissions": "not-queried",
+            "reason": reason,
+            "snapshot": "unavailable",
+            "state": "unknown-residual",
+        }
+        for surface in sorted(REQUIRED_SURFACES)
+    }
+
+
 def select_slot(current, pending, head_oid):
     if (
         pending

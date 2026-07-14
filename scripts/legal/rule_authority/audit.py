@@ -8,6 +8,7 @@ import re
 import subprocess
 from pathlib import Path
 
+from . import private_io
 from .codec import AuthorityError
 
 
@@ -15,10 +16,13 @@ OID = re.compile(rb"[0-9a-f]{40,64}")
 OBJECT_TYPES = {b"blob", b"commit", b"tag", b"tree"}
 
 
-def _git(git_dir, *args, binary=False):
+def _git(git_dir, *args, binary=False, pass_fds=()):
     try:
         result = subprocess.run(
-            ["git", f"--git-dir={git_dir}", *args], capture_output=True, check=True
+            ["git", f"--git-dir={git_dir}", *args],
+            capture_output=True,
+            check=True,
+            pass_fds=pass_fds,
         )
     except (OSError, subprocess.CalledProcessError) as exc:
         raise AuthorityError("integrity") from exc
@@ -31,7 +35,7 @@ def _ascii_fold(value):
     )
 
 
-def _matches(data, rules, surface):
+def _matches(data, rules, surface, paths=None):
     """Return block/warn rule counts without decoding attacker-controlled bytes."""
     block = warn = 0
     for rule in rules:
@@ -46,6 +50,13 @@ def _matches(data, rules, surface):
             raise AuthorityError("integrity")
         target = rule.get("target")
         if target not in {surface, "both"}:
+            continue
+        allow_paths = rule.get("allow_paths", [])
+        if not isinstance(allow_paths, list) or any(
+            not isinstance(item, bytes) for item in allow_paths
+        ):
+            raise AuthorityError("integrity")
+        if surface == "content" and paths and set(paths).issubset(set(allow_paths)):
             continue
         pattern = rule.get("pattern")
         mode = rule.get("match_mode")
@@ -109,7 +120,7 @@ def audit_tree(git_dir, commit_oid, required_ref, rules, limits):
         blob = _git(git_dir, "cat-file", "blob", oid, binary=True)
         if len(blob) > limits["max_blob_bytes"]:
             raise AuthorityError("integrity")
-        _add_counts(counts, _matches(blob, rules, "content"), limits)
+        _add_counts(counts, _matches(blob, rules, "content", {path}), limits)
         examined += 1
     return {
         "coverage": "complete",
@@ -153,16 +164,14 @@ def _snapshot_remote(remote_url, environment):
     return tuple(sorted(_parse_snapshot(b"".join(snapshots))))
 
 
-def _fetch_snapshot(remote_url, mirror_dir, refs, environment):
-    mirror_dir = Path(mirror_dir)
-    if mirror_dir.exists():
-        raise AuthorityError("integrity")
+def _fetch_snapshot(remote_url, mirror_dir, refs, environment, pass_fds=()):
     try:
         subprocess.run(
             ["git", "init", "--bare", str(mirror_dir)],
             capture_output=True,
             check=True,
             env=environment,
+            pass_fds=pass_fds,
         )
         for index, (oid, _ref) in enumerate(refs):
             subprocess.run(
@@ -181,6 +190,7 @@ def _fetch_snapshot(remote_url, mirror_dir, refs, environment):
                 capture_output=True,
                 check=True,
                 env=environment,
+                pass_fds=pass_fds,
             )
     except (OSError, subprocess.CalledProcessError) as exc:
         raise AuthorityError("integrity") from exc
@@ -193,11 +203,12 @@ def _edge(oid, kind, value, commit=None):
     return tuple(sorted(edge.items()))
 
 
-def _scan_mirror(git_dir, refs, rules, limits):
+def _scan_mirror(git_dir, refs, rules, limits, pass_fds=()):
     """Scan each unique raw object once while retaining all reverse edges."""
     if len(refs) > limits["max_entries"]:
         raise AuthorityError("integrity")
     object_oids = set()
+    object_paths = {}
     edges = set()
     counts = [0, 0]
     max_entries = limits["max_entries"]
@@ -213,7 +224,7 @@ def _scan_mirror(git_dir, refs, rules, limits):
             raise AuthorityError("integrity")
 
     def bounded_lines(*git_args):
-        raw = _git(git_dir, *git_args, binary=True)
+        raw = _git(git_dir, *git_args, binary=True, pass_fds=pass_fds)
         if len(raw) > limits["max_request_bytes"]:
             raise AuthorityError("integrity")
         lines = raw.splitlines()
@@ -259,6 +270,7 @@ def _scan_mirror(git_dir, refs, rules, limits):
                 "--full-tree",
                 commit,
                 binary=True,
+                pass_fds=pass_fds,
             )
             if len(tree_raw) > limits["max_request_bytes"]:
                 raise AuthorityError("integrity")
@@ -274,6 +286,7 @@ def _scan_mirror(git_dir, refs, rules, limits):
                 if not OID.fullmatch(path_oid.encode("ascii")):
                     raise AuthorityError("integrity")
                 _add_counts(counts, _matches(path, rules, "path"), limits)
+                object_paths.setdefault(path_oid, set()).add(path)
                 add_edge(
                     _edge(
                         path_oid,
@@ -284,16 +297,26 @@ def _scan_mirror(git_dir, refs, rules, limits):
                 )
     raw_bytes = 0
     for oid in sorted(object_oids):
-        object_type = _git(git_dir, "cat-file", "-t", oid, binary=True).strip()
+        object_type = _git(
+            git_dir, "cat-file", "-t", oid, binary=True, pass_fds=pass_fds
+        ).strip()
         if object_type not in OBJECT_TYPES:
             raise AuthorityError("integrity")
-        raw = _git(git_dir, "cat-file", object_type.decode("ascii"), oid, binary=True)
+        raw = _git(
+            git_dir,
+            "cat-file",
+            object_type.decode("ascii"),
+            oid,
+            binary=True,
+            pass_fds=pass_fds,
+        )
         if len(raw) > limits["max_blob_bytes"]:
             raise AuthorityError("integrity")
         raw_bytes += len(raw)
         if raw_bytes > limits["max_request_bytes"]:
             raise AuthorityError("integrity")
-        _add_counts(counts, _matches(raw, rules, "content"), limits)
+        paths = object_paths.get(oid) if object_type == b"blob" else None
+        _add_counts(counts, _matches(raw, rules, "content", paths), limits)
 
     reverse_edges = [dict(edge) for edge in sorted(edges)]
     return {
@@ -322,8 +345,13 @@ def audit_history(remote_url, mirror_dir, rules, limits):
     before = _snapshot_remote(remote_url, environment)
     if len(before) > limits["max_entries"]:
         raise AuthorityError("integrity")
-    _fetch_snapshot(remote_url, mirror_dir, before, environment)
-    after = _snapshot_remote(remote_url, environment)
-    if before != after:
-        raise AuthorityError("integrity")
-    return _scan_mirror(mirror_dir, before, rules, limits)
+    mirror = Path(mirror_dir)
+    with private_io.create_private_child(mirror.parent, mirror.name) as (
+        stable_mirror,
+        pass_fds,
+    ):
+        _fetch_snapshot(remote_url, stable_mirror, before, environment, pass_fds)
+        after = _snapshot_remote(remote_url, environment)
+        if before != after:
+            raise AuthorityError("integrity")
+        return _scan_mirror(stable_mirror, before, rules, limits, pass_fds)

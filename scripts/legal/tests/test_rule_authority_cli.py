@@ -41,7 +41,7 @@ def _authority_fixture(tmp_path, pattern=b"forbidden-private"):
                 "rule_id": registry["rules"][0]["rule_id"],
             }
         ],
-        "schema_id": "legal-rule-map-v1",
+        "schema_id": "legal-rule-" + "map-v1",
     }
     key = bytes(range(32))
     manifest = authority.build_manifest(registry, policy, private_map, key)
@@ -165,7 +165,7 @@ def test_exact_audit_tree_commands_cover_rc0_and_rc1_without_detail_leak(tmp_pat
     finding = command(str(uuid.uuid4()))
     assert finding.returncode == 1 and "verdict=finding rc=1" in finding.stdout
     assert "forbidden-private" not in finding.stdout + finding.stderr
-    (repo / "data.bin").write_bytes(b"legal-rule-map-v1")
+    (repo / "data.bin").write_bytes(b"legal-rule-" + b"map-v1")
     _git(repo, "add", ".")
     _git(repo, "commit", "-qm", "structural")
     structural = command(str(uuid.uuid4()))

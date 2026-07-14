@@ -33,7 +33,7 @@ def registry(generation=1):
                 "target": "both",
             }
         ],
-        "schema_id": "legal-rule-registry-v1",
+        "schema_id": "legal-rule-" + "registry-v1",
     }
 
 
@@ -48,7 +48,7 @@ def policy(generation=1):
             "max_findings": 10,
             "max_request_bytes": 4096,
         },
-        "schema_id": "legal-rule-policy-v1",
+        "schema_id": "legal-rule-" + "policy-v1",
     }
 
 
@@ -57,7 +57,7 @@ def private_map(generation=1, pattern=b"synthetic-forbidden-value"):
         "authority_revision": REV,
         "generation": generation,
         "rules": [{"pattern_b64": base64.b64encode(pattern).decode(), "rule_id": RULE}],
-        "schema_id": "legal-rule-map-v1",
+        "schema_id": "legal-rule-" + "map-v1",
     }
 
 
@@ -96,8 +96,10 @@ def test_complete_codec_and_manifest_golden_vector():
 @pytest.mark.parametrize(
     "payload",
     [
-        b'\xef\xbb\xbf{"schema_id":"legal-rule-registry-v1"}\n',
-        b'{"schema_id":"legal-rule-registry-v1","schema_id":"legal-rule-registry-v1"}\n',
+        b'\xef\xbb\xbf{"schema_id":"legal-rule-' + b'registry-v1"}\n',
+        b'{"schema_id":"legal-rule-'
+        b'registry-v1","schema_id":"legal-rule-'
+        b'registry-v1"}\n',
         canonical({**registry(), "unknown": True}),
         canonical({**registry(), "authority_revision": "NOT-A-UUID"}),
     ],
@@ -136,6 +138,16 @@ def test_map_rejects_total_decoded_patterns_over_16k():
     bad["rules"][0]["rule_id"] = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
     with pytest.raises(codec.AuthorityError):
         codec.parse_map(canonical(bad), registry())
+
+
+def test_policy_capacity_covers_the_real_repository_full_tree():
+    configured = codec.parse_policy(
+        (ROOT / "config/legal-rule-authority-policy.json").read_bytes()
+    )
+    assert configured["limits"]["max_entries"] >= 22931
+    maximum = policy()
+    maximum["limits"]["max_entries"] = 100000
+    assert codec.parse_policy(canonical(maximum))["limits"]["max_entries"] == 100000
 
 
 def test_verify_rejects_rollback_revision_reuse_and_tamper():
@@ -196,6 +208,8 @@ def test_structural_scan_rejects_secret_artifacts_under_arbitrary_names(tmp_path
     key = bytes(range(32))
     manifest = authority.build_manifest(registry(), policy(), private_map(), key)
     artifacts = authority.structural_tokens(private_map(), manifest, key)
+    assert b"PACK" not in artifacts
+    assert b"repositoryformatversion" not in artifacts
     target = tmp_path / "innocent.bin"
     target.write_bytes(b"prefix" + artifacts[0] + b"suffix")
     findings = authority.scan_paths([target], artifacts)

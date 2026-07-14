@@ -98,3 +98,16 @@ def test_envelope_materialization_is_no_overwrite_and_maps_filesystem(tmp_path):
         envelope.materialize(payload, private)
     if os.name != "nt":
         assert all((path.stat().st_mode & 0o077) == 0 for path in private.iterdir())
+
+
+def test_private_child_directory_is_created_no_overwrite_through_stable_handle(
+    tmp_path,
+):
+    parent = tmp_path / "private"
+    parent.mkdir(mode=0o700)
+    with private_io.create_private_child(parent, "mirror.git") as (stable, pass_fds):
+        assert Path(stable).is_dir()
+        assert pass_fds == () if os.name == "nt" else len(pass_fds) == 2
+    with pytest.raises(codec.AuthorityError, match="filesystem"):
+        with private_io.create_private_child(parent, "mirror.git"):
+            pass

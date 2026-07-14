@@ -11,7 +11,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "scripts" / "legal"))
-from rule_authority import audit, codec, coverage, private_io  # noqa: E402
+from rule_authority import audit, authority, codec, coverage, private_io  # noqa: E402
 
 
 def git(repo, *args):
@@ -65,6 +65,90 @@ def test_audit_tree_rejects_subset_ref_and_caps(tmp_path):
                 "max_request_bytes": 1,
             },
         )
+
+
+def test_audit_tree_handles_real_repository_scale(monkeypatch, tmp_path):
+    oid = "a" * 40
+    blob = "b" * 40
+    records = b"".join(
+        f"100644 blob {blob}\tfile-{index:05}.txt".encode() + b"\0"
+        for index in range(22931)
+    )
+
+    def fake_git(_repo, *args, binary=False, **_kwargs):
+        if args[:1] == ("rev-parse",):
+            return oid
+        if args[:1] == ("ls-tree",):
+            return records
+        if args[:2] == ("cat-file", "commit"):
+            return b"clean"
+        if args[:2] == ("cat-file", "blob"):
+            return b"clean"
+        raise AssertionError(args)
+
+    monkeypatch.setattr(audit, "_git", fake_git)
+    result = audit.audit_tree(
+        tmp_path,
+        oid,
+        "refs/heads/main",
+        [],
+        {
+            "max_blob_bytes": 1024,
+            "max_entries": 100000,
+            "max_findings": 1000,
+            "max_request_bytes": 104857600,
+        },
+    )
+    assert result["objects_examined"] == 22932
+
+
+def test_structural_public_marker_allowlist_is_exact_canonical_path(tmp_path):
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    git(repo, "init", "-q", "-b", "main")
+    git(repo, "config", "user.email", "synthetic@example.invalid")
+    git(repo, "config", "user.name", "Synthetic")
+    canonical = repo / "config" / "legal-rule-registry.json"
+    canonical.parent.mkdir()
+    canonical.write_bytes(b"legal-rule-" + b"registry-v1")
+    git(repo, "add", ".")
+    git(repo, "commit", "-qm", "canonical")
+    rule = {
+        "allow_paths": [b"config/legal-rule-registry.json"],
+        "match_mode": "exact-bytes",
+        "pattern": b"legal-rule-" + b"registry-v1",
+        "severity": "block",
+        "target": "content",
+    }
+    limits = {
+        "max_blob_bytes": 1024,
+        "max_entries": 100,
+        "max_findings": 10,
+        "max_request_bytes": 4096,
+    }
+    oid = git(repo, "rev-parse", "HEAD")
+    clean = audit.audit_tree(repo / ".git", oid, "refs/heads/main", [rule], limits)
+    assert clean["findings"] == 0
+    (repo / "copied.json").write_bytes(b"legal-rule-" + b"registry-v1")
+    git(repo, "add", ".")
+    git(repo, "commit", "-qm", "copied")
+    oid = git(repo, "rev-parse", "HEAD")
+    finding = audit.audit_tree(repo / ".git", oid, "refs/heads/main", [rule], limits)
+    assert finding["findings"] == 1
+
+
+def test_public_tree_marker_occurrences_are_only_at_canonical_allowlisted_paths():
+    def hits(marker):
+        result = subprocess.run(
+            ["git", "grep", "-l", "-z", "-F", "--", marker.decode("ascii")],
+            cwd=ROOT,
+            capture_output=True,
+        )
+        assert result.returncode in {0, 1}
+        return set(result.stdout.split(b"\0")[:-1])
+
+    for marker, allowed in authority.PUBLIC_MARKER_ALLOW_PATHS.items():
+        assert hits(marker) == set(allowed)
 
 
 def test_rule_specs_honor_surface_ascii_fold_and_warning_severity():
@@ -261,3 +345,21 @@ def test_dual_slot_exact_head_and_coverage_matrix():
     assert coverage.classify_coverage(scanned) == "residual"
     with pytest.raises(codec.AuthorityError):
         coverage.classify_coverage({"issues": "scanned"})
+
+
+def test_github_residual_matrix_records_every_required_surface():
+    matrix = coverage.github_residual_matrix("bounded-adapters-unavailable")
+    assert set(matrix) == set(coverage.REQUIRED_SURFACES)
+    assert all(
+        item
+        == {
+            "bytes_examined": 0,
+            "downloads_examined": 0,
+            "pages_examined": 0,
+            "permissions": "not-queried",
+            "reason": "bounded-adapters-unavailable",
+            "snapshot": "unavailable",
+            "state": "unknown-residual",
+        }
+        for item in matrix.values()
+    )

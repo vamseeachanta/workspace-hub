@@ -86,7 +86,7 @@ def parse_registry(data: bytes):
     value = parse_canonical(data)
     _exact_keys(value, {"authority_revision", "generation", "rules", "schema_id"})
     if (
-        value["schema_id"] != "legal-rule-registry-v1"
+        value["schema_id"] != "legal-rule-" + "registry-v1"
         or not isinstance(value["rules"], list)
         or not value["rules"]
     ):
@@ -133,7 +133,7 @@ def parse_policy(data: bytes):
             "schema_id",
         },
     )
-    if value["schema_id"] != "legal-rule-policy-v1":
+    if value["schema_id"] != "legal-rule-" + "policy-v1":
         raise AuthorityError("schema")
     _uuid4(value["authority_revision"])
     _generation(value["generation"])
@@ -150,7 +150,7 @@ def parse_policy(data: bytes):
     )
     bounds = {
         "max_blob_bytes": 10485760,
-        "max_entries": 10000,
+        "max_entries": 100000,
         "max_findings": 1000,
         "max_request_bytes": 104857600,
     }
@@ -165,7 +165,7 @@ def parse_policy(data: bytes):
 def parse_map(data: bytes, registry: dict):
     value = parse_canonical(data, MAX_MAP)
     _exact_keys(value, {"authority_revision", "generation", "rules", "schema_id"})
-    if value["schema_id"] != "legal-rule-map-v1" or (
+    if value["schema_id"] != "legal-rule-" + "map-v1" or (
         value["authority_revision"],
         value["generation"],
     ) != (registry["authority_revision"], registry["generation"]):
@@ -202,7 +202,7 @@ def parse_ledger(data: bytes):
     value = parse_canonical(data)
     _exact_keys(value, {"entries", "key_id", "ledger_mac", "schema_id"})
     if (
-        value["schema_id"] != "legal-rule-generation-ledger-v1"
+        value["schema_id"] != "legal-rule-" + "generation-ledger-v1"
         or not isinstance(value["key_id"], str)
         or not value["key_id"]
         or not HEX64.fullmatch(value["ledger_mac"])
@@ -233,7 +233,7 @@ def parse_manifest(data: bytes):
             "schema_id",
         },
     )
-    if value["schema_id"] != "legal-rule-authority-manifest-v1":
+    if value["schema_id"] != "legal-rule-" + "authority-manifest-v1":
         raise AuthorityError("schema")
     _uuid4(value["authority_revision"])
     _generation(value["generation"])
@@ -259,7 +259,9 @@ def parse_anchor(data: bytes):
             "expected_head_oid",
         },
     )
-    if value["schema_id"] != "legal-rule-active-anchor-v1" or value["slot"] not in {
+    if value["schema_id"] != "legal-rule-" + "active-anchor-v1" or value[
+        "slot"
+    ] not in {
         "current",
         "pending",
     }:

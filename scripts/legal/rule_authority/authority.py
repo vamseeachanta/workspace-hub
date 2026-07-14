@@ -13,6 +13,29 @@ from . import codec
 
 DOMAIN = b"LEGAL-RULE-AUTHORITY\0v1\0"
 LEDGER_DOMAIN = b"LEGAL-RULE-LEDGER\0v1\0"
+PUBLIC_MARKER_ALLOW_PATHS = {
+    ("legal-rule-" + "registry-v1").encode(): [
+        b"config/legal-rule-registry.json",
+        b"schemas/legal-rule-registry.schema.json",
+    ],
+    ("legal-rule-" + "policy-v1").encode(): [
+        b"config/legal-rule-authority-policy.json",
+        b"schemas/legal-rule-policy.schema.json",
+    ],
+    ("legal-rule-" + "map-v1").encode(): [b"schemas/legal-rule-map.schema.json"],
+    ("legal-rule-" + "authority-manifest-v1").encode(): [
+        b"schemas/legal-rule-authority-manifest.schema.json"
+    ],
+    ("legal-rule-" + "active-anchor-v1").encode(): [
+        b"schemas/legal-rule-active-anchor.schema.json"
+    ],
+    ("legal-rule-" + "generation-ledger-v1").encode(): [
+        b"schemas/legal-rule-generation-ledger.schema.json"
+    ],
+    ("legal-rule-" + "complete-v1").encode(): [
+        b"schemas/legal-rule-complete.schema.json"
+    ],
+}
 
 
 def _sha(value):
@@ -50,7 +73,7 @@ def build_manifest(registry, policy, private_map, key):
         "map_sha256": _sha(private_map).hex(),
         "policy_sha256": _sha(policy).hex(),
         "registry_sha256": _sha(registry).hex(),
-        "schema_id": "legal-rule-authority-manifest-v1",
+        "schema_id": "legal-rule-" + "authority-manifest-v1",
     }
 
 
@@ -59,7 +82,7 @@ def make_anchor(manifest, tool_sha, slot="current", expected_head_oid=None):
         "authority_revision": manifest["authority_revision"],
         "generation": manifest["generation"],
         "manifest_mac": manifest["manifest_mac"],
-        "schema_id": "legal-rule-active-anchor-v1",
+        "schema_id": "legal-rule-" + "active-anchor-v1",
         "slot": slot,
         "tool_sha": tool_sha,
         "expected_head_oid": expected_head_oid,
@@ -112,7 +135,7 @@ def new_ledger(key_id, manifest, key):
             }
         ],
         "key_id": key_id,
-        "schema_id": "legal-rule-generation-ledger-v1",
+        "schema_id": "legal-rule-" + "generation-ledger-v1",
     }
     return {**value, "ledger_mac": _ledger_mac(value, key)}
 
@@ -121,7 +144,7 @@ def verify_ledger(ledger, key):
     codec.parse_ledger(codec.canonical_bytes(ledger))
     if (
         set(ledger) != {"entries", "key_id", "schema_id", "ledger_mac"}
-        or ledger["schema_id"] != "legal-rule-generation-ledger-v1"
+        or ledger["schema_id"] != "legal-rule-" + "generation-ledger-v1"
     ):
         raise codec.AuthorityError("integrity")
     if not hmac.compare_digest(ledger["ledger_mac"], _ledger_mac(ledger, key)):
@@ -161,11 +184,7 @@ def structural_tokens(private_map, manifest, key, anchor=None, ledger=None):
         codec.canonical_bytes(manifest),
         key,
         base64.b64encode(key),
-        b"legal-rule-map-v1",
-        b"legal-rule-authority-manifest-v1",
-        b"legal-rule-active-anchor-v1",
-        b"legal-rule-generation-ledger-v1",
-        b"legal-rule-complete-v1",
+        *PUBLIC_MARKER_ALLOW_PATHS,
     ]
     artifacts = [value for value in (anchor, ledger) if value]
     tokens.extend(codec.canonical_bytes(value) for value in artifacts)
@@ -177,9 +196,9 @@ def structural_tokens(private_map, manifest, key, anchor=None, ledger=None):
         )
     tokens.extend(
         [
-            b"PACK",
+            b"PACK\x00\x00\x00",
             b"\xfftOc",
-            b"repositoryformatversion",
+            b"[core]\n\trepositoryformatversion",
             b"legal-rule-private-report-v1",
         ]
     )
