@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib
 import hashlib
+import hmac
 import sys
 from pathlib import Path
 
@@ -59,9 +60,14 @@ def test_manifest_mac_input_and_document_bytes_are_frozen():
     )
     assert seal.manifest_mac_input(registry, policy, private_map).hex() == expected_input
     raw = codec.encode_document("manifest", manifest)
-    assert hashlib.sha256(raw).hexdigest() == "75a644212868aa3a08f9b9a4633cb18268e6ba8a1bbee3cdf16c78d202255734"
-    assert raw.startswith(b'{"authority_revision":"123e4567-e89b-42d3-a456-426614174000"')
-    assert raw.endswith(b'"schema_id":"legal-rule-authority-manifest-v1"}\n')
+    expected = (
+        b'{"authority_revision":"123e4567-e89b-42d3-a456-426614174000",'
+        b'"generation":2,"manifest_mac":"baabf0644dd201d64265a731151c936ff7492642410719a14f30c93be21836d7",'
+        b'"map_sha256":"709cd63a7e5f5296e84e623f4780a3e56a1eff92ebd9f5593ecebb3f246112cc",'
+        b'"policy_sha256":"3e8496ae400736a9819f745267dbdc65fae48623e293eaf9aeba939b94b92b56",'
+        b'"registry_sha256":"5c16c8b6935afd495bda79961d717cb8e4460dd5dc51558f0595a3269581b835",'
+        b'"schema_id":"legal-rule-authority-manifest-v1"}\n')
+    assert raw == expected
 
 
 def test_valid_bundle_rejects_older_valid_replay_against_new_authority():
@@ -107,14 +113,44 @@ def test_anchor_and_ledger_genesis_append_bytes_are_frozen():
     old = {"authority_revision": OLD_REVISION, "generation": 1, "manifest_mac": "1" * 64}
     genesis = seal.create_ledger("synthetic-key", [old], KEY)
     appended = seal.append_ledger(genesis, 2, REVISION, manifest["manifest_mac"], KEY)
-    assert hashlib.sha256(codec.encode_document("anchor", anchor)).hexdigest() == (
-        "1756a2dfe35b1185fc5b932c2a19b2661e06f264c90f914622f636923176afec")
+    expected_anchor = (
+        b'{"authority_revision":"123e4567-e89b-42d3-a456-426614174000",'
+        b'"expected_head_oid":null,"generation":2,"manifest_mac":"baabf0644dd201d64265a731151c936ff7492642410719a14f30c93be21836d7",'
+        b'"schema_id":"legal-rule-active-anchor-v1","slot":"current",'
+        b'"tool_sha":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}\n')
+    assert codec.encode_document("anchor", anchor) == expected_anchor
     assert genesis["ledger_mac"] == "7243a17796aec6277db1909f078c9366710c109d1e0b2dae6e8b1429791ce05e"
     assert appended["ledger_mac"] == "322c0abf80b69834122b2690b673a842dc4d096d873ac367a6481adbeace7e43"
-    assert hashlib.sha256(codec.encode_document("ledger", genesis)).hexdigest() == (
-        "efc0f83054f7552e29b10962e45deb5bcd6feaf0d24c6cd809cf9a35be506a44")
-    assert hashlib.sha256(codec.encode_document("ledger", appended)).hexdigest() == (
-        "3b412ce96dd0abffe051cc33bf01f7156ce47115edd9f22bffb5f64d873b921d")
+    genesis_unsigned = (
+        b'{"entries":[{"authority_revision":"223e4567-e89b-42d3-a456-426614174000",'
+        b'"generation":1,"manifest_mac":"' + b"1" * 64 +
+        b'"}],"key_id":"synthetic-key","schema_id":"legal-rule-generation-ledger-v1"}\n')
+    appended_unsigned = (
+        b'{"entries":[{"authority_revision":"223e4567-e89b-42d3-a456-426614174000",'
+        b'"generation":1,"manifest_mac":"' + b"1" * 64 +
+        b'"},{"authority_revision":"123e4567-e89b-42d3-a456-426614174000",'
+        b'"generation":2,"manifest_mac":"baabf0644dd201d64265a731151c936ff7492642410719a14f30c93be21836d7"'
+        b'}],"key_id":"synthetic-key","schema_id":"legal-rule-generation-ledger-v1"}\n')
+    assert seal.ledger_mac_input(genesis) == seal.LEDGER_DOMAIN + genesis_unsigned
+    assert seal.ledger_mac_input(appended) == seal.LEDGER_DOMAIN + appended_unsigned
+    assert hmac.new(KEY, seal.LEDGER_DOMAIN + genesis_unsigned, hashlib.sha256).hexdigest() == genesis["ledger_mac"]
+    assert hmac.new(KEY, seal.LEDGER_DOMAIN + appended_unsigned, hashlib.sha256).hexdigest() == appended["ledger_mac"]
+    expected_genesis = (
+        b'{"entries":[{"authority_revision":"223e4567-e89b-42d3-a456-426614174000",'
+        b'"generation":1,"manifest_mac":"' + b"1" * 64 +
+        b'"}],"key_id":"synthetic-key",'
+        b'"ledger_mac":"7243a17796aec6277db1909f078c9366710c109d1e0b2dae6e8b1429791ce05e",'
+        b'"schema_id":"legal-rule-generation-ledger-v1"}\n')
+    expected_appended = (
+        b'{"entries":[{"authority_revision":"223e4567-e89b-42d3-a456-426614174000",'
+        b'"generation":1,"manifest_mac":"' + b"1" * 64 +
+        b'"},{"authority_revision":"123e4567-e89b-42d3-a456-426614174000",'
+        b'"generation":2,"manifest_mac":"baabf0644dd201d64265a731151c936ff7492642410719a14f30c93be21836d7"'
+        b'}],"key_id":"synthetic-key",'
+        b'"ledger_mac":"322c0abf80b69834122b2690b673a842dc4d096d873ac367a6481adbeace7e43",'
+        b'"schema_id":"legal-rule-generation-ledger-v1"}\n')
+    assert codec.encode_document("ledger", genesis) == expected_genesis
+    assert codec.encode_document("ledger", appended) == expected_appended
 
 
 def test_revision_reuse_and_nonsequential_append_reject():

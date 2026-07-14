@@ -125,3 +125,27 @@ def test_parent_namespace_swap_rejects(tmp_path, monkeypatch):
     monkeypatch.setattr(fs, "_read_key_at", swapping_read)
     with pytest.raises(fs.PrivateFilesystemError):
         fs.load_key(key_file=key_file, env_name=None, environ={})
+
+
+def test_ancestor_reparent_with_same_final_parent_inode_rejects(tmp_path, monkeypatch):
+    fs = private_fs()
+    ancestor = tmp_path / "private"
+    final_parent = ancestor / "nested"
+    key_file = write_key(final_parent)
+    ancestor.chmod(0o700)
+    original_read = fs._read_key_at
+    reparented = []
+
+    def reparenting_read(parent_fd, name):
+        raw = original_read(parent_fd, name)
+        moved = tmp_path / "moved"
+        ancestor.rename(moved)
+        ancestor.mkdir(mode=0o700)
+        (moved / "nested").rename(ancestor / "nested")
+        reparented.append(True)
+        return raw
+
+    monkeypatch.setattr(fs, "_read_key_at", reparenting_read)
+    with pytest.raises(fs.PrivateFilesystemError):
+        fs.load_key(key_file=key_file, env_name=None, environ={})
+    assert reparented == [True]
