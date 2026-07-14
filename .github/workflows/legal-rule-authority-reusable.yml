@@ -2,52 +2,50 @@ name: Legal Rule Authority Reusable
 
 on:
   workflow_call:
-    inputs:
-      head_oid: {required: true, type: string}
-      is_fork: {required: true, type: boolean}
-      tool_sha: {required: true, type: string}
-    secrets:
-      LEGAL_SCAN_AUTH_CURRENT: {required: false}
 
 permissions:
   contents: read
 
 jobs:
-  fork-denied:
-    name: strict-scan
-    if: inputs.is_fork
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "owner review required" && exit 1
-
   authority:
-    name: strict-scan
-    if: ${{ !inputs.is_fork }}
+    name: authority
     environment: legal-rule-authority
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Validate immutable object ids
-        env: {HEAD_OID: "${{ inputs.head_oid }}", TOOL_SHA: "${{ inputs.tool_sha }}"}
+      - name: Validate immutable event and tool ids
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          EVENT_REPO: ${{ github.repository }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          HEAD_OID: ${{ github.event.pull_request.head.sha }}
+          TOOL_SHA: ${{ github.job_workflow_sha }}
         run: |
+          [[ "$EVENT_NAME" == pull_request ]] || exit 2
+          [[ "$HEAD_REPO" == "$EVENT_REPO" ]] || exit 2
           [[ "$HEAD_OID" =~ ^[0-9a-f]{40}$ ]] || exit 2
           [[ "$TOOL_SHA" =~ ^[0-9a-f]{40}$ ]] || exit 2
       - name: Checkout immutable trusted tooling
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ inputs.tool_sha }}
+          ref: ${{ github.job_workflow_sha }}
           persist-credentials: false
           fetch-depth: 1
       - uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc
       - name: Materialize protected envelope
-        env: {AUTH_ENVELOPE: "${{ secrets.LEGAL_SCAN_AUTH_CURRENT }}"}
+        env:
+          AUTH_ENVELOPE: ${{ secrets.LEGAL_SCAN_AUTH_CURRENT }}
         run: |
-          set +x; umask 077
+          set +x
+          umask 077
           test -n "$AUTH_ENVELOPE"
           mkdir -m 700 "$RUNNER_TEMP/authority" "$RUNNER_TEMP/report"
           printf '%s' "$AUTH_ENVELOPE" > "$RUNNER_TEMP/authority/envelope.json"
+          chmod 600 "$RUNNER_TEMP/authority/envelope.json"
       - name: Verify authority and audit inert PR objects
-        env: {HEAD_OID: "${{ inputs.head_oid }}", TOOL_SHA: "${{ inputs.tool_sha }}"}
+        env:
+          HEAD_OID: ${{ github.event.pull_request.head.sha }}
+          TOOL_SHA: ${{ github.job_workflow_sha }}
         run: |
           git init --bare "$RUNNER_TEMP/audit.git"
           git --git-dir="$RUNNER_TEMP/audit.git" -c credential.helper= -c core.hooksPath=/dev/null fetch --no-tags https://github.com/vamseeachanta/workspace-hub.git "$HEAD_OID:refs/audit/head"

@@ -6,28 +6,46 @@ from __future__ import annotations
 import argparse
 import base64
 import os
+import stat
 import sys
 from pathlib import Path
 
-from rule_authority import audit, authority, codec, envelope, private_io
+from rule_authority import (
+    audit,
+    authority,
+    codec,
+    envelope,
+    private_io,
+    promotion,
+    protection,
+)
 
 
 def _read(path, maximum=codec.MAX_DOC):
-    target = Path(path)
-    if target.is_symlink() or target.stat().st_size > maximum:
-        raise codec.AuthorityError("schema")
-    return target.read_bytes()
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    fd = os.open(path, flags)
+    try:
+        before = os.fstat(fd)
+        if not stat.S_ISREG(before.st_mode) or before.st_size > maximum:
+            raise codec.AuthorityError("schema")
+        with os.fdopen(fd, "rb", closefd=False) as stream:
+            data = stream.read(maximum + 1)
+        after = os.fstat(fd)
+        if len(data) > maximum or (before.st_dev, before.st_ino) != (
+            after.st_dev,
+            after.st_ino,
+        ):
+            raise codec.AuthorityError("schema")
+        return data
+    finally:
+        os.close(fd)
 
 
 def _key(args):
     if bool(getattr(args, "key_file", None)) == bool(getattr(args, "key_env", None)):
         raise codec.AuthorityError("config")
     if args.key_file:
-        target = Path(args.key_file)
-        if os.name != "nt":
-            if target.stat().st_mode & 0o077 or target.parent.stat().st_mode & 0o077:
-                raise codec.AuthorityError("config")
-        raw = _read(args.key_file, 128)
+        raw = private_io.read_private_file(args.key_file, 128)
         if not raw.endswith(b"\n") or raw.endswith(b"\n\n"):
             raise codec.AuthorityError("config")
         encoded = raw[:-1]
@@ -51,13 +69,6 @@ def _public(args):
     ):
         raise codec.AuthorityError("schema")
     return registry, policy
-
-
-def _write_new(path, value):
-    target = Path(path)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    with target.open("xb") as stream:
-        stream.write(codec.canonical_bytes(value))
 
 
 def cmd_validate(args):
@@ -104,8 +115,13 @@ def cmd_seal(args):
         raise codec.AuthorityError("integrity")
     new_ledger = authority.append_ledger(ledger, manifest, key)
     out = Path(args.out_dir)
-    _write_new(out / "authority-manifest.json", manifest)
-    _write_new(out / "generation-ledger.json", new_ledger)
+    private_io.write_private_files(
+        out,
+        {
+            "authority-manifest.json": codec.canonical_bytes(manifest),
+            "generation-ledger.json": codec.canonical_bytes(new_ledger),
+        },
+    )
     print(
         f"command=seal generation={manifest['generation']} revision={manifest['authority_revision']} verdict=sealed rc=0"
     )
@@ -128,14 +144,30 @@ def _authority_dir(args):
     authority.verify_bundle(
         registry, policy, private_map, manifest, key, anchor, ledger, tool_sha, head_oid
     )
-    patterns = [base64.b64decode(item["pattern_b64"]) for item in private_map["rules"]]
-    return registry, policy, manifest, key, patterns
+    mapped = {
+        item["rule_id"]: base64.b64decode(item["pattern_b64"])
+        for item in private_map["rules"]
+    }
+    rules = [{**item, "pattern": mapped[item["rule_id"]]} for item in registry["rules"]]
+    rules.extend(
+        {
+            "match_mode": "exact-bytes",
+            "pattern": token,
+            "rule_id": "structural",
+            "severity": "block",
+            "target": "both",
+        }
+        for token in authority.structural_tokens(
+            private_map, manifest, key, anchor=anchor, ledger=ledger
+        )
+    )
+    return registry, policy, manifest, key, rules
 
 
 def cmd_audit_tree(args):
-    _registry, policy, manifest, key, patterns = _authority_dir(args)
+    _registry, policy, manifest, key, rules = _authority_dir(args)
     result = audit.audit_tree(
-        args.repo, args.commit, args.required_ref, patterns, policy["limits"]
+        args.repo, args.commit, args.required_ref, rules, policy["limits"]
     )
     transaction = private_io.write_complete_transaction(
         Path(args.out_dir),
@@ -143,6 +175,8 @@ def cmd_audit_tree(args):
         {"tree-report.json": codec.canonical_bytes(result)},
         key,
         manifest,
+        coverage={"tree": result["coverage"]},
+        snapshots={"commit": args.commit},
     )
     verdict = "finding" if result["findings"] else "clean"
     print(
@@ -159,17 +193,21 @@ def cmd_cleanup(args):
 
 
 def cmd_audit_history(args):
-    _registry, policy, manifest, key, patterns = _authority_dir(args)
+    _registry, policy, manifest, key, rules = _authority_dir(args)
     remote = os.environ.get(args.remote_url_env, "")
-    result = audit.audit_history(
-        remote, Path(args.mirror_dir), patterns, policy["limits"]
-    )
+    result = audit.audit_history(remote, Path(args.mirror_dir), rules, policy["limits"])
+    result["github_coverage"] = {
+        "state": "unknown-residual",
+        "reason": "bounded-adapters-unavailable",
+    }
     private_io.write_complete_transaction(
         Path(args.out_dir),
         args.transaction_id,
         {"history-report.json": codec.canonical_bytes(result)},
         key,
         manifest,
+        coverage={"git": "scanned", "github": "unknown-residual"},
+        snapshots={},
     )
     print(
         f"command=audit-history generation={manifest['generation']} objects={result['objects_examined']} coverage=residual verdict=unknown rc=3"
@@ -180,6 +218,26 @@ def cmd_audit_history(args):
 def cmd_materialize(args):
     envelope.materialize(_read(args.envelope, 32768), args.out_dir)
     print("command=materialize-envelope verdict=complete rc=0")
+
+
+def cmd_promote(args):
+    promotion.validate(
+        args.current_envelope_env,
+        args.pending_envelope_env,
+        args.expected_head,
+        args.expected_tree,
+        _read(args.preview),
+    )
+    print("command=promote verdict=ready rc=0")
+
+
+def cmd_verify_protection(args):
+    protection.verify_readback(
+        codec.parse_canonical(_read(args.preview)),
+        codec.parse_canonical(_read(args.environment_response)),
+        codec.parse_canonical(_read(args.ruleset_response)),
+    )
+    print("command=verify-protection verdict=verified rc=0")
 
 
 def _common(parser):
@@ -242,6 +300,20 @@ def build_parser():
     materialize.add_argument("--envelope", required=True)
     materialize.add_argument("--out-dir", required=True)
     materialize.set_defaults(func=cmd_materialize)
+    promote = sub.add_parser("promote")
+    for name in (
+        "current-envelope-env",
+        "pending-envelope-env",
+        "expected-head",
+        "expected-tree",
+        "preview",
+    ):
+        promote.add_argument(f"--{name}", required=True)
+    promote.set_defaults(func=cmd_promote)
+    readback = sub.add_parser("verify-protection")
+    for name in ("preview", "environment-response", "ruleset-response"):
+        readback.add_argument(f"--{name}", required=True)
+    readback.set_defaults(func=cmd_verify_protection)
     return parser
 
 
@@ -251,8 +323,16 @@ def main(argv=None):
         args.func(args)
         return 0
     except codec.AuthorityError as exc:
-        category = str(exc) if str(exc) in {"schema", "config"} else "integrity"
-        rc = 2 if category in {"schema", "config"} else 3
+        category = (
+            str(exc) if str(exc) in {"schema", "config", "filesystem"} else "integrity"
+        )
+        rc = (
+            4
+            if category == "filesystem"
+            else 2
+            if category in {"schema", "config"}
+            else 3
+        )
         print(f"command=authority verdict={category} rc={rc}", file=sys.stderr)
         return rc
     except (OSError, UnicodeError):

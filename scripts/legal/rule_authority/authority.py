@@ -171,9 +171,9 @@ def structural_tokens(private_map, manifest, key, anchor=None, ledger=None):
     tokens.extend(codec.canonical_bytes(value) for value in artifacts)
     for value in (manifest, *artifacts):
         tokens.extend(
-            str(item).encode("ascii")
+            item.encode("ascii")
             for item in value.values()
-            if isinstance(item, (str, int))
+            if isinstance(item, str) and len(item) >= 16
         )
     tokens.extend(
         [

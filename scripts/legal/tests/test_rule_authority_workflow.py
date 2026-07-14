@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import json
 from pathlib import Path
 
 
@@ -22,18 +23,46 @@ def test_reusable_workflow_is_secret_owner_and_caller_is_pinned():
         caller,
     )
     assert "secrets: inherit" not in caller
-    assert "ref: ${{ inputs.tool_sha }}" in reusable
+    assert "ref: ${{ github.job_workflow_sha }}" in reusable
+    assert "inputs.tool_sha" not in reusable
     assert "audit-tree" in reusable and "verify" in reusable
+    assert "inputs.head_oid" not in reusable
+    assert "inputs.is_fork" not in reusable
+    assert "github.event.pull_request.head.sha" in reusable
+    assert "github.event_name" in reusable
+    assert "github.repository" in reusable
 
 
 def test_fork_path_is_constant_and_precedes_private_scan():
-    reusable = (ROOT / ".github/workflows/legal-rule-authority-reusable.yml").read_text(
+    caller = (ROOT / ".github/workflows/legal-rule-authority-gate.yml").read_text(
         encoding="utf-8"
     )
-    fork = reusable.index("owner review required")
-    private = reusable.index("environment: legal-rule-authority")
-    assert fork < private
-    assert "if: inputs.is_fork" in reusable
+    assert "owner review required" in caller
+    assert (
+        "github.event.pull_request.head.repo.full_name != github.repository" in caller
+    )
+    assert "environment: legal-rule-authority" not in caller
+
+
+def test_trust_boundary_paths_are_codeowned_and_preview_is_exact():
+    owners = (ROOT / ".github/CODEOWNERS").read_text(encoding="utf-8")
+    for path in (
+        "/.github/CODEOWNERS",
+        "/.github/workflows/legal-rule-authority-gate.yml",
+        "/.github/workflows/legal-rule-authority-reusable.yml",
+        "/scripts/legal/",
+        "/schemas/legal-rule-",
+        "/config/legal-rule-",
+    ):
+        assert path in owners
+    preview = json.loads(
+        (
+            ROOT
+            / "docs/plans/evidence/2026-07-14-issue-3522-phase-a-protection-preview.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert preview["ruleset"]["required_workflow"]
+    assert preview["ruleset"]["require_code_owner_review"] is True
 
 
 def test_public_config_contains_no_pattern_or_locator_fields():
