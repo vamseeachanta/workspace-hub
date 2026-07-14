@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>#3533 — Standards Registry Authority Contract</title>
+<style>
+:root{--ink:#17233b;--muted:#58657a;--line:#d9e0e8;--paper:#f5f2ea;--card:#fff;--accent:#bd5b37;--safe:#246b58}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,sans-serif}
+main{max-width:1040px;margin:auto;padding:54px 30px 80px}.eyebrow{color:var(--accent);font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1{font:700 clamp(2.4rem,6vw,5rem)/.98 Georgia,serif;max-width:900px;margin:.3em 0}.lead{font-size:1.3rem;max-width:780px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:34px 0}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+h2{font:700 1.65rem Georgia,serif;margin:.2em 0 .7em}h3{margin:.2em 0}.tag{display:inline-block;padding:5px 9px;border-radius:99px;background:#e8eee9;color:var(--safe);font-size:.83rem;font-weight:700}
+table{width:100%;border-collapse:collapse;background:#fff}th,td{text-align:left;vertical-align:top;padding:12px;border-bottom:1px solid var(--line)}th{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}
+code{background:#eef1f4;padding:.1em .35em;border-radius:4px}.gate{border-left:5px solid var(--accent)}ul{padding-left:1.2em}.footer{margin-top:40px;color:var(--muted);font-size:.9rem}
+@media(max-width:720px){.grid{grid-template-columns:1fr}main{padding:30px 18px}}
+</style></head><body><main>
+<div class="eyebrow">Adversarially reviewed draft · Issue #3533</div>
+<h1>Standards facts must remain separate.</h1>
+<p class="lead">The registry will stop treating publisher currentness, a filename, transfer completion, lawful access, permission, and technical acceptance as interchangeable facts.</p>
+<div class="grid">
+  <section class="card"><span class="tag">Public-safe</span><h2>What workspace-hub will hold</h2><ul><li>Canonical code identity</li><li>Official publisher designation and evidence date</li><li>Implementation-basis metadata</li><li>Transfer history with verified or legacy-unverified evidence</li><li>A blocked or metadata-only resolution gate</li></ul></section>
+  <section class="card gate"><h2>What it will not publish</h2><ul><li>Document fingerprints or exact holdings</li><li>Private paths or access evidence</li><li>Permission or licensing decisions</li><li>Qualified-review details</li><li>Licensed text, tables, OCR, or coefficients</li></ul><p>Private authority evidence requires separately approved llm-wiki issue #840.</p></section>
+</div>
+<h2>Four independent questions</h2>
+<table><thead><tr><th>Question</th><th>Evidence</th><th>Fail-closed rule</th></tr></thead><tbody>
+<tr><td>What is current?</td><td>Official publisher catalog and verification time</td><td>Does not prove possession or applicability</td></tr>
+<tr><td>What was transferred?</td><td>Destination alias plus reconciled content identity</td><td>Legacy empty-path <code>done</code> becomes legacy-unverified</td></tr>
+<tr><td>What may be used?</td><td>Private, purpose-scoped access/permission evidence</td><td>Possession and subscription imply nothing</td></tr>
+<tr><td>What is technically accepted?</td><td>Qualified decision against an exact source identity</td><td>Current reachability affects usability, not historical decision integrity</td></tr>
+</tbody></table>
+<div class="grid">
+<section class="card"><h2>Implementation controls</h2><ul><li>Closed JSON/YAML schema and strict enums</li><li>Logical joins by code ID; holding joins by exact namespaced content identity</li><li>Injected build time, deterministic dry run, validation, atomic replacement</li><li>Consumer migration across reports, lookup, readiness, research, and domain views</li><li>Hermetic digest, chronology, collision, and disclosure tests</li></ul></section>
+<section class="card gate"><h2>Human gates</h2><ul><li>This plan requires explicit user approval after review.</li><li>Private evidence storage requires a separate approved plan.</li><li>A qualified reviewer must decide any technical basis.</li><li>No approval here authorizes DNV numerical changes or licensed-source inspection.</li></ul></section>
+</div>
+<h2>Delivery sequence</h2>
+<p>#3533 public schema and conservative records → private authority contract (#840) plus citation/page identity contracts (#3538/#839) → blocked resolver mechanics (#837) → qualified C203 basis decision (#1588) → exact activation and calculation implementation.</p>
+<p class="footer">Canonical executable plan: <code>docs/plans/2026-07-14-issue-3533-standards-registry-authority-contract.md</code>. This HTML is a human-review companion and contains no source-body content.</p>
+</main></body></html>
