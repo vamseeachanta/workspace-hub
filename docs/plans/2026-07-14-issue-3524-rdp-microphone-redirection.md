@@ -1,13 +1,13 @@
 # Plan for #3524: Restore RDP Microphone Redirection from WS014 to RDS02
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3524
 > **Client:** N/A
 > **Project:** N/A
 > **Lane:** lane:codex
-> **Execution mode:** parallel-readonly for resource intelligence/review; single-lane for live two-machine remediation; implementation remains blocked pending user approval
+> **Execution mode:** parallel-readonly for resource intelligence/review; single-lane for implementation and live two-machine remediation; approved by the user on 2026-07-14
 > **Review artifacts (r1, blocking):** `scripts/review/results/2026-07-14-plan-3524-claude-r1.md` | `scripts/review/results/2026-07-14-plan-3524-codex-r1.md` | `scripts/review/results/2026-07-14-plan-3524-disagreement-r1.md`
 > **Review artifacts (r2):** `scripts/review/results/2026-07-14-plan-3524-claude-r2.md` | `scripts/review/results/2026-07-14-plan-3524-codex-r2.md` | `scripts/review/results/2026-07-14-plan-3524-disagreement-r2.md`
 > **Review artifact (r3, blocking):** `scripts/review/results/2026-07-14-plan-3524-codex-r3.md`
