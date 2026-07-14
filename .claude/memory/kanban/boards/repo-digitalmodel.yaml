@@ -7646,7 +7646,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1565
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-review
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7669,7 +7671,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1574
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-review
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7679,7 +7683,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1575
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-review
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7689,7 +7695,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1576
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-review
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7699,7 +7707,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1577
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-review
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7709,7 +7719,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1578
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-review
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
