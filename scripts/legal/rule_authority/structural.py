@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import base64
 from dataclasses import dataclass
-from pathlib import PurePosixPath
 
 PRIVATE_MARKERS = (
     b"legal-rule-private-report-v1",
@@ -65,13 +64,20 @@ def _misplaced_public_marker(path: str, payload: bytes) -> bool:
     return False
 
 
+def contains_sensitive(path: bytes, payload: bytes,
+                       sensitive: SensitiveArtifacts) -> bool:
+    """Detect closed sensitive encodings without decoding hostile Git paths."""
+    basename = path.rsplit(b"/", 1)[-1]
+    prohibited = {name.encode("ascii") for name in sensitive.prohibited_basenames}
+    public_path = path.decode("ascii", errors="surrogateescape")
+    return (basename in prohibited or _has_private_bytes(payload, sensitive) or
+            _misplaced_public_marker(public_path, payload))
+
+
 def scan_blobs(blobs: dict[str, bytes], sensitive: SensitiveArtifacts) -> list[str]:
     """Return paths containing closed-form private artifacts, never their values."""
     findings = []
     for path, payload in blobs.items():
-        basename = PurePosixPath(path).name
-        if (basename in sensitive.prohibited_basenames or
-                _has_private_bytes(payload, sensitive) or
-                _misplaced_public_marker(path, payload)):
+        if contains_sensitive(path.encode("utf-8"), payload, sensitive):
             findings.append(path)
     return sorted(findings)
