@@ -29,12 +29,24 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\reconcile-ecosystem.ps1 -- --apply --equality
 #>
 [CmdletBinding()]
-param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Flags)
+param(
+    [string]$Machine = "",
+    [Parameter(ValueFromRemainingArguments = $true)][string[]]$Flags
+)
 
 $ErrorActionPreference = 'Continue'
 
 # --- repo root: this script lives in <hub>/scripts/windows ---
 $hub = (Get-Item $PSScriptRoot).Parent.Parent.FullName
+
+if (-not [string]::IsNullOrWhiteSpace($Machine)) {
+    if ($Machine -notmatch '^ace-win-[12]$') {
+        Write-Error "Unsupported reconciliation machine label '$Machine'"
+        exit 2
+    }
+    $env:RECONCILE_MACHINE = $Machine
+    $env:EQ_MACHINE = $Machine
+}
 
 # --- resolve the REAL Git Bash (MSYS/MINGW), never the WSL stub (same contract as collect-equality.ps1) ---
 function Resolve-GitBash {

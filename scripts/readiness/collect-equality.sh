@@ -28,6 +28,10 @@ for ((i=1; i<=$#; i++)); do
 done
 
 HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+# A machine may have a private or policy-sensitive OS hostname while using a public
+# fleet identity.  The Windows wrapper sets this to the validated --machine label so
+# tracked equality evidence never serializes the private hostname.
+PUBLIC_HOST="${EQ_PUBLIC_HOST:-$HOST}"
 case "$(uname -s 2>/dev/null)" in
   Linux) OS="linux";; Darwin) OS="macos";; MINGW*|MSYS*|CYGWIN*) OS="windows";; *) OS="unknown";;
 esac
@@ -135,7 +139,7 @@ for _ubin in "${HOME:-}/.npm-global/bin" "${HOME:-}/.local/bin"; do
 done
 export PATH
 readiness_file="harness-readiness-${MACHINE}.yaml"
-[[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${HOST}.yaml"
+[[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${PUBLIC_HOST}.yaml"
 readiness_overall="missing"
 [[ -f "${STATE_DIR}/${readiness_file}" ]] && \
   readiness_overall=$(awk -F': ' '/^overall:/{print $2; exit}' "${STATE_DIR}/${readiness_file}" 2>/dev/null)
@@ -356,6 +360,12 @@ providers:
     "memory:read": {status: unknown, reason: collector_unavailable}
     "skills:invoke": {status: unknown, reason: collector_unavailable}
     "workflow:gates": {status: unknown, reason: collector_unavailable}
+  gemini:
+    present: false
+    installed: false
+    "memory:read": {status: unknown, reason: collector_unavailable}
+    "skills:invoke": {status: unknown, reason: collector_unavailable}
+    "workflow:gates": {status: unknown, reason: collector_unavailable}
 YAML
 }
 provider_py=""
@@ -397,7 +407,7 @@ fi
 read -r -d '' BODY <<YAML || true
 schema_version: 4
 machine: "$(yesc "$MACHINE")"
-host: "$(yesc "$HOST")"
+host: "$(yesc "$PUBLIC_HOST")"
 os: ${OS}
 status: active
 provenance:

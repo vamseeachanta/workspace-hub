@@ -112,6 +112,20 @@ if ([string]::IsNullOrWhiteSpace($Machine)) {
     $Machine = Resolve-EqualityMachineLabel
 }
 
+# The logical machine label is public; the underlying Windows hostname may be
+# policy-sensitive.  Keep tracked equality evidence on the public identity.
+$env:EQ_PUBLIC_HOST = $Machine
+
+# Git Bash can see the Microsoft Store python alias even when it is only a
+# non-working installer stub. Prefer uv's real interpreter when available so
+# provider-harness evidence is collected instead of falling back to unknown.
+if (Get-Command uv -ErrorAction SilentlyContinue) {
+    $uvPython = (& uv python find 2>$null).Trim()
+    if ($LASTEXITCODE -eq 0 -and (Test-Path $uvPython)) {
+        $env:Path = "$(Split-Path -Parent $uvPython);$env:Path"
+    }
+}
+
 # ------ CIM compute (the .ps1's real job) ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 $cs = Get-CimInstance Win32_ComputerSystem
 $os = Get-CimInstance Win32_OperatingSystem
