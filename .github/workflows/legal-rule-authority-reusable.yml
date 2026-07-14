@@ -19,7 +19,7 @@ jobs:
           EVENT_REPO: ${{ github.repository }}
           HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
           HEAD_OID: ${{ github.event.pull_request.head.sha }}
-          TOOL_SHA: ${{ github.job_workflow_sha }}
+          TOOL_SHA: ${{ job.workflow_sha }}
         run: |
           [[ "$EVENT_NAME" == pull_request ]] || exit 2
           [[ "$HEAD_REPO" == "$EVENT_REPO" ]] || exit 2
@@ -28,7 +28,7 @@ jobs:
       - name: Checkout immutable trusted tooling
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ github.job_workflow_sha }}
+          ref: ${{ job.workflow_sha }}
           persist-credentials: false
           fetch-depth: 1
       - uses: astral-sh/setup-uv@e92bafb6253dcd438e0484186d7669ea7a8ca1cc
@@ -45,7 +45,7 @@ jobs:
       - name: Verify authority and audit inert PR objects
         env:
           HEAD_OID: ${{ github.event.pull_request.head.sha }}
-          TOOL_SHA: ${{ github.job_workflow_sha }}
+          TOOL_SHA: ${{ job.workflow_sha }}
         run: |
           git init --bare "$RUNNER_TEMP/audit.git"
           git --git-dir="$RUNNER_TEMP/audit.git" -c credential.helper= -c core.hooksPath=/dev/null fetch --no-tags https://github.com/vamseeachanta/workspace-hub.git "$HEAD_OID:refs/audit/head"

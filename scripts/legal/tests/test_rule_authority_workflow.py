@@ -23,7 +23,9 @@ def test_reusable_workflow_is_secret_owner_and_caller_is_pinned():
         caller,
     )
     assert "secrets: inherit" not in caller
-    assert "ref: ${{ github.job_workflow_sha }}" in reusable
+    assert "TOOL_SHA: ${{ job.workflow_sha }}" in reusable
+    assert "ref: ${{ job.workflow_sha }}" in reusable
+    assert "github.job_workflow_sha" not in reusable
     assert "inputs.tool_sha" not in reusable
     assert "audit-tree" in reusable and "verify" in reusable
     assert "inputs.head_oid" not in reusable
