@@ -12,7 +12,7 @@ REPOSITORY = re.compile(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\Z")
 APPROVED_REPOSITORY = "vamseeachanta/workspace-hub"
 # Immutable tooling commit selected by the reusable workflow. Updated only by
 # an owner-reviewed workflow pin change, never by caller input.
-APPROVED_TOOL_SHA = "0e4acc752bdae9ce962e461b3dcced1b44e1c0da"
+APPROVED_TOOL_SHA = "ef677d71c69bf34aa577b525292e15eb58a6e5fa"
 
 
 def _oid(value: object) -> str:

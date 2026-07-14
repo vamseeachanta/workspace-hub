@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           repository: vamseeachanta/workspace-hub
-          ref: 0e4acc752bdae9ce962e461b3dcced1b44e1c0da
+          ref: ef677d71c69bf34aa577b525292e15eb58a6e5fa
           fetch-depth: 1
           persist-credentials: false
       - name: Install pinned uv
