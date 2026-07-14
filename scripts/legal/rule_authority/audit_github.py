@@ -117,6 +117,8 @@ def _download(surface: str, item: Download, sensitive: SensitiveArtifacts,
         raise CoverageError("invalid download evidence")
     label = surface.encode() + b":" + item.label
     if item.archive_format == "zip":
+        if contains_sensitive(label, b"", sensitive):
+            findings.append(label)
         remaining_compressed = budget.limits[4] - budget.counts[4]
         remaining_expanded = budget.limits[5] - budget.counts[5]
         if (item.compressed_bytes > remaining_compressed or

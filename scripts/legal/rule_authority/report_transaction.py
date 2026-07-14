@@ -165,6 +165,19 @@ def _file_records(files: dict[str, bytes]) -> list[dict]:
     ]
 
 
+def _complete_payload(files: dict[str, bytes], complete_fields: dict, key: bytes) -> bytes:
+    try:
+        unsigned = {**complete_fields, "files": _file_records(files)}
+        complete = encode_document("complete", create_complete(unsigned, key))
+    except ValueError as exc:
+        raise ReportTransactionError("invalid complete report") from exc
+    payloads = (*files.values(), complete)
+    if (any(len(payload) > MAX_REPORT_FILE_BYTES for payload in payloads) or
+            sum(map(len, payloads)) > MAX_REPORT_TOTAL_BYTES):
+        raise ReportTransactionError("private report size limit exceeded")
+    return complete
+
+
 def _rename_noreplace(parent_fd: int, source: str, target: str) -> None:
     libc = ctypes.CDLL(None, use_errno=True)
     renameat2 = getattr(libc, "renameat2", None)
@@ -224,14 +237,13 @@ def write_report(root: Path, transaction_id: str, files: dict[str, bytes],
     if tuple(sorted(files)) != REQUIRED_REPORT_FILES or any(
             type(payload) is not bytes for payload in files.values()):
         raise ReportTransactionError("report file contract mismatch")
+    complete = _complete_payload(files, complete_fields, key)
     directory = _Directory(Path(root))
     old_umask, published = os.umask(0o077), False
     final = incomplete = ""
     try:
         final, incomplete, report_fd = _prepare(directory, transaction_id, files)
         try:
-            unsigned = {**complete_fields, "files": _file_records(files)}
-            complete = encode_document("complete", create_complete(unsigned, key))
             _write_file(report_fd, "COMPLETE", complete)
             os.fsync(report_fd)
         finally:
@@ -295,13 +307,15 @@ def verify_report(directory: Path, key: bytes, *, require_complete: bool = True)
         handle.close()
 
 
-def _inventory(directory_fd: int) -> dict[str, tuple[int, int, int]]:
+def _inventory(directory_fd: int) -> dict[str, tuple[int, int, int, int, int]]:
     result = {}
     for name in os.listdir(directory_fd):
         info = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
         if not stat.S_ISREG(info.st_mode):
             raise ReportTransactionError("private report inventory is unsafe")
-        result[name] = (info.st_dev, info.st_ino, info.st_size)
+        result[name] = (
+            info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns
+        )
     return result
 
 
