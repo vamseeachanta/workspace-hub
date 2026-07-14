@@ -131,7 +131,9 @@ preserved_external:
 # crons that are NOT in the role catalog and NOT externally-owned. Functionally identical
 # to preserved_external (the cron reconciler keeps them verbatim, never manages/deletes
 # them), but semantically these are the host's own workspace-hub scripts run with a
-# machine-specific invocation. Match on stable command bits only.
+# machine-specific invocation. `owner` records provenance; classification is global, so use
+# exact legacy lines for catalog-owned variants and stable command fingerprints only when the
+# command is intentionally preserved on every role where it appears.
 preserved_local:
   - owner: ace-linux-2
     note: >-
@@ -146,6 +148,22 @@ preserved_local:
       from the control-plane skills-curation task (scripts/cron/skills-curation.sh). Keep verbatim.
     fingerprint:
       command_contains: "--skill skills-curation"
+  - owner: ace-linux-1
+    catalog_task_id: session-curation
+    note: >-
+      Exact pre-managed-block invocation of the cataloged session-curation task. Treat it as
+      catalog-owned so transactional cutover removes the duplicate and renders one canonical copy.
+    legacy_exact_lines:
+      - id: ace-linux-1-pre-managed-block
+        line: '47 */6 * * * mkdir -p $WORKSPACE_HUB/logs/monitoring && PATH=$HOME/.local/bin:$PATH; cd /mnt/local-analysis/workspace-hub && bash scripts/curation/curate-session-memory.sh >> /mnt/local-analysis/workspace-hub/logs/monitoring/session-curation-$(date +\%Y-\%m-\%d).log 2>&1'
+  - owner: ace-linux-1
+    catalog_task_id: equality-matrix-refresh
+    note: >-
+      Exact pre-managed-block invocation of the cataloged equality-matrix-refresh task. Treat it
+      as catalog-owned so transactional cutover removes the duplicate and renders one canonical copy.
+    legacy_exact_lines:
+      - id: ace-linux-1-pre-managed-block
+        line: '50 */6 * * * PATH=$HOME/.local/bin:$PATH; cd /mnt/local-analysis/workspace-hub && bash scripts/readiness/equality-matrix-cron.sh >> /mnt/local-analysis/workspace-hub/logs/quality/equality-refresh-$(date +\%Y-\%m-\%d).log 2>&1'
   - owner: ace-linux-1
     catalog_task_id: notification-purge
     note: >-

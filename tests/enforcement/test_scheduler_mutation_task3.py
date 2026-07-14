@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import ast
+import functools
 import hashlib
 import importlib.util
 import json
@@ -29,12 +30,18 @@ def load_checker():
     return module
 
 
-def current_contract():
+@functools.cache
+def _contract_baseline():
     checker = load_checker()
     records = checker.read_index_records(ROOT)
     registry = yaml.safe_load(records[checker.REGISTRY])
     discovered = checker.discover_mutation_surfaces(records)
     return checker, records, registry, discovered
+
+
+def current_contract():
+    checker, records, registry, discovered = _contract_baseline()
+    return checker, dict(records), copy.deepcopy(registry), copy.deepcopy(discovered)
 
 
 def by_path(registry):
@@ -303,7 +310,8 @@ def test_3490_gap_is_linked_in_render_and_docs():
         ("setup-live-reload-v1", b'APPLY_ARGS+=(--allow-live-reload)', b'APPLY_ARGS+=(--json)'),
         ("setup-remote-reject-v1", b'if [[ "$CANONICAL_MACHINE" != "$PHYSICAL_MACHINE" ]]', b'if [[ "$CANONICAL_MACHINE" == "$PHYSICAL_MACHINE" ]]'),
         ("setup-remote-reject-v1", b'echo "Run setup-cron.sh on that machine instead." >&2\n  exit 2', b'echo "Run setup-cron.sh on that machine instead." >&2\n  exit 0'),
-        ("setup-windows-skip-v1", b'if [[ "$SCHEDULE_VARIANT" == "contribute-minimal" ]]', b'if [[ "$SCHEDULE_VARIANT" != "contribute-minimal" ]]'),
+        ("setup-windows-skip-v1", b'--machine "$TARGET_MACHINE" --field os)', b'--machine "$TARGET_MACHINE" --field schedule_variant)'),
+        ("setup-windows-skip-v1", b'if [[ "$MACHINE_OS" == "windows" ]]', b'if [[ "$MACHINE_OS" != "windows" ]]'),
         ("setup-windows-skip-v1", b'echo "This machine uses Windows Task Scheduler; Linux cron reconciliation is skipped."\n  exit 0', b'echo "This machine uses Windows Task Scheduler; Linux cron reconciliation is skipped."\n  exit 2'),
         ("new-machine-default-v1", b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh"\nfi', b'bash "${WORKSPACE_HUB}/scripts/cron/setup-cron.sh" || true\nfi'),
         ("new-machine-dry-run-v1", b'setup-cron.sh" --dry-run || true', b'setup-cron.sh" || true'),
@@ -318,12 +326,116 @@ def test_3490_gap_is_linked_in_render_and_docs():
 )
 def test_wrapper_attestations_reject_live_source_mutations(attestation, old, new):
     checker, records, _registry, _discovered = current_contract()
+    wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
     source = checker.attestation_source(attestation)
     body = records[source]
     mutated = body.replace(old, new, 1)
     assert mutated != body, (attestation, old)
     records[source] = mutated
-    assert not checker.evaluate_attestation(attestation, records, source)
+    original_pin = wrapper_module.WRAPPER_SHA256[source]
+    wrapper_module.WRAPPER_SHA256[source] = hashlib.sha256(mutated).hexdigest()
+    try:
+        assert wrapper_module._pinned(source, records)
+        assert not checker.evaluate_attestation(attestation, records, source)
+    finally:
+        records[source] = body
+        wrapper_module.WRAPPER_SHA256[source] = original_pin
+
+
+def _evaluate_self_pinned_setup(body, attestation="setup-windows-skip-v1"):
+    checker, records, _registry, _discovered = current_contract()
+    wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
+    source = checker.attestation_source(attestation)
+    original_body = records[source]
+    original_pin = wrapper_module.WRAPPER_SHA256[source]
+    records[source] = body
+    wrapper_module.WRAPPER_SHA256[source] = hashlib.sha256(body).hexdigest()
+    try:
+        assert wrapper_module._pinned(source, records)
+        return checker.evaluate_attestation(attestation, records, source)
+    finally:
+        records[source] = original_body
+        wrapper_module.WRAPPER_SHA256[source] = original_pin
+
+
+def test_setup_self_pinned_baseline_accepts_registry_os_gate():
+    checker, records, _registry, _discovered = current_contract()
+    wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
+    source = checker.attestation_source("setup-windows-skip-v1")
+    original_pin = wrapper_module.WRAPPER_SHA256[source]
+    wrapper_module.WRAPPER_SHA256[source] = hashlib.sha256(records[source]).hexdigest()
+    try:
+        assert all(checker.evaluate_attestation(name, records, source)
+                   for name in sorted(wrapper_module.SETUP_ATTESTATIONS))
+    finally:
+        wrapper_module.WRAPPER_SHA256[source] = original_pin
+
+
+SETUP_WINDOWS_BLOCK = b'''MACHINE_OS="$(uv run --no-project python "$CRON_RENDER" \\
+  --machine "$TARGET_MACHINE" --field os)"
+if [[ "$MACHINE_OS" == "windows" ]]; then
+  echo "This machine uses Windows Task Scheduler; Linux cron reconciliation is skipped."
+  exit 0
+fi'''
+SETUP_REMOTE_BLOCK = b'''if [[ "$CANONICAL_MACHINE" != "$PHYSICAL_MACHINE" ]]; then
+  echo "ERROR: refusing to reconcile local crontab for remote machine ${CANONICAL_MACHINE}" >&2
+  echo "Run setup-cron.sh on that machine instead." >&2
+  exit 2
+fi'''
+
+
+@pytest.mark.parametrize(
+    ("old", "new"),
+    [
+        (b'MACHINE_OS="$(uv run', b'OTHER_OS="$(uv run'),
+        (b'if [[ "$MACHINE_OS" == "windows" ]]', b'if [[ -n "$MACHINE_OS" ]]'),
+        (b'  exit 0\nfi\nif [[ "$CANONICAL_MACHINE"', b'  exit 2\nfi\nif [[ "$CANONICAL_MACHINE"'),
+        (b'if [[ "$CANONICAL_MACHINE" != "$PHYSICAL_MACHINE" ]]', b'if [[ "$CANONICAL_MACHINE" == "$PHYSICAL_MACHINE" ]]'),
+        (b'  --machine "$TARGET_MACHINE" --field os)"\nif [[', b'  --machine "$TARGET_MACHINE" --field os)"\nMACHINE_OS="linux"\nif [['),
+        (b'MACHINE_OS="$(uv run', b'if false; then\nMACHINE_OS="$(uv run'),
+        (b'MACHINE_OS="$(uv run', b'if true; then\n  exit 0\nfi\nMACHINE_OS="$(uv run'),
+        (b'exec uv run --script "$CRON_APPLY" "${APPLY_ARGS[@]}"', b'if [[ "$DRY_RUN" == impossible ]]; then\n  exec uv run --script "$CRON_APPLY" "${APPLY_ARGS[@]}"\nfi'),
+        (SETUP_REMOTE_BLOCK, b'PHYSICAL_MACHINE="$CANONICAL_MACHINE"\n' + SETUP_REMOTE_BLOCK),
+        (b'APPLY_ARGS=(--machine "$CANONICAL_MACHINE")', b'DRY_RUN=false\nAPPLY_ARGS=(--machine "$CANONICAL_MACHINE")'),
+        (b'if [[ "$ALLOW_LIVE_RELOAD" == true ]]', b'ALLOW_LIVE_RELOAD=true\nif [[ "$ALLOW_LIVE_RELOAD" == true ]]'),
+        (b'exec uv run --script "$CRON_APPLY"', b'APPLY_ARGS+=(--apply)\nexec uv run --script "$CRON_APPLY"'),
+        (b'CANONICAL_MACHINE="$(uv run', b'export DRY_RUN=true\nCANONICAL_MACHINE="$(uv run'),
+        (b'CANONICAL_MACHINE="$(uv run', b'if true; then exit 0; fi\nCANONICAL_MACHINE="$(uv run'),
+        (b'CANONICAL_MACHINE="$(uv run', b'builtin exit 0\nCANONICAL_MACHINE="$(uv run'),
+        (b'CANONICAL_MACHINE="$(uv run', b": <<'fi'\nCANONICAL_MACHINE=\"$(uv run"),
+    ],
+)
+def test_setup_attestation_rejects_self_pinned_semantic_bypasses(old, new):
+    checker, records, _registry, _discovered = current_contract()
+    source = checker.attestation_source("setup-windows-skip-v1")
+    mutated = records[source].replace(old, new, 1)
+    assert mutated != records[source], old
+    assert not _evaluate_self_pinned_setup(mutated)
+
+
+@pytest.mark.parametrize(
+    ("block", "prefix", "suffix"),
+    [
+        (SETUP_WINDOWS_BLOCK, b" exit 0\n", b""),
+        (SETUP_WINDOWS_BLOCK, b"while false; do\n", b"\ndone"),
+        (SETUP_WINDOWS_BLOCK, b"scheduler_decoy() {\n", b"\n}"),
+        (SETUP_WINDOWS_BLOCK, b"(\n", b"\n)"),
+        (SETUP_WINDOWS_BLOCK, b": <<'BODY'\n", b"\nBODY"),
+        (SETUP_WINDOWS_BLOCK, b" exit 0 # bypass\n", b""),
+        (SETUP_WINDOWS_BLOCK, b"if true; then exit 0; fi\n", b""),
+        (SETUP_WINDOWS_BLOCK, b"builtin exit 0\n", b""),
+        (SETUP_WINDOWS_BLOCK, b": <<'fi'\n", b""),
+        (SETUP_REMOTE_BLOCK, b"if false; then\n", b"\nfi"),
+    ],
+)
+def test_setup_attestation_rejects_self_pinned_control_scope_bypasses(
+    block, prefix, suffix,
+):
+    checker, records, _registry, _discovered = current_contract()
+    source = checker.attestation_source("setup-windows-skip-v1")
+    mutated = records[source].replace(block, prefix + block + suffix, 1)
+    assert mutated != records[source], block
+    assert not _evaluate_self_pinned_setup(mutated)
 
 
 WRAPPER_MUTATIONS = {
@@ -371,13 +483,29 @@ def test_wrapper_digest_pins_are_exact_complete_and_fail_closed():
     checker, records, _registry, _discovered = current_contract()
     wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
     assert set(wrapper_module.WRAPPER_SHA256) == set(WRAPPER_MUTATIONS)
+    assert wrapper_module.WRAPPER_SHA256[wrapper_module.SETUP] == (
+        "1a5e5573d00d17c4a820a831549fb92a2dad100b5fbab5572afcefadd57c84c1"
+    )
     for source, (attestation, _old, _new) in WRAPPER_MUTATIONS.items():
         original = wrapper_module.WRAPPER_SHA256[source]
-        wrapper_module.WRAPPER_SHA256[source] = "0" * 64
-        assert not checker.evaluate_attestation(attestation, records, source)
-        del wrapper_module.WRAPPER_SHA256[source]
-        assert not checker.evaluate_attestation(attestation, records, source)
-        wrapper_module.WRAPPER_SHA256[source] = original
+        try:
+            assert original == hashlib.sha256(records[source]).hexdigest()
+            wrapper_module.WRAPPER_SHA256[source] = "0" * 64
+            assert not checker.evaluate_attestation(attestation, records, source)
+            del wrapper_module.WRAPPER_SHA256[source]
+            assert not checker.evaluate_attestation(attestation, records, source)
+        finally:
+            wrapper_module.WRAPPER_SHA256[source] = original
+
+
+def test_setup_wrapper_pin_matches_exact_staged_blob():
+    checker, records, _registry, _discovered = current_contract()
+    wrapper_module = sys.modules["scheduler_mutation_wrapper_attestations"]
+    source = wrapper_module.SETUP
+    staged_body = records[source]
+    working_body = (ROOT / source.decode()).read_bytes()
+    assert staged_body == working_body
+    assert wrapper_module.WRAPPER_SHA256[source] == hashlib.sha256(staged_body).hexdigest()
 
 
 @pytest.mark.parametrize("source", sorted(WRAPPER_MUTATIONS))
