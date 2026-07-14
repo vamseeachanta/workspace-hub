@@ -17,7 +17,7 @@ public, so listing the names there *is* the leak (the deny-list paradox).
 1. **Single private source of truth.** Client identifiers live only in
    `client-codename-map.yaml` in the **private** `aceengineer-strategy` repo
    (`pii-remediation/3097-2026-06-14/`). It maps each real identifier to a
-   neutral codename and lists its `/mnt/ace/<bucket>/` path. The canonical client
+   neutral codename and lists its `<private-mount>/<bucket>/` path. The canonical client
    roster is `config/client-wikis.yml` (the registry); the map is built from it.
 
 2. **Name-agnostic tooling.** Two scripts in `scripts/legal/` contain **no client
