@@ -7647,7 +7647,7 @@ cards:
     title: "openfoam_run_batch: default work/output dirs land inside the input's directory (scope git checkout on dispatch hosts)"
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1565
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - status:plan-approved
       - lane:claude
@@ -7849,6 +7849,16 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1596
+    title: 'Hosted solver execution: enforce reusable launch and path-boundary invariants'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1596
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

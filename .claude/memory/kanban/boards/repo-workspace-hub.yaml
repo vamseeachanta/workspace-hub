@@ -23233,7 +23233,8 @@ cards:
       - bug
       - cat:harness
       - machine:multi
-      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 0
@@ -23343,7 +23344,8 @@ cards:
       - cat:operations
       - domain:workstations
       - machine:multi
-      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - lane:codex
     initial_status: triage
     priority: 0
@@ -23358,7 +23360,8 @@ cards:
       - priority:medium
       - cat:ai-orchestration
       - wrk-item
-      - status:needs-plan
+      - status:plan-approved
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 0
@@ -23386,7 +23389,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
-      - status:plan-review
+      - status:plan-approved
       - gate:completeness
       - lane:claude
     initial_status: triage
@@ -23444,7 +23447,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - status:plan-review
+      - status:plan-approved
       - gate:completeness
       - lane:claude
     initial_status: triage
@@ -23475,6 +23478,90 @@ cards:
       - status:needs-plan
       - gate:completeness
       - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3536
+    title: 'CLI boundaries: prevent argparse from echoing rejected caller-controlled tokens'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3536
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3537
+    title: '[WRK] Make plan-review fanout artifacts atomic and revision-stamped'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3537
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - wrk-item
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3538
+    title: Evolve calculation citation contract for amendment and exact-source identity
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3538
+    gh_state: open
+    gh_labels:
+      - bug
+      - domain:standards-tooling
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3539
+    title: Refactor oversized equality modules and make Windows collector tests hermetic
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3539
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3541
+    title: 'test(enforcement): assert exact schemas for equivalent bypass fields'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3541
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3542
+    title: 'audit(config): reject duplicate YAML keys and ambiguous scalar types'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3542
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3544
+    title: 'security(legal): correct and operationalize Phase A authority activation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3544
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - gate:completeness
+      - lane:codex
     initial_status: triage
     priority: 0
     gh_assignees: []
