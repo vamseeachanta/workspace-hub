@@ -261,11 +261,13 @@ function derive_transfer_evidence(record):
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | pending | — |
-| Codex | pending | — |
-| Gemini | pending | — |
+| Claude | MAJOR (round 1) | Corrected phantom paths, sparse scope, missing consumers, test command, and HTML artifact. |
+| Codex | MAJOR (round 1) | Closed schema, transition, provenance, C203, determinism/atomicity, and consumer gaps. |
+| Gemini | UNAVAILABLE | No non-interactive authentication; no review signal. |
 
-**Overall result:** pending
+**Overall result:** FAIL in round 1; revised draft is undergoing round-2 review and remains `status:needs-plan`.
+
+Round-1 revisions will use the public disclosure allowlist, private-evidence issue #840, concrete schema, exact script paths, complete consumer inventory, injected-clock dry runs, atomic replacement, chronology/collision tests, executable `uv` commands, and HTML visual QA.
 
 ---
 
