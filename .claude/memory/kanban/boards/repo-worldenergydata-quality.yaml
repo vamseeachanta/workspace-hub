@@ -850,3 +850,15 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1019
+    title: 'validate(cost): second-source rough validation of sanctioned project costs — pre-circulation gate (#1017)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1019
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:quality
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
