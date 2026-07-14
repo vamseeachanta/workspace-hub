@@ -1542,7 +1542,7 @@ cards:
     title: 'data(vessel_fleet): myshiptracking.com as vessel-particulars source family (IMO/MMSI, dimensions, tonnage) for non-rig vessels'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/988
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:low
