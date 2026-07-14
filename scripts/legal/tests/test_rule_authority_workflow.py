@@ -191,3 +191,22 @@ def test_docs_freeze_owner_preview_and_rollback_without_live_mutation() -> None:
     assert preview["cutover"]["rollback"]["requires_owner_approval"] is True
     assert "No environment, CODEOWNERS, ruleset, or secret was mutated" in doc
     assert "legacy client-PII gate remains active" in client_doc
+
+
+def test_phase_a_artifacts_do_not_self_trigger_structural_guard() -> None:
+    structural = importlib.import_module("rule_authority.structural")
+    paths = [
+        ".claude/docs/legal-rule-authority.md",
+        ".github/workflows/legal-rule-authority-gate.yml",
+        ".github/workflows/legal-rule-authority-reusable.yml",
+        "config/legal-rule-authority-policy.json",
+        "config/legal-rule-registry.json",
+        "docs/plans/evidence/2026-07-14-issue-3522-phase-a-owner-preview.json",
+        "scripts/legal/manage_rule_authority.py",
+        "scripts/legal/rule_authority/ci_contract.py",
+        "scripts/legal/rule_authority/protection_preview.py",
+        "scripts/legal/tests/test_rule_authority_workflow.py",
+    ]
+    blobs = {path: (ROOT / path).read_bytes() for path in paths}
+    empty = structural.SensitiveArtifacts(b"", (), (), frozenset())
+    assert structural.scan_blobs(blobs, empty) == []
