@@ -163,8 +163,8 @@ def test_main_push_scheduler_workflow_is_fail_closed():
     workflow_text = MAIN_WORKFLOW.read_text()
     workflow = yaml.load(workflow_text, Loader=yaml.BaseLoader)
     push = workflow["on"]["push"]
+    assert set(push) == {"branches"}
     assert push["branches"] == ["main"]
-    assert "paths" not in push
 
     job = workflow["jobs"]["scheduler-mutation-surfaces"]
     assert job["runs-on"] == "ubuntu-latest"
