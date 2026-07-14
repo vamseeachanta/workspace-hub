@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import os
 import subprocess
 import sys
@@ -16,7 +15,6 @@ sys.path.insert(0, str(LEGAL))
 
 from rule_authority import audit_git, audit_github, audit_output, report_transaction  # noqa: E402
 from rule_authority.complete import create_complete  # noqa: E402
-from rule_authority.codec import encode_document  # noqa: E402
 from rule_authority.structural import SensitiveArtifacts  # noqa: E402
 
 KEY = b"k" * 32
