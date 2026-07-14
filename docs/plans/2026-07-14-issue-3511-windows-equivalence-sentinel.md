@@ -213,7 +213,9 @@ generate_fingerprint(output):
     allow optional telemetry probes to degrade to null
     create a temporary file beside output (or in a temporary directory for stdout)
     serialize JSON into the temporary file; require emitter rc == 0
-    invoke equivalence_state.py validate so generation and publication share one schema
+    invoke the new equivalence_state.py validate subcommand so generation and publication share one schema
+    require validate to accept a fingerprint path, return zero only for the exact v1 schema,
+      emit no state mutation, and return a distinct nonzero validation error otherwise
     atomically replace output, or stream validated bytes to stdout
     trap-clean temporary residue and return nonzero on any required-step failure
 ```
@@ -258,7 +260,9 @@ sentinel_cycle():
 ```text
 render_equivalence_sentinel():
     read the equivalence-sentinel YAML block
-    resolve current machine through existing Windows identity mapping
+    resolve current machine through existing Windows identity mapping by default
+    accept a validated MachineIdOverride parameter only for WhatIf/test rendering;
+      reject it for live registration or removal
     skip when machine is outside the YAML roster
     convert "17 */6 * * *" to a trigger anchored at minute 17 with 6-hour repetition
     read windows_script from the same YAML task; reject missing/absolute/escaping paths
@@ -278,13 +282,13 @@ render_equivalence_sentinel():
 | Create | `scripts/lib/python-resolver.sh` | One verified interpreter-array contract for Git Bash on Linux and Windows |
 | Modify | `scripts/monitoring/equivalence-fingerprint.sh` | Remove bare `python3`; add atomic validated output and required-step failure semantics |
 | Modify | `scripts/monitoring/equivalence-sentinel.sh` | Validate before publish and preserve fingerprint/publish failure status |
-| Modify | `scripts/monitoring/equivalence_state.py` | Reject invalid payloads and use byte/NUL-safe tree plumbing |
+| Modify | `scripts/monitoring/equivalence_state.py` | Add a side-effect-free `validate` CLI subcommand, reject invalid payloads, and use byte/NUL-safe tree plumbing |
 | Create | `scripts/windows/equivalence-sentinel.ps1` | Resolve Git Bash, bind the repo environment, run the sentinel, and write Windows-native logs without translating cron shell syntax |
-| Modify | `scripts/windows/setup-scheduler-tasks.ps1` | Read the YAML `windows_script`, render/register it, and support the exact `*/6` cadence |
+| Modify | `scripts/windows/setup-scheduler-tasks.ps1` | Read the YAML `windows_script`, render/register it, support the exact `*/6` cadence, and expose a WhatIf-only machine override test seam |
 | Modify | `config/scheduled-tasks/schedule-tasks.yaml` | Add a repo-relative `windows_script` to the existing entry and reconcile the false `python3` capability requirement; do not change roster/cadence |
 | Modify | `scripts/readiness/collect-equality.sh` | Read publish-health through the verified resolver on Windows |
 | Modify | `scripts/monitoring/tests/test_equivalence_fingerprint.sh` | Add interpreter-stub, atomicity, schema, and identity tests without relying on system `python3` |
-| Modify | `tests/monitoring/test_equivalence_state.py` | Add invalid-input and exact-name Windows regression coverage |
+| Modify | `tests/monitoring/test_equivalence_state.py` | Add validate-subcommand CLI, invalid-input, no-mutation, and exact-name Windows regression coverage |
 | Modify | `tests/readiness/test_windows_scheduler_single_source.py` | Pin YAML-driven sentinel action, cadence, roster, WhatIf, and removal behavior |
 | Modify | `tests/readiness/test_collect_equality.py` | Pin Windows publish-health collection through the resolver |
 | Update | `scripts/windows/README.md` | Document registration, safe manual validation, and rollback commands |
@@ -306,6 +310,7 @@ No implementation file will be modified until the reviewed plan receives explici
 | `test_schema_rejects_wrong_types_version_and_key_set` | null/bool/string identity/version values plus missing/extra keys | validation error before Git write |
 | `test_schema_rejects_bad_timestamp_and_nonfinite_numbers` | naive/invalid timestamp and NaN/Infinity/negative numeric fields | validation error before Git write |
 | `test_schema_accepts_nullable_optional_telemetry` | documented null telemetry with otherwise exact v1 payload | validation succeeds |
+| `test_validate_cli_is_side_effect_free` | invoke `equivalence_state.py validate <fingerprint>` against valid and invalid fixtures while Git commands are trapped | valid returns zero; invalid returns nonzero; neither path invokes Git or mutates files |
 | `test_publish_rejects_empty_json_before_git_write` | empty payload | validation error; no hash/commit/push invocation |
 | `test_publish_rejects_malformed_or_nonobject_json` | malformed/list payload | validation error; ref unchanged |
 | `test_publish_rejects_machine_mismatch_and_unsafe_key` | mismatched field or control/path characters | validation error; ref unchanged |
@@ -316,7 +321,8 @@ No implementation file will be modified until the reviewed plan receives explici
 | `test_publish_failure_cannot_be_masked_by_green_compare` | publisher nonzero, comparator zero | cycle exits nonzero |
 | `test_publish_health_write_is_atomic` | interrupted write simulation | prior valid health record or complete new record, never partial JSON |
 | `test_publish_health_persistence_failure_exits_four` | temp-create/write/validate/replace failure injection | cycle exits 4 even when compare would return zero |
-| `test_windows_whatif_renders_equivalence_sentinel` | ace-win-2 `-WhatIf` | `\Claude\EquivalenceSentinel` appears |
+| `test_windows_whatif_renders_equivalence_sentinel_for_each_rostered_host` | `-WhatIf -MachineIdOverride` separately for `ace-win-1` and `ace-win-2` | `\Claude\EquivalenceSentinel` appears for each host with the same YAML action/cadence |
+| `test_windows_machine_override_is_whatif_only` | pass `MachineIdOverride` without `-WhatIf`, including removal mode | fail closed before scheduler mutation |
 | `test_windows_sentinel_trigger_is_minute_17_every_six_hours` | YAML `17 */6 * * *` | exact repetition interval and anchor |
 | `test_windows_sentinel_action_comes_from_yaml` | compare rendered PowerShell script/cadence to task fields | no separately hardcoded action or schedule |
 | `test_windows_wrapper_binds_repo_and_translates_no_cron_syntax` | temp repo path containing spaces; stub Git Bash | exact script invocation, WORKSPACE_HUB binding, native log path, no `\%`/`$(date)` leakage |
@@ -338,7 +344,7 @@ Tests that require invalid JSON or corrupt-name fixtures will use temporary dire
 - [ ] Real Git integration tests prove exact filenames and successful collection on Windows and Linux.
 - [ ] Sentinel publish failure cannot be overwritten by comparator success.
 - [ ] `config/scheduled-tasks/schedule-tasks.yaml` remains the only cadence/action source for the Windows sentinel; its repo-relative `windows_script` resolves through a tested wrapper without parsing the folded Linux command.
-- [ ] `setup-scheduler-tasks.ps1 -WhatIf` renders `\Claude\EquivalenceSentinel` at minute 17 every six hours for both Windows machines.
+- [ ] `setup-scheduler-tasks.ps1 -WhatIf -MachineIdOverride <host>` deterministically renders `\Claude\EquivalenceSentinel` at minute 17 every six hours for each of `ace-win-1` and `ace-win-2`; the override is rejected for any live mutation.
 - [ ] Any publish-health persistence failure returns exit 4 and cannot be masked by comparison success or a stale prior health record.
 - [ ] Focused tests pass, plus `uv run --no-project python scripts/cron/validate-schedule.py` and affected monitoring/readiness suites.
 - [ ] `scripts/legal/legal-sanity-scan.sh --diff-only` passes on the implementation diff.
@@ -355,10 +361,10 @@ Tests that require invalid JSON or corrupt-name fixtures will use temporary dire
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | PENDING | initial fanout timed out before producing an artifact; focused rerun required |
-| Codex | MAJOR | Windows action translation, exact schema, publish-health persistence failure, and canonical validation command required revision |
+| Codex | MAJOR (r2) | r1 defects were resolved; r2 required an explicit validation CLI contract and a deterministic two-host scheduler test seam |
 | Gemini | UNAVAILABLE | no non-interactive Gemini authentication configured |
 
-**Overall result:** FAIL — revision 2 addresses Codex r1; focused no-MAJOR re-review is required.
+**Overall result:** FAIL — revision 3 addresses Codex r1/r2; focused no-MAJOR re-review is required.
 
 Revisions made after Codex r1:
 
@@ -366,6 +372,8 @@ Revisions made after Codex r1:
 - Defined a strict fingerprint-version-1 schema, shared validator, and wrong-type/version/timestamp/non-finite test matrix.
 - Made publish-health persistence a required atomic stage with dedicated exit 4 and injected failure coverage.
 - Replaced the bare schedule-validator command with the canonical `uv run --no-project python` form.
+- Specified a side-effect-free `equivalence_state.py validate` subcommand and direct CLI/no-mutation tests.
+- Added a `WhatIf`-only `MachineIdOverride` seam so both rostered Windows hosts can be rendered and verified deterministically without scheduler mutation.
 
 ---
 
