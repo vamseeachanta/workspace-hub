@@ -142,7 +142,11 @@ def test_history_owns_snapshot_fetch_pull_refs_and_api_oid_graph(tmp_path: Path)
     assert result.verdict == "clean"
     assert any(edge[0] == b"refs/pull/7/head" for edge in result.edges)
     assert (b"api-discovered", oid.encode()) in result.edges
-    assert not _git(mirror, "config", "--get-regexp", "^remote\\.", input_bytes=None)
+    configured = subprocess.run(
+        ["git", "config", "--get-regexp", "^remote\\."], cwd=mirror,
+        capture_output=True, check=False,
+    )
+    assert configured.returncode == 1
 
 
 class FixtureAdapter:
@@ -196,8 +200,9 @@ def test_github_inventory_scans_payloads_downloads_and_discovers_oids() -> None:
 def test_github_inventory_global_caps_fail_closed(limit: str) -> None:
     pages = _pages()
     pages["artifacts"] = [audit_github.ApiPage(
-        b"safe", None, "etag", 2, permission="read", download_links=1,
-        downloads=(audit_github.Download(b"asset", b"expanded", 4, 8),),
+        b"safe", None, "etag", 2, permission="read", download_links=2,
+        downloads=(audit_github.Download(b"asset", b"expanded", 4, 8),
+                   audit_github.Download(b"asset-2", b"expanded", 4, 8)),
     )]
     with pytest.raises(audit_github.CoverageError):
         _inventory(pages, **{limit: 1})

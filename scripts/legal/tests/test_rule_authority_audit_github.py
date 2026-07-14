@@ -13,6 +13,9 @@ LEGAL = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(LEGAL))
 
 from rule_authority import audit_github  # noqa: E402
+from rule_authority.structural import SensitiveArtifacts  # noqa: E402
+
+SENSITIVE = SensitiveArtifacts(b"k" * 32, (b"synthetic-block-value",), (), frozenset())
 
 
 class FixtureAdapter:
@@ -34,11 +37,19 @@ def _empty_pages() -> dict[str, list[audit_github.ApiPage]]:
     }
 
 
+def _inventory(adapter: FixtureAdapter, *, max_pages: int = 30, max_bytes: int = 1000):
+    return audit_github.inventory(
+        adapter, SENSITIVE, max_pages=max_pages, max_bytes=max_bytes,
+        max_edges=100, max_downloads=100, max_compressed_bytes=1000,
+        max_expanded_bytes=1000,
+    )
+
+
 def test_inventory_requires_every_surface_and_records_bytes() -> None:
     assert {"commits", "git-trees", "rulesets"} <= set(audit_github.REQUIRED_SURFACES)
     pages = _empty_pages()
     pages["issues"] = [audit_github.ApiPage(b"synthetic bytes", None, "etag-1", 1)]
-    report = audit_github.inventory(FixtureAdapter(pages), max_pages=30, max_bytes=1000)
+    report = _inventory(FixtureAdapter(pages))
     assert set(report.surfaces) == set(audit_github.REQUIRED_SURFACES)
     assert report.surfaces["issues"].bytes_scanned == 15
     assert report.surfaces["issues"].state == "scanned"
@@ -51,26 +62,26 @@ def test_inventory_paginates_and_rejects_cursor_cycle() -> None:
         audit_github.ApiPage(b"a", "1", "e1", 1),
         audit_github.ApiPage(b"b", None, "e2", 1),
     ]
-    report = audit_github.inventory(FixtureAdapter(pages), max_pages=40, max_bytes=1000)
+    report = _inventory(FixtureAdapter(pages), max_pages=40)
     assert report.surfaces["comments"].pages == 2
     pages["comments"] = [audit_github.ApiPage(b"a", "0", "e1", 1)]
     with pytest.raises(audit_github.CoverageError):
-        audit_github.inventory(FixtureAdapter(pages), max_pages=40, max_bytes=1000)
+        _inventory(FixtureAdapter(pages), max_pages=40)
 
 
 def test_inventory_caps_are_fail_closed() -> None:
     pages = _empty_pages()
     pages["issues"] = [audit_github.ApiPage(b"too-large", None, "etag", 1)]
     with pytest.raises(audit_github.CoverageError):
-        audit_github.inventory(FixtureAdapter(pages), max_pages=30, max_bytes=3)
+        _inventory(FixtureAdapter(pages), max_bytes=3)
     with pytest.raises(audit_github.CoverageError):
-        audit_github.inventory(FixtureAdapter(pages), max_pages=1, max_bytes=1000)
+        _inventory(FixtureAdapter(pages), max_pages=1)
 
 
 def test_inventory_records_no_access_and_residual_without_clean_claim() -> None:
     pages = _empty_pages()
     pages["forks"] = [audit_github.ApiPage.no_access("permission-denied")]
-    report = audit_github.inventory(FixtureAdapter(pages), max_pages=30, max_bytes=1000)
+    report = _inventory(FixtureAdapter(pages))
     assert report.surfaces["forks"].state == "queried-no-access"
     assert report.coverage_class == "partial"
 
@@ -84,14 +95,14 @@ def test_inventory_snapshot_drift_fails_closed() -> None:
             return f"snapshot-{self.calls}"
 
     with pytest.raises(audit_github.CoverageError):
-        audit_github.inventory(DriftingAdapter(_empty_pages()), max_pages=30, max_bytes=1000)
+        _inventory(DriftingAdapter(_empty_pages()))
 
 
 def test_inventory_rejects_missing_surface() -> None:
     pages = _empty_pages()
     pages.pop("wiki")
     with pytest.raises(audit_github.CoverageError):
-        audit_github.inventory(FixtureAdapter(pages), max_pages=30, max_bytes=1000)
+        _inventory(FixtureAdapter(pages))
 
 
 def _zip(entries: dict[str, bytes]) -> bytes:
@@ -104,13 +115,14 @@ def _zip(entries: dict[str, bytes]) -> bytes:
 
 def test_archive_adapter_is_bounded_and_rejects_traversal() -> None:
     result = audit_github.scan_zip(
-        _zip({"safe.txt": b"safe"}), max_entries=2, max_expanded_bytes=10,
-        max_ratio=20, max_depth=2,
+        _zip({"safe.txt": b"safe"}), SENSITIVE, max_entries=2,
+        max_compressed_bytes=1000, max_expanded_bytes=10, max_ratio=20, max_depth=2,
     )
-    assert result == {"safe.txt": b"safe"}
+    assert result.files == {"safe.txt": b"safe"}
     with pytest.raises(audit_github.CoverageError):
         audit_github.scan_zip(
-            _zip({"../escape": b"x"}), max_entries=2, max_expanded_bytes=10,
+            _zip({"../escape": b"x"}), SENSITIVE, max_entries=2,
+            max_compressed_bytes=1000, max_expanded_bytes=10,
             max_ratio=20, max_depth=2,
         )
 
@@ -128,4 +140,4 @@ def test_archive_adapter_rejects_count_size_ratio_and_depth_caps() -> None:
     ]
     for raw, limits in cases:
         with pytest.raises(audit_github.CoverageError):
-            audit_github.scan_zip(raw, **limits)
+            audit_github.scan_zip(raw, SENSITIVE, max_compressed_bytes=10000, **limits)

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import os
 import stat
 import sys
 import uuid
@@ -16,17 +15,21 @@ sys.path.insert(0, str(LEGAL))
 
 from rule_authority import audit_output, report_transaction  # noqa: E402
 from rule_authority.complete import verify_complete  # noqa: E402
+from rule_authority.coverage_contract import REQUIRED_COVERAGE  # noqa: E402
 
 
 KEY = b"r" * 32
 REVISION = "12345678-1234-4234-9234-123456789abc"
 
 
-@pytest.mark.parametrize("rc,verdict", [(0, "clean"), (1, "blocked"), (3, "incomplete"), (4, "error")])
-def test_public_result_exact_allowlist(rc: int, verdict: str) -> None:
+@pytest.mark.parametrize("rc,verdict,coverage", [
+    (0, "clean", "complete"), (1, "blocked", "complete"),
+    (3, "incomplete", "partial"), (4, "error", "partial"),
+])
+def test_public_result_exact_allowlist(rc: int, verdict: str, coverage: str) -> None:
     raw = audit_output.public_result(
         command="audit-tree", revision=REVISION, generation=7,
-        objects_examined=9, coverage="complete", verdict=verdict, rc=rc,
+        objects_examined=9, coverage=coverage, verdict=verdict, rc=rc,
     )
     value = json.loads(raw)
     assert set(value) == {
@@ -53,10 +56,14 @@ def test_exit_precedence() -> None:
 def _complete_fields(transaction_id: str) -> dict:
     return {
         "api_snapshot_id": "api-1", "authority_revision": REVISION,
-        "coverage_states": {"git": "scanned"}, "generation": 7,
+        "coverage_states": {name: "scanned" for name in REQUIRED_COVERAGE}, "generation": 7,
         "manifest_mac": "a" * 64, "ref_snapshot_id": "refs-1",
         "schema_id": "legal-rule-complete-v1", "transaction_id": transaction_id,
     }
+
+
+def _report_files() -> dict[str, bytes]:
+    return {"coverage.json": b"{}\n", "findings.bin": b"private", "reachability.json": b"{}\n"}
 
 
 def test_report_transaction_writes_complete_last_and_modes(tmp_path: Path) -> None:
@@ -64,14 +71,16 @@ def test_report_transaction_writes_complete_last_and_modes(tmp_path: Path) -> No
     root.mkdir(mode=0o700)
     transaction_id = str(uuid.uuid4())
     final = report_transaction.write_report(
-        root, transaction_id, {"coverage.json": b"{}\n", "findings.bin": b"private"},
+        root, transaction_id, _report_files(),
         _complete_fields(transaction_id), KEY,
     )
     assert final.name == transaction_id
     assert stat.S_IMODE(final.stat().st_mode) == 0o700
     assert stat.S_IMODE((final / "coverage.json").stat().st_mode) == 0o600
     complete = verify_complete((final / "COMPLETE").read_bytes(), KEY)
-    assert [entry["path"] for entry in complete["files"]] == ["coverage.json", "findings.bin"]
+    assert [entry["path"] for entry in complete["files"]] == [
+        "coverage.json", "findings.bin", "reachability.json"
+    ]
 
 
 def test_report_transaction_no_overwrite_and_rejects_unsafe_names(tmp_path: Path) -> None:
@@ -79,9 +88,9 @@ def test_report_transaction_no_overwrite_and_rejects_unsafe_names(tmp_path: Path
     root.mkdir(mode=0o700)
     transaction_id = str(uuid.uuid4())
     fields = _complete_fields(transaction_id)
-    report_transaction.write_report(root, transaction_id, {"a": b"x"}, fields, KEY)
+    report_transaction.write_report(root, transaction_id, _report_files(), fields, KEY)
     with pytest.raises(report_transaction.ReportTransactionError):
-        report_transaction.write_report(root, transaction_id, {"a": b"x"}, fields, KEY)
+        report_transaction.write_report(root, transaction_id, _report_files(), fields, KEY)
     with pytest.raises(report_transaction.ReportTransactionError):
         report_transaction.write_report(root, str(uuid.uuid4()), {"../escape": b"x"}, fields, KEY)
     other_id = str(uuid.uuid4())
@@ -94,13 +103,13 @@ def test_report_transaction_failure_never_appears_complete(tmp_path: Path, monke
     root.mkdir(mode=0o700)
     transaction_id = str(uuid.uuid4())
 
-    def fail_replace(source: Path, target: Path) -> None:
-        raise OSError("synthetic disk failure")
+    def fail_replace(parent_fd: int, source: str, target: str) -> None:
+        raise report_transaction.ReportTransactionError("synthetic disk failure")
 
-    monkeypatch.setattr(os, "replace", fail_replace)
+    monkeypatch.setattr(report_transaction, "_rename_noreplace", fail_replace)
     with pytest.raises(report_transaction.ReportTransactionError):
         report_transaction.write_report(
-            root, transaction_id, {"coverage.json": b"{}"},
+            root, transaction_id, _report_files(),
             _complete_fields(transaction_id), KEY,
         )
     assert not (root / transaction_id / "COMPLETE").exists()
@@ -115,7 +124,7 @@ def test_report_root_must_be_private_current_uid(tmp_path: Path) -> None:
     transaction_id = str(uuid.uuid4())
     with pytest.raises(report_transaction.ReportTransactionError):
         report_transaction.write_report(
-            root, transaction_id, {"a": b"x"}, _complete_fields(transaction_id), KEY
+            root, transaction_id, _report_files(), _complete_fields(transaction_id), KEY
         )
 
 
@@ -124,7 +133,7 @@ def test_report_reader_rejects_extra_missing_and_changed_files(tmp_path: Path) -
     root.mkdir(mode=0o700)
     transaction_id = str(uuid.uuid4())
     final = report_transaction.write_report(
-        root, transaction_id, {"coverage.json": b"{}\n"},
+        root, transaction_id, _report_files(),
         _complete_fields(transaction_id), KEY,
     )
     assert report_transaction.verify_report(final, KEY)["transaction_id"] == transaction_id

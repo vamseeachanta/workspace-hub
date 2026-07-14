@@ -61,7 +61,9 @@ def test_parse_ls_tree_rejects_malformed_and_cap() -> None:
 def test_audit_tree_reads_named_commit_not_worktree(tmp_path: Path) -> None:
     repo, oid = _repo(tmp_path)
     (repo / "safe.txt").write_bytes(b"synthetic-block-value\n")
-    result = audit_git.audit_tree(repo, oid, SENSITIVE, max_entries=10, max_blob_bytes=100)
+    result = audit_git.audit_tree(
+        repo, oid, b"refs/heads/master", SENSITIVE, max_entries=10, max_blob_bytes=100
+    )
     assert result.verdict == "clean"
     assert result.objects_examined >= 2
     assert result.private_findings == ()
@@ -74,7 +76,10 @@ def test_audit_tree_scans_raw_blob_and_path_bytes(tmp_path: Path) -> None:
     entry = b"100644 blob " + blob.strip() + b"\t" + raw_name + b"\x00"
     tree = _git(repo, "mktree", "-z", input_bytes=entry).strip().decode()
     commit = _git(repo, "commit-tree", tree, "-m", "synthetic").strip().decode()
-    result = audit_git.audit_tree(repo, commit, SENSITIVE, max_entries=10, max_blob_bytes=100)
+    _git(repo, "update-ref", "refs/heads/audit", commit)
+    result = audit_git.audit_tree(
+        repo, commit, b"refs/heads/audit", SENSITIVE, max_entries=10, max_blob_bytes=100
+    )
     assert result.verdict == "blocked"
     assert len(result.private_findings) == 1
 
@@ -82,9 +87,15 @@ def test_audit_tree_scans_raw_blob_and_path_bytes(tmp_path: Path) -> None:
 def test_audit_tree_rejects_symbolic_revision_and_large_blob(tmp_path: Path) -> None:
     repo, oid = _repo(tmp_path)
     with pytest.raises(audit_git.CoverageError):
-        audit_git.audit_tree(repo, "HEAD", SENSITIVE, max_entries=10, max_blob_bytes=100)
+        audit_git.audit_tree(
+            repo, "HEAD", b"refs/heads/master", SENSITIVE,
+            max_entries=10, max_blob_bytes=100,
+        )
     with pytest.raises(audit_git.CoverageError):
-        audit_git.audit_tree(repo, oid, SENSITIVE, max_entries=10, max_blob_bytes=2)
+        audit_git.audit_tree(
+            repo, oid, b"refs/heads/master", SENSITIVE,
+            max_entries=10, max_blob_bytes=2,
+        )
 
 
 def test_audit_index_uses_staged_blob_not_worktree(tmp_path: Path) -> None:
@@ -158,22 +169,20 @@ def test_git_runner_retains_repository_dirfd_across_path_swap(tmp_path: Path) ->
         runner.close()
 
 
-def _bare_history(tmp_path: Path) -> tuple[Path, audit_git.RefSnapshot]:
+def _bare_history(tmp_path: Path) -> tuple[Path, Path]:
     source, oid = _repo(tmp_path)
     _git(source, "tag", "-a", "v1", "-m", "synthetic-block-value")
     bare = tmp_path / "mirror.git"
-    _git(tmp_path, "clone", "-q", "--mirror", str(source), str(bare))
+    _git(tmp_path, "init", "--bare", "-q", str(bare))
     os.chmod(bare, 0o700)
-    head = _git(source, "rev-parse", "HEAD").strip()
-    tag = _git(source, "rev-parse", "refs/tags/v1").strip()
-    raw = head + b"\trefs/heads/master\n" + tag + b"\trefs/tags/v1\n"
-    return bare, audit_git.parse_ls_remote(raw, max_refs=5)
+    assert oid
+    return source, bare
 
 
 def test_audit_history_scans_tags_and_retains_reverse_edges(tmp_path: Path) -> None:
-    bare, snapshot = _bare_history(tmp_path)
+    source, bare = _bare_history(tmp_path)
     result = audit_git.audit_history(
-        bare, snapshot, snapshot, SENSITIVE,
+        bare, str(source), SENSITIVE, api_discovered_oids=(), max_refs=10,
         max_entries=20, max_blob_bytes=100, max_objects=20, max_edges=50,
     )
     assert result.verdict == "blocked"
@@ -182,16 +191,18 @@ def test_audit_history_scans_tags_and_retains_reverse_edges(tmp_path: Path) -> N
 
 
 def test_audit_history_requires_bare_complete_stable_mirror(tmp_path: Path) -> None:
-    bare, snapshot = _bare_history(tmp_path)
-    changed = audit_git.RefSnapshot(snapshot.refs[:-1], "different")
+    source, bare = _bare_history(tmp_path)
+    other = tmp_path / "other"
+    other.mkdir()
+    nonbare, _ = _repo(other)
     with pytest.raises(audit_git.CoverageError):
         audit_git.audit_history(
-            bare, snapshot, changed, SENSITIVE,
+            nonbare, str(source), SENSITIVE, api_discovered_oids=(), max_refs=10,
             max_entries=20, max_blob_bytes=100, max_objects=20, max_edges=50,
         )
     _git(bare, "config", "remote.origin.promisor", "true")
     with pytest.raises(audit_git.CoverageError):
         audit_git.audit_history(
-            bare, snapshot, snapshot, SENSITIVE,
+            bare, str(source), SENSITIVE, api_discovered_oids=(), max_refs=10,
             max_entries=20, max_blob_bytes=100, max_objects=20, max_edges=50,
         )
