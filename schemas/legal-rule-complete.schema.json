@@ -10,12 +10,54 @@
     "complete_mac": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "coverage_states": {
       "type": "object",
-      "minProperties": 1,
-      "additionalProperties": {"enum": ["scanned", "queried-no-access", "provider-follow-up", "unknown-residual"]}
+      "additionalProperties": false,
+      "required": ["actions", "artifacts", "caches", "comments", "commit-comments", "commits", "discussions", "forks", "git", "git-trees", "issues", "lfs", "packages", "pages", "pulls", "release-assets", "releases", "review-comments", "reviews", "rulesets", "run-logs", "timeline", "wiki"],
+      "properties": {
+        "actions": {"$ref": "#/$defs/coverageState"},
+        "artifacts": {"$ref": "#/$defs/coverageState"},
+        "caches": {"$ref": "#/$defs/coverageState"},
+        "comments": {"$ref": "#/$defs/coverageState"},
+        "commit-comments": {"$ref": "#/$defs/coverageState"},
+        "commits": {"$ref": "#/$defs/coverageState"},
+        "discussions": {"$ref": "#/$defs/coverageState"},
+        "forks": {"$ref": "#/$defs/coverageState"},
+        "git": {"$ref": "#/$defs/coverageState"},
+        "git-trees": {"$ref": "#/$defs/coverageState"},
+        "issues": {"$ref": "#/$defs/coverageState"},
+        "lfs": {"$ref": "#/$defs/coverageState"},
+        "packages": {"$ref": "#/$defs/coverageState"},
+        "pages": {"$ref": "#/$defs/coverageState"},
+        "pulls": {"$ref": "#/$defs/coverageState"},
+        "release-assets": {"$ref": "#/$defs/coverageState"},
+        "releases": {"$ref": "#/$defs/coverageState"},
+        "review-comments": {"$ref": "#/$defs/coverageState"},
+        "reviews": {"$ref": "#/$defs/coverageState"},
+        "rulesets": {"$ref": "#/$defs/coverageState"},
+        "run-logs": {"$ref": "#/$defs/coverageState"},
+        "timeline": {"$ref": "#/$defs/coverageState"},
+        "wiki": {"$ref": "#/$defs/coverageState"}
+      }
     },
     "files": {
       "type": "array",
-      "items": {
+      "minItems": 3,
+      "maxItems": 3,
+      "prefixItems": [
+        {"$ref": "#/$defs/reportFile", "properties": {"path": {"const": "coverage.json"}}},
+        {"$ref": "#/$defs/reportFile", "properties": {"path": {"const": "findings.bin"}}},
+        {"$ref": "#/$defs/reportFile", "properties": {"path": {"const": "reachability.json"}}}
+      ],
+      "items": false
+    },
+    "generation": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+    "manifest_mac": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "ref_snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
+    "schema_id": {"const": "legal-rule-complete-v1"},
+    "transaction_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}
+  },
+  "$defs": {
+    "coverageState": {"enum": ["scanned", "queried-no-access", "provider-follow-up", "unknown-residual"]},
+    "reportFile": {
         "type": "object",
         "additionalProperties": false,
         "required": ["path", "sha256", "size"],
@@ -25,11 +67,5 @@
           "size": {"type": "integer", "minimum": 0, "maximum": 18446744073709551615}
         }
       }
-    },
-    "generation": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
-    "manifest_mac": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "ref_snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
-    "schema_id": {"const": "legal-rule-complete-v1"},
-    "transaction_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}
   }
 }
