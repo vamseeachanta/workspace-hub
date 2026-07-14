@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import importlib
+import json
 import sys
 from pathlib import Path
 
@@ -16,19 +17,10 @@ LEGAL = Path(__file__).resolve().parents[1]
 ROOT = LEGAL.parents[1]
 sys.path.insert(0, str(LEGAL))
 
+from rule_authority.coverage_contract import REQUIRED_COVERAGE  # noqa: E402
+
 COMPLETE_DOMAIN = b"LEGAL-RULE-COMPLETE\0v1\0"
-EXPECTED_COMPLETE = (
-    b'{"api_snapshot_id":"api-snapshot-synthetic","authority_revision":'
-    b'"123e4567-e89b-42d3-a456-426614174000","complete_mac":'
-    b'"9c8eab050ea93dc724ce43b2cb09ae438f43ed3da4f8a39c762ba836ea9444c4",'
-    b'"coverage_states":{"git":"scanned"},"files":[{"path":"coverage.json",'
-    b'"sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",'
-    b'"size":42}],"generation":2,"manifest_mac":'
-    b'"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",'
-    b'"ref_snapshot_id":"ref-snapshot-synthetic","schema_id":'
-    b'"legal-rule-complete-v1","transaction_id":'
-    b'"423e4567-e89b-42d3-a456-426614174000"}\n'
-)
+EXPECTED_MAC = "1a47166e06269356ded12f0bc530951e1b4cb53c93ab07ff964c2289b4afdfe1"
 
 
 def modules():
@@ -40,8 +32,12 @@ def unsigned_complete():
     return {
         "api_snapshot_id": "api-snapshot-synthetic",
         "authority_revision": REVISION,
-        "coverage_states": {"git": "scanned"},
-        "files": [{"path": "coverage.json", "sha256": "a" * 64, "size": 42}],
+        "coverage_states": {name: "scanned" for name in REQUIRED_COVERAGE},
+        "files": [
+            {"path": "coverage.json", "sha256": "a" * 64, "size": 42},
+            {"path": "findings.bin", "sha256": "c" * 64, "size": 0},
+            {"path": "reachability.json", "sha256": "d" * 64, "size": 84},
+        ],
         "generation": 2,
         "manifest_mac": "b" * 64,
         "ref_snapshot_id": "ref-snapshot-synthetic",
@@ -57,11 +53,16 @@ def test_complete_document_has_independent_golden_hmac_and_bytes():
     expected_mac = hmac.new(KEY, expected_input, hashlib.sha256).hexdigest()
     document = complete.create_complete(unsigned, KEY)
     assert complete.complete_mac_input(unsigned) == expected_input
-    assert expected_mac == "9c8eab050ea93dc724ce43b2cb09ae438f43ed3da4f8a39c762ba836ea9444c4"
+    assert expected_mac == EXPECTED_MAC
     assert document["complete_mac"] == expected_mac
     raw = codec.encode_document("complete", document)
     assert codec.decode_document("complete", raw) == document
-    assert raw == EXPECTED_COMPLETE
+    expected_document = {**unsigned, "complete_mac": EXPECTED_MAC}
+    expected_raw = (json.dumps(
+        expected_document, sort_keys=True, separators=(",", ":"),
+        ensure_ascii=True, allow_nan=False,
+    ) + "\n").encode("ascii")
+    assert raw == expected_raw
     assert complete.verify_complete(raw, KEY) == document
 
 
