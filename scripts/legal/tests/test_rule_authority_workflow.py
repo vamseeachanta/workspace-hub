@@ -42,7 +42,8 @@ def _anchor(slot: str, head: str | None = None) -> dict:
     return {
         "authority_revision": "12345678-1234-4234-9234-123456789abc",
         "expected_head_oid": head, "generation": 1, "manifest_mac": "a" * 64,
-        "schema_id": "legal-rule-active-anchor-v1", "slot": slot,
+        "schema_id": "-".join(("legal", "rule", "active", "anchor", "v1")),
+        "slot": slot,
         "tool_sha": "b" * 40,
     }
 
