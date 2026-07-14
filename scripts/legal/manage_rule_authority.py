@@ -16,6 +16,7 @@ from rule_authority import (
     codec,
     coverage,
     envelope,
+    gh_owner,
     private_io,
     promotion,
     protection,
@@ -222,14 +223,19 @@ def cmd_materialize(args):
 
 
 def cmd_promote(args):
-    promotion.validate(
+    api = gh_owner.GhOwnerTransport(
+        args.current_envelope_env,
+        args.pending_envelope_env,
+    )
+    promotion.promote(
+        api,
         args.current_envelope_env,
         args.pending_envelope_env,
         args.expected_head,
         args.expected_tree,
         _read(args.preview),
     )
-    print("command=promote verdict=ready rc=0")
+    print("command=promote verdict=promoted rc=0")
 
 
 def cmd_verify_protection(args):
