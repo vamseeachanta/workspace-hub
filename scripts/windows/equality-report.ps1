@@ -287,14 +287,13 @@ function Sync-EqualityState {
     }
 
     $ahead = Get-RevCount -Range "origin/main..HEAD"
-    $machine = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "windows-machine" }
     if ($ahead -gt 0) {
         if ($ahead -gt 1 -or -not (Test-AheadCommitIsEqualityReport -Machine $Machine)) {
             throw "Local commits ahead of origin/main are not a single equality report; refusing to amend"
         }
-        $commitArgs = @("commit", "--amend", "--only", "-m", "chore: equality report from $machine", "--") + $paths
+        $commitArgs = @("commit", "--amend", "--only", "-m", "chore: equality report from $Machine", "--") + $paths
     } else {
-        $commitArgs = @("commit", "--only", "-m", "chore: equality report from $machine", "--") + $paths
+        $commitArgs = @("commit", "--only", "-m", "chore: equality report from $Machine", "--") + $paths
     }
 
     Invoke-Checked -File "git" -Arguments $commitArgs `

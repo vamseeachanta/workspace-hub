@@ -158,7 +158,8 @@ def test_wrapper_refresh_matrix_is_opt_in_and_same_commit():
     assert "if (-not $RefreshMatrix)" in text
     # Matrix HTML rides in the SAME equality commit (invariant preserved).
     assert "-RefreshMatrix:$RefreshMatrix" in text
-    assert '"chore: equality report from $machine"' in text
+    assert '"chore: equality report from $Machine"' in text
+    assert '"chore: equality report from $machine"' not in text
 
 
 def test_curation_restores_generated_matrix_preview():
