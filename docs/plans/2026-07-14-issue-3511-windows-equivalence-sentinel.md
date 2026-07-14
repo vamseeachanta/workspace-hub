@@ -174,10 +174,10 @@ The shared validator will require exactly these top-level keys; additive fields 
 | `harness_version`, `harness_install` | null or nonempty string without control characters |
 | `registry_sha256` | null or 64 lowercase hexadecimal characters |
 | `learning_cron_ages_h` | exact two-key object; each value null or finite nonnegative number |
-| `provider_soul_hashes` | exact provider-key object; each value null or 16 lowercase hexadecimal characters |
+| `provider_soul_hashes` | exact five-key object (`hermes`, `claude`, `codex`, `codex_agents`, `gemini`), matching the current producer; each value null or 16 lowercase hexadecimal characters |
 | `on_main` | boolean |
 | `index_lock_stale_min` | null or finite nonnegative number |
-| `last_publish_duration_s` | null or finite nonnegative number; always present after sentinel preparation |
+| `last_publish_duration_s` | null or finite nonnegative number; the generator always emits this key as `null`, and sentinel preparation may replace it from a prior valid health record before final validation |
 
 `json.loads(..., parse_constant=reject)` will reject `NaN`, `Infinity`, and `-Infinity`. Direct publisher calls and generated files will invoke the same validator. `publish(machine, content)` will add the trust-boundary check that the validated `machine_id` equals `machine`.
 
@@ -212,7 +212,7 @@ generate_fingerprint(output):
     resolve registry identity through that same interpreter
     allow optional telemetry probes to degrade to null
     create a temporary file beside output (or in a temporary directory for stdout)
-    serialize JSON into the temporary file; require emitter rc == 0
+    serialize JSON into the temporary file with last_publish_duration_s=null; require emitter rc == 0
     invoke the new equivalence_state.py validate subcommand so generation and publication share one schema
     require validate to accept a fingerprint path, return zero only for the exact v1 schema,
       emit no state mutation, and return a distinct nonzero validation error otherwise
@@ -245,8 +245,11 @@ publish(machine, content):
 ```text
 sentinel_cycle():
     run atomic fingerprint generation
-    independently parse and validate the resulting file
+    independently parse and validate the generated file, including the null duration field
     on failure: persist phase=fingerprint publish-health failure and exit before publish
+    read the prior health record only when it passes the exact health schema;
+      copy its finite nonnegative duration into the fingerprint, otherwise retain null
+    atomically rewrite and revalidate the final publishable fingerprint
     run publisher
     create a same-directory health temp file, serialize + validate it, flush/close it,
       then atomically replace publish-health.json
@@ -287,10 +290,12 @@ render_equivalence_sentinel():
 | Modify | `scripts/windows/setup-scheduler-tasks.ps1` | Read the YAML `windows_script`, render/register it, support the exact `*/6` cadence, and expose a WhatIf-only machine override test seam |
 | Modify | `config/scheduled-tasks/schedule-tasks.yaml` | Add a repo-relative `windows_script` to the existing entry and reconcile the false `python3` capability requirement; do not change roster/cadence |
 | Modify | `scripts/readiness/collect-equality.sh` | Read publish-health through the verified resolver on Windows |
+| Modify | `scripts/readiness/build-equality-matrix.py` | Fail closed unless collected publish health has a valid aware timestamp, integer rc, and finite nonnegative duration before freshness grading |
 | Modify | `scripts/monitoring/tests/test_equivalence_fingerprint.sh` | Add interpreter-stub, atomicity, schema, and identity tests without relying on system `python3` |
 | Modify | `tests/monitoring/test_equivalence_state.py` | Add validate-subcommand CLI, invalid-input, no-mutation, and exact-name Windows regression coverage |
 | Modify | `tests/readiness/test_windows_scheduler_single_source.py` | Pin YAML-driven sentinel action, cadence, roster, WhatIf, and removal behavior |
 | Modify | `tests/readiness/test_collect_equality.py` | Pin Windows publish-health collection through the resolver |
+| Modify | `tests/readiness/test_publish_health_verdict.py` | Extend fail-closed matrix coverage for syntactically invalid/naive timestamps and missing or wrong-type rc/duration facts |
 | Update | `scripts/windows/README.md` | Document registration, safe manual validation, and rollback commands |
 | Update | `docs/plans/README.md` | Index this reviewed plan |
 
@@ -310,6 +315,7 @@ No implementation file will be modified until the reviewed plan receives explici
 | `test_schema_rejects_wrong_types_version_and_key_set` | null/bool/string identity/version values plus missing/extra keys | validation error before Git write |
 | `test_schema_rejects_bad_timestamp_and_nonfinite_numbers` | naive/invalid timestamp and NaN/Infinity/negative numeric fields | validation error before Git write |
 | `test_schema_accepts_nullable_optional_telemetry` | documented null telemetry with otherwise exact v1 payload | validation succeeds |
+| `test_generator_and_sentinel_duration_preparation_order` | generator emits `last_publish_duration_s=null`; valid prior health supplies a finite duration; invalid/missing prior health does not | generated and final payloads each pass the same exact schema; final payload is revalidated before publish |
 | `test_validate_cli_is_side_effect_free` | invoke `equivalence_state.py validate <fingerprint>` against valid and invalid fixtures while Git commands are trapped | valid returns zero; invalid returns nonzero; neither path invokes Git or mutates files |
 | `test_publish_rejects_empty_json_before_git_write` | empty payload | validation error; no hash/commit/push invocation |
 | `test_publish_rejects_malformed_or_nonobject_json` | malformed/list payload | validation error; ref unchanged |
@@ -329,6 +335,7 @@ No implementation file will be modified until the reviewed plan receives explici
 | `test_windows_renderer_rejects_unsafe_wrapper_path` | absolute/traversal/missing `windows_script` | fail closed before registration |
 | `test_windows_sentinel_machine_roster_and_remove` | included/excluded host plus `-Remove` | correct install/skip/removal behavior |
 | `test_windows_publish_health_uses_working_interpreter` | Store stub plus working fallback | equality output contains fresh timestamp/duration/rc |
+| expanded `tests/readiness/test_publish_health_verdict.py` freshness/schema cases | absent/sentinel, invalid-syntax, timezone-naive, future, and older-than-26-hour timestamps plus missing/wrong-type rc and duration | matrix remains fail-closed (`MISSING-EVIDENCE` or `PUBLISH-STALE`), never green |
 | existing equivalence, scheduler, schedule-validator, and matrix suites | regression | all pass |
 
 Tests that require invalid JSON or corrupt-name fixtures will use temporary directories and isolated bare repositories. No fixture will touch the production `equivalence-state` ref, and no blanket enforcement exemption will be added.
@@ -346,6 +353,7 @@ Tests that require invalid JSON or corrupt-name fixtures will use temporary dire
 - [ ] `config/scheduled-tasks/schedule-tasks.yaml` remains the only cadence/action source for the Windows sentinel; its repo-relative `windows_script` resolves through a tested wrapper without parsing the folded Linux command.
 - [ ] `setup-scheduler-tasks.ps1 -WhatIf -MachineIdOverride <host>` deterministically renders `\Claude\EquivalenceSentinel` at minute 17 every six hours for each of `ace-win-1` and `ace-win-2`; the override is rejected for any live mutation.
 - [ ] Any publish-health persistence failure returns exit 4 and cannot be masked by comparison success or a stale prior health record.
+- [ ] Expanded matrix freshness/schema tests prove absent/sentinel, invalid-syntax, timezone-naive, future, and older-than-26-hour timestamps plus missing/wrong-type rc and duration facts cannot render `PUBLISH-OK`.
 - [ ] Focused tests pass, plus `uv run --no-project python scripts/cron/validate-schedule.py` and affected monitoring/readiness suites.
 - [ ] `scripts/legal/legal-sanity-scan.sh --diff-only` passes on the implementation diff.
 - [ ] Code/artifact adversarial review completes at T3 depth; unavailable providers are recorded rather than treated as approvals.
@@ -360,11 +368,12 @@ Tests that require invalid JSON or corrupt-name fixtures will use temporary dire
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | initial fanout timed out before producing an artifact; focused rerun required |
-| Codex | MAJOR (r2) | r1 defects were resolved; r2 required an explicit validation CLI contract and a deterministic two-host scheduler test seam |
+| Claude | UNAVAILABLE | initial and focused reruns timed out without a usable review |
+| Codex | MINOR (r3) | no blockers; requested explicit provider-key enumeration and explicit retention of stale/missing publish-health matrix tests |
 | Gemini | UNAVAILABLE | no non-interactive Gemini authentication configured |
+| Independent read-only lane | MAJOR (r1) | corrected the five-key provider schema, duration preparation/validation order, and incomplete freshness-test claim in revision 4 |
 
-**Overall result:** FAIL — revision 3 addresses Codex r1/r2; focused no-MAJOR re-review is required.
+**Overall result:** FAIL pending focused re-review — Codex r3 has no blockers; Claude timed out and Gemini lacks non-interactive authentication. The independent read-only lane found provider-key and duration-order blockers in revision 3; revision 4 corrects them and requires focused confirmation before `status:plan-review`.
 
 Revisions made after Codex r1:
 
@@ -374,6 +383,9 @@ Revisions made after Codex r1:
 - Replaced the bare schedule-validator command with the canonical `uv run --no-project python` form.
 - Specified a side-effect-free `equivalence_state.py validate` subcommand and direct CLI/no-mutation tests.
 - Added a `WhatIf`-only `MachineIdOverride` seam so both rostered Windows hosts can be rendered and verified deterministically without scheduler mutation.
+- Corrected the exact provider hash set to include the producer's `codex_agents` key.
+- Made the generator emit a null duration, then required sentinel enrichment plus atomic final revalidation before publish.
+- Expanded fail-closed publish-health tests for invalid/naive timestamps and missing or wrong-type rc/duration facts.
 
 ---
 
