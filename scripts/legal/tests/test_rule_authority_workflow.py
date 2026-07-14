@@ -62,7 +62,7 @@ def test_trust_boundary_paths_are_codeowned_and_preview_is_exact():
         ).read_text(encoding="utf-8")
     )
     rules = {item["type"]: item for item in preview["ruleset"]["rules"]}
-    assert rules["required_workflows"]["workflows"]
+    assert rules["workflows"]["parameters"]["workflows"]
     assert rules["pull_request"]["parameters"]["require_code_owner_review"] is True
 
 

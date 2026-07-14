@@ -23,12 +23,11 @@ def _load(path: Path):
 def test_canonical_preview_is_the_normalized_rest_contract():
     preview = _load(PREVIEW)
     ruleset = preview["ruleset"]
-    required_workflows = next(
-        rule for rule in ruleset["rules"] if rule["type"] == "required_workflows"
+    workflows_rule = next(
+        rule for rule in ruleset["rules"] if rule["type"] == "workflows"
     )
-    assert "parameters" not in required_workflows
-    workflow = required_workflows["workflows"][0]
-    assert isinstance(workflow["repository_id"], int)
+    workflow = workflows_rule["parameters"]["workflows"][0]
+    assert workflow["repository_id"] == 1066339206
     checks = next(
         rule for rule in ruleset["rules"] if rule["type"] == "required_status_checks"
     )["parameters"]["required_status_checks"]
@@ -77,11 +76,9 @@ def test_canonical_preview_rejects_non_integer_rest_ids(field):
     preview = copy.deepcopy(preview)
     if field == "repository_id":
         workflow_rule = next(
-            rule
-            for rule in preview["ruleset"]["rules"]
-            if rule["type"] == "required_workflows"
+            rule for rule in preview["ruleset"]["rules"] if rule["type"] == "workflows"
         )
-        workflow_rule["workflows"][0][field] = "123456789"
+        workflow_rule["parameters"]["workflows"][0][field] = "1066339206"
     else:
         checks_rule = next(
             rule

@@ -83,11 +83,9 @@ def _normalize_ruleset(value):
                 "integration_id": _integer(check.get("integration_id")),
             }
         )
-    workflow_rule = _rule(rules, "required_workflows")
-    if "parameters" in workflow_rule:
-        raise AuthorityError("integrity")
+    workflow_parameters = _parameters(rules, "workflows")
     normalized_workflows = []
-    for workflow in _sequence(workflow_rule.get("workflows")):
+    for workflow in _sequence(workflow_parameters.get("workflows")):
         workflow = _mapping(workflow)
         path = workflow.get("path")
         ref = workflow.get("ref")
@@ -120,7 +118,10 @@ def _normalize_ruleset(value):
                 "parameters": {"required_status_checks": normalized_checks},
                 "type": "required_status_checks",
             },
-            {"type": "required_workflows", "workflows": normalized_workflows},
+            {
+                "parameters": {"workflows": normalized_workflows},
+                "type": "workflows",
+            },
             {
                 "parameters": {
                     "allows_direct_updates": update.get("allows_direct_updates")
