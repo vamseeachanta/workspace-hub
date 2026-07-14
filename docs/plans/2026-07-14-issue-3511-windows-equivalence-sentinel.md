@@ -20,7 +20,7 @@
 - `scripts/monitoring/equivalence_state.py` currently sends string input through `subprocess.run(..., text=True)` and constructs newline-delimited `git mktree` input. Windows newline conversion can therefore alter tree-entry bytes. The publisher also hashes malformed content after `json.loads()` fails.
 - `scripts/lib/python-resolver.sh` is absent. A small shared Bash resolver will be created so fingerprint generation, sentinel validation, and publish-health collection use the same verified interpreter array.
 - `config/scheduled-tasks/schedule-tasks.yaml` currently declares `equivalence-sentinel` for both Windows hosts at minute 17 every six hours. PR #3512 therefore resolves roster membership; this plan will not add duplicate membership.
-- `scripts/windows/setup-scheduler-tasks.ps1` currently reads YAML only for `EqualityReport`. Its cron converter supports fixed daily/weekly triggers but not `17 */6 * * *`, and the live `\Claude\` folder has no `EquivalenceSentinel` task.
+- `scripts/windows/setup-scheduler-tasks.ps1` currently reads YAML only for `EqualityReport`. Its cron converter supports fixed daily/weekly triggers but not `17 */6 * * *`, and the live `\Claude\` folder has no `EquivalenceSentinel` task. The folded Linux `command: >-` value is not directly renderable by its scalar reader, so this plan will add an explicit simple Windows wrapper field to the same YAML task rather than attempt lossy cron-shell translation.
 - `scripts/readiness/collect-equality.sh` currently reads `publish-health.json` only through bare `python3`, so Windows can continue reporting `MISSING-EVIDENCE` even after a valid sentinel run.
 
 ### Standards and control-plane contracts
@@ -51,6 +51,7 @@
 - No pre-hash validation or byte/NUL-safe tree-plumbing contract exists.
 - No sentinel exit contract preserves fingerprint/publish failure over a later comparison result.
 - No Windows Task Scheduler registration exists for the already-declared sentinel cadence.
+- No explicit YAML-to-Windows action contract exists for compound folded shell commands, environment binding, cron escaping, or log redirection.
 - No Windows-safe publish-health reader exists in the equality collector.
 
 ### Evidence (embedded verification)
@@ -112,6 +113,7 @@ Distinct sources consulted: issue state, current implementation, current tests, 
 | Fingerprint emitter | `scripts/monitoring/equivalence-fingerprint.sh` |
 | Sentinel controller | `scripts/monitoring/equivalence-sentinel.sh` |
 | Git-ref state store | `scripts/monitoring/equivalence_state.py` |
+| Windows sentinel wrapper | `scripts/windows/equivalence-sentinel.ps1` |
 | Windows scheduler renderer | `scripts/windows/setup-scheduler-tasks.ps1` |
 | Equality collector | `scripts/readiness/collect-equality.sh` |
 | Schedule source | `config/scheduled-tasks/schedule-tasks.yaml` |
@@ -137,7 +139,7 @@ The Windows equivalence sentinel will generate a validated `ace-win-2` fingerpri
 2. Atomic fingerprint generation with required-field validation.
 3. Strict publisher validation and exact byte/NUL-safe Git tree construction.
 4. Sentinel failure propagation and publish-health recording.
-5. YAML-driven Windows registration of `EquivalenceSentinel` at `:17` every six hours.
+5. YAML-driven Windows registration of `EquivalenceSentinel` at `:17` every six hours through an explicit PowerShell wrapper field in the canonical task entry.
 6. Windows-safe equality collection of the resulting publish-health record.
 7. Temporary-repository and `-WhatIf` tests that never mutate the production ref or live scheduler.
 8. Post-merge operator validation on `ace-win-2`, followed by an equality report refresh and #3506 evidence comment.
@@ -155,6 +157,41 @@ The Windows equivalence sentinel will generate a validated `ace-win-2` fingerpri
 ---
 
 ## Pseudocode
+
+### Fingerprint version 1 schema
+
+The shared validator will require exactly these top-level keys; additive fields will require a version bump rather than silent acceptance:
+
+| Field | Version-1 contract |
+|---|---|
+| `fingerprint_version` | integer exactly `1` (boolean rejected) |
+| `role` | nonempty string in `full`, `contribute`, `contribute-minimal`, `unknown` |
+| `hostname` | nonempty string without control characters |
+| `machine_id` | nonempty string matching `^[A-Za-z0-9][A-Za-z0-9._-]*$` |
+| `ts` | parseable RFC3339 string with explicit UTC offset |
+| `clone_head` | null or 7–40 lowercase hexadecimal string |
+| `behind_origin`, `ahead_origin` | null or nonnegative integer (boolean rejected) |
+| `harness_version`, `harness_install` | null or nonempty string without control characters |
+| `registry_sha256` | null or 64 lowercase hexadecimal characters |
+| `learning_cron_ages_h` | exact two-key object; each value null or finite nonnegative number |
+| `provider_soul_hashes` | exact provider-key object; each value null or 16 lowercase hexadecimal characters |
+| `on_main` | boolean |
+| `index_lock_stale_min` | null or finite nonnegative number |
+| `last_publish_duration_s` | null or finite nonnegative number; always present after sentinel preparation |
+
+`json.loads(..., parse_constant=reject)` will reject `NaN`, `Infinity`, and `-Infinity`. Direct publisher calls and generated files will invoke the same validator. `publish(machine, content)` will add the trust-boundary check that the validated `machine_id` equals `machine`.
+
+The publish-health file will use an independent exact schema:
+
+| Field | Contract |
+|---|---|
+| `schema_version` | integer exactly `1` |
+| `ts` | timezone-aware RFC3339 string |
+| `phase` | `fingerprint` or `publish` |
+| `duration_s` | finite nonnegative number |
+| `rc` | integer in `0..4` |
+
+Sentinel exit meanings will remain stable for comparison results (`0` info, `1` warning, `2` critical), use `3` for required fingerprint/publish/store failure, and add `4` for inability to persist the current publish-health result.
 
 ### Verified Bash interpreter resolution
 
@@ -176,8 +213,7 @@ generate_fingerprint(output):
     allow optional telemetry probes to degrade to null
     create a temporary file beside output (or in a temporary directory for stdout)
     serialize JSON into the temporary file; require emitter rc == 0
-    parse it again and require fingerprint_version, role, hostname, machine_id, ts
-    require machine_id and role are nonempty
+    invoke equivalence_state.py validate so generation and publication share one schema
     atomically replace output, or stream validated bytes to stdout
     trap-clean temporary residue and return nonzero on any required-step failure
 ```
@@ -186,8 +222,15 @@ generate_fingerprint(output):
 
 ```text
 publish(machine, content):
-    decode content as one JSON object before any git write
-    validate safe machine key and require content.machine_id == machine
+    decode content with non-standard JSON constants rejected
+    validate the exact fingerprint-version-1 schema before any git write
+    require integer fingerprint_version == 1
+    require exact allowed top-level keys
+    require nonempty string role/hostname/machine_id and safe machine key
+    require role in the version-1 role enum and content.machine_id == machine
+    require an RFC3339 timezone-aware timestamp
+    require booleans, nullable nonnegative integers/numbers, finite ages/durations,
+      and null-or-16-lower-hex provider hashes at their exact field paths
     fetch the current ref tip and parse ls-tree -z as bytes
     hash validated UTF-8 bytes
     build mktree -z input with NUL terminators and exact encoded names
@@ -201,9 +244,11 @@ publish(machine, content):
 sentinel_cycle():
     run atomic fingerprint generation
     independently parse and validate the resulting file
-    on failure: write publish-health failure and exit nonzero before publish
+    on failure: persist phase=fingerprint publish-health failure and exit before publish
     run publisher
-    always write publish-health timestamp/duration/rc atomically
+    create a same-directory health temp file, serialize + validate it, flush/close it,
+      then atomically replace publish-health.json
+    if health create/write/validate/replace fails, preserve any prior record and exit 4
     on publish failure: exit publish failure before comparison
     only then collect and compare fleet state; return comparison severity
 ```
@@ -216,8 +261,11 @@ render_equivalence_sentinel():
     resolve current machine through existing Windows identity mapping
     skip when machine is outside the YAML roster
     convert "17 */6 * * *" to a trigger anchored at minute 17 with 6-hour repetition
-    launch canonical Git Bash with the repo as WorkingDirectory
-    construct action from the YAML command without a second cadence/command constant
+    read windows_script from the same YAML task; reject missing/absolute/escaping paths
+    register PowerShell with that repo-relative script and repo WorkingDirectory
+    wrapper resolves canonical Git Bash, binds WORKSPACE_HUB to the repo,
+      invokes equivalence-sentinel.sh, and owns Windows-native dated log redirection
+    do not parse/translate the folded Linux command or its cron-specific percent escapes
     support WhatIf, replacement, removal, and idempotent re-registration
 ```
 
@@ -231,8 +279,9 @@ render_equivalence_sentinel():
 | Modify | `scripts/monitoring/equivalence-fingerprint.sh` | Remove bare `python3`; add atomic validated output and required-step failure semantics |
 | Modify | `scripts/monitoring/equivalence-sentinel.sh` | Validate before publish and preserve fingerprint/publish failure status |
 | Modify | `scripts/monitoring/equivalence_state.py` | Reject invalid payloads and use byte/NUL-safe tree plumbing |
-| Modify | `scripts/windows/setup-scheduler-tasks.ps1` | Render and register the YAML sentinel including `*/6` cadence |
-| Modify if required | `config/scheduled-tasks/schedule-tasks.yaml` | Reconcile the false `python3` capability requirement with the verified portable resolver; do not change roster/cadence |
+| Create | `scripts/windows/equivalence-sentinel.ps1` | Resolve Git Bash, bind the repo environment, run the sentinel, and write Windows-native logs without translating cron shell syntax |
+| Modify | `scripts/windows/setup-scheduler-tasks.ps1` | Read the YAML `windows_script`, render/register it, and support the exact `*/6` cadence |
+| Modify | `config/scheduled-tasks/schedule-tasks.yaml` | Add a repo-relative `windows_script` to the existing entry and reconcile the false `python3` capability requirement; do not change roster/cadence |
 | Modify | `scripts/readiness/collect-equality.sh` | Read publish-health through the verified resolver on Windows |
 | Modify | `scripts/monitoring/tests/test_equivalence_fingerprint.sh` | Add interpreter-stub, atomicity, schema, and identity tests without relying on system `python3` |
 | Modify | `tests/monitoring/test_equivalence_state.py` | Add invalid-input and exact-name Windows regression coverage |
@@ -254,6 +303,9 @@ No implementation file will be modified until the reviewed plan receives explici
 | `test_fingerprint_success_is_nonempty_valid_json` | nominal generation | required fields parse and match registry identity |
 | `test_fingerprint_failure_preserves_previous_valid_output` | emitter fails after a prior good file | prior file remains byte-identical |
 | `test_acma_ws014_identity_regression` | registry alias resolution | `ace-win-2`, `contribute-minimal` |
+| `test_schema_rejects_wrong_types_version_and_key_set` | null/bool/string identity/version values plus missing/extra keys | validation error before Git write |
+| `test_schema_rejects_bad_timestamp_and_nonfinite_numbers` | naive/invalid timestamp and NaN/Infinity/negative numeric fields | validation error before Git write |
+| `test_schema_accepts_nullable_optional_telemetry` | documented null telemetry with otherwise exact v1 payload | validation succeeds |
 | `test_publish_rejects_empty_json_before_git_write` | empty payload | validation error; no hash/commit/push invocation |
 | `test_publish_rejects_malformed_or_nonobject_json` | malformed/list payload | validation error; ref unchanged |
 | `test_publish_rejects_machine_mismatch_and_unsafe_key` | mismatched field or control/path characters | validation error; ref unchanged |
@@ -263,9 +315,12 @@ No implementation file will be modified until the reviewed plan receives explici
 | `test_invalid_fingerprint_blocks_publish` | zero-byte/missing required field | publisher is not invoked; health rc nonzero |
 | `test_publish_failure_cannot_be_masked_by_green_compare` | publisher nonzero, comparator zero | cycle exits nonzero |
 | `test_publish_health_write_is_atomic` | interrupted write simulation | prior valid health record or complete new record, never partial JSON |
+| `test_publish_health_persistence_failure_exits_four` | temp-create/write/validate/replace failure injection | cycle exits 4 even when compare would return zero |
 | `test_windows_whatif_renders_equivalence_sentinel` | ace-win-2 `-WhatIf` | `\Claude\EquivalenceSentinel` appears |
 | `test_windows_sentinel_trigger_is_minute_17_every_six_hours` | YAML `17 */6 * * *` | exact repetition interval and anchor |
-| `test_windows_sentinel_action_comes_from_yaml` | compare rendered action/cadence to task block | no separately hardcoded action or schedule |
+| `test_windows_sentinel_action_comes_from_yaml` | compare rendered PowerShell script/cadence to task fields | no separately hardcoded action or schedule |
+| `test_windows_wrapper_binds_repo_and_translates_no_cron_syntax` | temp repo path containing spaces; stub Git Bash | exact script invocation, WORKSPACE_HUB binding, native log path, no `\%`/`$(date)` leakage |
+| `test_windows_renderer_rejects_unsafe_wrapper_path` | absolute/traversal/missing `windows_script` | fail closed before registration |
 | `test_windows_sentinel_machine_roster_and_remove` | included/excluded host plus `-Remove` | correct install/skip/removal behavior |
 | `test_windows_publish_health_uses_working_interpreter` | Store stub plus working fallback | equality output contains fresh timestamp/duration/rc |
 | existing equivalence, scheduler, schedule-validator, and matrix suites | regression | all pass |
@@ -279,12 +334,13 @@ Tests that require invalid JSON or corrupt-name fixtures will use temporary dire
 - [ ] RED is captured first for the Store-stub zero-byte fingerprint and Windows real-Git tree failure.
 - [ ] All required fingerprint stages fail closed while optional telemetry continues to emit `null` where documented.
 - [ ] A failed generation never truncates or replaces the last valid fingerprint.
-- [ ] Empty, malformed, non-object, mismatched-machine, and unsafe-key payloads are rejected before Git object/ref mutation.
+- [ ] Empty, malformed, non-object, wrong-type/version/timestamp, non-finite, mismatched-machine, unsafe-key, missing-key, and extra-key payloads are rejected before Git object/ref mutation.
 - [ ] Real Git integration tests prove exact filenames and successful collection on Windows and Linux.
 - [ ] Sentinel publish failure cannot be overwritten by comparator success.
-- [ ] `config/scheduled-tasks/schedule-tasks.yaml` remains the only cadence/action source for the Windows sentinel.
+- [ ] `config/scheduled-tasks/schedule-tasks.yaml` remains the only cadence/action source for the Windows sentinel; its repo-relative `windows_script` resolves through a tested wrapper without parsing the folded Linux command.
 - [ ] `setup-scheduler-tasks.ps1 -WhatIf` renders `\Claude\EquivalenceSentinel` at minute 17 every six hours for both Windows machines.
-- [ ] Focused tests pass, plus `python scripts/cron/validate-schedule.py` and affected monitoring/readiness suites.
+- [ ] Any publish-health persistence failure returns exit 4 and cannot be masked by comparison success or a stale prior health record.
+- [ ] Focused tests pass, plus `uv run --no-project python scripts/cron/validate-schedule.py` and affected monitoring/readiness suites.
 - [ ] `scripts/legal/legal-sanity-scan.sh --diff-only` passes on the implementation diff.
 - [ ] Code/artifact adversarial review completes at T3 depth; unavailable providers are recorded rather than treated as approvals.
 - [ ] Post-merge operator validation runs from a clean/current canonical `ace-win-2` checkout and proves: nonempty fingerprint, `machine_id=ace-win-2`, exact ref entry `ace-win-2.json`, no CR-suffixed names, task last result zero, and fresh publish-health rc zero.
@@ -298,11 +354,18 @@ Tests that require invalid JSON or corrupt-name fixtures will use temporary dire
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | adversarial review not yet run |
-| Codex | PENDING | adversarial review not yet run |
-| Gemini | PENDING | adversarial review not yet run |
+| Claude | PENDING | initial fanout timed out before producing an artifact; focused rerun required |
+| Codex | MAJOR | Windows action translation, exact schema, publish-health persistence failure, and canonical validation command required revision |
+| Gemini | UNAVAILABLE | no non-interactive Gemini authentication configured |
 
-**Overall result:** PENDING — the plan is not approval-ready until no MAJOR findings remain.
+**Overall result:** FAIL — revision 2 addresses Codex r1; focused no-MAJOR re-review is required.
+
+Revisions made after Codex r1:
+
+- Replaced underspecified folded-command translation with an explicit YAML `windows_script` plus a Windows-native wrapper contract and escaping tests.
+- Defined a strict fingerprint-version-1 schema, shared validator, and wrong-type/version/timestamp/non-finite test matrix.
+- Made publish-health persistence a required atomic stage with dedicated exit 4 and injected failure coverage.
+- Replaced the bare schedule-validator command with the canonical `uv run --no-project python` form.
 
 ---
 
@@ -312,6 +375,7 @@ Tests that require invalid JSON or corrupt-name fixtures will use temporary dire
 - **False fallback success:** `command -v` alone accepts the Windows Store stub. Mitigation: every resolver candidate must execute a probe successfully.
 - **Over-broad `set -e`:** Optional metrics intentionally degrade to `null`. The implementation will check required identity/serialization/publish operations explicitly instead of making every best-effort probe fatal.
 - **Schedule duplication:** Hardcoding a PowerShell action or cadence would create a second authority. The renderer will consume the YAML block and tests will compare the rendered contract to that source.
+- **Cross-shell quoting:** The Linux folded command contains `$WORKSPACE_HUB`, `$(date)`, redirection, and cron percent escapes. Windows will not translate that string. The canonical task will name a repo-relative PowerShell wrapper that owns native environment/log semantics and invokes only the canonical sentinel script through resolved Git Bash.
 - **Trigger approximation:** A once-daily trigger is not equivalent to `17 */6 * * *`. Tests will inspect the six-hour repetition interval and minute anchor.
 - **Live scheduler mutation:** Registration changes affect the host. Tests and review use `-WhatIf`; actual registration and one-shot validation occur only after merge from the canonical checkout.
 - **Checkout churn:** Current ace-win-2 main is dirty and behind because scheduled outputs recur. Live validation will stop if the checkout is not current/clean; it will not pop the preserved stash or discard unrelated state.

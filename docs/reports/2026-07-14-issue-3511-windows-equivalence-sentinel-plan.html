@@ -28,10 +28,10 @@
 
   <h2>Implementation slices after approval</h2>
   <table><thead><tr><th>Slice</th><th>Change</th><th>Proof</th></tr></thead><tbody>
-    <tr><td>P0 — generation</td><td>Shared working-interpreter resolver; temporary output; parse and required-field validation; atomic replace.</td><td>Store-stub and prior-good-file tests.</td></tr>
+    <tr><td>P0 — generation</td><td>Shared working-interpreter resolver; temporary output; exact versioned schema validation; atomic replace.</td><td>Store-stub, type/version/timestamp/non-finite, and prior-good-file tests.</td></tr>
     <tr><td>P0 — publishing</td><td>Reject invalid/mismatched payloads before Git writes; use exact byte/NUL-delimited tree plumbing.</td><td>Temporary real-Git Windows and Linux tests.</td></tr>
-    <tr><td>P0 — exit contract</td><td>Stop before publish on invalid evidence and prevent a green compare from masking publish failure.</td><td>Injected failure tests plus atomic health JSON.</td></tr>
-    <tr><td>P1 — Windows schedule</td><td>Render EquivalenceSentinel from YAML at minute 17 every six hours through Git Bash.</td><td>PowerShell <code>-WhatIf</code>, cadence, roster, action, and removal tests.</td></tr>
+    <tr><td>P0 — exit contract</td><td>Stop before publish on invalid evidence, prevent comparison from masking publish failure, and exit 4 if atomic publish-health persistence fails.</td><td>Injected generation, publish, health-write, and replace failures.</td></tr>
+    <tr><td>P1 — Windows schedule</td><td>Read a repo-relative PowerShell wrapper from the same YAML task; register it at minute 17 every six hours. The wrapper binds the repo and launches the canonical sentinel through Git Bash without translating cron syntax.</td><td>PowerShell <code>-WhatIf</code>, path safety, spaces/quoting, cadence, roster, action, and removal tests.</td></tr>
     <tr><td>P1 — equality evidence</td><td>Read publish-health through the verified interpreter on Windows.</td><td>Collector test produces timestamp, duration, and rc.</td></tr>
   </tbody></table>
 
