@@ -14,7 +14,9 @@ CHECKER = ROOT / "scripts/enforcement/check-scheduler-mutation-surfaces.py"
 REGISTRY = ROOT / "config/scheduled-tasks/mutation-surfaces.yaml"
 REPORT = ROOT / "docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html"
 WORKFLOW = ROOT / ".github/workflows/enforcement-gate.yml"
+MAIN_WORKFLOW = ROOT / ".github/workflows/scheduler-mutation-main.yml"
 RULE = ROOT / ".claude/rules/scheduler-mutation-safety.md"
+MERGE_RULE = ROOT / ".claude/rules/merge-authorization.md"
 OPS = ROOT / "docs/ops/scheduled-tasks.md"
 
 
@@ -102,13 +104,18 @@ def test_cli_render_and_stale_check(tmp_path):
 def test_delivery_contract_is_in_digest_union():
     checker, records, registry, *_ = contract_inputs()
     union = checker.digest_record_union(registry, records)
-    delivery = b"tests/enforcement/test_scheduler_mutation_delivery.py"
-    assert delivery in union
-    mutated = dict(union)
-    mutated[delivery] += b"\n# contract change"
+    digest_sources = (
+        b"tests/enforcement/test_scheduler_mutation_delivery.py",
+        b".github/workflows/enforcement-gate.yml",
+        b".github/workflows/scheduler-mutation-main.yml",
+    )
     first = checker.input_digest(records[checker.REGISTRY], union)
-    second = checker.input_digest(records[checker.REGISTRY], mutated)
-    assert first != second
+    for source in digest_sources:
+        assert source in union
+        mutated = dict(union)
+        mutated[source] += b"\n# contract change"
+        second = checker.input_digest(records[checker.REGISTRY], mutated)
+        assert first != second
 
 
 def test_rule_and_ops_define_scheduler_target_binding_contract():
@@ -150,3 +157,49 @@ def test_enforcement_workflow_is_active_and_failure_propagating():
         assert step.get("continue-on-error") not in {"true", True}
         assert "|| true" not in step["run"]
         assert "set +e" not in step["run"]
+
+
+def test_main_push_scheduler_workflow_is_fail_closed():
+    workflow_text = MAIN_WORKFLOW.read_text()
+    workflow = yaml.load(workflow_text, Loader=yaml.BaseLoader)
+    push = workflow["on"]["push"]
+    assert push["branches"] == ["main"]
+    assert "paths" not in push
+
+    job = workflow["jobs"]["scheduler-mutation-surfaces"]
+    assert job["runs-on"] == "ubuntu-latest"
+    assert job.get("continue-on-error") not in {"true", True}
+    steps = job["steps"]
+    checkout = next(step for step in steps if step.get("uses") == "actions/checkout@v4")
+    assert checkout["with"]["fetch-depth"] == "0"
+    python = next(step for step in steps if step.get("uses") == "actions/setup-python@v5")
+    assert python["with"]["python-version"] == "3.12"
+    assert any(step.get("uses") == "astral-sh/setup-uv@v4" for step in steps)
+
+    expected_commands = {
+        "uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py",
+        "uv run python scripts/cron/build-cron-identity-inventory.py --check",
+        (
+            "uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py "
+            "--check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html"
+        ),
+    }
+    runs = {step["run"].strip() for step in steps if "run" in step}
+    assert runs == expected_commands
+    for step in steps:
+        assert step.get("continue-on-error") not in {"true", True}
+    assert "|| true" not in workflow_text
+    assert "set +e" not in workflow_text
+
+
+def test_merge_rule_requires_clean_helper_and_landed_validation():
+    rule = MERGE_RULE.read_text()
+    for phrase in (
+        "Explicit user authorization never waives",
+        "`mergeStateStatus == CLEAN`",
+        "`scripts/operations/merge-when-clean.sh --merge`",
+        "`git fetch origin main`",
+        "actual landed `origin/main`",
+        "changed-domain generated-artifact checks",
+    ):
+        assert phrase in rule
