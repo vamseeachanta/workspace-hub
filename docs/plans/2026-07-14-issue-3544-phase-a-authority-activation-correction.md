@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Lane:** lane:codex
 > **Execution:** planning `parallel-readonly`; implementation `single-lane`; external activation isolated owner transaction
-> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r3.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r3.md`
+> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`
 
 ---
 
@@ -698,13 +698,11 @@ Tests must be committed RED before their matching implementation slice.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| `custom_ansys_runners` R3 | MAJOR | correct exact supersession locations, add post-proof first-write CAS, and complete canonical CODEOWNERS last-match matrix |
-| `prepare_fer_extraction` R3 | MAJOR | add minimal trusted pre-Python launcher, explicit trust/FD boundary, and executable launcher race tests |
-| Independent re-review | PENDING | revised blocked draft must be re-reviewed after owner decisions |
+| `custom_ansys_runners` R4 | APPROVE | exact supersession references, first-write CAS, and canonical CODEOWNERS matrix resolve R3 findings |
+| `prepare_fer_extraction` R4 | APPROVE | trusted pre-Python launcher, FD boundary, trust assumptions, and executable race tests resolve R3 findings |
 
-**Overall result:** BLOCKED-DRAFT — both R3 MAJOR finding sets are incorporated,
-but two owner decisions and independent re-review are required before the plan
-may advance to `status:plan-review`.
+**Overall result:** BLOCKED-NEEDS-DECISION — adversarial review approves the R4
+design; implementation and activation remain blocked on both owner decisions.
 
 ## Risks and Open Questions
 
