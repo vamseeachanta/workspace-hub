@@ -135,3 +135,42 @@ def test_git_runner_uses_argv_and_sanitized_environment(tmp_path: Path) -> None:
     with pytest.raises(audit_git.CoverageError):
         runner.run("cat-file", "-t", "$(touch injected)")
     assert not (repo / "injected").exists()
+
+
+def _bare_history(tmp_path: Path) -> tuple[Path, audit_git.RefSnapshot]:
+    source, oid = _repo(tmp_path)
+    _git(source, "tag", "-a", "v1", "-m", "synthetic-block-value")
+    bare = tmp_path / "mirror.git"
+    _git(tmp_path, "clone", "-q", "--mirror", str(source), str(bare))
+    os.chmod(bare, 0o700)
+    head = _git(source, "rev-parse", "HEAD").strip()
+    tag = _git(source, "rev-parse", "refs/tags/v1").strip()
+    raw = head + b"\trefs/heads/master\n" + tag + b"\trefs/tags/v1\n"
+    return bare, audit_git.parse_ls_remote(raw, max_refs=5)
+
+
+def test_audit_history_scans_tags_and_retains_reverse_edges(tmp_path: Path) -> None:
+    bare, snapshot = _bare_history(tmp_path)
+    result = audit_git.audit_history(
+        bare, snapshot, snapshot, SENSITIVE,
+        max_entries=20, max_blob_bytes=100, max_objects=20, max_edges=50,
+    )
+    assert result.verdict == "blocked"
+    assert any(edge[0] == b"refs/tags/v1" for edge in result.edges)
+    assert result.objects_examined >= 4
+
+
+def test_audit_history_requires_bare_complete_stable_mirror(tmp_path: Path) -> None:
+    bare, snapshot = _bare_history(tmp_path)
+    changed = audit_git.RefSnapshot(snapshot.refs[:-1], "different")
+    with pytest.raises(audit_git.CoverageError):
+        audit_git.audit_history(
+            bare, snapshot, changed, SENSITIVE,
+            max_entries=20, max_blob_bytes=100, max_objects=20, max_edges=50,
+        )
+    _git(bare, "config", "remote.origin.promisor", "true")
+    with pytest.raises(audit_git.CoverageError):
+        audit_git.audit_history(
+            bare, snapshot, snapshot, SENSITIVE,
+            max_entries=20, max_blob_bytes=100, max_objects=20, max_edges=50,
+        )

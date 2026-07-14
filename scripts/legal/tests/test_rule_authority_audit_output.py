@@ -114,3 +114,21 @@ def test_report_root_must_be_private_current_uid(tmp_path: Path) -> None:
         report_transaction.write_report(
             root, transaction_id, {"a": b"x"}, _complete_fields(transaction_id), KEY
         )
+
+
+def test_report_reader_rejects_extra_missing_and_changed_files(tmp_path: Path) -> None:
+    root = tmp_path / "private"
+    root.mkdir(mode=0o700)
+    transaction_id = str(uuid.uuid4())
+    final = report_transaction.write_report(
+        root, transaction_id, {"coverage.json": b"{}\n"},
+        _complete_fields(transaction_id), KEY,
+    )
+    assert report_transaction.verify_report(final, KEY)["transaction_id"] == transaction_id
+    (final / "extra").write_bytes(b"x")
+    with pytest.raises(report_transaction.ReportTransactionError):
+        report_transaction.verify_report(final, KEY)
+    (final / "extra").unlink()
+    (final / "coverage.json").write_bytes(b"changed")
+    with pytest.raises(report_transaction.ReportTransactionError):
+        report_transaction.verify_report(final, KEY)
