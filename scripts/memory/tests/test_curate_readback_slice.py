@@ -275,6 +275,33 @@ def test_priority_manifest_fails_closed(tmp_path, manifest, message):
         mod.curate(source, "hermes", 2000, priority_path=path)
 
 
+@pytest.mark.parametrize(
+    "duplicate_lines",
+    [
+        "schema_version: 1\nschema_version: 1\n",
+        "must_retain_operational_slugs: []\nmust_retain_operational_slugs: []\n",
+    ],
+)
+def test_priority_manifest_rejects_duplicate_mapping_keys(tmp_path, duplicate_lines):
+    source = _write_pressure_memory(tmp_path)
+    path = tmp_path / "priorities.yaml"
+    path.write_text(duplicate_lines, encoding="utf-8")
+    with pytest.raises(ValueError, match="duplicate mapping key"):
+        mod.curate(source, "hermes", 2000, priority_path=path)
+
+
+@pytest.mark.parametrize("schema_version", ["true", "1.0"])
+def test_priority_manifest_requires_integer_schema_version(tmp_path, schema_version):
+    source = _write_pressure_memory(tmp_path)
+    path = tmp_path / "priorities.yaml"
+    path.write_text(
+        f"schema_version: {schema_version}\nmust_retain_operational_slugs: []\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="schema_version must be integer 1"):
+        mod.curate(source, "hermes", 2000, priority_path=path)
+
+
 def test_priority_over_budget_fails_closed(tmp_path):
     source = tmp_path / "memory"
     source.mkdir()

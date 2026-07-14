@@ -38,6 +38,32 @@ _DEFAULT_PRIORITY_PATH = (
 )
 
 
+class _UniqueKeySafeLoader(yaml.SafeLoader):
+    """SafeLoader variant that rejects duplicate YAML mapping keys."""
+
+
+def _construct_unique_mapping(loader, node, deep=False):
+    loader.flatten_mapping(node)
+    mapping = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        if key in mapping:
+            raise yaml.constructor.ConstructorError(
+                "while constructing a mapping",
+                node.start_mark,
+                f"duplicate mapping key: {key!r}",
+                key_node.start_mark,
+            )
+        mapping[key] = loader.construct_object(value_node, deep=deep)
+    return mapping
+
+
+_UniqueKeySafeLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+    _construct_unique_mapping,
+)
+
+
 @dataclass(frozen=True)
 class Entry:
     text: str
@@ -106,13 +132,17 @@ def _class_allocations(usable_budget: int) -> dict[str, int]:
 
 def _load_priority_slugs(path: Path) -> tuple[str, ...]:
     try:
-        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+        loader = _UniqueKeySafeLoader(path.read_text(encoding="utf-8"))
+        try:
+            payload = loader.get_single_data()
+        finally:
+            loader.dispose()
     except (OSError, yaml.YAMLError) as exc:
         raise ValueError(f"invalid priority manifest {path}: {exc}") from exc
     if not isinstance(payload, dict) or set(payload) != _MANIFEST_KEYS:
         raise ValueError(f"priority manifest must contain exactly {sorted(_MANIFEST_KEYS)}")
-    if payload["schema_version"] != 1:
-        raise ValueError("priority manifest schema_version must be 1")
+    if type(payload["schema_version"]) is not int or payload["schema_version"] != 1:
+        raise ValueError("priority manifest schema_version must be integer 1")
     slugs = payload["must_retain_operational_slugs"]
     if not isinstance(slugs, list) or any(not isinstance(slug, str) or not slug for slug in slugs):
         raise ValueError("must_retain_operational_slugs must be a list of non-empty strings")
