@@ -854,7 +854,7 @@ cards:
     title: 'validate(cost): second-source rough validation of sanctioned project costs — pre-circulation gate (#1017)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1019
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - cat:data
       - domain:quality
