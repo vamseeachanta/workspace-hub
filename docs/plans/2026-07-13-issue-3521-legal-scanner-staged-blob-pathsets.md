@@ -6,6 +6,7 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3521
 > **Client:** N/A
 > **Lane:** lane:codex
+> **Execution:** `parallel-readonly` planning/review; `single-lane` implementation in this isolated worktree
 > **Review artifacts:** `scripts/review/results/2026-07-13-plan-3521-{claude,codex,gemini}.md`
 
 ---
@@ -76,6 +77,8 @@ project identifiers and does not change domain knowledge.
   deletion, rename, symlink, gitlink, binary, large, or archive entries.
 - No post-scan verifier detects index, HEAD, tool, or rule drift before commit.
 - No public-safe receipt or narrow forensic mechanism exists for strict mode.
+- No stable public rule-ID/private-pattern authority exists; #3522 must provide
+  it before strict-mode implementation or activation.
 
 ### Evidence (embedded verification)
 
@@ -114,10 +117,12 @@ prior/related issues, control-plane/rules docs, and drive-index query (9+).
 | Artifact | Path |
 |---|---|
 | This plan | `docs/plans/2026-07-13-issue-3521-legal-scanner-staged-blob-pathsets.md` |
+| Normative protocol | `docs/plans/evidence/2026-07-13-issue-3521-staged-scan-contract.md` |
 | Compatibility wrapper | `scripts/legal/legal-sanity-scan.sh` |
 | Strict scanner/helper | `scripts/legal/scan_staged_blobs.py` |
-| Focused tests | `scripts/legal/tests/test_scan_staged_blobs.py` |
-| Request/receipt schemas | `schemas/legal-staged-scan-{request,receipt}.schema.json` |
+| Strict package | `scripts/legal/staged_scan/{model,git_transport,rules,receipt,cli}.py` |
+| Focused tests | `scripts/legal/tests/test_staged_scan_{contract,transport,policy}.py` |
+| Versioned schemas | `schemas/legal-staged-scan-{request,receipt,rule-registry,rule-map}.schema.json` |
 | Non-sensitive strict policy | `config/legal-staged-scan-policy.yaml` |
 | Contract documentation | `docs/standards/LEGAL_STAGED_SCAN_CONTRACT.md` |
 | User documentation | `.claude/docs/legal-scanning.md` |
@@ -129,77 +134,23 @@ prior/related issues, control-plane/rules docs, and drive-index query (9+).
 ## Deliverable
 
 A versioned, fail-closed staged-request/receipt mode that scans immutable Git
-index blobs for one explicit repository, preserves arbitrary path bytes, detects
-TOCTOU, emits public-safe deterministic evidence, and leaves legacy modes
-available but explicitly non-attesting.
+blobs and raw paths, independently regenerates receipts, and detects scan-to-
+commit drift against the resulting commit tree. Legacy modes remain explicitly
+non-attesting.
 
 ---
 
 ## Interface and Data Contract
 
-```bash
-evidence_dir="${TMPDIR:-/tmp}/legal-stage-${USER}"
-mkdir -p "$evidence_dir"
-uv run --no-project python scripts/legal/scan_staged_blobs.py request \
-  --repo-root . --scope all-staged --destination private \
-  --out "$evidence_dir/request.json"
-scripts/legal/legal-sanity-scan.sh --repo-root=. \
-  --staged-request="$evidence_dir/request.json" \
-  --receipt="$evidence_dir/receipt.json"
-uv run --no-project python scripts/legal/scan_staged_blobs.py verify \
-  --repo-root . --request "$evidence_dir/request.json" \
-  --receipt "$evidence_dir/receipt.json"
-```
+The normative protocol, exact commands, byte framing, request/delta schemas,
+rule authority, edge/exit table, atomic-output rules, receipt regeneration, and
+post-commit tree verification are frozen in
+`docs/plans/evidence/2026-07-13-issue-3521-staged-scan-contract.md`.
 
-- `--repo-root`, `--staged-request`, and `--receipt` form one mutually exclusive
-  strict mode. Existing `--repo`, `--all`, `--diff-only`, `--json`, and `--quiet`
-  retain compatible non-attesting behavior.
-- `request` is the only request generator. V1 supports `scope=all-staged`; its
-  entry set must equal `git diff-index --cached --raw -z --no-renames HEAD --`.
-  Callers stage only the intended transaction before generating the request.
-- Request and receipt must be regular files outside the selected repo and staged
-  set. The receipt does not hash itself; the caller hashes it after atomic close.
-- Exit codes: 0 clean, 1 prohibited finding, 2 usage/configuration, 3 integrity,
-  unsupported transport/media, or TOCTOU. Once request validation begins, every
-  exit produces an atomic failure/success receipt.
-
-Request schema v1 binds schema/tool/policy/rule digests, normalized repository
-identity hash, expected HEAD, Git object format, destination, scope, logical
-index digest, selected-set digest, and entries containing `path_b64`, status,
-mode, stage, full Git OID, and expected blob size/SHA-256 where applicable.
-
-Receipt schema v1 binds the request digest, start/end HEAD and logical-index
-digests, start/end tool/policy/rule digests, per-entry path identity, status,
-mode, OID, blob SHA-256, size, media class, disposition, rule-ID/offset findings,
-suppressions, overall verdict, and exit classification. It never includes rule
-patterns or matched snippets. Public destination receipts replace reversible
-paths with SHA-256 path IDs; private receipts may include `path_b64`.
-
----
-
-## Pseudocode
-
-```text
-request(repo_root, scope, destination, out):
-    canonicalize repo without following a caller path outside its Git root
-    require clean index stages and scope == all-staged
-    read HEAD/object format and full index with NUL-safe Git plumbing
-    derive no-rename staged delta; reject intent-to-add and untracked requests
-    emit canonical JSON request atomically outside repo
-
-scan(request, receipt):
-    validate schemas, repo identity, paths, HEAD, index, tool/policy/rule digests
-    open cat-file --batch-command -Z and read every regular/symlink blob by OID
-    apply byte-safe rules and same-blob forensic dispositions
-    reject unsupported mode/media; never follow symlinks or recurse gitlinks
-    re-read all identities; drift changes verdict to integrity failure
-    atomically write deterministic receipt without patterns/snippets/self-hash
-
-verify(repo, request, receipt):
-    validate both schemas and request digest
-    recompute current HEAD/index/tool/policy/rule identities
-    require exact entry set, modes, stages, OIDs, and successful receipt verdict
-```
+V1 accepts an external NUL pathset or an explicit `all-staged` generator. Every
+declared path must resolve to the staged delta; untracked/intent-to-add entries
+fail closed. Receipts use opaque ordinals and a nonce-salted request commitment,
+never path hashes, repository hashes, rule digests, patterns, or snippets.
 
 ---
 
@@ -209,17 +160,21 @@ verify(repo, request, receipt):
 |---|---|---|
 | Modify | `scripts/legal/legal-sanity-scan.sh` | Add strict-mode dispatch and compatibility help; no binary logic in shell. |
 | Create | `scripts/legal/scan_staged_blobs.py` | Binary-safe request, scan, canonical receipt, and verifier. |
-| Create | `scripts/legal/tests/test_scan_staged_blobs.py` | Hermetic TDD matrix. |
+| Create | `scripts/legal/staged_scan/*.py` | Split model, Git transport, rule matching, receipt, and CLI below size limits. |
+| Create | `scripts/legal/tests/test_staged_scan_*.py` | Hermetic contract/transport/policy TDD matrices. |
 | Create | `schemas/legal-staged-scan-request.schema.json` | Freeze caller-to-scanner contract. |
 | Create | `schemas/legal-staged-scan-receipt.schema.json` | Freeze evidence/exit contract. |
+| Create | `schemas/legal-staged-scan-rule-map.schema.json` | Freeze stable public IDs to private pattern map. |
+| Create | `schemas/legal-staged-scan-rule-registry.schema.json` | Freeze non-sensitive ID/target/severity/mode authority. |
 | Create | `config/legal-staged-scan-policy.yaml` | Non-sensitive media, limit, sentinel, destination policy. |
 | Create | `docs/standards/LEGAL_STAGED_SCAN_CONTRACT.md` | Durable attestation/threat model. |
 | Modify | `.claude/docs/legal-scanning.md` | Mark legacy modes non-attesting; document exact commands. |
 | Update | `docs/plans/README.md` | Index plan and review state. |
 
-`.legal-deny-list.yaml` and pre-commit callers are out of scope: strict mode will
-parse rule definitions but ignore its blanket target exclusions. #3522 owns
-sensitive-value migration; #3398 owns tier-1 hook adoption after this merges.
+`.legal-deny-list.yaml` and pre-commit callers are out of scope. #3522 must first
+land the stable non-sensitive registry/private rule map consumed here. After
+#3521 merges, #3398 must be re-planned/re-reviewed against this strict CLI; no
+concurrent wrapper/docs edits are permitted.
 
 ---
 
@@ -231,16 +186,21 @@ sensitive-value migration; #3398 owns tier-1 hook adoption after this merges.
 | `test_clean_staged_blob_ignores_dirty_worktree` | Worktree content cannot contaminate attestation. |
 | `test_raw_path_matrix_round_trips` | Space, tab, newline, leading dash, colon, non-UTF-8 paths survive via base64. |
 | `test_request_set_equals_all_staged_delta` | Omission, addition, duplicate, absolute, `..`, outside-root, and stale entries fail. |
+| `test_explicit_pathset_rejects_untracked` | NUL pathset entries absent/intent-to-add in index fail rather than disappear. |
 | `test_identity_drift_fails_closed` | HEAD/index/tool/policy/rule mutation before or during scan returns rc3. |
 | `test_git_errors_and_rules_fail_closed` | Missing blobs, Git errors, and missing/empty/malformed rules return rc2/3, never pass. |
-| `test_index_edge_matrix` | Add/modify/delete/type-change/rename-as-delete-add are deterministic; conflicts/intent-to-add reject. |
+| `test_index_edge_matrix` | Old/new mode/OID/null invariants cover add/modify/delete/type-change/rename-as-D+A. |
 | `test_symlink_and_gitlink_policy` | Symlink target blob is scanned without dereference; gitlink rejects. |
-| `test_media_policy_matrix` | Binary bytes scan case-sensitive rules; undecodable case-insensitive, archive, oversize, and unknown policy reject explicitly. |
-| `test_receipt_is_canonical_and_public_safe` | Repeated bytes match; JSON validates; public receipt has no pattern/snippet/reversible path. |
+| `test_media_policy_matrix` | Preflight caps precede contents; binary scans; magic-detected archive/oversize reject. |
+| `test_path_rules_cover_all_entry_kinds` | Raw add/delete/symlink paths are scanned without reversible public identifiers. |
+| `test_receipt_is_canonical_and_public_safe` | Same request repeats bytes; only ordinals/revision IDs/findings are public. |
+| `test_forged_receipt_is_rejected` | Verify independently rescans/regenerates; forged verdict/findings/hash cannot pass. |
 | `test_receipt_cannot_self_reference` | In-repo/staged request or receipt paths reject; external receipt binds request only. |
-| `test_forensic_policy_is_narrow` | Same-blob rule-ID line sentinel works only under approved prefixes; blanket/arbitrary exemptions fail. |
-| `test_rule_source_structural_disposition` | Exact parsed pattern fields in rule-source files avoid self-block; other content remains scanned. |
-| `test_private_destination_never_bypasses` | Destination changes disclosure only, never finding verdict. |
+| `test_forensic_policy_is_narrow` | Exact same-line rule-ID sentinel/prefix works; wrong/adjacent/whole-file/arbitrary bypasses fail. |
+| `test_rule_authority_is_immutable` | Public registry/private map IDs match; missing/duplicate/mutable/weakened sources fail. |
+| `test_post_commit_tree_binding` | Parent/tree/delta match request; mutation after verify is caught on resulting commit. |
+| `test_cat_file_protocol_is_strict` | Truncated/wrong/reordered/extra headers or content and boundary collisions fail. |
+| `test_atomic_evidence_output` | 0700 dir/0600 files, no-follow/no-overwrite/link-publish/fsync, crash cleanup, rc4 failure. |
 | `test_legacy_cli_compatibility` | Existing all/repo/diff/json/quiet modes remain callable and labeled non-attesting. |
 | `test_python_size_limits` | New Python files stay ≤400 lines and functions ≤50 lines. |
 
@@ -253,10 +213,10 @@ real client/project/person value will enter source, fixtures, logs, or receipts.
 
 1. Add RED schema/CLI/request-set tests; confirm assertion failures, not import
    or fixture failures.
-2. Implement canonical request creation and exact staged-delta/index parsing.
+2. Implement canonical request creation and exact old/new staged-delta parsing.
 3. Add RED immutable-blob/path/edge tests; implement batch `cat-file -Z` reads.
-4. Add RED rule/media/forensic tests; implement fail-closed byte scanning.
-5. Add RED receipt/TOCTOU/public-safety tests; implement atomic receipt/verify.
+4. After #3522 merges, add RED rule/path/media/forensic tests and byte scanning.
+5. Add RED receipt/TOCTOU/public-safety tests; implement rescan and commit verify.
 6. Wire the shell wrapper and legacy compatibility tests.
 7. Update contract/user docs and run the full acceptance sequence.
 8. Run T3 adversarial code/artifact review; any later change invalidates the
@@ -267,13 +227,15 @@ real client/project/person value will enter source, fixtures, logs, or receipts.
 ## Acceptance Criteria
 
 - [ ] RED evidence is captured per task before implementation.
-- [ ] `uv run --no-project pytest -q scripts/legal/tests/test_scan_staged_blobs.py`
+- [ ] #3522 is approved/merged and supplies the stable public-ID/private-map
+      contract; exact commits/digests are frozen before implementation.
+- [ ] `uv run --no-project pytest -q scripts/legal/tests/test_staged_scan_*.py`
       passes, including every named edge/threat fixture.
 - [ ] `uv run --no-project pytest -q scripts/legal/tests
       tests/enforcement/test_check_no_conflict_markers.py` passes.
 - [ ] `uv run --no-project python -m compileall -q scripts/legal` passes.
-- [ ] Request, scan, and verify commands above succeed on an exact synthetic
-      staged set; mutation after scan makes verify return rc3.
+- [ ] Contract commands succeed on an exact synthetic staged set; forged receipt
+      or mutation after final pre-commit verify fails rescan/post-commit rc3.
 - [ ] Strict mode never opens a worktree target, follows a symlink, suppresses a
       Git/search/rule error, skips a large/binary/archive silently, or echoes a
       pattern/snippet.
@@ -281,8 +243,11 @@ real client/project/person value will enter source, fixtures, logs, or receipts.
       non-canonical JSON, and request/receipt self-inclusion.
 - [ ] Legacy mode compatibility tests pass and documentation calls those modes
       non-attesting.
-- [ ] `scripts/legal/legal-sanity-scan.sh --diff-only` and all repository
-      enforcement checks pass on the exact staged implementation set.
+- [ ] `bash -n scripts/legal/legal-sanity-scan.sh`, schema validation, compileall,
+      focused tests, and the 47-test baseline pass with their documented codes.
+- [ ] Strict `pathset → request → scan → verify → commit → verify-commit` scans
+      the exact staged implementation transaction; legacy scan is compatibility
+      evidence only and cannot satisfy self-scan acceptance.
 - [ ] T3 code/artifact review has no MAJOR; issue receives implementation summary
       and source-consumption comment. No self-merge or self-close occurs.
 
@@ -292,9 +257,10 @@ real client/project/person value will enter source, fixtures, logs, or receipts.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | pending | fresh exact-revision review required |
-| Codex | pending | fresh exact-revision review required |
-| Gemini | pending | fresh exact-revision review or documented unavailability |
+| Claude r1 | MAJOR | receipt trust, commit TOCTOU, public disclosure, rule/self-scan, framing/limits incomplete |
+| Codex r1 | MAJOR | edge schema, rule/path authority, framing/exits, dependencies, modularity incomplete |
+| Gemini r1 | UNAVAILABLE | noninteractive OAuth rc41 |
+| r2 | pending | exact revised plan and normative protocol require review |
 
 **Overall result:** draft; implementation is blocked pending review and explicit
 user approval. No agent may apply `status:plan-approved` or create its marker.
@@ -304,9 +270,9 @@ user approval. No agent may apply `status:plan-approved` or create its marker.
 ## Risks and Open Questions
 
 - **Security incident:** #3522 owns private-rule migration/history assessment;
-  this issue must not echo or expand the exposure.
-- **Adoption overlap:** #3398 must consume this CLI/schema and remain separately
-  approved; #3521 will not edit tier-1 pre-commit configs.
+  it is a hard dependency and this issue must not echo or expand the exposure.
+- **Adoption overlap:** #3521 lands first; then #3398 is revised/re-reviewed to
+  consume this CLI/schema. #3521 will not edit tier-1 pre-commit configs.
 - **Git portability:** implementation will assert minimum Git support for
   `cat-file --batch-command -Z`; unsupported versions return configuration error.
 - **Resource bounds:** strict policy will cap total/request/blob sizes and reject
