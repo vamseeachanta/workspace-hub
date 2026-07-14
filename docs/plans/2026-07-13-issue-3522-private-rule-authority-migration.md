@@ -1,6 +1,6 @@
 # Plan for #3522: Private Legal-Rule Authority Migration
 
-> **Status:** draft
+> **Status:** plan-review (awaiting explicit user approval)
 > **Complexity:** T3
 > **Date:** 2026-07-13
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3522
@@ -75,7 +75,7 @@ and ignored; related legal/enforcement baseline 47 passed. Source count is 10+.
 | Artifact | Path |
 |---|---|
 | Plan / normative contract | this file; `docs/plans/evidence/2026-07-13-issue-3522-rule-authority-contract.md` |
-| Schemas | `schemas/legal-rule-{registry,map,policy,authority-manifest}.schema.json` |
+| Schemas | `schemas/legal-rule-{registry,map,policy,authority-manifest,active-anchor,generation-ledger,complete}.schema.json` |
 | Public authority | `config/legal-rule-{registry,authority-policy}.json` |
 | CLI/package | `scripts/legal/manage_rule_authority.py`; `scripts/legal/rule_authority/*.py` |
 | Tests | `scripts/legal/tests/test_rule_authority_{codec,seal,audit,workflow}.py` |
@@ -97,8 +97,8 @@ public metadata clean, and create an owner-only reachable-exposure assessment.
 `docs/plans/evidence/2026-07-13-issue-3522-rule-authority-contract.md` freezes:
 
 - canonical JSON byte codecs and synthetic golden HMAC vectors;
-- strictly increasing generations, fresh UUIDs, manifest no-overwrite, and a
-  separately protected active anchor that rejects valid-bundle rollback;
+- authenticated generation ledger, fresh UUID/generation, active anchor, and
+  dual CURRENT/PENDING slots that reject rollback and isolate migration cutover;
 - structural scanning for encoded map/manifest/key/anchor artifacts;
 - retained-dirfd private mirror/report contracts and rc0/1/2/3/4;
 - exact Git ref/raw-object and paginated GitHub-surface coverage with reverse
@@ -133,18 +133,20 @@ based on the live Phase A tool SHA.
 |---|---|
 | `test_complete_codec_golden_vectors` | Exact registry/policy/map/manifest/MAC bytes interoperate. |
 | `test_codec_rejects_hostile_inputs` | Duplicate/unknown/bad UUID/base64/order/ASCII/size inputs reject silently. |
-| `test_valid_bundle_rollback_rejects` | Old valid bundle fails against protected active anchor. |
-| `test_reseal_and_revision_reuse_reject` | Every byte change requires generation+UUID change. |
+| `test_valid_bundle_rollback_rejects` | Old valid bundle fails against anchor and authenticated ledger. |
+| `test_reseal_and_revision_reuse_reject` | Genesis/append/rotation require exact ledger tip+1 and new UUID. |
 | `test_structural_secret_artifacts_reject` | Force-added map/manifest/key/anchor under arbitrary names blocks. |
-| `test_private_filesystem_contract` | Mirror/report owner/mode/no-follow/dirfd/fsync/crash/cap behavior. |
+| `test_private_filesystem_contract` | Executable Git modes, credential-free stable-dirfd fetch, report COMPLETE integrity. |
 | `test_tree_raw_object_metadata` | Paths/blobs/raw commit/tag/ref bytes scan without checkout. |
 | `test_history_ref_snapshot_and_edges` | All advertised/PR refs, drift, and every reverse reachability edge. |
-| `test_github_surface_coverage_matrix` | Pagination/status for PR/issue/review/release/Actions/Pages/wiki/LFS/package/fork surfaces. |
+| `test_github_surface_coverage_matrix` | Accessible bytes, archives, drift/pagination/caps and residual statuses. |
 | `test_public_output_allowlist` | Errors, stdout/stderr/job summary leak no locators or sensitive fragments. |
 | `test_fork_constant_result_no_oracle` | Fork exits before secret access/data scan with constant result. |
 | `test_same_repo_trusted_object_scan` | Immutable base tool scans inert full-OID PR objects only. |
-| `test_ci_promotion_boundary` | SHA-pinned actions/tool, protected environment, no seal/cache/artifact/credentials. |
+| `test_ci_promotion_boundary` | Pinned reusable workflow owns Environment; caller gets no secrets. |
 | `test_ruleset_readback` | Required check and direct-update/bypass restrictions match preview. |
+| `test_dual_slot_cutover` | Concurrent CURRENT/PENDING, exact-head selection, CAS promotion/rollback. |
+| `test_fork_maintainer_promotion` | Fork never scans/merges; independent privately cleaned same-repo PR can pass. |
 | `test_legacy_enforcement_until_cutover` | Legacy private rules remain until active replacement passes. |
 | `test_existing_pii_regression` | Existing 21 tests and behavior remain green. |
 
@@ -154,8 +156,8 @@ based on the live Phase A tool SHA.
    hostile private-filesystem tests; implement schema/model/seal/verify modules.
 2. Add RED raw Git/GitHub coverage, reverse-edge, output-withholding, and cap
    tests; implement tree/history/API audit and private COMPLETE transactions.
-3. Add RED same-repo/fork/promotion/ruleset workflow tests; implement Phase A
-   secret-free bootstrap workflow, docs, and synthetic public registry/policy.
+3. Add RED pinned-reusable/fork/dual-slot/promotion/ruleset workflow tests;
+   implement Phase A secret-free caller/workflow, docs, and synthetic authority.
 4. Run exact acceptance, T3 code review, and present Phase A branch/PR plus
    protected-environment/CODEOWNERS/ruleset preview for owner approval.
 5. After Phase A merges, verify the immutable live tool SHA and external-state
@@ -181,8 +183,10 @@ based on the live Phase A tool SHA.
 - [ ] Phase A code review has no MAJOR; no legacy value/protection is removed.
 - [ ] Owner separately approves and live API verifies the environment,
       CODEOWNERS, required check, direct-update/bypass restrictions, and tool SHA.
-- [ ] Forks receive constant no-secret/no-scan status; same-repo PRs execute no
-      PR-controlled code/config/dependency with secrets.
+- [ ] Forks are constant-fail/nonmergeable and receive no secret/data scan;
+      maintainer candidates are privately cleaned into independent same-repo PRs.
+- [ ] CURRENT/PENDING concurrency, exact-head routing, and owner CAS promotion/
+      rollback pass without disrupting ordinary old-base checks.
 - [ ] Owner separately accepts the exact Phase B deletion-diff visibility and
       sealed migration preview before a migration branch/PR is created.
 - [ ] Proposed tree/raw metadata audit returns zero findings under the live base
@@ -201,9 +205,15 @@ based on the live Phase A tool SHA.
 | Claude r1 | MAJOR | rollback, codecs, CI bootstrap/trust, unenforced gate, history, forced secrets, filesystem, commands |
 | Codex r1 | MAJOR | same consensus plus fork oracle, promotion boundary, reverse edges, diff re-exposure, interim gap |
 | Gemini r1 | UNAVAILABLE | noninteractive OAuth rc41 |
+| Claude r2 | MAJOR | immutable workflow/fork path, CLI, downloadable coverage, artifact classes, Git modes, protection readback, anchor/ledger |
+| Codex r2 | MAJOR | same consensus plus dual-slot cutover, COMPLETE integrity, secret size, exit precedence |
+| Gemini r2 | UNAVAILABLE | noninteractive OAuth rc41 |
+| Main session r3 | RESOLVED | every r2 finding is mapped in the inline-resolution artifact; no r3 dispatch per routing rule |
 
-**Overall:** draft. R1 findings are incorporated; r2 review is required. No agent
-may apply `status:plan-approved` or create an approval marker.
+**Overall:** plan-review. R1/r2 defects are incorporated through the mandatory
+inline r3 resolution. Explicit user approval is required before Phase A only;
+Phase B and every external-state/irreversible transaction retain separate gates.
+No agent may apply `status:plan-approved` or create an approval marker.
 
 ## Risks and Open Decisions
 
