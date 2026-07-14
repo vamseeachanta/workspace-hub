@@ -38,13 +38,14 @@ def _run_cli(*args: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def _anchor(slot: str, head: str | None = None) -> dict:
+def _anchor(slot: str, head: str | None = None, *, generation: int = 1,
+            revision: str = "12345678-1234-4234-9234-123456789abc",
+            manifest: str = "a" * 64, tool_sha: str = "b" * 40) -> dict:
     return {
-        "authority_revision": "12345678-1234-4234-9234-123456789abc",
-        "expected_head_oid": head, "generation": 1, "manifest_mac": "a" * 64,
+        "authority_revision": revision,
+        "expected_head_oid": head, "generation": generation, "manifest_mac": manifest,
         "schema_id": "-".join(("legal", "rule", "active", "anchor", "v1")),
-        "slot": slot,
-        "tool_sha": "b" * 40,
+        "slot": slot, "tool_sha": tool_sha,
     }
 
 
@@ -149,18 +150,27 @@ def test_trusted_event_ref_and_sha_are_closed() -> None:
 def test_dual_slot_exact_head_selection_and_rollback_preview() -> None:
     ci = importlib.import_module("rule_authority.ci_contract")
     head = "c" * 40
-    current, pending = _anchor("current"), _anchor("pending", head)
+    current = _anchor("current", tool_sha="a" * 40)
+    pending = _anchor(
+        "pending", head, generation=2,
+        revision="22345678-1234-4234-9234-123456789abc",
+        manifest="b" * 64, tool_sha=ci.APPROVED_TOOL_SHA,
+    )
     assert ci.select_slot("d" * 40, current, pending) == current
     assert ci.select_slot(head, current, pending) == pending
     preview = ci.cutover_preview(
         current, pending, expected_head=head, expected_tree="e" * 40,
-        observed_current=current,
+        observed_head=head, observed_tree="e" * 40,
+        observed_current=current, observed_pending=pending,
     )
     assert preview["compare_and_swap"] is True
     assert preview["rollback"] == "restore-current-if-and-only-if-promoted-identity-matches"
     with pytest.raises(ValueError):
-        ci.cutover_preview(current, pending, expected_head="d" * 40,
-                           expected_tree="e" * 40, observed_current=current)
+        ci.cutover_preview(
+            current, pending, expected_head="d" * 40, expected_tree="e" * 40,
+            observed_head=head, observed_tree="e" * 40,
+            observed_current=current, observed_pending=pending,
+        )
 
 
 def test_readback_parser_matches_exact_owner_preview_without_network() -> None:
@@ -171,7 +181,7 @@ def test_readback_parser_matches_exact_owner_preview_without_network() -> None:
         "ruleset": preview["ruleset"],
         "codeowners": preview["codeowners"],
     }
-    normalized = protection.parse_readback_fixture(fixture)
+    normalized = protection.parse_readback_fixture(fixture, preview)
     assert normalized == protection.expected_readback(preview)
     assert normalized["ruleset"]["required_check"] == {
         "context": "legal-rule-authority / strict-scan", "integration_id": 15368,
