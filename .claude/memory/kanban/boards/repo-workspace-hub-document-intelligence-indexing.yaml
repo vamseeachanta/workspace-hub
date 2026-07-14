@@ -154,7 +154,6 @@ cards:
       - priority:medium
       - cat:data-pipeline
       - machine:dev-primary
-      - dispatch:ready
       - gate:completeness
       - domain:document-intelligence-indexing
       - lane:codex

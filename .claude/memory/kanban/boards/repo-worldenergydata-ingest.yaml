@@ -1664,3 +1664,16 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1020
+    title: 'data(cost): contract-award asset registry per sanctioned project — sourced stage split (feeds A1)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1020
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
