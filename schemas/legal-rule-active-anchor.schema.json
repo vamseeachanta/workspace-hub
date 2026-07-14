@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/legal-rule-active-anchor-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authority_revision", "expected_head_oid", "generation", "manifest_mac", "schema_id", "slot", "tool_sha"],
+  "properties": {
+    "authority_revision": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "expected_head_oid": {"type": ["string", "null"], "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+    "manifest_mac": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "schema_id": {"const": "legal-rule-active-anchor-v1"},
+    "slot": {"enum": ["current", "pending"]},
+    "tool_sha": {"type": "string", "pattern": "^(?:[0-9a-f]{40}|[0-9a-f]{64})$"}
+  }
+}
