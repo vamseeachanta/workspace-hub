@@ -183,6 +183,33 @@ def test_document_size_order_and_path_traversal_reject():
     policy["forensic_prefixes"] = ["z/", "a/"]
     with pytest.raises(codec.AuthorityFormatError):
         codec.encode_document("policy", policy)
+
+
+@pytest.mark.parametrize("key_id", ["bad\nkey", "x" * 129])
+def test_ledger_rejects_generation_gaps_and_hostile_key_ids(key_id):
+    codec = module("codec")
+    ledger = {
+        "entries": [
+            {"authority_revision": "223e4567-e89b-42d3-a456-426614174000",
+             "generation": 1, "manifest_mac": "a" * 64},
+            {"authority_revision": "423e4567-e89b-42d3-a456-426614174000",
+             "generation": 3, "manifest_mac": "b" * 64},
+        ],
+        "key_id": key_id,
+        "ledger_mac": "c" * 64,
+        "schema_id": "legal-rule-generation-ledger-v1",
+    }
+    with pytest.raises(codec.AuthorityFormatError):
+        codec.encode_document("ledger", ledger)
+
+
+def test_parser_and_integrity_errors_withhold_hostile_bytes():
+    codec = module("codec")
+    hostile = "sensitive-synthetic-fragment"
+    raw = ('{"schema_id":"' + hostile + '"}\n').encode()
+    with pytest.raises(codec.AuthorityFormatError) as caught:
+        codec.decode_document("registry", raw)
+    assert hostile not in str(caught.value)
     policy["forensic_prefixes"] = ["safe/../escape/"]
     with pytest.raises(codec.AuthorityFormatError):
         codec.encode_document("policy", policy)
