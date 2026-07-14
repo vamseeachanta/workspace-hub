@@ -1,0 +1,21 @@
+name: Legal Rule Authority
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  fork-denied:
+    name: strict-scan
+    if: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "owner review required" && exit 1
+
+  strict-scan:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    uses: vamseeachanta/workspace-hub/.github/workflows/legal-rule-authority-reusable.yml@51c547409ba5c62c8f4ef99de6496d290fa8a1fa
