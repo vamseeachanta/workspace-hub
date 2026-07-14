@@ -1,0 +1,1 @@
+{"authority_revision":"12345678-1234-4234-9234-123456789abc","forensic_prefixes":["docs/forensics/"],"generation":1,"limits":{"max_blob_bytes":10485760,"max_entries":10000,"max_findings":1000,"max_request_bytes":104857600},"schema_id":"legal-rule-policy-v1"}

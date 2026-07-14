@@ -1,0 +1,49 @@
+name: legal-rule-authority-reusable
+
+on:
+  workflow_call:
+    inputs:
+      event_name: {required: true, type: string}
+      repository: {required: true, type: string}
+      head_repository: {required: true, type: string}
+      base_ref: {required: true, type: string}
+      head_sha: {required: true, type: string}
+      tool_sha: {required: true, type: string}
+
+permissions:
+  contents: read
+
+jobs:
+  strict-scan:
+    name: strict-scan
+    environment: legal-rule-authority
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      PYTHONNOUSERSITE: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Checkout immutable Phase A tooling
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.tool_sha }}
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Validate trusted workflow context
+        env:
+          EVENT_NAME: ${{ inputs.event_name }}
+          REPOSITORY: ${{ inputs.repository }}
+          HEAD_REPOSITORY: ${{ inputs.head_repository }}
+          BASE_REF: ${{ inputs.base_ref }}
+          HEAD_SHA: ${{ inputs.head_sha }}
+          TOOL_SHA: ${{ inputs.tool_sha }}
+        run: |
+          python3 scripts/legal/manage_rule_authority.py validate-workflow-context \
+            --event-name "$EVENT_NAME" --repository "$REPOSITORY" \
+            --head-repository "$HEAD_REPOSITORY" --base-ref "$BASE_REF" \
+            --head-sha "$HEAD_SHA" --tool-sha "$TOOL_SHA"
+      - name: Validate synthetic public authority bootstrap
+        run: |
+          python3 scripts/legal/manage_rule_authority.py validate-public \
+            --registry config/legal-rule-registry.json \
+            --policy config/legal-rule-authority-policy.json

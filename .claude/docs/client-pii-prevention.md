@@ -84,6 +84,10 @@ any public file is required (and none should name the client).
 reviewed exception.
 
 ## Related
+
+The rule-authority Phase A bootstrap is additive: the legacy client-PII gate remains active
+until a separately approved private migration proves replacement enforcement live.
+
 - Counts-only remediation record: `analysis/3097-generated-pii-remediation.md`
 - Epic #3095; sub-issues #3096 (assessment), #3097 (generated remediation),
   #3098 (hand-authored scrub — incl. relocating `config/client-wikis.yml`),

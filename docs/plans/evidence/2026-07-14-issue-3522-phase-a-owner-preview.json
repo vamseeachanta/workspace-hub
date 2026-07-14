@@ -1,0 +1,53 @@
+{
+  "codeowners": {
+    "owners": ["@vamseeachanta"],
+    "paths": [
+      ".github/workflows/legal-rule-authority-gate.yml",
+      ".github/workflows/legal-rule-authority-reusable.yml",
+      "config/legal-rule-authority-policy.json",
+      "config/legal-rule-registry.json",
+      "schemas/legal-rule-*.schema.json",
+      "scripts/legal/manage_rule_authority.py",
+      "scripts/legal/rule_authority/"
+    ]
+  },
+  "cutover": {
+    "compare_and_swap": ["unchanged_current", "expected_merge_tree", "pending_identity"],
+    "current_envelope": "LEGAL_SCAN_AUTH_CURRENT",
+    "pending_envelope": "LEGAL_SCAN_AUTH_PENDING",
+    "rollback": {
+      "condition": "promoted_identity_matches_preview",
+      "requires_owner_approval": true,
+      "result": "restore_exact_prior_current"
+    }
+  },
+  "environment": {
+    "deployment_branch_policy": {
+      "custom_branch_policies": true,
+      "patterns": ["main"],
+      "protected_branches": false
+    },
+    "name": "legal-rule-authority",
+    "prevent_self_review": true,
+    "reviewers": ["vamseeachanta"]
+  },
+  "issue": 3522,
+  "owner": "vamseeachanta",
+  "repository": "vamseeachanta/workspace-hub",
+  "ruleset": {
+    "block_deletions": true,
+    "block_non_fast_forward": true,
+    "bypass_actors": [],
+    "conditions": {"ref_name": {"exclude": [], "include": ["refs/heads/main"]}},
+    "enforcement": "active",
+    "name": "legal-rule-authority-main",
+    "required_check": {
+      "context": "legal-rule-authority / strict-scan",
+      "integration_id": 15368
+    },
+    "required_pull_request": true,
+    "target": "branch"
+  },
+  "schema_id": "legal-rule-phase-a-owner-preview-v1",
+  "target_ref": "refs/heads/main"
+}
