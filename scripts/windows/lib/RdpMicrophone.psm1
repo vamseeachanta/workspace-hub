@@ -86,6 +86,9 @@ function Repair-RdpMicProfile {
         [Parameter(Mandatory)][string]$Path,
         [Parameter(DontShow)][ValidateSet('None', 'BeforeReplace', 'AfterReplace', 'RestoreFailure')][string]$FaultInjection = 'None'
     )
+    if ($FaultInjection -ne 'None' -and $env:RDP_MIC_TEST_MODE -ne '1') {
+        throw 'FaultInjection is disabled outside the native test harness.'
+    }
     $doc = Get-RdpMicProfileDocument -Path $Path
     $linePattern = '(?im)^audiocapturemode:i:[^\r\n]*'
     $matches = [regex]::Matches($doc.Text, $linePattern)
@@ -330,7 +333,7 @@ function Reset-RdpMicTargetConsent {
     [pscustomobject]@{
         Changed = $true
         SnapshotPath = $snapshot
-        RestoreCommand = "& '$entryPoint' -Role Client -Repair -RestoreSnapshot '$snapshot'"
+        RestoreCommand = ('powershell.exe -NoProfile -ExecutionPolicy Bypass -File "{0}" -Role Client -Repair -RestoreSnapshot "{1}"' -f $entryPoint, $snapshot)
     }
 }
 

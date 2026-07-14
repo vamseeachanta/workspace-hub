@@ -19,7 +19,7 @@
     .\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02
 
 .EXAMPLE
-    .\rdp-microphone.ps1 -Role Client -RdpFile C:\Users\me\Desktop\RDS02.rdp -Repair
+    .\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource C:\Users\me\Desktop\RDS02.rdp -RdpFile C:\Users\me\Desktop\RDS02.rdp -Repair
 
 .EXAMPLE
     .\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02 -Repair -ResetConsent -StateDirectory C:\Temp\RdpMicState
@@ -36,7 +36,7 @@ param(
 
     [string]$TargetHost = 'ACMA-HOU-RDS02',
     [string]$RdpFile,
-    [ValidateSet('Auto', 'Mstsc', 'MSRDC', 'WindowsApp')]
+    [ValidateSet('Auto', 'Mstsc', 'MSRDC', 'WindowsApp', 'Unknown')]
     [string]$ClientType = 'Auto',
     [string]$ConfigurationSource,
     [switch]$Repair,

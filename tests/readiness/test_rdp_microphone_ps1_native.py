@@ -107,7 +107,7 @@ def test_profile_replacement_faults_preserve_recovery_path(
     profile.write_bytes(FIXTURE.read_bytes())
     original = profile.read_bytes()
     command = (
-        f"Import-Module '{MODULE}' -Force; try{{Repair-RdpMicProfile -Path '{profile}' -FaultInjection '{fault}'|Out-Null}}"
+        f"$env:RDP_MIC_TEST_MODE='1'; Import-Module '{MODULE}' -Force; try{{Repair-RdpMicProfile -Path '{profile}' -FaultInjection '{fault}'|Out-Null}}"
         "catch{[pscustomobject]@{Caught=$true;Message=$_.Exception.Message}|ConvertTo-Json -Compress}"
     )
     result = _run(command)
@@ -119,6 +119,22 @@ def test_profile_replacement_faults_preserve_recovery_path(
     assert len(backups) == 1
     assert backups[0].read_bytes() == original
     assert (profile.read_bytes() == original) is original_restored
+
+
+def test_profile_fault_injection_is_rejected_outside_test_mode(tmp_path: Path):
+    profile = tmp_path / "test.rdp"
+    profile.write_bytes(FIXTURE.read_bytes())
+    result = _run(
+        f"Remove-Item Env:RDP_MIC_TEST_MODE -ErrorAction SilentlyContinue; Import-Module '{MODULE}' -Force; "
+        f"try{{Repair-RdpMicProfile -Path '{profile}' -FaultInjection BeforeReplace|Out-Null}}"
+        "catch{[pscustomobject]@{Caught=$true;Message=$_.Exception.Message}|ConvertTo-Json -Compress}"
+    )
+    assert result.returncode == 0, result.stderr
+    failure = json.loads(result.stdout)
+    assert failure["Caught"] is True
+    assert "disabled outside the native test harness" in failure["Message"]
+    assert profile.read_bytes() == FIXTURE.read_bytes()
+    assert not list(tmp_path.glob("*.backup-*"))
 
 
 def test_entrypoint_whatif_remains_json_only_and_writes_nothing(tmp_path: Path):
@@ -177,6 +193,25 @@ def test_modern_clients_refuse_classic_profile_repair(tmp_path: Path, client_typ
             POWERSHELL, "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass",
             "-File", str(ENTRYPOINT), "-Role", "Client", "-RdpFile", str(profile),
             "-ClientType", client_type, "-ConfigurationSource", str(profile), "-Repair",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert result.returncode == 2
+    report = json.loads(result.stdout)
+    assert "only a proven classic mstsc profile" in report["Error"]
+    assert profile.read_bytes() == FIXTURE.read_bytes()
+
+
+def test_explicit_unknown_client_refuses_profile_repair(tmp_path: Path):
+    profile = tmp_path / "test.rdp"
+    profile.write_bytes(FIXTURE.read_bytes())
+    result = subprocess.run(
+        [
+            POWERSHELL, "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass",
+            "-File", str(ENTRYPOINT), "-Role", "Client", "-RdpFile", str(profile),
+            "-ClientType", "Unknown", "-ConfigurationSource", str(profile), "-Repair",
         ],
         capture_output=True,
         text=True,
@@ -298,7 +333,7 @@ def test_consent_reset_restore_round_trip_and_conflict_refusal(tmp_path: Path):
         "if(-not(Test-Path $path)){New-Item -Path $path -Force|Out-Null}; "
         f"$name='{target}'; New-ItemProperty -LiteralPath $path -Name $name -Value 204 -PropertyType DWord -Force|Out-Null; "
         f"try{{$reset=Reset-RdpMicTargetConsent -TargetHost $name -StateDirectory '{state}' -Confirm:$false; "
-        "$missing=$null -eq (Get-Item $path).GetValue($name,$null); $absoluteRestore=$reset.RestoreCommand.StartsWith(\"& '\") -and $reset.RestoreCommand.Contains(':\\'); "
+        "$missing=$null -eq (Get-Item $path).GetValue($name,$null); $absoluteRestore=$reset.RestoreCommand.StartsWith('powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"') -and $reset.RestoreCommand.Contains(':\\'); "
         "$restore=Restore-RdpMicConsentSnapshot -SnapshotPath $reset.SnapshotPath -Confirm:$false; "
         "$roundtrip=(Get-Item $path).GetValue($name,$null) -eq 204; Remove-ItemProperty -LiteralPath $path -Name $name; "
         "$reset2=$null; New-ItemProperty -LiteralPath $path -Name $name -Value 204 -PropertyType DWord|Out-Null; "
