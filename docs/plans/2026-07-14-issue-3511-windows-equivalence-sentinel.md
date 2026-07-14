@@ -1,6 +1,6 @@
 # Plan for #3511: Fail-closed Windows equivalence sentinel and exact state publishing
 
-> **Status:** plan-review — adversarial review complete; waiting for user approval; implementation is not authorized
+> **Status:** plan-approved — user approved on 2026-07-14; TDD implementation authorized
 > **Complexity:** T3
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3511
