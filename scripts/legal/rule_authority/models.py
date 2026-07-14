@@ -188,6 +188,62 @@ def validate_ledger(value: object) -> None:
         raise ModelError("ledger revisions must be unique")
 
 
+def _closed_ascii(value: object, label: str) -> str:
+    if (not isinstance(value, str) or not value or not value.isascii() or
+            len(value) > 256):
+        raise ModelError(f"invalid {label}")
+    return value
+
+
+def _relative_path(value: object) -> str:
+    path = _closed_ascii(value, "file path")
+    parts = path.split("/")
+    if path.startswith("/") or any(part in {"", ".", ".."} for part in parts):
+        raise ModelError("invalid file path")
+    return path
+
+
+def validate_complete(value: object) -> None:
+    fields = {"api_snapshot_id", "authority_revision", "complete_mac",
+              "coverage_states", "files", "generation", "manifest_mac",
+              "ref_snapshot_id", "schema_id", "transaction_id"}
+    doc = _keys(value, fields)
+    _schema(doc["schema_id"], "legal-rule-complete-v1")
+    _uuid4(doc["authority_revision"])
+    _uuid4(doc["transaction_id"])
+    _u64(doc["generation"], 1)
+    _hex64(doc["manifest_mac"])
+    _hex64(doc["complete_mac"])
+    _closed_ascii(doc["api_snapshot_id"], "snapshot")
+    _closed_ascii(doc["ref_snapshot_id"], "snapshot")
+    _validate_coverage(doc["coverage_states"])
+    _validate_files(doc["files"])
+
+
+def _validate_coverage(value: object) -> None:
+    if not isinstance(value, dict) or not value:
+        raise ModelError("invalid coverage")
+    names = [_closed_ascii(name, "coverage name") for name in value]
+    if names != sorted(names):
+        raise ModelError("coverage names must be sorted")
+    states = {"scanned", "queried-no-access", "provider-follow-up", "unknown-residual"}
+    if any(state not in states for state in value.values()):
+        raise ModelError("invalid coverage state")
+
+
+def _validate_files(value: object) -> None:
+    if not isinstance(value, list):
+        raise ModelError("invalid files")
+    paths = []
+    for entry in value:
+        item = _keys(entry, {"path", "sha256", "size"})
+        paths.append(_relative_path(item["path"]))
+        _hex64(item["sha256"])
+        _u64(item["size"])
+    if paths != sorted(paths) or len(paths) != len(set(paths)):
+        raise ModelError("files must be sorted and unique")
+
+
 VALIDATORS: dict[str, Callable[[object], None]] = {
     "registry": validate_registry,
     "policy": validate_policy,
@@ -195,6 +251,7 @@ VALIDATORS: dict[str, Callable[[object], None]] = {
     "manifest": validate_manifest,
     "anchor": validate_anchor,
     "ledger": validate_ledger,
+    "complete": validate_complete,
 }
 
 

@@ -35,23 +35,63 @@ def _check_metadata(info: os.stat_result, required_mode: int) -> None:
         raise PrivateFilesystemError("unsafe private file metadata")
 
 
+def _open_parent(path: Path) -> tuple[int, os.stat_result]:
+    absolute = Path(os.path.abspath(path))
+    descriptor = os.open(absolute.anchor, os.O_RDONLY | os.O_DIRECTORY)
+    private_boundary = False
+    try:
+        for component in absolute.parts[1:-1]:
+            child = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
+                            dir_fd=descriptor)
+            info = os.fstat(child)
+            mode = stat.S_IMODE(info.st_mode)
+            if private_boundary or (info.st_uid == os.getuid() and mode == 0o700):
+                private_boundary = True
+                _check_metadata(info, 0o700)
+            os.close(descriptor)
+            descriptor = child
+        parent_info = os.fstat(descriptor)
+        _check_metadata(parent_info, 0o700)
+        return descriptor, parent_info
+    except Exception:
+        os.close(descriptor)
+        raise
+
+
+def _read_key_at(parent_fd: int, name: str) -> bytes:
+    descriptor = os.open(name, os.O_RDONLY | os.O_NOFOLLOW, dir_fd=parent_fd)
+    try:
+        info = os.fstat(descriptor)
+        if not stat.S_ISREG(info.st_mode):
+            raise PrivateFilesystemError("key is not a regular file")
+        _check_metadata(info, 0o600)
+        raw = os.read(descriptor, 1024)
+        if os.read(descriptor, 1):
+            raise PrivateFilesystemError("key file too large")
+        return raw
+    finally:
+        os.close(descriptor)
+
+
+def _parent_path_matches(path: Path, expected: os.stat_result) -> bool:
+    descriptor, actual = _open_parent(path)
+    try:
+        return (expected.st_dev, expected.st_ino) == (actual.st_dev, actual.st_ino)
+    finally:
+        os.close(descriptor)
+
+
 def _load_key_file(path: Path) -> bytes:
     try:
-        parent_info = path.parent.lstat()
-        if stat.S_ISLNK(parent_info.st_mode) or not stat.S_ISDIR(parent_info.st_mode):
-            raise PrivateFilesystemError("unsafe private parent")
-        _check_metadata(parent_info, 0o700)
-        descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+        parent_fd, before = _open_parent(path)
         try:
-            info = os.fstat(descriptor)
-            if not stat.S_ISREG(info.st_mode):
-                raise PrivateFilesystemError("key is not a regular file")
-            _check_metadata(info, 0o600)
-            raw = os.read(descriptor, 1024)
-            if os.read(descriptor, 1):
-                raise PrivateFilesystemError("key file too large")
+            raw = _read_key_at(parent_fd, Path(path).name)
+            after = os.fstat(parent_fd)
+            stable_fd = (before.st_dev, before.st_ino) == (after.st_dev, after.st_ino)
+            if not stable_fd or not _parent_path_matches(path, before):
+                raise PrivateFilesystemError("private parent changed")
         finally:
-            os.close(descriptor)
+            os.close(parent_fd)
     except (OSError, UnicodeError) as exc:
         if isinstance(exc, PrivateFilesystemError):
             raise
@@ -62,9 +102,10 @@ def _load_key_file(path: Path) -> bytes:
 def load_key(*, key_file: Path | None, env_name: str | None,
              environ: Mapping[str, str]) -> bytes:
     """Load exactly one canonical 32-byte key without logging its locator/value."""
-    env_selected = env_name is not None and env_name in environ
-    if (key_file is not None) == env_selected:
+    if (key_file is None) == (env_name is None):
         raise PrivateFilesystemError("select exactly one key source")
     if key_file is not None:
         return _load_key_file(Path(key_file))
+    if env_name not in environ:
+        raise PrivateFilesystemError("selected key source unavailable")
     return _decode_key(environ[env_name], trailing_lf=False)

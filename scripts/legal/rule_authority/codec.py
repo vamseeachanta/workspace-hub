@@ -13,6 +13,7 @@ MAXIMUMS = {
     "manifest": 2 * 1024 * 1024,
     "anchor": 2 * 1024,
     "ledger": 2 * 1024 * 1024,
+    "complete": 2 * 1024 * 1024,
 }
 
 

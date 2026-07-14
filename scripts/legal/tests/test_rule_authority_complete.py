@@ -17,6 +17,18 @@ ROOT = LEGAL.parents[1]
 sys.path.insert(0, str(LEGAL))
 
 COMPLETE_DOMAIN = b"LEGAL-RULE-COMPLETE\0v1\0"
+EXPECTED_COMPLETE = (
+    b'{"api_snapshot_id":"api-snapshot-synthetic","authority_revision":'
+    b'"123e4567-e89b-42d3-a456-426614174000","complete_mac":'
+    b'"9c8eab050ea93dc724ce43b2cb09ae438f43ed3da4f8a39c762ba836ea9444c4",'
+    b'"coverage_states":{"git":"scanned"},"files":[{"path":"coverage.json",'
+    b'"sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",'
+    b'"size":42}],"generation":2,"manifest_mac":'
+    b'"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",'
+    b'"ref_snapshot_id":"ref-snapshot-synthetic","schema_id":'
+    b'"legal-rule-complete-v1","transaction_id":'
+    b'"423e4567-e89b-42d3-a456-426614174000"}\n'
+)
 
 
 def modules():
@@ -45,10 +57,11 @@ def test_complete_document_has_independent_golden_hmac_and_bytes():
     expected_mac = hmac.new(KEY, expected_input, hashlib.sha256).hexdigest()
     document = complete.create_complete(unsigned, KEY)
     assert complete.complete_mac_input(unsigned) == expected_input
+    assert expected_mac == "9c8eab050ea93dc724ce43b2cb09ae438f43ed3da4f8a39c762ba836ea9444c4"
     assert document["complete_mac"] == expected_mac
     raw = codec.encode_document("complete", document)
     assert codec.decode_document("complete", raw) == document
-    assert raw == codec.canonical_bytes(document)
+    assert raw == EXPECTED_COMPLETE
     assert complete.verify_complete(raw, KEY) == document
 
 

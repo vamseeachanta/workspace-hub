@@ -7,17 +7,25 @@ from dataclasses import dataclass
 from pathlib import PurePosixPath
 
 PRIVATE_MARKERS = (
-    b"legal-rule-map-v1",
-    b"legal-rule-authority-manifest-v1",
-    b"legal-rule-active-anchor-v1",
-    b"legal-rule-generation-ledger-v1",
-    b"legal-rule-complete-v1",
+    b"legal-rule-private-report-v1",
+    b"legal-rule-coverage-v1",
+    b"core.repositoryformatversion",
     b"PACK\x00\x00\x00\x02",
     b"\xfftOc",
 )
-PUBLIC_MARKERS = {
-    b"legal-rule-registry-v1": "config/legal-rule-registry.json",
-    b"legal-rule-policy-v1": "config/legal-rule-authority-policy.json",
+CANONICAL_MARKERS = {
+    b"legal-rule-registry-v1": frozenset({
+        "config/legal-rule-registry.json", "schemas/legal-rule-registry.schema.json"}),
+    b"legal-rule-policy-v1": frozenset({
+        "config/legal-rule-authority-policy.json", "schemas/legal-rule-policy.schema.json"}),
+    b"legal-rule-map-v1": frozenset({"schemas/legal-rule-map.schema.json"}),
+    b"legal-rule-authority-manifest-v1": frozenset({
+        "schemas/legal-rule-authority-manifest.schema.json"}),
+    b"legal-rule-active-anchor-v1": frozenset({
+        "schemas/legal-rule-active-anchor.schema.json"}),
+    b"legal-rule-generation-ledger-v1": frozenset({
+        "schemas/legal-rule-generation-ledger.schema.json"}),
+    b"legal-rule-complete-v1": frozenset({"schemas/legal-rule-complete.schema.json"}),
 }
 
 
@@ -29,12 +37,18 @@ class SensitiveArtifacts:
     decoded_patterns: tuple[bytes, ...]
     exact_artifacts: tuple[bytes, ...]
     prohibited_basenames: frozenset[str]
+    digests: tuple[bytes, ...] = ()
+    individual_values: tuple[bytes, ...] = ()
 
 
 def _sensitive_encodings(sensitive: SensitiveArtifacts) -> tuple[bytes, ...]:
     encoded = [sensitive.key, base64.b64encode(sensitive.key)]
     for pattern in sensitive.decoded_patterns:
+        encoded.append(pattern)
         encoded.append(base64.b64encode(pattern))
+    for digest in sensitive.digests:
+        encoded.extend((digest, digest.hex().encode("ascii"), base64.b64encode(digest)))
+    encoded.extend(sensitive.individual_values)
     encoded.extend(sensitive.exact_artifacts)
     return tuple(value for value in encoded if value)
 
@@ -45,8 +59,8 @@ def _has_private_bytes(payload: bytes, sensitive: SensitiveArtifacts) -> bool:
 
 
 def _misplaced_public_marker(path: str, payload: bytes) -> bool:
-    for marker, canonical_path in PUBLIC_MARKERS.items():
-        if marker in payload and path != canonical_path:
+    for marker, canonical_paths in CANONICAL_MARKERS.items():
+        if marker in payload and path not in canonical_paths:
             return True
     return False
 

@@ -3,10 +3,11 @@
   "$id": "https://schemas.example.invalid/legal-rule-complete-v1.json",
   "type": "object",
   "additionalProperties": false,
-  "required": ["api_snapshot_id", "authority_revision", "coverage_states", "files", "generation", "manifest_mac", "ref_snapshot_id", "schema_id", "transaction_id"],
+  "required": ["api_snapshot_id", "authority_revision", "complete_mac", "coverage_states", "files", "generation", "manifest_mac", "ref_snapshot_id", "schema_id", "transaction_id"],
   "properties": {
     "api_snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
     "authority_revision": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "complete_mac": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
     "coverage_states": {
       "type": "object",
       "minProperties": 1,
