@@ -313,7 +313,7 @@ No implementation file will be modified until the reviewed plan receives explici
 | `test_resolver_fails_when_all_candidates_broken` | every candidate returns nonzero | resolver and fingerprint return nonzero |
 | `test_fingerprint_success_is_nonempty_valid_json` | nominal generation | required fields parse and match registry identity |
 | `test_fingerprint_failure_preserves_previous_valid_output` | emitter fails after a prior good file | prior file remains byte-identical |
-| `test_acma_ws014_identity_regression` | registry alias resolution | `ace-win-2`, `contribute-minimal` |
+| `test_ace_win_2_identity_regression` | registry alias resolution | `ace-win-2`, `contribute-minimal` |
 | `test_schema_rejects_wrong_types_version_and_key_set` | null/bool/string identity/version values plus missing/extra keys | validation error before Git write |
 | `test_schema_rejects_bad_timestamp_and_nonfinite_numbers` | naive/invalid timestamp and NaN/Infinity/negative numeric fields | validation error before Git write |
 | `test_schema_accepts_nullable_optional_telemetry` | documented null telemetry with otherwise exact v1 payload | validation succeeds |
