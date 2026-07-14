@@ -14,20 +14,20 @@ code{background:#eef1f4;padding:.1em .35em;border-radius:4px}.gate{border-left:5
 </style></head><body><main>
 <div class="eyebrow">Adversarially reviewed draft · Issue #3533</div>
 <h1>Standards facts must remain separate.</h1>
-<p class="lead">The registry will stop treating publisher currentness, a filename, transfer completion, lawful access, permission, and technical acceptance as interchangeable facts.</p>
+<p class="lead">The registry will stop treating publisher currentness, a filename, legacy porting status, lawful access, permission, and technical acceptance as interchangeable facts.</p>
 <div class="grid">
-  <section class="card"><span class="tag">Public-safe</span><h2>What workspace-hub will hold</h2><ul><li>Canonical code identity</li><li>Official publisher designation and evidence date</li><li>Implementation-basis metadata</li><li>Transfer history with verified or legacy-unverified evidence</li><li>A blocked or metadata-only resolution gate</li></ul></section>
+  <section class="card"><span class="tag">Public-safe</span><h2>What workspace-hub will hold</h2><ul><li>Canonical code identity</li><li>Official publisher designation and evidence date</li><li>Implementation-basis metadata</li><li>Legacy porting status separated from evidenced implementation</li><li>A blocked or metadata-only resolution gate</li></ul></section>
   <section class="card gate"><h2>What it will not publish</h2><ul><li>Document fingerprints or exact holdings</li><li>Private paths or access evidence</li><li>Permission or licensing decisions</li><li>Qualified-review details</li><li>Licensed text, tables, OCR, or coefficients</li></ul><p>Private authority evidence requires separately approved llm-wiki issue #840.</p></section>
 </div>
 <h2>Four independent questions</h2>
 <table><thead><tr><th>Question</th><th>Evidence</th><th>Fail-closed rule</th></tr></thead><tbody>
 <tr><td>What is current?</td><td>Official publisher catalog and verification time</td><td>Does not prove possession or applicability</td></tr>
-<tr><td>What was transferred?</td><td>Destination alias plus reconciled content identity</td><td>Legacy empty-path <code>done</code> becomes legacy-unverified</td></tr>
+<tr><td>What was implemented?</td><td>Public code/test/decision reference</td><td>Legacy <code>done</code> is porting input, never authority</td></tr>
 <tr><td>What may be used?</td><td>Private, purpose-scoped access/permission evidence</td><td>Possession and subscription imply nothing</td></tr>
 <tr><td>What is technically accepted?</td><td>Qualified decision against an exact source identity</td><td>Current reachability affects usability, not historical decision integrity</td></tr>
 </tbody></table>
 <div class="grid">
-<section class="card"><h2>Implementation controls</h2><ul><li>Closed JSON/YAML schema and strict enums</li><li>Logical joins by code ID; holding joins by exact namespaced content identity</li><li>Injected build time, deterministic dry run, validation, atomic replacement</li><li>Consumer migration across reports, lookup, readiness, research, and domain views</li><li>Hermetic digest, chronology, collision, and disclosure tests</li></ul></section>
+<section class="card"><h2>Implementation controls</h2><ul><li>Closed JSON/YAML schema and strict enums</li><li>Logical joins by code ID; private authority stays outside the public repo</li><li>Injected build time, deterministic dry run, validation, atomic replacement</li><li>Consumer migration across reports, lookup, readiness, research, and domain views</li><li>Hermetic chronology, cutoff, collision, and disclosure tests</li></ul></section>
 <section class="card gate"><h2>Human gates</h2><ul><li>This plan requires explicit user approval after review.</li><li>Private evidence storage requires a separate approved plan.</li><li>A qualified reviewer must decide any technical basis.</li><li>No approval here authorizes DNV numerical changes or licensed-source inspection.</li></ul></section>
 </div>
 <h2>Delivery sequence</h2>

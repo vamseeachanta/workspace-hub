@@ -6,7 +6,7 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3533
 > **Client:** N/A
 > **Lane:** lane:codex
-> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3533-claude.md` | `scripts/review/results/2026-07-14-plan-3533-codex.md` | `scripts/review/results/2026-07-14-plan-3533-gemini.md`
+> **Review artifacts:** round 1 in `scripts/review/results/2026-07-14-plan-3533-*`; round 2 in `scripts/review/results/r2/2026-07-14-plan-3533-*`
 
 ---
 
@@ -19,7 +19,7 @@
 - `scripts/data/document-index/build-ledger.py:193-247,268-353` currently derives `done` from upstream `implemented` state or a completed work item and rewrites the whole YAML from a legacy-only mapping. An unmodified generator would erase hand-added enrichment.
 - `scripts/document-intelligence/batch-process-standards.py:134-177` currently excludes `done` rows and can mark a candidate `done` without a positive file-existence result. `tests/document-intelligence/test_marine_standards_batch.py:179-215` currently encodes that behavior.
 - `scripts/readiness/code-version-guard.sh:35-116` currently uses a scalar-only parser, checks four legacy keys, reports informational output, and exits zero. Nested canonical fields would be invisible without a consumer migration.
-- `query-ledger.py`, `generate-coverage-report.py`, `scripts/knowledge/doc-key-lookup.py`, `scripts/document-intelligence/cross-reference-registries.py`, and `marine-taxonomy-classifier.py` consume legacy transfer state and/or paths. `scripts/data/research-literature/research-domain.py` maps several transfer states to `available`; `scripts/data/generate-domain-resource-views.py` renders `done` as acquired. These consumers will migrate or explicitly retain transfer-only behavior.
+- `query-ledger.py`, `generate-coverage-report.py`, `scripts/knowledge/doc-key-lookup.py`, `scripts/document-intelligence/cross-reference-registries.py`, and `marine-taxonomy-classifier.py` consume legacy porting status and/or paths. `research-domain.py` maps several statuses to `available`; `generate-domain-resource-views.py` renders `done` as acquired. These consumers will stop inferring possession/authority from porting state.
 
 ### Standards and source authority
 
@@ -39,24 +39,25 @@ Official catalog metadata will establish publisher identity and currentness only
 ### Documents and issues consulted
 
 - `docs/document-intelligence/standards-codes-provenance-reuse-contract.md:64-190,407-419` defines `doc_key` as namespaced content identity, paths as aliases, edition-changing content as a new identity, minimum provenance, and ledger `status` as transfer state rather than processing/access/rights state.
-- `docs/reports/intelligence-metric-source-of-truth-map.md:8-31` makes ledger totals and per-row transfer state canonical metrics; migration will therefore preserve transfer semantics and update downstream counts explicitly.
+- `docs/reports/intelligence-metric-source-of-truth-map.md:8-31` makes ledger totals and per-row legacy state canonical metrics; migration will rename its actual porting/implementation semantics and update downstream counts explicitly.
 - `data/document-index/intelligence-accessibility-registry.yaml:218-268` records asset-level reachability and is already stale at 425 ledger records versus 436 live rows; it cannot stand in for record-level verification.
 - `config/drive-index-registry.yml:48-97` records the O&G inventory as 2025-12-28 with no refresh and the frozen master index as 2026-04-17. Those catalogs will remain discovery evidence only.
+- `DRIVE_SEARCH_NO_METRICS=1 timeout 45 uv run python scripts/data/drive-index-search/search.py "DNV-RP-C203 BS 7608" --json --caller plan-resource-intel` completed on 2026-07-14. It queried six registered indexes, returned older C203/BS filename families plus unrelated token matches, and warned that O&G (198 days), CAD (18 days), and master index (88 days) exceeded thresholds. Per the playbook, this plan records aggregate/de-identified findings only; paths, hashes, OCR artifacts, and bodies are not authority evidence.
 - [#2207](https://github.com/vamseeachanta/workspace-hub/issues/2207) owns the existing provenance contract; [#2250](https://github.com/vamseeachanta/workspace-hub/issues/2250) owns canonical ledger metrics.
-- Open [#2362](https://github.com/vamseeachanta/workspace-hub/issues/2362) proposes broad `doc_key` backfill and an `unreachable` ledger status. #3533 will not absorb the broad backfill and will prevent access/reachability from overloading transfer state. #2362 will require re-planning against this contract before parallel implementation.
+- Open [#2362](https://github.com/vamseeachanta/workspace-hub/issues/2362) proposes broad `doc_key` backfill and an `unreachable` ledger status. #3533 will not absorb the broad backfill and will prevent access/reachability from overloading porting state. Its `dispatch:ready` label is removed and a coordination comment requires re-planning.
 - [#3538](https://github.com/vamseeachanta/workspace-hub/issues/3538) will own any amendment or exact-source extension to the calculation citation contract.
 
 ### Gaps identified
 
-- No machine-validated schema currently separates publisher currentness, holdings, access, reuse rights, qualified technical review, and transfer state.
+- No machine-validated public schema currently separates publisher currentness, implementation state, and blocked authority while excluding private evidence.
 - No durable producer path currently round-trips per-standard enrichment through a ledger rebuild.
 - No validator currently rejects malformed content identities such as a 32-hex digest mislabeled `sha256:`. A machine-local, gitignored `data/document-index/index.jsonl` sample contains this defect class; CI will use a hermetic synthetic fixture instead.
-- No consumer currently calculates “usable for engineering” from all required evidence while keeping legacy transfer metrics distinct.
+- Public consumers currently infer availability from porting status even though public data cannot establish engineering usability.
 - No existing artifact establishes lawful access, reuse rights, or qualified acceptance for the DNV-RP-C203 or BS 7608 holdings. Those values will remain `unknown` or `pending`.
 
 ### Evidence (embedded verification)
 
-**Issue status, verified 2026-07-14:** #3533, #2362, #2363, and #3538 are OPEN; #2207 and #2250 are CLOSED.
+**Issue status, verified 2026-07-14:** #3533, #2362, and #3538 are OPEN; #2207 and #2250 are CLOSED.
 
 **Empirical record checks:** a safe YAML parse returns 436 ledger rows, 435 with `status: done`, 142 `done` rows without either path, zero rows with `doc_key`, and no DNV-RP-C203 row. The BS-7608 row is `done` with empty paths.
 
@@ -75,39 +76,44 @@ The implementation will keep four independent questions explicit:
 3. **Access and purpose-scoped permissions** — access authorization will remain separate from permission for internal calculation use, metadata storage, derived numeric outputs, and text/table reproduction. Possession or subscription will imply none of them. The existing provenance contract's term “reuse” will remain reserved for reusing L2 outputs instead of reparsing L1; this schema will not overload it as a legal-rights verdict.
 4. **Qualified technical review** — accepted/rejected/pending status against an exact basis identity, decision reference, time, and reviewer role. Currentness or possession will not imply fitness for calculations.
 
-`code-registry.yaml` will own public-safe logical code identity, publisher-current metadata, implementation basis, and an opaque pending/blocked authority state. The transfer ledger will own transfer history and public-safe discovery aliases. Exact holdings, fingerprints, access evidence, permissions, and qualified-review evidence will not enter this public repository; private-registry ownership will be planned under [llm-wiki #840](https://github.com/vamseeachanta/llm-wiki/issues/840). Both layers will reuse the existing `doc_key` contract where exact private holdings exist.
+`code-registry.yaml` will own public-safe logical identity, publisher metadata, implementation-basis metadata, and a blocked resolution gate. The historically named transfer ledger will retain legacy engineering-code porting/migration state and discovery aliases; it will not be relabeled as physical transfer history, possession, or authority. Exact holdings, fingerprints, access, permissions, and qualified-review evidence will not enter this public repository; private ownership will be planned under [llm-wiki #840](https://github.com/vamseeachanta/llm-wiki/issues/840).
 
-Legacy `our_edition`, `latest_known_edition`, and `status` fields will remain read-compatible mirrors for one migration wave. The canonical nested fields will define their meaning, and validation will require mirror equality. Ledger `status` will remain transfer state; it will never encode access, rights, publisher currentness, or technical review.
+Legacy `our_edition`, `latest_known_edition`, and `status` will remain deprecated read fields for one wave; they will not be equality mirrors because their current vocabularies conflate meanings. Canonical fields will be `implementation_basis`, `publisher_current`, `resolution_gate`, and `implementation_status`. The ledger's legacy `status` will be treated only as historical porting/migration input.
 
-Transfer completion and engineering usability will use independent evidence. A new transfer will reach `done` only with a positive destination alias plus content identity/reconciliation evidence; it will not require technical acceptance or use permission. Existing `done` rows without that evidence will keep their historical transfer value and receive `transfer_evidence_status: legacy-unverified`; they will not count as verified transfers or engineering-usable records. No migration will rewrite their history to an access or processing status.
+At migration, all 436 legacy row IDs and a canonical input hash will be captured in a grandfather manifest. Existing `done` values will remain only as `legacy_status`; canonical `implementation_status` will default to `unknown` unless a public code/test evidence reference proves implementation. After the cutoff, the producer and every writer will be forbidden from synthesizing `done` or grandfathering new rows from `implemented` sources or completed work items. No public status will imply rights or engineering usability.
 
-Two joins will be explicit. Logical publisher records will join only by canonical edition-independent `code_id`. A holding, access assertion, permission assertion, or accepted technical basis will join only by the full namespaced `doc_key` plus asserted revision/amendment; code ID alone will never attach current metadata to an older edition.
+Public logical and publisher records will join only by canonical edition-independent `code_id`. Exact holding/permission/review joins are outside [#3533](https://github.com/vamseeachanta/workspace-hub/issues/3533) and will be defined privately by [llm-wiki #840](https://github.com/vamseeachanta/llm-wiki/issues/840); this plan will not validate or derive private usability.
 
 The public cross-repo interface name/version will be finalized by this implementation rather than pre-authorized downstream. Its allowlist will expose only canonical code identity, official publisher metadata, evidence URL/time/type, and `resolution_gate: blocked | metadata-only`. It will expose no fingerprint, holding, path, access fact, permission decision, reviewer state, or private evidence reference. LLM-wiki #837 will consume the landed schema through an adapter. Missing, stale, unsupported-version, or identity-mismatched records will fail closed.
 
-### Concrete public schema
+### Canonical registry schema (`standards-registry.schema.json`)
 
 ```yaml
 schema_version: "1"
-standard_identity: {code_id: <canonical id>, publisher: <publisher>}
-publisher_current:
-  designation: <publisher designation>
-  edition: <quoted value or unknown>
-  amendment: <quoted value or none/unknown>
-  lifecycle: current | withdrawn | superseded | unknown
-  evidence: {kind: publisher_catalog, url: <official URL>, verified_at: <RFC3339>}
-implementation_basis:
-  edition: <quoted value or unknown>
-  amendment: <quoted value or none/unknown>
-  evidence_ref: <public decision reference or none>
-transfer:
-  legacy_status: <existing status>
-  evidence_status: verified | legacy-unverified | not-applicable
-resolution_gate: blocked | metadata-only
-private_authority_state: private-record-required | not-applicable
+codes:
+  - standard_identity: {code_id: <canonical id>, publisher: <publisher>}
+    publisher_current:
+      designation: <publisher designation>
+      edition: <quoted value or unknown>
+      edition_published_at: <date or unknown>
+      amendment: <quoted value or none/unknown>
+      amendment_published_at: <date or none/unknown>
+      amendment_parent_edition: <edition or none/unknown>
+      lifecycle: current | withdrawn | superseded | unknown
+      evidence: {kind: publisher_catalog, url: <official URL>, verified_at: <RFC3339>}
+    implementation_basis:
+      edition: <quoted value or unknown>
+      amendment: <quoted value or none/unknown>
+      evidence_ref: <public code/test/decision reference or none>
+    implementation_status: implemented | not-implemented | unknown
+    resolution_gate: blocked | metadata-only
 ```
 
-The schema will be closed. Dates will be quoted RFC3339 values. Edition/amendment chronology will use explicit publisher dates/evidence, never lexical string order. `unknown`, `none`, and `not-applicable` will remain distinct. A historical qualified decision stored privately will remain valid against its exact `doc_key` if a mount later becomes unreachable; current usability will be a separate transient derivation.
+The ledger and curated input will each receive their own closed schema matching their live top-level envelopes. The ledger schema will carry `legacy_status`, canonical `implementation_status`, public evidence references, and grandfather-manifest membership; it will carry no authority or usability field. Dates will be quoted. Chronology will use publication dates and explicit amendment-parent identity, never lexical edition ordering.
+
+### Public export schema (`standards-authority-public.schema.json`)
+
+The export allowlist will contain only `schema_version`, `generated_at`, `standard_identity`, `publisher_current` (including its official evidence), and `resolution_gate`. It will exclude implementation basis/status, all ledger fields, private-state hints, free-text notes, fingerprints, holdings, paths, permissions, reviews, and private references. Unknown keys and free-text payload fields will fail validation.
 
 ---
 
@@ -119,54 +125,45 @@ The schema will be closed. Dates will be quoted RFC3339 values. Edition/amendmen
 | Human review companion | `docs/plans/2026-07-14-issue-3533-standards-registry-authority-contract.html` |
 | Registry schema | `data/design-codes/standards-registry.schema.json` |
 | Curated enrichment input | `data/document-index/standards-authority-metadata.yaml` |
+| Ledger/input schemas and cutoff | `data/document-index/standards-ledger.schema.json`; `data/document-index/standards-authority-metadata.schema.json`; `data/document-index/standards-ledger-grandfather.json` |
 | Public cross-repo schema/export | `data/design-codes/standards-authority-public.schema.json`; `data/design-codes/standards-authority-public.json` |
 | Validator | `scripts/data/document-index/validate-standards-registries.py` |
 | Tests | `tests/data/document-index/test_standards_registry_contract.py` |
-| Review artifacts | `scripts/review/results/2026-07-14-plan-3533-{claude,codex,gemini}.md` |
+| Review artifacts | round 1 under `scripts/review/results/`; round 2 under `scripts/review/results/r2/` |
 
 ---
 
 ## Deliverable
 
-A versioned, machine-validated standards-record contract and producer/consumer migration will distinguish publisher currentness, exact holdings, access, rights, technical acceptance, and transfer state without claiming facts that available evidence does not establish.
+A versioned public contract and producer/consumer migration will distinguish publisher currentness, implementation/porting state, and blocked authority without publishing or inferring private holdings, access, permissions, or technical acceptance.
 
 ---
 
 ## Pseudocode
 
 ```text
-function validate_record(record, registry_kind):
+function validate_public_record(record, registry_kind):
     validate schema version and allowed state vocabularies
-    validate publisher-current evidence independently from holdings
-    for each holding:
-        validate namespaced digest shape; never cross-join digest namespaces
-        require designation assertion and verification metadata
-        keep reachability, access, and each purpose-scoped permission independent
-    if technical review is accepted:
-        require exact basis doc_key, decision_ref, reviewer_role, reviewed_at
-        validate the historical decision against its exact identity
-    validate deprecated mirrors equal canonical values
+    validate publisher chronology, amendment parent, and official evidence
+    require implementation evidence for canonical implemented status
+    require resolution_gate blocked when private authority is unavailable
+    reject private/free-text fields from the public export
 
 function build_ledger(base_sources, curated_authority_metadata, as_of, output_path):
     reject normalized-id collisions and orphan curated records
-    generate deterministic legacy transfer rows using injected as_of
+    preserve grandfathered legacy_status only for manifest members
+    reject any post-cutoff synthesis of done from upstream/work-item state
     join logical metadata by canonical code_id
-    join holding/review evidence only by full doc_key plus revision/amendment
-    never synthesize evidence, doc_key, access, rights, or acceptance
+    never synthesize holding, authority, permission, or review evidence
     reject destructive overwrite of unmatched curated metadata
     validate candidate before write
     on dry run, emit candidate to output_path without mutating canonical file
     on apply, fsync a temporary sibling and replace atomically
 
-function derive_engineering_usability(public_record, private_record):
-    return true only when private exact identity, current reachability, authorized access,
-        required purpose-scoped internal use, and accepted qualified review all pass
-    report transfer status separately
-
-function derive_transfer_evidence(record):
-    preserve historical status only in legacy_status
-    verify new completion only from destination alias plus content reconciliation
-    classify evidence-free historical completion as legacy-unverified
+function report_public_state(record):
+    report legacy porting, canonical implementation, publisher currentness,
+        and resolution gate as distinct fields
+    never report engineering usability from public data
 ```
 
 ---
@@ -179,24 +176,27 @@ function derive_transfer_evidence(record):
 | Create | `data/design-codes/standards-authority-public.schema.json` | Define the disclosure-minimized public #3533 → #837 interface. |
 | Create | `data/design-codes/standards-authority-public.json` | Publish publisher metadata and blocked state only. |
 | Create | `data/document-index/standards-authority-metadata.yaml` | Provide a curated, generator-safe enrichment input rather than hand-edit-only state. |
-| Create | `scripts/data/document-index/validate-standards-registries.py` | Validate both registries and derived usability fail closed. |
+| Create | `data/document-index/standards-ledger.schema.json`, `standards-authority-metadata.schema.json`, `standards-ledger-grandfather.json` | Define separate envelopes and freeze the pre-migration row set. |
+| Create | `scripts/data/document-index/validate-standards-registries.py` | Validate public schemas and forbid authority/usability inference. |
 | Create | `tests/data/document-index/test_standards_registry_contract.py` | Add hermetic contract, migration, generator, and consumer tests before implementation. |
 | Modify | `data/design-codes/code-registry.yaml` | Add schema version and evidence-bounded C203 publisher/current, implementation-basis, and pending-review data. |
-| Modify | `data/document-index/standards-transfer-ledger.yaml` | Regenerate using the approved schema; preserve transfer state while adding evidence-bounded selected records. |
+| Modify | `data/document-index/standards-transfer-ledger.yaml` | Preserve legacy porting state, add canonical implementation state, and remove authority inference. |
 | Modify | `scripts/data/document-index/build-ledger.py` | Deterministically merge curated enrichment and validate pre/post write. |
-| Modify | `scripts/document-intelligence/batch-process-standards.py` | Require destination/content evidence for new transfer completion; keep usability separate. |
-| Modify | `scripts/data/document-index/query-ledger.py` | Expose transfer, holding, access, rights, review, and usability as distinct filters/output. |
-| Modify | `scripts/data/document-index/generate-coverage-report.py` | Report transfer coverage separately from engineering usability. |
+| Modify | `scripts/document-intelligence/batch-process-standards.py` | Stop creating canonical `done`; require explicit implementation evidence and validated writer flow. |
+| Modify | `scripts/data/document-index/query-ledger.py` | Expose legacy porting and canonical implementation without authority claims. |
+| Modify | `scripts/data/document-index/generate-coverage-report.py` | Report legacy porting and evidenced implementation separately. |
 | Modify | `scripts/document-intelligence/cross-reference-registries.py` | Replace “publish candidate” claims when authority is unknown with neutral reconciliation output. |
-| Modify | `scripts/knowledge/doc-key-lookup.py` | Read canonical holding arrays safely without treating transfer as authority. |
+| Modify | `scripts/knowledge/doc-key-lookup.py` | Treat legacy paths as discovery aliases, not holding or authority evidence. |
 | Modify | `scripts/document-intelligence/marine-taxonomy-classifier.py` | Consume schema-versioned fields without changing classification semantics. |
 | Modify | `scripts/data/research-literature/research-domain.py` | Stop mapping transfer state directly to source availability. |
-| Modify | `scripts/data/generate-domain-resource-views.py` | Render transfer, possession, and usability separately. |
+| Modify | `scripts/data/generate-domain-resource-views.py` | Render porting/implementation state without possession/usability inference. |
+| Modify | `scripts/data/document-index/mark-exhausted.py`, `scripts/data/document-index/reclassify-domains.py` | Route full-ledger rewrites through shared validation and atomic replacement. |
+| Modify | `scripts/data/ace_resource_audit.py`, `scripts/data/document-index/mkt_a_wiki_unblock.py` | Stop treating porting counts/scalar paths as disk coverage or authority. |
 | Modify | `scripts/readiness/code-version-guard.sh` | Consume validated nested fields while preserving a documented warn-only startup mode. |
 | Modify | `tests/document-intelligence/test_marine_standards_batch.py` | Replace unsafe completion expectations with evidence-gated behavior. |
 | Modify | `docs/reports/intelligence-metric-source-of-truth-map.md` | Define separate canonical metrics and migration effects. |
 | Modify | `data/document-index/intelligence-accessibility-registry.yaml` | Refresh asset record count and point to the validated contract without implying per-row rights. |
-| Create | `docs/plans/2026-07-14-issue-3533-standards-registry-authority-contract.html` | Provide the HTML-default review artifact and visual QA target. |
+| Existing | `docs/plans/2026-07-14-issue-3533-standards-registry-authority-contract.html` | HTML companion exists and passed Chrome full-page visual QA. |
 | Existing | `docs/plans/README.md` | Draft row exists; its status will update after review. |
 
 ---
@@ -205,52 +205,46 @@ function derive_transfer_evidence(record):
 
 | Test | Verification |
 |---|---|
-| `test_done_transfer_state_does_not_imply_usable` | A legacy `done` row without exact holding/evidence remains non-usable and is reported separately. |
-| `test_legacy_done_preserves_history_but_is_unverified` | Historical `done` remains transfer history and receives `legacy-unverified`; it is not silently rewritten. |
-| `test_new_transfer_done_requires_destination_identity` | New transfer completion requires positive destination alias plus reconciled content identity, not rights/technical review. |
+| `test_legacy_done_is_porting_input_not_transfer_or_authority` | Historical `done` remains only `legacy_status`; canonical implementation defaults unknown without evidence. |
+| `test_post_cutoff_done_synthesis_fails` | New upstream/work-item rows cannot enter the grandfather set or synthesize canonical completion. |
 | `test_publisher_update_does_not_create_holding_claim` | Publisher-current metadata cannot synthesize possession, access, rights, or review. |
 | `test_edition_chronology_and_amendment_parent` | Impossible dates and amendments without their parent edition fail. |
 | `test_filename_does_not_promote_amendment` | `BS_7608-2014.pdf` cannot become 2014+A1:2015; C203 2011 cannot become 2016/2024/current amendment. |
 | `test_stale_index_and_wiki_are_discovery_only` | Stale indexes and resolver pages cannot promote authority states. |
-| `test_access_and_permissions_are_independent` | Subscription/local reachability cannot imply any purpose-scoped permission. |
-| `test_permissions_are_purpose_scoped` | Internal calculation, metadata storage, derived numeric output, and text/table reproduction remain separate and default unknown. |
-| `test_accepted_review_requires_exact_basis` | Acceptance requires exact `doc_key`, identity, decision reference, reviewer role, and compatible evidence states. |
-| `test_digest_namespace_validation` | `md5:` plus 32 hex and `sha256:` plus 64 hex pass; pseudo-SHA-256 with 32 hex fails; namespaces never join. |
+| `test_public_schema_has_no_private_authority_fields` | Public schemas reject holdings, digests, access, permissions, review state, paths, notes, and free-text payloads. |
 | `test_generator_round_trip_preserves_enrichment` | Rebuilds preserve validated curated fields and deterministic ordering. |
 | `test_generator_injected_clock_and_repeated_bytes` | Two builds with identical inputs/as-of are byte-identical. |
 | `test_generator_atomic_replace_and_interruption` | Failed validation/write never changes the canonical ledger. |
 | `test_generator_rejects_orphan_and_id_collision` | Orphan curated records and normalized-ID collisions fail closed. |
-| `test_multi_edition_join_never_uses_code_id_for_holding` | Current publisher metadata cannot attach to an older holding; exact evidence joins by doc_key plus designation. |
-| `test_generator_cannot_synthesize_completion_evidence` | `implemented` sources or completed work items cannot create holding/access/right claims. |
-| `test_legacy_mirrors_equal_canonical_fields` | Old readers remain compatible for one wave and inconsistent mirrors fail validation. |
-| `test_batch_requires_positive_transfer_evidence` | Batch cannot mark a new transfer complete without destination/content evidence; authority remains separate. |
-| `test_reports_separate_transfer_from_usability` | Query, coverage, and readiness outputs do not conflate metrics. |
-| `test_authority_export_contract` | Export is deterministic, path-free, licensed-content-free, versioned, and compatible with the #837 fixture. |
-| `test_public_export_disclosure_allowlist` | Export has no doc_key, holding, path, access/permission/review fact, or private evidence reference. |
-| `test_research_and_domain_views_do_not_infer_availability` | Research/resource views separate transfer history from possession/usability. |
+| `test_generator_cannot_synthesize_authority_or_completion` | `implemented` sources/completed work items cannot create canonical completion or authority claims. |
+| `test_deprecated_fields_are_not_canonical_mirrors` | Legacy readers remain available for one wave while canonical semantics remain independently validated. |
+| `test_every_ledger_writer_validates_and_replaces_atomically` | Builder, batch, exhaustion, and reclassification writers share the gate. |
+| `test_reports_separate_porting_from_authority` | Query, coverage, and readiness outputs make no possession/usability claim. |
+| `test_authority_export_contract` | Export is deterministic, versioned, publisher-evidence-only, and blocked absent private authority. |
+| `test_public_export_disclosure_allowlist` | Exact key equality rejects implementation, ledger, free-text, digest, holding, path, access, permission, review, and private-reference fields. |
+| `test_research_and_domain_views_do_not_infer_availability` | Research/resource views stop mapping porting state to possession/usability. |
 | `test_cross_reference_never_implies_publish_rights` | Unknown-rights rows are reconciliation candidates, never publish candidates. |
-| `test_records_contain_metadata_only` | Schema rejects licensed body text, OCR/table payload fields, and embedded coefficient datasets. |
+| `test_export_values_are_bounded_metadata` | IDs/enums/dates/official URLs are format- and size-bounded; no general notes/body field exists. |
 
 ---
 
 ## Acceptance Criteria
 
 - [ ] TDD will begin with the tests above failing for the documented reasons.
-- [ ] Implementation preflight will extend sparse checkout with `scripts/document-intelligence scripts/knowledge` and every named consumer before edits.
-- [ ] `uv run --group dev pytest tests/data/document-index/test_standards_registry_contract.py tests/document-intelligence/test_marine_standards_batch.py tests/document-intelligence/test_cross_reference.py -v` plus focused tests for every migrated consumer will pass.
+- [ ] Preflight will extend sparse checkout with `scripts/document-intelligence scripts/knowledge scripts/legal`, verify/recreate the local `uv` environment if invalid, and include every named writer/consumer.
+- [ ] Exact suites will include the new contract test plus existing/focused tests for builder, query, coverage, batch, cross-reference, lookup, taxonomy, research-domain, domain views, resource audit, wiki unblock, exhaustion, reclassification, readiness guard, and legal scan; no “focused tests” placeholder will remain before approval.
 - [ ] The validator will pass both canonical registries and fail every negative fixture.
 - [ ] A dry run with injected `as_of` will emit a candidate artifact; repeated runs will be byte-identical, and atomic replacement will prevent partial writes.
-- [ ] Historical evidence-free `done` rows will retain transfer history as `legacy-unverified`; new `done` transitions will require destination/content evidence but not technical acceptance or use permission.
+- [ ] Historical `done` will remain only legacy porting/migration input. The grandfather manifest will freeze the cutoff set, new `done` synthesis will fail, and canonical implementation will require public code/test evidence.
 - [ ] DNV-RP-C203 will record official publisher currentness separately from filename evidence. No holding row will be created until exact private evidence exists; no public access/permission/review fact will be emitted.
-- [ ] BS 7608 will not claim A1:2015 possession from a 2014 filename and will not be engineering-usable from an empty-path `done` row.
-- [ ] Transfer counts and engineering-usability counts will be separately named and documented.
+- [ ] BS 7608 will not claim A1:2015 possession or engineering usability from a 2014 filename or legacy `done` row.
+- [ ] Legacy porting counts, canonical implementation counts, and publisher-current counts will be separately named; public data will expose no usability count.
 - [ ] No wiki page, index status, path, possession, or subscription will be treated as reuse authority.
-- [ ] Permission fields will be purpose-scoped and default to unknown; the provenance contract's L2 “reuse” term will not be redefined as a legal clearance.
-- [ ] Logical identity will join by canonical `code_id`; holdings, permissions, and accepted bases will join by full `doc_key` plus exact designation.
-- [ ] The public export will use its approved final name/version and disclosure allowlist; consumers will fail closed on missing, stale, mismatched, or unsupported versions.
-- [ ] No licensed text, tables, OCR bodies, or coefficient datasets will enter tracked artifacts.
+- [ ] Permissions and qualified review will be absent from the public schema; #840 will own their private contract without pre-authorization here.
+- [ ] The public export will use the exact publisher-metadata allowlist; downstream compatibility/freshness will be planned after the schema lands, not self-tested against an invented #837 fixture.
+- [ ] New export values will be limited to bounded IDs, enums, dates, and official URLs; legal scan will separately guard prohibited content. Existing free-text ledger notes are legacy data, not evidence or export fields.
 - [ ] #2362 will remain without `dispatch:ready`; its coordination comment will link this plan, and it will be re-planned before overlap.
-- [ ] #3538 and llm-wiki #837 will remain separate owners of citation-contract and resolver changes.
+- [ ] [#3538](https://github.com/vamseeachanta/workspace-hub/issues/3538) and [llm-wiki #837](https://github.com/vamseeachanta/llm-wiki/issues/837) will remain separate owners of citation and resolver changes.
 - [ ] `scripts/legal/legal-sanity-scan.sh` and the relevant repository test suite will pass.
 - [ ] T3 code/artifact review will obtain three-provider adversarial coverage or will explicitly record provider unavailability and residual risk.
 - [ ] The HTML companion will render without overflow, broken links, or private-path leakage and will receive visual QA.
@@ -265,9 +259,9 @@ function derive_transfer_evidence(record):
 | Codex | MAJOR (round 1) | Closed schema, transition, provenance, C203, determinism/atomicity, and consumer gaps. |
 | Gemini | UNAVAILABLE | No non-interactive authentication; no review signal. |
 
-**Overall result:** FAIL in round 1; revised draft is undergoing round-2 review and remains `status:needs-plan`.
+**Overall result:** FAIL. Round 2 returned Claude MAJOR and Codex MAJOR; the required r3 inline corrections are incorporated, but the plan remains `status:needs-plan` and will not advance without a fresh approved review state.
 
-Round-1 revisions will use the public disclosure allowlist, private-evidence issue #840, concrete schema, exact script paths, complete consumer inventory, injected-clock dry runs, atomic replacement, chronology/collision tests, executable `uv` commands, and HTML visual QA.
+R3 inline corrections separate porting from transfer/authority, define three schema envelopes and an exact public allowlist, remove private-usability scope, freeze a grandfather cutoff, close all known writer/consumer bypasses, add drive-search evidence, qualify dependency URLs, and make sparse/legal/environment preflight explicit. The HTML companion passed full-page Chrome visual QA on 2026-07-14.
 
 ---
 
@@ -277,10 +271,10 @@ Round-1 revisions will use the public disclosure allowlist, private-evidence iss
 - **Human decision:** any `technical_review.status: accepted` transition will require a qualified reviewer and evidence reference outside automated inference.
 - **Risk:** open #2362 can race or overwrite identity work. Its implementation will remain blocked/re-planned until ownership and schema compatibility are explicit.
 - **Risk:** a full-file ledger generator can destroy enrichment. Pre/post validation, deterministic merge input, atomic write, and round-trip tests will be acceptance gates.
-- **Risk:** changing `done` semantics would corrupt canonical metrics. The migration will preserve transfer state and introduce separately named usability metrics.
-- **Risk:** rights evidence may remain unavailable. The system will preserve `unknown` rather than relaxing the gate.
+- **Risk:** changing `done` semantics would corrupt canonical metrics. The migration will preserve it only as explicitly named legacy porting input and introduce evidenced implementation metrics.
+- **Risk:** private authority evidence may remain unavailable. Public resolution will stay blocked rather than infer usability.
 - **Privacy gate:** exact holdings, fingerprints, access, permissions, and qualified-review evidence will not enter public workspace-hub artifacts. Their private canonical home requires separately approved llm-wiki #840.
-- **Dependency order:** #3533 will publish schema plus pending/unknown records; #839 and #3538 will establish page/source and citation blocked-state contracts; #837 Stage A will install blocked identities; a qualified #1588 basis decision will precede accepted-review recording and #837 activation; only then will #1588 calculation implementation proceed. Each issue and activation stage retains its own user gate.
+- **Dependency order:** #3533 will publish schema plus pending/unknown records; [llm-wiki #839](https://github.com/vamseeachanta/llm-wiki/issues/839) and [workspace-hub #3538](https://github.com/vamseeachanta/workspace-hub/issues/3538) will establish page/source and citation contracts; [llm-wiki #837](https://github.com/vamseeachanta/llm-wiki/issues/837) Stage A will install blocked identities; a qualified [digitalmodel #1588](https://github.com/vamseeachanta/digitalmodel/issues/1588) basis decision will precede activation and calculation implementation. Each issue/stage retains its own user gate.
 
 ---
 
