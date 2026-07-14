@@ -107,3 +107,21 @@ def test_errors_withhold_key_and_locator(tmp_path):
         assert KEY_B64 not in message
     else:
         pytest.fail("missing key unexpectedly loaded")
+
+
+def test_parent_namespace_swap_rejects(tmp_path, monkeypatch):
+    fs = private_fs()
+    parent = tmp_path / "private"
+    key_file = write_key(parent)
+    original_read = fs._read_key_at
+
+    def swapping_read(parent_fd, name):
+        raw = original_read(parent_fd, name)
+        parent.rename(tmp_path / "moved")
+        replacement = tmp_path / "private"
+        write_key(replacement)
+        return raw
+
+    monkeypatch.setattr(fs, "_read_key_at", swapping_read)
+    with pytest.raises(fs.PrivateFilesystemError):
+        fs.load_key(key_file=key_file, env_name=None, environ={})

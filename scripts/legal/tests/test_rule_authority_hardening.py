@@ -139,9 +139,11 @@ def test_structural_inventory_covers_raw_hashes_values_and_markers():
 def test_structural_scanner_does_not_block_canonical_public_artifacts():
     structural = module("structural")
     sensitive = structural.SensitiveArtifacts(KEY, (), (), frozenset())
-    paths = (
-        "schemas/legal-rule-registry.schema.json",
-        "schemas/legal-rule-policy.schema.json",
+    schema_names = (
+        "registry", "policy", "map", "authority-manifest", "active-anchor",
+        "generation-ledger", "complete",
+    )
+    paths = tuple(f"schemas/legal-rule-{name}.schema.json" for name in schema_names) + (
         "config/legal-rule-registry.json",
         "config/legal-rule-authority-policy.json",
     )
@@ -169,3 +171,18 @@ def test_revision_requires_canonical_lowercase_uuid4(revision):
     document["authority_revision"] = revision
     with pytest.raises(codec.AuthorityFormatError):
         codec.encode_document("registry", document)
+
+
+def test_document_size_order_and_path_traversal_reject():
+    codec = module("codec")
+    oversized = deepcopy(PRIVATE_MAP)
+    oversized["rules"][0]["pattern_b64"] = base64.b64encode(b"x" * 16_385).decode()
+    with pytest.raises(codec.AuthorityFormatError):
+        codec.encode_document("map", oversized)
+    policy = deepcopy(POLICY)
+    policy["forensic_prefixes"] = ["z/", "a/"]
+    with pytest.raises(codec.AuthorityFormatError):
+        codec.encode_document("policy", policy)
+    policy["forensic_prefixes"] = ["safe/../escape/"]
+    with pytest.raises(codec.AuthorityFormatError):
+        codec.encode_document("policy", policy)
