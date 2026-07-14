@@ -1,6 +1,6 @@
 # Plan for #3532: Reserve cross-provider memory budget for operational feedback
 
-> **Status:** plan-review
+> **Status:** plan-approved
 > **Complexity:** T2
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3532
