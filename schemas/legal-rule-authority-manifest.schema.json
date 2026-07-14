@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/legal-rule-authority-manifest-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authority_revision", "generation", "manifest_mac", "map_sha256", "policy_sha256", "registry_sha256", "schema_id"],
+  "properties": {
+    "authority_revision": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "generation": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+    "manifest_mac": {"$ref": "#/$defs/hex64"},
+    "map_sha256": {"$ref": "#/$defs/hex64"},
+    "policy_sha256": {"$ref": "#/$defs/hex64"},
+    "registry_sha256": {"$ref": "#/$defs/hex64"},
+    "schema_id": {"const": "legal-rule-authority-manifest-v1"}
+  },
+  "$defs": {"hex64": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/legal-rule-complete-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["api_snapshot_id", "authority_revision", "coverage_states", "files", "generation", "manifest_mac", "ref_snapshot_id", "schema_id", "transaction_id"],
+  "properties": {
+    "api_snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
+    "authority_revision": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "coverage_states": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"enum": ["scanned", "queried-no-access", "provider-follow-up", "unknown-residual"]}
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "size"],
+        "properties": {
+          "path": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$)).+$"},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "size": {"type": "integer", "minimum": 0, "maximum": 18446744073709551615}
+        }
+      }
+    },
+    "generation": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+    "manifest_mac": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "ref_snapshot_id": {"type": "string", "minLength": 1, "maxLength": 256},
+    "schema_id": {"const": "legal-rule-complete-v1"},
+    "transaction_id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"}
+  }
+}

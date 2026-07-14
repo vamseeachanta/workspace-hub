@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/legal-rule-policy-v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["authority_revision", "forensic_prefixes", "generation", "limits", "schema_id"],
+  "properties": {
+    "authority_revision": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "forensic_prefixes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^(?!/)(?!(?:.*\/)?(?:\\.|\\.\\.)(?:\/|$))[\\x21-\\x7e]+/$"}
+    },
+    "generation": {"type": "integer", "minimum": 1, "maximum": 18446744073709551615},
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_blob_bytes", "max_entries", "max_findings", "max_request_bytes"],
+      "properties": {
+        "max_blob_bytes": {"type": "integer", "minimum": 1, "maximum": 10485760},
+        "max_entries": {"type": "integer", "minimum": 1, "maximum": 10000},
+        "max_findings": {"type": "integer", "minimum": 1, "maximum": 1000},
+        "max_request_bytes": {"type": "integer", "minimum": 1, "maximum": 104857600}
+      }
+    },
+    "schema_id": {"const": "legal-rule-policy-v1"}
+  }
+}
