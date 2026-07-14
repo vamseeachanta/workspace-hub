@@ -276,9 +276,15 @@ real client/project/person value will enter source, fixtures, logs, or receipts.
 | Claude r2 | MAJOR | pathspec commit, zero OID, public enumeration, dependency/authority, rule schema, framing, legacy contradiction |
 | Codex r2 | MAJOR | same consensus plus chmod M, pathset atomicity, dirfd, exact commands, old non-blob, push claim |
 | Gemini r2 | UNAVAILABLE | noninteractive OAuth rc41 |
+| Claude r3 | MAJOR | exact framing, atomic evidence bundle, independent private-map anchor, unresolved #3522 dependency |
+| Codex r3 | MAJOR | same consensus plus sibling tool identity, public-ID derivation, failure recovery, verdict lattice |
+| Gemini r3 | UNAVAILABLE | noninteractive OAuth rc41 |
 
 **Overall result:** draft; implementation is blocked pending review and explicit
 user approval. No agent may apply `status:plan-approved` or create its marker.
+
+The sustained-MAJOR guardrail has fired after three rounds. No r4 review will be
+dispatched until #3522 merges and this plan pins its exact authority artifacts.
 
 ---
 
