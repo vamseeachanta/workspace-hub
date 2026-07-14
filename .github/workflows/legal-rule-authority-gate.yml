@@ -18,4 +18,4 @@ jobs:
 
   strict-scan:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    uses: vamseeachanta/workspace-hub/.github/workflows/legal-rule-authority-reusable.yml@fd8a2acd22191d29998f67e49609d1e292222a74
+    uses: vamseeachanta/workspace-hub/.github/workflows/legal-rule-authority-reusable.yml@cb9fb83863e66a5451be63c44659c27840dd5d35
