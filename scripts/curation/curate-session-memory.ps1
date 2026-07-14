@@ -163,6 +163,17 @@ if ([string]::IsNullOrWhiteSpace($Machine)) {
 if ($LASTEXITCODE -ne 0) { Fail 'collect-equality.ps1 failed' }
 
 $matrix = (Join-Path $RepoRoot 'scripts/readiness/build-equality-matrix.py')
+$matrixReports = @(
+    ("docs/reports/{0}-machine-equality-matrix.html" -f (Get-Date -Format 'yyyy-MM-dd')),
+    'docs/reports/machine-equality-matrix.html'
+)
+foreach ($report in $matrixReports) {
+    $dirtyReport = & git status --porcelain --untracked-files=all -- $report
+    if ($LASTEXITCODE -ne 0) { Fail "unable to inspect generated matrix path: $report" }
+    if (-not [string]::IsNullOrWhiteSpace(($dirtyReport -join ''))) {
+        Fail "generated matrix path was already dirty before curation: $report"
+    }
+}
 if (Get-Command uv -ErrorAction SilentlyContinue) {
     & uv run --no-project --with pyyaml python $matrix
     if ($LASTEXITCODE -ne 0) { Fail 'build-equality-matrix.py failed (uv)' }
@@ -171,6 +182,19 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
     if ($LASTEXITCODE -ne 0) { Fail 'build-equality-matrix.py failed (python)' }
 } else {
     Fail 'no python runtime (uv/python) available for matrix build'
+}
+
+# The six-hour Windows curation job refreshes evidence, but dev-primary owns the
+# committed fleet matrix. Remove this local preview so EqualityReport's clean-path
+# guard is not blocked by curation's generated HTML.
+foreach ($report in $matrixReports) {
+    & git ls-files --error-unmatch -- $report *> $null
+    if ($LASTEXITCODE -eq 0) {
+        & git restore --worktree -- $report
+        if ($LASTEXITCODE -ne 0) { Fail "failed to restore generated matrix path: $report" }
+    } elseif (Test-Path $report) {
+        Remove-Item -LiteralPath $report -Force
+    }
 }
 
 Send-Notify -Status 'pass' -Details 'curated + matrix refreshed'

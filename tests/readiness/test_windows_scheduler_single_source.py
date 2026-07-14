@@ -14,6 +14,7 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SETUP_PS1 = REPO_ROOT / "scripts" / "windows" / "setup-scheduler-tasks.ps1"
 WRAPPER_PS1 = REPO_ROOT / "scripts" / "windows" / "equality-report.ps1"
+CURATION_PS1 = REPO_ROOT / "scripts" / "curation" / "curate-session-memory.ps1"
 SCHEDULE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 
 
@@ -157,3 +158,10 @@ def test_wrapper_refresh_matrix_is_opt_in_and_same_commit():
     # Matrix HTML rides in the SAME equality commit (invariant preserved).
     assert "-RefreshMatrix:$RefreshMatrix" in text
     assert '"chore: equality report from $machine"' in text
+
+
+def test_curation_restores_generated_matrix_preview():
+    text = CURATION_PS1.read_text()
+    assert "generated matrix path was already dirty before curation" in text
+    assert "git restore --worktree -- $report" in text
+    assert "Remove-Item -LiteralPath $report -Force" in text
