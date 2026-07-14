@@ -97,6 +97,15 @@ def test_audit_index_uses_staged_blob_not_worktree(tmp_path: Path) -> None:
     assert staged.verdict == "blocked"
 
 
+def test_audit_index_accepts_an_empty_index(tmp_path: Path) -> None:
+    repo = tmp_path / "empty"
+    repo.mkdir()
+    _git(repo, "init", "-q")
+    result = audit_git.audit_index(repo, SENSITIVE, max_entries=10, max_blob_bytes=100)
+    assert result.verdict == "clean"
+    assert result.objects_examined == 0
+
+
 def test_ref_snapshot_preserves_ref_bytes_and_rejects_malformed() -> None:
     raw = b"a" * 40 + b"\trefs/heads/main\n" + b"b" * 40 + b"\trefs/pull/1/head\n"
     snapshot = audit_git.parse_ls_remote(raw, max_refs=3)

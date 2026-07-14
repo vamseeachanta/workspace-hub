@@ -84,6 +84,9 @@ def test_report_transaction_no_overwrite_and_rejects_unsafe_names(tmp_path: Path
         report_transaction.write_report(root, transaction_id, {"a": b"x"}, fields, KEY)
     with pytest.raises(report_transaction.ReportTransactionError):
         report_transaction.write_report(root, str(uuid.uuid4()), {"../escape": b"x"}, fields, KEY)
+    other_id = str(uuid.uuid4())
+    with pytest.raises(report_transaction.ReportTransactionError):
+        report_transaction.write_report(root, other_id, {"a": b"x"}, fields, KEY)
 
 
 def test_report_transaction_failure_never_appears_complete(tmp_path: Path, monkeypatch) -> None:
