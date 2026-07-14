@@ -8,6 +8,8 @@ import re
 import uuid
 from collections.abc import Callable
 
+from .coverage_contract import REQUIRED_COVERAGE, REQUIRED_REPORT_FILES
+
 MAX_U64 = (1 << 64) - 1
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")
 OID = re.compile(r"[0-9a-f]{40}(?:[0-9a-f]{24})?\Z")
@@ -229,8 +231,8 @@ def _validate_coverage(value: object) -> None:
     if not isinstance(value, dict) or not value:
         raise ModelError("invalid coverage")
     names = [_closed_ascii(name, "coverage name") for name in value]
-    if names != sorted(names):
-        raise ModelError("coverage names must be sorted")
+    if set(names) != set(REQUIRED_COVERAGE) or len(names) != len(REQUIRED_COVERAGE):
+        raise ModelError("coverage surface contract mismatch")
     states = {"scanned", "queried-no-access", "provider-follow-up", "unknown-residual"}
     if any(state not in states for state in value.values()):
         raise ModelError("invalid coverage state")
@@ -245,8 +247,8 @@ def _validate_files(value: object) -> None:
         paths.append(_relative_path(item["path"]))
         _hex64(item["sha256"])
         _u64(item["size"])
-    if paths != sorted(paths) or len(paths) != len(set(paths)):
-        raise ModelError("files must be sorted and unique")
+    if tuple(paths) != REQUIRED_REPORT_FILES:
+        raise ModelError("report file contract mismatch")
 
 
 VALIDATORS: dict[str, Callable[[object], None]] = {

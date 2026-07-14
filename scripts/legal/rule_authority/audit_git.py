@@ -1,4 +1,4 @@
-"""Raw-byte Git tree, index, and ref audit primitives."""
+"""Raw-byte Git tree, index, ref, and history authority audits."""
 
 from __future__ import annotations
 
@@ -6,17 +6,17 @@ import hashlib
 import os
 import re
 import stat
-import subprocess
 from dataclasses import dataclass
 from pathlib import Path
+from urllib.parse import urlsplit
 
+from .git_transport import GitRunner, GitTransportError
 from .structural import SensitiveArtifacts, contains_sensitive
 
 OID = re.compile(rb"[0-9a-f]{40}(?:[0-9a-f]{24})?\Z")
 
 
-class CoverageError(RuntimeError):
-    """Git coverage is malformed, unstable, incomplete, or capped."""
+CoverageError = GitTransportError
 
 
 @dataclass(frozen=True)
@@ -24,11 +24,10 @@ class AuditResult:
     verdict: str
     objects_examined: int
     private_findings: tuple[bytes, ...]
+    edges: tuple[tuple[bytes, bytes], ...] = ()
 
 
-@dataclass(frozen=True)
-class HistoryResult(AuditResult):
-    edges: tuple[tuple[bytes, bytes], ...]
+HistoryResult = AuditResult
 
 
 @dataclass(frozen=True)
@@ -43,71 +42,11 @@ class RefSnapshot:
     identity: str
 
 
-class GitRunner:
-    """Invoke Git with argv-only input and a closed noninteractive environment."""
-
-    def __init__(self, repo: Path) -> None:
-        self.repo = Path(repo)
-        try:
-            self._fd = os.open(self.repo, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-        except OSError as exc:
-            raise CoverageError("Git repository unavailable") from exc
-        info = os.fstat(self._fd)
-        self.identity = (info.st_dev, info.st_ino)
-
-    def close(self) -> None:
-        if getattr(self, "_fd", -1) >= 0:
-            os.close(self._fd)
-            self._fd = -1
-
-    def __del__(self) -> None:
-        self.close()
-
-    def info(self) -> os.stat_result:
-        if self._fd < 0:
-            raise CoverageError("Git repository handle is closed")
-        return os.fstat(self._fd)
-
-    def has_path(self, path: str) -> bool:
-        try:
-            os.stat(path, dir_fd=self._fd, follow_symlinks=False)
-            return True
-        except FileNotFoundError:
-            return False
-
-    def _execute(self, *args: str) -> subprocess.CompletedProcess[bytes]:
-        before = self.info()
-        env = {
-            "PATH": os.environ.get("PATH", ""), "LANG": "C", "LC_ALL": "C",
-            "GIT_CONFIG_NOSYSTEM": "1", "GIT_TERMINAL_PROMPT": "0",
-            "GIT_OPTIONAL_LOCKS": "0", "GIT_LFS_SKIP_SMUDGE": "1",
-        }
-        command = ["git", "-c", "credential.helper=", "-c", "core.hooksPath=", *args]
-        cwd = os.path.join(os.sep, "proc", "self", "fd", str(self._fd))
-        result = subprocess.run(
-            command, cwd=cwd, env=env, capture_output=True, pass_fds=(self._fd,)
-        )
-        after = self.info()
-        if (before.st_dev, before.st_ino) != self.identity or (
-                after.st_dev, after.st_ino) != self.identity:
-            raise CoverageError("Git repository identity changed")
-        return result
-
-    def run(self, *args: str) -> bytes:
-        result = self._execute(*args)
-        if result.returncode:
-            raise CoverageError("Git operation failed")
-        return result.stdout
-
-    def optional(self, *args: str) -> bytes | None:
-        result = self._execute(*args)
-        if result.returncode not in {0, 1}:
-            raise CoverageError("Git operation failed")
-        return result.stdout if result.returncode == 0 else None
-
-
 def _oid(value: bytes | str) -> bytes:
-    raw = value.encode("ascii") if isinstance(value, str) else value
+    try:
+        raw = value.encode("ascii") if isinstance(value, str) else value
+    except UnicodeEncodeError as exc:
+        raise CoverageError("full Git OID required") from exc
     if OID.fullmatch(raw) is None:
         raise CoverageError("full Git OID required")
     return raw
@@ -133,7 +72,7 @@ def parse_ls_tree(raw: bytes, *, max_entries: int) -> list[tuple[bytes, bytes, b
     return entries
 
 
-def _parse_index(raw: bytes, max_entries: int) -> list[tuple[bytes, bytes]]:
+def _parse_index(raw: bytes, max_entries: int) -> list[tuple[bytes, bytes, bytes]]:
     records = raw[:-1].split(b"\0") if raw else []
     if (raw and not raw.endswith(b"\0")) or len(records) > max_entries:
         raise CoverageError("malformed index inventory")
@@ -141,64 +80,22 @@ def _parse_index(raw: bytes, max_entries: int) -> list[tuple[bytes, bytes]]:
     for record in records:
         try:
             metadata, path = record.split(b"\t", 1)
-            _mode, oid, stage = metadata.split(b" ")
+            mode, oid, stage = metadata.split(b" ")
         except ValueError as exc:
             raise CoverageError("malformed index inventory") from exc
         if OID.fullmatch(oid) is None or stage != b"0":
             raise CoverageError("unsupported index entry")
-        entries.append((path, oid))
+        entries.append((path, oid, mode))
     return entries
 
 
-def _scan_objects(runner: GitRunner, entries: list[tuple[bytes, bytes]],
-                  sensitive: SensitiveArtifacts, max_blob_bytes: int) -> tuple[bytes, ...]:
-    findings = []
-    for path, oid in entries:
-        size_raw = runner.run("cat-file", "-s", oid.decode("ascii")).strip()
-        if not size_raw.isdigit() or int(size_raw) > max_blob_bytes:
-            raise CoverageError("blob size cap exceeded")
-        payload = runner.run("cat-file", "blob", oid.decode("ascii"))
-        if len(payload) != int(size_raw):
-            raise CoverageError("blob size changed")
-        if contains_sensitive(path, payload, sensitive):
-            findings.append(path)
-    return tuple(findings)
-
-
-def audit_tree(repo: Path, commit_oid: str, sensitive: SensitiveArtifacts, *,
-               max_entries: int, max_blob_bytes: int) -> AuditResult:
-    """Audit an exact commit's raw metadata, paths, and blob bytes without checkout."""
-    oid = _oid(commit_oid).decode("ascii")
-    runner = GitRunner(repo)
-    if runner.run("cat-file", "-t", oid).strip() != b"commit":
-        raise CoverageError("named object is not a commit")
-    raw_commit = runner.run("cat-file", "commit", oid)
-    tree = parse_ls_tree(
-        runner.run("ls-tree", "-rz", "--full-tree", oid), max_entries=max_entries
-    )
-    blobs = [(path, entry_oid) for path, entry_oid, kind in tree if kind == b"blob"]
-    findings = list(_scan_objects(runner, blobs, sensitive, max_blob_bytes))
-    if contains_sensitive(b"<commit>", raw_commit, sensitive):
-        findings.append(b"<commit>")
-    return AuditResult("blocked" if findings else "clean", len(blobs) + 1, tuple(findings))
-
-
-def audit_index(repo: Path, sensitive: SensitiveArtifacts, *, max_entries: int,
-                max_blob_bytes: int) -> AuditResult:
-    """Audit index authority, never working-tree bytes."""
-    runner = GitRunner(repo)
-    entries = _parse_index(runner.run("ls-files", "-s", "-z"), max_entries)
-    findings = _scan_objects(runner, entries, sensitive, max_blob_bytes)
-    return AuditResult("blocked" if findings else "clean", len(entries), findings)
-
-
 def parse_ls_remote(raw: bytes, *, max_refs: int) -> RefSnapshot:
-    """Parse an advertised ref snapshot as raw bytes."""
+    """Parse a complete advertised-ref snapshot as raw bytes."""
     if max_refs < 1 or (raw and not raw.endswith(b"\n")):
         raise CoverageError("malformed ref snapshot")
     lines = raw.splitlines()
-    if len(lines) > max_refs:
-        raise CoverageError("ref cap exceeded")
+    if not lines or len(lines) > max_refs:
+        raise CoverageError("ref snapshot empty or capped")
     refs = []
     for line in lines:
         try:
@@ -208,8 +105,10 @@ def parse_ls_remote(raw: bytes, *, max_refs: int) -> RefSnapshot:
         if OID.fullmatch(oid) is None or not name or b"\0" in name:
             raise CoverageError("malformed ref snapshot")
         refs.append(Ref(oid, name))
-    identity = hashlib.sha256(raw).hexdigest()
-    return RefSnapshot(tuple(refs), identity)
+    if len({ref.name for ref in refs}) != len(refs):
+        raise CoverageError("duplicate advertised ref")
+    canonical = b"".join(ref.oid + b"\t" + ref.name + b"\n" for ref in refs)
+    return RefSnapshot(tuple(refs), hashlib.sha256(canonical).hexdigest())
 
 
 def require_stable_snapshot(before: RefSnapshot, after: RefSnapshot) -> None:
@@ -218,8 +117,6 @@ def require_stable_snapshot(before: RefSnapshot, after: RefSnapshot) -> None:
 
 
 class ReachabilityGraph:
-    """Bounded reverse-edge retention for private coverage reports."""
-
     def __init__(self, max_edges: int) -> None:
         if max_edges < 1:
             raise CoverageError("invalid edge cap")
@@ -232,19 +129,28 @@ class ReachabilityGraph:
         self.edges.append((parent, child))
 
 
-def _require_private_mirror(runner: GitRunner) -> None:
-    info = runner.info()
-    if (not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or
-            stat.S_IMODE(info.st_mode) != 0o700):
-        raise CoverageError("unsafe private mirror")
-    if runner.run("rev-parse", "--is-bare-repository").strip() != b"true":
-        raise CoverageError("history audit requires a bare mirror")
-    if runner.run("rev-parse", "--is-shallow-repository").strip() != b"false":
-        raise CoverageError("shallow history is incomplete")
-    if runner.optional("config", "--get-regexp", r"^remote\..*\.promisor$") is not None:
+def _git_path_exists(runner: GitRunner, path: str) -> bool:
+    raw = runner.run("rev-parse", "--git-path", path).strip()
+    try:
+        value = raw.decode("ascii")
+    except UnicodeDecodeError as exc:
+        raise CoverageError("unsafe Git path") from exc
+    if os.path.isabs(value):
+        raise CoverageError("unexpected absolute Git path")
+    return runner.has_path(value)
+
+
+def _reject_substitution(runner: GitRunner) -> None:
+    if runner.run("for-each-ref", "--format=%(refname)", "refs/replace").strip():
+        raise CoverageError("replacement refs are forbidden")
+    for path in ("info/grafts", "objects/info/alternates", "objects/info/http-alternates"):
+        if _git_path_exists(runner, path):
+            raise CoverageError("object substitution is forbidden")
+    partial = runner.optional(
+        "config", "--get-regexp", r"^(extensions\.partialclone|remote\..*\.promisor)$"
+    )
+    if partial is not None:
         raise CoverageError("partial clone is incomplete")
-    if runner.has_path("objects/info/alternates"):
-        raise CoverageError("alternate object store is forbidden")
 
 
 def _header_oid(raw: bytes, name: bytes) -> bytes:
@@ -257,18 +163,16 @@ def _header_oid(raw: bytes, name: bytes) -> bytes:
     raise CoverageError("malformed Git object")
 
 
-class _HistoryWalker:
+class _ObjectWalker:
     def __init__(self, runner: GitRunner, sensitive: SensitiveArtifacts, *,
                  max_entries: int, max_blob_bytes: int, max_objects: int,
-                 max_edges: int) -> None:
-        self.runner = runner
-        self.sensitive = sensitive
-        self.max_entries = max_entries
-        self.max_blob_bytes = max_blob_bytes
-        self.max_objects = max_objects
-        self.graph = ReachabilityGraph(max_edges)
-        self.seen: set[bytes] = set()
+                 max_edges: int, include_parents: bool) -> None:
+        self.runner, self.sensitive = runner, sensitive
+        self.max_entries, self.max_blob_bytes = max_entries, max_blob_bytes
+        self.max_objects, self.include_parents = max_objects, include_parents
+        self.graph, self.seen = ReachabilityGraph(max_edges), set()
         self.findings: list[bytes] = []
+        self.entry_count = 0
 
     def walk(self, oid: bytes, source: bytes) -> None:
         self.graph.add(source, oid)
@@ -288,63 +192,197 @@ class _HistoryWalker:
             raise CoverageError("unsupported Git object")
 
     def _blob(self, oid: bytes, source: bytes) -> None:
-        size = self.runner.run("cat-file", "-s", oid.decode("ascii")).strip()
+        size = self.runner.run("cat-file", "-s", oid.decode()).strip()
         if not size.isdigit() or int(size) > self.max_blob_bytes:
             raise CoverageError("blob size cap exceeded")
-        raw = self.runner.run("cat-file", "blob", oid.decode("ascii"))
+        raw = self.runner.run("cat-file", "blob", oid.decode())
         if len(raw) != int(size):
             raise CoverageError("blob size changed")
         if contains_sensitive(source, raw, self.sensitive):
             self.findings.append(source)
 
     def _metadata(self, oid: bytes, kind: bytes) -> None:
-        raw = self.runner.run("cat-file", kind.decode("ascii"), oid.decode("ascii"))
-        if contains_sensitive(b"<" + kind + b">", raw, self.sensitive):
-            self.findings.append(b"<" + kind + b">")
+        raw = self.runner.run("cat-file", kind.decode(), oid.decode())
+        label = b"<" + kind + b">"
+        if contains_sensitive(label, raw, self.sensitive):
+            self.findings.append(label)
         if kind == b"tag":
             self.walk(_header_oid(raw, b"object"), oid)
             return
         self.walk(_header_oid(raw, b"tree"), oid)
-        for line in raw.split(b"\n"):
-            if line.startswith(b"parent "):
-                self.walk(_oid(line[7:]), oid)
-            elif not line:
-                break
+        if self.include_parents:
+            for line in raw.split(b"\n"):
+                if line.startswith(b"parent "):
+                    self.walk(_oid(line[7:]), oid)
+                elif not line:
+                    break
 
     def _tree(self, oid: bytes) -> None:
-        raw = self.runner.run("cat-file", "tree", oid.decode("ascii"))
+        raw = self.runner.run("cat-file", "tree", oid.decode())
         if contains_sensitive(b"<tree>", raw, self.sensitive):
             self.findings.append(b"<tree>")
         entries = parse_ls_tree(
-            self.runner.run("ls-tree", "-z", "--full-tree", oid.decode("ascii")),
+            self.runner.run("ls-tree", "-z", "--full-tree", oid.decode()),
             max_entries=self.max_entries,
         )
+        self.entry_count += len(entries)
+        if self.entry_count > self.max_entries:
+            raise CoverageError("global tree entry cap exceeded")
         for path, child, kind in entries:
             self.graph.add(oid, path)
+            self.graph.add(path, child)
             if contains_sensitive(path, b"", self.sensitive):
                 self.findings.append(path)
             if kind != b"commit":
                 self.walk(child, path)
 
 
-def audit_history(repo: Path, before: RefSnapshot, after: RefSnapshot,
-                  sensitive: SensitiveArtifacts, *, max_entries: int,
-                  max_blob_bytes: int, max_objects: int,
-                  max_edges: int) -> HistoryResult:
-    """Audit all objects reachable from a stable advertised-ref snapshot."""
-    require_stable_snapshot(before, after)
+def _ref_text(required_ref: bytes) -> str:
+    if (not required_ref.startswith(b"refs/") or b"\0" in required_ref or
+            b"\n" in required_ref):
+        raise CoverageError("invalid required ref")
+    try:
+        return required_ref.decode("ascii")
+    except UnicodeDecodeError as exc:
+        raise CoverageError("invalid required ref") from exc
+
+
+def audit_tree(repo: Path, commit_oid: str, required_ref: bytes,
+               sensitive: SensitiveArtifacts, *, max_entries: int,
+               max_blob_bytes: int) -> AuditResult:
+    """Audit the complete raw object tree bound to one required ref."""
     runner = GitRunner(repo)
-    _require_private_mirror(runner)
-    walker = _HistoryWalker(
-        runner, sensitive, max_entries=max_entries, max_blob_bytes=max_blob_bytes,
-        max_objects=max_objects, max_edges=max_edges,
-    )
-    for ref in before.refs:
-        if contains_sensitive(ref.name, b"", sensitive):
-            walker.findings.append(ref.name)
-        walker.walk(ref.oid, ref.name)
-    findings = tuple(walker.findings)
-    return HistoryResult(
-        "blocked" if findings else "clean", len(walker.seen), findings,
-        tuple(walker.graph.edges),
-    )
+    try:
+        _reject_substitution(runner)
+        ref_text, expected = _ref_text(required_ref), _oid(commit_oid)
+        ref_oid = _oid(runner.run("show-ref", "--verify", "--hash", ref_text).strip())
+        peeled = _oid(runner.run("rev-parse", f"{ref_text}^{{commit}}").strip())
+        if peeled != expected:
+            raise CoverageError("required ref does not bind commit")
+        walker = _ObjectWalker(
+            runner, sensitive, max_entries=max_entries, max_blob_bytes=max_blob_bytes,
+            max_objects=max_entries * 3 + 3, max_edges=max_entries * 4 + 8,
+            include_parents=False,
+        )
+        if contains_sensitive(required_ref, b"", sensitive):
+            walker.findings.append(required_ref)
+        walker.walk(ref_oid, required_ref)
+        findings = tuple(walker.findings)
+        return AuditResult(
+            "blocked" if findings else "clean", len(walker.seen), findings,
+            tuple(walker.graph.edges),
+        )
+    except GitTransportError as exc:
+        raise CoverageError("Git coverage failed") from exc
+    finally:
+        runner.close()
+
+
+def audit_index(repo: Path, sensitive: SensitiveArtifacts, *, max_entries: int,
+                max_blob_bytes: int) -> AuditResult:
+    runner = GitRunner(repo)
+    try:
+        _reject_substitution(runner)
+        entries = _parse_index(runner.run("ls-files", "-s", "-z"), max_entries)
+        walker = _ObjectWalker(
+            runner, sensitive, max_entries=max_entries, max_blob_bytes=max_blob_bytes,
+            max_objects=max_entries + 1, max_edges=max_entries + 1,
+            include_parents=False,
+        )
+        for path, oid, mode in entries:
+            walker.graph.add(b"<index>", path)
+            walker.graph.add(path, oid)
+            if contains_sensitive(path, b"", sensitive):
+                walker.findings.append(path)
+            if mode != b"160000":
+                walker.walk(oid, path)
+        findings = tuple(walker.findings)
+        return AuditResult(
+            "blocked" if findings else "clean", len(walker.seen), findings,
+            tuple(walker.graph.edges),
+        )
+    except GitTransportError as exc:
+        raise CoverageError("Git coverage failed") from exc
+    finally:
+        runner.close()
+
+
+def _remote(value: str) -> str:
+    if not value or any(character in value for character in "\r\n"):
+        raise CoverageError("invalid remote")
+    parsed = urlsplit(value)
+    if parsed.scheme:
+        if parsed.scheme != "https" or parsed.username or parsed.password or parsed.query:
+            raise CoverageError("credential-bearing remote forbidden")
+    elif not Path(value).is_absolute():
+        raise CoverageError("local remote must be absolute")
+    return value
+
+
+def _snapshot(runner: GitRunner, remote: str, max_refs: int) -> RefSnapshot:
+    base = runner.run("ls-remote", "--refs", remote)
+    pulls = runner.run("ls-remote", "--refs", remote, "refs/pull/*/head", "refs/pull/*/merge")
+    lines = sorted(set((base + pulls).splitlines()))
+    raw = b"".join(line + b"\n" for line in lines)
+    snapshot = parse_ls_remote(raw, max_refs=max_refs)
+    if any(ref.name.startswith(b"refs/replace/") for ref in snapshot.refs):
+        raise CoverageError("remote replacement refs forbidden")
+    return snapshot
+
+
+def _fetch_oids(runner: GitRunner, remote: str, refs: tuple[Ref, ...]) -> None:
+    for index, oid in enumerate(dict.fromkeys(ref.oid for ref in refs)):
+        target = f"refs/audit/{index:08d}"
+        runner.run("fetch", "--no-tags", "--no-write-fetch-head", remote,
+                   f"+{oid.decode()}:{target}")
+
+
+def _require_private_mirror(runner: GitRunner) -> None:
+    info = runner.info()
+    if (not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or
+            stat.S_IMODE(info.st_mode) != 0o700):
+        raise CoverageError("unsafe private mirror")
+    if runner.run("rev-parse", "--is-bare-repository").strip() != b"true":
+        raise CoverageError("history audit requires a bare mirror")
+    if runner.run("rev-parse", "--is-shallow-repository").strip() != b"false":
+        raise CoverageError("shallow history is incomplete")
+    _reject_substitution(runner)
+    if runner.run("for-each-ref", "--format=%(refname)").strip():
+        raise CoverageError("history audit requires a fresh mirror")
+    if runner.optional("config", "--get-regexp", r"^remote\..*\.(url|pushurl)$") is not None:
+        raise CoverageError("persisted remote configuration forbidden")
+
+
+def audit_history(repo: Path, remote: str, sensitive: SensitiveArtifacts, *,
+                  api_discovered_oids: tuple[bytes, ...], max_refs: int,
+                  max_entries: int, max_blob_bytes: int, max_objects: int,
+                  max_edges: int) -> HistoryResult:
+    """Snapshot, exact-fetch, resnapshot, then audit the full remote surface."""
+    runner = GitRunner(repo)
+    try:
+        _require_private_mirror(runner)
+        remote = _remote(remote)
+        before = _snapshot(runner, remote, max_refs)
+        api_refs = tuple(Ref(_oid(oid), b"api-discovered") for oid in api_discovered_oids)
+        _fetch_oids(runner, remote, (*before.refs, *api_refs))
+        after = _snapshot(runner, remote, max_refs)
+        require_stable_snapshot(before, after)
+        walker = _ObjectWalker(
+            runner, sensitive, max_entries=max_entries, max_blob_bytes=max_blob_bytes,
+            max_objects=max_objects, max_edges=max_edges, include_parents=True,
+        )
+        for ref in before.refs:
+            if contains_sensitive(ref.name, b"", sensitive):
+                walker.findings.append(ref.name)
+            walker.walk(ref.oid, ref.name)
+        for ref in api_refs:
+            walker.walk(ref.oid, ref.name)
+        findings = tuple(walker.findings)
+        return AuditResult(
+            "blocked" if findings else "clean", len(walker.seen), findings,
+            tuple(walker.graph.edges),
+        )
+    except GitTransportError as exc:
+        raise CoverageError("Git history coverage failed") from exc
+    finally:
+        runner.close()

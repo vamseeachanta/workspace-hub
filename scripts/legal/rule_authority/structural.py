@@ -70,7 +70,8 @@ def contains_sensitive(path: bytes, payload: bytes,
     basename = path.rsplit(b"/", 1)[-1]
     prohibited = {name.encode("ascii") for name in sensitive.prohibited_basenames}
     public_path = path.decode("ascii", errors="surrogateescape")
-    return (basename in prohibited or _has_private_bytes(payload, sensitive) or
+    return (basename in prohibited or _has_private_bytes(path, sensitive) or
+            _has_private_bytes(payload, sensitive) or
             _misplaced_public_marker(public_path, payload))
 
 

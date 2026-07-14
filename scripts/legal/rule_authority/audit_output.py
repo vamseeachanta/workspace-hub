@@ -31,9 +31,12 @@ def public_result(*, command: str, revision: str, generation: int,
         raise PublicOutputError("invalid generation")
     if type(objects_examined) is not int or objects_examined < 0:
         raise PublicOutputError("invalid object count")
-    if coverage not in {"complete", "partial"} or verdict not in {
-        "clean", "blocked", "incomplete", "error"
-    } or rc not in {0, 1, 2, 3, 4}:
+    allowed = {
+        (0, "clean", "complete"), (1, "blocked", "complete"),
+        (2, "error", "partial"), (3, "incomplete", "partial"),
+        (4, "error", "partial"),
+    }
+    if (rc, verdict, coverage) not in allowed:
         raise PublicOutputError("invalid result")
     return _canonical({
         "command": command, "coverage": coverage, "generation": generation,
