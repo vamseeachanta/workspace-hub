@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Lane:** lane:codex
 > **Execution:** planning `parallel-readonly`; implementation `single-lane`; external activation isolated owner transaction
-> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r1.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r1.md`
+> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r2.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r2.md`
 
 ---
 
@@ -194,17 +194,27 @@ preserving `protect-main` and all legacy enforcement.
 The replacement contract must enumerate, rather than implicitly drift from, the
 four #3522 clauses it supersedes:
 
-1. resource bound `max_entries <= 10000` becomes `<= 100000`;
-2. the frozen operator interface gains the owner-only `genesis-current` command;
+1. resource bound `max_entries <= 10000` becomes `<= 100000` (supersedes
+   #3522 contract **§5 Tree and history audit**);
+2. the frozen operator interface gains the owner-only `genesis-current` command
+   (supersedes the bootstrap operator boundary in **§4 Private filesystem and
+   output transaction** and **§6 / Phase A — bootstrap, no private migration**);
 3. environment admission changes from protected/main-only to the exact custom
-   policies `main` and `refs/pull/*/merge` required by PR `GITHUB_REF`;
+   policies `main` and `refs/pull/*/merge` required by PR `GITHUB_REF`
+   (supersedes the environment admission clause in **§6 / Phase A**);
 4. the old `legal-rule-authority / strict-scan` and workflow-prefixed preview
    context are replaced by observed check context `strict-scan / authority`,
-   GitHub Actions integration ID `15368`.
+   GitHub Actions integration ID `15368` (supersedes the required-check identity
+   in **§6 / Phase A**).
 
 It also corrects the cache posture by removing `setup-uv`, rejects the invalid
 `update` rule, and replaces the unsupported user-repository `workflows` rule with
-the required status check. Every other #3522 boundary remains in force.
+the required status check. The replacement contract cross-links each numbered
+clause to its exact superseded heading in
+`2026-07-13-issue-3522-rule-authority-contract.md`. The old
+`2026-07-14-issue-3522-phase-a-protection-preview.json` is explicitly marked
+deprecated/non-executable and cross-links the replacement contract and preview;
+tests reject it as activation input. Every other #3522 boundary remains in force.
 
 Implementation commit A contains the replacement contract and all trusted tool
 bytes. After A exists, its full Git OID, the replacement-contract Git blob OID,
@@ -215,6 +225,15 @@ and B OIDs and readback proves main contains B, the caller at B pins A, the
 reusable/tool checkout is A, the current anchor binds A, and the three contract
 identities recompute exactly. A stale #3522 plan/approval SHA cannot satisfy this
 gate.
+
+The public pin evidence is
+`config/legal-rule-authority-implementation-pin.json`, canonical JSON with schema
+`legal-rule-authority-implementation-pin-v1` and exactly these keys:
+`schema`, `tool_commit` (A full OID), `contract_blob_oid`, `contract_sha256`,
+`caller_path` (`.github/workflows/legal-rule-authority-gate.yml`), and
+`reusable_path` (`.github/workflows/legal-rule-authority-reusable.yml`). Commit B
+owns both this file and the caller; its own OID is derived after commit creation
+and recorded in private evidence, avoiding a self-referential B field.
 
 Public policy and schema remain exactly 100,000. Activation preflight records the
 exact target tree entry count and requires `1 <= count <= 100000`; current
@@ -236,7 +255,14 @@ It is unavailable when `GITHUB_ACTIONS` is set and requires
 registry and policy as Git blobs from exact tool commit A—not from arbitrary path
 arguments—and verifies their blob OIDs and canonical SHA-256 values against the
 replacement contract. These public inputs are intentionally not subject to the
-private 0600 rule; all generated private bytes are.
+private 0600 rule; all generated private files are.
+
+Before requesting entropy, the operator creates a fresh private detached
+checkout or exact Git-object extraction of commit A, verifies A is reachable
+from the approved post-merge main, verifies the entry point and every imported
+authority-module blob OID against the A manifest/contract, rejects local or
+untracked substitutions, and executes only that verified extraction with
+isolated Python. A mutable working-tree script is never executable genesis input.
 
 The command obtains a 32-byte HMAC key and one unique 32-byte synthetic exact
 pattern per public rule directly from the Linux kernel CSPRNG with no fallback.
@@ -245,8 +271,10 @@ one LF, with no other whitespace; the map is canonical `legal-json-v1`, binds th
 public generation/revision/rule IDs, and contains only those generated synthetic
 patterns. `key_id` is generated as `phase-a-` plus a canonical lowercase UUIDv4.
 The generation-ledger JSON schema and codec both enforce this exact form and a
-64-byte maximum. No key, map, ID, digest, or path is accepted on argv/stdin or
-written to stdout. The command never reads `.legal-deny-list.yaml` or
+64-byte maximum. No generated private key, synthetic map/pattern, `key_id`, or
+private content digest is accepted on argv/stdin or written to stdout; the
+frozen repository/output path flags and transaction UUID are allowed. The
+command never reads `.legal-deny-list.yaml` or
 creates/migrates real rule bytes.
 
 Every path component is opened no-follow through retained dirfds. Before entropy
@@ -255,9 +283,9 @@ longest mount through `/proc/self/mountinfo`, and binds mount ID, major:minor,
 root, mountpoint, filesystem type, source, and options before/after the
 transaction. Only owner-approved native local `ext4`, `xfs`, or `btrfs` is
 accepted; `drvfs`, `9p`, FUSE, overlay, bind, NFS/CIFS, FAT/NTFS, `/mnt/<drive>`,
-or changed/ambiguous mounts reject rc4. The private preview separately attests
-the selected mount's encrypted-at-rest posture, which the filesystem type alone
-cannot prove. The final parent must be current-UID mode 0700. Outputs are created
+or changed/ambiguous mounts reject rc4. Encryption at rest is outside this
+contract; neither preview nor acceptance claims or attests it. The final parent
+must be current-UID mode 0700. Outputs are created
 no-overwrite 0600 under an incomplete 0700 child,
 fsynced, verified, and atomically renamed no-replace to
 `PRIVATE_DIR/UUID`. Output is exactly `map.json`, `manifest.json`, `anchor.json`,
@@ -329,6 +357,18 @@ authority row in the base branch `.github/CODEOWNERS`, and proves they can
 approve. For an owner-authored proof PR the second actor approves; for a
 second-actor-authored proof PR the owner approves. The author never supplies the
 counted approval, and head-only CODEOWNERS changes never satisfy the gate.
+The base branch must contain these exact Variant-A ownership rows, replacing
+`<second-login>` with the separately approved collaborator login:
+
+```text
+/scripts/legal/ @vamseeachanta @<second-login>
+/schemas/legal-rule-* @vamseeachanta @<second-login>
+/config/legal-rule-authority-* @vamseeachanta @<second-login>
+/.github/workflows/legal-rule-authority-* @vamseeachanta @<second-login>
+/docs/plans/evidence/2026-07-14-issue-3544-phase-a-activation-contract.md @vamseeachanta @<second-login>
+/docs/legal-rule-authority/phase-a-activation-proof-v1.txt @vamseeachanta @<second-login>
+```
+
 Creation uses POST with
 the full disabled document. Activation is the final mutation and uses PUT—not
 PATCH—with the same full document and only `enforcement` changed to `active`.
@@ -349,36 +389,62 @@ mergeable under the chosen review posture. The proof PR is never merged.
 3. Create commit B changing only the mutable caller and public pin evidence to
    pin A. The caller at B, reusable/tool at A, and anchor at A are invariant.
 4. Run focused/full acceptance and T3 adversarial code/artifact review.
-5. Present exact A and B identities. Merge only through a separately reviewed
-   PR. This stage performs no external activation.
-6. Generate a private owner preview binding the then-live main/tool SHA, tree
-   count, CURRENT envelope digest, Linux host identity/private root, chosen
-   ruleset variant, exact baseline responses, proof branch/PR names, and rollback.
-   Stop for fresh explicit activation approval.
+5. Present exact A and B identities. Merge the implementation PR with a merge
+   commit only—never squash or rebase—so A and B OIDs are preserved. Verify after
+   merge that both are ancestors reachable from `main`, B has exactly the allowed
+   caller/pin-evidence delta, and all recorded A blobs recompute exactly.
+6. Prepare a **genesis-only** private preview binding post-merge main, A, B,
+   contract/blob identities, Linux host/root, transaction UUID, and rollback of
+   local partial output. Stop for a separate explicit genesis approval. That
+   approval authorizes only one local `genesis-current` transaction and no GitHub
+   mutation.
+7. Execute the approved genesis transaction once from the verified detached/
+   extracted A bytes, independently materialize/verify/audit it, and retain the
+   exact canonical `envelope.json` bytes plus canonical SHA-256 in private 0600
+   evidence. Failure returns to a new genesis preview/approval; it never silently
+   regenerates.
+8. Only after successful retained genesis, prepare the separate activation
+   preview binding the same envelope digest, A/B/post-merge identities, live tree,
+   chosen ruleset variant, exact baselines, frozen proof identity, and rollback.
+   Stop for fresh explicit activation approval. Activation consumes those exact
+   retained envelope bytes and never invokes or regenerates genesis.
 
 ### External activation only after that separate approval
 
 1. **CAS preflight:** reread main head/tree, caller B and its A pin, workflow/tool
-   A, contract blob OID/SHA-256, collaborators/base CODEOWNERS, full environment,
+   A, post-merge reachability of unchanged A/B, contract blob OID/SHA-256,
+   retained envelope SHA-256, collaborators/base CODEOWNERS, full environment,
    branch policies, environment secret names/timestamps, repository/effective
    rulesets, workflow/check identity, and `protect-main`. Abort on any mismatch,
    pre-existing CURRENT, or same-name ruleset.
-2. **Offline proof:** on the approved Linux host, run `genesis-current`,
-   materialize to a second private 0700 directory, verify, and audit the exact
-   main tree with the reviewed tool. Require rc0 and complete coverage.
+2. **Retained-genesis proof:** rehash the retained canonical envelope and require
+   the activation-preview digest, materialize it into a second private 0700
+   directory, verify, and audit the exact main tree with A. Require rc0 and
+   complete coverage; do not run `genesis-current`.
 3. **Environment:** PUT the exact environment, create the two policies, perform
    the manual admin-bypass UI change, and verify exact GET/list readback.
 4. **CURRENT CAS and write:** repeat the full CAS immediately before uploading
-   `LEGAL_SCAN_AUTH_CURRENT` by stdin only; require name and
+   the exact retained `LEGAL_SCAN_AUTH_CURRENT` envelope bytes by stdin only;
+   require name and
    timestamp metadata readback. GitHub cannot return the value, so local canonical
    envelope retention is mandatory for recovery.
-5. **Proof PR:** from the bound main SHA, create a same-repository proof branch
-   containing only the fixed public marker `phase-a-activation-proof-v1`; open a
-   draft PR, approve the environment deployment, and require the exact
+5. **Proof PR:** from the bound main SHA, create exact branch
+   `phase-a-activation-proof-v1`, title
+   `[phase-a] activation proof v1`, and a one-file mode-100644 diff adding
+   `docs/legal-rule-authority/phase-a-activation-proof-v1.txt` whose complete
+   bytes are ASCII `phase-a-activation-proof-v1` plus one LF. Any pre-existing
+   branch/path/PR aborts. Under Variant A the base-branch CODEOWNERS authority
+   rows must govern this path and name both actors. Open it as a draft PR,
+   approve the environment deployment, and require the exact
    `strict-scan / authority` check from integration `15368` to return success.
    Then transition the PR from draft to ready-for-review and verify ready state.
    Under Variant A apply the exact author/reviewer matrix and require the counted
-   approval; under Variant B require none.
+   approval; under Variant B require none. Immediately after creation, capture
+   the numeric PR database ID/number, numeric head-repository ID, exact head
+   commit OID, numeric check-run ID, and check-suite/workflow-run IDs where
+   exposed. Every later CAS requires those
+   exact identities, branch/title/path/bytes/diff, ready state, and check app/
+   context; replacement or rerun identities require a new preview and approval.
    Fixture/adversarial tests prove the fork path remains constant-fail before
    environment access; no live fork/provider creation is authorized.
 6. **Disabled-ruleset CAS:** repeat the full CAS, including proof ready/check/
@@ -438,6 +504,7 @@ facts applicable at that boundary; drift permits no further forward write.
 genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id):
     require owner gate, non-Actions Linux, exact tool OID
     qualify stable approved native mount; retained-dirfd validate 0700 parent
+    extract/detach A; verify reachability and every executable/imported blob
     read registry/policy as exact Git blobs at A; verify contract blob identities
     generate key, synthetic map, and bounded key_id internally from kernel CSPRNG
     build manifest, current anchor, authenticated genesis ledger, CI envelope
@@ -460,7 +527,8 @@ verify_activation_readback(preview, live):
     reject missing/extra/type-coerced fields; return fixed verdict only
 
 activate_owner_transaction(preview):
-    perform CAS preflight and offline proof
+    require separately approved retained envelope; never call genesis
+    perform CAS preflight and retained-envelope proof
     environment -> policies -> UI admin bypass -> CURRENT -> proof PR
     create disabled ruleset -> activate ruleset last -> final proof
     on failure execute captured rollback in dependency-safe order
@@ -472,7 +540,9 @@ activate_owner_transaction(preview):
 |---|---|---|
 | Create | `docs/plans/evidence/2026-07-14-issue-3544-phase-a-activation-contract.md` | superseding exact activation/resource/rollback contract |
 | Create | `docs/plans/evidence/2026-07-14-issue-3544-phase-a-github-preview.json` | canonical non-secret API request/readback variants |
-| Modify | `docs/plans/evidence/2026-07-13-issue-3522-rule-authority-contract.md` | cross-link explicit 10k-to-100k supersession; preserve Phase B text |
+| Create (commit B) | `config/legal-rule-authority-implementation-pin.json` | exact public v1 A/contract/caller/reusable pin evidence |
+| Modify | `docs/plans/evidence/2026-07-13-issue-3522-rule-authority-contract.md` | cross-link all four exact superseded clauses; preserve Phase B text |
+| Modify | `docs/plans/evidence/2026-07-14-issue-3522-phase-a-protection-preview.json` | mark deprecated/non-executable and point to #3544 replacements |
 | Modify | `scripts/legal/manage_rule_authority.py` | owner-only `genesis-current` command and exact CLI |
 | Modify | `scripts/legal/rule_authority/codec.py` | bounded key ID and canonical activation structures |
 | Modify | `schemas/legal-rule-generation-ledger.schema.json` | enforce `phase-a-<lowercase UUIDv4>` key ID and 64-byte bound |
@@ -480,7 +550,7 @@ activate_owner_transaction(preview):
 | Modify | `scripts/legal/rule_authority/protection.py` | exact payload validation and complete readback/effective-rule comparison |
 | Modify | `.github/workflows/legal-rule-authority-reusable.yml` | remove setup-uv/cache and use isolated system Python |
 | Modify (commit B) | `.github/workflows/legal-rule-authority-gate.yml` | pin the commit-A reusable workflow/tool by full OID |
-| Modify if Variant A | `.github/CODEOWNERS` | name owner and exact second actor on every relevant authority row in base branch |
+| Modify if Variant A | `.github/CODEOWNERS` | name both actors on tool/contract/workflow/pin rows and frozen proof-marker path in base branch |
 | Modify | `.claude/docs/legal-rule-authority.md` | Linux owner runbook, proof, rollback, and value-withholding rules |
 | Modify/Create | `scripts/legal/tests/test_rule_authority_*.py` and fixtures | RED matrix below |
 | Update | `docs/plans/README.md` | index this plan and later reflect reviewed state |
@@ -495,10 +565,12 @@ and revision in a revised plan, and obtain another owner decision before sealing
 |---|---|
 | `test_genesis_command_is_frozen_and_owner_only` | command absent today; require exact flags, owner gate, no Actions execution |
 | `test_genesis_rejects_non_native_or_ambiguous_mounts` | require stable `/proc/self/mountinfo` identity and approved ext4/xfs/btrfs; Windows, `/mnt`, drvfs/9p/FUSE/overlay/bind/network/FAT/NTFS and mount drift reject before entropy/private reads |
-| `test_genesis_requires_0700_parent_0600_inputs` | wrong UID/mode, symlink, parent swap, hardlink/non-regular, size drift reject rc4 |
-| `test_genesis_creates_private_entropy_without_output` | internally create 32-byte key and unique 32-byte synthetic patterns; no argv/stdin/stdout values, IDs, digests, or paths; key file is exact RFC4648 base64 plus one LF |
+| `test_genesis_requires_0700_parent_and_0600_outputs` | wrong parent UID/mode, symlink, parent swap, output hardlink/non-regular, or mode drift rejects rc4; public A blobs are not treated as 0600 inputs |
+| `test_genesis_creates_private_entropy_without_output` | internally create 32-byte key and unique 32-byte synthetic patterns; generated private values/digests never use argv/stdin/stdout; key file is exact RFC4648 base64 plus one LF |
+| `test_genesis_csprng_failure_and_collision_fail_closed` | entropy failure, short read, repeated pattern, UUID/key ID collision, and output collision leave no accepted final transaction and never fall back/retry silently |
 | `test_ledger_key_id_schema_and_codec_match` | schema and codec accept only `phase-a-<lowercase UUIDv4>` within 64 bytes and reject every alternate form |
 | `test_genesis_binds_public_blobs_to_commit_a` | public registry/policy blob OIDs and canonical hashes match contract at A; private generated files alone require 0600 |
+| `test_genesis_executes_verified_commit_a_extraction` | reject mutable checkout, unreachable A, entry-point/import blob mismatch, untracked substitution, or entropy request before all module blobs verify |
 | `test_genesis_is_atomic_no_overwrite` | collisions, disk-full/fsync/rename crash leave no accepted final transaction |
 | `test_genesis_outputs_exact_canonical_bundle` | exact six 0600 files, current/null-head anchor, fresh ledger, <=32 KiB envelope |
 | `test_genesis_materialize_verify_roundtrip` | independent materialization and verification return rc0 at exact tool SHA |
@@ -507,6 +579,10 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_tree_over_100000_fails_closed` | 100,001 entries return rc3; no sampling/truncation/clean result |
 | `test_workflow_has_no_cache_or_dependency_action` | no setup-uv/actions-cache/artifact; exact `python3 -B -E -s`, no user site |
 | `test_two_commit_caller_topology` | A contains contract/reusable/tool/schema/tests; B changes only caller/public evidence; B pins A and anchor binds A |
+| `test_merge_commit_preserves_a_b_reachability` | squash/rebase merge rejects; post-merge main must retain exact A/B OIDs as ancestors and recompute B delta/A blobs |
+| `test_public_pin_schema_and_b_ownership` | exact path/v1 six-key canonical schema; B owns caller and pin evidence and neither contains a self-referential B field |
+| `test_supersession_and_old_preview_deprecation` | all four #3522 clauses cross-link replacements; old preview is marked non-executable and rejected as activation input |
+| `test_genesis_and_activation_approvals_are_separate` | genesis-only approval permits one local transaction/no GitHub writes; later preview binds retained envelope digest and activation never regenerates |
 | `test_environment_put_schema_is_exact` | typed reviewer ID and opposite branch-policy booleans; missing/extra/coerced fields reject |
 | `test_pr_and_main_custom_policy_patterns` | exactly `main` and `refs/pull/*/merge`; fork job never references environment |
 | `test_environment_readback_binds_admin_bypass` | require false, reviewer, self-review false, wait zero, exact policies/no extras |
@@ -515,6 +591,7 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_ruleset_disabled_then_active_full_put` | POST disabled then PUT full active document; PATCH/partial update rejects |
 | `test_effective_rules_preserve_protect_main` | baseline ID/rules/bypass unchanged and effective main includes both rulesets |
 | `test_proof_pr_state_machine` | draft check succeeds, PR transitions to verified ready state, Variant A exact non-author approval matrix or Variant B zero approvals, active reevaluation is mergeable but unmerged |
+| `test_proof_identity_is_frozen_and_cas_bound` | exact branch/title/one-file path/mode/ASCII-plus-LF diff and base CODEOWNERS coverage; capture and CAS PR number/database ID, head OID, and numeric check/run IDs |
 | `test_fork_constant_fail_pre_secret` | fork result fixed and no environment/secret/data scan |
 | `test_activation_cas_at_every_boundary` | full A/B/contract/main/CODEOWNERS/environment/secret/ruleset/proof CAS runs preflight, pre-CURRENT, pre-disabled POST, and pre-active PUT; drift produces zero further writes |
 | `test_ambiguous_mutation_reconciliation` | lost 200/201/204 and timeout fixtures reconcile intended/baseline/other; ambiguous secret PUT is rollback-only; rollback ambiguity reconciles before continuing |
@@ -535,6 +612,13 @@ Tests must be committed RED before their matching implementation slice.
 - [ ] Contract blob identities, public registry/policy blobs, reusable workflow,
       tool, schema, and anchor bind commit A; commit B changes only the caller and
       public pin evidence and its caller pins A by full OID.
+- [ ] A merge commit preserves exact A/B OIDs and post-merge main reachability;
+      squash/rebase is prohibited, and the exact public pin v1 schema passes.
+- [ ] All four #3522 superseded clauses cross-link their replacements and the old
+      #3522 protection preview is visibly deprecated and rejected by tests.
+- [ ] A separately approved, one-time genesis-only transaction executes verified
+      extracted A bytes before the activation preview exists; exact retained
+      envelope bytes/digest are consumed without regeneration.
 - [ ] Public contract, JSON schema, codec, config, and tests agree on 100,000;
       the then-live exact tree is measured and below it.
 - [ ] Workflow contains no setup/dependency/cache/artifact action and executes
@@ -546,14 +630,16 @@ Tests must be committed RED before their matching implementation slice.
       bypass; `protect-main` is unchanged.
 - [ ] Same-repository proof PR succeeds as draft, transitions to verified ready
       state, satisfies the selected exact author/reviewer matrix, and remains
-      mergeable after active ruleset readback; it is never merged. Fork fixtures remain
+      mergeable after active ruleset readback; frozen branch/title/path/bytes/diff
+      and captured PR/head/check identities survive every CAS. It is never merged. Fork fixtures remain
       constant-fail before secret access.
 - [ ] Full legal authority suite, focused enforcement tests, Ruff, compileall,
       schema validation, workflow checks, legal scan, and diff checks pass.
 - [ ] T3 adversarial plan review has no MAJOR before user approval; T3 code and
       artifact review has no MAJOR before implementation merge.
-- [ ] A second private preview binds live SHAs/digests/IDs/timestamps/host/path
-      and receives explicit owner approval before external activation.
+- [ ] A genesis-only preview receives separate approval before producing and
+      retaining the envelope; only afterward does an activation preview bind live
+      SHAs/digests/IDs/timestamps/host/path and receive its own explicit approval.
 - [ ] Failure injection proves exact rollback and preservation of the existing
       environment, `protect-main`, legacy deny-list, and all legacy enforcement.
 - [ ] Full CAS passes at preflight, pre-CURRENT, pre-disabled-POST, and
@@ -566,11 +652,11 @@ Tests must be committed RED before their matching implementation slice.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| `custom_ansys_runners` | MAJOR | Variant-A ownership matrix, ready transition, A/B topology, genesis encoding/schema, repeated CAS, ambiguity, and retention corrections required |
-| `prepare_fer_extraction` | MAJOR | exact supersession/SHA gate, base CODEOWNERS, ready proof, mount qualification, and repeated CAS required |
+| `custom_ansys_runners` R2 | MAJOR | genesis/activation approvals, retained envelope, merge-preserved A/B, exact pin evidence, proof identity, and detached-A execution required |
+| `prepare_fer_extraction` R2 | MAJOR | four-clause deprecation links, CODEOWNERS/proof IDs, argv wording, stale tests, and entropy failure coverage required |
 | Independent re-review | PENDING | revised blocked draft must be re-reviewed after owner decisions |
 
-**Overall result:** BLOCKED-DRAFT — both R1 MAJOR finding sets are incorporated,
+**Overall result:** BLOCKED-DRAFT — both R2 MAJOR finding sets are incorporated,
 but two owner decisions and independent re-review are required before the plan
 may advance to `status:plan-review`.
 
