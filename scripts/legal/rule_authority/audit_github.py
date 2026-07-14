@@ -28,6 +28,7 @@ class Download:
     payload: bytes
     compressed_bytes: int
     expanded_bytes: int
+    archive_format: str | None = None
 
 
 @dataclass(frozen=True)
@@ -108,14 +109,32 @@ def _page_evidence(page: ApiPage) -> None:
 
 
 def _download(surface: str, item: Download, sensitive: SensitiveArtifacts,
-              findings: list[bytes]) -> None:
+              findings: list[bytes], budget: _Budget) -> None:
     if (type(item.label) is not bytes or type(item.payload) is not bytes or
             type(item.compressed_bytes) is not int or type(item.expanded_bytes) is not int or
             not item.label or b"\0" in item.label or item.compressed_bytes < 0 or
-            item.expanded_bytes != len(item.payload)):
+            item.expanded_bytes < 0 or item.archive_format not in {None, "zip"}):
         raise CoverageError("invalid download evidence")
     label = surface.encode() + b":" + item.label
-    if contains_sensitive(label, item.payload, sensitive):
+    if item.archive_format == "zip":
+        remaining_compressed = budget.limits[4] - budget.counts[4]
+        remaining_expanded = budget.limits[5] - budget.counts[5]
+        if (item.compressed_bytes > remaining_compressed or
+                item.expanded_bytes > remaining_expanded):
+            raise CoverageError("inventory cap exceeded")
+        archive = scan_zip(
+            item.payload, sensitive, max_entries=10_000,
+            max_compressed_bytes=remaining_compressed,
+            max_expanded_bytes=remaining_expanded,
+            max_ratio=100, max_depth=8,
+        )
+        if (archive.compressed_bytes != item.compressed_bytes or
+                archive.expanded_bytes != item.expanded_bytes):
+            raise CoverageError("download size evidence mismatch")
+        findings.extend(label + b":" + path for path in archive.private_findings)
+    elif item.expanded_bytes != len(item.payload):
+        raise CoverageError("download size evidence mismatch")
+    elif contains_sensitive(label, item.payload, sensitive):
         findings.append(label)
 
 
@@ -139,7 +158,7 @@ def _surface(adapter: Adapter, name: str, sensitive: SensitiveArtifacts,
         if contains_sensitive(name.encode(), page.payload, sensitive):
             findings.append(name.encode())
         for item in page.downloads:
-            _download(name, item, sensitive, findings)
+            _download(name, item, sensitive, findings, budget)
         compressed = sum(item.compressed_bytes for item in page.downloads)
         expanded = sum(item.expanded_bytes for item in page.downloads)
         budget.add(1, len(page.payload), page.edges, len(page.downloads), compressed, expanded)
@@ -187,7 +206,8 @@ def inventory(adapter: Adapter, sensitive: SensitiveArtifacts, *, max_pages: int
 
 def _archive_name(name: str, max_depth: int) -> str:
     path = PurePosixPath(name)
-    if (not name or not name.isascii() or "\\" in name or path.is_absolute() or
+    if (not name or not name.isascii() or path.as_posix() != name or "\\" in name or
+            path.is_absolute() or
             any(part in {"", ".", ".."} for part in path.parts) or
             len(path.parts) > max_depth):
         raise CoverageError("unsafe archive entry")

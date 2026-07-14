@@ -15,6 +15,7 @@ from .complete import CompleteIntegrityError, create_complete, verify_complete
 from .coverage_contract import REQUIRED_REPORT_FILES
 
 MAX_REPORT_FILE_BYTES = 100 * 1024 * 1024
+MAX_REPORT_TOTAL_BYTES = 100 * 1024 * 1024
 
 
 class ReportTransactionError(OSError):
@@ -138,11 +139,19 @@ def _read_file(directory_fd: int, name: str) -> bytes:
             raise ReportTransactionError("unsafe private report file")
         if info.st_size > MAX_REPORT_FILE_BYTES:
             raise ReportTransactionError("private report file too large")
-        chunks = []
+        before = (info.st_dev, info.st_ino, info.st_size)
+        chunks, total = [], 0
         while True:
             chunk = os.read(descriptor, 1024 * 1024)
             if not chunk:
+                after = os.fstat(descriptor)
+                identity = (after.st_dev, after.st_ino, after.st_size)
+                if identity != before or total != info.st_size:
+                    raise ReportTransactionError("private report changed during read")
                 return b"".join(chunks)
+            total += len(chunk)
+            if total > MAX_REPORT_FILE_BYTES:
+                raise ReportTransactionError("private report file too large")
             chunks.append(chunk)
     finally:
         os.close(descriptor)
@@ -172,13 +181,20 @@ def _rename_noreplace(parent_fd: int, source: str, target: str) -> None:
 
 def _rollback_publication(root_fd: int, final: str, incomplete: str) -> None:
     try:
-        _rename_noreplace(root_fd, final, incomplete)
-        directory_fd = _open_child(root_fd, incomplete)
+        directory_fd = _open_child(root_fd, final)
+        sync_error = None
         try:
             os.unlink("COMPLETE", dir_fd=directory_fd)
-            os.fsync(directory_fd)
+            try:
+                os.fsync(directory_fd)
+            except OSError as exc:
+                sync_error = exc
         finally:
             os.close(directory_fd)
+        recovery = f"{incomplete}.rollback.{uuid.uuid4()}"
+        _rename_noreplace(root_fd, final, recovery)
+        if sync_error is not None:
+            raise sync_error
     except OSError as exc:
         raise ReportTransactionError("published report rollback failed") from exc
 
@@ -255,6 +271,9 @@ def verify_report(directory: Path, key: bytes, *, require_complete: bool = True)
     """Authenticate exact COMPLETE inventory using descriptor-relative reads."""
     handle = _Directory(Path(directory))
     try:
+        before = _inventory(handle.fd)
+        if sum(value[2] for value in before.values()) > MAX_REPORT_TOTAL_BYTES:
+            raise ReportTransactionError("private report total size exceeded")
         try:
             document = verify_complete(_read_file(handle.fd, "COMPLETE"), key)
         except (CompleteIntegrityError, ValueError) as exc:
@@ -266,12 +285,24 @@ def verify_report(directory: Path, key: bytes, *, require_complete: bool = True)
             raw, record = _read_file(handle.fd, name), expected[name]
             if len(raw) != record["size"] or hashlib.sha256(raw).hexdigest() != record["sha256"]:
                 raise ReportTransactionError("private report integrity mismatch")
+        if _inventory(handle.fd) != before:
+            raise ReportTransactionError("private report inventory changed")
         if require_complete and any(
                 state != "scanned" for state in document["coverage_states"].values()):
             raise ReportTransactionError("private report coverage incomplete")
         return document
     finally:
         handle.close()
+
+
+def _inventory(directory_fd: int) -> dict[str, tuple[int, int, int]]:
+    result = {}
+    for name in os.listdir(directory_fd):
+        info = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+        if not stat.S_ISREG(info.st_mode):
+            raise ReportTransactionError("private report inventory is unsafe")
+        result[name] = (info.st_dev, info.st_ino, info.st_size)
+    return result
 
 
 def cleanup_incomplete(root: Path, transaction_id: str) -> None:

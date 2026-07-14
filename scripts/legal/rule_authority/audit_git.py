@@ -5,12 +5,12 @@ from __future__ import annotations
 import hashlib
 import os
 import re
-import stat
 from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlsplit
 
 from .git_transport import GitRunner, GitTransportError
+from .git_transport import require_empty_object_store, validate_private_modes
 from .structural import SensitiveArtifacts, contains_sensitive
 
 OID = re.compile(rb"[0-9a-f]{40}(?:[0-9a-f]{24})?\Z")
@@ -286,15 +286,16 @@ def audit_index(repo: Path, sensitive: SensitiveArtifacts, *, max_entries: int,
         entries = _parse_index(runner.run("ls-files", "-s", "-z"), max_entries)
         walker = _ObjectWalker(
             runner, sensitive, max_entries=max_entries, max_blob_bytes=max_blob_bytes,
-            max_objects=max_entries + 1, max_edges=max_entries + 1,
+            max_objects=max_entries + 1, max_edges=max_entries * 2 + 1,
             include_parents=False,
         )
         for path, oid, mode in entries:
             walker.graph.add(b"<index>", path)
-            walker.graph.add(path, oid)
             if contains_sensitive(path, b"", sensitive):
                 walker.findings.append(path)
-            if mode != b"160000":
+            if mode == b"160000":
+                walker.graph.add(path, oid)
+            else:
                 walker.walk(oid, path)
         findings = tuple(walker.findings)
         return AuditResult(
@@ -320,7 +321,7 @@ def _remote(value: str) -> str:
 
 
 def _snapshot(runner: GitRunner, remote: str, max_refs: int) -> RefSnapshot:
-    base = runner.run("ls-remote", "--refs", remote)
+    base = runner.run("ls-remote", remote)
     pulls = runner.run("ls-remote", "--refs", remote, "refs/pull/*/head", "refs/pull/*/merge")
     lines = sorted(set((base + pulls).splitlines()))
     raw = b"".join(line + b"\n" for line in lines)
@@ -339,13 +340,14 @@ def _fetch_oids(runner: GitRunner, remote: str, refs: tuple[Ref, ...]) -> None:
 
 def _require_private_mirror(runner: GitRunner) -> None:
     info = runner.info()
-    if (not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or
-            stat.S_IMODE(info.st_mode) != 0o700):
+    if info.st_uid != os.getuid():
         raise CoverageError("unsafe private mirror")
     if runner.run("rev-parse", "--is-bare-repository").strip() != b"true":
         raise CoverageError("history audit requires a bare mirror")
     if runner.run("rev-parse", "--is-shallow-repository").strip() != b"false":
         raise CoverageError("shallow history is incomplete")
+    validate_private_modes(runner)
+    require_empty_object_store(runner)
     _reject_substitution(runner)
     if runner.run("for-each-ref", "--format=%(refname)").strip():
         raise CoverageError("history audit requires a fresh mirror")
@@ -359,12 +361,14 @@ def audit_history(repo: Path, remote: str, sensitive: SensitiveArtifacts, *,
                   max_edges: int) -> HistoryResult:
     """Snapshot, exact-fetch, resnapshot, then audit the full remote surface."""
     runner = GitRunner(repo)
+    old_umask = os.umask(0o077)
     try:
         _require_private_mirror(runner)
         remote = _remote(remote)
         before = _snapshot(runner, remote, max_refs)
         api_refs = tuple(Ref(_oid(oid), b"api-discovered") for oid in api_discovered_oids)
         _fetch_oids(runner, remote, (*before.refs, *api_refs))
+        validate_private_modes(runner)
         after = _snapshot(runner, remote, max_refs)
         require_stable_snapshot(before, after)
         walker = _ObjectWalker(
@@ -385,4 +389,5 @@ def audit_history(repo: Path, remote: str, sensitive: SensitiveArtifacts, *,
     except GitTransportError as exc:
         raise CoverageError("Git history coverage failed") from exc
     finally:
+        os.umask(old_umask)
         runner.close()

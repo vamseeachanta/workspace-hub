@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import stat
 import subprocess
 from pathlib import Path
 
@@ -95,3 +96,34 @@ class GitRunner:
         if result.returncode not in {0, 1}:
             raise GitTransportError("Git operation failed")
         return result.stdout if result.returncode == 0 else None
+
+
+def validate_private_modes(runner: GitRunner) -> None:
+    """Require every retained mirror directory/file to be private and regular."""
+    for _path, directories, files, directory_fd in os.fwalk(
+            ".", follow_symlinks=False, dir_fd=runner.directory_fd):
+        directory = os.fstat(directory_fd)
+        if directory.st_uid != os.getuid() or stat.S_IMODE(directory.st_mode) != 0o700:
+            raise GitTransportError("unsafe private mirror directory")
+        for name in directories:
+            info = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+            if (not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or
+                    stat.S_IMODE(info.st_mode) != 0o700):
+                raise GitTransportError("unsafe private mirror directory")
+        for name in files:
+            info = os.stat(name, dir_fd=directory_fd, follow_symlinks=False)
+            if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.getuid() or
+                    stat.S_IMODE(info.st_mode) not in {0o400, 0o600}):
+                raise GitTransportError("unsafe private mirror file")
+
+
+def require_empty_object_store(runner: GitRunner) -> None:
+    """Reject preexisting loose, packed, or garbage objects in a fresh mirror."""
+    values = {}
+    for line in runner.run("count-objects", "-v").splitlines():
+        if b": " in line:
+            name, value = line.split(b": ", 1)
+            values[name] = value
+    for name in (b"count", b"in-pack", b"packs", b"size-pack", b"garbage"):
+        if int(values.get(name, b"0")) != 0:
+            raise GitTransportError("history audit requires an empty object store")
