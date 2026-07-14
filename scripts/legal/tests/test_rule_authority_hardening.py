@@ -183,6 +183,9 @@ def test_document_size_order_and_path_traversal_reject():
     policy["forensic_prefixes"] = ["z/", "a/"]
     with pytest.raises(codec.AuthorityFormatError):
         codec.encode_document("policy", policy)
+    policy["forensic_prefixes"] = ["safe/../escape/"]
+    with pytest.raises(codec.AuthorityFormatError):
+        codec.encode_document("policy", policy)
 
 
 @pytest.mark.parametrize("key_id", ["bad\nkey", "x" * 129])
@@ -210,6 +213,3 @@ def test_parser_and_integrity_errors_withhold_hostile_bytes():
     with pytest.raises(codec.AuthorityFormatError) as caught:
         codec.decode_document("registry", raw)
     assert hostile not in str(caught.value)
-    policy["forensic_prefixes"] = ["safe/../escape/"]
-    with pytest.raises(codec.AuthorityFormatError):
-        codec.encode_document("policy", policy)

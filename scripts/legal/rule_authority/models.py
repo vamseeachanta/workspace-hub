@@ -169,7 +169,9 @@ def validate_anchor(value: object) -> None:
 def validate_ledger(value: object) -> None:
     doc = _keys(value, {"entries", "key_id", "ledger_mac", "schema_id"})
     _schema(doc["schema_id"], "legal-rule-generation-ledger-v1")
-    if not isinstance(doc["key_id"], str) or not doc["key_id"].isascii() or not doc["key_id"]:
+    key_id = doc["key_id"]
+    if (not isinstance(key_id, str) or not 1 <= len(key_id) <= 128 or
+            any(not 0x21 <= ord(character) <= 0x7E for character in key_id)):
         raise ModelError("invalid key ID")
     _hex64(doc["ledger_mac"])
     entries = doc["entries"]
@@ -184,6 +186,9 @@ def validate_ledger(value: object) -> None:
         _hex64(item["manifest_mac"])
     if generations != sorted(generations) or len(generations) != len(set(generations)):
         raise ModelError("ledger generations must be sorted and unique")
+    if any(current != previous + 1
+           for previous, current in zip(generations, generations[1:])):
+        raise ModelError("ledger generations must be contiguous")
     if len(revisions) != len(set(revisions)):
         raise ModelError("ledger revisions must be unique")
 
