@@ -82,7 +82,10 @@ function Get-RdpMicProfileAudit {
 
 function Repair-RdpMicProfile {
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
-    param([Parameter(Mandatory)][string]$Path)
+    param(
+        [Parameter(Mandatory)][string]$Path,
+        [Parameter(DontShow)][ValidateSet('None', 'BeforeReplace', 'AfterReplace', 'RestoreFailure')][string]$FaultInjection = 'None'
+    )
     $doc = Get-RdpMicProfileDocument -Path $Path
     $linePattern = '(?im)^audiocapturemode:i:[^\r\n]*'
     $matches = [regex]::Matches($doc.Text, $linePattern)
@@ -108,7 +111,12 @@ function Repair-RdpMicProfile {
         if ([regex]::Matches($candidate.Text, '(?im)^audiocapturemode:i:1\r?$').Count -ne 1) {
             throw 'Candidate re-read validation failed.'
         }
+        [IO.File]::Copy($doc.Path, $backupPath, $false)
+        if ($FaultInjection -eq 'BeforeReplace') { throw 'Injected failure before replacement.' }
+        # File.Replace requires a valid backup path on Windows PowerShell 5.1.
+        # Reusing the already verified path refreshes it with the same original bytes.
         [IO.File]::Replace($candidatePath, $doc.Path, $backupPath, $true)
+        if ($FaultInjection -in 'AfterReplace', 'RestoreFailure') { throw 'Injected ambiguous post-replacement failure.' }
         $active = Get-RdpMicProfileDocument -Path $doc.Path
         if ([regex]::Matches($active.Text, '(?im)^audiocapturemode:i:1\r?$').Count -ne 1) {
             throw 'Post-replacement validation failed; use BackupPath to recover.'
@@ -118,10 +126,14 @@ function Repair-RdpMicProfile {
             BackupSHA256 = Get-RdpMicSha256 -Bytes ([IO.File]::ReadAllBytes($backupPath))
         }
     } catch {
-        if (Test-Path -LiteralPath $backupPath) {
-            try { [IO.File]::Copy($backupPath, $doc.Path, $true) } catch { }
+        $restoreSucceeded = $false
+        if ((Test-Path -LiteralPath $backupPath) -and $FaultInjection -ne 'RestoreFailure') {
+            try {
+                [IO.File]::Copy($backupPath, $doc.Path, $true)
+                $restoreSucceeded = (Get-RdpMicSha256 -Bytes ([IO.File]::ReadAllBytes($doc.Path))) -eq (Get-RdpMicSha256 -Bytes ([IO.File]::ReadAllBytes($backupPath)))
+            } catch { $restoreSucceeded = $false }
         }
-        throw "Profile replacement failed. BackupPath='$backupPath'. $($_.Exception.Message)"
+        throw "Profile replacement failed. RestoreSucceeded=$restoreSucceeded. BackupPath='$backupPath'. Use Copy-Item -LiteralPath '$backupPath' -Destination '$($doc.Path)' -Force for manual recovery. $($_.Exception.Message)"
     } finally {
         if (Test-Path -LiteralPath $candidatePath) {
             Remove-Item -LiteralPath $candidatePath -Force -ErrorAction SilentlyContinue
@@ -265,41 +277,75 @@ function Export-RdpMicConsentSnapshot {
     return $snapshot
 }
 
-function Reset-RdpMicTargetConsent {
-    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
-    param([Parameter(Mandatory)][string]$TargetHost, [Parameter(Mandatory)][string]$StateDirectory)
-    $path = 'HKCU:\Software\Microsoft\Terminal Server Client\LocalDevices'
-    if (-not $PSCmdlet.ShouldProcess("$path\$TargetHost", 'Snapshot and remove exact saved device-consent value')) {
-        return $null
-    }
-    $snapshot = Export-RdpMicConsentSnapshot -TargetHost $TargetHost -StateDirectory $StateDirectory
-    Remove-ItemProperty -LiteralPath $path -Name $TargetHost -ErrorAction Stop
-    [pscustomobject]@{
-        Changed = $true
-        SnapshotPath = $snapshot
-        RestoreCommand = ".\rdp-microphone.ps1 -Role Client -Repair -RestoreSnapshot '$snapshot'"
-    }
-}
-
-function Restore-RdpMicConsentSnapshot {
-    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
+function Read-RdpMicConsentSnapshot {
+    [CmdletBinding()]
     param([Parameter(Mandatory)][string]$SnapshotPath)
     $envelope = Get-Content -LiteralPath $SnapshotPath -Raw -ErrorAction Stop | ConvertFrom-Json
     $allowed = 'HKCU:\Software\Microsoft\Terminal Server Client\LocalDevices'
     if ($envelope.Payload.Schema -ne 1 -or $envelope.Payload.RegistryPath -ne $allowed) {
         throw 'Snapshot schema/path is not allowlisted.'
     }
+    if ([string]::IsNullOrWhiteSpace([string]$envelope.Payload.Name) -or [string]::IsNullOrWhiteSpace([string]$envelope.Payload.Type)) {
+        throw 'Snapshot target name/type is missing.'
+    }
     $payloadJson = $envelope.Payload | ConvertTo-Json -Compress
     $actual = Get-RdpMicSha256 -Bytes ((New-Object Text.UTF8Encoding($false)).GetBytes($payloadJson))
     if ($actual -ne $envelope.SHA256) { throw 'Snapshot SHA256 validation failed.' }
-    $target = "$($envelope.Payload.RegistryPath)\$($envelope.Payload.Name)"
-    if (-not $PSCmdlet.ShouldProcess($target, 'Restore exact saved device-consent value')) { return $null }
-    $key = Get-Item -LiteralPath $envelope.Payload.RegistryPath -ErrorAction Stop
-    if ($null -ne $key.GetValue([string]$envelope.Payload.Name, $null, 'DoNotExpandEnvironmentNames')) {
-        throw "Consent restore conflict: '$($envelope.Payload.Name)' already exists; refusing to overwrite a newer decision."
+    return $envelope.Payload
+}
+
+function Test-RdpMicConsentValueEqual {
+    [CmdletBinding()]
+    param([Parameter(Mandatory)]$Left, [Parameter(Mandatory)]$Right)
+    return (($Left | ConvertTo-Json -Compress) -ceq ($Right | ConvertTo-Json -Compress))
+}
+
+function Reset-RdpMicTargetConsent {
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
+    param(
+        [Parameter(Mandatory)][string]$TargetHost,
+        [Parameter(Mandatory)][string]$StateDirectory,
+        [Parameter(DontShow)][scriptblock]$BeforeRemoveValidation
+    )
+    $path = 'HKCU:\Software\Microsoft\Terminal Server Client\LocalDevices'
+    if (-not $PSCmdlet.ShouldProcess("$path\$TargetHost", 'Snapshot and remove exact saved device-consent value')) {
+        return $null
     }
-    New-ItemProperty -LiteralPath $envelope.Payload.RegistryPath -Name $envelope.Payload.Name -Value $envelope.Payload.Value -PropertyType $envelope.Payload.Type -ErrorAction Stop | Out-Null
-    [pscustomobject]@{ Restored = $true; Name = $envelope.Payload.Name; SnapshotPath = $SnapshotPath }
+    $snapshot = Export-RdpMicConsentSnapshot -TargetHost $TargetHost -StateDirectory $StateDirectory
+    # The optional hook exists only so native tests can inject corruption/races at
+    # the exact boundary. All production callers omit it; every injected change is
+    # still caught by the fail-closed verification below.
+    if ($BeforeRemoveValidation) { & $BeforeRemoveValidation $snapshot $path $TargetHost }
+    $verified = Read-RdpMicConsentSnapshot -SnapshotPath $snapshot
+    if ($verified.Name -cne $TargetHost) { throw 'Verified snapshot target does not match the requested target.' }
+    $liveKey = Get-Item -LiteralPath $path -ErrorAction Stop
+    $liveValue = $liveKey.GetValue($TargetHost, $null, 'DoNotExpandEnvironmentNames')
+    if ($null -eq $liveValue) { throw 'Consent value disappeared before removal; refusing mutation.' }
+    $liveType = $liveKey.GetValueKind($TargetHost).ToString()
+    if ($liveType -cne [string]$verified.Type -or -not (Test-RdpMicConsentValueEqual -Left $liveValue -Right $verified.Value)) {
+        throw 'Consent value changed after snapshot; refusing to remove the newer decision.'
+    }
+    Remove-ItemProperty -LiteralPath $path -Name $TargetHost -ErrorAction Stop
+    $entryPoint = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\rdp-microphone.ps1'))
+    [pscustomobject]@{
+        Changed = $true
+        SnapshotPath = $snapshot
+        RestoreCommand = "& '$entryPoint' -Role Client -Repair -RestoreSnapshot '$snapshot'"
+    }
+}
+
+function Restore-RdpMicConsentSnapshot {
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
+    param([Parameter(Mandatory)][string]$SnapshotPath)
+    $payload = Read-RdpMicConsentSnapshot -SnapshotPath $SnapshotPath
+    $target = "$($payload.RegistryPath)\$($payload.Name)"
+    if (-not $PSCmdlet.ShouldProcess($target, 'Restore exact saved device-consent value')) { return $null }
+    $key = Get-Item -LiteralPath $payload.RegistryPath -ErrorAction Stop
+    if ($null -ne $key.GetValue([string]$payload.Name, $null, 'DoNotExpandEnvironmentNames')) {
+        throw "Consent restore conflict: '$($payload.Name)' already exists; refusing to overwrite a newer decision."
+    }
+    New-ItemProperty -LiteralPath $payload.RegistryPath -Name $payload.Name -Value $payload.Value -PropertyType $payload.Type -ErrorAction Stop | Out-Null
+    [pscustomobject]@{ Restored = $true; Name = $payload.Name; SnapshotPath = $SnapshotPath }
 }
 
 Export-ModuleMember -Function Get-RdpMicRegistryValue, Get-RdpMicSha256, Get-RdpMicProfileAudit, Repair-RdpMicProfile, Get-RdpMicClientIdentity, Get-RdpMicCaptureEndpoints, Get-RdpMicEndpointVerdict, ConvertFrom-RdpMicEventXml, Get-RdpMicEventVerdict, Export-RdpMicConsentSnapshot, Reset-RdpMicTargetConsent, Restore-RdpMicConsentSnapshot

@@ -96,6 +96,31 @@ def test_profile_whatif_does_not_write(tmp_path: Path):
     assert not list(tmp_path.glob("*.backup-*"))
 
 
+@pytest.mark.parametrize(
+    ("fault", "original_restored"),
+    [("BeforeReplace", True), ("AfterReplace", True), ("RestoreFailure", False)],
+)
+def test_profile_replacement_faults_preserve_recovery_path(
+    tmp_path: Path, fault: str, original_restored: bool
+):
+    profile = tmp_path / f"{fault}.rdp"
+    profile.write_bytes(FIXTURE.read_bytes())
+    original = profile.read_bytes()
+    command = (
+        f"Import-Module '{MODULE}' -Force; try{{Repair-RdpMicProfile -Path '{profile}' -FaultInjection '{fault}'|Out-Null}}"
+        "catch{[pscustomobject]@{Caught=$true;Message=$_.Exception.Message}|ConvertTo-Json -Compress}"
+    )
+    result = _run(command)
+    assert result.returncode == 0, result.stderr
+    failure = json.loads(result.stdout)
+    assert failure["Caught"] is True
+    assert "BackupPath=" in failure["Message"]
+    backups = list(tmp_path.glob("*.backup-*"))
+    assert len(backups) == 1
+    assert backups[0].read_bytes() == original
+    assert (profile.read_bytes() == original) is original_restored
+
+
 def test_entrypoint_whatif_remains_json_only_and_writes_nothing(tmp_path: Path):
     profile = tmp_path / "test.rdp"
     profile.write_bytes(FIXTURE.read_bytes())
@@ -141,6 +166,26 @@ def test_human_repair_prints_backup_and_rollback_details(tmp_path: Path):
     assert "CHANGE/ROLLBACK:" in result.stdout
     assert "BackupPath" in result.stdout
     assert list(tmp_path.glob("*.backup-*"))
+
+
+@pytest.mark.parametrize("client_type", ["MSRDC", "WindowsApp"])
+def test_modern_clients_refuse_classic_profile_repair(tmp_path: Path, client_type: str):
+    profile = tmp_path / "test.rdp"
+    profile.write_bytes(FIXTURE.read_bytes())
+    result = subprocess.run(
+        [
+            POWERSHELL, "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass",
+            "-File", str(ENTRYPOINT), "-Role", "Client", "-RdpFile", str(profile),
+            "-ClientType", client_type, "-ConfigurationSource", str(profile), "-Repair",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert result.returncode == 2
+    report = json.loads(result.stdout)
+    assert "only a proven classic mstsc profile" in report["Error"]
+    assert profile.read_bytes() == FIXTURE.read_bytes()
 
 
 def test_explicit_report_path_writes_parseable_json(tmp_path: Path):
@@ -253,7 +298,7 @@ def test_consent_reset_restore_round_trip_and_conflict_refusal(tmp_path: Path):
         "if(-not(Test-Path $path)){New-Item -Path $path -Force|Out-Null}; "
         f"$name='{target}'; New-ItemProperty -LiteralPath $path -Name $name -Value 204 -PropertyType DWord -Force|Out-Null; "
         f"try{{$reset=Reset-RdpMicTargetConsent -TargetHost $name -StateDirectory '{state}' -Confirm:$false; "
-        "$missing=$null -eq (Get-Item $path).GetValue($name,$null); "
+        "$missing=$null -eq (Get-Item $path).GetValue($name,$null); $absoluteRestore=$reset.RestoreCommand.StartsWith(\"& '\") -and $reset.RestoreCommand.Contains(':\\'); "
         "$restore=Restore-RdpMicConsentSnapshot -SnapshotPath $reset.SnapshotPath -Confirm:$false; "
         "$roundtrip=(Get-Item $path).GetValue($name,$null) -eq 204; Remove-ItemProperty -LiteralPath $path -Name $name; "
         "$reset2=$null; New-ItemProperty -LiteralPath $path -Name $name -Value 204 -PropertyType DWord|Out-Null; "
@@ -265,16 +310,47 @@ def test_consent_reset_restore_round_trip_and_conflict_refusal(tmp_path: Path):
         "New-ItemProperty -LiteralPath $path -Name $name -Value 999 -PropertyType DWord|Out-Null; $conflict=$false; "
         "try{Restore-RdpMicConsentSnapshot -SnapshotPath $reset2.SnapshotPath -Confirm:$false|Out-Null}catch{$conflict=$true}; "
         "$preserved=(Get-Item $path).GetValue($name,$null) -eq 999; "
-        "[pscustomobject]@{Missing=$missing;RoundTrip=$roundtrip;Tamper=$tamper;StillMissing=$stillMissing;Conflict=$conflict;Preserved=$preserved}|ConvertTo-Json -Compress} "
+        "[pscustomobject]@{Missing=$missing;AbsoluteRestore=$absoluteRestore;RoundTrip=$roundtrip;Tamper=$tamper;StillMissing=$stillMissing;Conflict=$conflict;Preserved=$preserved}|ConvertTo-Json -Compress} "
         "finally{Remove-ItemProperty -LiteralPath $path -Name $name -ErrorAction SilentlyContinue}"
     )
     result = _run(command)
     assert result.returncode == 0, result.stderr
     assert json.loads(result.stdout) == {
         "Missing": True,
+        "AbsoluteRestore": True,
         "RoundTrip": True,
         "Tamper": True,
         "StillMissing": True,
         "Conflict": True,
         "Preserved": True,
+    }
+
+
+def test_consent_reset_verification_and_race_fail_without_deletion(tmp_path: Path):
+    target = "CODEX-RDP-MIC-" + os.urandom(6).hex()
+    neighbor = target + "-NEIGHBOR"
+    state = tmp_path / "state"
+    command = (
+        f"Import-Module '{MODULE}' -Force; $path='HKCU:\\Software\\Microsoft\\Terminal Server Client\\LocalDevices'; "
+        "if(-not(Test-Path $path)){New-Item -Path $path -Force|Out-Null}; "
+        f"$name='{target}';$neighbor='{neighbor}'; "
+        "New-ItemProperty -LiteralPath $path -Name $name -Value 204 -PropertyType DWord -Force|Out-Null; "
+        "New-ItemProperty -LiteralPath $path -Name $neighbor -Value 77 -PropertyType DWord -Force|Out-Null; "
+        f"try{{$badSnapshot=$false;try{{Reset-RdpMicTargetConsent -TargetHost $name -StateDirectory '{state}' -Confirm:$false "
+        "-BeforeRemoveValidation {param($snapshot,$key,$target)[IO.File]::AppendAllText($snapshot,'corrupt')}|Out-Null}catch{$badSnapshot=$true}; "
+        "$originalPreserved=(Get-Item $path).GetValue($name,$null) -eq 204; "
+        "$race=$false;try{Reset-RdpMicTargetConsent -TargetHost $name -StateDirectory '" + str(state) + "' -Confirm:$false "
+        "-BeforeRemoveValidation {param($snapshot,$key,$target)Set-ItemProperty -LiteralPath $key -Name $target -Value 205}|Out-Null}catch{$race=$true}; "
+        "$newerPreserved=(Get-Item $path).GetValue($name,$null) -eq 205; $neighborPreserved=(Get-Item $path).GetValue($neighbor,$null) -eq 77; "
+        "[pscustomobject]@{BadSnapshot=$badSnapshot;OriginalPreserved=$originalPreserved;Race=$race;NewerPreserved=$newerPreserved;NeighborPreserved=$neighborPreserved}|ConvertTo-Json -Compress} "
+        "finally{Remove-ItemProperty -LiteralPath $path -Name $name -ErrorAction SilentlyContinue;Remove-ItemProperty -LiteralPath $path -Name $neighbor -ErrorAction SilentlyContinue}"
+    )
+    result = _run(command)
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "BadSnapshot": True,
+        "OriginalPreserved": True,
+        "Race": True,
+        "NewerPreserved": True,
+        "NeighborPreserved": True,
     }
