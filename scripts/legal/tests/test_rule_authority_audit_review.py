@@ -50,6 +50,15 @@ def _replace_with_safe(repo: Path, original: str) -> None:
     _git(repo, "replace", original, replacement)
 
 
+def _private_modes(root: Path) -> None:
+    for directory, directories, files in os.walk(root):
+        os.chmod(directory, 0o700)
+        for name in directories:
+            os.chmod(Path(directory) / name, 0o700)
+        for name in files:
+            os.chmod(Path(directory) / name, 0o600)
+
+
 def test_tree_rejects_replace_and_scans_required_ref_raw_objects(tmp_path: Path) -> None:
     repo, original = _repo(tmp_path, PATTERN)
     _replace_with_safe(repo, original)
@@ -65,7 +74,7 @@ def test_history_rejects_graft_and_all_alternate_sources(tmp_path: Path, artifac
     source, _ = _repo(tmp_path)
     mirror = tmp_path / "mirror.git"
     _git(tmp_path, "init", "--bare", "-q", str(mirror))
-    os.chmod(mirror, 0o700)
+    _private_modes(mirror)
     target = mirror / artifact
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text("synthetic\n")
@@ -131,7 +140,7 @@ def test_history_owns_snapshot_fetch_pull_refs_and_api_oid_graph(tmp_path: Path)
     _git(source, "update-ref", "refs/pull/7/head", oid)
     mirror = tmp_path / "mirror.git"
     _git(tmp_path, "init", "--bare", "-q", str(mirror))
-    os.chmod(mirror, 0o700)
+    _private_modes(mirror)
     result = audit_git.audit_history(
         mirror, str(source), SENSITIVE, api_discovered_oids=(oid.encode(),),
         max_refs=20, max_entries=20, max_blob_bytes=100,

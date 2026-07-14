@@ -174,7 +174,12 @@ def _bare_history(tmp_path: Path) -> tuple[Path, Path]:
     _git(source, "tag", "-a", "v1", "-m", "synthetic-block-value")
     bare = tmp_path / "mirror.git"
     _git(tmp_path, "init", "--bare", "-q", str(bare))
-    os.chmod(bare, 0o700)
+    for directory, directories, files in os.walk(bare):
+        os.chmod(directory, 0o700)
+        for name in directories:
+            os.chmod(Path(directory) / name, 0o700)
+        for name in files:
+            os.chmod(Path(directory) / name, 0o600)
     assert oid
     return source, bare
 
