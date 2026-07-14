@@ -7647,7 +7647,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1565
     gh_state: open
     gh_labels:
-      - status:plan-review
+      - status:plan-approved
       - lane:claude
     initial_status: triage
     priority: 0
@@ -7672,7 +7672,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1574
     gh_state: open
     gh_labels:
-      - status:plan-review
+      - status:plan-approved
       - lane:codex
     initial_status: triage
     priority: 0
@@ -7684,7 +7684,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1575
     gh_state: open
     gh_labels:
-      - status:plan-review
+      - status:plan-approved
       - lane:codex
     initial_status: triage
     priority: 0
@@ -7696,7 +7696,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1576
     gh_state: open
     gh_labels:
-      - status:plan-review
+      - status:plan-approved
       - lane:codex
     initial_status: triage
     priority: 0
@@ -7708,7 +7708,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1577
     gh_state: open
     gh_labels:
-      - status:plan-review
+      - status:plan-approved
       - lane:codex
     initial_status: triage
     priority: 0
@@ -7720,7 +7720,7 @@ cards:
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1578
     gh_state: open
     gh_labels:
-      - status:plan-review
+      - status:plan-approved
       - lane:codex
     initial_status: triage
     priority: 0
@@ -7770,6 +7770,83 @@ cards:
     gh_labels:
       - lane:codex
       - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1586
+    title: 'foam_system: starter cited criteria library (NFPA 11 / SOLAS FSS / IMO MODU-class rates)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1586
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1587
+    title: 'foam_system: report_pack end-to-end demo (standard report from a sizing run)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1587
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1589
+    title: 'alt_fuel_ship_sizing: voyage-profile boil-off (sea legs + port dwell segments)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1589
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1590
+    title: 'alt_fuel_ship_sizing: cited fuel-property presets for NH3 and methanol'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1590
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1591
+    title: 'alt_fuel_ship_sizing: report_pack end-to-end demo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1591
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1592
+    title: 'hull_girder_screening: IACS UR S11 rule wave BM/SF for total (sw+wave) utilization'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1592
+    gh_state: open
+    gh_labels:
+      - enhancement
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1593
+    title: 'hull_girder_screening: report_pack end-to-end demo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1593
+    gh_state: open
+    gh_labels:
+      - enhancement
     initial_status: triage
     priority: 0
     gh_assignees: []
