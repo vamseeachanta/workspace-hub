@@ -324,3 +324,60 @@ def test_filesystem_failure_has_rc4_precedence_over_private_finding(
         rc == 4 and captured.err.strip() == "command=authority verdict=filesystem rc=4"
     )
     assert captured.out == ""
+
+
+def test_promote_cli_invokes_owner_transport(monkeypatch, tmp_path, capsys):
+    spec = importlib.util.spec_from_file_location("manage_rule_authority_promote", CLI)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    head, tree = "a" * 40, "b" * 40
+    preview = tmp_path / "preview.json"
+    preview.write_bytes(
+        codec.canonical_bytes(
+            {
+                "current_envelope_sha256": "c" * 64,
+                "expected_head_oid": head,
+                "expected_tree_oid": tree,
+                "pending_envelope_sha256": "d" * 64,
+                "schema_id": "legal-rule-promotion-preview-v1",
+            }
+        )
+    )
+    sentinel = object()
+    observed = {}
+    monkeypatch.setattr(
+        module.gh_owner,
+        "GhOwnerTransport",
+        lambda current, pending: (
+            observed.update(constructor=(current, pending)) or sentinel
+        ),
+    )
+    monkeypatch.setattr(
+        module.promotion,
+        "promote",
+        lambda api, current, pending, got_head, got_tree, document: observed.update(
+            call=(api, current, pending, got_head, got_tree, document)
+        ),
+    )
+
+    rc = module.main(
+        [
+            "promote",
+            "--current-envelope-env",
+            "CURRENT",
+            "--pending-envelope-env",
+            "PENDING",
+            "--expected-head",
+            head,
+            "--expected-tree",
+            tree,
+            "--preview",
+            str(preview),
+        ]
+    )
+
+    assert rc == 0
+    assert observed["constructor"] == ("CURRENT", "PENDING")
+    assert observed["call"][:5] == (sentinel, "CURRENT", "PENDING", head, tree)
+    assert observed["call"][5] == preview.read_bytes()
+    assert capsys.readouterr().out.strip() == "command=promote verdict=promoted rc=0"

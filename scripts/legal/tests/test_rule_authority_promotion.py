@@ -8,7 +8,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "scripts" / "legal"))
-from rule_authority import codec, promotion  # noqa: E402
+from rule_authority import codec, gh_owner, promotion  # noqa: E402
 
 
 def canonical(value):
@@ -159,3 +159,93 @@ def test_owner_promote_retains_pending_when_current_readback_fails(monkeypatch):
         promotion.promote(api, "CURRENT", "PENDING", head, tree, _preview(head, tree))
     assert api.slots["PENDING"] == "pending-envelope"
     assert not any(call[0] == "delete_slot" for call in api.calls)
+
+
+class Result:
+    def __init__(self, stdout="", returncode=0):
+        self.stdout = stdout
+        self.returncode = returncode
+
+
+def test_gh_transport_uses_stdin_and_remote_metadata_for_cas(monkeypatch):
+    monkeypatch.setenv("LEGAL_RULE_OWNER_PROMOTE", "1")
+    monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
+    monkeypatch.setenv("CURRENT", "current-envelope")
+    monkeypatch.setenv("PENDING", "pending-envelope")
+    metadata = {
+        "CURRENT": "2026-07-13T00:00:00Z",
+        "PENDING": "2026-07-13T00:00:00Z",
+    }
+    calls = []
+
+    def runner(argv, **kwargs):
+        calls.append((argv, kwargs.get("input")))
+        assert "current-envelope" not in argv
+        assert "pending-envelope" not in argv
+        assert "CURRENT" not in kwargs["env"]
+        assert "PENDING" not in kwargs["env"]
+        if argv[1:3] == ["secret", "list"]:
+            return Result(
+                codec.canonical_bytes(
+                    [
+                        {"name": name, "updatedAt": updated}
+                        for name, updated in metadata.items()
+                    ]
+                ).decode()
+            )
+        if argv[1:3] == ["secret", "set"]:
+            assert argv[3] == "CURRENT"
+            assert kwargs["input"] == "pending-envelope"
+            metadata["CURRENT"] = "2026-07-14T00:00:00Z"
+            return Result()
+        if argv[1:3] == ["secret", "delete"]:
+            assert argv[3] == "PENDING"
+            del metadata["PENDING"]
+            return Result()
+        if argv[1:3] == ["api", "repos/o/r/git/ref/heads/main"]:
+            return Result("a" * 40 + "\n")
+        if argv[1:3] == ["api", "repos/o/r/git/commits/" + "a" * 40]:
+            return Result("b" * 40 + "\n")
+        raise AssertionError(argv)
+
+    api = gh_owner.GhOwnerTransport("CURRENT", "PENDING", "o/r", runner=runner)
+    head, tree = "a" * 40, "b" * 40
+    promotion.promote(api, "CURRENT", "PENDING", head, tree, _preview(head, tree))
+
+    assert "PENDING" not in metadata
+    assert any(call[0][1:3] == ["secret", "set"] for call in calls)
+    assert any(call[0][1:3] == ["secret", "delete"] for call in calls)
+
+
+def test_gh_transport_fails_closed_on_remote_drift_and_redacts_errors(monkeypatch):
+    monkeypatch.setenv("LEGAL_RULE_OWNER_PROMOTE", "1")
+    monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
+    monkeypatch.setenv("CURRENT", "current-envelope")
+    monkeypatch.setenv("PENDING", "pending-envelope")
+    responses = iter(
+        [
+            Result(
+                '[{"name":"CURRENT","updatedAt":"one"},{"name":"PENDING","updatedAt":"one"}]'
+            ),
+            Result(
+                '[{"name":"CURRENT","updatedAt":"drift"},{"name":"PENDING","updatedAt":"one"}]'
+            ),
+        ]
+    )
+
+    def runner(_argv, **_kwargs):
+        return next(responses)
+
+    api = gh_owner.GhOwnerTransport("CURRENT", "PENDING", "o/r", runner=runner)
+    assert api.read_slot("CURRENT") == "current-envelope"
+    with pytest.raises(codec.AuthorityError, match="integrity") as caught:
+        api.read_slot("CURRENT")
+    assert "current-envelope" not in str(caught.value)
+
+
+def test_gh_transport_rejects_ci_and_invalid_names_before_subprocess(monkeypatch):
+    calls = []
+    monkeypatch.setenv("GITHUB_ACTIONS", "true")
+    with pytest.raises(codec.AuthorityError, match="config"):
+        gh_owner.GhOwnerTransport("CURRENT;bad", "PENDING", "o/r", runner=calls.append)
+    assert calls == []
