@@ -19,10 +19,10 @@
     "bypass_actors": [],
     "direct_updates_allowed": false,
     "name": "legal-rule-authority-main",
-    "required_check": "legal-rule-authority / strict-scan",
+    "required_check": "Legal Rule Authority / strict-scan",
     "required_integration": "github-actions",
     "target": "refs/heads/main"
   },
   "schema_id": "legal-rule-phase-a-protection-preview-v1",
-  "tool_sha": "cc4bbc1e42aed2df573b0abd5ee94dd91a5a811c"
+  "tool_sha": "0c2f21fd37e56327604e2197569b06c2dafaf22e"
 }

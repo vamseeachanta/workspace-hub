@@ -9,19 +9,11 @@ permissions:
   contents: read
 
 jobs:
-  fork-owner-review:
-    if: github.event.pull_request.head.repo.full_name != github.repository
-    runs-on: ubuntu-latest
-    steps:
-      - name: Constant fork result
-        run: |
-          echo "owner review required"
-          exit 1
-
   strict-scan:
-    if: github.event.pull_request.head.repo.full_name == github.repository
-    uses: vamseeachanta/workspace-hub/.github/workflows/legal-rule-authority-reusable.yml@cc4bbc1e42aed2df573b0abd5ee94dd91a5a811c
+    uses: vamseeachanta/workspace-hub/.github/workflows/legal-rule-authority-reusable.yml@0c2f21fd37e56327604e2197569b06c2dafaf22e
     with:
       head_oid: ${{ github.event.pull_request.head.sha }}
+      is_fork: ${{ github.event.pull_request.head.repo.full_name != github.repository }}
+      tool_sha: 0c2f21fd37e56327604e2197569b06c2dafaf22e
     secrets:
       LEGAL_SCAN_AUTH_CURRENT: ${{ secrets.LEGAL_SCAN_AUTH_CURRENT }}
