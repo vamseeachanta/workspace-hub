@@ -1346,7 +1346,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - status:plan-review
+      - status:plan-approved
       - domain:pilots-data
       - lane:codex
     initial_status: triage
