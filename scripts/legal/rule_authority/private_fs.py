@@ -35,26 +35,40 @@ def _check_metadata(info: os.stat_result, required_mode: int) -> None:
         raise PrivateFilesystemError("unsafe private file metadata")
 
 
-def _open_parent(path: Path) -> tuple[int, os.stat_result]:
+def _close_all(descriptors: list[int] | tuple[int, ...]) -> None:
+    for descriptor in reversed(descriptors):
+        os.close(descriptor)
+
+
+def _identities(descriptors: list[int] | tuple[int, ...]) -> tuple[tuple[int, int], ...]:
+    return tuple((info.st_dev, info.st_ino) for info in map(os.fstat, descriptors))
+
+
+def _open_parent(path: Path) -> tuple[int, ...]:
     absolute = Path(os.path.abspath(path))
-    descriptor = os.open(absolute.anchor, os.O_RDONLY | os.O_DIRECTORY)
+    descriptors = [os.open(absolute.anchor, os.O_RDONLY | os.O_DIRECTORY)]
     private_boundary = False
     try:
         for component in absolute.parts[1:-1]:
             child = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
-                            dir_fd=descriptor)
+                            dir_fd=descriptors[-1])
             info = os.fstat(child)
             mode = stat.S_IMODE(info.st_mode)
             if private_boundary or (info.st_uid == os.getuid() and mode == 0o700):
+                if not private_boundary:
+                    _close_all(descriptors)
+                    descriptors = [child]
+                else:
+                    descriptors.append(child)
                 private_boundary = True
                 _check_metadata(info, 0o700)
-            os.close(descriptor)
-            descriptor = child
-        parent_info = os.fstat(descriptor)
-        _check_metadata(parent_info, 0o700)
-        return descriptor, parent_info
+            else:
+                _close_all(descriptors)
+                descriptors = [child]
+        _check_metadata(os.fstat(descriptors[-1]), 0o700)
+        return tuple(descriptors)
     except Exception:
-        os.close(descriptor)
+        _close_all(descriptors)
         raise
 
 
@@ -73,25 +87,25 @@ def _read_key_at(parent_fd: int, name: str) -> bytes:
         os.close(descriptor)
 
 
-def _parent_path_matches(path: Path, expected: os.stat_result) -> bool:
-    descriptor, actual = _open_parent(path)
+def _parent_path_matches(path: Path, expected: tuple[tuple[int, int], ...]) -> bool:
+    descriptors = _open_parent(path)
     try:
-        return (expected.st_dev, expected.st_ino) == (actual.st_dev, actual.st_ino)
+        return expected == _identities(descriptors)
     finally:
-        os.close(descriptor)
+        _close_all(descriptors)
 
 
 def _load_key_file(path: Path) -> bytes:
     try:
-        parent_fd, before = _open_parent(path)
+        parent_fds = _open_parent(path)
         try:
-            raw = _read_key_at(parent_fd, Path(path).name)
-            after = os.fstat(parent_fd)
-            stable_fd = (before.st_dev, before.st_ino) == (after.st_dev, after.st_ino)
+            before = _identities(parent_fds)
+            raw = _read_key_at(parent_fds[-1], Path(path).name)
+            stable_fd = before == _identities(parent_fds)
             if not stable_fd or not _parent_path_matches(path, before):
                 raise PrivateFilesystemError("private parent changed")
         finally:
-            os.close(parent_fd)
+            _close_all(parent_fds)
     except (OSError, UnicodeError) as exc:
         if isinstance(exc, PrivateFilesystemError):
             raise

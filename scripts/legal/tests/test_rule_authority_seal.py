@@ -123,11 +123,11 @@ def test_anchor_and_ledger_genesis_append_bytes_are_frozen():
     assert appended["ledger_mac"] == "322c0abf80b69834122b2690b673a842dc4d096d873ac367a6481adbeace7e43"
     genesis_unsigned = (
         b'{"entries":[{"authority_revision":"223e4567-e89b-42d3-a456-426614174000",'
-        b'"generation":1,"manifest_mac":"' + b"1" * 64 +
+        b'"generation":1,"manifest_mac":"1111111111111111111111111111111111111111111111111111111111111111'
         b'"}],"key_id":"synthetic-key","schema_id":"legal-rule-generation-ledger-v1"}\n')
     appended_unsigned = (
         b'{"entries":[{"authority_revision":"223e4567-e89b-42d3-a456-426614174000",'
-        b'"generation":1,"manifest_mac":"' + b"1" * 64 +
+        b'"generation":1,"manifest_mac":"1111111111111111111111111111111111111111111111111111111111111111'
         b'"},{"authority_revision":"123e4567-e89b-42d3-a456-426614174000",'
         b'"generation":2,"manifest_mac":"baabf0644dd201d64265a731151c936ff7492642410719a14f30c93be21836d7"'
         b'}],"key_id":"synthetic-key","schema_id":"legal-rule-generation-ledger-v1"}\n')
@@ -137,13 +137,13 @@ def test_anchor_and_ledger_genesis_append_bytes_are_frozen():
     assert hmac.new(KEY, seal.LEDGER_DOMAIN + appended_unsigned, hashlib.sha256).hexdigest() == appended["ledger_mac"]
     expected_genesis = (
         b'{"entries":[{"authority_revision":"223e4567-e89b-42d3-a456-426614174000",'
-        b'"generation":1,"manifest_mac":"' + b"1" * 64 +
+        b'"generation":1,"manifest_mac":"1111111111111111111111111111111111111111111111111111111111111111'
         b'"}],"key_id":"synthetic-key",'
         b'"ledger_mac":"7243a17796aec6277db1909f078c9366710c109d1e0b2dae6e8b1429791ce05e",'
         b'"schema_id":"legal-rule-generation-ledger-v1"}\n')
     expected_appended = (
         b'{"entries":[{"authority_revision":"223e4567-e89b-42d3-a456-426614174000",'
-        b'"generation":1,"manifest_mac":"' + b"1" * 64 +
+        b'"generation":1,"manifest_mac":"1111111111111111111111111111111111111111111111111111111111111111'
         b'"},{"authority_revision":"123e4567-e89b-42d3-a456-426614174000",'
         b'"generation":2,"manifest_mac":"baabf0644dd201d64265a731151c936ff7492642410719a14f30c93be21836d7"'
         b'}],"key_id":"synthetic-key",'

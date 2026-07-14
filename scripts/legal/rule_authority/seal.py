@@ -8,6 +8,7 @@ import struct
 import uuid
 
 from .codec import canonical_bytes, decode_document
+from .models import ModelError, validate_document
 
 AUTHORITY_DOMAIN = b"LEGAL-RULE-AUTHORITY\0v1\0"
 LEDGER_DOMAIN = b"LEGAL-RULE-GENERATION-LEDGER\0v1\0"
@@ -43,8 +44,7 @@ def manifest_mac_input(registry: bytes, policy: bytes, private_map: bytes) -> by
 
 
 def create_manifest(registry: bytes, policy: bytes, private_map: bytes, key: bytes) -> dict:
-    if len(key) != 32:
-        raise AuthorityIntegrityError("invalid key")
+    _require_key(key)
     documents = (
         decode_document("registry", registry),
         decode_document("policy", policy),
@@ -69,22 +69,45 @@ def create_manifest(registry: bytes, policy: bytes, private_map: bytes, key: byt
     }
 
 
-def _ledger_mac(document: dict, key: bytes) -> str:
+def _require_key(key: bytes) -> None:
+    if not isinstance(key, bytes) or len(key) != 32:
+        raise AuthorityIntegrityError("invalid key")
+
+
+def ledger_mac_input(document: dict) -> bytes:
+    """Return the domain-separated input for a ledger document."""
     unsigned = {name: value for name, value in document.items() if name != "ledger_mac"}
-    return hmac.new(key, LEDGER_DOMAIN + canonical_bytes(unsigned), hashlib.sha256).hexdigest()
+    return LEDGER_DOMAIN + canonical_bytes(unsigned)
+
+
+def _ledger_mac(document: dict, key: bytes) -> str:
+    return hmac.new(key, ledger_mac_input(document), hashlib.sha256).hexdigest()
+
+
+def _validate_ledger(document: dict) -> None:
+    try:
+        validate_document("ledger", document)
+    except ModelError as exc:
+        raise AuthorityIntegrityError("invalid ledger") from exc
 
 
 def create_ledger(key_id: str, entries: list[dict], key: bytes) -> dict:
+    _require_key(key)
     document = {
         "entries": entries,
         "key_id": key_id,
+        "ledger_mac": "0" * 64,
         "schema_id": "legal-rule-generation-ledger-v1",
     }
+    _validate_ledger(document)
     document["ledger_mac"] = _ledger_mac(document, key)
+    _validate_ledger(document)
     return document
 
 
 def _verify_ledger(ledger: dict, key: bytes) -> None:
+    _require_key(key)
+    _validate_ledger(ledger)
     expected = _ledger_mac(ledger, key)
     if not hmac.compare_digest(expected, ledger["ledger_mac"]):
         raise AuthorityIntegrityError("ledger authentication failed")
@@ -92,6 +115,7 @@ def _verify_ledger(ledger: dict, key: bytes) -> None:
 
 def append_ledger(ledger: dict, generation: int, revision: str,
                   manifest_mac: str, key: bytes) -> dict:
+    _require_key(key)
     _verify_ledger(ledger, key)
     entries = ledger["entries"]
     tip = entries[-1]
@@ -155,6 +179,7 @@ def _compare_manifest(expected: dict, manifest: dict) -> None:
 def verify_bundle(registry: bytes, policy: bytes, private_map: bytes,
                   manifest_bytes: bytes, anchor_bytes: bytes,
                   ledger_bytes: bytes, key: bytes) -> None:
+    _require_key(key)
     manifest = decode_document("manifest", manifest_bytes)
     anchor = decode_document("anchor", anchor_bytes)
     ledger = decode_document("ledger", ledger_bytes)
