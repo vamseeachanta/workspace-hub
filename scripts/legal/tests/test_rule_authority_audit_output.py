@@ -14,8 +14,8 @@ import pytest
 LEGAL = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(LEGAL))
 
-from rule_authority import audit_output, report_transaction
-from rule_authority.complete import verify_complete
+from rule_authority import audit_output, report_transaction  # noqa: E402
+from rule_authority.complete import verify_complete  # noqa: E402
 
 
 KEY = b"r" * 32

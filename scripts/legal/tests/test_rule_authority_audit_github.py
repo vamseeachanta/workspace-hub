@@ -10,7 +10,7 @@ import pytest
 LEGAL = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(LEGAL))
 
-from rule_authority import audit_github
+from rule_authority import audit_github  # noqa: E402
 
 
 class FixtureAdapter:

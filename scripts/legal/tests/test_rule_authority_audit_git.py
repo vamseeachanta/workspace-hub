@@ -12,8 +12,8 @@ import pytest
 LEGAL = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(LEGAL))
 
-from rule_authority import audit_git
-from rule_authority.structural import SensitiveArtifacts
+from rule_authority import audit_git  # noqa: E402
+from rule_authority.structural import SensitiveArtifacts  # noqa: E402
 
 
 SENSITIVE = SensitiveArtifacts(
