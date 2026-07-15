@@ -6,6 +6,8 @@ red until the launcher and its inline broker are added.
 """
 
 from pathlib import Path
+import os
+import subprocess
 
 import pytest
 
@@ -18,6 +20,20 @@ def launcher_source() -> str:
     """Return launcher bytes as text, failing clearly while it is unimplemented."""
     assert LAUNCHER.is_file(), f"missing required launcher: {LAUNCHER}"
     return LAUNCHER.read_text(encoding="utf-8")
+
+
+def run_launcher(*args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
+    """Execute the public launcher; RED until its file exists."""
+    assert LAUNCHER.is_file(), f"missing required launcher: {LAUNCHER}"
+    merged = os.environ.copy()
+    merged.update(env or {})
+    return subprocess.run(
+        ["/bin/bash", str(LAUNCHER), *args],
+        text=True,
+        capture_output=True,
+        env=merged,
+        check=False,
+    )
 
 
 def test_genesis_launcher_is_sole_owner_only_public_entrypoint():
@@ -106,3 +122,87 @@ def test_launcher_source_has_no_shell_path_reopen_or_mutable_broker_file():
     assert "broker.py" not in source
     assert "PYTHONSTARTUP" not in source
 
+
+def test_owner_and_actions_gate_rejects_untrusted_processes():
+    for env in (
+        {"LEGAL_RULE_OWNER_GENESIS": "", "GITHUB_ACTIONS": ""},
+        {"LEGAL_RULE_OWNER_GENESIS": "wrong", "GITHUB_ACTIONS": ""},
+        {"LEGAL_RULE_OWNER_GENESIS": "operator", "GITHUB_ACTIONS": "true"},
+    ):
+        result = run_launcher("genesis-current", env=env)
+        assert result.returncode != 0
+        assert "authority" not in result.stdout.lower()
+
+
+def test_owner_gate_acceptance_clears_hostile_environment_before_child_exec():
+    result = run_launcher(
+        "genesis-current",
+        "--tool-repo",
+        "fixture",
+        env={
+            "LEGAL_RULE_OWNER_GENESIS": "operator",
+            "GITHUB_ACTIONS": "",
+            "BASH_ENV": "/tmp/hostile-bash-env",
+            "PYTHONPATH": "/tmp/hostile-pythonpath",
+            "PYTHONSTARTUP": "/tmp/hostile-python-startup",
+            "PATH": "/tmp/hostile-bin",
+        },
+    )
+    assert "hostile" not in result.stdout.lower()
+    assert "hostile" not in result.stderr.lower()
+
+
+def test_subprocess_contract_forwards_internal_identity_and_exact_pairs():
+    result = run_launcher(
+        "genesis-current",
+        "--tool-repo",
+        "repo",
+        "--tool-sha",
+        "a" * 40,
+        "--out-parent",
+        "/private/output",
+        "--outer-identity-fd",
+        "9",
+        "--outer-bootstrap-sha256",
+        "b" * 64,
+        env={"LEGAL_RULE_OWNER_GENESIS": "operator"},
+    )
+    assert result.returncode != 0
+    assert "unknown option" not in result.stderr.lower()
+
+
+def test_pre_verifier_fixture_sentinels_are_not_executed_or_written(tmp_path):
+    sentinel = tmp_path / "sentinel"
+    hook = tmp_path / "python3"
+    hook.write_text(f"#!/bin/sh\nprintf touched > {sentinel}\nexit 99\n", encoding="utf-8")
+    hook.chmod(0o700)
+    result = run_launcher(
+        "genesis-current",
+        env={
+            "LEGAL_RULE_OWNER_GENESIS": "operator",
+            "PATH": str(tmp_path),
+            "PYTHONPATH": str(tmp_path),
+        },
+    )
+    assert not sentinel.exists(), result.stderr
+
+
+def test_unrelated_fd_is_closed_and_private_inputs_are_retained_no_follow(tmp_path):
+    target = tmp_path / "approval.json"
+    target.write_text("{}\n", encoding="utf-8")
+    link = tmp_path / "approval-link.json"
+    link.symlink_to(target)
+    result = run_launcher(
+        "genesis-current",
+        "--out-parent",
+        str(tmp_path),
+        env={"LEGAL_RULE_OWNER_GENESIS": "operator"},
+    )
+    assert result.returncode != 0
+    assert "symlink" in result.stderr.lower() or "follow" in result.stderr.lower()
+
+
+def test_sealed_memfd_identity_requires_exact_seals_and_readback():
+    result = run_launcher("genesis-current", env={"LEGAL_RULE_OWNER_GENESIS": "operator"})
+    assert result.returncode != 0
+    assert "seal" in result.stderr.lower() or "memfd" in result.stderr.lower()
