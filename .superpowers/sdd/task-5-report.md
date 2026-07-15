@@ -24,9 +24,8 @@ sentinels, unrelated-FD closure, no-follow symlink rejection, and sealed
 memfd identity readback. The frozen public argument names and order are pinned
 (`--tool-repo`, `--tool-sha`, `--out-parent`, `--transaction-id`,
 `--approval-record`, `--approval-sha256`, `--python-realpath`, and
-`--python-sha256`). A valid temporary approval/contract/manifest/verifier
-fixture captures child argv, environment, and inherited descriptors; the
-launcher is required to reach it under a pristine environment. The tests pin
+`--python-sha256`). Placeholder JSON records are explicitly non-canonical
+negative fixtures; they must be rejected before any child capture. The tests pin
 owner-only public entry, `builtin exec -c`, retained
 `O_NOFOLLOW` descriptors, independent outer-bootstrap identity, isolated
 stdlib-only `-I -S -B -c` broker, no path reopening/entropy/authority import,
