@@ -3416,7 +3416,7 @@ cards:
     title: 'data(cost): expand sanctioned-projects set — deepwater FIDs 2000–2026, all regions, #1019 proof standard'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1024
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
