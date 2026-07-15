@@ -246,6 +246,16 @@ def test_new_ledger_accepts_canonical_phase_a_key_id():
     assert len(key_id.encode("utf-8")) <= 64
 
 
+def test_new_ledger_accepts_canonical_phase_a_key_id_at_byte_boundary():
+    key = bytes(range(32))
+    manifest = authority.build_manifest(registry(), policy(), private_map(), key)
+    key_id = "phase-a-12345678-1234-4234-9234-123456789abc"
+
+    assert len(key_id.encode("utf-8")) == 44
+    assert len(key_id.encode("utf-8")) <= 64
+    authority.new_ledger(key_id, manifest, key)
+
+
 @pytest.mark.parametrize(
     "key_id",
     [
@@ -256,6 +266,7 @@ def test_new_ledger_accepts_canonical_phase_a_key_id():
         None,
         123,
         "phase-a-12345678-1234-4234-9234-123456789abc\N{SNOWMAN}",
+        "phase-a-12345678-1234-4234-9234-123456789abc" + "x" * 21,
     ],
 )
 def test_new_ledger_rejects_invalid_phase_a_key_id(key_id):
