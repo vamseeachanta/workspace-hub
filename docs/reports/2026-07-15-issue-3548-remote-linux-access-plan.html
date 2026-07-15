@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Issue 3548 — Remote Linux Access Plan</title>
+  <style>
+    :root { color-scheme: light; --ink: #14213d; --muted: #52606d; --accent: #0f766e; --panel: #f5f7fa; --line: #d9e2ec; }
+    body { max-width: 980px; margin: 0 auto; padding: 2rem; font: 16px/1.55 system-ui, sans-serif; color: var(--ink); }
+    h1, h2 { line-height: 1.2; } h1 { margin-bottom: .25rem; } h2 { margin-top: 2rem; }
+    a { color: var(--accent); } code { background: #edf2f7; padding: .1rem .3rem; border-radius: .25rem; }
+    .status { color: #92400e; font-weight: 700; } .muted { color: var(--muted); }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: .75rem; padding: 1rem 1.25rem; margin: 1rem 0; }
+    table { width: 100%; border-collapse: collapse; } th, td { border: 1px solid var(--line); padding: .6rem; text-align: left; vertical-align: top; }
+  </style>
+</head>
+<body>
+  <h1>Canonical remote Linux access</h1>
+  <p class="muted">Issue <a href="https://github.com/vamseeachanta/workspace-hub/issues/3548">#3548</a> · T2 documentation plan · 2026-07-15</p>
+  <p class="status">Draft — implementation remains blocked pending adversarial review and user approval.</p>
+
+  <div class="panel">
+    <strong>Outcome.</strong> The work will create a tested <code>docs/ops/remote-linux-access.md</code> authority for Tailscale transport plus conventional OpenSSH key authentication. It will not change machines, router settings, registry values, helpers, or keys.
+  </div>
+
+  <h2>Authority</h2>
+  <table>
+    <tr><th>Layer</th><th>Responsibility</th></tr>
+    <tr><td>Workstation registry</td><td>Machine identity, SSH aliases, verified non-secret connection metadata</td></tr>
+    <tr><td>Canonical runbook</td><td>Architecture, safe setup order, verification, rollback, troubleshooting</td></tr>
+    <tr><td>Connection helpers</td><td>Executable behavior; later reconciliation belongs to #3549</td></tr>
+    <tr><td>Machine-local stores</td><td>Private keys, credentials, Tailscale state, recovery secrets</td></tr>
+  </table>
+
+  <h2>Implementation sequence</h2>
+  <ol>
+    <li>Add a failing documentation-contract test.</li>
+    <li>Create the canonical runbook without copying endpoint literals.</li>
+    <li>Link durable fleet, handoff, setup, and documentation navigation.</li>
+    <li>Convert competing Tabby documents into safe legacy pointers.</li>
+    <li>Run focused tests, legal scan, secrets scan, and adversarial artifact review.</li>
+  </ol>
+
+  <h2>Hard boundaries</h2>
+  <ul>
+    <li>No router SSH forwarding.</li>
+    <li>No live Tailscale or OpenSSH mutation.</li>
+    <li>No registry or connection-helper changes.</li>
+    <li>No endpoint, key, token, auth URL, peer configuration, or router-detail publication.</li>
+    <li>No implementation before the user applies <code>status:plan-approved</code>.</li>
+  </ul>
+
+  <h2>Follow-through</h2>
+  <p>Repository automation will remain in <a href="https://github.com/vamseeachanta/workspace-hub/issues/3549">#3549</a>. The canary rollout will remain in <a href="https://github.com/vamseeachanta/workspace-hub/issues/3550">#3550</a>, followed by the primary-host rollout in <a href="https://github.com/vamseeachanta/workspace-hub/issues/3551">#3551</a>.</p>
+</body>
+</html>
