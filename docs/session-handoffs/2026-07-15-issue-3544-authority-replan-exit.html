@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Issue 3544 authority replan handoff — 2026-07-15</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 920px; margin: 2rem auto; padding: 0 1rem; color: #18202a; }
+    h1, h2 { line-height: 1.2; }
+    code { background: #eef2f6; padding: .1rem .3rem; border-radius: .2rem; }
+    .blocked { border-left: .4rem solid #b42318; padding-left: 1rem; }
+    li { margin: .35rem 0; }
+  </style>
+</head>
+<body>
+  <h1>Issue 3544 authority replan handoff</h1>
+  <p><strong>Date:</strong> 2026-07-15 · <strong>State:</strong> blocked-needs-replan</p>
+
+  <h2>Active task</h2>
+  <p>Correct and operationalize the Phase A legal-rule authority activation so the
+  machine-equivalence reconciliation PR can receive a valid authority envelope.</p>
+
+  <h2>Completed</h2>
+  <ul>
+    <li>Recorded owner choice of solo-safe Variant B and <code>ace-linux-1</code>.</li>
+    <li>Bound the proposed private-root notation to fail-closed host, account, path,
+    mount, ownership, and mode verification.</li>
+    <li>Preserved R5–R7 adversarial findings plus unavailable-provider evidence.</li>
+    <li>Posted the sustained-MAJOR result to GitHub issue 3544.</li>
+  </ul>
+
+  <h2>Verified state</h2>
+  <ul>
+    <li>Branch: <code>chore/3544-phase-a-activation</code>.</li>
+    <li>Remote branch: <code>codex/3544-phase-a-activation-plan</code>.</li>
+    <li>Latest plan-state commit before this handoff: <code>08da6ba8aa7e539bd11f221ada35a9e3fca40420</code>.</li>
+    <li>Issue remains open with <code>status:needs-plan</code>.</li>
+    <li>No approval marker or implementation was created.</li>
+    <li>No SSH trust, private-root, environment, secret, ruleset, authority,
+    scheduler, proof-PR, or machine-matrix mutation occurred.</li>
+  </ul>
+
+  <div class="blocked">
+    <h2>Blocking defects</h2>
+    <ol>
+      <li>Genesis approval is not durably consumed. A failed/crashed invocation can
+      replay the same approval record, digest, and UUID.</li>
+      <li>The pre-authority approval-record verifier boundary lacks an executable,
+      cryptographically bound structured-data parser contract.</li>
+    </ol>
+  </div>
+
+  <h2>Exact next checkpoint</h2>
+  <p>Revise the plan—not implementation—to specify an owner-only, no-overwrite,
+  fsynced approval-consumption tombstone retained across all outcomes, and a
+  minimal verified parser executed before the authority entry point or entropy.
+  Add crash/replay and parser-substitution RED tests, then start a new reviewed
+  plan revision. Do not advance the GitHub label or create an approval marker
+  until a fresh no-MAJOR review and explicit user approval.</p>
+</body>
+</html>
