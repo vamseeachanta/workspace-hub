@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Lane:** lane:codex
 > **Execution:** planning `parallel-readonly`; implementation `single-lane`; external activation isolated owner transaction
-> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`; `scripts/review/results/2026-07-15-plan-3544-codex-{security,transaction}-r5.md`
+> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`; `scripts/review/results/2026-07-15-plan-3544-codex-{security,transaction}-r{5,6}.md`
 
 ---
 
@@ -193,6 +193,8 @@ live GitHub state matches all reported blockers.
 | This plan | `docs/plans/2026-07-14-issue-3544-phase-a-authority-activation-correction.md` |
 | Revised normative activation contract | `docs/plans/evidence/2026-07-14-issue-3544-phase-a-activation-contract.md` |
 | Canonical non-secret GitHub payload/readback preview | `docs/plans/evidence/2026-07-14-issue-3544-phase-a-github-preview.json` |
+| Private genesis approval-record schema | `schemas/legal-rule-genesis-approval.schema.json` |
+| Private genesis approval record | off-repo 0600 canonical JSON; exact path and SHA-256 supplied only in the separately approved genesis transaction |
 | Genesis/operator guide | `.claude/docs/legal-rule-authority.md` |
 | Pre-Python genesis verifier/launcher | `scripts/legal/launch_rule_authority_genesis.sh` |
 | Owner CLI | `scripts/legal/manage_rule_authority.py` |
@@ -275,6 +277,7 @@ Add this frozen owner-only command:
 ```text
 genesis-current --tool-repo GIT_DIR --tool-sha FULL_OID
                 --out-parent PRIVATE_DIR --transaction-id UUID
+                --approval-record PRIVATE_JSON --approval-sha256 HEX
 ```
 
 It is unavailable when `GITHUB_ACTIONS` is set and requires
@@ -282,7 +285,17 @@ It is unavailable when `GITHUB_ACTIONS` is set and requires
 registry and policy as Git blobs from exact tool commit A—not from arbitrary path
 arguments—and verifies their blob OIDs and canonical SHA-256 values against the
 replacement contract. These public inputs are intentionally not subject to the
-private 0600 rule; all generated private files are.
+private 0600 rule; all generated private files are. `--approval-record` is an
+allowed private path and `--approval-sha256` is the exact non-secret digest the
+owner separately approves. The launcher opens the record no-follow as a retained
+FD, requires current-UID 0600 regular-file state, hashes that FD, and passes only
+`/proc/self/fd/<approval-fd>` into the verified Python entry point. The canonical
+record schema binds the plan/A/B/post-merge identities, transaction UUID,
+`ace-linux-1`, root-owned SSH-host-key fingerprint evidence, machine-id digest,
+trusted account name/UID/home, canonical parent, and native mount identity.
+Before Python or entropy, the launcher recomputes host-key and machine-id evidence
+from root-owned system files with approved absolute tools and rejects every
+record/digest/host/account/path mismatch or replayed transaction UUID.
 
 Before requesting entropy, the operator creates a fresh private detached
 checkout or exact Git-object extraction of commit A, verifies A is reachable
@@ -302,9 +315,13 @@ an open directory descriptor and entry-point FD and executes
 `/proc/self/fd/<entry-fd>` with imports confined to that immutable extracted
 tree; cleanup retains the directory FD until Python exits. Any descriptor/path,
 mode, inode, device, or digest change aborts before Python or entropy. Before
-invocation the operator uses the approved absolute system `sha256sum` to verify
-the launcher file against its separately approved digest, then invokes that exact
-open file with the approved absolute system shell. The trust assumption is
+invocation the operator opens the launcher once as a retained FD, requires a
+regular file with approved owner/mode/inode/device, hashes
+`/proc/self/fd/<launcher-fd>` with the approved absolute system `sha256sum`,
+rechecks `fstat`, and invokes `/bin/bash /proc/self/fd/<launcher-fd>` without
+reopening the pathname. The FD remains open until the launcher exits; pathname
+replacement after open is irrelevant, and launcher-FD/inode/device/digest drift
+aborts before Python or entropy. The trust assumption is
 explicit: that verified launcher, the Linux kernel, approved native filesystem, absolute
 system Git/hash/shell/Python binaries, root-owned system libraries, and absence
 of a hostile same-UID process are trusted; repository worktree code, hooks,
@@ -460,11 +477,15 @@ mergeable under the chosen review posture. The proof PR is never merged.
 6. Prepare a **genesis-only** private preview binding post-merge main, A, B,
    contract/blob identities, verified `ace-linux-1` fingerprint/host identity,
    trusted-account UID, canonical absolute pre-existing private parent and native
-   mount identity, transaction UUID, and rollback of local partial output. A
+   mount identity, transaction UUID, and rollback of local partial output in the
+   canonical private approval record. Independently compute its SHA-256 and stop
+   for approval of the exact record digest plus the launcher digest. A
    missing, symlinked, wrong-owner, wrong-mode, or disallowed parent stops for a
    separate host-root provisioning plan/approval; this preview cannot create or
-   repair it. Stop for a separate explicit genesis approval. That approval
-   authorizes only one local `genesis-current` transaction and no GitHub mutation.
+   repair it. That separate explicit genesis approval authorizes only one local
+   `genesis-current` invocation consuming the exact record/digest and no GitHub
+   mutation. A changed, missing, replayed, or alternate record requires a new
+   preview and approval.
 7. Execute the approved genesis transaction once from the verified detached/
    extracted A bytes, independently materialize/verify/audit it, and retain the
    exact canonical `envelope.json` bytes plus canonical SHA-256 in private 0600
@@ -478,7 +499,14 @@ mergeable under the chosen review posture. The proof PR is never merged.
 
 ### External activation only after that separate approval
 
-1. **CAS preflight:** reread main head/tree, caller B and its A pin, workflow/tool
+1. **Exclusive-owner and drift preflight:** the activation approval must attest
+   a short, bounded maintenance window in which the owner is the sole repository
+   administrator/mutator, no other session or credential will change environment
+   secrets, environments, policies, rulesets, or the proof branch, and every
+   unexpected actor/change ends the transaction. The GitHub endpoints used here
+   do not provide a plan-verified conditional-write contract, so readback is a
+   drift detector—not atomic compare-and-swap—and the plan makes no zero-TOCTOU
+   claim. Then reread main head/tree, caller B and its A pin, workflow/tool
    A, post-merge reachability of unchanged A/B, contract blob OID/SHA-256,
    retained envelope SHA-256, collaborators/base CODEOWNERS, full environment,
    branch policies, environment secret names/timestamps, repository/effective
@@ -488,12 +516,14 @@ mergeable under the chosen review posture. The proof PR is never merged.
    the activation-preview digest, materialize it into a second private 0700
    directory, verify, and audit the exact main tree with A. Require rc0 and
    complete coverage; do not run `genesis-current`.
-3. **First-write CAS:** immediately after retained proof/audit and immediately
-   before the first environment PUT, repeat the full CAS. Any proof-to-CAS or
-   CAS-to-PUT drift permits zero external writes.
+3. **First-write drift check:** immediately after retained proof/audit and
+   immediately before the first environment PUT, repeat the full drift check.
+   Observed proof-to-check drift permits zero external writes. The unavoidable
+   check-to-write window is accepted only under the explicit exclusive-owner
+   assumption; exact post-write readback is mandatory and cannot prove atomicity.
 4. **Environment:** PUT the exact environment, create the two policies, perform
    the manual admin-bypass UI change, and verify exact GET/list readback.
-5. **CURRENT CAS and write:** repeat the full CAS immediately before uploading
+5. **CURRENT drift check and write:** repeat the full drift check immediately before uploading
    the exact retained `LEGAL_SCAN_AUTH_CURRENT` envelope bytes by stdin only;
    require name and
    timestamp metadata readback. GitHub cannot return the value, so local canonical
@@ -511,17 +541,17 @@ mergeable under the chosen review posture. The proof PR is never merged.
    payload or review requirement aborts. Immediately after creation, capture
    the numeric PR database ID/number, numeric head-repository ID, exact head
    commit OID, numeric check-run ID, and check-suite/workflow-run IDs where
-   exposed. Every later CAS requires those
+   exposed. Every later drift check requires those
    exact identities, branch/title/path/bytes/diff, ready state, and check app/
    context; replacement or rerun identities require a new preview and approval.
    Fixture/adversarial tests prove the fork path remains constant-fail before
    environment access; no live fork/provider creation is authorized.
-7. **Disabled-ruleset CAS:** repeat the full CAS, including proof ready/check/
+7. **Disabled-ruleset drift check:** repeat the full drift check, including proof ready/check/
    review state, immediately before POSTing the chosen full payload with
 `enforcement=disabled`,
    capture its new ID, and verify normalized plus raw readback. Any 422/shape drift
    rolls back; never substitute an update/workflows rule.
-8. **Activation CAS and activate last:** repeat the full CAS after disabled
+8. **Activation drift check and activate last:** repeat the full drift check after disabled
    readback and immediately before PUTting the same full document with
 `enforcement=active`; verify
    raw/normalized/effective rules, unchanged `protect-main`, exact required check,
@@ -532,7 +562,13 @@ mergeable under the chosen review posture. The proof PR is never merged.
 
 ### Rollback and stop order
 
-At the first failed readback or proof, stop forward progress:
+At the first failed readback or proof, stop forward progress. Before every
+rollback mutation, re-attest the exclusive-owner window and reread the resource;
+continue only when its captured numeric identity and complete state equal the
+transaction-created state. Any other state, unexpected actor, or expired window
+stops for manual reconciliation without further mutation. The same unavoidable
+read-to-write window remains an explicit trust assumption; rollback is not
+described as atomic.
 
 1. If the new ruleset exists, PUT its exact full document with
    `enforcement=disabled` and verify. Delete it only if its ID was created by this
@@ -560,18 +596,21 @@ state stops and escalates. For a lost disabled-ruleset response, reconcile by th
 unique exact name and complete normalized shape; one exact match supplies the
 transaction ID, while zero, multiple, or drifted matches stop. UI mutations are
 reconciled by GET. Because a secret value cannot be read back, metadata presence
-cannot prove the intended payload: an ambiguous secret PUT is rollback-only,
-deleting the transaction-created name after confirming it was absent at baseline.
-Rollback mutations use the same reconcile-before-next-step rule. Every repeated
-CAS rechecks all A/B/contract, main/tree, collaborators/CODEOWNERS, environment/
+cannot prove the intended payload: an ambiguous secret PUT stops and escalates;
+it is never automatically retried or deleted. Rollback mutations use the same
+exclusive-window and reconcile-before-next-step rule. Every repeated drift check
+rechecks all A/B/contract, main/tree, collaborators/CODEOWNERS, environment/
 policies/admin, secret metadata, ruleset/effective, `protect-main`, and proof
 facts applicable at that boundary; drift permits no further forward write.
 
 ## Pseudocode
 
 ```text
-genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id):
+genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
+                approval_record, approval_sha256):
     require owner gate, non-Actions Linux, exact tool OID
+    retained-FD verify canonical approval record/digest and one-use transaction UUID
+    recompute local SSH-host-key/machine-id evidence; require approved host/account tuple
     resolve home from trusted account record, never environment; bind host/fingerprint/UID
     canonicalize selected absolute parent with no symlink components
     require exact pre-existing current-UID 0700 parent; never create/repair it
@@ -600,10 +639,11 @@ verify_activation_readback(preview, live):
 
 activate_owner_transaction(preview):
     require separately approved retained envelope; never call genesis
-    perform CAS preflight and retained-envelope proof
+    require bounded exclusive-owner mutation-window attestation
+    perform drift preflight and retained-envelope proof; do not claim atomic CAS
     environment -> policies -> UI admin bypass -> CURRENT -> proof PR
     create disabled ruleset -> activate ruleset last -> final proof
-    on failure execute captured rollback in dependency-safe order
+    on failure rollback only exact transaction state while window remains exclusive
 ```
 
 ## Files to Change
@@ -619,6 +659,7 @@ activate_owner_transaction(preview):
 | Create | `scripts/legal/launch_rule_authority_genesis.sh` | minimal trusted-system Git/hash verifier and FD-bound pre-Python launcher |
 | Modify | `scripts/legal/rule_authority/codec.py` | bounded key ID and canonical activation structures |
 | Modify | `schemas/legal-rule-generation-ledger.schema.json` | enforce `phase-a-<lowercase UUIDv4>` key ID and 64-byte bound |
+| Create | `schemas/legal-rule-genesis-approval.schema.json` | canonical private preview/approval record consumed by the launcher and CLI |
 | Modify | `scripts/legal/rule_authority/{authority,envelope,private_io}.py` | atomic genesis/envelope transaction with Linux guarantees |
 | Modify | `scripts/legal/rule_authority/protection.py` | exact payload validation and complete readback/effective-rule comparison |
 | Modify | `.github/workflows/legal-rule-authority-reusable.yml` | remove setup-uv/cache and use isolated system Python |
@@ -640,14 +681,14 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_genesis_command_is_frozen_and_owner_only` | command absent today; require exact flags, owner gate, no Actions execution |
 | `test_genesis_rejects_non_native_or_ambiguous_mounts` | require stable `/proc/self/mountinfo` identity and approved ext4/xfs/btrfs; Windows, `/mnt`, drvfs/9p/FUSE/overlay/bind/network/FAT/NTFS and mount drift reject before entropy/private reads |
 | `test_genesis_requires_preexisting_0700_parent_and_0600_outputs` | trusted-account home resolution must match the canonical approved absolute path; root-owned non-writable `/` and `/home` fixtures pass, while writable/foreign-owned system ancestors, foreign-owned or writable account-home/private components, absent parent, environment substitution, wrong final UID/mode, symlink component, parent swap, output hardlink/non-regular, or mode drift rejects rc4 before entropy/writes; genesis never creates/repairs the parent and public A blobs are not treated as 0600 inputs |
-| `test_genesis_preview_binds_verified_host_identity` | fixture-backed preview requires exact `ace-linux-1` host identity, out-of-band-verified SSH fingerprint evidence, trusted-account UID, and canonical path; every missing/mismatched hostname, fingerprint, UID, or evidence field rejects before Python, entropy, or writes |
+| `test_genesis_preview_binds_verified_host_identity` | fixture-backed canonical approval record/digest requires exact `ace-linux-1` SSH-host-key and machine-id evidence, trusted-account name/UID/home, canonical path, mount, A/B/plan identities, and transaction UUID; launcher recomputes local evidence and every missing/mismatched/replayed field rejects before Python, entropy, or writes |
 | `test_genesis_creates_private_entropy_without_output` | internally create 32-byte key and unique 32-byte synthetic patterns; generated private values/digests never use argv/stdin/stdout; key file is exact RFC4648 base64 plus one LF |
 | `test_genesis_csprng_failure_and_collision_fail_closed` | entropy failure, short read, repeated pattern, UUID/key ID collision, and output collision leave no accepted final transaction and never fall back/retry silently |
 | `test_ledger_key_id_schema_and_codec_match` | schema and codec accept only `phase-a-<lowercase UUIDv4>` within 64 bytes and reject every alternate form |
 | `test_genesis_binds_public_blobs_to_commit_a` | public registry/policy blob OIDs and canonical hashes match contract at A; private generated files alone require 0600 |
 | `test_genesis_executes_verified_commit_a_extraction` | reject mutable checkout, unreachable A, entry-point/import blob mismatch, untracked substitution, or entropy request before all module blobs verify |
 | `test_genesis_launcher_uses_trusted_absolute_tools` | execute launcher fixture; reject PATH aliases, hooks/config, unapproved binaries, wrong launcher blob/hash, or missing explicit trust inputs |
-| `test_genesis_launcher_fd_boundary_blocks_substitution` | execute race fixtures; retained dir/entry FDs plus 0500/0400 tree reject inode/device/path/mode/digest swaps and Python sentinel proves no Python/entropy before complete verification |
+| `test_genesis_launcher_fd_boundary_blocks_substitution` | execute race fixtures; retained launcher/approval-record/dir/entry FDs plus 0500/0400 tree reject pathname replacement and inode/device/mode/digest swaps; launcher is hashed and invoked through the same FD, and a Python sentinel proves no Python/entropy before complete verification |
 | `test_genesis_is_atomic_no_overwrite` | collisions, disk-full/fsync/rename crash leave no accepted final transaction |
 | `test_genesis_outputs_exact_canonical_bundle` | exact six 0600 files, current/null-head anchor, fresh ledger, <=32 KiB envelope |
 | `test_genesis_materialize_verify_roundtrip` | independent materialization and verification return rc0 at exact tool SHA |
@@ -669,10 +710,11 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_ruleset_disabled_then_active_full_put` | POST disabled then PUT full active document; PATCH/partial update rejects |
 | `test_effective_rules_preserve_protect_main` | baseline ID/rules/bypass unchanged and effective main includes both rulesets |
 | `test_proof_pr_state_machine` | draft check succeeds, PR transitions to verified ready state, exact Variant B requires zero PR approvals, active reevaluation is mergeable but unmerged, and any Variant A state aborts |
-| `test_proof_identity_is_frozen_and_cas_bound` | exact branch/title/one-file path/mode/ASCII-plus-LF diff, unchanged base CODEOWNERS blob identity, and no code-owner requirement; capture and CAS PR number/database ID, head OID, and numeric check/run IDs |
+| `test_proof_identity_is_frozen_and_drift_bound` | exact branch/title/one-file path/mode/ASCII-plus-LF diff, unchanged base CODEOWNERS blob identity, and no code-owner requirement; capture and recheck PR number/database ID, head OID, and numeric check/run IDs |
 | `test_fork_constant_fail_pre_secret` | fork result fixed and no environment/secret/data scan |
-| `test_activation_cas_at_every_boundary` | full A/B/contract/main/CODEOWNERS/environment/secret/ruleset/proof CAS runs preflight, immediately post-proof/pre-first-environment-PUT, pre-CURRENT, pre-disabled POST, and pre-active PUT; drift produces zero further writes |
-| `test_ambiguous_mutation_reconciliation` | lost 200/201/204 and timeout fixtures reconcile intended/baseline/other; ambiguous secret PUT is rollback-only; rollback ambiguity reconciles before continuing |
+| `test_activation_drift_checks_and_exclusive_window` | exact bounded owner attestation is required; full A/B/contract/main/CODEOWNERS/environment/secret/ruleset/proof drift checks run preflight, immediately pre-first-PUT, pre-CURRENT, pre-disabled POST, and pre-active PUT; observed drift produces zero further writes, and tests explicitly reject any atomic-CAS claim for unsupported endpoints |
+| `test_read_write_toctou_is_explicit_and_fail_closed` | fixture injects mutation before adapter dispatch and requires no write; mutation during an unavoidably unconditional request is classified as exclusive-window violation, never claimed atomic, and stops after readback without overwriting further state |
+| `test_ambiguous_mutation_reconciliation` | lost 200/201/204 and timeout fixtures reconcile intended/baseline/other; ambiguous secret PUT stops without automatic retry/delete; rollback ambiguity reconciles or stops before continuing |
 | `test_rollback_disables_ruleset_first` | injected failures assert exact disable, secret, UI, policies/environment order |
 | `test_rollback_touches_only_created_ids` | pre-existing env/protect-main/secret/ruleset are never overwritten/deleted |
 | `test_external_adapters_are_fixture_only` | tests perform no live writes and validate official 200/201/204/303/404/422 shapes |
@@ -696,9 +738,14 @@ Tests must be committed RED before their matching implementation slice.
 - [ ] Exact genesis command passes Linux permissions, atomicity, roundtrip,
       native-filesystem qualification, hostile-input, size, crash, exact
       base64-plus-LF, internal synthetic-map creation, and value-withholding tests.
+- [ ] The retained-FD private approval record and exact approved digest bind the
+      plan/A/B/transaction, local SSH-host-key and machine-id evidence, account
+      name/UID/home, canonical parent, and mount; mismatch or replay stops before
+      Python, entropy, or writes.
 - [ ] The external launcher's recorded blob/hash, trusted absolute tools,
       allowlisted A module identities, immutable extracted tree, and retained-FD
-      execution pass real launcher/race tests before any Python or entropy.
+      execution pass real launcher/approval-record/path-swap race tests before any
+      Python or entropy; the launcher is hashed and executed through the same FD.
 - [ ] Contract blob identities, public registry/policy blobs, reusable workflow,
       tool, schema, and anchor bind commit A; commit B changes only the caller and
       public pin evidence and its caller pins A by full OID.
@@ -721,7 +768,7 @@ Tests must be committed RED before their matching implementation slice.
 - [ ] Same-repository proof PR succeeds as draft, transitions to verified ready
       state with the exact Variant B zero-approval/no-code-owner posture, and remains
       mergeable after active ruleset readback; frozen branch/title/path/bytes/diff
-      and captured PR/head/check identities survive every CAS. It is never merged. Fork fixtures remain
+      and captured PR/head/check identities survive every drift check. It is never merged. Fork fixtures remain
       constant-fail before secret access.
 - [ ] Full legal authority suite, focused enforcement tests, Ruff, compileall,
       schema validation, workflow checks, legal scan, and diff checks pass.
@@ -730,11 +777,15 @@ Tests must be committed RED before their matching implementation slice.
 - [ ] A genesis-only preview receives separate approval before producing and
       retaining the envelope; only afterward does an activation preview bind live
       SHAs/digests/IDs/timestamps/host/path and receive its own explicit approval.
-- [ ] Failure injection proves exact rollback and preservation of the existing
-      environment, `protect-main`, legacy deny-list, and all legacy enforcement.
-- [ ] Full CAS passes at preflight, immediately post-proof/pre-first-environment-
-      PUT, pre-CURRENT, pre-disabled-POST, and pre-active-PUT boundaries;
-      ambiguous forward and rollback responses are reconciled without blind retries.
+- [ ] Failure injection proves rollback touches only exact transaction-created
+      state while the exclusive-owner window remains valid; drift or ambiguity
+      stops without overwriting a stale baseline.
+- [ ] The activation approval explicitly accepts the bounded sole-admin mutation
+      window and the unavoidable read-to-write TOCTOU of endpoints without a
+      verified conditional-write contract. Drift checks run at preflight,
+      immediately pre-first-environment-PUT, pre-CURRENT, pre-disabled-POST, and
+      pre-active-PUT; observed drift permits no further write, exact readback is
+      required, and no artifact claims atomic CAS.
 - [ ] No Phase B/PENDING/CAS/history/provider/cache-deletion action occurs; issue
       closure still requires the completeness gate.
 
@@ -746,9 +797,11 @@ Tests must be committed RED before their matching implementation slice.
 | `prepare_fer_extraction` R4 | APPROVE | trusted pre-Python launcher, FD boundary, trust assumptions, and executable race tests resolve R3 findings |
 | Codex security R5 | MAJOR | impossible current-UID ownership rule for root-owned system ancestors |
 | Codex transaction R5 | MAJOR | missing host-identity RED test, Variant-B/CODEOWNERS contradiction, and ambiguous approval wording |
+| Codex security R6 | MAJOR | genesis did not consume approved host evidence; launcher pathname was reopened after hashing |
+| Codex transaction R6 | MAJOR | missing approval-record data path and false atomic-CAS/lost-update guarantee |
 
-**Overall result:** REVIEW-PENDING — R5 rejected the first decision-bound SHA.
-The findings are patched in the working revision; a fresh no-MAJOR review is
+**Overall result:** REVIEW-PENDING — R6 rejected the second decision-bound SHA.
+The R5 and R6 findings are patched in the working revision; a fresh no-MAJOR review is
 required before the plan can be surfaced for exact-SHA approval. Implementation
 and activation remain blocked.
 
