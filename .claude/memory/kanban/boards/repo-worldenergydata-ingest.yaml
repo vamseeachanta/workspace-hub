@@ -1668,7 +1668,7 @@ cards:
     title: 'data(cost): contract-award asset registry per sanctioned project — sourced stage split (feeds A1)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1020
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
