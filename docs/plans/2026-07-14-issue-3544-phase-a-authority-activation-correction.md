@@ -1,13 +1,13 @@
 # Plan for #3544: Correct and Operationalize Phase A Authority Activation
 
-> **Status:** draft-review-pending
+> **Status:** draft-needs-replan
 > **Complexity:** T3
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3544
 > **Client:** N/A
 > **Lane:** lane:codex
 > **Execution:** planning `parallel-readonly`; implementation `single-lane`; external activation isolated owner transaction
-> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`; `scripts/review/results/2026-07-15-plan-3544-codex-{security,transaction}-r{5,6}.md`
+> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`; `scripts/review/results/2026-07-15-plan-3544-codex-{security,transaction}-r{5,6,7}.md`
 
 ---
 
@@ -799,11 +799,14 @@ Tests must be committed RED before their matching implementation slice.
 | Codex transaction R5 | MAJOR | missing host-identity RED test, Variant-B/CODEOWNERS contradiction, and ambiguous approval wording |
 | Codex security R6 | MAJOR | genesis did not consume approved host evidence; launcher pathname was reopened after hashing |
 | Codex transaction R6 | MAJOR | missing approval-record data path and false atomic-CAS/lost-update guarantee |
+| Codex security R7 | MAJOR | no durable approval-consumption marker; impossible pre-Python structured-record validation boundary |
+| Codex transaction R7 | MAJOR | failed genesis can replay the same unconsumed approval record/digest/UUID |
 
-**Overall result:** REVIEW-PENDING — R6 rejected the second decision-bound SHA.
-The R5 and R6 findings are patched in the working revision; a fresh no-MAJOR review is
-required before the plan can be surfaced for exact-SHA approval. Implementation
-and activation remain blocked.
+**Overall result:** BLOCKED-NEEDS-REPLAN — R7 is the third Codex review iteration
+and remains MAJOR. Do not continue an automatic review cycle. The next revision
+must add durable approval consumption and an executable trusted approval-record
+parser boundary before receiving a new adversarial review. Implementation and
+activation remain blocked.
 
 ## Risks and Open Questions
 
