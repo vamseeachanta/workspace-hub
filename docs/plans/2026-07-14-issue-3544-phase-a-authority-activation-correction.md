@@ -272,10 +272,11 @@ outside this issue.
 
 ### Secure genesis interface
 
-Add this frozen owner-only command:
+Add this frozen owner-only public launcher command:
 
 ```text
-genesis-current --tool-repo GIT_DIR --tool-sha FULL_OID
+launch_rule_authority_genesis.sh genesis-current
+                --tool-repo GIT_DIR --tool-sha FULL_OID
                 --out-parent PRIVATE_DIR --transaction-id UUID
                 --approval-record PRIVATE_JSON --approval-sha256 HEX
                 --python-realpath ABSOLUTE_PATH --python-sha256 HEX
@@ -291,7 +292,11 @@ allowed private path and `--approval-sha256` is the exact non-secret digest the
 owner separately approves. The genesis preview and separate owner approval will
 also bind the exact non-secret `--python-realpath` and `--python-sha256` command
 arguments before the launcher reads the approval JSON, removing any circular
-trust in interpreter fields parsed by that interpreter. The launcher opens the record no-follow as a retained
+trust in interpreter fields parsed by that interpreter. `manage_rule_authority.py`
+will not expose a public `genesis-current` command. It will expose only a distinct
+internal genesis dispatch that will be unreachable through the documented CLI
+and will validate the inherited launcher capability described below before any
+authority-module import. The launcher opens the record no-follow as a retained
 FD, requires current-UID 0600 regular-file state, hashes that FD, and passes only
 `/proc/self/fd/<approval-fd>` into the verified Python entry point. The canonical
 record schema binds the plan/A/B/post-merge identities, transaction UUID,
@@ -343,8 +348,11 @@ as attesting those dependencies.
 The launcher will open the approval record no-follow as a retained FD; require a
 current-UID, link-count-one regular file with exact mode 0600, stable device,
 inode, mode, size, and `1..16384` bytes; and require the raw SHA-256 to equal the
-approved digest. It will execute the verified verifier FD first with the approved
-absolute interpreter as `/approved/python -I -S -B /proc/self/fd/<verifier-fd>`, a sanitized
+approved digest. It will open the canonical approved interpreter realpath
+no-follow as a retained root-owned, non-group/other-writable regular-file FD,
+fstat/hash that FD, and require the independently approved SHA-256. It will
+execute the verified verifier FD first as
+`/proc/self/fd/<python-fd> -I -S -B /proc/self/fd/<verifier-fd>`, with a sanitized
 environment, fixed private working directory, closed unrelated FDs, and no
 `PYTHONPATH`, `site`, `.pth`, `sitecustomize`, user site, global site-packages, or
 repository path. The verifier will import only the standard library,
@@ -411,7 +419,8 @@ subprocess output.
 Before state inspection, the verifier will acquire a nonblocking exclusive Linux
 `flock` on the retained output-parent dirfd. It will retain that same open file
 description across approval consumption and `exec` of the verified authority
-entry point by explicitly marking only that dirfd and the other contract-required
+entry point by explicitly marking only that dirfd, the retained interpreter FD,
+and the other contract-required
 FDs inheritable immediately before `exec`; every unrelated FD will remain
 close-on-exec. Authority code will confirm the expected inherited FD identities
 and keep the locked parent FD open through final-directory
@@ -431,11 +440,29 @@ to create
 `transaction_id`; write and fsync it; revalidate
 owner, mode, link count, device, inode, size, and bytes; then fsync and revalidate
 the retained parent dirfd, then return rc0. The launcher will then `exec` the
-verified authority entry point while preserving only the required approval,
-extraction, and locked-parent FDs. Only after that durable commit point may
+verified authority entry point through the same
+`/proc/self/fd/<python-fd> -I -S -B /proc/self/fd/<entry-fd>` identity while
+preserving only the required interpreter, approval, extraction, and locked-parent
+FDs. Interpreter-path replacement after initial open will be irrelevant. Only
+after that durable commit point may
 authority code or entropy run. The tombstone will never be deleted, renamed, truncated, or
 overwritten on success, handled failure, crash recovery, or incomplete-output
 cleanup.
+
+The internal authority dispatch will be `_genesis-current-from-launcher`; it will
+not appear in the public frozen command list. `manage_rule_authority.py` will
+move its current top-level authority imports behind a standard-library-only
+bootstrap gate. Before importing any authority module, that gate will require and
+revalidate the exact allowlisted inherited interpreter, approval, verifier,
+entry/extraction, and locked-parent FDs; prove the parent lock is still held by
+the inherited open file description by requiring a separately opened probe FD's
+nonblocking exclusive-lock attempt to fail with `EWOULDBLOCK`; and require the canonical tombstone to
+match the approved digest/UUID with stable owner/mode/link/device/inode/bytes.
+Missing, caller-opened, unlocked, renumbered, extra, or mismatched capability FDs
+and direct `manage_rule_authority.py genesis-current ...` invocations will reject
+with fixed output before imports, entropy, or output. This is an accidental/
+workflow bypass boundary under the explicit no-hostile-same-UID trust assumption,
+not an unforgeable same-UID capability claim.
 
 Genesis state will be fail-closed: after the recovery process acquires the parent
 lock, no tombstone/output is `UNUSED`; failure to acquire the lock is
@@ -646,8 +673,11 @@ mergeable under the chosen review posture. The proof PR is never merged.
    branch policies, environment secret names/timestamps, repository/effective
    rulesets, workflow/check identity, and `protect-main`. Abort on any mismatch,
    pre-existing CURRENT, or same-name ruleset.
-2. **Retained-genesis proof:** require genesis state `COMPLETE`, rehash the
-   immutable consumption tombstone and retained canonical envelope, and require
+2. **Retained-genesis proof:** acquire the same retained-parent exclusive lock
+   nonblocking and hold it through COMPLETE classification and the full local
+   materialize/verify/audit proof. Lock contention classifies
+   `CONSUMED_RUNNING` and permits zero external adapters. Require genesis state
+   `COMPLETE`, rehash the immutable consumption tombstone and retained canonical envelope, and require
    the activation-preview digest, materialize it into a second private 0700
    directory, verify, and audit the exact main tree with A. Require rc0 and
    complete coverage; do not run `genesis-current`.
@@ -743,8 +773,9 @@ facts applicable at that boundary; drift permits no further forward write.
 ```text
 genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
                 approval_record, approval_sha256):
+    sole public entry is verified launcher; Python CLI has internal dispatch only
     require owner gate, non-Actions Linux, exact tool OID
-    shell retained-FD verify raw approval digest, verifier/interpreter, and immutable A bytes
+    open approved interpreter once; shell retained-FD verify it, approval, verifier, immutable A
     run only pinned `-I -S -B` stdlib verifier before authority imports or entropy
     acquire nonblocking exclusive flock on retained parent dirfd; hold across authority exec/final verify
     verifier requires canonical exact-schema record and compares every recomputed fact
@@ -757,7 +788,9 @@ genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
     verifier final-revalidates approval/verifier/interpreter before consumption
     verifier creates O_EXCL 0600 tombstone; fsyncs file and parent; revalidates; returns rc0
     classify any surviving marker as consumed; never delete or resume after failure/crash
-    only after durable consumption exec authority code with locked parent FD and recheck dynamic facts
+    only after durable consumption exec authority through same interpreter FD
+    internal stdlib bootstrap verifies inherited FD allowlist, lock probe, tombstone before imports
+    recheck dynamic facts; only then import authority and request entropy
     generate key, synthetic map, and bounded key_id internally from kernel CSPRNG
     build manifest, current anchor, authenticated genesis ledger, CI envelope
     require canonical envelope <= 32 KiB and verify bundle before decoding pattern
@@ -798,8 +831,8 @@ activate_owner_transaction(preview):
 | Create (commit B) | `config/legal-rule-authority-implementation-pin.json` | exact public v1 A/contract/caller/reusable pin evidence |
 | Modify | `docs/plans/evidence/2026-07-13-issue-3522-rule-authority-contract.md` | cross-link all four exact superseded clauses; preserve Phase B text |
 | Modify | `docs/plans/evidence/2026-07-14-issue-3522-phase-a-protection-preview.json` | mark deprecated/non-executable and point to #3544 replacements |
-| Modify | `scripts/legal/manage_rule_authority.py` | owner-only `genesis-current` command and exact CLI |
-| Create | `scripts/legal/launch_rule_authority_genesis.sh` | minimal trusted-system Git/hash verifier and FD-bound pre-authority launcher |
+| Modify | `scripts/legal/manage_rule_authority.py` | lazy-import internal `_genesis-current-from-launcher` dispatch with inherited-capability/tombstone gate; no public genesis command |
+| Create | `scripts/legal/launch_rule_authority_genesis.sh` | sole public owner-only `genesis-current` interface and FD-bound pre-authority launcher |
 | Create | `scripts/legal/verify_rule_authority_genesis_approval.py` | commit-A-pinned stdlib-only canonical approval parser/comparator that runs before authority imports or entropy |
 | Modify | `scripts/legal/rule_authority/codec.py` | bounded key ID and canonical activation structures |
 | Modify | `schemas/legal-rule-generation-ledger.schema.json` | enforce `phase-a-<lowercase UUIDv4>` key ID and 64-byte bound |
@@ -822,13 +855,14 @@ and revision in a revised plan, and obtain another owner decision before sealing
 
 | Test | RED condition and required result |
 |---|---|
-| `test_genesis_command_is_frozen_and_owner_only` | command absent today; require exact flags, owner gate, no Actions execution |
+| `test_genesis_command_is_frozen_and_owner_only` | public launcher command absent today; require exact flags including independent interpreter identity, owner gate, no Actions execution, and no public Python genesis command |
+| `test_direct_internal_genesis_invocation_cannot_bypass_launcher` | direct public/internal `manage_rule_authority.py` calls, missing/extra/caller-opened FDs, absent lock, bad probe result, or missing/mismatched tombstone reject before authority import/entropy/output sentinels |
 | `test_genesis_rejects_non_native_or_ambiguous_mounts` | require stable `/proc/self/mountinfo` identity and approved ext4/xfs/btrfs; Windows, `/mnt`, drvfs/9p/FUSE/overlay/bind/network/FAT/NTFS and mount drift reject before entropy/private reads |
 | `test_genesis_requires_preexisting_0700_parent_and_0600_outputs` | trusted-account home resolution must match the canonical approved absolute path; root-owned non-writable `/` and `/home` fixtures pass, while writable/foreign-owned system ancestors, foreign-owned or writable account-home/private components, absent parent, environment substitution, wrong final UID/mode, symlink component, parent swap, output hardlink/non-regular, or mode drift rejects rc4 before entropy/writes; genesis never creates/repairs the parent and public A blobs are not treated as 0600 inputs |
 | `test_genesis_preview_binds_verified_host_identity` | fixture-backed canonical approval record/digest requires exact `ace-linux-1` SSH-host-key and machine-id evidence, trusted-account name/UID/home, canonical path, mount, A/B/plan identities, and transaction UUID; launcher and the isolated verifier recompute/compare local evidence and every missing/mismatched/replayed field rejects before authority import, consumption, entropy, or writes |
 | `test_approval_verifier_requires_exact_canonical_bytes` | duplicate keys, BOM, CRLF, whitespace, malformed UTF-8, noncanonical escapes/order, floats/non-finite numbers, bool-as-int, and 16,385 bytes reject before authority/entropy sentinels |
 | `test_approval_verifier_schema_and_bound_facts_are_exact` | removing/adding/mutating every top-level or nested leaf across plan/A/B/main, contract, launcher, verifier, interpreter, UUID, host, account, parent, SSH key, machine ID, and mount rejects without coercion |
-| `test_approval_verifier_supply_chain_and_fd_boundary` | independently approved CLI Python realpath/hash must match the record before parsing; verifier blob/hash, PATH/PYTHONPATH, `site`, `.pth`, global/user `sitecustomize`, global/user site-packages, repository path, mutable extraction, approval/verifier FD replacement, or inode/device/mode/size/byte drift rejects before authority import or entropy |
+| `test_approval_verifier_supply_chain_and_fd_boundary` | independently approved CLI Python realpath/hash must match one retained regular root-owned FD used through `/proc/self/fd` for both verifier and authority; post-consumption interpreter-path replacement, verifier blob/hash, PATH/PYTHONPATH, `site`, `.pth`, global/user `sitecustomize`, global/user site-packages, repository path, mutable extraction, approval/verifier/interpreter FD replacement, or inode/device/mode/size/byte drift rejects or remains irrelevant before authority import/entropy |
 | `test_verifier_and_authority_share_parser_contract` | corpus-driven differential test requires both stages to accept/reject identical bytes and produce the same typed record |
 | `test_verified_order_is_parser_then_consumption_then_authority_then_entropy` | event ledger and sentinels prove no tombstone precedes successful exact comparison and no authority import, CSPRNG, or output precedes verifier rc0 after durable tombstone file+parent fsync and revalidation |
 | `test_consumption_marker_is_owner_only_no_overwrite` | symlink/non-regular/hardlinked/wrong-owner/wrong-mode/malformed/pre-existing marker and O_EXCL collision reject before entropy |
@@ -838,7 +872,7 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_marker_fsync_failure_and_partial_marker_fail_closed` | no entropy runs before durable commit; any surviving partial/malformed entry is terminal CONFLICT and blocks replay |
 | `test_concurrent_recovery_and_cleanup_require_parent_lock` | subprocess exec fixture proves only allowlisted FDs inherit and the same retained-parent flock survives into authority through final verification; nonblocking recovery/cleanup observes CONSUMED_RUNNING and performs no classification, removal, or output access until release |
 | `test_cleanup_never_removes_consumption_marker` | incomplete cleanup rejects the marker namespace; disposition requires a separate approved transaction |
-| `test_activation_preview_requires_complete_consumed_genesis` | UNUSED, CONSUMED_RUNNING, SPENT, and CONFLICT invoke zero external adapters; only marker plus independently verified final output is COMPLETE |
+| `test_activation_preview_requires_complete_consumed_genesis` | retained-genesis proof acquires/holds the parent lock during classification and local verification; contention plus UNUSED, CONSUMED_RUNNING, SPENT, and CONFLICT invoke zero external adapters; only marker plus independently verified final output is COMPLETE |
 | `test_genesis_creates_private_entropy_without_output` | internally create 32-byte key and unique 32-byte synthetic patterns; generated private values/digests never use argv/stdin/stdout; key file is exact RFC4648 base64 plus one LF |
 | `test_genesis_csprng_failure_and_collision_fail_closed` | entropy failure, short read, repeated pattern, UUID/key ID collision, and output collision leave no accepted final transaction and never fall back/retry silently |
 | `test_ledger_key_id_schema_and_codec_match` | schema and codec accept only `phase-a-<lowercase UUIDv4>` within 64 bytes and reject every alternate form |
@@ -905,6 +939,11 @@ Tests must be committed RED before their matching implementation slice.
       approval/verifier/path-swap race tests. The commit-A-pinned stdlib verifier
       is the only Python allowed before authority import and entropy; it enforces
       exact canonical bytes/schema and compares every typed bound fact.
+- [ ] The launcher is the sole public genesis entry. Both verifier and internal
+      authority execute through the same retained verified interpreter FD. The
+      Python CLI lazy-import bootstrap rejects direct invocation and every
+      missing/extra/unlocked/mismatched inherited capability or tombstone before
+      authority imports, entropy, or output.
 - [ ] Successful approval verification durably creates and revalidates an
       immutable owner-only no-overwrite tombstone, including file and parent
       fsync, before authority import or entropy. A retained-parent exclusive lock
@@ -945,6 +984,9 @@ Tests must be committed RED before their matching implementation slice.
 - [ ] A genesis-only preview receives separate approval before producing and
       retaining the envelope; only afterward does an activation preview bind live
       SHAs/digests/IDs/timestamps/host/path and receive its own explicit approval.
+- [ ] Retained-genesis proof and activation-preview construction acquire the same
+      parent lock nonblocking and hold it through COMPLETE classification and
+      local verification; contention produces zero external adapters.
 - [ ] Failure injection proves rollback touches only exact transaction-created
       state while the exclusive-owner window remains valid; drift or ambiguity
       stops without overwriting a stale baseline.
@@ -971,12 +1013,14 @@ Tests must be committed RED before their matching implementation slice.
 | Codex transaction R7 | MAJOR | failed genesis can replay the same unconsumed approval record/digest/UUID |
 | Consumption R8 | MAJOR | impossible rc0/consume order, live-vs-spent overlap, pre-commit crash overclaim, and weak future disposition |
 | Verifier R8 | MAJOR | circular interpreter pin, insufficient `-I -B` isolation, same ordering contradiction, and underspecified exact schema |
-| R9 focused verification | PENDING | inline R8 corrections add independent interpreter arguments, `-I -S -B`, exact schema constraints, one long-lived verifier sequence, retained-parent lock, and precise pre/post-commit crash states |
+| Consumption R9 | MAJOR | R8 fixed; interpreter FD was not retained across authority exec and activation did not explicitly join the parent lock |
+| Verifier R9 | MAJOR | R8 fixed; public Python genesis command could bypass the mandatory launcher and early imports |
+| R10 focused verification | PENDING | inline R9 corrections make launcher sole public entry, gate lazy imports on inherited capability/tombstone, reuse one interpreter FD, and join activation to the parent lock |
 
-**Overall result:** DRAFT-REVISED-PENDING-REVIEW — R8 independently returned
-MAJOR on the first post-R7 correction. The inline R8 patch will resolve its
-ordering, locking, interpreter, isolation, schema, and crash-state findings, but
-the plan is not approval-ready until focused verification returns no MAJOR.
+**Overall result:** DRAFT-REVISED-PENDING-REVIEW — R9 independently returned
+MAJOR after affirmatively closing R8. The inline R9 patch will resolve the public
+entry bypass, early-import gate, interpreter-FD race, and activation-lock gap,
+but the plan is not approval-ready until focused verification returns no MAJOR.
 Implementation and activation remain blocked.
 
 ## Risks and Open Questions
