@@ -22,10 +22,14 @@ def launcher_source() -> str:
     return LAUNCHER.read_text(encoding="utf-8")
 
 
-def run_launcher(*args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
+def run_launcher(
+    *args: str,
+    env: dict[str, str] | None = None,
+    pristine: bool = False,
+) -> subprocess.CompletedProcess[str]:
     """Execute the public launcher; RED until its file exists."""
     assert LAUNCHER.is_file(), f"missing required launcher: {LAUNCHER}"
-    merged = os.environ.copy()
+    merged = {} if pristine else os.environ.copy()
     merged.update(env or {})
     return subprocess.run(
         ["/bin/bash", str(LAUNCHER), *args],
@@ -127,7 +131,7 @@ def test_owner_and_actions_gate_rejects_untrusted_processes():
     for env in (
         {"LEGAL_RULE_OWNER_GENESIS": "", "GITHUB_ACTIONS": ""},
         {"LEGAL_RULE_OWNER_GENESIS": "wrong", "GITHUB_ACTIONS": ""},
-        {"LEGAL_RULE_OWNER_GENESIS": "operator", "GITHUB_ACTIONS": "true"},
+        {"LEGAL_RULE_OWNER_GENESIS": "1", "GITHUB_ACTIONS": "true"},
     ):
         result = run_launcher("genesis-current", env=env)
         assert result.returncode != 0
@@ -140,7 +144,7 @@ def test_owner_gate_acceptance_clears_hostile_environment_before_child_exec():
         "--tool-repo",
         "fixture",
         env={
-            "LEGAL_RULE_OWNER_GENESIS": "operator",
+            "LEGAL_RULE_OWNER_GENESIS": "1",
             "GITHUB_ACTIONS": "",
             "BASH_ENV": "/tmp/hostile-bash-env",
             "PYTHONPATH": "/tmp/hostile-pythonpath",
@@ -165,7 +169,7 @@ def test_subprocess_contract_forwards_internal_identity_and_exact_pairs():
         "9",
         "--outer-bootstrap-sha256",
         "b" * 64,
-        env={"LEGAL_RULE_OWNER_GENESIS": "operator"},
+        env={"LEGAL_RULE_OWNER_GENESIS": "1"},
     )
     assert result.returncode != 0
     assert "unknown option" not in result.stderr.lower()
@@ -179,7 +183,7 @@ def test_pre_verifier_fixture_sentinels_are_not_executed_or_written(tmp_path):
     result = run_launcher(
         "genesis-current",
         env={
-            "LEGAL_RULE_OWNER_GENESIS": "operator",
+            "LEGAL_RULE_OWNER_GENESIS": "1",
             "PATH": str(tmp_path),
             "PYTHONPATH": str(tmp_path),
         },
@@ -196,13 +200,80 @@ def test_unrelated_fd_is_closed_and_private_inputs_are_retained_no_follow(tmp_pa
         "genesis-current",
         "--out-parent",
         str(tmp_path),
-        env={"LEGAL_RULE_OWNER_GENESIS": "operator"},
+        env={"LEGAL_RULE_OWNER_GENESIS": "1"},
     )
     assert result.returncode != 0
     assert "symlink" in result.stderr.lower() or "follow" in result.stderr.lower()
 
 
 def test_sealed_memfd_identity_requires_exact_seals_and_readback():
-    result = run_launcher("genesis-current", env={"LEGAL_RULE_OWNER_GENESIS": "operator"})
+    result = run_launcher("genesis-current", env={"LEGAL_RULE_OWNER_GENESIS": "1"})
     assert result.returncode != 0
     assert "seal" in result.stderr.lower() or "memfd" in result.stderr.lower()
+
+
+def test_pristine_environment_executes_fixture_verifier_and_captures_contract(tmp_path):
+    """A valid fixture must reach the child with exact argv, env, and FD set."""
+    capture = tmp_path / "capture.py"
+    capture.write_text(
+        "import json, os, sys\n"
+        "json.dump({'argv':sys.argv[1:], 'env':dict(os.environ),\n"
+        "'fds':sorted(int(x) for x in os.listdir('/proc/self/fd') if x.isdigit())},\n"
+        "open(os.environ['CAPTURE'], 'w'))\n",
+        encoding="utf-8",
+    )
+    approval = tmp_path / "approval.json"
+    contract = tmp_path / "contract.json"
+    manifest = tmp_path / "manifest.json"
+    verifier = tmp_path / "verifier.py"
+    for path, payload in (
+        (approval, b'{"schema_id":"legal-rule-genesis-approval-v1"}\n'),
+        (contract, b'{"schema_id":"legal-rule-contract-v1"}\n'),
+        (manifest, b'{"schema_id":"legal-rule-genesis-execution-manifest-v1"}\n'),
+        (verifier, capture.read_bytes()),
+    ):
+        path.write_bytes(payload)
+        path.chmod(0o400)
+    captured = tmp_path / "captured.json"
+    result = run_launcher(
+        "genesis-current",
+        "--approval",
+        str(approval),
+        "--contract",
+        str(contract),
+        "--manifest",
+        str(manifest),
+        "--verifier",
+        str(verifier),
+        "--tool-repo",
+        "repo",
+        "--tool-sha",
+        "a" * 40,
+        "--out-parent",
+        str(tmp_path),
+        pristine=True,
+        env={"LEGAL_RULE_OWNER_GENESIS": "1", "CAPTURE": str(captured)},
+    )
+    assert result.returncode == 0, result.stderr
+    record = __import__("json").loads(captured.read_text(encoding="utf-8"))
+    assert record["argv"][:1] == ["_genesis-current-from-launcher"]
+    assert "PATH" not in record["env"]
+    assert "PYTHONPATH" not in record["env"]
+    assert all(fd >= 3 for fd in record["fds"])
+
+
+def test_valid_fixture_rejects_symlink_and_path_replacement_before_child(tmp_path):
+    target = tmp_path / "approval.json"
+    target.write_bytes(b'{"schema_id":"legal-rule-genesis-approval-v1"}\n')
+    link = tmp_path / "approval-link.json"
+    link.symlink_to(target)
+    result = run_launcher(
+        "genesis-current",
+        "--approval",
+        str(link),
+        "--out-parent",
+        str(tmp_path),
+        env={"LEGAL_RULE_OWNER_GENESIS": "1"},
+    )
+    assert result.returncode != 0
+    assert not (tmp_path / "captured.json").exists()
