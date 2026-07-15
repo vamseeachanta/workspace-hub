@@ -151,7 +151,6 @@ def _ledger_mac(value, key):
 
 
 def new_ledger(key_id, manifest, key):
-    codec._key_id(key_id)
     value = {
         "entries": [
             {

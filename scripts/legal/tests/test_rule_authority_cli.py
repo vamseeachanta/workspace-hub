@@ -57,7 +57,9 @@ def _authority_fixture(tmp_path, pattern=b"forbidden-private"):
         ("ledger.json", ledger),
     ):
         (directory / name).write_bytes(codec.canonical_bytes(value))
-    (directory / "key.b64").write_bytes(base64.b64encode(key) + b"\n")
+    key_path = directory / "key.b64"
+    key_path.write_bytes(base64.b64encode(key) + b"\n")
+    key_path.chmod(0o600)
     return directory, tool
 
 

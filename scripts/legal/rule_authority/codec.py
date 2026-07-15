@@ -12,9 +12,6 @@ MAX_DOC = 2 * 1024 * 1024
 MAX_MAP = 24 * 1024
 HEX64 = re.compile(r"[0-9a-f]{64}")
 OID = re.compile(r"[0-9a-f]{40,64}")
-PHASE_A_KEY_ID = re.compile(
-    r"phase-a-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
-)
 
 
 class AuthorityError(ValueError):
@@ -82,15 +79,6 @@ def _uuid4(value):
 
 def _generation(value):
     if type(value) is not int or not 1 <= value <= (2**64 - 1):
-        raise AuthorityError("schema")
-
-
-def _key_id(value):
-    if (
-        not isinstance(value, str)
-        or len(value.encode("utf-8")) > 64
-        or not PHASE_A_KEY_ID.fullmatch(value)
-    ):
         raise AuthorityError("schema")
 
 
@@ -215,10 +203,11 @@ def parse_ledger(data: bytes):
     _exact_keys(value, {"entries", "key_id", "ledger_mac", "schema_id"})
     if (
         value["schema_id"] != "legal-rule-" + "generation-ledger-v1"
+        or not isinstance(value["key_id"], str)
+        or not value["key_id"]
         or not HEX64.fullmatch(value["ledger_mac"])
     ):
         raise AuthorityError("schema")
-    _key_id(value["key_id"])
     if not isinstance(value["entries"], list) or not value["entries"]:
         raise AuthorityError("schema")
     for entry in value["entries"]:

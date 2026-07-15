@@ -182,7 +182,7 @@ def test_public_tree_marker_occurrences_are_only_at_canonical_allowlisted_paths(
         ).read_bytes()
     )
     anchor = authority.make_anchor(manifest, preview["tool_sha"])
-    ledger = authority.new_ledger("phase-a-12345678-1234-4234-9234-123456789abc", manifest, key)
+    ledger = authority.new_ledger("synthetic-key", manifest, key)
     unallowed = []
     for token in authority.structural_tokens(
         private_map, manifest, key, anchor=anchor, ledger=ledger
