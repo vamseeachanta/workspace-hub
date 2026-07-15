@@ -111,6 +111,44 @@ def test_parser_rejects_noncanonical_bytes(raw):
         verifier.parse_canonical_approval(raw(canonical_bytes(canonical_record())))
 
 
+def test_parser_rejects_valid_duplicate_top_level_member():
+    record = canonical_record()
+    raw = canonical_bytes(record)
+    needle = b'"schema_id":"legal-rule-genesis-approval-v1"'
+    duplicate = needle + b',"schema_id":"legal-rule-genesis-approval-v1"'
+    raw = raw.replace(needle, duplicate, 1)
+    with pytest.raises(ValueError):
+        verifier.parse_canonical_approval(raw)
+
+
+def _record_with_exact_size(size: int) -> bytes:
+    record = canonical_record()
+    record["host"]["mount"]["options"] = [f"opt{i:04d}" for i in range(1400)]
+    raw = canonical_bytes(record)
+    assert len(raw) < size
+    for length in range(1, 4097):
+        candidate = dict(record)
+        candidate["host"] = dict(record["host"])
+        candidate["host"]["mount"] = dict(record["host"]["mount"])
+        candidate["host"]["mount"]["options"] = [*record["host"]["mount"]["options"], "zz" + "x" * length]
+        raw = canonical_bytes(candidate)
+        if len(raw) == size:
+            return raw
+    raise AssertionError(f"could not construct canonical record of {size} bytes")
+
+
+def test_parser_accepts_exact_size_limit_and_rejects_one_byte_over():
+    exact = _record_with_exact_size(16_384)
+    assert len(exact) == 16_384
+    assert verifier.parse_canonical_approval(exact) == json.loads(exact)
+    over = exact[:-1] + b" " + exact[-1:]
+    assert len(over) == 16_384  # whitespace mutation remains at the boundary
+    over = exact + b" "
+    assert len(over) == 16_385
+    with pytest.raises(ValueError):
+        verifier.parse_canonical_approval(over)
+
+
 def test_parser_rejects_noncanonical_whitespace_order_escaping_and_trailing_bytes():
     record = canonical_record()
     pretty = (json.dumps(record, sort_keys=False, indent=2) + "\n").encode()
