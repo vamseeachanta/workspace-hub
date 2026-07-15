@@ -9,7 +9,7 @@ and fixed `ValueError` failures without echoing input values.
 Verification:
 
 - `pytest -q scripts/legal/tests/test_rule_authority_codec.py scripts/legal/tests/test_rule_authority_cli.py` — **30 passed**.
-- `pytest -q scripts/legal/tests/test_rule_authority_genesis_approval.py` — **58 passed**. The RED fixtures now retain the generated record for comparison and correctly assert that the one-byte-over mutation is 16,385 bytes.
+- `pytest -q scripts/legal/tests/test_rule_authority_genesis_approval.py` — **73 passed**. The RED fixtures now retain the generated record for comparison and correctly assert that the one-byte-over mutation is 16,385 bytes. Review hardening covers fixed hostname, bounded control-free strings, valid UID/mount IDs and filesystem types, sorted unique mount options, canonical absolute paths, and output-parent containment under account home.
 
 No launcher, FD broker, approval-consumption, or external-activation files were
 changed.

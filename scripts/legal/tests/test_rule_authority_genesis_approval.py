@@ -63,7 +63,7 @@ def canonical_record() -> dict:
                 "mountpoint": "/",
                 "filesystem_type": "ext4",
                 "source": "/dev/sda1",
-                "options": ["rw", "relatime"],
+                "options": ["relatime", "rw"],
             },
         },
     }
@@ -226,3 +226,55 @@ def test_parser_rejects_missing_nested_fields(path):
     del target[path[-1]]
     with pytest.raises(ValueError):
         verifier.parse_canonical_approval(canonical_bytes(record))
+
+
+@pytest.mark.parametrize(
+    "path, value",
+    [
+        (("host", "hostname"), "other-host"),
+        (("host", "account", "uid"), 0),
+        (("host", "account", "uid"), 2**31),
+        (("host", "mount", "mount_id"), 0),
+        (("host", "mount", "filesystem_type"), "vfat"),
+        (("host", "mount", "options"), ["rw", "rw"]),
+        (("host", "mount", "options"), ["rw", "relatime"]),
+    ],
+)
+def test_parser_enforces_normative_host_facts(path, value):
+    record = canonical_record()
+    target = record
+    for part in path[:-1]:
+        target = target[part]
+    target[path[-1]] = value
+    with pytest.raises(ValueError):
+        verifier.parse_canonical_approval(canonical_bytes(record))
+
+
+@pytest.mark.parametrize(
+    "path, value",
+    [
+        (("host", "account", "home"), "/home//operator"),
+        (("host", "account", "home"), "/home/./operator"),
+        (("host", "account", "home"), "/home/../operator"),
+        (("host", "output_parent"), "/tmp/output"),
+        (("host", "output_parent"), "/home/operator2/output"),
+        (("host", "mount", "mountpoint"), "/mnt/../"),
+        (("host", "mount", "source"), "/dev/\x00sda1"),
+    ],
+)
+def test_parser_enforces_canonical_paths_and_output_descendant(path, value):
+    record = canonical_record()
+    target = record
+    for part in path[:-1]:
+        target = target[part]
+    target[path[-1]] = value
+    with pytest.raises(ValueError):
+        verifier.parse_canonical_approval(canonical_bytes(record))
+
+
+def test_parser_rejects_control_and_oversized_strings():
+    for value in ("ace-linux-1\x00", "x" * 4097):
+        record = canonical_record()
+        record["host"]["hostname"] = value
+        with pytest.raises(ValueError):
+            verifier.parse_canonical_approval(canonical_bytes(record))
