@@ -109,3 +109,81 @@ def test_parser_rejects_schema_and_type_mutations(mutator):
 def test_parser_rejects_noncanonical_bytes(raw):
     with pytest.raises(ValueError):
         verifier.parse_canonical_approval(raw(canonical_bytes(canonical_record())))
+
+
+def test_parser_rejects_noncanonical_whitespace_order_escaping_and_trailing_bytes():
+    record = canonical_record()
+    pretty = (json.dumps(record, sort_keys=False, indent=2) + "\n").encode()
+    reordered = (json.dumps(record, sort_keys=False, separators=(",", ":")) + "\n").encode()
+    escaped = canonical_bytes(record).replace(b"ace-linux-1", b"ace-\\u006cinux-1")
+    for raw in (pretty, reordered, escaped, canonical_bytes(record) + b"\n", canonical_bytes(record)[:-1]):
+        with pytest.raises(ValueError):
+            verifier.parse_canonical_approval(raw)
+
+
+@pytest.mark.parametrize(
+    "field",
+    ["launcher", "execution_manifest", "approval_verifier", "python", "host"],
+)
+def test_parser_enforces_exact_nested_key_sets(field):
+    record = canonical_record()
+    record[field]["unexpected"] = "x"
+    with pytest.raises(ValueError):
+        verifier.parse_canonical_approval(canonical_bytes(record))
+
+
+@pytest.mark.parametrize("field", ["contract", "launcher", "execution_manifest", "approval_verifier"])
+@pytest.mark.parametrize("leaf,value", [("blob_oid", "A" * 40), ("blob_oid", "a" * 39), ("sha256", "B" * 64), ("sha256", "b" * 63), ("path", 7)])
+def test_parser_rejects_malformed_identity_leaves(field, leaf, value):
+    record = canonical_record()
+    record[field][leaf] = value
+    with pytest.raises(ValueError):
+        verifier.parse_canonical_approval(canonical_bytes(record))
+
+
+@pytest.mark.parametrize(
+    "path, value",
+    [
+        (("python", "realpath"), 7),
+        (("python", "sha256"), "x" * 64),
+        (("host", "hostname"), 7),
+        (("host", "machine_id_sha256"), "x" * 64),
+        (("host", "ssh_host_key", "key_type"), 7),
+        (("host", "ssh_host_key", "sha256_fingerprint"), "SHA256:bad"),
+        (("host", "account", "uid"), True),
+        (("host", "account", "home"), "relative"),
+        (("host", "mount", "mount_id"), True),
+        (("host", "mount", "major_minor"), "bad"),
+        (("host", "mount", "options"), "rw"),
+    ],
+)
+def test_parser_rejects_malformed_python_and_host_facts(path, value):
+    record = canonical_record()
+    target = record
+    for part in path[:-1]:
+        target = target[part]
+    target[path[-1]] = value
+    with pytest.raises(ValueError):
+        verifier.parse_canonical_approval(canonical_bytes(record))
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        ("launcher", "path"),
+        ("execution_manifest", "sha256"),
+        ("approval_verifier", "blob_oid"),
+        ("python", "realpath"),
+        ("host", "ssh_host_key", "path"),
+        ("host", "account", "name"),
+        ("host", "mount", "filesystem_type"),
+    ],
+)
+def test_parser_rejects_missing_nested_fields(path):
+    record = canonical_record()
+    target = record
+    for part in path[:-1]:
+        target = target[part]
+    del target[path[-1]]
+    with pytest.raises(ValueError):
+        verifier.parse_canonical_approval(canonical_bytes(record))
