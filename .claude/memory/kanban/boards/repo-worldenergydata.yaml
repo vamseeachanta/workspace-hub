@@ -3398,3 +3398,101 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1023
+    title: 'epic(cost): harden the cost-basis dataset — holistic proof stack across an expanded project set'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1023
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - epic
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1024
+    title: 'data(cost): expand sanctioned-projects set — deepwater FIDs 2000–2026, all regions, #1019 proof standard'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1024
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1025
+    title: 'feat(cost): normalize award registry — contract_awards.csv + project_cost_statements.csv with schema rails'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1025
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1026
+    title: 'data(cost): award + partner-statement research tranche 2+ — remaining and newly added projects'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1026
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1027
+    title: 'data(cost): outturn cost-trail table — dated sanctioned→revised→final figures per project'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1027
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1028
+    title: 'feat(cost): reconciliation harness — automated proofs + A1 evidence pack'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1028
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1029
+    title: 'data(cost): time-series hardening — day-rate density, UCCI gap, heavy-lift/pipelay rates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1029
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1030
+    title: 'feat(cost): regenerate presentation + llm-wiki notes from hardened dataset'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1030
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

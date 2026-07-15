@@ -7780,7 +7780,7 @@ cards:
     title: 'foam_system: starter cited criteria library (NFPA 11 / SOLAS FSS / IMO MODU-class rates)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1586
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
     initial_status: triage
@@ -7791,7 +7791,7 @@ cards:
     title: 'foam_system: report_pack end-to-end demo (standard report from a sizing run)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1587
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
     initial_status: triage
@@ -7802,7 +7802,7 @@ cards:
     title: 'alt_fuel_ship_sizing: voyage-profile boil-off (sea legs + port dwell segments)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1589
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
     initial_status: triage
@@ -7813,7 +7813,7 @@ cards:
     title: 'alt_fuel_ship_sizing: cited fuel-property presets for NH3 and methanol'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1590
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
     initial_status: triage
@@ -7824,7 +7824,7 @@ cards:
     title: 'alt_fuel_ship_sizing: report_pack end-to-end demo'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1591
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
     initial_status: triage
@@ -7835,7 +7835,7 @@ cards:
     title: 'hull_girder_screening: IACS UR S11 rule wave BM/SF for total (sw+wave) utilization'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1592
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
     initial_status: triage
@@ -7846,7 +7846,7 @@ cards:
     title: 'hull_girder_screening: report_pack end-to-end demo'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1593
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
     initial_status: triage

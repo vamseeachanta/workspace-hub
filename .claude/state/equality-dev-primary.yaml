@@ -1,19 +1,19 @@
-generated_at: "2026-07-14T12:47:18"
+generated_at: "2026-07-15T06:47:56"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "ceaec369c"
+  checkout_sha: "166dc5be3"
   dirty: true
-  behind_main: 73
-  ahead_main: 1
-  origin_ref_age_h: 1
+  behind_main: 1
+  ahead_main: 2
+  origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 25193, disk_avail_gb: 790}
+    headroom: {ram_avail_mib: 25116, disk_avail_gb: 790}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -34,7 +34,7 @@ dimensions:
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-07-14T04:25:03"
+    context_md_mtime: "2026-07-15T04:25:02"
   provider_harness:
     schema_version: 1
     providers:
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: true
     job_count: 63
   session_curation:
-    last_curated_at: "2026-07-14T17:47:02+00:00"
-    sessions_24h: 221
+    last_curated_at: "2026-07-15T11:47:06+00:00"
+    sessions_24h: 91
     providers_active: "claude,codex,gemini,hermes"
-    memory_files_changed: 0
+    memory_files_changed: 200
   skill_currency:
-    audited_at: "2026-07-14T17:47:16+00:00"
+    audited_at: "2026-07-15T11:47:45+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,16 +84,16 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-14T17:47:16+00:00"
-    worst_age_hours: 8.355
+    audited_at: "2026-07-15T11:47:48+00:00"
+    worst_age_hours: 2.38
     freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-07-14T17:47:18+00:00"
+    audited_at: "2026-07-15T11:47:56+00:00"
     repos_total: 14
     healthy: 28
     repairable: 0
     worst_state: "TEMPLATE-ABSENT"
   publish_health:
-    last_publish_at: "2026-07-14T17:17:12Z"
-    last_publish_duration_s: 8
+    last_publish_at: "2026-07-15T11:17:04Z"
+    last_publish_duration_s: 2
     last_publish_rc: 0
