@@ -1,6 +1,6 @@
 # Plan for #3544: Correct and Operationalize Phase A Authority Activation
 
-> **Status:** draft-needs-decision
+> **Status:** draft-review-pending
 > **Complexity:** T3
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3544
@@ -11,13 +11,15 @@
 
 ---
 
-## Blocking Owner Decisions
+## Recorded Owner Decisions
 
-This plan is not approval-ready until the owner resolves both decisions. Unknowns
-remain fail-closed; review may proceed, but no implementation or external
-activation may start.
+The owner resolved both design decisions on 2026-07-15. These choices will remain
+fail-closed until the revised plan receives focused adversarial review and a
+fresh approval bound to its exact commit. No implementation or external
+activation may start before that approval.
 
-1. **Merge-review posture.** Live API readback shows `vamseeachanta` is the only
+1. **Merge-review posture — Variant B selected.** Live API readback shows
+   `vamseeachanta` is the only
    collaborator. GitHub does not allow a PR author to approve their own PR, so
    `require_code_owner_review=true`, one required approval, and no bypass would
    permanently lock `main`.
@@ -28,17 +30,32 @@ activation may start.
      one approval plus code-owner review. For an owner-authored PR the second
      actor must approve; for a second-actor-authored PR the owner must approve.
      The author never supplies the counted approval.
-   - **B — solo-safe interim:** retain no bypass but set
+   - **B — solo-safe interim (selected):** retain no bypass but set
      `required_approving_review_count=0` and
      `require_code_owner_review=false`. The PR rule still rejects direct pushes;
      the exact authority status check remains mandatory. A later reviewed change
      may strengthen review after a second trusted reviewer exists.
-2. **Private Linux owner host.** `ace-win-1` is Windows, has no installed WSL
-   distribution, and no usable Linux/SSH owner endpoint is configured. The owner
-   must identify either (a) an existing private Linux host and native-Linux 0700
-   storage root or (b) a separately planned/approved WSL installation and
-   hardening transaction. `/mnt/d`, `D:\\ws`, network shares, and Windows mode
-   emulation do not satisfy this contract.
+   Variant A is not authorized by this plan and will require a later reviewed
+   change plus a named second trusted collaborator.
+2. **Private Linux owner host — existing `ace-linux-1` selected.** The
+   owner-facing notation for the proposed private parent is
+   `$HOME/.local/share/workspace-hub/legal-rule-authority`. The genesis preview
+   must resolve the account home from a trusted OS account record, not the
+   process environment; bind the canonical absolute path, UID, host identity,
+   and verified SSH fingerprint in private evidence; and require the launcher
+   argument to match that path exactly. Every component must already exist,
+   resolve without symlinks, be owned by the current UID, and the final parent
+   must be mode 0700 on a native local `ext4`, `xfs`, or `btrfs` filesystem.
+   Missing or incorrect state stops before entropy or writes and requires a
+   separately approved host-root provisioning transaction; genesis does not
+   create or repair the parent. A read-only connection attempt from `ace-win-1` stopped at host
+   key verification, so the host fingerprint, resolved home path, mount identity,
+   ownership, and permissions remain mandatory fail-closed preflight evidence;
+   they are not assumed by this decision. `/mnt/d`, `D:\\ws`, network shares,
+   Windows mode emulation, and any filesystem outside the approved native-local
+   allowlist do not satisfy this contract. Host-key onboarding will require
+   out-of-band fingerprint verification and will never use an insecure SSH
+   override.
 
 ## Resource Intelligence Summary
 
@@ -134,7 +151,8 @@ LLM wiki page applies.
 - No corrected public activation contract/payload/readback/rollback artifacts.
 - No exact proof-PR state machine or fail-closed rollback executor/guide.
 - No tested reconciliation between the 10,000 normative cap and current tree.
-- No owner decision for reviewer feasibility or private Linux execution host.
+- The selected Linux host is recorded, but its SSH fingerprint and native-local
+  mount/ownership/mode evidence are not yet verified from this workstation.
 
 ### Evidence (embedded verification)
 
@@ -186,7 +204,9 @@ A freshly owner-approved, Linux-private, TDD-backed Phase A activation contract
 and toolchain that can create and locally verify a synthetic CURRENT genesis,
 prove same-repository PR execution without cache or lockout, activate a valid
 required-check ruleset last, and roll back only transaction-created state while
-preserving `protect-main` and all legacy enforcement.
+preserving `protect-main` and all legacy enforcement. The frozen activation
+posture will be Variant B on `ace-linux-1` using the selected private parent only
+after its host and filesystem preflight passes.
 
 ## Corrected Normative Design
 
@@ -357,10 +377,12 @@ call the environment-owning reusable job.
 
 ### Exact ruleset variants
 
-Both variants use repository ID `1066339206`, name
+The selected transaction uses repository ID `1066339206`, name
 `legal-rule-authority-main`, target `branch`, conditions exactly
 `refs/heads/main`, `bypass_actors=[]`, and initially `enforcement=disabled`.
-Neither contains `update` or `workflows`.
+Its Variant B payload contains neither `update` nor `workflows`. Activation
+preview, tooling, and tests reject Variant A or any other review posture; a
+future Variant A transaction requires a new reviewed plan and owner approval.
 
 Common required status rule:
 
@@ -368,13 +390,15 @@ Common required status rule:
 {"type":"required_status_checks","parameters":{"do_not_enforce_on_create":false,"required_status_checks":[{"context":"strict-scan / authority","integration_id":15368}],"strict_required_status_checks_policy":false}}
 ```
 
-Variant B's solo-safe PR rule is fully specified:
+The selected Variant B solo-safe PR rule is fully specified:
 
 ```json
 {"type":"pull_request","parameters":{"allowed_merge_methods":["merge","squash","rebase"],"dismiss_stale_reviews_on_push":false,"require_code_owner_review":false,"require_last_push_approval":false,"required_approving_review_count":0,"required_review_thread_resolution":false}}
 ```
 
-Variant A uses the same object with `require_code_owner_review=true` and
+Variant A is non-executable reference material and is not authorized for this
+transaction. Its future contract would use
+the same object with `require_code_owner_review=true` and
 `required_approving_review_count=1`, but is invalid until an exact second trusted
 collaborator has write access, is named with the owner on every relevant
 authority row in the base branch `.github/CODEOWNERS`, and proves they can
@@ -415,8 +439,8 @@ mergeable under the chosen review posture. The proof PR is never merged.
 
 ### Implementation after a future plan approval
 
-1. Record the two owner decisions and exact revised plan SHA in the approval
-   marker. Write each RED test before code.
+1. Record Variant B, `ace-linux-1`, the selected private parent, and the exact
+   revised plan SHA in the approval marker. Write each RED test before code.
 2. Write RED tests, then create commit A containing the replacement contract,
    genesis transaction, corrected codecs/readbacks, reusable cache-free workflow,
    schemas, tests, and canonical non-secret preview. Record A's full OID, the
@@ -429,10 +453,13 @@ mergeable under the chosen review posture. The proof PR is never merged.
    merge that both are ancestors reachable from `main`, B has exactly the allowed
    caller/pin-evidence delta, and all recorded A blobs recompute exactly.
 6. Prepare a **genesis-only** private preview binding post-merge main, A, B,
-   contract/blob identities, Linux host/root, transaction UUID, and rollback of
-   local partial output. Stop for a separate explicit genesis approval. That
-   approval authorizes only one local `genesis-current` transaction and no GitHub
-   mutation.
+   contract/blob identities, verified `ace-linux-1` fingerprint/host identity,
+   trusted-account UID, canonical absolute pre-existing private parent and native
+   mount identity, transaction UUID, and rollback of local partial output. A
+   missing, symlinked, wrong-owner, wrong-mode, or disallowed parent stops for a
+   separate host-root provisioning plan/approval; this preview cannot create or
+   repair it. Stop for a separate explicit genesis approval. That approval
+   authorizes only one local `genesis-current` transaction and no GitHub mutation.
 7. Execute the approved genesis transaction once from the verified detached/
    extracted A bytes, independently materialize/verify/audit it, and retain the
    exact canonical `envelope.json` bytes plus canonical SHA-256 in private 0600
@@ -471,13 +498,12 @@ mergeable under the chosen review posture. The proof PR is never merged.
    `[phase-a] activation proof v1`, and a one-file mode-100644 diff adding
    `docs/legal-rule-authority/phase-a-activation-proof-v1.txt` whose complete
    bytes are ASCII `phase-a-activation-proof-v1` plus one LF. Any pre-existing
-   branch/path/PR aborts. Under Variant A the base-branch CODEOWNERS authority
-   rows must govern this path and name both actors. Open it as a draft PR,
+   branch/path/PR aborts. Open it as a draft PR,
    approve the environment deployment, and require the exact
    `strict-scan / authority` check from integration `15368` to return success.
    Then transition the PR from draft to ready-for-review and verify ready state.
-   Under Variant A apply the exact author/reviewer matrix and require the counted
-   approval; under Variant B require none. Immediately after creation, capture
+   Require the selected Variant B posture and zero PR approvals; any Variant A
+   payload or review requirement aborts. Immediately after creation, capture
    the numeric PR database ID/number, numeric head-repository ID, exact head
    commit OID, numeric check-run ID, and check-suite/workflow-run IDs where
    exposed. Every later CAS requires those
@@ -541,7 +567,10 @@ facts applicable at that boundary; drift permits no further forward write.
 ```text
 genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id):
     require owner gate, non-Actions Linux, exact tool OID
-    qualify stable approved native mount; retained-dirfd validate 0700 parent
+    resolve home from trusted account record, never environment; bind host/fingerprint/UID
+    canonicalize selected absolute parent with no symlink components
+    require exact pre-existing current-UID 0700 parent; never create/repair it
+    qualify stable approved native mount; retained-dirfd validate parent
     extract/detach A; verify reachability and every executable/imported blob
     read registry/policy as exact Git blobs at A; verify contract blob identities
     generate key, synthetic map, and bounded key_id internally from kernel CSPRNG
@@ -554,7 +583,7 @@ genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id):
 build_activation_preview(live, decision, implementation_sha):
     require exact main/tree, sole-or-approved collaborator set, empty secret slot
     require baseline environment and protect-main equal approved snapshot
-    select only owner-approved ruleset variant
+    require decision == variant_b; reject variant_a and every other posture
     emit canonical non-secret environment/policy/ruleset/order/rollback document
 
 verify_activation_readback(preview, live):
@@ -589,7 +618,7 @@ activate_owner_transaction(preview):
 | Modify | `scripts/legal/rule_authority/protection.py` | exact payload validation and complete readback/effective-rule comparison |
 | Modify | `.github/workflows/legal-rule-authority-reusable.yml` | remove setup-uv/cache and use isolated system Python |
 | Modify (commit B) | `.github/workflows/legal-rule-authority-gate.yml` | pin the commit-A reusable workflow/tool by full OID |
-| Modify if Variant A | `.github/CODEOWNERS` | name both actors on tool/contract/workflow/pin rows and frozen proof-marker path in base branch |
+| No change in selected Variant B | `.github/CODEOWNERS` | Variant A ownership changes remain outside this approved transaction |
 | Modify | `.claude/docs/legal-rule-authority.md` | Linux owner runbook, proof, rollback, and value-withholding rules |
 | Modify/Create | `scripts/legal/tests/test_rule_authority_*.py` and fixtures | RED matrix below |
 | Create | `scripts/legal/tests/test_rule_authority_genesis_launcher.py` | execute launcher fixtures for trust, substitution, and no-Python-before-verify boundaries |
@@ -605,7 +634,7 @@ and revision in a revised plan, and obtain another owner decision before sealing
 |---|---|
 | `test_genesis_command_is_frozen_and_owner_only` | command absent today; require exact flags, owner gate, no Actions execution |
 | `test_genesis_rejects_non_native_or_ambiguous_mounts` | require stable `/proc/self/mountinfo` identity and approved ext4/xfs/btrfs; Windows, `/mnt`, drvfs/9p/FUSE/overlay/bind/network/FAT/NTFS and mount drift reject before entropy/private reads |
-| `test_genesis_requires_0700_parent_and_0600_outputs` | wrong parent UID/mode, symlink, parent swap, output hardlink/non-regular, or mode drift rejects rc4; public A blobs are not treated as 0600 inputs |
+| `test_genesis_requires_preexisting_0700_parent_and_0600_outputs` | trusted-account home resolution must match the canonical approved absolute path; absent parent, environment substitution, wrong UID/mode, symlink component, parent swap, output hardlink/non-regular, or mode drift rejects rc4 before entropy/writes; genesis never creates/repairs the parent and public A blobs are not treated as 0600 inputs |
 | `test_genesis_creates_private_entropy_without_output` | internally create 32-byte key and unique 32-byte synthetic patterns; generated private values/digests never use argv/stdin/stdout; key file is exact RFC4648 base64 plus one LF |
 | `test_genesis_csprng_failure_and_collision_fail_closed` | entropy failure, short read, repeated pattern, UUID/key ID collision, and output collision leave no accepted final transaction and never fall back/retry silently |
 | `test_ledger_key_id_schema_and_codec_match` | schema and codec accept only `phase-a-<lowercase UUIDv4>` within 64 bytes and reject every alternate form |
@@ -628,12 +657,12 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_environment_put_schema_is_exact` | typed reviewer ID and opposite branch-policy booleans; missing/extra/coerced fields reject |
 | `test_pr_and_main_custom_policy_patterns` | exactly `main` and `refs/pull/*/merge`; fork job never references environment |
 | `test_environment_readback_binds_admin_bypass` | require false, reviewer, self-review false, wait zero, exact policies/no extras |
-| `test_solo_repo_review_decision_fails_closed` | count1/codeowner with sole collaborator rejects preview; variant B or proven second actor required |
-| `test_variant_a_codeowners_canonical_matrix` | exact EOF row order covers CODEOWNERS, workflows, scripts, schemas, registry/policy/pin, replacement and superseded contract/previews, and proof marker; last-match resolution has both actors/no later shadow for both author/reviewer directions |
+| `test_solo_repo_review_decision_fails_closed` | preview requires exact Variant B with count0/codeowner false; Variant A, count1, code-owner review, or any alternate posture rejects regardless of collaborator state |
+| `test_variant_a_is_outside_selected_transaction` | preview, implementation adapters, and activation reject Variant A and make no CODEOWNERS or external-state mutation |
 | `test_ruleset_payload_uses_supported_complete_schema` | full PR/status params; exact context/app; no `update` or `workflows` |
 | `test_ruleset_disabled_then_active_full_put` | POST disabled then PUT full active document; PATCH/partial update rejects |
 | `test_effective_rules_preserve_protect_main` | baseline ID/rules/bypass unchanged and effective main includes both rulesets |
-| `test_proof_pr_state_machine` | draft check succeeds, PR transitions to verified ready state, Variant A exact non-author approval matrix or Variant B zero approvals, active reevaluation is mergeable but unmerged |
+| `test_proof_pr_state_machine` | draft check succeeds, PR transitions to verified ready state, exact Variant B requires zero PR approvals, active reevaluation is mergeable but unmerged, and any Variant A state aborts |
 | `test_proof_identity_is_frozen_and_cas_bound` | exact branch/title/one-file path/mode/ASCII-plus-LF diff and base CODEOWNERS coverage; capture and CAS PR number/database ID, head OID, and numeric check/run IDs |
 | `test_fork_constant_fail_pre_secret` | fork result fixed and no environment/secret/data scan |
 | `test_activation_cas_at_every_boundary` | full A/B/contract/main/CODEOWNERS/environment/secret/ruleset/proof CAS runs preflight, immediately post-proof/pre-first-environment-PUT, pre-CURRENT, pre-disabled POST, and pre-active PUT; drift produces zero further writes |
@@ -646,7 +675,14 @@ Tests must be committed RED before their matching implementation slice.
 
 ## Acceptance Criteria
 
-- [ ] Owner decisions identify exact merge-review variant and private Linux host/root.
+- [x] Owner decisions select Variant B, `ace-linux-1`, and owner-facing notation
+      `$HOME/.local/share/workspace-hub/legal-rule-authority`; the trusted account
+      record must resolve and privately bind an exact canonical absolute path,
+      UID, host fingerprint/identity, and native mount before genesis approval.
+- [ ] The selected private parent pre-exists with no symlink components as
+      current-UID mode 0700 on an allowed native-local filesystem. Missing or
+      incorrect state stops for a separate provisioning approval; genesis never
+      creates or repairs it.
 - [ ] Fresh approval binds the revised plan SHA and explicitly accepts the
       100,000 cap plus chosen review posture; no stale #3522 approval is reused.
 - [ ] Exact genesis command passes Linux permissions, atomicity, roundtrip,
@@ -671,9 +707,9 @@ Tests must be committed RED before their matching implementation slice.
       pinned checked-out standard-library code with isolated Python flags.
 - [ ] Environment payload and policies match the valid documented API schemas;
       admin bypass is manually disabled and bound by GET readback.
-- [ ] Chosen ruleset has complete valid PR/status parameters, exact
+- [ ] Exact Variant B ruleset has complete valid PR/status parameters, exact
       `strict-scan / authority`/15368 identity, no update/workflows rule, and no
-      bypass; `protect-main` is unchanged.
+      bypass; Variant A is rejected and `protect-main` is unchanged.
 - [ ] Same-repository proof PR succeeds as draft, transitions to verified ready
       state, satisfies the selected exact author/reviewer matrix, and remains
       mergeable after active ruleset readback; frozen branch/title/path/bytes/diff
@@ -701,8 +737,11 @@ Tests must be committed RED before their matching implementation slice.
 | `custom_ansys_runners` R4 | APPROVE | exact supersession references, first-write CAS, and canonical CODEOWNERS matrix resolve R3 findings |
 | `prepare_fer_extraction` R4 | APPROVE | trusted pre-Python launcher, FD boundary, trust assumptions, and executable race tests resolve R3 findings |
 
-**Overall result:** BLOCKED-NEEDS-DECISION — adversarial review approves the R4
-design; implementation and activation remain blocked on both owner decisions.
+**Overall result:** REVIEW-PENDING — R4 approved the conditional design. The
+owner has now selected Variant B and `ace-linux-1` with the private parent above;
+focused adversarial review of this binding is required before the revised plan
+can be surfaced for exact-SHA approval. Implementation and activation remain
+blocked.
 
 ## Risks and Open Questions
 
@@ -715,10 +754,12 @@ design; implementation and activation remain blocked on both owner decisions.
 - An active required check can lock `main` if its context/app is wrong or CURRENT
   stops passing. Activation-last and ruleset-disable-first rollback are load
   bearing.
-- A new collaborator changes repository access and must not be inferred from
-  this plan. Variant A remains incomplete until the owner names the actor.
-- WSL installation/hardening and a Linux private storage root are external host
-  changes, not implied by selecting WSL.
+- A new collaborator changes repository access and is outside this plan.
+  Variant A remains unauthorized until the owner names the actor in a later
+  reviewed change.
+- Host-key onboarding and creation or permission repair of the selected private
+  parent are external host changes. They require verified fingerprint and
+  mount/UID/mode preflight and are not implied by naming `ace-linux-1`.
 - The 100,000 cap is sufficient for the current Phase A tree, not a claim that
   future Phase B history/API coverage fits. Overflow remains an explicit rc3.
 - Required-review and environment-review friction are separate. Variant B removes
