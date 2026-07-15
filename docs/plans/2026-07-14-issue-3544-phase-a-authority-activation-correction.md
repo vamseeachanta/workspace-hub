@@ -374,10 +374,11 @@ OIDs, transaction UUID, contract, launcher, verifier, approved Python, and a hos
 object containing hostname, machine-id digest, SSH host-key evidence, trusted
 account name/UID/home, output parent, and complete mount identity. The verifier
 will compare every leaf without coercion against independently recomputed facts
-and will emit fixed verdict metadata only. Before returning rc0, the same
-long-lived verifier process will perform the final re-fstat/rehash of the approval
-record, verifier, and interpreter and will durably consume the approval as
-specified below. The authority entry point will reparse through the same verifier module and
+and will emit fixed verdict metadata only. The same long-lived verifier process
+will perform the final re-fstat/rehash of the approval record, verifier, and
+interpreter, durably consume the approval as specified below, and directly
+`execve` the verified internal authority entry without returning to the shell
+launcher. The authority entry point will reparse through the same verifier module and
 recheck dynamic facts immediately before entropy; corpus-driven differential
 tests will require identical parsing decisions at both stages.
 
@@ -439,8 +440,8 @@ to create
 `schema` (`legal-rule-genesis-consumption-v1`), `approval_sha256`, and
 `transaction_id`; write and fsync it; revalidate
 owner, mode, link count, device, inode, size, and bytes; then fsync and revalidate
-the retained parent dirfd, then return rc0. The launcher will then `exec` the
-verified authority entry point through the same
+the retained parent dirfd. Without returning to the launcher, the verifier will
+then `execve` the verified authority entry point through the same
 `/proc/self/fd/<python-fd> -I -S -B /proc/self/fd/<entry-fd>` identity while
 preserving only the required interpreter, approval, extraction, and locked-parent
 FDs. Interpreter-path replacement after initial open will be irrelevant. Only
@@ -454,15 +455,19 @@ not appear in the public frozen command list. `manage_rule_authority.py` will
 move its current top-level authority imports behind a standard-library-only
 bootstrap gate. Before importing any authority module, that gate will require and
 revalidate the exact allowlisted inherited interpreter, approval, verifier,
-entry/extraction, and locked-parent FDs; prove the parent lock is still held by
-the inherited open file description by requiring a separately opened probe FD's
-nonblocking exclusive-lock attempt to fail with `EWOULDBLOCK`; and require the canonical tombstone to
+entry/extraction, and locked-parent FDs. To prove the inherited candidate—rather
+than some unrelated process—owns the lock, a newly opened probe FD's nonblocking
+exclusive-lock attempt must first fail with `EWOULDBLOCK`; reasserting
+`LOCK_EX|LOCK_NB` on the inherited candidate FD itself must then succeed; and a
+second independent probe must still fail. The gate will then require the canonical tombstone to
 match the approved digest/UUID with stable owner/mode/link/device/inode/bytes.
-Missing, caller-opened, unlocked, renumbered, extra, or mismatched capability FDs
-and direct `manage_rule_authority.py genesis-current ...` invocations will reject
+Missing, unlocked, renumbered, extra, or mismatched capability FDs and ordinary
+direct `manage_rule_authority.py genesis-current ...` invocations will reject
 with fixed output before imports, entropy, or output. This is an accidental/
 workflow bypass boundary under the explicit no-hostile-same-UID trust assumption,
-not an unforgeable same-UID capability claim.
+not an unforgeable same-UID capability or FD-provenance claim; a deliberate
+same-UID process that reconstructs the entire locked FD/tombstone state is outside
+the threat model and the plan will not claim to distinguish it.
 
 Genesis state will be fail-closed: after the recovery process acquires the parent
 lock, no tombstone/output is `UNUSED`; failure to acquire the lock is
@@ -786,9 +791,9 @@ genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
     extract/detach A; verify reachability and every executable/imported blob
     read registry/policy as exact Git blobs at A; verify contract blob identities
     verifier final-revalidates approval/verifier/interpreter before consumption
-    verifier creates O_EXCL 0600 tombstone; fsyncs file and parent; revalidates; returns rc0
+    verifier creates O_EXCL 0600 tombstone; fsyncs file and parent; revalidates
     classify any surviving marker as consumed; never delete or resume after failure/crash
-    only after durable consumption exec authority through same interpreter FD
+    verifier directly execves authority through same interpreter FD without returning to shell
     internal stdlib bootstrap verifies inherited FD allowlist, lock probe, tombstone before imports
     recheck dynamic facts; only then import authority and request entropy
     generate key, synthetic map, and bounded key_id internally from kernel CSPRNG
@@ -856,7 +861,7 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | Test | RED condition and required result |
 |---|---|
 | `test_genesis_command_is_frozen_and_owner_only` | public launcher command absent today; require exact flags including independent interpreter identity, owner gate, no Actions execution, and no public Python genesis command |
-| `test_direct_internal_genesis_invocation_cannot_bypass_launcher` | direct public/internal `manage_rule_authority.py` calls, missing/extra/caller-opened FDs, absent lock, bad probe result, or missing/mismatched tombstone reject before authority import/entropy/output sentinels |
+| `test_direct_internal_genesis_invocation_cannot_bypass_launcher` | ordinary direct public/internal `manage_rule_authority.py` calls, missing/extra FDs, absent lock, bad three-step lock proof, or missing/mismatched tombstone reject before authority import/entropy/output sentinels; an unlocked inherited candidate while another process owns the parent lock must reject; tests will not claim provenance against a deliberate same-UID reconstruction |
 | `test_genesis_rejects_non_native_or_ambiguous_mounts` | require stable `/proc/self/mountinfo` identity and approved ext4/xfs/btrfs; Windows, `/mnt`, drvfs/9p/FUSE/overlay/bind/network/FAT/NTFS and mount drift reject before entropy/private reads |
 | `test_genesis_requires_preexisting_0700_parent_and_0600_outputs` | trusted-account home resolution must match the canonical approved absolute path; root-owned non-writable `/` and `/home` fixtures pass, while writable/foreign-owned system ancestors, foreign-owned or writable account-home/private components, absent parent, environment substitution, wrong final UID/mode, symlink component, parent swap, output hardlink/non-regular, or mode drift rejects rc4 before entropy/writes; genesis never creates/repairs the parent and public A blobs are not treated as 0600 inputs |
 | `test_genesis_preview_binds_verified_host_identity` | fixture-backed canonical approval record/digest requires exact `ace-linux-1` SSH-host-key and machine-id evidence, trusted-account name/UID/home, canonical path, mount, A/B/plan identities, and transaction UUID; launcher and the isolated verifier recompute/compare local evidence and every missing/mismatched/replayed field rejects before authority import, consumption, entropy, or writes |
@@ -864,7 +869,7 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_approval_verifier_schema_and_bound_facts_are_exact` | removing/adding/mutating every top-level or nested leaf across plan/A/B/main, contract, launcher, verifier, interpreter, UUID, host, account, parent, SSH key, machine ID, and mount rejects without coercion |
 | `test_approval_verifier_supply_chain_and_fd_boundary` | independently approved CLI Python realpath/hash must match one retained regular root-owned FD used through `/proc/self/fd` for both verifier and authority; post-consumption interpreter-path replacement, verifier blob/hash, PATH/PYTHONPATH, `site`, `.pth`, global/user `sitecustomize`, global/user site-packages, repository path, mutable extraction, approval/verifier/interpreter FD replacement, or inode/device/mode/size/byte drift rejects or remains irrelevant before authority import/entropy |
 | `test_verifier_and_authority_share_parser_contract` | corpus-driven differential test requires both stages to accept/reject identical bytes and produce the same typed record |
-| `test_verified_order_is_parser_then_consumption_then_authority_then_entropy` | event ledger and sentinels prove no tombstone precedes successful exact comparison and no authority import, CSPRNG, or output precedes verifier rc0 after durable tombstone file+parent fsync and revalidation |
+| `test_verified_order_is_parser_then_consumption_then_authority_then_entropy` | event ledger and sentinels prove no tombstone precedes successful exact comparison; after durable tombstone file+parent fsync/revalidation the verifier directly execves authority without a shell return; no authority import, CSPRNG, or output can skip that chain |
 | `test_consumption_marker_is_owner_only_no_overwrite` | symlink/non-regular/hardlinked/wrong-owner/wrong-mode/malformed/pre-existing marker and O_EXCL collision reject before entropy |
 | `test_replay_after_success_or_post_commit_failure_is_rejected` | inject entropy, output-create, file-fsync, verify, rename, parent-fsync, and final-verify failures; the same approval/UUID never reaches entropy twice |
 | `test_crash_replay_is_rejected_at_every_post_commit_boundary` | SIGKILL/os._exit after marker create/fsync, entropy, incomplete writes, or final rename leaves COMPLETE, SPENT, or CONFLICT and never resumes/regenerates |
@@ -1015,12 +1020,15 @@ Tests must be committed RED before their matching implementation slice.
 | Verifier R8 | MAJOR | circular interpreter pin, insufficient `-I -B` isolation, same ordering contradiction, and underspecified exact schema |
 | Consumption R9 | MAJOR | R8 fixed; interpreter FD was not retained across authority exec and activation did not explicitly join the parent lock |
 | Verifier R9 | MAJOR | R8 fixed; public Python genesis command could bypass the mandatory launcher and early imports |
-| R10 focused verification | PENDING | inline R9 corrections make launcher sole public entry, gate lazy imports on inherited capability/tombstone, reuse one interpreter FD, and join activation to the parent lock |
+| Consumption R10 | MAJOR | R9 fixed; separate probe did not prove inherited candidate FD owned the lock |
+| Verifier R10 | MAJOR | R9 fixed; same invalid lock-provenance proof left internal bootstrap bypassable |
+| R11 focused verification | PENDING | inline R10 corrections use a three-step candidate lock proof, structural verifier-to-authority exec continuity, and no unforgeable same-UID provenance claim |
 
-**Overall result:** DRAFT-REVISED-PENDING-REVIEW — R9 independently returned
-MAJOR after affirmatively closing R8. The inline R9 patch will resolve the public
-entry bypass, early-import gate, interpreter-FD race, and activation-lock gap,
-but the plan is not approval-ready until focused verification returns no MAJOR.
+**Overall result:** DRAFT-REVISED-PENDING-REVIEW — R10 independently returned
+MAJOR after affirmatively closing R9. The inline R10 patch will resolve the lock-
+ownership proof with structural verifier-to-authority continuity and an exact
+three-step probe while narrowing the same-UID claim, but the plan is not
+approval-ready until focused verification returns no MAJOR.
 Implementation and activation remain blocked.
 
 ## Risks and Open Questions
