@@ -23562,7 +23562,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3544
     gh_state: open
     gh_labels:
-      - status:needs-plan
+      - status:plan-review
       - gate:completeness
       - lane:codex
     initial_status: triage
@@ -23612,7 +23612,7 @@ cards:
       - domain:workstations
       - domain:security
       - wip:ace-linux-1
-      - status:needs-plan
+      - status:plan-review
       - lane:claude
     initial_status: triage
     priority: 0
@@ -23665,6 +23665,22 @@ cards:
       - domain:workstations
       - domain:security
       - machine:dev-primary
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3552
+    title: 'security: make Gitleaks configuration fail closed with default rules and positive control'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3552
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:automation
+      - priority:critical
+      - domain:security
       - status:needs-plan
       - lane:claude
     initial_status: triage
