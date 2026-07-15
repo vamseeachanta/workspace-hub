@@ -3464,7 +3464,7 @@ cards:
     title: 'feat(cost): reconciliation harness — automated proofs + A1 evidence pack'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1028
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
@@ -3488,7 +3488,7 @@ cards:
     title: 'feat(cost): regenerate presentation + llm-wiki notes from hardened dataset'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1030
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
