@@ -1,13 +1,13 @@
 # Plan for #3544: Correct and Operationalize Phase A Authority Activation
 
-> **Status:** draft-pending-focused-review
+> **Status:** plan-review
 > **Complexity:** T3
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3544
 > **Client:** N/A
 > **Lane:** lane:codex
 > **Execution:** planning `parallel-readonly`; implementation `single-lane`; external activation isolated owner transaction
-> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`; `scripts/review/results/2026-07-15-plan-3544-codex-{security,transaction}-r{5,6,7}.md`
+> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`; `scripts/review/results/2026-07-15-plan-3544-codex-{security,transaction}-r{5,6,7}.md`; `scripts/review/results/2026-07-15-plan-3544-{consumption,verifier}-r{8,9,10,11}.md`
 
 ---
 
@@ -1022,14 +1022,14 @@ Tests must be committed RED before their matching implementation slice.
 | Verifier R9 | MAJOR | R8 fixed; public Python genesis command could bypass the mandatory launcher and early imports |
 | Consumption R10 | MAJOR | R9 fixed; separate probe did not prove inherited candidate FD owned the lock |
 | Verifier R10 | MAJOR | R9 fixed; same invalid lock-provenance proof left internal bootstrap bypassable |
-| R11 focused verification | PENDING | inline R10 corrections use a three-step candidate lock proof, structural verifier-to-authority exec continuity, and no unforgeable same-UID provenance claim |
+| Consumption R11 | APPROVE | structural verifier-to-authority exec, three-step candidate proof, crash/recovery, permanence, and activation locking verified |
+| Verifier R11 | APPROVE | sole launcher, lazy-import gate, retained interpreter, isolation, exact schema, lock proof, and narrowed threat claim verified |
 
-**Overall result:** DRAFT-REVISED-PENDING-REVIEW — R10 independently returned
-MAJOR after affirmatively closing R9. The inline R10 patch will resolve the lock-
-ownership proof with structural verifier-to-authority continuity and an exact
-three-step probe while narrowing the same-UID claim, but the plan is not
-approval-ready until focused verification returns no MAJOR.
-Implementation and activation remain blocked.
+**Overall result:** PLAN-REVIEW — both focused R11 reviewers returned APPROVE
+after affirmatively verifying the complete R7→R10 correction chain. The plan is
+ready for user approval, but implementation and activation remain blocked until
+the user explicitly approves this exact plan revision and the required approval
+marker/status are created outside this session's authority.
 
 ## Risks and Open Questions
 
