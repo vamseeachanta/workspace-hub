@@ -233,3 +233,34 @@ def test_generation_ledger_append_is_authenticated_and_monotonic():
     authority.verify_ledger(appended, key)
     with pytest.raises(codec.AuthorityError, match="integrity"):
         authority.append_ledger(appended, next_manifest, key)
+
+
+def test_new_ledger_accepts_canonical_phase_a_key_id():
+    key = bytes(range(32))
+    manifest = authority.build_manifest(registry(), policy(), private_map(), key)
+    key_id = "phase-a-12345678-1234-4234-9234-123456789abc"
+
+    ledger = authority.new_ledger(key_id, manifest, key)
+
+    assert ledger["key_id"] == key_id
+    assert len(key_id.encode("utf-8")) <= 64
+
+
+@pytest.mark.parametrize(
+    "key_id",
+    [
+        "phase-a-12345678-1234-4234-9234-123456789ABC",
+        "phase-a-not-a-uuid",
+        "12345678-1234-4234-9234-123456789abc",
+        "phase-a-12345678-1234-4234-9234-123456789abc-extra",
+        None,
+        123,
+        "phase-a-12345678-1234-4234-9234-123456789abc\N{SNOWMAN}",
+    ],
+)
+def test_new_ledger_rejects_invalid_phase_a_key_id(key_id):
+    key = bytes(range(32))
+    manifest = authority.build_manifest(registry(), policy(), private_map(), key)
+
+    with pytest.raises(codec.AuthorityError):
+        authority.new_ledger(key_id, manifest, key)
