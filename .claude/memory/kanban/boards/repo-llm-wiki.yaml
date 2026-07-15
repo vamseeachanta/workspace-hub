@@ -2088,3 +2088,31 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#839
+    title: Separate wiki page provenance from exact primary-source doc_key
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/839
+    gh_state: open
+    gh_labels:
+      - bug
+      - domain:standards
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#840
+    title: Create private standards authority-evidence registry
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/840
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - domain:standards
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

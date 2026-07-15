@@ -22699,6 +22699,7 @@ cards:
       - cat:ci
       - domain:testing
       - domain:environment-parity
+      - status:plan-review
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -22762,6 +22763,7 @@ cards:
       - cat:harness
       - domain:testing
       - domain:security
+      - status:plan-review
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -23260,10 +23262,11 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3514
     gh_state: open
     gh_labels:
+      - priority:high
       - priority:critical
       - compliance-alert
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3516
@@ -23344,7 +23347,8 @@ cards:
       - cat:operations
       - domain:workstations
       - machine:multi
-      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - lane:codex
     initial_status: triage
     priority: 0
@@ -23359,7 +23363,8 @@ cards:
       - priority:medium
       - cat:ai-orchestration
       - wrk-item
-      - status:plan-review
+      - status:plan-approved
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 0
@@ -23499,6 +23504,167 @@ cards:
       - priority:medium
       - cat:harness
       - wrk-item
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3538
+    title: Evolve calculation citation contract for amendment and exact-source identity
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3538
+    gh_state: open
+    gh_labels:
+      - bug
+      - domain:standards-tooling
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3539
+    title: Refactor oversized equality modules and make Windows collector tests hermetic
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3539
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3541
+    title: 'test(enforcement): assert exact schemas for equivalent bypass fields'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3541
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3542
+    title: 'audit(config): reject duplicate YAML keys and ambiguous scalar types'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3542
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3544
+    title: 'security(legal): correct and operationalize Phase A authority activation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3544
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+      - gate:completeness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3545
+    title: Plan bounded same-account Claude Remote Control pilot on Windows
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3545
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:ai-orchestration
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3547
+    title: 'feat(ops): secure remote Linux access architecture and staged rollout'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3547
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:infrastructure
+      - domain:workstations
+      - domain:security
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3548
+    title: 'docs(ops): canonical remote Linux access architecture and runbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3548
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:workstations
+      - domain:security
+      - wip:ace-linux-1
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3549
+    title: 'feat(ops): registry-driven Linux connection helpers with TDD'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3549
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:automation
+      - domain:workstations
+      - domain:security
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3550
+    title: 'ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3550
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - domain:workstations
+      - domain:security
+      - machine:dev-secondary
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3551
+    title: 'ops(dev-primary): roll out and verify Tailscale plus hardened OpenSSH'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3551
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - domain:workstations
+      - domain:security
+      - machine:dev-primary
       - status:needs-plan
       - lane:claude
     initial_status: triage
