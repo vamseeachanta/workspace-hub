@@ -1,6 +1,6 @@
 # Plan for #3544: Correct and Operationalize Phase A Authority Activation
 
-> **Status:** plan-approved
+> **Status:** plan-review-amendment
 > **Complexity:** T3
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3544
@@ -316,9 +316,9 @@ authority-module blob OID against the A manifest/contract, rejects local or
 untracked substitutions, and executes only that verified extraction with
 isolated Python. A mutable working-tree script is never executable genesis input.
 
-The minimal external pre-authority boundary will comprise
-`scripts/legal/launch_rule_authority_genesis.sh` and the self-contained,
-standard-library-only
+The minimal external pre-authority boundary will comprise the verified
+`scripts/legal/launch_rule_authority_genesis.sh`, its literal inline
+standard-library-only Python FD broker, and the self-contained
 `scripts/legal/verify_rule_authority_genesis_approval.py`. Their blob OIDs and
 SHA-256 values will be in the replacement contract and genesis-only approval.
 Using only absolute-path
@@ -345,13 +345,25 @@ realpath and executable SHA-256. The plan will explicitly trust its root-owned
 standard library/shared libraries; hashing the interpreter will not be described
 as attesting those dependencies.
 
-The launcher will open the approval record no-follow as a retained FD; require a
+Because Bash cannot request `O_NOFOLLOW` for input redirection, the launcher will
+not use `test -L` plus shell redirection or claim that a pathname check is an
+atomic open. It will invoke the independently approved canonical root-owned,
+non-group/other-writable system-Python realpath with `-I -S -B -c` and a literal
+FD-broker program embedded in the already verified launcher bytes. Invoking that
+root-controlled path is an explicit bootstrap trust assumption; replacement by
+root between the shell check and exec is outside the threat model. The broker
+will immediately open that same canonical interpreter path with
+`O_RDONLY|O_NOFOLLOW`, compare its retained device/inode to the running
+`/proc/self/exe`, fstat/hash the FD, and require the separately approved SHA-256
+before opening any private or repository-controlled input.
+
+The inline broker will open the approval record no-follow as a retained FD; require a
 current-UID, link-count-one regular file with exact mode 0600, stable device,
 inode, mode, size, and `1..16384` bytes; and require the raw SHA-256 to equal the
-approved digest. It will open the canonical approved interpreter realpath
-no-follow as a retained root-owned, non-group/other-writable regular-file FD,
-fstat/hash that FD, and require the independently approved SHA-256. It will
-execute the verified verifier FD first as
+approved digest. It will also open every extracted verifier/entry/module and
+required directory with `O_NOFOLLOW`/`O_DIRECTORY`, verify the contract-bound
+device/inode/mode/blob/hash facts through retained FDs, and reject every symlink,
+swap, or mismatch. It will execute the verified verifier FD as
 `/proc/self/fd/<python-fd> -I -S -B /proc/self/fd/<verifier-fd>`, with a sanitized
 environment, fixed private working directory, closed unrelated FDs, and no
 `PYTHONPATH`, `site`, `.pth`, `sitecustomize`, user site, global site-packages, or
@@ -837,7 +849,7 @@ activate_owner_transaction(preview):
 | Modify | `docs/plans/evidence/2026-07-13-issue-3522-rule-authority-contract.md` | cross-link all four exact superseded clauses; preserve Phase B text |
 | Modify | `docs/plans/evidence/2026-07-14-issue-3522-phase-a-protection-preview.json` | mark deprecated/non-executable and point to #3544 replacements |
 | Modify | `scripts/legal/manage_rule_authority.py` | lazy-import internal `_genesis-current-from-launcher` dispatch with inherited-capability/tombstone gate; no public genesis command |
-| Create | `scripts/legal/launch_rule_authority_genesis.sh` | sole public owner-only `genesis-current` interface and FD-bound pre-authority launcher |
+| Create | `scripts/legal/launch_rule_authority_genesis.sh` | sole public owner-only interface plus literal isolated Python FD broker for atomic no-follow retained opens before the verifier |
 | Create | `scripts/legal/verify_rule_authority_genesis_approval.py` | commit-A-pinned stdlib-only canonical approval parser/comparator that runs before authority imports or entropy |
 | Modify | `scripts/legal/rule_authority/codec.py` | bounded key ID and canonical activation structures |
 | Modify | `schemas/legal-rule-generation-ledger.schema.json` | enforce `phase-a-<lowercase UUIDv4>` key ID and 64-byte bound |
@@ -861,6 +873,8 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | Test | RED condition and required result |
 |---|---|
 | `test_genesis_command_is_frozen_and_owner_only` | public launcher command absent today; require exact flags including independent interpreter identity, owner gate, no Actions execution, and no public Python genesis command |
+| `test_inline_fd_broker_is_the_only_pre_verifier_python` | verified launcher contains one literal `-I -S -B -c` stdlib broker; no separate mutable broker file/import, shell redirection, `test -L`, PATH lookup, site, repository path, private parsing, entropy, or output is allowed before retained-FD verification |
+| `test_inline_fd_broker_opens_every_input_no_follow` | broker uses `O_NOFOLLOW`/`O_DIRECTORY`, proves running `/proc/self/exe` equals the retained approved interpreter FD, and rejects approval/verifier/entry/module/interpreter symlinks plus pathname replacement, inode/device/mode/hash drift before verifier import |
 | `test_direct_internal_genesis_invocation_cannot_bypass_launcher` | ordinary direct public/internal `manage_rule_authority.py` calls, missing/extra FDs, absent lock, bad three-step lock proof, or missing/mismatched tombstone reject before authority import/entropy/output sentinels; an unlocked inherited candidate while another process owns the parent lock must reject; tests will not claim provenance against a deliberate same-UID reconstruction |
 | `test_genesis_rejects_non_native_or_ambiguous_mounts` | require stable `/proc/self/mountinfo` identity and approved ext4/xfs/btrfs; Windows, `/mnt`, drvfs/9p/FUSE/overlay/bind/network/FAT/NTFS and mount drift reject before entropy/private reads |
 | `test_genesis_requires_preexisting_0700_parent_and_0600_outputs` | trusted-account home resolution must match the canonical approved absolute path; root-owned non-writable `/` and `/home` fixtures pass, while writable/foreign-owned system ancestors, foreign-owned or writable account-home/private components, absent parent, environment substitution, wrong final UID/mode, symlink component, parent swap, output hardlink/non-regular, or mode drift rejects rc4 before entropy/writes; genesis never creates/repairs the parent and public A blobs are not treated as 0600 inputs |
@@ -884,7 +898,7 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_genesis_binds_public_blobs_to_commit_a` | public registry/policy blob OIDs and canonical hashes match contract at A; private generated files alone require 0600 |
 | `test_genesis_executes_verified_commit_a_extraction` | reject mutable checkout, unreachable A, entry-point/import blob mismatch, untracked substitution, or entropy request before all module blobs verify |
 | `test_genesis_launcher_uses_trusted_absolute_tools` | execute launcher fixture; reject PATH aliases, hooks/config, unapproved binaries, wrong launcher/verifier/interpreter blob or hash, or missing explicit trust inputs |
-| `test_genesis_launcher_fd_boundary_blocks_substitution` | execute race fixtures; retained launcher/approval-record/dir/verifier/entry FDs plus 0500/0400 tree reject pathname replacement and inode/device/mode/digest swaps; launcher is hashed and invoked through the same FD, and sentinels prove the approval verifier is the only Python before complete approval validation |
+| `test_genesis_launcher_fd_boundary_blocks_substitution` | execute race fixtures; retained launcher/interpreter/approval-record/dir/verifier/entry/module FDs plus 0500/0400 tree reject pathname replacement and inode/device/mode/digest swaps; launcher is hashed/invoked through one FD, the inline broker is the only Python before the verifier, and sentinels prove no verifier/authority import or entropy before complete retained-FD validation |
 | `test_genesis_is_atomic_no_overwrite` | collisions, disk-full/fsync/rename crash leave no accepted final transaction |
 | `test_genesis_outputs_exact_canonical_bundle` | exact six 0600 files, current/null-head anchor, fresh ledger, <=32 KiB envelope |
 | `test_genesis_materialize_verify_roundtrip` | independent materialization and verification return rc0 at exact tool SHA |
@@ -1024,12 +1038,12 @@ Tests must be committed RED before their matching implementation slice.
 | Verifier R10 | MAJOR | R9 fixed; same invalid lock-provenance proof left internal bootstrap bypassable |
 | Consumption R11 | APPROVE | structural verifier-to-authority exec, three-step candidate proof, crash/recovery, permanence, and activation locking verified |
 | Verifier R11 | APPROVE | sole launcher, lazy-import gate, retained interpreter, isolation, exact schema, lock proof, and narrowed threat claim verified |
+| FD-broker amendment R12 | PENDING | implementation preflight proved Bash redirection cannot satisfy `O_NOFOLLOW`; owner selected a literal isolated Python broker embedded in verified launcher bytes |
 
-**Overall result:** PLAN-REVIEW — both focused R11 reviewers returned APPROVE
-after affirmatively verifying the complete R7→R10 correction chain. The plan is
-ready for user approval, but implementation and activation remain blocked until
-the user explicitly approves this exact plan revision and the required approval
-marker/status are created outside this session's authority.
+**Overall result:** PLAN-REVIEW-AMENDMENT — the previously approved normative
+design is reopened only for the executable retained-FD bootstrap boundary. The
+inline broker amendment requires focused adversarial review and then fresh user
+approval of the exact revised commit. Implementation and activation are blocked.
 
 ## Risks and Open Questions
 
