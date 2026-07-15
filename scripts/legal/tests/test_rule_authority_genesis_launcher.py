@@ -26,6 +26,7 @@ def run_launcher(
     *args: str,
     env: dict[str, str] | None = None,
     pristine: bool = False,
+    pass_fds: tuple[int, ...] = (),
 ) -> subprocess.CompletedProcess[str]:
     """Execute the public launcher; RED until its file exists."""
     assert LAUNCHER.is_file(), f"missing required launcher: {LAUNCHER}"
@@ -36,6 +37,7 @@ def run_launcher(
         text=True,
         capture_output=True,
         env=merged,
+        pass_fds=pass_fds,
         check=False,
     )
 
@@ -165,6 +167,16 @@ def test_subprocess_contract_forwards_internal_identity_and_exact_pairs():
         "a" * 40,
         "--out-parent",
         "/private/output",
+        "--transaction-id",
+        "12345678-1234-4234-9234-123456789abc",
+        "--approval-record",
+        "/private/approval.json",
+        "--approval-sha256",
+        "b" * 64,
+        "--python-realpath",
+        "/usr/bin/python3",
+        "--python-sha256",
+        "c" * 64,
         "--outer-identity-fd",
         "9",
         "--outer-bootstrap-sha256",
@@ -173,6 +185,16 @@ def test_subprocess_contract_forwards_internal_identity_and_exact_pairs():
     )
     assert result.returncode != 0
     assert "unknown option" not in result.stderr.lower()
+
+
+def test_public_argument_order_matches_frozen_interface():
+    source = launcher_source()
+    names = [
+        "--tool-repo", "--tool-sha", "--out-parent", "--transaction-id",
+        "--approval-record", "--approval-sha256", "--python-realpath",
+        "--python-sha256",
+    ]
+    assert [source.index(name) for name in names] == sorted(source.index(name) for name in names)
 
 
 def test_pre_verifier_fixture_sentinels_are_not_executed_or_written(tmp_path):
@@ -217,9 +239,8 @@ def test_pristine_environment_executes_fixture_verifier_and_captures_contract(tm
     capture = tmp_path / "capture.py"
     capture.write_text(
         "import json, os, sys\n"
-        "json.dump({'argv':sys.argv[1:], 'env':dict(os.environ),\n"
-        "'fds':sorted(int(x) for x in os.listdir('/proc/self/fd') if x.isdigit())},\n"
-        "open(os.environ['CAPTURE'], 'w'))\n",
+        "print(json.dumps({'argv':sys.argv[1:], 'env':dict(os.environ),\n"
+        "'fds':sorted(int(x) for x in os.listdir('/proc/self/fd') if x.isdigit())}))\n",
         encoding="utf-8",
     )
     approval = tmp_path / "approval.json"
@@ -234,10 +255,9 @@ def test_pristine_environment_executes_fixture_verifier_and_captures_contract(tm
     ):
         path.write_bytes(payload)
         path.chmod(0o400)
-    captured = tmp_path / "captured.json"
     result = run_launcher(
         "genesis-current",
-        "--approval",
+        "--approval-record",
         str(approval),
         "--contract",
         str(contract),
@@ -251,14 +271,21 @@ def test_pristine_environment_executes_fixture_verifier_and_captures_contract(tm
         "a" * 40,
         "--out-parent",
         str(tmp_path),
+        "--transaction-id",
+        "12345678-1234-4234-9234-123456789abc",
+        "--approval-sha256",
+        "b" * 64,
+        "--python-realpath",
+        "/usr/bin/python3",
+        "--python-sha256",
+        "c" * 64,
         pristine=True,
-        env={"LEGAL_RULE_OWNER_GENESIS": "1", "CAPTURE": str(captured)},
+        env={"LEGAL_RULE_OWNER_GENESIS": "1", "LC_ALL": "C"},
     )
     assert result.returncode == 0, result.stderr
-    record = __import__("json").loads(captured.read_text(encoding="utf-8"))
+    record = __import__("json").loads(result.stdout)
     assert record["argv"][:1] == ["_genesis-current-from-launcher"]
-    assert "PATH" not in record["env"]
-    assert "PYTHONPATH" not in record["env"]
+    assert record["env"] == {"LC_ALL": "C", "LEGAL_RULE_OWNER_GENESIS": "1"}
     assert all(fd >= 3 for fd in record["fds"])
 
 
@@ -269,7 +296,7 @@ def test_valid_fixture_rejects_symlink_and_path_replacement_before_child(tmp_pat
     link.symlink_to(target)
     result = run_launcher(
         "genesis-current",
-        "--approval",
+        "--approval-record",
         str(link),
         "--out-parent",
         str(tmp_path),
