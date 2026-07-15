@@ -22699,6 +22699,7 @@ cards:
       - cat:ci
       - domain:testing
       - domain:environment-parity
+      - status:plan-review
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -22762,6 +22763,7 @@ cards:
       - cat:harness
       - domain:testing
       - domain:security
+      - status:plan-review
     initial_status: triage
     priority: 1
     gh_assignees: []
