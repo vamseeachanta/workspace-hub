@@ -309,7 +309,13 @@ invoke only the separately verified, commit-A-pinned approval verifier described
 below and will reject every record/digest/host/account/path mismatch or replayed
 transaction UUID.
 
-Before requesting entropy, the operator creates a fresh private detached
+In this section, **genesis entropy** means application-requested randomness for
+the HMAC key, synthetic patterns, key ID, or any private capability. CPython may
+perform its own documented runtime `getrandom` calls before `-c`; the plan will
+not misdescribe those interpreter-internal calls as absent. No genesis entropy
+or private genesis output is permitted before durable approval consumption.
+
+Before requesting genesis entropy, the operator creates a fresh private detached
 checkout or exact Git-object extraction of commit A, verifies A is reachable
 from the approved post-merge main, verifies the entry point and every imported
 authority-module blob OID against the A manifest/contract, rejects local or
@@ -318,7 +324,8 @@ isolated Python. A mutable working-tree script is never executable genesis input
 
 The minimal external pre-authority boundary will comprise the verified
 `scripts/legal/launch_rule_authority_genesis.sh`, its literal inline
-standard-library-only Python FD broker, and the self-contained
+standard-library-only Python FD broker, the canonical public
+`config/legal-rule-authority-genesis-execution-manifest.json`, and the self-contained
 `scripts/legal/verify_rule_authority_genesis_approval.py`. Their blob OIDs and
 SHA-256 values will be in the replacement contract and genesis-only approval.
 Using only absolute-path
@@ -332,8 +339,11 @@ approval verifier or entropy. Before
 invocation the operator opens the launcher once as a retained FD, requires a
 regular file with approved owner/mode/inode/device, hashes
 `/proc/self/fd/<launcher-fd>` with the approved absolute system `sha256sum`,
-rechecks `fstat`, and invokes `/bin/bash /proc/self/fd/<launcher-fd>` without
-reopening the pathname. The FD remains open until the launcher exits; pathname
+rechecks `fstat`, and invokes the frozen outer form
+`/usr/bin/env -i LC_ALL=C LEGAL_RULE_OWNER_GENESIS=1 /bin/bash --noprofile --norc /proc/self/fd/<launcher-fd>`
+without reopening the pathname. No inherited `BASH_ENV`, `ENV`, `LD_*`, Python,
+Git, locale, HOME, PATH, or shell-function variable will reach Bash. The FD
+remains open until the launcher exits; pathname
 replacement after open is irrelevant, and launcher-FD/inode/device/digest drift
 will abort before the approval verifier or entropy. The trust assumption is
 explicit: that verified launcher, the Linux kernel, approved native filesystem, absolute
@@ -360,12 +370,34 @@ before opening any private or repository-controlled input.
 The inline broker will open the approval record no-follow as a retained FD; require a
 current-UID, link-count-one regular file with exact mode 0600, stable device,
 inode, mode, size, and `1..16384` bytes; and require the raw SHA-256 to equal the
-approved digest. It will also open every extracted verifier/entry/module and
-required directory with `O_NOFOLLOW`/`O_DIRECTORY`, verify the contract-bound
-device/inode/mode/blob/hash facts through retained FDs, and reject every symlink,
-swap, or mismatch. It will execute the verified verifier FD as
+approved digest. Before trusting any record field it will require that raw digest,
+then use its own strict bounded canonical-JSON parser (duplicate-key rejection,
+exact re-encoding, exact keys/types) to obtain the approval-bound execution-
+manifest path/blob OID/SHA-256. It will open that manifest no-follow from the
+verified commit-A extraction, recompute both Git blob OID and SHA-256, and
+strictly parse schema `legal-rule-genesis-execution-manifest-v1`. The manifest
+will contain an exact sorted nonempty `members` array; every member has exactly
+`path`, `blob_oid`, `sha256`, and `role`, with one verifier, one internal entry,
+and the complete allowlisted module set. The approval schema will bind the
+manifest identity object exactly like contract/launcher/verifier identities.
+Omission, duplication, extra members, path aliases, role confusion, and any
+record/manifest schema mismatch will reject.
+
+The broker will open every manifest member and required path component with
+`O_NOFOLLOW`/`O_DIRECTORY`, verify device/inode/mode/blob/hash facts through
+retained FDs, and reject every symlink, swap, or mismatch. From those verified
+public bytes it will construct a deterministic import archive in an anonymous
+Linux memfd, verify its member table/hashes, apply `F_SEAL_WRITE|F_SEAL_GROW|F_SEAL_SHRINK|F_SEAL_SEAL`,
+and retain the sealed archive FD. The archive is ephemeral public-code transport,
+not private genesis output. Verifier and authority import paths will contain only
+`/proc/self/fd/<archive-fd>`; normal repository/extraction path imports are
+forbidden. It will then direct-`execve` the verified verifier FD as
 `/proc/self/fd/<python-fd> -I -S -B /proc/self/fd/<verifier-fd>`, with a sanitized
-environment, fixed private working directory, closed unrelated FDs, and no
+exact argv, fixed private working directory, and environment exactly
+`LC_ALL=C,PYTHONNOUSERSITE=1`. Immediately before exec it will mark inheritable
+only the named interpreter, approval, contract, manifest, verifier, internal-
+entry, locked-parent, extraction-dir, and sealed-archive FDs; every other FD will
+remain close-on-exec. The broker will not return or reopen a pathname. There is no
 `PYTHONPATH`, `site`, `.pth`, `sitecustomize`, user site, global site-packages, or
 repository path. The verifier will import only the standard library,
 will contain its own parser, will import no authority/repository module, and will
@@ -382,7 +414,7 @@ exactly one LF.
 
 The record schema will have `additionalProperties:false` at every object and will
 bind exact typed values for `schema_id`, Git object format, plan/A/B/post-merge
-OIDs, transaction UUID, contract, launcher, verifier, approved Python, and a host
+OIDs, transaction UUID, contract, launcher, execution manifest, verifier, approved Python, and a host
 object containing hostname, machine-id digest, SSH host-key evidence, trusted
 account name/UID/home, output parent, and complete mount identity. The verifier
 will compare every leaf without coercion against independently recomputed facts
@@ -391,15 +423,15 @@ will perform the final re-fstat/rehash of the approval record, verifier, and
 interpreter, durably consume the approval as specified below, and directly
 `execve` the verified internal authority entry without returning to the shell
 launcher. The authority entry point will reparse through the same verifier module and
-recheck dynamic facts immediately before entropy; corpus-driven differential
+recheck dynamic facts immediately before genesis entropy; corpus-driven differential
 tests will require identical parsing decisions at both stages.
 
 The exact top-level record will use `schema_id` =
 `legal-rule-genesis-approval-v1`, `git_object_format` = `sha1`, the 40-lowercase-
 hex `plan_commit`, `tool_commit_a`, `caller_commit_b`, and `post_merge_main`, a
 canonical lowercase UUIDv4 `transaction_id`, and exact objects `contract`,
-`launcher`, `approval_verifier`, `python`, and `host`. `contract`, `launcher`,
-and `approval_verifier` will each contain exactly `path`, `blob_oid`, and
+`launcher`, `execution_manifest`, `approval_verifier`, `python`, and `host`.
+`contract`, `launcher`, `execution_manifest`, and `approval_verifier` will each contain exactly `path`, `blob_oid`, and
 `sha256`; their paths will equal the contract's literal allowlisted repo-relative
 paths, OIDs will be 40 lowercase hex because object format is `sha1`, and hashes
 will be 64 lowercase hex. `python` will contain exactly `realpath` and `sha256`,
@@ -489,7 +521,7 @@ independently valid final UUID directory is terminal `COMPLETE`; tombstone with
 absent/incomplete output is terminal `SPENT`; and any partial/malformed marker,
 final-without-marker, invalid final, or contradictory state is terminal
 `CONFLICT`. A crash before the file-and-parent fsync commit point will remain
-`UNUSED` and safely retryable because no entropy or output can precede that point;
+`UNUSED` and safely retryable because no genesis entropy or private output can precede that point;
 any surviving marker entry will nevertheless block replay even if its content is
 partial. Every post-commit crash will be irrevocably consumed. Recovery will
 never re-enter entropy. Cleanup may remove only the matching incomplete output
@@ -666,7 +698,7 @@ mergeable under the chosen review posture. The proof PR is never merged.
    retain the exact canonical `envelope.json` bytes plus canonical SHA-256 in
    private 0600 evidence. Success, handled post-commit failure, and post-commit
    crash will leave the approval consumed; a pre-commit crash will remain UNUSED
-   and retryable because no entropy/output can precede consumption. Any consumed
+   and retryable because no genesis entropy/private output can precede consumption. Any consumed
    failure will require a fresh preview, UUID, digest, and approval and will never
    silently regenerate.
 8. Only after successful retained genesis, prepare the separate activation
@@ -791,9 +823,12 @@ facts applicable at that boundary; drift permits no further forward write.
 genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
                 approval_record, approval_sha256):
     sole public entry is verified launcher; Python CLI has internal dispatch only
-    require owner gate, non-Actions Linux, exact tool OID
-    open approved interpreter once; shell retained-FD verify it, approval, verifier, immutable A
-    run only pinned `-I -S -B` stdlib verifier before authority imports or entropy
+    outer env -i launches verified retained shell FD with fixed environment only
+    require owner gate, non-Actions Linux, exact tool OID and approved interpreter identity
+    inline `-I -S -B -c` broker opens interpreter/approval/contract/manifest/members no-follow
+    broker strict-parses approval then authenticated execution manifest; verify every member FD
+    broker builds and seals deterministic public-code memfd archive from verified member bytes
+    broker marks exact FD allowlist inheritable and directly execves pinned verifier
     acquire nonblocking exclusive flock on retained parent dirfd; hold across authority exec/final verify
     verifier requires canonical exact-schema record and compares every recomputed fact
     resolve home from trusted account record, never environment; bind host/fingerprint/UID
@@ -806,8 +841,8 @@ genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
     verifier creates O_EXCL 0600 tombstone; fsyncs file and parent; revalidates
     classify any surviving marker as consumed; never delete or resume after failure/crash
     verifier directly execves authority through same interpreter FD without returning to shell
-    internal stdlib bootstrap verifies inherited FD allowlist, lock probe, tombstone before imports
-    recheck dynamic facts; only then import authority and request entropy
+    internal stdlib bootstrap verifies inherited FD allowlist/archive, lock probe, tombstone before imports
+    recheck dynamic facts; import authority only from sealed archive; only then request genesis entropy
     generate key, synthetic map, and bounded key_id internally from kernel CSPRNG
     build manifest, current anchor, authenticated genesis ledger, CI envelope
     require canonical envelope <= 32 KiB and verify bundle before decoding pattern
@@ -850,6 +885,7 @@ activate_owner_transaction(preview):
 | Modify | `docs/plans/evidence/2026-07-14-issue-3522-phase-a-protection-preview.json` | mark deprecated/non-executable and point to #3544 replacements |
 | Modify | `scripts/legal/manage_rule_authority.py` | lazy-import internal `_genesis-current-from-launcher` dispatch with inherited-capability/tombstone gate; no public genesis command |
 | Create | `scripts/legal/launch_rule_authority_genesis.sh` | sole public owner-only interface plus literal isolated Python FD broker for atomic no-follow retained opens before the verifier |
+| Create | `config/legal-rule-authority-genesis-execution-manifest.json` | canonical commit-A member path/role/blob/hash allowlist authenticated by the private approval and parsed by the broker |
 | Create | `scripts/legal/verify_rule_authority_genesis_approval.py` | commit-A-pinned stdlib-only canonical approval parser/comparator that runs before authority imports or entropy |
 | Modify | `scripts/legal/rule_authority/codec.py` | bounded key ID and canonical activation structures |
 | Modify | `schemas/legal-rule-generation-ledger.schema.json` | enforce `phase-a-<lowercase UUIDv4>` key ID and 64-byte bound |
@@ -875,20 +911,23 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_genesis_command_is_frozen_and_owner_only` | public launcher command absent today; require exact flags including independent interpreter identity, owner gate, no Actions execution, and no public Python genesis command |
 | `test_inline_fd_broker_is_the_only_pre_verifier_python` | verified launcher contains one literal `-I -S -B -c` stdlib broker; no separate mutable broker file/import, shell redirection, `test -L`, PATH lookup, site, repository path, private parsing, entropy, or output is allowed before retained-FD verification |
 | `test_inline_fd_broker_opens_every_input_no_follow` | broker uses `O_NOFOLLOW`/`O_DIRECTORY`, proves running `/proc/self/exe` equals the retained approved interpreter FD, and rejects approval/verifier/entry/module/interpreter symlinks plus pathname replacement, inode/device/mode/hash drift before verifier import |
+| `test_inline_fd_broker_authenticates_execution_manifest` | after raw approval digest match, broker strict-parses canonical approval, authenticates exact manifest path/blob/hash, strict-parses its exact sorted member schema, and rejects omission, duplicate keys/members, substitution, role/path aliases, extra entries, and schema confusion before member trust |
+| `test_inline_fd_broker_exec_inherits_only_verified_fds` | broker direct-exec fixture proves exact argv/env/cwd, preserves identical interpreter/approval/contract/manifest/verifier/entry/parent/extraction/archive FD identities, closes an unrelated FD, never returns/reopens paths, and imports modules only from the sealed archive despite post-validation pathname replacement |
+| `test_outer_launcher_environment_is_empty_and_fixed` | hostile `BASH_ENV`, `ENV`, `LD_*`, Python/Git/locale/HOME/PATH variables, exported functions, sentinel files, and modules cannot execute or influence Bash, loader, broker, verifier, or output before validation |
 | `test_direct_internal_genesis_invocation_cannot_bypass_launcher` | ordinary direct public/internal `manage_rule_authority.py` calls, missing/extra FDs, absent lock, bad three-step lock proof, or missing/mismatched tombstone reject before authority import/entropy/output sentinels; an unlocked inherited candidate while another process owns the parent lock must reject; tests will not claim provenance against a deliberate same-UID reconstruction |
-| `test_genesis_rejects_non_native_or_ambiguous_mounts` | require stable `/proc/self/mountinfo` identity and approved ext4/xfs/btrfs; Windows, `/mnt`, drvfs/9p/FUSE/overlay/bind/network/FAT/NTFS and mount drift reject before entropy/private reads |
-| `test_genesis_requires_preexisting_0700_parent_and_0600_outputs` | trusted-account home resolution must match the canonical approved absolute path; root-owned non-writable `/` and `/home` fixtures pass, while writable/foreign-owned system ancestors, foreign-owned or writable account-home/private components, absent parent, environment substitution, wrong final UID/mode, symlink component, parent swap, output hardlink/non-regular, or mode drift rejects rc4 before entropy/writes; genesis never creates/repairs the parent and public A blobs are not treated as 0600 inputs |
+| `test_genesis_rejects_non_native_or_ambiguous_mounts` | require stable `/proc/self/mountinfo` identity and approved ext4/xfs/btrfs; Windows, `/mnt`, drvfs/9p/FUSE/overlay/bind/network/FAT/NTFS and mount drift reject before genesis entropy/private reads |
+| `test_genesis_requires_preexisting_0700_parent_and_0600_outputs` | trusted-account home resolution must match the canonical approved absolute path; root-owned non-writable `/` and `/home` fixtures pass, while writable/foreign-owned system ancestors, foreign-owned or writable account-home/private components, absent parent, environment substitution, wrong final UID/mode, symlink component, parent swap, output hardlink/non-regular, or mode drift rejects rc4 before genesis entropy/private writes; genesis never creates/repairs the parent and public A blobs are not treated as 0600 inputs |
 | `test_genesis_preview_binds_verified_host_identity` | fixture-backed canonical approval record/digest requires exact `ace-linux-1` SSH-host-key and machine-id evidence, trusted-account name/UID/home, canonical path, mount, A/B/plan identities, and transaction UUID; launcher and the isolated verifier recompute/compare local evidence and every missing/mismatched/replayed field rejects before authority import, consumption, entropy, or writes |
 | `test_approval_verifier_requires_exact_canonical_bytes` | duplicate keys, BOM, CRLF, whitespace, malformed UTF-8, noncanonical escapes/order, floats/non-finite numbers, bool-as-int, and 16,385 bytes reject before authority/entropy sentinels |
 | `test_approval_verifier_schema_and_bound_facts_are_exact` | removing/adding/mutating every top-level or nested leaf across plan/A/B/main, contract, launcher, verifier, interpreter, UUID, host, account, parent, SSH key, machine ID, and mount rejects without coercion |
 | `test_approval_verifier_supply_chain_and_fd_boundary` | independently approved CLI Python realpath/hash must match one retained regular root-owned FD used through `/proc/self/fd` for both verifier and authority; post-consumption interpreter-path replacement, verifier blob/hash, PATH/PYTHONPATH, `site`, `.pth`, global/user `sitecustomize`, global/user site-packages, repository path, mutable extraction, approval/verifier/interpreter FD replacement, or inode/device/mode/size/byte drift rejects or remains irrelevant before authority import/entropy |
 | `test_verifier_and_authority_share_parser_contract` | corpus-driven differential test requires both stages to accept/reject identical bytes and produce the same typed record |
 | `test_verified_order_is_parser_then_consumption_then_authority_then_entropy` | event ledger and sentinels prove no tombstone precedes successful exact comparison; after durable tombstone file+parent fsync/revalidation the verifier directly execves authority without a shell return; no authority import, CSPRNG, or output can skip that chain |
-| `test_consumption_marker_is_owner_only_no_overwrite` | symlink/non-regular/hardlinked/wrong-owner/wrong-mode/malformed/pre-existing marker and O_EXCL collision reject before entropy |
+| `test_consumption_marker_is_owner_only_no_overwrite` | symlink/non-regular/hardlinked/wrong-owner/wrong-mode/malformed/pre-existing marker and O_EXCL collision reject before genesis entropy |
 | `test_replay_after_success_or_post_commit_failure_is_rejected` | inject entropy, output-create, file-fsync, verify, rename, parent-fsync, and final-verify failures; the same approval/UUID never reaches entropy twice |
 | `test_crash_replay_is_rejected_at_every_post_commit_boundary` | SIGKILL/os._exit after marker create/fsync, entropy, incomplete writes, or final rename leaves COMPLETE, SPENT, or CONFLICT and never resumes/regenerates |
-| `test_precommit_crash_is_unused_and_safe_to_retry` | crash before tombstone file+parent fsync reaches no entropy/output; absent marker remains UNUSED, while any surviving partial entry is CONFLICT and blocks reuse |
-| `test_marker_fsync_failure_and_partial_marker_fail_closed` | no entropy runs before durable commit; any surviving partial/malformed entry is terminal CONFLICT and blocks replay |
+| `test_precommit_crash_is_unused_and_safe_to_retry` | crash before tombstone file+parent fsync reaches no genesis entropy/private output; absent marker remains UNUSED, while any surviving partial entry is CONFLICT and blocks reuse |
+| `test_marker_fsync_failure_and_partial_marker_fail_closed` | no genesis entropy runs before durable commit; any surviving partial/malformed entry is terminal CONFLICT and blocks replay |
 | `test_concurrent_recovery_and_cleanup_require_parent_lock` | subprocess exec fixture proves only allowlisted FDs inherit and the same retained-parent flock survives into authority through final verification; nonblocking recovery/cleanup observes CONSUMED_RUNNING and performs no classification, removal, or output access until release |
 | `test_cleanup_never_removes_consumption_marker` | incomplete cleanup rejects the marker namespace; disposition requires a separate approved transaction |
 | `test_activation_preview_requires_complete_consumed_genesis` | retained-genesis proof acquires/holds the parent lock during classification and local verification; contention plus UNUSED, CONSUMED_RUNNING, SPENT, and CONFLICT invoke zero external adapters; only marker plus independently verified final output is COMPLETE |
@@ -898,7 +937,7 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_genesis_binds_public_blobs_to_commit_a` | public registry/policy blob OIDs and canonical hashes match contract at A; private generated files alone require 0600 |
 | `test_genesis_executes_verified_commit_a_extraction` | reject mutable checkout, unreachable A, entry-point/import blob mismatch, untracked substitution, or entropy request before all module blobs verify |
 | `test_genesis_launcher_uses_trusted_absolute_tools` | execute launcher fixture; reject PATH aliases, hooks/config, unapproved binaries, wrong launcher/verifier/interpreter blob or hash, or missing explicit trust inputs |
-| `test_genesis_launcher_fd_boundary_blocks_substitution` | execute race fixtures; retained launcher/interpreter/approval-record/dir/verifier/entry/module FDs plus 0500/0400 tree reject pathname replacement and inode/device/mode/digest swaps; launcher is hashed/invoked through one FD, the inline broker is the only Python before the verifier, and sentinels prove no verifier/authority import or entropy before complete retained-FD validation |
+| `test_genesis_launcher_fd_boundary_blocks_substitution` | execute race fixtures; retained launcher/interpreter/approval-record/dir/verifier/entry/module FDs plus 0500/0400 tree reject pathname replacement and inode/device/mode/digest swaps; launcher is hashed/invoked through one FD, the inline broker is the only Python before the verifier, and sentinels prove no verifier/authority import or genesis entropy before complete retained-FD validation |
 | `test_genesis_is_atomic_no_overwrite` | collisions, disk-full/fsync/rename crash leave no accepted final transaction |
 | `test_genesis_outputs_exact_canonical_bundle` | exact six 0600 files, current/null-head anchor, fresh ledger, <=32 KiB envelope |
 | `test_genesis_materialize_verify_roundtrip` | independent materialization and verification return rc0 at exact tool SHA |
@@ -955,9 +994,11 @@ Tests must be committed RED before their matching implementation slice.
 - [ ] The external launcher's recorded blob/hash, trusted absolute tools,
       allowlisted A verifier/module identities, approved interpreter realpath/hash,
       immutable extracted tree, and retained-FD execution pass real launcher/
-      approval/verifier/path-swap race tests. The commit-A-pinned stdlib verifier
-      is the only Python allowed before authority import and entropy; it enforces
-      exact canonical bytes/schema and compares every typed bound fact.
+      approval/verifier/path-swap race tests. The literal isolated broker is the
+      only Python before the commit-A-pinned verifier; both run before authority
+      import or genesis entropy. The broker authenticates the approval-bound
+      execution manifest and sealed FD archive, while the verifier enforces the
+      full canonical approval schema and typed local-fact comparison.
 - [ ] The launcher is the sole public genesis entry. Both verifier and internal
       authority execute through the same retained verified interpreter FD. The
       Python CLI lazy-import bootstrap rejects direct invocation and every
@@ -965,11 +1006,11 @@ Tests must be committed RED before their matching implementation slice.
       authority imports, entropy, or output.
 - [ ] Successful approval verification durably creates and revalidates an
       immutable owner-only no-overwrite tombstone, including file and parent
-      fsync, before authority import or entropy. A retained-parent exclusive lock
+      fsync, before authority import or genesis entropy. A retained-parent exclusive lock
       prevents concurrent recovery/cleanup through final verification. Success,
       handled post-commit failure, post-commit crash, partial marker, and cleanup
       tests prove a consumed approval/UUID can never be reused; pre-commit crash
-      is retryable only when no marker survives and no entropy/output occurred.
+      is retryable only when no marker survives and no genesis entropy/private output occurred.
       Activation requires terminal COMPLETE state.
 - [ ] Contract blob identities, public registry/policy blobs, reusable workflow,
       tool, schema, and anchor bind commit A; commit B changes only the caller and
@@ -1038,7 +1079,9 @@ Tests must be committed RED before their matching implementation slice.
 | Verifier R10 | MAJOR | R9 fixed; same invalid lock-provenance proof left internal bootstrap bypassable |
 | Consumption R11 | APPROVE | structural verifier-to-authority exec, three-step candidate proof, crash/recovery, permanence, and activation locking verified |
 | Verifier R11 | APPROVE | sole launcher, lazy-import gate, retained interpreter, isolation, exact schema, lock proof, and narrowed threat claim verified |
-| FD-broker amendment R12 | PENDING | implementation preflight proved Bash redirection cannot satisfy `O_NOFOLLOW`; owner selected a literal isolated Python broker embedded in verified launcher bytes |
+| FD-broker security R12 | MAJOR | hostile outer environment, interpreter-runtime entropy overclaim, pathname module imports, and stale pseudocode |
+| FD-broker transaction R12 | MAJOR | no authenticated execution-manifest parser/source and no exact broker-to-verifier FD inheritance contract |
+| FD-broker amendment R13 | PENDING | inline fixes add outer `env -i`, precise genesis-entropy scope, approval-bound canonical execution manifest, sealed memfd archive imports, and exact direct-exec FD allowlist |
 
 **Overall result:** PLAN-REVIEW-AMENDMENT — the previously approved normative
 design is reopened only for the executable retained-FD bootstrap boundary. The
