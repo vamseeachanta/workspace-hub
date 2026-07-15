@@ -87,6 +87,7 @@ docs/
 - 🗓️ [Weekly Ecosystem Execution & Intelligence Review](modules/ai/WEEKLY_ECOSYSTEM_EXECUTION_AND_INTELLIGENCE_REVIEW.md)
 - 📖 [Implementation Roadmap](modules/workflow/IMPLEMENTATION_ROADMAP.md)
 - 🌊 [OpenFOAM v2312 Baseline Workflow](engineering/portability/openfoam-v2312-baseline-workflow.md)
+- 🔐 [Remote Linux access](ops/remote-linux-access.md) - Canonical Tailscale transport, OpenSSH authentication, verification, and recovery runbook
 
 ### Standards & Compliance
 
