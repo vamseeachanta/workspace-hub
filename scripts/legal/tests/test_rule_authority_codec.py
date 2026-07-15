@@ -154,7 +154,7 @@ def test_verify_rejects_rollback_revision_reuse_and_tamper():
     key = bytes(range(32))
     manifest = authority.build_manifest(registry(), policy(), private_map(), key)
     anchor = authority.make_anchor(manifest, "f" * 40)
-    ledger = authority.new_ledger("synthetic-key", manifest, key)
+    ledger = authority.new_ledger("phase-a-12345678-1234-4234-9234-123456789abc", manifest, key)
     authority.verify_bundle(
         registry(), policy(), private_map(), manifest, key, anchor, ledger, "f" * 40
     )
@@ -174,7 +174,7 @@ def test_verify_rejects_rollback_revision_reuse_and_tamper():
 def test_verify_binds_ledger_tool_sha_and_pending_head():
     key = bytes(range(32))
     manifest = authority.build_manifest(registry(), policy(), private_map(), key)
-    ledger = authority.new_ledger("synthetic-key", manifest, key)
+    ledger = authority.new_ledger("phase-a-12345678-1234-4234-9234-123456789abc", manifest, key)
     anchor = authority.make_anchor(
         manifest, "f" * 40, slot="pending", expected_head_oid="e" * 40
     )
@@ -223,7 +223,7 @@ def test_structural_scan_rejects_secret_artifacts_under_arbitrary_names(tmp_path
 def test_generation_ledger_append_is_authenticated_and_monotonic():
     key = bytes(range(32))
     manifest = authority.build_manifest(registry(), policy(), private_map(), key)
-    ledger = authority.new_ledger("synthetic-key", manifest, key)
+    ledger = authority.new_ledger("phase-a-12345678-1234-4234-9234-123456789abc", manifest, key)
     authority.verify_ledger(ledger, key)
     next_manifest = dict(manifest)
     next_manifest["generation"] = 2
