@@ -411,7 +411,10 @@ subprocess output.
 Before state inspection, the verifier will acquire a nonblocking exclusive Linux
 `flock` on the retained output-parent dirfd. It will retain that same open file
 description across approval consumption and `exec` of the verified authority
-entry point, and authority code will keep it open through final-directory
+entry point by explicitly marking only that dirfd and the other contract-required
+FDs inheritable immediately before `exec`; every unrelated FD will remain
+close-on-exec. Authority code will confirm the expected inherited FD identities
+and keep the locked parent FD open through final-directory
 verification. Recovery or cleanup will open the same parent, acquire the same
 lock nonblocking, and refuse classification or mutation while the lock is held.
 This parent-scoped lock intentionally serializes every genesis/recovery operation
@@ -833,7 +836,7 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_crash_replay_is_rejected_at_every_post_commit_boundary` | SIGKILL/os._exit after marker create/fsync, entropy, incomplete writes, or final rename leaves COMPLETE, SPENT, or CONFLICT and never resumes/regenerates |
 | `test_precommit_crash_is_unused_and_safe_to_retry` | crash before tombstone file+parent fsync reaches no entropy/output; absent marker remains UNUSED, while any surviving partial entry is CONFLICT and blocks reuse |
 | `test_marker_fsync_failure_and_partial_marker_fail_closed` | no entropy runs before durable commit; any surviving partial/malformed entry is terminal CONFLICT and blocks replay |
-| `test_concurrent_recovery_and_cleanup_require_parent_lock` | live genesis holds the retained-parent flock through final verification; nonblocking recovery/cleanup observes CONSUMED_RUNNING and performs no classification, removal, or output access until the lock is released |
+| `test_concurrent_recovery_and_cleanup_require_parent_lock` | subprocess exec fixture proves only allowlisted FDs inherit and the same retained-parent flock survives into authority through final verification; nonblocking recovery/cleanup observes CONSUMED_RUNNING and performs no classification, removal, or output access until release |
 | `test_cleanup_never_removes_consumption_marker` | incomplete cleanup rejects the marker namespace; disposition requires a separate approved transaction |
 | `test_activation_preview_requires_complete_consumed_genesis` | UNUSED, CONSUMED_RUNNING, SPENT, and CONFLICT invoke zero external adapters; only marker plus independently verified final output is COMPLETE |
 | `test_genesis_creates_private_entropy_without_output` | internally create 32-byte key and unique 32-byte synthetic patterns; generated private values/digests never use argv/stdin/stdout; key file is exact RFC4648 base64 plus one LF |
