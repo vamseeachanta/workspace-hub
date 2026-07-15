@@ -1,9 +1,9 @@
 # Session handoff — issue 3525 Claude worker discovery
 
-Date: 2026-07-15  
-Repository: `vamseeachanta/workspace-hub`  
-Branch: `chore/3525-claude-worker-discovery-plan`  
-PR: [#3546](https://github.com/vamseeachanta/workspace-hub/pull/3546)  
+Date: 2026-07-15
+Repository: `vamseeachanta/workspace-hub`
+Branch: `chore/3525-claude-worker-discovery-plan`
+PR: [#3546](https://github.com/vamseeachanta/workspace-hub/pull/3546)
 Issue: [#3525](https://github.com/vamseeachanta/workspace-hub/issues/3525)
 
 ## Active task
