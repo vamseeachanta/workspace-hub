@@ -278,6 +278,7 @@ Add this frozen owner-only command:
 genesis-current --tool-repo GIT_DIR --tool-sha FULL_OID
                 --out-parent PRIVATE_DIR --transaction-id UUID
                 --approval-record PRIVATE_JSON --approval-sha256 HEX
+                --python-realpath ABSOLUTE_PATH --python-sha256 HEX
 ```
 
 It is unavailable when `GITHUB_ACTIONS` is set and requires
@@ -287,7 +288,10 @@ arguments—and verifies their blob OIDs and canonical SHA-256 values against th
 replacement contract. These public inputs are intentionally not subject to the
 private 0600 rule; all generated private files are. `--approval-record` is an
 allowed private path and `--approval-sha256` is the exact non-secret digest the
-owner separately approves. The launcher opens the record no-follow as a retained
+owner separately approves. The genesis preview and separate owner approval will
+also bind the exact non-secret `--python-realpath` and `--python-sha256` command
+arguments before the launcher reads the approval JSON, removing any circular
+trust in interpreter fields parsed by that interpreter. The launcher opens the record no-follow as a retained
 FD, requires current-UID 0600 regular-file state, hashes that FD, and passes only
 `/proc/self/fd/<approval-fd>` into the verified Python entry point. The canonical
 record schema binds the plan/A/B/post-merge identities, transaction UUID,
@@ -340,9 +344,10 @@ The launcher will open the approval record no-follow as a retained FD; require a
 current-UID, link-count-one regular file with exact mode 0600, stable device,
 inode, mode, size, and `1..16384` bytes; and require the raw SHA-256 to equal the
 approved digest. It will execute the verified verifier FD first with the approved
-absolute interpreter as `/approved/python -I -B /proc/self/fd/<verifier-fd>`, a sanitized
+absolute interpreter as `/approved/python -I -S -B /proc/self/fd/<verifier-fd>`, a sanitized
 environment, fixed private working directory, closed unrelated FDs, and no
-`PYTHONPATH` or user site. The verifier will import only the standard library,
+`PYTHONPATH`, `site`, `.pth`, `sitecustomize`, user site, global site-packages, or
+repository path. The verifier will import only the standard library,
 will contain its own parser, will import no authority/repository module, and will
 request no randomness. Its interface will receive only retained FD numbers plus
 the immutable non-secret identities already bound by the verified contract and
@@ -360,28 +365,60 @@ bind exact typed values for `schema_id`, Git object format, plan/A/B/post-merge
 OIDs, transaction UUID, contract, launcher, verifier, approved Python, and a host
 object containing hostname, machine-id digest, SSH host-key evidence, trusted
 account name/UID/home, output parent, and complete mount identity. The verifier
-will compare every leaf without coercion against launcher-recomputed facts and
-will emit fixed verdict metadata only. On verifier rc0 the launcher will re-fstat
-and rehash the approval record, verifier, and interpreter before consumption.
-The authority entry point will reparse through the same verifier module and
+will compare every leaf without coercion against independently recomputed facts
+and will emit fixed verdict metadata only. Before returning rc0, the same
+long-lived verifier process will perform the final re-fstat/rehash of the approval
+record, verifier, and interpreter and will durably consume the approval as
+specified below. The authority entry point will reparse through the same verifier module and
 recheck dynamic facts immediately before entropy; corpus-driven differential
 tests will require identical parsing decisions at both stages.
 
-The exact top-level record keys will be `schema_id`, `git_object_format`,
-`plan_commit`, `tool_commit_a`, `caller_commit_b`, `post_merge_main`,
-`transaction_id`, `contract`, `launcher`, `approval_verifier`, `python`, and
-`host`. The three file identity objects will bind path/blob OID/SHA-256; `python`
-will bind realpath/SHA-256; and `host` will bind hostname, machine-id digest, SSH
-host-key path/type/fingerprint, account name/non-boolean UID/home, output parent,
-and mount ID/major:minor/root/mountpoint/filesystem/source/sorted unique options.
-Git OIDs and SHA-256 values will be fixed-width lowercase hex; the transaction
-will be canonical lowercase UUIDv4. Parse/schema/digest/comparison failures will
-return fixed rc2; interpreter/verifier/host/account/path/mount/integrity failures
-will return fixed rc4; unexpected exceptions will map to fixed rc4. No failure
-will emit a parsed field, path, hash, JSON fragment, or subprocess output.
+The exact top-level record will use `schema_id` =
+`legal-rule-genesis-approval-v1`, `git_object_format` = `sha1`, the 40-lowercase-
+hex `plan_commit`, `tool_commit_a`, `caller_commit_b`, and `post_merge_main`, a
+canonical lowercase UUIDv4 `transaction_id`, and exact objects `contract`,
+`launcher`, `approval_verifier`, `python`, and `host`. `contract`, `launcher`,
+and `approval_verifier` will each contain exactly `path`, `blob_oid`, and
+`sha256`; their paths will equal the contract's literal allowlisted repo-relative
+paths, OIDs will be 40 lowercase hex because object format is `sha1`, and hashes
+will be 64 lowercase hex. `python` will contain exactly `realpath` and `sha256`,
+must byte-equal the independently approved CLI values, and will use a canonical
+absolute no-symlink path plus 64 lowercase hex.
+
+`host` will contain exactly `hostname`, `machine_id_sha256`, `ssh_host_key`,
+`account`, `output_parent`, and `mount`. Hostname will equal `ace-linux-1`;
+machine ID will be 64 lowercase hex. `ssh_host_key` will contain exactly `path`,
+`key_type`, and `sha256_fingerprint`: a canonical absolute root-owned key path,
+the recomputed first public-key token, and an unpadded OpenSSH
+`SHA256:<43-base64-characters>` fingerprint of decoded key bytes. `account` will
+contain exactly POSIX `name`, non-boolean integer `uid` in `1..2147483647`, and
+canonical absolute `home`. `output_parent` will be the canonical approved
+absolute descendant of that home. `mount` will contain exactly integer
+`mount_id`, string `major_minor`, decoded absolute `root`, decoded absolute
+`mountpoint`, `filesystem_type`, `source`, and `options`; mount ID will be a
+positive non-boolean integer, major/minor will match decimal `N:N`, filesystem
+will be one of `ext4|xfs|btrfs`, and options will be a sorted unique JSON array of
+nonempty mount-option tokens. All strings will reject NUL/control characters and
+will be length-bounded to 4096 bytes; the schema may impose tighter per-field
+bounds. The normative JSON schema and verifier's manual validator will encode
+these same names, types, literals, bounds, and `additionalProperties:false`, and
+one-leaf mutation tests will require parity. Parse/schema/digest/comparison
+failures will return fixed rc2; interpreter/verifier/host/account/path/mount/
+integrity failures will return fixed rc4; unexpected exceptions will map to
+fixed rc4. No failure will emit a parsed field, path, hash, JSON fragment, or
+subprocess output.
+
+Before state inspection, the verifier will acquire a nonblocking exclusive Linux
+`flock` on the retained output-parent dirfd. It will retain that same open file
+description across approval consumption and `exec` of the verified authority
+entry point, and authority code will keep it open through final-directory
+verification. Recovery or cleanup will open the same parent, acquire the same
+lock nonblocking, and refuse classification or mutation while the lock is held.
+This parent-scoped lock intentionally serializes every genesis/recovery operation
+under the selected private parent.
 
 After every read-only validation succeeds—but before the authority entry point,
-entropy, output creation, or external mutation—the launcher will atomically
+entropy, output creation, or external mutation—the verifier will atomically
 consume the approval through the retained output-parent dirfd. As its final
 successful action, the isolated verifier will use Python `os.open(..., dir_fd=)`
 to create
@@ -390,21 +427,30 @@ to create
 `schema` (`legal-rule-genesis-consumption-v1`), `approval_sha256`, and
 `transaction_id`; write and fsync it; revalidate
 owner, mode, link count, device, inode, size, and bytes; then fsync and revalidate
-the retained parent dirfd, then return rc0. Only after that durable commit point
-may the launcher enter authority code or request entropy. The tombstone will never be deleted, renamed, truncated, or
+the retained parent dirfd, then return rc0. The launcher will then `exec` the
+verified authority entry point while preserving only the required approval,
+extraction, and locked-parent FDs. Only after that durable commit point may
+authority code or entropy run. The tombstone will never be deleted, renamed, truncated, or
 overwritten on success, handled failure, crash recovery, or incomplete-output
 cleanup.
 
-Genesis state will be fail-closed: no tombstone/output is `UNUSED`; a durable
-tombstone with an active process is `CONSUMED_RUNNING`; tombstone plus an
+Genesis state will be fail-closed: after the recovery process acquires the parent
+lock, no tombstone/output is `UNUSED`; failure to acquire the lock is
+`CONSUMED_RUNNING` and permits no inspection-based classification or cleanup;
+tombstone plus an
 independently valid final UUID directory is terminal `COMPLETE`; tombstone with
 absent/incomplete output is terminal `SPENT`; and any partial/malformed marker,
 final-without-marker, invalid final, or contradictory state is terminal
-`CONFLICT`. A surviving marker entry will always block replay even if its content
-is partial. Recovery will never re-enter entropy. Cleanup may remove only the
-matching incomplete output and will reject the tombstone namespace. Every failed
-or crashed consumed attempt will require a fresh preview, UUID, digest, and
-approval; tombstone disposition will require a separately planned owner action.
+`CONFLICT`. A crash before the file-and-parent fsync commit point will remain
+`UNUSED` and safely retryable because no entropy or output can precede that point;
+any surviving marker entry will nevertheless block replay even if its content is
+partial. Every post-commit crash will be irrevocably consumed. Recovery will
+never re-enter entropy. Cleanup may remove only the matching incomplete output
+after acquiring the parent lock and will reject the tombstone namespace. Every
+failed or crashed consumed attempt will require a fresh preview, UUID, digest,
+and approval. Consumption evidence will be retained permanently; a future
+retention change would have to atomically migrate its key into an equally durable
+no-overwrite consumed index that genesis checks before any old marker is removed.
 
 The command obtains a 32-byte HMAC key and one unique 32-byte synthetic exact
 pattern per public rule directly from the Linux kernel CSPRNG with no fallback.
@@ -571,9 +617,11 @@ mergeable under the chosen review posture. The proof PR is never merged.
    or output. Execute the approved genesis transaction once from the verified
    detached/extracted A bytes, independently materialize/verify/audit it, and
    retain the exact canonical `envelope.json` bytes plus canonical SHA-256 in
-   private 0600 evidence. Success, handled failure, and crash will all leave the
-   approval consumed; failure will require a fresh preview, UUID, digest, and
-   approval and will never silently regenerate.
+   private 0600 evidence. Success, handled post-commit failure, and post-commit
+   crash will leave the approval consumed; a pre-commit crash will remain UNUSED
+   and retryable because no entropy/output can precede consumption. Any consumed
+   failure will require a fresh preview, UUID, digest, and approval and will never
+   silently regenerate.
 8. Only after successful retained genesis, prepare the separate activation
    preview binding the same envelope digest, A/B/post-merge identities, live tree,
    chosen ruleset variant, exact baselines, frozen proof identity, and rollback.
@@ -694,7 +742,8 @@ genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
                 approval_record, approval_sha256):
     require owner gate, non-Actions Linux, exact tool OID
     shell retained-FD verify raw approval digest, verifier/interpreter, and immutable A bytes
-    run only pinned isolated stdlib verifier before authority imports or entropy
+    run only pinned `-I -S -B` stdlib verifier before authority imports or entropy
+    acquire nonblocking exclusive flock on retained parent dirfd; hold across authority exec/final verify
     verifier requires canonical exact-schema record and compares every recomputed fact
     resolve home from trusted account record, never environment; bind host/fingerprint/UID
     canonicalize selected absolute parent with no symlink components
@@ -702,10 +751,10 @@ genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
     qualify stable approved native mount; retained-dirfd validate parent
     extract/detach A; verify reachability and every executable/imported blob
     read registry/policy as exact Git blobs at A; verify contract blob identities
-    revalidate approval/verifier/interpreter after verifier rc0
+    verifier final-revalidates approval/verifier/interpreter before consumption
     verifier creates O_EXCL 0600 tombstone; fsyncs file and parent; revalidates; returns rc0
     classify any surviving marker as consumed; never delete or resume after failure/crash
-    only after durable consumption enter authority code and recheck dynamic facts
+    only after durable consumption exec authority code with locked parent FD and recheck dynamic facts
     generate key, synthetic map, and bounded key_id internally from kernel CSPRNG
     build manifest, current anchor, authenticated genesis ledger, CI envelope
     require canonical envelope <= 32 KiB and verify bundle before decoding pattern
@@ -713,6 +762,7 @@ genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
     materialize/verify in-memory; fsync child+parent; rename no-replace to UUID
     emit fixed rc0 metadata; on failure emit fixed rc2/3/4 and no accepted final directory
     activation preview requires COMPLETE (valid tombstone plus verified final directory)
+    recovery/cleanup must acquire the same parent lock nonblocking before classify/mutate
 
 build_activation_preview(live, decision, implementation_sha):
     require exact main/tree, sole-or-approved collaborator set, empty secret slot
@@ -775,13 +825,15 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_genesis_preview_binds_verified_host_identity` | fixture-backed canonical approval record/digest requires exact `ace-linux-1` SSH-host-key and machine-id evidence, trusted-account name/UID/home, canonical path, mount, A/B/plan identities, and transaction UUID; launcher and the isolated verifier recompute/compare local evidence and every missing/mismatched/replayed field rejects before authority import, consumption, entropy, or writes |
 | `test_approval_verifier_requires_exact_canonical_bytes` | duplicate keys, BOM, CRLF, whitespace, malformed UTF-8, noncanonical escapes/order, floats/non-finite numbers, bool-as-int, and 16,385 bytes reject before authority/entropy sentinels |
 | `test_approval_verifier_schema_and_bound_facts_are_exact` | removing/adding/mutating every top-level or nested leaf across plan/A/B/main, contract, launcher, verifier, interpreter, UUID, host, account, parent, SSH key, machine ID, and mount rejects without coercion |
-| `test_approval_verifier_supply_chain_and_fd_boundary` | verifier blob/hash, Python realpath/hash, PATH/PYTHONPATH/user-site/sitecustomize, mutable extraction, approval/verifier FD replacement, or inode/device/mode/size/byte drift rejects before authority import or entropy |
+| `test_approval_verifier_supply_chain_and_fd_boundary` | independently approved CLI Python realpath/hash must match the record before parsing; verifier blob/hash, PATH/PYTHONPATH, `site`, `.pth`, global/user `sitecustomize`, global/user site-packages, repository path, mutable extraction, approval/verifier FD replacement, or inode/device/mode/size/byte drift rejects before authority import or entropy |
 | `test_verifier_and_authority_share_parser_contract` | corpus-driven differential test requires both stages to accept/reject identical bytes and produce the same typed record |
 | `test_verified_order_is_parser_then_consumption_then_authority_then_entropy` | event ledger and sentinels prove no tombstone precedes successful exact comparison and no authority import, CSPRNG, or output precedes verifier rc0 after durable tombstone file+parent fsync and revalidation |
 | `test_consumption_marker_is_owner_only_no_overwrite` | symlink/non-regular/hardlinked/wrong-owner/wrong-mode/malformed/pre-existing marker and O_EXCL collision reject before entropy |
 | `test_replay_after_success_or_post_commit_failure_is_rejected` | inject entropy, output-create, file-fsync, verify, rename, parent-fsync, and final-verify failures; the same approval/UUID never reaches entropy twice |
 | `test_crash_replay_is_rejected_at_every_post_commit_boundary` | SIGKILL/os._exit after marker create/fsync, entropy, incomplete writes, or final rename leaves COMPLETE, SPENT, or CONFLICT and never resumes/regenerates |
+| `test_precommit_crash_is_unused_and_safe_to_retry` | crash before tombstone file+parent fsync reaches no entropy/output; absent marker remains UNUSED, while any surviving partial entry is CONFLICT and blocks reuse |
 | `test_marker_fsync_failure_and_partial_marker_fail_closed` | no entropy runs before durable commit; any surviving partial/malformed entry is terminal CONFLICT and blocks replay |
+| `test_concurrent_recovery_and_cleanup_require_parent_lock` | live genesis holds the retained-parent flock through final verification; nonblocking recovery/cleanup observes CONSUMED_RUNNING and performs no classification, removal, or output access until the lock is released |
 | `test_cleanup_never_removes_consumption_marker` | incomplete cleanup rejects the marker namespace; disposition requires a separate approved transaction |
 | `test_activation_preview_requires_complete_consumed_genesis` | UNUSED, CONSUMED_RUNNING, SPENT, and CONFLICT invoke zero external adapters; only marker plus independently verified final output is COMPLETE |
 | `test_genesis_creates_private_entropy_without_output` | internally create 32-byte key and unique 32-byte synthetic patterns; generated private values/digests never use argv/stdin/stdout; key file is exact RFC4648 base64 plus one LF |
@@ -852,9 +904,12 @@ Tests must be committed RED before their matching implementation slice.
       exact canonical bytes/schema and compares every typed bound fact.
 - [ ] Successful approval verification durably creates and revalidates an
       immutable owner-only no-overwrite tombstone, including file and parent
-      fsync, before authority import or entropy. Success, handled failure, crash,
-      partial marker, and cleanup tests prove the same approval/UUID can never be
-      reused; activation requires terminal COMPLETE state.
+      fsync, before authority import or entropy. A retained-parent exclusive lock
+      prevents concurrent recovery/cleanup through final verification. Success,
+      handled post-commit failure, post-commit crash, partial marker, and cleanup
+      tests prove a consumed approval/UUID can never be reused; pre-commit crash
+      is retryable only when no marker survives and no entropy/output occurred.
+      Activation requires terminal COMPLETE state.
 - [ ] Contract blob identities, public registry/policy blobs, reusable workflow,
       tool, schema, and anchor bind commit A; commit B changes only the caller and
       public pin evidence and its caller pins A by full OID.
@@ -911,13 +966,15 @@ Tests must be committed RED before their matching implementation slice.
 | Codex transaction R6 | MAJOR | missing approval-record data path and false atomic-CAS/lost-update guarantee |
 | Codex security R7 | MAJOR | no durable approval-consumption marker; impossible pre-Python structured-record validation boundary |
 | Codex transaction R7 | MAJOR | failed genesis can replay the same unconsumed approval record/digest/UUID |
-| R8 focused re-review | PENDING | revised design adds a pinned isolated approval verifier plus an immutable fsynced one-use tombstone/state machine; these corrections still require adversarial verification |
+| Consumption R8 | MAJOR | impossible rc0/consume order, live-vs-spent overlap, pre-commit crash overclaim, and weak future disposition |
+| Verifier R8 | MAJOR | circular interpreter pin, insufficient `-I -B` isolation, same ordering contradiction, and underspecified exact schema |
+| R9 focused verification | PENDING | inline R8 corrections add independent interpreter arguments, `-I -S -B`, exact schema constraints, one long-lived verifier sequence, retained-parent lock, and precise pre/post-commit crash states |
 
-**Overall result:** DRAFT-REVISED-PENDING-REVIEW — R7 was the third Codex review
-iteration and remained MAJOR. This revision will resolve those two findings with
-a commit-A-pinned isolated verifier and a durable consumption state machine, but
-it is not approval-ready until focused adversarial reviewers verify the revised
-contract with no MAJOR. Implementation and activation remain blocked.
+**Overall result:** DRAFT-REVISED-PENDING-REVIEW — R8 independently returned
+MAJOR on the first post-R7 correction. The inline R8 patch will resolve its
+ordering, locking, interpreter, isolation, schema, and crash-state findings, but
+the plan is not approval-ready until focused verification returns no MAJOR.
+Implementation and activation remain blocked.
 
 ## Risks and Open Questions
 
