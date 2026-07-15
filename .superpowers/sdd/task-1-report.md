@@ -20,7 +20,7 @@ pytest -q scripts/legal/tests/test_rule_authority_codec.py -k 'phase_a_key_id'
 Result: `8 failed, 2 passed, 12 deselected`.
 
 All eight invalid-input cases failed because `authority.new_ledger()` did not
-raise `codec.AuthorityError`; both canonical valid-input and byte-boundary
+raise `codec.AuthorityError`; both canonical valid-input and within-bound
 acceptance tests passed. The overlong case is 65 UTF-8 bytes, while the
 canonical Phase-A identifier is 44 bytes and therefore within the 64-byte
 contract bound.

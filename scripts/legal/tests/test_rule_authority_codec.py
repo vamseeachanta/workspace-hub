@@ -246,7 +246,7 @@ def test_new_ledger_accepts_canonical_phase_a_key_id():
     assert len(key_id.encode("utf-8")) <= 64
 
 
-def test_new_ledger_accepts_canonical_phase_a_key_id_at_byte_boundary():
+def test_new_ledger_accepts_canonical_phase_a_key_id_within_byte_bound():
     key = bytes(range(32))
     manifest = authority.build_manifest(registry(), policy(), private_map(), key)
     key_id = "phase-a-12345678-1234-4234-9234-123456789abc"
