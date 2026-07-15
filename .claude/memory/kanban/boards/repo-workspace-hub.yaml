@@ -23260,10 +23260,11 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3514
     gh_state: open
     gh_labels:
+      - priority:high
       - priority:critical
       - compliance-alert
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3516
@@ -23574,6 +23575,94 @@ cards:
     gh_labels:
       - priority:medium
       - cat:ai-orchestration
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3547
+    title: 'feat(ops): secure remote Linux access architecture and staged rollout'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3547
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:infrastructure
+      - domain:workstations
+      - domain:security
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3548
+    title: 'docs(ops): canonical remote Linux access architecture and runbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3548
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:workstations
+      - domain:security
+      - wip:ace-linux-1
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3549
+    title: 'feat(ops): registry-driven Linux connection helpers with TDD'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3549
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:automation
+      - domain:workstations
+      - domain:security
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3550
+    title: 'ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3550
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - domain:workstations
+      - domain:security
+      - machine:dev-secondary
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3551
+    title: 'ops(dev-primary): roll out and verify Tailscale plus hardened OpenSSH'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3551
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - domain:workstations
+      - domain:security
+      - machine:dev-primary
       - status:needs-plan
       - lane:claude
     initial_status: triage
