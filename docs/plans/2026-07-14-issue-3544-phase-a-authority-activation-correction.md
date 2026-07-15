@@ -1,13 +1,13 @@
 # Plan for #3544: Correct and Operationalize Phase A Authority Activation
 
-> **Status:** plan-review-amendment
+> **Status:** plan-review
 > **Complexity:** T3
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3544
 > **Client:** N/A
 > **Lane:** lane:codex
 > **Execution:** planning `parallel-readonly`; implementation `single-lane`; external activation isolated owner transaction
-> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`; `scripts/review/results/2026-07-15-plan-3544-codex-{security,transaction}-r{5,6,7}.md`; `scripts/review/results/2026-07-15-plan-3544-{consumption,verifier}-r{8,9,10,11}.md`
+> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`; `scripts/review/results/2026-07-15-plan-3544-codex-{security,transaction}-r{5,6,7}.md`; `scripts/review/results/2026-07-15-plan-3544-{consumption,verifier}-r{8,9,10,11}.md`; `scripts/review/results/2026-07-15-plan-3544-fd-broker-{security,transaction}-r{12,13,14,15,16,17,18}.md`
 
 ---
 
@@ -1162,12 +1162,12 @@ Tests must be committed RED before their matching implementation slice.
 | FD-broker transaction R16 | MAJOR | outer source digest was consumed before launcher, leaving no independent downstream value to compare with approval |
 | FD-broker security R17 | MAJOR | owner/Actions gates were erased by `exec -c`; two tests overclaimed runtime source attestation and same-UID direct-use rejection |
 | FD-broker transaction R17 | APPROVE | independent digest, exact argv/env, both exec allowlists, pre-consumption comparison, replay tests, and bounded threat claim verified |
-| FD-broker amendment R18 | PENDING | trusted Bash now gates owner/Actions before clearing the environment; tests separate offline command validation from runtime declared-digest comparison and bound direct-use claims |
+| FD-broker security R18 | APPROVE | empirical owner/Actions cases, environment clearing, bounded self-attestation/direct-use claims, identity chain, and archive/interpreter regressions verified |
+| FD-broker transaction R18 | APPROVE | exact argv/env, independent sealed identity through both execs, pre-consumption comparison, archive retention, and replay/direct-bypass coverage verified |
 
-**Overall result:** PLAN-REVIEW-AMENDMENT — the previously approved normative
-design is reopened only for the executable retained-FD bootstrap boundary. The
-inline broker amendment requires focused adversarial review and then fresh user
-approval of the exact revised commit. Implementation and activation are blocked.
+**Overall result:** PLAN-REVIEW — the focused amendment review has no remaining
+MAJOR or MINOR findings. Fresh user approval must bind the exact revised commit
+before implementation. Implementation and activation remain blocked.
 
 ## Risks and Open Questions
 
