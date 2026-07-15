@@ -277,6 +277,8 @@ the exact ANSI-C-quoted canonical source emitted by the approved preview, not a
 mutable environment variable or file:
 
 ```text
+[[ ${GITHUB_ACTIONS+x} != x ]] &&
+[[ ${LEGAL_RULE_OWNER_GENESIS-} == 1 ]] &&
 builtin exec -c PYTHON_REALPATH -I -S -B -c OUTER_BOOTSTRAP_LITERAL --
                 --outer-bootstrap-sha256 HEX
                 --launcher-path LAUNCHER --launcher-sha256 HEX
@@ -286,8 +288,11 @@ builtin exec -c PYTHON_REALPATH -I -S -B -c OUTER_BOOTSTRAP_LITERAL --
                 --approval-record PRIVATE_JSON --approval-sha256 HEX
 ```
 
-It is unavailable when `GITHUB_ACTIONS` is set and requires
-`LEGAL_RULE_OWNER_GENESIS=1`. It supports Linux only. It reads the public
+The trusted current Bash will reject any set `GITHUB_ACTIONS` value and require
+`LEGAL_RULE_OWNER_GENESIS=1` immediately before `builtin exec -c`; the empty
+environment then deliberately removes both variables from the first Python
+loader. The verified outer bootstrap will mint the separate fixed internal
+launcher environment described below. It supports Linux only. It reads the public
 registry and policy as Git blobs from exact tool commit A—not from arbitrary path
 arguments—and verifies their blob OIDs and canonical SHA-256 values against the
 replacement contract. These public inputs are intentionally not subject to the
@@ -373,10 +378,13 @@ canonical launcher argument pairs `--tool-repo`, `--tool-sha`, `--out-parent`,
 `--transaction-id`, `--approval-record`, `--approval-sha256`,
 `--python-realpath`, and `--python-sha256` in that frozen order. The internal
 `--outer-identity-fd` prefix will not be part of the ordinary public launcher
-grammar; omission, duplication, a public string digest substitute, or direct
-public use will reject. The
+grammar; omission, duplication, a public string digest substitute, or an
+ordinary direct invocation lacking the complete valid retained-FD state will
+reject. A deliberate same-UID reconstruction remains outside the threat model.
+The
 environment will be exactly
-`LC_ALL=C,LEGAL_RULE_OWNER_GENESIS=1`. No inherited `BASH_ENV`, `ENV`, `LD_*`,
+`LC_ALL=C,LEGAL_RULE_OWNER_GENESIS=1`; that minted internal marker is not evidence
+of the operator gate already checked by the trusted parent Bash. No inherited `BASH_ENV`, `ENV`, `LD_*`,
 Python, Git, locale, HOME, PATH, or shell-function variable will reach the first
 new loader or Bash. The launcher FD
 remains open until the launcher exits; pathname
@@ -880,10 +888,10 @@ facts applicable at that boundary; drift permits no further forward write.
 genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
                 approval_record, approval_sha256):
     sole public entry is verified launcher; Python CLI has internal dispatch only
-    require out-of-band trusted pristine owner Bash; frozen command begins with builtin exec -c
+    require out-of-band trusted pristine owner Bash; check owner/Actions gates, then builtin exec -c
     generated command independently binds outer source SHA plus launcher/Python path+digests
     outer bootstrap verifies interpreter+launcher FDs, seals source digest in identity memfd, clean-execs Bash
-    require owner gate, non-Actions Linux, exact tool OID and approved interpreter identity
+    require Linux, exact tool OID and approved interpreter identity; parent gate variables stay cleared
     inline `-I -S -B -c` broker opens interpreter/approval/contract/manifest/members no-follow
     broker strict-parses approval then authenticated execution manifest; verify every member FD
     broker builds and seals deterministic public-code memfd archive from verified member bytes
@@ -967,9 +975,9 @@ and revision in a revised plan, and obtain another owner decision before sealing
 
 | Test | RED condition and required result |
 |---|---|
-| `test_genesis_command_is_frozen_and_owner_only` | public launcher command absent today; require exact flags including independent interpreter identity, owner gate, no Actions execution, and no public Python genesis command |
-| `test_outer_bootstrap_is_frozen_and_approval_bound` | generated command uses decoded canonical UTF-8 `-c` source bytes with exactly one LF, byte-exact ANSI-C quote round-trip, and independently approved source/launcher/Python digests/paths; outer creates an exactly sealed `64-hex+LF` identity memfd, and executed-source identity versus approval mismatch, source/argv mutation, mutable file/env source, self-referential whole-command hashing, or private-record parsing rejects |
-| `test_outer_bootstrap_forwards_exact_launcher_argv` | subprocess launcher receives only the internal `--outer-identity-fd N` prefix, then `genesis-current` plus every validated canonical transaction argument in frozen order; omission, duplication, extra/reordered flags, an ordinary/public outer-digest field, direct public internal-prefix use, or byte mutation rejects |
+| `test_genesis_command_is_frozen_and_owner_only` | public launcher command absent today; trusted pristine Bash rejects set `GITHUB_ACTIONS` and unset/wrong `LEGAL_RULE_OWNER_GENESIS`, accepts only exact owner gate, then proves `builtin exec -c` clears both before the first Python loader; require exact flags including independent interpreter identity and no public Python genesis command |
+| `test_outer_bootstrap_is_frozen_and_approval_bound` | offline generated-command validation proves decoded canonical UTF-8 `-c` source bytes with exactly one LF, byte-exact ANSI-C quote round-trip, source digest, and source/argv mutation requiring new approval; runtime outer creates an exactly sealed declared `64-hex+LF` identity memfd and rejects when that carried digest differs from approval; mutable file/env source, self-referential whole-command hashing, or private-record parsing rejects, without claiming Python runtime-self-attests its executed `-c` bytes |
+| `test_outer_bootstrap_forwards_exact_launcher_argv` | subprocess launcher receives only the internal `--outer-identity-fd N` prefix, then `genesis-current` plus every validated canonical transaction argument in frozen order; omission, duplication, extra/reordered flags, an ordinary/public outer-digest field, ordinary direct internal-prefix use lacking the complete valid retained-FD state, or byte mutation rejects; deliberate same-UID reconstruction remains outside the claim |
 | `test_inline_fd_broker_is_the_only_post_launcher_pre_verifier_python` | after the approval-bound outer bootstrap clean-execs the verified launcher, the launcher contains one literal `-I -S -B -c` stdlib broker; no separate mutable broker file/import, shell redirection, `test -L`, PATH lookup, site, repository path, private parsing, genesis entropy, or private output is allowed before retained-FD verification |
 | `test_inline_fd_broker_opens_every_input_no_follow` | broker uses `O_NOFOLLOW`/`O_DIRECTORY`, proves running `/proc/self/exe` equals the retained approved interpreter FD, and rejects approval/verifier/entry/module/interpreter symlinks plus pathname replacement, inode/device/mode/hash drift before verifier import |
 | `test_inline_fd_broker_authenticates_execution_manifest` | after raw approval digest match, broker strict-parses canonical approval, authenticates exact manifest path/blob/hash, strict-parses its exact sorted member schema, and rejects omission, duplicate keys/members, substitution, role/path aliases, extra entries, and schema confusion before member trust |
@@ -1152,7 +1160,9 @@ Tests must be committed RED before their matching implementation slice.
 | FD-broker transaction R15 | MAJOR | transaction args were lost and outer digest domain was ambiguous/self-referential |
 | FD-broker security R16 | MAJOR | in-shell trap/type/builtin preflight was circular and bypassable by the state it claimed to inspect |
 | FD-broker transaction R16 | MAJOR | outer source digest was consumed before launcher, leaving no independent downstream value to compare with approval |
-| FD-broker amendment R17 | PENDING | fixes make pristine Bash an explicit out-of-band trust axiom and preserve the outer digest through the full exec chain in an exact sealed identity FD |
+| FD-broker security R17 | MAJOR | owner/Actions gates were erased by `exec -c`; two tests overclaimed runtime source attestation and same-UID direct-use rejection |
+| FD-broker transaction R17 | APPROVE | independent digest, exact argv/env, both exec allowlists, pre-consumption comparison, replay tests, and bounded threat claim verified |
+| FD-broker amendment R18 | PENDING | trusted Bash now gates owner/Actions before clearing the environment; tests separate offline command validation from runtime declared-digest comparison and bound direct-use claims |
 
 **Overall result:** PLAN-REVIEW-AMENDMENT — the previously approved normative
 design is reopened only for the executable retained-FD bootstrap boundary. The
