@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Lane:** lane:claude
 > **Execution mode:** single-lane implementation because the runbook and cross-links share one authority contract; parallel-readonly adversarial review and verification
-> **Review artifacts:** prior rounds are archived as `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini}-r{1,2,3,4}.md`; the fanout tool will write the current round to `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini}.md`
+> **Review artifacts:** prior rounds are archived as `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini}-r{1,2,3,4,5}.md`; the fanout tool will write the current round to `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini}.md`
 > **Human-facing companion:** `docs/reports/2026-07-15-issue-3548-remote-linux-access-plan.html`
 
 ---
@@ -65,7 +65,7 @@
 
 - [#3547](https://github.com/vamseeachanta/workspace-hub/issues/3547) — OPEN — `status:needs-plan` — parent architecture and rollout sequence.
 - [#3548](https://github.com/vamseeachanta/workspace-hub/issues/3548) — OPEN — `status:needs-plan`, `wip:ace-linux-1`, `lane:claude` — documentation child.
-- [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549) — OPEN — `status:needs-plan` — helper/registry reconciliation.
+- [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549) — OPEN — `status:needs-plan`, `priority:high`, security escalation comment posted — helper exposure/reconciliation before rollout.
 - [#3550](https://github.com/vamseeachanta/workspace-hub/issues/3550) — OPEN — `status:needs-plan` — `ace-linux-2` canary rollout.
 - [#3551](https://github.com/vamseeachanta/workspace-hub/issues/3551) — OPEN — `status:needs-plan` — `ace-linux-1` rollout.
 - [#2646](https://github.com/vamseeachanta/workspace-hub/issues/2646), [#318](https://github.com/vamseeachanta/workspace-hub/issues/318), [#316](https://github.com/vamseeachanta/workspace-hub/issues/316), and [#398](https://github.com/vamseeachanta/workspace-hub/issues/398) — CLOSED — historical evidence only.
@@ -96,7 +96,7 @@ scripts/operations/connection/ssh-dev-secondary.sh:5
   ACE2_ALIAS="dev-secondary"
 ```
 
-The registry values are incompatible with Tailscale's documented CGNAT allocation and will be treated as synthetic or stale metadata, not live endpoints. The helper's live-looking address will not be copied elsewhere. [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549) will remove address-coupled helper behavior and decide whether to deprecate the registry field; it will not replace it with a live endpoint. Rollout issues will attest connectivity by hostname without committing endpoint values.
+The registry values are outside Tailscale's documented CGNAT allocation and will be treated as synthetic or stale metadata. Separately, the helper value is an in-range, live-looking public exposure and will not be copied. [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549) will remove address-coupled behavior without writing a live endpoint into the registry; rollout issues will attest hostname connectivity without committing endpoints.
 
 **Gap proof**:
 
@@ -126,10 +126,7 @@ exit 1
 | Plan review — current Claude | `scripts/review/results/2026-07-15-plan-3548-claude.md` |
 | Plan review — current Codex | `scripts/review/results/2026-07-15-plan-3548-codex.md` |
 | Plan review — current Gemini | `scripts/review/results/2026-07-15-plan-3548-gemini.md` |
-| Plan review — round 1 archive | `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini,disagreement}-r1.md` |
-| Plan review — round 2 archive | `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini,disagreement}-r2.md` |
-| Plan review — round 3 archive | `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini,disagreement}-r3.md` |
-| Plan review — round 4 archive | `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini,disagreement}-r4.md` |
+| Plan review archives | `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini,disagreement}-r{1,2,3,4,5}.md` |
 
 ---
 
@@ -199,7 +196,7 @@ The tests will assert:
 2. The runbook names Tailscale as transport, conventional OpenSSH keys as authentication, and Tailscale SSH as optional.
 3. Every IPv4 or IPv6 literal/network in `ENDPOINT_DOCS` is rejected unless its exact file-and-value pair appears in `SAFE_NETWORKS_BY_FILE` and the same line cites official Tailscale reserved-address documentation. Loopback and wildcard-bind literals are not allowlisted.
 4. The authority section links `config/workstations/registry.yaml`, `scripts/operations/connection/`, and machine-local secret storage.
-5. Legacy Tabby docs carry a canonical-authority notice. Across all `ENDPOINT_DOCS`, a line-oriented check will reject affirmative forwarding headings, router-to-host mappings, and imperative `open|map|forward` instructions naming SSH or port 22. The runbook must contain exactly `Never configure router port forwarding for SSH or port 22. <!-- ssh-no-forward-policy -->`; only that exact sentinel line is excluded from the positive scan.
+5. Legacy Tabby docs carry a canonical-authority notice. Across `ENDPOINT_DOCS`, a line check rejects affirmative forwarding headings, router-to-host mappings, and imperative `open|map|forward` instructions naming SSH/22. The exact line `Never configure router port forwarding for SSH or port 22. <!-- ssh-no-forward-policy -->` is required in `RUNBOOK` and may be skipped only in `RUNBOOK` or `LEGACY`; no other sentinel-bearing line is exempt.
 6. The drift ledger carries owned rows for endpoint/alias exposure ([#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549)), `ace-linux-2` capability and VNC divergence ([#3550](https://github.com/vamseeachanta/workspace-hub/issues/3550)), and unverified `ace-linux-1` historical addresses/installed state ([#3551](https://github.com/vamseeachanta/workspace-hub/issues/3551)).
 7. Each source in `EXPECTED_CANONICAL_LINKS` contains its exact directory-relative Markdown target; resolving `source.parent / target` reaches `RUNBOOK`. Pre-existing unrelated links are outside this test.
 8. Security controls require MFA, device approval, least-privilege grants, MagicDNS, server/client expiry decisions, conventional OpenSSH keys, and optional-only Tailscale SSH.
@@ -212,6 +209,7 @@ Run before implementation:
 
 ```bash
 uv run pytest tests/docs/test_remote_linux_access_contract.py -q
+uv run pytest tests/docs/ -q  # diagnostic; compare failure nodes with Claude r5 baseline
 ```
 
 Expected RED state: failures for the missing runbook, missing cross-links, and legacy duplicated endpoint guidance.
@@ -271,10 +269,8 @@ Run, in order:
 ```bash
 uv run pytest tests/docs/test_remote_linux_access_contract.py -q
 IMPLEMENTATION_PATHS=(
-  tests/docs/test_remote_linux_access_contract.py
-  docs/ops/remote-linux-access.md
-  docs/ops/machine-inventory.md
-  docs/ops/ace-linux-2-handoff-runbook.md
+  tests/docs/test_remote_linux_access_contract.py docs/ops/remote-linux-access.md
+  docs/ops/machine-inventory.md docs/ops/ace-linux-2-handoff-runbook.md
   docs/README.md docs/setup/README.md
   config/tabby/REMOTE_ACCESS.md config/tabby/TAILSCALE_SETUP.md
 )
@@ -284,14 +280,19 @@ diff -u \
   <(printf '%s\n' "${IMPLEMENTATION_PATHS[@]}" | sort) \
   <(git diff --cached --name-only | sort)
 bash scripts/legal/legal-sanity-scan.sh --diff-only
-GITLEAKS_IMAGE=ghcr.io/gitleaks/gitleaks:v8.30.1
+GITLEAKS_IMAGE=ghcr.io/gitleaks/gitleaks@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
 docker image inspect "$GITLEAKS_IMAGE" >/dev/null || docker pull "$GITLEAKS_IMAGE"
-for path in "${IMPLEMENTATION_PATHS[@]}"; do git show ":$path"; done | \
-  docker run --rm -i -v "$PWD/.gitleaks.toml:/gitleaks.toml:ro" "$GITLEAKS_IMAGE" \
-  --config /gitleaks.toml --redact --no-banner stdin
+GITLEAKS_DEFAULTS=$'[extend]\nuseDefault = true'
+if printf 'token = "%s%s"\n' 'ghp_' '016C7C7B4A2E4B3E9F2D1A0C8E5F7B9D3A6C' | \
+  docker run --rm -i -e GITLEAKS_CONFIG_TOML="$GITLEAKS_DEFAULTS" "$GITLEAKS_IMAGE" --redact --no-banner stdin; then exit 1; fi
+REPO_ROOT=$(git rev-parse --show-toplevel)
+GIT_COMMON_DIR=$(git rev-parse --path-format=absolute --git-common-dir)
+docker run --rm --user "$(id -u):$(id -g)" -e GITLEAKS_CONFIG_TOML="$GITLEAKS_DEFAULTS" \
+  -v "$REPO_ROOT:$REPO_ROOT:ro" -v "$GIT_COMMON_DIR:$GIT_COMMON_DIR:ro" -w "$REPO_ROOT" \
+  "$GITLEAKS_IMAGE" --redact --no-banner git --staged .
 ```
 
-Expected: focused tests pass; exactly eight paths are staged; whitespace/manifest checks are silent; legal scan passes; pinned Gitleaks scans the exact staged blob contents and reports no leaks. Docker is a prerequisite because the host wrapper cannot scan staged blobs and the host lacks `gitleaks`.
+Expected: focused tests pass; the directory diagnostic adds no failure node beyond the recorded sparse-worktree baseline (15 failed/118 passed before this test exists); exactly eight paths are staged; legal/whitespace/manifest checks pass; immutable-digest Gitleaks defaults reject the split positive control and the attributed staged scan reports no leaks. [#3552](https://github.com/vamseeachanta/workspace-hub/issues/3552) owns the ruleless-config defect.
 
 The implementation will then receive a T2 adversarial artifact/code review. Findings that generalize beyond this issue will be promoted to a follow-up issue or durable rule rather than buried only in review artifacts.
 Any review-induced edit will restart the complete test → stage → manifest → legal → Gitleaks → review sequence. Immediately before commit, `git diff --quiet -- "${IMPLEMENTATION_PATHS[@]}"` will prove the working tree equals the reviewed index. After the pathspec commit, its changed-path set will be compared with `IMPLEMENTATION_PATHS`; a mismatch will block closeout.
@@ -343,7 +344,7 @@ Explicitly unchanged: `config/workstations/registry.yaml`, all files under `scri
 | `test_security_controls_and_hardening_order` | Identity controls and lockout-safe sequencing are mechanically enforced | Runbook missing | Required controls exist in recovery → proof → validate → reload → second-proof order |
 | `test_verification_and_rollback_contract` | External/reboot success, password/keyboard-interactive/root rejection, no-forward, and rollback evidence cannot be omitted | Runbook missing | All named proofs and rollback path exist |
 | `test_primary_security_sources_are_cited` | Operational claims link official Tailscale and OpenBSD sources | Runbook missing | Required authoritative domains/manual link exist |
-| `test_changed_durable_docs_have_no_stale_references` | Existing stale-reference rules cover this issue's durable docs without inheriting unrelated suite failures | Links absent | Changed durable docs return no stale-reference hits |
+| `test_changed_durable_docs_have_no_stale_references` | Existing stale-reference rules cover this issue's durable docs without inheriting unrelated suite failures | Guarded runbook read fails | Changed durable docs return no stale-reference hits |
 
 ---
 
@@ -366,19 +367,12 @@ Explicitly unchanged: `config/workstations/registry.yaml`, all files under `scri
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude r1 | MAJOR | Eleven findings; blockers covered resource intel, artifact paths, endpoint policy, and self-blocking tests. Revised inline before round 2. |
-| Codex r1 | UNAVAILABLE | CLI 0.144.4 timed out with the documented additional-input regression; no review signal. |
-| Gemini r1 | UNAVAILABLE | No non-interactive Gemini authentication; no review signal. |
-| Claude r2 | UNAVAILABLE | Provider timed out after five minutes; no review signal. |
-| Codex r2 | MAJOR | Five findings; blockers covered scoped links, security test depth, endpoint coverage, and required drift rows. Revised inline before round 3. |
-| Gemini r2 | UNAVAILABLE | No non-interactive Gemini authentication; no review signal. |
-| Claude r3 | MAJOR | Ten findings; blockers covered staging/scanner mechanics, link targets, and explicit treatment of the public helper endpoint. Revised inline before round 4. |
-| Codex r3 | MINOR | IPv6/context-bound endpoint checks and keyboard-interactive rejection were added. |
-| Gemini r3 | UNAVAILABLE | No non-interactive Gemini authentication; no review signal. |
-| Claude r4 | MAJOR | Six findings; blockers covered staged secret scanning, #3551 ownership, and prohibition self-match. Revised inline before round 5. |
-| Codex r4 | MAJOR | Four findings; blockers covered staged-blob TOCTOU, stale IP policy, and canonical forwarding scans. Revised inline before round 5. |
-| Gemini r4 | UNAVAILABLE | No non-interactive Gemini authentication; no review signal. |
-| Round 5 | PENDING | Current producer-native artifacts will use `2026-07-15-plan-3548-{provider}.md`. |
+| r1 | Claude MAJOR; Codex/Gemini UNAVAILABLE | Resource intel, artifact paths, endpoint policy, and self-blocking tests revised. |
+| r2 | Codex MAJOR; Claude/Gemini UNAVAILABLE | Scoped links, security tests, endpoints, and drift rows revised. |
+| r3 | Claude MAJOR; Codex MINOR; Gemini UNAVAILABLE | Scanner/staging mechanics, IPv6, keyboard-interactive rejection, and public exposure revised. |
+| r4 | Claude MAJOR; Codex MAJOR; Gemini UNAVAILABLE | Staged secrets, TOCTOU, #3551 ownership, and forwarding sentinel revised. |
+| r5 | Claude MAJOR; Codex MAJOR; Gemini UNAVAILABLE | Ruleless Gitleaks configuration, digest/attribution, baseline, and sentinel coverage revised; [#3552](https://github.com/vamseeachanta/workspace-hub/issues/3552) filed. |
+| r6 | PENDING | Current producer-native artifacts will use `2026-07-15-plan-3548-{provider}.md`. |
 
 **Overall result:** MAJOR findings are being revised; implementation will remain blocked until a fresh review has no unresolved MAJOR finding and the user explicitly approves the plan.
 
