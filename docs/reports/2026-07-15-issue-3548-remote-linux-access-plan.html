@@ -17,7 +17,7 @@
 <body>
   <h1>Canonical remote Linux access</h1>
   <p class="muted">Issue <a href="https://github.com/vamseeachanta/workspace-hub/issues/3548">#3548</a> · T2 documentation plan · 2026-07-15</p>
-  <p class="status">Draft — implementation remains blocked pending adversarial review and user approval.</p>
+  <p class="status">Plan review complete — implementation remains blocked pending explicit user approval.</p>
 
   <div class="panel">
     <strong>Outcome.</strong> The work will create a tested <code>docs/ops/remote-linux-access.md</code> authority for Tailscale transport plus conventional OpenSSH key authentication. It will not change machines, router settings, registry values, helpers, or keys.
@@ -52,5 +52,8 @@
 
   <h2>Follow-through</h2>
   <p>Repository automation will remain in <a href="https://github.com/vamseeachanta/workspace-hub/issues/3549">#3549</a>. The canary rollout will remain in <a href="https://github.com/vamseeachanta/workspace-hub/issues/3550">#3550</a>, followed by the primary-host rollout in <a href="https://github.com/vamseeachanta/workspace-hub/issues/3551">#3551</a>.</p>
+
+  <h2>Review gate</h2>
+  <p>Round six produced fresh T2 evidence: Claude <strong>APPROVE</strong>, Codex <strong>MINOR</strong>, and Gemini <strong>UNAVAILABLE</strong>. No blocker remains. The ecosystem-wide Gitleaks configuration defect discovered during review is tracked separately in <a href="https://github.com/vamseeachanta/workspace-hub/issues/3552">#3552</a>.</p>
 </body>
 </html>

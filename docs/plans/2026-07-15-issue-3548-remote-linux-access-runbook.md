@@ -1,6 +1,6 @@
 # Plan for #3548: Canonical remote Linux access architecture and runbook
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-07-15
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3548
@@ -372,9 +372,9 @@ Explicitly unchanged: `config/workstations/registry.yaml`, all files under `scri
 | r3 | Claude MAJOR; Codex MINOR; Gemini UNAVAILABLE | Scanner/staging mechanics, IPv6, keyboard-interactive rejection, and public exposure revised. |
 | r4 | Claude MAJOR; Codex MAJOR; Gemini UNAVAILABLE | Staged secrets, TOCTOU, #3551 ownership, and forwarding sentinel revised. |
 | r5 | Claude MAJOR; Codex MAJOR; Gemini UNAVAILABLE | Ruleless Gitleaks configuration, digest/attribution, baseline, and sentinel coverage revised; [#3552](https://github.com/vamseeachanta/workspace-hub/issues/3552) filed. |
-| r6 | PENDING | Current producer-native artifacts will use `2026-07-15-plan-3548-{provider}.md`. |
+| r6 | Claude APPROVE; Codex MINOR; Gemini UNAVAILABLE | Fresh T2 signal at `8534f23db`; no blocker. Two non-blocking operational refinements remain documented. |
 
-**Overall result:** MAJOR findings are being revised; implementation will remain blocked until a fresh review has no unresolved MAJOR finding and the user explicitly approves the plan.
+**Overall result:** READY FOR USER APPROVAL — T2 review has no unresolved MAJOR finding. Implementation remains blocked until the user explicitly approves the plan; the agent will not self-apply `status:plan-approved`.
 
 ---
 
