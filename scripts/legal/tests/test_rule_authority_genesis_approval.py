@@ -278,3 +278,11 @@ def test_parser_rejects_control_and_oversized_strings():
         record["host"]["hostname"] = value
         with pytest.raises(ValueError):
             verifier.parse_canonical_approval(canonical_bytes(record))
+
+
+@pytest.mark.parametrize("option", ["rw\x00", "x" * 4097])
+def test_parser_rejects_control_and_oversized_mount_options(option):
+    record = canonical_record()
+    record["host"]["mount"]["options"] = [option]
+    with pytest.raises(ValueError):
+        verifier.parse_canonical_approval(canonical_bytes(record))

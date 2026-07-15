@@ -97,6 +97,8 @@ def _host(value):
     options = mount["options"]
     if type(options) is not list or any(type(item) is not str or not item for item in options):
         raise _error()
+    for option in options:
+        _string(option)
     if options != sorted(options) or len(options) != len(set(options)):
         raise _error()
 
