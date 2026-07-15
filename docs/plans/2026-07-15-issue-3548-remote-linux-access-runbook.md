@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Lane:** lane:claude
 > **Execution mode:** single-lane implementation because the runbook and cross-links share one authority contract; parallel-readonly adversarial review and verification
-> **Review artifacts:** `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini}-r1.md`
+> **Review artifacts:** round 1 is archived as `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini}-r1.md`; the fanout tool will write the current round to `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini}.md`
 > **Human-facing companion:** `docs/reports/2026-07-15-issue-3548-remote-linux-access-plan.html`
 
 ---
@@ -46,7 +46,7 @@
 - [#2646](https://github.com/vamseeachanta/workspace-hub/issues/2646) and `docs/plans/2026-05-13-issue-2646-ace-linux-2-handoff-runbook.md` provide structural precedent, not current connection truth.
 - [#318](https://github.com/vamseeachanta/workspace-hub/issues/318), [#316](https://github.com/vamseeachanta/workspace-hub/issues/316), and [#398](https://github.com/vamseeachanta/workspace-hub/issues/398) record historical intent without sufficient current-state evidence; their addresses, aliases, and installed-state claims will remain unverified.
 - [#2094](https://github.com/vamseeachanta/workspace-hub/issues/2094), `docs/plans/2026-05-26-issue-2801-machine-equality.md`, and `docs/plans/2026-06-08-issue-2967-epic-consistent-experience-dynamic-workflows.md` establish declared-versus-observed separation and registry reuse.
-- Drive-index command `uv run python scripts/data/drive-index-search/search.py "Tailscale SSH remote Linux runbook" --json --limit 20 --caller plan-resource-intel` produces no JSON envelope because `uv` stalls while creating a transient environment. The one-command search allowance is consumed; no drive result or coverage-gap claim will enter this plan.
+- Drive-index command `uv run python scripts/data/drive-index-search/search.py "Tailscale SSH remote Linux runbook" --json --limit 20 --caller plan-resource-intel` returned no relevant files. Its JSON envelope reported two unreachable indexes: `master_document_index` at `data/document-index/index.jsonl` and `dde_literature_catalog`. Those coverage gaps mean the absence of hits is not proof that no external document exists.
 - Official Tailscale references will include Linux installation, Tailscale SSH limitations, grants, device approval, key expiry, and connection types. OpenSSH hardening options will link to the OpenBSD `sshd_config(5)` manual.
 
 ### Gaps identified
@@ -77,7 +77,7 @@
 - EXISTS: `docs/setup/README.md` and `docs/README.md`.
 - EXISTS: `scripts/legal/legal-sanity-scan.sh`, `scripts/security/secrets-scan.sh`, and `scripts/enforcement/check-no-abs-paths.sh`.
 
-**Line excerpts**:
+**Line evidence**:
 
 ```text
 config/workstations/registry.yaml:1-4
@@ -85,17 +85,16 @@ config/workstations/registry.yaml:1-4
   HARD RULE: all machine identity/capability data lives here.
 
 config/workstations/registry.yaml:19-20,185-186
-  ssh: ace-linux-1 / tailscale_ip: 10.1.0.1
-  ssh: ace-linux-2 / tailscale_ip: 10.1.0.2
+  Each Linux record contains an SSH hostname and a tailscale_ip field.
 
 scripts/operations/connection/connect-workspace-tailscale.ps1:8
-  $WorkspaceHost = "100.107.64.76"
+  WorkspaceHost contains a different address literal from the registry fields.
 
 scripts/operations/connection/ssh-dev-secondary.sh:5
   ACE2_ALIAS="dev-secondary"
 ```
 
-The conflicting literals prove documentation drift; they do not prove which value is live.
+The registry values are incompatible with Tailscale's documented CGNAT allocation and will be treated as synthetic or stale metadata, not live endpoints. The helper's live-looking address will not be copied elsewhere. [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549) will remove address-coupled helper behavior and decide whether to deprecate the registry field; it will not replace it with a live endpoint. Rollout issues will attest connectivity by hostname without committing endpoint values.
 
 **Gap proof**:
 
@@ -106,7 +105,7 @@ exit 1
 
 **Reproduction proofs:** N/A — this issue is documentation/governance-only. Runtime validation and live-state attestation belong to [#3550](https://github.com/vamseeachanta/workspace-hub/issues/3550) and [#3551](https://github.com/vamseeachanta/workspace-hub/issues/3551).
 
-**Distinct source count:** 12 issue/file/primary-documentation sources, excluding the unavailable drive-index search.
+**Distinct source count:** 12 issue/file/primary-documentation sources plus one drive-index search with two recorded coverage gaps.
 
 ---
 
@@ -122,9 +121,10 @@ exit 1
 | Secondary-host handoff cross-link | `docs/ops/ace-linux-2-handoff-runbook.md` |
 | Documentation navigation | `docs/README.md`, `docs/setup/README.md` |
 | Legacy Tabby pointers | `config/tabby/REMOTE_ACCESS.md`, `config/tabby/TAILSCALE_SETUP.md` |
-| Plan review — Claude | `scripts/review/results/2026-07-15-plan-3548-claude-r1.md` |
-| Plan review — Codex | `scripts/review/results/2026-07-15-plan-3548-codex-r1.md` |
-| Plan review — Gemini | `scripts/review/results/2026-07-15-plan-3548-gemini-r1.md` |
+| Plan review — current Claude | `scripts/review/results/2026-07-15-plan-3548-claude.md` |
+| Plan review — current Codex | `scripts/review/results/2026-07-15-plan-3548-codex.md` |
+| Plan review — current Gemini | `scripts/review/results/2026-07-15-plan-3548-gemini.md` |
+| Plan review — round 1 archive | `scripts/review/results/2026-07-15-plan-3548-{claude,codex,gemini,disagreement}-r1.md` |
 
 ---
 
@@ -150,7 +150,7 @@ for each conflicting claim:
 route narrower docs and legacy Tabby docs to the canonical runbook
 ```
 
-The runbook will use command placeholders such as `<operator-user>` and `<tailnet-identity>` where identity-specific values would otherwise be copied. It may name the repo-governed machines `ace-linux-1` and `ace-linux-2`, but it will not publish or repeat literal connection addresses, keys, tokens, auth URLs, peer configurations, or router details.
+The runbook will use command placeholders such as `<operator-user>` and `<tailnet-identity>` where identity-specific values would otherwise be copied. It may name the repo-governed machines `ace-linux-1` and `ace-linux-2`, but it will not publish or repeat point-in-time machine endpoints, keys, tokens, auth URLs, peer configurations, or router details. Documentation-safe protocol constants such as loopback, wildcard bind addresses, and Tailscale's published address range may appear only when operationally necessary and cited to a primary source.
 
 ---
 
@@ -177,18 +177,25 @@ LEGACY = [
     ROOT / "config/tabby/REMOTE_ACCESS.md",
     ROOT / "config/tabby/TAILSCALE_SETUP.md",
 ]
+LINK_DOCS = [RUNBOOK, *RELATED, *LEGACY]
+ENDPOINT_SOURCES = [
+    ROOT / "config/workstations/registry.yaml",
+    ROOT / "scripts/operations/connection/connect-workspace-tailscale.sh",
+    ROOT / "scripts/operations/connection/connect-workspace-tailscale.ps1",
+    ROOT / "scripts/operations/connection/ssh-dev-secondary.sh",
+]
 ```
 
 The tests will assert:
 
 1. The runbook exists and contains the exact required sections `Authority`, `Architecture`, `Security controls`, `Setup sequence`, `Verification matrix`, `Rollback and recovery`, `Troubleshooting`, and `Drift ledger`.
 2. The runbook names Tailscale as transport, conventional OpenSSH keys as authentication, and Tailscale SSH as optional.
-3. The runbook contains no IPv4 literal and does not recommend router SSH port forwarding.
+3. The runbook and routed documents do not copy any machine endpoint literal extracted at test time from `ENDPOINT_SOURCES`. The test will not reject cited protocol constants merely because they use IPv4 notation.
 4. The authority section links `config/workstations/registry.yaml`, `scripts/operations/connection/`, and machine-local secret storage.
 5. Every related durable document links `docs/ops/remote-linux-access.md`.
-6. Both legacy Tabby documents carry a canonical-authority notice, contain no IPv4 literal, and contain no positive instruction to forward SSH from the router.
+6. Both legacy Tabby documents carry a canonical-authority notice and contain neither copied machine endpoints nor positive forwarding patterns such as a forwarding option heading, a router-to-host port mapping, or an imperative to forward SSH. A separate assertion requires explicit language that router SSH forwarding is prohibited, so the prohibition cannot self-match the positive-pattern check.
 7. The drift ledger links [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549), [#3550](https://github.com/vamseeachanta/workspace-hub/issues/3550), and [#3551](https://github.com/vamseeachanta/workspace-hub/issues/3551).
-8. Every repo-relative Markdown link introduced by this issue resolves.
+8. Every repo-relative Markdown link in the fixed `LINK_DOCS` set resolves. The test will not infer an implementation diff or base ref.
 
 Run before implementation:
 
@@ -231,7 +238,7 @@ After creation, run the focused tests. Expected intermediate state: runbook-cont
 - Modify `docs/README.md`.
 - Modify `docs/setup/README.md`.
 
-Each file will add one clearly labeled link to `docs/ops/remote-linux-access.md`. The machine inventory will retain fleet facts, the handoff runbook will retain `ace-linux-2` work-handoff semantics, and setup navigation will retain bootstrap scope. None will copy the canonical setup, security, rollback, or endpoint guidance.
+Each file will add one clearly labeled link to `docs/ops/remote-linux-access.md`. The machine inventory will retain fleet facts, the handoff runbook will retain `ace-linux-2` work-handoff semantics, and setup navigation will retain bootstrap scope. The handoff runbook's duplicated endpoint command will be replaced with a hostname-based reference to the canonical procedure. None will copy the canonical setup, security, rollback, or endpoint guidance.
 
 Run the focused tests. Expected intermediate state: durable cross-link tests pass; legacy-pointer tests remain red.
 
@@ -253,11 +260,13 @@ Run, in order:
 ```bash
 uv run pytest tests/docs/test_remote_linux_access_contract.py -q
 git diff --check
+test -n "$(git diff --name-only)"
 bash scripts/legal/legal-sanity-scan.sh --diff-only
 bash scripts/security/secrets-scan.sh --repo workspace-hub
 ```
 
 Expected: focused tests pass; whitespace check is silent; legal scan reports no block-severity violations; secrets scan reports `PASS: workspace-hub`.
+The nonempty-diff assertion and `--diff-only` legal scan will run immediately before the implementation commit; this ordering is load-bearing because a post-commit diff-only scan would pass without examining the committed files.
 
 The implementation will then receive a T2 adversarial artifact/code review. Findings that generalize beyond this issue will be promoted to a follow-up issue or durable rule rather than buried only in review artifacts.
 
@@ -287,7 +296,8 @@ git commit -m "docs(ops): add canonical remote Linux access runbook (#3548)" -- 
 | Modify | `docs/setup/README.md` | Route post-bootstrap operators to the runbook |
 | Modify | `config/tabby/REMOTE_ACCESS.md` | Remove competing endpoint/public-forwarding guidance and mark legacy scope |
 | Modify | `config/tabby/TAILSCALE_SETUP.md` | Remove point-in-time state and stale helper paths; mark legacy scope |
-| Update | `docs/plans/README.md` | Index this plan |
+
+Planning-only artifacts `docs/plans/README.md`, this plan, the HTML companion, and review results will be committed in the plan-review commits before implementation. They are intentionally absent from the implementation pathspec above.
 
 Explicitly unchanged: `config/workstations/registry.yaml`, all files under `scripts/operations/connection/`, live Tailscale/SSH/router state, and user SSH keys.
 
@@ -299,12 +309,12 @@ Explicitly unchanged: `config/workstations/registry.yaml`, all files under `scri
 |---|---|---|---|
 | `test_canonical_runbook_has_required_sections` | Complete operator contract | Runbook missing | All eight sections exist |
 | `test_runbook_separates_transport_and_authentication` | Tailscale transport + OpenSSH keys; Tailscale SSH optional | Runbook missing | Exact architecture terms exist |
-| `test_runbook_has_no_literal_ipv4_or_public_ssh_forwarding` | No duplicated endpoints or public exposure advice | Runbook missing | No IPv4 literal; explicit no-forward rule |
+| `test_docs_do_not_copy_machine_endpoints_or_recommend_public_ssh` | No copied machine endpoints or positive public-exposure advice, without rejecting protocol constants or prohibitions | Runbook missing and legacy docs contain copied endpoints/positive forwarding advice | Extracted machine endpoints absent; positive patterns absent; explicit no-forward rule present |
 | `test_runbook_declares_authority_hierarchy` | Registry → runbook → helpers → machine-local secrets | Runbook missing | All authority links exist |
 | `test_related_durable_docs_link_canonical_runbook` | One discoverable operational authority | Cross-links missing | Four related docs link it |
 | `test_legacy_tabby_docs_defer_to_canonical_authority` | Legacy docs cannot compete or publish endpoints | Current duplicated content | Both legacy docs become safe pointers |
 | `test_drift_ledger_routes_each_followup` | Drift belongs to helper and rollout children | Ledger missing | #3549, #3550, #3551 linked |
-| `test_new_markdown_links_resolve` | New relative links are valid | Links absent | Every introduced relative target exists |
+| `test_scoped_markdown_links_resolve` | Relative links in the fixed changed-document set are valid | Links absent | Every repo-relative target in `LINK_DOCS` exists |
 
 ---
 
@@ -312,7 +322,7 @@ Explicitly unchanged: `config/workstations/registry.yaml`, all files under `scri
 
 - [ ] The focused documentation-contract test demonstrates RED before implementation and GREEN afterward.
 - [ ] `docs/ops/remote-linux-access.md` is the canonical authority and contains architecture, security controls, setup sequence, verification, rollback, troubleshooting, and drift ownership.
-- [ ] The runbook contains no literal endpoint addresses, keys, tokens, auth URLs, peer configs, or router details.
+- [ ] The runbook contains no point-in-time machine endpoint addresses, keys, tokens, auth URLs, peer configs, or router details; cited protocol constants are allowed only when operationally necessary.
 - [ ] The runbook requires no router SSH forwarding and treats Tailscale SSH as optional only.
 - [ ] Related durable docs link the canonical runbook without duplicating procedures.
 - [ ] Legacy Tabby docs no longer present point-in-time endpoint or public-forwarding guidance as current authority.
@@ -327,17 +337,18 @@ Explicitly unchanged: `config/workstations/registry.yaml`, all files under `scri
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | `scripts/review/results/2026-07-15-plan-3548-claude-r1.md` |
-| Codex | PENDING | `scripts/review/results/2026-07-15-plan-3548-codex-r1.md` |
-| Gemini | PENDING | `scripts/review/results/2026-07-15-plan-3548-gemini-r1.md` |
+| Claude r1 | MAJOR | Eleven findings; blockers covered resource intel, artifact paths, endpoint policy, and self-blocking tests. Revised inline before round 2. |
+| Codex r1 | UNAVAILABLE | CLI 0.144.4 timed out with the documented additional-input regression; no review signal. |
+| Gemini r1 | UNAVAILABLE | No non-interactive Gemini authentication; no review signal. |
+| Round 2 | PENDING | Current producer-native artifacts will use `2026-07-15-plan-3548-{provider}.md`. |
 
-**Overall result:** PENDING — implementation will remain blocked.
+**Overall result:** MAJOR findings are being revised; implementation will remain blocked until a fresh review has no unresolved MAJOR finding and the user explicitly approves the plan.
 
 ---
 
 ## Risks and Open Questions
 
-- **Risk — stale data becomes authority:** the runbook could accidentally repeat a historical address or installed-state claim. Contract tests will prohibit literal IPv4 endpoints, and the drift ledger will mark current truth unverified.
+- **Risk — stale data becomes authority:** the runbook could accidentally repeat a historical address or installed-state claim. Contract tests will extract current endpoint literals from the identified source surfaces and prohibit copying them into the changed documentation while allowing cited protocol constants.
 - **Risk — security ordering causes lockout:** readers could disable password authentication before proving key and recovery access. The runbook will make recovery → transport → key proof → `sshd -t` → reload → second-session proof the mandatory order.
 - **Risk — documentation scope absorbs implementation:** tempting fixes exist in registry and helpers. The plan will keep them explicitly unchanged and route them to [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549).
 - **Risk — VNC conflict expands scope:** headless VNC guidance is adjacent but not part of the SSH architecture. The runbook will name the conflict and route it without changing VNC scripts or choosing an unverified server model.
