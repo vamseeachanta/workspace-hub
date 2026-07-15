@@ -9,7 +9,7 @@ and fixed `ValueError` failures without echoing input values.
 Verification:
 
 - `pytest -q scripts/legal/tests/test_rule_authority_codec.py scripts/legal/tests/test_rule_authority_cli.py` — **30 passed**.
-- `pytest -q scripts/legal/tests/test_rule_authority_genesis_approval.py` — **56 passed, 2 RED-fixture assertion failures**. The first compares against a newly generated UUID rather than the parsed fixture; the second asserts an unchanged byte length after inserting a byte. Both failures are test-fixture defects, not parser acceptance failures.
+- `pytest -q scripts/legal/tests/test_rule_authority_genesis_approval.py` — **58 passed**. The RED fixtures now retain the generated record for comparison and correctly assert that the one-byte-over mutation is 16,385 bytes.
 
 No launcher, FD broker, approval-consumption, or external-activation files were
 changed.

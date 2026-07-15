@@ -74,8 +74,9 @@ def canonical_bytes(record: dict) -> bytes:
 
 
 def test_parser_accepts_canonical_typed_record():
-    parsed = verifier.parse_canonical_approval(canonical_bytes(canonical_record()))
-    assert parsed == canonical_record()
+    record = canonical_record()
+    parsed = verifier.parse_canonical_approval(canonical_bytes(record))
+    assert parsed == record
 
 
 @pytest.mark.parametrize(
@@ -142,7 +143,7 @@ def test_parser_accepts_exact_size_limit_and_rejects_one_byte_over():
     assert len(exact) == 16_384
     assert verifier.parse_canonical_approval(exact) == json.loads(exact)
     over = exact[:-1] + b" " + exact[-1:]
-    assert len(over) == 16_384  # whitespace mutation remains at the boundary
+    assert len(over) == 16_385  # whitespace mutation adds one byte
     over = exact + b" "
     assert len(over) == 16_385
     with pytest.raises(ValueError):
