@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Lane:** lane:codex
 > **Execution:** planning `parallel-readonly`; implementation `single-lane`; external activation isolated owner transaction
-> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`
+> **Review artifacts:** `scripts/review/results/2026-07-14-plan-3544-custom-ansys-r4.md`; `scripts/review/results/2026-07-14-plan-3544-prepare-fer-extraction-r4.md`; `scripts/review/results/2026-07-15-plan-3544-codex-{security,transaction}-r5.md`
 
 ---
 
@@ -43,13 +43,16 @@ activation may start before that approval.
    must resolve the account home from a trusted OS account record, not the
    process environment; bind the canonical absolute path, UID, host identity,
    and verified SSH fingerprint in private evidence; and require the launcher
-   argument to match that path exactly. Every component must already exist,
-   resolve without symlinks, be owned by the current UID, and the final parent
-   must be mode 0700 on a native local `ext4`, `xfs`, or `btrfs` filesystem.
+   argument to match that path exactly. Every component must already exist and
+   resolve without symlinks. System ancestors such as `/` and `/home` must be
+   root-owned and not group/other-writable; the trusted account home and every
+   descendant through the selected parent must be owned by the bound account UID
+   and not group/other-writable; and the final parent must be exact mode 0700 on
+   a native local `ext4`, `xfs`, or `btrfs` filesystem.
    Missing or incorrect state stops before entropy or writes and requires a
    separately approved host-root provisioning transaction; genesis does not
-   create or repair the parent. A read-only connection attempt from `ace-win-1` stopped at host
-   key verification, so the host fingerprint, resolved home path, mount identity,
+   create or repair the parent. A read-only connection attempt from `ace-win-1`
+   stopped at host-key verification, so the host fingerprint, resolved home path, mount identity,
    ownership, and permissions remain mandatory fail-closed preflight evidence;
    they are not assumed by this decision. `/mnt/d`, `D:\\ws`, network shares,
    Windows mode emulation, and any filesystem outside the approved native-local
@@ -321,15 +324,17 @@ frozen repository/output path flags and transaction UUID are allowed. The
 command never reads `.legal-deny-list.yaml` or
 creates/migrates real rule bytes.
 
-Every path component is opened no-follow through retained dirfds. Before entropy
+Every path component is opened no-follow through retained dirfds. Root-owned
+system ancestors must not be group/other-writable; the trusted account home and
+private descendants must match the bound non-root UID and must not be
+group/other-writable; the final parent must be exact mode 0700. Before entropy
 or private writes, the command requires Linux, resolves the output device and
 longest mount through `/proc/self/mountinfo`, and binds mount ID, major:minor,
 root, mountpoint, filesystem type, source, and options before/after the
 transaction. Only owner-approved native local `ext4`, `xfs`, or `btrfs` is
 accepted; `drvfs`, `9p`, FUSE, overlay, bind, NFS/CIFS, FAT/NTFS, `/mnt/<drive>`,
 or changed/ambiguous mounts reject rc4. Encryption at rest is outside this
-contract; neither preview nor acceptance claims or attests it. The final parent
-must be current-UID mode 0700. Outputs are created
+contract; neither preview nor acceptance claims or attests it. Outputs are created
 no-overwrite 0600 under an incomplete 0700 child,
 fsynced, verified, and atomically renamed no-replace to
 `PRIVATE_DIR/UUID`. Output is exactly `map.json`, `manifest.json`, `anchor.json`,
@@ -634,7 +639,8 @@ and revision in a revised plan, and obtain another owner decision before sealing
 |---|---|
 | `test_genesis_command_is_frozen_and_owner_only` | command absent today; require exact flags, owner gate, no Actions execution |
 | `test_genesis_rejects_non_native_or_ambiguous_mounts` | require stable `/proc/self/mountinfo` identity and approved ext4/xfs/btrfs; Windows, `/mnt`, drvfs/9p/FUSE/overlay/bind/network/FAT/NTFS and mount drift reject before entropy/private reads |
-| `test_genesis_requires_preexisting_0700_parent_and_0600_outputs` | trusted-account home resolution must match the canonical approved absolute path; absent parent, environment substitution, wrong UID/mode, symlink component, parent swap, output hardlink/non-regular, or mode drift rejects rc4 before entropy/writes; genesis never creates/repairs the parent and public A blobs are not treated as 0600 inputs |
+| `test_genesis_requires_preexisting_0700_parent_and_0600_outputs` | trusted-account home resolution must match the canonical approved absolute path; root-owned non-writable `/` and `/home` fixtures pass, while writable/foreign-owned system ancestors, foreign-owned or writable account-home/private components, absent parent, environment substitution, wrong final UID/mode, symlink component, parent swap, output hardlink/non-regular, or mode drift rejects rc4 before entropy/writes; genesis never creates/repairs the parent and public A blobs are not treated as 0600 inputs |
+| `test_genesis_preview_binds_verified_host_identity` | fixture-backed preview requires exact `ace-linux-1` host identity, out-of-band-verified SSH fingerprint evidence, trusted-account UID, and canonical path; every missing/mismatched hostname, fingerprint, UID, or evidence field rejects before Python, entropy, or writes |
 | `test_genesis_creates_private_entropy_without_output` | internally create 32-byte key and unique 32-byte synthetic patterns; generated private values/digests never use argv/stdin/stdout; key file is exact RFC4648 base64 plus one LF |
 | `test_genesis_csprng_failure_and_collision_fail_closed` | entropy failure, short read, repeated pattern, UUID/key ID collision, and output collision leave no accepted final transaction and never fall back/retry silently |
 | `test_ledger_key_id_schema_and_codec_match` | schema and codec accept only `phase-a-<lowercase UUIDv4>` within 64 bytes and reject every alternate form |
@@ -663,7 +669,7 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | `test_ruleset_disabled_then_active_full_put` | POST disabled then PUT full active document; PATCH/partial update rejects |
 | `test_effective_rules_preserve_protect_main` | baseline ID/rules/bypass unchanged and effective main includes both rulesets |
 | `test_proof_pr_state_machine` | draft check succeeds, PR transitions to verified ready state, exact Variant B requires zero PR approvals, active reevaluation is mergeable but unmerged, and any Variant A state aborts |
-| `test_proof_identity_is_frozen_and_cas_bound` | exact branch/title/one-file path/mode/ASCII-plus-LF diff and base CODEOWNERS coverage; capture and CAS PR number/database ID, head OID, and numeric check/run IDs |
+| `test_proof_identity_is_frozen_and_cas_bound` | exact branch/title/one-file path/mode/ASCII-plus-LF diff, unchanged base CODEOWNERS blob identity, and no code-owner requirement; capture and CAS PR number/database ID, head OID, and numeric check/run IDs |
 | `test_fork_constant_fail_pre_secret` | fork result fixed and no environment/secret/data scan |
 | `test_activation_cas_at_every_boundary` | full A/B/contract/main/CODEOWNERS/environment/secret/ruleset/proof CAS runs preflight, immediately post-proof/pre-first-environment-PUT, pre-CURRENT, pre-disabled POST, and pre-active PUT; drift produces zero further writes |
 | `test_ambiguous_mutation_reconciliation` | lost 200/201/204 and timeout fixtures reconcile intended/baseline/other; ambiguous secret PUT is rollback-only; rollback ambiguity reconciles before continuing |
@@ -680,9 +686,11 @@ Tests must be committed RED before their matching implementation slice.
       record must resolve and privately bind an exact canonical absolute path,
       UID, host fingerprint/identity, and native mount before genesis approval.
 - [ ] The selected private parent pre-exists with no symlink components as
-      current-UID mode 0700 on an allowed native-local filesystem. Missing or
-      incorrect state stops for a separate provisioning approval; genesis never
-      creates or repairs it.
+      current-UID mode 0700 on an allowed native-local filesystem. Root-owned
+      system ancestors are non-writable by group/other; account-home/private
+      components match the bound UID and are non-writable by group/other.
+      Missing or incorrect state stops for a separate provisioning approval;
+      genesis never creates or repairs it.
 - [ ] Fresh approval binds the revised plan SHA and explicitly accepts the
       100,000 cap plus chosen review posture; no stale #3522 approval is reused.
 - [ ] Exact genesis command passes Linux permissions, atomicity, roundtrip,
@@ -711,7 +719,7 @@ Tests must be committed RED before their matching implementation slice.
       `strict-scan / authority`/15368 identity, no update/workflows rule, and no
       bypass; Variant A is rejected and `protect-main` is unchanged.
 - [ ] Same-repository proof PR succeeds as draft, transitions to verified ready
-      state, satisfies the selected exact author/reviewer matrix, and remains
+      state with the exact Variant B zero-approval/no-code-owner posture, and remains
       mergeable after active ruleset readback; frozen branch/title/path/bytes/diff
       and captured PR/head/check identities survive every CAS. It is never merged. Fork fixtures remain
       constant-fail before secret access.
@@ -736,12 +744,13 @@ Tests must be committed RED before their matching implementation slice.
 |---|---|---|
 | `custom_ansys_runners` R4 | APPROVE | exact supersession references, first-write CAS, and canonical CODEOWNERS matrix resolve R3 findings |
 | `prepare_fer_extraction` R4 | APPROVE | trusted pre-Python launcher, FD boundary, trust assumptions, and executable race tests resolve R3 findings |
+| Codex security R5 | MAJOR | impossible current-UID ownership rule for root-owned system ancestors |
+| Codex transaction R5 | MAJOR | missing host-identity RED test, Variant-B/CODEOWNERS contradiction, and ambiguous approval wording |
 
-**Overall result:** REVIEW-PENDING — R4 approved the conditional design. The
-owner has now selected Variant B and `ace-linux-1` with the private parent above;
-focused adversarial review of this binding is required before the revised plan
-can be surfaced for exact-SHA approval. Implementation and activation remain
-blocked.
+**Overall result:** REVIEW-PENDING — R5 rejected the first decision-bound SHA.
+The findings are patched in the working revision; a fresh no-MAJOR review is
+required before the plan can be surfaced for exact-SHA approval. Implementation
+and activation remain blocked.
 
 ## Risks and Open Questions
 
