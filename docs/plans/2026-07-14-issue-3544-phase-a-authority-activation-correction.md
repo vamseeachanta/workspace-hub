@@ -272,14 +272,18 @@ outside this issue.
 
 ### Secure genesis interface
 
-Add this frozen owner-only public launcher command:
+Add this frozen owner-only public operator command. `OUTER_BOOTSTRAP_LITERAL` is
+the exact ANSI-C-quoted canonical source emitted by the approved preview, not a
+mutable environment variable or file:
 
 ```text
-launch_rule_authority_genesis.sh genesis-current
+builtin exec -c PYTHON_REALPATH -I -S -B -c OUTER_BOOTSTRAP_LITERAL --
+                --outer-bootstrap-sha256 HEX
+                --launcher-path LAUNCHER --launcher-sha256 HEX
+                --python-realpath PYTHON_REALPATH --python-sha256 HEX
                 --tool-repo GIT_DIR --tool-sha FULL_OID
                 --out-parent PRIVATE_DIR --transaction-id UUID
                 --approval-record PRIVATE_JSON --approval-sha256 HEX
-                --python-realpath ABSOLUTE_PATH --python-sha256 HEX
 ```
 
 It is unavailable when `GITHUB_ACTIONS` is set and requires
@@ -324,7 +328,8 @@ authority-module blob OID against the A manifest/contract, rejects local or
 untracked substitutions, and executes only that verified extraction with
 isolated Python. A mutable working-tree script is never executable genesis input.
 
-The minimal external pre-authority boundary will comprise the verified
+The minimal external pre-authority boundary will comprise the approval-bound
+canonical outer-bootstrap literal, the verified
 `scripts/legal/launch_rule_authority_genesis.sh`, its literal inline
 standard-library-only Python FD broker, the canonical public
 `config/legal-rule-authority-genesis-execution-manifest.json`, and the self-contained
@@ -338,12 +343,18 @@ every Git blob OID and SHA-256, then makes files 0400 and directories 0500. It w
 retain an open directory descriptor plus verifier and entry-point FDs. Any
 descriptor/path, mode, inode, device, or digest change will abort before the
 approval verifier or entropy. Before
-invocation will begin in an explicitly trusted already-running owner Bash. Its
-builtin `exec -c`—not a dynamically linked `env` helper—will start the approved
+invocation will begin in an explicitly trusted already-running owner Bash with
+no active traps and no alias/function named `exec`, `builtin`, or `type`. The
+frozen preflight will require `builtin type -t exec` to equal `builtin`, reject a
+real `exec` shadow fixture, and invoke `builtin exec -c` explicitly—not a
+dynamically linked `env` helper. It will start the approved
 canonical Python with an empty environment, `-I -S -B -c`, and an exact outer-
-bootstrap literal whose canonical bytes/SHA-256 are bound by the private approval
-and frozen command. The outer bootstrap will open the approved interpreter and
-launcher with `O_NOFOLLOW`, require regular ownership/mode/device/inode/digests
+bootstrap literal whose canonical bytes/SHA-256 and exact argv are independently
+approved in the generated command and duplicated in the private approval for the
+later verifier to compare. The outer bootstrap will accept only those exact
+non-secret command fields; it will not parse or trust the private approval. It
+will open the approved interpreter and launcher with `O_NOFOLLOW`, require
+regular ownership/mode/device/inode/digests
 and running `/proc/self/exe` identity, mark only those FDs inheritable, and
 `os.execve` absolute `/bin/bash` with argv exactly
 `bash --noprofile --norc /proc/self/fd/<launcher-fd>` and environment exactly
@@ -410,7 +421,7 @@ remain close-on-exec. The broker will not return or reopen a pathname. There is 
 `PYTHONPATH`, `site`, `.pth`, `sitecustomize`, user site, global site-packages, or
 repository path. The verifier will import only the standard library,
 will contain its own parser, will import no authority/repository module, and will
-request no randomness. Its interface will receive only retained FD numbers plus
+request no genesis entropy or private capability randomness. Its interface will receive only retained FD numbers plus
 the immutable non-secret identities already bound by the verified contract and
 launcher arguments; it will independently recompute dynamic host/account/mount
 facts from retained descriptors and root-owned system sources rather than
@@ -423,7 +434,8 @@ exactly one LF.
 
 The record schema will have `additionalProperties:false` at every object and will
 bind exact typed values for `schema_id`, Git object format, plan/A/B/post-merge
-OIDs, transaction UUID, contract, launcher, execution manifest, verifier, approved Python, and a host
+OIDs, transaction UUID, `outer_bootstrap`, contract, launcher, execution
+manifest, verifier, approved Python, and a host
 object containing hostname, machine-id digest, SSH host-key evidence, trusted
 account name/UID/home, output parent, and complete mount identity. The verifier
 will compare every leaf without coercion against independently recomputed facts
@@ -439,7 +451,9 @@ The exact top-level record will use `schema_id` =
 `legal-rule-genesis-approval-v1`, `git_object_format` = `sha1`, the 40-lowercase-
 hex `plan_commit`, `tool_commit_a`, `caller_commit_b`, and `post_merge_main`, a
 canonical lowercase UUIDv4 `transaction_id`, and exact objects `contract`,
-`launcher`, `execution_manifest`, `approval_verifier`, `python`, and `host`.
+`outer_bootstrap`, `launcher`, `execution_manifest`, `approval_verifier`, `python`, and `host`.
+`outer_bootstrap` will contain exactly `sha256` and will byte-equal the
+independently approved generated-command digest.
 `contract`, `launcher`, `execution_manifest`, and `approval_verifier` will each contain exactly `path`, `blob_oid`, and
 `sha256`; their paths will equal the contract's literal allowlisted repo-relative
 paths, OIDs will be 40 lowercase hex because object format is `sha1`, and hashes
@@ -836,7 +850,8 @@ facts applicable at that boundary; drift permits no further forward write.
 genesis_current(tool_repo, tool_sha_A, out_parent, transaction_id,
                 approval_record, approval_sha256):
     sole public entry is verified launcher; Python CLI has internal dispatch only
-    trusted running owner Bash builtin exec -c launches approved Python outer bootstrap
+    trusted running owner Bash rejects traps/builtin shadows; builtin exec -c launches approved Python outer bootstrap
+    generated command independently binds outer source SHA plus launcher/Python path+digests
     outer bootstrap no-follow verifies interpreter+launcher FDs, clean-execs Bash on launcher FD
     require owner gate, non-Actions Linux, exact tool OID and approved interpreter identity
     inline `-I -S -B -c` broker opens interpreter/approval/contract/manifest/members no-follow
@@ -923,12 +938,13 @@ and revision in a revised plan, and obtain another owner decision before sealing
 | Test | RED condition and required result |
 |---|---|
 | `test_genesis_command_is_frozen_and_owner_only` | public launcher command absent today; require exact flags including independent interpreter identity, owner gate, no Actions execution, and no public Python genesis command |
-| `test_inline_fd_broker_is_the_only_pre_verifier_python` | verified launcher contains one literal `-I -S -B -c` stdlib broker; no separate mutable broker file/import, shell redirection, `test -L`, PATH lookup, site, repository path, private parsing, entropy, or output is allowed before retained-FD verification |
+| `test_outer_bootstrap_is_frozen_and_approval_bound` | generated command uses exact ANSI-C-quoted canonical `-c` bytes and independently approved outer-bootstrap/launcher/Python digests/paths; source/argv mutation, mutable file/env source, approval mismatch, or private-record parsing rejects |
+| `test_inline_fd_broker_is_the_only_post_launcher_pre_verifier_python` | after the approval-bound outer bootstrap clean-execs the verified launcher, the launcher contains one literal `-I -S -B -c` stdlib broker; no separate mutable broker file/import, shell redirection, `test -L`, PATH lookup, site, repository path, private parsing, genesis entropy, or private output is allowed before retained-FD verification |
 | `test_inline_fd_broker_opens_every_input_no_follow` | broker uses `O_NOFOLLOW`/`O_DIRECTORY`, proves running `/proc/self/exe` equals the retained approved interpreter FD, and rejects approval/verifier/entry/module/interpreter symlinks plus pathname replacement, inode/device/mode/hash drift before verifier import |
 | `test_inline_fd_broker_authenticates_execution_manifest` | after raw approval digest match, broker strict-parses canonical approval, authenticates exact manifest path/blob/hash, strict-parses its exact sorted member schema, and rejects omission, duplicate keys/members, substitution, role/path aliases, extra entries, and schema confusion before member trust |
 | `test_inline_fd_broker_exec_inherits_only_verified_fds` | broker direct-exec fixture proves exact argv/env/cwd, preserves identical interpreter/approval/contract/manifest/verifier/entry/parent/extraction/archive FD identities, closes an unrelated FD, never returns/reopens paths, and imports modules only from the sealed archive despite post-validation pathname replacement; memfd creation must include `MFD_ALLOW_SEALING`, add every required seal, and verify the exact `F_GET_SEALS` mask |
 | `test_verifier_to_authority_preserves_sealed_archive` | second exec preserves the identical execution-manifest/archive FD identities and exact seals/member table while closing an unrelated FD; authority imports exclusively from the archive after post-consumption source-path replacement |
-| `test_outer_launcher_environment_is_empty_and_fixed` | a trusted already-running Bash uses builtin `exec -c` to start the approved Python outer bootstrap; hostile `BASH_ENV`, `ENV`, `LD_*`, Python/Git/locale/HOME/PATH variables, exported functions, sentinel files, and modules cannot reach or influence the first new loader, Bash, broker, verifier, or output; invoking a dynamically linked `env -i` helper is forbidden |
+| `test_outer_launcher_environment_is_empty_and_fixed` | trusted already-running Bash rejects traps and actual aliases/functions shadowing `exec`/`builtin`/`type`, then uses explicit `builtin exec -c` to start the approved Python outer bootstrap; hostile child `BASH_ENV`, `ENV`, `LD_*`, Python/Git/locale/HOME/PATH variables, exported functions, sentinel files, and modules cannot reach or influence the first new loader, Bash, broker, verifier, or output; invoking a dynamically linked `env -i` helper is forbidden |
 | `test_direct_internal_genesis_invocation_cannot_bypass_launcher` | ordinary direct public/internal `manage_rule_authority.py` calls, missing/extra FDs, absent lock, bad three-step lock proof, or missing/mismatched tombstone reject before authority import/entropy/output sentinels; an unlocked inherited candidate while another process owns the parent lock must reject; tests will not claim provenance against a deliberate same-UID reconstruction |
 | `test_genesis_rejects_non_native_or_ambiguous_mounts` | require stable `/proc/self/mountinfo` identity and approved ext4/xfs/btrfs; Windows, `/mnt`, drvfs/9p/FUSE/overlay/bind/network/FAT/NTFS and mount drift reject before genesis entropy/private reads |
 | `test_genesis_requires_preexisting_0700_parent_and_0600_outputs` | trusted-account home resolution must match the canonical approved absolute path; root-owned non-writable `/` and `/home` fixtures pass, while writable/foreign-owned system ancestors, foreign-owned or writable account-home/private components, absent parent, environment substitution, wrong final UID/mode, symlink component, parent swap, output hardlink/non-regular, or mode drift rejects rc4 before genesis entropy/private writes; genesis never creates/repairs the parent and public A blobs are not treated as 0600 inputs |
@@ -1009,9 +1025,10 @@ Tests must be committed RED before their matching implementation slice.
 - [ ] The external launcher's recorded blob/hash, trusted absolute tools,
       allowlisted A verifier/module identities, approved interpreter realpath/hash,
       immutable extracted tree, and retained-FD execution pass real launcher/
-      approval/verifier/path-swap race tests. The literal isolated broker is the
-      only Python before the commit-A-pinned verifier; both run before authority
-      import or genesis entropy. The broker authenticates the approval-bound
+      approval/verifier/path-swap race tests. The approval-bound outer bootstrap
+      and literal isolated broker are the only two Python stages before the
+      commit-A-pinned verifier; all run before authority import or genesis
+      entropy. The broker authenticates the approval-bound
       execution manifest and sealed FD archive, while the verifier enforces the
       full canonical approval schema and typed local-fact comparison.
 - [ ] The launcher is the sole public genesis entry. Both verifier and internal
@@ -1098,7 +1115,9 @@ Tests must be committed RED before their matching implementation slice.
 | FD-broker transaction R12 | MAJOR | no authenticated execution-manifest parser/source and no exact broker-to-verifier FD inheritance contract |
 | FD-broker security R13 | MAJOR | dynamic-loader exposure before `env -i`, second-exec archive loss, runtime-randomness wording, and missing sealing eligibility/readback |
 | FD-broker transaction R13 | MAJOR | missing `MFD_ALLOW_SEALING`/seal proof and manifest/archive omission from verifier-to-authority exec |
-| FD-broker amendment R14 | PENDING | inline fixes use trusted-shell builtin `exec -c` plus outer bootstrap, exact seal creation/readback, and identical archive/manifest inheritance through both execs |
+| FD-broker security R14 | MAJOR | outer bootstrap not approval-bound, current-shell `exec` shadow, and residual unqualified randomness wording |
+| FD-broker transaction R14 | MAJOR | outer source/hash/argv absent from frozen interface/schema and incorrect sole-pre-verifier-stage claim |
+| FD-broker amendment R15 | PENDING | inline fixes make outer source/argv/digests first-class approved fields, reject current-shell shadows/traps, and name both isolated pre-verifier Python stages |
 
 **Overall result:** PLAN-REVIEW-AMENDMENT — the previously approved normative
 design is reopened only for the executable retained-FD bootstrap boundary. The
