@@ -20,13 +20,13 @@
   </style>
 </head>
 <body><main>
-  <p class="kicker">Workspace-hub · T2 · lane:claude · draft</p>
+  <p class="kicker">Workspace-hub · T2 · lane:claude · adversarial-reviewed with provider-degradation disclosure</p>
   <h1>Make equality publication truthful and Windows-portable</h1>
   <p class="meta">Issue <a href="https://github.com/vamseeachanta/workspace-hub/issues/3554">#3554</a> · 2026-07-16</p>
 
   <div class="grid">
     <section class="card"><h2>Observed failure</h2><p>Git Bash lacks <code>flock</code>. The publisher converts command-not-found into “another publish in flight,” exits zero, and lets cron claim success.</p></section>
-    <section class="card"><h2>Design</h2><p>The implementation will remove the host-local gate and strengthen the existing fetch, sparse-worktree, fast-forward push, and bounded retry transaction.</p></section>
+    <section class="card"><h2>Design</h2><p>The implementation will atomically replace collected YAML, remove the host-local gate, and strengthen the existing fetch, sparse-worktree, fast-forward push, and bounded retry transaction.</p></section>
     <section class="card"><h2>Boundary</h2><p>Sentinel state, scheduling, dirty-checkout reconciliation, evidence schema, and matrix semantics will remain outside this issue.</p></section>
   </div>
 
@@ -38,6 +38,7 @@
     <li>Prove publication succeeds with no <code>flock</code>.</li>
     <li>Race two isolated publishers against one bare remote and require convergence.</li>
     <li>Race two publishers sharing one checkout and require clean Git/worktree residue.</li>
+    <li>Race collection and publication and require readers to see only complete YAML.</li>
     <li>Force a first-push race and require a fresh fetch/rebuild retry.</li>
     <li>Force retry exhaustion and require nonzero plus failure notification.</li>
     <li>Prove cron never emits PASS or OK after publisher failure.</li>

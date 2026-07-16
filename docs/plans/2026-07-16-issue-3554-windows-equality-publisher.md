@@ -1,13 +1,13 @@
 # Plan for #3554: Windows equality publisher false success without `flock`
 
-> **Status:** draft
+> **Status:** adversarial-reviewed — r1/r2 MAJOR findings resolved through r3 inline loop-break; provider diversity degraded
 > **Complexity:** T2
 > **Date:** 2026-07-16
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3554
 > **Client:** N/A
 > **Lane:** lane:claude
 > **Execution mode:** parallel-readonly planning; single-lane implementation after approval
-> **Review artifacts:** `scripts/review/results/2026-07-16-plan-3554-claude.md` | `scripts/review/results/2026-07-16-plan-3554-codex.md` | `scripts/review/results/2026-07-16-plan-3554-gemini.md`
+> **Review artifacts:** `scripts/review/results/2026-07-16-plan-3554-claude.md` | `scripts/review/results/2026-07-16-plan-3554-codex-r1.md` | `scripts/review/results/2026-07-16-plan-3554-codex.md` | `scripts/review/results/2026-07-16-plan-3554-gemini.md` | `scripts/review/results/2026-07-16-plan-3554-r3-inline-resolution.md`
 
 ---
 
@@ -23,7 +23,7 @@
 
 ### Standards and operational contracts
 
-- `docs/standards/CONTROL_PLANE_CONTRACT.md` requires repo-owned provider-neutral behavior; a Windows-scheduled Bash path cannot depend silently on a Linux-only executable.
+- `docs/standards/CONTROL_PLANE_CONTRACT.md` defines repository entry points and provider-adapter boundaries. It supplies the required harness-context source but does not itself establish Windows command portability.
 - `docs/plans/2026-06-08-issue-2972-equality-matrix-fix.md` establishes that equality cron failures will notify and exit nonzero rather than disappear into logs.
 - `docs/plans/2026-07-11-issue-3463-cron-singleton-runtime-health.md` rejects silent-success contention for correctness-critical jobs and requires durable, distinct failure evidence.
 - `config/scheduled-tasks/schedule-tasks.yaml:31-50` assigns the equality-matrix Bash path to Windows machines and describes origin publication as part of the task contract.
@@ -92,7 +92,7 @@ Distinct sources consulted: 12.
 
 ## Deliverable
 
-The equality publisher will run on Linux and Windows Git Bash without a host-local `flock` dependency, will converge concurrent publishers through bounded remote-aware retries, and will fail loudly when publication cannot be proven.
+The collector and equality publisher will produce atomic local evidence, run on Linux and Windows Git Bash without a host-local `flock` dependency, converge concurrent publishers through bounded remote-aware retries, and fail loudly when publication cannot be proven.
 
 ## Design decision
 
@@ -101,6 +101,12 @@ The implementation will remove the host-local `flock` gate rather than replace i
 ## Pseudocode
 
 ```text
+collect(output_path, full_yaml):
+    create a unique temporary file in output_path's directory
+    write the complete YAML and flush/close the temporary file
+    atomically rename the temporary file over output_path
+    remove the temporary file on every pre-rename failure
+
 publish(max_attempts, retry_delays):
     validate max_attempts and retry configuration
     for attempt_number in 1..max_attempts:
@@ -139,6 +145,8 @@ Unknown flags, missing values, nonnumeric values, zero attempts, and negative de
 |---|---|---|
 | Modify | `scripts/readiness/publish-equality.sh` | remove the non-portable local gate; implement bounded configurable remote-aware retry with truthful outcomes |
 | Modify | `tests/readiness/test_publish_equality.py` | add Windows/no-`flock`, concurrent publisher, retry, and failure tests using the existing real Git fixture |
+| Modify | `scripts/readiness/collect-equality.sh` | replace direct report overwrite with same-directory temporary write plus atomic rename |
+| Modify | `tests/readiness/test_collect_equality.py` | prove readers observe the old or complete new report, never a partial report, and prove temporary cleanup after failure |
 | Modify if behavioral test requires a seam | `scripts/readiness/equality-matrix-cron.sh` | preserve fail-loud propagation and make success text truthful; no change if tests prove the current wrapper sufficient |
 | Modify | `tests/readiness/test_equality_matrix_cron_deps.py` | add behavioral failure-propagation coverage |
 | Update | `docs/plans/README.md` | index this plan |
@@ -153,6 +161,8 @@ Tests will be written and observed RED before implementation changes.
 | `test_publishes_when_flock_is_absent` | a MINGW-like PATH without `flock` will publish newer evidence instead of reporting contention |
 | `test_concurrent_publishers_converge` | two isolated clones publishing different fresh machine evidence to one bare remote will both terminate cleanly and the final remote will contain both newest records |
 | `test_same_checkout_concurrent_publishers_converge` | two publisher processes sharing one checkout/common Git directory will converge or truthfully noop without stranded worktrees, persistent Git locks, corruption, or false success |
+| `test_collector_replaces_report_atomically` | a reader racing collection will observe either the prior complete YAML or the new complete YAML, never a truncated/intermediate document |
+| `test_collector_atomic_write_failure_preserves_prior_report` | an injected pre-rename failure will leave the prior report unchanged and remove the temporary file |
 | `test_push_race_refetches_and_rebuilds` | a deterministic first-push race will cause a fresh fetch/rebuild/commit rather than force-push or stale overwrite |
 | `test_retry_exhaustion_fails_loud` | repeated injected push failures will return nonzero after the configured bound and will not claim success |
 | `test_retry_configuration_rejects_invalid_values` | zero, negative, or nonnumeric attempts/delays will fail closed before Git mutation |
@@ -165,16 +175,19 @@ Existing freshness, allowlist, dry-run, dirty/diverged checkout, rebuild, and cl
 
 ## Acceptance Criteria
 
-- [ ] `uv run pytest -q tests/readiness/test_publish_equality.py tests/readiness/test_equality_matrix_cron_deps.py` will pass on Linux and `ace-win-2` Git Bash.
+- [ ] `uv run pytest -q tests/readiness/test_publish_equality.py tests/readiness/test_collect_equality.py tests/readiness/test_equality_matrix_cron_deps.py` will pass on Linux and `ace-win-2` Git Bash.
 - [ ] `command -v flock` may be absent; `bash scripts/readiness/publish-equality.sh --dry-run` will still execute the publisher and return a truthful result.
 - [ ] Two concurrent publishers targeting one bare remote will converge without force push, reset, evidence regression, or abandoned worktrees.
 - [ ] Two concurrent publisher processes sharing one checkout/common Git directory will terminate cleanly with no persistent `.git` lock, missing registered worktree, or publisher-owned temporary directory.
 - [ ] Retry exhaustion will emit the existing failure notification and exit nonzero.
 - [ ] `equality-matrix-cron.sh` will never print `OK` or emit a pass notification after publisher failure.
 - [ ] The staged-path allowlist and strictly-newer evidence rule will remain unchanged.
+- [ ] `collect-equality.sh` will replace reports through a same-directory atomic rename; injected failure will preserve the prior report and leave no temporary file.
 - [ ] No implementation will modify sentinel/state-ref code, scheduler catalog membership, reconciler classification, evidence schema, or matrix semantics.
-- [ ] `bash -n scripts/readiness/publish-equality.sh scripts/readiness/equality-matrix-cron.sh` will pass.
-- [ ] `bash scripts/legal/legal-sanity-scan.sh --diff-only` and the targeted security scan will pass.
+- [ ] `bash -n scripts/readiness/publish-equality.sh` will pass.
+- [ ] `bash -n scripts/readiness/equality-matrix-cron.sh` will pass.
+- [ ] `bash -n scripts/readiness/collect-equality.sh` will pass.
+- [ ] `bash scripts/legal/legal-sanity-scan.sh --diff-only` will pass.
 - [ ] Code-stage adversarial review will complete before closeout.
 - [ ] Implementation evidence will be posted to [#3554](https://github.com/vamseeachanta/workspace-hub/issues/3554).
 - [ ] A supervised `ace-win-2` run of `bash scripts/readiness/reconcile-ecosystem.sh --apply --equality` will show evidence reaching `origin/main`; [#3557](https://github.com/vamseeachanta/workspace-hub/issues/3557) may still independently block a clean-equivalence verdict while the checkout is dirty.
@@ -184,10 +197,10 @@ Existing freshness, allowlist, dry-run, dirty/diverged checkout, rebuild, and cl
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | UNAVAILABLE r1 | CLI failed before returning a review |
-| Codex | MAJOR r1; re-review pending | same-checkout concurrency and retry interface were under-specified; both will be patched before re-review |
+| Codex | MAJOR r1 and r2; r3 inline resolution complete | r1 required same-checkout coverage and an explicit retry interface; r2 required real multi-file syntax gates and atomic collector output, plus citation/artifact corrections |
 | Gemini | UNAVAILABLE r1 | no non-interactive credentials were configured |
 
-**Overall result:** PENDING — implementation will remain blocked.
+**Overall result:** plan-review candidate under the r3 inline loop-break rule. Both Codex rounds produced non-overlapping defects and every finding will be incorporated. Claude and Gemini were unavailable, so there is no provider consensus; implementation will remain blocked pending explicit user approval.
 
 ## Risks and Open Questions
 
@@ -195,7 +208,7 @@ Existing freshness, allowlist, dry-run, dirty/diverged checkout, rebuild, and cl
 - **Risk — same-repository Git metadata contention:** simultaneous local publishers may race in the shared Git common directory. The bounded retry will treat Git lock/push failures as retryable only as a whole attempt and will clean publisher-owned worktrees before retrying.
 - **Risk — same-repository cleanup interaction:** the test will inventory registered worktrees, publisher-owned temporary directories, and persistent Git lock files after two same-checkout publishers finish; success will require both processes to terminate and all three inventories to be clean.
 - **Risk — retry classification:** the publisher will not parse locale-dependent Git error text. It will retry a bounded failed attempt from a fresh fetch, then fail loudly.
-- **Risk — collection TOCTOU:** `collect-equality.sh` currently writes its YAML directly while the publisher reads it. Atomic collection output is adjacent but outside #3554 unless implementation tests prove it blocks correctness; a follow-on issue will capture it rather than silently widening scope.
+- **Risk — atomic rename portability:** the collector will create its temporary file in the destination directory and rename only within that directory so Linux and Windows remain on one filesystem. Tests will cover prior-report preservation and temporary-file cleanup.
 - **Open question for review:** whether the cron pass message must distinguish `pushed`, `noop`, and `dry-run`, or whether truthful publisher output plus wrapper success is sufficient.
 
 ### Review revision r1
@@ -203,6 +216,14 @@ Existing freshness, allowlist, dry-run, dirty/diverged checkout, rebuild, and cl
 - The plan will add same-checkout concurrent publisher coverage, not only separate-clone remote contention.
 - The retry interface will be fixed as `--max-attempts` and `--retry-delay-seconds` with validated defaults and pre-mutation rejection.
 - The existing HTML plan artifact is now correctly classified as `Modify`.
+
+### Review revision r2
+
+- Each Bash file will receive a separate `bash -n` command so every syntax gate executes.
+- `collect-equality.sh` atomic report replacement and failure-preservation tests will close the collector/publisher partial-read race within this issue.
+- The Control-Plane Contract citation will be narrowed to what the document actually establishes; Windows scheduling authority remains `config/scheduled-tasks/schedule-tasks.yaml`.
+- The canonical r2 Codex artifact and preserved r1 artifact will both be named explicitly.
+- The undefined “targeted security scan” wording will be removed; the exact legal scan command will remain.
 
 ## Complexity: T2
 
