@@ -1279,3 +1279,17 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3558
+    title: 'fix(memory): prevent shared KNOWLEDGE rules from being omitted by provider slice cap'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3558
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:bugfix
+      - domain:ai-orchestration
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
