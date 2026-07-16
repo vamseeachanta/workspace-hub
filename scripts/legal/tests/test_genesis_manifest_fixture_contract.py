@@ -9,9 +9,10 @@ sys.path.insert(0, str(Path(__file__).parents[1]))
 from genesis_fixture import build_fixture_manifest  # noqa: F401
 
 
-def test_fixture_manifest_binds_roles_and_digests(tmp_path):
-    verifier = tmp_path / "verifier.py"
-    entry = tmp_path / "entry.py"
+def test_fixture_manifest_binds_roles_and_digests(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    verifier = Path("verifier.py")
+    entry = Path("entry.py")
     verifier.write_bytes(b"# verifier\n")
     entry.write_bytes(b"# entry\n")
     manifest = build_fixture_manifest(verifier, entry)
@@ -28,9 +29,10 @@ def test_fixture_manifest_binds_roles_and_digests(tmp_path):
         assert member["sha256"] == hashlib.sha256(Path(member["path"]).read_bytes()).hexdigest()
 
 
-def test_fixture_manifest_rejects_path_replacement(tmp_path):
-    verifier = tmp_path / "verifier.py"
-    entry = tmp_path / "entry.py"
+def test_fixture_manifest_rejects_path_replacement(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    verifier = Path("verifier.py")
+    entry = Path("entry.py")
     verifier.write_bytes(b"v")
     entry.write_bytes(b"e")
     manifest = build_fixture_manifest(verifier, entry)
@@ -44,9 +46,10 @@ def test_fixture_manifest_rejects_path_replacement(tmp_path):
     lambda m: m["members"][0].update(role="extra"),
     lambda m: m["members"][0].update(path="./alias.py"),
 ])
-def test_fixture_manifest_rejects_malformed_member_contract(tmp_path, mutation):
-    verifier = tmp_path / "verifier.py"; verifier.write_bytes(b"v")
-    entry = tmp_path / "entry.py"; entry.write_bytes(b"e")
+def test_fixture_manifest_rejects_malformed_member_contract(tmp_path, mutation, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    verifier = Path("verifier.py"); verifier.write_bytes(b"v")
+    entry = Path("entry.py"); entry.write_bytes(b"e")
     manifest = build_fixture_manifest(verifier, entry)
     mutation(manifest)
     with pytest.raises(ValueError):
