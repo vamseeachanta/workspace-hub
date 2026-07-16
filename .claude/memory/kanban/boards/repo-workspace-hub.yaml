@@ -23630,7 +23630,8 @@ cards:
       - cat:automation
       - domain:workstations
       - domain:security
-      - status:needs-plan
+      - status:plan-review
+      - gate:completeness
       - lane:claude
     initial_status: triage
     priority: 1
