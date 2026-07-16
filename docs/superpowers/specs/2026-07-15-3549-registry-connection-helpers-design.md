@@ -85,9 +85,9 @@ value.
 
 ### Machine-local fallback overlay
 
-The overlay will be outside the repository and gitignored. Its path will be
-selected through a documented cross-platform default with an explicit override
-for tests and managed installations.
+The overlay will be outside the repository, so repository ignore rules will not
+govern it. Its path will use the documented POSIX default with an explicit
+override for tests and managed installations.
 
 Each fallback record will contain:
 
@@ -96,11 +96,12 @@ Each fallback record will contain:
 - a Tailscale address parsed by the standard IP library;
 - verification state and non-secret evidence reference;
 - verification and expiry timestamps;
-- the digest of the public registry snapshot used during verification.
+- the digest of the selected machine's canonical connection-policy projection.
 
 The resolver will accept only an address within Tailscale-owned ranges. Missing,
 malformed, expired, unverified, machine-mismatched, reference-mismatched, or
-registry-digest-mismatched records will fail before any client process starts.
+connection-policy-digest-mismatched records will fail before any client process
+starts.
 
 The overlay will contain no keys, tokens, passwords, or authentication material.
 Documentation will define restrictive POSIX permissions and an equivalent
@@ -117,7 +118,7 @@ identifier, route policy, dry-run flag, registry path, and optional overlay path
 The command will:
 
 1. read the registry once;
-2. validate and digest that immutable snapshot;
+2. validate that immutable snapshot completely;
 3. resolve a globally unambiguous machine identity;
 4. select the canonical hostname by default;
 5. load and validate the overlay only for an explicitly requested fallback;
@@ -190,8 +191,26 @@ records:
     evidence: https://github.com/vamseeachanta/workspace-hub/issues/<rollout-issue>#issuecomment-<id>
     verified_at: <RFC-3339-UTC-seconds>
     expires_at: <RFC-3339-UTC-seconds>
-    registry_sha256: <64-lowercase-hex>
+    connection_policy_sha256: <64-lowercase-hex>
 ```
+
+The digest input will be a versioned projection containing exactly the canonical
+machine key, canonical SSH hostname, and every closed `connection` policy field.
+It will exclude other machines and unrelated capability or scheduling fields:
+
+```json
+{"connection":{"fallback":{"attestation_issue":0,"kind":"tailscale_ip","max_age_seconds":0,"reference":"<opaque-reference>"},"preferred_route":"ssh","schema_version":1},"format":"workspace-hub-connection-policy-v1","machine":"<canonical-machine-key>","ssh":"<canonical-ssh-hostname>"}
+```
+
+Validated runtime values will replace the typed placeholders. Canonical bytes
+will be `json.dumps(projection, sort_keys=True, separators=(",", ":"),
+ensure_ascii=True).encode("ascii")`, with no BOM, indentation, or trailing
+newline; the stored digest will be lowercase SHA-256 hexadecimal. Nulls, floats,
+Unicode, implicit YAML coercions, missing/unknown fields, legacy
+`registry_sha256`, and multiple digest fields will fail before hashing. The full
+registry will still be validated before projection, so malformed unrelated
+records and cross-machine collisions remain hard errors. Any projection change
+will require a new `format` value and re-attestation.
 
 On POSIX, the default will be
 `${XDG_CONFIG_HOME:-${HOME}/.config}/workspace-hub/connection-overlay.yaml`.
@@ -240,7 +259,8 @@ Hook installation will resolve the hooks directory with
 ## Output and Error Contract
 
 Dry-run output will be deterministic JSON containing only logical machine ID,
-route class, verification state, registry digest, and a redacted argument shape.
+route class, verification state, connection-policy digest, and a redacted
+argument shape.
 It will not reveal hostname, address, operator identity, rejected raw values,
 environment contents, overlay contents, or authentication state.
 
@@ -250,7 +270,7 @@ value. Exit codes will distinguish:
 - caller or unknown-machine errors;
 - malformed or ambiguous registry state;
 - unavailable, stale, or unverified fallback state;
-- registry/overlay digest mismatch;
+- connection-policy/overlay digest mismatch;
 - missing client or client-launch failure.
 
 Dry-run will perform no ping, DNS probe, Tailscale command, SSH attempt, Tabby
@@ -272,6 +292,19 @@ launch, or other external process execution.
   NUL-safe filename handling. Forensic fixtures will use narrow sentinels, never
   blanket file exemptions.
 
+Closeout will use Gitleaks v8.30.1 from its official GitHub release, not the
+repository's ruleless custom configuration. It will verify the downloaded
+`gitleaks_8.30.1_checksums.txt` against pinned SHA-256
+`061476c21adaf5441516f96f185c1a4706a83cd6329b9b38762271b3d4a52fae`, verify
+the selected Linux x64/arm64 archive through that manifest, require the installed
+version to equal `8.30.1`, and use a temporary `[extend] useDefault = true`
+configuration. A runtime-assembled synthetic leak will have to produce dedicated
+exit 23 before `gitleaks dir --redact --exit-code 24` scans the exact frozen
+`git write-tree` object exported with `git archive`. Unsupported architectures,
+manifest corruption, missing/duplicate entries, archive corruption, or a failed
+positive control will stop closeout. Source:
+<https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1>.
+
 ## Test Strategy
 
 TDD will begin with focused failing tests covering:
@@ -285,7 +318,8 @@ TDD will begin with focused failing tests covering:
 6. one successful synthetic verified-fallback fixture;
 7. injection and Unicode-confusable target corpora with no side effects;
 8. deterministic redacted dry-run and secret-safe diagnostics;
-9. single-read snapshot and registry-digest mismatch handling;
+9. single-read snapshot, canonical per-machine digest stability/mutation, legacy
+   digest rejection, and connection-policy mismatch handling;
 10. Bash and PowerShell argument/exit-code parity;
 11. complete governed-helper inventory and removal of address/operator defaults;
 12. exact staged-blob address and secret scanning with positive controls.
