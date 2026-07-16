@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>#3554 Windows equality publisher plan</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b1020; --panel:#141c31; --ink:#e8eefc; --muted:#a9b6d3; --accent:#74c7ec; --warn:#f9e2af; --line:#2b395b; }
+    body { margin:0; font:16px/1.55 system-ui,sans-serif; color:var(--ink); background:linear-gradient(135deg,#09101d,var(--bg)); }
+    main { max-width:980px; margin:auto; padding:48px 24px 72px; }
+    h1 { font-size:clamp(2rem,5vw,3.5rem); line-height:1.05; margin:.2em 0; }
+    h2 { margin-top:2rem; color:var(--accent); }
+    .kicker,.meta { color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; }
+    .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; }
+    code { color:var(--warn); }
+    li { margin:.5rem 0; }
+    .gate { border-left:5px solid var(--warn); padding-left:16px; }
+    a { color:var(--accent); }
+  </style>
+</head>
+<body><main>
+  <p class="kicker">Workspace-hub · T2 · lane:claude · draft</p>
+  <h1>Make equality publication truthful and Windows-portable</h1>
+  <p class="meta">Issue <a href="https://github.com/vamseeachanta/workspace-hub/issues/3554">#3554</a> · 2026-07-16</p>
+
+  <div class="grid">
+    <section class="card"><h2>Observed failure</h2><p>Git Bash lacks <code>flock</code>. The publisher converts command-not-found into “another publish in flight,” exits zero, and lets cron claim success.</p></section>
+    <section class="card"><h2>Design</h2><p>The implementation will remove the host-local gate and strengthen the existing fetch, sparse-worktree, fast-forward push, and bounded retry transaction.</p></section>
+    <section class="card"><h2>Boundary</h2><p>Sentinel state, scheduling, dirty-checkout reconciliation, evidence schema, and matrix semantics will remain outside this issue.</p></section>
+  </div>
+
+  <h2>Why no lock-directory fallback?</h2>
+  <p>A host-local lock cannot coordinate separate machines pushing the same branch. A fallback would add stale-owner, PID-reuse, TTL, crash-recovery, and cleanup risks while the remote fast-forward transaction already supplies the global arbitration point.</p>
+
+  <h2>TDD sequence</h2>
+  <ol>
+    <li>Prove publication succeeds with no <code>flock</code>.</li>
+    <li>Race two isolated publishers against one bare remote and require convergence.</li>
+    <li>Force a first-push race and require a fresh fetch/rebuild retry.</li>
+    <li>Force retry exhaustion and require nonzero plus failure notification.</li>
+    <li>Prove cron never emits PASS or OK after publisher failure.</li>
+  </ol>
+
+  <h2>Acceptance checkpoint</h2>
+  <p>A supervised <code>ace-win-2</code> reconciliation will publish fresh evidence to <code>origin/main</code> without <code>flock</code>. Existing newer-only, allowlist, dirty-checkout independence, dry-run, and cleanup invariants will remain green.</p>
+
+  <section class="card gate"><h2>Approval gate</h2><p>This is a planning artifact. Implementation will remain blocked until adversarial review completes and the user explicitly approves the plan.</p></section>
+</main></body></html>
