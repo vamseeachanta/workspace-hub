@@ -16,7 +16,7 @@
   <main>
     <h1>#3555: persistent goals and native Codex statusline</h1>
     <p><strong>Status:</strong> draft · <strong>Complexity:</strong> T3 · <strong>Lane:</strong> Claude orchestration</p>
-    <p class="gate"><strong>Gate:</strong> implementation will remain blocked until three-provider adversarial plan review completes and the user explicitly approves the reviewed plan.</p>
+    <p class="gate"><strong>Gate:</strong> Codex returned MAJOR in rounds 1 and 2; the distinct round-2 defects were patched inline. Claude and Gemini were unavailable because authentication failed. Provider-diversity review remains unmet, so this plan is not approval-ready and implementation remains blocked.</p>
 
     <h2>Outcome</h2>
     <p>Substantive interactive Claude and Codex work will attach a provider-native goal. Goal progress will use native UI, while the statusline/footer will independently show context and usage. The configuration will be repo-managed, safely merged into machine-local settings, piloted on <code>ace-win-2</code>, and reported through per-machine equivalence evidence.</p>
@@ -34,19 +34,19 @@
     <table>
       <thead><tr><th>Predicate</th><th>Claude</th><th>Codex</th><th>Matrix evidence</th></tr></thead>
       <tbody>
-        <tr><td>Goal attached</td><td>Native <code>/goal</code> after a substantive request</td><td>Native persisted goal after a substantive request</td><td>Installed rule + provider capability; pilot attestation</td></tr>
+        <tr><td>Goal authorized and attached</td><td>Native <code>/goal</code> after catalog/picklist routing or recorded override</td><td>Native persisted goal under the same gate</td><td>Installed policy; planning goals stop at approval, execution goals require approval + runner</td></tr>
         <tr><td>Goal visible</td><td>Native <code>◎ /goal active</code> indicator/status</td><td>Native goal/progress UI; no fabricated footer field</td><td>Capability and fresh-session evidence</td></tr>
-        <tr><td>Telemetry visible</td><td>Canonical command statusline</td><td>Fixed native footer items</td><td>Parsed effective config + freshness</td></tr>
+        <tr><td>Telemetry visible</td><td>One cross-platform Node renderer tested via Linux Bash, Windows Git Bash, and PowerShell</td><td>Fixed native footer items</td><td>Separate parsed statusline-config rows + freshness</td></tr>
       </tbody>
     </table>
     <p>Idle and trivial read-only sessions may have no goal. Non-interactive runs have no persistent TUI and will be graded as non-visual rather than falsely marked equivalent.</p>
 
     <h2>Execution sequence</h2>
     <ol>
-      <li>Empirically attest native goal UI and exact Codex footer identifiers in disposable fresh sessions.</li>
-      <li>Add the goal-use contract to the canonical cross-provider soul and rebuild runtimes.</li>
+      <li>Write failing schema/privacy tests first, implement the validator, then use a named PTY/direct-observation verifier to attest native goal UI and exact Codex footer identifiers in disposable fresh sessions.</li>
+      <li>Reconcile the goal-use contract in the canonical cross-provider soul and invocation rule, then rebuild the named Claude/Codex runtimes.</li>
       <li>Migrate Codex to key-level <code>[tui]</code> management and converge Claude deployment paths.</li>
-      <li>Extend setup verification and equality collection with separate session-UX rows.</li>
+      <li>Extend setup verification and equality collection with five separate policy, goal-surface, and statusline-config rows.</li>
       <li>Pilot on <code>ace-win-2</code>, then require fresh evidence from each machine before any fleet-complete claim.</li>
     </ol>
 
@@ -54,8 +54,10 @@
     <ul>
       <li class="risk">If Codex cannot keep native goal progress visibly available, work will return to plan review; no custom footer emulation will be invented.</li>
       <li class="risk">An unsupported footer item will preserve the prior config and fail installation.</li>
+      <li class="risk">Missing Node or a renderer failure will preserve the prior Claude settings and fail installation.</li>
+      <li class="risk">New-machine and scheduled-update tests will fail if either path writes legacy <code>statusBarEnabled</code> directly or bypasses canonical sync.</li>
       <li class="risk">Missing or stale machine evidence will remain <code>MISSING-EVIDENCE</code>, <code>STALE-CHECKOUT</code>, or <code>UNREACHABLE</code>.</li>
-      <li class="ok">Goal text and transcripts will never enter equality evidence.</li>
+      <li class="ok">Goal text, transcripts, token values, credentials, client identifiers, and private task text will be rejected from equality evidence.</li>
     </ul>
 
     <h2>Approval checkpoint</h2>
