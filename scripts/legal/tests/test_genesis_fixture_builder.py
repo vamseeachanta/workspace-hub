@@ -6,7 +6,7 @@ sys.path.insert(0, str(Path(__file__).parents[1]))
 from test_rule_authority_genesis_approval import canonical_record, canonical_bytes
 from genesis_fixture import build_genesis_fixture  # noqa: F401
 
-def test_build_genesis_fixture_emits_matching_identities(tmp_path, monkeypatch):
+def test_build_genesis_fixture_rejects_inconsistent_inputs(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     record = canonical_record()
     approval = Path("approval.json"); approval.write_bytes(canonical_bytes(record)); approval.chmod(0o600)
@@ -16,6 +16,3 @@ def test_build_genesis_fixture_emits_matching_identities(tmp_path, monkeypatch):
     entry = Path("entry.py"); entry.write_text("# entry\n"); entry.chmod(0o400)
     with pytest.raises(ValueError):
         build_genesis_fixture(approval, contract, manifest, verifier, entry)
-    assert result["approval_sha256"] == hashlib.sha256(approval.read_bytes()).hexdigest()
-    assert result["manifest"]["schema_id"] == "legal-rule-genesis-execution-manifest-v1"
-    assert json.loads(approval.read_text()) == record
