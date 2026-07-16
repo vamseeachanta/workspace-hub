@@ -153,6 +153,7 @@ The committed V1 exact-revision cache fixture will make deterministic offline bu
 | Create | `scripts/promote-build-output.js` | atomic staging-to-dist promotion and retention |
 | Create | `scripts/write-field-explorer-build-receipt.js` | closed-schema build/route/input/tool evidence with artifact hashes |
 | Create | `scripts/collect-field-explorer-browser-evidence.js` | Playwright assertion results and raw evidence hashes for preview/production smoke |
+| Create | `.github/workflows/verify-field-explorer-release.yml` | protected build/browser/legal evidence with durable run and artifact provenance |
 | Update | `build.js` | orchestrate validated relational rendering transactionally |
 | Create | `content/partials/capabilities/relational/page.html` | standard parent page shell |
 | Create | `content/partials/capabilities/relational/field-summary.html` | reusable field summary panel |
@@ -255,6 +256,7 @@ reduce_browser_state(state, action):
 - Promote only after route, link, CSP, accessibility, legal and receipt checks pass.
 - Reject any receipt with an unknown schema major, missing command/tool/deployment identity, unreferenced raw result, or hash mismatch.
 - Collect browser evidence against preview first; production collection will be read-only and separately authorized.
+- Bind each receipt to the protected Actions run/workflow blob/head SHA/artifact digest and live Vercel deployment ID/environment/git SHA; fork or self-authored local PASS receipts will fail parent verification.
 - Prove a failed R2 leaves R1 output and cache intact.
 - Prove a registry-pin revert R2→R1 reproduces R1 content and stable URLs.
 - Preserve legacy non-relational capability behavior through focused regression tests.
@@ -276,6 +278,7 @@ reduce_browser_state(state, action):
 - [ ] Data values will remain inert through escaping, safe URL/path validation, and CSP-compatible rendering.
 - [ ] The full website build will stage and validate before atomic promotion; a failed candidate will preserve the prior complete output.
 - [ ] Build and browser receipts will conform to the parent contract, bind exact commands/tool versions/inputs/routes/deployment IDs, and hash every referenced raw artifact.
+- [ ] Parent #3559 will be able to live-fetch the protected Actions run/artifact and Vercel deployment metadata and prove that the deployed website registry blob pins the receipt HF SHA.
 - [ ] An R1→R2→R1 rollback exercise will run on preview only; a fresh explicit user authorization will be required before production promotion.
 - [ ] Pin rollback will restore the earlier whole snapshot without changing canonical field/well URLs.
 - [ ] Focused tests, full tests, link/accessibility/browser checks, legal/security scans, and T3 code/artifact review will have no unresolved MAJOR finding.

@@ -93,12 +93,16 @@ Distinct sources: issue body, parent/consumer issues, two current exporter scrip
 | Contract fixtures | `tests/fixtures/hf_export/field_explorer_browser/` |
 | Tracked bundle/card | `reports/field-atlas/results/explorer_results_bundle.json`, `README.md` |
 | Post-publish receipt | `reports/field-atlas/results/explorer_publish_receipt.json` |
+| Protected publisher workflow | `.github/workflows/publish-field-explorer-snapshot.yml` |
+| Attested CI evidence bundle | GitHub Actions artifact bound in the publish receipt |
 
 ---
 
 ## Deliverable
 
 A deterministic publisher will build normalized fields, wells, countries, economics, bounded browser JSON shards, Parquet tables, card, and manifest from one clean worldenergydata commit; publish all bytes in one expected-parent HF commit; raw-read every declared artifact by the returned SHA; and emit a receipt only after full verification.
+
+The live mutation will run only from the protected manual GitHub Actions publisher workflow on the reviewed repository commit and environment. The receipt will record the run/workflow IDs, workflow blob, head SHA, artifact ID/digest, environment, and conclusion. Parent #3559 will live-fetch that run and rehash the downloaded evidence artifact; a locally fabricated receipt will not satisfy promotion.
 
 ## Artifact and Identity Contract
 
@@ -164,6 +168,7 @@ If upload succeeds but readback fails, the immutable commit will remain an unpro
 |---|---|---|
 | Create | `scripts/hf_export/explorer_snapshot.py` | pure load/normalize/validate/shard/hash/manifest logic |
 | Create | `scripts/hf_export/publish_explorer_snapshot_to_hf.py` | dry-run/live transaction, expected parent, readback, receipt |
+| Create | `.github/workflows/publish-field-explorer-snapshot.yml` | protected manual live publish, secret isolation and durable run provenance |
 | Create | `config/hf_export/field_explorer_snapshot.yml` | dataset, inputs, license classes, versions, shard limits |
 | Create | three JSON schemas under `config/schemas/` | closed record, manifest, and publish-receipt contracts |
 | Modify | `build_explorer_results_bundle.py` | delegate to canonical normalization and repair identity/hash/card drift |
@@ -211,6 +216,8 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 25. same-origin raw cache redirect is bounded and preserves the exact SHA; off-origin browser-JSON redirects fail;
 26. token/auth values never enter logs, exceptions, manifest, or receipt;
 27. success writes exactly one complete receipt; post-upload failure records only an unpromoted orphan;
+28. live mode refuses execution outside the protected workflow/environment contract;
+29. receipt binds GitHub run/workflow/head/artifact identity and parent verification rejects a fabricated or fork run;
 28. expected-parent conflict requires a fresh explicit run, not automatic retry.
 
 ---
@@ -228,6 +235,7 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 - [ ] The returned exact SHA will be captured and every raw artifact will be revalidated by that SHA.
 - [ ] The manifest will not self-reference an HF SHA; the receipt and website registry will bind it externally.
 - [ ] Any preflight/upload/race/readback failure will prevent receipt and website promotion.
+- [ ] Live publication will run only through the protected manual GitHub Actions environment and will emit evidence that parent #3559 can verify against the live Actions API and artifact digest.
 - [ ] Dry-run will make no external writes; live auth will be environment/client backed and redacted.
 - [ ] Browser JSON will be bounded regular Git blobs; website exact-SHA delivery behavior will be fixture-tested.
 - [ ] Dataset card/source classifications will not claim CC-BY-4.0 unless evidence authorizes it; unresolved rights will block publication.

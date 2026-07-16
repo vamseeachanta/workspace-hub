@@ -17,7 +17,7 @@
     .eyebrow { color:var(--accent); font-weight:750; letter-spacing:.08em; text-transform:uppercase; }
     .status { display:inline-block; margin:.75rem 0; padding:.35rem .65rem; border-radius:999px; background:#fff1cf; color:var(--warn); font-weight:700; }
     .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; margin-top:1rem; }
-    .flow { display:grid; grid-template-columns:repeat(5,minmax(140px,1fr)); gap:.65rem; overflow-x:auto; padding-bottom:.35rem; }
+    .flow { display:grid; grid-template-columns:repeat(8,minmax(140px,1fr)); gap:.65rem; overflow-x:auto; padding-bottom:.35rem; }
     .step { min-width:140px; padding:.8rem; border:1px solid var(--line); border-radius:10px; background:#fbfaf7; }
     .step strong { display:block; color:var(--accent); }
     table { width:100%; border-collapse:collapse; }
@@ -65,7 +65,10 @@
       <div class="step" role="listitem"><strong>2 · Publish</strong>One expected-parent HF commit</div>
       <div class="step" role="listitem"><strong>3 · Verify</strong>Raw exact-SHA readback and receipt</div>
       <div class="step" role="listitem"><strong>4 · Render</strong>Website pins SHA and stages all routes</div>
-      <div class="step" role="listitem"><strong>5 · Promote</strong>Checks pass; prior pin remains rollback</div>
+      <div class="step" role="listitem"><strong>5 · Preview</strong>R1→R2→R1 browser and rollback drill</div>
+      <div class="step" role="listitem"><strong>6 · Authorize</strong>Owner binds one-time approval to exact release</div>
+      <div class="step" role="listitem"><strong>7 · Deploy</strong>Record pending, deploy exact pin, smoke read-only</div>
+      <div class="step" role="listitem"><strong>8 · Resolve</strong>Accept, or record failure and prove rollback</div>
     </div>
   </section>
 
@@ -93,17 +96,20 @@
         <li>The browser will use local validated assets; there will be no runtime HF dependency.</li>
         <li>Markup will live in real HTML page and child-panel partials.</li>
         <li>Static parent, field, and well routes will provide useful no-JS navigation.</li>
-        <li>Failed candidates will preserve the last-good complete site and revision cache.</li>
+        <li>One remote-CAS release state will expose preview, authorization, deploy-pending, accepted, failure, rollback, and unknown states.</li>
+        <li>Receipts will be checked against live trusted CI, Hugging Face, and deployment provenance rather than trusted as self-authored JSON.</li>
+        <li>Failed candidates will preserve or restore the last-good complete site and revision cache; unproven rollback will block further promotion.</li>
       </ul>
     </article>
     <article class="card">
       <h2>Approval gates</h2>
       <ol>
         <li>Architecture — approved.</li>
-        <li>T3 adversarial plan review — pending.</li>
+        <li>T3 adversarial plan review — Round 2 returned two MAJOR verdicts; Round 3 is required after correction.</li>
         <li>User approval of each issue plan — pending.</li>
         <li>TDD implementation — blocked until approval.</li>
-        <li>T3 code/artifact review, legal/security, browser and production verification — required before close.</li>
+        <li>Preview evidence — required before a separate, release-bound production authorization.</li>
+        <li>T3 code/artifact review, legal/security, trusted CI/browser and production verification — required before close.</li>
       </ol>
       <p>Draft website PR <a href="https://github.com/vamseeachanta/aceengineer-website/pull/73">#73</a> overlaps shared files and will be resolved or explicitly coordinated before website implementation.</p>
     </article>
