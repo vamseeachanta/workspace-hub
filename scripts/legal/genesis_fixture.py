@@ -1,4 +1,6 @@
 import hashlib, os, posixpath
+import json
+from verify_rule_authority_genesis_approval import parse_canonical_approval
 from pathlib import Path
 
 def _member(path: Path, role: str) -> dict:
@@ -16,3 +18,17 @@ def build_fixture_manifest(verifier: Path, entry: Path, expected=None) -> dict:
     if expected is not None and expected != manifest:
         raise ValueError("member identity or digest changed")
     return manifest
+
+def build_genesis_fixture(approval, contract, manifest, verifier, entry):
+    raw = Path(approval).read_bytes()
+    parse_canonical_approval(raw)
+    try:
+        doc = json.loads(Path(manifest).read_text())
+    except Exception as exc:
+        raise ValueError("invalid execution manifest") from exc
+    if doc.get("schema_id") != "legal-rule-genesis-execution-manifest-v1" or not doc.get("members"):
+        raise ValueError("manifest identity missing")
+    built = build_fixture_manifest(Path(verifier), Path(entry))
+    if doc != built:
+        raise ValueError("manifest identity mismatch")
+    return {"approval_sha256": hashlib.sha256(raw).hexdigest(), "manifest": built}
