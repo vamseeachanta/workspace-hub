@@ -80,6 +80,7 @@
 
 ## Smart Agent Router (v2.0)
 
+- **AGY provider naming**: when available on a machine, AGY (`agy`, Antigravity CLI) is the preferred Gemini-backed delegation/review surface for new work; use `scripts/review/submit-to-agy.sh`, while preserving legacy/internal `gemini` tokens where a schema requires them. Verify installation before dispatch; `agy` was missing from PowerShell and Git Bash on `ace-win-2` on 2026-07-16. See `topics/feedback_agy_replaces_gemini_cli.md`.
 - **Entry point**: `scripts/coordination/routing/route.sh` *verified: 2026-03-15*
 - **Model registry**: `config/agents/model-registry.yaml` (5 models across 3 providers) *verified: 2026-03-26*
 - **EWMA engine**: `scripts/coordination/routing/lib/model_registry.sh` *verified: 2026-03-25*

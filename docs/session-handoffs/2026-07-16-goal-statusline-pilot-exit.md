@@ -21,11 +21,11 @@ Pilot repo-managed native goals for substantive Claude/Codex sessions, make Code
 
 ## Blocker
 
-Claude CLI OAuth is expired and Gemini noninteractive authentication is unavailable. The T3 plan therefore lacks provider-diverse clearance and is not approval-ready. Codex returned MAJOR in both rounds; all six findings are patched, but repository policy requires another provider signal rather than a same-provider auto-cycle.
+Claude CLI OAuth is expired. The user clarified that AGY (`agy`, Antigravity) replaces the legacy Gemini CLI for this ecosystem, but `agy` is not installed or discoverable in PowerShell or Git Bash on `ace-win-2`. The T3 plan therefore lacks provider-diverse clearance and is not approval-ready. Codex returned MAJOR in both rounds; the plan text incorporates responses to all six findings, but no provider has cleared that revised text and repository policy requires another provider signal rather than a same-provider auto-cycle.
 
 ## Next checkpoint
 
-1. Re-authenticate Claude or Gemini on `ace-win-2`.
+1. Install and authenticate AGY on `ace-win-2` (or re-authenticate Claude).
 2. Run an adversarial review against `docs/plans/2026-07-16-issue-3555-goal-statusline-machine-pilot.md` at the latest branch commit.
 3. If no MAJOR remains, commit/push the review artifact, post evidence to #3555, and move only to `status:plan-review`.
 4. Stop for explicit user approval; never self-apply `status:plan-approved`.

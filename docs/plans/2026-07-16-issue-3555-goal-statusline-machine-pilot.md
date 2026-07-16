@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Lane:** lane:claude
 > **Execution mode:** parallel-readonly for planning and review; single-lane for the `ace-win-2` pilot; parallel-worktree only for later approved, disjoint rollout validation
-> **Review artifacts:** round 1 `scripts/review/results/2026-07-16-plan-3555-{claude,codex,gemini}.md`; round 2 `scripts/review/results/2026-07-16-plan-3555-r2-codex.md`
+> **Review artifacts:** round 1 legacy `scripts/review/results/2026-07-16-plan-3555-{claude,codex,gemini}.md`; round 2 `scripts/review/results/2026-07-16-plan-3555-r2-codex.md`
 
 ---
 
@@ -25,6 +25,7 @@
 
 ### Product contracts
 
+- The ecosystem's Gemini-backed CLI surface is now AGY (`agy`, Antigravity). New review dispatch will use `scripts/review/submit-to-agy.sh`; the round-1 `*-gemini.md` artifact remains historical evidence and will not be renamed.
 - Current Codex documentation defines `goals` as stable, `/goal` as the persistent task-goal command, `/statusline` as the native footer configurator, `/status` as the session/context view, and `/usage` as the account-usage view.
 - Current Codex configuration defines the footer as `[tui] status_line = [...]`. The pilot will use only item identifiers accepted by the installed CLI, including `model-with-reasoning`, `current-dir`, `context-remaining`, `five-hour-limit`, and `weekly-limit` when the interactive selector confirms them.
 - Current Claude Code documentation defines `/goal` as a native completion condition with an `◎ /goal active` indicator and status view. It defines `statusLine` as a user- or project-settings command that receives session JSON and may display context and cost data.
@@ -138,8 +139,8 @@ $ inspect live footer item set
 | Sync tests | `scripts/_core/tests/test_sync_agent_configs.sh`, `scripts/_core/tests/test_sync_agent_helpers.sh` |
 | Statusline tests | `tests/statusline/` |
 | Equality tests | `tests/readiness/test_collect_equality.py`, `tests/readiness/test_collect_equality_ps1_schema.py`, `tests/readiness/test_build_equality_matrix.py` |
-| Plan reviews | `scripts/review/results/2026-07-16-plan-3555-{claude,codex,gemini}.md`, then `scripts/review/results/2026-07-16-plan-3555-r*-{claude,codex,gemini}.md` |
-| Code reviews | `scripts/review/results/2026-07-16-code-3555-r*-{claude,codex,gemini}.md` |
+| Plan reviews | legacy round 1 `scripts/review/results/2026-07-16-plan-3555-{claude,codex,gemini}.md`; subsequent `scripts/review/results/2026-07-16-plan-3555-r*-{claude,codex,agy}.md` |
+| Code reviews | `scripts/review/results/2026-07-16-code-3555-r*-{claude,codex,agy}.md` |
 
 ---
 
@@ -302,10 +303,10 @@ Tests will be written and observed failing before implementation changes. In par
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude | UNAVAILABLE | CLI OAuth is expired; fanout retained the unavailable artifact. |
-| Codex | MAJOR (r1, r2) | Round 1 found the goal-gate conflict, Windows coverage gap, and unnamed evidence. Round 2 found attestation-before-test sequencing, setup-path bypass coverage, and a nonexistent noninteractive Codex rendering probe. This revision addresses all six findings. |
-| Gemini | UNAVAILABLE | Noninteractive authentication is unavailable; fanout retained the unavailable artifact. |
+| Codex | MAJOR (r1, r2) | Round 1 found the goal-gate conflict, Windows coverage gap, and unnamed evidence. Round 2 found attestation-before-test sequencing, setup-path bypass coverage, and a nonexistent noninteractive Codex rendering probe. The plan text incorporates responses to all six findings, but no provider has cleared the revised text. |
+| AGY (Gemini-backed) | UNAVAILABLE | Round 1 used the legacy Gemini CLI. The user corrected the provider surface to AGY; `agy` is not installed or discoverable on `ace-win-2`, so a fresh independent review is still pending. |
 
-**Overall result:** FAIL / REVISED — two Codex rounds found blocking defects; the main session applied the distinct round-2 findings inline per the r3 loop-break rule. Provider-diversity requirements remain unmet while Claude and Gemini authentication are unavailable; implementation remains blocked and the plan is not approval-ready.
+**Overall result:** FAIL / REVISED — two Codex rounds found blocking defects; the main session applied the distinct round-2 findings inline per the r3 loop-break rule. Provider-diversity requirements remain unmet while Claude is unauthenticated and AGY is absent on `ace-win-2`; implementation remains blocked and the plan is not approval-ready.
 
 ---
 

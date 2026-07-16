@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (209)
+## Feedback — execution lessons & hazards (210)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -16,6 +16,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [feedback_agent_can_verify_but_not_self_merge_pr](feedback_agent_can_verify_but_not_self_merge_pr.md) — Agent can complete the whole verify-gate flow but auto-mode blocks self-merging an agent-authored PR — human merges
 - [feedback_agent_cannot_enable_security_gate_bypass](feedback_agent_cannot_enable_security_gate_bypass.md) — Auto-mode classifier hard-blocks the agent from enabling/spreading/self-granting a pre-push security-gate bypass — even with explicit user instruction; human must exercise it
 - [Include agent prompts when creating stories](feedback_agent_prompts_with_stories.md) — User expects GH stories to come with ready-to-dispatch agent prompts — context, research phase, implementation scope, standards, constraints
+- [agy-replaces-gemini-cli](feedback_agy_replaces_gemini_cli.md) — "User directive 2026-07-16: AGY (Antigravity CLI) is the Gemini-backed provider surface; use agy for new dispatch/review instead of the legacy gemini CLI."
 - [Always adversarial review; scale depth not presence](feedback_always_adversarial_review_scale_depth.md) — Never offer to skip adversarial review based on T-class or scope; instead scale the review's depth, breadth, and provider count to the work
 - [feedback_always_update_equality_matrix](feedback_always_update_equality_matrix.md) — Always finish equality/fleet-related work by publishing the matrix to origin/main — the committed render is the canonical comparison surface and must never lag the work
 - [feedback_amend_clobbers_parallel_branch_in_shared_checkout](feedback_amend_clobbers_parallel_branch_in_shared_checkout.md) — "In the shared main checkout, git commit --amend can land on a parallel session's branch because they moved HEAD between your edit and commit — always use a dedicated worktree."

@@ -16,7 +16,7 @@
   <main>
     <h1>#3555: persistent goals and native Codex statusline</h1>
     <p><strong>Status:</strong> draft · <strong>Complexity:</strong> T3 · <strong>Lane:</strong> Claude orchestration</p>
-    <p class="gate"><strong>Gate:</strong> Codex returned MAJOR in rounds 1 and 2; the distinct round-2 defects were patched inline. Claude and Gemini were unavailable because authentication failed. Provider-diversity review remains unmet, so this plan is not approval-ready and implementation remains blocked.</p>
+    <p class="gate"><strong>Gate:</strong> Codex returned MAJOR in rounds 1 and 2; the distinct round-2 defects were patched inline. Claude is unauthenticated, and the replacement AGY (Gemini-backed) CLI is not installed on <code>ace-win-2</code>. Provider-diversity review remains unmet, so this plan is not approval-ready and implementation remains blocked.</p>
 
     <h2>Outcome</h2>
     <p>Substantive interactive Claude and Codex work will attach a provider-native goal. Goal progress will use native UI, while the statusline/footer will independently show context and usage. The configuration will be repo-managed, safely merged into machine-local settings, piloted on <code>ace-win-2</code>, and reported through per-machine equivalence evidence.</p>
