@@ -87,6 +87,9 @@
         a changed-path authority conflict, so further code changes will remain
         paused until the narrow amendment below receives adversarial review and
         explicit user approval. The agent will not self-approve.</p>
+      <p><strong>Current live state:</strong> amendment round 1 returned MAJOR in
+        all three adversarial lanes. <code>status:plan-approved</code> is removed,
+        <code>status:plan-review</code> remains, and no local approval marker exists.</p>
       <p><strong>Review round 3:</strong> Claude returned MINOR, Codex returned its
         third MAJOR, and Gemini was unavailable. Policy stops automatic cycling;
         duplicate-key, timestamp, hidden-residue, hook-scope, artifact-path, and
@@ -108,14 +111,17 @@
           own argv, redacted dry-run, exit mapping, and one-process launch behavior.</li>
         <li><code>tests/workstations/test_connection_cli.py</code> will own the
           command-boundary tests.</li>
-        <li><code>scripts/workspace</code> will pass or print the explicit
-          <code>dev-secondary</code> machine and explicit fallback intent so the
-          five migrated wrappers will not strand existing menu callers.</li>
+        <li><code>scripts/workspace</code> will remain unchanged: its helper paths
+          are already nonexistent, the file is 575 lines, and Windows fallback
+          must fail with exit 4. Follow-on issue #3561 will own its split, path
+          repair, and explicit machine-selection design.</li>
       </ul>
-      <p>The correction tests will forbid abbreviated options, require exit 126
-        for unexecutable clients and 130 for child SIGINT, keep overlay failures
-        out of registry exit 3, exercise the real executable/shebang boundary,
-        and runtime-assemble synthetic fallback addresses.</p>
+      <p>The correction tests will forbid abbreviated options, require exit 127
+        only for a missing client, 126 for all other pre-child execution errors,
+        and 130 for child SIGINT. Overlay availability will remain exit 4;
+        integrity, digest, and otherwise-unclassified local overlay I/O will be
+        exit 5 rather than registry exit 3. Tests will exercise the real
+        executable/shebang boundary and runtime-assemble synthetic addresses.</p>
       <p>This amendment will not change the approved architecture: hostname first,
         explicit verified fallback, conventional host-key checking, one shell-free
         OpenSSH launch, and no automatic retry.</p>
@@ -215,18 +221,20 @@
           <h3>Checked enforcement</h3>
           <p>The manifest will classify registry, core, CLI, wrappers, Tabby,
             endpoint-prohibited docs, and the separately owned VNC surface. Local
-            hooks inspect staged blobs; CI compares exact base and head commit blobs.</p>
+            hooks inspect staged blobs; CI compares exact base and head commit blobs.
+            The focused command module and CLI test module are explicit governed
+            paths, not implicit additions.</p>
         </article>
       </div>
     </section>
 
     <section>
-      <h2>TDD delivery sequence</h2>
+      <h2>TDD resume sequence</h2>
       <ol>
-        <li>Create a fresh worktree only after the base is proven to descend from merged #3553; never reuse the pre-merge planning worktree.</li>
-        <li>Write failing registry-bytes, duplicate-key, strict-policy, and collision tests; implement only that slice to green.</li>
-        <li>Write failing POSIX integrity, timestamp-order/bound, canonical-policy mutation/stability, legacy-field, and digest tests; implement only that slice to green.</li>
-        <li>Write failing CLI, redaction, canonical SSH argv, host-key, interrupt, and exit tests; implement only that slice to green.</li>
+        <li>Preserve the current WIP and its recorded Slice A/B/C RED/GREEN evidence without treating it as amendment approval.</li>
+        <li>Obtain a no-MAJOR amendment review and explicit renewed user approval.</li>
+        <li>Write failing review-driven tests for option abbreviation, ENOEXEC/other OSError mapping, child SIGINT, overlay I/O classification, direct executable mode, and endpoint-literal source safety.</li>
+        <li>Implement only those command-boundary corrections and return the focused CLI plus 53-node resolver suite to green.</li>
         <li>Write failing Bash, PowerShell, Tabby, and governed-manifest tests.</li>
         <li>Replace unsafe helpers with thin shared-CLI wrappers.</li>
         <li>Delete both tracked FUSE-hidden helper residues, reject recurrence, and implement the manifest-backed staged/commit guard.</li>
@@ -235,9 +243,9 @@
         <li>Update the canonical runbook and directly affected helper references.</li>
         <li>Run adversarial artifact review, scans, completeness, and cleanup gates.</li>
       </ol>
-      <p class="muted">Every slice will record its RED failure before implementation,
-        reach GREEN with the minimum change, and restart affected checks after any
-        review-driven edit.</p>
+      <p class="muted">Every new correction will record a review-driven RED before
+        its production edit, reach GREEN with the minimum change, and restart
+        affected checks after any review-driven edit.</p>
     </section>
 
     <section class="success">
@@ -252,7 +260,7 @@
         <li>Bash and native PowerShell behavior are tested through the required <code>uv</code> runtime.</li>
         <li>Manifest-backed staged and commit enforcement catches added files, odd filenames, index/worktree races, and adjacent unsentinelled violations.</li>
         <li>Changed-code coverage explicitly includes the shared launcher under <code>scripts/operations/connection/</code>.</li>
-        <li>Implementation cannot start until multi-provider plan review completes and the user applies <code>status:plan-approved</code>.</li>
+        <li>Implementation correction cannot resume until amendment review has no MAJOR finding and the user reapplies <code>status:plan-approved</code>.</li>
       </ul>
     </section>
 
