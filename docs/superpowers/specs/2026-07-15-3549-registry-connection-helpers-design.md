@@ -157,6 +157,86 @@ owns VNC and secondary-machine capability reconciliation. Sync helpers without
 connection literals will remain unchanged unless Tabby template handling requires
 a narrowly scoped update.
 
+## Exact Runtime Contract
+
+The registry connection object will be closed and versioned:
+
+```yaml
+connection:
+  schema_version: 1
+  preferred_route: ssh
+  fallback:
+    kind: tailscale_ip
+    reference: <machine-key>-tailscale
+    attestation_issue: <rollout-issue-number>
+    max_age_seconds: 604800
+```
+
+The existing top-level `ssh` value will remain the canonical hostname. Reference
+values will use lower-case letters, digits, and hyphens; maximum age will be an
+integer from 300 through 2592000 seconds. One case-folded identifier may occur
+more than once inside the same machine record, but it may not belong to two
+different machines.
+
+The local overlay will be an OS-owner assertion, not a signed attestation:
+
+```yaml
+schema_version: 1
+records:
+  <machine-key>-tailscale:
+    machine: <machine-key>
+    address: <machine-local-observed-value>
+    status: verified
+    evidence: https://github.com/vamseeachanta/workspace-hub/issues/<rollout-issue>#issuecomment-<id>
+    verified_at: <RFC-3339-UTC-seconds>
+    expires_at: <RFC-3339-UTC-seconds>
+    registry_sha256: <64-lowercase-hex>
+```
+
+On POSIX, the default will be
+`${XDG_CONFIG_HOME:-${HOME}/.config}/workspace-hub/connection-overlay.yaml`.
+The immediate directory and file will be real, current-user-owned objects; the
+file will be a regular non-symlink with mode no broader than `0600`, and the
+directory will have no group/world write bits. An explicit overlay path will
+retain every check and will be rejected inside the Git worktree. Live issuance
+will belong to rollout issues #3550/#3551; #3549 will load only synthetic test
+records. Windows hostname mode will be supported, while fallback will return the
+documented unsupported exit until a native ACL validator is separately reviewed.
+
+The shared command will require `uv` and will expose machine, fallback, dry-run,
+user, registry-path, and overlay-path options. Generic wrappers will require an
+explicit machine; the secondary-named wrapper will retain its fixed machine ID.
+Removed terminal-method options will fail as usage errors rather than silently
+selecting another launch path.
+
+Fallback OpenSSH argv will keep the canonical hostname as its positional
+destination. Fixed options will override only `HostName` with the verified local
+address, bind `HostKeyAlias` to the canonical hostname, and force
+`StrictHostKeyChecking=yes`. This preserves the canonical SSH `Host` block and
+known-host identity. Caller-supplied SSH options will not be accepted.
+
+| Exit | Contract |
+|---:|---|
+| 0 | Dry-run or SSH succeeds |
+| 2 | Usage, legacy option, or unknown machine |
+| 3 | Registry schema or cross-machine ambiguity |
+| 4 | Fallback unavailable, unsafe, stale, unverified, or unsupported on the OS |
+| 5 | Digest or local-file integrity failure |
+| 126 | Selected executable cannot run |
+| 127 | Required uv/Python/OpenSSH runtime is missing |
+| Other | OpenSSH exit code; operator interrupt is 130 |
+
+Resolver and dry-run diagnostics will remain redacted. Interactive OpenSSH will
+inherit the terminal streams, and its own local diagnostics may display its
+destination; those bytes are outside the durable-log redaction boundary.
+
+The staged/CI guard will use a checked governed-path manifest. It will include
+the registry policy, connection core and CLI, all migrated wrappers, Tabby
+configuration, endpoint-prohibited docs, and an explicit deferred VNC row. Local
+mode will read exact staged blobs; CI mode will read exact head-commit blobs.
+Hook installation will resolve the hooks directory with
+`git rev-parse --git-path hooks` so linked worktrees are supported.
+
 ## Output and Error Contract
 
 Dry-run output will be deterministic JSON containing only logical machine ID,
