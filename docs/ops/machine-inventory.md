@@ -4,6 +4,7 @@
 > **Issue:** [#2548](https://github.com/vamseeachanta/workspace-hub/issues/2548)
 > **Sources:** `config/workstations/registry.yaml` (canonical for ssh/workspace/capabilities), `docs/ops/2026-05-04-multimachine-baseline-inventory.md` (program availability), `docs/BUSINESS_BRAIN.md` §AI Provider Accounts (provider plan)
 > **Purpose:** Per `docs/BUSINESS_BRAIN.md` §Machines: "Machine inventory must answer installed programs, license availability, AI-provider auth state, repo checkout locations, run/smoke-test commands, and what work may be dispatched safely."
+> **Remote access:** [Canonical remote Linux access runbook](remote-linux-access.md) governs transport, authentication, hardening, verification, and recovery; this inventory records fleet facts only.
 
 ---
 

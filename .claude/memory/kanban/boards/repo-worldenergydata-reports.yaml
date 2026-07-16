@@ -1628,3 +1628,21 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1044
+    title: 'feat(cost): FDAS workbook reconciliation and integrated cost-map report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1044
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - route:C
+      - cat:engineering-calculations
+      - domain:reports
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

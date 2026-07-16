@@ -453,3 +453,19 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#72
+    title: 'feat(reports): publish interactive tank-sloshing CFD case and summary reports'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/72
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:done
+      - cat:engineering-calculations
+      - cat:data
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
