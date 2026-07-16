@@ -86,8 +86,12 @@
       <p>The design is approved. This implementation plan will require adversarial
         review and explicit user-applied <code>status:plan-approved</code> before
         code changes begin. The agent will not self-approve.</p>
-      <p><strong>Dependency:</strong> the reviewed #3548 runbook must land through
-        PR #3553 before implementation starts.</p>
+      <p><strong>Review round 1:</strong> Claude and Codex returned MAJOR; Gemini
+        was unavailable for missing noninteractive credentials. The dependency,
+        file-map, digest, Gitleaks, completeness, and Windows-reporting findings
+        are corrected here and await round 2.</p>
+      <p><strong>Dependency:</strong> the reviewed #3548 runbook landed through
+        PR #3553 at merge commit <code>24d6c66</code>.</p>
     </section>
 
     <div class="grid">
@@ -100,7 +104,7 @@
       <article class="card">
         <h3>Local observation</h3>
         <p>A repository-external overlay will hold the OS-owner assertion, evidence
-          reference, timestamps, machine binding, and registry digest. On POSIX it
+          reference, timestamps, machine binding, and connection-policy digest. On POSIX it
           must be an owner-controlled regular non-symlink with mode no broader than
           <code>0600</code>, under a non-group/world-writable parent.</p>
       </article>
@@ -141,7 +145,7 @@
       <table>
         <thead><tr><th>Area</th><th>Planned change</th></tr></thead>
         <tbody>
-          <tr><td>Registry and resolver</td><td>Strict connection policy, typed collision handling, and immutable registry digest.</td></tr>
+          <tr><td>Registry and resolver</td><td>Strict full-registry validation, typed collision handling, and deterministic per-machine connection-policy digest.</td></tr>
           <tr><td>Connection core</td><td>New connection model and shared <code>connect-workstation.py</code> CLI through the required <code>uv</code> runtime.</td></tr>
           <tr><td>Bash</td><td>Three current SSH entry points plus the generic Linux helper will become thin wrappers.</td></tr>
           <tr><td>PowerShell</td><td>Two helpers will use argument arrays and the shared hostname contract; fallback will return exit <code>4</code>.</td></tr>
@@ -160,7 +164,8 @@
           <h3>Overlay integrity</h3>
           <ul>
             <li>Read the registry and selected overlay once into immutable snapshots.</li>
-            <li>Reject symlinks, wrong owners, non-regular files, broad modes, unsafe parents, stale evidence, and digest mismatches.</li>
+            <li>Reject symlinks, wrong owners, non-regular files, broad modes, unsafe parents, stale evidence, legacy digest fields, and policy-digest mismatches.</li>
+            <li>Hash every security-relevant field in versioned canonical ASCII JSON; unrelated valid registry edits do not invalidate the selected machine.</li>
             <li>Keep the overlay outside the repository; it is an owner assertion, not a signed attestation.</li>
           </ul>
         </article>
@@ -190,14 +195,14 @@
     <section>
       <h2>TDD delivery sequence</h2>
       <ol>
-        <li>Land #3548, update from <code>main</code>, recheck parallel work and baseline.</li>
+        <li>Start from merged #3553 on <code>main</code>, recheck parallel work and baseline.</li>
         <li>Write failing registry-bytes, strict-policy, and collision tests; implement only that slice to green.</li>
-        <li>Write failing POSIX owner, mode, symlink, parent, attestation, freshness, and digest tests; implement only that slice to green.</li>
+        <li>Write failing POSIX integrity, attestation, canonical-policy mutation/stability, legacy-field, and digest tests; implement only that slice to green.</li>
         <li>Write failing CLI, redaction, canonical SSH argv, host-key, interrupt, and exit tests; implement only that slice to green.</li>
         <li>Write failing Bash, PowerShell, Tabby, and governed-manifest tests.</li>
         <li>Replace unsafe helpers with thin shared-CLI wrappers.</li>
         <li>Write staged- and commit-state threat-model tests, then implement the manifest-backed endpoint guard.</li>
-        <li>Prove native PowerShell hostname behavior and fail-closed fallback exit <code>4</code> on Windows CI without allowing a skipped suite.</li>
+        <li>Separate Windows infrastructure failure from required-native test results; required mode will contain no skip path and fallback will return exit <code>4</code>.</li>
         <li>Update the canonical runbook and directly affected helper references.</li>
         <li>Run adversarial artifact review, scans, completeness, and cleanup gates.</li>
       </ol>
@@ -210,7 +215,7 @@
       <h2>Success contract</h2>
       <ul>
         <li>Every governed SSH helper resolves through one validated command.</li>
-        <li>Hostname access is the default; POSIX fallback is explicit, current, owner-asserted, and digest-bound.</li>
+        <li>Hostname access is the default; POSIX fallback is explicit, current, owner-asserted, and bound to the canonical per-machine policy.</li>
         <li>Windows hostname access works natively; unsupported fallback returns exit <code>4</code>.</li>
         <li>No SSH failure silently changes destination.</li>
         <li>Fallback retains canonical host configuration and host-key identity with strict checking.</li>
@@ -224,9 +229,10 @@
     <section class="risk">
       <h2>Known risks</h2>
       <ul>
-        <li>PR #3553 is not yet on <code>main</code>; this remains a hard dependency.</li>
+        <li>Implementation must prove its base descends from merged #3553 before RED tests begin.</li>
         <li>Current-tree cleanup will not erase historical endpoint exposure.</li>
-        <li>A global registry digest will deliberately invalidate fallback after any registry edit.</li>
+        <li>Projection omission could weaken invalidation; closed-field mutation tests and format versioning will guard it.</li>
+        <li>Gitleaks v8.30.1 will be checksum-pinned and forced to embedded defaults with a runtime positive control before scanning the frozen candidate tree.</li>
         <li>POSIX fallback depends on restrictive local ownership and permissions; Windows fallback remains unsupported.</li>
         <li>The existing workstation suite has one unrelated recorded baseline failure.</li>
         <li>Endpoint enforcement must remain narrow enough not to block its own tests and review evidence while covering every checked manifest entry.</li>
