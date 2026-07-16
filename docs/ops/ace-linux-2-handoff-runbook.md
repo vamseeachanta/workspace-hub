@@ -27,6 +27,7 @@ From the workspace-hub repository root on ace-linux-1:
 - VNC helper: `scripts/operations/connection/vnc-ace-linux-2.sh`
 - Planning-state bundle helper: `scripts/operations/workstation-handoff.sh`
 - Workstation registry: `config/workstations/registry.yaml`
+- Remote access authority: [canonical remote Linux access runbook](remote-linux-access.md)
 
 Remote workspace path on ace-linux-2:
 
@@ -67,11 +68,12 @@ Expected:
 - The workspace path exists and is a Git checkout.
 - Dirty state is either empty or explicitly owned by the current handoff.
 
-If the hostname alias fails, use the helper script for interactive access, or fall back to the registry Tailscale IP if needed:
+If the hostname alias fails, stop and use the canonical remote-access troubleshooting
+and recovery procedure. Do not copy a point-in-time endpoint from historical notes.
+The helper remains a convenience layer and must agree with the registry and runbook:
 
 ```bash
 scripts/operations/connection/ssh-dev-secondary.sh
-ssh vamsee@10.1.0.2 'hostname'
 ```
 
 ### 3.3 Required tool presence
@@ -139,7 +141,7 @@ What the helper does:
 - Verifies `xtigervncviewer` exists locally.
 - Checks whether `x11vnc` is listening on ace-linux-2 port 5900.
 - If missing, attempts to discover the active X display and start `x11vnc` on localhost-only port 5900.
-- Opens an SSH tunnel from local port 5900 to ace-linux-2 localhost:5900.
+- Opens an SSH tunnel from local port 5900 to ace-linux-2 localhost:5900. <!-- ssh-local-loopback-policy -->
 - Launches `xtigervncviewer localhost:5900`.
 - Closes the tunnel when the viewer exits.
 
