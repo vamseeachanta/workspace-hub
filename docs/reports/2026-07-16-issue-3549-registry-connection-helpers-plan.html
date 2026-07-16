@@ -86,10 +86,10 @@
       <p>The design is approved. This implementation plan will require adversarial
         review and explicit user-applied <code>status:plan-approved</code> before
         code changes begin. The agent will not self-approve.</p>
-      <p><strong>Review round 2:</strong> Claude and Codex returned MAJOR; Gemini
-        was unavailable for missing noninteractive credentials. The completeness
-        opt-in, stale dependency wording, fresh-base precondition, launcher
-        coverage, and review-output race are corrected here and await round 3.</p>
+      <p><strong>Review round 3:</strong> Claude returned MINOR, Codex returned its
+        third MAJOR, and Gemini was unavailable. Policy stops automatic cycling;
+        duplicate-key, timestamp, hidden-residue, hook-scope, artifact-path, and
+        runtime findings are corrected inline for the user decision gate.</p>
       <p><strong>Dependency:</strong> the reviewed #3548 runbook landed through
         PR #3553 at merge commit <code>24d6c66</code>.</p>
       <p><strong>Real close gate:</strong> issue #3549 now carries
@@ -167,7 +167,8 @@
           <h3>Overlay integrity</h3>
           <ul>
             <li>Read the registry and selected overlay once into immutable snapshots.</li>
-            <li>Reject symlinks, wrong owners, non-regular files, broad modes, unsafe parents, stale evidence, legacy digest fields, and policy-digest mismatches.</li>
+            <li>Reject duplicate YAML keys, symlinks, wrong owners, non-regular files, broad modes, unsafe parents, stale evidence, legacy digest fields, and policy-digest mismatches.</li>
+            <li>Require <code>verified_at ≤ now &lt; expires_at</code> and a validity interval no longer than policy.</li>
             <li>Hash every security-relevant field in versioned canonical ASCII JSON; unrelated valid registry edits do not invalidate the selected machine.</li>
             <li>Keep the overlay outside the repository; it is an owner assertion, not a signed attestation.</li>
           </ul>
@@ -199,12 +200,13 @@
       <h2>TDD delivery sequence</h2>
       <ol>
         <li>Create a fresh worktree only after the base is proven to descend from merged #3553; never reuse the pre-merge planning worktree.</li>
-        <li>Write failing registry-bytes, strict-policy, and collision tests; implement only that slice to green.</li>
-        <li>Write failing POSIX integrity, attestation, canonical-policy mutation/stability, legacy-field, and digest tests; implement only that slice to green.</li>
+        <li>Write failing registry-bytes, duplicate-key, strict-policy, and collision tests; implement only that slice to green.</li>
+        <li>Write failing POSIX integrity, timestamp-order/bound, canonical-policy mutation/stability, legacy-field, and digest tests; implement only that slice to green.</li>
         <li>Write failing CLI, redaction, canonical SSH argv, host-key, interrupt, and exit tests; implement only that slice to green.</li>
         <li>Write failing Bash, PowerShell, Tabby, and governed-manifest tests.</li>
         <li>Replace unsafe helpers with thin shared-CLI wrappers.</li>
-        <li>Write staged- and commit-state threat-model tests, then implement the manifest-backed endpoint guard.</li>
+        <li>Delete both tracked FUSE-hidden helper residues, reject recurrence, and implement the manifest-backed staged/commit guard.</li>
+        <li>Add an endpoint-only hook installer mode that is idempotent in normal and linked worktrees; broader installer repair remains #3435.</li>
         <li>Separate Windows infrastructure failure from required-native test results; required mode will contain no skip path and fallback will return exit <code>4</code>.</li>
         <li>Update the canonical runbook and directly affected helper references.</li>
         <li>Run adversarial artifact review, scans, completeness, and cleanup gates.</li>
