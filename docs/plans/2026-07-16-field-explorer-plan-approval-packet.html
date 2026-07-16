@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Field Explorer Plan Approval Packet</title>
+  <style>
+    :root { color-scheme: light; --ink:#172033; --muted:#596579; --paper:#f6f3ec; --card:#fff; --line:#d8d2c5; --accent:#0f6b5b; --warn:#8a5a00; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.55 system-ui,-apple-system,Segoe UI,sans-serif; }
+    main { width:min(1120px,calc(100% - 2rem)); margin:2rem auto 4rem; }
+    header,.card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:clamp(1rem,3vw,2rem); box-shadow:0 8px 28px rgba(23,32,51,.06); }
+    header { border-top:6px solid var(--accent); }
+    h1,h2 { line-height:1.15; }
+    h1 { margin:.25rem 0 .5rem; font-size:clamp(2rem,5vw,3.5rem); }
+    h2 { margin-top:0; }
+    .eyebrow { color:var(--accent); font-weight:750; letter-spacing:.08em; text-transform:uppercase; }
+    .status { display:inline-block; margin:.75rem 0; padding:.35rem .65rem; border-radius:999px; background:#fff1cf; color:var(--warn); font-weight:700; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; margin-top:1rem; }
+    .flow { display:grid; grid-template-columns:repeat(5,minmax(140px,1fr)); gap:.65rem; overflow-x:auto; padding-bottom:.35rem; }
+    .step { min-width:140px; padding:.8rem; border:1px solid var(--line); border-radius:10px; background:#fbfaf7; }
+    .step strong { display:block; color:var(--accent); }
+    table { width:100%; border-collapse:collapse; }
+    th,td { padding:.65rem; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-size:.85rem; text-transform:uppercase; letter-spacing:.04em; }
+    a { color:#075f9b; }
+    code { background:#eeeae0; padding:.1rem .3rem; border-radius:4px; }
+    ul { padding-left:1.2rem; }
+    .note { border-left:4px solid var(--accent); padding-left:1rem; }
+    @media (max-width:700px) { main { width:min(100% - 1rem,1120px); margin-top:.5rem; } th:nth-child(3),td:nth-child(3) { display:none; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">Plan approval packet · 2026-07-16</div>
+    <h1>Field Explorer</h1>
+    <p>Scalable, registry-driven HTML pages for immutable Hugging Face field and well results.</p>
+    <div class="status">Architecture approved · implementation not approved</div>
+    <p class="note">This packet will support one explicit approval decision for three independently gated issue plans. Parent approval will not silently approve either child.</p>
+  </header>
+
+  <section class="grid" aria-label="Issue plans">
+    <article class="card">
+      <h2>Program contract</h2>
+      <p><a href="https://github.com/vamseeachanta/workspace-hub/issues/3559">workspace-hub #3559</a> will own lifecycle, promotion, rollback, coverage truth, and cross-repository verification.</p>
+      <p><a href="2026-07-16-issue-3559-field-explorer-cross-repo-program.md">Open parent plan</a></p>
+    </article>
+    <article class="card">
+      <h2>Authoritative publisher</h2>
+      <p><a href="https://github.com/vamseeachanta/worldenergydata/issues/1045">worldenergydata #1045</a> will own identities, schemas, provenance, browser shards, one atomic HF commit, exact-SHA readback, and receipt.</p>
+      <p><a href="2026-07-16-issue-1045-wed-hf-browser-snapshot.md">Open publisher plan</a></p>
+    </article>
+    <article class="card">
+      <h2>Website renderer</h2>
+      <p><a href="https://github.com/vamseeachanta/aceengineer-website/issues/74">aceengineer-website #74</a> will own the pinned registry, actual parent/child HTML partials, selectors, static routes, deep links, accessibility, and deployment.</p>
+      <p><a href="2026-07-16-issue-74-website-pinned-field-well-drilldown.md">Open website plan</a></p>
+    </article>
+  </section>
+
+  <section class="card" style="margin-top:1rem">
+    <h2>Release lifecycle</h2>
+    <div class="flow" role="list">
+      <div class="step" role="listitem"><strong>1 · Build</strong>Clean WED source revision and deterministic outputs</div>
+      <div class="step" role="listitem"><strong>2 · Publish</strong>One expected-parent HF commit</div>
+      <div class="step" role="listitem"><strong>3 · Verify</strong>Raw exact-SHA readback and receipt</div>
+      <div class="step" role="listitem"><strong>4 · Render</strong>Website pins SHA and stages all routes</div>
+      <div class="step" role="listitem"><strong>5 · Promote</strong>Checks pass; prior pin remains rollback</div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top:1rem">
+    <h2>Coverage assessment</h2>
+    <table>
+      <thead><tr><th>Tier</th><th>Available</th><th>What it means</th><th>Plan treatment</th></tr></thead>
+      <tbody>
+        <tr><td>V1 standardized</td><td>10 fields · 56 wells</td><td>Rich field results with stable identities; seven fields have wells and three have explicit empty states.</td><td>Will publish and render now.</td></tr>
+        <tr><td>Existing field pages</td><td>115</td><td>BSEE FDP pages exist, but do not yet have equivalent standardized well drill-down.</td><td>Will remain outside V1.</td></tr>
+        <tr><td>Named/material expansion</td><td>131 additional</td><td>Candidate fields with enough naming/material evidence for further analysis.</td><td>Next readiness tier.</td></tr>
+        <tr><td>Named/producing expansion</td><td>201 additional</td><td>Broader candidate tier requiring identity, license, schema, and field/well join admission.</td><td>Later governed expansion.</td></tr>
+        <tr><td>Producing codes</td><td>1,256</td><td>Field-code population; 1,055 still need name/lease enrichment.</td><td>Not claimed as analyzed.</td></tr>
+        <tr><td>BSEE field codes</td><td>1,389</td><td>Full code universe, not a standardized result set.</td><td>Long-term ceiling, not current availability.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="grid">
+    <article class="card">
+      <h2>Fixed architecture decisions</h2>
+      <ul>
+        <li>worldenergydata remains authoritative for data, IDs, schemas, provenance, and licenses.</li>
+        <li>The website will consume only one exact HF revision through raw resolve URLs at build time.</li>
+        <li>The browser will use local validated assets; there will be no runtime HF dependency.</li>
+        <li>Markup will live in real HTML page and child-panel partials.</li>
+        <li>Static parent, field, and well routes will provide useful no-JS navigation.</li>
+        <li>Failed candidates will preserve the last-good complete site and revision cache.</li>
+      </ul>
+    </article>
+    <article class="card">
+      <h2>Approval gates</h2>
+      <ol>
+        <li>Architecture — approved.</li>
+        <li>T3 adversarial plan review — pending.</li>
+        <li>User approval of each issue plan — pending.</li>
+        <li>TDD implementation — blocked until approval.</li>
+        <li>T3 code/artifact review, legal/security, browser and production verification — required before close.</li>
+      </ol>
+      <p>Draft website PR <a href="https://github.com/vamseeachanta/aceengineer-website/pull/73">#73</a> overlaps shared files and will be resolved or explicitly coordinated before website implementation.</p>
+    </article>
+  </section>
+</main>
+</body>
+</html>
