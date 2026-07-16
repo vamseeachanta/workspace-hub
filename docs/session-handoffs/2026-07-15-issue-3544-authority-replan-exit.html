@@ -14,7 +14,18 @@
 </head>
 <body>
   <h1>Issue 3544 authority replan handoff</h1>
-  <p><strong>Date:</strong> 2026-07-15 · <strong>State:</strong> blocked-needs-replan</p>
+  <p><strong>Date:</strong> 2026-07-15 · <strong>State:</strong> superseded by newer approved parallel work</p>
+
+  <div class="blocked">
+    <h2>Supersession notice</h2>
+    <p>This handoff records the earlier R7 checkpoint only. A parallel session
+    subsequently completed R18 review, received fresh user approval for exact plan
+    commit <code>0e3d9bff8b19792fb8bca49950c83c52b6c79926</code>, created the approval marker,
+    and began TDD implementation on <code>origin/feature/3544-authority-activation</code>.
+    The locally verified active branch head at exit was
+    <code>a2b6f2683e934540e27ba551c8bf843548b5d7a8</code>. Do not use this historical
+    branch to downgrade, replace, or merge over that active work.</p>
+  </div>
 
   <h2>Active task</h2>
   <p>Correct and operationalize the Phase A legal-rule authority activation so the
@@ -67,12 +78,10 @@
   separately authorized, non-public history-remediation transaction.</p>
 
   <h2>Exact next checkpoint</h2>
-  <p>First rotate the exposed machine-access passwords through a non-public
-  remediation path. Then revise the plan—not implementation—to specify an owner-only, no-overwrite,
-  fsynced approval-consumption tombstone retained across all outcomes, and a
-  minimal verified parser executed before the authority entry point or entropy.
-  Add crash/replay and parser-substitution RED tests, then start a new reviewed
-  plan revision. Do not advance the GitHub label or create an approval marker
-  until a fresh no-MAJOR review and explicit user approval.</p>
+  <p>Preserve the active implementation lane and resume only after checking its
+  current owner/session and latest remote head. Continue TDD and code/artifact
+  review under the exact approved plan; external genesis and GitHub activation
+  remain separately approval-gated. Independently rotate the exposed
+  machine-access passwords through a non-public remediation path.</p>
 </body>
 </html>
