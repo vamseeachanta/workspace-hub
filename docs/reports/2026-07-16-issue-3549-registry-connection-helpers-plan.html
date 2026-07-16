@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>#3549 — Registry-Driven Connection Helpers Plan</title>
+  <style>
+    :root {
+      --ink: #172126;
+      --muted: #59676d;
+      --paper: #f5f2ea;
+      --card: #fffdf7;
+      --line: #d8d2c5;
+      --navy: #123a4a;
+      --teal: #087e78;
+      --amber: #c46b18;
+      --red: #9d2f2f;
+      --green: #23724d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font: 16px/1.55 Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+    header {
+      color: white;
+      background: linear-gradient(120deg, var(--navy), #195d68 68%, var(--teal));
+      padding: 3.5rem max(1.5rem, calc((100vw - 1120px) / 2));
+    }
+    header p { max-width: 780px; color: #dcecef; }
+    h1 { margin: 0 0 .7rem; font-size: clamp(2rem, 5vw, 4rem); line-height: 1.05; }
+    h2 { color: var(--navy); margin-top: 0; }
+    h3 { color: var(--teal); }
+    main { max-width: 1120px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    section, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 8px 26px rgb(37 51 56 / 7%);
+      margin: 1.2rem 0;
+      padding: 1.5rem;
+    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; }
+    .grid .card { margin: 0; }
+    .tag {
+      display: inline-block;
+      border: 1px solid rgb(255 255 255 / 45%);
+      border-radius: 999px;
+      margin: .25rem .35rem .25rem 0;
+      padding: .25rem .65rem;
+      font-size: .85rem;
+    }
+    .gate { border-left: 6px solid var(--amber); }
+    .risk { border-left: 6px solid var(--red); }
+    .success { border-left: 6px solid var(--green); }
+    .muted { color: var(--muted); }
+    code { background: #e8ece8; border-radius: 4px; padding: .1rem .3rem; }
+    pre { overflow-x: auto; background: #102a34; color: #e5f5f4; padding: 1rem; border-radius: 9px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border-bottom: 1px solid var(--line); padding: .7rem; text-align: left; vertical-align: top; }
+    th { color: var(--navy); }
+    li + li { margin-top: .45rem; }
+    a { color: var(--teal); }
+    .flow { display: flex; flex-wrap: wrap; align-items: center; gap: .55rem; }
+    .flow span { background: #e3efed; border-radius: 8px; padding: .6rem .8rem; }
+    .flow b { color: var(--amber); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="tag">Issue #3549</div>
+    <div class="tag">T3 security change</div>
+    <div class="tag">Status: draft plan</div>
+    <h1>Registry-Driven Connection Helpers</h1>
+    <p>A hostname-first, fail-closed connection architecture for two Linux
+      workstations, with machine-local verified fallback and one shared execution
+      boundary across Bash and PowerShell.</p>
+  </header>
+  <main>
+    <section class="gate">
+      <h2>Current human gate</h2>
+      <p>The design is approved. This implementation plan will require adversarial
+        review and explicit user-applied <code>status:plan-approved</code> before
+        code changes begin. The agent will not self-approve.</p>
+      <p><strong>Dependency:</strong> the reviewed #3548 runbook must land through
+        PR #3553 before implementation starts.</p>
+    </section>
+
+    <div class="grid">
+      <article class="card">
+        <h3>Public authority</h3>
+        <p>The workstation registry will hold canonical identity, MagicDNS/SSH
+          hostname policy, and an opaque fallback reference—never an observed
+          fallback address.</p>
+      </article>
+      <article class="card">
+        <h3>Local observation</h3>
+        <p>A gitignored overlay will hold the verified address, evidence reference,
+          timestamps, machine binding, and registry digest.</p>
+      </article>
+      <article class="card">
+        <h3>Single execution boundary</h3>
+        <p>Python will validate, resolve, redact, and launch OpenSSH with an argument
+          vector. Shell wrappers will not parse configuration or build commands.</p>
+      </article>
+      <article class="card">
+        <h3>Explicit fallback only</h3>
+        <p>No DNS, timeout, host-key, or authentication failure will cause a second
+          destination attempt. Fallback will be a distinct operator action.</p>
+      </article>
+    </div>
+
+    <section>
+      <h2>Authority and data flow</h2>
+      <div class="flow" aria-label="Connection authority flow">
+        <span>Registry identity + policy</span><b>→</b>
+        <span>Strict Python resolver</span><b>→</b>
+        <span>Hostname route</span><b>or explicit</b>
+        <span>Verified local overlay</span><b>→</b>
+        <span>OpenSSH argv</span>
+      </div>
+      <p class="muted">Credentials, keys, endpoints, operator identities, and raw
+        rejected values will not enter plans, logs, dry-run output, or tracked
+        helper defaults.</p>
+    </section>
+
+    <section>
+      <h2>Governed surface</h2>
+      <table>
+        <thead><tr><th>Area</th><th>Planned change</th></tr></thead>
+        <tbody>
+          <tr><td>Registry and resolver</td><td>Strict connection policy, typed collision handling, and immutable registry digest.</td></tr>
+          <tr><td>Connection core</td><td>New connection model and shared <code>connect-workstation.py</code> CLI.</td></tr>
+          <tr><td>Bash</td><td>Three current SSH entry points plus the generic Linux helper will become thin wrappers.</td></tr>
+          <tr><td>PowerShell</td><td>Two helpers will use argument arrays and the same shared resolver contract.</td></tr>
+          <tr><td>Tabby</td><td>Tracked endpoint and operator defaults will be removed while unrelated preferences remain.</td></tr>
+          <tr><td>Enforcement</td><td>An exact-path staged-blob guard will prevent endpoint defaults from returning.</td></tr>
+          <tr><td>CI</td><td>Linux tests plus a native Windows PowerShell job will prove parity.</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Excluded:</strong> VNC behavior remains owned by #3550.</p>
+    </section>
+
+    <section>
+      <h2>TDD delivery sequence</h2>
+      <ol>
+        <li>Land #3548, update from <code>main</code>, recheck parallel work and baseline.</li>
+        <li>Write failing strict-resolver, overlay, redaction, digest, and fallback tests.</li>
+        <li>Implement the minimum connection core to reach green.</li>
+        <li>Write failing Bash, PowerShell, Tabby, and governed-manifest tests.</li>
+        <li>Replace unsafe helpers with thin shared-CLI wrappers.</li>
+        <li>Write staged-state threat-model tests, then implement the endpoint guard.</li>
+        <li>Prove native PowerShell behavior on Windows CI.</li>
+        <li>Update the canonical runbook and directly affected helper references.</li>
+        <li>Run adversarial artifact review, scans, completeness, and cleanup gates.</li>
+      </ol>
+    </section>
+
+    <section class="success">
+      <h2>Success contract</h2>
+      <ul>
+        <li>Every governed SSH helper resolves through one validated command.</li>
+        <li>Hostname access is the default; fallback is explicit and attested.</li>
+        <li>No SSH failure silently changes destination.</li>
+        <li>Fallback retains canonical host-key identity.</li>
+        <li>Dry-run executes nothing and reveals no target or identity.</li>
+        <li>Bash and native PowerShell behavior are both tested.</li>
+        <li>Staged enforcement catches added files, odd filenames, index/worktree races, and adjacent unsentinelled violations.</li>
+      </ul>
+    </section>
+
+    <section class="risk">
+      <h2>Known risks</h2>
+      <ul>
+        <li>PR #3553 is not yet on <code>main</code>; this remains a hard dependency.</li>
+        <li>Current-tree cleanup will not erase historical endpoint exposure.</li>
+        <li>A global registry digest will deliberately invalidate fallback after any registry edit.</li>
+        <li>The existing workstation suite has one unrelated recorded baseline failure.</li>
+        <li>Endpoint enforcement must remain narrow enough not to block its own tests and review evidence.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Durable references</h2>
+      <ul>
+        <li><a href="https://github.com/vamseeachanta/workspace-hub/issues/3549">Issue #3549</a></li>
+        <li><a href="https://github.com/vamseeachanta/workspace-hub/blob/chore/3549-registry-connection-design/docs/superpowers/specs/2026-07-15-3549-registry-connection-helpers-design.md">Approved design</a></li>
+        <li><a href="https://github.com/vamseeachanta/workspace-hub/pull/3553">Dependency PR #3553</a></li>
+      </ul>
+      <p class="muted">Generated as the human-facing companion to the canonical
+        Markdown issue plan. The Markdown plan remains the lifecycle source.</p>
+    </section>
+  </main>
+</body>
+</html>
