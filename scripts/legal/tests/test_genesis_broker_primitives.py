@@ -56,7 +56,11 @@ def test_revalidate_hash_and_identity(tmp_path):
         st = os.fstat(fd)
         digest = fd_sha256(fd)
         revalidate(fd, digest, st)
-        os.write(os.open(str(path), os.O_WRONLY), b"x")
+        writer = os.open(str(path), os.O_WRONLY)
+        try:
+            os.write(writer, b"x")
+        finally:
+            os.close(writer)
         try:
             revalidate(fd, digest, st)
         except PermissionError:
