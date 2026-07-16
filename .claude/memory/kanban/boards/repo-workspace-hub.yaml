@@ -23631,7 +23631,6 @@ cards:
       - domain:workstations
       - domain:security
       - status:plan-review
-      - status:plan-approved
       - gate:completeness
       - lane:claude
     initial_status: triage
@@ -23723,5 +23722,35 @@ cards:
       - epic
     initial_status: triage
     priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3560
+    title: 'fix(review): isolate in-progress provider sinks and fail closed on empty final artifacts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3560
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:tooling
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3561
+    title: Repair and split workspace connection menu dispatch
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3561
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:automation
+      - domain:workstations
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
     gh_assignees: []
     body_excerpt: ''

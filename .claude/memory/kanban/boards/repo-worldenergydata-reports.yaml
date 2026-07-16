@@ -1639,9 +1639,9 @@ cards:
       - cat:data
       - route:C
       - cat:engineering-calculations
+      - status:plan-review
       - domain:reports
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []

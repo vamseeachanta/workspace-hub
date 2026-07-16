@@ -3507,9 +3507,9 @@ cards:
       - cat:data
       - route:C
       - cat:engineering-calculations
+      - status:plan-review
       - lane:claude
       - epic
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -3525,8 +3525,8 @@ cards:
       - cat:data
       - route:C
       - cat:engineering-calculations
+      - status:plan-review
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -3542,8 +3542,8 @@ cards:
       - cat:data
       - route:C
       - cat:engineering-calculations
+      - status:plan-review
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -3559,8 +3559,8 @@ cards:
       - cat:data
       - route:C
       - cat:engineering-calculations
+      - status:plan-review
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -3576,8 +3576,8 @@ cards:
       - cat:data
       - route:C
       - cat:engineering-calculations
+      - status:plan-review
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -3593,8 +3593,8 @@ cards:
       - cat:data
       - route:C
       - cat:engineering-calculations
+      - status:plan-review
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
