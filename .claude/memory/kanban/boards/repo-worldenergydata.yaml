@@ -3496,3 +3496,106 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1038
+    title: 'epic(cost): bidirectional asset-to-project cost map and correlated CAPEX estimator'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1038
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - route:C
+      - cat:engineering-calculations
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1039
+    title: 'feat(cost): Big Foot end-to-end asset cost-map pilot'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1039
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - route:C
+      - cat:engineering-calculations
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1040
+    title: 'feat(cost): portfolio required-assets and award-coverage map'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1040
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - route:C
+      - cat:engineering-calculations
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1041
+    title: 'feat(cost): portfolio bidirectional asset/project cost synthesis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1041
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - route:C
+      - cat:engineering-calculations
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1042
+    title: 'feat(cost): project component-cost time traces'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1042
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - route:C
+      - cat:engineering-calculations
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1043
+    title: 'feat(cost): correlated CAPEX estimator for undisclosed projects'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1043
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - route:C
+      - cat:engineering-calculations
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
