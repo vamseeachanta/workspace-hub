@@ -58,7 +58,7 @@
 ### Gaps identified
 
 - Missing: strict policy/overlay loader; shared safe launcher; connection tests;
-  staged/commit endpoint guard; native Windows job. PR #3553 is not on `main`.
+  staged/commit endpoint guard; native Windows job. PR #3553 is now on `main`.
 
 ### Evidence (embedded verification)
 
@@ -66,7 +66,8 @@
 
 - `#3547` OPEN/needs-plan; `#3548` CLOSED/done/completeness-verified;
   `#3549` OPEN/needs-plan/priority-high/lane-claude; `#3550` OPEN/needs-plan;
-  PR #3553 OPEN/draft. Live states will be rechecked before implementation.
+  PR #3553 was merged as `24d6c66d44b151d3a5800c421190b018a679e73c`.
+  Live states will be rechecked before implementation.
 
 **File and drift probe** (verified 2026-07-16; scalar values redacted by design):
 
@@ -95,7 +96,7 @@ will not report a new regression when the same node remains red.
 
 **Source count:** 15 distinct issue, file, test, policy, and Drive-index sources.
 
-## Artifact Map
+## Navigation Artifact Map
 
 | Artifact | Path |
 |---|---|
@@ -142,15 +143,16 @@ The plan will additionally require:
 function load_registry_snapshot(path):
     raw_bytes = read path exactly once
     build records through WorkstationPathResolver.from_registry_bytes(raw_bytes)
-    reject wrong types and identifiers owned by different machines
-    return immutable records and SHA-256(raw_bytes)
+    validate all records and reject cross-machine identifier collisions
+    return immutable validated records
 
-function resolve_connection_policy(snapshot, identifier):
+function canonical_connection_policy(snapshot, identifier):
     machine = resolve exactly one key, hostname, alias, or SSH identifier
     validate closed policy and safe ASCII DNS hostname
-    return canonical key, hostname, and typed fallback policy
+    project every security-relevant field into versioned canonical ASCII JSON
+    return policy and lowercase SHA-256 of the canonical bytes
 
-function load_verified_fallback(path, policy, registry_digest, now):
+function load_verified_fallback(path, policy, policy_digest, now):
     require safe POSIX parent/file owner, type, mode, and non-worktree path
     parse one read through the closed schema and standard IP library
     require policy, digest, protocol range, evidence, and freshness match
@@ -177,7 +179,12 @@ function endpoint_guard(staged_manifest):
     fail with path, line, and violation class
 ```
 
-## Files to Change
+## Canonical Implementation Changed-Path Map
+
+This table is the sole implementation changed-path authority; the navigation map
+above authorizes no changes. The staged set will equal every `Modify`/`Create`
+row plus a `Conditional` row only when its predicate is true. Any other path
+will require plan amendment.
 
 | Action | Path | Reason |
 |---|---|---|
@@ -200,7 +207,7 @@ function endpoint_guard(staged_manifest):
 | Create | `tests/operations/test_connection_helpers_ps1_native.py` | Exercise native wrapper behavior when PowerShell exists |
 | Create | `tests/enforcement/test_connection_helper_endpoints.py` | Prove staged-blob, NUL-safe, self-safe enforcement |
 | Create | `.github/workflows/connection-helper-parity.yml` | Set up Python and uv; run Linux commit-blob enforcement and focused tests; run native PowerShell tests on Windows without allowing skip |
-| Modify | `docs/ops/remote-linux-access.md` | Document the hostname-first helper, explicit local fallback overlay, and redacted dry-run without endpoints |
+| Conditional | `docs/ops/remote-linux-access.md` | After rebasing onto merged PR #3553, modify only if `connect-workstation.py`, `machine-local fallback overlay`, or `--dry-run` is absent; otherwise preserve it and record the three-token preflight |
 | Modify | `config/tabby/QUICK_REFERENCE.md` | Replace verified stale helper guidance with the shared CLI contract |
 | Modify | `config/tabby/INTERNET_ACCESS_SUMMARY.md` | Remove verified address-coupled helper guidance and route to the runbook |
 | Modify | `docs/modules/cli/WORKSPACE_CLI.md` | Replace the verified stale helper reference with the shared CLI invocation |
@@ -217,10 +224,10 @@ silently expanding the reviewed changed-path manifest.
 
 | Test group | Required failing nodes before implementation | Green contract |
 |---|---|---|
-| Registry bytes and identity | path delegates to one bytes read; same-machine duplicate; cross-machine key/hostname/alias/SSH collisions | immutable snapshot and compatible path rewriting |
+| Registry bytes and identity | path delegates to one bytes read; same-machine duplicate; cross-machine key/hostname/alias/SSH collisions | immutable validated snapshot and compatible path rewriting |
 | Closed connection policy | unknown keys, wrong types, unsafe hostname, missing SSH, invalid reference/issue/age | exact schema from the approved design |
 | POSIX overlay integrity | missing, symlink, wrong owner/type/mode, unsafe parent, repo-internal path | owner-controlled regular file or exit 5 |
-| Fallback attestation | malformed/out-of-range, unverified, stale, issue/evidence/machine/reference/digest mismatch | one synthetic verified fixture; Windows exit 4 |
+| Fallback attestation | malformed/out-of-range, unverified, stale, policy-digest mismatch; canonical field mutations and unrelated edits | one synthetic verified fixture; stable per-machine digest; Windows exit 4 |
 | SSH argv and host identity | missing/mismatched known host, injected user/target, implicit retry, caller options | canonical destination, fixed HostName/HostKeyAlias, strict checking, one launch |
 | CLI and diagnostics | deterministic JSON, raw-value canaries, missing runtimes, child stderr, TTY, interrupt | redacted resolver output; inherited child streams; numeric exits |
 | Bash wrappers | non-repo CWD, spaced checkout, missing uv, dry-run, exact argv/exits | thin delegation; fixed secondary ID; explicit generic machine |
@@ -235,8 +242,8 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 
 ## Implementation Sequence
 
-1. **Dependency and discovery gate:** PR #3553 will land; the implementation
-   branch will update from `main`; the live helper manifest, issue labels,
+1. **Dependency and discovery gate:** the implementation branch will update from
+   merged #3553 on `main`; the live helper manifest, issue labels,
    parallel sessions, and inherited baseline will be rechecked before editing.
 2. **Slice A — registry bytes and policy:** tests for `from_registry_bytes`,
    path delegation, same-machine duplicates, cross-machine collisions, and the
@@ -245,7 +252,8 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
    Only `resolver.py`, `connection.py`, and the synthetic tests will change before
    that command reaches green.
 3. **Slice B — POSIX overlay and digest:** missing, malformed, symlink, owner,
-   mode, parent, repo-internal path, range, evidence, freshness, and digest nodes
+   mode, parent, range, evidence, freshness, canonical policy mutation/stability,
+   legacy-field, unrelated-edit, and digest mismatch nodes
    will fail first with
    `uv run pytest tests/workstations/test_connection_resolver.py -k 'overlay or fallback or digest' -q`.
    The minimum overlay loader will then reach green; Windows fallback will remain
@@ -263,27 +271,26 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
    other Bash wrapper, fixed secondary wrapper, both PowerShell wrappers, removed
    legacy methods, explicit machine requirement, and tracked Tabby defaults.
    The wrappers/config will then reach green. Windows CI will install Python and
-   uv, run `uv sync --locked`, assert `pwsh` is present, and execute the native
-   suite with a Windows `.cmd` fake SSH shim; a skipped native test will fail the
-   job.
+   uv, run `uv sync --locked`, and preflight `pwsh`; absence will fail as
+   `INFRASTRUCTURE_FAILURE` before pytest. Required-native mode will use a Windows
+   `.cmd` fake SSH shim and will fail rather than skip when capability is absent.
 7. **Slice F — staged and commit enforcement:** temporary-index tests will fail
    first with
    `uv run pytest tests/enforcement/test_connection_helper_endpoints.py -q`.
    The manifest, stdlib checker, CI mode, and `install-hooks.sh` wiring through
    `git rev-parse --git-path hooks` will then reach green in both a normal clone
    and linked worktree fixture.
-8. **Documentation and full regression:** the runbook and four verified stale
-   helper documents will be updated without endpoint examples or duplicated
-   policy. The sorted changed-path set will be compared with this plan's artifact
-   map before review.
+8. **Documentation and full regression:** the four stale helper documents and the
+   conditional runbook when its predicate fires will be updated without endpoint
+   examples. The sorted changed paths will be compared with the canonical map.
 9. **Artifact review and closeout:** adversarial code review, legal/security
    scans, exact staged-tree verification, issue summary, completeness gate, and
    cleanup audit will run before closeout.
 
 ## Acceptance Criteria
 
-- [ ] PR #3553 is merged and the implementation branch starts from a descendant
-  of the merged #3548 authority.
+- [ ] The implementation branch starts from a descendant of merged #3553 commit
+  `24d6c66d44b151d3a5800c421190b018a679e73c`.
 - [ ] The user explicitly applies `status:plan-approved`; the implementing agent
   does not self-apply it.
 - [ ] The initial focused tests demonstrate RED failures for current drift before
@@ -319,23 +326,25 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
   recorded `ecosystem-reconcile` capability failure and expected machine-local
   skip.
 - [ ] `bash -n` and `shellcheck` pass for every governed Bash wrapper.
-- [ ] The Windows CI job passes native hostname-mode PowerShell tests and fails
-  if the native suite skips; its fallback test confirms the explicit exit-4
-  platform boundary.
-- [ ] The candidate index tree is frozen with `git write-tree`; the changed-path
-  manifest equals the reviewed file map; working-tree files equal their staged
-  blobs; and `scripts/legal/legal-sanity-scan.sh --diff-only` passes before any
-  commit or review handoff.
-- [ ] Pinned Gitleaks default rules reject a runtime-assembled positive control,
-  then pass against an archive of the exact candidate tree without using the
-  repository's currently ruleless custom configuration. Every review edit
-  restarts the legal, secret, and endpoint scans.
+- [ ] The Windows job distinguishes pre-pytest `INFRASTRUCTURE_FAILURE`, then
+  passes native hostname-mode tests in required mode with no skip path; fallback
+  confirms exit 4.
+- [ ] The candidate index tree is frozen with `git write-tree`; changed paths
+  equal the canonical map with evidence for the conditional row; working-tree
+  files equal staged blobs; and the diff-only legal scan passes.
+- [ ] The design's checksum-verified Gitleaks v8.30.1 procedure proves embedded
+  defaults with runtime exit 23, then scans the exact archived candidate tree
+  with finding exit 24. Every review edit restarts all scans.
 - [ ] Code/artifact adversarial review is complete and all MAJOR findings are
   resolved or explicitly returned to the user.
 - [ ] A summary comment is posted on #3549 before closeout.
-- [ ] `docs/reports/2026-07-16-3549-completeness.html` is rendered with
-  `uv run python scripts/workflow/render_completeness_html.py 3549 "Registry-driven connection helpers"`,
-  and the issue body receives the matching fenced `completeness` JSON record.
+- [ ] Closeout records candidate paths, the HEAD-bound module snapshot, measured
+  changed-code coverage, and evidence checklist in a JSON input; calls
+  `classify(...)` then `score_code(..., issue_number=3549)` from
+  `completeness_score`; writes `result.to_dict()` to `RECORD.json`; and renders
+  with `uv run python scripts/workflow/render_completeness_html.py 3549
+  "Registry-driven connection helpers" < RECORD.json`. The exact record is
+  stamped into the issue body's fenced `completeness` block.
 - [ ] An owner other than the closing actor applies
   `status:completeness-verified`; the server completeness Action succeeds; and
   the pre-completion cleanup audit reports no unexpected residue.
@@ -344,29 +353,25 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | Defect-hunting review will inspect architecture, scope, and gate correctness |
-| Codex | PENDING | Defect-hunting review will inspect security, staged-state, and TDD completeness |
-| Gemini | PENDING | Defect-hunting review will inspect cross-platform behavior and self-blocking enforcement |
+| Claude | MAJOR (r1) | Unmerged dependency and competing file maps; corrected before r2 |
+| Codex | MAJOR (r1) | File map, Gitleaks pin, and completeness command gaps; corrected before r2 |
+| Gemini | UNAVAILABLE (r1) | No noninteractive credentials on this runner; canonical stub retained |
 
-**Overall result:** PENDING
+**Overall result:** PENDING r2. Gemini unavailability degrades T3 to Claude+Codex
+T2; a substantive verdict will never be reclassified as unavailable.
 
-Revisions made based on review:
-
-- Pending.
+**Revisions:** merged #3553; made one changed-path authority; pinned the default-rules scan; completed the score/render contract; narrowed digest scope; separated Windows infrastructure failure from required-native test results.
 
 ## Risks and Open Questions
 
-- **Risk — dependency not landed:** PR #3553 is still draft. Implementation will
-  stop until its reviewed authority is present on `main`.
+- **Risk — dependency drift:** implementation will verify its base descends from the merged #3553 commit before RED tests begin.
 - **Risk — old endpoints remain in Git history:** current-tree cleanup will not
   erase historical commits. No history rewrite will occur without separate user
   authorization.
 - **Risk — registry strictness affects path consumers:** collision validation
   will be added with regression tests so workspace-path rewriting continues to
   accept all currently valid identifiers.
-- **Risk — global registry digest invalidates local fallback after unrelated
-  edits:** this conservative behavior will fail closed and require re-attestation;
-  the plan will prefer safety over partial-field digest complexity.
+- **Risk — projection omission:** explicit closed-field mutation tests and a versioned canonical format will ensure every security-relevant policy change invalidates the overlay while unrelated valid edits do not.
 - **Risk — local overlay permissions differ by OS:** documentation and tests will
   enforce the POSIX owner/mode/symlink boundary. Windows hostname access will be
   supported, while address fallback will fail explicitly until native ACL
