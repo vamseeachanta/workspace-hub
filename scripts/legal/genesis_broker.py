@@ -2,8 +2,26 @@
 import fcntl
 import os
 import stat
+import hashlib
 
 SEALS = fcntl.F_SEAL_WRITE | fcntl.F_SEAL_GROW | fcntl.F_SEAL_SHRINK | fcntl.F_SEAL_SEAL
+
+def fd_sha256(fd: int) -> str:
+    h = hashlib.sha256()
+    off = 0
+    while True:
+        chunk = os.pread(fd, 65536, off)
+        if not chunk:
+            return h.hexdigest()
+        h.update(chunk)
+        off += len(chunk)
+
+def revalidate(fd: int, expected_sha256: str, expected_stat: os.stat_result | None = None) -> None:
+    current = os.fstat(fd)
+    if expected_stat and (current.st_dev, current.st_ino, current.st_mode, current.st_size) != (expected_stat.st_dev, expected_stat.st_ino, expected_stat.st_mode, expected_stat.st_size):
+        raise PermissionError("retained identity changed")
+    if fd_sha256(fd) != expected_sha256:
+        raise PermissionError("retained digest changed")
 
 
 def open_nofollow(path: str, mode: int = 0o600, max_size: int = 16384) -> int:

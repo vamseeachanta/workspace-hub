@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
-from genesis_broker import allowlist_fds, open_nofollow, sealed_memfd
+from genesis_broker import allowlist_fds, fd_sha256, open_nofollow, revalidate, sealed_memfd
 
 
 def test_open_nofollow_rejects_symlink(tmp_path):
@@ -42,6 +42,27 @@ def test_sealed_memfd_roundtrip():
     fd = sealed_memfd("identity", b"abc\n")
     try:
         assert os.pread(fd, 4, 0) == b"abc\n"
+    finally:
+        os.close(fd)
+
+
+def test_revalidate_hash_and_identity(tmp_path):
+    path = tmp_path / "record"
+    payload = b"canonical\n"
+    path.write_bytes(payload)
+    path.chmod(0o600)
+    fd = open_nofollow(str(path))
+    try:
+        st = os.fstat(fd)
+        digest = fd_sha256(fd)
+        revalidate(fd, digest, st)
+        os.write(os.open(str(path), os.O_WRONLY), b"x")
+        try:
+            revalidate(fd, digest, st)
+        except PermissionError:
+            pass
+        else:
+            raise AssertionError("changed retained input accepted")
     finally:
         os.close(fd)
 
