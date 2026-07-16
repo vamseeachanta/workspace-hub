@@ -50,8 +50,25 @@
     </ol>
   </div>
 
+  <h2>Machine scheduler evidence</h2>
+  <ul>
+    <li><code>EquivalenceSentinel</code> is not registered on this machine.</li>
+    <li><code>EqualityReport</code> is registered as a weekly task, not daily.</li>
+    <li>Its 2026-07-13 04:30 run returned result <code>1</code>; the next scheduled
+    run is 2026-07-20 04:30.</li>
+    <li>Daily reconciled machine-equivalence execution is therefore not operational.</li>
+  </ul>
+
+  <h2>Non-public security remediation</h2>
+  <p>Two plaintext machine-access password entries were confirmed in tracked
+  repository history. Their values and affected machine identifiers are
+  intentionally omitted from this public handoff. Do not use those entries.
+  Rotate both credentials first, then remove current-tree copies and perform a
+  separately authorized, non-public history-remediation transaction.</p>
+
   <h2>Exact next checkpoint</h2>
-  <p>Revise the plan—not implementation—to specify an owner-only, no-overwrite,
+  <p>First rotate the exposed machine-access passwords through a non-public
+  remediation path. Then revise the plan—not implementation—to specify an owner-only, no-overwrite,
   fsynced approval-consumption tombstone retained across all outcomes, and a
   minimal verified parser executed before the authority entry point or entropy.
   Add crash/replay and parser-substitution RED tests, then start a new reviewed
