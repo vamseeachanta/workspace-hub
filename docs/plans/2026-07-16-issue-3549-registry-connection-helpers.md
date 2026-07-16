@@ -8,126 +8,75 @@
 > **Lane:** lane:claude
 > **Review artifacts:** scripts/review/results/2026-07-16-plan-3549-claude.md | scripts/review/results/2026-07-16-plan-3549-codex.md | scripts/review/results/2026-07-16-plan-3549-gemini.md
 
----
-
 ## Resource Intelligence Summary
 
 ### Existing repo code
 
-- `src/workspace_hub/workstations/resolver.py` contains the canonical
-  `WorkstationPathResolver`, which loads the workstation registry and resolves
-  keys, hostnames, aliases, and SSH identifiers. Its identifier map currently
-  uses last-write-wins assignment and its generic field lookup returns an empty
-  string for missing data, so the connection path will add strict ambiguity and
-  missing-value handling without creating a second YAML parser.
-- `scripts/lib/workstation-lib.sh` wraps the resolver through interpolated Python
-  source and suppressed stderr. The connection implementation will not reuse
-  this interface because environment-controlled strings must not become source
-  code and connection errors must fail visibly.
-- Five SSH helper scripts and `config/tabby/config.yaml` contain independently
-  maintained target literals. Their values disagree, so the implementation will
-  remove rather than reconcile them.
-- `config/workstations/registry.yaml` contains seven machine records. The two
-  Linux development records contain SSH and address fields but no provenance,
-  verification, or freshness metadata. Existing address values will remain
-  unusable and will not be promoted to verified state.
-- `tests/workstations/test_machine_path_resolver.py` supplies the existing
-  temporary-YAML resolver convention. Pytest subprocess tests under
-  `tests/operations/` supply the Bash fake-executable pattern. PowerShell tests
-  under `tests/readiness/` supply static Linux contracts and optional native
-  execution when `pwsh` or `powershell` exists.
-- `scripts/enforcement/check-no-conflict-markers.sh` supplies the staged-blob,
-  NUL-safe, same-blob, narrow-sentinel enforcement precedent. The new endpoint
-  check will follow that threat model and will not add whole-file exemptions.
+- `src/workspace_hub/workstations/resolver.py` is the canonical YAML parser but
+  currently rereads paths, silently overwrites cross-machine identifiers, and
+  returns empty values; it will gain a bytes constructor and strict ownership.
+- `scripts/lib/workstation-lib.sh` interpolates values into Python source and
+  suppresses stderr, so connection code will not reuse it.
+- Five SSH helpers plus `config/tabby/config.yaml` contain disagreeing target
+  literals; they will be removed rather than reconciled.
+- The two Linux registry records have SSH/address fields but no verification or
+  freshness metadata, so current addresses will remain unusable.
+- Resolver, operations-subprocess, PowerShell-contract, and conflict-marker tests
+  provide the YAML fixture, fake executable, native-skip, staged-blob, NUL-safe,
+  and narrow-sentinel precedents this plan will reuse.
 
 ### Standards
 
-| Standard | Status | Source |
-|---|---|---|
-| External engineering calculation standards | Not applicable | #3549 changes operational connection tooling, not a calculation module |
-| Repository security baseline | Active | `.claude/rules/security.md`, `SHARED_SOUL.md` hard gates |
-| Canonical remote-access policy | Pending integration dependency | `docs/ops/remote-linux-access.md` on PR #3553 |
+- Engineering calculation standards are not applicable. Repository security
+  rules are active; the canonical runbook remains pending through PR #3553.
 
 ### LLM Wiki pages consulted
 
-- No relevant wiki page applies. The durable authority will remain the
-  workstation registry plus the canonical operational runbook; no client or
-  engineering-domain knowledge will be added.
+- No relevant wiki applies; registry plus runbook will remain authoritative.
 
 ### Documents consulted
 
-- [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549) fixes the
-  helper-remediation scope, TDD requirement, and fail-closed acceptance criteria.
-- [#3547](https://github.com/vamseeachanta/workspace-hub/issues/3547) establishes
-  the parent rollout sequence.
-- [#3548](https://github.com/vamseeachanta/workspace-hub/issues/3548) and
-  [PR #3553](https://github.com/vamseeachanta/workspace-hub/pull/3553) establish
-  registry → runbook → helper → machine-local state as the authority hierarchy.
-- `docs/superpowers/specs/2026-07-15-3549-registry-connection-helpers-design.md`
-  records the user-approved Option 2 architecture: public registry policy plus a
-  machine-local verified fallback overlay.
-- `docs/ops/remote-linux-access.md` on PR #3553 requires MagicDNS/hostname-first
-  connections, conventional OpenSSH host-key verification, no silent public
-  fallback, and no observed endpoint publication.
-- [#3550](https://github.com/vamseeachanta/workspace-hub/issues/3550) owns VNC and
-  secondary-machine rollout, so `vnc-ace-linux-2.sh` will remain excluded.
+- [#3547](https://github.com/vamseeachanta/workspace-hub/issues/3547),
+  [#3548](https://github.com/vamseeachanta/workspace-hub/issues/3548),
+  [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549), and
+  [#3550](https://github.com/vamseeachanta/workspace-hub/issues/3550) establish
+  rollout order, helper scope, TDD, runbook authority, and VNC exclusion.
+- [PR #3553](https://github.com/vamseeachanta/workspace-hub/pull/3553), the
+  approved design, and `docs/ops/remote-linux-access.md` establish registry →
+  runbook → helper → local state, hostname-first access, conventional host-key
+  verification, explicit fallback, and no published observed endpoint.
+- [#3435](https://github.com/vamseeachanta/workspace-hub/issues/3435) owns broad
+  worktree-aware hook installation; [#3552](https://github.com/vamseeachanta/workspace-hub/issues/3552)
+  owns the ruleless Gitleaks configuration repair.
 - The Drive index search for `remote ssh workstation helper tailscale` returned
   no relevant Drive files. `master_document_index` had coverage gap reason
   `unreachable`; no client paths or unrelated document results will enter this
   plan.
-- `config/tabby/QUICK_REFERENCE.md`, `config/tabby/INTERNET_ACCESS_SUMMARY.md`,
-  `docs/modules/cli/WORKSPACE_CLI.md`, and `scripts/operations/connection/SCRIPT_ORGANIZATION.md`
-  contain stale helper references and will be updated only where the final CLI
-  contract changes their current guidance.
+- Four verified helper documents will be updated at their paths in the file map;
+  the prior false `scripts/.../SCRIPT_ORGANIZATION.md` path will not be used.
 
 ### Gaps identified
 
-- No strict connection-policy model or local-overlay loader exists.
-- No shared command owns resolution, redacted dry-run, and shell-free OpenSSH
-  launch across Bash and PowerShell.
-- No connection-specific test rejects duplicate identifiers, malformed policy,
-  stale attestation, silent fallback, unsafe hostnames, or raw-value diagnostics.
-- No exact-path staged-blob check prevents endpoint and operator defaults from
-  returning to governed helpers.
-- No native Windows CI job exercises the PowerShell wrapper.
-- The #3548 authority is not yet on `main`; implementation will not begin until
-  PR #3553 lands.
+- Missing: strict policy/overlay loader; shared safe launcher; connection tests;
+  staged/commit endpoint guard; native Windows job. PR #3553 is not on `main`.
 
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-07-16 via `gh issue view`):
 
-- `#3547` — OPEN — secure remote Linux access architecture and staged rollout —
-  `status:needs-plan`.
-- `#3548` — CLOSED — canonical remote Linux access architecture and runbook —
-  `status:done`, `status:completeness-verified`.
-- `#3549` — OPEN — registry-driven Linux connection helpers with TDD —
-  `status:needs-plan`, `priority:high`, `lane:claude`.
-- `#3550` — OPEN — secondary-machine rollout and verification —
-  `status:needs-plan`.
-- `PR #3553` — OPEN, draft — mergeable state will be rechecked immediately
-  before implementation.
+- `#3547` OPEN/needs-plan; `#3548` CLOSED/done/completeness-verified;
+  `#3549` OPEN/needs-plan/priority-high/lane-claude; `#3550` OPEN/needs-plan;
+  PR #3553 OPEN/draft. Live states will be rechecked before implementation.
 
 **File and drift probe** (verified 2026-07-16; scalar values redacted by design):
 
 ```text
 machines=7
 casefold_identifier_collisions=0
-dev-primary:ssh_present=True;tailscale_ip_present=True;verification_metadata_present=False
-dev-secondary:ssh_present=True;tailscale_ip_present=True;verification_metadata_present=False
-connect-workspace-tailscale.sh:exists=True;ipv4_literal_count=1
-connect-workspace-tailscale.ps1:exists=True;ipv4_literal_count=1
-ssh-dev-secondary.sh:exists=True;ipv4_literal_count=2
-connect-workspace-linux.sh:exists=True;ipv4_literal_count=1
-connect-workspace-windows.ps1:exists=True;ipv4_literal_count=1
-config/tabby/config.yaml:exists=True;ipv4_literal_count=2
-src/workspace_hub/workstations/connection.py:exists=False
-scripts/operations/connection/connect-workstation.py:exists=False
-tests/workstations/test_connection_resolver.py:exists=False
+linux_records:ssh_present=2;address_present=2;verification_metadata_present=0
+governed_existing_files=6;ipv4_literal_counts=[1,1,2,1,1,2]
+new_connection_core_cli_and_tests_exist=False
 ```
-
-The probe will parse assignments and YAML and will emit only booleans and counts.
-It will not print target or operator values.
 
 **Inherited test baseline** (reproduced 2026-07-16):
 
@@ -146,8 +95,6 @@ will not report a new regression when the same node remains red.
 
 **Source count:** 15 distinct issue, file, test, policy, and Drive-index sources.
 
----
-
 ## Artifact Map
 
 | Artifact | Path |
@@ -163,11 +110,11 @@ will not report a new regression when the same node remains red.
 | PowerShell contract tests | `tests/operations/test_connection_helpers_ps1_contract.py` |
 | PowerShell native tests | `tests/operations/test_connection_helpers_ps1_native.py` |
 | Endpoint enforcement tests | `tests/enforcement/test_connection_helper_endpoints.py` |
+| Governed-path manifest | `config/workstations/connection-governed-paths.yaml` |
+| Completeness report | `docs/reports/2026-07-16-3549-completeness.html` |
 | Plan review — Claude | `scripts/review/results/2026-07-16-plan-3549-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-07-16-plan-3549-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-07-16-plan-3549-gemini.md` |
-
----
 
 ## Deliverable
 
@@ -176,71 +123,66 @@ hostname-first, explicit verified fallback through one shell-free Python command
 with thin Bash and PowerShell wrappers, redacted dry-run behavior, native Windows
 verification, and staged-content recurrence protection.
 
----
+## Exact Interface and Trust Contracts
+
+The approved design specification section `Exact Runtime Contract` will be the normative schema and interface appendix. Implementation will follow its closed registry and overlay schemas, POSIX owner-assertion boundary, Windows fallback exit boundary, uv runtime, wrapper options, dry-run JSON, numeric exits, canonical-host SSH argv, and staged/commit enforcement modes.
+
+The plan will additionally require:
+
+- `WorkstationPathResolver.from_registry_bytes(raw_bytes)` with `from_registry_path` delegating to it, so digest and parse share one immutable read;
+- same-machine duplicate identifiers accepted and cross-machine case-folded collisions rejected;
+- generic wrappers requiring an explicit machine while `ssh-dev-secondary.sh` retains its fixed ID;
+- inherited OpenSSH streams treated as local interactive output, not durable resolver logging;
+- `git rev-parse --git-path hooks` plus normal-clone and linked-worktree installer tests; and
+- the checked governed-path manifest covering registry, core, CLI, wrappers, Tabby, endpoint-prohibited docs, and the deferred #3550 VNC row.
 
 ## Pseudocode
 
 ```text
 function load_registry_snapshot(path):
     raw_bytes = read path exactly once
-    payload = safe YAML parse raw_bytes
-    require mapping with supported schema
-    build machine records through WorkstationPathResolver
-    reject wrong types and case-folded identifier collisions
+    build records through WorkstationPathResolver.from_registry_bytes(raw_bytes)
+    reject wrong types and identifiers owned by different machines
     return immutable records and SHA-256(raw_bytes)
 
 function resolve_connection_policy(snapshot, identifier):
     machine = resolve exactly one key, hostname, alias, or SSH identifier
-    require closed connection-policy object
-    hostname = validate ASCII DNS name without option or shell syntax
-    require fallback policy and opaque reference to have strict types
-    return canonical machine key, hostname, and fallback policy
+    validate closed policy and safe ASCII DNS hostname
+    return canonical key, hostname, and typed fallback policy
 
 function load_verified_fallback(path, policy, registry_digest, now):
-    raw_bytes = read path exactly once
-    overlay = safe YAML parse raw_bytes with closed schema
-    require machine key, opaque reference, and registry digest match policy
-    address = parse with standard IP library
-    require address belongs to cited Tailscale protocol networks
-    require verified state, evidence reference, and unexpired timestamps
-    return immutable address without logging it
+    require safe POSIX parent/file owner, type, mode, and non-worktree path
+    parse one read through the closed schema and standard IP library
+    require policy, digest, protocol range, evidence, and freshness match
+    return immutable address without logging raw data
 
 function build_ssh_argv(policy, route, optional_user):
-    argv = [ssh executable]
-    if optional_user exists: validate and append as separate -l argument
-    if route is hostname: append canonical hostname
-    if route is fallback:
-        append fixed HostKeyAlias option using canonical hostname
-        append verified overlay address as one argument
-    reject caller-supplied SSH options and insecure host-key overrides
+    argv = [ssh, fixed StrictHostKeyChecking=yes]
+    append validated user as separate -l argument when present
+    for fallback append fixed HostName and canonical HostKeyAlias options
+    append canonical hostname as positional destination
     return argv
 
 function run_connection(args):
-    registry_snapshot = load_registry_snapshot(args.registry)
-    policy = resolve_connection_policy(snapshot, args.machine)
-    route = hostname unless args.fallback is explicitly true
-    if fallback: route = load_verified_fallback(...)
+    snapshot and policy = load and resolve once
+    route = explicit verified fallback or default hostname
     argv = build_ssh_argv(policy, route, args.user)
     if dry_run: print deterministic redacted JSON and return success
-    return subprocess.run(argv, shell=false).returncode
+    inherit terminal with shell=false; map interrupt to 130; return SSH exit
 
 function endpoint_guard(staged_manifest):
-    enumerate added or modified paths with NUL delimiters
-    select only the exact governed helper and Tabby paths
-    read every selected staged blob once
-    parse address and operator-target patterns without printing raw matches
-    allow only narrow same-line forensic sentinels in approved test locations
+    select NUL-delimited paths through the checked governed manifest
+    read each selected staged or head-commit blob once
+    classify patterns without raw output; honor narrow same-line sentinels
     fail with path, line, and violation class
 ```
-
----
 
 ## Files to Change
 
 | Action | Path | Reason |
 |---|---|---|
 | Modify | `config/workstations/registry.yaml` | Replace unusable address fields for governed Linux machines with strict hostname-first policy and opaque fallback references; no live value will be guessed |
-| Modify | `src/workspace_hub/workstations/resolver.py` | Add typed parsing support and global case-folded identifier collision rejection without breaking workspace-path behavior |
+| Modify | `src/workspace_hub/workstations/resolver.py` | Add `from_registry_bytes` with `from_registry_path` delegation and cross-machine collision rejection without breaking workspace-path behavior |
 | Create | `src/workspace_hub/workstations/connection.py` | Own strict policy, overlay, digest, route, redaction, and argv construction |
 | Create | `scripts/operations/connection/connect-workstation.py` | Provide the single cross-platform CLI and shell-free OpenSSH launch boundary |
 | Modify | `scripts/operations/connection/connect-workspace-tailscale.sh` | Become a thin shared-CLI wrapper with explicit machine/fallback/dry-run options |
@@ -249,6 +191,7 @@ function endpoint_guard(staged_manifest):
 | Modify | `scripts/operations/connection/connect-workspace-linux.sh` | Remove target/user defaults and delegate to the shared CLI |
 | Modify | `scripts/operations/connection/connect-workspace-windows.ps1` | Remove command strings and delegate to the shared CLI |
 | Modify | `config/tabby/config.yaml` | Preserve unrelated preferences while removing tracked endpoint and operator defaults |
+| Create | `config/workstations/connection-governed-paths.yaml` | Declare migrated, prohibited-doc, protocol-constant, and deferred connection surfaces for local and CI enforcement |
 | Create | `scripts/enforcement/check-connection-helper-endpoints.py` | Inspect exact staged blobs for recurrence without whole-file exemptions |
 | Modify | `scripts/enforcement/install-hooks.sh` | Invoke the workspace-scoped endpoint guard when present |
 | Create | `tests/workstations/test_connection_resolver.py` | Drive strict resolver and overlay behavior first |
@@ -256,85 +199,86 @@ function endpoint_guard(staged_manifest):
 | Create | `tests/operations/test_connection_helpers_ps1_contract.py` | Enforce static PowerShell safety and parity on Linux |
 | Create | `tests/operations/test_connection_helpers_ps1_native.py` | Exercise native wrapper behavior when PowerShell exists |
 | Create | `tests/enforcement/test_connection_helper_endpoints.py` | Prove staged-blob, NUL-safe, self-safe enforcement |
-| Create | `.github/workflows/connection-helper-parity.yml` | Run focused Python and native PowerShell tests on Linux and Windows |
+| Create | `.github/workflows/connection-helper-parity.yml` | Set up Python and uv; run Linux commit-blob enforcement and focused tests; run native PowerShell tests on Windows without allowing skip |
 | Modify | `docs/ops/remote-linux-access.md` | Document the hostname-first helper, explicit local fallback overlay, and redacted dry-run without endpoints |
-| Modify | `config/tabby/QUICK_REFERENCE.md` | Replace stale helper guidance with the shared CLI contract |
-| Modify | `config/tabby/INTERNET_ACCESS_SUMMARY.md` | Remove address-coupled helper guidance and route to the runbook |
-| Modify | `docs/modules/cli/WORKSPACE_CLI.md` | Update helper invocation only if the current command surface is referenced |
-| Modify | `scripts/operations/connection/SCRIPT_ORGANIZATION.md` | Record the shared CLI and wrapper responsibilities |
+| Modify | `config/tabby/QUICK_REFERENCE.md` | Replace verified stale helper guidance with the shared CLI contract |
+| Modify | `config/tabby/INTERNET_ACCESS_SUMMARY.md` | Remove verified address-coupled helper guidance and route to the runbook |
+| Modify | `docs/modules/cli/WORKSPACE_CLI.md` | Replace the verified stale helper reference with the shared CLI invocation |
+| Modify | `docs/modules/cli/SCRIPT_ORGANIZATION.md` | Record the shared CLI and wrapper responsibilities at the verified existing path |
 | Modify | `docs/plans/README.md` | Index this plan |
 
 `scripts/operations/connection/vnc-ace-linux-2.sh` will remain unchanged because
 #3550 owns VNC disposition. Sync helpers will remain unchanged unless a failing
-test proves that sanitizing Tabby configuration requires a narrow template path.
-
----
+test proves that sanitizing Tabby configuration requires a narrow template path;
+that outcome will stop implementation and return for plan amendment rather than
+silently expanding the reviewed changed-path manifest.
 
 ## TDD Test List
 
-| Test name | What it will verify | Expected result |
+| Test group | Required failing nodes before implementation | Green contract |
 |---|---|---|
-| `test_registry_rejects_casefolded_identifier_collision` | Key, hostname, alias, and SSH identifiers cannot collide | Typed ambiguity error without raw values |
-| `test_connection_policy_rejects_unknown_or_wrong_type_fields` | Policy schema will be closed and typed | Schema error naming only the field path |
-| `test_resolves_key_hostname_alias_and_ssh_identifier` | All canonical identifier forms will map to one machine | Same canonical key |
-| `test_hostname_route_is_default` | MagicDNS/SSH hostname will be preferred | One hostname route, no overlay read |
-| `test_missing_hostname_fails_before_launch` | Missing registry authority cannot fall through | Stable nonzero resolver exit |
-| `test_hostname_injection_corpus_is_rejected` | Controls, whitespace, option markers, URL and shell syntax cannot become targets | No child process or marker-file side effect |
-| `test_fallback_requires_explicit_flag` | A failed hostname SSH process cannot select another target | Exactly one SSH invocation |
-| `test_fallback_overlay_missing_or_malformed_fails_closed` | Overlay absence and invalid YAML/types cannot launch | No child process |
-| `test_fallback_rejects_unverified_stale_or_mismatched_attestation` | Verification, freshness, machine, reference, and digest are binding | Typed failure without raw values |
-| `test_fallback_rejects_non_tailscale_address` | Address must belong to cited protocol networks | Typed range error |
-| `test_verified_fallback_uses_host_key_alias` | Fallback will retain canonical host-key identity | Fixed safe argv and one invocation |
-| `test_registry_and_overlay_are_each_read_once` | Validation and launch will share immutable snapshots | One open per selected file |
-| `test_dry_run_is_deterministic_and_executes_nothing` | Dry-run will be read-only and redacted | Stable JSON; zero external calls |
-| `test_errors_never_echo_canary_values_or_environment` | Diagnostics will not leak invalid inputs or environment | Only field path and error class |
-| `test_optional_user_is_validated_and_passed_as_argv` | User selection cannot inject a target string | Separate `-l` argument or rejection |
-| `test_bash_wrappers_delegate_without_parsing_or_eval` | Bash will contain no YAML/JSON parsing or command construction | Shared CLI receives exact argv |
-| `test_bash_dry_run_invokes_no_clients` | Wrapper dry-run will remain non-executing | Fake clients record zero calls |
-| `test_bash_propagates_resolver_and_ssh_exit_codes` | Failures will remain actionable | Stable exit mapping |
-| `test_powerShell_contract_uses_argument_arrays` | PowerShell will avoid command strings and `Invoke-Expression` | Static contract passes |
-| `test_powerShell_contract_matches_bash_options` | Supported machine/fallback/dry-run semantics will align | Option and exit-code parity |
-| `test_powerShell_native_dry_run_and_launch` | Windows wrapper behavior will match the shared resolver | Native fake-client proof |
-| `test_governed_manifest_covers_every_target_bearing_ssh_surface` | Coverage claims will equal the live filesystem | Every SSH surface classified |
-| `test_tabby_config_contains_no_endpoint_or_operator_defaults` | Tracked terminal configuration will no longer publish identity | Zero governed matches |
-| `test_endpoint_guard_reads_added_staged_blobs` | New files will not bypass the scanner | Positive control fails |
-| `test_endpoint_guard_is_nul_safe_and_same_blob_consistent` | Odd filenames and working-tree/index races will not bypass | Staged content controls verdict |
-| `test_endpoint_guard_sentinel_is_line_scoped` | Forensic fixtures cannot create a blanket exemption | Unsuffixed adjacent violation still fails |
-| `test_endpoint_guard_does_not_block_its_own_artifacts` | Scanner, tests, plan, and reviews remain committable | Negative controls pass |
-| `test_windows_workflow_runs_native_powerShell_suite` | Cross-platform parity cannot rely on static assertions alone | Workflow contract selects Windows runner |
+| Registry bytes and identity | path delegates to one bytes read; same-machine duplicate; cross-machine key/hostname/alias/SSH collisions | immutable snapshot and compatible path rewriting |
+| Closed connection policy | unknown keys, wrong types, unsafe hostname, missing SSH, invalid reference/issue/age | exact schema from the approved design |
+| POSIX overlay integrity | missing, symlink, wrong owner/type/mode, unsafe parent, repo-internal path | owner-controlled regular file or exit 5 |
+| Fallback attestation | malformed/out-of-range, unverified, stale, issue/evidence/machine/reference/digest mismatch | one synthetic verified fixture; Windows exit 4 |
+| SSH argv and host identity | missing/mismatched known host, injected user/target, implicit retry, caller options | canonical destination, fixed HostName/HostKeyAlias, strict checking, one launch |
+| CLI and diagnostics | deterministic JSON, raw-value canaries, missing runtimes, child stderr, TTY, interrupt | redacted resolver output; inherited child streams; numeric exits |
+| Bash wrappers | non-repo CWD, spaced checkout, missing uv, dry-run, exact argv/exits | thin delegation; fixed secondary ID; explicit generic machine |
+| PowerShell wrappers | unsafe command strings, legacy methods, option/exit drift, native skip | argument arrays; hostname parity; native Windows proof |
+| Tabby and live inventory | every target-bearing SSH surface classified; tracked endpoint/operator defaults | exact governed manifest; unrelated preferences preserved |
+| Endpoint guard | added/modified/deleted/odd path, temporary index, TOCTOU, commit blobs, sentinel adjacency, self-artifacts | same-blob staged and head-ref verdicts without raw values |
+| Hook and CI wiring | duplicate insertion, normal clone, linked worktree, installed positive control, Windows skip | git-path hook resolution and non-skipping Linux/Windows jobs |
 
-Synthetic test addresses will be assembled at runtime from integer components so
-plans, reviews, fixtures, and scanner source will not contain live-looking
-endpoint strings. Protocol-network constants in implementation will carry a
-narrow same-line sentinel and official Tailscale source citation; the sentinel
-will not exempt any adjacent line or whole file.
-
----
+Synthetic addresses and secret controls will be assembled at runtime. Protocol
+network constants will use one cited same-line sentinel; no whole-file exemption
+will exist. Exact RED/GREEN commands appear in the implementation sequence.
 
 ## Implementation Sequence
 
 1. **Dependency and discovery gate:** PR #3553 will land; the implementation
    branch will update from `main`; the live helper manifest, issue labels,
    parallel sessions, and inherited baseline will be rechecked before editing.
-2. **RED — resolver and overlay:** strict-schema, ambiguity, hostname, fallback,
-   redaction, digest, and single-read tests will be written and shown failing.
-3. **GREEN — connection core:** the minimum typed parser/model and safe argv
-   builder will be implemented until resolver tests pass.
-4. **RED — wrappers and Tabby:** Bash, PowerShell, inventory, and no-default tests
-   will be written and shown failing against current helpers.
-5. **GREEN — wrappers and configuration:** the five SSH helpers and Tabby config
-   will delegate to the shared CLI without endpoint or operator defaults.
-6. **RED/GREEN — staged enforcement:** scanner threat-model tests will precede the
-   staged-blob checker and hook wiring.
-7. **Cross-platform proof:** the focused Linux and Windows workflow will prove
-   Python, Bash/static PowerShell, and native PowerShell behavior.
-8. **Documentation and regression:** the runbook and directly affected helper
-   references will be updated without endpoint examples or duplicated policy.
+2. **Slice A — registry bytes and policy:** tests for `from_registry_bytes`,
+   path delegation, same-machine duplicates, cross-machine collisions, and the
+   closed registry policy will fail first:
+   `uv run pytest tests/workstations/test_machine_path_resolver.py tests/workstations/test_connection_resolver.py -k 'registry or identifier or policy' -q`.
+   Only `resolver.py`, `connection.py`, and the synthetic tests will change before
+   that command reaches green.
+3. **Slice B — POSIX overlay and digest:** missing, malformed, symlink, owner,
+   mode, parent, repo-internal path, range, evidence, freshness, and digest nodes
+   will fail first with
+   `uv run pytest tests/workstations/test_connection_resolver.py -k 'overlay or fallback or digest' -q`.
+   The minimum overlay loader will then reach green; Windows fallback will remain
+   an explicit exit-4 boundary.
+4. **Slice C — CLI and interactive launch:** dry-run JSON, numeric exits,
+   canonical-host configuration, strict host-key behavior, inherited stderr,
+   TTY, and interrupt nodes will fail first with
+   `uv run pytest tests/workstations/test_connection_resolver.py -k 'cli or dry_run or ssh or interrupt' -q`.
+   The CLI will then implement the minimum shell-free argv and launch behavior.
+5. **Slice D — one Bash tracer:** `connect-workspace-tailscale.sh` delegation,
+   non-repo CWD, checkout path with spaces, missing uv, dry-run, and exact argv
+   nodes will fail first in `tests/operations/test_connection_helpers_bash.py`.
+   One thin wrapper will reach green before the pattern expands.
+6. **Slice E — remaining wrappers and Tabby:** tests will first fail for the
+   other Bash wrapper, fixed secondary wrapper, both PowerShell wrappers, removed
+   legacy methods, explicit machine requirement, and tracked Tabby defaults.
+   The wrappers/config will then reach green. Windows CI will install Python and
+   uv, run `uv sync --locked`, assert `pwsh` is present, and execute the native
+   suite with a Windows `.cmd` fake SSH shim; a skipped native test will fail the
+   job.
+7. **Slice F — staged and commit enforcement:** temporary-index tests will fail
+   first with
+   `uv run pytest tests/enforcement/test_connection_helper_endpoints.py -q`.
+   The manifest, stdlib checker, CI mode, and `install-hooks.sh` wiring through
+   `git rev-parse --git-path hooks` will then reach green in both a normal clone
+   and linked worktree fixture.
+8. **Documentation and full regression:** the runbook and four verified stale
+   helper documents will be updated without endpoint examples or duplicated
+   policy. The sorted changed-path set will be compared with this plan's artifact
+   map before review.
 9. **Artifact review and closeout:** adversarial code review, legal/security
    scans, exact staged-tree verification, issue summary, completeness gate, and
    cleanup audit will run before closeout.
-
----
 
 ## Acceptance Criteria
 
@@ -347,7 +291,8 @@ will not exempt any adjacent line or whole file.
 - [ ] Registry connection policy is strict, hostname-first, and contains no
   usable observed fallback address.
 - [ ] A fallback address is accepted only from an explicit, current, verified,
-  digest-bound machine-local overlay.
+  digest-bound, POSIX-owner-controlled machine-local overlay; Windows fallback
+  returns the documented unsupported exit without claiming ACL parity.
 - [ ] No SSH failure class triggers an automatic second destination.
 - [ ] Host-key verification remains enabled and fallback uses the canonical
   host-key alias.
@@ -355,10 +300,17 @@ will not exempt any adjacent line or whole file.
 - [ ] `config/tabby/config.yaml` contains no endpoint or operator defaults while
   unrelated terminal preferences remain intact.
 - [ ] Dry-run is deterministic, redacted, and invokes no external process.
-- [ ] Errors contain field paths and stable classes but no raw rejected values,
-  endpoints, identities, environment dumps, or overlay contents.
+- [ ] Resolver, wrapper, and dry-run errors contain field paths and stable classes
+  but no raw rejected values, endpoints, identities, environment dumps, or
+  overlay contents. Inherited interactive OpenSSH stderr remains an explicitly
+  local terminal boundary.
 - [ ] Exact staged-blob enforcement covers the governed manifest, added files,
   odd filenames, and TOCTOU cases without whole-file exemptions or self-blocking.
+- [ ] `python scripts/enforcement/check-connection-helper-endpoints.py --staged`
+  passes, and CI commit mode passes with
+  `--base-ref origin/main --head-ref HEAD`.
+- [ ] `install-hooks.sh` resolves hooks through `git rev-parse --git-path hooks`,
+  remains idempotent, and is tested in normal and linked-worktree repositories.
 - [ ] Focused tests pass:
   `uv run pytest tests/workstations/test_connection_resolver.py tests/operations/test_connection_helpers_bash.py tests/operations/test_connection_helpers_ps1_contract.py tests/operations/test_connection_helpers_ps1_native.py tests/enforcement/test_connection_helper_endpoints.py -q`.
 - [ ] Existing resolver tests pass:
@@ -367,16 +319,26 @@ will not exempt any adjacent line or whole file.
   recorded `ecosystem-reconcile` capability failure and expected machine-local
   skip.
 - [ ] `bash -n` and `shellcheck` pass for every governed Bash wrapper.
-- [ ] The Windows CI job passes native PowerShell wrapper tests.
-- [ ] `scripts/legal/legal-sanity-scan.sh --diff-only`, the applicable secret
-  scan, and the staged endpoint guard pass against the exact proposed tree.
+- [ ] The Windows CI job passes native hostname-mode PowerShell tests and fails
+  if the native suite skips; its fallback test confirms the explicit exit-4
+  platform boundary.
+- [ ] The candidate index tree is frozen with `git write-tree`; the changed-path
+  manifest equals the reviewed file map; working-tree files equal their staged
+  blobs; and `scripts/legal/legal-sanity-scan.sh --diff-only` passes before any
+  commit or review handoff.
+- [ ] Pinned Gitleaks default rules reject a runtime-assembled positive control,
+  then pass against an archive of the exact candidate tree without using the
+  repository's currently ruleless custom configuration. Every review edit
+  restarts the legal, secret, and endpoint scans.
 - [ ] Code/artifact adversarial review is complete and all MAJOR findings are
   resolved or explicitly returned to the user.
 - [ ] A summary comment is posted on #3549 before closeout.
-- [ ] Completeness verification and the pre-completion cleanup audit report no
-  unexpected residue.
-
----
+- [ ] `docs/reports/2026-07-16-3549-completeness.html` is rendered with
+  `uv run python scripts/workflow/render_completeness_html.py 3549 "Registry-driven connection helpers"`,
+  and the issue body receives the matching fenced `completeness` JSON record.
+- [ ] An owner other than the closing actor applies
+  `status:completeness-verified`; the server completeness Action succeeds; and
+  the pre-completion cleanup audit reports no unexpected residue.
 
 ## Adversarial Review Summary
 
@@ -392,8 +354,6 @@ Revisions made based on review:
 
 - Pending.
 
----
-
 ## Risks and Open Questions
 
 - **Risk — dependency not landed:** PR #3553 is still draft. Implementation will
@@ -408,15 +368,23 @@ Revisions made based on review:
   edits:** this conservative behavior will fail closed and require re-attestation;
   the plan will prefer safety over partial-field digest complexity.
 - **Risk — local overlay permissions differ by OS:** documentation and tests will
-  enforce POSIX mode expectations where available and will validate the Windows
-  ACL guidance through review and native workflow behavior.
+  enforce the POSIX owner/mode/symlink boundary. Windows hostname access will be
+  supported, while address fallback will fail explicitly until native ACL
+  enforcement receives its own reviewed design.
 - **Risk — scanner false positives or self-blocking:** the checker will parse only
   exact governed paths and will use runtime-constructed test values plus narrow
   line sentinels.
+- **Risk — current Gitleaks configuration replaces defaults:** closeout will use
+  pinned default rules plus a positive control rather than the ruleless custom
+  file. Ecosystem-wide repair remains owned by
+  [#3552](https://github.com/vamseeachanta/workspace-hub/issues/3552) instead of
+  being silently expanded into #3549.
+- **Risk — hook installer worktree assumptions generalize beyond this guard:**
+  #3549 will fix and test the endpoint-guard insertion path. Broader installer
+  hardening remains owned by
+  [#3435](https://github.com/vamseeachanta/workspace-hub/issues/3435).
 - **Open questions:** none. The user approved the Option 2 architecture and the
   durable design artifact before this plan was drafted.
-
----
 
 ## Complexity: T3
 
