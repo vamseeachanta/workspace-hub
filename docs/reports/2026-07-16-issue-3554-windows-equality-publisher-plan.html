@@ -37,10 +37,14 @@
   <ol>
     <li>Prove publication succeeds with no <code>flock</code>.</li>
     <li>Race two isolated publishers against one bare remote and require convergence.</li>
+    <li>Race two publishers sharing one checkout and require clean Git/worktree residue.</li>
     <li>Force a first-push race and require a fresh fetch/rebuild retry.</li>
     <li>Force retry exhaustion and require nonzero plus failure notification.</li>
     <li>Prove cron never emits PASS or OK after publisher failure.</li>
   </ol>
+
+  <h2>Bounded retry interface</h2>
+  <p><code>--max-attempts N</code> will default to 3 and <code>--retry-delay-seconds N</code> will default to 2. Invalid configuration will exit before any Git mutation.</p>
 
   <h2>Acceptance checkpoint</h2>
   <p>A supervised <code>ace-win-2</code> reconciliation will publish fresh evidence to <code>origin/main</code> without <code>flock</code>. Existing newer-only, allowlist, dirty-checkout independence, dry-run, and cleanup invariants will remain green.</p>

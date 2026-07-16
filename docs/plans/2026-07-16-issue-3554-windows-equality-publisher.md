@@ -126,6 +126,13 @@ equality_cron():
     otherwise emit pass notification describing pushed/noop result
 ```
 
+The public retry interface will be:
+
+- `--max-attempts N` — positive integer, default `3`;
+- `--retry-delay-seconds N` — nonnegative integer, default `2`.
+
+Unknown flags, missing values, nonnumeric values, zero attempts, and negative delays will exit 2 before any fetch, worktree, commit, or push. Tests will pass `--retry-delay-seconds 0`; production callers will retain bounded delay without changing their current command lines.
+
 ## Files to Change
 
 | Action | Path | Reason |
@@ -135,7 +142,7 @@ equality_cron():
 | Modify if behavioral test requires a seam | `scripts/readiness/equality-matrix-cron.sh` | preserve fail-loud propagation and make success text truthful; no change if tests prove the current wrapper sufficient |
 | Modify | `tests/readiness/test_equality_matrix_cron_deps.py` | add behavioral failure-propagation coverage |
 | Update | `docs/plans/README.md` | index this plan |
-| Create | `docs/reports/2026-07-16-issue-3554-windows-equality-publisher-plan.html` | provide the default human-facing plan artifact |
+| Modify | `docs/reports/2026-07-16-issue-3554-windows-equality-publisher-plan.html` | keep the existing human-facing plan artifact synchronized with reviewed revisions |
 
 ## TDD Test List
 
@@ -145,6 +152,7 @@ Tests will be written and observed RED before implementation changes.
 |---|---|
 | `test_publishes_when_flock_is_absent` | a MINGW-like PATH without `flock` will publish newer evidence instead of reporting contention |
 | `test_concurrent_publishers_converge` | two isolated clones publishing different fresh machine evidence to one bare remote will both terminate cleanly and the final remote will contain both newest records |
+| `test_same_checkout_concurrent_publishers_converge` | two publisher processes sharing one checkout/common Git directory will converge or truthfully noop without stranded worktrees, persistent Git locks, corruption, or false success |
 | `test_push_race_refetches_and_rebuilds` | a deterministic first-push race will cause a fresh fetch/rebuild/commit rather than force-push or stale overwrite |
 | `test_retry_exhaustion_fails_loud` | repeated injected push failures will return nonzero after the configured bound and will not claim success |
 | `test_retry_configuration_rejects_invalid_values` | zero, negative, or nonnumeric attempts/delays will fail closed before Git mutation |
@@ -160,6 +168,7 @@ Existing freshness, allowlist, dry-run, dirty/diverged checkout, rebuild, and cl
 - [ ] `uv run pytest -q tests/readiness/test_publish_equality.py tests/readiness/test_equality_matrix_cron_deps.py` will pass on Linux and `ace-win-2` Git Bash.
 - [ ] `command -v flock` may be absent; `bash scripts/readiness/publish-equality.sh --dry-run` will still execute the publisher and return a truthful result.
 - [ ] Two concurrent publishers targeting one bare remote will converge without force push, reset, evidence regression, or abandoned worktrees.
+- [ ] Two concurrent publisher processes sharing one checkout/common Git directory will terminate cleanly with no persistent `.git` lock, missing registered worktree, or publisher-owned temporary directory.
 - [ ] Retry exhaustion will emit the existing failure notification and exit nonzero.
 - [ ] `equality-matrix-cron.sh` will never print `OK` or emit a pass notification after publisher failure.
 - [ ] The staged-path allowlist and strictly-newer evidence rule will remain unchanged.
@@ -174,9 +183,9 @@ Existing freshness, allowlist, dry-run, dirty/diverged checkout, rebuild, and cl
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | review not yet run |
-| Codex | PENDING | review not yet run |
-| Gemini | PENDING | review not yet run |
+| Claude | UNAVAILABLE r1 | CLI failed before returning a review |
+| Codex | MAJOR r1; re-review pending | same-checkout concurrency and retry interface were under-specified; both will be patched before re-review |
+| Gemini | UNAVAILABLE r1 | no non-interactive credentials were configured |
 
 **Overall result:** PENDING — implementation will remain blocked.
 
@@ -184,9 +193,16 @@ Existing freshness, allowlist, dry-run, dirty/diverged checkout, rebuild, and cl
 
 - **Risk — deterministic concurrency testing:** tests will use isolated local bare remotes and explicit test seams for retry timing; they will not depend on public-network race timing.
 - **Risk — same-repository Git metadata contention:** simultaneous local publishers may race in the shared Git common directory. The bounded retry will treat Git lock/push failures as retryable only as a whole attempt and will clean publisher-owned worktrees before retrying.
+- **Risk — same-repository cleanup interaction:** the test will inventory registered worktrees, publisher-owned temporary directories, and persistent Git lock files after two same-checkout publishers finish; success will require both processes to terminate and all three inventories to be clean.
 - **Risk — retry classification:** the publisher will not parse locale-dependent Git error text. It will retry a bounded failed attempt from a fresh fetch, then fail loudly.
 - **Risk — collection TOCTOU:** `collect-equality.sh` currently writes its YAML directly while the publisher reads it. Atomic collection output is adjacent but outside #3554 unless implementation tests prove it blocks correctness; a follow-on issue will capture it rather than silently widening scope.
 - **Open question for review:** whether the cron pass message must distinguish `pushed`, `noop`, and `dry-run`, or whether truthful publisher output plus wrapper success is sufficient.
+
+### Review revision r1
+
+- The plan will add same-checkout concurrent publisher coverage, not only separate-clone remote contention.
+- The retry interface will be fixed as `--max-attempts` and `--retry-delay-seconds` with validated defaults and pre-mutation rejection.
+- The existing HTML plan artifact is now correctly classified as `Modify`.
 
 ## Complexity: T2
 
