@@ -1,6 +1,6 @@
 # Plan for #3549: Registry-Driven Linux Connection Helpers with TDD
 
-> **Status:** plan-review — amendment r2 MAJOR; implementation paused
+> **Status:** plan-review — amendment r3 MAJOR corrected inline; user decision required
 > **Complexity:** T3
 > **Date:** 2026-07-16
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3549
@@ -337,10 +337,11 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 **Overall result:** USER DECISION REQUIRED. Codex remained MAJOR for three rounds
 while Claude reached MINOR; policy stops automatic cycling at this disagreement.
 
-**Implementation amendment reviews r1/r2:** MAJOR in all three local adversarial
+**Implementation amendment reviews r1–r3:** MAJOR in all three local adversarial
 lanes. The live `status:plan-approved` label is removed, `status:plan-review`
-remains, and no local approval marker exists. The focused addendum will require a
-round-3 result with no MAJOR finding before renewed user approval.
+remains, and no local approval marker exists. Concrete round-3 defects are
+corrected inline in the focused addendum; the automatic review loop is capped and
+the next gate is an explicit user waiver or an authorized fourth review.
 
 **Inline r3 corrections:** reject duplicate YAML keys; close timestamp ordering;
 delete tracked FUSE residue; narrow hook worktree scope; use revisioned artifacts

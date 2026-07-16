@@ -87,10 +87,11 @@
         a changed-path authority conflict, so further code changes will remain
         paused until the narrow amendment below receives adversarial review and
         explicit user approval. The agent will not self-approve.</p>
-      <p><strong>Current live state:</strong> amendment rounds 1 and 2 returned
-        MAJOR findings. <code>status:plan-approved</code> is removed,
+      <p><strong>Current live state:</strong> amendment rounds 1–3 returned MAJOR
+        findings; all concrete round-3 defects are corrected inline and the
+        automatic review loop is capped. <code>status:plan-approved</code> is removed,
         <code>status:plan-review</code> remains, and no local approval marker exists.</p>
-      <p><strong>Review round 3:</strong> Claude returned MINOR, Codex returned its
+      <p><strong>Original plan review round 3:</strong> Claude returned MINOR, Codex returned its
         third MAJOR, and Gemini was unavailable. Policy stops automatic cycling;
         duplicate-key, timestamp, hidden-residue, hook-scope, artifact-path, and
         runtime findings are corrected inline for the user decision gate.</p>
@@ -127,7 +128,9 @@
         executable/shebang boundary and runtime-assemble synthetic addresses.</p>
       <p>Renewed approval will require both the owner-applied label and an
         owner-created <code>.planning/plan-approved/3549.md</code> marker bound to
-        the exact reviewed amendment revision and final review artifacts.</p>
+        the exact published amendment revision and final review artifacts. The
+        marker will include owner identity, RFC-3339 date, artifact digests, and
+        either a no-MAJOR verdict or an explicit round-3 waiver.</p>
       <p>This amendment will not change the approved architecture: hostname first,
         explicit verified fallback, conventional host-key checking, one shell-free
         OpenSSH launch, and no automatic retry.</p>
@@ -238,8 +241,9 @@
       <h2>TDD resume sequence</h2>
       <ol>
         <li>Preserve the current WIP and its recorded Slice A/B/C RED/GREEN evidence without treating it as amendment approval.</li>
-        <li>Obtain a no-MAJOR amendment review and explicit renewed user approval.</li>
-        <li>Write failing review-driven tests for option abbreviation, ENOEXEC/other OSError mapping, child SIGINT, overlay I/O classification, direct executable mode, and endpoint-literal source safety.</li>
+        <li>Obtain either a no-MAJOR review or an explicit user waiver after inline correction, then bind approval to the published revision.</li>
+        <li>Write failing review-driven tests for every option abbreviation, errno-crossed launch mapping, child SIGINT, filesystem-boundary overlay I/O classification, and endpoint-literal source safety.</li>
+        <li>Retain already-green direct executable/shebang behavior as a regression check from non-repo and spaced-path contexts.</li>
         <li>Implement only those command-boundary corrections and return the focused CLI plus 53-node resolver suite to green.</li>
         <li>Write failing Bash, PowerShell, Tabby, and governed-manifest tests.</li>
         <li>Replace unsafe helpers with thin shared-CLI wrappers.</li>
