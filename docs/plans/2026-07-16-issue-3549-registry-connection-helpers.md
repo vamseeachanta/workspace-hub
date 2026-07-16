@@ -28,7 +28,7 @@
 ### Standards
 
 - Engineering calculation standards are not applicable. Repository security
-  rules are active; the canonical runbook remains pending through PR #3553.
+  rules and the canonical runbook merged through PR #3553 are active.
 
 ### LLM Wiki pages consulted
 
@@ -64,8 +64,8 @@
 
 **Issue statuses** (verified 2026-07-16 via `gh issue view`):
 
-- `#3547` OPEN/needs-plan; `#3548` CLOSED/done/completeness-verified;
-  `#3549` OPEN/needs-plan/priority-high/lane-claude; `#3550` OPEN/needs-plan;
+- `#3547` OPEN/needs-plan; `#3548` CLOSED/done/completeness-verified; `#3549`
+  OPEN/needs-plan/priority-high/lane-claude/gate-completeness; `#3550` OPEN/needs-plan;
   PR #3553 was merged as `24d6c66d44b151d3a5800c421190b018a679e73c`.
   Live states will be rechecked before implementation.
 
@@ -112,7 +112,7 @@ will not report a new regression when the same node remains red.
 | PowerShell native tests | `tests/operations/test_connection_helpers_ps1_native.py` |
 | Endpoint enforcement tests | `tests/enforcement/test_connection_helper_endpoints.py` |
 | Governed-path manifest | `config/workstations/connection-governed-paths.yaml` |
-| Completeness report | `docs/reports/2026-07-16-3549-completeness.html` |
+| Completeness report | `docs/reports/<completion-date>-3549-completeness.html` |
 | Plan review — Claude | `scripts/review/results/2026-07-16-plan-3549-claude.md` |
 | Plan review — Codex | `scripts/review/results/2026-07-16-plan-3549-codex.md` |
 | Plan review — Gemini | `scripts/review/results/2026-07-16-plan-3549-gemini.md` |
@@ -242,9 +242,10 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 
 ## Implementation Sequence
 
-1. **Dependency and discovery gate:** the implementation branch will update from
-   merged #3553 on `main`; the live helper manifest, issue labels,
-   parallel sessions, and inherited baseline will be rechecked before editing.
+1. **Dependency and discovery gate:** a fresh implementation worktree will be
+   created only after `git merge-base --is-ancestor 24d6c66d HEAD` succeeds; the
+   pre-merge planning worktree will never be reused. Live paths, labels, parallel
+   sessions, and the inherited baseline will be rechecked before editing.
 2. **Slice A — registry bytes and policy:** tests for `from_registry_bytes`,
    path delegation, same-machine duplicates, cross-machine collisions, and the
    closed registry policy will fail first:
@@ -332,14 +333,14 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 - [ ] The candidate index tree is frozen with `git write-tree`; changed paths
   equal the canonical map with evidence for the conditional row; working-tree
   files equal staged blobs; and the diff-only legal scan passes.
-- [ ] The design's checksum-verified Gitleaks v8.30.1 procedure proves embedded
-  defaults with runtime exit 23, then scans the exact archived candidate tree
+- [ ] The published Gitleaks v8.30.1 release and checksum manifest are reverified;
+  the pinned procedure proves defaults with runtime exit 23, then scans the candidate tree
   with finding exit 24. Every review edit restarts all scans.
 - [ ] Code/artifact adversarial review is complete and all MAJOR findings are
   resolved or explicitly returned to the user.
 - [ ] A summary comment is posted on #3549 before closeout.
 - [ ] Closeout records candidate paths, the HEAD-bound module snapshot, measured
-  changed-code coverage, and evidence checklist in a JSON input; calls
+  changed-code coverage including `connect-workstation.py`, and evidence checklist; calls
   `classify(...)` then `score_code(..., issue_number=3549)` from
   `completeness_score`; writes `result.to_dict()` to `RECORD.json`; and renders
   with `uv run python scripts/workflow/render_completeness_html.py 3549
@@ -353,14 +354,14 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR (r1) | Unmerged dependency and competing file maps; corrected before r2 |
-| Codex | MAJOR (r1) | File map, Gitleaks pin, and completeness command gaps; corrected before r2 |
-| Gemini | UNAVAILABLE (r1) | No noninteractive credentials on this runner; canonical stub retained |
+| Claude | MAJOR (r2) | Completeness opt-in and stale dependency wording; corrected before r3 |
+| Codex | MAJOR (r2) | Same blockers plus stale-base and output-race findings; corrected before r3 |
+| Gemini | UNAVAILABLE (r2) | No noninteractive credentials; canonical stub retained |
 
-**Overall result:** PENDING r2. Gemini unavailability degrades T3 to Claude+Codex
+**Overall result:** PENDING r3. Gemini unavailability degrades T3 to Claude+Codex
 T2; a substantive verdict will never be reclassified as unavailable.
 
-**Revisions:** merged #3553; made one changed-path authority; pinned the default-rules scan; completed the score/render contract; narrowed digest scope; separated Windows infrastructure failure from required-native test results.
+**Revisions:** applied `gate:completeness`; removed stale dependency text; made the fresh-base check executable; added launcher coverage; verified the Gitleaks release; isolated review output to eliminate self-observation races.
 
 ## Risks and Open Questions
 
