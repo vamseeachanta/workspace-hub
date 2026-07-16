@@ -87,8 +87,8 @@
         a changed-path authority conflict, so further code changes will remain
         paused until the narrow amendment below receives adversarial review and
         explicit user approval. The agent will not self-approve.</p>
-      <p><strong>Current live state:</strong> amendment round 1 returned MAJOR in
-        all three adversarial lanes. <code>status:plan-approved</code> is removed,
+      <p><strong>Current live state:</strong> amendment rounds 1 and 2 returned
+        MAJOR findings. <code>status:plan-approved</code> is removed,
         <code>status:plan-review</code> remains, and no local approval marker exists.</p>
       <p><strong>Review round 3:</strong> Claude returned MINOR, Codex returned its
         third MAJOR, and Gemini was unavailable. Policy stops automatic cycling;
@@ -103,6 +103,9 @@
 
     <section class="gate">
       <h2>Implementation amendment</h2>
+      <p>The canonical focused contract is
+        <code>docs/plans/2026-07-16-issue-3549-amendment.md</code>. It supersedes
+        the base plan's candidate path table and keeps both plan files below 400 lines.</p>
       <p>The approved resolver core and its tests reached 376 and 397 lines,
         respectively. The hard 400-line repository limit will therefore require
         two focused Slice C files rather than compressing security-sensitive code:</p>
@@ -122,6 +125,9 @@
         integrity, digest, and otherwise-unclassified local overlay I/O will be
         exit 5 rather than registry exit 3. Tests will exercise the real
         executable/shebang boundary and runtime-assemble synthetic addresses.</p>
+      <p>Renewed approval will require both the owner-applied label and an
+        owner-created <code>.planning/plan-approved/3549.md</code> marker bound to
+        the exact reviewed amendment revision and final review artifacts.</p>
       <p>This amendment will not change the approved architecture: hostname first,
         explicit verified fallback, conventional host-key checking, one shell-free
         OpenSSH launch, and no automatic retry.</p>

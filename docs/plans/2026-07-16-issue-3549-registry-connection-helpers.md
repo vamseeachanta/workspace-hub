@@ -1,6 +1,6 @@
 # Plan for #3549: Registry-Driven Linux Connection Helpers with TDD
 
-> **Status:** plan-review — amendment r1 MAJOR; implementation paused
+> **Status:** plan-review — amendment r2 MAJOR; implementation paused
 > **Complexity:** T3
 > **Date:** 2026-07-16
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3549
@@ -52,7 +52,8 @@
   no relevant Drive files. `master_document_index` had coverage gap reason
   `unreachable`; no client paths or unrelated document results will enter this
   plan.
-- Four verified helper documents will be updated at their paths in the file map;
+- Three verified helper documents will be updated at their paths in the amended
+  file map; the oversized `WORKSPACE_CLI.md` and broken menu move to #3561, and
   the prior false `scripts/.../SCRIPT_ORGANIZATION.md` path will not be used.
 
 ### Gaps identified
@@ -169,125 +170,21 @@ function endpoint_guard(staged_manifest):
     fail with path, line, and violation class
 ```
 
-## Implementation Amendment — Slice C/D Structural and Caller Safety
+## Reviewed Implementation Amendment
 
-This amendment will resolve constraints visible in the current WIP branch: the
-approved Slice A/B files are 376 and 397 lines, and Slice C review identifies
-command-boundary defects that must remain blocked pending renewed approval.
+The focused addendum at
+`docs/plans/2026-07-16-issue-3549-amendment.md` will supersede this plan's
+changed-path table and define the revision-bound approval, review-driven TDD,
+line-limit, error-mapping, platform, and #3561 deferral contracts. Implementation
+will remain paused until its final review has no MAJOR finding and the user
+supplies both approval signals named there.
 
-1. `src/workspace_hub/workstations/connection.py` and
-   `tests/workstations/test_connection_resolver.py` will remain below the hard
-   400-line limit. Slice C command/launch behavior will therefore live in the
-   focused `connection_command.py` module, with behavior tests in the focused
-   `test_connection_cli.py` module. The split will preserve the approved API and
-   add no new runtime dependency.
-2. Slice C will disable argparse option abbreviation, map `ENOEXEC` and permission
-   execution failures to 126, normalize child SIGINT termination to 130, and keep
-   registry-load error mapping separate from overlay/domain failures. Tests will
-   cover the executable script/shebang boundary and will runtime-assemble any
-   synthetic protocol address used by the fallback harness.
-3. The already-broken `scripts/workspace` menu will remain outside #3549. Its
-   helper paths do not exist, the file is 575 lines, its defaults do not establish
-   one safe target contract, and Windows fallback must return exit 4. Follow-on
-   [#3561](https://github.com/vamseeachanta/workspace-hub/issues/3561) will own the
-   required split, explicit machine selection, path repair, and menu tests.
+## Canonical Candidate Changed-Path Map
 
-Implementation will remain paused until this amendment receives adversarial
-review and explicit user approval. The user-approved architecture—hostname first,
-explicit verified fallback, one shell-free launcher, no automatic retry—will not
-change.
-
-### Amendment TDD sequence
-
-1. The existing WIP Slice C commits will remain preserved but unapproved. New
-   review-driven tests in `tests/workstations/test_connection_cli.py` will first
-   prove RED for `--fall`, `ENOEXEC`, a child return code of `-signal.SIGINT`, an
-   overlay read `OSError`, direct executable mode, and endpoint-literal source
-   scanning. The command will be:
-   `uv run pytest tests/workstations/test_connection_cli.py -q`.
-   Negative controls will prove that exact `--fallback` remains accepted, a
-   missing executable remains 127, a normal child status remains unchanged, and
-   no failed case launches a second process.
-2. The parser will set `allow_abbrev=False`. Launch mapping will return 127 only
-   for `ENOENT`, 130 for `KeyboardInterrupt` or `-SIGINT`, 126 for every other
-   pre-child `OSError` including permission and `ENOEXEC`, and the unchanged child
-   status otherwise. Diagnostics will contain only stable error classes.
-3. Registry read/policy resolution will remain in its own narrow exception block;
-   overlay availability errors will remain exit 4, overlay integrity/digest and
-   otherwise-unclassified local overlay I/O will return exit 5, and no overlay
-   `OSError` will flow through registry exit 3.
-4. Direct-executable tests will invoke the executable script without
-   `sys.executable`, from a non-repository CWD and a copied checkout path containing
-   spaces. Source tests will require synthetic fallback addresses to be assembled
-   at runtime rather than stored as literal endpoint strings.
-5. Focused tests, the 53-node resolver/overlay suite, the inherited workstation
-   baseline, Ruff, Bash syntax, ShellCheck, PowerShell contract tests, line/function
-   gates, and the changed-path authority check will all run before a correction
-   commit. No implementation step will accept a new failing baseline node.
-
-The live issue will remain at `status:plan-review`, with no local approval marker.
-Only the user may restore `status:plan-approved` after the revised amendment has
-no MAJOR review finding. That renewed approval will authorize correction of the
-preserved WIP; it will not retroactively approve the pre-amendment commits.
-
-## Canonical Implementation Changed-Path Map
-
-This table is the sole candidate changed-path authority; the navigation map above
-authorizes no changes. The candidate set will be computed from approved-plan merge
-`d9db0d7665c66736ae185e462213c92da9a65d82` through the frozen candidate tree and
-will equal every `Modify`/`Create`/`Delete` row plus a `Conditional` row only when
-its predicate is true. Planning, HTML, and amendment-review artifacts are listed
-explicitly rather than silently exempted. Any other path will require plan amendment.
-
-| Action | Path | Reason |
-|---|---|---|
-| Modify | `config/workstations/registry.yaml` | Replace unusable address fields for governed Linux machines with strict hostname-first policy and opaque fallback references; no live value will be guessed |
-| Modify | `src/workspace_hub/workstations/resolver.py` | Add `from_registry_bytes` with `from_registry_path` delegation and cross-machine collision rejection without breaking workspace-path behavior |
-| Create | `src/workspace_hub/workstations/connection.py` | Own strict policy, overlay, digest, route, and redaction |
-| Create | `src/workspace_hub/workstations/connection_command.py` | Own focused argv, dry-run, exit mapping, and one-process OpenSSH launch behavior without exceeding the core file limit |
-| Create | `scripts/operations/connection/connect-workstation.py` | Provide the single cross-platform CLI and shell-free OpenSSH launch boundary |
-| Modify | `scripts/operations/connection/connect-workspace-tailscale.sh` | Become a thin shared-CLI wrapper with explicit machine/fallback/dry-run options |
-| Modify | `scripts/operations/connection/connect-workspace-tailscale.ps1` | Match the Bash wrapper through safe argument arrays |
-| Modify | `scripts/operations/connection/ssh-dev-secondary.sh` | Remove authentication-probe fallback and delegate to the shared CLI |
-| Modify | `scripts/operations/connection/connect-workspace-linux.sh` | Remove target/user defaults and delegate to the shared CLI |
-| Modify | `scripts/operations/connection/connect-workspace-windows.ps1` | Remove command strings and delegate to the shared CLI |
-| Delete | `scripts/operations/connection/.fuse_hidden0002aeb10000414f` | Remove tracked FUSE residue that duplicates a target-bearing helper |
-| Delete | `scripts/operations/connection/.fuse_hidden0002aeb100013f84` | Remove the second byte-identical tracked FUSE residue |
-| Modify | `config/tabby/config.yaml` | Preserve unrelated preferences while removing tracked endpoint and operator defaults |
-| Create | `config/workstations/connection-governed-paths.yaml` | Declare migrated, prohibited-doc, protocol-constant, and deferred connection surfaces; explicitly govern `connection_command.py` and `test_connection_cli.py` |
-| Create | `scripts/enforcement/check-connection-helper-endpoints.py` | Inspect exact staged blobs for recurrence without whole-file exemptions |
-| Modify | `scripts/enforcement/install-hooks.sh` | Invoke the workspace-scoped endpoint guard when present |
-| Create | `tests/workstations/test_connection_resolver.py` | Drive strict resolver and overlay behavior first |
-| Create | `tests/workstations/test_connection_cli.py` | Drive the focused CLI, dry-run, launch, executable-mode, and numeric-exit contract without exceeding the resolver test file limit |
-| Create | `tests/operations/test_connection_helpers_bash.py` | Drive Bash parity, argv safety, and non-executing dry-run |
-| Create | `tests/operations/test_connection_helpers_ps1_contract.py` | Enforce static PowerShell safety and parity on Linux |
-| Create | `tests/operations/test_connection_helpers_ps1_native.py` | Exercise native wrapper behavior when PowerShell exists |
-| Create | `tests/enforcement/test_connection_helper_endpoints.py` | Prove staged-blob, NUL-safe, self-safe enforcement |
-| Create | `.github/workflows/connection-helper-parity.yml` | Set up Python and uv; run Linux commit-blob enforcement and focused tests; run native PowerShell tests on Windows without allowing skip |
-| Conditional | `docs/ops/remote-linux-access.md` | After rebasing onto merged PR #3553, modify only if `connect-workstation.py`, `machine-local fallback overlay`, or `--dry-run` is absent; otherwise preserve it and record the three-token preflight |
-| Modify | `config/tabby/QUICK_REFERENCE.md` | Replace verified stale helper guidance with the shared CLI contract |
-| Modify | `config/tabby/INTERNET_ACCESS_SUMMARY.md` | Remove verified address-coupled helper guidance and route to the runbook |
-| Modify | `docs/modules/cli/WORKSPACE_CLI.md` | Replace the verified stale helper reference with the shared CLI invocation |
-| Modify | `docs/modules/cli/SCRIPT_ORGANIZATION.md` | Record the shared CLI and wrapper responsibilities at the verified existing path |
-| Modify | `docs/plans/README.md` | Index this plan |
-| Modify | `docs/plans/2026-07-16-issue-3549-registry-connection-helpers.md` | Record the reviewed amendment, exact candidate baseline, and renewed user gate |
-| Modify | `docs/reports/2026-07-16-issue-3549-registry-connection-helpers-plan.html` | Keep the human-facing plan synchronized with the amendment and current lifecycle state |
-| Create | `scripts/review/results/2026-07-16-plan-3549-amendment-security-round1.md` | Preserve the first amendment security review |
-| Create | `scripts/review/results/2026-07-16-plan-3549-amendment-governance-round1.md` | Preserve the first amendment governance review |
-| Create | `scripts/review/results/2026-07-16-plan-3549-amendment-compatibility-round1.md` | Preserve the first amendment compatibility review |
-| Create | `scripts/review/results/2026-07-16-plan-3549-amendment-security-round2.md` | Preserve the final amendment security review |
-| Create | `scripts/review/results/2026-07-16-plan-3549-amendment-governance-round2.md` | Preserve the final amendment governance review |
-| Create | `scripts/review/results/2026-07-16-plan-3549-amendment-compatibility-round2.md` | Preserve the final amendment compatibility review |
-
-Any newly tracked `.fuse_hidden*` connection path will fail inventory enforcement.
-The amendment review directory is gitignored by default, so the six exact review
-artifact paths above will be force-added individually; no directory-wide force-add
-or wildcard exemption will be used.
-`scripts/operations/connection/vnc-ace-linux-2.sh` will remain unchanged because
-#3550 owns VNC disposition. Sync helpers will remain unchanged unless a failing
-test proves that sanitizing Tabby configuration requires a narrow template path;
-that outcome will stop implementation and return for plan amendment rather than
-silently expanding the reviewed changed-path manifest.
+The complete, sole candidate path authority is the table in
+`docs/plans/2026-07-16-issue-3549-amendment.md`. It will be evaluated from
+`d9db0d7665c66736ae185e462213c92da9a65d82`; no path in this base document will
+extend that table implicitly.
 
 ## TDD Test List
 
@@ -357,7 +254,7 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
    `uv run pytest tests/enforcement/test_connection_helper_endpoints.py -q`.
    The manifest, stdlib checker, CI mode, and endpoint-only hook mode will reach
    green in normal and linked fixtures; the full legacy installer stays under #3435.
-8. **Documentation and full regression:** the four stale helper documents and the
+8. **Documentation and full regression:** the three scoped helper documents and the
    conditional runbook when its predicate fires will be updated without endpoint
    examples. The sorted changed paths will be compared with the canonical map.
 9. **Artifact review and closeout:** adversarial code review, legal/security
@@ -440,10 +337,10 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 **Overall result:** USER DECISION REQUIRED. Codex remained MAJOR for three rounds
 while Claude reached MINOR; policy stops automatic cycling at this disagreement.
 
-**Implementation amendment review round 1:** MAJOR in all three local adversarial
+**Implementation amendment reviews r1/r2:** MAJOR in all three local adversarial
 lanes. The live `status:plan-approved` label is removed, `status:plan-review`
-remains, and no local approval marker exists. This revision will require a fresh
-round with no MAJOR finding before it is surfaced for renewed user approval.
+remains, and no local approval marker exists. The focused addendum will require a
+round-3 result with no MAJOR finding before renewed user approval.
 
 **Inline r3 corrections:** reject duplicate YAML keys; close timestamp ordering;
 delete tracked FUSE residue; narrow hook worktree scope; use revisioned artifacts
