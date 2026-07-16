@@ -86,12 +86,15 @@
       <p>The design is approved. This implementation plan will require adversarial
         review and explicit user-applied <code>status:plan-approved</code> before
         code changes begin. The agent will not self-approve.</p>
-      <p><strong>Review round 1:</strong> Claude and Codex returned MAJOR; Gemini
-        was unavailable for missing noninteractive credentials. The dependency,
-        file-map, digest, Gitleaks, completeness, and Windows-reporting findings
-        are corrected here and await round 2.</p>
+      <p><strong>Review round 2:</strong> Claude and Codex returned MAJOR; Gemini
+        was unavailable for missing noninteractive credentials. The completeness
+        opt-in, stale dependency wording, fresh-base precondition, launcher
+        coverage, and review-output race are corrected here and await round 3.</p>
       <p><strong>Dependency:</strong> the reviewed #3548 runbook landed through
         PR #3553 at merge commit <code>24d6c66</code>.</p>
+      <p><strong>Real close gate:</strong> issue #3549 now carries
+        <code>gate:completeness</code>; the server Action may not be treated as
+        passing when skipped.</p>
     </section>
 
     <div class="grid">
@@ -195,7 +198,7 @@
     <section>
       <h2>TDD delivery sequence</h2>
       <ol>
-        <li>Start from merged #3553 on <code>main</code>, recheck parallel work and baseline.</li>
+        <li>Create a fresh worktree only after the base is proven to descend from merged #3553; never reuse the pre-merge planning worktree.</li>
         <li>Write failing registry-bytes, strict-policy, and collision tests; implement only that slice to green.</li>
         <li>Write failing POSIX integrity, attestation, canonical-policy mutation/stability, legacy-field, and digest tests; implement only that slice to green.</li>
         <li>Write failing CLI, redaction, canonical SSH argv, host-key, interrupt, and exit tests; implement only that slice to green.</li>
@@ -222,6 +225,7 @@
         <li>Dry-run executes nothing and reveals no target or identity.</li>
         <li>Bash and native PowerShell behavior are tested through the required <code>uv</code> runtime.</li>
         <li>Manifest-backed staged and commit enforcement catches added files, odd filenames, index/worktree races, and adjacent unsentinelled violations.</li>
+        <li>Changed-code coverage explicitly includes the shared launcher under <code>scripts/operations/connection/</code>.</li>
         <li>Implementation cannot start until multi-provider plan review completes and the user applies <code>status:plan-approved</code>.</li>
       </ul>
     </section>
