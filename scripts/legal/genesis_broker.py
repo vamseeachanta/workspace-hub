@@ -18,10 +18,27 @@ def fd_sha256(fd: int) -> str:
 
 def revalidate(fd: int, expected_sha256: str, expected_stat: os.stat_result | None = None) -> None:
     current = os.fstat(fd)
-    if expected_stat and (current.st_dev, current.st_ino, current.st_mode, current.st_size) != (expected_stat.st_dev, expected_stat.st_ino, expected_stat.st_mode, expected_stat.st_size):
+    if expected_stat and (current.st_dev, current.st_ino, current.st_mode, current.st_size, current.st_uid, current.st_nlink) != (expected_stat.st_dev, expected_stat.st_ino, expected_stat.st_mode, expected_stat.st_size, expected_stat.st_uid, expected_stat.st_nlink):
         raise PermissionError("retained identity changed")
     if fd_sha256(fd) != expected_sha256:
         raise PermissionError("retained digest changed")
+
+def open_verified_bundle(members: dict[str, tuple[str, str]]) -> dict[str, int]:
+    opened: dict[str, int] = {}
+    try:
+        for name, (path, digest) in members.items():
+            fd = open_nofollow(path)
+            st = os.fstat(fd)
+            revalidate(fd, digest, st)
+            opened[name] = fd
+        return opened
+    except Exception:
+        for fd in opened.values():
+            try:
+                os.close(fd)
+            except OSError:
+                pass
+        raise
 
 
 def open_nofollow(path: str, mode: int = 0o600, max_size: int = 16384) -> int:
