@@ -10,6 +10,7 @@
 > **Execution mode:** planning/review `parallel-readonly`; approved implementation `parallel-worktree`
 > **Round 1 input commit:** `06216c5c7d48b217ae7b1f92ad184d6eeb4ab2c5`
 > **Round 2 input commit:** `a703e619c14fde5aea003010e3479b80f15e1d19`
+> **Round 3 input commit / plan blob:** `8aeb690c7f6e1aa96f4c84accb78e734516d0a67` / `14b6cdda9782dbbad174a098a8567af9aa351231`
 > **Round 1 artifacts:** `scripts/review/results/issue-3559-round-1/2026-07-16-plan-3559-claude.md` | `...-codex.md` | `...-gemini.md`
 > **Round 2 artifacts:** `scripts/review/results/issue-3559-round-2/2026-07-16-plan-3559-claude.md` | `...-codex.md` | `...-gemini.md`
 > **Round 3 artifacts:** `scripts/review/results/issue-3559-round-3/2026-07-16-plan-3559-claude.md` | `...-codex.md` | `...-gemini.md`
@@ -46,6 +47,7 @@
 - [aceengineer-website #74](https://github.com/vamseeachanta/aceengineer-website/issues/74) will own pinned consumption, registry validation, parent/child templates, selectors, routes, accessibility, and deployment.
 - [#3485](https://github.com/vamseeachanta/workspace-hub/issues/3485) supplies the general registry-driven capability program. Its floating datasets-server behavior will remain a compatibility path only.
 - [worldenergydata #939](https://github.com/vamseeachanta/worldenergydata/issues/939) supplies the longer-term Explorer program; it will not expand V1 by implication.
+- [#3560](https://github.com/vamseeachanta/workspace-hub/issues/3560) now owns the general review-harness defect where providers can inspect their own empty in-progress sinks; this plan will not claim those transient observations are final artifact state.
 - Drive-index query `Hugging Face field explorer HTML templates dropdown worldenergydata` ran on 2026-07-16. It returned unrelated engineering/CAD documents and one stale missing workspace-spec path; no external drive file will govern this plan.
 - No relevant LLM-wiki page was found or will be modified.
 
@@ -149,7 +151,7 @@ P4: the website registry binds dataset + HF SHA + manifest path; the parent
     verifier live-checks approval comments/labels and joins schema-valid publisher,
     manifest, registry, build, browser, deployment, route, and scan evidence.
 P5: an R1→R2→R1 preview-deployment drill proves whole-snapshot rollback.
-P6: a candidate-bound, expiring, one-time user authorization records deploy_pending;
+P6: a candidate-bound protected-environment approval records deploy_pending;
     production deploy and read-only smoke then record accepted or failure/rollback.
 P7: both children close their own gates before parent completeness/closure.
 ```
@@ -196,15 +198,17 @@ verify_approvals(github_api, contract):
         require repository marker .planning/plan-approved/<issue>.md
         bind evidence comment's reviewed commit/blob and no-MAJOR artifact paths
         require approval event and marker follow that exact review evidence
-    return hash-bound approval evidence or fail closed
+    return exact account-authority evidence or fail closed
 ```
 
 ```text
 verify_trusted_receipts(github_api, vercel_api, hf_raw, receipts):
-    require each child receipt names protected GitHub Actions run/workflow/head SHA
-    live-fetch run conclusion, event, repository, head SHA and artifact digest
-    reject fork/untrusted workflow and rehash downloaded evidence artifact
-    require workflow blob belongs to reviewed child commit
+    require exact allowlisted repository + workflow path/ID + workflow blob SHA
+    require workflow_dispatch, protected target ref, allowlisted automation actor,
+        run_attempt=1, conclusion=success and exact reviewed child head SHA
+    require every action reference is pinned to a full reviewed commit SHA
+    require named protected environment and live deployment-approval record
+    reject fork/PR events and rehash/attestation-verify downloaded evidence
     live-fetch Vercel deployment ID/environment/git SHA and raw exact HF bytes
     require deployed website registry blob pins receipt HF SHA
 ```
@@ -225,21 +229,29 @@ verify_candidate(approval_evidence, wed_receipt, hf_manifest, website_registry,
 ```
 
 ```text
-transition_release(expected_remote_sha, expected_state_version, event, evidence):
-    fetch fresh remote state; reject stale SHA/version or illegal transition
-    update one authoritative release-state object and immutable evidence paths
-    commit them together on a promotion PR from expected_remote_sha
-    merge only by non-force fast-forward/PR CAS; competing writer must refetch
+transition_release(expected_state_ref_oid, expected_state_version, event, evidence):
+    fetch protected refs/heads/field-explorer-release-state; require expected OID/version
+    require all prior canonical event hashes remain an exact ordered prefix
+    require every evidence/sha256/<digest>.json path is create-only and matches digest
+    create one commit whose sole parent is expected_state_ref_oid
+    non-force push commit to the same protected ref; Git receive-pack is the CAS
+    on non-fast-forward rejection refetch; never auto-rebase or overwrite history
 
 authorize_and_deploy(candidate, github_api):
-    live-fetch owner comment with exact PROMOTE marker, release/evidence root,
-        HF SHA, website SHA, production environment, nonce and <=24h expiry
-    reject used nonce, stale/wrong candidate or non-owner author
-    transition candidate preview_verified -> promotion_authorized -> deploy_pending
-    deploy exact website commit/pin; run read-only production smoke
+    dispatch allowlisted production workflow as automation principal with release ID,
+        evidence root, HF SHA, website SHA, target and unique deployment_intent_id
+    require distinct configured reviewer approves protected environment with
+        prevent_self_review; live-fetch approval and bind it to pending deployment
+    transition preview_verified -> promotion_authorized -> deploy_pending with
+        lease expiry, intent ID and exact rollback deployment
+    before create/retry query Vercel by project/target/git SHA/intent metadata
+    if one match resume it; if none create once; if multiple/timeout enter unknown
+    after API returns transition -> deployed_pending_smoke with deployment ID
+    run read-only production smoke
     on pass transition -> accepted and retain prior release as rollback target
     on failure transition -> production_failed -> rollback_pending -> rolled_back
-    if rollback cannot be proven transition -> unknown and block all promotion
+    after crash/lease expiry reconciliation must query by intent before any retry
+    if state cannot be proven transition -> unknown and block all promotion
 ```
 
 ---
@@ -254,7 +266,7 @@ authorize_and_deploy(candidate, github_api):
 | Create | `scripts/workflow/verify_field_explorer_promotion.py` | join and verify child receipts and release evidence |
 | Create | `scripts/workflow/promote_field_explorer_release.py` | remote-SHA/state-version CAS and legal release transitions |
 | Create | `tests/workflow/test_field_explorer_promotion.py` | TDD for lifecycle, candidate, rollback and expansion bounds |
-| Create | `docs/reports/field-explorer/release-state.json` | single authoritative state/event history/current accepted/rollback object |
+| Create on protected state ref | `docs/reports/field-explorer/release-state.json` | single authoritative state/event history/current accepted/rollback object |
 | Create per release | `docs/reports/field-explorer/releases/<release-id>/` | immutable copies of publisher, build, browser, scan and deployment receipts |
 | Update | `docs/README.md` | expose the approved contract/runbook |
 | Update | `docs/plans/README.md` | index this plan |
@@ -269,7 +281,7 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 | Test | Verification |
 |---|---|
 | `test_children_are_exact_and_independently_gated` | parent approval cannot approve children |
-| `test_approval_requires_live_owner_label_event_marker_review_comment_and_plan_blob` | canonical approval evidence is exact and non-forgeable |
+| `test_approval_requires_live_owner_label_event_marker_review_comment_and_plan_blob` | canonical account-authority evidence binds the exact review |
 | `test_receipt_schemas_are_closed_and_versioned` | unknown/missing fields and schema majors fail |
 | `test_referenced_evidence_is_rehashed` | structurally convenient arbitrary JSON cannot pass |
 | `test_dependency_graph_is_acyclic_and_publisher_first` | production pin cannot precede verified receipt |
@@ -285,10 +297,12 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 | `test_data_only_xss_and_safe_path_contract` | markup/path payloads fail or remain inert |
 | `test_failed_candidate_preserves_last_good` | failed R2 leaves R1 intact |
 | `test_registry_revert_restores_r1` | R2→R1 preserves stable routes and data |
-| `test_single_state_object_and_remote_ref_cas_survive_crash_and_race_points` | no split ledger/pointer and no cross-worktree lost update |
+| `test_single_state_object_nonforce_ref_push_is_actual_remote_cas` | same-parent concurrent writers: exactly one succeeds |
+| `test_history_is_prefix_only_and_evidence_is_content_addressed_create_only` | prior events/evidence cannot be truncated or rewritten |
 | `test_production_pending_failure_rollback_and_unknown_transitions` | external state never contradicts silent R1 acceptance |
-| `test_promotion_authorization_is_live_candidate_bound_expiring_and_single_use` | forged/stale/replayed comments fail |
-| `test_receipts_require_live_trusted_ci_deployment_and_hf_provenance` | self-consistent fabricated PASS JSON fails |
+| `test_protected_environment_approval_is_distinct_candidate_bound_and_single_use` | workflow actor cannot self-approve or replay another candidate |
+| `test_deployment_intent_reconciles_crash_timeout_zero_one_or_many_matches` | retry never creates an ambiguous second production deployment |
+| `test_exact_trusted_workflow_policy_and_live_provenance` | wrong event/path/ref/actor/attempt/action/environment/fork fails |
 | `test_rollback_drill_is_preview_only_without_fresh_authorization` | planning approval cannot mutate production |
 | `test_runbook_matches_machine_contract` | HTML and JSON lifecycle stay in parity |
 | `test_approval_packet_matches_contract_states_and_authority` | approval surface cannot omit pending/failure/rollback gates |
@@ -300,9 +314,10 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 - [ ] This parent plan and both child plans will receive independent adversarial review and explicit user approval before their implementations begin.
 - [ ] Parent approval will not authorize either child.
 - [ ] Parent JSON and HTML will define the exact issue DAG, crosswalk, revisions, receipts, states, failure behavior, and rollback.
-- [ ] Plan approval verification will bind the live owner-applied `status:plan-approved` timeline event, canonical marker, plan-review evidence comment, exact reviewed plan blob, and final no-MAJOR artifacts.
+- [ ] Plan approval verification will bind the live account-authority `status:plan-approved` event, canonical marker, plan-review evidence comment, exact reviewed plan blob, and final review artifacts; it will not claim cryptographic proof of human intent.
 - [ ] Closed versioned schemas will cover publisher, build, browser, scan, deployment, authorization, candidate, pending, acceptance, rejection, failure, rollback, and unknown receipts/states.
-- [ ] One authoritative release-state object plus immutable evidence will update in one Git commit through fresh-remote-SHA/state-version PR CAS; stale worktrees/clones will fail.
+- [ ] One authoritative release-state object plus content-addressed create-only evidence will update on a protected state ref through a one-parent non-force push; concurrent stale writers will receive non-fast-forward failure.
+- [ ] Every transition will preserve prior canonical event hashes as an exact prefix and validate state-ref ancestry to genesis.
 - [ ] #1045 will produce byte-identical browser outputs from one clean source revision and one atomic HF commit.
 - [ ] Every immutable read will use raw `resolve/<exact-hf-sha>/...`; datasets-server and floating refs will be rejected.
 - [ ] #74 production pinning will consume the verified #1045 receipt, not only fixtures.
@@ -312,10 +327,10 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 - [ ] No-JS HTML will expose useful results, counts, provenance, revision, limitations, and links.
 - [ ] Dirty source, legal ambiguity, unsafe path, embedded HTML, duplicate/orphan ID, schema/hash/count mismatch, missing shard, mixed revision, or stale pin will fail before deployment.
 - [ ] Failed R2 promotion will leave R1 intact; R2→R1 revert will reproduce R1.
-- [ ] Website-generated build/browser receipts will bind commands, tools, routes, assertions, hashes and preview deployment to a protected GitHub Actions run; the parent will live-fetch run/workflow/artifact and Vercel provenance and rehash evidence.
+- [ ] Website-generated build/browser receipts will bind commands, tools, routes, assertions, hashes and preview deployment to an exact allowlisted workflow_dispatch policy; the parent will live-fetch run/approval/artifact and Vercel provenance and verify attestations/hashes.
 - [ ] Preview browser, mobile, keyboard, JS-disabled, CSP, XSS, link, and revision-disclosure checks will pass before any production mutation.
-- [ ] Production promotion will require a live owner comment bound to release/evidence/HF/website/environment, expiring within 24 hours and carrying a one-time nonce.
-- [ ] Production will enter `deploy_pending` before mutation; smoke success will accept, failure will record and roll back, and an unproven rollback will enter blocking `unknown` state.
+- [ ] Production promotion will require protected-environment approval by a configured reviewer distinct from the automation actor, with prevent-self-review and exact candidate inputs.
+- [ ] Production will enter `deploy_pending` with a lease, intent ID and rollback target before mutation; retries will reconcile Vercel intent metadata before creation; smoke success will accept, failure will record and roll back, and ambiguity will enter blocking `unknown`.
 - [ ] Both implemented child issues will receive summary comments before parent closure.
 - [ ] Parent and child legal/security scans, tests, cross-reviews, cleanup audits, and completeness gates will pass.
 - [ ] Closeout will not claim the 115 FDP pages or broader expansion tiers as delivered.
@@ -326,11 +341,11 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR | review provenance, canonical approval signal, cross-worktree serialization |
-| Codex | MAJOR | atomic state, distributed CAS, production failure, authorization replay, trusted provenance, packet parity |
+| Claude | MAJOR | final-input binding/harness self-observation; deployment-state latency residual |
+| Codex | MAJOR | authorization trust boundary, exact remote CAS, crash reconciliation, workflow allowlist, append-only evidence |
 | Gemini | UNAVAILABLE | no non-interactive authentication configured |
 
-**Round 2 result:** MAJOR from two independent providers. The current revision will replace split state with one remote-CAS object, align approval authority, add pending/failure/rollback states and trusted-run provenance, update the HTML packet, and receive a fresh Round 3 review. The issue will remain `status:needs-plan` until the final revision has no unresolved MAJOR finding.
+**Round 3 result:** MAJOR from two independent providers. The exact input was remotely committed at `8aeb690c...` with plan blob `14b6cdda...`; both final artifacts became non-empty after provider exit, while both reviewers also exposed the in-progress-sink race now filed as [#3560](https://github.com/vamseeachanta/workspace-hub/issues/3560). The remaining findings will be absorbed inline through the three-round cap. No fourth automatic review will run; the issue will remain `status:needs-plan` and the user will receive the final evidence plus the unresolved consensus risk for disposition.
 
 ---
 
@@ -342,7 +357,8 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 - **Identity drift:** display names and slugs may change; stable IDs and redirects will preserve joins and URLs.
 - **Cache substitution:** only a fully validated cache for the exact pinned revision may support an outage build.
 - **Scale:** V1 proves generic correctness beyond 100 with synthetic fixtures; it will not claim performance for all future 1,389 fields without a later measured expansion plan.
-- **External-action authority:** the rollback exercise will use a preview deployment. Planning approval will not authorize production deployment; promotion will stop for a live candidate-bound owner authorization after preview evidence.
+- **External-action authority:** the rollback exercise will use a preview deployment. Planning approval will not authorize production deployment; promotion will stop for candidate-bound protected-environment approval by a reviewer distinct from the workflow actor.
+- **Implementation proof burden:** approval will authorize building the state/CAS/provenance machinery, not assert that it is already correct. Remote-race, crash-point, protected-environment, Vercel reconciliation, and attestation tests plus T3 code review will remain mandatory before any production promotion.
 
 ## Complexity: T3
 

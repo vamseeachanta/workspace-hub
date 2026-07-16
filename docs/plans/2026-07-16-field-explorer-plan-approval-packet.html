@@ -66,7 +66,7 @@
       <div class="step" role="listitem"><strong>3 · Verify</strong>Raw exact-SHA readback and receipt</div>
       <div class="step" role="listitem"><strong>4 · Render</strong>Website pins SHA and stages all routes</div>
       <div class="step" role="listitem"><strong>5 · Preview</strong>R1→R2→R1 browser and rollback drill</div>
-      <div class="step" role="listitem"><strong>6 · Authorize</strong>Owner binds one-time approval to exact release</div>
+      <div class="step" role="listitem"><strong>6 · Authorize</strong>Distinct reviewer approves protected environment for exact release</div>
       <div class="step" role="listitem"><strong>7 · Deploy</strong>Record pending, deploy exact pin, smoke read-only</div>
       <div class="step" role="listitem"><strong>8 · Resolve</strong>Accept, or record failure and prove rollback</div>
     </div>
@@ -96,7 +96,8 @@
         <li>The browser will use local validated assets; there will be no runtime HF dependency.</li>
         <li>Markup will live in real HTML page and child-panel partials.</li>
         <li>Static parent, field, and well routes will provide useful no-JS navigation.</li>
-        <li>One remote-CAS release state will expose preview, authorization, deploy-pending, accepted, failure, rollback, and unknown states.</li>
+        <li>One protected state ref will use a one-parent non-force push as the remote CAS; stale concurrent writers will fail.</li>
+        <li>Prior event hashes will remain an exact prefix and evidence paths will be content-addressed and create-only.</li>
         <li>Receipts will be checked against live trusted CI, Hugging Face, and deployment provenance rather than trusted as self-authored JSON.</li>
         <li>Failed candidates will preserve or restore the last-good complete site and revision cache; unproven rollback will block further promotion.</li>
       </ul>
@@ -105,10 +106,10 @@
       <h2>Approval gates</h2>
       <ol>
         <li>Architecture — approved.</li>
-        <li>T3 adversarial plan review — Round 2 returned two MAJOR verdicts; Round 3 is required after correction.</li>
+        <li>T3 adversarial plan review — three rounds returned MAJOR findings; all final findings are absorbed inline, and no fourth automatic cycle will run.</li>
         <li>User approval of each issue plan — pending.</li>
         <li>TDD implementation — blocked until approval.</li>
-        <li>Preview evidence — required before a separate, release-bound production authorization.</li>
+        <li>Preview evidence — required before a protected-environment approval by a reviewer distinct from the automation actor.</li>
         <li>T3 code/artifact review, legal/security, trusted CI/browser and production verification — required before close.</li>
       </ol>
       <p>Draft website PR <a href="https://github.com/vamseeachanta/aceengineer-website/pull/73">#73</a> overlaps shared files and will be resolved or explicitly coordinated before website implementation.</p>

@@ -8,7 +8,7 @@
 > **Project:** N/A
 > **Lane:** lane:codex
 > **Execution mode:** planning/review `parallel-readonly`; implementation `parallel-worktree` for pure builder/tests, serialized single-lane for live publication
-> **Review artifacts:** `scripts/review/results/2026-07-16-plan-1045-claude.md` | `scripts/review/results/2026-07-16-plan-1045-codex.md` | `scripts/review/results/2026-07-16-plan-1045-gemini.md`
+> **Round 1 artifacts:** `scripts/review/results/issue-1045-round-1/2026-07-16-plan-1045-claude.md` | `...-codex.md` | `...-gemini.md`
 
 ---
 
@@ -102,7 +102,7 @@ Distinct sources: issue body, parent/consumer issues, two current exporter scrip
 
 A deterministic publisher will build normalized fields, wells, countries, economics, bounded browser JSON shards, Parquet tables, card, and manifest from one clean worldenergydata commit; publish all bytes in one expected-parent HF commit; raw-read every declared artifact by the returned SHA; and emit a receipt only after full verification.
 
-The live mutation will run only from the protected manual GitHub Actions publisher workflow on the reviewed repository commit and environment. The receipt will record the run/workflow IDs, workflow blob, head SHA, artifact ID/digest, environment, and conclusion. Parent #3559 will live-fetch that run and rehash the downloaded evidence artifact; a locally fabricated receipt will not satisfy promotion.
+The live mutation will run only from the exact allowlisted `.github/workflows/publish-field-explorer-snapshot.yml` `workflow_dispatch` on the protected target ref, reviewed head SHA, and `field-explorer-publish` environment. The workflow will reject fork/PR events and rerun attempts, pin every action to a full commit SHA, and require the configured automation actor plus protected-environment approval policy. The receipt will record the run/workflow IDs and blob, event/ref/actor/attempt, head SHA, action pins, environment approval, artifact ID/digest/attestation, and conclusion. Parent #3559 will live-fetch and verify that policy and rehash the downloaded artifact; a locally fabricated or merely successful same-repository run will not satisfy promotion.
 
 ## Artifact and Identity Contract
 

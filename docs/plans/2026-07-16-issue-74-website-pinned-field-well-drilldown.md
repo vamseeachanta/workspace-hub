@@ -9,7 +9,7 @@
 > **Client:** N/A
 > **Lane:** lane:codex
 > **Execution mode:** planning/review `parallel-readonly`; approved implementation `parallel-worktree`
-> **Review artifacts:** `scripts/review/results/2026-07-16-plan-74-claude.md` | `scripts/review/results/2026-07-16-plan-74-codex.md` | `scripts/review/results/2026-07-16-plan-74-gemini.md`
+> **Round 1 artifacts:** `scripts/review/results/issue-74-round-1/2026-07-16-plan-74-claude.md` | `...-codex.md` | `...-gemini.md`
 
 ---
 
@@ -256,7 +256,7 @@ reduce_browser_state(state, action):
 - Promote only after route, link, CSP, accessibility, legal and receipt checks pass.
 - Reject any receipt with an unknown schema major, missing command/tool/deployment identity, unreferenced raw result, or hash mismatch.
 - Collect browser evidence against preview first; production collection will be read-only and separately authorized.
-- Bind each receipt to the protected Actions run/workflow blob/head SHA/artifact digest and live Vercel deployment ID/environment/git SHA; fork or self-authored local PASS receipts will fail parent verification.
+- Bind each receipt to the exact allowlisted `.github/workflows/verify-field-explorer-release.yml` workflow_dispatch, protected target ref, reviewed head SHA, configured automation actor, run attempt 1, full-commit-pinned actions, named environment approval, attested artifact digest, and live Vercel deployment ID/environment/git SHA; fork/PR events, reruns, alternative workflows, or self-authored local PASS receipts will fail parent verification.
 - Prove a failed R2 leaves R1 output and cache intact.
 - Prove a registry-pin revert R2→R1 reproduces R1 content and stable URLs.
 - Preserve legacy non-relational capability behavior through focused regression tests.
