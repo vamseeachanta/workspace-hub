@@ -74,7 +74,8 @@ It will identify:
 - the expected overlay schema version;
 - the maximum accepted attestation age.
 
-Connection fields will have explicit types and a closed schema. Unknown fields,
+Connection fields will have explicit types and a closed schema. A custom safe
+loader will reject duplicate mapping keys before construction; unknown fields,
 wrong YAML types, empty values, and conflicting identifiers will fail closed.
 Machine keys, hostnames, aliases, and SSH identifiers will be globally unique
 after case folding.
@@ -102,6 +103,11 @@ The resolver will accept only an address within Tailscale-owned ranges. Missing,
 malformed, expired, unverified, machine-mismatched, reference-mismatched, or
 connection-policy-digest-mismatched records will fail before any client process
 starts.
+
+Timestamps will be RFC-3339 UTC seconds. Acceptance requires
+`verified_at <= now < expires_at`, `expires_at > verified_at`, and
+`expires_at - verified_at <= policy.max_age_seconds`; future verification,
+reversed/equal bounds, and policy-overlong validity will fail closed.
 
 The overlay will contain no keys, tokens, passwords, or authentication material.
 Documentation will define restrictive POSIX permissions and an equivalent
@@ -254,7 +260,9 @@ the registry policy, connection core and CLI, all migrated wrappers, Tabby
 configuration, endpoint-prohibited docs, and an explicit deferred VNC row. Local
 mode will read exact staged blobs; CI mode will read exact head-commit blobs.
 Hook installation will resolve the hooks directory with
-`git rev-parse --git-path hooks` so linked worktrees are supported.
+`git rev-parse --git-path hooks`. A new idempotent
+`--connection-endpoint-only` mode will install only this guard and will work in
+normal and linked worktrees; broad legacy installer conversion remains #3435.
 
 ## Output and Error Contract
 
@@ -309,19 +317,20 @@ positive control will stop closeout. Source:
 
 TDD will begin with focused failing tests covering:
 
-1. strict connection schema and global identifier collisions;
+1. duplicate-key rejection, strict connection schema, and global collisions;
 2. canonical key, hostname, alias, and SSH-identifier resolution;
 3. hostname-first behavior with exactly one OpenSSH invocation;
 4. no implicit fallback after every major OpenSSH failure class;
-5. explicit fallback rejection for missing, malformed, out-of-range, stale,
-   unverified, or mismatched overlay records;
+5. explicit fallback rejection for missing, malformed, duplicate, out-of-range,
+   future-dated, reversed, overlong, stale, unverified, or mismatched records;
 6. one successful synthetic verified-fallback fixture;
 7. injection and Unicode-confusable target corpora with no side effects;
 8. deterministic redacted dry-run and secret-safe diagnostics;
 9. single-read snapshot, canonical per-machine digest stability/mutation, legacy
    digest rejection, and connection-policy mismatch handling;
 10. Bash and PowerShell argument/exit-code parity;
-11. complete governed-helper inventory and removal of address/operator defaults;
+11. complete governed-helper inventory, deletion of both tracked `.fuse_hidden*`
+    connection residues, and rejection of any future tracked residue;
 12. exact staged-blob address and secret scanning with positive controls.
 
 Pytest will drive Python and Bash behavior with temporary registries, overlays,
