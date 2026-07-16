@@ -13,8 +13,9 @@ def test_chain_uses_exact_internal_entry_and_clean_environment():
     assert "LEGAL_RULE_OWNER_GENESIS=1" in source
     assert "--outer-identity-fd" in source
     assert "--approval-record" in source
-    assert "--execution-manifest-fd" in source or "execution_manifest" in source
-    assert "--internal-genesis" in source
+    assert "_genesis-current-from-launcher" in source
+    for token in ("--tool-repo", "--tool-sha", "--out-parent", "--transaction-id", "--approval-record", "--approval-sha256", "--python-realpath", "--python-sha256"):
+        assert token in source
 
 
 def test_chain_rejects_actions_and_does_not_emit_child_output():
