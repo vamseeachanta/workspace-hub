@@ -73,6 +73,8 @@
     <div class="tag">Issue #3549</div>
     <div class="tag">T3 security change</div>
     <div class="tag">Status: draft plan</div>
+    <div class="tag">TDD: planned, not started</div>
+    <div class="tag">Adversarial review: pending</div>
     <h1>Registry-Driven Connection Helpers</h1>
     <p>A hostname-first, fail-closed connection architecture for two Linux
       workstations, with machine-local verified fallback and one shared execution
@@ -97,18 +99,26 @@
       </article>
       <article class="card">
         <h3>Local observation</h3>
-        <p>A gitignored overlay will hold the verified address, evidence reference,
-          timestamps, machine binding, and registry digest.</p>
+        <p>A repository-external overlay will hold the OS-owner assertion, evidence
+          reference, timestamps, machine binding, and registry digest. On POSIX it
+          must be an owner-controlled regular non-symlink with mode no broader than
+          <code>0600</code>, under a non-group/world-writable parent.</p>
       </article>
       <article class="card">
         <h3>Single execution boundary</h3>
-        <p>Python will validate, resolve, redact, and launch OpenSSH with an argument
-          vector. Shell wrappers will not parse configuration or build commands.</p>
+        <p>The required <code>uv</code> runtime will launch one Python command that
+          validates, resolves, redacts, and starts OpenSSH with an argument vector.
+          Shell wrappers will not parse configuration or build commands.</p>
       </article>
       <article class="card">
         <h3>Explicit fallback only</h3>
         <p>No DNS, timeout, host-key, or authentication failure will cause a second
           destination attempt. Fallback will be a distinct operator action.</p>
+      </article>
+      <article class="card">
+        <h3>Windows boundary</h3>
+        <p>Windows will support hostname mode. Address fallback will fail closed with
+          exit <code>4</code> until a separately reviewed native ACL validator exists.</p>
       </article>
     </div>
 
@@ -118,7 +128,7 @@
         <span>Registry identity + policy</span><b>→</b>
         <span>Strict Python resolver</span><b>→</b>
         <span>Hostname route</span><b>or explicit</b>
-        <span>Verified local overlay</span><b>→</b>
+        <span>POSIX owner-asserted overlay</span><b>→</b>
         <span>OpenSSH argv</span>
       </div>
       <p class="muted">Credentials, keys, endpoints, operator identities, and raw
@@ -132,42 +142,82 @@
         <thead><tr><th>Area</th><th>Planned change</th></tr></thead>
         <tbody>
           <tr><td>Registry and resolver</td><td>Strict connection policy, typed collision handling, and immutable registry digest.</td></tr>
-          <tr><td>Connection core</td><td>New connection model and shared <code>connect-workstation.py</code> CLI.</td></tr>
+          <tr><td>Connection core</td><td>New connection model and shared <code>connect-workstation.py</code> CLI through the required <code>uv</code> runtime.</td></tr>
           <tr><td>Bash</td><td>Three current SSH entry points plus the generic Linux helper will become thin wrappers.</td></tr>
-          <tr><td>PowerShell</td><td>Two helpers will use argument arrays and the same shared resolver contract.</td></tr>
+          <tr><td>PowerShell</td><td>Two helpers will use argument arrays and the shared hostname contract; fallback will return exit <code>4</code>.</td></tr>
           <tr><td>Tabby</td><td>Tracked endpoint and operator defaults will be removed while unrelated preferences remain.</td></tr>
-          <tr><td>Enforcement</td><td>An exact-path staged-blob guard will prevent endpoint defaults from returning.</td></tr>
-          <tr><td>CI</td><td>Linux tests plus a native Windows PowerShell job will prove parity.</td></tr>
+          <tr><td>Enforcement</td><td>A checked governed-path manifest will drive exact staged-blob and head-commit scans without whole-file exemptions.</td></tr>
+          <tr><td>CI</td><td>Linux commit-mode enforcement plus a native Windows hostname-mode PowerShell job will prove the supported boundary.</td></tr>
         </tbody>
       </table>
       <p><strong>Excluded:</strong> VNC behavior remains owned by #3550.</p>
     </section>
 
     <section>
+      <h2>Runtime security contract</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Overlay integrity</h3>
+          <ul>
+            <li>Read the registry and selected overlay once into immutable snapshots.</li>
+            <li>Reject symlinks, wrong owners, non-regular files, broad modes, unsafe parents, stale evidence, and digest mismatches.</li>
+            <li>Keep the overlay outside the repository; it is an owner assertion, not a signed attestation.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Canonical SSH identity</h3>
+          <p>The canonical hostname remains the positional OpenSSH destination.
+            Explicit POSIX fallback adds only fixed <code>HostName</code> and
+            canonical <code>HostKeyAlias</code> options and forces
+            <code>StrictHostKeyChecking=yes</code>. Caller-supplied SSH options are
+            not accepted.</p>
+        </article>
+        <article class="card">
+          <h3>Redaction boundary</h3>
+          <p>Resolver, wrapper, and dry-run diagnostics will reveal neither target,
+            identity, rejected raw value, environment, nor overlay content. Inherited
+            interactive OpenSSH stderr remains an explicit local-terminal boundary.</p>
+        </article>
+        <article class="card">
+          <h3>Checked enforcement</h3>
+          <p>The manifest will classify registry, core, CLI, wrappers, Tabby,
+            endpoint-prohibited docs, and the separately owned VNC surface. Local
+            hooks inspect staged blobs; CI compares exact base and head commit blobs.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
       <h2>TDD delivery sequence</h2>
       <ol>
         <li>Land #3548, update from <code>main</code>, recheck parallel work and baseline.</li>
-        <li>Write failing strict-resolver, overlay, redaction, digest, and fallback tests.</li>
-        <li>Implement the minimum connection core to reach green.</li>
+        <li>Write failing registry-bytes, strict-policy, and collision tests; implement only that slice to green.</li>
+        <li>Write failing POSIX owner, mode, symlink, parent, attestation, freshness, and digest tests; implement only that slice to green.</li>
+        <li>Write failing CLI, redaction, canonical SSH argv, host-key, interrupt, and exit tests; implement only that slice to green.</li>
         <li>Write failing Bash, PowerShell, Tabby, and governed-manifest tests.</li>
         <li>Replace unsafe helpers with thin shared-CLI wrappers.</li>
-        <li>Write staged-state threat-model tests, then implement the endpoint guard.</li>
-        <li>Prove native PowerShell behavior on Windows CI.</li>
+        <li>Write staged- and commit-state threat-model tests, then implement the manifest-backed endpoint guard.</li>
+        <li>Prove native PowerShell hostname behavior and fail-closed fallback exit <code>4</code> on Windows CI without allowing a skipped suite.</li>
         <li>Update the canonical runbook and directly affected helper references.</li>
         <li>Run adversarial artifact review, scans, completeness, and cleanup gates.</li>
       </ol>
+      <p class="muted">Every slice will record its RED failure before implementation,
+        reach GREEN with the minimum change, and restart affected checks after any
+        review-driven edit.</p>
     </section>
 
     <section class="success">
       <h2>Success contract</h2>
       <ul>
         <li>Every governed SSH helper resolves through one validated command.</li>
-        <li>Hostname access is the default; fallback is explicit and attested.</li>
+        <li>Hostname access is the default; POSIX fallback is explicit, current, owner-asserted, and digest-bound.</li>
+        <li>Windows hostname access works natively; unsupported fallback returns exit <code>4</code>.</li>
         <li>No SSH failure silently changes destination.</li>
-        <li>Fallback retains canonical host-key identity.</li>
+        <li>Fallback retains canonical host configuration and host-key identity with strict checking.</li>
         <li>Dry-run executes nothing and reveals no target or identity.</li>
-        <li>Bash and native PowerShell behavior are both tested.</li>
-        <li>Staged enforcement catches added files, odd filenames, index/worktree races, and adjacent unsentinelled violations.</li>
+        <li>Bash and native PowerShell behavior are tested through the required <code>uv</code> runtime.</li>
+        <li>Manifest-backed staged and commit enforcement catches added files, odd filenames, index/worktree races, and adjacent unsentinelled violations.</li>
+        <li>Implementation cannot start until multi-provider plan review completes and the user applies <code>status:plan-approved</code>.</li>
       </ul>
     </section>
 
@@ -177,8 +227,9 @@
         <li>PR #3553 is not yet on <code>main</code>; this remains a hard dependency.</li>
         <li>Current-tree cleanup will not erase historical endpoint exposure.</li>
         <li>A global registry digest will deliberately invalidate fallback after any registry edit.</li>
+        <li>POSIX fallback depends on restrictive local ownership and permissions; Windows fallback remains unsupported.</li>
         <li>The existing workstation suite has one unrelated recorded baseline failure.</li>
-        <li>Endpoint enforcement must remain narrow enough not to block its own tests and review evidence.</li>
+        <li>Endpoint enforcement must remain narrow enough not to block its own tests and review evidence while covering every checked manifest entry.</li>
       </ul>
     </section>
 
