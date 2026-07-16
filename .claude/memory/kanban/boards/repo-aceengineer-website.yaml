@@ -461,10 +461,9 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - status:working
+      - status:done
       - cat:engineering-calculations
       - cat:data
-      - status:plan-approved
       - lane:codex
     initial_status: triage
     priority: 1
