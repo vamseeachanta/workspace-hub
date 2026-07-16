@@ -23631,6 +23631,7 @@ cards:
       - domain:workstations
       - domain:security
       - status:plan-review
+      - status:plan-approved
       - gate:completeness
       - lane:claude
     initial_status: triage
@@ -23705,5 +23706,22 @@ cards:
       - lane:claude
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3559
+    title: 'feat(field-explorer): immutable Hugging Face field/well HTML drill-down program [C11]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3559
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data-pipeline
+      - cat:tooling
+      - status:needs-plan
+      - lane:codex
+      - epic
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

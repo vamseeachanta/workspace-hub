@@ -469,3 +469,34 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#74
+    title: 'feat(capabilities): registry-driven pinned field → well HTML drill-down [C11-R1]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/74
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - cat:tooling
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#75
+    title: Register verified digitalmodel riser analysis Hugging Face dataset
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/75
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -802,3 +802,37 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1603
+    title: Define normalized riser analysis cases and public source registry
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1603
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1604
+    title: Build fail-closed riser result release and Hugging Face publication pipeline
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1604
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:high
+      - cat:data
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

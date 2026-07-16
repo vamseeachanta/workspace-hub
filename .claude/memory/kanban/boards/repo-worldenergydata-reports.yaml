@@ -1646,3 +1646,20 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1045
+    title: 'feat(explorer-publish): deterministic exact-revision HF browser snapshot manifest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1045
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - cat:automation
+      - domain:reports
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
