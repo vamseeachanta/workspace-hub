@@ -2,9 +2,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
+import re
 from typing import Any
 
 import yaml
+
+
+_MACHINE_KEY_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
 class RegistryValidationError(ValueError):
@@ -15,9 +19,7 @@ class _UniqueKeyLoader(yaml.SafeLoader):
     pass
 
 
-def _construct_unique_mapping(
-    loader: _UniqueKeyLoader, node: yaml.MappingNode, deep: bool = False
-) -> dict[Any, Any]:
+def _construct_unique_mapping(loader: _UniqueKeyLoader, node: yaml.MappingNode, deep: bool = False) -> dict[Any, Any]:
     loader.flatten_mapping(node)
     mapping: dict[Any, Any] = {}
     for key_node, value_node in node.value:
@@ -32,9 +34,7 @@ def _construct_unique_mapping(
     return mapping
 
 
-_UniqueKeyLoader.add_constructor(
-    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _construct_unique_mapping
-)
+_UniqueKeyLoader.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _construct_unique_mapping)
 
 
 def load_unique_yaml_bytes(raw_bytes: bytes, *, context: str = "registry") -> Any:
@@ -80,9 +80,7 @@ class WorkstationPathResolver:
                     normalized = identifier.casefold()
                     owner = self._id_to_key.get(normalized)
                     if owner is not None and owner != key:
-                        raise RegistryValidationError(
-                            "registry.machines: identifier_collision"
-                        )
+                        raise RegistryValidationError("registry.machines: identifier_collision")
                     self._id_to_key[normalized] = key
 
     @classmethod
@@ -101,15 +99,15 @@ class WorkstationPathResolver:
         for key, raw in raw_machines.items():
             if not isinstance(key, str) or not isinstance(raw, dict):
                 raise RegistryValidationError("registry.machines: invalid_record")
+            if not _MACHINE_KEY_RE.fullmatch(key):
+                raise RegistryValidationError("registry.machines: invalid_machine_key")
             hostname = raw.get("hostname", "")
             aliases = raw.get("hostname_aliases", []) or []
             operating_system = raw.get("os", "")
             ssh = raw.get("ssh")
             if not isinstance(hostname, str) or not isinstance(operating_system, str):
                 raise RegistryValidationError("registry.machines: invalid_identifier")
-            if not isinstance(aliases, list) or not all(
-                isinstance(alias, str) for alias in aliases
-            ):
+            if not isinstance(aliases, list) or not all(isinstance(alias, str) for alias in aliases):
                 raise RegistryValidationError("registry.machines: invalid_aliases")
             if ssh is not None and not isinstance(ssh, str):
                 raise RegistryValidationError("registry.machines: invalid_ssh")

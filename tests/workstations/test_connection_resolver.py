@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import importlib
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 from types import ModuleType
 
@@ -66,10 +66,7 @@ def _overlay_payload(policy, **updates: object) -> dict[str, object]:
         "machine": "node-one",
         "address": "100.64.10.20",
         "status": "verified",
-        "evidence": (
-            "https://github.com/vamseeachanta/workspace-hub/issues/3550"
-            "#issuecomment-123456"
-        ),
+        "evidence": ("https://github.com/vamseeachanta/workspace-hub/issues/3550#issuecomment-123456"),
         "verified_at": "2026-07-16T11:30:00Z",
         "expires_at": "2026-07-16T12:30:00Z",
         "connection_policy_sha256": policy.sha256,
@@ -125,20 +122,28 @@ def test_registry_rejects_duplicate_yaml_keys_without_echoing_value() -> None:
     assert "secret" not in str(error.value)
 
 
+@pytest.mark.parametrize("machine_key", ["nøde-one", "Node-One", "node_one", "-node-one"])
+def test_registry_rejects_unsafe_canonical_machine_key(machine_key: str) -> None:
+    with pytest.raises(ValueError, match=r"registry\.machines: invalid_machine_key"):
+        WorkstationPathResolver.from_registry_bytes(_registry_bytes({machine_key: _machine()}))
+
+
 def test_same_machine_casefolded_identifier_repetition_is_accepted() -> None:
-    resolver = WorkstationPathResolver.from_registry_bytes(
-        _registry_bytes({"node-one": _machine(aliases=["NODE-ONE"], ssh="Node-One")})
-    )
+    resolver = WorkstationPathResolver.from_registry_bytes(_registry_bytes({"node-one": _machine(aliases=["NODE-ONE"], ssh="Node-One")}))
 
     assert resolver.resolve_machine("NODE-ONE").key == "node-one"
 
 
 @pytest.mark.parametrize("collision", ["key", "hostname", "alias", "ssh"])
-def test_cross_machine_casefolded_identifier_collision_is_rejected(collision: str) -> None:
+def test_cross_machine_casefolded_identifier_collision_is_rejected(
+    collision: str,
+) -> None:
     second_key = "node-two"
     second = _machine(hostname="node-two", ssh="ssh-two")
+    error_class = "identifier_collision"
     if collision == "key":
         second_key = "NODE-ONE"
+        error_class = "invalid_machine_key"
     elif collision == "hostname":
         second["hostname"] = "NODE-ONE"
     elif collision == "alias":
@@ -146,23 +151,36 @@ def test_cross_machine_casefolded_identifier_collision_is_rejected(collision: st
     else:
         second["ssh"] = "NODE-ONE"
 
-    with pytest.raises(ValueError, match=r"registry\.machines: identifier_collision"):
-        WorkstationPathResolver.from_registry_bytes(
-            _registry_bytes({"node-one": _machine(), second_key: second})
-        )
+    with pytest.raises(ValueError, match=rf"registry\.machines: {error_class}"):
+        WorkstationPathResolver.from_registry_bytes(_registry_bytes({"node-one": _machine(), second_key: second}))
 
 
 @pytest.mark.parametrize(
     ("mutation", "error_path"),
     [
         (lambda machine: machine["connection"].update({"extra": True}), "connection"),
-        (lambda machine: machine["connection"].update({"schema_version": True}), "schema_version"),
+        (
+            lambda machine: machine["connection"].update({"schema_version": True}),
+            "schema_version",
+        ),
         (lambda machine: machine.update({"ssh": "bad host"}), "ssh"),
         (lambda machine: machine.update({"ssh": None}), "ssh"),
-        (lambda machine: machine["connection"]["fallback"].update({"reference": "Bad_Ref"}), "reference"),
-        (lambda machine: machine["connection"]["fallback"].update({"attestation_issue": 0}), "attestation_issue"),
-        (lambda machine: machine["connection"]["fallback"].update({"max_age_seconds": 299}), "max_age_seconds"),
-        (lambda machine: machine["connection"]["fallback"].update({"max_age_seconds": 2592001}), "max_age_seconds"),
+        (
+            lambda machine: machine["connection"]["fallback"].update({"reference": "Bad_Ref"}),
+            "reference",
+        ),
+        (
+            lambda machine: machine["connection"]["fallback"].update({"attestation_issue": 0}),
+            "attestation_issue",
+        ),
+        (
+            lambda machine: machine["connection"]["fallback"].update({"max_age_seconds": 299}),
+            "max_age_seconds",
+        ),
+        (
+            lambda machine: machine["connection"]["fallback"].update({"max_age_seconds": 2592001}),
+            "max_age_seconds",
+        ),
     ],
 )
 def test_connection_policy_schema_is_closed_and_typed(mutation, error_path: str) -> None:
@@ -177,12 +195,22 @@ def test_connection_policy_schema_is_closed_and_typed(mutation, error_path: str)
 def test_full_registry_is_validated_before_selected_policy() -> None:
     invalid = _machine(hostname="node-two", ssh="node-two")
     invalid["connection"]["preferred_route"] = "automatic"
-    resolver = WorkstationPathResolver.from_registry_bytes(
-        _registry_bytes({"node-one": _machine(), "node-two": invalid})
-    )
+    resolver = WorkstationPathResolver.from_registry_bytes(_registry_bytes({"node-one": _machine(), "node-two": invalid}))
 
     with pytest.raises(ValueError, match="preferred_route"):
         _connection().resolve_connection_policy(resolver, "node-one")
+
+
+def test_full_registry_rejects_null_but_allows_absent_connection() -> None:
+    unrelated = _machine(hostname="node-two", ssh="node-two")
+    unrelated["connection"] = None
+    resolver = WorkstationPathResolver.from_registry_bytes(_registry_bytes({"node-one": _machine(), "node-two": unrelated}))
+    with pytest.raises(ValueError, match=r"connection: invalid_type"):
+        _connection().resolve_connection_policy(resolver, "node-one")
+
+    unrelated.pop("connection")
+    resolver = WorkstationPathResolver.from_registry_bytes(_registry_bytes({"node-one": _machine(), "node-two": unrelated}))
+    assert _connection().resolve_connection_policy(resolver, "node-one").machine == "node-one"
 
 
 def test_policy_lookup_aliases_share_exact_canonical_bytes_and_digest() -> None:
@@ -190,8 +218,7 @@ def test_policy_lookup_aliases_share_exact_canonical_bytes_and_digest() -> None:
     machine = _machine(hostname="node-host", aliases=["node-alias"], ssh="ssh-node")
     resolver = WorkstationPathResolver.from_registry_bytes(_registry_bytes({"node-one": machine}))
     policies = [
-        module.resolve_connection_policy(resolver, identifier)
-        for identifier in ("node-one", "node-host", "node-alias", "ssh-node")
+        module.resolve_connection_policy(resolver, identifier) for identifier in ("node-one", "node-host", "node-alias", "ssh-node")
     ]
     expected = (
         b'{"connection":{"fallback":{"attestation_issue":3550,"kind":"tailscale_ip",'
@@ -231,9 +258,7 @@ def test_every_mutable_projected_field_changes_digest(mutate) -> None:
 
 def test_registry_migration_removes_observed_linux_addresses() -> None:
     repo_root = Path(__file__).resolve().parents[2]
-    resolver = WorkstationPathResolver.from_registry_path(
-        repo_root / "config" / "workstations" / "registry.yaml"
-    )
+    resolver = WorkstationPathResolver.from_registry_path(repo_root / "config" / "workstations" / "registry.yaml")
 
     for identifier in ("dev-primary", "dev-secondary"):
         machine = resolver.resolve_machine(identifier)
@@ -245,8 +270,7 @@ def test_overlay_rejects_duplicate_and_legacy_digest_fields(tmp_path: Path) -> N
     policy = _policy()
     path = _write_overlay(tmp_path, _overlay_payload(policy))
     path.write_text(
-        "schema_version: 1\nrecords:\n  node-one-tailscale:\n"
-        "    machine: node-one\n    machine: other\n",
+        "schema_version: 1\nrecords:\n  node-one-tailscale:\n    machine: node-one\n    machine: other\n",
         encoding="utf-8",
     )
     with pytest.raises(ValueError, match="duplicate_key"):
@@ -268,7 +292,9 @@ def test_overlay_rejects_file_mode_broader_than_0600(tmp_path: Path, mode: int) 
         _load_overlay(path, policy, tmp_path)
 
 
-def test_overlay_rejects_symlink_unsafe_parent_and_repo_internal_path(tmp_path: Path) -> None:
+def test_overlay_rejects_symlink_unsafe_parent_and_repo_internal_path(
+    tmp_path: Path,
+) -> None:
     policy = _policy()
     real = _write_overlay(tmp_path, _overlay_payload(policy))
     link = real.with_name("link.yaml")
@@ -300,6 +326,30 @@ def test_overlay_rejects_non_owner(tmp_path: Path, monkeypatch) -> None:
         _load_overlay(path, policy, tmp_path)
 
 
+def test_overlay_binds_leaf_open_to_validated_parent(tmp_path: Path, monkeypatch) -> None:
+    policy = _policy()
+    path = _write_overlay(tmp_path, _overlay_payload(policy))
+    repo_root = tmp_path / "repository"
+    repo_root.mkdir(mode=0o700)
+    internal = repo_root / path.name
+    internal.write_text(yaml.safe_dump(_overlay_payload(policy)), encoding="utf-8")
+    internal.chmod(0o600)
+    original_open = os.open
+    replaced = False
+
+    def substitute_parent(target, flags, *args, **kwargs):
+        nonlocal replaced
+        if not replaced:
+            replaced = True
+            path.parent.rename(path.parent.with_name("validated-parent"))
+            path.parent.symlink_to(repo_root, target_is_directory=True)
+        return original_open(target, flags, *args, **kwargs)
+
+    monkeypatch.setattr(os, "open", substitute_parent)
+    with pytest.raises(ValueError, match=r"overlay\.parent: (invalid_type|identity_changed)"):
+        _connection().load_verified_fallback(path, policy, now=NOW, repo_root=repo_root)
+
+
 @pytest.mark.parametrize(
     ("updates", "error_path"),
     [
@@ -318,9 +368,7 @@ def test_overlay_rejects_non_owner(tmp_path: Path, monkeypatch) -> None:
         ({"connection_policy_sha256": "0" * 64}, "connection_policy_sha256"),
     ],
 )
-def test_overlay_rejects_invalid_or_mismatched_attestation(
-    tmp_path: Path, updates: dict[str, object], error_path: str
-) -> None:
+def test_overlay_rejects_invalid_or_mismatched_attestation(tmp_path: Path, updates: dict[str, object], error_path: str) -> None:
     policy = _policy()
     path = _write_overlay(tmp_path, _overlay_payload(policy, **updates))
 

@@ -79,9 +79,7 @@ class VerifiedFallback:
     expires_at: datetime
 
 
-def _require_exact_keys(
-    value: Any, expected: set[str], field_path: str, *, exit_code: int = 3
-) -> dict[str, Any]:
+def _require_exact_keys(value: Any, expected: set[str], field_path: str, *, exit_code: int = 3) -> dict[str, Any]:
     if not isinstance(value, dict):
         error = ConnectionPolicyError if exit_code == 3 else FallbackUnavailableError
         raise error(field_path, "invalid_type")
@@ -112,9 +110,7 @@ def _validate_dns_hostname(value: Any, field_path: str) -> str:
 
 def _validate_connection_fields(connection: Any) -> tuple[str, int, int]:
     base = "registry.machines[].connection"
-    connection = _require_exact_keys(
-        connection, {"schema_version", "preferred_route", "fallback"}, base
-    )
+    connection = _require_exact_keys(connection, {"schema_version", "preferred_route", "fallback"}, base)
     if connection["schema_version"] != 1 or not _is_int(connection["schema_version"]):
         raise ConnectionPolicyError(f"{base}.schema_version", "invalid_value")
     if connection["preferred_route"] != "ssh":
@@ -131,9 +127,7 @@ def _validate_connection_fields(connection: Any) -> tuple[str, int, int]:
         raise ConnectionPolicyError(f"{base}.fallback.reference", "invalid_value")
     issue = fallback["attestation_issue"]
     if not _is_int(issue) or issue <= 0:
-        raise ConnectionPolicyError(
-            f"{base}.fallback.attestation_issue", "invalid_value"
-        )
+        raise ConnectionPolicyError(f"{base}.fallback.attestation_issue", "invalid_value")
     max_age = fallback["max_age_seconds"]
     if not _is_int(max_age) or not 300 <= max_age <= 2_592_000:
         raise ConnectionPolicyError(f"{base}.fallback.max_age_seconds", "invalid_value")
@@ -141,9 +135,9 @@ def _validate_connection_fields(connection: Any) -> tuple[str, int, int]:
 
 
 def _validate_machine_policy(machine: MachineRecord) -> ConnectionPolicy | None:
-    connection = machine.raw.get("connection")
-    if connection is None:
+    if "connection" not in machine.raw:
         return None
+    connection = machine.raw["connection"]
     reference, issue, max_age = _validate_connection_fields(connection)
     ssh = _validate_dns_hostname(machine.ssh, "registry.machines[].ssh")
     projection = {
@@ -161,9 +155,7 @@ def _validate_machine_policy(machine: MachineRecord) -> ConnectionPolicy | None:
         "machine": machine.key,
         "ssh": ssh,
     }
-    canonical = json.dumps(
-        projection, sort_keys=True, separators=(",", ":"), ensure_ascii=True
-    ).encode("ascii")
+    canonical = json.dumps(projection, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("ascii")
     return ConnectionPolicy(
         machine=machine.key,
         ssh=ssh,
@@ -178,9 +170,7 @@ def _validate_machine_policy(machine: MachineRecord) -> ConnectionPolicy | None:
     )
 
 
-def resolve_connection_policy(
-    resolver: WorkstationPathResolver, identifier: str
-) -> ConnectionPolicy:
+def resolve_connection_policy(resolver: WorkstationPathResolver, identifier: str) -> ConnectionPolicy:
     policies: dict[str, ConnectionPolicy] = {}
     for machine in resolver.machines:
         policy = _validate_machine_policy(machine)
@@ -203,58 +193,84 @@ def _is_within(path: Path, parent: Path) -> bool:
     return True
 
 
+def _validate_parent_stat(parent_stat: os.stat_result) -> None:
+    if not stat.S_ISDIR(parent_stat.st_mode):
+        raise OverlayIntegrityError("overlay.parent", "invalid_type")
+    if parent_stat.st_uid != os.getuid():
+        raise OverlayIntegrityError("overlay.parent", "wrong_owner")
+    if stat.S_IMODE(parent_stat.st_mode) & 0o022:
+        raise OverlayIntegrityError("overlay.parent", "unsafe_mode")
+
+
+def _open_validated_parent(parent: Path, expected: os.stat_result) -> int:
+    flags = os.O_RDONLY | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        descriptor = os.open(parent, flags)
+    except FileNotFoundError as exc:
+        raise FallbackUnavailableError("overlay.parent", "unavailable") from exc
+    except OSError as exc:
+        raise OverlayIntegrityError("overlay.parent", "invalid_type") from exc
+    try:
+        opened = os.fstat(descriptor)
+        if (opened.st_dev, opened.st_ino) != (expected.st_dev, expected.st_ino):
+            raise OverlayIntegrityError("overlay.parent", "identity_changed")
+        _validate_parent_stat(opened)
+        return descriptor
+    except OSError as exc:
+        os.close(descriptor)
+        raise OverlayIntegrityError("overlay.parent", "invalid_type") from exc
+    except Exception:
+        os.close(descriptor)
+        raise
+
+
 def _read_secure_overlay(path: Path, repo_root: Path) -> bytes:
     parent = path.parent
     try:
         parent_stat = parent.lstat()
     except OSError as exc:
         raise FallbackUnavailableError("overlay.parent", "unavailable") from exc
-    if not stat.S_ISDIR(parent_stat.st_mode) or parent.is_symlink():
-        raise OverlayIntegrityError("overlay.parent", "invalid_type")
-    if parent_stat.st_uid != os.getuid():
-        raise OverlayIntegrityError("overlay.parent", "wrong_owner")
-    if stat.S_IMODE(parent_stat.st_mode) & 0o022:
-        raise OverlayIntegrityError("overlay.parent", "unsafe_mode")
+    _validate_parent_stat(parent_stat)
     resolved_parent = parent.resolve()
     resolved_path = resolved_parent / path.name
     if _is_within(resolved_path, repo_root.resolve()):
         raise OverlayIntegrityError("overlay.file", "repository_internal")
 
+    parent_descriptor = _open_validated_parent(parent, parent_stat)
     flags = os.O_RDONLY | getattr(os, "O_CLOEXEC", 0) | getattr(os, "O_NOFOLLOW", 0)
     try:
-        descriptor = os.open(path, flags)
-    except FileNotFoundError as exc:
-        raise FallbackUnavailableError("overlay.file", "unavailable") from exc
-    except OSError as exc:
-        raise OverlayIntegrityError("overlay.file", "invalid_type") from exc
-    try:
-        file_stat = os.fstat(descriptor)
-        if not stat.S_ISREG(file_stat.st_mode):
-            raise OverlayIntegrityError("overlay.file", "invalid_type")
-        if file_stat.st_uid != os.getuid():
-            raise OverlayIntegrityError("overlay.file", "wrong_owner")
-        if stat.S_IMODE(file_stat.st_mode) & ~0o600:
-            raise OverlayIntegrityError("overlay.file", "unsafe_mode")
-        with os.fdopen(descriptor, "rb", closefd=False) as stream:
-            return stream.read()
+        try:
+            descriptor = os.open(path.name, flags, dir_fd=parent_descriptor)
+        except FileNotFoundError as exc:
+            raise FallbackUnavailableError("overlay.file", "unavailable") from exc
+        except OSError as exc:
+            raise OverlayIntegrityError("overlay.file", "invalid_type") from exc
+        try:
+            file_stat = os.fstat(descriptor)
+            if not stat.S_ISREG(file_stat.st_mode):
+                raise OverlayIntegrityError("overlay.file", "invalid_type")
+            if file_stat.st_uid != os.getuid():
+                raise OverlayIntegrityError("overlay.file", "wrong_owner")
+            if stat.S_IMODE(file_stat.st_mode) & ~0o600:
+                raise OverlayIntegrityError("overlay.file", "unsafe_mode")
+            with os.fdopen(descriptor, "rb", closefd=False) as stream:
+                return stream.read()
+        finally:
+            os.close(descriptor)
     finally:
-        os.close(descriptor)
+        os.close(parent_descriptor)
 
 
 def _parse_timestamp(value: Any, field_path: str) -> datetime:
     if not isinstance(value, str) or not _UTC_SECONDS_RE.fullmatch(value):
         raise FallbackUnavailableError(field_path, "invalid_timestamp")
     try:
-        return datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(
-            tzinfo=timezone.utc
-        )
+        return datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
     except ValueError as exc:
         raise FallbackUnavailableError(field_path, "invalid_timestamp") from exc
 
 
-def _parse_tailscale_address(
-    value: Any, field_path: str
-) -> ipaddress.IPv4Address | ipaddress.IPv6Address:
+def _parse_tailscale_address(value: Any, field_path: str) -> ipaddress.IPv4Address | ipaddress.IPv6Address:
     try:
         address = ipaddress.ip_address(value) if isinstance(value, str) else None
     except ValueError as exc:
@@ -306,9 +322,7 @@ def _validate_overlay_record(
         if int(match.group(1)) != policy.attestation_issue:
             raise FallbackUnavailableError(f"{base}.evidence", "issue_mismatch")
         if digest != policy.sha256:
-            raise OverlayIntegrityError(
-                f"{base}.connection_policy_sha256", "digest_mismatch"
-            )
+            raise OverlayIntegrityError(f"{base}.connection_policy_sha256", "digest_mismatch")
     return address, verified_at, expires_at
 
 
