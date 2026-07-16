@@ -6,18 +6,23 @@ import stat
 SEALS = fcntl.F_SEAL_WRITE | fcntl.F_SEAL_GROW | fcntl.F_SEAL_SHRINK | fcntl.F_SEAL_SEAL
 
 
-def open_nofollow(path: str, mode: int = 0o600) -> int:
-    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+def open_nofollow(path: str, mode: int = 0o600, max_size: int = 16384) -> int:
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
     st = os.fstat(fd)
-    if not stat.S_ISREG(st.st_mode) or stat.S_IMODE(st.st_mode) != mode or st.st_nlink != 1:
+    if (not stat.S_ISREG(st.st_mode) or st.st_uid != os.getuid()
+            or stat.S_IMODE(st.st_mode) != mode or st.st_nlink != 1
+            or st.st_size < 1 or st.st_size > max_size):
         os.close(fd)
         raise PermissionError("non-canonical retained input")
+    os.set_inheritable(fd, True)
     return fd
 
 
 def sealed_memfd(name: str, payload: bytes) -> int:
     fd = os.memfd_create(name, os.MFD_CLOEXEC | os.MFD_ALLOW_SEALING)
-    os.write(fd, payload)
+    view = memoryview(payload)
+    while view:
+        view = view[os.write(fd, view):]
     fcntl.fcntl(fd, fcntl.F_ADD_SEALS, SEALS)
     if fcntl.fcntl(fd, fcntl.F_GET_SEALS) != SEALS or os.pread(fd, len(payload), 0) != payload:
         os.close(fd)
@@ -35,3 +40,5 @@ def allowlist_fds(keep: set[int]) -> None:
                 os.close(fd)
             except OSError:
                 pass
+        elif fd in keep:
+            os.set_inheritable(fd, True)

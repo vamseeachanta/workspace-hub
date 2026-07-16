@@ -20,6 +20,24 @@ def test_open_nofollow_rejects_symlink(tmp_path):
         raise AssertionError("symlink accepted")
 
 
+def test_open_nofollow_bounds_owner_and_inheritable(tmp_path):
+    path = tmp_path / "record"
+    path.write_bytes(b"x")
+    path.chmod(0o600)
+    fd = open_nofollow(str(path))
+    try:
+        assert os.get_inheritable(fd)
+    finally:
+        os.close(fd)
+    path.write_bytes(b"x" * 16385)
+    try:
+        open_nofollow(str(path))
+    except OSError:
+        pass
+    else:
+        raise AssertionError("oversize record accepted")
+
+
 def test_sealed_memfd_roundtrip():
     fd = sealed_memfd("identity", b"abc\n")
     try:
