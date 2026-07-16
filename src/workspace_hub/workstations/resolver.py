@@ -7,6 +7,51 @@ from typing import Any
 import yaml
 
 
+class RegistryValidationError(ValueError):
+    """Registry data failed validation without exposing the rejected value."""
+
+
+class _UniqueKeyLoader(yaml.SafeLoader):
+    pass
+
+
+def _construct_unique_mapping(
+    loader: _UniqueKeyLoader, node: yaml.MappingNode, deep: bool = False
+) -> dict[Any, Any]:
+    loader.flatten_mapping(node)
+    mapping: dict[Any, Any] = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=deep)
+        try:
+            duplicate = key in mapping
+        except TypeError as exc:
+            raise RegistryValidationError("registry: invalid_mapping_key") from exc
+        if duplicate:
+            raise RegistryValidationError("registry: duplicate_key")
+        mapping[key] = loader.construct_object(value_node, deep=deep)
+    return mapping
+
+
+_UniqueKeyLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _construct_unique_mapping
+)
+
+
+def load_unique_yaml_bytes(raw_bytes: bytes, *, context: str = "registry") -> Any:
+    """Load YAML bytes while rejecting duplicate mapping keys."""
+    if not isinstance(raw_bytes, bytes):
+        raise RegistryValidationError(f"{context}: invalid_bytes")
+    try:
+        return yaml.load(raw_bytes.decode("utf-8"), Loader=_UniqueKeyLoader)
+    except RegistryValidationError as exc:
+        if context == "registry":
+            raise
+        suffix = str(exc).split(": ", 1)[-1]
+        raise RegistryValidationError(f"{context}: {suffix}") from exc
+    except (UnicodeDecodeError, yaml.YAMLError) as exc:
+        raise RegistryValidationError(f"{context}: malformed_yaml") from exc
+
+
 @dataclass(frozen=True)
 class MachineRecord:
     key: str
@@ -32,21 +77,49 @@ class WorkstationPathResolver:
         for key, machine in machines.items():
             for identifier in machine.identifiers:
                 if identifier:
-                    self._id_to_key[identifier.lower()] = key
+                    normalized = identifier.casefold()
+                    owner = self._id_to_key.get(normalized)
+                    if owner is not None and owner != key:
+                        raise RegistryValidationError(
+                            "registry.machines: identifier_collision"
+                        )
+                    self._id_to_key[normalized] = key
 
     @classmethod
     def from_registry_path(cls, registry_path: Path) -> "WorkstationPathResolver":
-        payload = yaml.safe_load(registry_path.read_text(encoding="utf-8")) or {}
+        return cls.from_registry_bytes(registry_path.read_bytes())
+
+    @classmethod
+    def from_registry_bytes(cls, raw_bytes: bytes) -> "WorkstationPathResolver":
+        payload = load_unique_yaml_bytes(raw_bytes) or {}
+        if not isinstance(payload, dict):
+            raise RegistryValidationError("registry: invalid_schema")
         raw_machines = payload.get("machines", {}) or {}
+        if not isinstance(raw_machines, dict):
+            raise RegistryValidationError("registry.machines: invalid_type")
         machines: dict[str, MachineRecord] = {}
         for key, raw in raw_machines.items():
+            if not isinstance(key, str) or not isinstance(raw, dict):
+                raise RegistryValidationError("registry.machines: invalid_record")
+            hostname = raw.get("hostname", "")
+            aliases = raw.get("hostname_aliases", []) or []
+            operating_system = raw.get("os", "")
+            ssh = raw.get("ssh")
+            if not isinstance(hostname, str) or not isinstance(operating_system, str):
+                raise RegistryValidationError("registry.machines: invalid_identifier")
+            if not isinstance(aliases, list) or not all(
+                isinstance(alias, str) for alias in aliases
+            ):
+                raise RegistryValidationError("registry.machines: invalid_aliases")
+            if ssh is not None and not isinstance(ssh, str):
+                raise RegistryValidationError("registry.machines: invalid_ssh")
             machine = MachineRecord(
                 key=key,
-                hostname=str(raw.get("hostname", "")),
-                hostname_aliases=tuple(raw.get("hostname_aliases", []) or []),
-                os=str(raw.get("os", "")),
+                hostname=hostname,
+                hostname_aliases=tuple(aliases),
+                os=operating_system,
                 workspace_root=raw.get("workspace_root"),
-                ssh=raw.get("ssh"),
+                ssh=ssh,
                 raw=dict(raw),
             )
             machines[key] = machine
@@ -59,10 +132,14 @@ class WorkstationPathResolver:
     def resolve_machine(self, identifier: str | None) -> MachineRecord | None:
         if not identifier:
             return None
-        key = self._id_to_key.get(str(identifier).strip().lower())
+        key = self._id_to_key.get(str(identifier).strip().casefold())
         if key is None:
             return None
         return self._machines[key]
+
+    @property
+    def machines(self) -> tuple[MachineRecord, ...]:
+        return tuple(self._machines.values())
 
     def field_for(self, identifier: str | None, field: str) -> Any:
         machine = self.resolve_machine(identifier)

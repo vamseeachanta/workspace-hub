@@ -17,7 +17,14 @@ machines:
       roles: [control-plane]
       managed: true
     ssh: ace-linux-1
-    tailscale_ip: 10.1.0.1
+    connection:
+      schema_version: 1
+      preferred_route: ssh
+      fallback:
+        kind: tailscale_ip
+        reference: dev-primary-tailscale
+        attestation_issue: 3551
+        max_age_seconds: 604800
     capabilities:
       agent_clis: [claude, gemini]
       languages: [python3, bash]
@@ -183,7 +190,14 @@ machines:
       roles: [comms-dispatch, sim-worker]
       managed: true
     ssh: ace-linux-2
-    tailscale_ip: 10.1.0.2
+    connection:
+      schema_version: 1
+      preferred_route: ssh
+      fallback:
+        kind: tailscale_ip
+        reference: dev-secondary-tailscale
+        attestation_issue: 3550
+        max_age_seconds: 604800
     capabilities:
       agent_clis: [claude]
       languages: [python3, bash]
