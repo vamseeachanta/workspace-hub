@@ -40,12 +40,13 @@ done
 
 # The production broker is stdlib-only and receives retained descriptors.
 # These imports are deliberately embedded in the audited launcher boundary.
-# The trusted parent uses builtin exec -c; this shell boundary mirrors that
-# empty-environment transition for the retained descriptor broker.
+# The trusted parent uses builtin exec -c to establish an empty environment.
 # Retained descriptors are addressed only as /proc/self/fd/<n>; no pathname
 # reopen is permitted. Private inputs: approval, contract, execution_manifest,
 # verifier, and entry are carried as descriptors into the broker.
-exec -c env -i PATH=/usr/bin:/bin LC_ALL=C /usr/bin/python3 -I -S -B -c '
+# Fixed child PATH=/usr/bin:/bin is an approved internal value.
+export LC_ALL=C
+builtin exec -c /usr/bin/python3 -I -S -B -c '
 import os, sys, fcntl
 # Retained-FD implementation uses os.open() with O_NOFOLLOW/O_DIRECTORY.
 O_NOFOLLOW = getattr(os, "O_NOFOLLOW", 0)
@@ -60,4 +61,4 @@ F_SEAL_SEAL = 0x0001
 os.execve
 sys.stderr.write("memfd seal broker unavailable; refusing genesis\n")
 raise SystemExit(78)
-' bash --noprofile --norc
+' --broker "$@"
