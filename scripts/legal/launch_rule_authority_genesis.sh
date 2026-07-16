@@ -46,6 +46,12 @@ done
 # verifier, and entry are carried as descriptors into the broker.
 # Fixed child PATH=/usr/bin:/bin is an approved internal value.
 export LC_ALL=C
+# Internal dispatch and frozen canonical pairs (outer bootstrap supplies FDs):
+# _genesis-current-from-launcher --outer-identity-fd FD --outer-bootstrap-sha256 HEX
+# --tool-repo REPO --tool-sha SHA --out-parent PARENT --transaction-id UUID
+# --approval-record APPROVAL --approval-sha256 HEX --python-realpath PATH --python-sha256 HEX
+LEGAL_RULE_OWNER_GENESIS=1
+# Unrelated descriptors are closed by the broker allowlist before dispatch.
 builtin exec -c /usr/bin/python3 -I -S -B -c '
 import os, sys, fcntl
 # Retained-FD implementation uses os.open() with O_NOFOLLOW/O_DIRECTORY.
