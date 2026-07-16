@@ -34,3 +34,14 @@ def test_bundle_rejects_symlink_and_digest_mismatch(tmp_path):
         open_verified_bundle({"approval": (str(link), "00" * 32)})
     with pytest.raises(OSError):
         open_verified_bundle({"approval": (str(target), "00" * 32)})
+
+
+def test_bundle_failure_closes_current_member(tmp_path):
+    path = tmp_path / "record"
+    path.write_bytes(b"x")
+    path.chmod(0o600)
+    before = set(int(p.name) for p in Path("/proc/self/fd").iterdir() if p.name.isdigit())
+    with pytest.raises(OSError):
+        open_verified_bundle({"approval": (str(path), "00" * 32)})
+    after = set(int(p.name) for p in Path("/proc/self/fd").iterdir() if p.name.isdigit())
+    assert after <= before | {0, 1, 2}

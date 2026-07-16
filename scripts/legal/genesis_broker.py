@@ -28,8 +28,12 @@ def open_verified_bundle(members: dict[str, tuple[str, str]]) -> dict[str, int]:
     try:
         for name, (path, digest) in members.items():
             fd = open_nofollow(path)
-            st = os.fstat(fd)
-            revalidate(fd, digest, st)
+            try:
+                st = os.fstat(fd)
+                revalidate(fd, digest, st)
+            except Exception:
+                os.close(fd)
+                raise
             opened[name] = fd
         return opened
     except Exception:
