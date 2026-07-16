@@ -6,7 +6,7 @@
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3549
 > **Client:** N/A
 > **Lane:** lane:claude
-> **Review artifacts:** scripts/review/results/2026-07-16-plan-3549-claude.md | scripts/review/results/2026-07-16-plan-3549-codex.md | scripts/review/results/2026-07-16-plan-3549-gemini.md
+> **Review artifacts:** scripts/review/results/2026-07-16-plan-3549-{claude,codex,gemini,disagreement}-round3.md
 
 ## Resource Intelligence Summary
 
@@ -103,19 +103,8 @@ will not report a new regression when the same node remains red.
 | Approved design | `docs/superpowers/specs/2026-07-15-3549-registry-connection-helpers-design.md` |
 | This plan | `docs/plans/2026-07-16-issue-3549-registry-connection-helpers.md` |
 | Human-facing plan | `docs/reports/2026-07-16-issue-3549-registry-connection-helpers-plan.html` |
-| Registry parser | `src/workspace_hub/workstations/resolver.py` |
-| Connection model | `src/workspace_hub/workstations/connection.py` |
-| Shared CLI | `scripts/operations/connection/connect-workstation.py` |
-| Resolver tests | `tests/workstations/test_connection_resolver.py` |
-| Bash tests | `tests/operations/test_connection_helpers_bash.py` |
-| PowerShell contract tests | `tests/operations/test_connection_helpers_ps1_contract.py` |
-| PowerShell native tests | `tests/operations/test_connection_helpers_ps1_native.py` |
-| Endpoint enforcement tests | `tests/enforcement/test_connection_helper_endpoints.py` |
-| Governed-path manifest | `config/workstations/connection-governed-paths.yaml` |
 | Completeness report | `docs/reports/<completion-date>-3549-completeness.html` |
-| Plan review — Claude | `scripts/review/results/2026-07-16-plan-3549-claude.md` |
-| Plan review — Codex | `scripts/review/results/2026-07-16-plan-3549-codex.md` |
-| Plan review — Gemini | `scripts/review/results/2026-07-16-plan-3549-gemini.md` |
+| Plan review round 3 | `scripts/review/results/2026-07-16-plan-3549-{claude,codex,gemini,disagreement}-round3.md` |
 
 ## Deliverable
 
@@ -131,10 +120,11 @@ The approved design specification section `Exact Runtime Contract` will be the n
 The plan will additionally require:
 
 - `WorkstationPathResolver.from_registry_bytes(raw_bytes)` with `from_registry_path` delegating to it, so digest and parse share one immutable read;
+- duplicate YAML keys rejected before either registry or overlay validation;
 - same-machine duplicate identifiers accepted and cross-machine case-folded collisions rejected;
 - generic wrappers requiring an explicit machine while `ssh-dev-secondary.sh` retains its fixed ID;
 - inherited OpenSSH streams treated as local interactive output, not durable resolver logging;
-- `git rev-parse --git-path hooks` plus normal-clone and linked-worktree installer tests; and
+- an idempotent `install-hooks.sh --connection-endpoint-only` mode using `git rev-parse --git-path hooks`; full linked-worktree installer repair remains #3435; and
 - the checked governed-path manifest covering registry, core, CLI, wrappers, Tabby, endpoint-prohibited docs, and the deferred #3550 VNC row.
 
 ## Pseudocode
@@ -182,7 +172,7 @@ function endpoint_guard(staged_manifest):
 ## Canonical Implementation Changed-Path Map
 
 This table is the sole implementation changed-path authority; the navigation map
-above authorizes no changes. The staged set will equal every `Modify`/`Create`
+above authorizes no changes. The staged set will equal every `Modify`/`Create`/`Delete`
 row plus a `Conditional` row only when its predicate is true. Any other path
 will require plan amendment.
 
@@ -197,6 +187,8 @@ will require plan amendment.
 | Modify | `scripts/operations/connection/ssh-dev-secondary.sh` | Remove authentication-probe fallback and delegate to the shared CLI |
 | Modify | `scripts/operations/connection/connect-workspace-linux.sh` | Remove target/user defaults and delegate to the shared CLI |
 | Modify | `scripts/operations/connection/connect-workspace-windows.ps1` | Remove command strings and delegate to the shared CLI |
+| Delete | `scripts/operations/connection/.fuse_hidden0002aeb10000414f` | Remove tracked FUSE residue that duplicates a target-bearing helper |
+| Delete | `scripts/operations/connection/.fuse_hidden0002aeb100013f84` | Remove the second byte-identical tracked FUSE residue |
 | Modify | `config/tabby/config.yaml` | Preserve unrelated preferences while removing tracked endpoint and operator defaults |
 | Create | `config/workstations/connection-governed-paths.yaml` | Declare migrated, prohibited-doc, protocol-constant, and deferred connection surfaces for local and CI enforcement |
 | Create | `scripts/enforcement/check-connection-helper-endpoints.py` | Inspect exact staged blobs for recurrence without whole-file exemptions |
@@ -214,6 +206,7 @@ will require plan amendment.
 | Modify | `docs/modules/cli/SCRIPT_ORGANIZATION.md` | Record the shared CLI and wrapper responsibilities at the verified existing path |
 | Modify | `docs/plans/README.md` | Index this plan |
 
+Any newly tracked `.fuse_hidden*` connection path will fail inventory enforcement.
 `scripts/operations/connection/vnc-ace-linux-2.sh` will remain unchanged because
 #3550 owns VNC disposition. Sync helpers will remain unchanged unless a failing
 test proves that sanitizing Tabby configuration requires a narrow template path;
@@ -225,16 +218,16 @@ silently expanding the reviewed changed-path manifest.
 | Test group | Required failing nodes before implementation | Green contract |
 |---|---|---|
 | Registry bytes and identity | path delegates to one bytes read; same-machine duplicate; cross-machine key/hostname/alias/SSH collisions | immutable validated snapshot and compatible path rewriting |
-| Closed connection policy | unknown keys, wrong types, unsafe hostname, missing SSH, invalid reference/issue/age | exact schema from the approved design |
+| Closed connection policy | duplicate/unknown keys, wrong types, unsafe hostname, missing SSH, invalid reference/issue/age | rejecting YAML loader and exact schema |
 | POSIX overlay integrity | missing, symlink, wrong owner/type/mode, unsafe parent, repo-internal path | owner-controlled regular file or exit 5 |
-| Fallback attestation | malformed/out-of-range, unverified, stale, policy-digest mismatch; canonical field mutations and unrelated edits | one synthetic verified fixture; stable per-machine digest; Windows exit 4 |
+| Fallback attestation | future verification; reversed/overlong expiry; stale or policy-digest mismatch; field mutations and unrelated edits | ordered policy-bounded timestamps; stable digest; Windows exit 4 |
 | SSH argv and host identity | missing/mismatched known host, injected user/target, implicit retry, caller options | canonical destination, fixed HostName/HostKeyAlias, strict checking, one launch |
 | CLI and diagnostics | deterministic JSON, raw-value canaries, missing runtimes, child stderr, TTY, interrupt | redacted resolver output; inherited child streams; numeric exits |
 | Bash wrappers | non-repo CWD, spaced checkout, missing uv, dry-run, exact argv/exits | thin delegation; fixed secondary ID; explicit generic machine |
 | PowerShell wrappers | unsafe command strings, legacy methods, option/exit drift, native skip | argument arrays; hostname parity; native Windows proof |
 | Tabby and live inventory | every target-bearing SSH surface classified; tracked endpoint/operator defaults | exact governed manifest; unrelated preferences preserved |
 | Endpoint guard | added/modified/deleted/odd path, temporary index, TOCTOU, commit blobs, sentinel adjacency, self-artifacts | same-blob staged and head-ref verdicts without raw values |
-| Hook and CI wiring | duplicate insertion, normal clone, linked worktree, installed positive control, Windows skip | git-path hook resolution and non-skipping Linux/Windows jobs |
+| Hook and CI wiring | endpoint-only duplicate insertion in normal/linked worktree; full normal install; Windows skip | git-path endpoint mode; legacy installer deferred; non-skipping CI |
 
 Synthetic addresses and secret controls will be assembled at runtime. Protocol
 network constants will use one cited same-line sentinel; no whole-file exemption
@@ -247,13 +240,13 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
    pre-merge planning worktree will never be reused. Live paths, labels, parallel
    sessions, and the inherited baseline will be rechecked before editing.
 2. **Slice A — registry bytes and policy:** tests for `from_registry_bytes`,
-   path delegation, same-machine duplicates, cross-machine collisions, and the
+   path delegation, duplicate YAML keys, same-machine duplicates, collisions, and the
    closed registry policy will fail first:
    `uv run pytest tests/workstations/test_machine_path_resolver.py tests/workstations/test_connection_resolver.py -k 'registry or identifier or policy' -q`.
    Only `resolver.py`, `connection.py`, and the synthetic tests will change before
    that command reaches green.
-3. **Slice B — POSIX overlay and digest:** missing, malformed, symlink, owner,
-   mode, parent, range, evidence, freshness, canonical policy mutation/stability,
+3. **Slice B — POSIX overlay and digest:** missing, malformed/duplicate, symlink,
+   owner, mode, parent, range, future/reversed/overlong timestamps, mutation/stability,
    legacy-field, unrelated-edit, and digest mismatch nodes
    will fail first with
    `uv run pytest tests/workstations/test_connection_resolver.py -k 'overlay or fallback or digest' -q`.
@@ -278,9 +271,8 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 7. **Slice F — staged and commit enforcement:** temporary-index tests will fail
    first with
    `uv run pytest tests/enforcement/test_connection_helper_endpoints.py -q`.
-   The manifest, stdlib checker, CI mode, and `install-hooks.sh` wiring through
-   `git rev-parse --git-path hooks` will then reach green in both a normal clone
-   and linked worktree fixture.
+   The manifest, stdlib checker, CI mode, and endpoint-only hook mode will reach
+   green in normal and linked fixtures; the full legacy installer stays under #3435.
 8. **Documentation and full regression:** the four stale helper documents and the
    conditional runbook when its predicate fires will be updated without endpoint
    examples. The sorted changed paths will be compared with the canonical map.
@@ -314,11 +306,11 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
   local terminal boundary.
 - [ ] Exact staged-blob enforcement covers the governed manifest, added files,
   odd filenames, and TOCTOU cases without whole-file exemptions or self-blocking.
-- [ ] `python scripts/enforcement/check-connection-helper-endpoints.py --staged`
+- [ ] `uv run python scripts/enforcement/check-connection-helper-endpoints.py --staged`
   passes, and CI commit mode passes with
   `--base-ref origin/main --head-ref HEAD`.
-- [ ] `install-hooks.sh` resolves hooks through `git rev-parse --git-path hooks`,
-  remains idempotent, and is tested in normal and linked-worktree repositories.
+- [ ] `install-hooks.sh --connection-endpoint-only` resolves the real hook path,
+  remains idempotent in normal/linked worktrees, and bypasses unrelated legacy steps.
 - [ ] Focused tests pass:
   `uv run pytest tests/workstations/test_connection_resolver.py tests/operations/test_connection_helpers_bash.py tests/operations/test_connection_helpers_ps1_contract.py tests/operations/test_connection_helpers_ps1_native.py tests/enforcement/test_connection_helper_endpoints.py -q`.
 - [ ] Existing resolver tests pass:
@@ -354,14 +346,16 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | MAJOR (r2) | Completeness opt-in and stale dependency wording; corrected before r3 |
-| Codex | MAJOR (r2) | Same blockers plus stale-base and output-race findings; corrected before r3 |
-| Gemini | UNAVAILABLE (r2) | No noninteractive credentials; canonical stub retained |
+| Claude | MINOR (r3) | Artifact paths plus sparse-review limitations; paths corrected |
+| Codex | MAJOR (r3) | YAML duplicates, time bounds, hidden residue, hook scope, paths, uv; corrected inline |
+| Gemini | UNAVAILABLE (r3) | No noninteractive credentials; round-3 stub retained |
 
-**Overall result:** PENDING r3. Gemini unavailability degrades T3 to Claude+Codex
-T2; a substantive verdict will never be reclassified as unavailable.
+**Overall result:** USER DECISION REQUIRED. Codex remained MAJOR for three rounds
+while Claude reached MINOR; policy stops automatic cycling at this disagreement.
 
-**Revisions:** applied `gate:completeness`; removed stale dependency text; made the fresh-base check executable; added launcher coverage; verified the Gitleaks release; isolated review output to eliminate self-observation races.
+**Inline r3 corrections:** reject duplicate YAML keys; close timestamp ordering;
+delete tracked FUSE residue; narrow hook worktree scope; use revisioned artifacts
+and `uv run python`. No fourth Codex verdict will be manufactured.
 
 ## Risks and Open Questions
 
