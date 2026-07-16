@@ -21,7 +21,12 @@ def build_fixture_manifest(verifier: Path, entry: Path, expected=None) -> dict:
 
 def build_genesis_fixture(approval, contract, manifest, verifier, entry):
     raw = Path(approval).read_bytes()
-    parse_canonical_approval(raw)
+    approval_doc = parse_canonical_approval(raw)
+    def ident(path):
+        data = Path(path).read_bytes()
+        return {"path": str(path), "blob_oid": hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest(), "sha256": hashlib.sha256(data).hexdigest()}
+    if approval_doc.get("contract") != ident(contract) or approval_doc.get("execution_manifest") != ident(manifest):
+        raise ValueError("approval identity mismatch")
     try:
         doc = json.loads(Path(manifest).read_text())
     except Exception as exc:
