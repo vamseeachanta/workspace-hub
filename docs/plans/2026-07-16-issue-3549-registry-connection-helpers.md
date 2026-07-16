@@ -169,6 +169,56 @@ function endpoint_guard(staged_manifest):
     fail with path, line, and violation class
 ```
 
+## Implementation Amendment — Slice C/D Structural and Caller Safety
+
+This amendment will resolve three constraints that became visible only after the
+approved Slice A/B implementation established real file sizes and Slice C review
+exercised the command boundary:
+
+1. `src/workspace_hub/workstations/connection.py` and
+   `tests/workstations/test_connection_resolver.py` will remain below the hard
+   400-line limit. Slice C command/launch behavior will therefore live in the
+   focused `connection_command.py` module, with behavior tests in the focused
+   `test_connection_cli.py` module. The split will preserve the approved API and
+   add no new runtime dependency.
+2. Slice C will disable argparse option abbreviation, map `ENOEXEC` and permission
+   execution failures to 126, normalize child SIGINT termination to 130, and keep
+   registry-load error mapping separate from overlay/domain failures. Tests will
+   cover the executable script/shebang boundary and will runtime-assemble any
+   synthetic protocol address used by the fallback harness.
+3. `scripts/workspace` will preserve its existing menu outcome while generic
+   wrappers begin requiring an explicit machine: Linux/Windows menu guidance will
+   pass or print `dev-secondary`, and the Tailscale entries will additionally pass
+   the explicit fallback flag. This compatibility migration will not restore any
+   endpoint or operator default.
+
+Implementation will remain paused until this amendment receives adversarial
+review and explicit user approval. The user-approved architecture—hostname first,
+explicit verified fallback, one shell-free launcher, no automatic retry—will not
+change.
+
+### Amendment TDD sequence
+
+1. Focused tests in `tests/workstations/test_connection_cli.py` will first prove
+   RED for `--fall`/other abbreviated options, `ENOEXEC`, a child return code of
+   `-signal.SIGINT`, an overlay read `OSError`, direct executable mode, and
+   endpoint-literal source scanning. The command will be:
+   `uv run pytest tests/workstations/test_connection_cli.py -q`.
+2. The parser will set `allow_abbrev=False`. Launch mapping will return 126 only
+   for permission/`ENOEXEC` execution failures, 127 for a missing client, 130 for
+   `KeyboardInterrupt` or `-SIGINT`, and the unchanged child status otherwise.
+3. Registry read/policy resolution will remain in its own narrow exception block;
+   overlay resolution will preserve its `ConnectionResolverError` exit and will
+   not flow through registry `OSError` handling.
+4. Wrapper/menu tests will first prove RED for every no-argument generic call or
+   printed command in `scripts/workspace`. The Bash menu calls will pass
+   `dev-secondary`; the PowerShell guidance will print `-Machine dev-secondary`;
+   the Tailscale variants will also carry their explicit fallback switch.
+5. Focused tests, the 53-node resolver/overlay suite, the inherited workstation
+   baseline, Ruff, Bash syntax, ShellCheck, PowerShell contract tests, line/function
+   gates, and the changed-path authority check will all run before a correction
+   commit. No implementation step will accept a new failing baseline node.
+
 ## Canonical Implementation Changed-Path Map
 
 This table is the sole implementation changed-path authority; the navigation map
@@ -180,13 +230,15 @@ will require plan amendment.
 |---|---|---|
 | Modify | `config/workstations/registry.yaml` | Replace unusable address fields for governed Linux machines with strict hostname-first policy and opaque fallback references; no live value will be guessed |
 | Modify | `src/workspace_hub/workstations/resolver.py` | Add `from_registry_bytes` with `from_registry_path` delegation and cross-machine collision rejection without breaking workspace-path behavior |
-| Create | `src/workspace_hub/workstations/connection.py` | Own strict policy, overlay, digest, route, redaction, and argv construction |
+| Create | `src/workspace_hub/workstations/connection.py` | Own strict policy, overlay, digest, route, and redaction |
+| Create | `src/workspace_hub/workstations/connection_command.py` | Own focused argv, dry-run, exit mapping, and one-process OpenSSH launch behavior without exceeding the core file limit |
 | Create | `scripts/operations/connection/connect-workstation.py` | Provide the single cross-platform CLI and shell-free OpenSSH launch boundary |
 | Modify | `scripts/operations/connection/connect-workspace-tailscale.sh` | Become a thin shared-CLI wrapper with explicit machine/fallback/dry-run options |
 | Modify | `scripts/operations/connection/connect-workspace-tailscale.ps1` | Match the Bash wrapper through safe argument arrays |
 | Modify | `scripts/operations/connection/ssh-dev-secondary.sh` | Remove authentication-probe fallback and delegate to the shared CLI |
 | Modify | `scripts/operations/connection/connect-workspace-linux.sh` | Remove target/user defaults and delegate to the shared CLI |
 | Modify | `scripts/operations/connection/connect-workspace-windows.ps1` | Remove command strings and delegate to the shared CLI |
+| Modify | `scripts/workspace` | Preserve menu behavior by passing/printing the explicit `dev-secondary` machine and fallback intent required by migrated generic wrappers |
 | Delete | `scripts/operations/connection/.fuse_hidden0002aeb10000414f` | Remove tracked FUSE residue that duplicates a target-bearing helper |
 | Delete | `scripts/operations/connection/.fuse_hidden0002aeb100013f84` | Remove the second byte-identical tracked FUSE residue |
 | Modify | `config/tabby/config.yaml` | Preserve unrelated preferences while removing tracked endpoint and operator defaults |
@@ -194,6 +246,7 @@ will require plan amendment.
 | Create | `scripts/enforcement/check-connection-helper-endpoints.py` | Inspect exact staged blobs for recurrence without whole-file exemptions |
 | Modify | `scripts/enforcement/install-hooks.sh` | Invoke the workspace-scoped endpoint guard when present |
 | Create | `tests/workstations/test_connection_resolver.py` | Drive strict resolver and overlay behavior first |
+| Create | `tests/workstations/test_connection_cli.py` | Drive the focused CLI, dry-run, launch, executable-mode, and numeric-exit contract without exceeding the resolver test file limit |
 | Create | `tests/operations/test_connection_helpers_bash.py` | Drive Bash parity, argv safety, and non-executing dry-run |
 | Create | `tests/operations/test_connection_helpers_ps1_contract.py` | Enforce static PowerShell safety and parity on Linux |
 | Create | `tests/operations/test_connection_helpers_ps1_native.py` | Exercise native wrapper behavior when PowerShell exists |
@@ -255,8 +308,12 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 4. **Slice C — CLI and interactive launch:** dry-run JSON, numeric exits,
    canonical-host configuration, strict host-key behavior, inherited stderr,
    TTY, and interrupt nodes will fail first with
-   `uv run pytest tests/workstations/test_connection_resolver.py -k 'cli or dry_run or ssh or interrupt' -q`.
-   The CLI will then implement the minimum shell-free argv and launch behavior.
+   `uv run pytest tests/workstations/test_connection_cli.py -q`.
+   The focused command module and thin executable CLI will then implement the
+   minimum shell-free argv and launch behavior. RED tests will forbid abbreviated
+   options, require 126 for unexecutable clients, require 130 for child SIGINT,
+   and prove overlay failures retain their domain exit instead of becoming a
+   registry error.
 5. **Slice D — one Bash tracer:** `connect-workspace-tailscale.sh` delegation,
    non-repo CWD, checkout path with spaces, missing uv, dry-run, and exact argv
    nodes will fail first in `tests/operations/test_connection_helpers_bash.py`.
@@ -268,6 +325,8 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
    uv, run `uv sync --locked`, and preflight `pwsh`; absence will fail as
    `INFRASTRUCTURE_FAILURE` before pytest. Required-native mode will use a Windows
    `.cmd` fake SSH shim and will fail rather than skip when capability is absent.
+   Caller tests will also prove `scripts/workspace` passes or prints the explicit
+   `dev-secondary` machine and fallback intent for its existing menu entries.
 7. **Slice F — staged and commit enforcement:** temporary-index tests will fail
    first with
    `uv run pytest tests/enforcement/test_connection_helper_endpoints.py -q`.
@@ -297,6 +356,9 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 - [ ] Host-key verification remains enabled and fallback uses the canonical
   host-key alias.
 - [ ] All five SSH wrappers delegate through one shell-free Python command.
+- [ ] Existing `scripts/workspace` menu entries pass or print the explicit
+  `dev-secondary` machine; Tailscale menu entries also carry explicit fallback,
+  so removing wrapper defaults will not create a usage-exit regression.
 - [ ] `config/tabby/config.yaml` contains no endpoint or operator defaults while
   unrelated terminal preferences remain intact.
 - [ ] Dry-run is deterministic, redacted, and invokes no external process.
@@ -353,6 +415,10 @@ will exist. Exact RED/GREEN commands appear in the implementation sequence.
 **Overall result:** USER DECISION REQUIRED. Codex remained MAJOR for three rounds
 while Claude reached MINOR; policy stops automatic cycling at this disagreement.
 
+**Implementation amendment review:** not yet reviewed. Slice C/D implementation
+will remain stopped until the amendment rows and corrected test contract receive
+a fresh adversarial review and explicit user approval.
+
 **Inline r3 corrections:** reject duplicate YAML keys; close timestamp ordering;
 delete tracked FUSE residue; narrow hook worktree scope; use revisioned artifacts
 and `uv run python`. No fourth Codex verdict will be manufactured.
@@ -383,6 +449,9 @@ and `uv run python`. No fourth Codex verdict will be manufactured.
   #3549 will fix and test the endpoint-guard insertion path. Broader installer
   hardening remains owned by
   [#3435](https://github.com/vamseeachanta/workspace-hub/issues/3435).
+- **Risk — explicit-machine wrappers strand existing menu callers:**
+  `scripts/workspace` will migrate in the same wrapper slice, and focused tests
+  will forbid no-argument menu invocations or printed commands.
 - **Open questions:** none. The user approved the Option 2 architecture and the
   durable design artifact before this plan was drafted.
 

@@ -72,9 +72,9 @@
   <header>
     <div class="tag">Issue #3549</div>
     <div class="tag">T3 security change</div>
-    <div class="tag">Status: draft plan</div>
-    <div class="tag">TDD: planned, not started</div>
-    <div class="tag">Adversarial review: pending</div>
+    <div class="tag">Status: amendment review</div>
+    <div class="tag">Implementation: paused</div>
+    <div class="tag">Amendment approval required</div>
     <h1>Registry-Driven Connection Helpers</h1>
     <p>A hostname-first, fail-closed connection architecture for two Linux
       workstations, with machine-local verified fallback and one shared execution
@@ -83,9 +83,10 @@
   <main>
     <section class="gate">
       <h2>Current human gate</h2>
-      <p>The design is approved. This implementation plan will require adversarial
-        review and explicit user-applied <code>status:plan-approved</code> before
-        code changes begin. The agent will not self-approve.</p>
+      <p>The design and original plan were approved. Implementation review exposed
+        a changed-path authority conflict, so further code changes will remain
+        paused until the narrow amendment below receives adversarial review and
+        explicit user approval. The agent will not self-approve.</p>
       <p><strong>Review round 3:</strong> Claude returned MINOR, Codex returned its
         third MAJOR, and Gemini was unavailable. Policy stops automatic cycling;
         duplicate-key, timestamp, hidden-residue, hook-scope, artifact-path, and
@@ -95,6 +96,29 @@
       <p><strong>Real close gate:</strong> issue #3549 now carries
         <code>gate:completeness</code>; the server Action may not be treated as
         passing when skipped.</p>
+    </section>
+
+    <section class="gate">
+      <h2>Implementation amendment</h2>
+      <p>The approved resolver core and its tests reached 376 and 397 lines,
+        respectively. The hard 400-line repository limit will therefore require
+        two focused Slice C files rather than compressing security-sensitive code:</p>
+      <ul>
+        <li><code>src/workspace_hub/workstations/connection_command.py</code> will
+          own argv, redacted dry-run, exit mapping, and one-process launch behavior.</li>
+        <li><code>tests/workstations/test_connection_cli.py</code> will own the
+          command-boundary tests.</li>
+        <li><code>scripts/workspace</code> will pass or print the explicit
+          <code>dev-secondary</code> machine and explicit fallback intent so the
+          five migrated wrappers will not strand existing menu callers.</li>
+      </ul>
+      <p>The correction tests will forbid abbreviated options, require exit 126
+        for unexecutable clients and 130 for child SIGINT, keep overlay failures
+        out of registry exit 3, exercise the real executable/shebang boundary,
+        and runtime-assemble synthetic fallback addresses.</p>
+      <p>This amendment will not change the approved architecture: hostname first,
+        explicit verified fallback, conventional host-key checking, one shell-free
+        OpenSSH launch, and no automatic retry.</p>
     </section>
 
     <div class="grid">
