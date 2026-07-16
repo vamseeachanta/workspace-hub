@@ -16,7 +16,11 @@ def test_fixture_manifest_binds_roles_and_digests(tmp_path):
     manifest = build_fixture_manifest(verifier, entry)
     assert manifest["schema_id"] == "legal-rule-genesis-execution-manifest-v1"
     assert {m["role"] for m in manifest["members"]} == {"verifier", "internal_entry"}
+    assert manifest["members"]
+    assert [m["path"] for m in manifest["members"]] == sorted(m["path"] for m in manifest["members"])
     for member in manifest["members"]:
+        assert set(member) == {"path", "blob_oid", "sha256", "role"}
+        assert len(member["blob_oid"]) == 40 and all(c in "0123456789abcdef" for c in member["blob_oid"])
         assert member["sha256"] == hashlib.sha256(Path(member["path"]).read_bytes()).hexdigest()
 
 
@@ -27,5 +31,5 @@ def test_fixture_manifest_rejects_path_replacement(tmp_path):
     entry.write_bytes(b"e")
     manifest = build_fixture_manifest(verifier, entry)
     verifier.write_bytes(b"replaced")
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="digest|identity|member"):
         build_fixture_manifest(verifier, entry, expected=manifest)
