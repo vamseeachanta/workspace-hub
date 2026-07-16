@@ -85,6 +85,7 @@ Distinct sources: issue body, parent/consumer issues, two current exporter scrip
 | Publisher configuration | `config/hf_export/field_explorer_snapshot.yml` |
 | Manifest schema | `config/schemas/field_explorer_browser_manifest.schema.json` |
 | Record schema | `config/schemas/field_explorer_browser_records.schema.json` |
+| Publish-receipt schema | `config/schemas/field_explorer_publish_receipt.schema.json` |
 | Existing bundle builder | `scripts/hf_export/build_explorer_results_bundle.py` |
 | Deprecated publisher | `scripts/hf_export/publish_explorer_refresh_to_hf.py` |
 | Human contract | `docs/data/field-explorer-hf-browser-snapshot.html` |
@@ -114,7 +115,7 @@ browser/snapshots/<content_snapshot_id>/countries/part-00000.json
 browser/snapshots/<content_snapshot_id>/parametric_economics/part-00000.json
 ```
 
-The content snapshot ID will be derived from canonical logical record bytes before paths/manifest serialization. The manifest will contain schema version, dataset ID, clean source Git SHA, generator version, source hashes, every artifact path/hash/bytes/media type/records/schema, primary/foreign keys, declared sorting, readiness, provenance, license classification, and explicit zero-well representation. It will not contain its own HF commit SHA.
+The content snapshot ID will be derived from canonical logical record bytes before paths/manifest serialization. The manifest will contain schema version, dataset ID, clean source Git SHA, generator version, source hashes, every artifact path/hash/bytes/media type/records/schema, primary/foreign keys, declared sorting, readiness, provenance, license classification, and explicit zero-well representation. It will not contain its own HF commit SHA. The closed publish-receipt schema will bind source Git SHA, HF parent/returned SHA, manifest path/hash, operation set, exact-readback results, counts, generator/tool versions, timestamps, verification status, and referenced evidence hashes; unknown fields and schema majors will fail.
 
 - `field_id`: stable canonical ID from `config/fields.yml`.
 - `well_id`: `bsee-api12:<api>` for V1; API remains a string.
@@ -164,7 +165,7 @@ If upload succeeds but readback fails, the immutable commit will remain an unpro
 | Create | `scripts/hf_export/explorer_snapshot.py` | pure load/normalize/validate/shard/hash/manifest logic |
 | Create | `scripts/hf_export/publish_explorer_snapshot_to_hf.py` | dry-run/live transaction, expected parent, readback, receipt |
 | Create | `config/hf_export/field_explorer_snapshot.yml` | dataset, inputs, license classes, versions, shard limits |
-| Create | two JSON schemas under `config/schemas/` | closed machine contract |
+| Create | three JSON schemas under `config/schemas/` | closed record, manifest, and publish-receipt contracts |
 | Modify | `build_explorer_results_bundle.py` | delegate to canonical normalization and repair identity/hash/card drift |
 | Deprecate or delete | `publish_explorer_refresh_to_hf.py` | prevent a second floating supported path |
 | Regenerate | tracked bundle and card | current deterministic source artifact |

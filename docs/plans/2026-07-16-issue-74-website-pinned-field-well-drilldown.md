@@ -151,6 +151,8 @@ The committed V1 exact-revision cache fixture will make deterministic offline bu
 | Create | `scripts/refresh-pinned-capability-data.js` | explicit reviewed refresh command; no floating refresh |
 | Create | `scripts/render-relational-capability.js` | safe view models and parent/child route generation |
 | Create | `scripts/promote-build-output.js` | atomic staging-to-dist promotion and retention |
+| Create | `scripts/write-field-explorer-build-receipt.js` | closed-schema build/route/input/tool evidence with artifact hashes |
+| Create | `scripts/collect-field-explorer-browser-evidence.js` | Playwright assertion results and raw evidence hashes for preview/production smoke |
 | Update | `build.js` | orchestrate validated relational rendering transactionally |
 | Create | `content/partials/capabilities/relational/page.html` | standard parent page shell |
 | Create | `content/partials/capabilities/relational/field-summary.html` | reusable field summary panel |
@@ -161,6 +163,8 @@ The committed V1 exact-revision cache fixture will make deterministic offline bu
 | Create | `assets/js/capability-drilldown.js` | local selector, pagination, history and deep-link controller |
 | Update/Create | `assets/css/` relational styles | accessible responsive presentation |
 | Create | `data/hf-cache/pinned/<dataset>/<sha>/` | exact V1 manifest/shard fixture and metadata |
+| Create per build | `dist/.build-receipts/field-explorer.json` | website commit, pinned SHA, manifest, template/data hashes, route/link counts and commands |
+| Create per acceptance | `artifacts/field-explorer/<release-id>/browser-receipt.json` | tool/browser versions, deployment URL/ID, assertions and screenshot/report hashes |
 | Create/Update | `tests/` focused registry/snapshot/render/browser/build tests | TDD and regressions |
 
 New implementation modules will remain at or below 400 lines and functions at or below 50 lines. The work will not enlarge `scripts/render-capabilities.js` into a second relational renderer.
@@ -195,6 +199,7 @@ render_relational(model, templates, staging):
     for each well: render nested well page and parent context
     emit local browser data, revision disclosure, canonical links and sitemap
     verify route inventory and internal links before promotion
+    write closed-schema build receipt containing command/tool/input/output hashes
 ```
 
 ```text
@@ -248,6 +253,8 @@ reduce_browser_state(state, action):
 - Fail before deleting or replacing current `dist` when registry/snapshot/render/link checks fail.
 - Render the whole site in a sibling staging directory.
 - Promote only after route, link, CSP, accessibility, legal and receipt checks pass.
+- Reject any receipt with an unknown schema major, missing command/tool/deployment identity, unreferenced raw result, or hash mismatch.
+- Collect browser evidence against preview first; production collection will be read-only and separately authorized.
 - Prove a failed R2 leaves R1 output and cache intact.
 - Prove a registry-pin revert R2→R1 reproduces R1 content and stable URLs.
 - Preserve legacy non-relational capability behavior through focused regression tests.
@@ -268,6 +275,8 @@ reduce_browser_state(state, action):
 - [ ] No-JS output will provide useful field and well navigation, counts, provenance, revision, limitations, and zero-well states.
 - [ ] Data values will remain inert through escaping, safe URL/path validation, and CSP-compatible rendering.
 - [ ] The full website build will stage and validate before atomic promotion; a failed candidate will preserve the prior complete output.
+- [ ] Build and browser receipts will conform to the parent contract, bind exact commands/tool versions/inputs/routes/deployment IDs, and hash every referenced raw artifact.
+- [ ] An R1→R2→R1 rollback exercise will run on preview only; a fresh explicit user authorization will be required before production promotion.
 - [ ] Pin rollback will restore the earlier whole snapshot without changing canonical field/well URLs.
 - [ ] Focused tests, full tests, link/accessibility/browser checks, legal/security scans, and T3 code/artifact review will have no unresolved MAJOR finding.
 - [ ] The issue will receive a closeout comment linking the website commit, pinned HF SHA, build/deployment evidence, route/count report, rollback target, and named residual gaps.

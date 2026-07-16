@@ -8,7 +8,9 @@
 > **Project:** N/A
 > **Lane:** lane:codex
 > **Execution mode:** planning/review `parallel-readonly`; approved implementation `parallel-worktree`
-> **Review artifacts:** `scripts/review/results/2026-07-16-plan-3559-claude.md` | `scripts/review/results/2026-07-16-plan-3559-codex.md` | `scripts/review/results/2026-07-16-plan-3559-gemini.md`
+> **Reviewed draft:** `06216c5c7d48b217ae7b1f92ad184d6eeb4ab2c5`
+> **Round 1 artifacts:** `scripts/review/results/issue-3559-round-1/2026-07-16-plan-3559-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Round 2 artifacts:** `scripts/review/results/issue-3559-round-2/2026-07-16-plan-3559-claude.md` | `...-codex.md` | `...-gemini.md`
 
 ---
 
@@ -69,9 +71,36 @@ website origin/main:      efde01a32a8507768804649afedf06190ec618bf
 live HF snapshot observed: aa94a449b5bad834f36dcac253f1aedc3a976a4c
 ```
 
-**Immutable-read reproduction:** raw datasets-server requests without a revision, with the real HF SHA, and with an invalid all-zero SHA all returned HTTP 200 and identical bytes. Therefore acceptance evidence will use only raw `resolve/<exact-sha>/...` artifacts; datasets-server will not prove immutability.
+### Embedded retrieval and reproduction evidence
 
-**Reproduction proofs:** N/A for the parent governance implementation. The two child plans will carry the runtime/data gap proofs.
+Commands ran from the workspace root at `2026-07-16T17:20-05:00`:
+
+```bash
+gh issue view 3559 -R vamseeachanta/workspace-hub --json number,title,state,labels
+gh issue view 1045 -R vamseeachanta/worldenergydata --json number,title,state,labels
+gh issue view 74 -R vamseeachanta/aceengineer-website --json number,title,state,labels
+```
+
+Captured result: all three issues were `OPEN`, carried `status:needs-plan` and exactly one `lane:codex` label. Titles were respectively “immutable Hugging Face field/well HTML drill-down program,” “deterministic exact-revision HF browser snapshot manifest,” and “registry-driven pinned field → well HTML drill-down.”
+
+```bash
+git -C aceengineer-website show origin/main:scripts/hf-fetch.js | nl -ba
+git -C aceengineer-website show origin/main:scripts/render-capabilities.js | nl -ba
+git -C aceengineer-website show origin/main:assets/js/capabilities-refresh.js | nl -ba
+git -C aceengineer-website show origin/main:build.js | nl -ba
+```
+
+Captured excerpts: `hf-fetch.js:24-25` declared page/default caps of 100; `render-capabilities.js:113,203` declared 50 and sliced to it; `capabilities-refresh.js:17-19,193,213` used floating datasets-server with fetch/display caps 100/50; `build.js:205-209` removed and recreated `dist` before later caught build operations at lines 220 and 236.
+
+```bash
+repo=aceengineer/worldenergydata-explorer
+sha=aa94a449b5bad834f36dcac253f1aedc3a976a4c
+curl 'https://datasets-server.huggingface.co/rows?dataset=aceengineer/worldenergydata-explorer&config=fields&split=train&offset=0&length=1'
+curl 'https://datasets-server.huggingface.co/rows?dataset=aceengineer/worldenergydata-explorer&config=fields&split=train&offset=0&length=1&revision=aa94a449b5bad834f36dcac253f1aedc3a976a4c'
+curl 'https://datasets-server.huggingface.co/rows?dataset=aceengineer/worldenergydata-explorer&config=fields&split=train&offset=0&length=1&revision=0000000000000000000000000000000000000000'
+```
+
+Captured output for omitted/real/fake revisions was identical: `status=200 bytes=3928 sha256=f414935f36e1f31255c60237c3db93ff40456729c44b2fac168437fbca8f3772`. Raw README resolution returned `307` for the real SHA and `404` for the fabricated SHA. Therefore datasets-server will not prove immutability; acceptance will use raw exact-SHA artifacts with the bounded redirect contract defined by the website child.
 
 Distinct sources: three new issues, two parent programs, one overlapping PR, three repositories, one prior architecture plan, live website/HF probes, and the drive-index search.
 
@@ -86,7 +115,12 @@ Distinct sources: three new issues, two parent programs, one overlapping PR, thr
 | Parent machine contract | `docs/architecture/field-explorer-cross-repo-contract.json` |
 | Promotion/rollback runbook | `docs/governance/field-explorer-promotion-runbook.html` |
 | Promotion verifier | `scripts/workflow/verify_field_explorer_promotion.py` |
+| Promotion state writer | `scripts/workflow/promote_field_explorer_release.py` |
 | Verifier tests | `tests/workflow/test_field_explorer_promotion.py` |
+| Receipt schemas | `$defs` in `docs/architecture/field-explorer-cross-repo-contract.json` |
+| Append-only release ledger | `docs/reports/field-explorer/release-ledger.jsonl` |
+| Accepted-release pointer | `docs/reports/field-explorer/accepted-release.json` |
+| Per-release evidence | `docs/reports/field-explorer/releases/<release-id>/` |
 | Final E2E report | `docs/reports/<date>-3559-field-explorer-e2e.html` |
 | Publisher implementation | owned only by [worldenergydata #1045](https://github.com/vamseeachanta/worldenergydata/issues/1045) |
 | Website implementation | owned only by [aceengineer-website #74](https://github.com/vamseeachanta/aceengineer-website/issues/74) |
@@ -108,9 +142,11 @@ P2: #1045 builds from one clean Git SHA, passes legal/schema/join gates,
 P3: #74 may build against the reviewed contract fixture; production pinning
     waits for the real #1045 receipt and for PR #73 coordination.
 P4: the website registry binds dataset + HF SHA + manifest path; the parent
-    verifier joins publisher, manifest, registry, build, route, and scan evidence.
-P5: production smoke accepts the candidate and retains the prior pin.
-P6: an R1→R2 update and R2→R1 revert prove stable routes and whole-snapshot rollback.
+    verifier live-checks approval comments/labels and joins schema-valid publisher,
+    manifest, registry, build, browser, deployment, route, and scan evidence.
+P5: an R1→R2→R1 preview-deployment drill proves whole-snapshot rollback.
+P6: a separately user-authorized production promotion receives read-only smoke;
+    accepted state advances atomically and retains the prior pin/deployment.
 P7: both children close their own gates before parent completeness/closure.
 ```
 
@@ -143,26 +179,45 @@ Production logic will not hardcode these values; the parent acceptance fixture a
 
 ```text
 load_contract(path):
-    require exact child URLs, owners, lifecycle states, V1 bounds and crosswalk
+    require exact child URLs, owners, lifecycle states, receipt schemas, V1 bounds and crosswalk
     reject cyclic dependencies or any edge where parent approval approves a child
     reject floating revision semantics or child implementation paths owned by parent
 ```
 
 ```text
-verify_candidate(wed_receipt, hf_manifest, website_registry, build_receipt):
-    require independently approved children
+verify_approvals(github_api, contract):
+    for parent and each child issue:
+        fetch the issue and approval comment from GitHub, never caller JSON alone
+        require status:plan-approved, approved plan commit/blob and approval marker
+        require comment author is the configured owner and predates implementation
+    return hash-bound approval evidence or fail closed
+```
+
+```text
+verify_candidate(approval_evidence, wed_receipt, hf_manifest, website_registry,
+                 build_receipt, browser_receipt, deployment_receipt, scan_receipts):
+    validate every input against closed contract $defs and rehash referenced evidence
+    require live-verified independent approvals
     require source SHA and manifest source identity agree
     require registry dataset/revision/manifest agree with WED receipt
     require every read used the exact raw HF SHA
     validate hashes, schemas, counts, IDs, joins, licenses and readiness
-    validate parent + field + well routes, links, sitemap and visible revision
-    return immutable candidate record; never mutate last_good
+    validate staged/preview parent + field + well routes, links, sitemap, browser,
+            accessibility, security and visible revision evidence
+    return immutable candidate record with evidence-root hash; never mutate accepted state
 ```
 
 ```text
-accept_or_retain(candidate, last_good, production_smoke):
-    if all gates and smoke pass: accept candidate and retain last_good as rollback
-    else: record unpromoted candidate and retain last_good unchanged
+record_candidate(candidate, ledger, expected_accepted_hash):
+    acquire repository-local lock; reject concurrent or stale expected state
+    write per-release evidence to temporary sibling; fsync and atomically rename
+    append hash-chained candidate event; leave accepted-release unchanged
+
+accept_candidate(candidate, user_authorization, production_smoke):
+    require preview R1→R2→R1 drill and separate production-promotion authorization
+    require read-only production smoke binds deployment + website + HF revision
+    atomically append accepted event and replace accepted-release pointer
+    retain previous accepted release as explicit rollback target
 ```
 
 ---
@@ -174,7 +229,11 @@ accept_or_retain(candidate, last_good, production_smoke):
 | Create | `docs/architecture/field-explorer-cross-repo-contract.json` | machine-readable lifecycle, crosswalk, issue DAG, V1 bounds |
 | Create | `docs/governance/field-explorer-promotion-runbook.html` | human promotion, failure recovery and rollback |
 | Create | `scripts/workflow/verify_field_explorer_promotion.py` | join and verify child receipts and release evidence |
+| Create | `scripts/workflow/promote_field_explorer_release.py` | locked, hash-chained candidate/accept state transitions |
 | Create | `tests/workflow/test_field_explorer_promotion.py` | TDD for lifecycle, candidate, rollback and expansion bounds |
+| Create | `docs/reports/field-explorer/release-ledger.jsonl` | append-only candidate/accepted/rejected/rollback history |
+| Create | `docs/reports/field-explorer/accepted-release.json` | atomic pointer to accepted evidence root and rollback target |
+| Create per release | `docs/reports/field-explorer/releases/<release-id>/` | immutable copies of publisher, build, browser, scan and deployment receipts |
 | Update | `docs/README.md` | expose the approved contract/runbook |
 | Update | `docs/plans/README.md` | index this plan |
 | Create at closeout | `docs/reports/<date>-3559-field-explorer-e2e.html` | actual end-to-end evidence |
@@ -188,6 +247,9 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 | Test | Verification |
 |---|---|
 | `test_children_are_exact_and_independently_gated` | parent approval cannot approve children |
+| `test_approval_requires_live_issue_label_owner_comment_and_plan_blob` | caller JSON cannot forge authorization |
+| `test_receipt_schemas_are_closed_and_versioned` | unknown/missing fields and schema majors fail |
+| `test_referenced_evidence_is_rehashed` | structurally convenient arbitrary JSON cannot pass |
 | `test_dependency_graph_is_acyclic_and_publisher_first` | production pin cannot precede verified receipt |
 | `test_crosswalk_covers_source_hf_registry_build_deploy` | every boundary has one owner/binding/evidence |
 | `test_state_machine_has_no_acceptance_bypass` | legal/hash/schema/build/smoke gates are mandatory |
@@ -201,6 +263,10 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 | `test_data_only_xss_and_safe_path_contract` | markup/path payloads fail or remain inert |
 | `test_failed_candidate_preserves_last_good` | failed R2 leaves R1 intact |
 | `test_registry_revert_restores_r1` | R2→R1 preserves stable routes and data |
+| `test_ledger_is_hash_chained_locked_and_append_only` | concurrent/stale/tampered transitions fail |
+| `test_accepted_pointer_updates_atomically_after_authorized_smoke` | no partial accepted state |
+| `test_browser_build_deployment_and_scan_receipts_are_required` | synthetic parent fixture cannot satisfy production evidence |
+| `test_rollback_drill_is_preview_only_without_fresh_authorization` | planning approval cannot mutate production |
 | `test_runbook_matches_machine_contract` | HTML and JSON lifecycle stay in parity |
 
 ---
@@ -210,6 +276,9 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 - [ ] This parent plan and both child plans will receive independent adversarial review and explicit user approval before their implementations begin.
 - [ ] Parent approval will not authorize either child.
 - [ ] Parent JSON and HTML will define the exact issue DAG, crosswalk, revisions, receipts, states, failure behavior, and rollback.
+- [ ] Promotion will live-fetch each issue label and owner approval comment, bind the approved plan commit/blob, and reject caller-authored approval claims.
+- [ ] Closed versioned schemas will cover publisher, build, browser, scan, deployment, candidate, acceptance, rejection, and rollback receipts.
+- [ ] A locked hash-chained ledger, per-release evidence directory, and atomic accepted pointer will preserve durable last-good state and recovery history.
 - [ ] #1045 will produce byte-identical browser outputs from one clean source revision and one atomic HF commit.
 - [ ] Every immutable read will use raw `resolve/<exact-hf-sha>/...`; datasets-server and floating refs will be rejected.
 - [ ] #74 production pinning will consume the verified #1045 receipt, not only fixtures.
@@ -219,7 +288,9 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 - [ ] No-JS HTML will expose useful results, counts, provenance, revision, limitations, and links.
 - [ ] Dirty source, legal ambiguity, unsafe path, embedded HTML, duplicate/orphan ID, schema/hash/count mismatch, missing shard, mixed revision, or stale pin will fail before deployment.
 - [ ] Failed R2 promotion will leave R1 intact; R2→R1 revert will reproduce R1.
-- [ ] Production browser, mobile, keyboard, JS-disabled, CSP, XSS, link, and revision-disclosure checks will pass.
+- [ ] Website-generated build/browser receipts will bind commands, tool versions, routes, assertions, hashes, preview deployment, and raw artifacts; the parent will schema-check and rehash them.
+- [ ] Preview browser, mobile, keyboard, JS-disabled, CSP, XSS, link, and revision-disclosure checks will pass before any production mutation.
+- [ ] Production promotion will require a fresh explicit authorization after preview evidence; production smoke will be read-only.
 - [ ] Both implemented child issues will receive summary comments before parent closure.
 - [ ] Parent and child legal/security scans, tests, cross-reviews, cleanup audits, and completeness gates will pass.
 - [ ] Closeout will not claim the 115 FDP pages or broader expansion tiers as delivered.
@@ -230,22 +301,23 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | review not run |
-| Codex | PENDING | review not run |
-| Gemini | PENDING | review not run |
+| Claude | UNAVAILABLE | timed out after 600 seconds without usable output |
+| Codex | MAJOR | approval authenticity, receipt/state schemas, evidence interfaces, rollback authority, embedded reproduction |
+| Gemini | UNAVAILABLE | no non-interactive authentication configured |
 
-**Overall result:** PENDING. The issue will remain `status:needs-plan` until no unresolved MAJOR finding remains.
+**Round 1 result:** MAJOR. Findings will be resolved in this revision and independently rerun under the Round 2 namespace. The issue will remain `status:needs-plan` until the fresh round has no unresolved MAJOR finding.
 
 ---
 
 ## Risks and Open Questions
 
-- **Non-atomic platforms:** GitHub, HF, and Vercel cannot become visible simultaneously. Acceptance will be a verified state transition, not a visibility claim.
+- **Non-atomic platforms:** GitHub, HF, and Vercel cannot become visible simultaneously. Acceptance will be a locked, hash-chained verified state transition, not a visibility claim.
 - **License conflict:** #1045 will fail closed until source-specific redistribution and dataset-card licensing are recorded; the parent cannot waive it.
 - **PR overlap:** #74 will begin only after PR #73 merges/rebases or explicit path coordination occurs.
 - **Identity drift:** display names and slugs may change; stable IDs and redirects will preserve joins and URLs.
 - **Cache substitution:** only a fully validated cache for the exact pinned revision may support an outage build.
 - **Scale:** V1 proves generic correctness beyond 100 with synthetic fixtures; it will not claim performance for all future 1,389 fields without a later measured expansion plan.
+- **External-action authority:** the rollback exercise will use a preview deployment. Planning approval will not authorize production deployment or a production rollback drill; promotion will stop for a fresh user authorization after preview evidence.
 
 ## Complexity: T3
 
