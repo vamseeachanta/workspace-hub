@@ -1,19 +1,19 @@
-generated_at: "2026-07-13T05:06:45"
+generated_at: "2026-07-16T12:04:30"
 schema_version: 4
 machine: "ace-win-2"
 host: "acma-ws014"
 os: windows
 status: active
 provenance:
-  checkout_sha: "7b0789cb4"
-  dirty: false
-  behind_main: 0
+  checkout_sha: "680f3d01c"
+  dirty: true
+  behind_main: 14
   ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
-    static: {cores: 32, ram_total_mib: 16014, gpu_model: "NVIDIA T1000 8GB"}
-    headroom: {ram_avail_mib: 4112, disk_avail_gb: 147}
+    static: {cores: 32, ram_total_mib: unknown, gpu_model: "none"}
+    headroom: {ram_avail_mib: unknown, disk_avail_gb: unknown}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -34,7 +34,7 @@ dimensions:
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: absent
-    context_md_mtime: "2026-07-13T04:30:01"
+    context_md_mtime: "2026-07-16T04:30:02"
   provider_harness:
     schema_version: 1
     providers:
