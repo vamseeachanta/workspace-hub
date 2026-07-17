@@ -5,7 +5,6 @@ import hashlib
 import struct
 from dataclasses import dataclass
 from typing import Any
-
 from scheduler_mutation_delegation import validate_delegation_schema
 TX_FIELDS = (
     "lock",
@@ -123,10 +122,8 @@ class ValidationResult:
     errors: list[str]
     statuses: dict[str, str]
 
-
 def attestation_source(name: str) -> bytes:
     return ATT_SOURCES.get(name, b"")
-
 
 def derive_status(
     branches: list[dict[str, Any]],
@@ -140,7 +137,6 @@ def derive_status(
     if weak or not all(attestations) or not all(required_transactions):
         return "migration-required"
     return "compliant"
-
 
 def input_digest(registry_bytes: bytes, records: dict[bytes, bytes]) -> str:
     data = bytearray(b"scheduler-mutation-input-v1\0")
@@ -168,6 +164,10 @@ def digest_record_union(
         b"tests/enforcement/test_scheduler_mutation_hardening.py",
         b"tests/enforcement/test_scheduler_mutation_delivery.py",
         b".github/workflows/enforcement-gate.yml",
+        b".github/workflows/scheduler-mutation-main.yml",
+        b"scripts/lib/git_index_snapshot.py",
+        b"pyproject.toml",
+        b"uv.lock",
     }
     for row in registry["surfaces"]:
         paths.add(row["path"].encode())

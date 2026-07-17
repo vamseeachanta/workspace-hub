@@ -81,10 +81,10 @@ def resolve_machine(
     }
 
 
-def workspace_hub_path(workspace_hub: str | Path | None = None) -> Path:
-    """Return the checkout path used for render-time $WORKSPACE_HUB expansion."""
+def workspace_hub_path(workspace_hub: str | Path | None = None) -> str:
+    """Return the declared target path without applying host path semantics."""
     override = workspace_hub or os.environ.get("WORKSPACE_HUB")
-    return Path(override).expanduser().resolve() if override else REPO_ROOT
+    return str(override) if override else str(REPO_ROOT)
 
 
 def build_context(
@@ -97,7 +97,8 @@ def build_context(
     entry = resolved["machine"]
     hub = workspace_hub_path(workspace_hub)
     schedule_variant = entry.get("schedule_variant", "contribute")
-    log = hub / FULL_VARIANT_LOG if schedule_variant == "full" else Path(CONTRIBUTE_LOG)
+    hub_prefix = hub.rstrip("/\\")
+    log = f"{hub_prefix}/{FULL_VARIANT_LOG}" if schedule_variant == "full" else CONTRIBUTE_LOG
 
     hostname = _norm(entry.get("hostname") or resolved["input_token"])
     aliases = [_norm(alias) for alias in entry.get("hostname_aliases", []) or []]
@@ -109,8 +110,8 @@ def build_context(
 
     return {
         **resolved,
-        "workspace_hub": str(hub),
-        "log": str(log),
+        "workspace_hub": hub,
+        "log": log,
         "schedule_variant": schedule_variant,
         "schedule_tokens": ordered_schedule_tokens,
         # Scheduler routing (#3507): setup-cron.sh must key its Windows-Task-Scheduler

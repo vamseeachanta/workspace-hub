@@ -1,0 +1,63 @@
+name: Scheduler Mutation Main Guard
+
+# Validate scheduler generated state from the immutable tree that lands on main.
+on:
+  push:
+    branches: [main]
+
+jobs:
+  scheduler-mutation-surfaces:
+    name: Scheduler Mutation Landed-Tree Guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout landed commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+      - name: Validate captured scheduler state
+        shell: bash
+        run: |
+          set -euo pipefail
+          snapshot_helper="$(mktemp)"
+          snapshot_entry=""
+          cleanup_snapshot() {
+            status=$?
+            trap - EXIT
+            rm -f -- "$snapshot_helper" ${snapshot_entry:+"$snapshot_entry"} || {
+              if [[ $status -eq 0 ]]; then status=1; fi
+            }
+            exit "$status"
+          }
+          trap cleanup_snapshot EXIT
+          snapshot_entry="$(mktemp)"
+          tree_oid="$(git --no-replace-objects rev-parse 'HEAD^{tree}')"
+          [[ "$tree_oid" =~ ^([0-9a-f]{40}|[0-9a-f]{64})$ ]]
+          [[ "$(git --no-replace-objects cat-file -t "$tree_oid")" == tree ]]
+          git --no-replace-objects ls-tree -z "$tree_oid" -- scripts/lib/git_index_snapshot.py > "$snapshot_entry"
+          python -I -S - "$snapshot_entry" <<'PY'
+          import pathlib
+          import sys
+
+          body = pathlib.Path(sys.argv[1]).read_bytes()
+          if not body or not body.endswith(b"\0") or len(body[:-1].split(b"\0")) != 1:
+              raise SystemExit("invalid helper ls-tree frame")
+          PY
+          mapfile -d '' snapshot_entries < "$snapshot_entry"
+          [[ ${#snapshot_entries[@]} -eq 1 ]]
+          IFS=$'\t' read -r helper_meta helper_path <<< "${snapshot_entries[0]}"
+          read -r helper_mode helper_type helper_oid <<< "$helper_meta"
+          [[ "$helper_path" == scripts/lib/git_index_snapshot.py ]]
+          [[ "$helper_mode" == 100644 || "$helper_mode" == 100755 ]]
+          [[ "$helper_type" == blob ]]
+          [[ "$helper_oid" =~ ^([0-9a-f]{40}|[0-9a-f]{64})$ ]]
+          git --no-replace-objects cat-file blob "$helper_oid" > "$snapshot_helper"
+          [[ -s "$snapshot_helper" ]]
+          [[ "$(git --no-replace-objects hash-object "$snapshot_helper")" == "$helper_oid" ]]
+          python -I -S "$snapshot_helper" --tree-oid "$tree_oid" all

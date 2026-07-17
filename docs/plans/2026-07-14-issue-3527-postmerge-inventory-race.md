@@ -426,8 +426,8 @@ Revisions made after round 1:
 ## Rollback
 
 - Amendment rollback will preserve the original `.github/workflows/scheduler-mutation-main.yml`, CLEAN merge rule, and main-workflow scheduler digest binding. Removing that landed-main detector would recreate the original incident and will require a separately approved emergency action plus explicit broken-main monitoring.
-- The snapshot helper, its two digest-union bindings, renderer normalization, captured checker/generator behavior, and amendment tests will be reverted as one transaction; no orphan helper/binding and no partial runtime-only or generated-only rollback will be allowed.
-- After reverting amendment source bytes, rollback will regenerate and stage the inventory, copy its digest into the #3475 registry binding, regenerate and stage scheduler HTML, and run the exact `all` bootstrap block so registry, inventory, and HTML receive one captured tree OID. Landed verification will repeat captured-helper `all` against `HEAD^{tree}`.
+- The snapshot helper, its two digest-union bindings, renderer normalization, captured checker/generator behavior, amendment tests, and both workflow bodies that invoke the helper will be reverted as one transaction; the main-push detector and PR scheduler job will remain, but their bodies will return to the pre-amendment direct checks. No preserved workflow may reference a removed helper.
+- After reverting amendment source bytes, rollback will regenerate and stage the inventory, copy its digest into the #3475 registry binding, and regenerate and stage scheduler HTML. Validation will use a temporary checkout of the exact rollback tree; landed verification will repeat the three pre-amendment checks against immutable `HEAD` rather than invoke the removed helper.
 - Rollback will verify that identity rows again match the declared canonical fixture and that no live cron, crontab, daemon, systemd timer, or Windows scheduled task was mutated.
 
 ---

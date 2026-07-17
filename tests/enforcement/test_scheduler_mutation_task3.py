@@ -177,11 +177,10 @@ def test_direct_primitive_wrapper_cannot_inherit_terminal_compliance():
 def test_state_classes_inventory_and_workflow_are_fail_closed():
     checker, records, registry, discovered = current_contract()
     workflow = records[b".github/workflows/enforcement-gate.yml"].decode()
-    assert "build-cron-identity-inventory.py --check" in workflow
-    inventory_line = next(
-        line for line in workflow.splitlines() if "build-cron-identity-inventory.py --check" in line
-    )
-    assert "|| true" not in inventory_line
+    assert 'python -I -S "$snapshot_helper" --tree-oid "$tree_oid" all' in workflow
+    assert "uv run python scripts/cron/build-cron-identity-inventory.py --check" not in workflow
+    scheduler_block = workflow.split("  stage-prompt-drift:", 1)[0]
+    assert "|| true" not in scheduler_block
 
     stale = copy.deepcopy(records)
     stale[b"docs/reports/issue-3475-command-identity-inventory.json"] += b" "
