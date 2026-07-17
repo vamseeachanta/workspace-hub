@@ -10,11 +10,16 @@ Pilot repo-managed native goals for substantive Claude/Codex sessions, make Code
 - Created and pushed `plan/3555-goal-statusline-pilot`.
 - Added the future-tense plan and HTML review surface.
 - Ran two Codex adversarial review rounds. The plan now preserves the existing catalog, picklist, approval, and runner gates; specifies a cross-platform Claude renderer; defines five machine-equivalence rows; and makes pilot evidence privacy-safe and tests-first.
+- Recorded the user correction that AGY (`agy`, Antigravity) is the Gemini-backed provider surface in `.claude/memory/KNOWLEDGE.md` and `.claude/memory/topics/feedback_agy_replaces_gemini_cli.md`; regenerated the managed topic index.
+- Ran an adversarial review of the AGY memory/plan update, applied every finding inline, and retained the provider review plus disposition under `scripts/review/results/`.
+- Filed [#3558](https://github.com/vamseeachanta/workspace-hub/issues/3558) for the discovered provider-startup-memory cap defect: canonical shared knowledge is recallable but can be omitted from the capped startup slice.
 - Posted the reviewed state and blocker on issue #3555.
 
 ## Verified state
 
-- Reviewed branch commit: `df0dd6448c95e0915e0c55a245431e6b37718195` (local and remote matched before this handoff commit).
+- Latest content/review commit before this handoff refresh: `04834b0eb0f2ca136f530197af7f07e8af19c3f2`; local and remote matched.
+- Memory verification: `python -m pytest scripts/memory/tests/test_build_topics_index.py scripts/memory/tests/test_recall.py -q` → 11 passed; `python scripts/memory/recall.py agy --limit 5` returns the AGY topic.
+- Canonical wrapper probe: `scripts/review/submit-to-agy.sh` exits 2 with `agy CLI not found (AGY_CMD=agy)` on `ace-win-2`.
 - Legal diff scan: PASS.
 - Issue state: OPEN, `status:needs-plan`.
 - No implementation, pilot mutation, equality regeneration, or fleet rollout has started.
@@ -26,7 +31,7 @@ Claude CLI OAuth is expired. The user clarified that AGY (`agy`, Antigravity) re
 ## Next checkpoint
 
 1. Install and authenticate AGY on `ace-win-2` (or re-authenticate Claude).
-2. Run an adversarial review against `docs/plans/2026-07-16-issue-3555-goal-statusline-machine-pilot.md` at the latest branch commit.
+2. Run the canonical `scripts/review/submit-to-agy.sh` adversarial review against `docs/plans/2026-07-16-issue-3555-goal-statusline-machine-pilot.md` at the latest branch commit.
 3. If no MAJOR remains, commit/push the review artifact, post evidence to #3555, and move only to `status:plan-review`.
 4. Stop for explicit user approval; never self-apply `status:plan-approved`.
 
