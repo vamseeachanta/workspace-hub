@@ -36,7 +36,7 @@
     <div class="eyebrow">Plan approval packet · 2026-07-16</div>
     <h1>Field Explorer</h1>
     <p>Scalable, registry-driven HTML pages for immutable Hugging Face field and well results.</p>
-    <div class="status">Architecture approved · implementation not approved</div>
+    <div class="status">Architecture approved · corrected plans under review · implementation not approved</div>
     <p class="note">This packet will support one explicit approval decision for three independently gated issue plans. Parent approval will not silently approve either child.</p>
   </header>
 
@@ -61,10 +61,11 @@
   <section class="card" style="margin-top:1rem">
     <h2>Release lifecycle</h2>
     <div class="flow" role="list">
-      <div class="step" role="listitem"><strong>1 · Build</strong>Clean WED source revision and deterministic outputs</div>
+      <div class="step" role="listitem"><strong>0 · Bootstrap</strong>Separately authorize and verify protected release-state genesis/rules</div>
+      <div class="step" role="listitem"><strong>1 · Build</strong>Clean WED source revision, deterministic outputs, schemas and lineage</div>
       <div class="step" role="listitem"><strong>2 · Publish</strong>One expected-parent HF commit</div>
       <div class="step" role="listitem"><strong>3 · Verify</strong>Raw exact-SHA readback and receipt</div>
-      <div class="step" role="listitem"><strong>4 · Render</strong>Website pins SHA and stages all routes</div>
+      <div class="step" role="listitem"><strong>4 · Render</strong>Website pins SHA and stages fingerprinted HTML, JSON, JS and CSS</div>
       <div class="step" role="listitem"><strong>5 · Preview</strong>R1→R2→R1 browser and rollback drill</div>
       <div class="step" role="listitem"><strong>6 · Authorize</strong>Distinct reviewer approves protected environment for exact release</div>
       <div class="step" role="listitem"><strong>7 · Deploy</strong>Record pending, deploy exact pin, smoke read-only</div>
@@ -96,8 +97,12 @@
         <li>The browser will use local validated assets; there will be no runtime HF dependency.</li>
         <li>Markup will live in real HTML page and child-panel partials.</li>
         <li>Static parent, field, and well routes will provide useful no-JS navigation.</li>
-        <li>One protected state ref will use a one-parent non-force push as the remote CAS; stale concurrent writers will fail.</li>
-        <li>Prior event hashes will remain an exact prefix and evidence paths will be content-addressed and create-only.</li>
+        <li>A separately authorized deterministic genesis and verified ruleset will restrict the protected state ref to one named non-force CAS writer.</li>
+        <li>Transition IDs will reconcile server-accepted/client-timeout pushes; one canonical content-addressed evidence store will feed reference-only release indexes.</li>
+        <li>The HF manifest will exclude itself, ship immutable schemas in the same commit, and discover every ordered shard without listing APIs.</li>
+        <li>Regular browser blobs and HF-managed Parquet will use distinct fail-closed exact-revision redirect policies.</li>
+        <li>Generated JSON, controller JavaScript and CSS will live only in the staged release-hash tree, preventing rollback cache mixing.</li>
+        <li>Generic parent/child state, inherited page/child templates, dependent selectors, deep links, visible cache/fallback state and no-JS routes will share one registry contract.</li>
         <li>Receipts will be checked against live trusted CI, Hugging Face, and deployment provenance rather than trusted as self-authored JSON.</li>
         <li>Failed candidates will preserve or restore the last-good complete site and revision cache; unproven rollback will block further promotion.</li>
       </ul>
@@ -106,8 +111,8 @@
       <h2>Approval gates</h2>
       <ol>
         <li>Architecture — approved.</li>
-        <li>Parent T3 review — three rounds returned MAJOR findings; final findings are absorbed inline, and no fourth automatic cycle will run.</li>
-        <li>Child review — WED returned MINOR/MAJOR; website returned MAJOR/MAJOR. Both plans are corrected inline but remain blocked with the parent.</li>
+        <li>Parent T3 review — prior rounds and isolated adjudication found MAJOR defects; corrected bootstrap, authority, latency, CAS and rollback contracts now require final disposition.</li>
+        <li>Child review — isolated adjudication found WED manifest/redirect/lineage gaps and website cache/transaction/race gaps; corrected drafts remain at needs-plan pending no-MAJOR review.</li>
         <li>User approval of each issue plan — pending.</li>
         <li>TDD implementation — blocked until approval.</li>
         <li>Preview evidence — required before a protected-environment approval by a reviewer distinct from the automation actor.</li>

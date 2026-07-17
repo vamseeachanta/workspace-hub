@@ -14,6 +14,7 @@
 > **Round 1 artifacts:** `scripts/review/results/issue-3559-round-1/2026-07-16-plan-3559-claude.md` | `...-codex.md` | `...-gemini.md`
 > **Round 2 artifacts:** `scripts/review/results/issue-3559-round-2/2026-07-16-plan-3559-claude.md` | `...-codex.md` | `...-gemini.md`
 > **Round 3 artifacts:** `scripts/review/results/issue-3559-round-3/2026-07-16-plan-3559-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Isolated adjudication:** `scripts/review/results/issue-3559-isolated-adjudication/2026-07-16-adjudication.md`
 
 ---
 
@@ -57,6 +58,8 @@
 - No cross-repository state machine will currently prevent an unverified HF candidate from becoming a deployed website revision.
 - No verifier will currently join the publisher receipt, HF manifest, website registry/build receipt, route counts, and production evidence.
 - No parent closeout rule will currently prevent broad field-coverage claims from exceeding the manifest-ready set.
+- The authoritative release-state ref does not yet exist or carry a protection ruleset. The workspace-hub repository owner will separately authorize its creation and protection; approval of this plan will not authorize repository-settings changes, and promotion will remain disabled until live bootstrap verification passes.
+- The parent contract will carry closed, nonempty allowlists for production and rollback approvers. Allowlist changes will require a separately reviewed contract change rather than runtime input.
 
 ### Evidence
 
@@ -126,7 +129,9 @@ Distinct sources: three new issues, two parent programs, one overlapping PR, thr
 | Verifier tests | `tests/workflow/test_field_explorer_promotion.py` |
 | Receipt schemas | `$defs` in `docs/architecture/field-explorer-cross-repo-contract.json` |
 | Authoritative release state | `docs/reports/field-explorer/release-state.json` |
-| Per-release evidence | `docs/reports/field-explorer/releases/<release-id>/` |
+| Canonical immutable evidence | `docs/reports/field-explorer/evidence/sha256/<digest>.json` |
+| Per-release evidence index | `docs/reports/field-explorer/releases/<release-id>/release-index.json` |
+| State-ref/trust policy | `docs/architecture/field-explorer-release-state-policy.json` |
 | Final E2E report | `docs/reports/<date>-3559-field-explorer-e2e.html` |
 | Publisher implementation | owned only by [worldenergydata #1045](https://github.com/vamseeachanta/worldenergydata/issues/1045) |
 | Website implementation | owned only by [aceengineer-website #74](https://github.com/vamseeachanta/aceengineer-website/issues/74) |
@@ -141,6 +146,10 @@ A JSON parent contract, HTML promotion/rollback runbook, and tested cross-reposi
 
 ```text
 P0: #3559 parent contract is reviewed and user-approved.
+P0A: after separate repository-settings authorization, the repository owner
+     provisions the reviewed deterministic genesis ref, protection ruleset,
+     automation writer, environments, and approver allowlists; live preflight
+     must prove every property before any release transition.
 P1: #1045 and #74 are independently reviewed and user-approved.
 P2: #1045 builds from one clean Git SHA, passes legal/schema/join gates,
     publishes one expected-parent HF commit, raw-reads it by returned SHA,
@@ -194,11 +203,12 @@ load_contract(path):
 verify_approvals(github_api, contract):
     for parent and each child issue:
         fetch issue, timeline events and plan-review evidence comment from GitHub
-        require status:plan-approved and owner-applied approval-label event
+        require status:plan-approved and approval-label event by a contract-allowlisted principal
         require repository marker .planning/plan-approved/<issue>.md
         bind evidence comment's reviewed commit/blob and no-MAJOR artifact paths
         require approval event and marker follow that exact review evidence
-    return exact account-authority evidence or fail closed
+        require approving individual is distinct from the automation actor
+    return live allowlist membership and exact account-authority evidence or fail closed
 ```
 
 ```text
@@ -230,29 +240,49 @@ verify_candidate(approval_evidence, wed_receipt, hf_manifest, website_registry,
 
 ```text
 transition_release(expected_state_ref_oid, expected_state_version, event, evidence):
+    live-verify ref genesis, ruleset digest, named automation writer and approver allowlists
     fetch protected refs/heads/field-explorer-release-state; require expected OID/version
     require all prior canonical event hashes remain an exact ordered prefix
     require every evidence/sha256/<digest>.json path is create-only and matches digest
-    create one commit whose sole parent is expected_state_ref_oid
-    non-force push commit to the same protected ref; Git receive-pack is the CAS
-    on non-fast-forward rejection refetch; never auto-rebase or overwrite history
+    require release-index contains ordered digest references, never receipt copies
+    derive transition_id from parent OID, state version, release, event and evidence root
+    create one deterministic commit whose sole parent is expected_state_ref_oid
+    non-force push explicit new-OID:state-ref refspec; Git receive-pack is the CAS
+    after success, rejection, timeout or EOF refetch the remote ref
+    if exact transition_id exists return idempotent already_committed success
+    if remote still equals expected parent retry the identical commit within a bound
+    if remote advanced without transition return conflict; never rebase or append automatically
+    if remote state cannot be proven enter state_transition_unknown and stop
 
 authorize_and_deploy(candidate, github_api):
     dispatch allowlisted production workflow as automation principal with release ID,
         evidence root, HF SHA, website SHA, target and unique deployment_intent_id
-    require distinct configured reviewer approves protected environment with
-        prevent_self_review; live-fetch approval and bind it to pending deployment
+    require distinct allowlisted reviewer approves protected environment with
+        prevent_self_review; bind candidate, evidence root, intent, target, expiry,
+        exact last-good deployment/registry pin and rollback_authorized flag
     transition preview_verified -> promotion_authorized -> deploy_pending with
         lease expiry, intent ID and exact rollback deployment
-    before create/retry query Vercel by project/target/git SHA/intent metadata
-    if one match resume it; if none create once; if multiple/timeout enter unknown
-    after API returns transition -> deployed_pending_smoke with deployment ID
+    serialize by Vercel project+target and capture expected current production
+    enumerate bounded candidates by project/target/git SHA/time window, fetch details,
+        then match exact intent metadata locally; do not assume a native intent filter
+    if one nonterminal match remain deploy_pending; if one ready match bind its ID
+    if none create only when prior acceptance is disproven; if multiple/timeout enter unknown
+    before promotion require current production still equals captured expected current
+    after ready transition -> deployed_pending_smoke with deployment ID
     run read-only production smoke
     on pass transition -> accepted and retain prior release as rollback target
-    on failure transition -> production_failed -> rollback_pending -> rolled_back
+    on terminal/smoke failure use candidate-bound rollback authority only for the exact
+        last-good target; otherwise enter rollback_approval_pending for fresh approval
+    before rollback require current production equals the failed candidate
+    transition -> production_failed -> rollback_pending -> rolled_back, or rollback_unknown
     after crash/lease expiry reconciliation must query by intent before any retry
-    if state cannot be proven transition -> unknown and block all promotion
+    observation timeout never implies failure; nonterminal/ambiguous state enters unknown
+    if state cannot be proven block all promotion and rollback
 ```
+
+The deterministic zero-parent genesis commit will contain only the initial `release-state.json` with schema version, `state_version: 0`, empty history, no accepted release, and a deterministic genesis identifier. After separate user authorization, the repository owner will create the ref at that reviewed SHA and apply a ruleset that blocks deletion and force-pushes, restricts non-force direct updates to the named automation app/bot without requiring a PR, rejects every other writer, and exposes a ruleset ID and policy digest. The live preflight will prove the exact OID, ruleset, writer, environments, reviewer configuration, prevent-self-review setting, and allowlists or fail closed.
+
+The content-addressed evidence path will be the only canonical receipt store. A per-release index will contain references and digests only; it will not duplicate mutable receipt copies. Each event will bind both the release-index digest and evidence-root digest.
 
 ---
 
@@ -261,13 +291,15 @@ authorize_and_deploy(candidate, github_api):
 | Action | Path | Reason |
 |---|---|---|
 | Create | `docs/architecture/field-explorer-cross-repo-contract.json` | machine-readable lifecycle, crosswalk, issue DAG, V1 bounds |
+| Create | `docs/architecture/field-explorer-release-state-policy.json` | genesis SHA, ruleset ID/digest, automation identity and closed approver allowlists |
 | Create | `docs/governance/field-explorer-promotion-runbook.html` | human promotion, failure recovery and rollback |
 | Update | `docs/plans/2026-07-16-field-explorer-plan-approval-packet.html` | keep human approval lifecycle and authority in parity |
 | Create | `scripts/workflow/verify_field_explorer_promotion.py` | join and verify child receipts and release evidence |
 | Create | `scripts/workflow/promote_field_explorer_release.py` | remote-SHA/state-version CAS and legal release transitions |
 | Create | `tests/workflow/test_field_explorer_promotion.py` | TDD for lifecycle, candidate, rollback and expansion bounds |
 | Create on protected state ref | `docs/reports/field-explorer/release-state.json` | single authoritative state/event history/current accepted/rollback object |
-| Create per release | `docs/reports/field-explorer/releases/<release-id>/` | immutable copies of publisher, build, browser, scan and deployment receipts |
+| Create per digest | `docs/reports/field-explorer/evidence/sha256/<digest>.json` | sole canonical content-addressed receipt/evidence store |
+| Create per release | `docs/reports/field-explorer/releases/<release-id>/release-index.json` | ordered references to canonical evidence, never receipt copies |
 | Update | `docs/README.md` | expose the approved contract/runbook |
 | Update | `docs/plans/README.md` | index this plan |
 | Create at closeout | `docs/reports/<date>-3559-field-explorer-e2e.html` | actual end-to-end evidence |
@@ -298,10 +330,19 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 | `test_failed_candidate_preserves_last_good` | failed R2 leaves R1 intact |
 | `test_registry_revert_restores_r1` | R2→R1 preserves stable routes and data |
 | `test_single_state_object_nonforce_ref_push_is_actual_remote_cas` | same-parent concurrent writers: exactly one succeeds |
+| `test_state_ref_bootstrap_requires_separate_owner_authorization` | plan approval cannot mutate repository settings |
+| `test_state_ref_genesis_and_ruleset_are_live_verified` | deterministic zero-parent genesis, writer and protections are exact |
+| `test_protection_or_authority_drift_blocks_each_transition` | missing/ref-changed ruleset, writer or allowlist fails closed |
 | `test_history_is_prefix_only_and_evidence_is_content_addressed_create_only` | prior events/evidence cannot be truncated or rewritten |
+| `test_release_index_references_one_canonical_evidence_store` | releases never carry divergent receipt copies |
+| `test_state_push_timeout_reconciles_before_retry` | accepted timeout is idempotent; competing transition conflicts |
+| `test_state_transition_unknown_blocks_promotion` | unprovable remote state never triggers a blind retry |
 | `test_production_pending_failure_rollback_and_unknown_transitions` | external state never contradicts silent R1 acceptance |
 | `test_protected_environment_approval_is_distinct_candidate_bound_and_single_use` | workflow actor cannot self-approve or replay another candidate |
 | `test_deployment_intent_reconciles_crash_timeout_zero_one_or_many_matches` | retry never creates an ambiguous second production deployment |
+| `test_two_intents_for_one_target_are_serialized_and_expected_current_guarded` | a stale workflow cannot overwrite newer production |
+| `test_nonterminal_latency_and_observation_timeout_never_create_or_rollback` | latency becomes pending/unknown, never inferred failure |
+| `test_rollback_authority_is_exact_expiring_and_single_use` | only the bound last-good target may be restored |
 | `test_exact_trusted_workflow_policy_and_live_provenance` | wrong event/path/ref/actor/attempt/action/environment/fork fails |
 | `test_rollback_drill_is_preview_only_without_fresh_authorization` | planning approval cannot mutate production |
 | `test_runbook_matches_machine_contract` | HTML and JSON lifecycle stay in parity |
@@ -316,8 +357,11 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 - [ ] Parent JSON and HTML will define the exact issue DAG, crosswalk, revisions, receipts, states, failure behavior, and rollback.
 - [ ] Plan approval verification will bind the live account-authority `status:plan-approved` event, canonical marker, plan-review evidence comment, exact reviewed plan blob, and final review artifacts; it will not claim cryptographic proof of human intent.
 - [ ] Closed versioned schemas will cover publisher, build, browser, scan, deployment, authorization, candidate, pending, acceptance, rejection, failure, rollback, and unknown receipts/states.
-- [ ] One authoritative release-state object plus content-addressed create-only evidence will update on a protected state ref through a one-parent non-force push; concurrent stale writers will receive non-fast-forward failure.
+- [ ] Separate user authorization and repository-owner provisioning will create the exact deterministic genesis ref and ruleset; plan approval alone will not change repository settings.
+- [ ] Live preflight will prove that the named automation writer may perform non-force CAS while deletion, force-pushes and every unauthorized writer remain blocked.
+- [ ] One authoritative release-state object plus one canonical content-addressed evidence store and reference-only release indexes will update through deterministic one-parent non-force pushes.
 - [ ] Every transition will preserve prior canonical event hashes as an exact prefix and validate state-ref ancestry to genesis.
+- [ ] Server-accepted/client-timeout pushes will reconcile by transition ID without duplicate events; unprovable state will enter blocking `state_transition_unknown`.
 - [ ] #1045 will produce byte-identical browser outputs from one clean source revision and one atomic HF commit.
 - [ ] Every immutable read will use raw `resolve/<exact-hf-sha>/...`; datasets-server and floating refs will be rejected.
 - [ ] #74 production pinning will consume the verified #1045 receipt, not only fixtures.
@@ -329,8 +373,9 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 - [ ] Failed R2 promotion will leave R1 intact; R2→R1 revert will reproduce R1.
 - [ ] Website-generated build/browser receipts will bind commands, tools, routes, assertions, hashes and preview deployment to an exact allowlisted workflow_dispatch policy; the parent will live-fetch run/approval/artifact and Vercel provenance and verify attestations/hashes.
 - [ ] Preview browser, mobile, keyboard, JS-disabled, CSP, XSS, link, and revision-disclosure checks will pass before any production mutation.
-- [ ] Production promotion will require protected-environment approval by a configured reviewer distinct from the automation actor, with prevent-self-review and exact candidate inputs.
-- [ ] Production will enter `deploy_pending` with a lease, intent ID and rollback target before mutation; retries will reconcile Vercel intent metadata before creation; smoke success will accept, failure will record and roll back, and ambiguity will enter blocking `unknown`.
+- [ ] Production promotion will require protected-environment approval by a closed allowlisted reviewer distinct from the automation actor, with prevent-self-review, expiry, single-use status and exact candidate inputs.
+- [ ] Production will serialize by Vercel project+target, enforce expected-current guards, enumerate and locally match exact intent metadata without assuming a native intent filter, and never infer failure from observation latency.
+- [ ] Rollback will require candidate-bound authority for the exact last-good deployment; missing/expired authority will enter `rollback_approval_pending`, and ambiguous execution will enter `rollback_unknown`.
 - [ ] Both implemented child issues will receive summary comments before parent closure.
 - [ ] Parent and child legal/security scans, tests, cross-reviews, cleanup audits, and completeness gates will pass.
 - [ ] Closeout will not claim the 115 FDP pages or broader expansion tiers as delivered.
@@ -345,7 +390,7 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 | Codex | MAJOR | authorization trust boundary, exact remote CAS, crash reconciliation, workflow allowlist, append-only evidence |
 | Gemini | UNAVAILABLE | no non-interactive authentication configured |
 
-**Round 3 result:** MAJOR from two independent providers. The exact input was remotely committed at `8aeb690c...` with plan blob `14b6cdda...`; both final artifacts became non-empty after provider exit, while both reviewers also exposed the in-progress-sink race now filed as [#3560](https://github.com/vamseeachanta/workspace-hub/issues/3560). The remaining findings will be absorbed inline through the three-round cap. No fourth automatic review will run; the issue will remain `status:needs-plan` and the user will receive the final evidence plus the unresolved consensus risk for disposition.
+**Round 3 result:** MAJOR from two independent providers. The exact input was remotely committed at `8aeb690c...` with plan blob `14b6cdda...`; both final artifacts became non-empty after provider exit, while both reviewers also exposed the in-progress-sink race now filed as [#3560](https://github.com/vamseeachanta/workspace-hub/issues/3560). A user-authorized isolated adjudication of commit `7f1f3f0...` then confirmed substantive protected-ref bootstrap, timeout reconciliation, authority, external-latency and rollback gaps. Those findings are incorporated in this draft; the issue will remain `status:needs-plan` until the corrected artifact receives a no-MAJOR disposition.
 
 ---
 

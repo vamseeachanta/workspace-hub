@@ -9,6 +9,7 @@
 > **Lane:** lane:codex
 > **Execution mode:** planning/review `parallel-readonly`; implementation `parallel-worktree` for pure builder/tests, serialized single-lane for live publication
 > **Round 1 artifacts:** `scripts/review/results/issue-1045-round-1/2026-07-16-plan-1045-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Isolated adjudication:** `scripts/review/results/issue-3559-isolated-adjudication/2026-07-16-adjudication.md`
 
 ---
 
@@ -97,6 +98,7 @@ Distinct sources: issue body, parent/consumer issues, two current exporter scrip
 | Publisher/orchestrator | `scripts/hf_export/publish_explorer_snapshot_to_hf.py` |
 | Publisher configuration | `config/hf_export/field_explorer_snapshot.yml` |
 | Source-license admission registry | `config/hf_export/field_explorer_source_licenses.yml` |
+| Canonical source authority | `data/catalog/source-registry.yml` |
 | Manifest schema | `config/schemas/field_explorer_browser_manifest.schema.json` |
 | Record schema | `config/schemas/field_explorer_browser_records.schema.json` |
 | Publish-receipt schema | `config/schemas/field_explorer_publish_receipt.schema.json` |
@@ -116,7 +118,7 @@ Distinct sources: issue body, parent/consumer issues, two current exporter scrip
 
 A deterministic publisher will build normalized fields, wells, countries, economics, bounded browser JSON shards, Parquet tables, card, and manifest from one clean worldenergydata commit; publish all bytes in one expected-parent HF commit; raw-read every declared artifact by the returned SHA; and emit a receipt only after full verification.
 
-The live mutation will run only from the exact allowlisted `.github/workflows/publish-field-explorer-snapshot.yml` `workflow_dispatch` on the protected target ref, reviewed head SHA, and `field-explorer-publish` environment. The workflow will reject fork/PR events and rerun attempts, pin every action to a full commit SHA, and require the configured automation actor plus protected-environment approval policy. The publisher core receipt will contain only facts available before artifact upload: source/HF identities, operation set, exact readback, counts and hashes. The workflow will upload and attest that receipt/evidence. After the run finishes, parent #3559 will live-fetch the run conclusion, workflow/environment approval, artifact ID/digest and attestation and compose the external provenance envelope; no receipt will self-reference its later artifact or conclusion.
+The live mutation will run only from the exact allowlisted `.github/workflows/publish-field-explorer-snapshot.yml` `workflow_dispatch` on the protected target ref, reviewed head SHA, and `field-explorer-publish` environment. The workflow will reject fork/PR events and rerun attempts, pin every action to a full commit SHA, and require the configured automation actor plus protected-environment approval policy. Phase A will create the single HF dataset commit. Phase B will raw-read and verify that returned commit. Only after Phase B succeeds will the publisher write the core receipt containing source/HF identities, operation set, exact-readback results, counts and hashes. Phase C will upload and attest the core receipt/evidence as a GitHub Actions artifact. After the run finishes, parent #3559 will live-fetch the run conclusion, workflow/environment approval, artifact ID/digest and attestation and compose the external provenance envelope; the core receipt will not self-reference its later Actions artifact or run conclusion.
 
 Repository-admin provisioning is a named prerequisite, not implicit code: the worldenergydata owner will create the `field-explorer-publish` environment, required-reviewer policy, automation-actor allowlist and `HF_TOKEN` secret. The workflow will include a read-only preflight that verifies these settings and will stop before local implementation can request live publication if they are absent. Architecture/plan approval will not authorize creating secrets or changing repository settings.
 
@@ -129,13 +131,19 @@ wells.parquet
 countries.parquet
 parametric_economics.parquet
 browser/manifest.json
+browser/schemas/manifest.schema.json
+browser/schemas/records.schema.json
 browser/snapshots/<content_snapshot_id>/fields/part-00000.json
 browser/snapshots/<content_snapshot_id>/wells/part-00000.json
 browser/snapshots/<content_snapshot_id>/countries/part-00000.json
 browser/snapshots/<content_snapshot_id>/parametric_economics/part-00000.json
 ```
 
-The content snapshot ID will be derived from canonical logical record bytes before paths/manifest serialization. Each field/well will carry a safe immutable `field_route_key`/`well_route_key` derived from its stable ID; mutable display slugs will remain aliases and cannot redefine canonical URLs. The manifest will contain schema version, dataset ID, clean source Git SHA, generator version, source hashes, every artifact path/hash/bytes/media type/records/schema, primary/foreign keys, declared sorting, readiness, provenance, license classification, and explicit zero-well representation. It will not contain its own HF commit SHA. The closed publish-receipt schema will bind source Git SHA, HF parent/returned SHA, manifest path/hash, operation set, exact-readback results, counts, generator/tool versions, timestamps, verification status, and referenced evidence hashes; unknown fields and schema majors will fail.
+The content snapshot ID will be derived from canonical logical record bytes before paths/manifest serialization. Each field/well will carry a safe immutable `field_route_key`/`well_route_key` derived from its stable ID; mutable display slugs will remain aliases and cannot redefine canonical URLs. Producer route-key values will be verification sidecars: they must equal the one canonical safe encoding of the stable ID or fail. The manifest will contain schema version, dataset ID, `projection_identifier`, `source_repository`, clean source Git SHA, generator version, source hashes, primary/foreign keys, declared sorting, readiness, and a `payload_artifacts` collection. `payload_artifacts` will exclude the manifest itself; each entry will bind path/hash/bytes/media type/records/schema, provenance references and license classification. The receipt alone will bind the manifest's exact path/hash/bytes. Immutable schema documents will ship in the same HF commit under `browser/schemas/`, and every payload schema reference will bind an exact schema path and SHA-256. The manifest will not contain its own HF commit SHA. The closed publish-receipt schema will bind source Git SHA, HF parent/returned SHA, manifest path/hash/bytes, operation set, exact-readback results, counts, generator/tool versions, timestamps, verification status, and referenced evidence hashes; unknown fields and schema majors will fail.
+
+The snapshot will keep four cardinality domains distinct: `drilldown_field_count` (10 canonical Explorer fields), `well_count` (56), `country_count` (84), and `catalog_field_count` (2,032 catalog entries represented by the countries projection). Catalog entries will not become drill-down fields or acquire well readiness by implication. Readiness will distinguish `drilldown_ready`, `zero_well_ready`, and `catalog_only`; only canonical Explorer fields will participate in `parent_field_id` joins. The builder will derive all counts from inputs rather than hardcode them.
+
+Each manifest collection will contain an ordered `shards` array. Every descriptor will carry `ordinal`, `path`, `record_count`, `byte_count`, `sha256`, `first_sort_key`, and `last_sort_key`; each collection will carry `shard_count`, aggregate record count, and the global sort definition. Consumers will discover and terminate traversal solely through the exact-SHA manifest, without repository-listing or datasets-server pagination APIs.
 
 - `field_id`: stable canonical ID from `config/fields.yml`.
 - `well_id`: `bsee-api12:<api>` for V1; API remains a string.
@@ -143,7 +151,9 @@ The content snapshot ID will be derived from canonical logical record bytes befo
 - label, aliases, slug, and slot: mutable/display attributes, never identity.
 - browser payload: data only; no embedded HTML or executable strings.
 
-Browser JSON shards will be regular, bounded Git blobs (not LFS/CAS objects), each below the configured byte limit, so the website can resolve them through exact-SHA same-origin HF cache redirects. Parquet may use HF's normal large-file storage but will not be a browser dependency.
+Browser JSON shards and schemas will be regular, bounded Git blobs (not LFS/CAS objects), each below the configured byte limit, so the website can resolve them through exact-SHA same-origin HF cache redirects. Parquet may use HF's normal large-file storage but will not be a browser dependency. Manifest/browser Git blobs will permit only the observed same-origin exact-revision HF cache redirect form. Parquet readback will permit only an explicit HF-controlled Xet/LFS host allowlist. Every initial resolve response will require `x-repo-commit == returned_sha`; HTTPS, hop limits, credential stripping, final byte count and staged SHA-256 will remain mandatory for both policies.
+
+`data/catalog/source-registry.yml` will remain the canonical repository source authority. `config/hf_export/field_explorer_source_licenses.yml` will be a projection admission map, not a competing registry: every entry will reference a canonical source-registry ID and add only projection-specific column lineage, reviewer, redistribution decision, evidence URL/hash, and status. Missing references or disagreement will fail before staging. Every payload artifact and every output column will resolve through this map to canonical authority, URL, license and redistribution evidence; a dataset-wide license string will not substitute for per-artifact/per-column provenance.
 
 ---
 
@@ -174,12 +184,13 @@ publish(stage, dry_run):
     returned_sha = validate_40_hex(result.oid)
     raw-read browser/manifest.json separately at returned_sha
     compare staged bytes; hash, parse and schema-validate exact returned manifest
-    for artifact in manifest: raw-read at returned_sha and revalidate bytes/hash/schema/count
+    for payload_artifact in manifest: apply its blob-or-Parquet redirect policy,
+        raw-read at returned_sha and revalidate bytes/hash/schema/count
     write publisher core receipt atomically only after every check passes
     workflow uploads+attests core receipt; parent composes post-run provenance envelope
 ```
 
-If upload succeeds but readback fails, the immutable commit will remain an unpromoted orphan: no receipt, website pin, automatic retry, deletion, or history rewrite will occur.
+If the HF commit succeeds but readback fails, the returned commit may already be visible at the target branch head to floating consumers even though no receipt or website pin exists. Redacted failure evidence will record `remote_head_advanced=true`, returned SHA, and failed phase. No core receipt, website pin, automatic retry, deletion, revert, or history rewrite will occur. Before live mutation, the workflow will enumerate known consumers and require each to be exact-SHA pinned or to have separately accepted this unavoidable floating-head exposure.
 
 ---
 
@@ -191,7 +202,7 @@ If upload succeeds but readback fails, the immutable commit will remain an unpro
 | Create | `scripts/hf_export/publish_explorer_snapshot_to_hf.py` | dry-run/live transaction, expected parent, readback, receipt |
 | Create | `.github/workflows/publish-field-explorer-snapshot.yml` | protected manual live publish, secret isolation and durable run provenance |
 | Create | `config/hf_export/field_explorer_snapshot.yml` | dataset, inputs, license classes, versions, shard limits |
-| Create | `config/hf_export/field_explorer_source_licenses.yml` | source/column lineage, authority, public URL, license, redistribution evidence, reviewer and status |
+| Create | `config/hf_export/field_explorer_source_licenses.yml` | projection admission map referencing canonical `data/catalog/source-registry.yml` IDs |
 | Create | three JSON schemas under `config/schemas/` | closed record, manifest, and publish-receipt contracts |
 | Modify | `pyproject.toml`, `uv.lock` | declare/pin `huggingface-hub`, Parquet/schema runtime and clean locked install |
 | Modify | `build_explorer_results_bundle.py` | delegate to canonical normalization and repair identity/hash/card drift |
@@ -211,43 +222,49 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 
 1. repeated builds under different paths/locales produce byte-identical artifacts;
 2. dirty tree, stale source hash, wrong dataset ID, or non-40-hex source SHA fails;
-3. unresolved/conflicting license classification fails before staging;
+3. unknown canonical source IDs, conflicting licenses, missing artifact provenance, or missing output-column lineage fails before staging;
 4. NaN/Infinity, HTML/script strings, absolute/traversal/backslash/NUL paths fail;
 5. unknown schema major and unknown record fields fail;
-6. canonical field IDs resolve only through the registry;
+6. all ten Explorer IDs resolve through the 11-entry canonical registry while Buckskin remains outside V1;
 7. namespaced well IDs are unique and API values remain strings;
 8. every `parent_field_id` exists exactly once; duplicates/orphans fail;
 9. explicit zero-well fields remain ready/selectable;
 10. stable ordering and canonical serialization are environment-independent;
-- Route-key guard: stable-ID-derived route keys remain safe and unchanged across label/display-slug changes;
-11. synthetic >100 records shard deterministically without loss/duplication;
-12. record and byte shard bounds are enforced; browser shards remain regular-blob sized;
-13. manifest hashes/bytes/media/counts/schema match staged files;
-14. manifest schema rejects any HF commit SHA property;
-15. JSON and Parquet have logical parity for all four configs;
-16. surfaced-economics filtering is explicit and discovered counts match policy;
-17. existing analytical columns remain or carry a versioned migration.
-- Compatibility guard: the live website `field-economics-sensitivity` consumer will receive an unchanged compatible `parametric_economics` config/schema or a separately reviewed migration before publish.
+11. stable-ID-derived route keys remain safe, canonical, and unchanged across label/display-slug changes;
+12. synthetic >100 records shard deterministically without loss/duplication;
+13. record and byte shard bounds are enforced; browser shards remain regular-blob sized;
+14. shard arrays reject missing/duplicate ordinals and overlapping/non-monotonic ranges and traverse exactly once without listing APIs;
+15. manifest payload hashes/bytes/media/counts/schema match staged files and exclude the manifest itself;
+16. receipt binds manifest hash/bytes; projection/source fields and same-commit schema path/hashes are mandatory;
+17. manifest schema rejects any HF commit SHA property;
+18. 10 drill-down fields, 56 wells, 84 countries and 2,032 catalog entries remain separate derived cardinalities;
+19. catalog-only records cannot inflate drill-down counts or acquire invented well relationships;
+20. JSON and Parquet have logical parity for all four configs;
+21. surfaced-economics filtering is explicit and discovered counts match policy;
+22. existing analytical columns remain or carry a versioned migration;
+23. the live website `field-economics-sensitivity` consumer receives an unchanged compatible `parametric_economics` contract or a separately reviewed migration before publish.
 
 ### Publisher
 
-18. dry-run uses no token, writes no network state, and emits no receipt;
-19. live mode invokes one `create_commit` containing every artifact;
-20. `parent_commit` equals the preflight head; a race fails with no receipt;
-21. invalid/missing returned SHA fails closed;
-22. exact-SHA manifest bytes equal staging and independently pass hash/schema validation;
-23. every verification URL contains the returned exact SHA and no floating ref;
-24. no code path uses datasets-server for immutable verification;
-25. missing/tampered/recount/schema/readback failures emit no receipt;
-26. fixture tests bound the same-origin exact-SHA cache redirect and reject off-origin/multi-hop forms;
-27. a non-mutating live HF probe records actual manifest/shard redirect chain, status, revision and timestamp before publication;
-28. token/auth values never enter logs, exceptions, manifest, receipt or artifact;
-29. success writes one core receipt; post-upload failure records only an unpromoted orphan;
-30. live mode refuses execution outside the exact protected workflow/environment policy;
-31. parent rejects wrong workflow/event/ref/actor/attempt/action pin/environment, fork run or artifact digest;
-32. expected-parent conflict requires a fresh explicit run, not automatic retry;
-33. clean `uv sync --locked` imports every declared publisher runtime dependency;
-34. missing/unreviewed source-license evidence or output-column lineage fails before staging.
+24. dry-run uses no token, writes no network state, and emits no receipt;
+25. live mode invokes one `create_commit` containing every artifact;
+26. `parent_commit` equals the preflight head; a race fails with no receipt;
+27. invalid/missing returned SHA fails closed;
+28. exact-SHA manifest bytes equal staging and independently pass hash/schema validation;
+29. every verification URL contains the returned exact SHA and no floating ref;
+30. no code path uses datasets-server for immutable verification;
+31. missing/tampered/recount/schema/readback failures emit no receipt;
+32. regular Git blobs accept only the bounded same-origin exact-revision redirect form;
+33. Parquet accepts only bounded HF-controlled Xet/LFS redirects with correct initial `x-repo-commit` and final staged hash;
+34. a non-mutating live HF probe records actual redirect chains, status, revision and timestamp before publication;
+35. token/auth values never enter logs, exceptions, manifest, receipt or artifact;
+36. success writes one core receipt after readback and before Actions evidence upload;
+37. post-commit readback failure records advanced remote head/returned SHA but emits no receipt, pin, retry or rewrite;
+38. an unapproved floating consumer blocks live mutation;
+39. live mode refuses execution outside the exact protected workflow/environment policy;
+40. parent rejects wrong workflow/event/ref/actor/attempt/action pin/environment, fork run or artifact digest;
+41. expected-parent conflict requires a fresh explicit run, not automatic retry;
+42. clean `uv sync --locked` imports every declared publisher runtime dependency.
 
 ### Executable fixture boundaries
 
@@ -277,12 +294,18 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 - [ ] The returned exact SHA will be captured and every raw artifact will be revalidated by that SHA.
 - [ ] The exact-SHA manifest itself will be fetched, byte-compared, hashed, parsed and schema-validated before any declared artifact loop.
 - [ ] The manifest will not self-reference an HF SHA; the receipt and website registry will bind it externally.
+- [ ] `payload_artifacts` will exclude the manifest; the receipt will bind manifest path/hash/bytes, and referenced immutable schemas will resolve by path/hash in the same HF commit.
+- [ ] The manifest will require `projection_identifier` and `source_repository` and will provide complete ordered shard discovery without listing APIs.
 - [ ] Any preflight/upload/race/readback failure will prevent receipt and website promotion.
 - [ ] Live publication will run only through the protected manual GitHub Actions environment and will emit evidence that parent #3559 can verify against the live Actions API and artifact digest.
 - [ ] Repository-admin environment/reviewer/actor/secret setup will be an explicit owner prerequisite and read-only preflight; plan approval will not authorize those settings or secrets.
 - [ ] Dry-run will make no external writes; live auth will be environment/client backed and redacted.
 - [ ] Browser JSON will be bounded regular Git blobs; redirect validation will include fixtures plus a timestamped non-mutating live probe.
-- [ ] Every public source and output-column lineage will have owner-reviewed authority, URL, license and redistribution evidence; scanner exclusions/binary Parquet will not substitute for this registry.
+- [ ] Exact-revision verification will support both regular Git blobs and allowlisted HF-managed Parquet storage without weakening revision or byte binding.
+- [ ] One canonical source authority plus a validated projection admission map will govern every payload artifact and output column; scanner exclusions/binary Parquet will not substitute for lineage.
+- [ ] Drill-down fields, wells, countries and catalog entries will remain separately named/count-checked; 2,032 catalog entries will never be described as analyzed fields.
+- [ ] The core receipt will be created after exact-SHA HF readback and before Actions evidence upload; failure at either later boundary will not fabricate the next trust artifact.
+- [ ] Post-commit readback failure will be reported as target-head exposure, not an unexposed orphan, and will never promote automatically.
 - [ ] `pyproject.toml` and `uv.lock` will declare the publisher runtime and a fresh `uv sync --locked` will pass.
 - [ ] Existing consumers will remain compatible or receive an explicit versioned migration.
 - [ ] Shared-dataset consumer `field-economics-sensitivity` will pass config/schema/row-policy compatibility checks before the HF commit becomes publishable.

@@ -10,12 +10,17 @@
 > **Lane:** lane:codex
 > **Execution mode:** planning/review `parallel-readonly`; approved implementation `parallel-worktree`
 > **Round 1 artifacts:** `scripts/review/results/issue-74-round-1/2026-07-16-plan-74-claude.md` | `...-codex.md` | `...-gemini.md`
+> **Isolated adjudication:** `scripts/review/results/issue-3559-isolated-adjudication/2026-07-16-adjudication.md`
 
 ---
 
 ## Authorization Boundary
 
-This plan will authorize only aceengineer-website changes after its own adversarial review and explicit user approval. Approval of parent #3559 or publisher #1045 will not approve this implementation. No website implementation may start until parent #3559 is reviewed and explicitly approved. Phase A may then build generic registry/template behavior against a reviewed synthetic parent-contract fixture; Phase B real cache/pinning will wait for an independently approved/published #1045 receipt and exact HF SHA. Draft [PR #73](https://github.com/vamseeachanta/aceengineer-website/pull/73) overlaps the registry, build, and registry-test paths; implementation will start only after merge/rebase or explicit path coordination.
+This plan will authorize only aceengineer-website changes after its own adversarial review and explicit user approval. Approval of parent #3559 or publisher #1045 will not approve this implementation. Phase A will begin only after parent #3559 and this plan receive explicit user approval and PR #73 is merged or closed with its overlapping paths reconciled. Phase A will implement only the generic parent/child registry schema, validator, renderer, controller, transactional build machinery, and synthetic fixtures. It will perform no HF network request, create no production cache, switch no live capability to relational mode, run no Vercel promotion, and change no production route behavior.
+
+Phase B will begin only after #1045 receives its own approval, publishes one validated receipt and exact HF SHA, and the website verifies that receipt against the reviewed contract. Phase B will create the exact-revision cache, switch `field-explorer` to relational mode, generate production parent/child routes and content-addressed assets, run preview evidence and R1→R2→R1 exercises, and stop for fresh explicit production authorization. Issue #74 will remain open until both phases and production closeout complete.
+
+Before the Phase A branch is created, the integration owner will record PR #73's final disposition and merge SHA, fetch current remote `main`, create `feature/issue-74-pinned-parent-child-drilldown` from that SHA, and prove that PR #73 capability entries/tests remain present. While PR #73 is open, no #74 lane may edit `build.js`, `config/capabilities.yaml`, or `tests/js/capabilities-registry.test.js`; those shared files will have one serialized integration owner after reconciliation.
 
 ## Resource Intelligence Summary
 
@@ -79,8 +84,10 @@ Captured 2026-07-16: `DEFAULT_MAX_ROWS=100`, `MAX_TABLE_ROWS=50`; the legacy ren
 | Registry contract | `config/capabilities.yaml`, `docs/capabilities-registry.md` |
 | HTML template family | `content/partials/capabilities/relational/` |
 | Pinned ingestion/cache | `scripts/hf-pinned-snapshot.js`, `data/hf-cache/pinned/` |
-| Browser assets | `assets/data/field-explorer/<hf-sha>/<content-hash>/`, `assets/js/capability-drilldown.js` |
-| Build/browser/deployment receipts | separate schemas/artifacts under `artifacts/field-explorer/<release-id>/` |
+| Release-coupled browser assets | `<staging>/assets/generated/capabilities/field-explorer/<release-hash>/` |
+| Public deployed build identity | `<staging>/.well-known/field-explorer-build-receipt.json` |
+| Protected release evidence workspace | runner-temporary `<RUNNER_TEMP>/field-explorer/<release-id>/` |
+| Durable protected evidence | Actions artifact `field-explorer-release-<release-id>` with separate receipts and hashed index |
 | Release workflows | `.github/workflows/verify-field-explorer-release.yml`, `.github/workflows/promote-field-explorer.yml` |
 
 ---
@@ -125,23 +132,27 @@ relationships:
     url_parameter: well
   duplicate_label_policy: append_stable_id_suffix
 selectors:
-  primary: field
-  dependent: well
+  parent_label: Field
+  child_label: Well
 templates:
   page: capabilities/relational/page.html
-  field_panels:
+  parent_panels:
     - field-summary.html
     - production-economics.html
     - well-list.html
-  well_panels:
+  child_panels:
     - well-detail.html
 routes:
-  parent: /capabilities/field-explorer.html
-  field: /capabilities/field-explorer/fields/{field_route_key}.html
-  well: /capabilities/field-explorer/fields/{field_route_key}/wells/{well_route_key}.html
+  root: /capabilities/field-explorer.html
+  parent_record: /capabilities/field-explorer/fields/{parent_route_key}.html
+  child_record: /capabilities/field-explorer/fields/{parent_route_key}/wells/{child_route_key}.html
 ```
 
 The validator will reject unknown schema majors, floating revisions, unsafe paths, duplicate template/route ownership, missing config/value/label/route/URL/parent keys, ambiguous duplicate labels without the declared policy, selector cycles, and relational capabilities wired to legacy floating refresh. A second synthetic hierarchy with different config/column names will prove that renderer logic is registry-generic rather than field/well hardcoded.
+
+Core renderer/controller state will be named `parentKey`, `childKey`, `panelKey`, and `pageIndex`; DOM hooks will use `data-parent-*` and `data-child-*`. Field/well words will exist only in registry labels, config/column mappings, route literals, and field-specific panel filenames. The second hierarchy fixture will fail if core modules inspect `fields`, `wells`, `field_id`, or `well_id` directly.
+
+The validator will require each declared route key to equal the single canonical safe encoding of its stable value ID. Producer route-key columns will be verification sidecars, not independent route authority; a mismatch will fail. Mutable labels/slugs will never change canonical routes.
 
 ## Template and Route Architecture
 
@@ -168,6 +179,8 @@ Generated canonical routes will be:
 
 Route keys will be deterministic safe encodings derived from stable IDs, not mutable display slugs. Mutable slugs will remain labels/aliases and may generate reviewed redirects, but will not define canonical identity. The no-JavaScript parent will expose the complete field index. Every field page will expose all child well links or an explicit zero-well state. Depth-aware `rootPath` values, breadcrumbs, canonical links, back-links, and generated sitemap entries will be produced for every route.
 
+`page.html` will be the inherited shell for root, parent-record, and child-record pages. The renderer will supply a generic page-kind view model and ordered allowlisted panel partials; partials will not include or extend arbitrary data-provided paths. Required locals and panel outputs will be validated before render. The root-path calculator will derive depth from the generated output path and will be fixture-asserted as `../` for the root page, `../../../` for a parent-record page, and `../../../../../` for a nested child-record page. Full rendered-link tests will verify head, nav, CSS, JavaScript, images, breadcrumbs, canonical links, and back-links at each depth.
+
 ## Snapshot, Cache, and Promotion Contract
 
 ```text
@@ -178,18 +191,24 @@ permit at most one same-origin exact-SHA resolve-cache redirect
 validate manifest schema, safe paths and producer identity
 fetch every declared browser shard from the same exact SHA
 rehash and validate bytes, counts, schemas, ordering, IDs and joins
-write only a fully validated revision cache
+write only a fully validated revision cache under data/hf-cache/pinned
 construct one relational model from that cache
-emit browser JSON under assets/data/field-explorer/<hf-sha>/<content-hash>/
-bind exact content-addressed URLs in HTML and build receipt
 render the whole site into a sibling staging directory
+write deployable JSON only to <staging>/assets/generated/capabilities/<id>/<release-hash>/
+fingerprint controller JavaScript and relational CSS into that release directory
+bind exact fingerprinted JSON/JavaScript/CSS URLs in HTML and build receipt
+never mutate tracked source assets during npm run build
 run route/link/security/accessibility/build-receipt checks
 journal promotion; rename dist to retained backup, then staging to dist
 on any error/crash recover from journal/backup before another build
 retain the prior deployed Vercel release and exact-revision cache on failure
 ```
 
-The reviewed synthetic contract fixture will support Phase A without pretending to be a published revision. The real committed cache will enter only in Phase B from the verified #1045 receipt. A build may use only a complete cache for the configured revision. A different revision will never substitute silently. Content-addressed browser URLs prevent year-long `/assets/*` caches from mixing R1/R2 or rollback bytes. A failed build or deployment candidate will leave deployed R1 unchanged; local directory promotion will be crash-recoverable, not falsely described as single-operation atomic.
+The reviewed synthetic contract fixture will support Phase A without pretending to be a published revision. The real committed cache will enter only in Phase B from the verified #1045 receipt. A build may use only a complete cache for the configured revision. A different revision will never substitute silently. All release-coupled resources—JSON, controller JavaScript, and relational CSS—will use the release-hash URL; generated pages will not reference stable controller/style URLs under the existing year-long immutable `/assets/*` policy. An R1 page will therefore bind only R1 client/data/style bytes and an R2 page only R2 bytes. A failed build or deployment candidate will leave deployed R1 unchanged; local directory promotion will be crash-recoverable, not falsely described as single-operation atomic.
+
+Every root, parent-record, and child-record page will visibly disclose the HF revision, producer source revision, materialization source (`exact-raw` or `exact-revision-cache`), and bounded fallback reason (`none`, `offline-build`, `network-unavailable`, or `raw-validation-failed`). Raw errors, local paths, hosts and secrets will not render. The same disclosure will remain present without JavaScript.
+
+Promotion will support first build with no current `dist` and replacement builds. The durable checksummed journal will carry schema version, destination, staging, backup, expected tree digests, and phase; files and affected parent directories will be fsynced before the next phase. Recovery will define deterministic outcomes for no journal/no dist, prepared, old moved, new moved, committed, missing staging, missing backup, both trees present, orphan staging/backup, and malformed/truncated/checksum-invalid journals. Ambiguous or corrupt state will fail closed without deleting candidates and will emit an operator inventory. Automated recovery will select a tree only when its recorded digest validates, never by mtime.
 
 ## Files to Change
 
@@ -218,26 +237,26 @@ The reviewed synthetic contract fixture will support Phase A without pretending 
 | Create | `content/partials/capabilities/relational/well-list.html` | reusable complete/paginated well list |
 | Create | `content/partials/capabilities/relational/well-detail.html` | reusable well drill-down panel |
 | Create | `content/partials/capabilities/relational/generic-table.html` | bounded generic fallback panel |
-| Create | `assets/js/capability-drilldown.js` | local selector, pagination, history and deep-link controller |
-| Update/Create | `assets/css/` relational styles | accessible responsive presentation |
+| Create source | `assets/js/capability-drilldown.js` | local controller build input, fingerprinted into staging |
+| Update/Create source | `assets/css/` relational styles | accessible style build inputs, fingerprinted into staging |
 | Create Phase A | `tests/fixtures/relational-capability/` | reviewed synthetic generic hierarchy; never labeled as a real HF cache |
 | Create Phase B | `data/hf-cache/pinned/<dataset>/<sha>/` | exact receipt-derived manifest/shards and metadata |
-| Create | `assets/data/field-explorer/<hf-sha>/<content-hash>/` | content-addressed local browser JSON with immutable cache semantics |
-| Create per build | `dist/.build-receipts/field-explorer.json` | pre-deployment website commit/pin/template/data/route/tool evidence only |
-| Create per preview | `artifacts/field-explorer/<release-id>/browser-receipt.json` | preview URL/ID, tools, assertions and raw evidence hashes |
-| Create per deployment | `artifacts/field-explorer/<release-id>/deployment-receipt.json` | intent, environment, git/HF identities, Vercel result/reconciliation/rollback |
+| Generate per build in staging | `.well-known/field-explorer-build-receipt.json` | bounded public commit/pin/template/data/route/tool identities and hashes |
+| Generate in runner temp | separate build/browser/deployment receipts and evidence index | protected workflow artifacts, never tracked or served from `dist` |
 | Update | `package.json`, `package-lock.json` | run all new Jest suites and pin Playwright/axe/link/evidence tooling |
 | Update | `vercel.json` | content-addressed data caching and release workflow/output contract |
 | Create/Update | `tests/` focused registry/snapshot/render/browser/build tests | TDD and regressions |
 
 New implementation modules will remain at or below 400 lines and functions at or below 50 lines. The work will not enlarge `scripts/render-capabilities.js` into a second relational renderer.
 
+No receipt will be written to tracked `artifacts/`, source `assets/`, or an unversioned local-only path. The public build receipt will contain only bounded public identities/hashes/counts. Preview-browser and deployment receipts will remain protected workflow artifacts and will not be served from `dist`; the deployment receipt will reference build/browser digests rather than copy their fields.
+
 ## Pseudocode
 
 ```text
 load_relational_registry(entry):
     require exact dataset, 40-char revision and safe manifest path
-    require stable field/well/parent keys and acyclic dependent selectors
+    require stable parent/child keys and acyclic dependent selectors
     require real page and child-panel template paths
     require collision-free parent/field/well route patterns
     reject legacy floating refresh for this capability
@@ -259,10 +278,11 @@ load_pinned_snapshot(entry, cache):
 ```text
 render_relational(model, templates, staging):
     build escaped view models
-    render parent page and complete field index
-    for each field: render child panels and all well links or empty state
-    for each well: render nested well page and parent context
-    emit content-addressed local browser data and bind exact URLs in pages
+    render root page and complete parent-record index
+    for each parent record: render allowlisted panels and all child links or empty state
+    for each child record: render nested child page and parent context
+    emit content-addressed JSON/controller/style bytes only inside staging
+    bind exact fingerprinted URLs and visible revision/cache/fallback disclosures
     compute depth-aware root paths and stable-ID-derived canonical routes
     generate sitemap after all nested pages; never overwrite it by static copy
     verify route inventory and internal links before promotion
@@ -271,29 +291,35 @@ render_relational(model, templates, staging):
 
 ```text
 reduce_browser_state(state, action):
-    field change resets well and page, then filters wells locally
-    well change selects only a child of the active field
-    page change remains bounded and preserves field/well/panel query state
+    parent change resets child and page, then filters children locally
+    child change selects only a child of the active parent
+    page change remains bounded and preserves parent/child/panel query state
     history updates a shareable URL without network data access
     invalid deep links recover visibly to a valid state
 ```
 
 ```text
 promote_local(staging, dist, journal):
-    require validated staging and intact current dist
-    fsync journal with staging/backup/destination and phase
-    rename current dist to unique retained backup
+    validate optional current dist, complete staging and checksummed journal inputs
+    fsync files, journal and affected parent directories at each durable phase
+    if current dist exists rename it to unique retained backup
     rename staging to dist; on failure restore backup
-    on startup recover deterministically from every journal phase
+    on startup recover by validated tree digest for every declared state
+    corrupt or ambiguous state fails closed without deletion
 ```
 
 ```text
 deploy_release(intent):
     require parent/child approvals, #1045 receipt and protected environment
-    query Vercel by project/target/git SHA/deployment_intent_id before create
-    zero => create once; one => resume; many/timeout => fail unknown
+    acquire non-cancelling concurrency keyed by Vercel project+target
+    capture current production deployment and registry pin
+    list bounded candidates by project/target/git SHA/creation window
+    fetch details and match exact intent/run/HF metadata locally
+    zero => create once and durably persist returned ID; one => resume; many/timeout => fail unknown
+    before promotion require current production still equals captured expected current
     record deployment ID, run read-only smoke, and emit separate receipt
-    failure => redeploy exact prior deployment/pin and prove rollback
+    before rollback require current production equals failed candidate
+    failure => restore exact authorized prior deployment/pin or fail stale, then prove rollback
 ```
 
 ## Failing-First TDD Sequence
@@ -304,6 +330,11 @@ deploy_release(intent):
 - Reject unsafe manifest/template/route paths and selector cycles.
 - Reject relational capability wired to `capabilities-refresh.js`.
 - Prove a second synthetic hierarchy with different config/column names renders without code changes.
+- Prove core reducer/renderer state is parent/child generic and contains no field/well branches for that second hierarchy.
+- Reject any producer route key that differs from the canonical encoding of its stable value ID.
+- Prove Phase A performs no network, cache, live-registry, route-behavior, or deployment mutation.
+- Prove Phase B rejects a missing/mismatched producer receipt or HF SHA.
+- Rebase from PR #73's recorded merge SHA and prove its registry entries/tests survive before shared-file edits.
 - Prove legacy renderer/fetch/online verification skips relational mode and exactly one writer owns the parent dist path.
 - Prove datasets-server and `main` are never used.
 - Permit only the bounded same-origin exact-SHA resolve-cache redirect.
@@ -324,12 +355,13 @@ deploy_release(intent):
 - Assert stable-ID-derived route keys remain unchanged when labels/display slugs change; reviewed legacy slug redirects resolve.
 - Assert duplicate labels use the declared stable-ID suffix policy and duplicate route keys fail.
 - Assert nested page root paths resolve all shared head/nav/assets.
+- Assert root/parent/child `rootPath` equals `../`, `../../../`, and `../../../../../` and every rendered asset resolves.
 - Assert generated sitemap contains every nested route and is not overwritten by static copying.
 
 ### Browser controller
 
-- Populate the field selector from local validated data.
-- Filter the well selector by `parent_field_id` and expose the zero-well state.
+- Populate the registry-labeled parent selector from local validated data.
+- Filter the child selector by the configured parent column and expose the empty-child state.
 - Reach every well and every record beyond 100 through pagination.
 - Reset invalid dependent state when the field changes.
 - Parse and serialize field, well, panel, and page deep-link state.
@@ -337,12 +369,17 @@ deploy_release(intent):
 - Pass keyboard, label, focus, live-region, and reduced-motion checks.
 - Make no runtime request to Hugging Face or datasets-server.
 - Load only the HTML-bound content-addressed data URL; stale R2 client plus rolled-back R1 page cannot mix bytes.
+- Prove R1/R2 HTML cannot load the other release's fingerprinted controller, style, or data from cache.
+- Prove root/parent/child pages disclose revision, source, raw/cache materialization and fallback reason without JavaScript.
 
 ### Build and promotion
 
 - Fail before deleting or replacing current `dist` when registry/snapshot/render/link checks fail.
 - Render the whole site in a sibling staging directory.
+- Prove generated JSON/JavaScript/CSS exist only under staging and success/failure leave tracked source bytes unchanged.
+- Prove first build without `dist` promotes complete staging.
 - Exercise crash/failure at every journal phase; recovery restores a complete old or new `dist`, never a partial tree.
+- Prove malformed/truncated journals and ambiguous trees fail closed without deletion.
 - Promote only after route, link, CSP, accessibility, legal and build-receipt checks pass.
 - Keep build, preview-browser and deployment receipts separate; reject schema/trust-boundary mixing.
 - Collect browser evidence against preview first; production collection will be read-only and separately authorized.
@@ -353,14 +390,17 @@ deploy_release(intent):
 - Preserve `field-economics-sensitivity` parametric config/schema/row policy across the shared-dataset publish.
 - Preflight exact protected environments, reviewers, prevent-self-review, actor allowlists and required secrets without mutating settings.
 - Test Vercel intent reconciliation for zero/one/many deployments, timeout, crash and rollback.
+- Prove two different intents for the same project/target serialize, stale expected-current blocks promotion/rollback, and reconciliation locally matches enumerated deployment metadata without a native intent filter.
 - Prove `npm ci` installs pinned Playwright/axe tooling and the declared scripts discover/run every new suite.
 
 ## Acceptance Criteria
 
 - [ ] This issue plan will receive T3 adversarial review and explicit user approval before implementation.
 - [ ] Parent #3559 will be reviewed and explicitly approved before Phase A; real cache/pinning Phase B will wait for independently approved/published #1045 receipt artifacts.
-- [ ] PR #73 overlap will be merged/rebased or explicitly coordinated before shared files change.
+- [ ] Phase A will be provably offline/non-production; Phase B will reject any pin not bound to the approved #1045 receipt.
+- [ ] PR #73 will be merged/closed first; its final merge SHA and surviving registry behavior will be recorded before serialized shared-file edits.
 - [ ] The generic registry will bind dataset/revision/manifest plus parent/child config, value, label, stable route key, URL parameter, parent column, duplicate-label policy, templates and route patterns.
+- [ ] Core code/state will remain parent/child generic; a differently named hierarchy will pass without field/well branches.
 - [ ] Production pinning will use the verified #1045 receipt and exact returned HF SHA.
 - [ ] Every browser artifact will be fetched from the same raw exact revision and fully validated before rendering.
 - [ ] No runtime browser request will target Hugging Face or datasets-server.
@@ -372,13 +412,14 @@ deploy_release(intent):
 - [ ] Shareable field/well/panel/page deep links and browser Back/Forward behavior will work without data refetch.
 - [ ] No-JS output will provide useful field and well navigation, counts, provenance, revision, limitations, and zero-well states.
 - [ ] Data values will remain inert through escaping, safe URL/path validation, and CSP-compatible rendering.
-- [ ] Browser JSON will use HTML-bound content-addressed HF/content hashes, preventing stale immutable asset caches from mixing revisions after rollback.
-- [ ] The full website build will parameterize its output root, stage/validate before a journaled two-rename swap, and recover a complete old/new tree from every crash phase.
-- [ ] Build, preview-browser and deployment receipts will remain separate, conform to parent schemas, bind exact commands/tools/inputs/routes/deployment IDs at the correct stage, and hash every referenced artifact.
+- [ ] Generated JSON, controller JavaScript and relational CSS will be written only inside the staged release-hash tree and HTML-bound by fingerprinted URLs; `npm run build` will leave tracked source byte-identical.
+- [ ] Every generated page, including no-JS output, will visibly disclose exact revisions, raw/cache source and a bounded fallback reason.
+- [ ] The full build will handle absent `dist`, every durable journal phase and corrupt/ambiguous journals without deleting the only valid tree.
+- [ ] Public and protected receipts will use the single declared locations/lifecycle, remain separate, and cross-reference digests without trust-boundary mixing.
 - [ ] Parent #3559 will be able to live-fetch the protected Actions run/artifact and Vercel deployment metadata and prove that the deployed website registry blob pins the receipt HF SHA.
 - [ ] An R1→R2→R1 rollback exercise will run on preview only; a fresh explicit user authorization will be required before production promotion.
 - [ ] Repository-admin protected environments/reviewers/actors/secrets will be explicit prerequisites with read-only preflight; plan approval will not authorize provisioning them.
-- [ ] Production workflow and Vercel intent client will query/reconcile before create, resume exactly one deployment, block ambiguity, and prove rollback to the prior deployment/pin.
+- [ ] Production operations will serialize by project+target, reconcile candidates by local metadata inspection rather than an assumed native intent filter, enforce expected-current guards before promotion/rollback, and prove rollback to the prior deployment/pin.
 - [ ] Nested route roots and generated sitemap will pass focused regressions; static sitemap copying will not overwrite generated entries.
 - [ ] Pinned Playwright/axe/link tooling and test discovery will be declared in package files and pass from clean `npm ci`.
 - [ ] Stable canonical route keys will derive from stable IDs, not mutable slugs; cross-revision label/slug changes will preserve canonical URLs.
@@ -395,7 +436,7 @@ deploy_release(intent):
 | Codex | MAJOR | evidence contract, generic registry, dispatch, content-addressing, promotion recovery, receipts, routes/tooling/URLs, parent dependency |
 | Gemini | UNAVAILABLE | no non-interactive authentication configured |
 
-**Round 1 result:** MAJOR consensus from both working providers. Findings are absorbed inline, but no second automatic child round will run while parent #3559 remains blocked; this issue remains `status:needs-plan`.
+**Round 1 result:** MAJOR consensus from both working providers. A user-authorized isolated adjudication of commit `7f1f3f0...` confirmed substantive client/style cache mixing, cross-intent production races, generated-output transaction, fallback disclosure, recovery-state, genericity and receipt-location gaps. Those findings are incorporated in this draft; this issue remains `status:needs-plan` until the corrected artifact receives a no-MAJOR disposition.
 
 ## Risks and Fixed Decisions
 
