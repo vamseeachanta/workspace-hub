@@ -4,6 +4,7 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 
+import pytest
 import yaml
 
 
@@ -151,7 +152,7 @@ def test_expand_command_only_replaces_exact_workspace_and_log_variables(monkeypa
     assert "/tmp/workspace-hub-cron.logDIR" not in expanded
     assert "/tmp/workspace-hub-cron.logNAME" not in expanded
     assert f"{REPO}_BACKUP" not in expanded
-    assert f"echo /tmp/workspace-hub-cron.log /tmp/workspace-hub-cron.log" in expanded
+    assert "echo /tmp/workspace-hub-cron.log /tmp/workspace-hub-cron.log" in expanded
     assert f" {REPO} {REPO} " in expanded
 
 
@@ -172,3 +173,38 @@ def test_build_context_exposes_registry_os_for_scheduler_routing():
     assert render.build_context("ace-win-1", registry=registry)["os"] == "windows"
     # missing os defaults to linux — cron reconciliation must not silently skip
     assert render.build_context("legacy-box", registry=registry)["os"] == "linux"
+
+
+@pytest.mark.parametrize(
+    ("workspace", "variant", "expected_log"),
+    [
+        (
+            "/mnt/local-analysis/workspace-hub",
+            "full",
+            "/mnt/local-analysis/workspace-hub/logs/quality/cron-wrapper.log",
+        ),
+        (
+            r"D:\workspace-hub",
+            "full",
+            r"D:\workspace-hub/logs/quality/cron-wrapper.log",
+        ),
+        (
+            r"\\server\share\workspace-hub",
+            "full",
+            r"\\server\share\workspace-hub/logs/quality/cron-wrapper.log",
+        ),
+        (r"D:\workspace-hub", "contribute", "/tmp/workspace-hub-cron.log"),
+    ],
+)
+def test_render_logs_follow_target_scheduler_path_contract(
+    workspace, variant, expected_log
+):
+    render = _load_renderer()
+    registry = {"machines": {"target": {
+        "hostname": "target", "os": "linux", "schedule_variant": variant,
+    }}}
+    context = render.build_context(
+        "target", registry=registry, workspace_hub=workspace
+    )
+    assert context["workspace_hub"] == workspace
+    assert context["log"] == expected_log

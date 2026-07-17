@@ -13,8 +13,11 @@ from typing import Any
 import yaml
 
 MODULE_DIR = Path(__file__).resolve().parent
+LIB_DIR = Path(__file__).resolve().parents[1] / "lib"
 if str(MODULE_DIR) not in sys.path:
     sys.path.insert(0, str(MODULE_DIR))
+if str(LIB_DIR) not in sys.path:
+    sys.path.insert(0, str(LIB_DIR))
 
 from scheduler_mutation_contract import (  # noqa: E402
     ATT_SOURCES,
@@ -47,8 +50,10 @@ from scheduler_mutation_report import render_html  # noqa: E402
 from scheduler_mutation_wrapper_attestations import (  # noqa: E402
     evaluate_wrapper_attestation,
 )
+from git_index_snapshot import verify_captured_context  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
+REPORT_PATH = Path("docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html")
 REGISTRY = b"config/scheduled-tasks/mutation-surfaces.yaml"
 CHECKER = b"scripts/enforcement/check-scheduler-mutation-surfaces.py"
 TEST = b"tests/enforcement/test_scheduler_mutation_surfaces.py"
@@ -317,14 +322,41 @@ def _validate_global_sets(registry, rows, statuses, discovery, records, errors):
         errors.append("dispositions must exactly cover migration-required surfaces")
 
 
+def _canonical_check_selected(raw_args: list[str], args: argparse.Namespace) -> bool:
+    canonical = not (args.render_html or args.check_html)
+    if not args.check_html:
+        return canonical
+    lexical = next(
+        (token.split("=", 1)[1] for token in raw_args if token.startswith("--check-html=")),
+        None,
+    )
+    if lexical is None:
+        position = raw_args.index("--check-html")
+        lexical = raw_args[position + 1]
+    if lexical == REPORT_PATH.as_posix():
+        return True
+    try:
+        args.check_html.resolve().relative_to(ROOT.resolve())
+    except ValueError:
+        return False
+    raise ValueError("tracked HTML aliases are not accepted")
+
+
 def main(argv: list[str] | None = None) -> int:
+    raw_args = list(sys.argv[1:] if argv is None else argv)
     parser = argparse.ArgumentParser()
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--captured-tree", action="store_true", help=argparse.SUPPRESS)
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument("--render-html", type=Path)
     modes.add_argument("--check-html", type=Path)
     args = parser.parse_args(argv)
     try:
+        canonical = _canonical_check_selected(raw_args, args)
+        if canonical and not args.captured_tree:
+            raise ValueError("canonical scheduler check requires captured-tree coordinator")
+        if canonical:
+            verify_captured_context(ROOT)
         records = read_index_records(ROOT)
         raw = records[REGISTRY]
         registry = yaml.safe_load(raw)
@@ -333,7 +365,7 @@ def main(argv: list[str] | None = None) -> int:
         discovery = discover_mutation_surfaces(records)
         result = validate_registry(registry, discovery, records)
         digest = input_digest(raw, digest_record_union(registry, records))
-    except (GitTransportError, KeyError, ValueError, yaml.YAMLError) as exc:
+    except (GitTransportError, KeyError, RuntimeError, ValueError, yaml.YAMLError) as exc:
         discovery = Discovery(set(), set(), {}, {}, set())
         result = ValidationResult([str(exc)], {})
         digest = ""

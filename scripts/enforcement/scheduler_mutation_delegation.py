@@ -113,7 +113,8 @@ def _validate_inventory_digest(inventory, records, errors):
     sources = [b"config/scheduled-tasks/schedule-tasks.yaml", b"config/workstations/registry.yaml",
                b"config/workstations/harness-state-classes.yaml", b"scripts/cron/build-cron-identity-inventory.py",
                b"scripts/cron/cron_render.py", b"scripts/cron/cron_transaction.py",
-               b"scripts/cron/cron_line_model.py", b"scripts/cron/cron_identity.py"]
+               b"scripts/cron/cron_line_model.py", b"scripts/cron/cron_identity.py",
+               b"scripts/lib/git_index_snapshot.py", b"pyproject.toml", b"uv.lock"]
     digest = hashlib.sha256(b"cron-identity-input-v1\0")
     for source in sorted(sources):
         digest.update(struct.pack(">Q", len(source)) + source)
