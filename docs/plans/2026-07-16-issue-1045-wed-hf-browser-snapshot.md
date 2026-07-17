@@ -97,6 +97,7 @@ Distinct sources: issue body, parent/consumer issues, two current exporter scrip
 | Pure snapshot builder | `scripts/hf_export/explorer_snapshot.py` |
 | Publisher/orchestrator | `scripts/hf_export/publish_explorer_snapshot_to_hf.py` |
 | Publisher configuration | `config/hf_export/field_explorer_snapshot.yml` |
+| Floating-consumer inventory | `config/hf_export/field_explorer_consumers.yml` |
 | Source-license admission registry | `config/hf_export/field_explorer_source_licenses.yml` |
 | Canonical source authority | `data/catalog/source-registry.yml` |
 | Manifest schema | `config/schemas/field_explorer_browser_manifest.schema.json` |
@@ -145,7 +146,7 @@ The snapshot will keep four cardinality domains distinct: `drilldown_field_count
 
 Each manifest collection will contain an ordered `shards` array. Every descriptor will carry `ordinal`, `path`, `record_count`, `byte_count`, `sha256`, `first_sort_key`, and `last_sort_key`; each collection will carry `shard_count`, aggregate record count, and the global sort definition. Consumers will discover and terminate traversal solely through the exact-SHA manifest, without repository-listing or datasets-server pagination APIs.
 
-The shared route encoding will be named `route-id-v1`: prefix `r1-` plus lowercase RFC 4648 base32hex of NFC-normalized stable-ID UTF-8 bytes with `=` padding removed. Invalid UTF-8/NFC, mismatched sidecars, or unknown versions will fail. The manifest will bind `route_key_encoding: route-id-v1`; the reversible encoding has no collision fallback.
+The shared route encoding will be named `route-id-v1`: stable IDs must already equal their NFC-normalized form or fail; the encoder will prefix `r1-` to lowercase RFC 4648 base32hex of the stable-ID UTF-8 bytes with `=` padding removed. Invalid UTF-8/NFC, mismatched sidecars, unknown versions, or duplicate encoded keys will fail. The manifest will bind `route_key_encoding: route-id-v1`; golden field/well vectors and cross-runtime encode/decode round-trips will be shared with website #74.
 
 - `field_id`: stable canonical ID from `config/fields.yml`.
 - `well_id`: `bsee-api12:<api>` for V1; API remains a string.
@@ -156,6 +157,8 @@ The shared route encoding will be named `route-id-v1`: prefix `r1-` plus lowerca
 Browser JSON shards and schemas will be regular, bounded Git blobs (not LFS/CAS objects), each below the configured byte limit, so the website can resolve them through exact-SHA same-origin HF cache redirects. Parquet may use HF's normal large-file storage but will not be a browser dependency. Manifest/browser Git blobs will permit only the observed same-origin exact-revision HF cache redirect form. Parquet readback will permit only an explicit HF-controlled Xet/LFS host allowlist. Every initial resolve response will require `x-repo-commit == returned_sha`; HTTPS, hop limits, credential stripping, final byte count and staged SHA-256 will remain mandatory for both policies.
 
 `data/catalog/source-registry.yml` will remain the canonical repository source authority. `config/hf_export/field_explorer_source_licenses.yml` will be a projection admission map, not a competing registry: every entry will reference a canonical source-registry ID and add only projection-specific column lineage, reviewer, redistribution decision, evidence URL/hash, and status. Missing references or disagreement will fail before staging. Every payload artifact and every output column will resolve through this map to canonical authority, URL, license and redistribution evidence; a dataset-wide license string will not substitute for per-artifact/per-column provenance.
+
+`config/hf_export/field_explorer_consumers.yml` will be the tracked inventory of repository-owned consumers. Each entry will declare owner, exact-SHA-pinned or floating mode, approval record, expiry, and remediation status. The publisher will enumerate only this known repository-owned set; anonymous public HF consumers cannot be enumerated and will remain an explicit residual risk. Missing, stale, floating, pinned, and explicitly accepted entries will have distinct fail-closed fixture outcomes.
 
 ---
 
@@ -206,6 +209,7 @@ If the HF commit succeeds but readback fails, the returned commit may already be
 | Create | `config/hf_export/field_explorer_snapshot.yml` | dataset, inputs, license classes, versions, shard limits |
 | Create | `config/hf_export/field_explorer_source_licenses.yml` | projection admission map referencing canonical `data/catalog/source-registry.yml` IDs |
 | Modify | `data/catalog/source-registry.yml` | define stable source IDs and add every Explorer authority/evidence record required by the projection map |
+| Create | `config/hf_export/field_explorer_consumers.yml` | repository-owned consumer inventory and bounded floating-head acceptance records |
 | Create | three JSON schemas under `config/schemas/` | closed record, manifest, and publish-receipt contracts |
 | Modify | `pyproject.toml`, `uv.lock` | declare/pin `huggingface-hub`, Parquet/schema runtime and clean locked install |
 | Modify | `build_explorer_results_bundle.py` | delegate to canonical normalization and repair identity/hash/card drift |
@@ -234,6 +238,7 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 9. explicit zero-well fields remain ready/selectable;
 10. stable ordering and canonical serialization are environment-independent;
 11. stable-ID-derived route keys remain safe, canonical, and unchanged across label/display-slug changes;
+12. non-NFC stable IDs, duplicate encoded keys, and missing golden vectors fail;
 12. synthetic >100 records shard deterministically without loss/duplication;
 13. record and byte shard bounds are enforced; browser shards remain regular-blob sized;
 14. shard arrays reject missing/duplicate ordinals and overlapping/non-monotonic ranges and traverse exactly once without listing APIs;
@@ -266,6 +271,7 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 37. failed Actions evidence upload preserves the core receipt but produces no external envelope or website promotion and reports Phase C distinctly;
 37. post-commit readback failure records advanced remote head/returned SHA but emits no receipt, pin, retry or rewrite;
 38. an unapproved floating consumer blocks live mutation;
+39. consumer inventory distinguishes missing, stale, floating, pinned, and explicitly accepted entries and excludes anonymous public consumers from false coverage claims;
 39. live mode refuses execution outside the exact protected workflow/environment policy;
 40. parent rejects wrong workflow/event/ref/actor/attempt/action pin/environment, fork run or artifact digest;
 41. expected-parent conflict requires a fresh explicit run, not automatic retry;
@@ -311,6 +317,8 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 - [ ] Drill-down fields, wells, countries and catalog entries will remain separately named/count-checked; 2,032 catalog entries will never be described as analyzed fields.
 - [ ] The core receipt will be created after exact-SHA HF readback and before Actions evidence upload; failure at either later boundary will not fabricate the next trust artifact.
 - [ ] Post-commit readback failure will be reported as target-head exposure, not an unexposed orphan, and will never promote automatically.
+- [ ] Stable IDs will be NFC-normalized before publication, route-id-v1 will have golden cross-runtime vectors and round-trip tests, and duplicate encoded keys will fail.
+- [ ] Repository-owned floating consumers will be covered by a tracked inventory with owner, pin/acceptance state and expiry; anonymous public consumers will be disclosed as unenumerable residual risk.
 - [ ] `pyproject.toml` and `uv.lock` will declare the publisher runtime and a fresh `uv sync --locked` will pass.
 - [ ] Existing consumers will remain compatible or receive an explicit versioned migration.
 - [ ] Shared-dataset consumer `field-economics-sensitivity` will pass config/schema/row-policy compatibility checks before the HF commit becomes publishable.
