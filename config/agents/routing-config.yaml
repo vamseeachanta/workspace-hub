@@ -6,7 +6,7 @@ version: 2.0.0
 
 # Single source of truth for per-tier provider routing (#3209). Cost-aligned:
 # cheap tiers run codex (not claude) per the cost-ceiling policy. Authored in
-# CLI tokens (claude/codex/gemini); hermes is NOT a tier-CLI provider — it
+# CLI tokens (claude/codex/agy); hermes is NOT a tier-CLI provider — it
 # routes via `dimensions` + `execution_contexts.hermes_batch`.
 # tier_router.sh's bash arrays are GENERATED from this block via
 #   uv run scripts/ai/routing_resolver.py --emit-bash-table
@@ -15,22 +15,22 @@ version: 2.0.0
 tiers:
   SIMPLE:
     primary: codex
-    fallbacks: [gemini, claude]
+    fallbacks: [agy, claude]
     max_context_tokens: 8000
     description: Short factual queries, status checks, simple lookups
   STANDARD:
     primary: codex
-    fallbacks: [claude, gemini]
+    fallbacks: [claude, agy]
     max_context_tokens: 32000
     description: Implementation tasks, bug fixes, refactoring
   COMPLEX:
     primary: claude
-    fallbacks: [gemini, codex]
+    fallbacks: [agy, codex]
     max_context_tokens: 128000
     description: Architecture decisions, multi-file changes, design
   REASONING:
     primary: claude
-    fallbacks: [gemini, codex]
+    fallbacks: [agy, codex]
     max_context_tokens: 200000
     description: Proofs, convergence analysis, deep trade-off evaluation
 
@@ -122,7 +122,7 @@ agents:
 # SSoT for the cost policy: docs/governance/2026-06-17-cost-ceiling-policy.md
 # policy_summary: Claude is the interactive-dev lane only; Hermes backing stays
 #   openai-codex (model pinned in model-registry.yaml); agy (Antigravity,
-#   Gemini-backed -> the `gemini` token) is the cheap fallback/delegation lane;
+#   Gemini-backed; first-class `agy` token since #3573) is the cheap fallback/delegation lane;
 #   NO Claude for Hermes-context work.
 #
 # routing_resolution_note: ENFORCED at runtime as of #3205 (cost ceiling only).
@@ -136,12 +136,12 @@ cost_ceiling_policy: docs/governance/2026-06-17-cost-ceiling-policy.md
 execution_contexts:
   hermes_batch:               # docs / data-analysis / delegation / overnight-batch
     primary: openai-codex     # Hermes backing via openai-codex; model pinned in model-registry (unchanged)
-    fallbacks: [gemini]       # agy = the Antigravity Gemini CLI surface -> gemini token
+    fallbacks: [agy]          # agy = Antigravity CLI, first-class token since #3573
     forbid: [claude]          # cost ceiling
     cost_ceiling: true
   interactive_dev:            # human-driven Claude Code / codex sessions
     primary: claude
-    fallbacks: [codex, gemini]
+    fallbacks: [codex, agy]
   cross_review:               # quality gate — unchanged (rides claude_primary)
     primary: claude
-    fallbacks: [codex, gemini]
+    fallbacks: [codex, agy]

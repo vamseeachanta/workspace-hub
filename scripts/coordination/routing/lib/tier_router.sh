@@ -28,20 +28,20 @@ _resolver() {
 # Drift-guard: tests/coordination/test_tier_table_no_drift.py (fails CI on divergence)
 # Cost-aligned single source: cheap tiers route to codex, not claude.
 declare -A TIER_PRIMARY=( [SIMPLE]="codex" [STANDARD]="codex" [COMPLEX]="claude" [REASONING]="claude" )
-declare -A TIER_FALLBACK1=( [SIMPLE]="gemini" [STANDARD]="claude" [COMPLEX]="gemini" [REASONING]="gemini" )
-declare -A TIER_FALLBACK2=( [SIMPLE]="claude" [STANDARD]="gemini" [COMPLEX]="codex" [REASONING]="codex" )
+declare -A TIER_FALLBACK1=( [SIMPLE]="agy" [STANDARD]="claude" [COMPLEX]="agy" [REASONING]="agy" )
+declare -A TIER_FALLBACK2=( [SIMPLE]="claude" [STANDARD]="agy" [COMPLEX]="codex" [REASONING]="codex" )
 # <<< END GENERATED
 
 # --- Function: check_provider_available ---
 # Checks if a provider's CLI tool is installed and reachable
-# @param $1: provider name (claude|codex|gemini)
+# @param $1: provider name (claude|codex|agy)
 # @return: 0 if available, 1 if not
 check_provider_available() {
     local provider="$1"
     case "$provider" in
         "claude") command -v claude &>/dev/null ;;
         "codex")  command -v codex &>/dev/null ;;
-        "gemini") command -v gemini &>/dev/null ;;
+        "agy")    command -v agy &>/dev/null ;;
         *) return 1 ;;
     esac
 }
