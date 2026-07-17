@@ -1639,7 +1639,7 @@ cards:
       - cat:data
       - route:C
       - cat:engineering-calculations
-      - status:plan-review
+      - status:plan-approved
       - domain:reports
       - lane:codex
     initial_status: triage

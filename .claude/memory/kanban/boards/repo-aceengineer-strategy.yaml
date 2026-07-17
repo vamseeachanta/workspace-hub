@@ -1451,3 +1451,17 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#176
+    title: 'Floorhand: 2-page Elliott Services FFS pamphlet (qualification/recertification + new works)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/176
+    gh_state: open
+    gh_labels:
+      - status:scoping
+      - domain:gtm
+      - domain:product
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
