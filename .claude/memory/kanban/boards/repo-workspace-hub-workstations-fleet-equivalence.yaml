@@ -490,3 +490,43 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3567
+    title: 'feat(machine-equivalence): add interaction-UX evidence and pet-peeve predicates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3567
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:agent-ux
+      - machine:multi
+      - type:follow-up
+      - status:needs-plan
+      - gate:completeness
+      - domain:workstations-fleet-equivalence
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3568
+    title: 'epic(agent-ux): cross-machine input interaction parity'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3568
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:agent-ux
+      - machine:multi
+      - status:needs-plan
+      - gate:completeness
+      - domain:workstations-fleet-equivalence
+      - lane:claude
+      - epic
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
