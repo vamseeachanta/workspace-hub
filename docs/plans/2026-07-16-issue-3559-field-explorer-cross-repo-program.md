@@ -59,7 +59,7 @@
 - No verifier will currently join the publisher receipt, HF manifest, website registry/build receipt, route counts, and production evidence.
 - No parent closeout rule will currently prevent broad field-coverage claims from exceeding the manifest-ready set.
 - The authoritative release-state ref does not yet exist or carry a protection ruleset. The workspace-hub repository owner will separately authorize its creation and protection; approval of this plan will not authorize repository-settings changes, and promotion will remain disabled until live bootstrap verification passes.
-- The parent contract will carry closed, nonempty allowlists for production and rollback approvers. Allowlist changes will require a separately reviewed contract change rather than runtime input.
+- The contract will carry separate closed, nonempty `plan_approvers`, `production_approvers`, and `rollback_approvers` sets, with intentional overlap explicit. The user will approve the populated policy before provisioning; later changes require separate review.
 
 ### Evidence
 
@@ -266,13 +266,20 @@ authorize_and_deploy(candidate, github_api):
     enumerate bounded candidates by project/target/git SHA/time window, fetch details,
         then match exact intent metadata locally; do not assume a native intent filter
     if one nonterminal match remain deploy_pending; if one ready match bind its ID
-    if none create only when prior acceptance is disproven; if multiple/timeout enter unknown
+    before first create durably transition to create_requested with attempt=1
+    only zero matches before any submitted call may create exactly once
+    after any possibly submitted call, zero matches remain pending/unknown and never create again
+    multiple matches, delayed visibility or timeout enter unknown
     before promotion require current production still equals captured expected current
     after ready transition -> deployed_pending_smoke with deployment ID
     run read-only production smoke
     on pass transition -> accepted and retain prior release as rollback target
     on terminal/smoke failure use candidate-bound rollback authority only for the exact
-        last-good target; otherwise enter rollback_approval_pending for fresh approval
+        last-good target; otherwise enter rollback_approval_pending
+    fresh approval must use the named protected rollback environment and a live
+        rollback-allowlisted principal distinct from automation; bind candidate,
+        failed deployment, exact last-good target, expiry and single-use nonce
+    consume in rollback_authorized; missing/stale/replayed approval fails closed
     before rollback require current production equals the failed candidate
     transition -> production_failed -> rollback_pending -> rolled_back, or rollback_unknown
     after crash/lease expiry reconciliation must query by intent before any retry
@@ -341,8 +348,10 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 | `test_protected_environment_approval_is_distinct_candidate_bound_and_single_use` | workflow actor cannot self-approve or replay another candidate |
 | `test_deployment_intent_reconciles_crash_timeout_zero_one_or_many_matches` | retry never creates an ambiguous second production deployment |
 | `test_two_intents_for_one_target_are_serialized_and_expected_current_guarded` | a stale workflow cannot overwrite newer production |
+| `test_create_requested_zero_match_never_submits_a_second_create` | delayed indexing cannot duplicate deployment |
 | `test_nonterminal_latency_and_observation_timeout_never_create_or_rollback` | latency becomes pending/unknown, never inferred failure |
 | `test_rollback_authority_is_exact_expiring_and_single_use` | only the bound last-good target may be restored |
+| `test_fresh_rollback_approval_uses_protected_allowlisted_gate` | pending rollback cannot bypass identity/binding/replay checks |
 | `test_exact_trusted_workflow_policy_and_live_provenance` | wrong event/path/ref/actor/attempt/action/environment/fork fails |
 | `test_rollback_drill_is_preview_only_without_fresh_authorization` | planning approval cannot mutate production |
 | `test_runbook_matches_machine_contract` | HTML and JSON lifecycle stay in parity |
@@ -375,7 +384,9 @@ The parent will not modify worldenergydata publisher code, HF data, website temp
 - [ ] Preview browser, mobile, keyboard, JS-disabled, CSP, XSS, link, and revision-disclosure checks will pass before any production mutation.
 - [ ] Production promotion will require protected-environment approval by a closed allowlisted reviewer distinct from the automation actor, with prevent-self-review, expiry, single-use status and exact candidate inputs.
 - [ ] Production will serialize by Vercel project+target, enforce expected-current guards, enumerate and locally match exact intent metadata without assuming a native intent filter, and never infer failure from observation latency.
+- [ ] A durable `create_requested` attempt marker will precede the external call; after any possibly submitted call, zero matches will never authorize another create.
 - [ ] Rollback will require candidate-bound authority for the exact last-good deployment; missing/expired authority will enter `rollback_approval_pending`, and ambiguous execution will enter `rollback_unknown`.
+- [ ] Fresh rollback approval will use the named protected rollback environment and populated allowlist with distinct actor, exact bindings, expiry and single-use enforcement.
 - [ ] Both implemented child issues will receive summary comments before parent closure.
 - [ ] Parent and child legal/security scans, tests, cross-reviews, cleanup audits, and completeness gates will pass.
 - [ ] Closeout will not claim the 115 FDP pages or broader expansion tiers as delivered.
