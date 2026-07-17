@@ -23754,3 +23754,26 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3562
+    title: Audit MSYS conversion of slash-prefixed native-command tokens
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3562
+    gh_state: open
+    gh_labels:
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3564
+    title: 'bug(ci): legal rule authority receives empty AUTH_ENVELOPE on PRs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3564
+    gh_state: open
+    gh_labels:
+      - bug
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -3615,3 +3615,13 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1048
+    title: enforce TOCTOU-safe input hashing for deterministic manifests
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1048
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
