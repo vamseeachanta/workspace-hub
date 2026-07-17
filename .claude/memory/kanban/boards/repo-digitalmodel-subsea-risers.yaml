@@ -43,9 +43,9 @@ cards:
       - priority:medium
       - wrk-item
       - machine:dev-primary
-      - dispatch:ready
       - domain:subsea-risers
       - lane:codex
+      - status:needs-plan
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -686,6 +686,7 @@ cards:
       - enhancement
       - domain:subsea-risers
       - lane:codex
+      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -798,6 +799,7 @@ cards:
       - status:plan-approved
       - domain:subsea-risers
       - lane:codex
+      - epic
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -840,6 +842,175 @@ cards:
     title: Add traceable riser model, response, and operating-envelope visualizations
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1605
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1607
+    title: 'Reconcile #1602 riser ownership, hierarchy, and lifecycle boundaries'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1607
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1608
+    title: Prove a synthetic completion/workover case through the pre-license tracer
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1608
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:data
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1609
+    title: Prove a public drilling case through the shared pre-license tracer
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1609
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:data
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1610
+    title: Verify a completion/workover result through the engineering oracle
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1610
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1611
+    title: Verify a drilling result through the engineering oracle
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1611
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1612
+    title: Populate one verified drilling result into the existing operating atlas
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1612
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1613
+    title: Populate a bounded licensed dynamic riser operating envelope
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1613
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1614
+    title: Build the fail-closed riser release compiler and local verifier
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1614
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:data
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1615
+    title: Authorize and atomically publish the verified riser HF release
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1615
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:data
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1616
+    title: Render traceable pre-run and verified post-run riser visuals
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1616
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1617
+    title: Bind immutable riser release evidence into twin replay and monitoring
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1617
     gh_state: open
     gh_labels:
       - enhancement

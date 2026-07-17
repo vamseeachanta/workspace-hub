@@ -521,7 +521,7 @@ cards:
       - cat:harness
       - domain:agent-ux
       - machine:multi
-      - status:plan-review
+      - status:plan-approved
       - gate:completeness
       - domain:workstations-fleet-equivalence
       - lane:claude
