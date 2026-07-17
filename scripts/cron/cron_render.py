@@ -15,7 +15,7 @@ import argparse
 import os
 import re
 import socket
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 import yaml
@@ -81,10 +81,17 @@ def resolve_machine(
     }
 
 
-def workspace_hub_path(workspace_hub: str | Path | None = None) -> Path:
+def workspace_hub_path(
+    workspace_hub: str | Path | None = None,
+) -> Path | PurePosixPath:
     """Return the checkout path used for render-time $WORKSPACE_HUB expansion."""
     override = workspace_hub or os.environ.get("WORKSPACE_HUB")
-    return Path(override).expanduser().resolve() if override else REPO_ROOT
+    if not override:
+        return REPO_ROOT
+    text = str(override)
+    if text.startswith("/"):
+        return PurePosixPath(text)
+    return Path(override).expanduser().resolve()
 
 
 def build_context(

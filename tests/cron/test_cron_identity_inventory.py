@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import importlib.util
+import struct
 import subprocess
 import sys
 from pathlib import Path
@@ -94,6 +96,30 @@ def test_inventory_uses_registry_workspace_not_checkout_environment(tmp_path, mo
     second = generator.build(catalog, registry, classes)
 
     assert first == second
+    expected_line = "0 1 * * * /canonical/workspace-hub/scripts/run.sh"
+    assert first["identities"] == [{
+        "canonical_line_sha256": hashlib.sha256(expected_line.encode()).hexdigest(),
+        "legacy_variant_ids": [],
+        "machine_id": "linux-a",
+        "task_id": "one",
+        "unique": True,
+    }]
+
+
+def test_input_digest_uses_posix_repository_paths(tmp_path, monkeypatch):
+    generator = load_generator()
+    monkeypatch.setattr(generator, "ROOT", tmp_path)
+    source = tmp_path / "nested" / "source.py"
+    source.parent.mkdir()
+    source.write_bytes(b"source\n")
+
+    logical = b"nested/source.py"
+    expected = hashlib.sha256(
+        b"cron-identity-input-v1\0"
+        + struct.pack(">Q", len(logical)) + logical
+        + struct.pack(">Q", len(source.read_bytes())) + source.read_bytes()
+    ).hexdigest()
+    assert generator.input_digest([source]) == expected
 
 
 def test_generator_source_is_in_versioned_digest_union(tmp_path):

@@ -41,7 +41,7 @@ def input_digest(paths: list[Path]) -> str:
     logical = []
     for path in paths:
         try:
-            name = str(path.resolve().relative_to(ROOT.resolve()))
+            name = path.resolve().relative_to(ROOT.resolve()).as_posix()
         except ValueError:
             name = path.name
         logical.append((name, path))

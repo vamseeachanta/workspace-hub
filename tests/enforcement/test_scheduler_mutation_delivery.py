@@ -152,7 +152,8 @@ def test_enforcement_workflow_is_active_and_failure_propagating():
     runs = [step for step in steps if CHECKER.name in step.get("run", "")]
     assert len(runs) == 2
     assert any("--check-html" not in step["run"] for step in runs)
-    assert any(f"--check-html {REPORT.relative_to(ROOT)}" in step["run"] for step in runs)
+    report_path = REPORT.relative_to(ROOT).as_posix()
+    assert any(f"--check-html {report_path}" in step["run"] for step in runs)
     for step in runs:
         assert step.get("continue-on-error") not in {"true", True}
         assert "|| true" not in step["run"]
