@@ -23392,7 +23392,7 @@ cards:
     gh_state: open
     gh_labels:
       - bug
-      - status:plan-review
+      - status:plan-approved
       - gate:completeness
       - lane:claude
     initial_status: triage
@@ -23820,7 +23820,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3571
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-review
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []
