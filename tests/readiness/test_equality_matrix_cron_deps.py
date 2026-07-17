@@ -10,12 +10,23 @@ in any CI without flaking on dependency resolution.
 """
 from __future__ import annotations
 
+import os
 import re
+import shutil
+import subprocess
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 SCRIPT = REPO / "scripts" / "readiness" / "build-equality-matrix.py"
 WRAPPER = REPO / "scripts" / "readiness" / "equality-matrix-cron.sh"
+
+
+def _shell_path(path: Path) -> str:
+    if shutil.which("cygpath"):
+        return subprocess.check_output(
+            ["cygpath", "-u", str(path)], text=True,
+        ).strip()
+    return str(path)
 
 
 def _pep723_deps(text: str) -> list[str]:
@@ -40,3 +51,35 @@ def test_cron_wrapper_fails_loud():
     t = WRAPPER.read_text()
     assert "notify.sh" in t, "wrapper must emit a JSONL notification on failure"
     assert "exit 1" in t, "wrapper must exit non-zero on failure"
+
+
+def test_cron_propagates_publisher_failure_without_pass_claim(tmp_path):
+    repo = tmp_path / "repo"
+    readiness = repo / "scripts" / "readiness"
+    readiness.mkdir(parents=True)
+    (readiness / "equality-matrix-cron.sh").write_text(WRAPPER.read_text())
+    (readiness / "collect-equality.sh").write_text("#!/usr/bin/env bash\nexit 0\n")
+    (readiness / "publish-equality.sh").write_text("#!/usr/bin/env bash\nexit 7\n")
+    (readiness / "build-equality-matrix.py").write_text("")
+    notify = repo / "scripts" / "notify.sh"
+    notify.write_text("#!/usr/bin/env bash\nprintf '%s\\n' \"$*\" >> \"$NOTIFY_LOG\"\n")
+    bindir = tmp_path / "bin"
+    bindir.mkdir()
+    uv = bindir / "uv"
+    uv.write_text("#!/usr/bin/env bash\nexit 0\n")
+    for path in [*readiness.iterdir(), notify, uv]:
+        path.chmod(0o755)
+    subprocess.run(["git", "init", "-q", str(repo)], check=True)
+    log = tmp_path / "notify.log"
+    res = subprocess.run(
+        ["bash", str(readiness / "equality-matrix-cron.sh")],
+        cwd=repo,
+        env={**os.environ, "PATH": f"{_shell_path(bindir)}:{os.environ['PATH']}",
+             "NOTIFY_LOG": str(log)},
+        capture_output=True, text=True, timeout=60,
+    )
+    assert res.returncode != 0
+    assert "equality-matrix-cron OK" not in res.stdout
+    notices = log.read_text()
+    assert "equality-matrix fail" in notices
+    assert "equality-matrix pass" not in notices
