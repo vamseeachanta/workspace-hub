@@ -23815,3 +23815,26 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3571
+    title: 'equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3571
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3572
+    title: Harden agent workflows for idempotent external mutations and receipt-bound review degradation
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3572
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - domain:review
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

@@ -836,3 +836,18 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1605
+    title: Add traceable riser model, response, and operating-envelope visualizations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1605
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
