@@ -24,8 +24,9 @@ latest_models:
   claude_balanced: "claude-sonnet-4-6"
   claude_fast: "claude-haiku-4-5"
   codex_primary: "codex-cli"          # Codex CLI; runs gpt-5.5 under the hood (~/.codex/config.toml)
-  gemini_primary: "gemini-2.5-pro"           # live-verified 2026-06-11: CLI default; 3.1-pro-preview exists but 429s on Pro plan
+  gemini_primary: "gemini-2.5-pro"           # LEGACY (gemini CLI retired from routing #3573); still the underlying Gemini model id for the agy lane
   gemini_fast: "gemini-2.5-flash"
+  agy_primary: "gemini-3.1-pro"              # agy (Antigravity) default = "Gemini 3.1 Pro (High)" label (#3086); own quota pool — 3.1 does NOT 429 here
   openai_primary: "gpt-5.5"
   openai_fast: "gpt-5.4-mini"
 
@@ -125,7 +126,27 @@ providers:
         cost_tier: budget
         capability_tier: COMPLEX
         default_priority: 90
+  agy:
+    # Antigravity CLI (Gemini-backed) — the third worker/reviewer provider (#3573).
+    # NOTE: agy persists its default model as a DISPLAY LABEL in
+    # ~/.gemini/antigravity-cli/settings.json (see set-antigravity-default-model.sh, #3086).
+    default_model: gemini-3-1-pro-high
+    models:
+      gemini-3-1-pro-high:
+        display_name: "Gemini 3.1 Pro (High)"
+        model_id: "gemini-3.1-pro"
+        cost_tier: balanced          # rides the Google AI Pro plan; agy pool separate from gemini-CLI quota
+        capability_tier: REASONING
+        default_priority: 100
+      gemini-3-1-pro:
+        display_name: "Gemini 3.1 Pro"
+        model_id: "gemini-3.1-pro"
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 90
   gemini:
+    # LEGACY (#3573): the gemini CLI is retired from worker/reviewer routing;
+    # agy (above) is the Gemini surface. Section retained for audit/back-compat.
     default_model: gemini-pro
     models:
       gemini-3-1-pro-preview:

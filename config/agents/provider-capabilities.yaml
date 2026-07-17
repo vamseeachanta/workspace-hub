@@ -60,7 +60,8 @@ capability_bindings:
 # Strategy note (updated 2026-06-11 after live-config audit)
 # - Claude: orchestrator + primary executor in interactive sessions (Claude Code, Max subscription)
 # - Codex: cross-review hard gate and bounded second-lane implementation helper (CLI runs gpt-5.5)
-# - Gemini: third review lane and overflow/large-context option, but not the observed primary research engine
+# - Agy (Antigravity, Gemini-backed): third review lane + cheap delegation lane (#3573); overflow/large-context option
+# - Gemini CLI: LEGACY — retired from routing (#3573); agy is the Gemini surface
 # - Hermes: the cron/automation engine on ace-linux-1 — runs gpt-5.5 via the openai-codex provider
 #   (NOT a Claude wrapper; see ~/.hermes/config.yaml). Docs/data/skill specialist + delegation router.
 
@@ -121,8 +122,36 @@ providers:
       consolidation_candidate: true
       consolidation_trigger: "Codex cross-review verdicts consistently match Claude Sonnet AND cost savings < overhead"
 
+  agy:
+    display_name: "Antigravity CLI (agy, Gemini-backed)"
+    model_ids:
+      primary: "gemini-3.1-pro"          # agy default = "Gemini 3.1 Pro (High)" label (#3086); agy pool separate from gemini-CLI quota
+      fast: "gemini-2.5-flash"
+    context_window:
+      primary: 1000000
+      fast: 1000000
+    strengths:
+      - independent third-lane review
+      - large-context overflow analysis
+      - cheap headless delegation dispatch (#3207)
+      - broad synthesis as a supplementary reviewer
+    cost_tier: medium
+    primary_use_cases:
+      - "Third adversarial review lane (submit-to-agy.sh, AGY_REVIEW_MODE=1)"
+      - "Cheap fallback/delegation lane under the cost ceiling (#3192)"
+      - "Large-context overflow analysis when routed"
+      - "Fallback research pass when Hermes/Claude are saturated"
+    horizon_2026_h1:
+      trajectory: improving_rapidly
+      unique_value: "1M token context + fresh Google quota pool; headless --print dispatch"
+      strategy_role: third_review_lane
+      consolidation_candidate: true
+      consolidation_trigger: "Claude context window reaches 1M tokens AND agy adds no unique capability"
+
   gemini:
-    display_name: "Google Gemini"
+    # LEGACY (#3573): gemini CLI retired from worker/reviewer routing — agy
+    # (above) is the Gemini surface. Retained for audit; not a routed provider.
+    display_name: "Google Gemini (legacy CLI — not routed)"
     model_ids:
       primary: "gemini-2.5-pro"          # live-verified 2026-06-11 (CLI default); 3.1-pro-preview 429s on Pro plan
       premium_limited: "gemini-3.1-pro-preview"
@@ -131,22 +160,16 @@ providers:
       primary: 1000000
       fast: 1000000
     strengths:
-      - independent third-lane review
       - large-context overflow analysis
-      - content drafting when explicitly routed
-      - broad synthesis as a supplementary reviewer
     cost_tier: medium
     primary_use_cases:
-      - "Third adversarial review lane"
-      - "Large-context overflow analysis when routed"
-      - "Supplementary synthesis and documentation"
-      - "Fallback research pass when Hermes/Claude are saturated"
+      - "None — retired from routing (#3573); use agy"
     horizon_2026_h1:
-      trajectory: improving_rapidly
-      unique_value: "1M token context window — still useful as overflow capacity"
-      strategy_role: third_review_lane
+      trajectory: stable
+      unique_value: "none since #3573 — superseded by agy"
+      strategy_role: legacy_retired
       consolidation_candidate: true
-      consolidation_trigger: "Claude context window reaches 1M tokens AND Gemini adds no unique capability"
+      consolidation_trigger: "2-week agy soak clean -> uninstall decision issue"
 
   hermes:
     display_name: "Hermes Agent"
