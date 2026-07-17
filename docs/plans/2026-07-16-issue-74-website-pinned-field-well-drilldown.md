@@ -20,7 +20,7 @@ This plan will authorize only aceengineer-website changes after its own adversar
 
 Phase B will begin only after #1045 receives its own approval, publishes one validated receipt and exact HF SHA, and the website verifies that receipt against the reviewed contract. Phase B will create the exact-revision cache, switch `field-explorer` to relational mode, generate production parent/child routes and content-addressed assets, run preview evidence and R1→R2→R1 exercises, and stop for fresh explicit production authorization. Issue #74 will remain open until both phases and production closeout complete.
 
-Before the Phase A branch is created, the integration owner will record PR #73's final disposition and merge SHA, fetch current remote `main`, create `feature/issue-74-pinned-parent-child-drilldown` from that SHA, and prove that PR #73 capability entries/tests remain present. While PR #73 is open, no #74 lane may edit `build.js`, `config/capabilities.yaml`, or `tests/js/capabilities-registry.test.js`; those shared files will have one serialized integration owner after reconciliation.
+Before Phase A, the integration owner will record PR #73's disposition and fetch current remote `main`. If merged, the record will bind the merge SHA and prove ancestry/behavior; if closed unmerged, it will bind the closed head SHA and prove overlap is intentionally absent or separately reconciled. The feature branch will always start from current remote `main`. While PR #73 is open, no #74 lane may edit `build.js`, `config/capabilities.yaml`, or `tests/js/capabilities-registry.test.js`; those shared files will have one serialized integration owner after reconciliation.
 
 ## Resource Intelligence Summary
 
@@ -153,6 +153,8 @@ The validator will reject unknown schema majors, floating revisions, unsafe path
 Core renderer/controller state will be named `parentKey`, `childKey`, `panelKey`, and `pageIndex`; DOM hooks will use `data-parent-*` and `data-child-*`. Field/well words will exist only in registry labels, config/column mappings, route literals, and field-specific panel filenames. The second hierarchy fixture will fail if core modules inspect `fields`, `wells`, `field_id`, or `well_id` directly.
 
 The validator will require each declared route key to equal the single canonical safe encoding of its stable value ID. Producer route-key columns will be verification sidecars, not independent route authority; a mismatch will fail. Mutable labels/slugs will never change canonical routes.
+
+The shared encoding will be `route-id-v1`: `r1-` plus lowercase RFC 4648 base32hex of NFC-normalized stable-ID UTF-8 bytes with padding removed. The registry/manifest will bind that version; invalid normalization, unknown versions, sidecar mismatch, or collisions will fail.
 
 ## Template and Route Architecture
 
@@ -334,7 +336,7 @@ deploy_release(intent):
 - Reject any producer route key that differs from the canonical encoding of its stable value ID.
 - Prove Phase A performs no network, cache, live-registry, route-behavior, or deployment mutation.
 - Prove Phase B rejects a missing/mismatched producer receipt or HF SHA.
-- Rebase from PR #73's recorded merge SHA and prove its registry entries/tests survive before shared-file edits.
+- Branch from current remote `main`; prove merged PR #73 ancestry/behavior or closed-unmerged reconciliation before shared-file edits.
 - Prove legacy renderer/fetch/online verification skips relational mode and exactly one writer owns the parent dist path.
 - Prove datasets-server and `main` are never used.
 - Permit only the bounded same-origin exact-SHA resolve-cache redirect.
@@ -383,7 +385,7 @@ deploy_release(intent):
 - Promote only after route, link, CSP, accessibility, legal and build-receipt checks pass.
 - Keep build, preview-browser and deployment receipts separate; reject schema/trust-boundary mixing.
 - Collect browser evidence against preview first; production collection will be read-only and separately authorized.
-- Bind each receipt to the exact allowlisted `.github/workflows/verify-field-explorer-release.yml` workflow_dispatch, protected target ref, reviewed head SHA, configured automation actor, run attempt 1, full-commit-pinned actions, named environment approval, attested artifact digest, and live Vercel deployment ID/environment/git SHA; fork/PR events, reruns, alternative workflows, or self-authored local PASS receipts will fail parent verification.
+- Bind the public build receipt to website/HF/template/data/route hashes; bind the protected browser receipt to the build digest and preview deployment; bind the deployment receipt to build/browser digests plus production intent/result. Each protected receipt will bind the exact allowlisted workflow/ref/head/actor/attempt/action pins/environment/artifact; fork/PR events, reruns, alternative workflows, or self-authored PASS receipts will fail.
 - Prove a failed R2 leaves R1 output and cache intact.
 - Prove a registry-pin revert R2→R1 reproduces R1 content and stable URLs.
 - Preserve legacy non-relational capability behavior through focused regression tests.
@@ -398,7 +400,7 @@ deploy_release(intent):
 - [ ] This issue plan will receive T3 adversarial review and explicit user approval before implementation.
 - [ ] Parent #3559 will be reviewed and explicitly approved before Phase A; real cache/pinning Phase B will wait for independently approved/published #1045 receipt artifacts.
 - [ ] Phase A will be provably offline/non-production; Phase B will reject any pin not bound to the approved #1045 receipt.
-- [ ] PR #73 will be merged/closed first; its final merge SHA and surviving registry behavior will be recorded before serialized shared-file edits.
+- [ ] PR #73 will be merged/closed first; merged ancestry or closed-unmerged reconciliation will be recorded from current remote `main` before serialized shared-file edits.
 - [ ] The generic registry will bind dataset/revision/manifest plus parent/child config, value, label, stable route key, URL parameter, parent column, duplicate-label policy, templates and route patterns.
 - [ ] Core code/state will remain parent/child generic; a differently named hierarchy will pass without field/well branches.
 - [ ] Production pinning will use the verified #1045 receipt and exact returned HF SHA.

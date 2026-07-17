@@ -145,6 +145,8 @@ The snapshot will keep four cardinality domains distinct: `drilldown_field_count
 
 Each manifest collection will contain an ordered `shards` array. Every descriptor will carry `ordinal`, `path`, `record_count`, `byte_count`, `sha256`, `first_sort_key`, and `last_sort_key`; each collection will carry `shard_count`, aggregate record count, and the global sort definition. Consumers will discover and terminate traversal solely through the exact-SHA manifest, without repository-listing or datasets-server pagination APIs.
 
+The shared route encoding will be named `route-id-v1`: prefix `r1-` plus lowercase RFC 4648 base32hex of NFC-normalized stable-ID UTF-8 bytes with `=` padding removed. Invalid UTF-8/NFC, mismatched sidecars, or unknown versions will fail. The manifest will bind `route_key_encoding: route-id-v1`; the reversible encoding has no collision fallback.
+
 - `field_id`: stable canonical ID from `config/fields.yml`.
 - `well_id`: `bsee-api12:<api>` for V1; API remains a string.
 - `parent_field_id`: canonical field ID.
@@ -203,6 +205,7 @@ If the HF commit succeeds but readback fails, the returned commit may already be
 | Create | `.github/workflows/publish-field-explorer-snapshot.yml` | protected manual live publish, secret isolation and durable run provenance |
 | Create | `config/hf_export/field_explorer_snapshot.yml` | dataset, inputs, license classes, versions, shard limits |
 | Create | `config/hf_export/field_explorer_source_licenses.yml` | projection admission map referencing canonical `data/catalog/source-registry.yml` IDs |
+| Modify | `data/catalog/source-registry.yml` | define stable source IDs and add every Explorer authority/evidence record required by the projection map |
 | Create | three JSON schemas under `config/schemas/` | closed record, manifest, and publish-receipt contracts |
 | Modify | `pyproject.toml`, `uv.lock` | declare/pin `huggingface-hub`, Parquet/schema runtime and clean locked install |
 | Modify | `build_explorer_results_bundle.py` | delegate to canonical normalization and repair identity/hash/card drift |
@@ -234,6 +237,7 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 12. synthetic >100 records shard deterministically without loss/duplication;
 13. record and byte shard bounds are enforced; browser shards remain regular-blob sized;
 14. shard arrays reject missing/duplicate ordinals and overlapping/non-monotonic ranges and traverse exactly once without listing APIs;
+15. empty/one/exact-limit/over-limit collections define 0/1/100/101 semantics; empty uses `shard_count=0`, `shards=[]`, and no boundary keys;
 15. manifest payload hashes/bytes/media/counts/schema match staged files and exclude the manifest itself;
 16. receipt binds manifest hash/bytes; projection/source fields and same-commit schema path/hashes are mandatory;
 17. manifest schema rejects any HF commit SHA property;
@@ -259,6 +263,7 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 34. a non-mutating live HF probe records actual redirect chains, status, revision and timestamp before publication;
 35. token/auth values never enter logs, exceptions, manifest, receipt or artifact;
 36. success writes one core receipt after readback and before Actions evidence upload;
+37. failed Actions evidence upload preserves the core receipt but produces no external envelope or website promotion and reports Phase C distinctly;
 37. post-commit readback failure records advanced remote head/returned SHA but emits no receipt, pin, retry or rewrite;
 38. an unapproved floating consumer blocks live mutation;
 39. live mode refuses execution outside the exact protected workflow/environment policy;
@@ -329,7 +334,7 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 
 - **License admission:** implementation may proceed through local fixtures, but live upload will remain fail-closed until explicit source/redistribution classification is recorded.
 - **Parquet determinism:** serializer/version, column order/types/index/compression/metadata will be pinned; browser JSON will remain the authoritative browser contract.
-- **Post-upload failure:** HF history cannot be rolled back atomically. Failed candidates will remain unpromoted and unreferenced.
+- **Post-upload failure:** HF history cannot be rolled back atomically. Failed candidates will remain unpromoted by receipt/website pin but may still be referenced by target-branch HEAD and visible to floating consumers.
 - **Source self-reference:** generated HF manifest will be staged after the clean source commit and will not be committed back into that source revision.
 - **Publisher drift:** the old floating entrypoint will not remain a supported alternative.
 - **Scale:** shard record, byte, and operation-count limits will be configured and verified before mutation.
