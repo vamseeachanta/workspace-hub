@@ -1,11 +1,11 @@
-generated_at: "2026-07-14T14:01:26"
+generated_at: "2026-07-17T06:52:34"
 schema_version: 4
 machine: "ace-win-1"
 host: "ace-win-1"
 os: windows
 status: active
 provenance:
-  checkout_sha: "baa9ac46b"
+  checkout_sha: "9ea1a2c3b"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 64, ram_total_mib: 261848, gpu_model: "ASPEED Graphics Family(WDDM)"}
-    headroom: {ram_avail_mib: 235336, disk_avail_gb: 1368}
+    headroom: {ram_avail_mib: 231264, disk_avail_gb: 1365}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -49,13 +49,13 @@ dimensions:
         installed: true
         "memory:read": {status: present, reason: codex_memory_runtime_found}
         "skills:invoke": {status: absent, reason: adapter_not_directory_or_symlink}
-        "workflow:gates": {status: absent, reason: active_runtime_missing}
+        "workflow:gates": {status: present, reason: codex_agents_runtime_active}
       hermes:
-        present: false
-        installed: false
-        "memory:read": {status: absent, reason: provider_not_installed}
-        "skills:invoke": {status: absent, reason: provider_not_installed}
-        "workflow:gates": {status: absent, reason: provider_not_installed}
+        present: true
+        installed: true
+        "memory:read": {status: absent, reason: hermes_memory_store_missing}
+        "skills:invoke": {status: absent, reason: hermes_skill_registry_missing}
+        "workflow:gates": {status: present, reason: hermes_soul_runtime_active}
       gemini:
         present: true
         installed: true
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: false
     job_count: 0
   session_curation:
-    last_curated_at: "2026-07-14T19:01:06+00:00"
-    sessions_24h: 18
+    last_curated_at: "2026-07-17T11:49:11+00:00"
+    sessions_24h: 12
     providers_active: "claude,codex"
     memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-07-14T19:01:13+00:00"
+    audited_at: "2026-07-17T11:49:17+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,14 +84,14 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-14T19:01:14+00:00"
+    audited_at: "2026-07-17T11:49:18+00:00"
     worst_age_hours: null
     freshness: "MISSING-EVIDENCE"
   skill_link_health:
-    audited_at: "2026-07-14T19:01:23+00:00"
-    repos_total: 10
+    audited_at: "2026-07-17T11:49:28+00:00"
+    repos_total: 11
     healthy: 12
-    repairable: 6
+    repairable: 8
     worst_state: "MISSING"
   publish_health:
     last_publish_at: "missing"
