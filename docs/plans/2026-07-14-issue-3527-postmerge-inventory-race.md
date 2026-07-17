@@ -1,6 +1,6 @@
 # Plan for #3527: Reconcile scheduler inventory and detect post-merge drift
 
-> **Status:** plan-review — 2026-07-17 amendment requires user approval
+> **Status:** plan-approved — user approved amendment 2026-07-17
 > **Complexity:** T3
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3527
@@ -403,7 +403,7 @@ No live cron, crontab, daemon, systemd timer, or scheduled-task mutation will oc
 | 2026-07-17 Codex amendment r7 | MAJOR | Required isolated Python startup, one captured landed `all`, consistent child scope, and live gate rollback. |
 | 2026-07-17 Claude amendment r7 | MAJOR | Required one workflow shape and captured locked dependencies for PyYAML children. |
 
-**Overall amendment result:** REVIEW CAP REACHED after concordant MAJOR verdicts through r7; Gemini is explicitly unavailable. Final inline revision absorbs the r7 findings, but no automatic eighth cycle will run. The approval marker remains absent and all implementation stays blocked pending explicit user disposition and a later fresh review window.
+**Overall amendment result:** USER DISPOSITION — review cap reached after concordant MAJOR verdicts through r7 and Gemini was unavailable. Final inline revision absorbed r7 findings; the user explicitly accepted this disclosed review posture and applied `status:plan-approved` on 2026-07-17. TDD implementation is authorized; code-stage T3 review remains mandatory.
 
 Revisions made after round 1:
 
