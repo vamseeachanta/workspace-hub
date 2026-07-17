@@ -317,7 +317,7 @@ Python files will remain at most 400 lines and functions at most 50 lines; pure 
 - [ ] Drill-down fields, wells, countries and catalog entries will remain separately named/count-checked; 2,032 catalog entries will never be described as analyzed fields.
 - [ ] The core receipt will be created after exact-SHA HF readback and before Actions evidence upload; failure at either later boundary will not fabricate the next trust artifact.
 - [ ] Post-commit readback failure will be reported as target-head exposure, not an unexposed orphan, and will never promote automatically.
-- [ ] Stable IDs will be NFC-normalized before publication, route-id-v1 will have golden cross-runtime vectors and round-trip tests, and duplicate encoded keys will fail.
+- [ ] Stable IDs will be required to already equal their NFC-normalized form; non-NFC IDs will fail before encoding. `route-id-v1` will have shared golden cross-runtime vectors and round-trip tests, and duplicate encoded keys will fail.
 - [ ] Repository-owned floating consumers will be covered by a tracked inventory with owner, pin/acceptance state and expiry; anonymous public consumers will be disclosed as unenumerable residual risk.
 - [ ] `pyproject.toml` and `uv.lock` will declare the publisher runtime and a fresh `uv sync --locked` will pass.
 - [ ] Existing consumers will remain compatible or receive an explicit versioned migration.
