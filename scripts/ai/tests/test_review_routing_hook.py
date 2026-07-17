@@ -153,8 +153,8 @@ class TestRoutingRecommendationAnnotation:
         assert "codex" in output["reviewers"]
         assert output["priority"] in ("low", "normal", "high")
 
-    def test_architecture_change_recommends_gemini(self):
-        """Architecture-heavy changes should recommend Gemini as third reviewer."""
+    def test_architecture_change_recommends_agy(self):
+        """Architecture-heavy changes should recommend agy as third reviewer."""
         lines = []
         for d in ["scripts/ai", "coordination", "docs/standards", ".claude/rules"]:
             lines.append(f"diff --git a/{d}/f.py b/{d}/f.py")
@@ -173,5 +173,5 @@ class TestRoutingRecommendationAnnotation:
         )
         assert result.returncode == 0
         output = json.loads(result.stdout)
-        assert "gemini" in output["reviewers"]
+        assert "agy" in output["reviewers"]
         assert "architecture-heavy" in output["triggers_matched"]

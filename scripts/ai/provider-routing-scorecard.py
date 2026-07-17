@@ -3,7 +3,7 @@
 
 Purpose:
 - translate provider utilization and session-audit telemetry into actionable routing
-  guidance for Claude, Codex, Gemini, and Hermes
+  guidance for Claude, Codex, Agy (Antigravity, Gemini-backed), and Hermes
 - surface who should receive the next work packets
 - keep recommendations grounded in tracked telemetry instead of intuition
 """
@@ -20,7 +20,7 @@ UTILIZATION_PATH = WORKSPACE_HUB / "config" / "ai-tools" / "provider-utilization
 AUDIT_PATH = WORKSPACE_HUB / "analysis" / "provider-session-ecosystem-audit.json"
 DEFAULT_JSON_OUT = WORKSPACE_HUB / "config" / "ai-tools" / "provider-routing-scorecard.json"
 DEFAULT_MD_OUT = WORKSPACE_HUB / "docs" / "reports" / "provider-routing-scorecard.md"
-TARGET_PROVIDERS = ("claude", "codex", "gemini")
+TARGET_PROVIDERS = ("claude", "codex", "agy")
 
 ROUTING_RULES = {
     "claude": {
@@ -48,7 +48,7 @@ ROUTING_RULES = {
             "broad ecosystem synthesis",
         ],
     },
-    "gemini": {
+    "agy": {
         "preferred_work": [
             "batched research/recon",
             "risk enumeration",
@@ -108,7 +108,7 @@ def build_recommendation(provider: str, metrics: dict[str, Any], audit: dict[str
     status = classify_status(reported, quota_basis, missing_reads, python3_calls, post_records)
 
     priority = "medium"
-    if provider in {"codex", "gemini"} and reported < 15:
+    if provider in {"codex", "agy"} and reported < 15:
         priority = "highest"
     elif provider == "claude" and reported < 15:
         priority = "high"
@@ -142,11 +142,11 @@ def build_recommendation(provider: str, metrics: dict[str, Any], audit: dict[str
                 "Use Codex for repetitive repo-hardening tasks before spending more Claude review cycles.",
             ]
         )
-    elif provider == "gemini":
+    elif provider == "agy":
         recommendation["actions"].extend(
             [
-                "Batch 5-6 related research/recon tasks into Gemini sessions.",
-                "Use Gemini for scouting/risk-analysis packets instead of leaving the lane idle.",
+                "Batch 5-6 related research/recon tasks into agy sessions.",
+                "Use agy for scouting/risk-analysis packets instead of leaving the lane idle.",
             ]
         )
     elif provider == "claude":

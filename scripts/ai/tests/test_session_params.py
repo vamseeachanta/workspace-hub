@@ -32,7 +32,7 @@ def test_session_params_output_structure():
         assert not missing, f"Row missing keys {missing}: {row}"
     assert all(r["event"] == "session_params" for r in rows)
     providers = {r["provider"] for r in rows}
-    assert providers == {"claude", "codex", "gemini"}
+    assert providers == {"claude", "codex", "agy"}
 
 
 def test_session_params_context_k_is_positive_int():
@@ -50,6 +50,6 @@ def test_session_params_missing_config_graceful():
     assert len(rows) == 3
     for row in rows:
         assert row.get("event") == "session_params"
-        assert row.get("provider") in {"claude", "codex", "gemini"}
+        assert row.get("provider") in {"claude", "codex", "agy"}
         assert "model" in row
         assert isinstance(row.get("context_k"), int)
