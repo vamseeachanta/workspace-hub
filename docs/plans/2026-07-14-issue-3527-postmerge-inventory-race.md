@@ -1,6 +1,6 @@
 # Plan for #3527: Reconcile scheduler inventory and detect post-merge drift
 
-> **Status:** plan-approved — user approved amendment 2026-07-17
+> **Status:** plan-review — 2026-07-18 rollback/test-map correction requires renewed user approval
 > **Complexity:** T3
 > **Date:** 2026-07-14
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3527
@@ -19,6 +19,12 @@ The amended implementation will close two defects found by adversarial code revi
 2. Both generated-artifact checks will validate one captured Git index snapshot. The checker will capture a NUL-safe stage-0 manifest of Git path bytes and blob OIDs once, reject unmerged/multi-stage entries, and read exact OIDs thereafter. After successful capture, later index mutation will be irrelevant: execution will complete solely from immutable captured OIDs. Git object transport or materialization failure will return nonzero.
 
 The original approval remains historical evidence for work already performed in the original seven-file scope. Removing its marker will pause all further #3527 implementation, including original-scope repairs, until the user approves the exact amended plan.
+
+### 2026-07-18 review-driven correction
+
+- Rollback will revert both helper-invoking workflow bodies together with the helper and bindings, while preserving the main-push detector and PR scheduler job on their pre-amendment direct checks. Immutable rollback-tree validation will not call a removed helper.
+- Captured-tree/bootstrap security tests will live in `tests/cron/test_git_index_snapshot.py` so every test file stays within the 400-line guardrail.
+- This correction changes approved rollback and artifact-map text only; runtime scope and the no-live-scheduler-mutation boundary are unchanged. Implementation is blocked pending renewed user approval.
 
 ### Index-snapshot and path-classification contract
 
@@ -317,6 +323,7 @@ when merging an authorized PR:
 | Modify | `scripts/cron/build-cron-identity-inventory.py` | Use POSIX logical path bytes and provide index-coherent `--check` behavior |
 | Modify | `scripts/cron/cron_render.py` | Preserve canonical POSIX Linux render paths and shell log separators on Windows |
 | Modify | `tests/cron/test_cron_identity_inventory.py` | Add cross-machine digest, identity, and staged-snapshot RED contracts |
+| Create | `tests/cron/test_git_index_snapshot.py` | Keep captured-tree/bootstrap security tests below the 400-line file guardrail |
 | Modify | `tests/cron/test_cron_render.py` | Bind POSIX shell-log rendering on Windows and native workspace spelling |
 | Modify | `.claude/rules/merge-authorization.md` | Require CLEAN helper-based merge and landed-tree checks |
 | Regenerate | `docs/reports/issue-3475-command-identity-inventory.json` | Reconcile current declared input digest |
