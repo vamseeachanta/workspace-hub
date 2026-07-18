@@ -1,14 +1,14 @@
-generated_at: "2026-07-18T13:32:06"
+generated_at: "2026-07-18T15:30:50"
 schema_version: 4
 machine: "ace-win-1"
 host: "ace-win-1"
 os: windows
 status: active
 provenance:
-  checkout_sha: "f80237305"
+  checkout_sha: "891b25a7d"
   dirty: false
   behind_main: 0
-  ahead_main: 3
+  ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
@@ -88,7 +88,7 @@ dimensions:
     worst_age_hours: null
     freshness: "MISSING-EVIDENCE"
   skill_link_health:
-    audited_at: "2026-07-18T17:47:33+00:00"
+    audited_at: "2026-07-18T18:35:52+00:00"
     repos_total: 11
     healthy: 12
     repairable: 8
