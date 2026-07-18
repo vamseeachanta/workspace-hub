@@ -256,6 +256,37 @@ def test_mkdir_lock_released_with_worktree_on_failure(tmp_path):
     assert wts.count("worktree ") == 1
 
 
+def test_commit_subject_uses_public_label_not_hostname(tmp_path):
+    # 2026-07-18 leak (#3571): the publish commit subject serialized the raw OS
+    # hostname onto public main. With an identity file (or EQ_MACHINE), the
+    # subject must carry the fleet label; the hostname must appear nowhere.
+    origin, clone = _fixture(tmp_path)
+    (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
+        _yaml("dev-primary", "2026-07-01T12:00:00"))
+    idf = tmp_path / "machine-identity.yaml"
+    idf.write_text('machine: "ace-win-1"\npublic_host: "ace-win-1"\n')
+    env = {**GIT_ENV, "WORKSPACE_HUB_MACHINE_IDENTITY": str(idf)}
+    res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone)],
+                         env=env, capture_output=True, text=True, timeout=120)
+    assert res.returncode == 0, f"{res.stdout}\n{res.stderr}"
+    subject = _git("log", "-1", "--format=%s", cwd=origin)
+    host = subprocess.run(["hostname"], capture_output=True, text=True,
+                          timeout=30).stdout.strip().lower()
+    assert "from ace-win-1" in subject
+    assert host not in subject.lower()
+
+
+def test_commit_subject_honors_eq_machine_env(tmp_path):
+    origin, clone = _fixture(tmp_path)
+    (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
+        _yaml("dev-primary", "2026-07-01T12:00:00"))
+    env = {**GIT_ENV, "EQ_MACHINE": "ace-win-2"}
+    res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone)],
+                         env=env, capture_output=True, text=True, timeout=120)
+    assert res.returncode == 0, f"{res.stdout}\n{res.stderr}"
+    assert "from ace-win-2" in _git("log", "-1", "--format=%s", cwd=origin)
+
+
 def test_lock_autodetect_gates_on_command_v_not_exit_code():
     # Static contract: detection must be `command -v flock`; a bare `flock -n || skip`
     # conflates command-not-found with lock-held (the #3571 silent no-op).

@@ -38,6 +38,29 @@ done
 [[ -n "$REPO_ROOT" && -d "$REPO_ROOT" ]] || { echo "publish-equality: no repo root" >&2; exit 1; }
 
 HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+# Public label for anything that can land in tracked/published surfaces (commit
+# subjects!). Raw ${HOST} put a policy-banned private hostname into a public main
+# commit subject on 2026-07-18 (#3571) — resolve the fleet label instead and fall
+# back to HOST only for boxes with no mapping (whose hostnames are public-safe).
+# shellcheck source=scripts/readiness/lib/machine-identity.sh
+. "$SCRIPT_DIR/lib/machine-identity.sh"
+PUBLIC_LABEL="${EQ_MACHINE:-}"
+if [[ -z "$PUBLIC_LABEL" ]]; then
+  case "$HOST" in
+    ace-linux-1*) PUBLIC_LABEL="dev-primary" ;;
+    ace-linux-2*) PUBLIC_LABEL="dev-secondary" ;;
+    *macbook*)    PUBLIC_LABEL="macbook-portable" ;;
+    ace-win-1*|licensed-win-1*|acma-ansys05*) PUBLIC_LABEL="ace-win-1" ;;
+    ace-win-2*|licensed-win-2*|acma-ws014*)   PUBLIC_LABEL="ace-win-2" ;;
+    *)
+      if _identity="$(resolve_identity_file "$HOST")"; then
+        PUBLIC_LABEL="${_identity##* }"
+      else
+        [[ $? -eq 1 ]] && exit 1
+        PUBLIC_LABEL="$HOST"
+      fi ;;
+  esac
+fi
 say()  { echo "publish-equality: $*"; }
 fail() {
   bash "$REPO_ROOT/scripts/notify.sh" cron equality-publish fail "$1" 2>/dev/null || true
@@ -157,7 +180,7 @@ attempt() {
     esac
   done <<< "$staged"
 
-  git -C "$WT" commit --quiet -m "chore(equality): publish equality artifacts from ${HOST}" \
+  git -C "$WT" commit --quiet -m "chore(equality): publish equality artifacts from ${PUBLIC_LABEL}" \
     || return 1
   if [[ "$DRY_RUN" == 1 ]]; then
     say "dry-run — would push:"
@@ -173,6 +196,6 @@ attempt() {
 PUBLISHED=""
 if ! attempt; then
   say "first attempt failed (push race or transient); retrying once"
-  attempt || fail "could not publish equality artifacts to $REMOTE/$BRANCH from ${HOST}"
+  attempt || fail "could not publish equality artifacts to $REMOTE/$BRANCH from ${PUBLIC_LABEL}"
 fi
 say "done (${PUBLISHED})"
