@@ -82,6 +82,7 @@ fi
 # de-duplication). config/agents/gemini/SOUL.runtime.md remains a built
 # reference artifact for review and future use.
 echo "SKIP   ~/.gemini/SOUL.md not created — Gemini CLI doesn't load SOUL.md (see Phase 5)"
+echo "SKIP   agy SOUL symlink not created — agy loads the GEMINI.md family, not SOUL.md; config/agents/agy/SOUL.runtime.md is a built reference artifact (#3573)"
 
 echo
 echo "Summary: ${created} created, ${unchanged} unchanged, ${backed_up} backed-up, ${skipped} skipped."

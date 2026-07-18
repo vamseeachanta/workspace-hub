@@ -119,156 +119,32 @@ The user runs a multi-provider operation (Hermes on `ace-linux-1`, Claude Max su
 
 ---
 
-# Codex Provider Delta
-> Inherits identity, gates, and must-fire rules from [`../SHARED_SOUL.md`](../SHARED_SOUL.md). This file carries only Codex-specific operating-model differences.
-> **Operational runtime artifact**: [`./AGENTS.runtime.md`](./AGENTS.runtime.md) — `~/.codex/AGENTS.md` symlinks to this. Verified 2026-05-16 (Phase 5): Codex CLI base instructions explicitly cite `AGENTS.md` as the loaded surface.
-> Reference artifact: [`./SOUL.runtime.md`](./SOUL.runtime.md) — built for review parity; NOT loaded by Codex CLI.
+# Agy Provider Delta
+> Inherits identity, gates, and must-fire rules from [`../SHARED_SOUL.md`](../SHARED_SOUL.md). This file carries only Agy-specific (Antigravity CLI, Gemini-backed) operating-model differences.
+> **Reference artifact only**: [`./SOUL.runtime.md`](./SOUL.runtime.md) — built for review parity by `scripts/agents/build-soul-runtime.sh`. agy loads workspace context from the `GEMINI.md` family, not `SOUL.md`; the operational surface is workspace [`GEMINI.md`](../../../GEMINI.md).
 
-# Codex-Specific Operating Model
+# Agy-Specific Operating Model
 
-## Sandbox Capability — Inspect, Don't Assume
+## Headless Dispatch Contract (#3207)
 
-**Codex runtime capabilities vary by session.** Do NOT hardcode universal "NO shell exec" or "NO local filesystem writes" rules. Before performing local writes or shell exec:
+- The prompt is the VALUE of `--print` (`--prompt` is an alias): `agy --print "<TEXT>" --print-timeout 240s`. NEVER pass content as a trailing positional.
+- `--print-timeout` takes a Go duration (`"240s"`), not integer seconds.
+- agy **ignores stdin** — content rides the `--print` value (argv), so payloads are ARG_MAX-bounded (`AGY_MAX_BYTES`, default 1 MB).
+- Freeform text out — **no JSON mode**. Review prompts must demand a `VERDICT: APPROVE | MINOR | MAJOR` trailer; `normalize-verdicts.sh` extracts it tolerantly (case/markdown-bold/punctuation).
 
-1. Inspect the active `sandbox_mode` declared by the environment (e.g., `workspace-write` exposes both shell exec and bounded filesystem writes; tighter modes may block both).
-2. Inspect the tool list actually available in the current session.
-3. If shell exec is available, use it. If blocked (typical symptom: `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`), fall back to `js_repl` + GitHub MCP connector for file/issue access.
+## Review Lane Rules (#3573)
 
-Do NOT generalize a single-session sandbox failure to a permanent constraint. (`feedback_codex_sandbox_no_execution`, `feedback_codex_sandbox_fallback_paths`)
+- Agy is the **third worker/reviewer provider** (Claude + Codex + Agy). Dispatch via `scripts/review/submit-to-agy.sh`.
+- `AGY_REVIEW_MODE=1` in review dispatches: an oversize payload **fails the dispatch (exit 3)** instead of truncating — a truncated review can silently false-APPROVE.
+- An artifact that exists but fails verdict parsing is `INVALID_OUTPUT` and **blocks** the round; only provider-UNAVAILABLE (429 / non-zero exit with no artifact) degrades T3 → T2.
 
-## Pre-Exec Pushed-Artifact Requirement
+## Authentication, Settings, and Quota
 
-Codex `exec` (and the Codex GitHub connector) cannot read local files outside the sandbox. Before invoking `codex exec` on a plan or artifact:
+- Rides the **Google AI Pro** seat via Antigravity OAuth/Code Assist; the agy quota pool is separate from the legacy gemini CLI pool (Gemini 3.1 Pro does not 429 here as of 2026-07).
+- Settings live at `~/.gemini/antigravity-cli/settings.json`; the default model is persisted as a **display label** (`"Gemini 3.1 Pro (High)"`) — pinned across machines by `scripts/agents/set-antigravity-default-model.sh` (#3086).
+- Self-updates via `agy update` (standalone binary at `~/.local/bin/agy`; no npm package).
+- Quota exhaustion (429) is hard-stop: document as `UNAVAILABLE` per `scripts/review/results/` convention; do NOT retry within the reset window.
 
-- **Push the plan/issue to GitHub first.** Codex's GH connector can fetch tracked content; local-only files are invisible. (`feedback_codex_needs_pushed_artifact`)
-- For inline-prompt review, the prompt body itself may be passed via `codex exec "$PROMPT"`; this works without push.
+## Cross-Review Role
 
-## Authentication and Quota
-
-- Verify Codex/OpenAI subscription auth status before load planning. Don't assume parallel paid seats without machine-specific auth evidence.
-- `~/.codex/auth.json` carries the active token; `~/.codex/auth.lock` indicates active session.
-- Quota exhaustion produces specific exit codes; `submit-to-codex.sh` exits 3 on quota → triggers Opus fallback in `cross-review.sh`.
-
-## Known CLI Regressions
-
-- **CLI 0.124, 0.130** — periodic upstream regressions in `codex exec` stdin handling. Symptoms: `UNAVAILABLE (codex CLI failed, rc=0: Reading additional input from stdin)`. (`feedback_codex_cli_0_124_upstream_regression`)
-- Check `codex --version` against `feedback_codex_cli_*` memory files before assuming a new bug.
-
-## Adversarial Review Posture
-
-- Sustained-MAJOR loop hazard: if Codex returns MAJOR for 3+ rounds while Claude/Gemini land at MINOR by v3, surface as consensus-vs-minority — do not auto-cycle blindly. (`feedback_codex_sustained_major_loop`)
-- Codex reviews via GitHub connector when local shell is blocked. Connector-derived evidence (file existence, line contents, link resolution) MUST be locally re-verified before applying as a fix. (`feedback_cross_provider_review_payoff`, `feedback_r1_review_trust_hazard`)
-- Codex review iteration cap: 3 per WRK/non-WRK plan; `submit-to-codex.sh` enforces via `review-iteration.yaml` for WRK-scoped work.
-
-## Skill Loader
-
-- `~/.codex/skills/` is currently empty on this machine; `.codex/skills/` symlinks to `.claude/skills/` (workspace-hub canonical).
-- Codex roles vs skills mapping: `.claude/docs/codex-roles-vs-skills.md`.
-- Parity audit: `specs/architecture/work-queue-codex-parity.md`.
-
-## Consolidated Cross-Provider Memory (read at session start)
-
-At the start of a session, read **`config/agents/codex/MEMORY.runtime.md`** (repo-tracked, relative to the workspace root). It is a curated, budget-capped slice of the consolidated cross-provider memory (the Claude "dream" — durable learnings distilled from Codex/Gemini/Hermes/Claude sessions). It is **machine-invariant and auto-generated** by `scripts/memory/bridge-hermes-claude.sh` (#2841) — do not hand-edit. Treat its entries as durable workspace conventions/learnings; they complement (do not replace) the SHARED_SOUL gates above.
-
-## Skills (no native loader — use the Skill index)
-
-Codex has no native skill loader. The **Skill index** at the bottom of `AGENTS.runtime.md` lists every workspace skill family (`.claude/skills/<family>/`) with a count + an `ls` command to enumerate a family's skills. Consult it and **use** the relevant skill rather than improvising; workspace `.claude/skills/` wins over `.agents/skills/` and `~/.claude/plugins/`. Mandatory lifecycle skills: `coordination/issue-planning-mode` and `coordination/pre-completion-cleanup-audit`.
-
-## Required Gates (Codex-specific extensions to SHARED_SOUL Hard Gates)
-
-Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:
-
-1. **Every implementation task maps to a WRK-* in `.claude/work-queue/`** OR a GitHub issue per the broader workspace `feedback_no_reserved_wrk_ids` rule. Codex's `submit-to-codex.sh` Stage-5 gate validates WRK evidence when `--wrk-id` is supplied.
-2. **Workflow lifecycle skills are mandatory**: `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` + `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md` for WRK-mode work.
-3. **Coding style guardrails**: max 400 lines/file, max 50 lines/function, snake_case Python, camelCase JS — see `.claude/rules/coding-style.md`.
-4. **Git workflow**: conventional commits, branch prefixes (`feature/`, `bugfix/`, `chore/`) — see `.claude/rules/git-workflow.md`.
-
-## Bootstrap Hazard — `~/.codex/AGENTS.md` Untracked Generator
-
-`~/.codex/AGENTS.md` on this machine contains a `sed`-derived copy of `~/.claude/CLAUDE.md` with `s/claude/Codex/g` substitutions (broken — should have been `s/claude/codex/g`). Resulting `.Codex/memory/` path is wrong (capital C). The generator is NOT in any tracked script. (`feedback_codex_bootstrap_untracked_sed_origin` — write-time pending)
-
-The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.com/vamseeachanta/workspace-hub/issues/2719) Phase 4) which symlinks `~/.codex/AGENTS.md` to the committed `config/agents/codex/AGENTS.runtime.md` artifact, bypassing the broken sed pattern entirely.
-
----
-
-## Skill index
-> Codex has no native skill loader — enumerate + USE these. Indexed by FAMILY (top-level `.claude/skills/<family>/`); run `ls .claude/skills/<family>/*/SKILL.md` to list a family's skills. Workspace `.claude/skills/` wins over `.agents/skills/` and `~/.claude/plugins/`. Mandatory lifecycle skills: `coordination/issue-planning-mode`, `coordination/pre-completion-cleanup-audit`. Auto-generated — do not hand-edit.
-
-- **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
-- **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
-- **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
-- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
-- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
-- **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
-- **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
-- **coordination/** — 59 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
-- **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
-- **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
-- **data/** — 85 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
-- **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
-- **development/** — 71 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
-- **devops/** — 8 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
-- **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
-- **digitalmodel/** — 8 skill(s); `ls .claude/skills/digitalmodel/*/SKILL.md` to enumerate
-- **email/** — 10 skill(s); `ls .claude/skills/email/*/SKILL.md` to enumerate
-- **eng/** — 0 skill(s); `ls .claude/skills/eng/*/SKILL.md` to enumerate
-- **engineering/** — 89 skill(s); `ls .claude/skills/engineering/*/SKILL.md` to enumerate
-- **extract-learnings-to-issues** — Extract unstructured user reflections and learnings, distill core themes, route insights to existing GitHub issues as contextual c
-- **field-dev-code-recon** — Extract field development information from external sources (LinkedIn posts, technical content), map against digitalmodel codebase
-- **finance/** — 3 skill(s); `ls .claude/skills/finance/*/SKILL.md` to enumerate
-- **gaming/** — 2 skill(s); `ls .claude/skills/gaming/*/SKILL.md` to enumerate
-- **github/** — 19 skill(s); `ls .claude/skills/github/*/SKILL.md` to enumerate
-- **leisure/** — 1 skill(s); `ls .claude/skills/leisure/*/SKILL.md` to enumerate
-- **marketing/** — 7 skill(s); `ls .claude/skills/marketing/*/SKILL.md` to enumerate
-- **mcp/** — 2 skill(s); `ls .claude/skills/mcp/*/SKILL.md` to enumerate
-- **media/** — 5 skill(s); `ls .claude/skills/media/*/SKILL.md` to enumerate
-- **memory/** — 3 skill(s); `ls .claude/skills/memory/*/SKILL.md` to enumerate
-- **mlops/** — 21 skill(s); `ls .claude/skills/mlops/*/SKILL.md` to enumerate
-- **operations/** — 17 skill(s); `ls .claude/skills/operations/*/SKILL.md` to enumerate
-- **productivity/** — 11 skill(s); `ls .claude/skills/productivity/*/SKILL.md` to enumerate
-- **red-teaming/** — 1 skill(s); `ls .claude/skills/red-teaming/*/SKILL.md` to enumerate
-- **research/** — 15 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
-- **science/** — 6 skill(s); `ls .claude/skills/science/*/SKILL.md` to enumerate
-- **smart-home/** — 1 skill(s); `ls .claude/skills/smart-home/*/SKILL.md` to enumerate
-- **social-media/** — 2 skill(s); `ls .claude/skills/social-media/*/SKILL.md` to enumerate
-- **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
-- **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
-- **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
-- **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
-- **workspace-hub-learned/** — 70 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
-
-## Universal rules (inlined for Codex)
-> Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.
-
-### coding-style
-# Coding Style Rules — Universal
-
-## Edit Safety
-- Prefer targeted single-site edits over bulk find-replace — verify each change site
-- After edits: confirm imports not mangled, no duplicate definitions, no deleted adjacent code
-- Multi-file refactors: edit one file at a time, run tests between files
-
-## Path Handling
-- In scripts: use relative paths or `$(git rev-parse --show-toplevel)` / `${REPO_ROOT}` — never hardcode absolute paths (enforced: `scripts/enforcement/check-no-abs-paths.sh`)
-- Absolute paths permitted only when a tool call explicitly requires them (e.g., `file_path` parameter)
-
-## Agent Harness Files
-CLAUDE.md, MEMORY.md, AGENTS.md, GEMINI.md must not exceed 20 lines. Migrate excess to a skill or doc. (enforced: `scripts/enforcement/check-harness-file-size.sh`)
-
-### patterns
-# Design Patterns Rules — Universal
-
-## Enforcement Gradient
-
-Rules exist on a maturity spectrum. Move rules toward stronger enforcement over time:
-
-| Level | Mechanism | Reliability | When to use |
-|---|---|---|---|
-| 0 — Prose | Skill file | Lowest — only if invoked | Broad guidance |
-| 1 — Micro-skill | Per-stage file, auto-loaded | Medium — guaranteed at stage entry | Stage-specific checklists |
-| 2 — Script | Shell/Python, called from skill or CI | High — auditable, testable | Binary checks: did/didn't |
-| 3 — Hook | pre-commit / stop-hook | Strongest — fires automatically | Must-never-miss enforcement |
-
-Migration path: when a prose rule can be expressed as exit 0/1, write a script. When it must fire on every commit, promote to a hook.
-
-Level-2 examples (#2322): `scripts/enforcement/check-no-abs-paths.sh`, `scripts/enforcement/check-harness-file-size.sh`.
+Agy is the **3rd-opinion provider** on T3 reviews (Claude orchestrator + Codex executor-reviewer + Agy independent) and the **cheap fallback/delegation lane** under the cost ceiling (#3192). Agy is **not authorized for implementation by default** — review/delegation unless explicitly enabled by the user.
