@@ -607,3 +607,146 @@ def test_collect_kanban_queue_order_is_byte_sorted(tmp_path):
     (ws / ".claude" / "dispatch" / "_leader-state.yaml").write_text("x")
     d = _run(ws)
     assert d["dimensions"]["kanban"]["dispatch_queues"] == "_leader-state,dev-primary,multi"
+
+
+# ── #3571 W2: machine-identity file (private-hostname boxes) ──────────────────
+# Precedence: explicit flag/env > hardcoded hostname map > identity file > fail.
+# The file lives OFF-REPO (default ~/.config/workspace-hub/machine-identity.yaml,
+# override WORKSPACE_HUB_MACHINE_IDENTITY) so no hostname token enters the repo.
+
+IDENTITY_LIB = REPO_ROOT / "scripts" / "readiness" / "lib" / "machine-identity.sh"
+RECONCILE = REPO_ROOT / "scripts" / "readiness" / "reconcile-ecosystem.sh"
+REPORT_PS1 = REPO_ROOT / "scripts" / "windows" / "equality-report.ps1"
+
+
+def _host_stub(tmp_path: Path, name: str) -> Path:
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir(exist_ok=True)
+    stub = bin_dir / "hostname"
+    stub.write_text(f"#!/usr/bin/env bash\nprintf '%s\\n' {name}\n")
+    stub.chmod(0o755)
+    return bin_dir
+
+
+def _identity_env(tmp_path: Path, ws: Path, host: str, identity: str | None) -> dict:
+    home = tmp_path / "home"
+    home.mkdir(exist_ok=True)
+    if identity is not None:
+        idf = home / ".config" / "workspace-hub" / "machine-identity.yaml"
+        idf.parent.mkdir(parents=True, exist_ok=True)
+        idf.write_text(identity)
+    return {
+        "WORKSPACE_HUB": _bash_path(ws),
+        "PATH": f"{_host_stub(tmp_path, host)}:{BASH_PATH}",
+        "HOME": str(home),
+    }
+
+
+def _run_env(env: dict, *args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(["bash", str(SCRIPT), "--stdout", *args],
+                          env=env, capture_output=True, text=True, timeout=60)
+
+
+def test_identity_file_resolves_unknown_host(tmp_path):
+    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
+                        'machine: "ace-win-1"\n')
+    res = _run_env(env)
+    assert res.returncode == 0, res.stderr
+    d = yaml.safe_load(res.stdout)
+    assert d["machine"] == "ace-win-1"
+    assert d["host"] == "ace-win-1"          # public_host defaults to the label
+
+
+def test_identity_file_public_host_serialized_never_hostname(tmp_path):
+    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
+                        'machine: "ace-win-1"\npublic_host: "retired-name"\n')
+    res = _run_env(env)
+    assert res.returncode == 0, res.stderr
+    d = yaml.safe_load(res.stdout)
+    assert d["host"] == "retired-name"
+    assert "unknown-box" not in res.stdout   # OS hostname never serialized
+
+
+def test_identity_file_ignored_when_flag_given(tmp_path):
+    # Explicit --machine must short-circuit BEFORE any identity-file read/validation:
+    # a malformed file present must not break the scheduled-task path (r2 finding 1).
+    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
+                        "not: even: close: to valid\n")
+    res = _run_env(env, "--machine", "licensed-win-2")
+    assert res.returncode == 0, res.stderr
+    assert yaml.safe_load(res.stdout)["machine"] == "licensed-win-2"
+
+
+def test_identity_env_eq_machine_resolves(tmp_path):
+    # EQ_MACHINE env == --machine (reconcile remediation commands use it).
+    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box", None)
+    env["EQ_MACHINE"] = "ace-win-2"
+    res = _run_env(env)
+    assert res.returncode == 0, res.stderr
+    assert yaml.safe_load(res.stdout)["machine"] == "ace-win-2"
+
+
+def test_identity_file_never_overrides_mapped_host(tmp_path):
+    # A stale/copied file on a correctly-mapped host must be dead weight (r2 finding 2).
+    env = _identity_env(tmp_path, _fixture(tmp_path), "ace-linux-1",
+                        'machine: "ace-win-1"\n')
+    res = _run_env(env)
+    assert res.returncode == 0, res.stderr
+    assert yaml.safe_load(res.stdout)["machine"] == "dev-primary"
+
+
+def test_identity_file_missing_machine_key_fails_loud(tmp_path):
+    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
+                        'public_host: "x"\n')
+    res = _run_env(env)
+    assert res.returncode != 0
+    assert "machine-identity" in res.stderr
+
+
+def test_identity_file_unknown_label_fails_loud(tmp_path):
+    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
+                        'machine: "bogus-label"\n')
+    res = _run_env(env)
+    assert res.returncode != 0
+    assert "machine-identity" in res.stderr
+
+
+def test_identity_file_expected_hostname_mismatch_fails_loud(tmp_path):
+    # A file copied to the wrong box must die, not mint a false column (r2 finding 2).
+    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
+                        'machine: "ace-win-1"\nexpected_hostname: "some-other-box"\n')
+    res = _run_env(env)
+    assert res.returncode != 0
+    assert "machine-identity" in res.stderr
+
+
+def test_identity_file_expected_hostname_match_succeeds(tmp_path):
+    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
+                        'machine: "ace-win-1"\nexpected_hostname: "unknown-box"\n')
+    res = _run_env(env)
+    assert res.returncode == 0, res.stderr
+    assert yaml.safe_load(res.stdout)["machine"] == "ace-win-1"
+
+
+def test_identity_label_set_single_sourced_across_mirrors():
+    # One canonical label list (r1 finding 1): the bash lib defines it; the PS1
+    # mirror and reconcile must agree with it.
+    lib = IDENTITY_LIB.read_text(encoding="utf-8")
+    m = re.search(r'KNOWN_MACHINE_LABELS="([^"]+)"', lib)
+    assert m, "lib must define KNOWN_MACHINE_LABELS"
+    labels = set(m.group(1).split())
+    assert labels == {"dev-primary", "dev-secondary", "macbook-portable",
+                      "ace-win-1", "ace-win-2"}
+    ps1 = REPORT_PS1.read_text(encoding="utf-8")
+    ps1_m = re.search(r'\$KnownMachineLabels\s*=\s*@\(([^)]*)\)', ps1)
+    assert ps1_m, "equality-report.ps1 must define $KnownMachineLabels"
+    ps1_labels = set(re.findall(r'"([^"]+)"', ps1_m.group(1)))
+    assert ps1_labels == labels
+    assert "resolve_identity_file" in RECONCILE.read_text(encoding="utf-8")
+
+
+def test_reconcile_remediation_embeds_machine_env():
+    # Printed AUTO-SAFE remediations must be runnable as printed on identity-file
+    # boxes: the cron invocation carries EQ_MACHINE (r2/issue defect 2).
+    text = RECONCILE.read_text(encoding="utf-8")
+    assert "EQ_MACHINE=" in text
