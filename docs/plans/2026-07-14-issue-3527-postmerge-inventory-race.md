@@ -113,8 +113,7 @@ The RED checkpoint will run:
 ```text
 uv run pytest tests/cron/test_cron_identity_inventory.py tests/cron/test_cron_render.py -q
 uv run pytest tests/enforcement/test_scheduler_mutation_delivery.py -k "captured_staged" -q
-uv run pytest tests/cron/test_cron_identity_inventory.py -k "captured_staged" -q
-uv run pytest tests/cron/test_cron_identity_inventory.py -k "bootstrap or materialization or coordinator or locked_dependency or host_python" -q
+uv run pytest tests/cron/test_git_index_snapshot.py -k "captured or bootstrap or materialization or coordinator or locked_dependency or host_python" -q
 ```
 
 The named tests will be written before these commands run. RED will require assertion failures with tests collected; exit 5/no-tests-collected will not count. Before implementation, the first command will expose host-dependent path/log bytes on Windows; the captured-staged selections will expose mixed snapshots; and the last command will expose working-code bootstrap, unsafe materialization, and multi-capture coordinator defects.
@@ -207,6 +206,7 @@ Failure mode observed matches issue claim: **YES**.
 | Inventory generator/checker | `scripts/cron/build-cron-identity-inventory.py` |
 | Cross-target renderer | `scripts/cron/cron_render.py` |
 | Inventory equivalence/index tests | `tests/cron/test_cron_identity_inventory.py` |
+| Captured-tree/bootstrap security tests | `tests/cron/test_git_index_snapshot.py` |
 | Cross-target renderer tests | `tests/cron/test_cron_render.py` |
 | Merge rule | `.claude/rules/merge-authorization.md` |
 | Generated inventory | `docs/reports/issue-3475-command-identity-inventory.json` |
@@ -337,6 +337,8 @@ No live cron, crontab, daemon, systemd timer, or scheduled-task mutation will oc
 
 ## TDD Test List
 
+Snapshot/bootstrap rows from `test_bootstrap_ignores_working_entrypoint_and_helper` through `test_all_materializes_locked_dependency_project` will live in `tests/cron/test_git_index_snapshot.py`; inventory/render rows will remain in their existing test files, and delivery/workflow rows will remain in `tests/enforcement/test_scheduler_mutation_delivery.py`.
+
 | Test name | What it will verify | Expected RED | Expected GREEN |
 |---|---|---|---|
 | `test_main_push_scheduler_workflow_is_fail_closed` | landed `main` receives one captured-tree coordinator check | workflow missing | exact trigger/bootstrap/`all` command passes |
@@ -370,7 +372,7 @@ No live cron, crontab, daemon, systemd timer, or scheduled-task mutation will oc
 - [ ] Merge policy requires CLEAN state, the existing merge helper, and actual-landed-tree validation.
 - [ ] Current scheduler identity rows, collisions, and unsupported entries do not change unexpectedly.
 - [ ] `scripts/legal/legal-sanity-scan.sh --diff-only` passes.
-- [ ] `uv run pytest tests/cron/test_cron_identity_inventory.py tests/cron/test_cron_render.py tests/enforcement/test_scheduler_mutation_delivery.py tests/enforcement/test_scheduler_mutation_task3.py -q` passes on Windows (131 or more tests).
+- [ ] `uv run pytest tests/cron/test_cron_identity_inventory.py tests/cron/test_git_index_snapshot.py tests/cron/test_cron_render.py tests/enforcement/test_scheduler_mutation_delivery.py tests/enforcement/test_scheduler_mutation_task3.py -q` passes on Windows (131 or more tests).
 - [ ] The same canonical Linux-target fixtures and focused suite pass on Linux CI; Windows-target drive and UNC fixtures pass without depending on the host OS.
 - [ ] For both artifact chains, staged source/output incoherence fails even when working bytes are correct; a coherent captured index passes even when working bytes diverge.
 - [ ] Missing/deleted outputs, unmerged entries, unsafe modes/paths/collisions, Git/materialization/cleanup failure, and tracked-path alias ambiguity fail closed.
@@ -410,7 +412,7 @@ No live cron, crontab, daemon, systemd timer, or scheduled-task mutation will oc
 | 2026-07-17 Codex amendment r7 | MAJOR | Required isolated Python startup, one captured landed `all`, consistent child scope, and live gate rollback. |
 | 2026-07-17 Claude amendment r7 | MAJOR | Required one workflow shape and captured locked dependencies for PyYAML children. |
 
-**Overall amendment result:** USER DISPOSITION — review cap reached after concordant MAJOR verdicts through r7 and Gemini was unavailable. Final inline revision absorbed r7 findings; the user explicitly accepted this disclosed review posture and applied `status:plan-approved` on 2026-07-17. TDD implementation is authorized; code-stage T3 review remains mandatory.
+**Historical amendment result:** the user accepted the disclosed r7 review-cap posture and applied `status:plan-approved` on 2026-07-17. That authorization was superseded by the 2026-07-18 rollback/test-map correction. Implementation is blocked until the corrected plan receives renewed user approval; code-stage T3 review will remain mandatory afterward.
 
 Revisions made after round 1:
 
@@ -433,7 +435,7 @@ Revisions made after round 1:
 ## Rollback
 
 - Amendment rollback will preserve the original `.github/workflows/scheduler-mutation-main.yml`, CLEAN merge rule, and main-workflow scheduler digest binding. Removing that landed-main detector would recreate the original incident and will require a separately approved emergency action plus explicit broken-main monitoring.
-- The snapshot helper, its two digest-union bindings, renderer normalization, captured checker/generator behavior, amendment tests, and both workflow bodies that invoke the helper will be reverted as one transaction; the main-push detector and PR scheduler job will remain, but their bodies will return to the pre-amendment direct checks. No preserved workflow may reference a removed helper.
+- The snapshot helper; helper, `pyproject.toml`, and `uv.lock` bindings in both relevant digest unions; renderer normalization; captured checker/generator behavior; amendment tests; and both workflow bodies that invoke the helper will be reverted as one transaction. The main-push detector and PR scheduler job will remain, but their bodies will return to the pre-amendment direct checks. No preserved workflow may reference a removed helper or retain dependency bindings whose isolated-uv consumer was removed.
 - After reverting amendment source bytes, rollback will regenerate and stage the inventory, copy its digest into the #3475 registry binding, and regenerate and stage scheduler HTML. Validation will use a temporary checkout of the exact rollback tree; landed verification will repeat the three pre-amendment checks against immutable `HEAD` rather than invoke the removed helper.
 - Rollback will verify that identity rows again match the declared canonical fixture and that no live cron, crontab, daemon, systemd timer, or Windows scheduled task was mutated.
 
