@@ -1,11 +1,11 @@
-generated_at: "2026-07-18T15:30:50"
+generated_at: "2026-07-18T15:40:15"
 schema_version: 4
 machine: "ace-win-1"
 host: "ace-win-1"
 os: windows
 status: active
 provenance:
-  checkout_sha: "891b25a7d"
+  checkout_sha: "1c538d693"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: false
     job_count: 0
   session_curation:
-    last_curated_at: "2026-07-18T17:47:04+00:00"
-    sessions_24h: 3
+    last_curated_at: "2026-07-18T20:32:22+00:00"
+    sessions_24h: 4
     providers_active: "claude,codex"
     memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-07-18T17:47:20+00:00"
+    audited_at: "2026-07-18T20:32:30+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,15 +84,15 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-18T17:47:21+00:00"
+    audited_at: "2026-07-18T20:32:31+00:00"
     worst_age_hours: null
     freshness: "MISSING-EVIDENCE"
   skill_link_health:
-    audited_at: "2026-07-18T18:35:52+00:00"
+    audited_at: "2026-07-18T20:39:58+00:00"
     repos_total: 11
-    healthy: 12
-    repairable: 8
-    worst_state: "MISSING"
+    healthy: 20
+    repairable: 0
+    worst_state: "MODIFIED-REAL-DIR"
   publish_health:
     last_publish_at: "missing"
     last_publish_duration_s: null
