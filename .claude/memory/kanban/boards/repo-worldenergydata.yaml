@@ -3625,3 +3625,18 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1050
+    title: 'vessel_fleet: public MODU physical-vessel and loading-condition source contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1050
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
