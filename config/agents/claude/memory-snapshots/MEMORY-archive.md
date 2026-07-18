@@ -1,6 +1,20 @@
 # Workspace Hub Memory
 
 ## Project
+- [Drilling-rig spec DB program](project_drilling_rig_spec_database_program.md)
+- [Cloud routines migrated to ace-linux-1](project_cloud_routines_migrated_to_ace_linux_1.md)
+- [HF-backed website capability surfaces (wh#3485)](project_hf_backed_website_capability_surfaces.md)
+- [wed #971 economics life-to-date fix](project_wed971_economics_life_to_date_fix.md)
+- [Under-pressured gas-field screen (wed #708)](project_underpressured_gas_field_screen.md)
+- [ace share cleanup+dedup](project_ace_share_cleanup_dedup.md)
+- [Reed Goodman / Collide lead](project_reed_goodman_collide_lead.md)
+- [Data-source catalog + domain-DB flywheel](project_data_source_catalog_flywheel.md)
+- [RUNSPEC Monte Carlo UQ ingest](project_runspec_monte_carlo_uq_ingest.md)
+- [Richard D'Souza outreach + llm-wiki deepwater](project_richard_dsouza_outreach.md)
+- [Field-dev life-cycle poster](project_field_development_lifecycle_megaproject_poster.md)
+- [Collide PE solver (dm #836)](project_collide_pe_solver_program.md)
+- [Subsea intervention DB epic (wed #582)](project_subsea_intervention_database_epic.md)
+- [Howard Day GT-R CFD (NDA)](project_howard_day_cfd_landspeed_study.md)
 - [Contact directory collation](project_contact_directory_collation.md)
 - [Seamless dev epic #3290](project_seamless_ecosystem_development_epic.md)
 - [Deterministic Workflow API](project_deterministic_workflow_api_epic.md)
@@ -138,3 +152,20 @@
 
 ## References
 > ai-orchestration.md, network_machines.md
+- [Tier-1 replan planning factory (wh#3050)](project_tier1_replan_planning_factory.md)
+- [Tank sloshing → dm capability + Scott email](project_tank_sloshing_capability.md)
+- [Ecosystem review 2026-07-04 (Fable 5)](project_ecosystem_review_2026_07_04.md)
+- [Motion-forecast offering (dm #1356)](project_motion_forecast_offering_epic.md)
+- [Subsea7 FDG deck + slogan](project_subsea7_fdg_deck.md)
+- [Devakrishna school: STAAR + enrollment](project_devakrishna_school_staar_enrollment.md)
+- [Household utility bills](project_household_utility_bills.md)
+- [Voice dictation rollout](project_voice_dictation_ecosystem.md)
+- [Tug brochure + 3-repo epics](project_tug_analysis_brochure_epics.md)
+- [dm #1142 repo-health](project_dm_1142_repo_health.md)
+- [Seamless ecosystem dev epic (#3290)](project_seamless_ecosystem_development_epic.md)
+- [EPIC dm #1080 tubular/structural](project_dm_1080_tubular_structural_epic.md)
+- [Contact directory collation](project_contact_directory_collation.md)
+- [mkt-a Noble warm-window notes](project_mkt-a_noble_warm_window_call_2026_06_26.md)
+- [Chuck's UDW well access article](project_chuck_udw_well_access_article_backing.md)
+- [CAD/CAM discovery epic (dm #1004)](project_cad_cam_discovery_epic_1004.md)
+- [Ecosystem Pages + career](project_ecosystem_pages_and_career_initiative.md)

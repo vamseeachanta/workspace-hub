@@ -1,10 +1,10 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-07-09
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-07-18
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_document_discovered_data_sources_as_issues.md
 
 ---
 name: feedback_document_discovered_data_sources_as_issues
 description: "Owner directive 2026-07-06: any data source discovered during research gets documented immediately as a GitHub data issue for future ingestion"
-metadata:
+metadata: 
   node_type: memory
   type: feedback
   originSessionId: 4aef446e-8ae6-4fa4-8a87-b5d9afe883d1
