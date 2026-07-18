@@ -67,7 +67,7 @@ function Get-MachineIdentityFromFile {
     param([Parameter(Mandatory=$true)][string]$HostName)
     # #3571: off-repo identity file for boxes whose hostname must not enter the
     # public host map. Consulted ONLY after the hardcoded map fails (a stale copied
-    # file can never override a mapped host); malformed/foreign files throw —
+    # file can never override a mapped host); malformed/foreign files throw -
     # never fall through. Diagnostics omit hostname values (logs may be tracked).
     $path = if ($env:WORKSPACE_HUB_MACHINE_IDENTITY) { $env:WORKSPACE_HUB_MACHINE_IDENTITY }
             else { Join-Path $env:USERPROFILE ".config\workspace-hub\machine-identity.yaml" }
@@ -88,7 +88,7 @@ function Get-MachineIdentityFromFile {
     $expected = & $get "expected_hostname"
     if (-not [string]::IsNullOrWhiteSpace($expected) -and
         $expected.ToLowerInvariant() -ne $HostName.ToLowerInvariant()) {
-        throw "machine-identity: expected_hostname in $path does not match this box — refusing a copied identity file"
+        throw "machine-identity: expected_hostname in $path does not match this box - refusing a copied identity file"
     }
     return $machine
 }

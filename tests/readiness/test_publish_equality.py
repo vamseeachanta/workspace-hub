@@ -294,15 +294,22 @@ def test_commit_subject_uses_public_label_not_hostname(tmp_path):
         _yaml("dev-primary", "2026-07-01T12:00:00"))
     idf = tmp_path / "machine-identity.yaml"
     idf.write_text('machine: "ace-win-1"\npublic_host: "ace-win-1"\n')
-    env = {**GIT_ENV, "WORKSPACE_HUB_MACHINE_IDENTITY": str(idf)}
+    fake_bin = tmp_path / "fake-bin"
+    fake_bin.mkdir()
+    hostname = fake_bin / "hostname"
+    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' private-ci-host\n")
+    hostname.chmod(0o755)
+    env = {
+        **GIT_ENV,
+        "WORKSPACE_HUB_MACHINE_IDENTITY": str(idf),
+        "PATH": f"{fake_bin.as_posix()}:{GIT_ENV.get('PATH', '')}",
+    }
     res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone)],
                          env=env, capture_output=True, text=True, timeout=120)
     assert res.returncode == 0, f"{res.stdout}\n{res.stderr}"
     subject = _git("log", "-1", "--format=%s", cwd=origin)
-    host = subprocess.run(["hostname"], capture_output=True, text=True,
-                          timeout=30).stdout.strip().lower()
     assert "from ace-win-1" in subject
-    assert host not in subject.lower()
+    assert "private-ci-host" not in subject.lower()
 
 
 def test_commit_subject_honors_eq_machine_env(tmp_path):
