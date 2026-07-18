@@ -39,11 +39,14 @@ is_reparse_point() {
           case "$attr" in *ReparsePoint*) return 0 ;; *) return 1 ;; esac
         fi
       fi
-      if command -v fsutil >/dev/null 2>&1; then
-        if fsutil reparsepoint query "$wp" >/dev/null 2>&1; then return 0; fi
-        return 1
+      # PowerShell probe absent or errored. fsutil can only CONFIRM a reparse
+      # point here — its failure conflates "not a reparse point" with access
+      # errors, so a definitive NO is not available: stay undetermined (refuse).
+      if command -v fsutil >/dev/null 2>&1 \
+          && fsutil reparsepoint query "$wp" >/dev/null 2>&1; then
+        return 0
       fi
-      return 2   # no probe available — caller must fail closed
+      return 2   # no trustworthy negative probe — caller must fail closed
       ;;
   esac
   return 1
