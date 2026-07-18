@@ -256,6 +256,35 @@ def test_mkdir_lock_released_with_worktree_on_failure(tmp_path):
     assert wts.count("worktree ") == 1
 
 
+LOCK_PROBE_BUILDER = """\
+import glob, os
+from pathlib import Path
+root = Path(__file__).resolve().parents[2]
+held = bool(glob.glob(os.path.join(os.environ.get("TMPDIR", "/tmp"),
+                                   "publish-equality-*.lock.d")))
+(root / "docs" / "reports" / "machine-equality-matrix.html").write_text(
+    "lock-held" if held else "lock-missing")
+"""
+
+
+def test_mkdir_lock_stays_held_throughout_publish(tmp_path):
+    # Codex r2-code MAJOR: attempt() used to start by releasing the lock, so the
+    # entire fetch/copy/commit/push ran unlocked. A builder stub that runs INSIDE
+    # the publish observes whether the lock dir still exists at that point.
+    origin, clone = _fixture(tmp_path)
+    seed = tmp_path / "seed"
+    _git("pull", "origin", "main", cwd=seed)
+    (seed / "scripts" / "readiness" / "build-equality-matrix.py").write_text(
+        LOCK_PROBE_BUILDER)
+    _git("add", "-A", cwd=seed); _git("commit", "-m", "probe builder", cwd=seed)
+    _git("push", "origin", "main", cwd=seed)
+    (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
+        _yaml("dev-primary", "2026-07-01T12:00:00"))
+    _run_mkdir_lock(clone, tmp_path, "--rebuild")
+    assert _origin_file(origin, "docs/reports/machine-equality-matrix.html") == "lock-held"
+    assert not _host_lock_dir(tmp_path).exists()      # …and released at exit
+
+
 def test_commit_subject_uses_public_label_not_hostname(tmp_path):
     # 2026-07-18 leak (#3571): the publish commit subject serialized the raw OS
     # hostname onto public main. With an identity file (or EQ_MACHINE), the

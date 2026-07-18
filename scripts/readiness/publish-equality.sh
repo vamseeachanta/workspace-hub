@@ -113,9 +113,15 @@ else
 fi
 
 WT=""
-cleanup() {
+# Two-tier cleanup (Codex r2-code MAJOR): attempt() re-runs the worktree cleanup
+# between retries, but the LOCK must survive until process exit — a combined
+# cleanup released the mkdir lock at the START of the publish it protects.
+cleanup_worktree() {
   [[ -n "$WT" ]] && git -C "$REPO_ROOT" worktree remove --force "$WT" >/dev/null 2>&1
   git -C "$REPO_ROOT" worktree prune >/dev/null 2>&1
+}
+cleanup() {
+  cleanup_worktree
   [[ "${LOCK_HELD:-0}" == 1 ]] && rm -rf "$LOCK_DIR" >/dev/null 2>&1
 }
 trap cleanup EXIT
@@ -124,7 +130,7 @@ trap cleanup EXIT
 gen_at() { awk -F'"' '/^generated_at:/{print $2; exit}' "$1" 2>/dev/null; }
 
 attempt() {
-  cleanup; WT=""
+  cleanup_worktree; WT=""
   timeout 120 git -C "$REPO_ROOT" fetch "$REMOTE" "$BRANCH" --quiet || return 1
 
   WT="$(mktemp -d "${TMPDIR:-/tmp}/publish-equality-wt.XXXXXX")" || return 1
