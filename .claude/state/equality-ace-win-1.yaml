@@ -1,19 +1,19 @@
-generated_at: "2026-07-17T06:52:34"
+generated_at: "2026-07-18T13:32:06"
 schema_version: 4
 machine: "ace-win-1"
 host: "ace-win-1"
 os: windows
 status: active
 provenance:
-  checkout_sha: "9ea1a2c3b"
+  checkout_sha: "f80237305"
   dirty: false
   behind_main: 0
-  ahead_main: 0
+  ahead_main: 3
   origin_ref_age_h: 0
 dimensions:
   compute:
-    static: {cores: 64, ram_total_mib: 261848, gpu_model: "ASPEED Graphics Family(WDDM)"}
-    headroom: {ram_avail_mib: 231264, disk_avail_gb: 1365}
+    static: {cores: 64, ram_total_mib: unknown, gpu_model: "none"}
+    headroom: {ram_avail_mib: unknown, disk_avail_gb: unknown}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -39,29 +39,29 @@ dimensions:
     schema_version: 1
     providers:
       claude:
-        present: true
-        installed: true
-        "memory:read": {status: present, reason: claude_memory_context_found}
-        "skills:invoke": {status: present, reason: repo_skill_tree_found}
-        "workflow:gates": {status: present, reason: hard_gates_runtime_found}
+        present: false
+        installed: false
+        "memory:read": {status: unknown, reason: collector_unavailable}
+        "skills:invoke": {status: unknown, reason: collector_unavailable}
+        "workflow:gates": {status: unknown, reason: collector_unavailable}
       codex:
-        present: true
-        installed: true
-        "memory:read": {status: present, reason: codex_memory_runtime_found}
-        "skills:invoke": {status: absent, reason: adapter_not_directory_or_symlink}
-        "workflow:gates": {status: present, reason: codex_agents_runtime_active}
+        present: false
+        installed: false
+        "memory:read": {status: unknown, reason: collector_unavailable}
+        "skills:invoke": {status: unknown, reason: collector_unavailable}
+        "workflow:gates": {status: unknown, reason: collector_unavailable}
       hermes:
-        present: true
-        installed: true
-        "memory:read": {status: absent, reason: hermes_memory_store_missing}
-        "skills:invoke": {status: absent, reason: hermes_skill_registry_missing}
-        "workflow:gates": {status: present, reason: hermes_soul_runtime_active}
+        present: false
+        installed: false
+        "memory:read": {status: unknown, reason: collector_unavailable}
+        "skills:invoke": {status: unknown, reason: collector_unavailable}
+        "workflow:gates": {status: unknown, reason: collector_unavailable}
       gemini:
-        present: true
-        installed: true
-        "memory:read": {status: present, reason: gemini_memory_runtime_found}
-        "skills:invoke": {status: expected_divergence, reason: gemini_skill_dispatch_unsupported}
-        "workflow:gates": {status: present, reason: gemini_soul_runtime_gates_found}
+        present: false
+        installed: false
+        "memory:read": {status: unknown, reason: collector_unavailable}
+        "skills:invoke": {status: unknown, reason: collector_unavailable}
+        "workflow:gates": {status: unknown, reason: collector_unavailable}
   behavior:
     enums: {b1: deny, b2: ok, b3: html, b4: pass}
     hashes: {b5: 2a21ba0731d11660}
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: false
     job_count: 0
   session_curation:
-    last_curated_at: "2026-07-17T11:49:11+00:00"
-    sessions_24h: 12
+    last_curated_at: "2026-07-18T17:47:04+00:00"
+    sessions_24h: 3
     providers_active: "claude,codex"
     memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-07-17T11:49:17+00:00"
+    audited_at: "2026-07-18T17:47:20+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,11 +84,11 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-17T11:49:18+00:00"
+    audited_at: "2026-07-18T17:47:21+00:00"
     worst_age_hours: null
     freshness: "MISSING-EVIDENCE"
   skill_link_health:
-    audited_at: "2026-07-17T11:49:28+00:00"
+    audited_at: "2026-07-18T17:47:33+00:00"
     repos_total: 11
     healthy: 12
     repairable: 8
