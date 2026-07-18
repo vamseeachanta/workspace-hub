@@ -796,10 +796,10 @@ cards:
       - cat:engineering
       - priority:high
       - cat:data
+      - status:plan-review
       - domain:subsea-risers
       - lane:codex
       - epic
-      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
