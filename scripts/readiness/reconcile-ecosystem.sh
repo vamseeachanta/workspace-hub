@@ -247,7 +247,7 @@ equality_plan() {
         esac ;;
       DIVERGES|NO-MAJORITY)
         case "$dim" in
-          skills) add NEEDS-APPROVAL "$MACHINE" "[skills] likely tracked-symlink-materialized-as-text — repair (rm+checkout tracked paths)" \
+          skills) add NEEDS-APPROVAL "$MACHINE" "[skills] likely tracked-symlink-materialized-as-text — repair (rm+checkout tracked paths); FIRST check LinkType: if the path is a Junction, do NOT run this (it would follow the reparse point — #3571 incident); leave junctions to the link tooling" \
                     "git -C '$REPO_ROOT' config core.symlinks true; for s in .codex/skills .gemini/skills; do rm -f \"\$s\" && git -C '$REPO_ROOT' checkout -- \"\$s\"; done" ;;
           harness|behavior) add NEEDS-APPROVAL "$MACHINE" "[$dim] runtime/config drift — rebuild soul runtime + re-collect" \
                     "bash scripts/agents/build-soul-runtime.sh && bash scripts/agents/install-soul-runtime.sh && ${CRON_CMD_PREFIX}bash '$CRON'" ;;
