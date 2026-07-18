@@ -26,6 +26,13 @@ for ((i=1; i<=$#; i++)); do
     --now)     :;;  # explicit on-demand; behaviour identical (cadence is the caller's concern)
   esac
 done
+# EQ_MACHINE env == --machine (flag wins). Lets no-arg chain callers — notably the
+# reconcile-printed `EQ_MACHINE=<label> bash equality-matrix-cron.sh` remediations —
+# carry an explicit label through to this collector (#3571).
+MACHINE="${MACHINE:-${EQ_MACHINE:-}}"
+
+# shellcheck source=scripts/readiness/lib/machine-identity.sh
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/machine-identity.sh"
 
 HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
 # A machine may have a private or policy-sensitive OS hostname while using a public
@@ -51,11 +58,21 @@ if [[ -z "$MACHINE" ]]; then
     ace-win-1*|licensed-win-1*|acma-ansys05*) MACHINE="ace-win-1";;
     ace-win-2*|licensed-win-2*|acma-ws014*) MACHINE="ace-win-2";;
     *)
-      if [[ "$OS" == "windows" ]]; then
-        echo "collect-equality.sh: unknown Windows host '$HOST'; pass --machine ace-win-1 or ace-win-2" >&2
-        exit 1
-      fi
-      MACHINE="$HOST";;
+      # Identity file is consulted ONLY for hostnames the map does not know — a
+      # stale/copied file can never override a mapped host (#3571). rc 1 (malformed
+      # or foreign file) must fail loud, never fall through.
+      if _identity="$(resolve_identity_file "$HOST")"; then
+        MACHINE="${_identity%% *}"
+        [[ -n "${EQ_PUBLIC_HOST:-}" ]] || PUBLIC_HOST="${_identity##* }"
+      else
+        _rc=$?
+        [[ "$_rc" -eq 1 ]] && exit 1
+        if [[ "$OS" == "windows" ]]; then
+          echo "collect-equality.sh: unknown Windows host '$HOST'; pass --machine ace-win-1 or ace-win-2, or provision $(machine_identity_file)" >&2
+          exit 1
+        fi
+        MACHINE="$HOST"
+      fi;;
   esac
 fi
 have() { command -v "$1" >/dev/null 2>&1; }

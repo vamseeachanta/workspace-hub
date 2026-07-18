@@ -69,6 +69,8 @@ done
 ts() { date '+%Y-%m-%dT%H:%M:%S'; }
 
 # ── machine slug (canonical mapping, mirrors collect-equality.sh) ─────────────
+# shellcheck source=scripts/readiness/lib/machine-identity.sh
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/machine-identity.sh"
 HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
 case "$HOST" in
   ace-linux-1*) MACHINE="dev-primary" ;;
@@ -76,8 +78,22 @@ case "$HOST" in
   *macbook*)    MACHINE="macbook-portable" ;;
   ace-win-1*|licensed-win-1*|acma-ansys05*) MACHINE="ace-win-1" ;;
   ace-win-2*|licensed-win-2*|acma-ws014*)   MACHINE="ace-win-2" ;;
-  *) MACHINE="${RECONCILE_MACHINE:-$HOST}" ;;
+  *)
+    # env override > identity file > raw hostname (#3571; rc 1 = malformed file, fail loud)
+    MACHINE="${RECONCILE_MACHINE:-}"
+    if [ -z "$MACHINE" ]; then
+      if _identity="$(resolve_identity_file "$HOST")"; then
+        MACHINE="${_identity%% *}"
+      else
+        [ $? -eq 1 ] && exit 1
+        MACHINE="$HOST"
+      fi
+    fi ;;
 esac
+# Printed remediations must be runnable AS PRINTED on identity-file/renamed boxes:
+# equality-matrix-cron.sh chains to collect-equality.sh, which honors EQ_MACHINE (#3571).
+CRON_CMD_PREFIX="EQ_MACHINE=$MACHINE "
+export EQ_MACHINE="${EQ_MACHINE:-$MACHINE}"
 
 # dev-primary runs the intentional worktree-per-feature automation + the daily-cleanup
 # cron owns destructive disposal there → branch/worktree deletion is REPORT-ONLY on it.
@@ -213,14 +229,14 @@ equality_plan() {
     case "$verdict" in
       STALE-CHECKOUT)
         add AUTO-SAFE "$MACHINE" "[$dim] STALE — clean tree + fetch, then re-collect" \
-          "git -C '$REPO_ROOT' fetch origin main && bash '$CRON'" ;;
+          "git -C '$REPO_ROOT' fetch origin main && ${CRON_CMD_PREFIX}bash '$CRON'" ;;
       MISSING-EVIDENCE)
         if printf '%s' "$dim" | grep -q '^harness:'; then
           add NEEDS-APPROVAL "$MACHINE" "[$dim] provider capability absent (or no Claude baseline on host)" \
             "verify provider install/auth; on a Hermes-only host this is by-design"
         else
           add AUTO-SAFE "$MACHINE" "[$dim] no fresh report — collect equality on this box" \
-            "bash '$CRON'"
+            "${CRON_CMD_PREFIX}bash '$CRON'"
         fi ;;
       BELOW-BASELINE)
         case "$dim" in
@@ -234,11 +250,11 @@ equality_plan() {
           skills) add NEEDS-APPROVAL "$MACHINE" "[skills] likely tracked-symlink-materialized-as-text — repair (rm+checkout tracked paths)" \
                     "git -C '$REPO_ROOT' config core.symlinks true; for s in .codex/skills .gemini/skills; do rm -f \"\$s\" && git -C '$REPO_ROOT' checkout -- \"\$s\"; done" ;;
           harness|behavior) add NEEDS-APPROVAL "$MACHINE" "[$dim] runtime/config drift — rebuild soul runtime + re-collect" \
-                    "bash scripts/agents/build-soul-runtime.sh && bash scripts/agents/install-soul-runtime.sh && bash '$CRON'" ;;
+                    "bash scripts/agents/build-soul-runtime.sh && bash scripts/agents/install-soul-runtime.sh && ${CRON_CMD_PREFIX}bash '$CRON'" ;;
           scheduler) add NEEDS-APPROVAL "$MACHINE" "[scheduler] cron drift — reconcile jobs then re-collect" \
-                    "bash scripts/cron/setup-cron.sh --check && bash '$CRON'" ;;
+                    "bash scripts/cron/setup-cron.sh --check && ${CRON_CMD_PREFIX}bash '$CRON'" ;;
           *) add NEEDS-APPROVAL "$MACHINE" "[$dim] diverges from peers — stale report? re-collect, else reconcile config" \
-                    "bash '$CRON'" ;;
+                    "${CRON_CMD_PREFIX}bash '$CRON'" ;;
         esac ;;
       *) add NEEDS-APPROVAL "$MACHINE" "[$dim] verdict $verdict — investigate" "inspect equality-$MACHINE.yaml" ;;
     esac
