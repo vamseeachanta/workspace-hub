@@ -1139,7 +1139,7 @@ cards:
     title: 'WRK-026: Unified input data format converter for diffraction solvers (AQWA, OrcaWave, BEMRosetta)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/321
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -1153,7 +1153,7 @@ cards:
     title: 'WRK-057: Define canonical spec.yml schema for diffraction analysis'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/322
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -1181,7 +1181,7 @@ cards:
     title: 'WRK-059: OrcaWave input backend — spec.yml to single .yml and modular includes'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/324
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -1209,7 +1209,7 @@ cards:
     title: 'WRK-061: CLI and integration layer for spec converter'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/326
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -1237,7 +1237,7 @@ cards:
     title: 'WRK-063: Reverse parsers — AQWA .dat and OrcaWave .yml to canonical spec.yml'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/328
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -1847,7 +1847,7 @@ cards:
     title: 'WRK-127: Sanitize and categorize ideal spec.yml templates for OrcaFlex input across structure types'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/371
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -2074,7 +2074,7 @@ cards:
     title: 'WRK-240: Diffraction spec converter skill — register as named agent-callable skill'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/387
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -2116,7 +2116,7 @@ cards:
     title: 'WRK-244: OrcaFlex template library skill — get canonical spec.yml by structure type'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/390
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -3163,7 +3163,7 @@ cards:
     title: Connect jumper pipeline to OrcaFlex modular model generator
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/476
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - cat:engineering
     initial_status: triage
@@ -3209,7 +3209,7 @@ cards:
     title: OrcaFlex YAML-strict validator — automated load-test for generated files
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/495
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
     initial_status: triage
@@ -3220,7 +3220,7 @@ cards:
     title: 'OrcaFlex spec schema: multi-wave-train + multi-current-profile support'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/496
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
     initial_status: triage
@@ -3231,7 +3231,7 @@ cards:
     title: 'OrcaFlex builders: raw_properties round-trip emission + cross-builder validation'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/497
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
     initial_status: triage
@@ -3242,7 +3242,7 @@ cards:
     title: OrcaFlex builder test coverage uplift — missing builder + integration tests
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/498
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
     initial_status: triage
@@ -3253,7 +3253,7 @@ cards:
     title: 'OrcaFlex model library: upgrade extracted specs from generic to domain-specific sections'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/499
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
     initial_status: triage
@@ -3264,7 +3264,7 @@ cards:
     title: 'OrcaFlex spec audit: fix remaining 13 failures to reach 100% readiness'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/502
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
     initial_status: triage
@@ -3298,7 +3298,7 @@ cards:
     title: 'OrcaFlex: campaign spec generation — parametric sweep from spec.yml'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/511
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - status:done
@@ -3320,7 +3320,7 @@ cards:
     title: Clarify and close semantic-equivalence gaps between spec/LLM-friendly YAML and OrcaFlex strict YAML
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/515
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -3335,7 +3335,7 @@ cards:
     title: Clarify and close semantic-equivalence gaps between spec/LLM-friendly YAML and OrcaWave strict YAML
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/516
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - project
@@ -3350,7 +3350,7 @@ cards:
     title: Define OrcaFlex YAML semantic-diff taxonomy and comparison policy
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/517
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -3366,7 +3366,7 @@ cards:
     title: Classify and fix General/Environment/Groups fidelity gaps in OrcaFlex generation
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/519
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -3382,7 +3382,7 @@ cards:
     title: Improve and document reverse extraction limits for OrcaFlex strict YAML to spec.yml
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/520
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - cat:engineering
@@ -3397,7 +3397,7 @@ cards:
     title: Implement OrcaWave semantic-equivalence taxonomy, regression tests, and documentation follow-ups
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/521
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - project
@@ -3412,7 +3412,7 @@ cards:
     title: Add OrcaWave value-level semantic roundtrip regression tests
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/524
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - project
@@ -4519,7 +4519,7 @@ cards:
     title: 'Bulk diffraction model generator: fleet deck-gen over installation_vessels() + batch config'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/929
-    gh_state: closed
+    gh_state: open
     gh_labels: []
     initial_status: triage
     priority: 0
@@ -4663,7 +4663,7 @@ cards:
     title: 'OrcaWave gap specs: mean-drift, field-points, control-surface (dispatchable templates)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/953
-    gh_state: closed
+    gh_state: open
     gh_labels: []
     initial_status: triage
     priority: 0

@@ -14,7 +14,7 @@ cards:
     title: 'OrcaWave: mesh file pre-flight validation + auto-copy in runner'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/500
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - priority:high
@@ -35,7 +35,7 @@ cards:
     title: 'OrcaWave: produce self-contained solver packages from spec conversion'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/605
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - priority:high
@@ -54,7 +54,7 @@ cards:
     title: 'OrcaWave: integrate MeshPipeline into spec conversion and runner'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/606
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - priority:high
@@ -73,7 +73,7 @@ cards:
     title: 'OrcaWave: add given-mesh CLI workflow for diffraction setup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/607
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - priority:high
@@ -92,7 +92,7 @@ cards:
     title: 'OrcaWave: add mesh quality gates before diffraction solve'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/608
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - priority:high
@@ -111,7 +111,7 @@ cards:
     title: 'OrcaWave: normalize auxiliary mesh handling for control surfaces and QTF inputs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/609
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - priority:high
@@ -358,7 +358,7 @@ cards:
     title: 'OrcaWave: expand QTF config + field points + irregular frequency method'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/501
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - priority:high

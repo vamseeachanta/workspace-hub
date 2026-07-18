@@ -36,7 +36,7 @@ cards:
     title: 'Diffraction (a): inverse entry point + resolver — outcome + barebones data -> complete spec'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/623
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - machine:dev-primary
@@ -49,7 +49,7 @@ cards:
     title: 'Diffraction (a): AssumptionLedger — surface every assumed value in the output report'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/624
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - machine:dev-primary

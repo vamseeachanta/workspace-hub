@@ -796,7 +796,7 @@ cards:
       - cat:engineering
       - priority:high
       - cat:data
-      - status:plan-review
+      - status:plan-approved
       - domain:subsea-risers
       - lane:codex
       - epic

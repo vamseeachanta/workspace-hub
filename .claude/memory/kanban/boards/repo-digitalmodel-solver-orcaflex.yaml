@@ -584,7 +584,7 @@ cards:
     title: 'bug(orcaflex): preserve generated jumper line-section YAML in pipeline outputs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/601
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - cat:engineering
       - priority:medium
@@ -603,7 +603,7 @@ cards:
     title: 'feat(orcaflex): convert Ballymore jumper specs into generator-ready ProjectInputSpec models'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/602
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - cat:engineering
       - priority:medium
@@ -622,7 +622,7 @@ cards:
     title: 'test(orcaflex): add regression coverage for Ballymore spec-to-modular pipeline'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/603
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - cat:engineering
       - priority:medium
@@ -692,7 +692,7 @@ cards:
     title: 'fix(orcaflex): refresh spec-library audit and clear known generation failures (schema, builders, YAML-strict)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/716
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - cat:engineering
       - priority:high
