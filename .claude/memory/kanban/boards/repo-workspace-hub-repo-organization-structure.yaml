@@ -174,7 +174,6 @@ cards:
       - cat:harness
       - status:working
       - machine:dev-primary
-      - agent:gemini
       - agent:claude
       - agent:codex
       - status:plan-approved
@@ -182,6 +181,7 @@ cards:
       - gate:completeness
       - domain:repo-organization-structure
       - lane:codex
+      - agent:agy
     gh_assignees: []
     initial_status: triage
     priority: 1

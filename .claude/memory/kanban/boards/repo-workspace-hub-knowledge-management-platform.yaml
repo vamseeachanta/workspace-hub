@@ -450,7 +450,6 @@ cards:
       - priority:high
       - cat:ai-orchestration
       - machine:dev-primary
-      - agent:gemini
       - agent:claude
       - agent:codex
       - status:plan-approved
@@ -458,6 +457,7 @@ cards:
       - gate:completeness
       - domain:knowledge-management-platform
       - lane:claude
+      - agent:agy
     gh_assignees: []
     initial_status: triage
     priority: 1

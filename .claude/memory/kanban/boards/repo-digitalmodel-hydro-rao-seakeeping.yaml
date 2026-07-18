@@ -191,3 +191,20 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1618
+    title: Bind one public drilling rig to a physical vessel hydrodynamic identity
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1618
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:data
+      - domain:hydro-rao-seakeeping
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

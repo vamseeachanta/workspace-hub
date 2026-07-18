@@ -902,3 +902,47 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3577
+    title: 'fix(harness): repo-wide exec-bit audit — NTFS-FUSE working copy commits scripts as 100644'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3577
+    gh_state: open
+    gh_labels:
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3578
+    title: "fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3578
+    gh_state: open
+    gh_labels:
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3579
+    title: 'chore(readiness): rename equality/parity provider row gemini→agy (cross-machine snapshot schema migration)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3579
+    gh_state: open
+    gh_labels:
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3580
+    title: 'chore(harness): gemini CLI uninstall decision after agy soak (#3573)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3580
+    gh_state: open
+    gh_labels:
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

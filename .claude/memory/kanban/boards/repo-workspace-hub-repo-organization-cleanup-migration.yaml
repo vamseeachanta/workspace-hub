@@ -72,11 +72,11 @@ cards:
       - priority:low
       - cat:engineering
       - machine:dev-primary
-      - agent:gemini
       - dispatch:ready
       - gate:completeness
       - domain:repo-organization-cleanup-migration
       - lane:claude
+      - agent:agy
     gh_assignees: []
     initial_status: triage
     priority: 0

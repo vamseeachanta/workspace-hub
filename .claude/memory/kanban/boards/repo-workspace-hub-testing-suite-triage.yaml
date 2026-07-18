@@ -300,12 +300,12 @@ cards:
       - priority:medium
       - cat:engineering
       - machine:dev-primary
-      - agent:gemini
       - status:plan-review
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
       - lane:claude
+      - agent:agy
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -319,11 +319,11 @@ cards:
       - priority:medium
       - cat:engineering
       - machine:dev-primary
-      - agent:gemini
       - dispatch:ready
       - gate:completeness
       - domain:testing-suite-triage
       - lane:codex
+      - agent:agy
     gh_assignees: []
     initial_status: triage
     priority: 0

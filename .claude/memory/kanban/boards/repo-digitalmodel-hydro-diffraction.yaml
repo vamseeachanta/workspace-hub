@@ -485,3 +485,21 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1619
+    title: Prove one solver-neutral public MODU diffraction-to-RAO record
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1619
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:data
+      - domain:hydro-diffraction
+      - domain:hydro-rao-seakeeping
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

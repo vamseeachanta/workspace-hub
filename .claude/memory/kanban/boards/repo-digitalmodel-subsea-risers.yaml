@@ -796,10 +796,10 @@ cards:
       - cat:engineering
       - priority:high
       - cat:data
-      - status:plan-approved
       - domain:subsea-risers
       - lane:codex
       - epic
+      - status:needs-plan
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -1011,6 +1011,83 @@ cards:
     title: Bind immutable riser release evidence into twin replay and monitoring
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1617
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1620
+    title: Bind one immutable riser release to a versioned operating envelope
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1620
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:data
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1621
+    title: Map telemetry to canonical riser, host, and envelope identities
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1621
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - cat:data
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1622
+    title: Track deterministic real-time riser operating state
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1622
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1623
+    title: Approve and activate advisory riser alarm policy
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1623
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - domain:subsea-risers
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1624
+    title: Validate riser-monitoring risk-reduction evidence
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1624
     gh_state: open
     gh_labels:
       - enhancement
