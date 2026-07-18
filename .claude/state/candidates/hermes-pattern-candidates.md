@@ -35,3 +35,8 @@
 - key: user-expects-learning-passes-to-actively-update-class-level-skills-when-there-is-real-signal-preferring-loaded-existing-umbrella-skills-plus-concise-references-over-narrow-one-session-skills  status: candidate  kind: skill  source: USER.md  summary: "User expects learning passes to actively update class-level skills when there is real signal, preferring loaded/existing umbrella skills plus concise references over narrow one-session skills."
 - key: user-prefers-interactive-local-review-rating-web-apps-to-include-a-simple-submit-button-rather-than-requiring-manual-export-download-upload-workflows  status: candidate  kind: skill  source: USER.md  summary: "User prefers interactive local review/rating web apps to include a simple Submit button rather than requiring manual export/download/upload workflows."
 - key: user-expects-operational-ctas-to-be-explicit-and-directly-executable-including-the-exact-command-message-to-send-and-what-to-do-next  status: candidate  kind: memory  source: USER.md  summary: "User expects operational CTAs to be explicit and directly executable, including the exact command/message to send and what to do next."
+
+## Candidates (from 2026-07-13 — Hermes patterns)
+> Auto-emitted by extract_hermes_patterns.py — status: candidate. Promotion to a skill/memory
+> is a HUMAN owner-review action (gate per #3252). Do not edit manually.
+- key: baez-telegram-deckhand-stays-within-transportation-engineering-economics-unless-explicitly-asked-for-multi-domain-work-confirm-before-other-domains  status: candidate  kind: memory  source: MEMORY.md  summary: "baez Telegram: Deckhand stays within transportation/engineering/economics unless explicitly asked for multi-domain work; confirm before other domains."
