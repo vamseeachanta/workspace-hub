@@ -3518,14 +3518,14 @@ cards:
     title: 'feat(cost): Big Foot end-to-end asset cost-map pilot'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1039
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - priority:high
       - cat:data
       - route:C
       - cat:engineering-calculations
-      - status:plan-approved
+      - status:plan-review
       - lane:codex
     initial_status: triage
     priority: 1
