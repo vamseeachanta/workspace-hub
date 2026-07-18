@@ -7873,3 +7873,23 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1625
+    title: 'report_pack: wide result tables overflow the page - no per-table scroll container in the standard HTML'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1625
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1626
+    title: 'test_foam_report_pack: byte-exact CSV regeneration compare fails on Windows checkouts (CRLF)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1626
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
