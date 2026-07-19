@@ -34,7 +34,7 @@ exact, checksummed target-consent reset/restore; privacy and machine policy are 
 written. See `docs/runbooks/windows-rdp-microphone.md`.
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02 -OutputFormat Human
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost <remote-session-host> -OutputFormat Human
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Server -OutputFormat Human
 ```
 
