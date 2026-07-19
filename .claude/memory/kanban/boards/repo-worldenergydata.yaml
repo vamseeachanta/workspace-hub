@@ -3540,9 +3540,9 @@ cards:
       - enhancement
       - priority:high
       - cat:data
+      - status:working
       - route:C
       - cat:engineering-calculations
-      - status:plan-review
       - lane:codex
     initial_status: triage
     priority: 1
