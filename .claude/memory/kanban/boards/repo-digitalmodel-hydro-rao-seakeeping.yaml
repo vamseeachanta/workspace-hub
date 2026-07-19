@@ -200,7 +200,7 @@ cards:
       - enhancement
       - cat:engineering
       - cat:data
-      - status:plan-review
+      - status:plan-approved
       - domain:hydro-rao-seakeeping
       - domain:subsea-risers
       - lane:codex
