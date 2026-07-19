@@ -395,7 +395,5 @@ def main(argv: list[str] | None = None) -> int:
         for error in result.errors:
             print(f"ERROR: {error}", file=sys.stderr)
     return 1 if result.errors else 0
-
-
 if __name__ == "__main__":
     raise SystemExit(main())
