@@ -114,6 +114,12 @@ def test_digest_logical_names_are_posix_stable():
     assert generator.digest_logical_name(ROOT / relative) == relative.as_posix()
 
 
+def test_stale_inventory_diagnostic_reads_existing_digest():
+    generator = load_generator()
+    assert generator.rendered_input_digest(b'{"input_digest":"abc"}\n') == "abc"
+    assert generator.rendered_input_digest(b"not-json") == "<invalid-json>"
+
+
 def test_duplicate_exact_lines_emit_collision_and_non_unique_rows(tmp_path):
     tasks = [
         {"id": task_id, "scheduler": "cron", "schedule": "0 1 * * *",

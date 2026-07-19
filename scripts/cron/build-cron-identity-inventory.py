@@ -135,6 +135,14 @@ def render(payload: dict) -> bytes:
             + "\n").encode("utf-8")
 
 
+def rendered_input_digest(raw: bytes) -> str:
+    try:
+        payload = json.loads(raw)
+    except json.JSONDecodeError:
+        return "<invalid-json>"
+    return str(payload.get("input_digest", "<missing>"))
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
@@ -151,9 +159,15 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     invalid = bool(payload["unsupported"] or payload["collisions"])
     if args.check:
-        stale = not args.output.is_file() or args.output.read_bytes() != generated
+        current = args.output.read_bytes() if args.output.is_file() else b""
+        stale = current != generated
         if stale:
             print(f"ERROR: stale identity inventory: {args.output}", file=sys.stderr)
+            print(
+                "ERROR: expected input_digest "
+                f"{payload['input_digest']} but found {rendered_input_digest(current)}",
+                file=sys.stderr,
+            )
         return 1 if stale or invalid else 0
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(generated)
