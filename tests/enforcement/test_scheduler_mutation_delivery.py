@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import importlib.util
 import html
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -230,6 +231,42 @@ def test_bootstrap_rejects_missing_or_nonregular_helper(tmp_path, helper_mode):
     command = command.replace(needle, "git --no-replace-objects write-tree")
     completed = subprocess.run(["bash", "-c", command], cwd=repo)
     assert completed.returncode != 0
+
+
+def test_forged_index_attestation_cannot_execute_working_modules(tmp_path):
+    repo = tmp_path / "clone"
+    subprocess.run(
+        ["git", "-c", "core.longpaths=true", "clone", "-q", "--no-hardlinks",
+         str(ROOT), str(repo)], check=True,
+    )
+    index = repo / ".captured-index"
+    git_dir = subprocess.check_output(
+        ["git", "rev-parse", "--absolute-git-dir"], cwd=repo, text=True
+    ).strip()
+    tree_oid = subprocess.check_output(
+        ["git", "rev-parse", "HEAD^{tree}"], cwd=repo, text=True
+    ).strip()
+    env = dict(
+        os.environ,
+        GIT_DIR=git_dir,
+        GIT_WORK_TREE=str(repo),
+        GIT_INDEX_FILE=str(index),
+        CAPTURED_TREE_OID=tree_oid,
+    )
+    subprocess.run(["git", "read-tree", tree_oid], cwd=repo, env=env, check=True)
+    sentinel = tmp_path / "working-module-ran"
+    module = repo / "scripts/enforcement/scheduler_mutation_contract.py"
+    module.write_text(
+        module.read_text(encoding="utf-8")
+        + f"\nfrom pathlib import Path\nPath({str(sentinel)!r}).write_text('ran')\n",
+        encoding="utf-8",
+    )
+    completed = subprocess.run(
+        [sys.executable, "scripts/enforcement/check-scheduler-mutation-surfaces.py",
+         "--captured-tree"], cwd=repo, env=env,
+    )
+    assert completed.returncode != 0
+    assert not sentinel.exists()
 
 
 def test_rule_and_ops_define_scheduler_target_binding_contract():

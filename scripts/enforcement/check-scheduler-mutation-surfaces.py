@@ -10,8 +10,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import yaml
-
 MODULE_DIR = Path(__file__).resolve().parent
 LIB_DIR = Path(__file__).resolve().parents[1] / "lib"
 if str(MODULE_DIR) not in sys.path:
@@ -19,6 +17,15 @@ if str(MODULE_DIR) not in sys.path:
 if str(LIB_DIR) not in sys.path:
     sys.path.insert(0, str(LIB_DIR))
 
+from git_index_snapshot import (  # noqa: E402
+    SCHEDULER_CODE_PATHS,
+    verify_captured_context,
+)
+ROOT = Path(__file__).resolve().parents[2]
+if "--captured-tree" in sys.argv[1:]:
+    verify_captured_context(ROOT, SCHEDULER_CODE_PATHS)
+
+import yaml  # noqa: E402
 from scheduler_mutation_contract import (  # noqa: E402
     ATT_SOURCES,
     Discovery,
@@ -50,9 +57,6 @@ from scheduler_mutation_report import render_html  # noqa: E402
 from scheduler_mutation_wrapper_attestations import (  # noqa: E402
     evaluate_wrapper_attestation,
 )
-from git_index_snapshot import verify_captured_context  # noqa: E402
-
-ROOT = Path(__file__).resolve().parents[2]
 REPORT_PATH = Path("docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html")
 REGISTRY = b"config/scheduled-tasks/mutation-surfaces.yaml"
 CHECKER = b"scripts/enforcement/check-scheduler-mutation-surfaces.py"
@@ -356,7 +360,7 @@ def main(argv: list[str] | None = None) -> int:
         if canonical and not args.captured_tree:
             raise ValueError("canonical scheduler check requires captured-tree coordinator")
         if canonical:
-            verify_captured_context(ROOT)
+            verify_captured_context(ROOT, SCHEDULER_CODE_PATHS)
         records = read_index_records(ROOT)
         raw = records[REGISTRY]
         registry = yaml.safe_load(raw)

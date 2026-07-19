@@ -19,17 +19,20 @@ attestation. The onboarding preview gap remains visible as
 [#3490](https://github.com/vamseeachanta/workspace-hub/issues/3490), while the
 harness-update error-swallowing disposition remains #3479.
 
-```bash
-# Validate inventory, source attestations, and dispositions
-uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
+For a local operator check, stage every intended scheduler source and generated
+artifact, then run the complete `Validate captured scheduler state` shell block
+from `.github/workflows/scheduler-mutation-main.yml`. Make exactly one local
+substitution: replace
+`git --no-replace-objects rev-parse 'HEAD^{tree}'` with
+`git --no-replace-objects write-tree`. The block extracts and hash-verifies the
+helper from that tree and runs registry, identity inventory, and HTML validation
+through one captured `all` coordinator.
 
-# Verify the deterministic exact-identity inventory
-uv run python scripts/cron/build-cron-identity-inventory.py --check
-
-# Verify the committed human audit is byte-current
-uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py \
-  --check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html
-```
+Do not replace that block with direct canonical invocations of
+`check-scheduler-mutation-surfaces.py` or
+`build-cron-identity-inventory.py --check`; those commands intentionally fail
+closed outside the captured-index environment. Custom external fixture paths
+remain available for focused generator/checker tests.
 
 The human audit records [#3475](https://github.com/vamseeachanta/workspace-hub/issues/3475)
 as resolved and links active migration issues

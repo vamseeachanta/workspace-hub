@@ -9,8 +9,6 @@ import struct
 import sys
 from pathlib import Path
 
-import yaml
-
 ROOT = Path(__file__).resolve().parents[2]
 CRON_DIR = Path(__file__).resolve().parent
 LIB_DIR = ROOT / "scripts/lib"
@@ -19,12 +17,19 @@ if str(CRON_DIR) not in sys.path:
 if str(LIB_DIR) not in sys.path:
     sys.path.insert(0, str(LIB_DIR))
 
+from git_index_snapshot import (  # noqa: E402
+    INVENTORY_CODE_PATHS,
+    verify_captured_context,
+)
+if "--captured-tree" in sys.argv[1:]:
+    verify_captured_context(ROOT, INVENTORY_CODE_PATHS)
+
+import yaml  # noqa: E402
 from cron_identity import (  # noqa: E402
     build_ownership_context,
     validate_inventory_inputs,
     validate_state_classes,
 )
-from git_index_snapshot import verify_captured_context  # noqa: E402
 
 DEFAULT_CATALOG = ROOT / "config/scheduled-tasks/schedule-tasks.yaml"
 DEFAULT_REGISTRY = ROOT / "config/workstations/registry.yaml"
@@ -200,7 +205,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.check and canonical and not args.captured_tree:
             raise ValueError("canonical inventory check requires captured-tree coordinator")
         if args.check and canonical:
-            verify_captured_context(ROOT)
+            verify_captured_context(ROOT, INVENTORY_CODE_PATHS)
         payload = build(args.catalog, args.registry, args.state_classes)
         generated = render(payload)
     except (OSError, RuntimeError, TypeError, ValueError, yaml.YAMLError) as exc:

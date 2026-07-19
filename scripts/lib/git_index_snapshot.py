@@ -33,6 +33,9 @@ INVENTORY_PATHS = {
     "config/workstations/harness-state-classes.yaml",
     "docs/reports/issue-3475-command-identity-inventory.json",
 }
+INVENTORY_CODE_PATHS = {
+    path for path in INVENTORY_PATHS if path.endswith(".py")
+} | {"scripts/lib/git_index_snapshot.py"}
 SCHEDULER_PATHS = {
     "scripts/enforcement/check-scheduler-mutation-surfaces.py",
     "scripts/enforcement/scheduler_mutation_contract.py",
@@ -44,6 +47,9 @@ SCHEDULER_PATHS = {
     "scripts/enforcement/scheduler_mutation_wrapper_attestations.py",
     "docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html",
 } | INVENTORY_PATHS
+SCHEDULER_CODE_PATHS = {
+    path for path in SCHEDULER_PATHS if path.endswith(".py")
+} | {"scripts/lib/git_index_snapshot.py"}
 
 
 class SnapshotError(RuntimeError):
@@ -202,7 +208,7 @@ def _sanitized_env() -> dict[str, str]:
     return env
 
 
-def verify_captured_context(root: Path) -> None:
+def verify_captured_context(root: Path, paths: set[str]) -> None:
     declared = os.environ.get("CAPTURED_TREE_OID", "")
     index = Path(os.environ.get("GIT_INDEX_FILE", ""))
     worktree = Path(os.environ.get("GIT_WORK_TREE", ""))
@@ -221,6 +227,22 @@ def verify_captured_context(root: Path) -> None:
     )
     if completed.returncode or completed.stdout.strip() != declared:
         raise SnapshotError("captured-tree coordinator index does not match declared tree")
+    for path in sorted(paths):
+        listed = subprocess.run(
+            ["git", "--no-replace-objects", "ls-files", "-s", "-z", "--", path],
+            cwd=root, capture_output=True,
+        )
+        frames = listed.stdout[:-1].split(b"\0") if listed.stdout.endswith(b"\0") else []
+        if listed.returncode or len(frames) != 1:
+            raise SnapshotError(f"captured executable is missing: {path}")
+        metadata, listed_path = frames[0].split(b"\t", 1)
+        mode, oid, stage = metadata.split(b" ")
+        if listed_path.decode() != path or mode.decode() not in REGULAR_MODES or stage != b"0":
+            raise SnapshotError(f"captured executable entry is invalid: {path}")
+        body = root.joinpath(*PurePosixPath(path).parts).read_bytes()
+        actual = _git(root, "hash-object", "--stdin", input_bytes=body).decode().strip()
+        if actual != oid.decode():
+            raise SnapshotError(f"working executable differs from captured index: {path}")
 
 
 def _frozen_git_env(snapshot: Snapshot, root: Path, index: Path) -> dict[str, str]:
@@ -274,25 +296,31 @@ def _child_command(mode: str, python: Path) -> list[str]:
     return command
 
 
-def _run_modes(snapshot: Snapshot, modes: list[str]) -> int:
+def _run_mode(snapshot: Snapshot, mode: str) -> int:
     root = Path(tempfile.mkdtemp(prefix="git-index-snapshot-"))
     status = 0
     try:
         paths = COMMON_PATHS | INVENTORY_PATHS
-        if any(mode in {"registry", "html"} for mode in modes):
+        if mode in {"registry", "html"}:
             paths |= SCHEDULER_PATHS
         _materialize(snapshot, root, paths)
         env = _frozen_git_env(snapshot, root, root / ".captured-index")
         python = _sync_environment(root, env)
-        for mode in modes:
-            result = subprocess.run(_child_command(mode, python), cwd=root, env=env)
-            status |= int(result.returncode != 0)
+        result = subprocess.run(_child_command(mode, python), cwd=root, env=env)
+        status = int(result.returncode != 0)
     finally:
         try:
             shutil.rmtree(root)
         except OSError as exc:
             if status == 0:
                 raise SnapshotError(f"snapshot cleanup failed: {exc}") from exc
+    return status
+
+
+def _run_modes(snapshot: Snapshot, modes: list[str]) -> int:
+    status = 0
+    for mode in modes:
+        status |= _run_mode(snapshot, mode)
     return status
 
 
