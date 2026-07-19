@@ -143,6 +143,31 @@ def rendered_input_digest(raw: bytes) -> str:
     return str(payload.get("input_digest", "<missing>"))
 
 
+def inventory_mismatch_summary(current: bytes, generated: bytes) -> str:
+    try:
+        current_payload = json.loads(current)
+        generated_payload = json.loads(generated)
+    except json.JSONDecodeError:
+        return "inventory body mismatch: current file is not valid JSON"
+    for key in ("schema_version", "input_digest", "machines", "unsupported", "collisions"):
+        if current_payload.get(key) != generated_payload.get(key):
+            return f"inventory body mismatch at {key}"
+    current_rows = current_payload.get("identities", [])
+    generated_rows = generated_payload.get("identities", [])
+    if len(current_rows) != len(generated_rows):
+        return (
+            "inventory body mismatch: identity row count "
+            f"{len(current_rows)} != {len(generated_rows)}"
+        )
+    for index, (current_row, generated_row) in enumerate(zip(current_rows, generated_rows)):
+        if current_row != generated_row:
+            return (
+                f"inventory body mismatch at identities[{index}]: "
+                f"expected {generated_row!r} but found {current_row!r}"
+            )
+    return "inventory body mismatch: bytes differ after canonical JSON comparison"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
@@ -168,6 +193,7 @@ def main(argv: list[str] | None = None) -> int:
                 f"{payload['input_digest']} but found {rendered_input_digest(current)}",
                 file=sys.stderr,
             )
+            print(f"ERROR: {inventory_mismatch_summary(current, generated)}", file=sys.stderr)
         return 1 if stale or invalid else 0
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(generated)

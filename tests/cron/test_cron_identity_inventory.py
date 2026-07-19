@@ -120,6 +120,13 @@ def test_stale_inventory_diagnostic_reads_existing_digest():
     assert generator.rendered_input_digest(b"not-json") == "<invalid-json>"
 
 
+def test_inventory_mismatch_summary_names_first_changed_row():
+    generator = load_generator()
+    current = b'{"collisions":[],"identities":[{"task_id":"old"}],"input_digest":"d","machines":[],"schema_version":1,"unsupported":[]}\n'
+    generated = b'{"collisions":[],"identities":[{"task_id":"new"}],"input_digest":"d","machines":[],"schema_version":1,"unsupported":[]}\n'
+    assert "identities[0]" in generator.inventory_mismatch_summary(current, generated)
+
+
 def test_duplicate_exact_lines_emit_collision_and_non_unique_rows(tmp_path):
     tasks = [
         {"id": task_id, "scheduler": "cron", "schedule": "0 1 * * *",
