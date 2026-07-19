@@ -35,16 +35,19 @@ SOURCE_PATHS = (
 )
 
 
+def digest_logical_name(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(ROOT.resolve()).as_posix()
+    except ValueError:
+        return path.name
+
+
 def input_digest(paths: list[Path]) -> str:
     digest = hashlib.sha256()
     digest.update(b"cron-identity-input-v1\0")
     logical = []
     for path in paths:
-        try:
-            name = str(path.resolve().relative_to(ROOT.resolve()))
-        except ValueError:
-            name = path.name
-        logical.append((name, path))
+        logical.append((digest_logical_name(path), path))
     for name_text, path in sorted(logical):
         name = name_text.encode("utf-8")
         body = path.read_bytes()

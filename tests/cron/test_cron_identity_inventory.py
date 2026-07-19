@@ -108,6 +108,12 @@ def test_generator_source_is_in_versioned_digest_union(tmp_path):
     assert generator.input_digest([first]) != generator.input_digest([second])
 
 
+def test_digest_logical_names_are_posix_stable():
+    generator = load_generator()
+    relative = Path("scripts") / "cron" / "build-cron-identity-inventory.py"
+    assert generator.digest_logical_name(ROOT / relative) == relative.as_posix()
+
+
 def test_duplicate_exact_lines_emit_collision_and_non_unique_rows(tmp_path):
     tasks = [
         {"id": task_id, "scheduler": "cron", "schedule": "0 1 * * *",
