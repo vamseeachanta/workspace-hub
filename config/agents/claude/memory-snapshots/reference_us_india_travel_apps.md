@@ -1,14 +1,26 @@
 ---
 name: reference_us_india_travel_apps
-description: Travel/immigration/customs apps for the family (3 US citizens + OCI) for US↔India trips — incl. MANDATORY India e-Arrival Card since Apr 2026
+description: India trip Jul 21–Aug 19 2026 full prep record (e-Arrival, check-in, seats, roaming, Uber Reserve) + US↔India travel-app rules; NEXT = return check-in ~Aug 18
 metadata: 
   node_type: memory
   type: reference
   originSessionId: 4f3f7aae-afe3-461a-983d-eeb522f6a79c
-  modified: 2026-07-19T05:58:58.249Z
+  modified: 2026-07-19T12:35:32.880Z
 ---
 
-# US↔India travel apps (verified 2026-07-18)
+# US↔India travel apps + India trip Jul 21–Aug 19 2026 (prep COMPLETE 2026-07-19)
+
+**NEXT ACTIONS (in order):**
+1. **~Aug 18: return check-in** — QR4775 (IndiGo-op) + QR713; OTP dance via
+   achantav@gmail.com; ask IndiGo/HYD counter for QR4775 seats; QR713 seats already locked
+   23A(window=Devakrishna)/23B/23C ✓; MPC app declaration on landing at IAH.
+2. Optional during trip: submit 3 Global Entry apps at ttp.dhs.gov ($240 total, Devakrishna
+   free) → if conditionally approved, Enrollment on Arrival at IAH on Aug 19.
+3. 2026-09-18 calendar reminder fires: Devakrishna DS-11 renewal → then OCI passport
+   upload within 3 months ([[project_devakrishna_passport_renewal]]).
+
+Printer: Epson ET-2800 — `lp -d EPSON_ET_2800_Series -P <pages> -o print-color-mode=monochrome`.
+Paper backups of e-arrival QRs + e-tickets printed 2026-07-19.
 
 **TRIP (booked, PNR 78ANCY, Qatar Airways, in achantav@gmail.com):**
 Out: IAH→DOH QR714 Sun 19 Jul 2026 18:15 → DOH→HYD QR500, **arrive Hyderabad Tue 21 Jul
