@@ -200,10 +200,10 @@ cards:
       - enhancement
       - cat:engineering
       - cat:data
+      - status:plan-approved
       - domain:hydro-rao-seakeeping
       - domain:subsea-risers
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
