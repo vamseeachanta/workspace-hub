@@ -1,16 +1,16 @@
 # Provider work queue
 
-Generated: 2026-07-18T21:21:30.487567Z
-Current week: 2026-W29
-Recommended provider order: gemini, claude, codex
+Generated: 2026-07-22T21:21:13.728969Z
+Current week: 2026-W30
+Recommended provider order: agy, claude, codex
 
 Execution-ready means the issue already carries `status:plan-approved`. agent:* labels are routing hints only and do not grant execution approval.
 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 61
-- Total routed candidates: 177
+- Execution-ready candidates: 60
+- Total routed candidates: 175
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: high
 - Execution-ready candidates: 8
-- Total routed candidates: 23
+- Total routed candidates: 24
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -40,12 +40,13 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | yes | implementation/test/fix language | bug, cat:harness, machine:multi, status:plan-approved, gate:completeness, domain:workstations-fleet-equivalence |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | yes | implementation/test/fix language | status:plan-approved, gate:completeness, lane:claude |
 
-## gemini
+## agy
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 0
+- Total routed candidates: 1
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
+| #3584 phone-media: USB-pull remaining family phones into the archive | no | research/triage/audit language | priority:medium, cat:data-pipeline |
 

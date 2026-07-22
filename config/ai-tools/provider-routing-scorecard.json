@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-07-15T09:21:30.625067Z",
-  "current_week": "2026-W29",
+  "generated_at": "2026-07-22T21:21:11.908890Z",
+  "current_week": "2026-W30",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-07-15T09:21:30.488945Z",
-    "audit_generated_at": "2026-07-13T09:15:04Z"
+    "utilization_generated_at": "2026-07-22T21:21:11.794868Z",
+    "audit_generated_at": "2026-07-20T09:15:07Z"
   },
   "recommended_provider_order": [
-    "gemini",
+    "agy",
     "claude",
     "codex"
   ],
@@ -17,28 +17,48 @@
       "provider": "claude",
       "status": "underused",
       "priority": "high",
-      "reported_utilization_pct": 0.5,
+      "reported_utilization_pct": 0.0,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 5,
-      "post_records_current_week": 187,
-      "audit_post_records": 122229,
+      "sessions_current_week": 0,
+      "post_records_current_week": 0,
+      "audit_post_records": 123003,
       "missing_repo_reads": 9463,
-      "python3_per_1k_records": 9.16,
-      "migration_debt_per_1k_records": 14.1,
+      "python3_per_1k_records": 9.12,
+      "migration_debt_per_1k_records": 14.02,
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
-          "tool": "unknown",
-          "count": 120
-        },
-        {
           "tool": "Bash",
-          "count": 63
+          "count": 65539
         },
         {
           "tool": "Read",
-          "count": 4
+          "count": 21595
+        },
+        {
+          "tool": "Edit",
+          "count": 9704
+        },
+        {
+          "tool": "unknown",
+          "count": 9386
+        },
+        {
+          "tool": "Write",
+          "count": 8497
+        },
+        {
+          "tool": "Grep",
+          "count": 2613
+        },
+        {
+          "tool": "Agent",
+          "count": 1420
+        },
+        {
+          "tool": "ToolSearch",
+          "count": 681
         }
       ],
       "preferred_work": [
@@ -63,36 +83,48 @@
       "provider": "codex",
       "status": "needs_cleanup",
       "priority": "high",
-      "reported_utilization_pct": 52.0,
+      "reported_utilization_pct": 21.4,
       "quota_basis": "quota",
       "quota_source": "history.jsonl-estimate",
-      "sessions_current_week": 113,
-      "post_records_current_week": 6486,
-      "audit_post_records": 188117,
+      "sessions_current_week": 0,
+      "post_records_current_week": 0,
+      "audit_post_records": 202717,
       "missing_repo_reads": 1689,
-      "python3_per_1k_records": 14.99,
+      "python3_per_1k_records": 13.91,
       "migration_debt_per_1k_records": 0.05,
       "top_migration_hint": "llm_wiki_spinout_path_drift",
       "top_tools": [
         {
+          "tool": "Bash",
+          "count": 166105
+        },
+        {
           "tool": "wait",
-          "count": 3074
+          "count": 11473
+        },
+        {
+          "tool": "Read",
+          "count": 7376
         },
         {
           "tool": "wait_agent",
-          "count": 1852
+          "count": 6485
         },
         {
           "tool": "send_message",
-          "count": 812
+          "count": 2054
         },
         {
-          "tool": "followup_task",
-          "count": 232
+          "tool": "Grep",
+          "count": 2036
         },
         {
-          "tool": "list_agents",
-          "count": 202
+          "tool": "spawn_agent",
+          "count": 1519
+        },
+        {
+          "tool": "update_plan",
+          "count": 1058
         }
       ],
       "preferred_work": [
@@ -112,53 +144,20 @@
       ]
     },
     {
-      "provider": "gemini",
+      "provider": "agy",
       "status": "underused",
       "priority": "highest",
       "reported_utilization_pct": 0.0,
-      "quota_basis": "quota",
-      "quota_source": "manual-snapshot",
+      "quota_basis": "unavailable",
+      "quota_source": "unavailable",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 6210,
-      "missing_repo_reads": 615,
-      "python3_per_1k_records": 46.86,
-      "migration_debt_per_1k_records": 13.85,
-      "top_migration_hint": "legacy_local_work_queue_items",
-      "top_tools": [
-        {
-          "tool": "Bash",
-          "count": 2288
-        },
-        {
-          "tool": "Read",
-          "count": 2181
-        },
-        {
-          "tool": "Grep",
-          "count": 655
-        },
-        {
-          "tool": "Write",
-          "count": 535
-        },
-        {
-          "tool": "Edit",
-          "count": 394
-        },
-        {
-          "tool": "Browser",
-          "count": 143
-        },
-        {
-          "tool": "ToolSearch",
-          "count": 9
-        },
-        {
-          "tool": "generalist",
-          "count": 3
-        }
-      ],
+      "audit_post_records": 0,
+      "missing_repo_reads": 0,
+      "python3_per_1k_records": 0.0,
+      "migration_debt_per_1k_records": 0.0,
+      "top_migration_hint": null,
+      "top_tools": [],
       "preferred_work": [
         "batched research/recon",
         "risk enumeration",
@@ -170,13 +169,14 @@
         "tight verification loops"
       ],
       "actions": [
-        "Batch 5-6 related research/recon tasks into Gemini sessions.",
-        "Use Gemini for scouting/risk-analysis packets instead of leaving the lane idle."
+        "Batch 5-6 related research/recon tasks into agy sessions.",
+        "Use agy for scouting/risk-analysis packets instead of leaving the lane idle.",
+        "Telemetry is weak; treat utilization as directional, not exact weekly headroom."
       ]
     }
   ],
   "summary": {
-    "highest_priority_provider": "gemini",
-    "highest_priority_reason": "Batch 5-6 related research/recon tasks into Gemini sessions."
+    "highest_priority_provider": "agy",
+    "highest_priority_reason": "Batch 5-6 related research/recon tasks into agy sessions."
   }
 }

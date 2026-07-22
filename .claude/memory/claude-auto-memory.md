@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-07-18
+> Last captured: 2026-07-22
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -11,7 +11,9 @@
 > below; full detail lives in each topic file here.
 
 ## Active & Recent Projects
-- [External SSH via Tailscale for ace-linux-1/2](project_external_ssh_tailscale_fleet.md) — 2026-07-18 ✅ WIRED + verified both directions LAN-side (deckhand#571): ace-linux-1 joined tailnet via root-free userspace tailscaled (100.105.46.79), persistence = user unit + linger; ace-linux-2 (100.93.161.27) plain sshd over tailnet. PENDING (user-gated): off-LAN test, reboot check, router 22/2222 audit, optional RunSSH via sudo. Traps banked in topic file
+- [India family trip Jul 21–Aug 19 + travel apps](reference_us_india_travel_apps.md) — 2026-07-19 ✅✅ **PREP COMPLETE, family departs IAH 18:15 Jul 19** (PNR 78ANCY): e-Arrival cards filed+printed, checked in (passes at IAH desk — arrive 3h early), outbound seats together, return QR713 seats 23A window=Krishna, H2O roaming funded both lines, Uber Reserve RGIA→Secunderabad booked (flight-linked QR500, ₹2288 Visa ••1832), docs in `achantas-data/_travel/2026/`. **NEXT: ~Aug 18 return check-in** (OTP via achantav@gmail.com); optional GE apps from India; Sep 18 DS-11 reminder. Full runbook + traps in topic file
+- [iPhone media extraction pipeline](project_iphone_media_taildrop_pipeline.md) — 2026-07-19 ✅✅ TWO PHONES ARCHIVED 3-2-1: iphone-14 (958/6GB) + iphone-sabitha (711/22GB) originals via USB AFC → `phone-media/` + Drive mirrors rclone-check-verified (1671 obj/27.3GiB; **Drive free 30.4GiB**). Low-res tree deleted; Taildrop+WebDAV lanes systemd-live. Follow-ons = EPIC wh#3589 (#3584-#3588). Krishna no phone. NEXT: #3586 capacity plan gates next phone
+- [External SSH via Tailscale for ace-linux-1/2](project_external_ssh_tailscale_fleet.md) — 2026-07-18 ✅✅ **GOAL MET, verified from phone on cellular** (deckhand#571): ace-linux-1 (100.105.46.79) root-free userspace tailscaled + OpenSSH passthrough, persistence = user unit + linger; ace-linux-2 (100.93.161.27) Tailscale SSH (RunSSH=true, DNS warning cleared). ✅ ace-linux-1 reboot survival PASS 2026-07-19 (all lanes auto-recovered). PENDING (passive): router 22/2222 audit. Traps banked in topic file
 - [agy replaces gemini as 3rd worker/reviewer (wh#3573)](project_agy_replaces_gemini_provider_swap.md) — 2026-07-18 ✅✅✅ **COMPLETE, #3573 CLOSED**: all 3 PRs MERGED (#3574 `a03d1a9`, #3575 `331cd23`, #3576 `3e8edba`, content-verified); labels migrated; handoff `docs/session-handoffs/2026-07-18-handoff-3573-agy-provider-swap.md` on main (`bc92523b4`). RULE now live: cross-review = Claude+Codex+Agy; `gemini` = deprecated alias only. Open follow-ons: #3577 exec-bit sweep, #3578 codex stdin-hang, #3579 equality row rename (after soak), #3580 gemini uninstall (~2026-08-01). Detail in topic file
 - [Sun Manufacturing Floorhand pamphlet](project_sun_manufacturing_floorhand_pamphlet.md) — 2026-07-17: ✅ PR #179 MERGED; ✅ pamphlet EMAILED; ✅ Austin Bryant replied POSITIVE same day (shop installing 2 new machines = CAD/CAM opening). Floorhand design system banked (RULE: future pamphlets copy `strategy/floorhand-pamphlet-TEMPLATE.html`). AWAITING Austin's meeting pick (offered Wed–Fri Jul 22–24 ≥2 PM; calendar clear). NEXT: on pick → calendar event + meeting kit (pamphlet + P10/P50/P90 bidding + CAD/CAM angle); nudge Monday if silent. Contact details in topic file
 - [Fidelity returns analysis + dashboard](project_fidelity_returns_analysis.md) — 2026-07-17 ✅ COMPLETE: Flow-vs-Return charts (monthly+yearly, per-acct+per-stock dropdown) MERGED PR #152 (`4182215`, content-verified). Recon 0.05% worst dev; traps banked (Yahoo split-adjust, IRA rollover half-missing, proxy-deposit cash credit). Build now self-contained (`prices/` + fetch_prices.py). No open work
@@ -26,7 +28,7 @@
 - [dm#1528 sloshing fill/drain reduced-order](project_dm1528_sloshing_reduced_order.md) — 2026-07-12: coeff corrected 0.16·Π (GCI 9.5%); ITEM-4 handover dm#1562. REMAINING (blocked on user hull data): run #1562 → roll-reduction %
 - [HF projection + staged promotion (wh#3433)](project_hf_projection_staged_promotion.md) — 2026-07-11: PR #3465 plan-approved; schema chain PR #3468; gated behind DRAFT #3452. Pilots blocked
 - [World Energy Field Explorer program](project_world_energy_field_explorer_program.md) — 2026-07-10: wed EPIC #939 + #940-#951 + dm#1523. NEXT: #942 panel (dm#1519) or #945
-- [Devakrishna passport renewal (DS-11)](project_devakrishna_passport_renewal.md) — 2026-07-18: partially UNBLOCKED (passport details recovered from repo scans; expires 22 Jun 2027, tight for travel after ~Dec 2026). Still needs: SSN, height/hair/eye, ZIP, consent path
+- [Devakrishna passport renewal (DS-11)](project_devakrishna_passport_renewal.md) — 2026-07-18: DEFERRED until family returns from current trip (user decision; trip runs on existing passport, exp 22 Jun 2027, OK while travel ends before ~late Dec 2026). On return: SSN, height/hair/eye, ZIP, consent path → DS-11 + appointment
 - [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-07: #755/#756/#848-#850 LIVE; #757 plan-APPROVED; remaining #759/#761
 - [International field-dev epic (wed #713)](project_wed_international_field_dev_epic.md) — 2026-07-13: 6 country chains MERGED + benchmark; #720 Mexico source recovered. NEXT: #720 DI-loader; #722
 - [FDAS public tier + HSE finding](project_fdas_public_tier_dashboard_hse.md) — HSE does NOT favor dry-tree — don't pitch HSE. OPEN: dashboard + Roy email
@@ -76,9 +78,11 @@
 - [SVG-for-PDF portability](feedback_svg_pdf_portability_no_patterns_clippaths.md) — no `<pattern>`/clipPath/filter/mask in PDF-bound SVG; verify with `pdftocairo`
 
 ## Key References
+- [US↔India travel apps for the family](reference_us_india_travel_apps.md) — India e-Arrival Card MANDATORY since Apr 2026 (72h pre-arrival, OCI too, save the QR); MPC for US re-entry (12 family profiles); ATITHI 2.0 for India customs; H2O roaming needs credit top-up (silently fails at $0); Uber Reserve needs valid card (no cash, web can't add cards)
 - [Family US passport scan locations](reference_family_us_passport_locations.md) — current scans in achantas-data (`va/`, `sd/ID/`, `da/`); Sabitha surname = DEEPTHIMAHANTI; Devakrishna expiry 22 Jun 2027 = travel constraint; numbers stay in scans (PII rule)
 - [gpu-claw WireGuard flap → detached runs](reference_gpu_claw_wireguard_flap_detached_runs.md) — nohup + GitHub-as-progress-channel pattern
 - [Vessel-fleet data locations](reference_vessel_fleet_data_locations.md) — rig-spec DB complete (epic wed #991); NEXT #997 onshore + #1006 equipment fields
+- [ace-linux-1 display: NVIDIA Maxwell dead on kernel 7.0](reference_ace_linux_1_display_nvidia_maxwell_dead.md) — 2026-07-19: GTX 750 Ti fell to simpledrm 640×480 (no 535 modules for 7.0 kernel + nouveau blacklisted); fix = purge nvidia stack → nouveau; never reinstall nvidia-535
 - [ace-linux-1 OOM hang 2026-07-12](reference_ace_linux_1_oom_hang_2026_07_12.md) — earlyoom installed; wedge RESOLVED. OPEN: #3504-#3506 fingerprint triage — detail in topic file
 - [FUSE mount saturation = process storm](reference_fuse_mount_saturation_process_storm.md) — "filesystem timed out" = runaway jobs; diagnose `ps -eo ppid,stat,etimes,%cpu`
 - [Verify licensed-run hosts headless via heartbeat](reference_ace_win_1_headless_verification_via_heartbeat.md) — queue-repo `heartbeat/<host>.json` = ONLY remote signal

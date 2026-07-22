@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-07-15T09:21:32.927221Z",
-  "current_week": "2026-W29",
-  "scorecard_generated_at": "2026-07-15T09:21:30.625067Z",
+  "generated_at": "2026-07-22T21:21:13.728969Z",
+  "current_week": "2026-W30",
+  "scorecard_generated_at": "2026-07-22T21:21:11.908890Z",
   "recommended_provider_order": [
-    "gemini",
+    "agy",
     "claude",
     "codex"
   ],
@@ -11,93 +11,9 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 66,
-      "total_candidates": 180,
+      "execution_ready_count": 60,
+      "total_candidates": 175,
       "top_issues": [
-        {
-          "number": 3063,
-          "title": "uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3063",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:codex",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-06T18:35:45Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3064,
-          "title": "uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3064",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:codex",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-06T18:35:45Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3065,
-          "title": "uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3065",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:codex",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-06T18:35:48Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 3282,
           "title": "wf-api(assetutilities): ResultEnvelope + run_workflow() + registry request/response schema [FOUNDATIONAL]",
@@ -217,93 +133,82 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3295,
+          "title": "seamless(contract): reconcile registry schema_version into a unified v2 superset (unblocks #3282)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3295",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "domain:workflow-standardization",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-06-29T04:08:24Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3297,
+          "title": "wf-api(assetutilities): make the engine embeddable \u2014 injected root, no cwd-coupled side effects [PREREQ for #3282]",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3297",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "domain:workflow-standardization",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-06-29T04:08:22Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3307,
+          "title": "wf-api(digitalmodel): engine embed-port \u2014 mirror #3297 for digitalmodel's own engine [prereq for #3285]",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3307",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "domain:workflow-standardization",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-06-29T04:08:27Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
         }
       ],
       "full_candidates": [
-        {
-          "number": 3063,
-          "title": "uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3063",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:codex",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-06T18:35:45Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3064,
-          "title": "uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3064",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:codex",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-06T18:35:45Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3065,
-          "title": "uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3065",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:workflow-standardization",
-            "status:plan-approved",
-            "dispatch:ready",
-            "gate:completeness",
-            "lane:codex",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-06T18:35:48Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 3282,
           "title": "wf-api(assetutilities): ResultEnvelope + run_workflow() + registry request/response schema [FOUNDATIONAL]",
@@ -759,28 +664,28 @@
           ]
         },
         {
-          "number": 3067,
-          "title": "uv-workflow(workspace-hub): write the canonical UV workflow contract standard doc",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3067",
+          "number": 3549,
+          "title": "feat(ops): registry-driven Linux connection helpers with TDD",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3549",
           "labels": [
             "enhancement",
-            "priority:medium",
-            "cat:documentation",
-            "domain:workflow-standardization",
-            "status:plan-review",
+            "priority:high",
+            "cat:automation",
+            "domain:workstations",
+            "domain:security",
             "status:plan-approved",
-            "dispatch:ready",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-06T18:35:52Z",
+          "updatedAt": "2026-07-18T08:11:29Z",
           "execution_ready": true,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -945,7 +850,7 @@
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-09T09:55:57Z",
+          "updatedAt": "2026-07-17T10:02:14Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1051,7 +956,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-14T20:49:13Z",
+          "updatedAt": "2026-07-15T15:20:15Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1060,6 +965,62 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3566,
+          "title": "fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3566",
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:harness",
+            "domain:agent-ux",
+            "machine:multi",
+            "status:plan-approved",
+            "type:follow-up",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-18T07:21:08Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3568,
+          "title": "epic(agent-ux): cross-machine input interaction parity",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3568",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "domain:agent-ux",
+            "machine:multi",
+            "status:plan-approved",
+            "gate:completeness",
+            "domain:workstations-fleet-equivalence",
+            "lane:claude",
+            "epic"
+          ],
+          "updatedAt": "2026-07-17T22:00:06Z",
+          "execution_ready": true,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -1103,169 +1064,6 @@
           "updatedAt": "2026-06-29T00:31:13Z",
           "execution_ready": true,
           "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3051,
-          "title": "Model parity: config flip \u2014 registry + propagation \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3051",
-          "labels": [
-            "domain:ai-config",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-14T15:30:07Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3055,
-          "title": "Model parity: model-swap playbook + parity decision ADR \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3055",
-          "labels": [
-            "domain:ai-config",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-14T21:24:14Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3061,
-          "title": "Harden: continuous parity instrumentation \u2014 epic #3058",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3061",
-          "labels": [
-            "domain:ai-orchestration",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-14T10:48:31Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3074,
-          "title": "Harden: provider-behavior parity across machines (SOUL.runtime per provider) \u2014 epic #3058",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3074",
-          "labels": [
-            "domain:ai-orchestration",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-14T10:48:37Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3103,
-          "title": "Retire dead claude-flow orchestration cluster in scripts/automation/ (epic #3078 follow-up)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3103",
-          "labels": [
-            "cat:harness",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-15T14:37:20Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3112,
-          "title": "Harden: instrument true skill/command invocation (the measurement gap behind retirement + de-prescription) \u2014 epic #3058",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3112",
-          "labels": [
-            "domain:ai-orchestration",
-            "domain:skill-improvement",
-            "machine:multi",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "status:completeness-verified"
-          ],
-          "updatedAt": "2026-06-15T18:32:17Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3116,
-          "title": "feat(harness): G1 portable agent-definition format \u2014 define once, run on any harness (Claude/Codex/Gemini) [sub of #3058, umbrella #3114]",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3116",
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-orchestration",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-15T18:34:57Z",
-          "execution_ready": true,
-          "priority_rank": 4,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1740,7 +1538,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-14T16:34:24Z",
+          "updatedAt": "2026-07-19T13:16:56Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1807,7 +1605,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-14T20:46:48Z",
+          "updatedAt": "2026-07-19T11:56:37Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1821,17 +1619,43 @@
           ]
         },
         {
-          "number": 3104,
-          "title": "Compliance alert: W25 \u2014 29% (critical)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3104",
+          "number": 3544,
+          "title": "security(legal): correct and operationalize Phase A authority activation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
           "labels": [
-            "priority:medium",
-            "priority:critical",
-            "compliance-alert"
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:codex"
           ],
-          "updatedAt": "2026-06-21T11:45:06Z",
-          "execution_ready": false,
-          "priority_rank": 0,
+          "updatedAt": "2026-07-19T13:16:28Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3573,
+          "title": "feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3573",
+          "labels": [
+            "enhancement",
+            "domain:ai-orchestration",
+            "machine:multi",
+            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-18T07:28:28Z",
+          "execution_ready": true,
+          "priority_rank": 4,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1912,10 +1736,11 @@
           "title": "Compliance alert: W29 \u2014 0% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3514",
           "labels": [
+            "priority:high",
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-07-14T11:45:05Z",
+          "updatedAt": "2026-07-19T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1929,22 +1754,20 @@
           ]
         },
         {
-          "number": 3050,
-          "title": "EPIC: confirm tier-1 repos + drive workflows through the UV package (uv run python -m <pkg> <input.yml>)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3050",
+          "number": 3552,
+          "title": "security: make Gitleaks configuration fail closed with default rules and positive control",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3552",
           "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:engineering",
-            "domain:workflow-standardization",
+            "bug",
+            "cat:automation",
+            "priority:critical",
+            "domain:security",
             "status:needs-plan",
-            "dispatch:ready",
-            "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-11T12:28:37Z",
+          "updatedAt": "2026-07-15T16:45:17Z",
           "execution_ready": false,
-          "priority_rank": 1,
+          "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -2339,9 +2162,10 @@
             "priority:high",
             "cat:ci",
             "domain:testing",
-            "domain:environment-parity"
+            "domain:environment-parity",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-07-10T09:00:15Z",
+          "updatedAt": "2026-07-15T13:12:43Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2434,9 +2258,10 @@
             "priority:high",
             "cat:harness",
             "domain:testing",
-            "domain:security"
+            "domain:security",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-07-10T10:14:11Z",
+          "updatedAt": "2026-07-15T13:12:41Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2608,7 +2433,7 @@
             "cat:data-pipeline",
             "cat:tooling"
           ],
-          "updatedAt": "2026-07-12T09:26:01Z",
+          "updatedAt": "2026-07-16T21:16:16Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2673,6 +2498,55 @@
             "cat:maintenance"
           ],
           "updatedAt": "2026-07-12T10:44:53Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3559,
+          "title": "feat(field-explorer): immutable Hugging Face field/well HTML drill-down program [C11]",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3559",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:data-pipeline",
+            "cat:tooling",
+            "status:needs-plan",
+            "lane:codex",
+            "epic"
+          ],
+          "updatedAt": "2026-07-17T03:58:48Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3560,
+          "title": "fix(review): isolate in-progress provider sinks and fail closed on empty final artifacts",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3560",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:tooling",
+            "status:needs-plan",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-07-16T22:51:47Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -3037,7 +2911,7 @@
             "status:needs-plan",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-14T15:47:32Z",
+          "updatedAt": "2026-07-16T20:08:36Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3069,6 +2943,203 @@
           "work_type": [
             "research",
             "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3547,
+          "title": "feat(ops): secure remote Linux access architecture and staged rollout",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3547",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:infrastructure",
+            "domain:workstations",
+            "domain:security",
+            "status:needs-plan",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-15T11:37:39Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3550,
+          "title": "ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3550",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "domain:workstations",
+            "domain:security",
+            "machine:dev-secondary",
+            "status:needs-plan",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-15T11:35:23Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3551,
+          "title": "ops(dev-primary): roll out and verify Tailscale plus hardened OpenSSH",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3551",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "domain:workstations",
+            "domain:security",
+            "machine:dev-primary",
+            "status:needs-plan",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-15T11:37:27Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3565,
+          "title": "feat(agent-ux): align Linux Codex dictation hotkey with Windows Win+H",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3565",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "domain:agent-ux",
+            "machine:multi",
+            "type:follow-up",
+            "status:needs-plan",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-17T10:12:01Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3567,
+          "title": "feat(machine-equivalence): add interaction-UX evidence and pet-peeve predicates",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3567",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "domain:agent-ux",
+            "machine:multi",
+            "type:follow-up",
+            "status:needs-plan",
+            "gate:completeness",
+            "domain:workstations-fleet-equivalence",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-17T10:10:50Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3572,
+          "title": "Harden agent workflows for idempotent external mutations and receipt-bound review degradation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3572",
+          "labels": [
+            "priority:medium",
+            "domain:review",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-17T12:00:32Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3586,
+          "title": "phone-media: off-site backup capacity plan + periodic rclone check cron",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3586",
+          "labels": [
+            "priority:medium",
+            "cat:operations"
+          ],
+          "updatedAt": "2026-07-19T11:44:36Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "default long-context routing",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "general"
+          ]
+        },
+        {
+          "number": 3589,
+          "title": "EPIC: family phone-media extraction & archive ecosystem",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3589",
+          "labels": [
+            "priority:medium",
+            "cat:data-pipeline"
+          ],
+          "updatedAt": "2026-07-19T15:15:49Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "strategy"
           ]
         },
@@ -3164,361 +3235,41 @@
           ]
         },
         {
-          "number": 3043,
-          "title": "Model parity: make the repo ecosystem equivalent for Opus and Fable (run on multiple machines)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3043",
+          "number": 3587,
+          "title": "phone-media: choose the ongoing incremental sync lane",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3587",
           "labels": [
-            "domain:ai-config",
-            "domain:ai-orchestration",
-            "machine:multi"
+            "priority:low",
+            "cat:operations"
           ],
-          "updatedAt": "2026-06-15T12:56:42Z",
+          "updatedAt": "2026-07-19T11:44:38Z",
           "execution_ready": false,
-          "priority_rank": 4,
+          "priority_rank": 3,
           "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
+          "routing_reason": "default long-context routing",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "research",
-            "implementation",
-            "strategy"
+            "general"
           ]
         },
         {
-          "number": 3044,
-          "title": "Model parity audit on ace-linux-1 (Part A) \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3044",
+          "number": 3588,
+          "title": "phone-media: evaluate self-hosted family photo browser (Immich / PhotoPrism)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3588",
           "labels": [
-            "domain:ai-config",
-            "machine:ace-linux-1"
+            "priority:low",
+            "cat:operations"
           ],
-          "updatedAt": "2026-06-13T12:46:46Z",
+          "updatedAt": "2026-07-19T11:44:40Z",
           "execution_ready": false,
-          "priority_rank": 4,
+          "priority_rank": 3,
           "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
+          "routing_reason": "default long-context routing",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3045,
-          "title": "Model parity audit on ace-linux-2 (Part A) \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3045",
-          "labels": [
-            "domain:ai-config",
-            "machine:ace-linux-2"
-          ],
-          "updatedAt": "2026-06-13T12:46:45Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3046,
-          "title": "Model parity audit on ace-win-1 (Part A) \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3046",
-          "labels": [
-            "domain:ai-config",
-            "machine:ace-win-1"
-          ],
-          "updatedAt": "2026-06-13T10:26:13Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3047,
-          "title": "Model parity audit on ace-win-2 (Part A) \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3047",
-          "labels": [
-            "domain:ai-config",
-            "machine:ace-win-2"
-          ],
-          "updatedAt": "2026-06-13T10:26:15Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3048,
-          "title": "Model parity audit on home-win (Part A) \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3048",
-          "labels": [
-            "domain:ai-config",
-            "machine:home-win"
-          ],
-          "updatedAt": "2026-06-13T10:26:17Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3049,
-          "title": "Model parity: synthesize audits \u2192 gap report, PRs, Opus playbook (Part B) \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3049",
-          "labels": [
-            "domain:ai-config",
-            "domain:ai-orchestration",
-            "machine:multi"
-          ],
-          "updatedAt": "2026-06-13T10:26:30Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3052,
-          "title": "Model parity: context-window parity (1M lever / opus-4-8[1m]) \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3052",
-          "labels": [
-            "domain:ai-config"
-          ],
-          "updatedAt": "2026-06-13T12:33:22Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3053,
-          "title": "Model parity: dynamic workflows, orchestration & cadence/quota economics \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3053",
-          "labels": [
-            "domain:ai-orchestration"
-          ],
-          "updatedAt": "2026-06-13T12:33:23Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3054,
-          "title": "Model parity: skills + learning/signal loops + memory re-baselining \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3054",
-          "labels": [
-            "domain:ai-orchestration",
-            "domain:memory"
-          ],
-          "updatedAt": "2026-06-13T21:39:57Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 3058,
-          "title": "Epic: Harden the repo ecosystem \u2014 enforce equivalence, model-sourcing, parity baselines, retrieval",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3058",
-          "labels": [
-            "domain:ai-orchestration",
-            "domain:tooling",
-            "machine:multi"
-          ],
-          "updatedAt": "2026-07-01T20:51:31Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3062,
-          "title": "Harden: skill/state sprawl cleanup + retrieval quality \u2014 epic #3058",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3062",
-          "labels": [
-            "domain:skill-improvement",
-            "status:plan-review",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-16T15:27:28Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3073,
-          "title": "Client-identifier in a public skill slug \u2014 rename or route private (no-client-PII)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3073",
-          "labels": [
-            "domain:cleanup",
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-06-14T19:28:04Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3086,
-          "title": "Standardize agy (Antigravity CLI) default model = Gemini 3.1 Pro (High) across all machines",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3086",
-          "labels": [
-            "enhancement",
-            "cat:tooling",
-            "domain:platform-infra"
-          ],
-          "updatedAt": "2026-06-14T15:44:09Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3107,
-          "title": "Model parity: ship a 'fable-mode' behavioral adapter skill (executable playbook) \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3107",
-          "labels": [
-            "domain:ai-orchestration",
-            "domain:memory"
-          ],
-          "updatedAt": "2026-06-15T16:26:33Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3109,
-          "title": "Model parity: external Fable-5 corpus (Hugging Face) \u2014 out-of-sample validation of #3056 \u2014 epic #3043",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3109",
-          "labels": [
-            "domain:ai-orchestration",
-            "machine:multi"
-          ],
-          "updatedAt": "2026-06-15T13:15:50Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3114,
-          "title": "feat(ecosystem): Omnigent-lens \u2014 make repo ecosystem AI-provider- & OS/machine-equivalent [gap-analysis umbrella; extends #2887/#2967/#3058]",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3114",
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-orchestration"
-          ],
-          "updatedAt": "2026-06-16T03:04:21Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
+            "general"
           ]
         },
         {
@@ -3888,7 +3639,7 @@
             "enhancement",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-10T17:49:16Z",
+          "updatedAt": "2026-07-15T16:24:53Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4335,15 +4086,20 @@
           ]
         },
         {
-          "number": 3544,
-          "title": "security(legal): correct and operationalize Phase A authority activation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
+          "number": 3555,
+          "title": "feat(agent-ux): pilot persistent goals and native Codex statusline across machines",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3555",
           "labels": [
+            "enhancement",
+            "cat:ai-orchestration",
+            "cat:harness",
+            "domain:agent-ux",
+            "machine:multi",
             "status:needs-plan",
             "gate:completeness",
-            "lane:codex"
+            "lane:claude"
           ],
-          "updatedAt": "2026-07-14T22:53:18Z",
+          "updatedAt": "2026-07-16T19:53:54Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4355,14 +4111,156 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3558,
+          "title": "fix(memory): prevent shared KNOWLEDGE rules from being omitted by provider slice cap",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3558",
+          "labels": [
+            "bug",
+            "cat:bugfix",
+            "domain:ai-orchestration",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-16T19:49:59Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3561,
+          "title": "Repair and split workspace connection menu dispatch",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3561",
+          "labels": [
+            "enhancement",
+            "cat:automation",
+            "domain:workstations",
+            "status:needs-plan",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-16T22:56:39Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3564,
+          "title": "bug(ci): legal rule authority receives empty AUTH_ENVELOPE on PRs",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3564",
+          "labels": [
+            "bug",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-17T04:24:31Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3578,
+          "title": "fix(review): submit-to-codex.sh hangs \u2014 codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3578",
+          "labels": [
+            "domain:harness"
+          ],
+          "updatedAt": "2026-07-18T07:24:27Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3579,
+          "title": "chore(readiness): rename equality/parity provider row gemini\u2192agy (cross-machine snapshot schema migration)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3579",
+          "labels": [
+            "domain:harness"
+          ],
+          "updatedAt": "2026-07-18T07:24:31Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "default long-context routing",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "general"
+          ]
+        },
+        {
+          "number": 3580,
+          "title": "chore(harness): gemini CLI uninstall decision after agy soak (#3573)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3580",
+          "labels": [
+            "domain:harness"
+          ],
+          "updatedAt": "2026-07-18T07:24:36Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
+        },
+        {
+          "number": 3582,
+          "title": "equality-matrix-cron.sh on Windows collects via bash and publishes degraded compute/provider evidence",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3582",
+          "labels": [
+            "status:plan-review",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-18T21:00:51Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "high",
-      "execution_ready_count": 6,
-      "total_candidates": 20,
+      "execution_ready_count": 8,
+      "total_candidates": 24,
       "top_issues": [
         {
           "number": 3430,
@@ -4510,40 +4408,48 @@
           ]
         },
         {
-          "number": 3077,
-          "title": "Orchestrator consistency drift (2026-06-14)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3077",
+          "number": 3554,
+          "title": "bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3554",
           "labels": [
-            "consistency-drift"
+            "bug",
+            "cat:harness",
+            "machine:multi",
+            "status:plan-approved",
+            "gate:completeness",
+            "domain:workstations-fleet-equivalence",
+            "lane:claude"
           ],
-          "updatedAt": "2026-07-12T11:15:52Z",
-          "execution_ready": false,
+          "updatedAt": "2026-07-17T12:24:35Z",
+          "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
+            "research",
             "implementation"
           ]
         },
         {
-          "number": 3087,
-          "title": "Statusline: make Gemini (agy) usage genuine + add days/hours-to-reset token",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3087",
+          "number": 3571,
+          "title": "equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3571",
           "labels": [
-            "enhancement",
-            "cat:tooling",
-            "domain:agent-ux"
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
           ],
-          "updatedAt": "2026-06-14T21:35:17Z",
-          "execution_ready": false,
+          "updatedAt": "2026-07-18T20:33:42Z",
+          "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
+            "research",
             "implementation"
           ]
         }
@@ -4695,35 +4601,62 @@
           ]
         },
         {
-          "number": 3077,
-          "title": "Orchestrator consistency drift (2026-06-14)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3077",
+          "number": 3554,
+          "title": "bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3554",
           "labels": [
-            "consistency-drift"
+            "bug",
+            "cat:harness",
+            "machine:multi",
+            "status:plan-approved",
+            "gate:completeness",
+            "domain:workstations-fleet-equivalence",
+            "lane:claude"
           ],
-          "updatedAt": "2026-07-12T11:15:52Z",
-          "execution_ready": false,
+          "updatedAt": "2026-07-17T12:24:35Z",
+          "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "high",
           "provider_status": "needs_cleanup",
           "work_type": [
+            "research",
             "implementation"
           ]
         },
         {
-          "number": 3087,
-          "title": "Statusline: make Gemini (agy) usage genuine + add days/hours-to-reset token",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3087",
+          "number": 3571,
+          "title": "equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3571",
           "labels": [
-            "enhancement",
-            "cat:tooling",
-            "domain:agent-ux"
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
           ],
-          "updatedAt": "2026-06-14T21:35:17Z",
-          "execution_ready": false,
+          "updatedAt": "2026-07-18T20:33:42Z",
+          "execution_ready": true,
           "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3585,
+          "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
+          "labels": [
+            "priority:medium",
+            "cat:data-pipeline"
+          ],
+          "updatedAt": "2026-07-19T11:44:35Z",
+          "execution_ready": false,
+          "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "high",
@@ -4894,7 +4827,7 @@
             "machine:multi",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-13T10:39:38Z",
+          "updatedAt": "2026-07-19T13:16:47Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4964,16 +4897,117 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 3557,
+          "title": "bug(equality): reconcile marks dirty STALE-CHECKOUT auto-safe but apply cannot clean or make progress",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3557",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "machine:multi",
+            "status:needs-plan",
+            "domain:workstations-fleet-equivalence"
+          ],
+          "updatedAt": "2026-07-16T19:46:19Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3562,
+          "title": "Audit MSYS conversion of slash-prefixed native-command tokens",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3562",
+          "labels": [
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-17T03:59:45Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3577,
+          "title": "fix(harness): repo-wide exec-bit audit \u2014 NTFS-FUSE working copy commits scripts as 100644",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3577",
+          "labels": [
+            "domain:harness"
+          ],
+          "updatedAt": "2026-07-18T07:23:57Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ]
     },
-    "gemini": {
-      "provider": "gemini",
+    "agy": {
+      "provider": "agy",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 0,
-      "top_issues": [],
-      "full_candidates": []
+      "total_candidates": 1,
+      "top_issues": [
+        {
+          "number": 3584,
+          "title": "phone-media: USB-pull remaining family phones into the archive",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3584",
+          "labels": [
+            "priority:medium",
+            "cat:data-pipeline"
+          ],
+          "updatedAt": "2026-07-19T11:44:33Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "agy",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "general"
+          ]
+        }
+      ],
+      "full_candidates": [
+        {
+          "number": 3584,
+          "title": "phone-media: USB-pull remaining family phones into the archive",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3584",
+          "labels": [
+            "priority:medium",
+            "cat:data-pipeline"
+          ],
+          "updatedAt": "2026-07-19T11:44:33Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "agy",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "general"
+          ]
+        }
+      ]
     }
   }
 }

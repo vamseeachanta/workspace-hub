@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-07-18T21:21:30.646643Z
+Generated: 2026-07-22T21:21:13.859131Z
 Apply mode: False
 Threshold: 0.9
 
@@ -22,3 +22,4 @@ Threshold: 0.9
 | #3532 fix(memory): reserve cross-provider runtime budget for operational feedback | agent:codex | 0.75 | no | execution-ready, strong-codex-language-match, provider-high-priority |
 | #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | agent:codex | 0.75 | no | execution-ready, strong-codex-language-match, provider-high-priority |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | agent:codex | 0.75 | no | execution-ready, strong-codex-language-match, provider-high-priority |
+| #3584 phone-media: USB-pull remaining family phones into the archive | agent:agy | 0.60 | no | priority-labeled, strong-agy-language-match, provider-highest-priority |
