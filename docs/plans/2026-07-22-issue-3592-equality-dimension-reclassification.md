@@ -1,6 +1,6 @@
 # Plan for #3592: Equality matrix — reclassify harness/scheduler/memory rows
 
-> **Status:** draft
+> **Status:** plan-review
 > **Complexity:** T2
 > **Date:** 2026-07-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3592
@@ -10,6 +10,16 @@
 > **Review artifacts:** scripts/review/results/2026-07-22-plan-3592-claude.md | ...-codex.md
 
 ---
+
+> **RE-SCOPE (2026-07-22, post-review):** while this plan was in draft, commit `762fa1d8a`
+> (issue #3591, same owner, parallel session) landed the **harness** dim reclassification:
+> `providers_baseline` is now declared for all 5 active workstations in `harness-config.yaml`,
+> the harness row grades as cold conformance (CONFORMS on all 5 boxes, live-verified), and
+> `unknown` is fail-closed ("not evidence for ANY baseline"). This plan therefore **drops the
+> harness dim from scope** and covers the remaining two mis-voted dims — **scheduler** and
+> **memory** — plus the collector `unknown` semantics and Windows `schtasks` probe. The
+> implementation will REUSE the cold-conformance machinery #3591 added rather than introduce
+> a parallel mechanism.
 
 ## Resource Intelligence Summary
 
@@ -31,7 +41,7 @@ No relevant wiki pages — this is workspace-hub control-plane tooling, out of w
 ### Documents consulted
 - Issue #3592 (this plan's source) — full triage evidence tables, 2026-07-22.
 - `.claude/rules/patterns.md` — enforcement gradient; this stays a Level-2 script change with existing pytest coverage.
-- Related issue #2801 (matrix design: COLD vs UNIFORM dims), #2815 (ace-win-1 scheduler + gh auth, on-box), #2816 (Windows compute overlay design), #3573 (agy replaces gemini — CLOSED), #3580 (gemini uninstall ~2026-08-01 — OPEN), #3571 (publish hardening).
+- Related issue #2801 (matrix design: COLD vs UNIFORM dims), #2815 (ace-win-1 scheduler + gh auth, on-box), #2816 (Windows compute overlay design), #3573 (agy replaces gemini — **OPEN**; its three PRs merged but the issue remains open pending soak), #3580 (gemini uninstall decision — OPEN), #3571 (publish hardening), #3591 (landed the harness-dim reclassification, commit `762fa1d8a` — see RE-SCOPE note).
 - Drive-file index: no relevant drive files (search `"equality matrix scheduler provider baseline"` via `scripts/data/drive-index-search/search.py --caller plan-resource-intel` returned 20 keyword-collision hits, all unrelated lab-stability PDFs).
 
 ### Gaps identified
@@ -98,7 +108,7 @@ ace-win-2     {has_repo_sync: false, has_parity_review: false}  job_count: 0   (
 
 ## Deliverable
 
-The `harness`, `scheduler`, and `memory` matrix rows will grade each machine against a declared per-machine baseline in `harness-config.yaml` (CONFORMS / BELOW-BASELINE / MISSING-EVIDENCE) instead of a cross-machine majority vote, and the collectors will emit `unknown` for any scheduler field they do not actually probe — so an all-fleet DIVERGES can no longer be produced by role differences or placeholder data, and the one real gap (gpu-claw's missing cron set) will grade visibly BELOW-BASELINE.
+The `scheduler` and `memory` matrix rows will grade each machine against a declared per-machine baseline in `harness-config.yaml` (CONFORMS / BELOW-BASELINE / MISSING-BASELINE / MISSING-EVIDENCE) via the same cold-conformance machinery #3591 established for the harness row, and the collector will emit `unknown` for any scheduler field it does not actually probe (with a `schtasks` probe added for Windows) — so an all-fleet DIVERGES can no longer be produced by role differences or placeholder data, and the one real gap (gpu-claw's missing cron set) will grade visibly BELOW-BASELINE.
 
 ---
 
@@ -106,51 +116,49 @@ The `harness`, `scheduler`, and `memory` matrix rows will grade each machine aga
 
 ### 1. Config schema (`harness-config.yaml`, per `workstations.<machine>`)
 
+`providers_baseline` already exists per #3591 (this plan will NOT touch it). NEW keys:
+
 ```yaml
-# NEW keys per machine (values shown = proposed initial baselines):
-providers_baseline: {claude: present, codex: present, gemini: optional, hermes: present|absent per box}
 hermes_home_baseline: present | absent          # per box
 scheduler_baseline:
-  repo_sync: required | not-required            # required on Linux execution boxes
+  repo_sync: required | not-required            # required on execution boxes
   parity_review: required | not-required        # required ONLY on dev-primary (leader)
 ```
 
 Proposed initial values (owner confirms at approval):
 
-| machine | providers_baseline (gemini/hermes) | hermes_home | repo_sync | parity_review |
-|---|---|---|---|---|
-| dev-primary | optional / present | present | required | required |
-| dev-secondary | optional / present | present | required | not-required |
-| gpu-claw | optional / absent | absent | required | not-required |
-| ace-win-1 | optional / absent | absent | required (Task Scheduler) | not-required |
-| ace-win-2 | optional / absent → **owner decides** (evidence self-contradicts) | absent → **owner decides** | required (Task Scheduler) | not-required |
+| machine | hermes_home | repo_sync | parity_review |
+|---|---|---|---|
+| dev-primary | present | required | required |
+| dev-secondary | present | required | not-required |
+| gpu-claw | absent | required | not-required |
+| ace-win-1 | absent → **owner decides** (probes self-contradict on the win boxes) | required (Task Scheduler) | not-required |
+| ace-win-2 | absent → **owner decides** | required (Task Scheduler) | not-required |
 
-`gemini: optional` during the #3580 uninstall rollout; a follow-on flips it to `absent` fleet-wide after #3580 closes.
+Note: #3591 declared `hermes: present` in ace-win-2's `providers_baseline` while its
+`memory.hermes_home` evidence reads `absent` (and ace-win-1 shows the inverse pairing).
+The `hermes_home_baseline` values above must be reconciled with those landed provider
+baselines at approval, and the implementation will identify which probe is wrong.
 
 ### 2. Builder (`build-equality-matrix.py`)
 
 ```
-PROVIDER_ACCEPT = {"present": {"present"}, "absent": {"absent"},
-                   "optional": {"present", "absent"}}     # unknown satisfies nothing (fail-closed)
-
-function declared_verdict(dim, report, baseline):
+function declared_verdict(dim, report, baseline):     # extends the #3591 cold path
     if baseline missing for this dim → MISSING-BASELINE
-    if dim == "harness":
-        for each provider in baseline.providers_baseline:
-            observed = report.harness.providers[provider]  (missing → unknown)
-            if observed not in PROVIDER_ACCEPT[declared] → BELOW-BASELINE
-        return CONFORMS
     if dim == "memory":
-        compare report.memory.hermes_home to hermes_home_baseline (unknown → MISSING-EVIDENCE)
+        observed = report.memory.hermes_home  (missing/"unknown" → MISSING-EVIDENCE)
+        return CONFORMS iff observed == hermes_home_baseline else BELOW-BASELINE
     if dim == "scheduler":
-        if report.scheduler values are "unknown" → MISSING-EVIDENCE
+        if report.scheduler booleans are "unknown" → MISSING-EVIDENCE
+        (schema_version < 5 AND os == windows → treat as unknown — migration gate)
         if repo_sync required and has_repo_sync != true  → BELOW-BASELINE
         if parity_review required and has_parity_review != true → BELOW-BASELINE
         return CONFORMS
 
-move "harness", "memory", "scheduler" from the UNIFORM path to this declared path;
-keep DISPLAY_DIMS order unchanged; update the remediation-card text per dim
-(BELOW-BASELINE → box-side fix command; MISSING-EVIDENCE → run-the-collector command).
+move "memory" and "scheduler" from the UNIFORM path to this declared path (harness
+already moved via #3591); keep DISPLAY_DIMS order unchanged; update the
+remediation-card text per dim (BELOW-BASELINE → box-side fix command;
+MISSING-EVIDENCE → run-the-collector command), mirroring #3591's harness hints.
 ```
 
 ### 3. Collector (`collect-equality.sh` §8 SCHEDULER)
@@ -181,11 +189,12 @@ match on task NAMES only, consistent with the C4 no-cron-lines allowlist.
 
 | Action | Path | Reason |
 |---|---|---|
-| Modify | scripts/readiness/harness-config.yaml | add `providers_baseline`, `hermes_home_baseline`, `scheduler_baseline` per machine |
-| Modify | scripts/readiness/build-equality-matrix.py | move 3 dims from uniform vote to declared grading; PROVIDER_ACCEPT; remediation-card text |
-| Modify | scripts/readiness/collect-equality.sh | `unknown` defaults + Windows `schtasks` probe in §8 |
-| Modify | tests/readiness/test_build_equality_matrix.py | TDD cases for the three declared verdicts |
+| Modify | scripts/readiness/harness-config.yaml | add `hermes_home_baseline` + `scheduler_baseline` per machine (`providers_baseline` landed via #3591 — untouched) |
+| Modify | scripts/readiness/build-equality-matrix.py | move `memory` + `scheduler` from uniform vote to the #3591 declared-grading path; schema<5 Windows migration gate; remediation-card text |
+| Modify | scripts/readiness/collect-equality.sh | `unknown` defaults + Windows `schtasks` probe in §8; `schema_version` 4→5 |
+| Modify | tests/readiness/test_build_equality_matrix.py | TDD cases for the two declared verdicts + migration gate |
 | Modify | tests/readiness/test_collect_equality.py | `unknown` emission + schtasks-parse cases |
+| Modify | tests/readiness/test_collect_equality_ps1_schema.py (+ fixture) | ps1 golden fixture asserts `schema_version == 4` today and validates emitted dimensions; must be updated to schema 5 with intentional scheduler `unknown`/probed output (Codex r2 MAJOR-1/MINOR) |
 | Update | docs/plans/README.md | index row for this plan |
 
 Out of scope (tracked elsewhere): gpu-claw cron installation (box-side, #3592 checklist); ace-win-1 Task Scheduler repair (#2815); gemini uninstall itself (#3580); provider-capability parity rows `harness:<provider>:<capability>` (separate voting logic via `provider_harness_parity.py`, untouched).
@@ -196,29 +205,28 @@ Out of scope (tracked elsewhere): gpu-claw cron installation (box-side, #3592 ch
 
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| test_harness_declared_conforms | full-present box vs all-present baseline | providers all present | CONFORMS |
-| test_harness_declared_below_baseline | required provider missing | hermes absent, baseline present | BELOW-BASELINE |
-| test_harness_optional_accepts_both | gemini optional during #3580 rollout | gemini present on A, absent on B | CONFORMS both |
-| test_harness_unknown_fails_closed | unknown provider signal | claude: unknown | BELOW-BASELINE (never CONFORMS) |
-| test_harness_missing_baseline | roster entry without providers_baseline | no key | MISSING-BASELINE |
 | test_memory_hermes_home_declared | per-box hermes_home grading | absent vs baseline absent | CONFORMS |
+| test_memory_hermes_home_below | hermes_home differs from declared intent | absent vs baseline present | BELOW-BASELINE |
+| test_memory_missing_baseline | roster entry without hermes_home_baseline | no key | MISSING-BASELINE |
+| test_memory_unknown_missing_evidence | unknown never grades | hermes_home unknown | MISSING-EVIDENCE |
 | test_scheduler_required_missing | real gap stays visible | gpu-claw false + required | BELOW-BASELINE |
 | test_scheduler_unknown_missing_evidence | placeholder can no longer pass or poison | all three unknown | MISSING-EVIDENCE |
 | test_scheduler_leader_parity | parity_review required only on leader | dev-secondary false + not-required | CONFORMS |
-| test_no_uniform_vote_for_reclassified_dims | the 3 dims never enter uniform_verdict | evidence set with mixed values | no DIVERGES/NO-MAJORITY emitted for them |
+| test_no_uniform_vote_for_reclassified_dims | memory + scheduler never enter uniform_verdict | evidence set with mixed values | no DIVERGES/NO-MAJORITY emitted for them |
 | test_collect_scheduler_unknown_default | probe unavailable | no crontab, no schtasks | `unknown` ×3 in yaml |
 | test_collect_schtasks_parse | Windows probe (fixture csv) | schtasks csv w/ repo-sync task | job_count>0, has_sync true |
 | test_builder_schema4_windows_scheduler_unknown | migration gate: stale placeholder evidence cannot mis-grade | schema_version 4, os windows, false/0 | MISSING-EVIDENCE |
 | test_builder_schema4_linux_scheduler_measured | Linux legacy evidence keeps measured values | schema_version 4, os linux, true/63 | graded vs baseline (CONFORMS) |
+| test_ps1_golden_schema5_scheduler | ps1 golden fixture carries schema 5 + intentional scheduler output | Windows fixture run | schema_version 5; scheduler fields `unknown` or schtasks-probed, never bare false/0 placeholders |
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All new tests will pass: `uv run pytest tests/readiness/test_build_equality_matrix.py tests/readiness/test_collect_equality.py -v`
-- [ ] No regression: full `tests/readiness/` suite will pass
-- [ ] Rebuild against the live 2026-07-22 evidence set will produce: dev-primary/dev-secondary `harness`+`memory`+`scheduler` = CONFORMS; gpu-claw `scheduler` = BELOW-BASELINE (real gap surfaced); Windows `scheduler` = MISSING-EVIDENCE until fresh evidence with the schtasks probe lands
-- [ ] No all-fleet DIVERGES row will be producible from role differences or placeholder data on the three reclassified dims
+- [ ] All new tests will pass: `uv run pytest tests/readiness/test_build_equality_matrix.py tests/readiness/test_collect_equality.py tests/readiness/test_collect_equality_ps1_schema.py -v`
+- [ ] No regression: full `tests/readiness/` suite will pass (including the updated ps1 golden fixture at schema 5 — Codex r2)
+- [ ] Rebuild against the live 2026-07-22 evidence set will produce: dev-primary/dev-secondary `memory`+`scheduler` = CONFORMS (harness already CONFORMS via #3591); gpu-claw `scheduler` = BELOW-BASELINE (real gap surfaced); Windows `scheduler` = MISSING-EVIDENCE until fresh evidence with the schtasks probe lands
+- [ ] No all-fleet DIVERGES row will be producible from role differences or placeholder data on the reclassified dims
 - [ ] Serialization allowlist (counts/booleans/enums, never cron lines — C4) will still hold; `unknown` is an enum value
 - [ ] Review artifacts posted to scripts/review/results/
 - [ ] `docs/plans/README.md` index updated
@@ -229,13 +237,17 @@ Out of scope (tracked elsewhere): gpu-claw cron installation (box-side, #3592 ch
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | PENDING | |
-| Codex | PENDING | |
+| Claude (r1 inline) | MINOR | F1 migration hand-wave → fixed via schema_version 4→5 gate; F2 Windows job_count semantics → documented display-only; F3 ace-win-2 hermes probe contradiction → owner decision at approval; F4 render-layer verdict coverage → covered by live-rebuild acceptance criterion |
+| Codex (r2 dispatched) | MAJOR → resolved inline (r3) | MAJOR-1: ps1 golden fixture asserts schema_version==4 — test+fixture added to Files to Change / TDD list. MAJOR-2: plan claimed #3573 CLOSED; live state is OPEN — corrected, and the gemini-baseline question is mooted by re-scope (#3591 landed `providers_baseline`; this plan no longer touches provider baselines). MINOR: ps1 emitted-dimensions fixture must prove schema-5 scheduler output is intentional — added as test_ps1_golden_schema5_scheduler |
 
-**Overall result:** PENDING
+**Overall result:** PASS (r3 inline patches applied per the r1/r2-divergence loop-break convention; no unresolved MAJOR remains in the plan text)
 
 Revisions made based on review:
-- (none yet)
+- Re-scoped: harness dim removed (landed via #3591 commit `762fa1d8a` in a parallel session); plan now covers memory + scheduler only, reusing #3591's cold-conformance machinery.
+- schema_version 4→5 migration gate replaces the "accept one-cycle misgrade" hand-wave (Claude F1).
+- `tests/readiness/test_collect_equality_ps1_schema.py` + golden fixture added to scope (Codex MAJOR-1/MINOR).
+- #3573 state corrected to OPEN; provider-baseline changes explicitly excluded from scope (Codex MAJOR-2).
+- Windows `job_count` documented as display-only/noisy; graded booleans match task names only (Claude F2).
 
 ---
 
@@ -244,8 +256,8 @@ Revisions made based on review:
 - **Risk:** builder and `provider_harness_parity.py` share `EXPECTED_DIVERGENCE_REASONS` (drift note #3206/#3209). This plan will not touch the capability rows, but the reviewer should verify the reclassification cannot desync that pairing.
 - **Risk (mitigated by design):** existing evidence yamls carry `false/0` placeholders; until every box re-collects with `unknown` semantics, Windows scheduler cells would grade BELOW-BASELINE (false ≠ required-true) instead of MISSING-EVIDENCE. Mitigation: the collector change will bump `schema_version` 4 → 5 (emitted at `collect-equality.sh:425`); the builder will treat scheduler fields in `schema_version < 5` evidence from `os: windows` as `unknown` (→ MISSING-EVIDENCE), so stale placeholder evidence can never mis-grade. Linux `schema_version < 5` evidence keeps its measured values (the Linux probe semantics are unchanged).
 - **Risk:** `schtasks /query /fo csv` output is locale-dependent on some Windows SKUs; parse defensively (count rows, case-insensitive name match) and fall back to `unknown` on any parse doubt.
-- **Open (owner decision at approval):** ace-win-2 hermes intent — evidence self-contradicts (`providers.hermes: present`, `hermes_home: absent`). Baseline value needs an owner call.
-- **Open (owner decision at approval):** confirm `gemini: optional` fleet-wide during the #3580 rollout, flipping to `absent` after #3580 closes (follow-on one-liner).
+- **Open (owner decision at approval):** win-box hermes intent — evidence self-contradicts (ace-win-2: `providers.hermes: present` / `hermes_home: absent`; ace-win-1 the inverse), and #3591 has now baked `hermes: present` into ace-win-2's `providers_baseline`. The `hermes_home_baseline` values must be set consistently with that, and the implementation will determine which probe is lying.
+- **Resolved by re-scope:** the gemini-baseline question (Codex r2) — #3591 landed `providers_baseline` with concrete `gemini` values while #3573/#3580 remain OPEN; this plan does not touch provider baselines. Flipping gemini to `absent` post-#3580 is a one-line follow-on on #3580.
 - **Open (minor):** should `has_parity_review` on Windows be probed at all, or is `not-required` + unmeasured acceptable? Plan assumes the latter.
 
 ---
