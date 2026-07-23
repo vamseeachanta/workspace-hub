@@ -23936,3 +23936,48 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3592
+    title: 'equality matrix: reclassify harness/scheduler/memory rows — uniform vote mis-grades per-role differences + Windows placeholder data poisons majority'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3592
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - cat:harness
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3593
+    title: 'ops(cron): gpu-claw excluded from repository-sync — roles_authoritative unset, legacy machines exclusion wins; clone-behind warnings recur'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3593
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:operations
+      - machine:multi
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3594
+    title: 'chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding — notes say clone pending / uv NOT installed; both now false'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3594
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:low
+      - cat:operations
+      - machine:multi
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
