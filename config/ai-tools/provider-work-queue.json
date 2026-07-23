@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-22T21:21:13.728969Z",
+  "generated_at": "2026-07-23T09:21:12.226146Z",
   "current_week": "2026-W30",
-  "scorecard_generated_at": "2026-07-22T21:21:11.908890Z",
+  "scorecard_generated_at": "2026-07-23T09:21:10.244081Z",
   "recommended_provider_order": [
     "agy",
     "claude",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 60,
-      "total_candidates": 175,
+      "execution_ready_count": 59,
+      "total_candidates": 174,
       "top_issues": [
         {
           "number": 3282,
@@ -1074,54 +1074,6 @@
           ]
         },
         {
-          "number": 3118,
-          "title": "feat(harness): G3 MCP-first tool exposure \u2014 provider-portable tools [sub of #3058, umbrella #3114]",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3118",
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-orchestration",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-16T02:13:17Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3137,
-          "title": "Skill-invocation: capture Skill-tool calls (id\u2192short_name resolution) \u2014 follow-on to #3112",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3137",
-          "labels": [
-            "domain:ai-orchestration",
-            "domain:skill-improvement",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-15T21:19:22Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3138,
           "title": "Skill-invocation: backfill historical events from transcripts \u2014 follow-on to #3112",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3138",
@@ -1654,6 +1606,30 @@
             "lane:claude"
           ],
           "updatedAt": "2026-07-18T07:28:28Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3592,
+          "title": "equality matrix: reclassify harness/scheduler/memory rows \u2014 uniform vote mis-grades per-role differences + Windows placeholder data poisons majority",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3592",
+          "labels": [
+            "cat:operations",
+            "cat:harness",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-23T05:39:56Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3144,6 +3120,29 @@
           ]
         },
         {
+          "number": 3593,
+          "title": "ops(cron): gpu-claw excluded from repository-sync \u2014 roles_authoritative unset, legacy machines exclusion wins; clone-behind warnings recur",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3593",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "machine:multi",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-23T05:40:19Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
           "number": 3186,
           "title": "Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3186",
@@ -3270,54 +3269,6 @@
           "provider_status": "underused",
           "work_type": [
             "general"
-          ]
-        },
-        {
-          "number": 3119,
-          "title": "feat(harness): G4 budget-as-policy \u2014 stateful cost/token guardrail at harness layer [sub of #1838, umbrella #3114]",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3119",
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-orchestration",
-            "status:blocked"
-          ],
-          "updatedAt": "2026-06-16T02:53:28Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3120,
-          "title": "feat(harness): G5 cross-surface session continuity \u2014 resumable session object [sub of #2998, umbrella #3114]",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3120",
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-orchestration",
-            "status:blocked"
-          ],
-          "updatedAt": "2026-06-16T03:04:20Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
           ]
         },
         {
@@ -4253,6 +4204,29 @@
           "work_type": [
             "implementation"
           ]
+        },
+        {
+          "number": 3595,
+          "title": "ace-win-2 on-box: schema-5 equality re-collect verification + hermes home init + revive licensed-runs queue heartbeat (#3592 follow-up)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3595",
+          "labels": [
+            "cat:harness",
+            "machine:ace-win-2",
+            "domain:workstations-windows-readiness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-23T05:28:00Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4260,7 +4234,7 @@
       "provider": "codex",
       "routing_priority": "high",
       "execution_ready_count": 8,
-      "total_candidates": 24,
+      "total_candidates": 25,
       "top_issues": [
         {
           "number": 3430,
@@ -4666,6 +4640,28 @@
           ]
         },
         {
+          "number": 3594,
+          "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3594",
+          "labels": [
+            "bug",
+            "priority:low",
+            "cat:operations",
+            "machine:multi",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-23T02:09:40Z",
+          "execution_ready": false,
+          "priority_rank": 3,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "implementation"
+          ]
+        },
+        {
           "number": 3231,
           "title": "Isolate concurrent agent sessions per repo (worktree-per-session) \u2014 shared-clone HEAD thrash",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3231",
@@ -4849,7 +4845,7 @@
             "machine:multi",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-13T12:09:25Z",
+          "updatedAt": "2026-07-23T02:09:52Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

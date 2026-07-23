@@ -1,16 +1,21 @@
 # Session-curation digest — dev-primary
-_Curated 2026-07-22T23:47:02+00:00 · transferable to sibling machines via `session-curation-state` ref_
+_Curated 2026-07-23T05:47:01+00:00 · transferable to sibling machines via `session-curation-state` ref_
 
 ## Provider session activity (this box)
 | Provider | Present | Sessions | Last 24h | Newest |
 |---|---|---|---|---|
-| claude | yes | 5670 | 9 | 2026-07-22T18:21:43 |
-| codex | yes | 4176 | 0 | 2026-07-19T12:21:51 |
+| claude | yes | 5671 | 9 | 2026-07-23T00:41:39 |
+| codex | yes | 4178 | 2 | 2026-07-22T22:57:43 |
 | gemini | yes | 2177 | 0 | 2026-07-07T04:17:24 |
 | hermes | yes | 0 | 0 | — |
 
-## Memory delta — 0 file(s) changed since last curation
-- (none)
+## Memory delta — 6 file(s) changed since last curation
+- `topics/feedback_agent_prompts_with_stories.md`
+- `topics/feedback_cross_review_valuable.md`
+- `topics/feedback_gh_always_refresh.md`
+- `topics/feedback_no_fluff.md`
+- `topics/feedback_prefer_inprocess_agents.md`
+- `topics/feedback_research_before_stories.md`
 
 ## Fleet transfer
 - Fingerprint published to git ref `session-curation-state` (per-machine blob).

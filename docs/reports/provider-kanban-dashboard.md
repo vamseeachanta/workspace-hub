@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-22T21:21:15Z
+Generated: 2026-07-23T09:21:14Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,10 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3595 | ace-win-2 on-box: schema-5 equality re-collect verification + hermes home init + revive licensed-runs queue heartbeat (#3592 follow-up) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3594 | chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding — notes say clone pending / uv NOT installed; both now false | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3593 | ops(cron): gpu-claw excluded from repository-sync — roles_authoritative unset, legacy machines exclusion wins; clone-behind warnings recur | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3592 | equality matrix: reclassify harness/scheduler/memory rows — uniform vote mis-grades per-role differences + Windows placeholder data poisons majority | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
 | #3589 | EPIC: family phone-media extraction & archive ecosystem | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3588 | phone-media: evaluate self-hosted family photo browser (Immich / PhotoPrism) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3587 | phone-media: choose the ongoing incremental sync lane | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -239,10 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3143 | bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3142 | bug(review-tooling): validate-review-output.sh + render-structured-review.py tracked non-executable (100644) but invoked directly → fails on fresh clone | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3138 | Skill-invocation: backfill historical events from transcripts — follow-on to #3112 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #3137 | Skill-invocation: capture Skill-tool calls (id→short_name resolution) — follow-on to #3112 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #3120 | feat(harness): G5 cross-surface session continuity — resumable session object [sub of #2998, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3119 | feat(harness): G4 budget-as-policy — stateful cost/token guardrail at harness layer [sub of #1838, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3118 | feat(harness): G3 MCP-first tool exposure — provider-portable tools [sub of #3058, umbrella #3114] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 
 ## Lane: blocked (0)
 

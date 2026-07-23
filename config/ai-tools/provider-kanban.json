@@ -36,6 +36,170 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:harness",
+          "machine:ace-win-2",
+          "domain:workstations-windows-readiness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "ace-win-2 on-box: schema-5 equality re-collect verification + hermes home init + revive licensed-runs queue heartbeat (#3592 follow-up)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3595,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "ace-win-2 on-box: schema-5 equality re-collect verification + hermes home init + revive licensed-runs queue heartbeat (#3592 follow-up)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3595",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "bug",
+          "priority:low",
+          "cat:operations",
+          "machine:multi",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3594,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3594",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:operations",
+          "machine:multi",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "ops(cron): gpu-claw excluded from repository-sync \u2014 roles_authoritative unset, legacy machines exclusion wins; clone-behind warnings recur"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3593,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "ops(cron): gpu-claw excluded from repository-sync \u2014 roles_authoritative unset, legacy machines exclusion wins; clone-behind warnings recur",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3593",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
+        "reviews not clean: major_review,missing_review",
+        "issue already has approval marker on disk",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": ".planning/plan-approved/3592.md",
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "cat:operations",
+          "cat:harness",
+          "status:plan-approved",
+          "gate:completeness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "- Found: `scripts/readiness/build-equality-matrix.py` \u2014 `COLD_DIMS = {\"compute\", \"data_access\", \"solvers\"}` (line 36) grade against DECLARED per-machine baselines via `cold_verdict()` (lines 113\u2013162); `uniform_verdict()` (lines 189\u2013200) majority-votes the rest and filters `None/\"",
+        "provider_route": "claude",
+        "risks": "**Risk:** builder and `provider_harness_parity.py` share `EXPECTED_DIVERGENCE_REASONS` (drift note #3206/#3209). This plan will not touch the capability rows, but the reviewer should verify the reclassification cannot desync that pairing. | **Risk (mitigated by design):** existing evidence yamls carry `false/0` placeholders; until every box re-collects with `unknown` semantics, Windows scheduler c",
+        "tests": "TDD section present",
+        "title": "equality matrix: reclassify harness/scheduler/memory rows \u2014 uniform vote mis-grades per-role differences + Windows placeholder data poisons majority"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3592,
+      "pipeline_lane": "C",
+      "plan": "docs/plans/2026-07-22-issue-3592-equality-dimension-reclassification.md",
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "equality matrix: reclassify harness/scheduler/memory rows \u2014 uniform vote mis-grades per-role differences + Windows placeholder data poisons majority",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3592",
+      "warnings": [
+        "legacy_review_no_sha",
+        "major_review",
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "priority:medium",
           "cat:data-pipeline"
         ],
@@ -8025,182 +8189,178 @@
         "approved_no_marker",
         "missing_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "domain:ai-orchestration",
-          "domain:skill-improvement",
-          "status:plan-approved",
-          "gate:completeness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `.claude/hooks/session-logger.sh` \u2014 the #3112 PostToolUse producer. Lines 31-40 emit `skill_name` (a rel-path under `.claude/skills/`) **only** for a `Read` of `*/.claude/skills/*/SKILL.md`. It parses `.tool_input.file_path`/`.tool_input.path` (line 27) and `.session_id`",
-        "provider_route": "claude",
-        "risks": "**Risk (HIGH):** The Claude-Code-guide docs summary says the Skill id field is `.tool_input.skill_name`, but 1080/1080 live transcript records carry it under `.tool_input.skill`. The PostToolUse `tool_input` envelope mirrors the assistant tool_use `input`, so `.skill` is near-certain \u2014 but the harness version could differ. **Mitigation:** read `.tool_input.skill // .tool_input.skill_name` (already",
-        "tests": "TDD section present",
-        "title": "Skill-invocation: capture Skill-tool calls (id\u2192short_name resolution) \u2014 follow-on to #3112"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3137,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-15-issue-3137-skill-tool-capture.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Skill-invocation: capture Skill-tool calls (id\u2192short_name resolution) \u2014 follow-on to #3112",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3137",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "cat:ai-orchestration",
-          "cat:harness",
-          "domain:ai-orchestration",
-          "status:blocked"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(harness): G5 cross-surface session continuity \u2014 resumable session object [sub of #2998, umbrella #3114]"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3120,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(harness): G5 cross-surface session continuity \u2014 resumable session object [sub of #2998, umbrella #3114]",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3120",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "cat:ai-orchestration",
-          "cat:harness",
-          "domain:ai-orchestration",
-          "status:blocked"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(harness): G4 budget-as-policy \u2014 stateful cost/token guardrail at harness layer [sub of #1838, umbrella #3114]"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3119,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(harness): G4 budget-as-policy \u2014 stateful cost/token guardrail at harness layer [sub of #1838, umbrella #3114]",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3119",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "no canonical plan file",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "cat:ai-orchestration",
-          "cat:harness",
-          "domain:ai-orchestration",
-          "status:plan-approved",
-          "gate:completeness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(harness): G3 MCP-first tool exposure \u2014 provider-portable tools [sub of #3058, umbrella #3114]"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3118,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(harness): G3 MCP-first tool exposure \u2014 provider-portable tools [sub of #3058, umbrella #3114]",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3118",
-      "warnings": [
-        "approved_no_marker",
-        "approved_no_plan",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-07-22T21:21:15Z",
+  "generated_at": "2026-07-23T09:21:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "cat:harness",
+            "machine:ace-win-2",
+            "domain:workstations-windows-readiness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "ace-win-2 on-box: schema-5 equality re-collect verification + hermes home init + revive licensed-runs queue heartbeat (#3592 follow-up)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3595,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "ace-win-2 on-box: schema-5 equality re-collect verification + hermes home init + revive licensed-runs queue heartbeat (#3592 follow-up)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3595",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "priority:low",
+            "cat:operations",
+            "machine:multi",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3594,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3594",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "machine:multi",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "ops(cron): gpu-claw excluded from repository-sync \u2014 roles_authoritative unset, legacy machines exclusion wins; clone-behind warnings recur"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3593,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "ops(cron): gpu-claw excluded from repository-sync \u2014 roles_authoritative unset, legacy machines exclusion wins; clone-behind warnings recur",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3593",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
+          "reviews not clean: major_review,missing_review",
+          "issue already has approval marker on disk",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": ".planning/plan-approved/3592.md",
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "cat:operations",
+            "cat:harness",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "- Found: `scripts/readiness/build-equality-matrix.py` \u2014 `COLD_DIMS = {\"compute\", \"data_access\", \"solvers\"}` (line 36) grade against DECLARED per-machine baselines via `cold_verdict()` (lines 113\u2013162); `uniform_verdict()` (lines 189\u2013200) majority-votes the rest and filters `None/\"",
+          "provider_route": "claude",
+          "risks": "**Risk:** builder and `provider_harness_parity.py` share `EXPECTED_DIVERGENCE_REASONS` (drift note #3206/#3209). This plan will not touch the capability rows, but the reviewer should verify the reclassification cannot desync that pairing. | **Risk (mitigated by design):** existing evidence yamls carry `false/0` placeholders; until every box re-collects with `unknown` semantics, Windows scheduler c",
+          "tests": "TDD section present",
+          "title": "equality matrix: reclassify harness/scheduler/memory rows \u2014 uniform vote mis-grades per-role differences + Windows placeholder data poisons majority"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3592,
+        "pipeline_lane": "C",
+        "plan": "docs/plans/2026-07-22-issue-3592-equality-dimension-reclassification.md",
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "equality matrix: reclassify harness/scheduler/memory rows \u2014 uniform vote mis-grades per-role differences + Windows placeholder data poisons majority",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3592",
+        "warnings": [
+          "legacy_review_no_sha",
+          "major_review",
+          "missing_review"
+        ]
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16201,174 +16361,6 @@
           "approved_no_marker",
           "missing_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "domain:ai-orchestration",
-            "domain:skill-improvement",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `.claude/hooks/session-logger.sh` \u2014 the #3112 PostToolUse producer. Lines 31-40 emit `skill_name` (a rel-path under `.claude/skills/`) **only** for a `Read` of `*/.claude/skills/*/SKILL.md`. It parses `.tool_input.file_path`/`.tool_input.path` (line 27) and `.session_id`",
-          "provider_route": "claude",
-          "risks": "**Risk (HIGH):** The Claude-Code-guide docs summary says the Skill id field is `.tool_input.skill_name`, but 1080/1080 live transcript records carry it under `.tool_input.skill`. The PostToolUse `tool_input` envelope mirrors the assistant tool_use `input`, so `.skill` is near-certain \u2014 but the harness version could differ. **Mitigation:** read `.tool_input.skill // .tool_input.skill_name` (already",
-          "tests": "TDD section present",
-          "title": "Skill-invocation: capture Skill-tool calls (id\u2192short_name resolution) \u2014 follow-on to #3112"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3137,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-15-issue-3137-skill-tool-capture.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Skill-invocation: capture Skill-tool calls (id\u2192short_name resolution) \u2014 follow-on to #3112",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3137",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-orchestration",
-            "status:blocked"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(harness): G5 cross-surface session continuity \u2014 resumable session object [sub of #2998, umbrella #3114]"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3120,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(harness): G5 cross-surface session continuity \u2014 resumable session object [sub of #2998, umbrella #3114]",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3120",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-orchestration",
-            "status:blocked"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(harness): G4 budget-as-policy \u2014 stateful cost/token guardrail at harness layer [sub of #1838, umbrella #3114]"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3119,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(harness): G4 budget-as-policy \u2014 stateful cost/token guardrail at harness layer [sub of #1838, umbrella #3114]",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3119",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "no canonical plan file",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "cat:ai-orchestration",
-            "cat:harness",
-            "domain:ai-orchestration",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(harness): G3 MCP-first tool exposure \u2014 provider-portable tools [sub of #3058, umbrella #3114]"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3118,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(harness): G3 MCP-first tool exposure \u2014 provider-portable tools [sub of #3058, umbrella #3114]",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3118",
-        "warnings": [
-          "approved_no_marker",
-          "approved_no_plan",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16379,17 +16371,17 @@
     "claude",
     "codex"
   ],
-  "scorecard_generated_at": "2026-07-22T21:21:11.908890Z",
+  "scorecard_generated_at": "2026-07-23T09:21:10.244081Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-22T21:21:11.794868Z",
+  "utilization_generated_at": "2026-07-23T09:21:10.120636Z",
   "warning_summary": {
-    "approved_no_marker": 63,
-    "approved_no_plan": 37,
+    "approved_no_marker": 61,
+    "approved_no_plan": 36,
     "dual_status_labels": 5,
-    "legacy_review_no_sha": 6,
-    "major_review": 3,
+    "legacy_review_no_sha": 7,
+    "major_review": 4,
     "marker_without_open_approved_issue": 175,
-    "missing_review": 76,
+    "missing_review": 75,
     "unavailable_review": 3
   }
 }
