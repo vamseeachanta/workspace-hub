@@ -778,9 +778,12 @@ def test_scheduler_unknown_when_probe_unavailable(tmp_path):
 def test_scheduler_windows_schtasks_probe(tmp_path):
     shim = tmp_path / "bin"
     shim.mkdir()
+    # Realistic name: scripts/windows/setup-scheduler-tasks.ps1 registers PascalCase
+    # tasks under \Claude\ ("RepoSync", "EqualityReport") — the probe must match
+    # those, not just hyphenated cron-style names (#3592 follow-up fix).
     (shim / "schtasks").write_text(
         "#!/usr/bin/env bash\n"
-        'printf \'"\\\\repo-sync-daily","N/A","Ready"\\r\\n\'\n'
+        'printf \'"\\\\Claude\\\\RepoSync","N/A","Ready"\\r\\n\'\n'
         'printf \'"\\\\some-other-task","N/A","Ready"\\r\\n\'\n')
     (shim / "schtasks").chmod(0o755)
     d = _run_sched(_fixture(tmp_path),

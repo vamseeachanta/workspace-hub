@@ -293,8 +293,11 @@ elif [[ "$OS" == "windows" ]] && have schtasks; then
   if [[ -n "$tasks" ]]; then
     job_count=$(printf '%s\n' "$tasks" | grep -c '^"')
     has_sync=false; has_parity=false
-    printf '%s' "$tasks" | grep -qiE 'repo-sync|repository-sync|equality-report' && has_sync=true
-    printf '%s' "$tasks" | grep -qi 'parity-review' && has_parity=true
+    # Match BOTH cron-style hyphenated names AND the PascalCase Task Scheduler names
+    # registered by scripts/windows/setup-scheduler-tasks.ps1 (\Claude\RepoSync,
+    # \Claude\EqualityReport) — case-insensitive with an optional separator.
+    printf '%s' "$tasks" | grep -qiE 'repo[-_ ]?sync|repository[-_ ]?sync|equality[-_ ]?report' && has_sync=true
+    printf '%s' "$tasks" | grep -qiE 'parity[-_ ]?review' && has_parity=true
   fi
 fi
 
