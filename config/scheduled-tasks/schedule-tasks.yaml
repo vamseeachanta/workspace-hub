@@ -862,7 +862,10 @@ tasks:
   - id: repository-sync
     label: Repository sync
     schedule: "0 */4 * * *"
-    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    # gpu-claw added per #3592: scheduler_baseline declares repo_sync REQUIRED on every
+    # Linux execution box — without it the checkout drifts stale and equality evidence
+    # only refreshes manually (its first publish was hand-run, 2026-07-22).
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, gpu-claw]
     roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, git, uv, python3]
     runtime:

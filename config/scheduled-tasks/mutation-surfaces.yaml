@@ -259,4 +259,6 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    source_digest: d5b4fbc4508bf58d8ce0b4c47186204be298bf2586e93b5ab19f375f465b07fb
+    # digest refreshed 2026-07-23: schedule-tasks.yaml gained gpu-claw in the
+    # repository-sync machines list (#3592 scheduler_baseline follow-on)
+    source_digest: af1d32c21780787247adf297ee3147df753f740a16875ba9e7b1c007de24ae14
