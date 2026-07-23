@@ -82,11 +82,13 @@ workstations:
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
     # #3591 providers baseline: THIN host by policy — CFD lane only, no gemini/hermes
     providers_baseline: {claude: present, codex: present, gemini: absent, hermes: absent}
-    # #3592: thin host, no hermes home. repo-sync not-required (owner decision 2026-07-23,
-    # via #3591 review flag): no wh cron on the CFD lane today — flip back to required
-    # if/when repo-sync is installed there.
+    # #3592: thin host, no hermes home. repo-sync REQUIRED — installed 2026-07-23 via
+    # setup-cron.sh (crontab: repository-sync 4h + equivalence-sentinel 6h + weekly
+    # equality report; evidence measured has_repo_sync:true, job_count:3, publish
+    # 29639aa94). The earlier same-day not-required flip predated that install; its own
+    # flip-back-when-installed condition is now met.
     hermes_home_baseline: absent
-    scheduler_baseline: {repo_sync: not-required, parity_review: not-required}
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   ace-win-1:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
