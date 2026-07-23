@@ -23929,7 +23929,7 @@ cards:
     title: 'R-SKILLS readiness fail: legitimate skill fix blocked by skill-content scan debt (github-repo-management)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3591
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
     initial_status: triage
