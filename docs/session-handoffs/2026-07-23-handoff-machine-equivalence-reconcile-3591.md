@@ -29,7 +29,7 @@ Also: reconcile-ecosystem `--apply` fixed 76 AUTO-SAFE hygiene items across sibl
 1. **Peer boxes' R-MODEL-DRIFT**: registry now says `gpt-5.6-sol`. Any box whose `~/.codex/config.toml` still says `gpt-5.5` will flag drift until its codex config updates. Expected to self-heal via codex updates; if a box flags, check its config, not the registry.
 2. **ace-win-1/2 schema-5 collections**: MISSING-EVIDENCE scheduler/memory cells clear on their next collector runs. If still MISSING-EVIDENCE after the next weekly Windows run, check the ps1 rollout.
 3. **ace-win-1/2 memory BELOW-BASELINE** (observed pre-schema-5): re-check after schema-5 evidence lands; baselines in harness-config.yaml may need an owner look (win-1 declared absent, win-2 present).
-4. **gpu-claw**: if repo-sync is ever installed, flip `scheduler_baseline.repo_sync` back to `required` (comment marks the spot).
+4. **gpu-claw**: RESOLVED same-day — a parallel session installed repo-sync on gpu-claw (crontab: repository-sync 4h + sentinel 6h; evidence `has_repo_sync:true`) and flipped the baseline back to `required`, meeting the flip-back condition of `8a0c0969e`. Current config (`required`) + live evidence (`true`) → CONFORMS. No action.
 5. **R-SKILLS advisory**: on quiet fleet weeks the OK line shows "(advisory: no skills committed fleet-wide in 7 days)" — by design, not a defect.
 
 ## Dirty-state exceptions on this box (intentional, not for cleanup)
