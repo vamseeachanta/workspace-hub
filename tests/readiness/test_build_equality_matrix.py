@@ -1040,3 +1040,27 @@ def test_scheduler_schema4_linux_measured_values_kept():
     # Linux probe semantics are unchanged across the bump — legacy evidence stays graded
     rep = _sched_rep(has_sync=True, has_parity=True, job_count=63, schema=4, os="linux")
     assert bem.cold_verdict("scheduler", rep, _sched_baseline(parity="required"), TIER1) == "CONFORMS"
+
+
+# ── provider rows must survive the #3592 schema bump (Codex code-review MAJOR) ──
+def test_provider_row_parity_at_schema_5():
+    # The provider-row contract is dimensions.provider_harness.schema_version == 1;
+    # the TOP-LEVEL schema gate must accept every schema that carries it (4+), else
+    # a collector bump silently degrades all 12 capability rows to MISSING-EVIDENCE.
+    rep = _provider_report("dev-primary")
+    rep["schema_version"] = 5
+    assert bem.provider_row_verdict("harness:codex:memory:read", rep) == "PARITY"
+
+
+def test_provider_row_expected_divergence_at_schema_5():
+    rep = _provider_report("dev-primary", {"gemini": {
+        "skills:invoke": {"status": "expected_divergence",
+                          "reason": "gemini_skill_dispatch_unsupported"}}})
+    rep["schema_version"] = 5
+    assert bem.provider_row_verdict("harness:gemini:skills:invoke", rep) == "EXPECTED-DIVERGENCE"
+
+
+def test_provider_row_pre_provider_harness_schema_still_rejected():
+    rep = _provider_report("dev-primary")
+    rep["schema_version"] = 3          # predates the provider_harness dimension (#2889)
+    assert bem.provider_row_verdict("harness:codex:memory:read", rep) == "MISSING-EVIDENCE"

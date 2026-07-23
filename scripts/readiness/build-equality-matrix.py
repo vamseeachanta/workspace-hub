@@ -519,7 +519,12 @@ def provider_row_verdict(dim: str, report: dict) -> str:
     parsed = parse_provider_row(dim)
     if parsed is None:
         return "MISSING-EVIDENCE"
-    if report.get("schema_version") != 4:
+    # Accept every top-level schema that carries the provider_harness dimension (4+,
+    # #2889); the row's real contract is provider_harness.schema_version == 1 below.
+    # Pinning == 4 here silently degraded all capability rows to MISSING-EVIDENCE on
+    # the #3592 schema-5 bump (Codex code-review catch).
+    schema = report.get("schema_version")
+    if not isinstance(schema, int) or schema < 4:
         return "MISSING-EVIDENCE"
     provider, capability = parsed
     harness = report.get("dimensions", {}).get("provider_harness")
