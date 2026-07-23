@@ -1,4 +1,4 @@
-generated_at: "2026-07-23T01:11:24"
+generated_at: "2026-07-23T01:39:57"
 schema_version: 5
 machine: "gpu-claw"
 host: "gpu-claw"
@@ -7,13 +7,13 @@ status: active
 provenance:
   checkout_sha: "2df0a6f55"
   dirty: false
-  behind_main: 0
+  behind_main: 7
   ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 8, ram_total_mib: 64283, gpu_model: "NVIDIA GeForce RTX 3090"}
-    headroom: {ram_avail_mib: 55146, disk_avail_gb: 89}
+    headroom: {ram_avail_mib: 55135, disk_avail_gb: 89}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
