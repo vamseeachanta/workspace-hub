@@ -1,11 +1,11 @@
-generated_at: "2026-07-22T18:53:24"
-schema_version: 4
+generated_at: "2026-07-22T22:53:23"
+schema_version: 5
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "921830db9"
+  checkout_sha: "612cf423f"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32037, gpu_model: "none"}
-    headroom: {ram_avail_mib: 28468, disk_avail_gb: 759}
+    headroom: {ram_avail_mib: 28379, disk_avail_gb: 759}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
