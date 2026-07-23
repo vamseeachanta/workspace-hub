@@ -1,6 +1,6 @@
 # Plan for #3592: Equality matrix — reclassify harness/scheduler/memory rows
 
-> **Status:** plan-approved — implemented (`612cf423f`), code-stage review in flight
+> **Status:** completed — implemented `612cf423f` + provider-row fix; issue CLOSED 2026-07-22
 > **Complexity:** T2
 > **Date:** 2026-07-22
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3592
