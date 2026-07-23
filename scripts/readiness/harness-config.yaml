@@ -53,6 +53,8 @@ workstations:
     required_data_access: [assetutilities, digitalmodel, worldenergydata, assethold]
     # #2849 solvers baseline (cold-dim): a Linux dev box is EXPECTED to lack solvers → absent
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
+    # #3591 providers baseline (cold-dim, role-aware): full provider stack on the Hermes host
+    providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
   dev-secondary:
     ws_hub_path: /mnt/local-analysis/workspace-hub
     ssh_target: ace-linux-2
@@ -61,6 +63,8 @@ workstations:
     compute_floor: {cores_min: 8, ram_gib_min: 8}
     required_data_access: [assetutilities, digitalmodel, worldenergydata, assethold]
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
+    # #3591 providers baseline: full Linux execution box
+    providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
   gpu-claw:
     ws_hub_path: /home/undi/ws/workspace-hub
     ssh_target: gpu-claw
@@ -70,6 +74,8 @@ workstations:
     compute_floor: {cores_min: 8, ram_gib_min: 32}
     required_data_access: [digitalmodel]
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
+    # #3591 providers baseline: THIN host by policy — CFD lane only, no gemini/hermes
+    providers_baseline: {claude: present, codex: present, gemini: absent, hermes: absent}
   ace-win-1:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
@@ -91,6 +97,8 @@ workstations:
     # most `present` (install/import detection only — no real license probe). Until the
     # Windows-side license probe follow-up lands, these cells grade BELOW-BASELINE by design.
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
+    # #3591 providers baseline: THIN Windows host by policy (keep-Windows-host-thin) — no gemini/hermes
+    providers_baseline: {claude: present, codex: present, gemini: absent, hermes: absent}
   ace-win-2:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
@@ -108,6 +116,8 @@ workstations:
     # NOTE (PR #2850, 2026-05-28): grades BELOW-BASELINE until the Windows license-probe
     # follow-up emits a real `licensed` signal (probe only detects install/import → `present`).
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
+    # #3591 providers baseline: full stack observed + intended on this box (doc/email/marketing lane)
+    providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
   home-win:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null

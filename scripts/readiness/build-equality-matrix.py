@@ -7,9 +7,10 @@
 
 Joins per-machine .claude/state/equality-<machine>.yaml self-reports into one
 machines × dimensions matrix. Two grading families (D2):
-  COLD dims  (compute, data_access) → conformance to a DECLARED per-machine baseline
-             in harness-config.yaml  → CONFORMS / BELOW-BASELINE / MISSING-BASELINE
-  UNIFORM dims (harness, skills, kanban, memory, behavior, scheduler) → equality across
+  COLD dims  (compute, data_access, solvers, harness) → conformance to a DECLARED
+             per-machine baseline in harness-config.yaml → CONFORMS / BELOW-BASELINE /
+             MISSING-BASELINE (harness = providers_baseline, role-aware per #3591)
+  UNIFORM dims (skills, kanban, memory, behavior, scheduler) → equality across
              active machines → EQUAL / DIVERGES / NO-MAJORITY / EXPECTED-DIFF / PENDING
 plus MISSING-EVIDENCE / UNREACHABLE. Roster is read from harness-config.yaml (never
 hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py [--open]
@@ -33,7 +34,7 @@ CONFIG = REPO / "scripts" / "readiness" / "harness-config.yaml"
 
 TIER1_DEFAULT = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 UNREACHABLE_DEFAULT = {"home-win", "macbook-portable"}
-COLD_DIMS = {"compute", "data_access", "solvers"}
+COLD_DIMS = {"compute", "data_access", "solvers", "harness"}
 # Solver verdict acceptance (STRICT, #2849 decision 1): which DETECTED statuses satisfy
 # each DECLARED baseline. `licensed` baseline is satisfied ONLY by a `licensed` signal
 # (an install-only `present` is NOT enough — licensed work must never route to it).
@@ -44,6 +45,15 @@ SOLVER_OK = {
     "absent":   {"absent"},
     "present":  {"present", "licensed"},
     "licensed": {"licensed"},
+}
+# Provider verdict acceptance (role-aware baselines, #3591): which DETECTED provider
+# statuses satisfy each DECLARED providers_baseline entry. Thin hosts (gpu-claw,
+# ace-win-1) intentionally lack gemini/hermes — a declared `absent` baseline makes
+# that CONFORMS instead of fleet-wide DIVERGES. A provider present where the baseline
+# declares absent is thin-host policy drift and grades BELOW-BASELINE.
+PROVIDER_OK = {
+    "absent":  {"absent"},
+    "present": {"present"},
 }
 # Uniform dims whose cross-machine difference is OS-driven, not a defect:
 EXPECTED_DIFF_DIMS = {"python_cmd"}
@@ -155,6 +165,23 @@ def cold_verdict(dim: str, report: dict, baseline: dict | None, probed_repos: li
                 verdict = "MISSING-EVIDENCE"
                 continue
             if got not in ok:
+                return "BELOW-BASELINE"                   # any concrete miss dominates
+        return verdict
+    if dim == "harness":
+        declared = baseline.get("providers_baseline")
+        if not declared:                                 # baseline opted out → fail-closed
+            return "MISSING-BASELINE"
+        detected = dims.get("harness", {}).get("providers", {}) or {}
+        verdict = "CONFORMS"
+        for name, want in declared.items():
+            got = detected.get(name, "unknown")
+            # `unknown`/unprobed is NOT evidence for ANY baseline (incl. absent) —
+            # mirrors the solvers rule (#2849): a report with no probe for a provider
+            # must not masquerade as CONFORMS.
+            if got in (None, "unknown"):
+                verdict = "MISSING-EVIDENCE"
+                continue
+            if got not in PROVIDER_OK.get(want, set()):
                 return "BELOW-BASELINE"                   # any concrete miss dominates
         return verdict
     raise ValueError(f"not a cold dimension: {dim}")
@@ -393,8 +420,6 @@ def extract_value(dim: str, report: dict):
     d = report.get("dimensions", {})
     if dim == "python_cmd":
         return d.get("harness", {}).get("python_cmd")
-    if dim == "harness":
-        return json.dumps(d.get("harness", {}).get("providers", {}), sort_keys=True)
     if dim == "skills":
         return d.get("skills", {}).get("repo_skill_count")
     if dim == "kanban":
@@ -622,6 +647,9 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
         if dim == "compute":
             return ("under the declared cores/ram/gpu floor — upgrade box or retune harness-config floor",
                     "operator", False)
+        if dim == "harness":
+            return ("provider set differs from this box's declared providers_baseline — install/remove "
+                    "the provider or retune harness-config.yaml (thin-host policy)", "operator", False)
         return ("below the declared baseline — inspect this box's equality report", "operator", False)
     if verdict in ("DIVERGES", "NO-MAJORITY"):
         if is_provider:
@@ -630,7 +658,7 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
         if dim == "skills":
             return ("skills count differs — usually a tracked symlink materialized as a text file; "
                     "git config core.symlinks true, then rm + git checkout the symlink paths", "this box", False)
-        if dim in ("harness", "behavior"):
+        if dim == "behavior":
             return ("runtime/config drift — rebuild + install the soul runtime, then re-collect", "this box", False)
         if dim == "scheduler":
             return ("cron jobs differ — reconcile via setup-cron.sh --check, then re-collect", "this box", False)
