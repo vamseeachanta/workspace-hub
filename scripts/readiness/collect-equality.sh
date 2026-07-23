@@ -274,12 +274,28 @@ fi
 # (sandbox cleanup handled by the EXIT trap above — CC3/GC4)
 
 # ── 8. SCHEDULER (counts/booleans only; never cron lines, C4) ────────────────
-job_count=0; has_sync=false; has_parity=false
+# #3592: fields default to "unknown" (an enum, C4-safe), NEVER false/0 — an unprobed
+# placeholder is indistinguishable from a measurement and poisoned the old uniform
+# vote (Windows placeholders outvoted the two measured Linux boxes 3-to-2). The
+# matrix grades "unknown" as MISSING-EVIDENCE; only a real probe emits booleans.
+job_count="unknown"; has_sync="unknown"; has_parity="unknown"
 if [[ "$OS" != "windows" ]] && have crontab; then
   dump=$(crontab -l 2>/dev/null)
   job_count=$(printf '%s\n' "$dump" | grep -cE '^[[:space:]]*[^[:space:]#]')  # non-blank, non-comment
+  has_sync=false; has_parity=false
   printf '%s' "$dump" | grep -q 'repository-sync\|repo-sync' && has_sync=true
   printf '%s' "$dump" | grep -q 'parity-review' && has_parity=true
+elif [[ "$OS" == "windows" ]] && have schtasks; then
+  # Windows probe (#3592): Task Scheduler via `schtasks /query /fo csv /nh`. Name-match
+  # only (no schedule lines serialized — C4 holds). job_count includes system tasks, so
+  # it is noisy and display-only (never graded); the booleans are the graded signals.
+  tasks=$(schtasks /query /fo csv /nh 2>/dev/null | tr -d '\r')
+  if [[ -n "$tasks" ]]; then
+    job_count=$(printf '%s\n' "$tasks" | grep -c '^"')
+    has_sync=false; has_parity=false
+    printf '%s' "$tasks" | grep -qiE 'repo-sync|repository-sync|equality-report' && has_sync=true
+    printf '%s' "$tasks" | grep -qi 'parity-review' && has_parity=true
+  fi
 fi
 
 # ── 9. PROVENANCE — checkout freshness guard (#2851) ─────────────────────────
@@ -422,7 +438,7 @@ fi
 #          churn (sha) ONLY, so every freshness-state field stays live in the committed report
 #          and a fresh→stale transition always forces a rewrite) ──
 read -r -d '' BODY <<YAML || true
-schema_version: 4
+schema_version: 5
 machine: "$(yesc "$MACHINE")"
 host: "$(yesc "$PUBLIC_HOST")"
 os: ${OS}

@@ -7,10 +7,11 @@
 
 Joins per-machine .claude/state/equality-<machine>.yaml self-reports into one
 machines × dimensions matrix. Two grading families (D2):
-  COLD dims  (compute, data_access, solvers, harness) → conformance to a DECLARED
-             per-machine baseline in harness-config.yaml → CONFORMS / BELOW-BASELINE /
-             MISSING-BASELINE (harness = providers_baseline, role-aware per #3591)
-  UNIFORM dims (skills, kanban, memory, behavior, scheduler) → equality across
+  COLD dims  (compute, data_access, solvers, harness, memory, scheduler) → conformance
+             to a DECLARED per-machine baseline in harness-config.yaml → CONFORMS /
+             BELOW-BASELINE / MISSING-BASELINE (harness = providers_baseline #3591;
+             memory = hermes_home_baseline, scheduler = scheduler_baseline #3592)
+  UNIFORM dims (skills, kanban, behavior) → equality across
              active machines → EQUAL / DIVERGES / NO-MAJORITY / EXPECTED-DIFF / PENDING
 plus MISSING-EVIDENCE / UNREACHABLE. Roster is read from harness-config.yaml (never
 hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py [--open]
@@ -34,7 +35,7 @@ CONFIG = REPO / "scripts" / "readiness" / "harness-config.yaml"
 
 TIER1_DEFAULT = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 UNREACHABLE_DEFAULT = {"home-win", "macbook-portable"}
-COLD_DIMS = {"compute", "data_access", "solvers", "harness"}
+COLD_DIMS = {"compute", "data_access", "solvers", "harness", "memory", "scheduler"}
 # Solver verdict acceptance (STRICT, #2849 decision 1): which DETECTED statuses satisfy
 # each DECLARED baseline. `licensed` baseline is satisfied ONLY by a `licensed` signal
 # (an install-only `present` is NOT enough — licensed work must never route to it).
@@ -184,6 +185,38 @@ def cold_verdict(dim: str, report: dict, baseline: dict | None, probed_repos: li
             if got not in PROVIDER_OK.get(want, set()):
                 return "BELOW-BASELINE"                   # any concrete miss dominates
         return verdict
+    if dim == "memory":
+        declared = baseline.get("hermes_home_baseline")
+        if not declared:                                 # baseline opted out → fail-closed
+            return "MISSING-BASELINE"
+        got = dims.get("memory", {}).get("hermes_home", "unknown")
+        if got in (None, "unknown"):
+            return "MISSING-EVIDENCE"
+        # present-where-declared-absent is drift too (mirrors thin-host policy, #3591)
+        return "CONFORMS" if got == declared else "BELOW-BASELINE"
+    if dim == "scheduler":
+        declared = baseline.get("scheduler_baseline")
+        if not declared:                                 # baseline opted out → fail-closed
+            return "MISSING-BASELINE"
+        sched = dims.get("scheduler", {}) or {}
+        has_sync = sched.get("has_repo_sync")
+        has_parity = sched.get("has_parity_review")
+        # Migration gate (#3592): schema<5 collectors NEVER probed Windows — their
+        # false/0 scheduler values are hardcoded placeholders, not measurements.
+        # Treat them as unprobed so stale evidence can neither pass nor fail the
+        # baseline. Linux probe semantics are unchanged across the bump, so legacy
+        # Linux evidence keeps its measured values.
+        schema = report.get("schema_version")
+        legacy = not isinstance(schema, int) or schema < 5
+        if legacy and report.get("os") == "windows":
+            has_sync = has_parity = "unknown"
+        if has_sync in (None, "unknown") or has_parity in (None, "unknown"):
+            return "MISSING-EVIDENCE"
+        if declared.get("repo_sync") == "required" and has_sync is not True:
+            return "BELOW-BASELINE"
+        if declared.get("parity_review") == "required" and has_parity is not True:
+            return "BELOW-BASELINE"
+        return "CONFORMS"
     raise ValueError(f"not a cold dimension: {dim}")
 
 
@@ -429,15 +462,10 @@ def extract_value(dim: str, report: dict):
         # queue set arrived as differently-ordered strings and graded DIVERGES. Order is
         # a collector artifact; membership is the signal.
         return ",".join(sorted(q.split(","))) if isinstance(q, str) else q
-    if dim == "memory":
-        return d.get("memory", {}).get("hermes_home")
     if dim == "behavior":
         b = d.get("behavior", {})
         return json.dumps({"enums": b.get("enums", {}), "hashes": b.get("hashes", {})}, sort_keys=True)
-    if dim == "scheduler":
-        s = d.get("scheduler", {})
-        return json.dumps({"has_repo_sync": s.get("has_repo_sync"),
-                           "has_parity_review": s.get("has_parity_review")}, sort_keys=True)
+    # memory + scheduler moved to COLD_DIMS (#3592) — they no longer feed the uniform vote
     return None
 
 
@@ -650,6 +678,12 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
         if dim == "harness":
             return ("provider set differs from this box's declared providers_baseline — install/remove "
                     "the provider or retune harness-config.yaml (thin-host policy)", "operator", False)
+        if dim == "memory":
+            return ("hermes home dir differs from this box's declared hermes_home_baseline — "
+                    "install/remove ~/.hermes or retune harness-config.yaml", "operator", False)
+        if dim == "scheduler":
+            return ("a required scheduler job is missing — install the cron set "
+                    "(scripts/cron/setup-cron.sh; Task Scheduler on Windows), then re-collect", "this box", False)
         return ("below the declared baseline — inspect this box's equality report", "operator", False)
     if verdict in ("DIVERGES", "NO-MAJORITY"):
         if is_provider:
@@ -660,8 +694,6 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
                     "git config core.symlinks true, then rm + git checkout the symlink paths", "this box", False)
         if dim == "behavior":
             return ("runtime/config drift — rebuild + install the soul runtime, then re-collect", "this box", False)
-        if dim == "scheduler":
-            return ("cron jobs differ — reconcile via setup-cron.sh --check, then re-collect", "this box", False)
         return ("differs from peers — OFTEN a stale-peer artifact; refresh ALL machines' reports first, "
                 "then reconcile any genuine config drift", "all boxes", False)
     if verdict == "MISSING-BASELINE":

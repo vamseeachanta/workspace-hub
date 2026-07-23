@@ -14,7 +14,7 @@
 # (cores_min:8; ram_gib_min restored in the #2816 W4 follow-up). NOT a live machine report —
 # regenerate by re-running the .sh seam if the schema changes.
 generated_at: "2026-05-30T04:31:07"
-schema_version: 4
+schema_version: 5
 machine: "ace-win-1"
 host: "acma-ws002"
 os: windows
@@ -82,8 +82,8 @@ dimensions:
     hashes: {b5: 4f2a9c1e7b0d6385}
   scheduler:
     has_repo_sync: true
-    has_parity_review: true
-    job_count: 4
+    has_parity_review: false
+    job_count: 187
   session_curation:
     last_curated_at: "2026-05-30T03:55:12"
     sessions_24h: 47

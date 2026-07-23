@@ -919,3 +919,124 @@ def test_kanban_membership_difference_still_diverges():
     reports["b"]["dimensions"]["kanban"] = {"dispatch_queues": "dev-primary,multi"}
     reports["c"]["dimensions"]["kanban"] = {"dispatch_queues": "dev-primary,multi,rogue"}
     assert bem.verdict_for("kanban", "a", reports, {}, roster, TIER1) == "DIVERGES"
+
+
+# ── memory + scheduler cold-dim conformance (declared baselines, #3592) ──────
+def test_memory_is_cold_dim():
+    assert "memory" in bem.COLD_DIMS
+
+
+def test_scheduler_is_cold_dim():
+    assert "scheduler" in bem.COLD_DIMS
+
+
+def test_reclassified_dims_not_uniform_voted():
+    # extract_value feeds ONLY the uniform vote; reclassified dims must not map there,
+    # so a mixed-fleet value set can never manufacture DIVERGES/NO-MAJORITY for them.
+    rep = _report("dev-primary")
+    assert bem.extract_value("memory", rep) is None
+    assert bem.extract_value("scheduler", rep) is None
+
+
+def _memory_rep(machine="dev-primary", hermes_home="present"):
+    mem = {"context_md_mtime": "2026-07-22T04:25:01"}
+    if hermes_home is not None:
+        mem["hermes_home"] = hermes_home
+    return _report(machine, memory=mem)
+
+
+def test_memory_hermes_home_conforms():
+    rep = _memory_rep(hermes_home="present")
+    assert bem.cold_verdict("memory", rep, {"hermes_home_baseline": "present"}, TIER1) == "CONFORMS"
+
+
+def test_memory_absent_conforms_to_absent_baseline():
+    rep = _memory_rep("gpu-claw", hermes_home="absent")
+    assert bem.cold_verdict("memory", rep, {"hermes_home_baseline": "absent"}, TIER1) == "CONFORMS"
+
+
+def test_memory_below_baseline_on_mismatch():
+    rep = _memory_rep("ace-win-2", hermes_home="absent")
+    assert bem.cold_verdict("memory", rep, {"hermes_home_baseline": "present"}, TIER1) == "BELOW-BASELINE"
+
+
+def test_memory_surplus_hermes_below_baseline():
+    rep = _memory_rep("ace-win-1", hermes_home="present")
+    assert bem.cold_verdict("memory", rep, {"hermes_home_baseline": "absent"}, TIER1) == "BELOW-BASELINE"
+
+
+def test_memory_no_baseline_fail_closed():
+    rep = _memory_rep()
+    assert bem.cold_verdict("memory", rep, {"compute_floor": {"cores_min": 8}}, TIER1) == "MISSING-BASELINE"
+
+
+def test_memory_unknown_missing_evidence():
+    rep = _memory_rep(hermes_home=None)
+    assert bem.cold_verdict("memory", rep, {"hermes_home_baseline": "present"}, TIER1) == "MISSING-EVIDENCE"
+
+
+def _sched_baseline(repo_sync="required", parity="not-required"):
+    return {"scheduler_baseline": {"repo_sync": repo_sync, "parity_review": parity}}
+
+
+def _sched_rep(machine="dev-primary", has_sync=True, has_parity=False, job_count=26,
+               schema=5, os="linux"):
+    rep = _report(machine, scheduler={"has_repo_sync": has_sync,
+                                      "has_parity_review": has_parity,
+                                      "job_count": job_count})
+    rep["schema_version"] = schema
+    rep["os"] = os
+    return rep
+
+
+def test_scheduler_required_sync_present_conforms():
+    rep = _sched_rep(has_sync=True, has_parity=False)
+    assert bem.cold_verdict("scheduler", rep, _sched_baseline(), TIER1) == "CONFORMS"
+
+
+def test_scheduler_required_sync_missing_below_baseline():
+    # gpu-claw: measured Linux zeros = a REAL onboarding gap, must stay visible
+    rep = _sched_rep("gpu-claw", has_sync=False, has_parity=False, job_count=0)
+    assert bem.cold_verdict("scheduler", rep, _sched_baseline(), TIER1) == "BELOW-BASELINE"
+
+
+def test_scheduler_leader_parity_required_conforms():
+    rep = _sched_rep(has_sync=True, has_parity=True, job_count=63)
+    assert bem.cold_verdict("scheduler", rep, _sched_baseline(parity="required"), TIER1) == "CONFORMS"
+
+
+def test_scheduler_leader_parity_missing_below_baseline():
+    rep = _sched_rep(has_sync=True, has_parity=False)
+    assert bem.cold_verdict("scheduler", rep, _sched_baseline(parity="required"), TIER1) == "BELOW-BASELINE"
+
+
+def test_scheduler_not_required_false_conforms():
+    rep = _sched_rep(has_sync=False, has_parity=False, job_count=0)
+    bl = _sched_baseline(repo_sync="not-required", parity="not-required")
+    assert bem.cold_verdict("scheduler", rep, bl, TIER1) == "CONFORMS"
+
+
+def test_scheduler_unknown_missing_evidence():
+    # `unknown` is never evidence: neither a baseline pass nor a fail
+    rep = _sched_rep(has_sync="unknown", has_parity="unknown", job_count="unknown")
+    assert bem.cold_verdict("scheduler", rep, _sched_baseline(), TIER1) == "MISSING-EVIDENCE"
+
+
+def test_scheduler_no_baseline_fail_closed():
+    rep = _sched_rep()
+    assert bem.cold_verdict("scheduler", rep, {"compute_floor": {"cores_min": 8}}, TIER1) == "MISSING-BASELINE"
+
+
+def test_scheduler_schema4_windows_placeholder_is_unprobed():
+    # Migration gate (#3592): pre-schema-5 collectors NEVER probed Windows — their
+    # false/0 values are placeholders, not measurements. They must grade
+    # MISSING-EVIDENCE, never BELOW-BASELINE (and never CONFORMS).
+    rep = _sched_rep("ace-win-1", has_sync=False, has_parity=False, job_count=0,
+                     schema=4, os="windows")
+    assert bem.cold_verdict("scheduler", rep, _sched_baseline(), TIER1) == "MISSING-EVIDENCE"
+
+
+def test_scheduler_schema4_linux_measured_values_kept():
+    # Linux probe semantics are unchanged across the bump — legacy evidence stays graded
+    rep = _sched_rep(has_sync=True, has_parity=True, job_count=63, schema=4, os="linux")
+    assert bem.cold_verdict("scheduler", rep, _sched_baseline(parity="required"), TIER1) == "CONFORMS"

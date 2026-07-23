@@ -55,6 +55,9 @@ workstations:
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
     # #3591 providers baseline (cold-dim, role-aware): full provider stack on the Hermes host
     providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
+    # #3592 memory + scheduler baselines (cold-dim): leader box — repo-sync AND parity-review crons
+    hermes_home_baseline: present
+    scheduler_baseline: {repo_sync: required, parity_review: required}
   dev-secondary:
     ws_hub_path: /mnt/local-analysis/workspace-hub
     ssh_target: ace-linux-2
@@ -65,6 +68,9 @@ workstations:
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
     # #3591 providers baseline: full Linux execution box
     providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
+    # #3592: execution box — repo-sync required; parity-review is leader-only (dev-primary)
+    hermes_home_baseline: present
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   gpu-claw:
     ws_hub_path: /home/undi/ws/workspace-hub
     ssh_target: gpu-claw
@@ -76,6 +82,9 @@ workstations:
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
     # #3591 providers baseline: THIN host by policy — CFD lane only, no gemini/hermes
     providers_baseline: {claude: present, codex: present, gemini: absent, hermes: absent}
+    # #3592: thin host, no hermes home; repo-sync still required (checkout must not drift stale)
+    hermes_home_baseline: absent
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   ace-win-1:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
@@ -99,6 +108,11 @@ workstations:
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
     # #3591 providers baseline: THIN Windows host by policy (keep-Windows-host-thin) — no gemini/hermes
     providers_baseline: {claude: present, codex: present, gemini: absent, hermes: absent}
+    # #3592: hermes_home aligned with providers_baseline (thin → absent). Evidence currently
+    # reads present — a probe/policy contradiction the BELOW-BASELINE cell surfaces for
+    # on-box cleanup (#2815 companion). Task Scheduler repo-sync required.
+    hermes_home_baseline: absent
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   ace-win-2:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
@@ -118,6 +132,11 @@ workstations:
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
     # #3591 providers baseline: full stack observed + intended on this box (doc/email/marketing lane)
     providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
+    # #3592: hermes_home aligned with providers_baseline (full stack → present). Evidence
+    # currently reads absent — the inverse contradiction of ace-win-1; the red cell drives
+    # the on-box probe/install reconciliation. Task Scheduler repo-sync required.
+    hermes_home_baseline: present
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   home-win:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null

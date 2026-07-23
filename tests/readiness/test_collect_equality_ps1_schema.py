@@ -63,9 +63,9 @@ EXPECTED_DIMS = {"compute", "data_access", "solvers", "harness", "skills",
                  "publish_health"}
 
 
-def test_ps1_sample_output_parses_schema_v4_with_provider_harness():
+def test_ps1_sample_output_parses_schema_v5_with_provider_harness():
     d = _fixture()
-    assert d["schema_version"] == 4
+    assert d["schema_version"] == 5
     assert d["os"] == "windows"
     assert d["machine"] == "ace-win-1"
     # provenance block present with the freshness fields is_stale() consumes
@@ -267,3 +267,19 @@ def test_eq_os_override_ignored_without_test_flag(tmp_path):
     assert res.returncode == 0, res.stderr
     d = yaml.safe_load(res.stdout)
     assert d["os"] != "unknown"                                      # real OS, override ignored
+
+
+def test_ps1_golden_schema5_scheduler():
+    # #3592: schema 5 makes scheduler emission intentional on Windows — either the
+    # schtasks probe ran (typed booleans + noisy display-only job_count) or every
+    # field is the string "unknown". Bare pre-#3592 placeholders (false/false/0
+    # emitted without probing) are no longer a legal golden state.
+    s = _fixture()["dimensions"]["scheduler"]
+    assert set(s) == {"has_repo_sync", "has_parity_review", "job_count"}
+    probed = isinstance(s["has_repo_sync"], bool)
+    if probed:
+        assert isinstance(s["has_parity_review"], bool)
+        assert isinstance(s["job_count"], int)
+        assert s != {"has_repo_sync": False, "has_parity_review": False, "job_count": 0}
+    else:
+        assert s["has_repo_sync"] == s["has_parity_review"] == s["job_count"] == "unknown"

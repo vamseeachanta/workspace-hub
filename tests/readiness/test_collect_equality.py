@@ -166,10 +166,11 @@ STATUS_ENUM = {"licensed", "present", "absent", "unknown"}
 EVIDENCE_ENUM = {"import", "env", "root", "absent", "unknown"}
 
 
-def test_collect_emits_schema_v4(tmp_path):
-    # #2889: schema bumped to 4 with the provider_harness dimension added.
+def test_collect_emits_schema_v5(tmp_path):
+    # #2889: schema 4 added provider_harness; #3592: schema 5 = scheduler `unknown`
+    # semantics (unprobed fields are never placeholder false/0) + Windows schtasks probe.
     d = _run(_fixture(tmp_path))
-    assert d["schema_version"] == 4
+    assert d["schema_version"] == 5
 
 
 def test_collect_emits_schema_v4_with_complete_provider_harness(tmp_path):
@@ -225,7 +226,7 @@ def test_provider_harness_helper_is_windows_stdlib_safe(tmp_path):
         timeout=60)
     assert res.returncode == 0, res.stderr
     data = yaml.safe_load(res.stdout)
-    assert data["schema_version"] == 4
+    assert data["schema_version"] == 5
     assert "provider_harness" in data["dimensions"]
 
 
@@ -750,3 +751,59 @@ def test_reconcile_remediation_embeds_machine_env():
     # boxes: the cron invocation carries EQ_MACHINE (r2/issue defect 2).
     text = RECONCILE.read_text(encoding="utf-8")
     assert "EQ_MACHINE=" in text
+
+
+# ── scheduler probe semantics (#3592): unknown when unprobed, schtasks on windows ──
+def _run_sched(ws: Path, extra: dict, *args: str) -> dict:
+    env = {"WORKSPACE_HUB": _bash_path(ws), "PATH": extra.pop("PATH", BASH_PATH)}
+    env.update(extra)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary", *args],
+        env=env, capture_output=True, text=True, timeout=60)
+    assert res.returncode == 0, res.stderr
+    return yaml.safe_load(res.stdout)
+
+
+def test_scheduler_unknown_when_probe_unavailable(tmp_path):
+    # windows branch without schtasks on PATH → all three fields are the string
+    # "unknown", NEVER placeholder false/0 (placeholders poisoned the old vote, #3592)
+    d = _run_sched(_fixture(tmp_path),
+                 {"EQ_TEST_ENABLE_OS_OVERRIDE": "1", "EQ_OS_OVERRIDE": "windows"})
+    s = d["dimensions"]["scheduler"]
+    assert s["has_repo_sync"] == "unknown"
+    assert s["has_parity_review"] == "unknown"
+    assert s["job_count"] == "unknown"
+
+
+def test_scheduler_windows_schtasks_probe(tmp_path):
+    shim = tmp_path / "bin"
+    shim.mkdir()
+    (shim / "schtasks").write_text(
+        "#!/usr/bin/env bash\n"
+        'printf \'"\\\\repo-sync-daily","N/A","Ready"\\r\\n\'\n'
+        'printf \'"\\\\some-other-task","N/A","Ready"\\r\\n\'\n')
+    (shim / "schtasks").chmod(0o755)
+    d = _run_sched(_fixture(tmp_path),
+                 {"EQ_TEST_ENABLE_OS_OVERRIDE": "1", "EQ_OS_OVERRIDE": "windows",
+                  "PATH": f"{shim}:{BASH_PATH}"})
+    s = d["dimensions"]["scheduler"]
+    assert s["has_repo_sync"] is True
+    assert s["has_parity_review"] is False       # measured-false: no parity task found
+    assert s["job_count"] == 2
+
+
+def test_scheduler_linux_crontab_measured(tmp_path):
+    # hermetic: a crontab shim FIRST in PATH so the host's real crontab never leaks in
+    shim = tmp_path / "bin"
+    shim.mkdir()
+    (shim / "crontab").write_text(
+        "#!/usr/bin/env bash\n"
+        "echo '0 3 * * * bash scripts/cron/cron-repository-sync.sh'\n"
+        "echo '0 4 * * 0 bash scripts/readiness/parity-review.sh'\n"
+        "echo '# a comment line'\n")
+    (shim / "crontab").chmod(0o755)
+    d = _run_sched(_fixture(tmp_path), {"PATH": f"{shim}:{BASH_PATH}"})
+    s = d["dimensions"]["scheduler"]
+    assert s["has_repo_sync"] is True
+    assert s["has_parity_review"] is True
+    assert s["job_count"] == 2                   # comment line excluded
