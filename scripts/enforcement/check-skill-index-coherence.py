@@ -55,6 +55,21 @@ KNOWN_DANGLING_EDGE_REFS: set[str] = set()  # emptied by #3220 (4 nodes added, 1
 # only `#{2,4} When to Use…` / `Trigger…`). Used by the advisory check (b).
 _LOOSE_WTU_HEADING = re.compile(
     r"(?im)^\s*#{1,6}\s*(when[\s_-]*(to|you)[\s_-]*use|trigger)\b")
+_FENCE_LINE = re.compile(r"^\s{0,3}(```|~~~)")
+
+
+def _strip_fenced_code(text: str) -> str:
+    """Drop fenced code blocks so a `# bash comment` inside ``` fences is never
+    mistaken for a markdown heading (#3591 item 3 — false-flagged
+    github/github-repo-management on `# Trigger a workflow manually`)."""
+    out, in_fence = [], False
+    for line in text.splitlines(keepends=True):
+        if _FENCE_LINE.match(line):
+            in_fence = not in_fence
+            continue
+        if not in_fence:
+            out.append(line)
+    return "".join(out)
 
 
 def _load_yaml(path: Path):
@@ -98,7 +113,7 @@ def check_b_advisory() -> list[str]:
         sk = SKILLS_DIR / e["id"] / "SKILL.md"
         if not sk.is_file():
             continue
-        if _LOOSE_WTU_HEADING.search(sk.read_text(encoding="utf-8", errors="replace")):
+        if _LOOSE_WTU_HEADING.search(_strip_fenced_code(sk.read_text(encoding="utf-8", errors="replace"))):
             advisories.append(e["id"])
     return advisories
 
