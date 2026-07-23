@@ -301,6 +301,75 @@ def test_solvers_in_display_dims_after_data_access():
     assert bem.DISPLAY_DIMS.index("solvers") == bem.DISPLAY_DIMS.index("data_access") + 1
 
 
+# ── harness providers cold-dim conformance (role-aware baselines, #3591) ─────
+FULL_PROVIDERS = {"claude": "present", "codex": "present", "gemini": "present", "hermes": "present"}
+THIN_PROVIDERS = {"claude": "present", "codex": "present", "gemini": "absent", "hermes": "absent"}
+
+
+def _harness(providers):
+    return {"providers": dict(providers), "readiness_overall": "pass", "python_cmd": "uv-run"}
+
+
+def _providers_baseline(**over):
+    base = dict(FULL_PROVIDERS)
+    base.update(over)
+    return {"providers_baseline": base}
+
+
+def test_harness_is_cold_dim():
+    assert "harness" in bem.COLD_DIMS
+
+
+def test_harness_full_box_conforms_to_full_baseline():
+    rep = _report("dev-secondary", harness=_harness(FULL_PROVIDERS))
+    assert bem.cold_verdict("harness", rep, _providers_baseline(), TIER1) == "CONFORMS"
+
+
+def test_harness_thin_box_conforms_to_thin_baseline():
+    # gpu-claw / ace-win-1 intentionally lack gemini+hermes (thin-host policy) — must
+    # grade CONFORMS against their declared thin baseline, not fleet-DIVERGES (#3591).
+    rep = _report("gpu-claw", harness=_harness(THIN_PROVIDERS))
+    bl = _providers_baseline(gemini="absent", hermes="absent")
+    assert bem.cold_verdict("harness", rep, bl, TIER1) == "CONFORMS"
+
+
+def test_harness_missing_expected_provider_below_baseline():
+    rep = _report("dev-secondary", harness=_harness(dict(FULL_PROVIDERS, hermes="absent")))
+    assert bem.cold_verdict("harness", rep, _providers_baseline(), TIER1) == "BELOW-BASELINE"
+
+
+def test_harness_extra_provider_on_thin_box_below_baseline():
+    # thin-host policy drift: a provider installed where the baseline declares absent
+    rep = _report("ace-win-1", harness=_harness(dict(THIN_PROVIDERS, hermes="present")))
+    bl = _providers_baseline(gemini="absent", hermes="absent")
+    assert bem.cold_verdict("harness", rep, bl, TIER1) == "BELOW-BASELINE"
+
+
+def test_harness_no_baseline_fail_closed():
+    rep = _report("dev-secondary", harness=_harness(FULL_PROVIDERS))
+    assert bem.cold_verdict("harness", rep, {"compute_floor": {"cores_min": 8}}, TIER1) == "MISSING-BASELINE"
+
+
+def test_harness_unprobed_provider_is_missing_evidence():
+    # baseline declares hermes but the probe has no entry for it → MISSING-EVIDENCE,
+    # never CONFORMS (unknown is not evidence, mirrors the solvers rule #2849).
+    probed = {k: v for k, v in FULL_PROVIDERS.items() if k != "hermes"}
+    rep = _report("dev-secondary", harness=_harness(probed))
+    assert bem.cold_verdict("harness", rep, _providers_baseline(), TIER1) == "MISSING-EVIDENCE"
+
+
+def test_harness_concrete_miss_dominates_unknown():
+    probed = {"claude": "present", "codex": "present", "gemini": "absent"}  # hermes unprobed
+    rep = _report("dev-secondary", harness=_harness(probed))
+    assert bem.cold_verdict("harness", rep, _providers_baseline(), TIER1) == "BELOW-BASELINE"
+
+
+def test_harness_legacy_report_without_harness_block_missing_evidence():
+    rep = _report("dev-secondary")
+    rep["dimensions"].pop("harness")
+    assert bem.cold_verdict("harness", rep, _providers_baseline(), TIER1) == "MISSING-EVIDENCE"
+
+
 def test_solvers_renders_row_in_html(tmp_path, monkeypatch):
     # End-to-end: matrix HTML includes a solvers row. Drive main() against a tmp state dir.
     state = tmp_path / "state"
