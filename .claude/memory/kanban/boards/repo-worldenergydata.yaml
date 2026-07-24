@@ -3378,7 +3378,7 @@ cards:
     title: 'bug: Spain-cores adapter tests fail on main → blocks all PRs (Test PR gate)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/983
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
     initial_status: triage
