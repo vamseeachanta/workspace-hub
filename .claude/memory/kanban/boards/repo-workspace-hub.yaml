@@ -23993,3 +23993,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3598
+    title: 'feat(equality): add HF-token health row to the machine equivalence matrix'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3598
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
