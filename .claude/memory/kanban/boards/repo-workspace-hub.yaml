@@ -8904,7 +8904,7 @@ cards:
     title: 'WRK-1272: Enforce 200-line skill limit — split 293 oversized SKILL.md files'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1019
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - priority:high

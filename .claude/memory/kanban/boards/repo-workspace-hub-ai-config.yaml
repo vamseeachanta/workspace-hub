@@ -1020,7 +1020,7 @@ cards:
     title: 'Model parity: de-prescription sweep — strip Fable-degrading scaffolding from skills/prompts — epic #3043'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3106
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - domain:ai-config
       - domain:ai-orchestration

@@ -503,3 +503,19 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1633
+    title: 'bug(validation): OrcaWave benchmark suite compares OrcaWave to itself; the one AQWA cross-check is NO_CONSENSUS but marked status: pass'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1633
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - priority:high
+      - domain:hydro-diffraction
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

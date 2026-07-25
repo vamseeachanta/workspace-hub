@@ -1074,7 +1074,7 @@ cards:
     title: '[corpus-ingest] O&G raw document-support manual review routing'
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/638
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - priority:high
       - status:done

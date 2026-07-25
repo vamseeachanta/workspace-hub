@@ -7893,3 +7893,17 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1634
+    title: 'ci(governance): protect-main has no required_status_checks and 0 required reviews — 60.3% of merged PRs were red'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1634
+    gh_state: open
+    gh_labels:
+      - priority:critical
+      - cat:ci
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

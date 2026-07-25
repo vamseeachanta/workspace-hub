@@ -788,3 +788,66 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1629
+    title: 'bug(orcaflex): process_summary_by_model_and_cfg returns hardcoded 0.0 inside the live licensed convergence loop'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1629
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - priority:critical
+      - domain:solver-orcaflex
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1630
+    title: 'bug(mooring): DNV-OS-E301 compliance hardcoded True; comprehensive_analysis package is a scaffold with zero tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1630
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - priority:critical
+      - domain:solver-orcaflex
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1631
+    title: 'bug(licensed-lane): runs report returncode 0 / finished despite validator Overall Status: FAIL — make the lane fail-closed'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1631
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - priority:critical
+      - domain:solver-orcaflex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1632
+    title: 'chore(packaging): root dependencies poisoned by vendored orcaflex_dashboard requirements.txt (celery/newrelic/sentry/boto3/poetry at runtime)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1632
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:maintenance
+      - domain:solver-orcaflex
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

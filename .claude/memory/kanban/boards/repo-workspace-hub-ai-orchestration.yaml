@@ -918,7 +918,7 @@ cards:
     title: 'Model parity: analyze the Fable-5 session corpus (behavioral learning) — epic #3043'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3056
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - domain:ai-orchestration
       - machine:multi
@@ -973,7 +973,7 @@ cards:
     title: "Model parity: ship a 'fable-mode' behavioral adapter skill (executable playbook) — epic #3043"
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3107
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:ai-orchestration
       - domain:memory
@@ -985,7 +985,7 @@ cards:
     title: 'Model parity: external Fable-5 corpus (Hugging Face) — out-of-sample validation of #3056 — epic #3043'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3109
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - domain:ai-orchestration
       - machine:multi
