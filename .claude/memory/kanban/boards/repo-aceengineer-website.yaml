@@ -500,3 +500,13 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#76
+    title: 'feat(nav): make aceengineer.com navigable — consistent capability nav on every page'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/76
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
