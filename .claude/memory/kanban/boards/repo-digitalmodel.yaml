@@ -3535,7 +3535,7 @@ cards:
     title: 'OrcaWave: define result export and postprocess contract for diffraction runs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/611
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - enhancement
       - machine:dev-primary
@@ -7102,7 +7102,7 @@ cards:
     title: Add repo-level units regression test (kN<->N factor-1000 trap)
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1447
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - cat:engineering-calculations
       - status:done
@@ -7522,6 +7522,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:data
+      - status:plan-approved
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -7557,7 +7558,7 @@ cards:
     title: 'feat(orcaflex): licensed orcaflex-run-batch — N-parallel dynamic time-domain batch sized to ~90% of host cores [#1553 A]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1554
-    gh_state: closed
+    gh_state: open
     gh_labels:
       - feature
       - cat:engineering
