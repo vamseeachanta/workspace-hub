@@ -510,3 +510,149 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#80
+    title: '[Epic] Site organization, navigation and design consistency (audit 2026-07-26)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/80
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - design-system
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#81
+    title: 'A1 — Navigable IA: real nav + hub cross-links, reconnect 26 orphan pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/81
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - design-system
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#82
+    title: 'A2 — One design system: collapse marketing/components/theme CSS onto one token set'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/82
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - design-system
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#83
+    title: 'A3 — Capability pages: align generated output with the design system, close the dead end'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/83
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - design-system
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#84
+    title: A4 — Bootstrap 3.4 (EOL 2019) to Bootstrap 5.3
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/84
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - design-system
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#85
+    title: A5 — Generated sitemap + canonical URLs + Dataset JSON-LD
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/85
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:working
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#86
+    title: 'A6 — Asset delivery: PurgeCSS no-op, three Plotly versions, unbundled CSS'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/86
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - status:working
+      - cat:tooling
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#87
+    title: 'A7 — Accessibility baseline: main landmark, skip link, heading order, contrast'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/87
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - status:working
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#88
+    title: 'A8 — Repo structure Phase 2: retire the legacy root tree (follow-up to #13)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/88
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#89
+    title: 'A9 — Brand/messaging reconciliation: one story, one set of enforced rules'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/89
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - content
+      - design-system
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
