@@ -1,6 +1,6 @@
 # Weekly Trend Summary
 
-Generated: 2026-07-23 02:15
+Generated: 2026-07-26 02:17
 
 | Week | Violations/day | Corrections | Sessions | One-shot % | Median stage (s) | Stages |
 |------|---------------|-------------|----------|-----------|-----------------|--------|
