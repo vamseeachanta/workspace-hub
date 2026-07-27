@@ -328,7 +328,7 @@ machines:
     hostname_aliases: [Vamsees-MacBook-Air.local]
     os: macos
     role: portable-dev
-    workspace_root: /Users/krishna/workspace-hub
+    workspace_root: /Users/krishna/Developer/ws/workspace-hub
     schedule_variant: none
     ssh: null  # no SSH from Linux hosts
     tailscale_ip: null
@@ -355,7 +355,9 @@ machines:
       readiness_freshness_thresholds:
         report_hours: 25
     notes: >
-      Portable macOS workstation. No cron — manual or launchd-based scheduling.
+      Portable macOS workstation. Not in the equivalence roster (schedule_variant:
+      none) — publishes no fingerprint by design. Runs one local cron job only:
+      the daily repository-sync at 02:00 (see scripts/cron-repository-sync.sh).
       Path conventions differ from Linux (/Users/ vs /home/).
       Some Linux-specific kernel/GPU tools not applicable.
 
