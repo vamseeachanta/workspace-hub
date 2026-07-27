@@ -1,6 +1,6 @@
 # Provider utilization weekly report
 
-Generated: 2026-07-27T04:01:07.552961Z
+Generated: 2026-07-27T05:21:09.738644Z
 Current week: 2026-W31
 Total monthly spend tracked: $260.0/mo
 
@@ -48,6 +48,33 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 |---|---:|---:|---:|---|---:|---|
 | claude | 4 | 685 | 1.7% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
 | codex | 314 | 35148 | 42.0% | quota | 42.0% | week_pct from app-server-live |
+| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+
+## 2026-W26
+
+| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
+|---|---:|---:|---:|---|---:|---|
+| claude | 2 | 16 | 0.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 62 | 6960 | 0.0% | quota | 0.0% | week_pct from local-session-rate-limits |
+| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+
+## 2026-W25
+
+| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
+|---|---:|---:|---:|---|---:|---|
+| claude | 3 | 595 | 1.5% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 249 | 23239 | 23.0% | quota | 23.0% | week_pct from local-session-rate-limits |
+| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+
+## 2026-W24
+
+| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
+|---|---:|---:|---:|---|---:|---|
+| claude | 42 | 2707 | 6.7% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 351 | 38817 | 54.0% | quota | 54.0% | week_pct from app-server-live |
 | agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 | hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-27T01:21:12.760207Z",
+  "generated_at": "2026-07-27T05:21:11.963242Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-27T01:21:10.925376Z",
+  "scorecard_generated_at": "2026-07-27T05:21:09.856563Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 57,
+      "execution_ready_count": 54,
       "total_candidates": 176,
       "top_issues": [
         {
@@ -21,12 +21,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:18Z",
+          "updatedAt": "2026-07-27T02:35:14Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -45,12 +46,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:18Z",
+          "updatedAt": "2026-07-27T02:35:14Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -69,12 +71,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:18Z",
+          "updatedAt": "2026-07-27T02:35:14Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -96,9 +99,10 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ci-release"
           ],
-          "updatedAt": "2026-06-29T00:30:37Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -120,9 +124,10 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
-          "updatedAt": "2026-06-29T00:28:45Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -141,12 +146,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -166,12 +172,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -191,12 +198,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -216,12 +224,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:18Z",
+          "updatedAt": "2026-07-27T02:35:14Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -240,12 +249,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:18Z",
+          "updatedAt": "2026-07-27T02:35:14Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -264,12 +274,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:18Z",
+          "updatedAt": "2026-07-27T02:35:14Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -291,9 +302,10 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ci-release"
           ],
-          "updatedAt": "2026-06-29T00:30:37Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -315,9 +327,10 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
-          "updatedAt": "2026-06-29T00:28:45Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -336,12 +349,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -361,12 +375,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -386,12 +401,13 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -646,13 +662,14 @@
             "bug",
             "priority:high",
             "cat:harness",
+            "domain:workstations",
             "machine:multi",
             "status:plan-review",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-13T21:46:34Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -697,12 +714,13 @@
           "labels": [
             "enhancement",
             "priority:medium",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:18Z",
+          "updatedAt": "2026-07-27T02:35:14Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -721,12 +739,13 @@
           "labels": [
             "enhancement",
             "priority:medium",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:18Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -745,12 +764,13 @@
           "labels": [
             "enhancement",
             "priority:medium",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -773,9 +793,10 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ci-release"
           ],
-          "updatedAt": "2026-06-29T00:31:10Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -798,9 +819,10 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:governance"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -820,12 +842,13 @@
           "labels": [
             "enhancement",
             "priority:medium",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -897,14 +920,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3482",
           "labels": [
             "priority:medium",
-            "cat:operations",
             "cat:tooling",
             "domain:testing",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T03:35:21Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -951,12 +973,13 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "domain:workstations",
             "wrk-item",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1032,12 +1055,13 @@
           "labels": [
             "enhancement",
             "priority:low",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:18Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -1059,9 +1083,10 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ci-release"
           ],
-          "updatedAt": "2026-06-29T00:31:13Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": true,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -1069,75 +1094,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3146,
-          "title": "Add ruff baseline/ratchet to check-all \u2014 pre-push gate unpassable on 3/4 tier-1 repos (chronic bypass)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3146",
-          "labels": [
-            "bug",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "status:completeness-verified"
-          ],
-          "updatedAt": "2026-06-16T14:50:37Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3179,
-          "title": "run-all-tests.sh (and peer gate scripts) mis-resolve REPO_ROOT under git hooks in a worktree \u2192 spurious pre-push FAIL",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3179",
-          "labels": [
-            "bug",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-17T01:25:11Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3224,
-          "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3224",
-          "labels": [
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-06T23:03:22Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
@@ -1233,12 +1189,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3298",
           "labels": [
             "enhancement",
+            "cat:harness",
             "agent:claude",
             "status:plan-approved",
             "gate:completeness",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1257,12 +1214,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3306",
           "labels": [
             "enhancement",
+            "cat:harness",
             "agent:claude",
             "status:plan-approved",
             "gate:completeness",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1280,11 +1238,13 @@
           "title": "chore(dev-workflow): standardize + roll formatting pre-commit (black/isort/flake8) across Python repos",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3382",
           "labels": [
+            "cat:tooling",
             "status:plan-approved",
             "gate:completeness",
-            "lane:codex"
+            "lane:codex",
+            "domain:repo"
           ],
-          "updatedAt": "2026-07-05T03:09:47Z",
+          "updatedAt": "2026-07-27T02:35:10Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1303,10 +1263,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3384",
           "labels": [
             "bug",
+            "cat:harness",
             "status:plan-approved",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T01:19:16Z",
+          "updatedAt": "2026-07-27T02:35:30Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1325,12 +1286,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3389",
           "labels": [
             "cat:tooling",
+            "domain:workflow",
             "status:plan-approved",
             "status:needs-plan",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:16Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1347,10 +1309,12 @@
           "title": "[#3401] Brand consolidation: workspace-hub (per-repo canonical + standards) \u2014 PLAN",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3402",
           "labels": [
+            "cat:documentation",
+            "domain:website",
             "status:plan-approved",
             "gate:completeness"
           ],
-          "updatedAt": "2026-07-09T23:59:30Z",
+          "updatedAt": "2026-07-27T02:35:10Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1393,10 +1357,12 @@
           "title": "Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3480",
           "labels": [
+            "cat:tooling",
             "status:plan-approved",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:capability"
           ],
-          "updatedAt": "2026-07-12T00:56:47Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1414,11 +1380,13 @@
           "title": "fix(onboarding): surface cron preview failure during new-machine dry-run",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3490",
           "labels": [
+            "cat:operations",
+            "domain:onboarding",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-12T10:40:45Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1437,12 +1405,13 @@
           "labels": [
             "bug",
             "cat:harness",
+            "domain:workstations",
             "machine:multi",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-19T13:16:56Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1461,11 +1430,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3518",
           "labels": [
             "bug",
+            "cat:operations",
             "status:plan-approved",
             "gate:completeness",
+            "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-14T09:20:01Z",
+          "updatedAt": "2026-07-27T02:35:08Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1482,11 +1453,13 @@
           "title": "security(legal): migrate sensitive deny-list values out of public repository history",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3522",
           "labels": [
+            "cat:operations",
+            "domain:security",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-14T19:09:39Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1505,11 +1478,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3527",
           "labels": [
             "bug",
+            "cat:harness",
             "status:plan-approved",
             "gate:completeness",
+            "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-19T11:56:37Z",
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1527,11 +1502,13 @@
           "title": "security(legal): correct and operationalize Phase A authority activation",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
           "labels": [
+            "cat:operations",
             "status:plan-approved",
             "gate:completeness",
-            "lane:codex"
+            "lane:codex",
+            "domain:governance"
           ],
-          "updatedAt": "2026-07-19T13:16:28Z",
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1550,6 +1527,7 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3573",
           "labels": [
             "enhancement",
+            "cat:harness",
             "machine:multi",
             "status:plan-review",
             "status:plan-approved",
@@ -1557,7 +1535,7 @@
             "lane:claude",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T01:19:10Z",
+          "updatedAt": "2026-07-27T02:35:12Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1575,37 +1553,15 @@
           "title": "equality matrix: reclassify harness/scheduler/memory rows \u2014 uniform vote mis-grades per-role differences + Windows placeholder data poisons majority",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3592",
           "labels": [
-            "cat:operations",
             "cat:harness",
+            "domain:workstations",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-23T05:39:56Z",
+          "updatedAt": "2026-07-27T03:35:20Z",
           "execution_ready": true,
           "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3226,
-          "title": "Compliance alert: W26 \u2014 0% (critical)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3226",
-          "labels": [
-            "priority:medium",
-            "priority:critical",
-            "compliance-alert"
-          ],
-          "updatedAt": "2026-06-27T11:45:06Z",
-          "execution_ready": false,
-          "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1622,10 +1578,12 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3321",
           "labels": [
             "priority:medium",
+            "cat:operations",
             "priority:critical",
-            "compliance-alert"
+            "compliance-alert",
+            "domain:harness"
           ],
-          "updatedAt": "2026-07-05T11:45:34Z",
+          "updatedAt": "2026-07-27T02:35:11Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1643,10 +1601,12 @@
           "title": "Compliance alert: W28 \u2014 11% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3392",
           "labels": [
+            "cat:operations",
             "priority:critical",
-            "compliance-alert"
+            "compliance-alert",
+            "domain:harness"
           ],
-          "updatedAt": "2026-07-12T11:45:06Z",
+          "updatedAt": "2026-07-27T02:35:10Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1665,10 +1625,12 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3514",
           "labels": [
             "priority:high",
+            "cat:operations",
             "priority:critical",
-            "compliance-alert"
+            "compliance-alert",
+            "domain:harness"
           ],
-          "updatedAt": "2026-07-19T11:45:06Z",
+          "updatedAt": "2026-07-27T02:35:08Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1711,10 +1673,12 @@
           "title": "Compliance alert: W30 \u2014 18% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3596",
           "labels": [
+            "cat:operations",
             "priority:critical",
-            "compliance-alert"
+            "compliance-alert",
+            "domain:harness"
           ],
-          "updatedAt": "2026-07-26T11:45:06Z",
+          "updatedAt": "2026-07-27T02:35:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1734,11 +1698,12 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:needs-plan",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:18Z",
+          "updatedAt": "2026-07-27T02:35:14Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1760,9 +1725,10 @@
             "priority:high",
             "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-06-28T10:00:38Z",
+          "updatedAt": "2026-07-27T02:35:35Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2156,10 +2122,9 @@
             "bug",
             "priority:high",
             "cat:harness",
-            "cat:tooling",
             "domain:testing"
           ],
-          "updatedAt": "2026-07-27T01:19:14Z",
+          "updatedAt": "2026-07-27T03:35:21Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2232,9 +2197,10 @@
             "machine:dev-primary",
             "status:needs-plan",
             "gate:completeness",
+            "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2280,12 +2246,13 @@
             "bug",
             "priority:high",
             "cat:tooling",
+            "domain:security",
             "machine:dev-primary",
             "status:needs-plan",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2308,9 +2275,10 @@
             "cat:tooling",
             "status:needs-plan",
             "gate:completeness",
+            "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2333,9 +2301,10 @@
             "cat:tooling",
             "status:needs-plan",
             "gate:completeness",
+            "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2354,11 +2323,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3467",
           "labels": [
             "priority:high",
+            "cat:harness",
             "status:needs-plan",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
-          "updatedAt": "2026-07-11T12:16:22Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2377,10 +2348,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3485",
           "labels": [
             "priority:high",
-            "cat:tooling",
-            "cat:data"
+            "cat:data",
+            "domain:capability"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T03:35:21Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2399,9 +2370,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3497",
           "labels": [
             "priority:high",
-            "cat:harness"
+            "cat:harness",
+            "domain:workstations"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2420,9 +2392,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3498",
           "labels": [
             "priority:high",
-            "cat:operations"
+            "cat:operations",
+            "domain:workstations"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2441,9 +2414,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3499",
           "labels": [
             "priority:high",
-            "cat:operations"
+            "cat:operations",
+            "domain:workstations"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2462,13 +2436,13 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:tooling",
             "cat:data",
             "status:needs-plan",
             "lane:codex",
-            "epic"
+            "epic",
+            "domain:capability"
           ],
-          "updatedAt": "2026-07-27T01:19:11Z",
+          "updatedAt": "2026-07-27T03:35:21Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2490,9 +2464,10 @@
             "priority:high",
             "cat:tooling",
             "status:needs-plan",
-            "lane:codex"
+            "lane:codex",
+            "domain:ai"
           ],
-          "updatedAt": "2026-07-16T22:51:47Z",
+          "updatedAt": "2026-07-27T02:35:31Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2530,6 +2505,203 @@
           ]
         },
         {
+          "number": 3601,
+          "title": "INITIATIVE: Engineering compute & solver trust",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3601",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "initiative",
+            "domain:solver"
+          ],
+          "updatedAt": "2026-07-27T02:35:06Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3602,
+          "title": "INITIATIVE: World Energy Field Explorer & asset data spine",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3602",
+          "labels": [
+            "priority:high",
+            "cat:data",
+            "initiative",
+            "domain:ingest"
+          ],
+          "updatedAt": "2026-07-27T02:35:06Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
+        },
+        {
+          "number": 3603,
+          "title": "INITIATIVE: Deckhand & Open Deck platform",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3603",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "domain:gtm",
+            "initiative"
+          ],
+          "updatedAt": "2026-07-27T02:35:06Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3604,
+          "title": "INITIATIVE: Knowledge ingestion & the llm-wiki corpus",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3604",
+          "labels": [
+            "priority:high",
+            "cat:data",
+            "domain:knowledge",
+            "initiative"
+          ],
+          "updatedAt": "2026-07-27T02:35:06Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3605,
+          "title": "INITIATIVE: ACMA & client delivery",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3605",
+          "labels": [
+            "priority:high",
+            "cat:business",
+            "domain:business-development",
+            "initiative"
+          ],
+          "updatedAt": "2026-07-27T02:35:06Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3606,
+          "title": "INITIATIVE: Agent harness, memory & ecosystem hardening",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3606",
+          "labels": [
+            "priority:high",
+            "cat:harness",
+            "domain:harness",
+            "initiative"
+          ],
+          "updatedAt": "2026-07-27T02:35:06Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3607,
+          "title": "INITIATIVE: Brand, public surfaces & go-to-market",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3607",
+          "labels": [
+            "priority:high",
+            "cat:business",
+            "domain:gtm",
+            "initiative"
+          ],
+          "updatedAt": "2026-07-27T02:35:06Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3608,
+          "title": "INITIATIVE: CAD/CAM & manufacturing capability",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3608",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "initiative",
+            "domain:cad"
+          ],
+          "updatedAt": "2026-07-27T02:35:06Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
+        },
+        {
+          "number": 3609,
+          "title": "INITIATIVE: Personal & family operations",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3609",
+          "labels": [
+            "priority:high",
+            "cat:operations",
+            "initiative",
+            "domain:family"
+          ],
+          "updatedAt": "2026-07-27T02:35:06Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "strategy"
+          ]
+        },
+        {
           "number": 3349,
           "title": "Perf: ecosystem-data-nudge.sh UserPromptSubmit hook runs 270-460ms per prompt (budget: 50ms)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3349",
@@ -2538,9 +2710,10 @@
             "priority:medium",
             "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-02T11:22:53Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2560,10 +2733,11 @@
             "enhancement",
             "priority:medium",
             "cat:data",
+            "domain:knowledge",
             "status:needs-plan",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-03T15:55:43Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2584,10 +2758,11 @@
             "enhancement",
             "priority:medium",
             "cat:data",
+            "domain:knowledge",
             "status:needs-plan",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-03T15:55:37Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2609,9 +2784,10 @@
             "priority:medium",
             "cat:data",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "domain:capability"
           ],
-          "updatedAt": "2026-07-03T15:55:42Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2679,13 +2855,12 @@
             "bug",
             "priority:medium",
             "cat:harness",
-            "cat:tooling",
             "type:follow-up",
             "status:needs-plan",
             "lane:codex",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T01:19:14Z",
+          "updatedAt": "2026-07-27T03:35:21Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2706,13 +2881,12 @@
             "bug",
             "priority:medium",
             "cat:harness",
-            "cat:tooling",
             "type:follow-up",
             "status:needs-plan",
             "lane:codex",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T01:19:14Z",
+          "updatedAt": "2026-07-27T03:35:20Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2733,13 +2907,12 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "cat:tooling",
             "type:follow-up",
             "status:needs-plan",
             "lane:codex",
             "domain:governance"
           ],
-          "updatedAt": "2026-07-27T01:19:14Z",
+          "updatedAt": "2026-07-27T03:35:20Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2757,12 +2930,12 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3444",
           "labels": [
             "priority:medium",
-            "cat:operations",
             "cat:tooling",
+            "domain:workstations",
             "status:needs-plan",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:14Z",
+          "updatedAt": "2026-07-27T03:35:20Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2828,14 +3001,14 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:documentation",
             "cat:tooling",
+            "domain:security",
             "machine:dev-primary",
             "status:needs-plan",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T03:35:21Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2880,9 +3053,10 @@
             "cat:harness",
             "wrk-item",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
-          "updatedAt": "2026-07-16T20:08:36Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2901,10 +3075,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "domain:workstations",
             "status:needs-plan",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3060,10 +3235,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3572",
           "labels": [
             "priority:medium",
+            "cat:harness",
             "domain:testing",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-27T01:19:10Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3082,9 +3258,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3584",
           "labels": [
             "priority:medium",
-            "cat:data"
+            "cat:data",
+            "domain:family"
           ],
-          "updatedAt": "2026-07-27T01:19:10Z",
+          "updatedAt": "2026-07-27T02:35:31Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3101,9 +3278,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3586",
           "labels": [
             "priority:medium",
-            "cat:operations"
+            "cat:operations",
+            "domain:family"
           ],
-          "updatedAt": "2026-07-19T11:44:36Z",
+          "updatedAt": "2026-07-27T02:35:31Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3120,9 +3298,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3589",
           "labels": [
             "priority:medium",
-            "cat:data"
+            "cat:data",
+            "domain:family"
           ],
-          "updatedAt": "2026-07-27T01:19:10Z",
+          "updatedAt": "2026-07-27T02:35:31Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3141,10 +3320,11 @@
             "enhancement",
             "priority:medium",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-23T05:40:19Z",
+          "updatedAt": "2026-07-27T02:35:31Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3157,39 +3337,18 @@
           ]
         },
         {
-          "number": 3186,
-          "title": "Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3186",
-          "labels": [
-            "priority:low",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-06-17T11:02:39Z",
-          "execution_ready": false,
-          "priority_rank": 3,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3289,
           "title": "wf-api(workspace-hub): [DEFERRED] HTTP/FastAPI gateway over run_workflow",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3289",
           "labels": [
             "enhancement",
             "priority:low",
+            "cat:engineering",
             "domain:workflow",
             "status:needs-plan",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:17Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3211,9 +3370,10 @@
             "priority:low",
             "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-02T21:02:08Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3232,10 +3392,11 @@
           "labels": [
             "priority:low",
             "cat:data",
+            "domain:knowledge",
             "status:needs-plan",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-03T01:53:02Z",
+          "updatedAt": "2026-07-27T02:35:34Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3253,9 +3414,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3587",
           "labels": [
             "priority:low",
-            "cat:operations"
+            "cat:operations",
+            "domain:family"
           ],
-          "updatedAt": "2026-07-19T11:44:38Z",
+          "updatedAt": "2026-07-27T02:35:31Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3272,9 +3434,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3588",
           "labels": [
             "priority:low",
-            "cat:operations"
+            "cat:operations",
+            "domain:family"
           ],
-          "updatedAt": "2026-07-19T11:44:40Z",
+          "updatedAt": "2026-07-27T02:35:31Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3283,79 +3446,6 @@
           "provider_status": "underused",
           "work_type": [
             "general"
-          ]
-        },
-        {
-          "number": 3182,
-          "title": "Provider-utilization tracker is blind to Hermes usage after ace-linux-2 migration",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3182",
-          "labels": [],
-          "updatedAt": "2026-06-16T18:30:11Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3198,
-          "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3198",
-          "labels": [
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-07-12T15:45:37Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3212,
-          "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
-          "labels": [
-            "status:plan-review"
-          ],
-          "updatedAt": "2026-07-02T12:20:35Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3223,
-          "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3223",
-          "labels": [],
-          "updatedAt": "2026-06-22T15:48:44Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
           ]
         },
         {
@@ -3406,9 +3496,11 @@
           "title": "Ecosystem README API banner \u2014 every tier-1 repo points at the Deckhand API catalog",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3300",
           "labels": [
-            "lane:claude"
+            "cat:documentation",
+            "lane:claude",
+            "domain:repo"
           ],
-          "updatedAt": "2026-06-28T14:13:22Z",
+          "updatedAt": "2026-07-27T02:35:11Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3423,8 +3515,11 @@
           "number": 3302,
           "title": "Weekly Deckhand-API presence-sync skill + schedule",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3302",
-          "labels": [],
-          "updatedAt": "2026-06-28T12:44:55Z",
+          "labels": [
+            "cat:harness",
+            "domain:skills"
+          ],
+          "updatedAt": "2026-07-27T02:35:11Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3442,10 +3537,12 @@
           "title": "Auto-memory MEMORY.md index over load limit (52KB > 24.4KB) \u2014 compaction + thresholds policy",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3366",
           "labels": [
+            "cat:harness",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
-          "updatedAt": "2026-07-04T09:52:09Z",
+          "updatedAt": "2026-07-27T02:35:11Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3463,9 +3560,11 @@
           "title": "Day-to-day friction guards (session-grounded suite) \u2014 reduce recurring time-sinks",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3368",
           "labels": [
-            "status:plan-review"
+            "cat:harness",
+            "status:plan-review",
+            "domain:harness"
           ],
-          "updatedAt": "2026-07-08T13:20:15Z",
+          "updatedAt": "2026-07-27T02:35:11Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3483,10 +3582,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3387",
           "labels": [
             "bug",
+            "cat:harness",
             "status:needs-plan",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T01:19:16Z",
+          "updatedAt": "2026-07-27T02:35:30Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3504,10 +3604,12 @@
           "title": "bug(readiness): R-HOOKS false-missing on Windows CRLF paths",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3397",
           "labels": [
+            "cat:harness",
+            "domain:workstations",
             "status:needs-plan",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-07T04:27:15Z",
+          "updatedAt": "2026-07-27T02:35:10Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3525,10 +3627,12 @@
           "title": "chore(harness): add legal-sanity precommit entries for assetutilities and worldenergydata",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3398",
           "labels": [
+            "cat:harness",
+            "domain:security",
             "status:needs-plan",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-07T04:38:18Z",
+          "updatedAt": "2026-07-27T02:35:10Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3545,8 +3649,11 @@
           "number": 3401,
           "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3401",
-          "labels": [],
-          "updatedAt": "2026-07-10T03:32:20Z",
+          "labels": [
+            "cat:documentation",
+            "domain:website"
+          ],
+          "updatedAt": "2026-07-27T02:35:10Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3563,8 +3670,11 @@
           "number": 3448,
           "title": "chore(ecosystem): audit repository detection for linked worktree compatibility",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3448",
-          "labels": [],
-          "updatedAt": "2026-07-10T16:51:46Z",
+          "labels": [
+            "cat:tooling",
+            "domain:repo"
+          ],
+          "updatedAt": "2026-07-27T02:35:10Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3581,8 +3691,11 @@
           "number": 3450,
           "title": "fix(workflow-manifest): distinguish nested-worktree resolution failures from registry drift",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3450",
-          "labels": [],
-          "updatedAt": "2026-07-10T17:43:14Z",
+          "labels": [
+            "cat:tooling",
+            "domain:workflow"
+          ],
+          "updatedAt": "2026-07-27T02:35:10Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3601,9 +3714,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3451",
           "labels": [
             "enhancement",
+            "cat:tooling",
+            "domain:security",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-15T16:24:53Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3624,9 +3739,10 @@
             "bug",
             "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3647,9 +3763,10 @@
             "bug",
             "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3667,9 +3784,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3462",
           "labels": [
             "bug",
+            "cat:harness",
+            "domain:workstations",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-11T08:47:11Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3688,10 +3807,12 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3464",
           "labels": [
             "enhancement",
+            "cat:tooling",
+            "domain:security",
             "status:needs-plan",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-11T11:17:25Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3709,9 +3830,11 @@
           "title": "chore(skills): regenerate skill-index-full.yaml for hf-dataset-publishing",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3474",
           "labels": [
+            "cat:harness",
+            "domain:skills",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-11T23:49:26Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3727,8 +3850,11 @@
           "number": 3491,
           "title": "chore(solver-queue): reconcile legacy solver-queue issues (#2641/#1586/#2524) with the live deckhand licensed-run lane [dm#1553 H]",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3491",
-          "labels": [],
-          "updatedAt": "2026-07-12T03:52:05Z",
+          "labels": [
+            "cat:operations",
+            "domain:solver"
+          ],
+          "updatedAt": "2026-07-27T02:35:08Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3745,10 +3871,10 @@
           "title": "design(capabilities): reconcile existing per-repo GitHub Pages capabilities pages with the HF-backed aceengineer.com surface [C10]",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3494",
           "labels": [
-            "cat:documentation",
-            "cat:tooling"
+            "cat:tooling",
+            "domain:capability"
           ],
-          "updatedAt": "2026-07-13T09:44:32Z",
+          "updatedAt": "2026-07-27T03:35:21Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3766,10 +3892,12 @@
           "title": "test(enforcement): make hash-pinned semantic mutation tests exercise refreshed pins",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3495",
           "labels": [
+            "cat:tooling",
+            "domain:testing",
             "status:needs-plan",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-12T09:57:36Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3789,10 +3917,11 @@
           "labels": [
             "bug",
             "cat:harness",
+            "domain:workstations",
             "machine:multi",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-13T10:12:31Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3810,10 +3939,12 @@
           "title": "Legal scanner: support explicit NUL-safe staged-blob pathsets",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3521",
           "labels": [
+            "cat:tooling",
+            "domain:security",
             "status:needs-plan",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-14T04:09:04Z",
+          "updatedAt": "2026-07-27T02:35:08Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3830,8 +3961,11 @@
           "number": 3523,
           "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3523",
-          "labels": [],
-          "updatedAt": "2026-07-14T09:52:05Z",
+          "labels": [
+            "cat:harness",
+            "domain:governance"
+          ],
+          "updatedAt": "2026-07-27T02:35:08Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3851,11 +3985,12 @@
           "labels": [
             "enhancement",
             "cat:harness",
+            "domain:workstations",
             "machine:ace-win-2",
             "status:needs-plan",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-14T10:41:56Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3873,9 +4008,10 @@
           "title": "Krishna daily schedule \u2014 calendar rails + family Telegram comms (epic)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3528",
           "labels": [
+            "cat:operations",
             "domain:personal"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3892,9 +4028,10 @@
           "title": "Krishna schedule: post to family Telegram channel via Deckhand",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3530",
           "labels": [
+            "cat:operations",
             "domain:personal"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3911,11 +4048,12 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3533",
           "labels": [
             "bug",
+            "cat:data",
             "domain:standards",
             "status:needs-plan",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3934,11 +4072,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3534",
           "labels": [
             "enhancement",
+            "cat:operations",
+            "domain:security",
             "status:needs-plan",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-14T11:15:03Z",
+          "updatedAt": "2026-07-27T02:35:08Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3955,8 +4095,11 @@
           "number": 3536,
           "title": "CLI boundaries: prevent argparse from echoing rejected caller-controlled tokens",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3536",
-          "labels": [],
-          "updatedAt": "2026-07-14T14:53:39Z",
+          "labels": [
+            "cat:tooling",
+            "domain:security"
+          ],
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3975,11 +4118,12 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3538",
           "labels": [
             "bug",
+            "cat:engineering",
             "domain:standards",
             "status:needs-plan",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3995,8 +4139,11 @@
           "number": 3539,
           "title": "Refactor oversized equality modules and make Windows collector tests hermetic",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3539",
-          "labels": [],
-          "updatedAt": "2026-07-14T16:04:44Z",
+          "labels": [
+            "cat:tooling",
+            "domain:testing"
+          ],
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4014,9 +4161,11 @@
           "title": "test(enforcement): assert exact schemas for equivalent bypass fields",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3541",
           "labels": [
+            "cat:tooling",
+            "domain:testing",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-14T16:40:10Z",
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4034,9 +4183,11 @@
           "title": "audit(config): reject duplicate YAML keys and ambiguous scalar types",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3542",
           "labels": [
-            "status:needs-plan"
+            "cat:tooling",
+            "status:needs-plan",
+            "domain:harness"
           ],
-          "updatedAt": "2026-07-14T16:40:09Z",
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4081,10 +4232,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3558",
           "labels": [
             "bug",
+            "cat:harness",
             "status:needs-plan",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T01:19:11Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4127,9 +4279,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3564",
           "labels": [
             "bug",
-            "status:needs-plan"
+            "cat:operations",
+            "status:needs-plan",
+            "domain:ci-release"
           ],
-          "updatedAt": "2026-07-17T04:24:31Z",
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4147,9 +4301,10 @@
           "title": "fix(review): submit-to-codex.sh hangs \u2014 codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3578",
           "labels": [
+            "cat:harness",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-18T07:24:27Z",
+          "updatedAt": "2026-07-27T02:35:12Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4166,9 +4321,10 @@
           "title": "chore(readiness): rename equality/parity provider row gemini\u2192agy (cross-machine snapshot schema migration)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3579",
           "labels": [
+            "cat:operations",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-18T07:24:31Z",
+          "updatedAt": "2026-07-27T02:35:12Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4184,9 +4340,10 @@
           "title": "chore(harness): gemini CLI uninstall decision after agy soak (#3573)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3580",
           "labels": [
+            "cat:harness",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-18T07:24:36Z",
+          "updatedAt": "2026-07-27T02:35:12Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4202,10 +4359,12 @@
           "title": "equality-matrix-cron.sh on Windows collects via bash and publishes degraded compute/provider evidence",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3582",
           "labels": [
+            "cat:operations",
+            "domain:workstations",
             "status:plan-review",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-18T21:00:51Z",
+          "updatedAt": "2026-07-27T02:35:06Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4243,8 +4402,11 @@
           "number": 3598,
           "title": "feat(equality): add HF-token health row to the machine equivalence matrix",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3598",
-          "labels": [],
-          "updatedAt": "2026-07-25T07:11:00Z",
+          "labels": [
+            "cat:operations",
+            "domain:workstations"
+          ],
+          "updatedAt": "2026-07-27T02:35:06Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4321,7 +4483,6 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3472",
           "labels": [
             "priority:medium",
-            "cat:operations",
             "cat:tooling",
             "domain:testing",
             "machine:dev-primary",
@@ -4329,7 +4490,7 @@
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T03:35:20Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4347,6 +4508,7 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
           "labels": [
             "enhancement",
+            "cat:business",
             "domain:gtm",
             "domain:content",
             "status:plan-approved",
@@ -4354,7 +4516,7 @@
             "lane:codex",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:19Z",
+          "updatedAt": "2026-07-27T02:35:14Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4372,11 +4534,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3532",
           "labels": [
             "enhancement",
+            "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
-          "updatedAt": "2026-07-14T16:42:53Z",
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4418,11 +4582,13 @@
           "title": "equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3571",
           "labels": [
+            "cat:operations",
+            "domain:workstations",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-18T20:33:42Z",
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4440,9 +4606,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
           "labels": [
             "priority:medium",
-            "cat:data"
+            "cat:data",
+            "domain:family"
           ],
-          "updatedAt": "2026-07-27T01:19:10Z",
+          "updatedAt": "2026-07-27T02:35:31Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4512,7 +4679,6 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3472",
           "labels": [
             "priority:medium",
-            "cat:operations",
             "cat:tooling",
             "domain:testing",
             "machine:dev-primary",
@@ -4520,7 +4686,7 @@
             "gate:completeness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-07-27T03:35:20Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4538,6 +4704,7 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
           "labels": [
             "enhancement",
+            "cat:business",
             "domain:gtm",
             "domain:content",
             "status:plan-approved",
@@ -4545,7 +4712,7 @@
             "lane:codex",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:19Z",
+          "updatedAt": "2026-07-27T02:35:14Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4563,11 +4730,13 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3532",
           "labels": [
             "enhancement",
+            "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
-          "updatedAt": "2026-07-14T16:42:53Z",
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4609,11 +4778,13 @@
           "title": "equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3571",
           "labels": [
+            "cat:operations",
+            "domain:workstations",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-18T20:33:42Z",
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4631,9 +4802,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
           "labels": [
             "priority:medium",
-            "cat:data"
+            "cat:data",
+            "domain:family"
           ],
-          "updatedAt": "2026-07-27T01:19:10Z",
+          "updatedAt": "2026-07-27T02:35:31Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4652,10 +4824,11 @@
             "bug",
             "priority:low",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-23T02:09:40Z",
+          "updatedAt": "2026-07-27T02:35:31Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "codex",
@@ -4670,8 +4843,11 @@
           "number": 3231,
           "title": "Isolate concurrent agent sessions per repo (worktree-per-session) \u2014 shared-clone HEAD thrash",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3231",
-          "labels": [],
-          "updatedAt": "2026-06-23T23:30:01Z",
+          "labels": [
+            "cat:harness",
+            "domain:harness"
+          ],
+          "updatedAt": "2026-07-27T02:35:11Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4687,8 +4863,11 @@
           "number": 3325,
           "title": "chore(repo-health): git bloat reduction campaign \u2014 reclaim ~12 GiB across repos (slim-git-history)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3325",
-          "labels": [],
-          "updatedAt": "2026-06-30T15:32:20Z",
+          "labels": [
+            "cat:operations",
+            "domain:repo"
+          ],
+          "updatedAt": "2026-07-27T02:35:11Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4705,10 +4884,12 @@
           "title": "refactor(cron): migrate three legacy marker installers to transactional reconciliation",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3476",
           "labels": [
+            "cat:operations",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-11T23:56:20Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4725,10 +4906,12 @@
           "title": "fix(scheduler): make kanban loader timer transactional across systemd-user and cron",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3477",
           "labels": [
+            "cat:operations",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-11T23:56:22Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4744,10 +4927,12 @@
           "title": "refactor(windows): add semantic ownership and recovery to scheduled-task installers",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3478",
           "labels": [
+            "cat:operations",
+            "domain:workstations",
             "status:needs-plan",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-11T23:56:23Z",
+          "updatedAt": "2026-07-27T02:35:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4763,10 +4948,12 @@
           "title": "fix(harness-update): propagate or explicitly surface cron reconciliation failure",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3479",
           "labels": [
+            "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
-          "updatedAt": "2026-07-11T23:56:25Z",
+          "updatedAt": "2026-07-27T02:35:08Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4783,9 +4970,10 @@
           "title": "save_results_to_hf.py: --public is a silent no-op on an EXISTING dataset (create_repo exist_ok doesn't change visibility)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3483",
           "labels": [
-            "cat:data"
+            "cat:data",
+            "domain:capability"
           ],
-          "updatedAt": "2026-07-12T01:54:58Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4803,10 +4991,11 @@
           "labels": [
             "bug",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-13T10:39:37Z",
+          "updatedAt": "2026-07-27T02:35:33Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4825,10 +5014,11 @@
           "labels": [
             "bug",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-19T13:16:47Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4847,10 +5037,11 @@
           "labels": [
             "bug",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-23T02:09:52Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4867,9 +5058,10 @@
           "title": "Krishna schedule: recurring Google Calendar events on parents' calendar",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3529",
           "labels": [
+            "cat:operations",
             "domain:personal"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4885,9 +5077,10 @@
           "title": "Krishna schedule: optional daily 6:00 AM 'today's plan' Telegram auto-post",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3531",
           "labels": [
+            "cat:operations",
             "domain:personal"
           ],
-          "updatedAt": "2026-07-27T01:19:12Z",
+          "updatedAt": "2026-07-27T02:35:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4927,9 +5120,11 @@
           "title": "Audit MSYS conversion of slash-prefixed native-command tokens",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3562",
           "labels": [
+            "cat:tooling",
+            "domain:workstations",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-17T03:59:45Z",
+          "updatedAt": "2026-07-27T02:35:07Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4946,9 +5141,10 @@
           "title": "fix(harness): repo-wide exec-bit audit \u2014 NTFS-FUSE working copy commits scripts as 100644",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3577",
           "labels": [
+            "cat:harness",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-18T07:23:57Z",
+          "updatedAt": "2026-07-27T02:35:12Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

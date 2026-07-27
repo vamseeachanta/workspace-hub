@@ -36,6 +36,357 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:high",
+          "cat:operations",
+          "initiative",
+          "domain:family"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "INITIATIVE: Personal & family operations"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3609,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "INITIATIVE: Personal & family operations",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3609",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:engineering",
+          "initiative",
+          "domain:cad"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "INITIATIVE: CAD/CAM & manufacturing capability"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3608,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "INITIATIVE: CAD/CAM & manufacturing capability",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3608",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:business",
+          "domain:gtm",
+          "initiative"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "INITIATIVE: Brand, public surfaces & go-to-market"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3607,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "INITIATIVE: Brand, public surfaces & go-to-market",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3607",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:harness",
+          "domain:harness",
+          "initiative"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "INITIATIVE: Agent harness, memory & ecosystem hardening"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3606,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "INITIATIVE: Agent harness, memory & ecosystem hardening",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3606",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:business",
+          "domain:business-development",
+          "initiative"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "INITIATIVE: ACMA & client delivery"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3605,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "INITIATIVE: ACMA & client delivery",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3605",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:data",
+          "domain:knowledge",
+          "initiative"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "INITIATIVE: Knowledge ingestion & the llm-wiki corpus"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3604,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "INITIATIVE: Knowledge ingestion & the llm-wiki corpus",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3604",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:engineering",
+          "domain:gtm",
+          "initiative"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "INITIATIVE: Deckhand & Open Deck platform"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3603,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "INITIATIVE: Deckhand & Open Deck platform",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3603",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:data",
+          "initiative",
+          "domain:ingest"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "INITIATIVE: World Energy Field Explorer & asset data spine"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3602,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "INITIATIVE: World Energy Field Explorer & asset data spine",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3602",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:engineering",
+          "initiative",
+          "domain:solver"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "INITIATIVE: Engineering compute & solver trust"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3601,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "INITIATIVE: Engineering compute & solver trust",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3601",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "bug",
           "priority:high",
           "cat:harness",
@@ -76,7 +427,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:operations",
+          "domain:workstations"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -111,8 +465,10 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
           "priority:critical",
-          "compliance-alert"
+          "compliance-alert",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -190,6 +546,7 @@
           "bug",
           "priority:low",
           "cat:operations",
+          "domain:workstations",
           "machine:multi",
           "lane:claude"
         ],
@@ -230,6 +587,7 @@
           "enhancement",
           "priority:medium",
           "cat:operations",
+          "domain:workstations",
           "machine:multi",
           "lane:claude"
         ],
@@ -268,8 +626,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:operations",
           "cat:harness",
+          "domain:workstations",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -313,7 +671,8 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:data"
+          "cat:data",
+          "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -350,7 +709,8 @@
       "hover": {
         "labels": [
           "priority:low",
-          "cat:operations"
+          "cat:operations",
+          "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -387,7 +747,8 @@
       "hover": {
         "labels": [
           "priority:low",
-          "cat:operations"
+          "cat:operations",
+          "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -424,7 +785,8 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:operations"
+          "cat:operations",
+          "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -461,7 +823,8 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:data"
+          "cat:data",
+          "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -498,7 +861,8 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:data"
+          "cat:data",
+          "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -532,6 +896,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
+          "domain:workstations",
           "status:plan-review",
           "lane:claude"
         ],
@@ -571,6 +937,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:harness",
           "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -607,6 +974,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
           "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -643,6 +1011,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:harness",
           "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -679,6 +1048,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:harness",
           "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -716,6 +1086,7 @@
       "hover": {
         "labels": [
           "enhancement",
+          "cat:harness",
           "machine:multi",
           "status:plan-review",
           "status:plan-approved",
@@ -763,6 +1134,7 @@
       "hover": {
         "labels": [
           "priority:medium",
+          "cat:harness",
           "domain:testing",
           "status:needs-plan"
         ],
@@ -800,6 +1172,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
+          "domain:workstations",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -1030,7 +1404,9 @@
       "hover": {
         "labels": [
           "bug",
-          "status:needs-plan"
+          "cat:operations",
+          "status:needs-plan",
+          "domain:ci-release"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1066,6 +1442,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:tooling",
+          "domain:workstations",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1146,7 +1524,8 @@
           "priority:high",
           "cat:tooling",
           "status:needs-plan",
-          "lane:codex"
+          "lane:codex",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1184,11 +1563,11 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:tooling",
           "cat:data",
           "status:needs-plan",
           "lane:codex",
-          "epic"
+          "epic",
+          "domain:capability"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1225,6 +1604,7 @@
       "hover": {
         "labels": [
           "bug",
+          "cat:harness",
           "status:needs-plan",
           "domain:ai"
         ],
@@ -1608,6 +1988,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "domain:workstations",
           "status:needs-plan",
           "lane:claude"
         ],
@@ -1646,9 +2027,11 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
           "status:plan-approved",
           "gate:completeness",
-          "lane:codex"
+          "lane:codex",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1688,7 +2071,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "status:needs-plan"
+          "cat:tooling",
+          "status:needs-plan",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1724,6 +2109,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:tooling",
+          "domain:testing",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1759,7 +2146,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:tooling",
+          "domain:testing"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -1795,6 +2185,7 @@
       "hover": {
         "labels": [
           "bug",
+          "cat:engineering",
           "domain:standards",
           "status:needs-plan",
           "lane:codex"
@@ -1837,7 +2228,8 @@
           "cat:harness",
           "wrk-item",
           "status:needs-plan",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1872,7 +2264,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:tooling",
+          "domain:security"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -1908,6 +2303,8 @@
       "hover": {
         "labels": [
           "enhancement",
+          "cat:operations",
+          "domain:security",
           "status:needs-plan",
           "gate:completeness",
           "lane:claude"
@@ -1947,6 +2344,7 @@
       "hover": {
         "labels": [
           "bug",
+          "cat:data",
           "domain:standards",
           "status:needs-plan",
           "lane:codex"
@@ -1987,9 +2385,11 @@
       "hover": {
         "labels": [
           "enhancement",
+          "cat:harness",
           "status:plan-approved",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2029,6 +2429,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
           "domain:personal"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2065,6 +2466,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
           "domain:personal"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2101,6 +2503,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
           "domain:personal"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2137,6 +2540,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
           "domain:personal"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2175,8 +2579,10 @@
       "hover": {
         "labels": [
           "bug",
+          "cat:harness",
           "status:plan-approved",
           "gate:completeness",
+          "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2219,6 +2625,7 @@
         "labels": [
           "enhancement",
           "cat:harness",
+          "domain:workstations",
           "machine:ace-win-2",
           "status:needs-plan",
           "lane:claude"
@@ -2260,6 +2667,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "domain:workstations",
           "wrk-item",
           "status:plan-approved",
           "gate:completeness",
@@ -2348,7 +2756,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:harness",
+          "domain:governance"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -2384,6 +2795,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
+          "domain:security",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex"
@@ -2424,6 +2837,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:tooling",
+          "domain:security",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -2463,8 +2878,10 @@
       "hover": {
         "labels": [
           "bug",
+          "cat:operations",
           "status:plan-approved",
           "gate:completeness",
+          "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2508,6 +2925,7 @@
           "bug",
           "priority:high",
           "cat:harness",
+          "domain:workstations",
           "machine:multi",
           "status:plan-review",
           "status:plan-approved",
@@ -2554,8 +2972,10 @@
       "hover": {
         "labels": [
           "priority:high",
+          "cat:operations",
           "priority:critical",
-          "compliance-alert"
+          "compliance-alert",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2593,6 +3013,7 @@
         "labels": [
           "bug",
           "cat:harness",
+          "domain:workstations",
           "machine:multi",
           "status:needs-plan"
         ],
@@ -2633,6 +3054,7 @@
         "labels": [
           "bug",
           "cat:harness",
+          "domain:workstations",
           "machine:multi",
           "status:plan-approved",
           "gate:completeness",
@@ -2678,6 +3100,7 @@
         "labels": [
           "bug",
           "cat:operations",
+          "domain:workstations",
           "machine:multi",
           "lane:claude"
         ],
@@ -2717,6 +3140,7 @@
         "labels": [
           "bug",
           "cat:operations",
+          "domain:workstations",
           "machine:multi",
           "lane:claude"
         ],
@@ -2756,6 +3180,7 @@
         "labels": [
           "bug",
           "cat:operations",
+          "domain:workstations",
           "machine:multi",
           "lane:claude"
         ],
@@ -2843,7 +3268,8 @@
       "hover": {
         "labels": [
           "priority:high",
-          "cat:operations"
+          "cat:operations",
+          "domain:workstations"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2880,7 +3306,8 @@
       "hover": {
         "labels": [
           "priority:high",
-          "cat:operations"
+          "cat:operations",
+          "domain:workstations"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2917,7 +3344,8 @@
       "hover": {
         "labels": [
           "priority:high",
-          "cat:harness"
+          "cat:harness",
+          "domain:workstations"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2953,6 +3381,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:tooling",
+          "domain:testing",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -2990,8 +3420,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:documentation",
-          "cat:tooling"
+          "cat:tooling",
+          "domain:capability"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3026,7 +3456,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:operations",
+          "domain:solver"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -3061,6 +3494,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
+          "domain:onboarding",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex"
@@ -3105,8 +3540,8 @@
       "hover": {
         "labels": [
           "priority:high",
-          "cat:tooling",
-          "cat:data"
+          "cat:data",
+          "domain:capability"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3142,7 +3577,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:data"
+          "cat:data",
+          "domain:capability"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3180,7 +3616,6 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:operations",
           "cat:tooling",
           "domain:testing",
           "status:plan-approved",
@@ -3226,8 +3661,10 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:tooling",
           "status:plan-approved",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:capability"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3267,7 +3704,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:harness",
           "status:needs-plan",
+          "domain:harness",
           "lane:codex"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3304,6 +3743,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
+          "domain:workstations",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -3341,7 +3782,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
           "status:needs-plan",
+          "domain:harness",
           "lane:codex"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3378,7 +3821,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
           "status:needs-plan",
+          "domain:harness",
           "lane:codex"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3415,6 +3860,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:harness",
+          "domain:skills",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3453,7 +3900,6 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:operations",
           "cat:tooling",
           "domain:testing",
           "machine:dev-primary",
@@ -3500,9 +3946,11 @@
       "hover": {
         "labels": [
           "priority:high",
+          "cat:harness",
           "status:needs-plan",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3539,6 +3987,8 @@
       "hover": {
         "labels": [
           "enhancement",
+          "cat:tooling",
+          "domain:security",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -3577,6 +4027,8 @@
       "hover": {
         "labels": [
           "bug",
+          "cat:harness",
+          "domain:workstations",
           "lane:codex"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3618,6 +4070,7 @@
           "cat:tooling",
           "status:needs-plan",
           "gate:completeness",
+          "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3657,6 +4110,7 @@
           "bug",
           "cat:harness",
           "status:needs-plan",
+          "domain:harness",
           "lane:codex"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3696,6 +4150,7 @@
           "bug",
           "cat:harness",
           "status:needs-plan",
+          "domain:harness",
           "lane:codex"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3737,6 +4192,7 @@
           "cat:tooling",
           "status:needs-plan",
           "gate:completeness",
+          "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3815,6 +4271,7 @@
           "bug",
           "priority:high",
           "cat:tooling",
+          "domain:security",
           "machine:dev-primary",
           "status:needs-plan",
           "gate:completeness",
@@ -3897,8 +4354,8 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:documentation",
           "cat:tooling",
+          "domain:security",
           "machine:dev-primary",
           "status:needs-plan",
           "gate:completeness",
@@ -3944,6 +4401,7 @@
           "machine:dev-primary",
           "status:needs-plan",
           "gate:completeness",
+          "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3981,6 +4439,8 @@
       "hover": {
         "labels": [
           "enhancement",
+          "cat:tooling",
+          "domain:security",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -4016,7 +4476,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:tooling",
+          "domain:workflow"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -4050,7 +4513,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:tooling",
+          "domain:repo"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -4207,8 +4673,8 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:operations",
           "cat:tooling",
+          "domain:workstations",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -4290,7 +4756,6 @@
           "bug",
           "priority:high",
           "cat:harness",
-          "cat:tooling",
           "domain:testing"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -4459,7 +4924,6 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "cat:tooling",
           "type:follow-up",
           "status:needs-plan",
           "lane:codex",
@@ -4502,7 +4966,6 @@
           "bug",
           "priority:medium",
           "cat:harness",
-          "cat:tooling",
           "type:follow-up",
           "status:needs-plan",
           "lane:codex",
@@ -4545,7 +5008,6 @@
           "bug",
           "priority:medium",
           "cat:harness",
-          "cat:tooling",
           "type:follow-up",
           "status:needs-plan",
           "lane:codex",
@@ -5599,6 +6061,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:documentation",
+          "domain:website",
           "status:plan-approved",
           "gate:completeness"
         ],
@@ -5639,7 +6103,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:documentation",
+          "domain:website"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -5673,6 +6140,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:harness",
+          "domain:security",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -5711,6 +6180,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:harness",
+          "domain:workstations",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -5750,8 +6221,10 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:operations",
           "priority:critical",
-          "compliance-alert"
+          "compliance-alert",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5789,6 +6262,7 @@
       "hover": {
         "labels": [
           "cat:tooling",
+          "domain:workflow",
           "status:plan-approved",
           "status:needs-plan",
           "gate:completeness",
@@ -5833,6 +6307,7 @@
       "hover": {
         "labels": [
           "bug",
+          "cat:harness",
           "status:needs-plan",
           "domain:ai"
         ],
@@ -5918,6 +6393,7 @@
       "hover": {
         "labels": [
           "bug",
+          "cat:harness",
           "status:plan-approved",
           "domain:ai"
         ],
@@ -5961,9 +6437,11 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:tooling",
           "status:plan-approved",
           "gate:completeness",
-          "lane:codex"
+          "lane:codex",
+          "domain:repo"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6007,7 +6485,8 @@
           "priority:medium",
           "cat:data",
           "status:needs-plan",
-          "lane:claude"
+          "lane:claude",
+          "domain:capability"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6128,6 +6607,7 @@
           "enhancement",
           "priority:medium",
           "cat:data",
+          "domain:knowledge",
           "status:needs-plan",
           "lane:claude"
         ],
@@ -6168,6 +6648,7 @@
           "enhancement",
           "priority:medium",
           "cat:data",
+          "domain:knowledge",
           "status:needs-plan",
           "lane:claude"
         ],
@@ -6203,7 +6684,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "status:plan-review"
+          "cat:harness",
+          "status:plan-review",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6241,8 +6724,10 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "cat:harness",
           "status:needs-plan",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6280,6 +6765,7 @@
         "labels": [
           "priority:low",
           "cat:data",
+          "domain:knowledge",
           "status:needs-plan",
           "lane:claude"
         ],
@@ -6321,6 +6807,7 @@
           "priority:low",
           "cat:harness",
           "status:needs-plan",
+          "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -6361,6 +6848,7 @@
           "priority:medium",
           "cat:harness",
           "status:needs-plan",
+          "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -6439,7 +6927,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:operations",
+          "domain:repo"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -6475,8 +6966,10 @@
       "hover": {
         "labels": [
           "priority:medium",
+          "cat:operations",
           "priority:critical",
-          "compliance-alert"
+          "compliance-alert",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6514,6 +7007,7 @@
         "labels": [
           "enhancement",
           "priority:medium",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -6558,6 +7052,7 @@
         "labels": [
           "enhancement",
           "priority:high",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -6601,6 +7096,7 @@
       "hover": {
         "labels": [
           "enhancement",
+          "cat:harness",
           "agent:claude",
           "status:plan-approved",
           "gate:completeness",
@@ -6642,7 +7138,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:harness",
+          "domain:skills"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -6677,7 +7176,9 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "lane:claude"
+          "cat:documentation",
+          "lane:claude",
+          "domain:repo"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6714,6 +7215,7 @@
       "hover": {
         "labels": [
           "enhancement",
+          "cat:harness",
           "agent:claude",
           "status:plan-approved",
           "gate:completeness",
@@ -6758,6 +7260,7 @@
         "labels": [
           "enhancement",
           "priority:high",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -6805,7 +7308,8 @@
           "cat:harness",
           "status:plan-approved",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6846,6 +7350,7 @@
         "labels": [
           "enhancement",
           "priority:high",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -6893,7 +7398,8 @@
           "cat:harness",
           "status:plan-approved",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6937,7 +7443,8 @@
           "cat:harness",
           "status:plan-approved",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ci-release"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6981,7 +7488,8 @@
           "cat:harness",
           "status:plan-approved",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ci-release"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7025,7 +7533,8 @@
           "cat:harness",
           "status:plan-approved",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ci-release"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7068,6 +7577,7 @@
           "priority:high",
           "cat:harness",
           "status:needs-plan",
+          "domain:harness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -7106,6 +7616,7 @@
         "labels": [
           "enhancement",
           "priority:low",
+          "cat:engineering",
           "domain:workflow",
           "status:needs-plan",
           "lane:claude"
@@ -7146,6 +7657,7 @@
         "labels": [
           "enhancement",
           "priority:medium",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -7190,6 +7702,7 @@
         "labels": [
           "enhancement",
           "priority:low",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -7234,6 +7747,7 @@
         "labels": [
           "enhancement",
           "priority:medium",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -7278,6 +7792,7 @@
         "labels": [
           "enhancement",
           "priority:high",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -7322,6 +7837,7 @@
         "labels": [
           "enhancement",
           "priority:medium",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -7366,6 +7882,7 @@
         "labels": [
           "enhancement",
           "priority:high",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -7410,6 +7927,7 @@
         "labels": [
           "enhancement",
           "priority:high",
+          "cat:engineering",
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
@@ -7457,6 +7975,7 @@
         "labels": [
           "enhancement",
           "priority:high",
+          "cat:engineering",
           "domain:workflow",
           "status:needs-plan",
           "lane:claude"
@@ -7710,6 +8229,7 @@
       "hover": {
         "labels": [
           "enhancement",
+          "cat:business",
           "domain:gtm",
           "domain:content",
           "status:plan-approved",
@@ -7792,7 +8312,10 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "cat:harness",
+          "domain:harness"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -7815,362 +8338,365 @@
       "title": "Isolate concurrent agent sessions per repo (worktree-per-session) \u2014 shared-clone HEAD thrash",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3231",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "priority:critical",
-          "compliance-alert"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Compliance alert: W26 \u2014 0% (critical)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3226,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Compliance alert: W26 \u2014 0% (critical)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3226",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "no canonical plan file",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "status:plan-approved",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3224,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3224",
-      "warnings": [
-        "approved_no_marker",
-        "approved_no_plan",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3223,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3223",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "no canonical plan file",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "status:plan-review"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3212,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
-      "warnings": [
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "no canonical plan file",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "status:plan-review"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3198,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3198",
-      "warnings": [
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:low",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3186,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3186",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Provider-utilization tracker is blind to Hermes usage after ace-linux-2 migration"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3182,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Provider-utilization tracker is blind to Hermes usage after ace-linux-2 migration",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3182",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "already has status:plan-approved",
-        "reviews not clean: major_review,missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- **Found** `scripts/testing/run-all-tests.sh:16` \u2014 `REPO_ROOT=\"$(git -C \"$SCRIPT_DIR\" rev-parse --show-toplevel)\"`, then `source \"${REPO_ROOT}/scripts/lib/tier1-repos.sh\"` at line 25. This is the reported failure site.",
-        "provider_route": "claude",
-        "risks": "**Load-bearing gate change** \u2192 full plan\u2192review\u2192approve\u2192TDD; verify the hook still PASSES legitimately (not just stops false-FAILing) by testing a known-good and a known-bad change. | **Structural-depth brittleness** \u2014 `cd \u2026/../.. && pwd` breaks if `run-all-tests.sh`/`run-benchmarks.sh` ever move directory depth. Mitigation: contract test #4 asserts correct REPO_ROOT; this is the same accepted ris",
-        "tests": "(no TDD section)",
-        "title": "run-all-tests.sh (and peer gate scripts) mis-resolve REPO_ROOT under git hooks in a worktree \u2192 spurious pre-push FAIL"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3179,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-16-issue-3179-reporoot-hook-resolution.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "run-all-tests.sh (and peer gate scripts) mis-resolve REPO_ROOT under git hooks in a worktree \u2192 spurious pre-push FAIL",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3179",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "legacy_review_no_sha",
-        "major_review",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "status:plan-review",
-          "status:plan-approved",
-          "gate:completeness",
-          "status:completeness-verified"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- `.git/hooks/pre-push:158` runs `bash check-all.sh --repo \"$repo\"` per tier-1 repo \u2014 a **hard** gate. `check-all.sh` `run_ruff` does `ruff check .` and FAILs on ANY error, with **no baseline** (`scripts/quality/check-all.sh`, `run_ruff`). This is what blocks pushes.",
-        "provider_route": "claude",
-        "risks": "**Risk:** load-bearing gate \u2014 a ratchet bug could let new ruff errors through (mitigate: explicit new_error_fails test) or block valid pushes (baseline seeded at measured counts). | **Risk:** the architectural wrinkle (hard run_mypy vs separate mypy ratchet) \u2014 must be understood before wiring ruff, or the fix won't unblock `:158`. TDD pins the actual `run_mypy` gate behavior first. | **Risk:** bas",
-        "tests": "TDD section present",
-        "title": "Add ruff baseline/ratchet to check-all \u2014 pre-push gate unpassable on 3/4 tier-1 repos (chronic bypass)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3146,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-06-15-issue-3146-ruff-baseline-ratchet.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Add ruff baseline/ratchet to check-all \u2014 pre-push gate unpassable on 3/4 tier-1 repos (chronic bypass)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3146",
-      "warnings": [
-        "approved_no_marker",
-        "dual_status_labels",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-07-27T01:21:15Z",
+  "generated_at": "2026-07-27T05:21:13Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:operations",
+            "initiative",
+            "domain:family"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "INITIATIVE: Personal & family operations"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3609,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "INITIATIVE: Personal & family operations",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3609",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "initiative",
+            "domain:cad"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "INITIATIVE: CAD/CAM & manufacturing capability"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3608,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "INITIATIVE: CAD/CAM & manufacturing capability",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3608",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:business",
+            "domain:gtm",
+            "initiative"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "INITIATIVE: Brand, public surfaces & go-to-market"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3607,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "INITIATIVE: Brand, public surfaces & go-to-market",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3607",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:harness",
+            "domain:harness",
+            "initiative"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "INITIATIVE: Agent harness, memory & ecosystem hardening"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3606,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "INITIATIVE: Agent harness, memory & ecosystem hardening",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3606",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:business",
+            "domain:business-development",
+            "initiative"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "INITIATIVE: ACMA & client delivery"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3605,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "INITIATIVE: ACMA & client delivery",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3605",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:data",
+            "domain:knowledge",
+            "initiative"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "INITIATIVE: Knowledge ingestion & the llm-wiki corpus"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3604,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "INITIATIVE: Knowledge ingestion & the llm-wiki corpus",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3604",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "domain:gtm",
+            "initiative"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "INITIATIVE: Deckhand & Open Deck platform"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3603,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "INITIATIVE: Deckhand & Open Deck platform",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3603",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:data",
+            "initiative",
+            "domain:ingest"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "INITIATIVE: World Energy Field Explorer & asset data spine"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3602,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "INITIATIVE: World Energy Field Explorer & asset data spine",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3602",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "initiative",
+            "domain:solver"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "INITIATIVE: Engineering compute & solver trust"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3601,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "INITIATIVE: Engineering compute & solver trust",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3601",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8222,7 +8748,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:operations",
+            "domain:workstations"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -8257,8 +8786,10 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
             "priority:critical",
-            "compliance-alert"
+            "compliance-alert",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8336,6 +8867,7 @@
             "bug",
             "priority:low",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
             "lane:claude"
           ],
@@ -8376,6 +8908,7 @@
             "enhancement",
             "priority:medium",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
             "lane:claude"
           ],
@@ -8414,8 +8947,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:operations",
             "cat:harness",
+            "domain:workstations",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -8459,7 +8992,8 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:data"
+            "cat:data",
+            "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8496,7 +9030,8 @@
         "hover": {
           "labels": [
             "priority:low",
-            "cat:operations"
+            "cat:operations",
+            "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8533,7 +9068,8 @@
         "hover": {
           "labels": [
             "priority:low",
-            "cat:operations"
+            "cat:operations",
+            "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8570,7 +9106,8 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:operations"
+            "cat:operations",
+            "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8607,7 +9144,8 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:data"
+            "cat:data",
+            "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8644,7 +9182,8 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:data"
+            "cat:data",
+            "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8678,6 +9217,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
+            "domain:workstations",
             "status:plan-review",
             "lane:claude"
           ],
@@ -8717,6 +9258,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:harness",
             "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8753,6 +9295,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
             "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8789,6 +9332,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:harness",
             "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8825,6 +9369,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:harness",
             "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8862,6 +9407,7 @@
         "hover": {
           "labels": [
             "enhancement",
+            "cat:harness",
             "machine:multi",
             "status:plan-review",
             "status:plan-approved",
@@ -8909,6 +9455,7 @@
         "hover": {
           "labels": [
             "priority:medium",
+            "cat:harness",
             "domain:testing",
             "status:needs-plan"
           ],
@@ -8946,6 +9493,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
+            "domain:workstations",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -9176,7 +9725,9 @@
         "hover": {
           "labels": [
             "bug",
-            "status:needs-plan"
+            "cat:operations",
+            "status:needs-plan",
+            "domain:ci-release"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9212,6 +9763,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:tooling",
+            "domain:workstations",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9292,7 +9845,8 @@
             "priority:high",
             "cat:tooling",
             "status:needs-plan",
-            "lane:codex"
+            "lane:codex",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9330,11 +9884,11 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:tooling",
             "cat:data",
             "status:needs-plan",
             "lane:codex",
-            "epic"
+            "epic",
+            "domain:capability"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9371,6 +9925,7 @@
         "hover": {
           "labels": [
             "bug",
+            "cat:harness",
             "status:needs-plan",
             "domain:ai"
           ],
@@ -9754,6 +10309,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "domain:workstations",
             "status:needs-plan",
             "lane:claude"
           ],
@@ -9792,9 +10348,11 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
             "status:plan-approved",
             "gate:completeness",
-            "lane:codex"
+            "lane:codex",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9834,7 +10392,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "status:needs-plan"
+            "cat:tooling",
+            "status:needs-plan",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9870,6 +10430,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:tooling",
+            "domain:testing",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9905,7 +10467,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:tooling",
+            "domain:testing"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -9941,6 +10506,7 @@
         "hover": {
           "labels": [
             "bug",
+            "cat:engineering",
             "domain:standards",
             "status:needs-plan",
             "lane:codex"
@@ -9983,7 +10549,8 @@
             "cat:harness",
             "wrk-item",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10018,7 +10585,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:tooling",
+            "domain:security"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -10054,6 +10624,8 @@
         "hover": {
           "labels": [
             "enhancement",
+            "cat:operations",
+            "domain:security",
             "status:needs-plan",
             "gate:completeness",
             "lane:claude"
@@ -10093,6 +10665,7 @@
         "hover": {
           "labels": [
             "bug",
+            "cat:data",
             "domain:standards",
             "status:needs-plan",
             "lane:codex"
@@ -10133,9 +10706,11 @@
         "hover": {
           "labels": [
             "enhancement",
+            "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10175,6 +10750,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
             "domain:personal"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10211,6 +10787,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
             "domain:personal"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10247,6 +10824,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
             "domain:personal"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10283,6 +10861,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
             "domain:personal"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10321,8 +10900,10 @@
         "hover": {
           "labels": [
             "bug",
+            "cat:harness",
             "status:plan-approved",
             "gate:completeness",
+            "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10365,6 +10946,7 @@
           "labels": [
             "enhancement",
             "cat:harness",
+            "domain:workstations",
             "machine:ace-win-2",
             "status:needs-plan",
             "lane:claude"
@@ -10406,6 +10988,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "domain:workstations",
             "wrk-item",
             "status:plan-approved",
             "gate:completeness",
@@ -10494,7 +11077,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:harness",
+            "domain:governance"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -10530,6 +11116,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
+            "domain:security",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
@@ -10570,6 +11158,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:tooling",
+            "domain:security",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -10609,8 +11199,10 @@
         "hover": {
           "labels": [
             "bug",
+            "cat:operations",
             "status:plan-approved",
             "gate:completeness",
+            "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10654,6 +11246,7 @@
             "bug",
             "priority:high",
             "cat:harness",
+            "domain:workstations",
             "machine:multi",
             "status:plan-review",
             "status:plan-approved",
@@ -10700,8 +11293,10 @@
         "hover": {
           "labels": [
             "priority:high",
+            "cat:operations",
             "priority:critical",
-            "compliance-alert"
+            "compliance-alert",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10739,6 +11334,7 @@
           "labels": [
             "bug",
             "cat:harness",
+            "domain:workstations",
             "machine:multi",
             "status:needs-plan"
           ],
@@ -10779,6 +11375,7 @@
           "labels": [
             "bug",
             "cat:harness",
+            "domain:workstations",
             "machine:multi",
             "status:plan-approved",
             "gate:completeness",
@@ -10824,6 +11421,7 @@
           "labels": [
             "bug",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
             "lane:claude"
           ],
@@ -10863,6 +11461,7 @@
           "labels": [
             "bug",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
             "lane:claude"
           ],
@@ -10902,6 +11501,7 @@
           "labels": [
             "bug",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
             "lane:claude"
           ],
@@ -10989,7 +11589,8 @@
         "hover": {
           "labels": [
             "priority:high",
-            "cat:operations"
+            "cat:operations",
+            "domain:workstations"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11026,7 +11627,8 @@
         "hover": {
           "labels": [
             "priority:high",
-            "cat:operations"
+            "cat:operations",
+            "domain:workstations"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11063,7 +11665,8 @@
         "hover": {
           "labels": [
             "priority:high",
-            "cat:harness"
+            "cat:harness",
+            "domain:workstations"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11099,6 +11702,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:tooling",
+            "domain:testing",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -11136,8 +11741,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:documentation",
-            "cat:tooling"
+            "cat:tooling",
+            "domain:capability"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11172,7 +11777,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:operations",
+            "domain:solver"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -11207,6 +11815,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
+            "domain:onboarding",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
@@ -11251,8 +11861,8 @@
         "hover": {
           "labels": [
             "priority:high",
-            "cat:tooling",
-            "cat:data"
+            "cat:data",
+            "domain:capability"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11288,7 +11898,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:data"
+            "cat:data",
+            "domain:capability"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11326,7 +11937,6 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:operations",
             "cat:tooling",
             "domain:testing",
             "status:plan-approved",
@@ -11372,8 +11982,10 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:tooling",
             "status:plan-approved",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:capability"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11413,7 +12025,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11450,6 +12064,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
+            "domain:workstations",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -11487,7 +12103,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11524,7 +12142,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11561,6 +12181,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:harness",
+            "domain:skills",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11599,7 +12221,6 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:operations",
             "cat:tooling",
             "domain:testing",
             "machine:dev-primary",
@@ -11646,9 +12267,11 @@
         "hover": {
           "labels": [
             "priority:high",
+            "cat:harness",
             "status:needs-plan",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11685,6 +12308,8 @@
         "hover": {
           "labels": [
             "enhancement",
+            "cat:tooling",
+            "domain:security",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -11723,6 +12348,8 @@
         "hover": {
           "labels": [
             "bug",
+            "cat:harness",
+            "domain:workstations",
             "lane:codex"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11764,6 +12391,7 @@
             "cat:tooling",
             "status:needs-plan",
             "gate:completeness",
+            "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11803,6 +12431,7 @@
             "bug",
             "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11842,6 +12471,7 @@
             "bug",
             "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11883,6 +12513,7 @@
             "cat:tooling",
             "status:needs-plan",
             "gate:completeness",
+            "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11961,6 +12592,7 @@
             "bug",
             "priority:high",
             "cat:tooling",
+            "domain:security",
             "machine:dev-primary",
             "status:needs-plan",
             "gate:completeness",
@@ -12043,8 +12675,8 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:documentation",
             "cat:tooling",
+            "domain:security",
             "machine:dev-primary",
             "status:needs-plan",
             "gate:completeness",
@@ -12090,6 +12722,7 @@
             "machine:dev-primary",
             "status:needs-plan",
             "gate:completeness",
+            "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -12127,6 +12760,8 @@
         "hover": {
           "labels": [
             "enhancement",
+            "cat:tooling",
+            "domain:security",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -12162,7 +12797,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:tooling",
+            "domain:workflow"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -12196,7 +12834,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:tooling",
+            "domain:repo"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -12353,8 +12994,8 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:operations",
             "cat:tooling",
+            "domain:workstations",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -12436,7 +13077,6 @@
             "bug",
             "priority:high",
             "cat:harness",
-            "cat:tooling",
             "domain:testing"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -12605,7 +13245,6 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "cat:tooling",
             "type:follow-up",
             "status:needs-plan",
             "lane:codex",
@@ -12648,7 +13287,6 @@
             "bug",
             "priority:medium",
             "cat:harness",
-            "cat:tooling",
             "type:follow-up",
             "status:needs-plan",
             "lane:codex",
@@ -12691,7 +13329,6 @@
             "bug",
             "priority:medium",
             "cat:harness",
-            "cat:tooling",
             "type:follow-up",
             "status:needs-plan",
             "lane:codex",
@@ -13745,6 +14382,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:documentation",
+            "domain:website",
             "status:plan-approved",
             "gate:completeness"
           ],
@@ -13785,7 +14424,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:documentation",
+            "domain:website"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -13819,6 +14461,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:harness",
+            "domain:security",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -13857,6 +14501,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:harness",
+            "domain:workstations",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -13896,8 +14542,10 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:operations",
             "priority:critical",
-            "compliance-alert"
+            "compliance-alert",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13935,6 +14583,7 @@
         "hover": {
           "labels": [
             "cat:tooling",
+            "domain:workflow",
             "status:plan-approved",
             "status:needs-plan",
             "gate:completeness",
@@ -13979,6 +14628,7 @@
         "hover": {
           "labels": [
             "bug",
+            "cat:harness",
             "status:needs-plan",
             "domain:ai"
           ],
@@ -14064,6 +14714,7 @@
         "hover": {
           "labels": [
             "bug",
+            "cat:harness",
             "status:plan-approved",
             "domain:ai"
           ],
@@ -14107,9 +14758,11 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:tooling",
             "status:plan-approved",
             "gate:completeness",
-            "lane:codex"
+            "lane:codex",
+            "domain:repo"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14153,7 +14806,8 @@
             "priority:medium",
             "cat:data",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "domain:capability"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14274,6 +14928,7 @@
             "enhancement",
             "priority:medium",
             "cat:data",
+            "domain:knowledge",
             "status:needs-plan",
             "lane:claude"
           ],
@@ -14314,6 +14969,7 @@
             "enhancement",
             "priority:medium",
             "cat:data",
+            "domain:knowledge",
             "status:needs-plan",
             "lane:claude"
           ],
@@ -14349,7 +15005,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "status:plan-review"
+            "cat:harness",
+            "status:plan-review",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14387,8 +15045,10 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "cat:harness",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14426,6 +15086,7 @@
           "labels": [
             "priority:low",
             "cat:data",
+            "domain:knowledge",
             "status:needs-plan",
             "lane:claude"
           ],
@@ -14467,6 +15128,7 @@
             "priority:low",
             "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -14507,6 +15169,7 @@
             "priority:medium",
             "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -14585,7 +15248,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:operations",
+            "domain:repo"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -14621,8 +15287,10 @@
         "hover": {
           "labels": [
             "priority:medium",
+            "cat:operations",
             "priority:critical",
-            "compliance-alert"
+            "compliance-alert",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14660,6 +15328,7 @@
           "labels": [
             "enhancement",
             "priority:medium",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -14704,6 +15373,7 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -14747,6 +15417,7 @@
         "hover": {
           "labels": [
             "enhancement",
+            "cat:harness",
             "agent:claude",
             "status:plan-approved",
             "gate:completeness",
@@ -14788,7 +15459,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:harness",
+            "domain:skills"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -14823,7 +15497,9 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "lane:claude"
+            "cat:documentation",
+            "lane:claude",
+            "domain:repo"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14860,6 +15536,7 @@
         "hover": {
           "labels": [
             "enhancement",
+            "cat:harness",
             "agent:claude",
             "status:plan-approved",
             "gate:completeness",
@@ -14904,6 +15581,7 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -14951,7 +15629,8 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14992,6 +15671,7 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -15039,7 +15719,8 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15083,7 +15764,8 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ci-release"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15127,7 +15809,8 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ci-release"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15171,7 +15854,8 @@
             "cat:harness",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ci-release"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15214,6 +15898,7 @@
             "priority:high",
             "cat:harness",
             "status:needs-plan",
+            "domain:harness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -15252,6 +15937,7 @@
           "labels": [
             "enhancement",
             "priority:low",
+            "cat:engineering",
             "domain:workflow",
             "status:needs-plan",
             "lane:claude"
@@ -15292,6 +15978,7 @@
           "labels": [
             "enhancement",
             "priority:medium",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -15336,6 +16023,7 @@
           "labels": [
             "enhancement",
             "priority:low",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -15380,6 +16068,7 @@
           "labels": [
             "enhancement",
             "priority:medium",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -15424,6 +16113,7 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -15468,6 +16158,7 @@
           "labels": [
             "enhancement",
             "priority:medium",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -15512,6 +16203,7 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -15556,6 +16248,7 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
@@ -15603,6 +16296,7 @@
           "labels": [
             "enhancement",
             "priority:high",
+            "cat:engineering",
             "domain:workflow",
             "status:needs-plan",
             "lane:claude"
@@ -15856,6 +16550,7 @@
         "hover": {
           "labels": [
             "enhancement",
+            "cat:business",
             "domain:gtm",
             "domain:content",
             "status:plan-approved",
@@ -15938,7 +16633,10 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "cat:harness",
+            "domain:harness"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -15961,354 +16659,6 @@
         "title": "Isolate concurrent agent sessions per repo (worktree-per-session) \u2014 shared-clone HEAD thrash",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3231",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "priority:critical",
-            "compliance-alert"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Compliance alert: W26 \u2014 0% (critical)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3226,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Compliance alert: W26 \u2014 0% (critical)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3226",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "no canonical plan file",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3224,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3224",
-        "warnings": [
-          "approved_no_marker",
-          "approved_no_plan",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3223,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3223",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "no canonical plan file",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "status:plan-review"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3212,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB \u2192 managed cron jobs short-circuit (dev-secondary report pipeline re-broken)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3212",
-        "warnings": [
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "no canonical plan file",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "status:plan-review"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3198,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3198",
-        "warnings": [
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:low",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3186,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3186",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Provider-utilization tracker is blind to Hermes usage after ace-linux-2 migration"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3182,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Provider-utilization tracker is blind to Hermes usage after ace-linux-2 migration",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3182",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "already has status:plan-approved",
-          "reviews not clean: major_review,missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- **Found** `scripts/testing/run-all-tests.sh:16` \u2014 `REPO_ROOT=\"$(git -C \"$SCRIPT_DIR\" rev-parse --show-toplevel)\"`, then `source \"${REPO_ROOT}/scripts/lib/tier1-repos.sh\"` at line 25. This is the reported failure site.",
-          "provider_route": "claude",
-          "risks": "**Load-bearing gate change** \u2192 full plan\u2192review\u2192approve\u2192TDD; verify the hook still PASSES legitimately (not just stops false-FAILing) by testing a known-good and a known-bad change. | **Structural-depth brittleness** \u2014 `cd \u2026/../.. && pwd` breaks if `run-all-tests.sh`/`run-benchmarks.sh` ever move directory depth. Mitigation: contract test #4 asserts correct REPO_ROOT; this is the same accepted ris",
-          "tests": "(no TDD section)",
-          "title": "run-all-tests.sh (and peer gate scripts) mis-resolve REPO_ROOT under git hooks in a worktree \u2192 spurious pre-push FAIL"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3179,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-16-issue-3179-reporoot-hook-resolution.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "run-all-tests.sh (and peer gate scripts) mis-resolve REPO_ROOT under git hooks in a worktree \u2192 spurious pre-push FAIL",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3179",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "legacy_review_no_sha",
-          "major_review",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "status:plan-review",
-            "status:plan-approved",
-            "gate:completeness",
-            "status:completeness-verified"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- `.git/hooks/pre-push:158` runs `bash check-all.sh --repo \"$repo\"` per tier-1 repo \u2014 a **hard** gate. `check-all.sh` `run_ruff` does `ruff check .` and FAILs on ANY error, with **no baseline** (`scripts/quality/check-all.sh`, `run_ruff`). This is what blocks pushes.",
-          "provider_route": "claude",
-          "risks": "**Risk:** load-bearing gate \u2014 a ratchet bug could let new ruff errors through (mitigate: explicit new_error_fails test) or block valid pushes (baseline seeded at measured counts). | **Risk:** the architectural wrinkle (hard run_mypy vs separate mypy ratchet) \u2014 must be understood before wiring ruff, or the fix won't unblock `:158`. TDD pins the actual `run_mypy` gate behavior first. | **Risk:** bas",
-          "tests": "TDD section present",
-          "title": "Add ruff baseline/ratchet to check-all \u2014 pre-push gate unpassable on 3/4 tier-1 repos (chronic bypass)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3146,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-06-15-issue-3146-ruff-baseline-ratchet.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Add ruff baseline/ratchet to check-all \u2014 pre-push gate unpassable on 3/4 tier-1 repos (chronic bypass)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3146",
-        "warnings": [
-          "approved_no_marker",
-          "dual_status_labels",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16319,17 +16669,17 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-07-27T01:21:10.925376Z",
+  "scorecard_generated_at": "2026-07-27T05:21:09.856563Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-27T01:21:10.798247Z",
+  "utilization_generated_at": "2026-07-27T05:21:09.738644Z",
   "warning_summary": {
-    "approved_no_marker": 58,
-    "approved_no_plan": 34,
-    "dual_status_labels": 5,
-    "legacy_review_no_sha": 7,
-    "major_review": 4,
+    "approved_no_marker": 55,
+    "approved_no_plan": 33,
+    "dual_status_labels": 3,
+    "legacy_review_no_sha": 6,
+    "major_review": 3,
     "marker_without_open_approved_issue": 175,
-    "missing_review": 72,
+    "missing_review": 67,
     "unavailable_review": 3
   }
 }

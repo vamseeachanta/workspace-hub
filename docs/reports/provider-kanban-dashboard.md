@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-27T01:21:15Z
+Generated: 2026-07-27T05:21:13Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,15 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3609 | INITIATIVE: Personal & family operations | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3608 | INITIATIVE: CAD/CAM & manufacturing capability | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3607 | INITIATIVE: Brand, public surfaces & go-to-market | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3606 | INITIATIVE: Agent harness, memory & ecosystem hardening | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3605 | INITIATIVE: ACMA & client delivery | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3604 | INITIATIVE: Knowledge ingestion & the llm-wiki corpus | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3603 | INITIATIVE: Deckhand & Open Deck platform | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3602 | INITIATIVE: World Energy Field Explorer & asset data spine | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3601 | INITIATIVE: Engineering compute & solver trust | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3600 | fix(harness): R-MODEL-DRIFT validates only openai_primary — no claude_* key is checked by any nightly gate | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3598 | feat(equality): add HF-token health row to the machine equivalence matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3596 | Compliance alert: W30 — 18% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -234,15 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3239 | Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3237 | docs(workflow): canonical lifecycle for a typical GitHub issue — plan → review → implement → HTML artifact → live link | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3231 | Isolate concurrent agent sessions per repo (worktree-per-session) — shared-clone HEAD thrash | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3226 | Compliance alert: W26 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3224 | Pages demo: multi-repo orchestration & governance engine (skills, AI-review, audits) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #3223 | Epic: Demonstrate ecosystem work via GitHub Pages (deterministic static-site pattern) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3212 | cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB → managed cron jobs short-circuit (dev-secondary report pipeline re-broken) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3198 | bug(pre-push): new-branch push runs ALL tier-1 test suites even for docs-only / non-tier-1 changes (RUN_ALL over-gating) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3186 | Reconcile ~/.codex/skills design conflict: unification-symlink vs native .system (AGENTS.runtime.md:165 / SOUL.delta.md:44) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3182 | Provider-utilization tracker is blind to Hermes usage after ace-linux-2 migration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3179 | run-all-tests.sh (and peer gate scripts) mis-resolve REPO_ROOT under git hooks in a worktree → spurious pre-push FAIL | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3146 | Add ruff baseline/ratchet to check-all — pre-push gate unpassable on 3/4 tier-1 repos (chronic bypass) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 
 ## Lane: blocked (0)
 

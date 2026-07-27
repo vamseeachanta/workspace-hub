@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-27T01:21:12.889003Z",
+  "generated_at": "2026-07-27T05:21:12.100843Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 11,
@@ -80,7 +80,6 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3472",
       "labels": [
         "priority:medium",
-        "cat:operations",
         "cat:tooling",
         "domain:testing",
         "machine:dev-primary",
@@ -88,7 +87,7 @@
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-07-27T01:19:13Z",
+      "updatedAt": "2026-07-27T03:35:20Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "codex",
@@ -116,12 +115,13 @@
       "labels": [
         "enhancement",
         "priority:high",
+        "cat:engineering",
         "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-27T01:19:18Z",
+      "updatedAt": "2026-07-27T02:35:14Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -149,12 +149,13 @@
       "labels": [
         "enhancement",
         "priority:high",
+        "cat:engineering",
         "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-07-27T01:19:18Z",
+      "updatedAt": "2026-07-27T02:35:14Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -182,12 +183,13 @@
       "labels": [
         "enhancement",
         "priority:high",
+        "cat:engineering",
         "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-07-27T01:19:18Z",
+      "updatedAt": "2026-07-27T02:35:14Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -218,9 +220,10 @@
         "cat:harness",
         "status:plan-approved",
         "gate:completeness",
-        "lane:claude"
+        "lane:claude",
+        "domain:ci-release"
       ],
-      "updatedAt": "2026-06-29T00:30:37Z",
+      "updatedAt": "2026-07-27T02:35:34Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -251,9 +254,10 @@
         "cat:harness",
         "status:plan-approved",
         "gate:completeness",
-        "lane:claude"
+        "lane:claude",
+        "domain:ai"
       ],
-      "updatedAt": "2026-06-29T00:28:45Z",
+      "updatedAt": "2026-07-27T02:35:34Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -281,12 +285,13 @@
       "labels": [
         "enhancement",
         "priority:high",
+        "cat:engineering",
         "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-27T01:19:17Z",
+      "updatedAt": "2026-07-27T02:35:13Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -315,12 +320,13 @@
       "labels": [
         "enhancement",
         "priority:high",
+        "cat:engineering",
         "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-07-27T01:19:17Z",
+      "updatedAt": "2026-07-27T02:35:13Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -349,12 +355,13 @@
       "labels": [
         "enhancement",
         "priority:high",
+        "cat:engineering",
         "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-07-27T01:19:17Z",
+      "updatedAt": "2026-07-27T02:35:13Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -380,6 +387,7 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
       "labels": [
         "enhancement",
+        "cat:business",
         "domain:gtm",
         "domain:content",
         "status:plan-approved",
@@ -387,7 +395,7 @@
         "lane:codex",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-27T01:19:19Z",
+      "updatedAt": "2026-07-27T02:35:14Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -413,11 +421,13 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3532",
       "labels": [
         "enhancement",
+        "cat:harness",
         "status:plan-approved",
         "gate:completeness",
-        "lane:claude"
+        "lane:claude",
+        "domain:ai"
       ],
-      "updatedAt": "2026-07-14T16:42:53Z",
+      "updatedAt": "2026-07-27T02:35:07Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -475,11 +485,13 @@
       "title": "equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3571",
       "labels": [
+        "cat:operations",
+        "domain:workstations",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-18T20:33:42Z",
+      "updatedAt": "2026-07-27T02:35:07Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -505,9 +517,10 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
       "labels": [
         "priority:medium",
-        "cat:data"
+        "cat:data",
+        "domain:family"
       ],
-      "updatedAt": "2026-07-27T01:19:10Z",
+      "updatedAt": "2026-07-27T02:35:31Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
