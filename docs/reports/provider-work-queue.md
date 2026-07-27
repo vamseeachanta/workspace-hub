@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-07-23T09:21:12.226146Z
+Generated: 2026-07-26T21:21:12.570521Z
 Current week: 2026-W30
 Recommended provider order: agy, claude, codex
 
@@ -9,8 +9,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 59
-- Total routed candidates: 174
+- Execution-ready candidates: 57
+- Total routed candidates: 175
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -26,19 +26,19 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## codex
 
 - Routing priority: high
-- Execution-ready candidates: 8
-- Total routed candidates: 25
+- Execution-ready candidates: 7
+- Total routed candidates: 24
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #3430 standard: replayable public input and source snapshot contract | yes | implementation/test/fix language | enhancement, priority:high, cat:data-pipeline, domain:audit-trail, status:plan-approved, type:follow-up |
 | #3385 Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links) | yes | implementation/test/fix language | enhancement, priority:medium, cat:documentation, cat:website, status:plan-approved, gate:completeness |
 | #3472 feat(operations): add pressure-aware daily OS maintenance cleanup | yes | implementation/test/fix language | priority:medium, cat:operations, domain:automation, domain:repo-health, machine:dev-primary, status:plan-approved |
-| #3143 bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | yes | implementation/test/fix language | bug, cat:harness/ops, status:plan-approved, gate:completeness |
 | #3239 Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | yes | implementation/test/fix language | enhancement, domain:reporting, domain:gtm, status:plan-approved, gate:completeness, lane:codex |
 | #3532 fix(memory): reserve cross-provider runtime budget for operational feedback | yes | implementation/test/fix language | enhancement, status:plan-approved, gate:completeness, lane:claude |
 | #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | yes | implementation/test/fix language | bug, cat:harness, machine:multi, status:plan-approved, gate:completeness, domain:workstations-fleet-equivalence |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | yes | implementation/test/fix language | status:plan-approved, gate:completeness, lane:claude |
+| #3585 phone-media: EXIF-date organizer + cross-phone dedupe | no | implementation/test/fix language | priority:medium, cat:data-pipeline |
 
 ## agy
 

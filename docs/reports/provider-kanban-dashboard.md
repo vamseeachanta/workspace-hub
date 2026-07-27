@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-23T09:21:14Z
+Generated: 2026-07-26T21:21:15Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3600 | fix(harness): R-MODEL-DRIFT validates only openai_primary — no claude_* key is checked by any nightly gate | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3598 | feat(equality): add HF-token health row to the machine equivalence matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3596 | Compliance alert: W30 — 18% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3595 | ace-win-2 on-box: schema-5 equality re-collect verification + hermes home init + revive licensed-runs queue heartbeat (#3592 follow-up) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3594 | chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding — notes say clone pending / uv NOT installed; both now false | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3593 | ops(cron): gpu-claw excluded from repository-sync — roles_authoritative unset, legacy machines exclusion wins; clone-behind warnings recur | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -240,9 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3182 | Provider-utilization tracker is blind to Hermes usage after ace-linux-2 migration | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3179 | run-all-tests.sh (and peer gate scripts) mis-resolve REPO_ROOT under git hooks in a worktree → spurious pre-push FAIL | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3146 | Add ruff baseline/ratchet to check-all — pre-push gate unpassable on 3/4 tier-1 repos (chronic bypass) | claude | — (blocked:no_provider_capable_workstation) | ✗ | already has status:plan-approved; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3143 | bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #3142 | bug(review-tooling): validate-review-output.sh + render-structured-review.py tracked non-executable (100644) but invoked directly → fails on fresh clone | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #3138 | Skill-invocation: backfill historical events from transcripts — follow-on to #3112 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 
 ## Lane: blocked (0)
 

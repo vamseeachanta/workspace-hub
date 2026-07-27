@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-07-23T09:21:12.369150Z
+Generated: 2026-07-26T21:21:12.714642Z
 Apply mode: False
 Threshold: 0.9
 
@@ -17,9 +17,9 @@ Threshold: 0.9
 | #3430 standard: replayable public input and source snapshot contract | agent:codex | 0.90 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-high-priority |
 | #3385 Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links) | agent:codex | 0.90 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-high-priority |
 | #3472 feat(operations): add pressure-aware daily OS maintenance cleanup | agent:codex | 0.90 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-high-priority |
-| #3143 bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | agent:codex | 0.75 | no | execution-ready, strong-codex-language-match, provider-high-priority |
 | #3239 Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | agent:codex | 0.75 | no | execution-ready, strong-codex-language-match, provider-high-priority |
 | #3532 fix(memory): reserve cross-provider runtime budget for operational feedback | agent:codex | 0.75 | no | execution-ready, strong-codex-language-match, provider-high-priority |
 | #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | agent:codex | 0.75 | no | execution-ready, strong-codex-language-match, provider-high-priority |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | agent:codex | 0.75 | no | execution-ready, strong-codex-language-match, provider-high-priority |
 | #3584 phone-media: USB-pull remaining family phones into the archive | agent:agy | 0.60 | no | priority-labeled, strong-agy-language-match, provider-highest-priority |
+| #3585 phone-media: EXIF-date organizer + cross-phone dedupe | agent:codex | 0.55 | no | priority-labeled, strong-codex-language-match, provider-high-priority |

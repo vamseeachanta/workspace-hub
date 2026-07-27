@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (221)
+## Feedback — execution lessons & hazards (223)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -184,6 +184,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [Reflog as ground truth during git operations](feedback_reflog_as_ground_truth.md) — When in-flight git output suggests failure (lock errors, [rejected] push, mid-rebase staged-AD entries), check reflog and `git status` before retrying — the operation may have actually succeeded
 - [feedback_regression_test_broader_than_issue_scope](feedback_regression_test_broader_than_issue_scope.md) — "When writing a regression test for a specific issue, scope the test pattern (glob/regex) BROADER than the named target — sibling files with the same defect class get caught for free at no additional cost."
 - [Public repo scope](feedback_repo_scope.md) — Only 4 public repos are development targets; OGManufacturing is client data only
+- [feedback_report_hub_design_system](feedback_report_hub_design_system.md) — "Owner-approved report-hub design = THE consistent design for all worldwide field-data surfaces; self-contained pages, evidence badges, drill-down tiers, navigable site, data on HF"
 - [feedback_required_check_must_not_skip](feedback_required_check_must_not_skip.md) — Never make a conditionally-skipped GitHub job a required status check — a skipped required check deadlocks the PR at BLOCKED forever
 - [Research task per story](feedback_research_before_stories.md) — Every plan phase/story must include an online research task to validate approach before implementation
 - [Research skill must include university sources](feedback_research_skill_sources.md) — Research-literature skill should include university coursework, textbook examples, and lecture resources — archive in dark intelligence
@@ -220,6 +221,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [feedback_verify_against_real_ci_lint_toolchain](feedback_verify_against_real_ci_lint_toolchain.md) — "Before pushing, run the repo's ACTUAL CI lint toolchain (same tool, version, config) — a green from a different tool or an absent binary is a false negative"
 - [feedback_verify_generated_state_against_origin_not_working_copy](feedback_verify_generated_state_against_origin_not_working_copy.md) — "Generated/state files (skill-scores.yaml, telemetry, caches) must be judged against origin/main, not the current working copy — a feature-branch checkout misleads"
 - [verify-subagent-firewall-claims-on-client-data](feedback_verify_subagent_firewall_claims.md) — "Subagents posting client-data plans can overclaim firewall compliance; always read the actual posted content for project/field identifiers before trusting \"no leak\""
+- [feedback_verify_subagent_line_citations_not_just_claims](feedback_verify_subagent_line_citations_not_just_claims.md) — "When relaying subagent findings, re-check the file:line coordinates too — not just the substance — before asserting they were verified"
 - [wait-for-safety-bg-task-before-destructive-op](feedback_wait_for_safety_bg_task_before_destructive_op.md) — "When a background task is in flight to verify \"is this safe to delete / does anything reference this\", its completion is a blocking dependency for the destructive action — even when the user has given conditional approval like \"if stale, delete\"."
 - [WebFetch first for LinkedIn recon](feedback_webfetch_first_for_linkedin.md) — For field-dev-code-recon and similar LinkedIn-source workflows, try WebFetch before launching browser automation — LinkedIn returns og:description metadata that often satisfies the extraction phase entirely
 - [feedback_wed_pr_title_conventional_types_only](feedback_wed_pr_title_conventional_types_only.md) — "worldenergydata PR titles must use a Conventional-Commits type; data(...)/chore-scope fail the required \"Validate PR Title\" check"

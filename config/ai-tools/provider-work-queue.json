@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-23T09:21:12.226146Z",
+  "generated_at": "2026-07-26T21:21:12.570521Z",
   "current_week": "2026-W30",
-  "scorecard_generated_at": "2026-07-23T09:21:10.244081Z",
+  "scorecard_generated_at": "2026-07-26T21:21:10.459384Z",
   "recommended_provider_order": [
     "agy",
     "claude",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 59,
-      "total_candidates": 174,
+      "execution_ready_count": 57,
+      "total_candidates": 175,
       "top_issues": [
         {
           "number": 3282,
@@ -1074,52 +1074,6 @@
           ]
         },
         {
-          "number": 3138,
-          "title": "Skill-invocation: backfill historical events from transcripts \u2014 follow-on to #3112",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3138",
-          "labels": [
-            "domain:ai-orchestration",
-            "domain:skill-improvement",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-15T21:19:24Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3142,
-          "title": "bug(review-tooling): validate-review-output.sh + render-structured-review.py tracked non-executable (100644) but invoked directly \u2192 fails on fresh clone",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3142",
-          "labels": [
-            "bug",
-            "cat:harness/ops",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-07-11T02:48:05Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3146,
           "title": "Add ruff baseline/ratchet to check-all \u2014 pre-push gate unpassable on 3/4 tier-1 repos (chronic bypass)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3146",
@@ -1742,6 +1696,27 @@
             "lane:claude"
           ],
           "updatedAt": "2026-07-15T16:45:17Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3596,
+          "title": "Compliance alert: W30 \u2014 18% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3596",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-07-26T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -2530,6 +2505,31 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3600,
+          "title": "fix(harness): R-MODEL-DRIFT validates only openai_primary \u2014 no claude_* key is checked by any nightly gate",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3600",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:harness",
+            "domain:ai-config",
+            "machine:multi",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-25T23:03:17Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -4227,14 +4227,31 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3598,
+          "title": "feat(equality): add HF-token health row to the machine equivalence matrix",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3598",
+          "labels": [],
+          "updatedAt": "2026-07-25T07:11:00Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "high",
-      "execution_ready_count": 8,
-      "total_candidates": 25,
+      "execution_ready_count": 7,
+      "total_candidates": 24,
       "top_issues": [
         {
           "number": 3430,
@@ -4310,27 +4327,6 @@
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3143,
-          "title": "bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3143",
-          "labels": [
-            "bug",
-            "cat:harness/ops",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-15T21:52:43Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
             "implementation"
           ]
         },
@@ -4426,6 +4422,25 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 3585,
+          "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
+          "labels": [
+            "priority:medium",
+            "cat:data-pipeline"
+          ],
+          "updatedAt": "2026-07-19T11:44:35Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "high",
+          "provider_status": "needs_cleanup",
+          "work_type": [
+            "implementation"
+          ]
         }
       ],
       "full_candidates": [
@@ -4503,27 +4518,6 @@
           "provider_status": "needs_cleanup",
           "work_type": [
             "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3143,
-          "title": "bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3143",
-          "labels": [
-            "bug",
-            "cat:harness/ops",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-06-15T21:52:43Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "high",
-          "provider_status": "needs_cleanup",
-          "work_type": [
             "implementation"
           ]
         },

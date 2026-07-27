@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-23T09:21:12.369150Z",
+  "generated_at": "2026-07-26T21:21:12.714642Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 11,
@@ -375,35 +375,6 @@
       "eligible": true
     },
     {
-      "number": 3143,
-      "title": "bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3143",
-      "labels": [
-        "bug",
-        "cat:harness/ops",
-        "status:plan-approved",
-        "gate:completeness"
-      ],
-      "updatedAt": "2026-06-15T21:52:43Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.75,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 3239,
       "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
@@ -552,6 +523,33 @@
         "priority-labeled",
         "strong-agy-language-match",
         "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3585,
+      "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
+      "labels": [
+        "priority:medium",
+        "cat:data-pipeline"
+      ],
+      "updatedAt": "2026-07-19T11:44:35Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "high",
+      "provider_status": "needs_cleanup",
+      "work_type": [
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-high-priority"
       ],
       "eligible": false
     }
