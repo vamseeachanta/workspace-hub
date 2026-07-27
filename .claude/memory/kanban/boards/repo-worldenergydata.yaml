@@ -3662,3 +3662,205 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1062
+    title: 'bug(data): drilling & completion days have three incompatible definitions — adopt BSEE WAR activity codes as the reference basis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1062
+    gh_state: open
+    gh_labels:
+      - priority:high
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1063
+    title: 'epic(data): rebuild drilling & completion days on a ratified basis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1063
+    gh_state: open
+    gh_labels:
+      - priority:high
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1064
+    title: 'decide(data): ratify the drilling & completion day basis with the domain owner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1064
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1065
+    title: 'data(bsee): obtain the official WELL_ACTIVITY_CD code list — PND is undocumented'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1065
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1066
+    title: 'fix(build): make data fails — ModuleNotFoundError blocks WAR recomputation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1066
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1067
+    title: 'feat(data): implement shared war_rig_days module on BSEE activity codes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1067
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1068
+    title: 'fix(data): DRILLING_DAYS mixes two bases behind an undocumented 250-day threshold'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1068
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1069
+    title: 'fix(data): COMPLETION_DAYS counts every post-TD rig-day forever (root of #846)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1069
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1070
+    title: 'fix(data): completion days depend on remark presence, drilling does not (B6)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1070
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1071
+    title: 'fix(data): union_days does not merge back-to-back WAR weeks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1071
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1072
+    title: 'fix(data): drilling and completion use different day-counting conventions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1072
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1073
+    title: 'fix(data): missing spud/TD emits 0 instead of null (38 of 253 bores)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1073
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1074
+    title: 'chore(data): delete dead completion-keyword code and stale comments'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1074
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1075
+    title: 'refactor(data): converge four independent drilling-day implementations'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1075
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1076
+    title: 'feat(data): emit explicit basis, pnd_days and days_status columns'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1076
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1077
+    title: 'fix(reports): benchmark drilling_days is calendar cycle time, not drilling time'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1077
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1078
+    title: 'docs(data): disclose WAR quantization, 2004 floor, MD-vs-TVD and the declared basis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1078
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1079
+    title: 'task(data): recompute and republish all D&C surfaces after the basis change'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1079
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1080
+    title: 'feat(data): add Days/10K normalized drilling parameter (days per 10,000 ft)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1080
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1081
+    title: 'research(data): API-10 vs API-12 vs API-14 wellbore grain — drives rig-day aggregation (+ llm-wiki note)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1081
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''

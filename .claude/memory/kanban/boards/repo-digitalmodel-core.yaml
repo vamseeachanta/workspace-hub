@@ -511,7 +511,7 @@ cards:
     title: Add PassingShipSpec and JumperInstallationSpec schemas for non-generic specs
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/506
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium

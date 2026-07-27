@@ -162,7 +162,7 @@ cards:
     title: 'OrcaFlex tests: hoist class-scoped fixtures in test_orcaflex_converter_enhanced.py to module level'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/530
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:low
@@ -342,7 +342,7 @@ cards:
     title: 'OrcaFlex: follow-up — 9 pre-existing test failures across 5 files not covered by #510 plan scope'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/531
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
       - priority:medium

@@ -433,14 +433,11 @@ cards:
     title: 'OrcaFlex buoys builder refactor: split 611-line mega-builder into focused builders'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/504
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:medium
-      - status:working
       - machine:licensed-win-1
-      - status:plan-approved
-      - dispatch:ready
       - domain:solver-orcaflex
       - lane:codex
     gh_assignees: []
@@ -844,6 +841,36 @@ cards:
     gh_labels:
       - priority:high
       - cat:maintenance
+      - domain:solver-orcaflex
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1640
+    title: 'EPIC: OrcaFlex review remediation — arm the merge gate, unblock CI, fix silently-wrong numbers (2026-07-25 audit)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1640
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:critical
+      - domain:solver-orcaflex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1641
+    title: 'feat(orcaflex): modular_generator has no console script — the canonical spec-to-model path is CLI-unreachable [#1640 Lane F]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1641
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
       - domain:solver-orcaflex
       - lane:codex
       - status:needs-plan

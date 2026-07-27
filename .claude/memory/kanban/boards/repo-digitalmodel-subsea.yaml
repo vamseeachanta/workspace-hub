@@ -408,3 +408,19 @@ cards:
       **Status:** pending | **Priority:** low | **Category:** engineering | **Subcategory:** refactoring
 
       **Repo:** [''worldenergydata''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1639
+    title: 'ci(subsea): operability explorer + monitor have no index card registration — 2 failing tests [#1234 3/3]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1639
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:ci
+      - domain:subsea
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
