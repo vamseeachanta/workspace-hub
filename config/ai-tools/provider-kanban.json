@@ -36,6 +36,43 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:critical",
+          "compliance-alert"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Compliance alert: W31 \u2014 0% (critical)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3693,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Compliance alert: W31 \u2014 0% (critical)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3693",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "priority:high",
           "initiative"
         ],
@@ -3005,6 +3042,7 @@
         "labels": [
           "priority:medium",
           "cat:data",
+          "epic",
           "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -5450,7 +5488,8 @@
         "labels": [
           "priority:high",
           "cat:harness",
-          "domain:workstations"
+          "domain:workstations",
+          "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5646,6 +5685,7 @@
         "labels": [
           "priority:high",
           "cat:data",
+          "epic",
           "domain:capability"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -7452,6 +7492,7 @@
           "tracker",
           "gate:completeness",
           "lane:claude",
+          "epic",
           "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -7913,7 +7954,8 @@
           "cat:business",
           "domain:workflow",
           "status:needs-plan",
-          "lane:claude"
+          "lane:claude",
+          "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8112,51 +8154,51 @@
         "approved_no_plan",
         "missing_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:documentation",
-          "domain:website"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3401,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3401",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-07-27T09:21:16Z",
+  "generated_at": "2026-07-27T13:21:17Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Compliance alert: W31 \u2014 0% (critical)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3693,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Compliance alert: W31 \u2014 0% (critical)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3693",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -11137,6 +11179,7 @@
           "labels": [
             "priority:medium",
             "cat:data",
+            "epic",
             "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -13582,7 +13625,8 @@
           "labels": [
             "priority:high",
             "cat:harness",
-            "domain:workstations"
+            "domain:workstations",
+            "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13778,6 +13822,7 @@
           "labels": [
             "priority:high",
             "cat:data",
+            "epic",
             "domain:capability"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -15584,6 +15629,7 @@
             "tracker",
             "gate:completeness",
             "lane:claude",
+            "epic",
             "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -16045,7 +16091,8 @@
             "cat:business",
             "domain:workflow",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16244,43 +16291,6 @@
           "approved_no_plan",
           "missing_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:documentation",
-            "domain:website"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3401,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3401",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16291,9 +16301,9 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-07-27T09:21:12.033959Z",
+  "scorecard_generated_at": "2026-07-27T13:21:13.482345Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-27T09:21:11.914230Z",
+  "utilization_generated_at": "2026-07-27T13:21:13.345522Z",
   "warning_summary": {
     "approved_no_marker": 27,
     "approved_no_plan": 24,

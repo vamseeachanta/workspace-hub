@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-27T09:21:14.390180Z",
+  "generated_at": "2026-07-27T13:21:15.529471Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-27T09:21:12.033959Z",
+  "scorecard_generated_at": "2026-07-27T13:21:13.482345Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -52,9 +52,10 @@
             "tracker",
             "gate:completeness",
             "lane:claude",
+            "epic",
             "domain:governance"
           ],
-          "updatedAt": "2026-07-27T01:19:15Z",
+          "updatedAt": "2026-07-27T09:44:23Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -264,9 +265,10 @@
             "tracker",
             "gate:completeness",
             "lane:claude",
+            "epic",
             "domain:governance"
           ],
-          "updatedAt": "2026-07-27T01:19:15Z",
+          "updatedAt": "2026-07-27T09:44:23Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -995,6 +997,27 @@
           ]
         },
         {
+          "number": 3693,
+          "title": "Compliance alert: W31 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3693",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-07-27T11:45:06Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 3414,
           "title": "epic(landman-project-desk): broker workflow, QA, and federal-acreage diligence",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3414",
@@ -1004,9 +1027,10 @@
             "cat:business",
             "domain:workflow",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "epic"
           ],
-          "updatedAt": "2026-07-27T01:19:16Z",
+          "updatedAt": "2026-07-27T09:44:23Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1528,9 +1552,10 @@
           "labels": [
             "priority:high",
             "cat:data",
+            "epic",
             "domain:capability"
           ],
-          "updatedAt": "2026-07-27T03:35:21Z",
+          "updatedAt": "2026-07-27T09:44:22Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1550,9 +1575,10 @@
           "labels": [
             "priority:high",
             "cat:harness",
-            "domain:workstations"
+            "domain:workstations",
+            "epic"
           ],
-          "updatedAt": "2026-07-27T02:35:33Z",
+          "updatedAt": "2026-07-27T09:44:22Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2441,9 +2467,10 @@
           "labels": [
             "priority:medium",
             "cat:data",
+            "epic",
             "domain:family"
           ],
-          "updatedAt": "2026-07-27T02:35:31Z",
+          "updatedAt": "2026-07-27T09:44:22Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3800,27 +3827,6 @@
           "provider_status": "underused",
           "work_type": [
             "general"
-          ]
-        },
-        {
-          "number": 3401,
-          "title": "EPIC: One brand + layout system across all public-facing ecosystem pages (rollout of digitalmodel#1471)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3401",
-          "labels": [
-            "cat:documentation",
-            "domain:website"
-          ],
-          "updatedAt": "2026-07-27T02:35:10Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
           ]
         },
         {

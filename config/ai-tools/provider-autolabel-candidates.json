@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-27T09:21:14.524153Z",
+  "generated_at": "2026-07-27T13:21:15.672321Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 10,
@@ -121,9 +121,10 @@
         "tracker",
         "gate:completeness",
         "lane:claude",
+        "epic",
         "domain:governance"
       ],
-      "updatedAt": "2026-07-27T01:19:15Z",
+      "updatedAt": "2026-07-27T09:44:23Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
