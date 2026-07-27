@@ -39,9 +39,9 @@
           "bug",
           "priority:high",
           "cat:harness",
-          "domain:ai-config",
           "machine:multi",
-          "status:needs-plan"
+          "status:needs-plan",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -149,8 +149,8 @@
       "hover": {
         "labels": [
           "cat:harness",
+          "domain:workstations",
           "machine:ace-win-2",
-          "domain:workstations-windows-readiness",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -313,7 +313,7 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:data-pipeline"
+          "cat:data"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -461,7 +461,7 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:data-pipeline"
+          "cat:data"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -498,12 +498,12 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:data-pipeline"
+          "cat:data"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "agy",
+        "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
         "title": "phone-media: USB-pull remaining family phones into the archive"
@@ -516,9 +516,9 @@
       "number": 3584,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "agy",
+      "provider_route": "claude",
       "review_clean": false,
-      "routing_reason": "research/triage/audit language",
+      "routing_reason": "default long-context routing",
       "title": "phone-media: USB-pull remaining family phones into the archive",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3584",
       "warnings": []
@@ -716,12 +716,12 @@
       "hover": {
         "labels": [
           "enhancement",
-          "domain:ai-orchestration",
           "machine:multi",
           "status:plan-review",
           "status:plan-approved",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -763,7 +763,7 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "domain:review",
+          "domain:testing",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -846,13 +846,13 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "domain:agent-ux",
+          "domain:workstations",
           "machine:multi",
           "status:plan-approved",
           "gate:completeness",
-          "domain:workstations-fleet-equivalence",
           "lane:claude",
-          "epic"
+          "epic",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -894,13 +894,13 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "domain:agent-ux",
+          "domain:workstations",
           "machine:multi",
           "type:follow-up",
           "status:needs-plan",
           "gate:completeness",
-          "domain:workstations-fleet-equivalence",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -939,12 +939,12 @@
           "bug",
           "priority:medium",
           "cat:harness",
-          "domain:agent-ux",
           "machine:multi",
           "status:plan-approved",
           "type:follow-up",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -988,12 +988,12 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "domain:agent-ux",
           "machine:multi",
           "type:follow-up",
           "status:needs-plan",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1103,7 +1103,7 @@
       "hover": {
         "labels": [
           "enhancement",
-          "cat:automation",
+          "cat:tooling",
           "domain:workstations",
           "status:needs-plan",
           "lane:claude"
@@ -1184,8 +1184,8 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:data-pipeline",
           "cat:tooling",
+          "cat:data",
           "status:needs-plan",
           "lane:codex",
           "epic"
@@ -1225,9 +1225,8 @@
       "hover": {
         "labels": [
           "bug",
-          "cat:bugfix",
-          "domain:ai-orchestration",
-          "status:needs-plan"
+          "status:needs-plan",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1265,9 +1264,9 @@
         "labels": [
           "bug",
           "cat:harness",
+          "domain:workstations",
           "machine:multi",
-          "status:needs-plan",
-          "domain:workstations-fleet-equivalence"
+          "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1304,13 +1303,12 @@
       "hover": {
         "labels": [
           "enhancement",
-          "cat:ai-orchestration",
           "cat:harness",
-          "domain:agent-ux",
           "machine:multi",
           "status:needs-plan",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1349,10 +1347,10 @@
         "labels": [
           "bug",
           "cat:harness",
+          "domain:workstations",
           "machine:multi",
           "status:plan-approved",
           "gate:completeness",
-          "domain:workstations-fleet-equivalence",
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1394,7 +1392,7 @@
       "hover": {
         "labels": [
           "bug",
-          "cat:automation",
+          "cat:tooling",
           "priority:critical",
           "domain:security",
           "status:needs-plan",
@@ -1522,7 +1520,7 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:automation",
+          "cat:tooling",
           "domain:workstations",
           "domain:security",
           "status:plan-approved",
@@ -1568,7 +1566,7 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:infrastructure",
+          "cat:operations",
           "domain:workstations",
           "domain:security",
           "status:needs-plan",
@@ -1609,7 +1607,7 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:ai-orchestration",
+          "cat:harness",
           "status:needs-plan",
           "lane:claude"
         ],
@@ -1797,7 +1795,7 @@
       "hover": {
         "labels": [
           "bug",
-          "domain:standards-tooling",
+          "domain:standards",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -1949,7 +1947,7 @@
       "hover": {
         "labels": [
           "bug",
-          "domain:standards-tooling",
+          "domain:standards",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -2031,7 +2029,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:personal"
+          "domain:personal"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2067,7 +2065,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:personal"
+          "domain:personal"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2103,7 +2101,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:personal"
+          "domain:personal"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2139,7 +2137,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:personal"
+          "domain:personal"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2261,7 +2259,7 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:ai-orchestration",
+          "cat:harness",
           "wrk-item",
           "status:plan-approved",
           "gate:completeness",
@@ -2798,12 +2796,12 @@
           "bug",
           "priority:high",
           "cat:harness",
-          "domain:git-hygiene",
           "machine:dev-primary",
           "status:plan-review",
           "status:plan-approved",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:repo"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2845,8 +2843,7 @@
       "hover": {
         "labels": [
           "priority:high",
-          "cat:infrastructure",
-          "cat:maintenance"
+          "cat:operations"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2883,7 +2880,7 @@
       "hover": {
         "labels": [
           "priority:high",
-          "cat:infrastructure"
+          "cat:operations"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2920,7 +2917,7 @@
       "hover": {
         "labels": [
           "priority:high",
-          "cat:work-queue-infrastructure"
+          "cat:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3108,8 +3105,8 @@
       "hover": {
         "labels": [
           "priority:high",
-          "cat:data-pipeline",
-          "cat:tooling"
+          "cat:tooling",
+          "cat:data"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3184,8 +3181,8 @@
         "labels": [
           "priority:medium",
           "cat:operations",
-          "domain:automation",
-          "domain:repo-health",
+          "cat:tooling",
+          "domain:testing",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex"
@@ -3457,8 +3454,8 @@
         "labels": [
           "priority:medium",
           "cat:operations",
-          "domain:automation",
-          "domain:repo-health",
+          "cat:tooling",
+          "domain:testing",
           "machine:dev-primary",
           "status:plan-approved",
           "gate:completeness",
@@ -3618,7 +3615,7 @@
         "labels": [
           "bug",
           "priority:high",
-          "domain:automation",
+          "cat:tooling",
           "status:needs-plan",
           "gate:completeness",
           "lane:claude"
@@ -3658,7 +3655,7 @@
       "hover": {
         "labels": [
           "bug",
-          "cat:harness/ops",
+          "cat:harness",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -3697,7 +3694,7 @@
       "hover": {
         "labels": [
           "bug",
-          "cat:harness/ops",
+          "cat:harness",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -3737,7 +3734,7 @@
         "labels": [
           "bug",
           "priority:high",
-          "domain:automation",
+          "cat:tooling",
           "status:needs-plan",
           "gate:completeness",
           "lane:claude"
@@ -3817,7 +3814,7 @@
         "labels": [
           "bug",
           "priority:high",
-          "domain:automation",
+          "cat:tooling",
           "machine:dev-primary",
           "status:needs-plan",
           "gate:completeness",
@@ -3860,9 +3857,9 @@
           "bug",
           "priority:high",
           "cat:operations",
+          "domain:workstations",
           "machine:multi",
-          "status:needs-plan",
-          "domain:workstations-machine-bringup"
+          "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3901,7 +3898,7 @@
           "enhancement",
           "priority:medium",
           "cat:documentation",
-          "domain:automation",
+          "cat:tooling",
           "machine:dev-primary",
           "status:needs-plan",
           "gate:completeness",
@@ -3943,7 +3940,7 @@
         "labels": [
           "bug",
           "priority:high",
-          "domain:automation",
+          "cat:tooling",
           "machine:dev-primary",
           "status:needs-plan",
           "gate:completeness",
@@ -4091,8 +4088,8 @@
           "bug",
           "priority:medium",
           "cat:tooling",
-          "domain:cli-ux",
-          "domain:test-coverage"
+          "domain:testing",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4172,8 +4169,8 @@
           "bug",
           "priority:medium",
           "cat:harness",
-          "domain:quality",
-          "domain:api-contracts"
+          "domain:testing",
+          "domain:ci-release"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4210,8 +4207,8 @@
       "hover": {
         "labels": [
           "priority:medium",
-          "cat:infrastructure",
-          "domain:automation",
+          "cat:operations",
+          "cat:tooling",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -4292,9 +4289,9 @@
         "labels": [
           "bug",
           "priority:high",
-          "cat:ai-orchestration",
-          "domain:tooling",
-          "domain:cross-review"
+          "cat:harness",
+          "cat:tooling",
+          "domain:testing"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4334,8 +4331,8 @@
           "bug",
           "priority:medium",
           "cat:harness",
-          "domain:workflow-html",
           "domain:security",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex",
@@ -4418,10 +4415,10 @@
         "labels": [
           "bug",
           "priority:high",
-          "cat:ci",
+          "cat:operations",
           "domain:testing",
-          "domain:environment-parity",
-          "status:plan-review"
+          "status:plan-review",
+          "domain:ci-release"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4462,11 +4459,11 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "cat:automation",
-          "domain:audit-trail",
+          "cat:tooling",
           "type:follow-up",
           "status:needs-plan",
-          "lane:codex"
+          "lane:codex",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4505,11 +4502,11 @@
           "bug",
           "priority:medium",
           "cat:harness",
-          "cat:automation",
-          "domain:git-hygiene",
+          "cat:tooling",
           "type:follow-up",
           "status:needs-plan",
-          "lane:codex"
+          "lane:codex",
+          "domain:repo"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4548,11 +4545,11 @@
           "bug",
           "priority:medium",
           "cat:harness",
-          "cat:automation",
-          "domain:git-hygiene",
+          "cat:tooling",
           "type:follow-up",
           "status:needs-plan",
-          "lane:codex"
+          "lane:codex",
+          "domain:repo"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4590,11 +4587,11 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:data-pipeline",
-          "domain:audit-trail",
+          "cat:data",
           "type:follow-up",
           "status:needs-plan",
-          "lane:claude"
+          "lane:claude",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4633,12 +4630,12 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:data-pipeline",
-          "domain:audit-trail",
+          "cat:data",
           "status:plan-approved",
           "type:follow-up",
           "gate:completeness",
-          "lane:codex"
+          "lane:codex",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4681,12 +4678,12 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:data-pipeline",
-          "domain:audit-trail",
+          "cat:data",
           "status:plan-approved",
           "type:follow-up",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4729,12 +4726,12 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:data-pipeline",
-          "domain:audit-trail",
+          "cat:data",
           "status:plan-approved",
           "type:follow-up",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4777,12 +4774,12 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:data-pipeline",
-          "domain:audit-trail",
+          "cat:data",
           "status:plan-approved",
           "type:follow-up",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4825,12 +4822,12 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:data-pipeline",
-          "domain:audit-trail",
+          "cat:data",
           "status:plan-approved",
           "type:follow-up",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4873,12 +4870,12 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:data-pipeline",
-          "domain:audit-trail",
+          "cat:data",
           "status:plan-approved",
           "type:follow-up",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4921,12 +4918,12 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:data-pipeline",
-          "domain:audit-trail",
+          "cat:data",
           "status:plan-approved",
           "tracker",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4969,7 +4966,7 @@
           "enhancement",
           "priority:high",
           "cat:harness",
-          "domain:workflow-gates",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -5013,10 +5010,10 @@
       "hover": {
         "labels": [
           "priority:high",
-          "cat:skills-improvement",
+          "cat:harness",
+          "domain:skills",
           "status:needs-plan",
           "gate:completeness",
-          "domain:skills-lifecycle",
           "lane:codex"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -5056,9 +5053,9 @@
           "enhancement",
           "priority:medium",
           "cat:business",
-          "domain:training",
           "status:needs-plan",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5097,8 +5094,8 @@
           "enhancement",
           "priority:high",
           "cat:data",
-          "domain:integrations",
           "status:needs-plan",
+          "domain:harness",
           "lane:codex"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -5138,7 +5135,7 @@
           "enhancement",
           "priority:high",
           "cat:business",
-          "domain:reporting",
+          "domain:content",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -5179,7 +5176,7 @@
           "enhancement",
           "priority:high",
           "cat:business",
-          "domain:quality",
+          "domain:testing",
           "status:needs-plan",
           "lane:codex"
         ],
@@ -5220,9 +5217,9 @@
           "enhancement",
           "priority:high",
           "cat:business",
-          "domain:audit-trail",
           "status:needs-plan",
-          "lane:codex"
+          "lane:codex",
+          "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5301,7 +5298,7 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:platform",
+          "cat:operations",
           "domain:security",
           "security",
           "status:needs-plan",
@@ -5343,10 +5340,10 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:platform",
-          "domain:repo-organization",
+          "cat:operations",
           "status:needs-plan",
-          "lane:claude"
+          "lane:claude",
+          "domain:repo"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5386,7 +5383,7 @@
           "enhancement",
           "priority:high",
           "cat:research",
-          "domain:labor-market",
+          "domain:gtm",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -5432,7 +5429,7 @@
           "enhancement",
           "priority:high",
           "cat:business",
-          "domain:project-management",
+          "domain:workflow",
           "status:needs-plan",
           "lane:claude"
         ],
@@ -5519,7 +5516,7 @@
           "enhancement",
           "priority:medium",
           "cat:operations",
-          "domain:machine-setup"
+          "domain:workstations"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5559,11 +5556,11 @@
           "enhancement",
           "priority:medium",
           "cat:harness",
-          "domain:agent-ux",
           "machine:dev-primary",
           "status:plan-approved",
           "gate:completeness",
-          "lane:codex"
+          "lane:codex",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5791,8 +5788,7 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:bugfix",
-          "domain:tooling",
+          "cat:tooling",
           "status:plan-approved",
           "status:needs-plan",
           "gate:completeness",
@@ -5837,9 +5833,8 @@
       "hover": {
         "labels": [
           "bug",
-          "cat:bugfix",
-          "domain:ai-orchestration",
-          "status:needs-plan"
+          "status:needs-plan",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5879,7 +5874,7 @@
           "enhancement",
           "priority:medium",
           "cat:documentation",
-          "cat:website",
+          "domain:website",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -5923,9 +5918,8 @@
       "hover": {
         "labels": [
           "bug",
-          "cat:bugfix",
-          "domain:ai-orchestration",
-          "status:plan-approved"
+          "status:plan-approved",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6405,14 +6399,12 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "cat:ai-orchestration",
           "cat:harness",
-          "domain:ai-config",
-          "domain:ai-orchestration",
           "machine:multi",
           "status:needs-plan",
           "gate:completeness",
-          "lane:claude"
+          "lane:claude",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6522,7 +6514,7 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex"
@@ -6566,7 +6558,7 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex"
@@ -6609,10 +6601,10 @@
       "hover": {
         "labels": [
           "enhancement",
-          "domain:session",
           "agent:claude",
           "status:plan-approved",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6722,10 +6714,10 @@
       "hover": {
         "labels": [
           "enhancement",
-          "domain:session",
           "agent:claude",
           "status:plan-approved",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6766,7 +6758,7 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex"
@@ -6810,7 +6802,7 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "cat:ai-orchestration",
+          "cat:harness",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -6854,7 +6846,7 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -7114,7 +7106,7 @@
         "labels": [
           "enhancement",
           "priority:low",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:needs-plan",
           "lane:claude"
         ],
@@ -7154,7 +7146,7 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -7198,7 +7190,7 @@
         "labels": [
           "enhancement",
           "priority:low",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex"
@@ -7242,7 +7234,7 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex"
@@ -7286,7 +7278,7 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex"
@@ -7330,7 +7322,7 @@
         "labels": [
           "enhancement",
           "priority:medium",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -7374,7 +7366,7 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex"
@@ -7418,7 +7410,7 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -7465,7 +7457,7 @@
         "labels": [
           "enhancement",
           "priority:high",
-          "domain:workflow-standardization",
+          "domain:workflow",
           "status:needs-plan",
           "lane:claude"
         ],
@@ -7504,10 +7496,10 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:skills-improvement",
-          "domain:ai-orchestration",
+          "cat:harness",
           "status:plan-approved",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7548,10 +7540,10 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:skills-improvement",
-          "domain:ai-orchestration",
+          "cat:harness",
           "status:plan-approved",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7592,10 +7584,10 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:skills-improvement",
-          "domain:ai-orchestration",
+          "cat:harness",
           "status:plan-approved",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7636,10 +7628,10 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:skills-improvement",
-          "domain:ai-orchestration",
+          "cat:harness",
           "status:plan-approved",
-          "gate:completeness"
+          "gate:completeness",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7679,8 +7671,8 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "cat:skills-improvement",
-          "domain:ai-orchestration"
+          "cat:harness",
+          "domain:ai"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7718,8 +7710,8 @@
       "hover": {
         "labels": [
           "enhancement",
-          "domain:reporting",
           "domain:gtm",
+          "domain:content",
           "status:plan-approved",
           "gate:completeness",
           "lane:codex",
@@ -8173,7 +8165,7 @@
       ]
     }
   ],
-  "generated_at": "2026-07-26T21:21:15Z",
+  "generated_at": "2026-07-27T01:21:15Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8193,9 +8185,9 @@
             "bug",
             "priority:high",
             "cat:harness",
-            "domain:ai-config",
             "machine:multi",
-            "status:needs-plan"
+            "status:needs-plan",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8303,8 +8295,8 @@
         "hover": {
           "labels": [
             "cat:harness",
+            "domain:workstations",
             "machine:ace-win-2",
-            "domain:workstations-windows-readiness",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8467,7 +8459,7 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:data-pipeline"
+            "cat:data"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8615,7 +8607,7 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:data-pipeline"
+            "cat:data"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8652,12 +8644,12 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:data-pipeline"
+            "cat:data"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "agy",
+          "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
           "title": "phone-media: USB-pull remaining family phones into the archive"
@@ -8670,9 +8662,9 @@
         "number": 3584,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "agy",
+        "provider_route": "claude",
         "review_clean": false,
-        "routing_reason": "research/triage/audit language",
+        "routing_reason": "default long-context routing",
         "title": "phone-media: USB-pull remaining family phones into the archive",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3584",
         "warnings": []
@@ -8870,12 +8862,12 @@
         "hover": {
           "labels": [
             "enhancement",
-            "domain:ai-orchestration",
             "machine:multi",
             "status:plan-review",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8917,7 +8909,7 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "domain:review",
+            "domain:testing",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9000,13 +8992,13 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "domain:agent-ux",
+            "domain:workstations",
             "machine:multi",
             "status:plan-approved",
             "gate:completeness",
-            "domain:workstations-fleet-equivalence",
             "lane:claude",
-            "epic"
+            "epic",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9048,13 +9040,13 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "domain:agent-ux",
+            "domain:workstations",
             "machine:multi",
             "type:follow-up",
             "status:needs-plan",
             "gate:completeness",
-            "domain:workstations-fleet-equivalence",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9093,12 +9085,12 @@
             "bug",
             "priority:medium",
             "cat:harness",
-            "domain:agent-ux",
             "machine:multi",
             "status:plan-approved",
             "type:follow-up",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9142,12 +9134,12 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "domain:agent-ux",
             "machine:multi",
             "type:follow-up",
             "status:needs-plan",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9257,7 +9249,7 @@
         "hover": {
           "labels": [
             "enhancement",
-            "cat:automation",
+            "cat:tooling",
             "domain:workstations",
             "status:needs-plan",
             "lane:claude"
@@ -9338,8 +9330,8 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:data-pipeline",
             "cat:tooling",
+            "cat:data",
             "status:needs-plan",
             "lane:codex",
             "epic"
@@ -9379,9 +9371,8 @@
         "hover": {
           "labels": [
             "bug",
-            "cat:bugfix",
-            "domain:ai-orchestration",
-            "status:needs-plan"
+            "status:needs-plan",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9419,9 +9410,9 @@
           "labels": [
             "bug",
             "cat:harness",
+            "domain:workstations",
             "machine:multi",
-            "status:needs-plan",
-            "domain:workstations-fleet-equivalence"
+            "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9458,13 +9449,12 @@
         "hover": {
           "labels": [
             "enhancement",
-            "cat:ai-orchestration",
             "cat:harness",
-            "domain:agent-ux",
             "machine:multi",
             "status:needs-plan",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9503,10 +9493,10 @@
           "labels": [
             "bug",
             "cat:harness",
+            "domain:workstations",
             "machine:multi",
             "status:plan-approved",
             "gate:completeness",
-            "domain:workstations-fleet-equivalence",
             "lane:claude"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9548,7 +9538,7 @@
         "hover": {
           "labels": [
             "bug",
-            "cat:automation",
+            "cat:tooling",
             "priority:critical",
             "domain:security",
             "status:needs-plan",
@@ -9676,7 +9666,7 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:automation",
+            "cat:tooling",
             "domain:workstations",
             "domain:security",
             "status:plan-approved",
@@ -9722,7 +9712,7 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:infrastructure",
+            "cat:operations",
             "domain:workstations",
             "domain:security",
             "status:needs-plan",
@@ -9763,7 +9753,7 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:ai-orchestration",
+            "cat:harness",
             "status:needs-plan",
             "lane:claude"
           ],
@@ -9951,7 +9941,7 @@
         "hover": {
           "labels": [
             "bug",
-            "domain:standards-tooling",
+            "domain:standards",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -10103,7 +10093,7 @@
         "hover": {
           "labels": [
             "bug",
-            "domain:standards-tooling",
+            "domain:standards",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -10185,7 +10175,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:personal"
+            "domain:personal"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10221,7 +10211,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:personal"
+            "domain:personal"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10257,7 +10247,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:personal"
+            "domain:personal"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10293,7 +10283,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:personal"
+            "domain:personal"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10415,7 +10405,7 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:ai-orchestration",
+            "cat:harness",
             "wrk-item",
             "status:plan-approved",
             "gate:completeness",
@@ -10952,12 +10942,12 @@
             "bug",
             "priority:high",
             "cat:harness",
-            "domain:git-hygiene",
             "machine:dev-primary",
             "status:plan-review",
             "status:plan-approved",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:repo"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10999,8 +10989,7 @@
         "hover": {
           "labels": [
             "priority:high",
-            "cat:infrastructure",
-            "cat:maintenance"
+            "cat:operations"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11037,7 +11026,7 @@
         "hover": {
           "labels": [
             "priority:high",
-            "cat:infrastructure"
+            "cat:operations"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11074,7 +11063,7 @@
         "hover": {
           "labels": [
             "priority:high",
-            "cat:work-queue-infrastructure"
+            "cat:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11262,8 +11251,8 @@
         "hover": {
           "labels": [
             "priority:high",
-            "cat:data-pipeline",
-            "cat:tooling"
+            "cat:tooling",
+            "cat:data"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11338,8 +11327,8 @@
           "labels": [
             "priority:medium",
             "cat:operations",
-            "domain:automation",
-            "domain:repo-health",
+            "cat:tooling",
+            "domain:testing",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
@@ -11611,8 +11600,8 @@
           "labels": [
             "priority:medium",
             "cat:operations",
-            "domain:automation",
-            "domain:repo-health",
+            "cat:tooling",
+            "domain:testing",
             "machine:dev-primary",
             "status:plan-approved",
             "gate:completeness",
@@ -11772,7 +11761,7 @@
           "labels": [
             "bug",
             "priority:high",
-            "domain:automation",
+            "cat:tooling",
             "status:needs-plan",
             "gate:completeness",
             "lane:claude"
@@ -11812,7 +11801,7 @@
         "hover": {
           "labels": [
             "bug",
-            "cat:harness/ops",
+            "cat:harness",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -11851,7 +11840,7 @@
         "hover": {
           "labels": [
             "bug",
-            "cat:harness/ops",
+            "cat:harness",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -11891,7 +11880,7 @@
           "labels": [
             "bug",
             "priority:high",
-            "domain:automation",
+            "cat:tooling",
             "status:needs-plan",
             "gate:completeness",
             "lane:claude"
@@ -11971,7 +11960,7 @@
           "labels": [
             "bug",
             "priority:high",
-            "domain:automation",
+            "cat:tooling",
             "machine:dev-primary",
             "status:needs-plan",
             "gate:completeness",
@@ -12014,9 +12003,9 @@
             "bug",
             "priority:high",
             "cat:operations",
+            "domain:workstations",
             "machine:multi",
-            "status:needs-plan",
-            "domain:workstations-machine-bringup"
+            "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12055,7 +12044,7 @@
             "enhancement",
             "priority:medium",
             "cat:documentation",
-            "domain:automation",
+            "cat:tooling",
             "machine:dev-primary",
             "status:needs-plan",
             "gate:completeness",
@@ -12097,7 +12086,7 @@
           "labels": [
             "bug",
             "priority:high",
-            "domain:automation",
+            "cat:tooling",
             "machine:dev-primary",
             "status:needs-plan",
             "gate:completeness",
@@ -12245,8 +12234,8 @@
             "bug",
             "priority:medium",
             "cat:tooling",
-            "domain:cli-ux",
-            "domain:test-coverage"
+            "domain:testing",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12326,8 +12315,8 @@
             "bug",
             "priority:medium",
             "cat:harness",
-            "domain:quality",
-            "domain:api-contracts"
+            "domain:testing",
+            "domain:ci-release"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12364,8 +12353,8 @@
         "hover": {
           "labels": [
             "priority:medium",
-            "cat:infrastructure",
-            "domain:automation",
+            "cat:operations",
+            "cat:tooling",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -12446,9 +12435,9 @@
           "labels": [
             "bug",
             "priority:high",
-            "cat:ai-orchestration",
-            "domain:tooling",
-            "domain:cross-review"
+            "cat:harness",
+            "cat:tooling",
+            "domain:testing"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12488,8 +12477,8 @@
             "bug",
             "priority:medium",
             "cat:harness",
-            "domain:workflow-html",
             "domain:security",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex",
@@ -12572,10 +12561,10 @@
           "labels": [
             "bug",
             "priority:high",
-            "cat:ci",
+            "cat:operations",
             "domain:testing",
-            "domain:environment-parity",
-            "status:plan-review"
+            "status:plan-review",
+            "domain:ci-release"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12616,11 +12605,11 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "cat:automation",
-            "domain:audit-trail",
+            "cat:tooling",
             "type:follow-up",
             "status:needs-plan",
-            "lane:codex"
+            "lane:codex",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12659,11 +12648,11 @@
             "bug",
             "priority:medium",
             "cat:harness",
-            "cat:automation",
-            "domain:git-hygiene",
+            "cat:tooling",
             "type:follow-up",
             "status:needs-plan",
-            "lane:codex"
+            "lane:codex",
+            "domain:repo"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12702,11 +12691,11 @@
             "bug",
             "priority:medium",
             "cat:harness",
-            "cat:automation",
-            "domain:git-hygiene",
+            "cat:tooling",
             "type:follow-up",
             "status:needs-plan",
-            "lane:codex"
+            "lane:codex",
+            "domain:repo"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12744,11 +12733,11 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:data-pipeline",
-            "domain:audit-trail",
+            "cat:data",
             "type:follow-up",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12787,12 +12776,12 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:data-pipeline",
-            "domain:audit-trail",
+            "cat:data",
             "status:plan-approved",
             "type:follow-up",
             "gate:completeness",
-            "lane:codex"
+            "lane:codex",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12835,12 +12824,12 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:data-pipeline",
-            "domain:audit-trail",
+            "cat:data",
             "status:plan-approved",
             "type:follow-up",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12883,12 +12872,12 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:data-pipeline",
-            "domain:audit-trail",
+            "cat:data",
             "status:plan-approved",
             "type:follow-up",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12931,12 +12920,12 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:data-pipeline",
-            "domain:audit-trail",
+            "cat:data",
             "status:plan-approved",
             "type:follow-up",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12979,12 +12968,12 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:data-pipeline",
-            "domain:audit-trail",
+            "cat:data",
             "status:plan-approved",
             "type:follow-up",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13027,12 +13016,12 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:data-pipeline",
-            "domain:audit-trail",
+            "cat:data",
             "status:plan-approved",
             "type:follow-up",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13075,12 +13064,12 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:data-pipeline",
-            "domain:audit-trail",
+            "cat:data",
             "status:plan-approved",
             "tracker",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13123,7 +13112,7 @@
             "enhancement",
             "priority:high",
             "cat:harness",
-            "domain:workflow-gates",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -13167,10 +13156,10 @@
         "hover": {
           "labels": [
             "priority:high",
-            "cat:skills-improvement",
+            "cat:harness",
+            "domain:skills",
             "status:needs-plan",
             "gate:completeness",
-            "domain:skills-lifecycle",
             "lane:codex"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -13210,9 +13199,9 @@
             "enhancement",
             "priority:medium",
             "cat:business",
-            "domain:training",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13251,8 +13240,8 @@
             "enhancement",
             "priority:high",
             "cat:data",
-            "domain:integrations",
             "status:needs-plan",
+            "domain:harness",
             "lane:codex"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -13292,7 +13281,7 @@
             "enhancement",
             "priority:high",
             "cat:business",
-            "domain:reporting",
+            "domain:content",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -13333,7 +13322,7 @@
             "enhancement",
             "priority:high",
             "cat:business",
-            "domain:quality",
+            "domain:testing",
             "status:needs-plan",
             "lane:codex"
           ],
@@ -13374,9 +13363,9 @@
             "enhancement",
             "priority:high",
             "cat:business",
-            "domain:audit-trail",
             "status:needs-plan",
-            "lane:codex"
+            "lane:codex",
+            "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13455,7 +13444,7 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:platform",
+            "cat:operations",
             "domain:security",
             "security",
             "status:needs-plan",
@@ -13497,10 +13486,10 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:platform",
-            "domain:repo-organization",
+            "cat:operations",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "domain:repo"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13540,7 +13529,7 @@
             "enhancement",
             "priority:high",
             "cat:research",
-            "domain:labor-market",
+            "domain:gtm",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -13586,7 +13575,7 @@
             "enhancement",
             "priority:high",
             "cat:business",
-            "domain:project-management",
+            "domain:workflow",
             "status:needs-plan",
             "lane:claude"
           ],
@@ -13673,7 +13662,7 @@
             "enhancement",
             "priority:medium",
             "cat:operations",
-            "domain:machine-setup"
+            "domain:workstations"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13713,11 +13702,11 @@
             "enhancement",
             "priority:medium",
             "cat:harness",
-            "domain:agent-ux",
             "machine:dev-primary",
             "status:plan-approved",
             "gate:completeness",
-            "lane:codex"
+            "lane:codex",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13945,8 +13934,7 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:bugfix",
-            "domain:tooling",
+            "cat:tooling",
             "status:plan-approved",
             "status:needs-plan",
             "gate:completeness",
@@ -13991,9 +13979,8 @@
         "hover": {
           "labels": [
             "bug",
-            "cat:bugfix",
-            "domain:ai-orchestration",
-            "status:needs-plan"
+            "status:needs-plan",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14033,7 +14020,7 @@
             "enhancement",
             "priority:medium",
             "cat:documentation",
-            "cat:website",
+            "domain:website",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -14077,9 +14064,8 @@
         "hover": {
           "labels": [
             "bug",
-            "cat:bugfix",
-            "domain:ai-orchestration",
-            "status:plan-approved"
+            "status:plan-approved",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14559,14 +14545,12 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "cat:ai-orchestration",
             "cat:harness",
-            "domain:ai-config",
-            "domain:ai-orchestration",
             "machine:multi",
             "status:needs-plan",
             "gate:completeness",
-            "lane:claude"
+            "lane:claude",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14676,7 +14660,7 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
@@ -14720,7 +14704,7 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
@@ -14763,10 +14747,10 @@
         "hover": {
           "labels": [
             "enhancement",
-            "domain:session",
             "agent:claude",
             "status:plan-approved",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14876,10 +14860,10 @@
         "hover": {
           "labels": [
             "enhancement",
-            "domain:session",
             "agent:claude",
             "status:plan-approved",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14920,7 +14904,7 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
@@ -14964,7 +14948,7 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "cat:ai-orchestration",
+            "cat:harness",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -15008,7 +14992,7 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -15268,7 +15252,7 @@
           "labels": [
             "enhancement",
             "priority:low",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:needs-plan",
             "lane:claude"
           ],
@@ -15308,7 +15292,7 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -15352,7 +15336,7 @@
           "labels": [
             "enhancement",
             "priority:low",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
@@ -15396,7 +15380,7 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
@@ -15440,7 +15424,7 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
@@ -15484,7 +15468,7 @@
           "labels": [
             "enhancement",
             "priority:medium",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -15528,7 +15512,7 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex"
@@ -15572,7 +15556,7 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -15619,7 +15603,7 @@
           "labels": [
             "enhancement",
             "priority:high",
-            "domain:workflow-standardization",
+            "domain:workflow",
             "status:needs-plan",
             "lane:claude"
           ],
@@ -15658,10 +15642,10 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:skills-improvement",
-            "domain:ai-orchestration",
+            "cat:harness",
             "status:plan-approved",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15702,10 +15686,10 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:skills-improvement",
-            "domain:ai-orchestration",
+            "cat:harness",
             "status:plan-approved",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15746,10 +15730,10 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:skills-improvement",
-            "domain:ai-orchestration",
+            "cat:harness",
             "status:plan-approved",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15790,10 +15774,10 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:skills-improvement",
-            "domain:ai-orchestration",
+            "cat:harness",
             "status:plan-approved",
-            "gate:completeness"
+            "gate:completeness",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15833,8 +15817,8 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "cat:skills-improvement",
-            "domain:ai-orchestration"
+            "cat:harness",
+            "domain:ai"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15872,8 +15856,8 @@
         "hover": {
           "labels": [
             "enhancement",
-            "domain:reporting",
             "domain:gtm",
+            "domain:content",
             "status:plan-approved",
             "gate:completeness",
             "lane:codex",
@@ -16331,13 +16315,13 @@
     "running_leased": []
   },
   "recommended_provider_order": [
+    "codex",
     "agy",
-    "claude",
-    "codex"
+    "claude"
   ],
-  "scorecard_generated_at": "2026-07-26T21:21:10.459384Z",
+  "scorecard_generated_at": "2026-07-27T01:21:10.925376Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-26T21:21:10.329600Z",
+  "utilization_generated_at": "2026-07-27T01:21:10.798247Z",
   "warning_summary": {
     "approved_no_marker": 58,
     "approved_no_plan": 34,

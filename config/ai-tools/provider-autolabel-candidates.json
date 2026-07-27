@@ -1,10 +1,114 @@
 {
-  "generated_at": "2026-07-26T21:21:12.714642Z",
+  "generated_at": "2026-07-27T01:21:12.889003Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 11,
   "applied": [],
   "candidates": [
+    {
+      "number": 3430,
+      "title": "standard: replayable public input and source snapshot contract",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3430",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:data",
+        "status:plan-approved",
+        "type:follow-up",
+        "gate:completeness",
+        "lane:claude",
+        "domain:governance"
+      ],
+      "updatedAt": "2026-07-27T01:19:15Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3385,
+      "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:documentation",
+        "domain:website",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-07-27T01:19:16Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3472,
+      "title": "feat(operations): add pressure-aware daily OS maintenance cleanup",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3472",
+      "labels": [
+        "priority:medium",
+        "cat:operations",
+        "cat:tooling",
+        "domain:testing",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:codex"
+      ],
+      "updatedAt": "2026-07-27T01:19:13Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
     {
       "number": 3282,
       "title": "wf-api(assetutilities): ResultEnvelope + run_workflow() + registry request/response schema [FOUNDATIONAL]",
@@ -12,12 +116,12 @@
       "labels": [
         "enhancement",
         "priority:high",
-        "domain:workflow-standardization",
+        "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-06-29T04:08:24Z",
+      "updatedAt": "2026-07-27T01:19:18Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -45,12 +149,12 @@
       "labels": [
         "enhancement",
         "priority:high",
-        "domain:workflow-standardization",
+        "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-06-29T12:15:43Z",
+      "updatedAt": "2026-07-27T01:19:18Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -78,12 +182,12 @@
       "labels": [
         "enhancement",
         "priority:high",
-        "domain:workflow-standardization",
+        "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-06-29T11:47:36Z",
+      "updatedAt": "2026-07-27T01:19:18Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -177,12 +281,12 @@
       "labels": [
         "enhancement",
         "priority:high",
-        "domain:workflow-standardization",
+        "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-06-29T04:08:24Z",
+      "updatedAt": "2026-07-27T01:19:17Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -211,12 +315,12 @@
       "labels": [
         "enhancement",
         "priority:high",
-        "domain:workflow-standardization",
+        "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-06-29T04:08:22Z",
+      "updatedAt": "2026-07-27T01:19:17Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -245,12 +349,12 @@
       "labels": [
         "enhancement",
         "priority:high",
-        "domain:workflow-standardization",
+        "domain:workflow",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-06-29T04:08:27Z",
+      "updatedAt": "2026-07-27T01:19:17Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -271,139 +375,35 @@
       "eligible": true
     },
     {
-      "number": 3430,
-      "title": "standard: replayable public input and source snapshot contract",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3430",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:data-pipeline",
-        "domain:audit-trail",
-        "status:plan-approved",
-        "type:follow-up",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-07-11T20:11:25Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3385,
-      "title": "Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3385",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:documentation",
-        "cat:website",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-07-06T19:24:03Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3472,
-      "title": "feat(operations): add pressure-aware daily OS maintenance cleanup",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3472",
-      "labels": [
-        "priority:medium",
-        "cat:operations",
-        "domain:automation",
-        "domain:repo-health",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:codex"
-      ],
-      "updatedAt": "2026-07-12T01:45:10Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
       "number": 3239,
       "title": "Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3239",
       "labels": [
         "enhancement",
-        "domain:reporting",
         "domain:gtm",
+        "domain:content",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-06T23:03:22Z",
+      "updatedAt": "2026-07-27T01:19:19Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_priority": "highest",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.75,
+      "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
         "strong-codex-language-match",
-        "provider-high-priority"
+        "provider-highest-priority"
       ],
       "eligible": false
     },
@@ -422,18 +422,18 @@
       "priority_rank": 4,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_priority": "highest",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.75,
+      "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
         "strong-codex-language-match",
-        "provider-high-priority"
+        "provider-highest-priority"
       ],
       "eligible": false
     },
@@ -444,29 +444,29 @@
       "labels": [
         "bug",
         "cat:harness",
+        "domain:workstations",
         "machine:multi",
         "status:plan-approved",
         "gate:completeness",
-        "domain:workstations-fleet-equivalence",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-17T12:24:35Z",
+      "updatedAt": "2026-07-27T01:19:11Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_priority": "highest",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.75,
+      "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
         "strong-codex-language-match",
-        "provider-high-priority"
+        "provider-highest-priority"
       ],
       "eligible": false
     },
@@ -484,44 +484,17 @@
       "priority_rank": 4,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_priority": "highest",
+      "provider_status": "underused",
       "work_type": [
         "research",
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.75,
+      "confidence": 0.8,
       "confidence_reasons": [
         "execution-ready",
         "strong-codex-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3584,
-      "title": "phone-media: USB-pull remaining family phones into the archive",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3584",
-      "labels": [
-        "priority:medium",
-        "cat:data-pipeline"
-      ],
-      "updatedAt": "2026-07-19T11:44:33Z",
-      "execution_ready": false,
-      "priority_rank": 2,
-      "suggested_provider": "agy",
-      "routing_reason": "research/triage/audit language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "general"
-      ],
-      "target_label": "agent:agy",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-agy-language-match",
         "provider-highest-priority"
       ],
       "eligible": false
@@ -532,24 +505,24 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
       "labels": [
         "priority:medium",
-        "cat:data-pipeline"
+        "cat:data"
       ],
-      "updatedAt": "2026-07-19T11:44:35Z",
+      "updatedAt": "2026-07-27T01:19:10Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
-      "provider_priority": "high",
-      "provider_status": "needs_cleanup",
+      "provider_priority": "highest",
+      "provider_status": "underused",
       "work_type": [
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.55,
+      "confidence": 0.6,
       "confidence_reasons": [
         "priority-labeled",
         "strong-codex-language-match",
-        "provider-high-priority"
+        "provider-highest-priority"
       ],
       "eligible": false
     }
