@@ -1,6 +1,6 @@
 # Provider routing scorecard
 
-Generated: 2026-07-27T05:21:09.856563Z
+Generated: 2026-07-27T09:21:12.033959Z
 Current week: 2026-W31
 Recommended provider order: codex, agy, claude
 
