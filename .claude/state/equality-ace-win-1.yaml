@@ -1,11 +1,11 @@
-generated_at: "2026-07-18T15:42:51"
-schema_version: 4
+generated_at: "2026-07-27T11:14:06"
+schema_version: 5
 machine: "ace-win-1"
 host: "ace-win-1"
 os: windows
 status: active
 provenance:
-  checkout_sha: "6be40190d"
+  checkout_sha: "1ec517c46"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 64, ram_total_mib: 261848, gpu_model: "ASPEED Graphics Family(WDDM)"}
-    headroom: {ram_avail_mib: 209913, disk_avail_gb: 1356}
+    headroom: {ram_avail_mib: 211328, disk_avail_gb: 1355}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -66,16 +66,16 @@ dimensions:
     enums: {b1: deny, b2: ok, b3: html, b4: pass}
     hashes: {b5: 2a21ba0731d11660}
   scheduler:
-    has_repo_sync: false
-    has_parity_review: false
-    job_count: 0
+    has_repo_sync: unknown
+    has_parity_review: unknown
+    job_count: unknown
   session_curation:
-    last_curated_at: "2026-07-18T20:32:22+00:00"
-    sessions_24h: 4
+    last_curated_at: "2026-07-27T11:47:03+00:00"
+    sessions_24h: 3
     providers_active: "claude,codex"
     memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-07-18T20:32:30+00:00"
+    audited_at: "2026-07-27T11:47:09+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,11 +84,11 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-18T20:32:31+00:00"
+    audited_at: "2026-07-27T11:47:11+00:00"
     worst_age_hours: null
     freshness: "MISSING-EVIDENCE"
   skill_link_health:
-    audited_at: "2026-07-18T20:39:58+00:00"
+    audited_at: "2026-07-27T11:47:20+00:00"
     repos_total: 11
     healthy: 20
     repairable: 0
