@@ -17,7 +17,8 @@ Design goals (why this is generic):
     deeper is JSON-stringified (lossless).
   * Sanitizes NaN/inf -> null. Writes parquet (HF datasets-server auto-renders it).
   * Emits a dataset card with a viewer `configs:` block + sha256 provenance.
-  * PRIVATE by default (fail-safe); --public only for redistributable data.
+  * PRIVATE by default (fail-safe); --public only for redistributable data. Visibility is
+    enforced on every publish and read back off the remote, not just set at creation.
   * Verifies via list_repo_files + the datasets-server /is-valid API.
 
 DATA-QUALITY REMINDER (printed at the end): faithful-to-source != correct. A generic
@@ -58,6 +59,47 @@ def trigger_deploy_hook(enabled=True, url_env=DEPLOY_HOOK_ENV, timeout=15):
         print(f"deploy-hook: trigger failed ({e.__class__.__name__}: {e}) — "
               "publish still succeeded")
         return None
+
+
+def ensure_visibility(api, repo_id, public):
+    """Force the remote's visibility to match what the caller asked for (workspace-hub#3483).
+
+    `create_repo(..., private=..., exist_ok=True)` only applies `private=` when it actually
+    CREATES the repo. On a repo that already exists it is a silent no-op, so a dataset first
+    published private and re-published with --public stayed private while the tool printed
+    PUBLIC. Call this unconditionally after create_repo — it is idempotent, so there is no
+    need to know whether the repo pre-existed.
+
+    `api` is duck-typed on purpose: huggingface_hub is imported lazily inside main(), and
+    keeping this function free of that import is what lets the tests exercise it without
+    the package installed. Older hub versions expose update_repo_visibility instead of
+    update_repo_settings.
+    """
+    private = not public
+    if hasattr(api, "update_repo_settings"):
+        api.update_repo_settings(repo_id=repo_id, repo_type="dataset", private=private)
+    elif hasattr(api, "update_repo_visibility"):  # hub < 0.25
+        api.update_repo_visibility(repo_id=repo_id, repo_type="dataset", private=private)
+    else:
+        sys.exit("VISIBILITY: this huggingface_hub exposes neither update_repo_settings nor "
+                 "update_repo_visibility — cannot guarantee the dataset's visibility. Upgrade "
+                 "huggingface_hub and retry (see workspace-hub#3483).")
+    return private
+
+
+def verify_visibility(api, repo_id, public):
+    """Read the visibility back off the remote and fail loudly if it disagrees.
+
+    The tool already refuses to trust `upload_folder`'s return value and re-checks the files
+    with list_repo_files; visibility gets the same treatment. #3483 went unnoticed for a day
+    precisely because the tool printed its INTENT ("PUBLIC") rather than an observation.
+    """
+    actual_private = bool(getattr(api.dataset_info(repo_id), "private", False))
+    if actual_private is not (not public):
+        sys.exit(f"VISIBILITY FAILED: asked for {'PUBLIC' if public else 'PRIVATE'} but "
+                 f"{repo_id} is {'PRIVATE' if actual_private else 'PUBLIC'} on the remote. "
+                 "Do not treat this dataset as published (see workspace-hub#3483).")
+    return actual_private
 
 
 def _flatten(rec, prefix="", out=None):
@@ -305,6 +347,10 @@ def main():
     try:
         api.create_repo(repo_id=args.repo_id, repo_type="dataset",
                         private=not args.public, exist_ok=True)
+        # create_repo's private= is create-time only, so it is a no-op on an existing
+        # repo. Force it explicitly (workspace-hub#3483). Inside this try so a read-only
+        # token still gets the WRITE-scope diagnosis below rather than a raw 401/403.
+        ensure_visibility(api, args.repo_id, args.public)
         info = api.upload_folder(
             folder_path=str(out), repo_id=args.repo_id, repo_type="dataset",
             commit_message=f"results via save_results_to_hf.py ({args.source_repo or 'n/a'})")
@@ -315,8 +361,11 @@ def main():
                      "Create a WRITE token at https://huggingface.co/settings/tokens and retry.")
         raise
     rev = getattr(info, "oid", None) or getattr(info, "commit_id", None)
+    # Report what the REMOTE says, not what we asked for — exits non-zero on a mismatch.
+    actual_private = verify_visibility(api, args.repo_id, args.public)
     print(f"published: https://huggingface.co/datasets/{args.repo_id}  "
-          f"({'PUBLIC' if args.public else 'PRIVATE'})  revision={rev}")
+          f"({'PRIVATE' if actual_private else 'PUBLIC'} — confirmed on remote)  "
+          f"revision={rev}")
     # Verify the bytes actually landed (don't just trust the upload return).
     files = set(api.list_repo_files(repo_id=args.repo_id, repo_type="dataset", revision=rev))
     expected = {"README.md"} | {f"{t}.parquet" for t in tables_meta}

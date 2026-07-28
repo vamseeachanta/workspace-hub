@@ -112,3 +112,92 @@ def test_trigger_deploy_hook_never_raises_on_failure(monkeypatch):
     monkeypatch.setattr(srhf.urllib.request, "urlopen", boom)
     # a failed rebuild trigger must NEVER fail an otherwise-successful publish
     assert srhf.trigger_deploy_hook() is None
+
+
+# --- visibility enforcement (workspace-hub#3483) -------------------------------------
+# create_repo(private=..., exist_ok=True) only applies private= at CREATION, so an
+# existing dataset kept its old visibility while the tool printed the requested one.
+
+
+class _FakeApi:
+    """Duck-typed stand-in for HfApi — no huggingface_hub import needed."""
+
+    def __init__(self, private=True):
+        self._private = private
+        self.calls = []
+
+    def update_repo_settings(self, repo_id, repo_type, private):
+        self.calls.append(("settings", repo_id, repo_type, private))
+        self._private = private
+
+    def dataset_info(self, repo_id):
+        return type("Info", (), {"private": self._private})()
+
+
+class _LegacyApi:
+    """Older hub (< 0.25): exposes update_repo_visibility and NOT update_repo_settings.
+
+    Deliberately does not inherit _FakeApi — inheriting would leave update_repo_settings
+    resolvable via the MRO, so hasattr() would still find it and the fallback branch
+    would never be exercised.
+    """
+
+    def __init__(self, private=True):
+        self._private = private
+        self.calls = []
+
+    def update_repo_visibility(self, repo_id, repo_type, private):
+        self.calls.append(("visibility", repo_id, repo_type, private))
+        self._private = private
+
+    def dataset_info(self, repo_id):
+        return type("Info", (), {"private": self._private})()
+
+
+def test_ensure_visibility_flips_existing_private_repo_to_public():
+    api = _FakeApi(private=True)  # dataset already exists, and is private
+    srhf.ensure_visibility(api, "aceengineer/x", public=True)
+    assert api.calls == [("settings", "aceengineer/x", "dataset", False)]
+
+
+def test_ensure_visibility_enforces_private_rather_than_relying_on_default():
+    api = _FakeApi(private=False)  # already public; --public NOT passed
+    srhf.ensure_visibility(api, "aceengineer/x", public=False)
+    # private-by-default is a fail-safe only if it is actually asserted on the remote
+    assert api.calls == [("settings", "aceengineer/x", "dataset", True)]
+
+
+def test_ensure_visibility_falls_back_to_update_repo_visibility_on_older_hub():
+    api = _LegacyApi(private=True)
+    assert not hasattr(api, "update_repo_settings")
+    srhf.ensure_visibility(api, "aceengineer/x", public=True)
+    assert api.calls == [("visibility", "aceengineer/x", "dataset", False)]
+
+
+def test_ensure_visibility_exits_when_no_visibility_api_exists():
+    class _Ancient:
+        pass
+    with pytest.raises(SystemExit) as e:
+        srhf.ensure_visibility(_Ancient(), "aceengineer/x", public=True)
+    assert "VISIBILITY" in str(e.value)
+
+
+def test_verify_visibility_returns_actual_when_it_matches():
+    api = _FakeApi(private=False)
+    assert srhf.verify_visibility(api, "aceengineer/x", public=True) is False
+
+
+def test_verify_visibility_exits_when_remote_disagrees():
+    # the #3483 failure mode: asked for public, remote is still private
+    api = _FakeApi(private=True)
+    with pytest.raises(SystemExit) as e:
+        srhf.verify_visibility(api, "aceengineer/x", public=True)
+    msg = str(e.value)
+    assert "VISIBILITY FAILED" in msg and "PRIVATE" in msg
+
+
+def test_ensure_then_verify_is_the_fixed_path():
+    # end to end on the duck-typed api: the flip makes the readback agree
+    api = _FakeApi(private=True)
+    srhf.ensure_visibility(api, "aceengineer/x", public=True)
+    assert srhf.verify_visibility(api, "aceengineer/x", public=True) is False
