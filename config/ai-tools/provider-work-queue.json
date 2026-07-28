@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-28T13:21:25.981976Z",
+  "generated_at": "2026-07-28T17:21:39.058616Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-28T13:21:24.011690Z",
+  "scorecard_generated_at": "2026-07-28T17:21:35.342953Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -688,7 +688,7 @@
             "gate:completeness",
             "domain:capability"
           ],
-          "updatedAt": "2026-07-27T02:35:09Z",
+          "updatedAt": "2026-07-28T17:18:01Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4970,7 +4970,7 @@
             "cat:data",
             "domain:capability"
           ],
-          "updatedAt": "2026-07-27T02:35:33Z",
+          "updatedAt": "2026-07-28T17:18:51Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
