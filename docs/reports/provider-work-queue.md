@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-07-28T01:21:15.000363Z
+Generated: 2026-07-28T05:21:13.732510Z
 Current week: 2026-W31
 Recommended provider order: codex, agy, claude
 
@@ -9,8 +9,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 28
-- Total routed candidates: 183
+- Execution-ready candidates: 26
+- Total routed candidates: 182
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: highest
 - Execution-ready candidates: 5
-- Total routed candidates: 17
+- Total routed candidates: 18
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -37,8 +37,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | yes | implementation/test/fix language | bug, cat:harness, domain:workstations, machine:multi, status:plan-approved, gate:completeness |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | yes | implementation/test/fix language | cat:operations, domain:workstations, status:plan-approved, gate:completeness, lane:claude |
 | #3585 phone-media: EXIF-date organizer + cross-phone dedupe | no | implementation/test/fix language | priority:medium, cat:data, domain:family |
+| #3696 chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | no | implementation/test/fix language | priority:medium, cat:operations, domain:workstations |
 | #3594 chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding — notes say clone pending / uv NOT installed; both now false | no | implementation/test/fix language | bug, priority:low, cat:operations, domain:workstations, machine:multi, lane:claude |
-| #3476 refactor(cron): migrate three legacy marker installers to transactional reconciliation | no | implementation/test/fix language | cat:operations, status:needs-plan, domain:harness, lane:codex |
 
 ## agy
 

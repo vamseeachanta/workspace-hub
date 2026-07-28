@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-07-28T01:21:15.146755Z
+Generated: 2026-07-28T05:21:13.872952Z
 Apply mode: False
 Threshold: 0.9
 
@@ -20,5 +20,5 @@ Threshold: 0.9
 | #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3585 phone-media: EXIF-date organizer + cross-phone dedupe | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #3696 chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3594 chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding — notes say clone pending / uv NOT installed; both now false | agent:codex | 0.45 | no | strong-codex-language-match, provider-highest-priority |
-| #3476 refactor(cron): migrate three legacy marker installers to transactional reconciliation | agent:codex | 0.45 | no | strong-codex-language-match, provider-highest-priority |

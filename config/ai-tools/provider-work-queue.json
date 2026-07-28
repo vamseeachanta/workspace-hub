@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-28T01:21:15.000363Z",
+  "generated_at": "2026-07-28T05:21:13.732510Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-28T01:21:12.863918Z",
+  "scorecard_generated_at": "2026-07-28T05:21:11.828393Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 28,
-      "total_candidates": 183,
+      "execution_ready_count": 26,
+      "total_candidates": 182,
       "top_issues": [
         {
           "number": 3426,
@@ -492,33 +492,6 @@
           ]
         },
         {
-          "number": 3403,
-          "title": "Repair Linux voice dictation rollout and VNC consistency contract",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3403",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-07-27T01:19:16Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3440,
           "title": "Harden generated HTML against JSON script-tag breakout",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3440",
@@ -676,29 +649,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3402,
-          "title": "[#3401] Brand consolidation: workspace-hub (per-repo canonical + standards) \u2014 PLAN",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3402",
-          "labels": [
-            "cat:documentation",
-            "domain:website",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "updatedAt": "2026-07-27T02:35:10Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
@@ -1969,24 +1919,24 @@
           ]
         },
         {
-          "number": 3404,
-          "title": "Explore direct SSH path to gpu-claw without WireGuard dependency",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3404",
+          "number": 3694,
+          "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
           "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "domain:workstations"
+            "priority:high",
+            "cat:tooling",
+            "domain:repo-cleanup"
           ],
-          "updatedAt": "2026-07-27T01:19:16Z",
+          "updatedAt": "2026-07-28T02:11:10Z",
           "execution_ready": false,
-          "priority_rank": 2,
+          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
             "strategy"
           ]
         },
@@ -3790,6 +3740,27 @@
           ]
         },
         {
+          "number": 3695,
+          "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3695",
+          "labels": [
+            "priority:medium",
+            "cat:tooling",
+            "domain:repo-cleanup"
+          ],
+          "updatedAt": "2026-07-28T02:11:33Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
           "number": 3587,
           "title": "phone-media: choose the ongoing incremental sync lane",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3587",
@@ -4527,7 +4498,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 5,
-      "total_candidates": 17,
+      "total_candidates": 18,
       "top_issues": [
         {
           "number": 3430,
@@ -4673,6 +4644,27 @@
           ]
         },
         {
+          "number": 3696,
+          "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
+          "labels": [
+            "priority:medium",
+            "cat:operations",
+            "domain:workstations"
+          ],
+          "updatedAt": "2026-07-28T02:26:35Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 3594,
           "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3594",
@@ -4692,28 +4684,6 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3476,
-          "title": "refactor(cron): migrate three legacy marker installers to transactional reconciliation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3476",
-          "labels": [
-            "cat:operations",
-            "status:needs-plan",
-            "domain:harness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-07-27T02:35:09Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation"
           ]
         }
@@ -4859,6 +4829,27 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
+            "implementation"
+          ]
+        },
+        {
+          "number": 3696,
+          "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
+          "labels": [
+            "priority:medium",
+            "cat:operations",
+            "domain:workstations"
+          ],
+          "updatedAt": "2026-07-28T02:26:35Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation"
           ]
         },

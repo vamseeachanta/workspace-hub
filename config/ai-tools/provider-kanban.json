@@ -36,6 +36,120 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:medium",
+          "cat:operations",
+          "domain:workstations"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3696,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:medium",
+          "cat:tooling",
+          "domain:repo-cleanup"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3695,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3695",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:tooling",
+          "domain:repo-cleanup"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3694,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "priority:critical",
           "compliance-alert"
         ],
@@ -8025,143 +8139,128 @@
         "approved_no_plan",
         "missing_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:operations",
-          "domain:workstations"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Explore direct SSH path to gpu-claw without WireGuard dependency"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3404,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Explore direct SSH path to gpu-claw without WireGuard dependency",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3404",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": ".planning/plan-approved/3403.md",
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:harness",
-          "machine:dev-primary",
-          "status:plan-approved",
-          "gate:completeness",
-          "lane:codex",
-          "domain:ai"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: local branch `feat/voice-dictation-ecosystem` contains the previous implementation source:",
-        "provider_route": "claude",
-        "risks": "**Risk:** The Plantronics device can appear/disappear during a session; tests must not depend on live hardware except for the final smoke test. | **Risk:** `faster-whisper` may download the selected model on first run; installer should report this but avoid doing uncontrolled sudo/system changes. | **Risk:** GNOME hotkey binding in headless/non-GNOME sessions can fail; installer should skip gracef",
-        "tests": "36 TDD tests defined",
-        "title": "Repair Linux voice dictation rollout and VNC consistency contract"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3403,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-07-09-issue-3403-voice-dictation-vnc-contract.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Repair Linux voice dictation rollout and VNC consistency contract",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3403",
-      "warnings": [
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "no canonical plan file",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:documentation",
-          "domain:website",
-          "status:plan-approved",
-          "gate:completeness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "[#3401] Brand consolidation: workspace-hub (per-repo canonical + standards) \u2014 PLAN"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3402,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "[#3401] Brand consolidation: workspace-hub (per-repo canonical + standards) \u2014 PLAN",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3402",
-      "warnings": [
-        "approved_no_marker",
-        "approved_no_plan",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-07-28T01:21:16Z",
+  "generated_at": "2026-07-28T05:21:15Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:medium",
+            "cat:operations",
+            "domain:workstations"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3696,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:medium",
+            "cat:tooling",
+            "domain:repo-cleanup"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3695,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3695",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:tooling",
+            "domain:repo-cleanup"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3694,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16162,135 +16261,6 @@
           "approved_no_plan",
           "missing_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "domain:workstations"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Explore direct SSH path to gpu-claw without WireGuard dependency"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3404,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Explore direct SSH path to gpu-claw without WireGuard dependency",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3404",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": ".planning/plan-approved/3403.md",
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex",
-            "domain:ai"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: local branch `feat/voice-dictation-ecosystem` contains the previous implementation source:",
-          "provider_route": "claude",
-          "risks": "**Risk:** The Plantronics device can appear/disappear during a session; tests must not depend on live hardware except for the final smoke test. | **Risk:** `faster-whisper` may download the selected model on first run; installer should report this but avoid doing uncontrolled sudo/system changes. | **Risk:** GNOME hotkey binding in headless/non-GNOME sessions can fail; installer should skip gracef",
-          "tests": "36 TDD tests defined",
-          "title": "Repair Linux voice dictation rollout and VNC consistency contract"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3403,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-07-09-issue-3403-voice-dictation-vnc-contract.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Repair Linux voice dictation rollout and VNC consistency contract",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3403",
-        "warnings": [
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "no canonical plan file",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:documentation",
-            "domain:website",
-            "status:plan-approved",
-            "gate:completeness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "[#3401] Brand consolidation: workspace-hub (per-repo canonical + standards) \u2014 PLAN"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3402,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "[#3401] Brand consolidation: workspace-hub (per-repo canonical + standards) \u2014 PLAN",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3402",
-        "warnings": [
-          "approved_no_marker",
-          "approved_no_plan",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16301,17 +16271,17 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-07-28T01:21:12.863918Z",
+  "scorecard_generated_at": "2026-07-28T05:21:11.828393Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-28T01:21:12.731250Z",
+  "utilization_generated_at": "2026-07-28T05:21:11.703407Z",
   "warning_summary": {
-    "approved_no_marker": 27,
-    "approved_no_plan": 24,
+    "approved_no_marker": 26,
+    "approved_no_plan": 23,
     "dual_status_labels": 3,
     "legacy_review_no_sha": 4,
     "major_review": 1,
-    "marker_without_open_approved_issue": 175,
-    "missing_review": 36,
+    "marker_without_open_approved_issue": 176,
+    "missing_review": 34,
     "unavailable_review": 2
   }
 }

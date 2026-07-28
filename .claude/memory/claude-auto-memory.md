@@ -35,7 +35,7 @@
 - [dm#1528 sloshing reduced-order](project_dm1528_sloshing_reduced_order.md) — 2026-07-12: coeff 0.16·Π. REMAINING (blocked on user hull data): run dm#1562
 - [HF projection + staged promotion (wh#3433)](project_hf_projection_staged_promotion.md) — 2026-07-11: PR #3465 plan-approved; gated behind DRAFT #3452
 - [World Energy Field Explorer program](project_world_energy_field_explorer_program.md) — 2026-07-11 feature-complete (shell/84 countries/56 wells/architecture); open: #962 SVGs, #966 HF viz, #955/#959/#960 ingest
-- [Rama Lakshmi Indian passport Tatkaal re-issue](project_ramalakshmi_indian_passport_tatkal.md) — 2026-07-24 ✅ case SETTLED = II-B-2 (2008 book expired 19/02/2018 is her only one; `rld.md` "6-Nov-2027" is WRONG). Package + collection sheet + day-of checklist in `_relations/RLD/2026-07_tatkal_reissue_application.md`; ₹5,000 at POPSK Kakinada. ⚠️ husband gravely ill — do NOT propose renewing his. NEXT: get her 8 answers (§8)
+- [Rama Lakshmi Indian passport Tatkaal re-issue](project_ramalakshmi_indian_passport_tatkal.md) — 2026-07-24 ✅ case SETTLED = II-B-2 (2008 book expired 19/02/2018 is her only one; `rld.md` "6-Nov-2027" is WRONG). Package + collection sheet + day-of checklist in `_relations/RLD/2026-07_tatkal_reissue_application.md`; ₹5,000 at POPSK Kakinada. ⚠️ husband gravely ill — do NOT propose renewing his. NEXT: get her 8 answers (§8) *stale: 2026-07-28*
 - [Devakrishna passport renewal (DS-11)](project_devakrishna_passport_renewal.md) — DEFERRED until family returns (passport exp Jun 2027 OK). On return: DS-11 + appointment
 - [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-07: #755/#756/#848-#850 LIVE; remaining #759/#761
 - [International field-dev epic (wed #713)](project_wed_international_field_dev_epic.md) — 6 country chains MERGED; #720 Mexico source recovered, DI-loader UNBUILT; ⚠️ mx-720 watcher = LOCAL systemd timer (owner one-liner above). NEXT: #720 loader; #722
@@ -72,7 +72,7 @@
 - [--delete-branch auto-closes stacked child PR](feedback_delete_branch_closes_stacked_child_pr.md) — merge parent WITHOUT delete → retarget child → merge → delete last
 - [dev-primary equality "green" is self-healing](feedback_dev_primary_equality_green_is_self_healing.md) — fix drift via PR + STOP; cron re-greens
 - [Autorun resets worktree branches → push immediately](feedback_autorun_clobbers_subagent_worktree_commits.md) — `commit && push -u`; verify on REMOTE
-- [Small calcs go into digitalmodel domain modules](feedback_small_calcs_into_digitalmodel_domains.md) — `src/digitalmodel/<domain>/` + tiny test
+- [Small calcs go into digitalmodel domain modules](feedback_small_calcs_into_digitalmodel_domains.md) — `src/digitalmodel/<domain>/` + tiny test *stale: 2026-07-28*
 - [Delegate token-heavy REVIEW to Codex (not authoring)](feedback_delegate_token_heavy_to_codex.md) — `submit-to-codex.sh` (`env -u CLAUDECODE`); verify output exists
 - [Agent CAN --no-verify push a feature branch (not main)](feedback_prepush_no_verify_allowed_on_feature_branch.md) — auto-deny is default-branch-specific
 - [Check issue state before implementing](feedback_check_issue_state_before_implementing_on_detached_head.md) — branch from origin/main + `gh issue view` + PR search FIRST

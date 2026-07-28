@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-28T01:21:16Z
+Generated: 2026-07-28T05:21:15Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3696 | chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3695 | chore(llm-wiki): resolve two empty client-wiki stubs — llm-wiki-seanation and llm-wiki-hd | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3694 | chore(repo): reconcile llm-wiki-mkt-a → llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3693 | Compliance alert: W31 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3671 | INITIATIVE: Repo structure, test health & governance | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3670 | INITIATIVE: Fleet operations — machine readiness, cross-platform parity & security | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -240,9 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3416 | chore(landman-desk): establish the private application repository and public/private data boundary | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3414 | epic(landman-project-desk): broker workflow, QA, and federal-acreage diligence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3408 | Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #3404 | Explore direct SSH path to gpu-claw without WireGuard dependency | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3403 | Repair Linux voice dictation rollout and VNC consistency contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #3402 | [#3401] Brand consolidation: workspace-hub (per-repo canonical + standards) — PLAN | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 
 ## Lane: blocked (0)
 
