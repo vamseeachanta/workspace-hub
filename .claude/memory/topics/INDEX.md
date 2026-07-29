@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (223)
+## Feedback — execution lessons & hazards (225)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -215,6 +215,8 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [feedback_timelapse_append_current_satellite_frame](feedback_timelapse_append_current_satellite_frame.md) — GIS timelapse videos should append a current high-res satellite/Maps frame as the final frame; NAIP lags ~2-4 yrs (latest 2022)
 - [feedback_unique_live_links_traffic_credibility](feedback_unique_live_links_traffic_credibility.md) — Every capability/skill should link to its OWN unique live page — uniqueness drives traffic + credibility
 - [feedback_uv_run_isolation](feedback_uv_run_isolation.md) — "uv run --no-project creates isolated env without .venv packages — use fallback imports or avoid optional deps"
+- [feedback_validation_chain_bsee_first_then_interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — Validation must run source-definitions-first (BSEE direct) → wed interpretation → analysis → published page → validation blog; definitions get ONE canonical home the code imports
+- [feedback_vamsee_email_short_attachment_carries_detail](feedback_vamsee_email_short_attachment_carries_detail.md) — "Vamsee's outreach emails are ~150 words with ALL technical detail in the attached PDF — never in the body"
 - [feedback_vamsee_email_style_skestates](feedback_vamsee_email_style_skestates.md) — "Vamsee's email writing style for vendor/partner correspondence (skestatesinc / CRE / Family Dollar threads) — learned from his edits to a sent draft"
 - [feedback_vamsee_technical_outreach_email_style](feedback_vamsee_technical_outreach_email_style.md) — "Vamsee's email style for technical/engineering PROSPECT outreach (leads like Reed Goodman) — learned by diffing my staged draft vs what he actually sent"
 - [feedback_verification_queue_mixed_line_endings](feedback_verification_queue_mixed_line_endings.md) — llm-wiki verification-queue CSV has mixed LF/CRLF rows; edit it with binary I/O or text-mode strips 340 CRLF rows silently
