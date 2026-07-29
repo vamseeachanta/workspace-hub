@@ -120,8 +120,32 @@ def _is_list_of_dicts(v):
     return isinstance(v, list) and len(v) > 0 and all(isinstance(x, dict) for x in v)
 
 
+def _contains_nested_table(d):
+    """True if any value of `d` is itself table-shaped (a list-of-dicts, or a dict whose
+    values are lists-of-dicts). Such a dict is a SECTION MAP, not a row set."""
+    for v in d.values():
+        if _is_list_of_dicts(v):
+            return True
+        if isinstance(v, dict) and any(_is_list_of_dicts(x) for x in v.values()):
+            return True
+    return False
+
+
 def _is_dict_of_dicts(v):
-    return isinstance(v, dict) and len(v) > 0 and all(isinstance(x, dict) for x in v.values())
+    """A dict whose values are all dicts AND which holds no nested tables.
+
+    The second condition matters (workspace-hub#3699). A results file commonly looks like
+    {"meta": {...}, "min_wall_pass": {...}, "series": {"DNV-ST-F101": [rows...], ...}} —
+    every top-level value is a dict, so without the guard the WHOLE FILE collapses into one
+    row-per-section table, the real per-series tables are never found, and the mixed column
+    types that produces fail parquet conversion outright.
+
+    Keeps the plain case intact: {"w1": {"depth": 10}, "w2": {"depth": 20}} holds only
+    scalars, so it is still read as one table of two rows.
+    """
+    if not (isinstance(v, dict) and len(v) > 0 and all(isinstance(x, dict) for x in v.values())):
+        return False
+    return not _contains_nested_table(v)
 
 
 def discover_tables(obj, name=""):

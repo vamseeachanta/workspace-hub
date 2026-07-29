@@ -201,3 +201,48 @@ def test_ensure_then_verify_is_the_fixed_path():
     api = _FakeApi(private=True)
     srhf.ensure_visibility(api, "aceengineer/x", public=True)
     assert srhf.verify_visibility(api, "aceengineer/x", public=True) is False
+
+
+# --- section maps vs row sets (workspace-hub#3699) ------------------------------------
+# A dict whose values are all dicts is only a table if it holds no nested tables.
+
+
+def test_section_map_with_nested_series_is_not_one_table():
+    # the real shape from digitalmodel/docs/api/structural/wall-thickness-explorer.json
+    doc = {
+        "meta": {"od_mm": 273.0, "grade": "X65"},
+        "min_wall_pass": {"DNV-ST-F101": 19.5, "DNV-ST-F201": 8.0},
+        "series": {
+            "DNV-ST-F101": [{"w": 8.0, "u": 8.7}, {"w": 8.5, "u": 7.9}],
+            "DNV-ST-F201": [{"w": 8.0, "u": 0.59}],
+        },
+    }
+    t = srhf.discover_tables(doc)
+    # must NOT collapse the file into a single records table
+    assert "records" not in t
+    # each series is its own table, found by recursing past the section map
+    assert t["series.DNV-ST-F101"] == [{"w": 8.0, "u": 8.7}, {"w": 8.5, "u": 7.9}]
+    assert len(t["series.DNV-ST-F201"]) == 1
+
+
+def test_section_map_does_not_mix_scalar_and_list_into_one_column():
+    # the exact parquet failure: DNV-ST-F101 held a float in one row and a
+    # JSON-stringified list in another, giving an unconvertible object column
+    doc = {"min_wall_pass": {"A": 19.5}, "series": {"A": [{"w": 1.0}]}}
+    t = srhf.discover_tables(doc)
+    for rows in t.values():
+        for row in rows:
+            for col, val in row.items():
+                assert not isinstance(val, dict), f"{col} still nested"
+
+
+def test_plain_dict_of_dicts_is_still_one_table():
+    # regression guard: the documented behaviour must not change
+    t = srhf.discover_tables({"w1": {"depth": 10}, "w2": {"depth": 20}})
+    assert "records" in t and {r["_id"] for r in t["records"]} == {"w1", "w2"}
+
+
+def test_contains_nested_table_detects_both_shapes():
+    assert srhf._contains_nested_table({"s": [{"a": 1}]})            # list-of-dicts
+    assert srhf._contains_nested_table({"s": {"k": [{"a": 1}]}})     # dict-of-lists-of-dicts
+    assert not srhf._contains_nested_table({"s": {"a": 1}})          # plain scalars
