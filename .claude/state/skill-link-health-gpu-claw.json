@@ -1,0 +1,16 @@
+{
+  "machine": "gpu-claw",
+  "audited_at": "2026-07-29T23:24:39+00:00",
+  "platform": "unix",
+  "repos_total": 4,
+  "healthy": 0,
+  "missing": 8,
+  "dangling": 0,
+  "flattened": 0,
+  "modified_real_dir": 0,
+  "template_absent": 4,
+  "repairable": 8,
+  "unexpected_missing_repos": ["aceengineer-website", "assetutilities", "deckhand", "digitalmodel"],
+  "worst_state": "MISSING",
+  "schema_version": 1
+}

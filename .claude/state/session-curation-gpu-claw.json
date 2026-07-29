@@ -1,0 +1,18 @@
+{
+  "machine": "gpu-claw",
+  "last_curated_at": "2026-07-29T23:24:34+00:00",
+  "providers": {
+    "claude": 27,
+    "codex": 27,
+    "gemini": 0,
+    "hermes": 0
+  },
+  "sessions_24h": 20,
+  "providers_active": [
+    "claude",
+    "codex"
+  ],
+  "memory_files_changed": 200,
+  "digest_ref": "session-curation-state",
+  "schema_version": 1
+}

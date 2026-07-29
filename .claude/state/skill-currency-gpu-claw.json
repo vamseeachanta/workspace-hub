@@ -1,0 +1,14 @@
+{
+  "machine": "gpu-claw",
+  "audited_at": "2026-07-29T23:24:36+00:00",
+  "canonical_count": 44,
+  "gemini_present": true,
+  "gemini_unexpected": 0,
+  "gemini_unexpected_families": [],
+  "gemini_expected": 9,
+  "codex_present": true,
+  "hermes_present": true,
+  "index_dangling": 0,
+  "index_stale": false,
+  "schema_version": 2
+}
