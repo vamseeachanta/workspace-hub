@@ -1,36 +1,64 @@
 {
-  "generated_at": "2026-07-23T09:21:10.244081Z",
-  "current_week": "2026-W30",
+  "generated_at": "2026-07-29T09:25:10.797423Z",
+  "current_week": "2026-W31",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-07-23T09:21:10.120636Z",
-    "audit_generated_at": "2026-07-20T09:15:07Z"
+    "utilization_generated_at": "2026-07-29T09:25:07.584208Z",
+    "audit_generated_at": "2026-07-27T09:15:04Z"
   },
   "recommended_provider_order": [
+    "codex",
     "agy",
-    "claude",
-    "codex"
+    "claude"
   ],
   "recommendations": [
     {
       "provider": "claude",
       "status": "underused",
       "priority": "high",
-      "reported_utilization_pct": 0.2,
+      "reported_utilization_pct": 0.0,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 1,
-      "post_records_current_week": 70,
-      "audit_post_records": 123003,
-      "missing_repo_reads": 9463,
+      "sessions_current_week": 0,
+      "post_records_current_week": 0,
+      "audit_post_records": 123073,
+      "missing_repo_reads": 9464,
       "python3_per_1k_records": 9.12,
-      "migration_debt_per_1k_records": 14.02,
+      "migration_debt_per_1k_records": 14.01,
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
+          "tool": "Bash",
+          "count": 65539
+        },
+        {
+          "tool": "Read",
+          "count": 21595
+        },
+        {
+          "tool": "Edit",
+          "count": 9704
+        },
+        {
           "tool": "unknown",
-          "count": 70
+          "count": 9456
+        },
+        {
+          "tool": "Write",
+          "count": 8497
+        },
+        {
+          "tool": "Grep",
+          "count": 2613
+        },
+        {
+          "tool": "Agent",
+          "count": 1420
+        },
+        {
+          "tool": "ToolSearch",
+          "count": 681
         }
       ],
       "preferred_work": [
@@ -53,22 +81,38 @@
     },
     {
       "provider": "codex",
-      "status": "needs_cleanup",
-      "priority": "high",
-      "reported_utilization_pct": 21.4,
+      "status": "underused",
+      "priority": "highest",
+      "reported_utilization_pct": 0.0,
       "quota_basis": "quota",
       "quota_source": "history.jsonl-estimate",
-      "sessions_current_week": 2,
-      "post_records_current_week": 71,
-      "audit_post_records": 202717,
+      "sessions_current_week": 28,
+      "post_records_current_week": 1224,
+      "audit_post_records": 202788,
       "missing_repo_reads": 1689,
-      "python3_per_1k_records": 13.91,
+      "python3_per_1k_records": 13.9,
       "migration_debt_per_1k_records": 0.05,
       "top_migration_hint": "llm_wiki_spinout_path_drift",
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 71
+          "count": 934
+        },
+        {
+          "tool": "wait",
+          "count": 117
+        },
+        {
+          "tool": "wait_agent",
+          "count": 53
+        },
+        {
+          "tool": "send_message",
+          "count": 47
+        },
+        {
+          "tool": "spawn_agent",
+          "count": 27
         }
       ],
       "preferred_work": [
@@ -120,7 +164,7 @@
     }
   ],
   "summary": {
-    "highest_priority_provider": "agy",
-    "highest_priority_reason": "Batch 5-6 related research/recon tasks into agy sessions."
+    "highest_priority_provider": "codex",
+    "highest_priority_reason": "Route bounded implementation/test/refactor issues to Codex immediately."
   }
 }

@@ -1,12 +1,21 @@
 # Provider utilization weekly report
 
-Generated: 2026-07-23T09:21:10.120636Z
-Current week: 2026-W30
+Generated: 2026-07-29T09:25:07.584208Z
+Current week: 2026-W31
 Total monthly spend tracked: $260.0/mo
 
 Quota-based utilization is preferred when available; otherwise the report falls back to activity-vs-recent-peak based on exported session logs.
 
-## 2026-W30 (current)
+## 2026-W31 (current)
+
+| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
+|---|---:|---:|---:|---|---:|---|
+| claude | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 28 | 1224 | 0.0% | quota | 0.0% | week_messages/weekly_limit from history.jsonl-estimate |
+| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+
+## 2026-W30
 
 | Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
 |---|---:|---:|---:|---|---:|---|
@@ -69,17 +78,9 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 | agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 | hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 
-## 2026-W23
-
-| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
-|---|---:|---:|---:|---|---:|---|
-| claude | 1 | 4 | 0.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
-| codex | 119 | 8303 | 22.0% | quota | 22.0% | week_pct from app-server-live |
-| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-
 ## Current-week underutilization alerts
 
-- claude at 0.2% (activity_vs_recent_peak)
+- claude at 0.0% (activity_vs_recent_peak)
+- codex at 0.0% (quota)
 - agy at 0.0% (activity_vs_recent_peak)
 

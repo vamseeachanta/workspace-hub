@@ -1,52 +1,51 @@
 # Provider work queue
 
-Generated: 2026-07-23T09:21:12.226146Z
-Current week: 2026-W30
-Recommended provider order: agy, claude, codex
+Generated: 2026-07-29T09:25:15.068421Z
+Current week: 2026-W31
+Recommended provider order: codex, agy, claude
 
 Execution-ready means the issue already carries `status:plan-approved`. agent:* labels are routing hints only and do not grant execution approval.
 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 59
-- Total routed candidates: 174
+- Execution-ready candidates: 26
+- Total routed candidates: 183
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #3282 wf-api(assetutilities): ResultEnvelope + run_workflow() + registry request/response schema [FOUNDATIONAL] | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:claude |
-| #3283 wf-api(ecosystem): determinism harness — provenance stamp + result hash + golden-baseline template | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:codex |
-| #3285 wf-api(digitalmodel): adopt ResultEnvelope + schemas + goldens (FFS, buckling, mooring, wall-thickness) | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:codex |
-| #3291 seamless(ci): uv caching across assetutilities / assethold / digitalmodel test workflows | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, status:plan-approved, gate:completeness, lane:claude |
-| #3294 seamless(review): make adversarial-review dispatchers run headless (codex env -u CLAUDECODE, gemini non-interactive) | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, status:plan-approved, gate:completeness, lane:claude |
-| #3295 seamless(contract): reconcile registry schema_version into a unified v2 superset (unblocks #3282) | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:claude |
-| #3297 wf-api(assetutilities): make the engine embeddable — injected root, no cwd-coupled side effects [PREREQ for #3282] | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:codex |
-| #3307 wf-api(digitalmodel): engine embed-port — mirror #3297 for digitalmodel's own engine [prereq for #3285] | yes | strategy/workflow/architecture language | enhancement, priority:high, domain:workflow-standardization, status:plan-approved, gate:completeness, lane:codex |
+| #3426 feat(governance): deploy completeness closeout contract to worldenergydata | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, domain:workflow, status:plan-approved, gate:completeness |
+| #3427 epic: repository-linked algorithm run datasets and decision intelligence | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, tracker, gate:completeness |
+| #3428 standard: deterministic run identity and algorithm version contract | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
+| #3429 standard: content-addressed artifact and Hugging Face residency contract | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
+| #3431 standard: curated output and rolling algorithm report contract | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
+| #3432 standard: algorithm-specific metric definition and observation contract | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
+| #3433 feature: per-repository Hugging Face projection and staged promotion | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
+| #3500 bug(pre-push): equivalence-state publish loops full tier-1 suite forever — remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198) | yes | strategy/workflow/architecture language | bug, priority:high, cat:harness, machine:dev-primary, status:plan-review, status:plan-approved |
 
 ## codex
 
-- Routing priority: high
-- Execution-ready candidates: 8
-- Total routed candidates: 25
+- Routing priority: highest
+- Execution-ready candidates: 5
+- Total routed candidates: 17
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #3430 standard: replayable public input and source snapshot contract | yes | implementation/test/fix language | enhancement, priority:high, cat:data-pipeline, domain:audit-trail, status:plan-approved, type:follow-up |
-| #3385 Ecosystem: dedicated SME-verification section on digitalmodel + worldenergydata Pages (progressive reconciliation/baseline links) | yes | implementation/test/fix language | enhancement, priority:medium, cat:documentation, cat:website, status:plan-approved, gate:completeness |
-| #3472 feat(operations): add pressure-aware daily OS maintenance cleanup | yes | implementation/test/fix language | priority:medium, cat:operations, domain:automation, domain:repo-health, machine:dev-primary, status:plan-approved |
-| #3143 bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session | yes | implementation/test/fix language | bug, cat:harness/ops, status:plan-approved, gate:completeness |
-| #3239 Generate Deckhand deliverables from the digitalmodel.reporting block library (report-as-backbone) | yes | implementation/test/fix language | enhancement, domain:reporting, domain:gtm, status:plan-approved, gate:completeness, lane:codex |
-| #3532 fix(memory): reserve cross-provider runtime budget for operational feedback | yes | implementation/test/fix language | enhancement, status:plan-approved, gate:completeness, lane:claude |
-| #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | yes | implementation/test/fix language | bug, cat:harness, machine:multi, status:plan-approved, gate:completeness, domain:workstations-fleet-equivalence |
-| #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | yes | implementation/test/fix language | status:plan-approved, gate:completeness, lane:claude |
+| #3430 standard: replayable public input and source snapshot contract | yes | implementation/test/fix language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
+| #3472 feat(operations): add pressure-aware daily OS maintenance cleanup | yes | implementation/test/fix language | priority:medium, cat:tooling, domain:testing, machine:dev-primary, status:plan-approved, gate:completeness |
+| #3532 fix(memory): reserve cross-provider runtime budget for operational feedback | yes | implementation/test/fix language | enhancement, cat:harness, status:plan-approved, gate:completeness, lane:claude, domain:ai |
+| #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | yes | implementation/test/fix language | bug, cat:harness, domain:workstations, machine:multi, status:plan-approved, gate:completeness |
+| #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | yes | implementation/test/fix language | cat:operations, domain:workstations, status:plan-approved, gate:completeness, lane:claude |
+| #3585 phone-media: EXIF-date organizer + cross-phone dedupe | no | implementation/test/fix language | priority:medium, cat:data, domain:family |
+| #3696 chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | no | implementation/test/fix language | priority:medium, cat:operations, domain:workstations |
+| #3594 chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding — notes say clone pending / uv NOT installed; both now false | no | implementation/test/fix language | bug, priority:low, cat:operations, domain:workstations, machine:multi, lane:claude |
 
 ## agy
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 1
+- Total routed candidates: 0
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #3584 phone-media: USB-pull remaining family phones into the archive | no | research/triage/audit language | priority:medium, cat:data-pipeline |
 
