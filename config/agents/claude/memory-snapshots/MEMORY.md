@@ -5,7 +5,7 @@
 
 ## Active & Recent Projects
 - [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" definitions, 0/56 wells agree (6.6× gap); reference basis = BSEE WAR `WELL_ACTIVITY_CD`. EPIC #1063 + #1064–#1081. NEXT: #1064 basis decision w/ Roy (HARD BLOCKER)
-- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). Root cause: dm `main` had no required checks → 60.3% red merges. ✅ PR #1636 merged. ⚠ triage reports wrong both ways — verify against code. ⚠ 3 red CI shards = 0 code defects, land before #1634 arms the ruleset. NEXT: #1638
+- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). Root cause: dm `main` had no required checks → 60.3% red merges. ✅✅ **ALL 3 SHARDS GREEN 2026-07-28** (PRs #1879, #1882, #1886) → **#1634 UNBLOCKED, owner decision**. ⚠ audit said "3 root causes"; really **2** (#1637+#1639 = one page deletion). ⚠ triage reports wrong both ways — verify against code. NEXT: owner arms #1634
 - [Model-generation reopen slate](project_model_generation_reopen_slate_2026_07_25.md) — wh#3106/#3056/#1019 + llm-wiki#638 REOPENED; #3043 retargeted. NEXT: wh#3051 registry flip (blocks the rest)
 - [Model-registry generation drift blind spot](project_model_generation_drift_registry_blindspot.md) — nightly guard checks ONLY `openai_primary`; Claude lane has zero drift coverage. ✅ wh#3600 FILED. NEXT: #3600 needs-plan
 - [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; hub PR #1058 armed. ⚠ DRILLING_DAYS mixes two bases → batch-drilled undercount. NEXT: owner sends v2 email
@@ -36,6 +36,7 @@
 - [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
 
 ## Key Lessons (how to work)
+- [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included**
 - [Verify subagent line citations, not just claims](feedback_verify_subagent_line_citations_not_just_claims.md) — a defect existing ≠ it being at that line; cite the SYMBOL when coordinates aren't cheap to confirm
 - [Report-hub design system (owner-approved)](feedback_report_hub_design_system.md) — hub grammar = THE design for ALL field-data surfaces; data → HF `aceengineer/*`; ref impl wed PR #1058
 - [Rig-selector capability depth](feedback_rig_selector_capability_depth.md) — onshore/offshore = FIRST filter; equipment fields over more hull numbers (wed #1006)
@@ -48,6 +49,7 @@
 - [Fable 5 vs Opus 4.8 routing](reference_fable5_vs_opus48_session_comparison.md) — Fable=orchestration/planning, Opus=execution/merge-CI
 - [Equality wedge ≠ drift recovery](feedback_equality_wedge_vs_drift_recovery.md) — main ahead AND behind → prove regenerable → backup tag → `reset --hard` (destructive, get OK)
 - [Vamsee's technical-outreach email style](feedback_vamsee_technical_outreach_email_style.md) — reply into EXISTING thread; humble greeting; LIVE links; one ask. [[feedback_vamsee_email_style_skestates]]
+- [Emails are ~150 words; the PDF carries the detail](feedback_vamsee_email_short_attachment_carries_detail.md) — NO numbers/tables/reasoning in the body; name the attachment, point at a section, one-sentence ask, phone in sig
 - [Strict-up-to-date ruleset blocks green-PR merge](feedback_strict_uptodate_ruleset_no_admin_bypass.md) — `--admin` doesn't bypass rulesets; merge-when-CLEAN loop
 - [Required check must never skip](feedback_required_check_must_not_skip.md) — job-level `if:` on required check deadlocks PRs (skipped ≠ success)
 - [Verify against the real CI lint toolchain pre-push](feedback_verify_against_real_ci_lint_toolchain.md) — repo's EXACT black/isort/flake8; absent binary "passes" silently
