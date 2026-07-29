@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-28T17:21:43Z
+Generated: 2026-07-28T21:21:33Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3698 | PR gate is baseline-red: two enforcement checks fail on every PR, plus an undeclared test dep | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3696 | chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3695 | chore(llm-wiki): resolve two empty client-wiki stubs — llm-wiki-seanation and llm-wiki-hd | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3694 | chore(repo): reconcile llm-wiki-mkt-a → llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -188,7 +189,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3491 | chore(solver-queue): reconcile legacy solver-queue issues (#2641/#1586/#2524) with the live deckhand licensed-run lane [dm#1553 H] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3490 | fix(onboarding): surface cron preview failure during new-machine dry-run | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review,unavailable_review |
 | #3485 | epic: Live HF-backed capability surfaces on aceengineer.com — self-perpetuating algorithm showcase | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3483 | save_results_to_hf.py: --public is a silent no-op on an EXISTING dataset (create_repo exist_ok doesn't change visibility) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3482 | design(repo-health): safe worktree lifecycle with leases and recoverable quarantine | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3480 | Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3479 | fix(harness-update): propagate or explicitly surface cron reconciliation failure | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |

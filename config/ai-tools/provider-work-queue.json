@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-28T17:21:39.058616Z",
+  "generated_at": "2026-07-28T21:21:31.872243Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-28T17:21:35.342953Z",
+  "scorecard_generated_at": "2026-07-28T21:21:30.040520Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 26,
-      "total_candidates": 182,
+      "total_candidates": 183,
       "top_issues": [
         {
           "number": 3426,
@@ -4491,6 +4491,24 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3698,
+          "title": "PR gate is baseline-red: two enforcement checks fail on every PR, plus an undeclared test dep",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3698",
+          "labels": [],
+          "updatedAt": "2026-07-28T19:17:17Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4498,7 +4516,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 5,
-      "total_candidates": 18,
+      "total_candidates": 17,
       "top_issues": [
         {
           "number": 3430,
@@ -4959,25 +4977,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3483,
-          "title": "save_results_to_hf.py: --public is a silent no-op on an EXISTING dataset (create_repo exist_ok doesn't change visibility)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3483",
-          "labels": [
-            "cat:data",
-            "domain:capability"
-          ],
-          "updatedAt": "2026-07-28T17:18:51Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
             "implementation"
           ]
         },
