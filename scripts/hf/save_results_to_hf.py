@@ -120,13 +120,33 @@ def _is_list_of_dicts(v):
     return isinstance(v, list) and len(v) > 0 and all(isinstance(x, dict) for x in v)
 
 
-def _contains_nested_table(d):
-    """True if any value of `d` is itself table-shaped (a list-of-dicts, or a dict whose
-    values are lists-of-dicts). Such a dict is a SECTION MAP, not a row set."""
+_MAX_NEST_SCAN = 8
+
+
+def _contains_nested_table(d, _depth=0):
+    """True if a table (a list-of-dicts) is reachable anywhere below `d`. Such a dict is a
+    SECTION MAP, not a row set.
+
+    Recursive at ARBITRARY depth, deliberately. The first version of this guard looked only
+    one level down, which was enough for wall-thickness-explorer.json (`series` -> lists of
+    rows) but not for cathodic-protection-explorer.json, whose rows sit four levels deep:
+
+        series -> "4-leg jacket" -> "temperate" -> "bare" -> [ {...}, ... ]
+
+    With a one-level check the top level still read as a dict-of-dicts, so the whole file
+    collapsed into one 2-row table (`meta`, `series`) and the 56 real leaf tables were never
+    found. It did not crash this time — the types happened to be compatible — which is worse
+    than the ArrowTypeError in #3699, because it would have published silently.
+
+    `_MAX_NEST_SCAN` bounds the walk so a pathological or cyclic-looking structure cannot
+    hang the scan; 8 is far beyond any real results file.
+    """
+    if _depth >= _MAX_NEST_SCAN:
+        return False
     for v in d.values():
         if _is_list_of_dicts(v):
             return True
-        if isinstance(v, dict) and any(_is_list_of_dicts(x) for x in v.values()):
+        if isinstance(v, dict) and _contains_nested_table(v, _depth + 1):
             return True
     return False
 

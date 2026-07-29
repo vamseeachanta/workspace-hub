@@ -246,3 +246,36 @@ def test_contains_nested_table_detects_both_shapes():
     assert srhf._contains_nested_table({"s": [{"a": 1}]})            # list-of-dicts
     assert srhf._contains_nested_table({"s": {"k": [{"a": 1}]}})     # dict-of-lists-of-dicts
     assert not srhf._contains_nested_table({"s": {"a": 1}})          # plain scalars
+
+
+def test_deeply_nested_section_map_is_not_one_table():
+    # cathodic-protection-explorer.json: rows are FOUR levels down.
+    doc = {
+        "meta": {"structures": ["4-leg jacket"], "climates": ["temperate"]},
+        "series": {
+            "4-leg jacket": {
+                "temperate": {
+                    "bare": [{"l": 10.0, "mass": 12692.3}, {"l": 15.0, "mass": 19038.4}],
+                    "good-coating": [{"l": 10.0, "mass": 11103.8}],
+                },
+            },
+        },
+    }
+    t = srhf.discover_tables(doc)
+    assert "records" not in t, "the file collapsed into one row-per-section table again"
+    assert t["series.4-leg jacket.temperate.bare"] == [
+        {"l": 10.0, "mass": 12692.3}, {"l": 15.0, "mass": 19038.4}]
+    assert len(t["series.4-leg jacket.temperate.good-coating"]) == 1
+
+
+def test_contains_nested_table_is_recursive():
+    assert srhf._contains_nested_table({"a": {"b": {"c": [{"x": 1}]}}})
+    assert not srhf._contains_nested_table({"a": {"b": {"c": {"x": 1}}}})
+
+
+def test_contains_nested_table_bounded_on_pathological_depth():
+    # a very deep scalar-only nest must terminate and report False, not recurse forever
+    node = {"leaf": 1}
+    for _ in range(40):
+        node = {"d": node}
+    assert srhf._contains_nested_table(node) is False
