@@ -17,8 +17,9 @@ cards:
       - priority:medium
       - machine:dev-primary
       - dispatch:ready
-      - domain:records-ops
       - lane:claude
+      - domain:governance
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -38,6 +39,7 @@ cards:
       - dispatch:ready
       - domain:tax
       - lane:claude
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -55,8 +57,9 @@ cards:
       - priority:medium
       - machine:dev-primary
       - dispatch:ready
-      - domain:records-ops
       - lane:claude
+      - domain:governance
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -76,6 +79,7 @@ cards:
       - dispatch:ready
       - domain:tax
       - lane:claude
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -95,6 +99,7 @@ cards:
       - dispatch:ready
       - domain:tax
       - lane:claude
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -112,8 +117,9 @@ cards:
       - priority:medium
       - machine:dev-primary
       - dispatch:ready
-      - domain:records-ops
       - lane:claude
+      - domain:governance
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -131,8 +137,9 @@ cards:
       - priority:low
       - machine:dev-primary
       - dispatch:ready
-      - domain:rd-program
       - lane:claude
+      - domain:governance
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -152,6 +159,7 @@ cards:
       - dispatch:ready
       - domain:tax
       - lane:claude
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -169,9 +177,10 @@ cards:
       - priority:medium
       - machine:dev-primary
       - dispatch:ready
-      - domain:rd-program
       - lane:codex
       - lane:claude
+      - domain:governance
+      - cat:documentation
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -191,6 +200,7 @@ cards:
       - dispatch:ready
       - domain:tax
       - lane:claude
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -210,6 +220,7 @@ cards:
       - dispatch:ready
       - domain:tax
       - lane:claude
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -227,8 +238,9 @@ cards:
       - priority:medium
       - machine:dev-primary
       - dispatch:ready
-      - domain:rd-program
       - lane:claude
+      - domain:governance
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -246,8 +258,9 @@ cards:
       - priority:medium
       - machine:dev-primary
       - dispatch:ready
-      - domain:records-ops
       - lane:claude
+      - domain:governance
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -267,6 +280,7 @@ cards:
       - dispatch:ready
       - domain:tax
       - lane:claude
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -286,6 +300,7 @@ cards:
       - dispatch:ready
       - domain:tax
       - lane:claude
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -305,6 +320,7 @@ cards:
       - dispatch:ready
       - domain:tax
       - lane:claude
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -383,6 +399,7 @@ cards:
       - domain:security
       - lane:codex
       - lane:claude
+      - cat:engineering
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -402,7 +419,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/36
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:operations
+      - domain:workstations
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -426,7 +445,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-admin/issues/38
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:operations
+      - domain:workstations
     initial_status: triage
     priority: 0
     gh_assignees: []

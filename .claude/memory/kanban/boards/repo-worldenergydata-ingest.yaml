@@ -19,7 +19,6 @@ cards:
       - enhancement
       - priority:medium
       - cat:data
-      - cat:operations
       - machine:dev-primary
       - dispatch:ready
       - domain:ingest
@@ -415,6 +414,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:data
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -435,6 +435,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:data
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -470,6 +471,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:data
       - status:plan-review
       - domain:ingest
       - lane:codex
@@ -489,7 +491,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
       - domain:ingest
       - lane:codex
     initial_status: triage
@@ -516,7 +517,6 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - cat:engineering-methodology
       - status:plan-review
       - domain:ingest
       - lane:claude
@@ -841,7 +841,6 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - cat:data
       - status:plan-approved
       - domain:ingest
       - lane:codex
@@ -893,7 +892,6 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - cat:data
       - domain:ingest
       - epic
       - status:needs-plan
@@ -1012,7 +1010,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
       - status:plan-review
       - domain:ingest
       - lane:codex
@@ -1046,7 +1043,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
       - domain:ingest
       - lane:codex
       - status:needs-plan
@@ -1206,7 +1202,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
       - domain:ingest
       - lane:codex
       - status:needs-plan
@@ -1223,7 +1218,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
       - domain:ingest
       - lane:codex
       - status:needs-plan
@@ -1668,10 +1662,176 @@ cards:
     title: 'data(cost): contract-award asset registry per sanctioned project — sourced stage split (feeds A1)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1020
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#458
+    title: 'fix(lng): enabled lng_terminals_refresh is still a stub and blocks scheduler freshness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/458
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#680
+    title: D8 — Establish the production-reservoir database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/680
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - domain:ingest
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#681
+    title: D11 — Establish the drilling-well database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/681
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - domain:ingest
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#814
+    title: 'feat(canada): live C-NLOER PDF download + refresh lane (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/814
     gh_state: open
     gh_labels:
       - enhancement
       - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#816
+    title: 'feat(canada): CNSOER Sable + Deep Panuke legacy gas ingest + gas revenue (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/816
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#817
+    title: 'feat(canada): Hibernia 1997-2001 HTML-modal production backfill (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/817
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#818
+    title: 'feat(canada): ArcGIS Development-Wells water-depth + FieldConcept enrichment (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/818
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#823
+    title: 'feat(australia): production feed (AEMO GBB / PEPS-SA) → real economics (#721 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/823
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#825
+    title: 'feat(australia): NOPTA/GA wells + water-depth enrichment for FieldConcept (#721 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/825
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#910
+    title: 'docs(data): inventory /mnt/ace ecosystem data roots for underwriting readiness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/910
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+      - domain:ingest
+      - cat:documentation
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#928
+    title: Align Landman freshness scorecard with packaged fixture catalog
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/928
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1065
+    title: 'data(bsee): obtain the official WELL_ACTIVITY_CD code list — PND is undocumented'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1065
+    gh_state: open
+    gh_labels:
+      - cat:research
       - domain:ingest
     initial_status: triage
     priority: 0

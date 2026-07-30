@@ -33,7 +33,7 @@ def test_forbidden_providers_interactive_none():
 
 
 def test_filter_drops_claude_preserves_order():
-    assert rr.filter_candidates(["claude", "codex", "gemini"], "hermes_batch") == ["codex", "gemini"]
+    assert rr.filter_candidates(["claude", "codex", "agy"], "hermes_batch") == ["codex", "agy"]
 
 
 def test_filter_no_context_passthrough():
@@ -48,7 +48,7 @@ def test_filter_unknown_context_fails_closed():
 
 def test_filter_all_forbidden_falls_to_context_chain():
     # Only claude offered under a ceiling context -> fall to the context chain.
-    assert rr.filter_candidates(["claude"], "hermes_batch") == ["codex", "gemini"]
+    assert rr.filter_candidates(["claude"], "hermes_batch") == ["codex", "agy"]
 
 
 def test_filter_no_fallback_returns_empty_when_all_forbidden():
@@ -62,7 +62,7 @@ def test_chain_is_cli_normalized():
     # r2-C3/r1-F4: openai-codex (provider token) -> codex (CLI token).
     chain = rr.context_chain("hermes_batch")
     assert "openai-codex" not in chain
-    assert chain == ["codex", "gemini"]
+    assert chain == ["codex", "agy"]
 
 
 def test_cli_helper_normalizes():
@@ -73,7 +73,7 @@ def test_cli_helper_normalizes():
 def test_cli_helper_normalizes_full_token_space():
     # review r3-F3: a forbid authored in provider tokens must not fail open.
     assert rr.cli("anthropic") == "claude"
-    assert rr.cli("copilot") == "gemini"
+    assert rr.cli("copilot") == "agy"
 
 
 def test_is_cost_ceiling_true_false():
@@ -91,15 +91,15 @@ def _run(*args: str) -> subprocess.CompletedProcess:
 
 
 def test_cli_filter_mode():
-    r = _run("--context", "hermes_batch", "--filter", "claude,codex,gemini")
+    r = _run("--context", "hermes_batch", "--filter", "claude,codex,agy")
     assert r.returncode == 0
-    assert r.stdout.split() == ["codex", "gemini"]
+    assert r.stdout.split() == ["codex", "agy"]
 
 
 def test_cli_chain_mode():
     r = _run("--context", "hermes_batch", "--chain")
     assert r.returncode == 0
-    assert r.stdout.split() == ["codex", "gemini"]
+    assert r.stdout.split() == ["codex", "agy"]
 
 
 def test_cli_forbidden_mode():
@@ -121,7 +121,7 @@ def test_cli_empty_filter_is_empty_not_blank_string():
     assert r.returncode == 0
     assert "" not in r.stdout.split()
     # empty input -> context chain
-    assert r.stdout.split() == ["codex", "gemini"]
+    assert r.stdout.split() == ["codex", "agy"]
 
 
 def test_cli_forbidden_unknown_context_fails_closed():
@@ -148,15 +148,15 @@ def test_cli_json_mode():
 # --- tier routing (#3209) ---------------------------------------------------
 
 def test_tier_chain_simple_cost_aligned():
-    assert rr.tier_chain("SIMPLE") == ["codex", "gemini", "claude"]
+    assert rr.tier_chain("SIMPLE") == ["codex", "agy", "claude"]
 
 
 def test_tier_chain_standard_cost_aligned():
-    assert rr.tier_chain("STANDARD") == ["codex", "claude", "gemini"]
+    assert rr.tier_chain("STANDARD") == ["codex", "claude", "agy"]
 
 
 def test_tier_chain_complex_claude_primary():
-    assert rr.tier_chain("COMPLEX") == ["claude", "gemini", "codex"]
+    assert rr.tier_chain("COMPLEX") == ["claude", "agy", "codex"]
 
 
 def test_tier_chain_has_no_hermes():
@@ -178,7 +178,7 @@ def test_tier_unknown_raises():
 def test_cli_tier_mode():
     r = _run("--tier", "SIMPLE")
     assert r.returncode == 0
-    assert r.stdout.split() == ["codex", "gemini", "claude"]
+    assert r.stdout.split() == ["codex", "agy", "claude"]
 
 
 def test_cli_tier_unknown_fails_closed():

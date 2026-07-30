@@ -82,6 +82,17 @@ _create_recovery_backup() {
         git diff --binary HEAD 2>/dev/null || true
         git diff --binary --cached HEAD 2>/dev/null || true
     } > "$backup_file"
+
+    # Retention: this safety-net cache is written every sync (≈every 4h) and had
+    # no pruning, so it grew unbounded — 2+ GB on workspace-hub, bloating .git and
+    # slowing every git op (workspace-hub#3325). Prune backups older than
+    # RECOVERY_BACKUP_RETENTION_DAYS (default 14) AFTER writing the newest one, so
+    # the most recent recoverable states are always kept. Runs every sync, so the
+    # existing backlog is cleaned on the next cron pass.
+    local retention_days="${RECOVERY_BACKUP_RETENTION_DAYS:-14}"
+    find "$backup_dir" -maxdepth 1 -type f \
+        \( -name "${repo}-*.patch" -o -name "${repo}-*.patch.status" \) \
+        -mtime "+${retention_days}" -delete 2>/dev/null || true
 }
 
 _safe_ff_only_pull() {

@@ -6,13 +6,13 @@
 """Portable bounded-worker agent runner (G1 / #3116).
 
 Define a worker ONCE in config/agents/agent-defs/<name>.agent.yaml, then invoke it
-on Claude / Codex / Gemini through the existing review wrappers. The portable
+on Claude / Codex / Agy through the existing review wrappers. The portable
 unit (the .agent.yaml) is decoupled from the runtime (the harness) — the
 Omnigent "define once, materialize per harness" pattern applied to agents.
 
 Capability enforcement is harness-dependent and EXPLICIT (no false abstraction):
   - ENFORCED   : Claude Code subagent accepts a tools: allowlist -> native tools.
-  - ADVISORY   : Codex/Gemini are monolithic CLIs -> capability is a prompt
+  - ADVISORY   : Codex/Agy are monolithic CLIs -> capability is a prompt
                  preamble, NOT a sandbox.
   - UNSUPPORTED: harness cannot provide it -> FAIL CLOSED before dispatch.
 
@@ -22,7 +22,7 @@ Bindings live in config/agents/provider-capabilities.yaml -> capability_bindings
 This module is a pure resolver + thin dispatch wrapper. It deliberately does NOT
 re-implement provider quirks — dispatch reuses scripts/review/submit-to-*.sh,
 which already carry the per-provider guards (Codex CLAUDECODE stdin-hang #2684,
-Gemini workspace-trust, quota fallback, output validation).
+agy headless flags, quota fallback, output validation).
 """
 from __future__ import annotations
 
@@ -43,7 +43,7 @@ AGENT_DEFS_DIR = REPO_ROOT / "config" / "agents" / "agent-defs"
 # Non-Claude providers dispatch through the existing review wrappers.
 WRAPPERS = {
     "codex": REPO_ROOT / "scripts" / "review" / "submit-to-codex.sh",
-    "gemini": REPO_ROOT / "scripts" / "review" / "submit-to-gemini.sh",
+    "gemini": REPO_ROOT / "scripts" / "review" / "submit-to-agy.sh",  # DEPRECATED alias -> agy (#3573); replay of queued dispatches
     "agy": REPO_ROOT / "scripts" / "review" / "submit-to-agy.sh",  # Antigravity headless (#3207)
     "claude": Path("<claude-subagent>"),  # materialized as a Claude subagent, not a wrapper
 }
@@ -193,8 +193,7 @@ def dispatch_run(dispatch: dict, content_file: str, provider: str) -> dict:
     env = dict(os.environ)
     if provider == "codex":
         env.pop("CLAUDECODE", None)  # #2684 stdin-hang
-    elif provider == "gemini":
-        env["GEMINI_CLI_TRUST_WORKSPACE"] = "true"
+    # "gemini" is a deprecated alias for agy since #3573 — no env tweak needed
     # agy (#3207) needs no env tweak — it ignores stdin and skips permissions in the
     # wrapper. stdin=DEVNULL is set for ALL providers so a dispatched wrapper can never
     # block on an inherited stdin under capture_output (r1-F9).

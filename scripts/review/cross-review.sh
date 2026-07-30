@@ -3,7 +3,8 @@
 # Submits content to all available AI agents (Claude, Codex, Gemini) for review
 # Cross-review is MANDATORY for all plans and implementations per CLAUDE.md
 # CODEX IS A HARD GATE — script exits non-zero if Codex review fails
-# Usage: cross-review.sh <file_or_diff> <reviewer: claude|codex|gemini|all> [--type plan|implementation|commit]
+# Usage: cross-review.sh <file_or_diff> <reviewer: claude|codex|agy|all> [--type plan|implementation|commit]
+#        ('gemini' is accepted as a DEPRECATED alias for agy — #3573)
 # Preferred: cross-review.sh <file_or_diff> all --type implementation
 set -euo pipefail
 
@@ -19,7 +20,12 @@ cleanup() { for f in "${CLEANUP_FILES[@]}"; do rm -f "$f"; done; }
 trap cleanup EXIT
 
 FILE_OR_DIFF="${1:?Usage: cross-review.sh <file_or_diff_or_sha> <reviewer> [--type plan|implementation|commit]}"
-REVIEWER="${2:?Specify reviewer: claude, codex, gemini, or all}"
+REVIEWER="${2:?Specify reviewer: claude, codex, agy, or all}"
+# DEPRECATED alias (#3573): the third lane is agy (Antigravity, Gemini-backed)
+if [[ "$REVIEWER" == "gemini" ]]; then
+  echo "note: reviewer 'gemini' is a deprecated alias for 'agy' (#3573)" >&2
+  REVIEWER="agy"
+fi
 REVIEW_TYPE="implementation"
 WRK_ID=""
 
@@ -409,40 +415,42 @@ submit_review() {
         fi
       fi
       ;;
-    gemini)
+    agy)
+      # Third lane = agy headless (#3207/#3573). AGY_REVIEW_MODE=1: oversize
+      # payload FAILS the dispatch instead of truncating (false-APPROVE guard).
       if [[ -n "$COMMIT_SHA" ]]; then
-        "${SCRIPT_DIR}/submit-to-gemini.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || {
-          echo "# Gemini review failed" > "$result_file"
+        AGY_REVIEW_MODE=1 bash "${SCRIPT_DIR}/submit-to-agy.sh" --commit "$COMMIT_SHA" --prompt "$PROMPT" > "$result_file" 2>&1 || {
+          echo "# Agy review failed" > "$result_file"
           echo "# Fallback: manual review required" >> "$result_file"
         }
       else
-        "${SCRIPT_DIR}/submit-to-gemini.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || {
-          echo "# Gemini review failed" > "$result_file"
+        AGY_REVIEW_MODE=1 bash "${SCRIPT_DIR}/submit-to-agy.sh" --file "$CONTENT_FILE" --prompt "$PROMPT" > "$result_file" 2>&1 || {
+          echo "# Agy review failed" > "$result_file"
           echo "# Fallback: manual review required" >> "$result_file"
         }
       fi
-      local gemini_status
-      gemini_status="$(classify_review_result "$result_file")"
-      case "$gemini_status" in
+      local agy_status
+      agy_status="$(classify_review_result "$result_file")"
+      case "$agy_status" in
         VALID) ;;
         SKIPPED_NETWORK)
           preserve_raw_result "$result_file"
-          echo "# Gemini returned SKIPPED_NETWORK (DNS failure)" > "$result_file"
+          echo "# Agy returned SKIPPED_NETWORK (DNS failure)" > "$result_file"
           ;;
         NO_OUTPUT)
           preserve_raw_result "$result_file"
-          echo "# Gemini returned NO_OUTPUT" > "$result_file"
+          echo "# Agy returned NO_OUTPUT" > "$result_file"
           ;;
         INVALID_OUTPUT)
-          echo "    WARNING: Gemini returned INVALID_OUTPUT" >&2
+          echo "    WARNING: Agy returned INVALID_OUTPUT" >&2
           preserve_raw_result "$result_file"
           {
-            echo "# Gemini returned INVALID_OUTPUT"
+            echo "# Agy returned INVALID_OUTPUT"
             echo "# Output did not match required review format"
           } > "$result_file"
           ;;
         *)
-          echo "    WARNING: Gemini review classification ERROR" >&2
+          echo "    WARNING: Agy review classification ERROR" >&2
           ;;
       esac
       ;;
@@ -483,7 +491,7 @@ case "$REVIEWER" in
   all)
     submit_review "claude"
     submit_review "codex"
-    submit_review "gemini"
+    submit_review "agy"
     echo "--- All reviews submitted. Results in: ${RESULTS_DIR}/"
     if [[ "$CODEX_PASSED" != "true" ]]; then
       # Codex CLI missing: require explicit user approval to proceed without Codex
@@ -503,27 +511,27 @@ case "$REVIEWER" in
         echo ""
         echo "--- Codex unavailable/NO_OUTPUT. Attempting 2-of-3 fallback consensus..." >&2
         claude_file="${RESULT_PREFIX}-claude.md"
-        gemini_file="${RESULT_PREFIX}-gemini.md"
+        agy_file="${RESULT_PREFIX}-agy.md"
         claude_status="$(classify_review_result "$claude_file")"
-        gemini_status="$(classify_review_result "$gemini_file")"
+        agy_status="$(classify_review_result "$agy_file")"
         claude_verdict="$("${SCRIPT_DIR}/normalize-verdicts.sh" "$claude_file" 2>/dev/null || echo "ERROR")"
-        gemini_verdict="$("${SCRIPT_DIR}/normalize-verdicts.sh" "$gemini_file" 2>/dev/null || echo "ERROR")"
+        agy_verdict="$("${SCRIPT_DIR}/normalize-verdicts.sh" "$agy_file" 2>/dev/null || echo "ERROR")"
         echo "    Claude artifact status: $claude_status" >&2
-        echo "    Gemini artifact status: $gemini_status" >&2
+        echo "    Agy artifact status: $agy_status" >&2
         echo "    Claude verdict: $claude_verdict" >&2
-        echo "    Gemini verdict: $gemini_verdict" >&2
+        echo "    Agy verdict: $agy_verdict" >&2
 
-        if [[ "$claude_status" == "VALID" && "$gemini_status" == "VALID" && \
+        if [[ "$claude_status" == "VALID" && "$agy_status" == "VALID" && \
               ("$claude_verdict" == "APPROVE" || "$claude_verdict" == "MINOR") && \
-              ("$gemini_verdict" == "APPROVE" || "$gemini_verdict" == "MINOR") ]]; then
-          echo "=== CODEX FALLBACK: 2-of-3 consensus reached (Claude=$claude_verdict, Gemini=$gemini_verdict) ===" >&2
+              ("$agy_verdict" == "APPROVE" || "$agy_verdict" == "MINOR") ]]; then
+          echo "=== CODEX FALLBACK: 2-of-3 consensus reached (Claude=$claude_verdict, Agy=$agy_verdict) ===" >&2
           # Write fallback result
           fallback_file="${RESULT_PREFIX}-FALLBACK.md"
           cat > "$fallback_file" <<FALLBACK_EOF
 # Codex Fallback Consensus (WRK-160)
 - **Codex**: NO_OUTPUT (empty response)
 - **Claude**: $claude_verdict
-- **Gemini**: $gemini_verdict
+- **Agy**: $agy_verdict
 - **Result**: CONDITIONAL_PASS (2-of-3 consensus)
 - **Timestamp**: $(date -u +%Y-%m-%dT%H:%M:%SZ)
 - **Policy**: Codex remains primary authority; fallback only on NO_OUTPUT, never on explicit REJECT/MAJOR
@@ -532,7 +540,7 @@ FALLBACK_EOF
           exit 0
         else
           echo "=== CODEX HARD GATE FAILED (no fallback consensus) ===" >&2
-          echo "Claude=$claude_verdict, Gemini=$gemini_verdict — need both APPROVE or MINOR for fallback." >&2
+          echo "Claude=$claude_verdict, Agy=$agy_verdict — need both APPROVE or MINOR for fallback." >&2
           echo "Review results saved to: ${RESULTS_DIR}/" >&2
           exit 1
         fi
@@ -553,11 +561,11 @@ FALLBACK_EOF
       exit 1
     fi
     ;;
-  claude|gemini)
+  claude|agy)
     submit_review "$REVIEWER"
     ;;
   *)
-    echo "Unknown reviewer: $REVIEWER (must be claude, codex, gemini, or all)" >&2
+    echo "Unknown reviewer: $REVIEWER (must be claude, codex, agy, or all)" >&2
     exit 1
     ;;
 esac

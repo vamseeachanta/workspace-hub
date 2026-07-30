@@ -21,6 +21,7 @@ This runs the 14-step bootstrap. On Windows native PowerShell, use `pwsh scripts
 | [EXISTING_MACHINE_AUDIT.md](EXISTING_MACHINE_AUDIT.md) | You suspect a machine has drifted from canonical state. Walks through the audit flow + targeted repair commands. |
 | [PROVIDER_AUTH_GUIDE.md](PROVIDER_AUTH_GUIDE.md) | Per-provider authentication for Claude, Codex, GitHub, Gemini, Hermes. Token rotation. What's auto-handled vs manual. |
 | [MACHINE_REGISTRY.md](MACHINE_REGISTRY.md) | How the control-plane (`ace-linux-1`) reads per-machine status from `config/machine-baselines/` and aggregates the fleet drift report. |
+| [Remote Linux access](../ops/remote-linux-access.md) | Post-bootstrap Tailscale transport, OpenSSH authentication, hardening, verification, and recovery. |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Known issues: NTFS dirty volumes, sparse-checkout overlays, Codex stdin hang, parallel-session git conflicts, sudo prompts during auto-install. |
 
 ## How the pieces fit

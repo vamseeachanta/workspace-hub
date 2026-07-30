@@ -20,6 +20,8 @@ cards:
       - design-system
       - dispatch:ready
       - lane:claude
+      - domain:content
+      - cat:documentation
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -41,6 +43,8 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - lane:claude
+      - domain:content
+      - cat:documentation
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -61,6 +65,8 @@ cards:
       - design-system
       - dispatch:ready
       - lane:claude
+      - domain:content
+      - cat:documentation
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -81,6 +87,8 @@ cards:
       - design-system
       - dispatch:ready
       - lane:claude
+      - domain:content
+      - cat:documentation
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -99,6 +107,8 @@ cards:
       - machine:dev-primary
       - dispatch:ready
       - lane:claude
+      - cat:engineering
+      - domain:subsea
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -163,6 +173,8 @@ cards:
       - priority:high
       - status:plan-approved
       - lane:claude
+      - cat:engineering
+      - domain:security
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -184,9 +196,11 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - cat:tooling
       - content
       - design-system
       - lane:claude
+      - domain:website
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -198,7 +212,9 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - cat:tooling
       - lane:claude
+      - domain:website
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -211,6 +227,8 @@ cards:
     gh_labels:
       - enhancement
       - lane:claude
+      - domain:content
+      - cat:documentation
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -223,6 +241,8 @@ cards:
     gh_labels:
       - enhancement
       - lane:claude
+      - domain:content
+      - cat:documentation
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -235,6 +255,8 @@ cards:
     gh_labels:
       - enhancement
       - lane:claude
+      - domain:content
+      - cat:documentation
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -259,6 +281,8 @@ cards:
     gh_labels:
       - enhancement
       - lane:claude
+      - domain:content
+      - cat:documentation
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -294,7 +318,9 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - cat:tooling
       - lane:claude
+      - domain:website
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -356,9 +382,11 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - cat:tooling
       - status:plan-approved
       - lane:codex
       - lane:claude
+      - domain:website
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -449,6 +477,296 @@ cards:
     gh_state: closed
     gh_labels:
       - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#72
+    title: 'feat(reports): publish interactive tank-sloshing CFD case and summary reports'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/72
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:done
+      - lane:codex
+      - cat:engineering
+      - domain:cfd
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#74
+    title: 'feat(capabilities): registry-driven pinned field → well HTML drill-down [C11-R1]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/74
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+      - domain:website
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#75
+    title: Register verified digitalmodel riser analysis Hugging Face dataset
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/75
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#76
+    title: 'feat(nav): make aceengineer.com navigable — consistent capability nav on every page'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/76
+    gh_state: open
+    gh_labels:
+      - cat:tooling
+      - domain:website
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#80
+    title: '[Epic] Site organization, navigation and design consistency (audit 2026-07-26)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/80
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:tooling
+      - design-system
+      - lane:claude
+      - domain:website
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#81
+    title: 'A1 — Navigable IA: real nav + hub cross-links, reconnect 26 orphan pages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/81
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:tooling
+      - design-system
+      - lane:claude
+      - status:needs-plan
+      - domain:website
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#82
+    title: 'A2 — One design system: collapse marketing/components/theme CSS onto one token set'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/82
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:tooling
+      - design-system
+      - lane:claude
+      - status:needs-plan
+      - domain:website
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#83
+    title: 'A3 — Capability pages: align generated output with the design system, close the dead end'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/83
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:tooling
+      - design-system
+      - lane:claude
+      - status:needs-plan
+      - domain:website
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#84
+    title: A4 — Bootstrap 3.4 (EOL 2019) to Bootstrap 5.3
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/84
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - design-system
+      - lane:claude
+      - status:needs-plan
+      - domain:website
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#85
+    title: A5 — Generated sitemap + canonical URLs + Dataset JSON-LD
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/85
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:working
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#86
+    title: 'A6 — Asset delivery: PurgeCSS no-op, three Plotly versions, unbundled CSS'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/86
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - status:working
+      - cat:tooling
+      - lane:claude
+      - domain:website
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#87
+    title: 'A7 — Accessibility baseline: main landmark, skip link, heading order, contrast'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/87
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - status:working
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#88
+    title: 'A8 — Repo structure Phase 2: retire the legacy root tree (follow-up to #13)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/88
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - lane:claude
+      - status:needs-plan
+      - domain:website
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#89
+    title: 'A9 — Brand/messaging reconciliation: one story, one set of enforced rules'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/89
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - content
+      - design-system
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+      - cat:documentation
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#97
+    title: '[Epic] Promote all 57 digitalmodel + worldenergydata capabilities to aceengineer.com, HF-backed'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/97
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#98
+    title: C3 — Expand the capability registry 5 → 57 (all dm + wed capabilities)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/98
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#99
+    title: C4 — Capability taxonomy + hub IA that survives 57 pages
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/99
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#100
+    title: 'C7 — One AceEngineer wordmark: logo, favicon and schema.org logo share no palette today'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/100
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#101
+    title: 'A10 — Visual-regression tooling: nothing catches a layout break, and four issues need it first'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/101
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#102
+    title: 'C8 — HF snapshot + fetch scaling: sized for 5 capabilities, #98 makes it 57'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/102
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-website#103
+    title: C9 — Gate figure provenance so embedded data cannot come back
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-website/issues/103
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []

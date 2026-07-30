@@ -14,7 +14,7 @@ WORKSPACE_HUB = Path(__file__).resolve().parents[2]
 SCORECARD_PATH = WORKSPACE_HUB / "config" / "ai-tools" / "provider-routing-scorecard.json"
 DEFAULT_JSON_OUT = WORKSPACE_HUB / "config" / "ai-tools" / "provider-work-queue.json"
 DEFAULT_MD_OUT = WORKSPACE_HUB / "docs" / "reports" / "provider-work-queue.md"
-PROVIDERS = ("claude", "codex", "gemini")
+PROVIDERS = ("claude", "codex", "agy")
 
 RESEARCH_TERMS = {
     "research", "audit", "triage", "recon", "reconnaissance", "scan", "inventory",
@@ -91,10 +91,10 @@ def suggested_provider(issue: dict[str, Any]) -> tuple[str, str]:
     if any(term in haystack for term in IMPLEMENT_TERMS):
         return "codex", "implementation/test/fix language"
     if any(term in haystack for term in RESEARCH_TERMS):
-        return "gemini", "research/triage/audit language"
+        return "agy", "research/triage/audit language"
 
     if "cat:data-pipeline" in labels or "cat:document-intelligence" in labels:
-        return "gemini", "data-pipeline/document-intelligence label"
+        return "agy", "data-pipeline/document-intelligence label"
     if "bug" in labels:
         return "codex", "bug label"
     return "claude", "default long-context routing"
