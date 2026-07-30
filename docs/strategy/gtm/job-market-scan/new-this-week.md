@@ -1,620 +1,564 @@
 # New Job Postings This Week
 
-> Scan date: 2026-07-13
+> Scan date: 2026-07-27
 > New postings not seen in any previous scan
 
-## Summary: 948 new postings found
+## Summary: 1024 new postings found
 
-### Tier 1 — Elite Niche (OrcaFlex, riser, mooring) (166 new)
-
-| Score | Title | Company | Location | Source | Keyword |
-|-------|-------|---------|----------|--------|---------|
-| 150 | Senior Installation Analysis Engineer | Subsea7 | Houston, TX | linkedin | OrcaFlex engineer |
-| 150 | Senior Mooring Engineer | Intermoor | Houston, TX | linkedin | riser engineer offshore |
-| 150 | Engineer I, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
-| 150 | Senior Mooring Engineer | Intermoor | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Engineer I, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior Installation Analysis Engineer | Subsea7 | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior or Above Marine/ Mechanical Engineer | American Bureau of Shipping (A | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior Project Engineer | McDermott International, Ltd | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior or Above Marine/ Mechanical Engineer | ABS Dubai | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior Project Engineer (Installation Methods) | Subsea7 | Houston, TX | linkedin | mooring engineer offshore |
-| 135 | Engineering Applications | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
-| 135 | Completions Installation Engineer | TechnipFMC | Houston, TX | linkedin | mooring engineer offshore |
-| 130 | Senior Consultant, Ports and Marine Civil/Structural Enginee | WSP | Irvine, CA 92618(Irv | indeed | riser engineer offshore |
-| 130 | Piping Walkdown Designer / Engineer | Worley | Odessa, TX | indeed | riser engineer offshore |
-| 130 | Coordinator, Marine | Cheniere Energy, Inc. | Gregory, TX | linkedin | mooring engineer offshore |
-| 125 | Lead Mooring Engineer [HOU] | Hanwha Ocean EPU | Houston, TX | linkedin | OrcaFlex engineer |
-| 125 | Senior Mooring Engineer [HOU] | Hanwha Ocean EPU | Houston, TX | linkedin | OrcaFlex engineer |
-| 125 | Senior Engineer- Structural | Nabors Industries | Houston, TX(Greenspo | indeed | riser engineer offshore |
-| 125 | Senior Mooring Engineer [HOU] | Hanwha Ocean EPU | Houston, TX | linkedin | riser engineer offshore |
-| 125 | Sr Engineer Process | Zachry Group | Houston, TX | linkedin | riser engineer offshore |
-
-### Tier 2 — Strong Niche (cathodic, subsea, pipeline) (263 new)
+### Tier 1 — Elite Niche (OrcaFlex, riser, mooring) (61 new)
 
 | Score | Title | Company | Location | Source | Keyword |
 |-------|-------|---------|----------|--------|---------|
-| 130 | Senior Mooring Engineer | Intermoor | Houston, TX | linkedin | pipeline engineer offshore |
-| 130 | Senior Project Engineer | McDermott International, Ltd | Houston, TX | linkedin | pipeline engineer offshore |
-| 130 | Senior Project Engineer (Installation Methods) | Subsea7 | Houston, TX | linkedin | pipeline engineer offshore |
-| 130 | Engineer I, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | integrity engineer offshore |
-| 130 | Senior or Above Marine/ Mechanical Engineer | American Bureau of Shipping (A | Houston, TX | linkedin | integrity engineer offshore |
-| 130 | Senior or Above Marine/ Mechanical Engineer | ABS Dubai | Houston, TX | linkedin | naval architect Houston |
-| 130 | Senior or Above Marine/ Mechanical Engineer | American Bureau of Shipping (A | Houston, TX | linkedin | naval architect Houston |
-| 130 | Carbon Capture Marine Engineer /Senior Engineer - Technology | American Bureau of Shipping (A | Houston, TX | linkedin | naval architect Houston |
-| 125 | Senior Wellbore Reliability Engineer | Diamondback Energy | Midland, TX | linkedin | API 579 fitness for service |
-| 125 | Senior Wellbore Reliability Engineer | Diamondback Energy | Midland, TX | linkedin | integrity engineer offshore |
-| 125 | Reliability Specialist | NextDecade | Brownsville, TX | linkedin | integrity engineer offshore |
-| 115 | Completions Installation Engineer | TechnipFMC | Houston, TX | linkedin | pipeline engineer offshore |
-| 115 | Mechanical Engineer - Customized Solutions | Subsea7 | Houston, TX | linkedin | pipeline engineer offshore |
-| 115 | Lead Engineer - Fleet Engineering, Mechanical Structures | GE Vernova | Schenectady, NY | linkedin | pipeline engineer offshore |
-| 115 | Lead Engineer - Fleet Engineering, Mechanical Structures | GE Vernova | Greenville, SC | linkedin | pipeline engineer offshore |
-| 115 | Rigid Pipe Engineer | TechnipFMC | Houston, TX | linkedin | API 579 fitness for service |
-| 115 | Senior Principal Mechanical Engineer | Worley | Charleston, WV | linkedin | API 579 fitness for service |
-| 115 | Rigid Pipe Engineer | TechnipFMC | Houston, TX | linkedin | integrity engineer offshore |
-| 115 | Senior/ Staff Engineer, Process Safety Management | Cheniere Energy, Inc. | Cameron, LA | linkedin | integrity engineer offshore |
-| 115 | New Repair Introduction Lead Hot Gas Path Engineer | GE Vernova |  | career_page | career_page_scan |
+| 150 | Lead SURF Engineer | Worley | Houston, TX | linkedin | OrcaFlex engineer |
+| 150 | Lead SURF Engineer | Worley | Houston, TX | linkedin | riser engineer offshore |
+| 125 | Lead SURF Engineer | Airswift | Houston, TX | linkedin | OrcaFlex engineer |
+| 125 | Lead SURF Engineer | Orion Group | Houston, TX | linkedin | OrcaFlex engineer |
+| 125 | Lead SURF Engineer | Orion Group | Houston, TX | linkedin | riser engineer offshore |
+| 115 | Epic Willow Home Infusion Analyst Consultant | The Planet Group | United States | linkedin | hydrodynamic analyst offshore |
+| 110 | Autonomy Engineer | Persona AI | Houston, TX | linkedin | riser engineer offshore |
+| 110 | Senior Engineer | Tata Consultancy Services | Charlotte, NC | linkedin | riser engineer offshore |
+| 110 | Senior Engineer | Tata Consultancy Services | Charlotte, NC | linkedin | riser engineer offshore |
+| 110 | Sr. Engineer, Contact Center Platform Stability & Production | LPL Financial | Fort Mill, SC | linkedin | riser engineer offshore |
+| 110 | Principal Enterprise Security & AI Engineering Architect | Delta Dental of Missouri | St Louis, MO | linkedin | riser engineer offshore |
+| 110 | Solutions Leader, Scaled Engineering and Cloud GTM | Slalom | Miami, FL | linkedin | riser engineer offshore |
+| 110 | Senior Analyst, Programmatic | Spark Foundry | New York, NY | linkedin | hydrodynamic analyst offshore |
+| 110 | Senior Analyst, Precision | Digitas North America | New York, NY | linkedin | hydrodynamic analyst offshore |
+| 110 | Senior Analyst, Precision | Digitas North America | Boston, MA | linkedin | hydrodynamic analyst offshore |
+| 110 | Senior Forecasting Analyst | HAVI | Chicago, IL | linkedin | hydrodynamic analyst offshore |
+| 105 | M365 SME /Engineer | Upbound Group | Plano, TX | linkedin | riser engineer offshore |
+| 105 | Client Technology - Engineering - Architecture | EY | Austin, TX | linkedin | riser engineer offshore |
+| 105 | Client Technology - Engineering - Architecture | EY | Dallas, TX | linkedin | riser engineer offshore |
+| 105 | Client Technology - Engineering - Architecture | EY | Dallas, TX | linkedin | riser engineer offshore |
 
-### Tier 3 — Broader Fit (FEA, structural, corrosion) (280 new)
+### Tier 2 — Strong Niche (cathodic, subsea, pipeline) (316 new)
 
 | Score | Title | Company | Location | Source | Keyword |
 |-------|-------|---------|----------|--------|---------|
-| 110 | Senior/Principal Structural Engineer - Technology | American Bureau of Shipping (A | Houston, TX | linkedin | structural engineer offshore |
-| 110 | Engineer I, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | structural engineer offshore |
-| 110 | Senior Project Engineer (Installation Methods) | Subsea7 | Houston, TX | linkedin | structural engineer offshore |
-| 110 | Senior Project Engineer | McDermott International, Ltd | Houston, TX | linkedin | structural engineer offshore |
-| 110 | Engineer I, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | DNV engineer offshore |
-| 110 | Senior Mooring Engineer | Intermoor | Houston, TX | linkedin | DNV engineer offshore |
+| 150 | Senior Associate Technical Consultant, Infrastructure | Worley | Houston, TX | linkedin | floating wind engineer |
+| 130 | Senior Maintenance Engineer | Worley | Houston, TX | linkedin | pipeline engineer offshore |
+| 130 | Lead SURF Engineer | Worley | Houston, TX | linkedin | pipeline engineer offshore |
+| 130 | Senior Maintenance Engineer | Worley | Houston, TX | linkedin | integrity engineer offshore |
+| 125 | Sr. Stress Analyst | Oceaneering | Clear Lake Shores, T | linkedin | pipeline engineer offshore |
+| 125 | Sr. Stress Analyst | Oceaneering | Clear Lake Shores, T | linkedin | API 579 fitness for service |
+| 115 | Offshore Field Engineer | Worley | Houston, TX | linkedin | pipeline engineer offshore |
+| 115 | Principal Project Engineer | Worley | Denver, CO | linkedin | pipeline engineer offshore |
+| 115 | Project Engineer, Regulatory Compliance & Assurance | Venture Global LNG | Houston, TX | linkedin | integrity engineer offshore |
+| 115 | Offshore Field Engineer | Worley | Houston, TX | linkedin | integrity engineer offshore |
+| 115 | Marine Electrical and Power Systems Engineer (Drives and Aut | Siemens Energy | Houston, TX | linkedin | naval architect Houston |
+| 115 | Offshore Field Engineer | Worley | Houston, TX | linkedin | floating wind engineer |
+| 115 | Senior Systems Engineer – Performance Upgrades | GE Vernova |  | career_page | career_page_scan |
+| 105 | Engineering Manager – Cathodic Protection & Corrosion Engine | Umanist NA | Houston, TX | linkedin | cathodic protection engineer |
+| 105 | Senior Maintenance Engineer | Fort Point LLC | Houston, TX | linkedin | pipeline engineer offshore |
+| 105 | Lead Installation Engineer | Insight Global | Houston, TX | linkedin | pipeline engineer offshore |
+| 105 | Lead SURF Engineer | Orion Group | Houston, TX | linkedin | pipeline engineer offshore |
+| 105 | Principal Engineer - Aftermarket | Weatherford | Houston, TX | linkedin | pipeline engineer offshore |
+| 105 | Piping Design Specialist, Senior | Audubon Companies | Houston, TX | linkedin | pipeline engineer offshore |
+| 105 | CWK Principal Integrity Engineer | Wood | Houston, TX | linkedin | API 579 fitness for service |
+
+### Tier 3 — Broader Fit (FEA, structural, corrosion) (408 new)
+
+| Score | Title | Company | Location | Source | Keyword |
+|-------|-------|---------|----------|--------|---------|
+| 130 | Senior Associate Technical Consultant, Infrastructure | Worley | Houston, TX | linkedin | DNV engineer offshore |
 | 110 | Principal Engineer- EMT and Special Studies | DNV | Houston, TX | linkedin | DNV engineer offshore |
-| 110 | Principal AI Developer | Energy Transfer | Houston, TX | linkedin | Python engineer oil gas |
-| 110 | Lead AI Engineer | Worley | Houston, TX | linkedin | Python engineer oil gas |
-| 105 | Principal Engineer- EMT and Special Studies | DNV | Austin, TX | linkedin | DNV engineer offshore |
+| 110 | Customized Solutions Project Specialist | Subsea7 | Houston, TX | linkedin | DNV engineer offshore |
+| 110 | Lead SURF Engineer | Worley | Houston, TX | linkedin | DNV engineer offshore |
+| 110 | Principal LNG Growth & Advisory Lead | DNV | Houston, TX | linkedin | DNV engineer offshore |
+| 110 | Senior Machine Learning Engineer | bp | Houston, TX | linkedin | Python engineer oil gas |
+| 105 | Sr. Stress Analyst | Oceaneering | Clear Lake Shores, T | linkedin | FEA analyst ANSYS |
+| 105 | Sr. Stress Analyst | Oceaneering | Clear Lake Shores, T | linkedin | structural engineer offshore |
+| 105 | Senior Wellbore Reliability Engineer | Diamondback Energy | Midland, TX | indeed | corrosion engineer |
+| 105 | Sr. Stress Analyst | Oceaneering | Clear Lake Shores, T | linkedin | DNV engineer offshore |
 | 105 | Principal Engineer- EMT and Special Studies | DNV | Dallas, TX | linkedin | DNV engineer offshore |
-| 95 | Lead Engineer - Fleet Engineering, Mechanical Structures | GE Vernova | Schenectady, NY | linkedin | structural engineer offshore |
-| 95 | Lead Engineer - Fleet Engineering, Mechanical Structures | GE Vernova | Greenville, SC | linkedin | structural engineer offshore |
-| 95 | Engineering Applications | American Bureau of Shipping (A | Houston, TX | linkedin | DNV engineer offshore |
-| 95 | Senior Production Systems Engineer | bp | Denver, CO 80202(Lod | indeed | Python engineer oil gas |
-| 95 | Senior Production Systems Engineer | bp | Denver, CO | linkedin | Python engineer oil gas |
-| 95 | Software Engineer, Backend - AI Practice Team | ABS Group | Houston, TX | linkedin | Python engineer oil gas |
+| 105 | Principal Engineer- EMT and Special Studies | DNV | Austin, TX | linkedin | DNV engineer offshore |
+| 105 | Sr. Fullstack Developer | ExxonMobil | Spring, TX | linkedin | Python engineer oil gas |
+| 95 | Principal Project Engineer | Worley | Denver, CO | linkedin | structural engineer offshore |
+| 95 | Offshore Field Engineer | Worley | Houston, TX | linkedin | DNV engineer offshore |
+| 95 | Technical Sales / Sales Engineer | DNV | Houston, TX | linkedin | DNV engineer offshore |
+| 95 | Project Engineer, Regulatory Compliance & Assurance | Venture Global LNG | Houston, TX | linkedin | DNV engineer offshore |
 | 90 | Lead Python Consultant | Sonsoft Inc | Boston, MA | indeed | Python engineer oil gas |
-| 90 | Computational Scientist | ExxonMobil | Spring, TX | linkedin | Python engineer oil gas |
-| 90 | Data Scientist, Upstream Development | ExxonMobil | Spring, TX | linkedin | Python engineer oil gas |
+| 90 | Operations Research Engineer (CCS100 Optimization Engineer) | ExxonMobil | Spring, TX | linkedin | Python engineer oil gas |
+| 85 | Mechanical Engineering Specialist, Senior | Audubon Companies | Houston, TX | linkedin | structural engineer offshore |
 
 ### Tier 4 — Manufacturing / Wide Net (239 new)
 
 | Score | Title | Company | Location | Source | Keyword |
 |-------|-------|---------|----------|--------|---------|
-| 90 | Senior Principal Marine Operations Spec | McDermott International, Ltd | Houston, TX | linkedin | cathodic protection manufactur |
-| 75 | Rigid Pipe Engineer | TechnipFMC | Houston, TX | linkedin | cathodic protection manufactur |
-| 75 | Manufacturing Engineer | Oceaneering | Houston, TX | linkedin | cathodic protection manufactur |
-| 70 | Battery Materials Customer & Application Development Enginee | ExxonMobil | Spring, TX | linkedin | cathodic protection manufactur |
-| 65 | Engineering Manager | Corrpro Companies, Inc. | Houston, TX | linkedin | cathodic protection manufactur |
-| 65 | Manufacturing Manager – Lithium Refining | Licube | Greater Houston | linkedin | cathodic protection manufactur |
-| 65 | Materials & Process Principal Engineer | Axiom Space | Houston, TX | linkedin | cathodic protection manufactur |
-| 60 | Mechanical Analysis Engineer | GE Vernova | Wilmington, NC | linkedin | FEA analyst manufacturing |
-| 60 | Corrosion Technician | Energy Transfer | Kissimmee, FL | linkedin | cathodic protection manufactur |
-| 60 | CORROSION MANAGER (WHARTON, TX) | Kinder Morgan, Inc. | Wharton, TX | linkedin | cathodic protection manufactur |
-| 60 | Product Engineering Technician | Oceaneering | Morgan City, LA | linkedin | cathodic protection manufactur |
+| 85 | Sr. Stress Analyst | Oceaneering | Clear Lake Shores, T | linkedin | structural analyst aerospace |
+| 85 | Manager - Corrosion | Energy Transfer | Midland, TX | linkedin | cathodic protection manufactur |
+| 75 | Mechanical Engineer Specialist - Structural Analysis (Nuclea | Flowserve Corporation | Raleigh, NC | linkedin | ANSYS engineer manufacturing |
+| 75 | Quality Specialist | Bollinger Shipyards | Houma, LA | linkedin | cathodic protection manufactur |
+| 70 | Corrosion Science Post-Doctoral Fellow | ExxonMobil | Spring, TX | linkedin | cathodic protection manufactur |
+| 65 | Sr. Structures Engineer | Venus Aerospace | Houston, TX | linkedin | structural analyst aerospace |
+| 65 | Engineering Manager – Cathodic Protection & Corrosion Engine | Umanist NA | Houston, TX | linkedin | cathodic protection manufactur |
+| 65 | Senior Corrosion Specialist | Plains | Houston, TX | linkedin | cathodic protection manufactur |
+| 60 | Analyst Principal | Westlake | Stafford, TX | linkedin | FEA analyst manufacturing |
+| 60 | Senior Mechanical Engineer – Structural Simulation & Analysi | Apptronik | Austin, TX | linkedin | ANSYS engineer manufacturing |
+| 60 | Senior Engineer, Structural Analysis (R5173) | Shield AI | San Diego, TX | linkedin | ANSYS engineer manufacturing |
+| 60 | Senior Engineer, Structural Analysis (R5173) | Shield AI | San Diego, TX | linkedin | structural analyst aerospace |
+| 60 | Corrosion Control Technician- Sr Control Technician | Atmos Energy | Athens, TX | linkedin | cathodic protection manufactur |
+| 60 | Sr Corrosion Control Technician | Atmos Energy | Abilene, TX | linkedin | cathodic protection manufactur |
+| 60 | Corrosion Technician | Energy Transfer | Watford City, ND | linkedin | cathodic protection manufactur |
+| 60 | Production Manager – Steel Pipe & Coating Operations | Jobot | Corpus Christi, TX | linkedin | cathodic protection manufactur |
+| 60 | Equipment Engineering Manager - Solar Cell Factory (Starlink | SpaceX | Bastrop, TX | linkedin | cathodic protection manufactur |
 | 60 | Quality Specialist | NOV | Beaumont, TX | linkedin | cathodic protection manufactur |
-| 60 | Senior Engineer, Metal Making | MP Materials | Fort Worth, TX | linkedin | cathodic protection manufactur |
-| 60 | Manager, Chemical Operations & Production | SpaceX | Bastrop, TX | linkedin | cathodic protection manufactur |
-| 60 | Project Engineering Manager | Gulf Copper | Galveston, TX | linkedin | cathodic protection manufactur |
-| 55 | Consulting Engineer - FEA | IMAGINiT Technologies | San Francisco, CA | linkedin | ANSYS engineer manufacturing |
-| 55 | Consulting Engineer - FEA | IMAGINiT Technologies | San Francisco, CA | linkedin | structural analyst aerospace |
-| 55 | Stress Engineer (Contract) | Airbus Aircraft | Wichita, KS | linkedin | structural analyst aerospace |
-| 50 | Specialist, Mechanical Engineer | L3Harris Technologies | North Amityville, NY | linkedin | FEA analyst manufacturing |
-| 50 | Design Engineering Specialist 1 | Fox Factory | Elkhart, IN | linkedin | FEA analyst manufacturing |
+| 50 | Senior Structural Analyst I/II | Rocket Lab | Chantilly, VA | linkedin | FEA analyst manufacturing |
+| 50 | Principal Mechanical Systems Simulation Engineer | 4MP Inc | United States | linkedin | FEA analyst manufacturing |
 
 ## New Companies This Week
 
-**506 companies** appeared for the first time:
+**450 companies** appeared for the first time:
 
-- **3E** (1 roles)
-- **3Pillar** (2 roles)
-- **AAA Global** (1 roles)
-- **ABB** (1 roles)
-- **ABS Dubai** (2 roles) ✅ PRIORITY
-- **ABS Group** (1 roles) ✅ PRIORITY
-- **ACCIONA** (1 roles)
-- **ACL Digital** (1 roles)
-- **ACV Auctions** (4 roles)
-- **AECOM** (4 roles)
-- **AI Fund** (2 roles)
-- **ALSO.** (1 roles)
-- **AMETEK** (2 roles)
-- **ANDRITZ** (1 roles)
-- **ASM** (1 roles)
-- **ASRC Federal** (1 roles)
-- **ATI** (2 roles)
-- **ATT Metrology Solutions** (1 roles)
-- **AUTOMO USA** (1 roles)
-- **AbbVie** (2 roles)
-- **Academy Sports + Outdoors** (2 roles)
-- **Accord Technologies Inc** (3 roles)
-- **Acorn Product Development** (1 roles)
-- **Actalent** (1 roles)
-- **Acuren** (7 roles)
-- **Addison Group** (1 roles)
-- **Admiral Field Services** (1 roles)
-- **Advantage Technical** (1 roles)
-- **Aerolab** (2 roles)
-- **Air Liquide** (2 roles)
+- **3M** (1 roles)
+- **4MP Inc** (1 roles)
+- **ALTEN Technology USA** (3 roles)
+- **AMPAM** (1 roles)
+- **ANF Group, Inc.** (2 roles)
+- **APT (A-P-T Research, Inc.)** (1 roles)
+- **APTIM** (2 roles)
+- **ARA** (3 roles)
+- **Abbott** (2 roles)
+- **Activ8 Recruitment & Solutions** (1 roles)
+- **Acuren** (6 roles)
+- **Aecon U.S.** (1 roles)
+- **Air Products** (1 roles)
 - **Airbus Aircraft** (4 roles)
-- **Airswift** (2 roles)
-- **Akkodis** (3 roles)
-- **Amazon** (9 roles)
-- **Amentum** (1 roles)
-- **American Bureau of Shipping (ABS)** (12 roles) ✅ PRIORITY
-- **American Electric Power** (1 roles)
-- **American Electro Products** (2 roles)
-- **American National** (1 roles)
+- **Airswift** (5 roles)
+- **Allan Myers Inc.** (4 roles)
+- **Amazon Web Services, Inc.** (1 roles)
+- **Ambs Chemical Search LLC** (1 roles)
+- **Amentum** (7 roles)
+- **Ampcus Inc** (1 roles)
+- **Amphenol Communications Solutions** (1 roles)
 - **Amphenol RF** (2 roles)
-- **Anduril Industries** (5 roles)
-- **Aon** (1 roles)
-- **Apera** (1 roles)
-- **Apex Bridge Talent Group** (2 roles)
-- **Applied Materials** (1 roles)
-- **Approach Venture** (2 roles)
-- **ArcelorMittal Calvert** (2 roles)
-- **ArcelorMittal South Africa** (1 roles)
-- **ArcelorMittal Tailored Blanks North America** (1 roles)
-- **Arcfield** (2 roles)
-- **Archipelago** (1 roles)
-- **ArmorWorks Enterprises, Inc** (1 roles)
-- **Arup** (2 roles)
-- **Askari Defense** (1 roles)
-- **Ateeca Inc** (1 roles)
-- **Atlanta Gas Light** (1 roles)
-- **Atlas Copco** (1 roles)
-- **Atmos Energy** (1 roles)
-- **Audubon Companies** (1 roles)
-- **Austal USA** (1 roles)
-- **Avance Consulting** (1 roles)
-- **Avangrid** (1 roles)
-- **Averro** (1 roles)
-- **Axiom Space** (1 roles)
-- **Axis Energy Services** (1 roles)
-- **BAE Systems, Inc.** (3 roles)
-- **Baker Hughes** (1 roles)
-- **Balco, Inc.** (1 roles)
-- **Bank of America** (1 roles)
+- **Andromeda Systems Incorporated** (2 roles)
+- **Anduril Industries** (10 roles)
+- **Antares** (1 roles)
+- **Apex Systems** (2 roles)
+- **Applicantz** (2 roles)
+- **Apptronik** (3 roles)
+- **Arcadis** (1 roles)
+- **Archer** (1 roles)
+- **Arconic** (1 roles)
+- **Arup** (1 roles)
+- **Aspire Bakeries** (1 roles)
+- **Astrion** (1 roles)
+- **Ateeca Inc** (2 roles)
+- **Atlas Search** (2 roles)
+- **Atmos Energy** (3 roles)
+- **Atomic Machines** (2 roles)
+- **Audubon Companies** (5 roles)
+- **Austal USA** (4 roles)
+- **Azuria Water Solutions** (1 roles)
+- **BAE Systems, Inc.** (4 roles)
+- **BGE, Inc** (2 roles)
+- **BIP US** (1 roles)
+- **BWE, Inc.** (1 roles)
+- **Baker Construction** (1 roles)
+- **Baker Hughes** (13 roles)
+- **Ballard Marine Construction** (2 roles)
+- **Barnhart Crane & Rigging** (1 roles)
+- **Barrday Inc.** (1 roles)
 - **Bastion Technologies, Inc.** (1 roles)
-- **Bechtel Corporation** (3 roles)
-- **Belcan** (3 roles)
-- **Beusa Energy** (1 roles)
-- **Beyond Gravity** (2 roles)
-- **Beyond New Horizons** (2 roles)
-- **Biglift Amstel B.V.** (6 roles)
+- **Battelle** (1 roles)
+- **Bay Ltd.** (1 roles)
+- **Bechtel Corporation** (1 roles)
+- **Belcan** (2 roles)
+- **Biglift Amstel B.V.** (8 roles)
+- **BioTalent** (1 roles)
+- **Black & Veatch** (1 roles)
 - **BlackRock Resources LLC** (1 roles)
-- **Blue Origin** (11 roles)
-- **Boar's Head Brand** (1 roles)
+- **Blue Bird Corporation** (1 roles)
+- **Blue Origin** (21 roles)
 - **Boardwalk Pipelines** (2 roles)
-- **Boeing** (11 roles)
-- **Bombardier** (3 roles)
-- **Bonneville Power Administration** (1 roles)
-- **Booz Allen Hamilton** (3 roles)
-- **Brain Corp** (1 roles)
-- **BravoTECH** (1 roles)
-- **Brindley Engineering Corporation** (1 roles)
-- **Bristol Wave Seafoods, LLC** (3 roles)
-- **Brunswick Corporation** (1 roles)
-- **Bureau of Land Management** (1 roles)
-- **Burns & McDonnell** (1 roles)
-- **CACI International Inc** (4 roles)
-- **CBIZ** (1 roles)
-- **CFD Research Corporation** (1 roles)
-- **COMLUX AMERICA** (1 roles)
-- **CPS Energy** (1 roles)
-- **CSD Engineers** (1 roles)
-- **CSS AG** (1 roles)
-- **CSW Industrials Inc.** (1 roles)
+- **Boeing** (6 roles)
+- **Bollinger Shipyards** (1 roles) ✅ PRIORITY
+- **Boom Supersonic** (1 roles)
+- **Booz Allen Hamilton** (1 roles)
+- **BrandSafway** (1 roles)
+- **Braun Intertec Corporation** (1 roles)
+- **Brightpath Associates LLC** (1 roles)
+- **C9Xperts Corp** (1 roles)
+- **CAMP Systems International, Inc.** (3 roles)
+- **CB&I** (4 roles)
+- **CEC®** (1 roles)
+- **CHAOS Industries** (1 roles)
+- **CITGO** (1 roles)
+- **COWI** (2 roles)
 - **CTS Complete Technical Services** (2 roles)
-- **CVR Energy, Inc.** (2 roles)
-- **California State University Maritime Academy** (1 roles)
-- **Carnival Cruise Line** (1 roles)
-- **Chalk** (1 roles)
+- **Cambrex** (2 roles)
+- **CapstoneONE Search** (1 roles)
+- **Castelion** (2 roles)
+- **Castleton Commodities International** (1 roles)
+- **Centraprise** (2 roles)
 - **ChampionX** (1 roles)
-- **Charles River Analytics** (1 roles)
-- **Chemtrade** (1 roles)
-- **Cheniere Energy, Inc.** (2 roles) ✅ PRIORITY
-- **Classic Engineering, LLC** (1 roles)
-- **CoAspire** (1 roles)
-- **Coffman Engineers** (1 roles)
-- **Collabera** (1 roles)
-- **Collins Aerospace** (1 roles)
-- **ConocoPhillips** (2 roles)
-- **Constellation** (1 roles)
-- **Contract Professionals, Inc.** (3 roles)
-- **Core Group Resources** (4 roles)
-- **Corrpro Companies, Inc.** (1 roles)
-- **Cortina Solutions** (1 roles)
-- **Cowboy Space Corporation** (1 roles)
-- **Creare** (1 roles)
-- **Crescent Solutions** (1 roles)
-- **Critical Energy** (1 roles)
-- **Crowley** (1 roles)
-- **Cuhaci Peterson®** (1 roles)
-- **Cybotic System** (1 roles)
-- **DAS Staffing Inc.** (1 roles)
-- **DND Staffing LLC** (1 roles)
+- **Chance Maritime Technologies** (1 roles)
+- **Cherokee Millwright, Inc.** (1 roles)
+- **Cirrus** (2 roles)
+- **Cisco** (1 roles)
+- **Citadel Securities** (2 roles)
+- **Cititec** (1 roles)
+- **Clark Bros Inc.** (1 roles)
+- **CoAspire** (2 roles)
+- **Collins Aerospace** (3 roles)
+- **ColonialWebb** (1 roles)
+- **Conduit Power** (1 roles)
+- **Contemporary Amperex Technology Kentucky LLC** (1 roles)
+- **Continental Resources** (1 roles)
+- **Control Risks** (1 roles)
+- **Core Group Resources** (2 roles)
+- **Cornerstone Surveying & Mapping** (2 roles)
+- **Corvant** (1 roles)
+- **Crescent Midstream, LLC** (3 roles)
+- **Cummins Inc.** (3 roles)
+- **Curtiss-Wright Corporation** (9 roles)
+- **CyberCoders** (1 roles)
+- **DESE Research, Inc.** (3 roles)
+- **DICK'S Sporting Goods** (1 roles)
 - **DNV** (5 roles) ✅ PRIORITY
 - **DRW** (1 roles)
-- **Datwyler Group** (2 roles)
-- **Deloitte** (11 roles)
-- **Delta System & Software, Inc.** (1 roles)
-- **Diamond Peak Recruiting** (1 roles)
-- **Diamondback Energy** (2 roles) ✅ PRIORITY
-- **DisruptXtalent** (1 roles)
-- **E-Space** (1 roles)
-- **ECS** (1 roles)
+- **Daikin Comfort** (1 roles)
+- **Darwin Recruitment** (2 roles)
+- **Dassault Falcon Jet** (1 roles)
+- **Dauch** (1 roles)
+- **Delek US** (1 roles)
+- **Deloitte** (13 roles)
+- **Delta Dental of Missouri** (1 roles)
+- **Deugro USA** (1 roles)
+- **Dexcom** (1 roles)
+- **Diamondback Energy** (1 roles) ✅ PRIORITY
+- **Digital Prospectors** (2 roles)
+- **Digitas North America** (2 roles)
+- **Divergent** (1 roles)
+- **Doyon, Limited** (1 roles)
+- **Duke Energy Corporation** (1 roles)
+- **Dynamis Power Solutions** (1 roles)
+- **Dyno Nobel** (1 roles)
+- **E-Space** (2 roles)
+- **ECLARO** (1 roles)
 - **EDF power solutions North America** (2 roles)
-- **EDG** (1 roles)
-- **ENSCO, Inc.** (1 roles)
-- **EQT Corporation** (3 roles)
-- **ESCO Group LLC** (1 roles)
-- **ESPO Corporation** (1 roles)
-- **EVONA** (2 roles)
-- **EY** (2 roles)
-- **Earth Mechanics, Inc. (EMI)** (2 roles)
-- **Eaton** (1 roles)
-- **EcoMetric** (1 roles)
-- **Encorus Group** (1 roles)
+- **EQT Corporation** (4 roles)
+- **EY** (38 roles)
+- **EZARC** (1 roles)
+- **Econ One Research** (6 roles)
+- **Ecotal** (1 roles)
+- **Edgewater Technical Associates** (1 roles)
+- **Edison Smart®** (1 roles)
+- **Ellis & Watts Global Industries, Inc.** (4 roles)
+- **Enbridge** (1 roles)
+- **Enercon Services, Inc.** (2 roles)
 - **Energy Transfer** (2 roles) ✅ PRIORITY
-- **Entegris** (1 roles)
+- **Engelhart** (1 roles)
+- **Engtal** (1 roles)
+- **Entech Network Solutions, LLC.** (1 roles)
 - **Entergy** (1 roles)
-- **Enterprise Products** (6 roles)
-- **Enviva** (2 roles)
-- **Equinor** (1 roles) ✅ PRIORITY
+- **Enterprise Products** (1 roles)
+- **Enverus** (1 roles)
 - **Equinox Engineering Ltd.** (1 roles)
-- **Ergon Inc.** (2 roles)
-- **EthosEnergy** (1 roles)
+- **Ergon Inc.** (3 roles)
 - **Eversource Energy** (1 roles)
-- **Excelon Solutions** (3 roles)
-- **Expand Energy** (2 roles)
-- **ExxonMobil** (4 roles) ✅ PRIORITY
-- **FDM Group** (1 roles)
-- **FST Technical Services** (1 roles)
-- **Fairmont Hotels & Resorts** (1 roles)
-- **Farnsworth Group** (1 roles)
-- **Flowtec Group** (1 roles)
+- **Evonik Industries AG** (1 roles)
+- **Exponent Inc.** (2 roles)
+- **ExxonMobil** (3 roles) ✅ PRIORITY
+- **Federal Ammunition** (1 roles)
+- **Fintal Partners** (2 roles)
+- **FlatironDragados** (1 roles)
+- **Flex** (1 roles)
+- **Flexon Technologies Talent360.ai** (1 roles)
+- **Flowserve Corporation** (1 roles) ✅ PRIORITY
 - **Fluor Corporation** (1 roles)
-- **Ford Motor Company** (6 roles)
-- **Fox Factory** (1 roles)
-- **Fractal** (1 roles)
-- **Freeport-McMoRan** (1 roles)
-- **Frequency Electronics, Inc.** (1 roles)
-- **Fugro** (3 roles)
-- **GA Telesis** (2 roles)
-- **GE Vernova** (8 roles) ✅ PRIORITY
-- **GEA Group** (1 roles)
-- **GKN Aerospace** (2 roles)
-- **GRVTY** (1 roles)
-- **GSI Environmental Inc.** (1 roles)
-- **GTI Fabrication** (2 roles)
-- **General Atomics Aeronautical Systems** (1 roles)
-- **General Dynamics Electric Boat** (1 roles)
-- **General Dynamics Ordnance and Tactical Systems** (1 roles)
-- **General Motors** (2 roles)
-- **Global Technical Talent, an Inc. 5000 Company** (1 roles)
-- **Globalcom Technologies** (1 roles)
-- **Goken America** (2 roles)
-- **Golden Technology** (1 roles)
-- **Grapevine Energy** (1 roles)
-- **Great Lakes Dredge & Dock** (1 roles)
-- **Gulf Copper** (1 roles)
-- **H9 Talent Solutions** (1 roles)
-- **HCLTech** (3 roles)
-- **HECO** (1 roles)
-- **HOLT Manufacturing** (1 roles)
-- **HX5, LLC** (1 roles)
-- **Halliburton** (1 roles)
-- **Hanwha Energy USA** (1 roles)
-- **Hanwha Ocean EPU** (7 roles)
-- **Hanwha Philly Shipyard** (1 roles)
-- **Harbinger** (1 roles)
-- **Hashorn** (1 roles)
-- **Hatch** (2 roles)
-- **Haus** (2 roles)
-- **Helix Energy Solutions Group** (5 roles)
-- **Henniges Automotive** (3 roles)
-- **Hensley Industries** (1 roles)
-- **Holtec International** (1 roles)
-- **Honda South Carolina Manufacturing** (1 roles)
+- **Flywheel Energy, LLC** (1 roles)
+- **Ford Motor Company** (1 roles)
+- **Fort Point LLC** (2 roles)
+- **Fortify Technical Staffing** (1 roles)
+- **Freese and Nichols** (1 roles)
+- **Future Energy Enterprises, LLC** (1 roles)
+- **GE Vernova** (5 roles) ✅ PRIORITY
+- **GM Defense** (6 roles)
+- **GMA Construction Group** (2 roles)
+- **Gabletek Robotics and Controls Solutions** (2 roles)
+- **Garuda Ventures** (3 roles)
+- **General Atomics Aeronautical Systems** (3 roles)
+- **General Motors** (7 roles)
+- **Gentherm** (1 roles)
+- **Global Earthwork & Underground** (1 roles)
+- **Global Edge Group** (1 roles)
+- **Goken America** (1 roles)
+- **Golden Pass LNG** (2 roles)
+- **Goliath Partners** (1 roles)
+- **Great Lakes Cheese** (1 roles)
+- **Grupo Take Care** (1 roles)
+- **HAVI** (1 roles)
+- **HII** (4 roles)
+- **HSBMA** (1 roles)
+- **HTC Global Services** (1 roles)
+- **Habitat Energy** (1 roles)
+- **Hargrove Engineers & Constructors** (1 roles)
+- **Harper Brothers Construction LLC** (1 roles)
+- **Helion** (1 roles)
+- **Hermeus** (5 roles)
+- **HireTalent - Staffing & Recruiting Firm** (1 roles)
 - **Honeywell Aerospace** (1 roles)
-- **Hornblower Group** (2 roles)
-- **Howmet Aerospace** (1 roles)
-- **Hunter Recruiting** (2 roles)
-- **Huntsman Corporation** (2 roles)
-- **IMAGINiT Technologies** (2 roles)
-- **IMC Trading** (1 roles)
-- **INEOS Olefins & Polymers USA, LLC** (2 roles)
-- **INSPYR Solutions** (1 roles)
-- **IPT Global** (4 roles)
-- **IPolarity** (1 roles)
-- **Icarus** (2 roles)
-- **Idaho National Laboratory** (1 roles)
-- **InfoStride** (3 roles)
-- **Innovative Embedded Systems Pvt. Ltd. (SIIC IIT Kanpur).** (1 roles)
-- **Insight Global** (6 roles)
-- **IntePros** (1 roles)
-- **Intel** (1 roles)
-- **Intellisense Systems, Inc.** (1 roles)
-- **Intermoor** (4 roles) ✅ PRIORITY
-- **Intrinsic** (1 roles)
-- **Intuitive Machines** (1 roles)
-- **Invenergy** (4 roles)
+- **Honeywell Technologies** (1 roles)
+- **Hudson Manpower** (9 roles)
+- **Hunter Contracting Co.** (2 roles)
+- **Hyundai AutoEver America** (1 roles)
+- **INEOS Olefins & Polymers USA, LLC** (1 roles)
+- **IPT Global** (5 roles)
+- **ITMC Systems, Inc** (3 roles)
+- **Impetus** (1 roles)
+- **Indorama Ventures: Indovinya** (2 roles)
+- **Infosys** (2 roles)
+- **Innovative Refrigeration Systems, Inc.** (1 roles)
+- **Innovatix Technology Partners** (1 roles)
+- **Insight Global** (7 roles)
+- **Integrated Resources, Inc ( IRI )** (1 roles)
+- **Intertek** (3 roles)
+- **Invenergy** (2 roles)
 - **Inversion** (1 roles)
-- **JT4** (1 roles)
-- **Jacobs** (4 roles)
-- **James Hardie** (1 roles)
+- **Invesco** (1 roles)
+- **JMJ Phillip Group** (1 roles)
+- **JPMorganChase** (1 roles)
+- **JW Resources** (2 roles)
+- **Jacobs** (13 roles)
+- **Jinko U.S.** (1 roles)
 - **Jobot** (1 roles)
-- **Johns Hopkins Applied Physics Laboratory** (1 roles)
-- **Joulé** (1 roles)
-- **KBR** (3 roles)
-- **KBR Careers** (1 roles)
-- **KBR, Inc.** (1 roles)
-- **KIHOMAC** (1 roles)
-- **KODIAK Construction Recruiting & Staffing** (1 roles)
-- **Kegman Inc** (1 roles)
-- **Kelly Science, Engineering, Technology & Telecom** (1 roles)
-- **Kforce Inc** (1 roles)
-- **Kiewit** (4 roles)
-- **Kinder Morgan, Inc.** (2 roles)
-- **Koch** (2 roles)
-- **Korn Ferry** (1 roles)
-- **L&T Technology Services** (1 roles)
-- **L3Harris Technologies** (3 roles)
-- **LD Consulting** (1 roles)
-- **LG&E and KU Energy LLC** (1 roles)
-- **LaBella Associates** (2 roles)
-- **Lam Research** (2 roles)
-- **Laveer Engineering** (2 roles)
-- **Leeward Renewable Energy** (1 roles)
-- **Leonardo DRS** (1 roles)
+- **Jump Trading** (1 roles)
+- **K2 Space Corporation** (2 roles)
+- **KBR Careers** (2 roles)
+- **KEMET Electronics Corporation** (1 roles)
+- **Keller Augusta** (1 roles)
+- **Kemper Insurance** (1 roles)
+- **Ken's Foods** (1 roles)
+- **Kiewit** (15 roles)
+- **Kinder Morgan, Inc.** (5 roles)
+- **Kinetik** (2 roles)
+- **Kirby** (1 roles)
+- **Kirby Offshore Marine** (2 roles)
+- **Knightwerx** (3 roles)
+- **Koch Ag & Energy Solutions, LLC** (1 roles)
+- **Kohler Co.** (1 roles)
+- **Kraton Corporation** (2 roles)
+- **Kratos Defense and Security Solutions** (4 roles)
+- **Kunai, part of the PwC Network** (1 roles)
+- **Körber** (6 roles)
+- **Körber Supply Chain** (10 roles)
+- **L2x Talent Solutions** (1 roles)
+- **LER TechForce** (3 roles)
+- **LMOceans** (3 roles)
+- **LPL Financial** (1 roles)
+- **LS Power** (1 roles)
+- **Leonardo DRS** (2 roles)
 - **Lewis Energy Group** (1 roles)
-- **Licube** (1 roles)
-- **Lime** (1 roles)
-- **Linde** (2 roles)
-- **Lockheed Martin** (2 roles)
-- **Lockton** (1 roles)
-- **Loenbro** (3 roles)
-- **LyondellBasell** (2 roles)
-- **MISTRAS Group** (2 roles)
-- **MITRE** (1 roles)
-- **MP Materials** (2 roles)
-- **Mach Industries** (3 roles)
-- **Magnolia River** (1 roles)
-- **Mainstream Engineering Corporation** (1 roles)
-- **Mammoet** (4 roles)
-- **Man Group** (1 roles)
-- **Management & Training Corporation** (1 roles)
-- **Marathon Petroleum Corporation** (4 roles)
-- **Mariana Minerals** (1 roles)
-- **Mark III Construction, Inc.** (1 roles)
-- **MasTec Power Delivery** (2 roles)
-- **Matrix PDM Engineering** (1 roles)
-- **McAllister Towing** (1 roles)
-- **McDermott International, Ltd** (4 roles) ✅ PRIORITY
-- **McKim & Creed, Inc.** (1 roles)
-- **Meet Life Sciences** (1 roles)
-- **Merrick & Company** (2 roles)
-- **MetOx International** (1 roles)
+- **Liberty** (2 roles)
+- **Liebherr USA** (1 roles)
+- **Linde Advanced Material Technologies** (2 roles)
+- **Lockheed Martin** (4 roles)
+- **Loenbro** (1 roles)
+- **Loft Orbital** (1 roles)
+- **Los Alamos National Laboratory** (3 roles)
+- **Lubrizol IMEA** (1 roles)
+- **Lumicity** (2 roles)
+- **LyondellBasell** (3 roles)
+- **MISTRAS Group** (3 roles)
+- **Magellan Aerospace Limited** (1 roles)
+- **ManpowerGroup** (1 roles)
+- **Marathon Petroleum Corporation** (3 roles)
+- **MasTec Power Delivery** (1 roles)
+- **Material Bank®** (1 roles)
+- **Maverick Power** (1 roles)
+- **Metallus** (1 roles)
+- **Middough Inc.** (1 roles)
 - **Millennium** (2 roles)
-- **Mitsubishi Chemical Advanced Materials** (1 roles)
-- **Mitsubishi Power Americas** (1 roles)
-- **Mobile Apps US** (1 roles)
-- **Moffatt & Nichol** (3 roles)
-- **Moran Towing Corporation** (2 roles)
-- **Moss** (1 roles)
-- **Motion Recruitment** (2 roles)
-- **Murphy Company** (1 roles)
-- **MyPetroCareer.com** (2 roles)
-- **NDT Global** (1 roles)
-- **NOV** (5 roles)
-- **NRG Energy** (1 roles)
-- **NVIDIA** (3 roles)
-- **NVIDIA AI** (1 roles)
-- **Nabors Industries** (1 roles)
-- **Naval Air Warfare Center Training Systems Division (NAWCTSD)** (1 roles)
+- **Molex** (8 roles)
+- **Monarch Quantum** (1 roles)
+- **Morek Engineering** (2 roles)
+- **Motive Workforce** (1 roles)
+- **Mott MacDonald** (1 roles)
+- **Mueller Water Products** (2 roles)
+- **NATILUS** (1 roles)
+- **NDX Human Capital Solutions** (5 roles)
+- **NGL Energy Partners LP** (1 roles)
+- **NOV** (2 roles)
+- **NSG - Real Estate & Construction (Noor Staffing Group)** (2 roles)
+- **NVIDIA** (1 roles)
+- **Nabors Industries** (2 roles)
+- **Navis Consulting** (1 roles)
 - **Net2Source (N2S)** (1 roles)
-- **News Corp** (2 roles)
-- **NextDecade** (1 roles) ✅ PRIORITY
-- **NextEra Energy Resources** (1 roles)
-- **Nira Energy** (1 roles)
-- **Noble Corporation** (5 roles)
+- **Newport News Shipbuilding, A Division of HII** (5 roles)
+- **Nicor Gas** (1 roles)
+- **Noblis** (1 roles)
+- **Norda Stelo** (2 roles)
+- **North Point Technology** (3 roles)
 - **Northrop Grumman** (5 roles)
-- **Northwood** (1 roles)
-- **Nouryon** (2 roles)
-- **NuScale Power** (1 roles)
-- **ONEOK** (5 roles)
-- **ORION** (2 roles)
+- **Norwegian Cruise Line Holdings Ltd.** (1 roles)
+- **Novelis** (1 roles)
+- **Noveon Magnetics Inc.** (1 roles)
+- **ODYSEA** (1 roles)
+- **OKAYA INFOCOM** (1 roles)
+- **OMEC Medical NV** (1 roles)
+- **ONEOK** (4 roles)
+- **ORION** (6 roles)
 - **OSI Engineering** (1 roles)
-- **Oceaneering** (2 roles) ✅ PRIORITY
-- **Octopus Energy** (1 roles)
-- **Olsen Associates has joined Foth** (1 roles)
-- **Ontic** (1 roles)
-- **Optimus** (1 roles)
-- **OsecoElfab** (1 roles)
-- **Otto Aerospace** (1 roles)
-- **PLUM AI** (2 roles)
+- **Ocean Atomics** (2 roles)
+- **Oceaneering** (22 roles) ✅ PRIORITY
+- **Okland Construction** (1 roles)
+- **Omaha Public Power District** (1 roles)
+- **Open Systems Inc.** (3 roles)
+- **Optimal Staffing** (2 roles)
+- **Optiver** (1 roles)
+- **Orion Group** (4 roles)
+- **Otto Aerospace** (2 roles)
+- **Owens Corning** (3 roles)
+- **PBF Energy** (1 roles)
 - **PO&G Resources** (1 roles)
 - **PRICE WATERHOUSE COOPERS** (2 roles)
-- **PROLIM Corporation** (1 roles)
-- **PSC by Rocket Lab** (2 roles)
-- **PTR Global** (2 roles)
-- **PTS Advance** (1 roles)
-- **PacifiCorp** (2 roles)
-- **Pacific Northwest National Laboratory** (1 roles)
-- **Pacific Power** (1 roles)
-- **Pacific Seafood** (2 roles)
+- **Palmetto** (2 roles)
+- **Panku Inc.** (1 roles)
 - **Panthalassa** (4 roles)
-- **Par Pacific Holdings, Inc.** (4 roles)
+- **Par Health** (1 roles)
+- **PayCruit** (1 roles)
+- **Pentangle Tech Services | P5 Group** (10 roles)
 - **Persona AI** (1 roles)
-- **Phillips 66** (2 roles)
-- **Phoenix Tailings** (1 roles)
-- **Pi Security** (1 roles)
-- **Pinnacle** (2 roles)
-- **Pipeline and Hazardous Materials Safety Administration (PHMSA)** (2 roles)
-- **Piper Maddox** (3 roles)
-- **Placed** (2 roles)
-- **Plum** (2 roles)
-- **Powerwell** (1 roles)
-- **Pratt & Whitney** (1 roles)
-- **Precision Custom Components, LLC** (2 roles)
-- **Precision Talent Partners, LLC** (2 roles)
-- **Prestone Official** (1 roles)
-- **Primary Talent Partners** (1 roles)
-- **ProActivate** (1 roles)
-- **ProPetro Services, Inc** (1 roles)
-- **Protingent** (1 roles)
-- **Protouch Staffing** (2 roles)
-- **Pursuit Collection** (2 roles)
-- **Qualis1 Inc.** (1 roles)
-- **Quartermaster** (1 roles)
-- **Quartus Engineering** (1 roles)
-- **RADISE International** (1 roles)
-- **RAI Resources** (1 roles)
-- **RENK America** (1 roles)
-- **RISINGSUN TECHNOLOGIES** (1 roles)
-- **Raise** (1 roles)
-- **Raise Robotics** (1 roles)
-- **Re:Build Manufacturing** (4 roles)
-- **Recru** (1 roles)
-- **Relativity Space** (5 roles)
-- **Renesas Electronics** (1 roles)
-- **Resolve Marine** (1 roles)
-- **Rheem Manufacturing Company** (1 roles)
-- **Ridgeview Industries** (1 roles)
-- **Rivian** (3 roles)
-- **RobCo** (1 roles)
-- **Robinson Helicopter Company** (1 roles)
-- **Rocket Lab** (2 roles)
-- **Rolls-Royce** (10 roles)
-- **Rolls-Royce Power Systems** (1 roles)
+- **PetIQ** (1 roles)
+- **Phillips 66** (3 roles)
+- **Physical Sciences Inc.** (1 roles)
+- **Plains** (5 roles)
+- **Plant Construction Company, LP** (1 roles)
+- **Plastipak** (1 roles)
+- **Positions at Sea - UnCruise Adventures** (1 roles)
+- **Precision Technologies** (1 roles)
+- **Premier Finder LLC** (1 roles)
+- **Prinsco, Inc.** (1 roles)
+- **Professional Employment Group of Colorado** (1 roles)
+- **Qual IT Resources** (1 roles)
+- **Qualcomm** (2 roles)
+- **Quest Global** (3 roles)
+- **RINA** (2 roles)
+- **ROSEN** (2 roles)
+- **RPH Products** (3 roles)
+- **Rauch & Associates** (1 roles)
+- **Raytheon** (2 roles)
+- **ReadyGoNuke** (1 roles)
+- **Relativity Space** (2 roles)
+- **Reliability & Performance Technologies ( R&P )** (1 roles)
+- **Rendezvous Robotics** (4 roles)
+- **Resource Innovations** (1 roles)
+- **ResourceTek, LLC** (1 roles)
+- **RigUp** (2 roles)
+- **Robson Forensic, Inc.** (2 roles)
+- **Rocket Lab** (7 roles)
+- **Rolls-Royce** (3 roles)
+- **Russell Tobin** (1 roles)
 - **SAIC** (1 roles)
-- **SEGULA Technologies** (3 roles)
+- **SIRIS LLC** (1 roles)
+- **SLB** (4 roles)
 - **SOCOTEC** (1 roles)
-- **SOGECLAIR** (2 roles)
-- **Sandvik** (2 roles)
-- **Sargent & Lundy** (5 roles)
-- **Saronic Technologies** (5 roles)
-- **Savage** (2 roles)
-- **Scientific Search** (1 roles)
-- **Scribd, Inc.** (1 roles)
-- **Sea-Bird Scientific** (1 roles)
-- **Seagate Technology** (1 roles)
-- **Seatrium** (11 roles)
-- **Shield AI** (1 roles)
-- **ShrinQ Consulting Group Inc** (1 roles)
-- **Sigma Defense Systems LLC** (1 roles)
-- **Simpson Gumpertz & Heger (SGH)** (2 roles)
-- **Sira Consulting, an Inc 5000 company** (2 roles)
-- **Sofar Ocean** (1 roles)
-- **Software Guidance & Assistance, Inc. (SGA, Inc.)** (1 roles)
-- **Sonalysts, Inc.** (2 roles)
+- **SOGECLAIR** (8 roles)
+- **Saab, Inc.** (2 roles)
+- **Sagis Diagnostics** (1 roles)
+- **Saipem** (6 roles)
+- **Samtec Inc** (3 roles)
+- **Saputo Inc.** (1 roles)
+- **Saragossa** (1 roles)
+- **Sargent & Lundy** (3 roles)
+- **Saronic Technologies** (13 roles)
+- **Savage** (3 roles)
+- **Saviynt** (1 roles)
+- **Scale** (1 roles)
+- **Seatrium** (5 roles)
+- **Shield AI** (4 roles)
+- **Siemens Energy** (4 roles) ✅ PRIORITY
+- **Simplot Company** (1 roles)
+- **Sira Consulting, an Inc 5000 company** (1 roles)
+- **Slalom** (1 roles)
+- **Slate Auto** (3 roles)
+- **Smithfield Foods** (2 roles)
+- **SoTalent** (1 roles)
+- **Solar Turbines** (2 roles)
+- **Solstice Advanced Materials** (2 roles)
 - **Sonsoft Inc** (1 roles)
-- **SpaceX** (6 roles)
-- **Spade** (1 roles)
-- **Spheros Environmental** (1 roles)
-- **Spirit AeroSystems** (1 roles)
-- **State of Louisiana** (1 roles)
-- **Stealth Startup** (1 roles)
-- **Steam Management, Inc.** (1 roles)
-- **Stevens Towing Company** (2 roles)
+- **SpaceX** (4 roles)
+- **Spark Foundry** (1 roles)
+- **Sphinx Staffing** (1 roles)
+- **Stabbert Maritime** (1 roles)
+- **Stable10** (1 roles)
 - **Stoke Space** (1 roles)
-- **Strategy Engineering and Consulting, LLC** (1 roles)
-- **Subcritical Systems Inc** (2 roles)
-- **Subsea7** (6 roles) ✅ PRIORITY
-- **Sulzer** (2 roles)
-- **Swarm Aero** (1 roles)
+- **Stratolaunch** (1 roles)
+- **Structural Integrity Associates** (2 roles)
+- **Subsea7** (1 roles) ✅ PRIORITY
+- **Summit Midstream Corporation** (1 roles)
 - **System One** (2 roles)
-- **SystemWorks LLC** (1 roles)
-- **TC Energy** (8 roles)
+- **TC Energy** (1 roles)
 - **TEAM, Inc.** (4 roles)
-- **TES Recruiting** (2 roles)
-- **TGS** (1 roles)
-- **TIC - The Industrial Company** (7 roles)
-- **TMMG** (3 roles)
-- **TRC Companies, Inc.** (2 roles)
-- **TRISTAR** (1 roles)
-- **TTM Technologies** (1 roles)
-- **TWG** (1 roles)
-- **Talent on Staffing** (1 roles)
-- **Targa Resources** (6 roles)
-- **Tata Consultancy Services** (9 roles)
-- **Tate** (1 roles)
-- **TechDoQuest** (3 roles)
+- **TEC Group International** (2 roles)
+- **TMMG, LLC** (2 roles)
+- **TRC Talent Solutions** (4 roles)
+- **Take-Two Interactive** (1 roles)
+- **Takeda** (2 roles)
+- **Tallgrass** (4 roles)
+- **Targa Resources** (4 roles)
+- **Tata Consultancy Services** (3 roles)
+- **Technetics Group** (1 roles)
 - **Technip Energies** (1 roles)
-- **TechnipFMC** (5 roles) ✅ PRIORITY
-- **Techtronic Industries - TTI** (1 roles)
-- **Teledyne FLIR** (1 roles)
-- **Tenaska** (1 roles)
-- **Tesla** (1 roles)
-- **The Amatriot Group** (1 roles)
-- **The Structures Company, LLC** (1 roles)
-- **The Timken Company** (1 roles)
-- **The Vane Brothers Company** (1 roles)
-- **Themesoft Inc.** (5 roles)
-- **Thermo Fisher Scientific** (2 roles)
-- **Thermon** (1 roles)
-- **Theron Solutions** (1 roles)
-- **Toray Performance Materials Corporation** (2 roles)
-- **Trackline** (1 roles)
-- **Trendsetter Engineering, Inc.** (4 roles)
-- **Triomics** (1 roles)
-- **Truenorth Executive Search, Inc.** (1 roles)
-- **U.S. Fleet Forces Command** (4 roles)
-- **U.S. Pacific Fleet** (1 roles)
-- **US Army Corps of Engineers** (2 roles)
-- **US Tech Solutions** (3 roles)
-- **Umicore** (1 roles)
-- **United Alloy** (1 roles)
-- **University of Michigan** (2 roles)
-- **University of South Florida** (1 roles)
-- **Ursa Major** (2 roles)
-- **Valero** (3 roles)
-- **Valpaks Engineering LLC** (1 roles)
-- **Venture Global LNG** (1 roles) ✅ PRIORITY
-- **VeriiPro** (1 roles)
-- **Verrified Engineering** (1 roles)
+- **Teksky LLC** (1 roles)
+- **TerraForm Power** (2 roles)
+- **The Foth Companies** (2 roles)
+- **The Hawk Group** (1 roles)
+- **The Jupiter Group, Inc** (1 roles)
+- **The Lubrizol Corporation** (2 roles)
+- **The Planet Group** (1 roles)
+- **Therma-Tru Doors** (2 roles)
+- **Tiltedge Solutions** (1 roles)
+- **TotalEnergies** (1 roles)
+- **Tower Research Capital** (2 roles)
+- **Trafigura** (2 roles)
+- **Transocean** (3 roles)
+- **Tricon Solutions** (1 roles)
+- **Trident Maritime Systems** (1 roles)
+- **Tridentis, LLC** (1 roles)
+- **Trispoke Managed Services Pvt. Ltd.** (1 roles)
+- **Trylak** (1 roles)
+- **Twin Brothers Marine, LLC** (1 roles)
+- **U.S. Fleet Forces Command** (3 roles)
+- **U.S. Pacific Fleet** (2 roles)
+- **USA Talent Solutions** (2 roles)
+- **Umanist NA** (2 roles)
+- **University of Dayton Research Institute** (1 roles)
+- **Upbound Group** (1 roles)
+- **VHB** (2 roles)
+- **Vallourec - North America** (3 roles)
+- **Vanderweil Engineers** (1 roles)
+- **Vast** (1 roles)
+- **Vasyugan Aerospace** (1 roles)
+- **Venteon** (1 roles)
+- **Venture Global LNG** (5 roles) ✅ PRIORITY
+- **Venus Aerospace** (1 roles)
+- **Veridian Tech Solutions, Inc.** (1 roles)
+- **Vertical Mechanical Group** (1 roles)
 - **Vertiv** (1 roles)
-- **Verustruct** (1 roles)
-- **Viridien** (1 roles)
-- **Vision Point Systems** (2 roles)
-- **Vitol** (1 roles)
-- **Vulcan Elements** (1 roles)
-- **W&T Offshore Inc. (NYSE: WTI)** (1 roles)
-- **WD** (1 roles)
-- **WSP** (1 roles)
-- **WSP in the U.S.** (7 roles)
-- **WTS Energy** (1 roles)
-- **Walker Lovell** (1 roles)
-- **Walt Disney World** (1 roles)
-- **Weatherford** (2 roles)
-- **Weeks Marine, Inc.** (7 roles)
-- **Wenger Corporation** (1 roles)
-- **Western Power Pool** (1 roles)
-- **Westinghouse Electric Company** (4 roles)
-- **Whisper Aero** (2 roles)
-- **WhiteWater** (2 roles)
-- **Wilhelmsen Ships Service** (1 roles)
-- **Wilhelmsen group** (1 roles)
-- **Williams** (1 roles)
-- **Wiss, Janney, Elstner Associates, Inc.** (2 roles)
-- **Woods Hole Oceanographic Institution** (1 roles)
-- **Worley** (6 roles) ✅ PRIORITY
-- **X-wave Innovations, Inc.** (1 roles)
-- **Yamaha Motor Corporation, USA** (4 roles)
-- **Yes Energy** (2 roles)
-- **Yokohama TWS** (2 roles)
-- **Zachary Piper Solutions** (2 roles)
-- **Zachry Group** (3 roles)
-- **Zeeco, Inc.** (1 roles)
-- **Zenovo** (1 roles)
-- **bp** (2 roles) ✅ PRIORITY
-- **iPS Powerful People (B Corp™)** (1 roles)
-- **talisman** (1 roles)
-- **Ørsted** (2 roles)
+- **Veteran Hiring Solutions** (2 roles)
+- **Vistra Corp.** (1 roles)
+- **Vitol** (2 roles)
+- **WEC Energy Group** (1 roles)
+- **WSP in the U.S.** (5 roles)
+- **Weatherford** (4 roles)
+- **Weeks Marine, Inc.** (1 roles)
+- **Westinghouse Electric Company** (1 roles)
+- **Westlake** (3 roles)
+- **Wheeler Staffing Partners** (1 roles)
+- **Williams** (2 roles)
+- **Wood** (3 roles)
+- **Worley** (14 roles) ✅ PRIORITY
+- **XML International** (1 roles)
+- **Yazaki North America** (1 roles)
+- **York Space Systems** (1 roles)
+- **Zifo** (1 roles)
+- **Zipline** (1 roles)
+- **Zobility** (1 roles)
+- **bp** (1 roles) ✅ PRIORITY
+- **magniX** (4 roles)
+- **thyssenkrupp** (1 roles)
 
 ---
 

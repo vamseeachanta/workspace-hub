@@ -20,6 +20,7 @@ cards:
       - machine:dev-primary
       - lane:claude
       - priority:high
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -39,6 +40,7 @@ cards:
       - machine:dev-primary
       - lane:claude
       - priority:medium
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -58,6 +60,7 @@ cards:
       - machine:dev-primary
       - lane:claude
       - priority:high
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -77,6 +80,7 @@ cards:
       - machine:dev-primary
       - lane:claude
       - priority:high
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -97,6 +101,7 @@ cards:
       - machine:dev-primary
       - lane:claude
       - priority:medium
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -117,6 +122,7 @@ cards:
       - machine:dev-primary
       - lane:claude
       - priority:medium
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -137,6 +143,7 @@ cards:
       - machine:dev-primary
       - lane:claude
       - priority:high
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -156,6 +163,7 @@ cards:
       - machine:dev-primary
       - lane:claude
       - priority:medium
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -175,6 +183,7 @@ cards:
       - machine:dev-primary
       - lane:claude
       - priority:high
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -194,6 +203,7 @@ cards:
       - machine:dev-primary
       - lane:claude
       - priority:high
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -211,6 +221,18 @@ cards:
       - enhancement
       - domain:finance
       - priority:medium
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/achantas-data#134
+    title: Live market data → paper-trading alerts for the Fidelity account (engine in assethold, orchestration here)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/achantas-data/issues/134
+    gh_state: open
+    gh_labels:
+      - domain:finance
+      - cat:engineering
     initial_status: triage
     priority: 0
     gh_assignees: []

@@ -1,44 +1,36 @@
 {
-  "generated_at": "2026-07-15T09:21:30.625067Z",
-  "current_week": "2026-W29",
+  "generated_at": "2026-07-30T17:21:16.555452Z",
+  "current_week": "2026-W31",
   "inputs": {
     "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-07-15T09:21:30.488945Z",
-    "audit_generated_at": "2026-07-13T09:15:04Z"
+    "utilization_generated_at": "2026-07-30T17:21:16.337885Z",
+    "audit_generated_at": "2026-07-27T09:15:04Z"
   },
   "recommended_provider_order": [
-    "gemini",
-    "claude",
-    "codex"
+    "codex",
+    "agy",
+    "claude"
   ],
   "recommendations": [
     {
       "provider": "claude",
       "status": "underused",
       "priority": "high",
-      "reported_utilization_pct": 0.5,
+      "reported_utilization_pct": 0.1,
       "quota_basis": "unavailable",
       "quota_source": "unavailable",
-      "sessions_current_week": 5,
-      "post_records_current_week": 187,
-      "audit_post_records": 122229,
-      "missing_repo_reads": 9463,
-      "python3_per_1k_records": 9.16,
-      "migration_debt_per_1k_records": 14.1,
+      "sessions_current_week": 1,
+      "post_records_current_week": 57,
+      "audit_post_records": 123073,
+      "missing_repo_reads": 9464,
+      "python3_per_1k_records": 9.12,
+      "migration_debt_per_1k_records": 14.01,
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
           "tool": "unknown",
-          "count": 120
-        },
-        {
-          "tool": "Bash",
-          "count": 63
-        },
-        {
-          "tool": "Read",
-          "count": 4
+          "count": 57
         }
       ],
       "preferred_work": [
@@ -61,38 +53,38 @@
     },
     {
       "provider": "codex",
-      "status": "needs_cleanup",
-      "priority": "high",
-      "reported_utilization_pct": 52.0,
+      "status": "underused",
+      "priority": "highest",
+      "reported_utilization_pct": 0.0,
       "quota_basis": "quota",
       "quota_source": "history.jsonl-estimate",
-      "sessions_current_week": 113,
-      "post_records_current_week": 6486,
-      "audit_post_records": 188117,
+      "sessions_current_week": 57,
+      "post_records_current_week": 2659,
+      "audit_post_records": 202788,
       "missing_repo_reads": 1689,
-      "python3_per_1k_records": 14.99,
+      "python3_per_1k_records": 13.9,
       "migration_debt_per_1k_records": 0.05,
       "top_migration_hint": "llm_wiki_spinout_path_drift",
       "top_tools": [
         {
+          "tool": "Bash",
+          "count": 2061
+        },
+        {
           "tool": "wait",
-          "count": 3074
+          "count": 210
         },
         {
           "tool": "wait_agent",
-          "count": 1852
+          "count": 122
         },
         {
           "tool": "send_message",
-          "count": 812
+          "count": 103
         },
         {
-          "tool": "followup_task",
-          "count": 232
-        },
-        {
-          "tool": "list_agents",
-          "count": 202
+          "tool": "spawn_agent",
+          "count": 57
         }
       ],
       "preferred_work": [
@@ -112,53 +104,20 @@
       ]
     },
     {
-      "provider": "gemini",
+      "provider": "agy",
       "status": "underused",
       "priority": "highest",
       "reported_utilization_pct": 0.0,
-      "quota_basis": "quota",
-      "quota_source": "manual-snapshot",
+      "quota_basis": "unavailable",
+      "quota_source": "unavailable",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 6210,
-      "missing_repo_reads": 615,
-      "python3_per_1k_records": 46.86,
-      "migration_debt_per_1k_records": 13.85,
-      "top_migration_hint": "legacy_local_work_queue_items",
-      "top_tools": [
-        {
-          "tool": "Bash",
-          "count": 2288
-        },
-        {
-          "tool": "Read",
-          "count": 2181
-        },
-        {
-          "tool": "Grep",
-          "count": 655
-        },
-        {
-          "tool": "Write",
-          "count": 535
-        },
-        {
-          "tool": "Edit",
-          "count": 394
-        },
-        {
-          "tool": "Browser",
-          "count": 143
-        },
-        {
-          "tool": "ToolSearch",
-          "count": 9
-        },
-        {
-          "tool": "generalist",
-          "count": 3
-        }
-      ],
+      "audit_post_records": 0,
+      "missing_repo_reads": 0,
+      "python3_per_1k_records": 0.0,
+      "migration_debt_per_1k_records": 0.0,
+      "top_migration_hint": null,
+      "top_tools": [],
       "preferred_work": [
         "batched research/recon",
         "risk enumeration",
@@ -170,13 +129,14 @@
         "tight verification loops"
       ],
       "actions": [
-        "Batch 5-6 related research/recon tasks into Gemini sessions.",
-        "Use Gemini for scouting/risk-analysis packets instead of leaving the lane idle."
+        "Batch 5-6 related research/recon tasks into agy sessions.",
+        "Use agy for scouting/risk-analysis packets instead of leaving the lane idle.",
+        "Telemetry is weak; treat utilization as directional, not exact weekly headroom."
       ]
     }
   ],
   "summary": {
-    "highest_priority_provider": "gemini",
-    "highest_priority_reason": "Batch 5-6 related research/recon tasks into Gemini sessions."
+    "highest_priority_provider": "codex",
+    "highest_priority_reason": "Route bounded implementation/test/refactor issues to Codex immediately."
   }
 }

@@ -26,19 +26,8 @@ for ((i=1; i<=$#; i++)); do
     --now)     :;;  # explicit on-demand; behaviour identical (cadence is the caller's concern)
   esac
 done
-# EQ_MACHINE env == --machine (flag wins). Lets no-arg chain callers — notably the
-# reconcile-printed `EQ_MACHINE=<label> bash equality-matrix-cron.sh` remediations —
-# carry an explicit label through to this collector (#3571).
-MACHINE="${MACHINE:-${EQ_MACHINE:-}}"
-
-# shellcheck source=scripts/readiness/lib/machine-identity.sh
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/machine-identity.sh"
 
 HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
-# A machine may have a private or policy-sensitive OS hostname while using a public
-# fleet identity.  The Windows wrapper sets this to the validated --machine label so
-# tracked equality evidence never serializes the private hostname.
-PUBLIC_HOST="${EQ_PUBLIC_HOST:-$HOST}"
 case "$(uname -s 2>/dev/null)" in
   Linux) OS="linux";; Darwin) OS="macos";; MINGW*|MSYS*|CYGWIN*) OS="windows";; *) OS="unknown";;
 esac
@@ -58,21 +47,11 @@ if [[ -z "$MACHINE" ]]; then
     ace-win-1*|licensed-win-1*|acma-ansys05*) MACHINE="ace-win-1";;
     ace-win-2*|licensed-win-2*|acma-ws014*) MACHINE="ace-win-2";;
     *)
-      # Identity file is consulted ONLY for hostnames the map does not know — a
-      # stale/copied file can never override a mapped host (#3571). rc 1 (malformed
-      # or foreign file) must fail loud, never fall through.
-      if _identity="$(resolve_identity_file "$HOST")"; then
-        MACHINE="${_identity%% *}"
-        [[ -n "${EQ_PUBLIC_HOST:-}" ]] || PUBLIC_HOST="${_identity##* }"
-      else
-        _rc=$?
-        [[ "$_rc" -eq 1 ]] && exit 1
-        if [[ "$OS" == "windows" ]]; then
-          echo "collect-equality.sh: unknown Windows host '$HOST'; pass --machine ace-win-1 or ace-win-2, or provision $(machine_identity_file)" >&2
-          exit 1
-        fi
-        MACHINE="$HOST"
-      fi;;
+      if [[ "$OS" == "windows" ]]; then
+        echo "collect-equality.sh: unknown Windows host '$HOST'; pass --machine ace-win-1 or ace-win-2" >&2
+        exit 1
+      fi
+      MACHINE="$HOST";;
   esac
 fi
 have() { command -v "$1" >/dev/null 2>&1; }
@@ -160,7 +139,7 @@ for _ubin in "${HOME:-}/.npm-global/bin" "${HOME:-}/.local/bin"; do
 done
 export PATH
 readiness_file="harness-readiness-${MACHINE}.yaml"
-[[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${PUBLIC_HOST}.yaml"
+[[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${HOST}.yaml"
 readiness_overall="missing"
 [[ -f "${STATE_DIR}/${readiness_file}" ]] && \
   readiness_overall=$(awk -F': ' '/^overall:/{print $2; exit}' "${STATE_DIR}/${readiness_file}" 2>/dev/null)
@@ -246,6 +225,30 @@ if [[ -f "$slh_file" ]] && have jq; then
   slh_repairable=$(jq -r '.repairable // 0' "$slh_file" 2>/dev/null); [[ "$slh_repairable" =~ ^[0-9]+$ ]] || slh_repairable=0
   _slw=$(jq -r '.worst_state // empty' "$slh_file" 2>/dev/null)
   [[ -n "$_slw" ]] && slh_worst="\"$(yesc "$_slw")\""
+fi
+
+# ── 6f. HARNESS CHECKUP — /doctor hygiene facts (#3408) ──────────────────────
+# References the audit state from scripts/curation/audit_harness_checkup.py (never re-runs it).
+# Missing/garbled file -> audited_at null -> matrix grades MISSING-EVIDENCE. audited_at stays in the
+# canonical payload so a fresh audit forces a rewrite. Every field is type-gated on read (boolean/
+# number/string as declared, else null) so a malformed audit can never inject garbage into the graded
+# cells — allowlist-safe by construction (the audit emits counts/booleans/enums/version strings only).
+hc_file="${STATE_DIR}/harness-checkup-${MACHINE}.json"
+hc_audited="null"; hc_ver="null"; hc_latest="null"; hc_vcur="null"; hc_install="null"
+hc_dupe="null"; hc_sok="null"; hc_bad="null"; hc_uskill="null"; hc_uplug="null"; hc_mode="null"; hc_auto="null"
+if [[ -f "$hc_file" ]] && have jq; then
+  _hca=$(jq -r '.audited_at // empty' "$hc_file" 2>/dev/null);   [[ -n "$_hca" ]] && hc_audited="\"$(yesc "$_hca")\""
+  _hcv=$(jq -r '.cc_version // empty' "$hc_file" 2>/dev/null);   [[ -n "$_hcv" ]] && hc_ver="\"$(yesc "$_hcv")\""
+  _hcl=$(jq -r '.cc_latest // empty' "$hc_file" 2>/dev/null);    [[ -n "$_hcl" ]] && hc_latest="\"$(yesc "$_hcl")\""
+  _hci=$(jq -r '.install_method // empty' "$hc_file" 2>/dev/null); [[ -n "$_hci" ]] && hc_install="\"$(yesc "$_hci")\""
+  _hcm=$(jq -r '.default_mode // empty' "$hc_file" 2>/dev/null); [[ -n "$_hcm" ]] && hc_mode="\"$(yesc "$_hcm")\""
+  _hcvc=$(jq -r 'if (.version_current|type)=="boolean" then .version_current else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcvc" == "true" || "$_hcvc" == "false" ]] && hc_vcur="$_hcvc"
+  _hcso=$(jq -r 'if (.settings_parse_ok|type)=="boolean" then .settings_parse_ok else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcso" == "true" || "$_hcso" == "false" ]] && hc_sok="$_hcso"
+  _hcau=$(jq -r 'if (.auto_mode_default|type)=="boolean" then .auto_mode_default else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcau" == "true" || "$_hcau" == "false" ]] && hc_auto="$_hcau"
+  _hcd=$(jq -r 'if (.duplicate_installs|type)=="number" then .duplicate_installs else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcd" =~ ^[0-9]+$ ]] && hc_dupe="$_hcd"
+  _hcb=$(jq -r 'if (.broken_agents|type)=="number" then .broken_agents else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcb" =~ ^[0-9]+$ ]] && hc_bad="$_hcb"
+  _hcus=$(jq -r 'if (.unused_skills|type)=="number" then .unused_skills else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcus" =~ ^[0-9]+$ ]] && hc_uskill="$_hcus"
+  _hcup=$(jq -r 'if (.unused_plugins|type)=="number" then .unused_plugins else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcup" =~ ^[0-9]+$ ]] && hc_uplug="$_hcup"
 fi
 
 # ── 7. BEHAVIOR — deterministic, SANDBOXED probe corpus (DG4/DC1) ────────────
@@ -381,12 +384,6 @@ providers:
     "memory:read": {status: unknown, reason: collector_unavailable}
     "skills:invoke": {status: unknown, reason: collector_unavailable}
     "workflow:gates": {status: unknown, reason: collector_unavailable}
-  gemini:
-    present: false
-    installed: false
-    "memory:read": {status: unknown, reason: collector_unavailable}
-    "skills:invoke": {status: unknown, reason: collector_unavailable}
-    "workflow:gates": {status: unknown, reason: collector_unavailable}
 YAML
 }
 provider_py=""
@@ -430,7 +427,7 @@ fi
 read -r -d '' BODY <<YAML || true
 schema_version: 4
 machine: "$(yesc "$MACHINE")"
-host: "$(yesc "$PUBLIC_HOST")"
+host: "$(yesc "$HOST")"
 os: ${OS}
 status: active
 provenance:
@@ -489,10 +486,19 @@ ${provider_harness_yaml}
     healthy: ${slh_healthy}
     repairable: ${slh_repairable}
     worst_state: ${slh_worst}
-  publish_health:
-    last_publish_at: "$(yesc "$ph_ts")"
-    last_publish_duration_s: ${ph_dur}
-    last_publish_rc: ${ph_rc}
+  harness_checkup:
+    audited_at: ${hc_audited}
+    cc_version: ${hc_ver}
+    cc_latest: ${hc_latest}
+    version_current: ${hc_vcur}
+    install_method: ${hc_install}
+    duplicate_installs: ${hc_dupe}
+    settings_parse_ok: ${hc_sok}
+    broken_agents: ${hc_bad}
+    unused_skills: ${hc_uskill}
+    unused_plugins: ${hc_uplug}
+    default_mode: ${hc_mode}
+    auto_mode_default: ${hc_auto}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 

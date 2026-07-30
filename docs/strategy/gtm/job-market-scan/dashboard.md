@@ -1,14 +1,14 @@
 # GTM Job Market Scan — Dashboard
 
-> Auto-generated: 2026-07-13
+> Auto-generated: 2026-07-27
 > Related: GitHub issues #1669, #1670, #1671
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Total job postings found | **973** |
-| Unique companies | **512** |
+| Total job postings found | **1048** |
+| Unique companies | **457** |
 | Keywords searched | 22 |
 | Sources queried | linkedin, indeed, career_page |
 
@@ -16,86 +16,86 @@
 
 | Source | Count |
 |--------|-------|
-| linkedin | 915 |
-| indeed | 32 |
-| career_page | 26 |
+| linkedin | 973 |
+| indeed | 48 |
+| career_page | 27 |
 
 ## Results by Keyword Tier
 
 | Tier | Description | Count |
 |------|-------------|-------|
-| Tier 1 | Elite niche (OrcaFlex, riser, mooring, hydro) | 166 |
-| Tier 2 | Strong niche (cathodic, subsea, pipeline, API 579) | 261 |
-| Tier 3 | Broader fit (FEA, structural, corrosion, DNV) | 280 |
-| Tier 4 | Manufacturing / wide net (ANSYS, aerospace) | 240 |
+| Tier 1 | Elite niche (OrcaFlex, riser, mooring, hydro) | 61 |
+| Tier 2 | Strong niche (cathodic, subsea, pipeline, API 579) | 313 |
+| Tier 3 | Broader fit (FEA, structural, corrosion, DNV) | 408 |
+| Tier 4 | Manufacturing / wide net (ANSYS, aerospace) | 239 |
 
 ## Top Companies by Posting Volume
 
 | Rank | Company | Postings | Priority Target? |
 |------|---------|----------|------------------|
-| 1 | ABS | 13 | ✅ YES |
-| 2 | Boeing | 12 |  |
-| 3 | American Bureau of Shipping (ABS) | 12 | ✅ YES |
-| 4 | Seatrium | 11 |  |
-| 5 | Blue Origin | 11 |  |
-| 6 | Deloitte | 11 |  |
-| 7 | GE Vernova | 10 | ✅ YES |
-| 8 | Rolls-Royce | 10 |  |
-| 9 | Amazon | 9 |  |
-| 10 | Tata Consultancy Services | 9 |  |
-| 11 | TC Energy | 8 |  |
-| 12 | Hanwha Ocean EPU | 7 |  |
-| 13 | TechnipFMC | 7 | ✅ YES |
-| 14 | Acuren | 7 |  |
-| 15 | TIC - The Industrial Company | 7 |  |
-| 16 | WSP in the U.S. | 7 |  |
-| 17 | Weeks Marine, Inc. | 7 |  |
-| 18 | Subsea7 | 6 | ✅ YES |
-| 19 | Worley | 6 | ✅ YES |
-| 20 | Biglift Amstel B.V. | 6 |  |
-| 21 | Ford Motor Company | 6 |  |
-| 22 | Insight Global | 6 |  |
-| 23 | Targa Resources | 6 |  |
-| 24 | Enterprise Products | 6 |  |
-| 25 | SpaceX | 6 |  |
-| 26 | Helix Energy Solutions Group | 5 |  |
-| 27 | DNV | 5 | ✅ YES |
-| 28 | Themesoft Inc. | 5 |  |
-| 29 | Noble Corporation | 5 |  |
-| 30 | Saronic Technologies | 5 |  |
+| 1 | EY | 38 |  |
+| 2 | Oceaneering | 22 | ✅ YES |
+| 3 | Blue Origin | 21 |  |
+| 4 | Kiewit | 15 |  |
+| 5 | Worley | 14 | ✅ YES |
+| 6 | Baker Hughes | 13 |  |
+| 7 | Saronic Technologies | 13 |  |
+| 8 | Deloitte | 13 |  |
+| 9 | Jacobs | 13 |  |
+| 10 | ABS | 13 | ✅ YES |
+| 11 | Körber Supply Chain | 10 |  |
+| 12 | Anduril Industries | 10 |  |
+| 13 | Pentangle Tech Services | P5 Group | 10 |  |
+| 14 | Curtiss-Wright Corporation | 9 |  |
+| 15 | Hudson Manpower | 9 |  |
+| 16 | Biglift Amstel B.V. | 8 |  |
+| 17 | SOGECLAIR | 8 |  |
+| 18 | Molex | 8 |  |
+| 19 | Insight Global | 7 |  |
+| 20 | Amentum | 7 |  |
+| 21 | GE Vernova | 7 | ✅ YES |
+| 22 | Rocket Lab | 7 |  |
+| 23 | General Motors | 7 |  |
+| 24 | Körber | 6 |  |
+| 25 | Acuren | 6 |  |
+| 26 | Saipem | 6 |  |
+| 27 | ORION | 6 |  |
+| 28 | Boeing | 6 |  |
+| 29 | GM Defense | 6 |  |
+| 30 | Econ One Research | 6 |  |
 
 ## Top 20 Highest-Scoring Job Postings
 
 | Score | Title | Company | Location | Source | Keyword |
 |-------|-------|---------|----------|--------|---------|
-| 150 | Senior Installation Analysis Engineer | Subsea7 | Houston, TX | linkedin | OrcaFlex engineer |
-| 150 | Senior Mooring Engineer | Intermoor | Houston, TX | linkedin | riser engineer offshore |
-| 150 | Engineer I, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
-| 150 | Senior Mooring Engineer | Intermoor | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Engineer I, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior Installation Analysis Engineer | Subsea7 | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior or Above Marine/ Mechanical Engineer | American Bureau of Shipping (A | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior Project Engineer | McDermott International, Ltd | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior or Above Marine/ Mechanical Engineer | ABS Dubai | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior Project Engineer (Installation Methods) | Subsea7 | Houston, TX | linkedin | mooring engineer offshore |
-| 135 | Engineering Applications | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
-| 135 | Completions Installation Engineer | TechnipFMC | Houston, TX | linkedin | mooring engineer offshore |
-| 130 | Senior Consultant, Ports and Marine Civil/Structural Enginee | WSP | Irvine, CA 92618(Irv | indeed | riser engineer offshore |
-| 130 | Piping Walkdown Designer / Engineer | Worley | Odessa, TX | indeed | riser engineer offshore |
-| 130 | Coordinator, Marine | Cheniere Energy, Inc. | Gregory, TX | linkedin | mooring engineer offshore |
-| 130 | Senior Mooring Engineer | Intermoor | Houston, TX | linkedin | pipeline engineer offshore |
-| 130 | Senior Project Engineer | McDermott International, Ltd | Houston, TX | linkedin | pipeline engineer offshore |
-| 130 | Senior Project Engineer (Installation Methods) | Subsea7 | Houston, TX | linkedin | pipeline engineer offshore |
-| 130 | Engineer I, Senior | American Bureau of Shipping (A | Houston, TX | linkedin | integrity engineer offshore |
-| 130 | Senior or Above Marine/ Mechanical Engineer | American Bureau of Shipping (A | Houston, TX | linkedin | integrity engineer offshore |
+| 150 | Lead SURF Engineer | Worley | Houston, TX | linkedin | OrcaFlex engineer |
+| 150 | Lead SURF Engineer | Worley | Houston, TX | linkedin | riser engineer offshore |
+| 150 | Senior Associate Technical Consultant, Infrastructure | Worley | Houston, TX | linkedin | floating wind engineer |
+| 130 | Senior Maintenance Engineer | Worley | Houston, TX | linkedin | pipeline engineer offshore |
+| 130 | Lead SURF Engineer | Worley | Houston, TX | linkedin | pipeline engineer offshore |
+| 130 | Senior Maintenance Engineer | Worley | Houston, TX | linkedin | integrity engineer offshore |
+| 130 | Senior Associate Technical Consultant, Infrastructure | Worley | Houston, TX | linkedin | DNV engineer offshore |
+| 125 | Lead SURF Engineer | Airswift | Houston, TX | linkedin | OrcaFlex engineer |
+| 125 | Lead SURF Engineer | Orion Group | Houston, TX | linkedin | OrcaFlex engineer |
+| 125 | Lead SURF Engineer | Orion Group | Houston, TX | linkedin | riser engineer offshore |
+| 125 | Sr. Stress Analyst | Oceaneering | Clear Lake Shores, T | linkedin | pipeline engineer offshore |
+| 125 | Sr. Stress Analyst | Oceaneering | Clear Lake Shores, T | linkedin | API 579 fitness for service |
+| 115 | Epic Willow Home Infusion Analyst Consultant | The Planet Group | United States | linkedin | hydrodynamic analyst offshore |
+| 115 | Offshore Field Engineer | Worley | Houston, TX | linkedin | pipeline engineer offshore |
+| 115 | Principal Project Engineer | Worley | Denver, CO | linkedin | pipeline engineer offshore |
+| 115 | Project Engineer, Regulatory Compliance & Assurance | Venture Global LNG | Houston, TX | linkedin | integrity engineer offshore |
+| 115 | Offshore Field Engineer | Worley | Houston, TX | linkedin | integrity engineer offshore |
+| 115 | Marine Electrical and Power Systems Engineer (Drives and Aut | Siemens Energy | Houston, TX | linkedin | naval architect Houston |
+| 115 | Offshore Field Engineer | Worley | Houston, TX | linkedin | floating wind engineer |
+| 115 | Senior Systems Engineer – Performance Upgrades | GE Vernova |  | career_page | career_page_scan |
 
 ## Seniority Breakdown
 
 | Level | Count | Consulting Fit |
 |-------|-------|----------------|
-| Senior | 244 | ★★★★★ Best — they need experience NOW |
-| Mid | 721 | ★★★☆☆ Good — can pitch senior-level delivery |
-| Junior | 8 | ★☆☆☆☆ Low — they want cheap labor |
+| Senior | 249 | ★★★★★ Best — they need experience NOW |
+| Mid | 792 | ★★★☆☆ Good — can pitch senior-level delivery |
+| Junior | 7 | ★☆☆☆☆ Low — they want cheap labor |
 
 ---
 

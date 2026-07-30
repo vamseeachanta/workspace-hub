@@ -1,19 +1,19 @@
-generated_at: "2026-07-19T06:47:15"
-schema_version: 4
+generated_at: "2026-07-30T12:47:08"
+schema_version: 5
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "023fe58c4"
-  dirty: true
-  behind_main: 5
-  ahead_main: 1
-  origin_ref_age_h: 4
+  checkout_sha: "0eeea2a8b"
+  dirty: false
+  behind_main: 0
+  ahead_main: 0
+  origin_ref_age_h: 0
 dimensions:
   compute:
-    static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA GeForce GTX 750 Ti"}
-    headroom: {ram_avail_mib: 24061, disk_avail_gb: 754}
+    static: {cores: 32, ram_total_mib: 32037, gpu_model: "none"}
+    headroom: {ram_avail_mib: 28410, disk_avail_gb: 744}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -34,7 +34,7 @@ dimensions:
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-07-19T04:25:01"
+    context_md_mtime: "2026-07-30T04:25:01"
   provider_harness:
     schema_version: 1
     providers:
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: true
     job_count: 63
   session_curation:
-    last_curated_at: "2026-07-19T11:47:02+00:00"
-    sessions_24h: 57
+    last_curated_at: "2026-07-30T17:47:02+00:00"
+    sessions_24h: 21
     providers_active: "claude,codex,gemini,hermes"
-    memory_files_changed: 200
+    memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-07-19T11:47:12+00:00"
+    audited_at: "2026-07-30T17:47:06+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,16 +84,16 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-19T11:47:13+00:00"
-    worst_age_hours: 2.37
+    audited_at: "2026-07-30T17:47:06+00:00"
+    worst_age_hours: 8.368
     freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-07-19T11:47:15+00:00"
+    audited_at: "2026-07-30T17:47:08+00:00"
     repos_total: 15
-    healthy: 28
-    repairable: 2
-    worst_state: "MISSING"
+    healthy: 45
+    repairable: 0
+    worst_state: "HEALTHY"
   publish_health:
-    last_publish_at: "2026-07-19T11:17:06Z"
-    last_publish_duration_s: 3
+    last_publish_at: "2026-07-30T17:17:04Z"
+    last_publish_duration_s: 2
     last_publish_rc: 0
