@@ -283,17 +283,49 @@ def codex_weekly_remaining(override=None):
         return None
 
 
-def lane_quota_demotion(provider, source, remaining_pct, defaults):
-    """Return (provider, demoted). Suspends ONLY the lane-derived codex choice
-    when weekly remaining is strictly below QUOTA_GATE_PCT. ai:/rule codex
-    carries human/rule authority and is never altered; None (unknown quota)
-    fails open. A demoted card keeps provider_explicit=False at the call site,
-    so labels_for() writes no ai: label — demotion leaves no sticky residue.
+#: Carries the SPEND decision, separately from the provider choice (deckhand#584
+#: R9). Without it, an `ai:` label chose the provider AND silently opted out of
+#: the budget guard — one label making two decisions, the second invisible at
+#: the point of labelling.
+QUOTA_OVERRIDE_LABEL = "quota:override"
+
+
+def quota_demotion(provider, source, remaining_pct, defaults, labels=None):
+    """Return (provider, demoted). Suspends a codex choice from ANY source when
+    weekly remaining is strictly below QUOTA_GATE_PCT.
+
+    R9 (deckhand#584, owner 2026-07-30): `ai:` and rule-sourced codex are no
+    longer exempt. The provider choice and the budget bypass are different
+    decisions — "codex does this work better" is about a task, "spend into a
+    suspended pool" is about the month — so they now need different labels.
+    Rule-sourced is demotable too, decided rather than inherited: a capability
+    rule is MACHINE-decided and has even less claim on a budget guard than a
+    human's deliberate `ai:`.
+
+    `QUOTA_OVERRIDE_LABEL` is the only bypass, and it is a spend decision only —
+    it never chooses a provider.
+
+    `None` remaining FAILS OPEN: the gate is an optimisation on top of routing
+    (#3030) and an unreachable quota source must not strand heavy work. That is
+    deliberately the opposite of the write gate's fail-closed posture — the cost
+    of a wrong answer differs in each direction.
+
+    A demoted card keeps provider_explicit=False at the call site, so
+    labels_for() writes no ai: label — demotion leaves no sticky residue. An
+    EXISTING `ai:` label is not removed: it records the operator's intent, while
+    the gate governs this run's execution.
     """
-    if (provider == "codex" and source == "lane"
-            and remaining_pct is not None and remaining_pct < QUOTA_GATE_PCT):
+    if provider != "codex":
+        return provider, False
+    if QUOTA_OVERRIDE_LABEL in (labels or []):
+        return provider, False
+    if remaining_pct is not None and remaining_pct < QUOTA_GATE_PCT:
         return defaults.get("provider"), True
     return provider, False
+
+
+#: Back-compat alias — the old name said "lane" and the restriction is gone.
+lane_quota_demotion = quota_demotion
 
 
 def propose(args) -> list[dict]:
@@ -328,12 +360,16 @@ def propose(args) -> list[dict]:
         provider, provider_explicit, provider_source = resolve_provider(
             labels, assign, defaults)
         quota_demoted = False
-        if provider == "codex" and provider_source == "lane":
+        # R9: NO source restriction here. This call site previously carried its
+        # own `provider_source == "lane"` guard, so relaxing only the function
+        # would have left the exemption fully intact — the fix would look done
+        # and do nothing.
+        if provider == "codex":
             if quota_remaining is _QUOTA_UNSET:  # one quota read per run
                 quota_remaining = codex_weekly_remaining(
                     override=getattr(args, "codex_remaining", None))
-            provider, quota_demoted = lane_quota_demotion(
-                provider, provider_source, quota_remaining, defaults)
+            provider, quota_demoted = quota_demotion(
+                provider, provider_source, quota_remaining, defaults, labels=labels)
         routed_by = "manual" if existing_machine else "rule"
 
         proposals.append({
