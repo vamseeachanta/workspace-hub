@@ -1,16 +1,16 @@
 {
-  "machine": "dev-primary",
-  "audited_at": "2026-07-30T00:21:32+00:00",
+  "machine": "gpu-claw",
+  "audited_at": "2026-07-30T00:18:09+00:00",
   "platform": "unix",
-  "repos_total": 15,
-  "healthy": 45,
+  "repos_total": 4,
+  "healthy": 8,
   "missing": 0,
   "dangling": 0,
   "flattened": 0,
   "modified_real_dir": 0,
-  "template_absent": 0,
+  "template_absent": 4,
   "repairable": 0,
   "unexpected_missing_repos": [],
-  "worst_state": "HEALTHY",
+  "worst_state": "TEMPLATE-ABSENT",
   "schema_version": 1
 }

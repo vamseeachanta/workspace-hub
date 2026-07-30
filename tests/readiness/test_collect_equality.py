@@ -17,6 +17,12 @@ from pathlib import Path
 
 import yaml
 
+#3702 note: the collector's default output moved OUT of the tracked tree. The
+# commit-on-change / provenance cases below pin `EQ_STATE_DIR` back to the fixture's
+# in-tree `.claude/state` — the documented rollback configuration — so they keep
+# asserting collector SEMANTICS at a known path. The out-of-tree default, the flag/env
+# precedence, and working-tree cleanliness are covered by
+# tests/readiness/test_equality_tree_cleanliness.py.
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "readiness" / "collect-equality.sh"
 BASH_PATH = "/mingw64/bin:/usr/bin:/bin:/usr/local/bin"
@@ -154,7 +160,8 @@ def test_collect_commit_on_change_idempotent(tmp_path):
     # D1/DC4: two runs with no real change must not rewrite (hash excludes volatile + generated_at)
     ws = _fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin",
+           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     first_mtime = out.stat().st_mtime_ns
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
@@ -346,7 +353,8 @@ def test_collect_solvers_canonical_hash_includes_block(tmp_path):
     # Toggling a solver status in the committed file is a MEANINGFUL change → rewrite.
     ws = _fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin",
+           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     text = out.read_text().replace(
         "{name: orcaflex, status: absent", "{name: orcaflex, status: licensed")
@@ -361,7 +369,8 @@ def test_collect_commit_on_change_detects_real_drift(tmp_path):
     # canonical()-grep bug where a volatile field sharing a line masked its neighbors.
     ws = _fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin",
+           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     # tamper a meaningful field in the committed file; real collection differs → must rewrite
     text = out.read_text().replace("hermes_home: absent", "hermes_home: present")
@@ -513,7 +522,8 @@ def test_collect_sha_excluded_from_hash(tmp_path):
     # local and remote move together. Only checkout_sha differs → canonical payload identical.
     ws = _git_fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent),
+           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     first_mtime = out.stat().st_mtime_ns
     _git(ws, "commit", "-q", "--allow-empty", "-m", "advance sha")
@@ -527,7 +537,8 @@ def test_collect_dirty_change_forces_rewrite(tmp_path):
     # cannot keep a stale dirty:false that fools the matrix.
     ws = _git_fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent),
+           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert "dirty: false" in out.read_text()
     (ws.joinpath(*MEASURED_PATH)).write_text("workstations: {}\n# now dirty\n")
@@ -540,7 +551,8 @@ def test_collect_dirty_no_self_trigger(tmp_path):
     # dirty is captured pre-write AND .claude/state is outside the measured allowlist.
     ws = _git_fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent),
+           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert "dirty: false" in out.read_text()         # writing its own report didn't self-dirty
 
@@ -593,7 +605,8 @@ def test_collect_origin_ref_age_refreshed_not_frozen(tmp_path):
     # matrix. Tamper the committed age to a huge stale value; the next run MUST rewrite it back.
     ws = _git_fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent),
+           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert re.search(r"origin_ref_age_h: \d", out.read_text())          # live numeric value
     out.write_text(re.sub(r"origin_ref_age_h: .*", "origin_ref_age_h: 999", out.read_text()))

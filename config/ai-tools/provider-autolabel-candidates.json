@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-29T09:25:17.391697Z",
+  "generated_at": "2026-07-29T17:21:37.513993Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 10,
@@ -522,7 +522,7 @@
         "machine:multi",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-27T02:35:31Z",
+      "updatedAt": "2026-07-29T13:43:07Z",
       "execution_ready": false,
       "priority_rank": 3,
       "suggested_provider": "codex",

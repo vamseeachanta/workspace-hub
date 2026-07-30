@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-29T09:25:15.068421Z",
+  "generated_at": "2026-07-29T17:21:37.360495Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-29T09:25:10.797423Z",
+  "scorecard_generated_at": "2026-07-29T17:21:35.428759Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 26,
-      "total_candidates": 183,
+      "execution_ready_count": 25,
+      "total_candidates": 181,
       "top_issues": [
         {
           "number": 3426,
@@ -654,31 +654,6 @@
           ]
         },
         {
-          "number": 3408,
-          "title": "Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3408",
-          "labels": [
-            "cat:harness",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-09T20:10:47Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3480,
           "title": "Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3480",
@@ -954,7 +929,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-07-28T11:45:06Z",
+          "updatedAt": "2026-07-29T11:45:08Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -963,56 +938,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3414,
-          "title": "epic(landman-project-desk): broker workflow, QA, and federal-acreage diligence",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3414",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:business",
-            "domain:workflow",
-            "status:needs-plan",
-            "lane:claude",
-            "epic"
-          ],
-          "updatedAt": "2026-07-27T09:44:23Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3416,
-          "title": "chore(landman-desk): establish the private application repository and public/private data boundary",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3416",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:operations",
-            "status:needs-plan",
-            "lane:claude",
-            "domain:repo"
-          ],
-          "updatedAt": "2026-07-27T01:19:16Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -4376,9 +4301,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3578",
           "labels": [
             "cat:harness",
+            "status:plan-review",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-27T02:35:12Z",
+          "updatedAt": "2026-07-29T13:16:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4509,6 +4435,30 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3702,
+          "title": "bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3702",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "machine:multi",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-29T13:41:49Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4516,7 +4466,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 5,
-      "total_candidates": 17,
+      "total_candidates": 19,
       "top_issues": [
         {
           "number": 3430,
@@ -4694,7 +4644,7 @@
             "machine:multi",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T02:35:31Z",
+          "updatedAt": "2026-07-29T13:43:07Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "codex",
@@ -4883,7 +4833,7 @@
             "machine:multi",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T02:35:31Z",
+          "updatedAt": "2026-07-29T13:43:07Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "codex",
@@ -5037,7 +4987,7 @@
             "machine:multi",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-27T01:19:11Z",
+          "updatedAt": "2026-07-29T13:43:06Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -5079,6 +5029,52 @@
             "domain:harness"
           ],
           "updatedAt": "2026-07-27T02:35:12Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3703,
+          "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3703",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "machine:multi",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-29T13:42:28Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3704,
+          "title": "bug(equality): reconcile-ecosystem.sh scans stale refs without fetching, so \"0 actions\" is not evidence of health",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3704",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "machine:multi",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-29T13:42:30Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

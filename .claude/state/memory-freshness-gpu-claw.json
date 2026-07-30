@@ -1,6 +1,6 @@
 {
-  "machine": "dev-primary",
-  "audited_at": "2026-07-30T00:21:31+00:00",
+  "machine": "gpu-claw",
+  "audited_at": "2026-07-30T00:18:09+00:00",
   "surfaces": {
     "bridge_heartbeat": {
       "present": false,
@@ -9,9 +9,9 @@
       "signal": "git-commit"
     },
     "hermes_memories": {
-      "present": true,
-      "refreshed_at": "2026-07-29T09:25:25+00:00",
-      "age_hours": 14.935,
+      "present": false,
+      "refreshed_at": null,
+      "age_hours": null,
       "signal": "file-mtime"
     },
     "context_md": {
@@ -39,8 +39,8 @@
       "signal": "presence"
     }
   },
-  "newest_refresh": "2026-07-29T09:25:25+00:00",
-  "worst_age_hours": 14.935,
-  "freshness": "MEMORY-FRESH",
+  "newest_refresh": null,
+  "worst_age_hours": null,
+  "freshness": "MISSING-EVIDENCE",
   "schema_version": 2
 }

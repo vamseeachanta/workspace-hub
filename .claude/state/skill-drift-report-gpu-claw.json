@@ -1,6 +1,6 @@
 {
-  "machine": "dev-primary",
-  "evaluated_at": "2026-07-30T00:21:31+00:00",
+  "machine": "gpu-claw",
+  "evaluated_at": "2026-07-30T00:18:09+00:00",
   "signature": "CLEAN",
   "drift_present": false,
   "new_drift": false,

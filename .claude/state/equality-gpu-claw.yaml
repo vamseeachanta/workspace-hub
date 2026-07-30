@@ -1,11 +1,11 @@
-generated_at: "2026-07-29T09:40:08"
+generated_at: "2026-07-29T19:25:07"
 schema_version: 5
 machine: "gpu-claw"
 host: "gpu-claw"
 os: linux
 status: active
 provenance:
-  checkout_sha: "f935b1983"
+  checkout_sha: "4ad4f7176"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 8, ram_total_mib: 64283, gpu_model: "NVIDIA GeForce RTX 3090"}
-    headroom: {ram_avail_mib: 55306, disk_avail_gb: 78}
+    headroom: {ram_avail_mib: 55900, disk_avail_gb: 78}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -70,30 +70,30 @@ dimensions:
     has_parity_review: false
     job_count: 3
   session_curation:
-    last_curated_at: null
-    sessions_24h: 0
-    providers_active: ""
+    last_curated_at: "2026-07-30T00:18:07+00:00"
+    sessions_24h: 20
+    providers_active: "claude,codex"
     memory_files_changed: 0
   skill_currency:
-    audited_at: null
-    canonical_count: 0
-    gemini_present: false
+    audited_at: "2026-07-30T00:18:09+00:00"
+    canonical_count: 44
+    gemini_present: true
     gemini_unexpected: 0
-    gemini_expected: 0
-    codex_present: false
-    hermes_present: false
-    index_dangling: null
+    gemini_expected: 9
+    codex_present: true
+    hermes_present: true
+    index_dangling: 0
   memory_freshness:
-    audited_at: null
+    audited_at: "2026-07-30T00:18:09+00:00"
     worst_age_hours: null
-    freshness: null
+    freshness: "MISSING-EVIDENCE"
   skill_link_health:
-    audited_at: null
-    repos_total: 0
-    healthy: 0
+    audited_at: "2026-07-30T00:18:09+00:00"
+    repos_total: 4
+    healthy: 8
     repairable: 0
-    worst_state: null
+    worst_state: "TEMPLATE-ABSENT"
   publish_health:
-    last_publish_at: "2026-07-29T10:17:03Z"
+    last_publish_at: "2026-07-29T22:17:03Z"
     last_publish_duration_s: 1
     last_publish_rc: 0
