@@ -1,0 +1,4 @@
+schema_version: 1
+must_retain_operational_slugs:
+  - feedback_strict_uptodate_ruleset_no_admin_bypass
+  - feedback_verify_generated_state_against_origin_not_working_copy
