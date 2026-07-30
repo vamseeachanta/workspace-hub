@@ -65,7 +65,12 @@ echo "Publish handled by equality-matrix-cron.sh (publish-equality.sh); nothing 
 # ------ verify --------------------------------------------------------------------------
 step "Provenance + commit"
 echo "--- provenance (expect dirty: false, behind_main: 0, ahead_main: 0, origin_ref_age_h 0-48)"
-grep -E 'dirty|behind_main|ahead_main|origin_ref_age_h' .claude/state/equality-*.yaml 2>/dev/null || true
+# #3702: generated evidence lives in the out-of-tree seam now, not .claude/state.
+# shellcheck source=scripts/readiness/lib/eq-seam.sh
+. "$REPO_ROOT/scripts/readiness/lib/eq-seam.sh"
+EQ_LOCAL_DIR="$(eq_state_dir "")"
+echo "    (local seam: ${EQ_LOCAL_DIR})"
+grep -E 'dirty|behind_main|ahead_main|origin_ref_age_h' "$EQ_LOCAL_DIR"/equality-*.yaml 2>/dev/null || true
 echo "--- last commit"
 git log -1 --oneline
 echo "--- status"

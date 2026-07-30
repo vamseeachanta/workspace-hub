@@ -53,6 +53,11 @@ workstations:
     required_data_access: [assetutilities, digitalmodel, worldenergydata, assethold]
     # #2849 solvers baseline (cold-dim): a Linux dev box is EXPECTED to lack solvers → absent
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
+    # #3591 providers baseline (cold-dim, role-aware): full provider stack on the Hermes host
+    providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
+    # #3592 memory + scheduler baselines (cold-dim): leader box — repo-sync AND parity-review crons
+    hermes_home_baseline: present
+    scheduler_baseline: {repo_sync: required, parity_review: required}
   dev-secondary:
     ws_hub_path: /mnt/local-analysis/workspace-hub
     ssh_target: ace-linux-2
@@ -61,6 +66,11 @@ workstations:
     compute_floor: {cores_min: 8, ram_gib_min: 8}
     required_data_access: [assetutilities, digitalmodel, worldenergydata, assethold]
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
+    # #3591 providers baseline: full Linux execution box
+    providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
+    # #3592: execution box — repo-sync required; parity-review is leader-only (dev-primary)
+    hermes_home_baseline: present
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   gpu-claw:
     ws_hub_path: /home/undi/ws/workspace-hub
     ssh_target: gpu-claw
@@ -70,6 +80,15 @@ workstations:
     compute_floor: {cores_min: 8, ram_gib_min: 32}
     required_data_access: [digitalmodel]
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
+    # #3591 providers baseline: THIN host by policy — CFD lane only, no gemini/hermes
+    providers_baseline: {claude: present, codex: present, gemini: absent, hermes: absent}
+    # #3592: thin host, no hermes home. repo-sync REQUIRED — installed 2026-07-23 via
+    # setup-cron.sh (crontab: repository-sync 4h + equivalence-sentinel 6h + weekly
+    # equality report; evidence measured has_repo_sync:true, job_count:3, publish
+    # 29639aa94). The earlier same-day not-required flip predated that install; its own
+    # flip-back-when-installed condition is now met.
+    hermes_home_baseline: absent
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   ace-win-1:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
@@ -91,6 +110,13 @@ workstations:
     # most `present` (install/import detection only — no real license probe). Until the
     # Windows-side license probe follow-up lands, these cells grade BELOW-BASELINE by design.
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
+    # #3591 providers baseline: THIN Windows host by policy (keep-Windows-host-thin) — no gemini/hermes
+    providers_baseline: {claude: present, codex: present, gemini: absent, hermes: absent}
+    # #3592: hermes_home aligned with providers_baseline (thin → absent). Evidence currently
+    # reads present — a probe/policy contradiction the BELOW-BASELINE cell surfaces for
+    # on-box cleanup (#2815 companion). Task Scheduler repo-sync required.
+    hermes_home_baseline: absent
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   ace-win-2:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
@@ -108,6 +134,13 @@ workstations:
     # NOTE (PR #2850, 2026-05-28): grades BELOW-BASELINE until the Windows license-probe
     # follow-up emits a real `licensed` signal (probe only detects install/import → `present`).
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
+    # #3591 providers baseline: full stack observed + intended on this box (doc/email/marketing lane)
+    providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
+    # #3592: hermes_home aligned with providers_baseline (full stack → present). Evidence
+    # currently reads absent — the inverse contradiction of ace-win-1; the red cell drives
+    # the on-box probe/install reconciliation. Task Scheduler repo-sync required.
+    hermes_home_baseline: present
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   home-win:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null

@@ -13,6 +13,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 MODULE_PATH = REPO_ROOT / "scripts" / "readiness" / "build-equality-matrix.py"
 
@@ -69,6 +71,32 @@ def test_missing_evidence_on_never_published_sentinel_value():
 def test_missing_evidence_on_future_stamp():
     assert bem.publish_health_verdict(
         _rep(last_publish_at="2026-07-14T00:00:00Z"), now=NOW) == "MISSING-EVIDENCE"
+
+
+@pytest.mark.parametrize("stamp", [
+    "2026-07-13T11:00:00",
+    "2026-07-13 11:00:00+00:00",
+    "not-a-timestamp",
+])
+def test_missing_evidence_on_invalid_or_naive_timestamp(stamp):
+    assert bem.publish_health_verdict(
+        _rep(last_publish_at=stamp), now=NOW) == "MISSING-EVIDENCE"
+
+
+@pytest.mark.parametrize("field,value", [
+    ("last_publish_rc", None),
+    ("last_publish_rc", True),
+    ("last_publish_rc", "0"),
+    ("last_publish_duration_s", None),
+    ("last_publish_duration_s", False),
+    ("last_publish_duration_s", "2"),
+    ("last_publish_duration_s", -1),
+    ("last_publish_duration_s", float("nan")),
+    ("last_publish_duration_s", float("inf")),
+])
+def test_missing_evidence_on_incomplete_or_wrong_type_health(field, value):
+    report = _rep(**{field: value})
+    assert bem.publish_health_verdict(report, now=NOW) == "MISSING-EVIDENCE"
 
 
 def test_dim_registered_in_display_and_groups():

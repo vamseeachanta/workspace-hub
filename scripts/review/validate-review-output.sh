@@ -17,12 +17,12 @@ fi
 
 text="$(tr '[:upper:]' '[:lower:]' < "$infile")"
 
-if grep -Eiq '^(# (claude|codex|gemini).*(skipped_network|skipped network))' <<< "$text"; then
+if grep -Eiq '^(# (claude|codex|gemini|agy).*(skipped_network|skipped network))' <<< "$text"; then
     echo "SKIPPED_NETWORK"
     exit 0
 fi
 
-if grep -Eiq '^# (claude|gemini) (returned no_output|review failed|transport/network failure|exec timed out|quota/credits exhausted|cli not found|review failed or timed out)' <<< "$text"; then
+if grep -Eiq '^# (claude|gemini|agy) (returned no_output|review failed|transport/network failure|exec timed out|quota/credits exhausted|cli not found|review failed or timed out|payload exceeds review cap)' <<< "$text"; then
     echo "NO_OUTPUT"
     exit 0
 fi

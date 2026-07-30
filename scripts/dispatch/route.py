@@ -72,6 +72,75 @@ def existing_label_value(labels: list[str], prefix: str) -> str | None:
     return None
 
 
+# ---------------------------------------------------------------------------
+# Assignment coverage (deckhand#584) — READ-ONLY reporting.
+#
+# Four buckets, because "has a label" is not "is routable":
+#   missing    no label on the axis
+#   ambiguous  MULTIPLE labels on one axis. existing_label_value() returns the
+#              FIRST match, so routing depends on API label order. This presents
+#              as healthy and is arguably worse than missing.
+#   terminal   deliberately not scheduled — a valid end state, not a finding
+#   skipped    in flight (skip_if_labeled) — not an assignment failure
+#   routable   exactly one label, and it resolves
+#
+# NOTE the `model:` inversion: per #584 decision 1, ABSENCE of a model: label is
+# MEANINGFUL ("executor chooses") and must never be counted as a gap. That is the
+# opposite of machine:/lane:. `model:` is therefore not an axis here at all.
+# ---------------------------------------------------------------------------
+
+COVERAGE_BUCKETS = ("missing", "ambiguous", "terminal", "skipped", "routable")
+
+
+def classify_axis(labels, prefix, terminal, skip) -> str:
+    """Bucket one issue on one label axis. Pure: never mutates `labels`."""
+    labs = list(labels or [])
+
+    # Terminal beats everything: deliberately unscheduled is an answer, not a gap.
+    if any(t in labs for t in terminal):
+        return "terminal"
+    # In-flight work is not an assignment failure.
+    if any(s in labs for s in skip):
+        return "skipped"
+
+    on_axis = [lab for lab in labs if lab.startswith(prefix)]
+    if not on_axis:
+        return "missing"
+    if len(on_axis) > 1:
+        return "ambiguous"
+    return "routable"
+
+
+def coverage_report(issues, axes, terminal, skip) -> dict:
+    """Read-only coverage over an issue list. No gh, no writes, no network.
+
+    `issues` are dicts with `number` and `labels`. Returns per-axis bucket counts
+    plus the issue numbers behind each finding — a count alone is not reviewable.
+    """
+    report = {"axes": {}, "total": len(issues), "missing_all_axes": []}
+
+    for axis in axes:
+        counts = {b: 0 for b in COVERAGE_BUCKETS}
+        counts["missing_issues"] = []
+        counts["ambiguous_issues"] = []
+        for iss in issues:
+            bucket = classify_axis(iss.get("labels"), axis, terminal, skip)
+            counts[bucket] += 1
+            if bucket == "missing":
+                counts["missing_issues"].append(iss["number"])
+            elif bucket == "ambiguous":
+                counts["ambiguous_issues"].append(iss["number"])
+        report["axes"][axis] = counts
+
+    for iss in issues:
+        if all(
+            classify_axis(iss.get("labels"), axis, terminal, skip) == "missing" for axis in axes
+        ):
+            report["missing_all_axes"].append(iss["number"])
+
+    return report
+
+
 def _domain_matches(pattern: str, domain) -> bool:
     """Match a rule's `domain:` pattern against a card's domain.
 
@@ -214,17 +283,49 @@ def codex_weekly_remaining(override=None):
         return None
 
 
-def lane_quota_demotion(provider, source, remaining_pct, defaults):
-    """Return (provider, demoted). Suspends ONLY the lane-derived codex choice
-    when weekly remaining is strictly below QUOTA_GATE_PCT. ai:/rule codex
-    carries human/rule authority and is never altered; None (unknown quota)
-    fails open. A demoted card keeps provider_explicit=False at the call site,
-    so labels_for() writes no ai: label — demotion leaves no sticky residue.
+#: Carries the SPEND decision, separately from the provider choice (deckhand#584
+#: R9). Without it, an `ai:` label chose the provider AND silently opted out of
+#: the budget guard — one label making two decisions, the second invisible at
+#: the point of labelling.
+QUOTA_OVERRIDE_LABEL = "quota:override"
+
+
+def quota_demotion(provider, source, remaining_pct, defaults, labels=None):
+    """Return (provider, demoted). Suspends a codex choice from ANY source when
+    weekly remaining is strictly below QUOTA_GATE_PCT.
+
+    R9 (deckhand#584, owner 2026-07-30): `ai:` and rule-sourced codex are no
+    longer exempt. The provider choice and the budget bypass are different
+    decisions — "codex does this work better" is about a task, "spend into a
+    suspended pool" is about the month — so they now need different labels.
+    Rule-sourced is demotable too, decided rather than inherited: a capability
+    rule is MACHINE-decided and has even less claim on a budget guard than a
+    human's deliberate `ai:`.
+
+    `QUOTA_OVERRIDE_LABEL` is the only bypass, and it is a spend decision only —
+    it never chooses a provider.
+
+    `None` remaining FAILS OPEN: the gate is an optimisation on top of routing
+    (#3030) and an unreachable quota source must not strand heavy work. That is
+    deliberately the opposite of the write gate's fail-closed posture — the cost
+    of a wrong answer differs in each direction.
+
+    A demoted card keeps provider_explicit=False at the call site, so
+    labels_for() writes no ai: label — demotion leaves no sticky residue. An
+    EXISTING `ai:` label is not removed: it records the operator's intent, while
+    the gate governs this run's execution.
     """
-    if (provider == "codex" and source == "lane"
-            and remaining_pct is not None and remaining_pct < QUOTA_GATE_PCT):
+    if provider != "codex":
+        return provider, False
+    if QUOTA_OVERRIDE_LABEL in (labels or []):
+        return provider, False
+    if remaining_pct is not None and remaining_pct < QUOTA_GATE_PCT:
         return defaults.get("provider"), True
     return provider, False
+
+
+#: Back-compat alias — the old name said "lane" and the restriction is gone.
+lane_quota_demotion = quota_demotion
 
 
 def propose(args) -> list[dict]:
@@ -259,12 +360,16 @@ def propose(args) -> list[dict]:
         provider, provider_explicit, provider_source = resolve_provider(
             labels, assign, defaults)
         quota_demoted = False
-        if provider == "codex" and provider_source == "lane":
+        # R9: NO source restriction here. This call site previously carried its
+        # own `provider_source == "lane"` guard, so relaxing only the function
+        # would have left the exemption fully intact — the fix would look done
+        # and do nothing.
+        if provider == "codex":
             if quota_remaining is _QUOTA_UNSET:  # one quota read per run
                 quota_remaining = codex_weekly_remaining(
                     override=getattr(args, "codex_remaining", None))
-            provider, quota_demoted = lane_quota_demotion(
-                provider, provider_source, quota_remaining, defaults)
+            provider, quota_demoted = quota_demotion(
+                provider, provider_source, quota_remaining, defaults, labels=labels)
         routed_by = "manual" if existing_machine else "rule"
 
         proposals.append({
@@ -392,7 +497,8 @@ def print_summary(proposals: list[dict]):
     print(f"  *active = concurrent slots allowed now per WIP caps; "
           f"the rest sit dispatch:ready in queue.")
     print("\n\033[2mDRY-RUN — no labels written. `--detail` for per-card, "
-          "`--apply` for Phase B (disabled).\033[0m")
+          f"`--apply` to preview writes; `--apply --yes` with {APPLY_FLAG}=1 to "
+          "actually write.\033[0m")
 
 
 # ---------------------------------------------------------------------------
@@ -488,8 +594,52 @@ def labels_for(p: dict, existing: set[str], skip_domain: bool = False) -> list[s
     return [l for l in out if l not in existing]
 
 
+# ---------------------------------------------------------------------------
+# Write gate (deckhand#584 slice 2).
+#
+# route.py used to PRINT "`--apply` for Phase B (disabled)" while --apply/--yes
+# were real flags reaching a live `gh issue edit --add-label`. The "disabled"
+# lived only in a help string. That is dangerous here specifically because the
+# capability map is known-wrong (routing-rules claims a solver capability for a
+# host that cannot obtain the licence, #579), so an accidental mass-apply would
+# dispatch work into guaranteed failure across hundreds of issues.
+#
+# The gate is an ENVIRONMENT flag, deliberately not a config value: config is
+# committed and diffable, so a flag flipped in a PR could be merged without
+# anyone registering that it armed a mass-write path. An env var has to be set
+# by the person running the command, at the moment they run it.
+# ---------------------------------------------------------------------------
+
+APPLY_FLAG = "DISPATCH_APPLY_ENABLED"
+#: Only these open the gate. Anything else — including "0", "false", "off" and
+#: the empty string — fails closed. A naive truthiness check would treat "0" and
+#: "false" as permission, which is worse than no gate because it reads protected.
+_AFFIRMATIVE = {"1", "true", "yes", "on"}
+
+
+def assert_write_allowed() -> None:
+    """Exit unless the operator explicitly armed writes for this invocation."""
+    value = (os.environ.get(APPLY_FLAG) or "").strip().lower()
+    if value not in _AFFIRMATIVE:
+        sys.exit(
+            f"REFUSED: label writes are gated. Set {APPLY_FLAG}=1 to arm this "
+            f"invocation.\n"
+            f"  Before arming, confirm the capability map is correct — "
+            f"routing-rules.yaml currently claims a solver capability for a host "
+            f"that cannot obtain the licence (deckhand#579), and a mass-apply "
+            f"would route work into guaranteed failure.\n"
+            f"  Run `--coverage` first to see what is actually assigned."
+        )
+
+
 def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace: float):
     import time
+
+    # Gate BEFORE any fetch, label-ensure, or write. Dry-run (--apply without
+    # --yes) is a preview and stays ungated: gating it too would push people to
+    # set the flag habitually, which defeats the gate.
+    if do_write:
+        assert_write_allowed()
     proposals = [p for p in proposals if p["repo"] == repo]
     if not proposals:
         sys.exit(f"no open cards for {repo}")
@@ -543,13 +693,72 @@ def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace
               "(domain: shown optimistically; skipped live where one exists).\033[0m")
 
 
+def cmd_coverage(args) -> None:
+    """READ-ONLY coverage report (deckhand#584). Reaches no write path."""
+    cfg = load_rules()
+    defaults = cfg.get("defaults", {}) or {}
+    skip = list(defaults.get("skip_if_labeled", []) or [])
+    # Deliberately-unscheduled markers. These must ALSO be honoured by the
+    # routing engine, not merely named here — see #584: a marker that the
+    # report calls terminal while the engine routes it is a dead control.
+    terminal = list(defaults.get("terminal_if_labeled", []) or
+                    ["machine:unassigned", "status:icebox"])
+    axes = ("machine:", "lane:")
+
+    repos = [args.repo] if args.repo else DEFAULT_COVERAGE_REPOS
+    overall = {}
+    for repo in repos:
+        issues = fetch_open_issues(repo)
+        overall[repo] = coverage_report(issues, axes, terminal, skip)
+
+    if args.json:
+        print(json.dumps(overall, indent=2))
+        return
+
+    for repo, rep_ in overall.items():
+        print(f"\n\033[1m{repo}\033[0m  open={rep_['total']}")
+        for axis, c in rep_["axes"].items():
+            print(f"  {axis:<10} missing={c['missing']:<5} ambiguous={c['ambiguous']:<4} "
+                  f"terminal={c['terminal']:<4} skipped={c['skipped']:<4} routable={c['routable']}")
+        if rep_["missing_all_axes"]:
+            n_all = len(rep_["missing_all_axes"])
+            print(f"  \033[1;33mno axis at all: {n_all}\033[0m "
+                  f"(e.g. {rep_['missing_all_axes'][:8]})")
+    print("\n\033[2mREAD-ONLY — no labels written. `model:` absence is NOT a gap "
+          "(#584: it means the executor chooses).\033[0m")
+
+
+DEFAULT_COVERAGE_REPOS = (
+    "vamseeachanta/workspace-hub",
+    "vamseeachanta/digitalmodel",
+    "vamseeachanta/deckhand",
+)
+
+
+def fetch_open_issues(repo: str) -> list[dict]:
+    """Open issues with labels, via gh. READ-ONLY: `issue list` only."""
+    r = subprocess.run(
+        ["gh", "issue", "list", "--repo", repo, "--state", "open",
+         "--limit", "2000", "--json", "number,labels"],
+        capture_output=True, text=True,
+    )
+    if r.returncode != 0:
+        return []
+    return [{"number": i["number"], "labels": [lab["name"] for lab in i.get("labels", [])]}
+            for i in json.loads(r.stdout or "[]")]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--coverage", action="store_true",
+                    help="READ-ONLY assignment-coverage report (deckhand#584); "
+                         "never writes. Buckets: missing/ambiguous/terminal/skipped/routable")
     ap.add_argument("--detail", action="store_true", help="per-card listing")
     ap.add_argument("--apply", action="store_true", help="write GH labels (Phase B)")
-    ap.add_argument("--yes", action="store_true", help="actually write (else apply dry-run)")
+    ap.add_argument("--yes", action="store_true",
+                    help=f"actually write (else apply dry-run); requires {APPLY_FLAG}=1")
     ap.add_argument("--batch", type=int, default=50, help="pace every N writes")
     ap.add_argument("--pace", type=float, default=2.0, help="seconds to sleep per batch")
     ap.add_argument("--codex-remaining", type=float, default=None,
@@ -557,6 +766,12 @@ def main():
                     help="override live codex weekly remaining %% for the lane "
                          "quota gate (loud operator escape hatch, #3030)")
     args = ap.parse_args()
+
+    if args.coverage:
+        # Returns BEFORE propose(): the reporter must not touch the routing
+        # engine's proposal path at all, so it cannot reach a write.
+        cmd_coverage(args)
+        return
 
     proposals = propose(args)
     if args.json:

@@ -71,6 +71,18 @@ identity:
   digest: sha256
   domain_separation_required: true
   canonical_serialization_owner: identity
+  # Pinned canonicalization scheme (workspace-hub#3428). An under-specified scheme
+  # would let the identity root diverge on equivalent inputs or collide on different
+  # ones. Reference implementation: assetutilities.workflow_api.identity.canonicalize.
+  canonicalization:
+    version: identity-jcs-1            # a required component of every identity digest
+    structure: rfc_8785_jcs           # UTF-8, object keys sorted by UTF-16 code-unit order, no insignificant whitespace, arrays in declared order
+    strings: unicode_nfc              # NFC-normalize before hashing
+    numbers: decimal_normalize_no_float_roundtrip   # 1e3==1000, 5.0==5.00==5; Decimal(str(x)), never Decimal(float)
+    units: explicit_value_unit_pair_required        # a bare units-bearing numeric is rejected, never silently hashed
+    null_na: explicit                 # null / "NA" are explicit, never omitted
+    digest: sha256_domain_separated   # prefix "{identity_type}\n{version}\n" so id types never collide on equal bytes
+    reused_by: [input_set_id, artifact_structured_content, output_equality_digest]
   algorithm_version_id:
     required_components: [algorithm_id, semantic_version, clean_git_commit,
       input_schema_version, output_schema_version, environment_digest]

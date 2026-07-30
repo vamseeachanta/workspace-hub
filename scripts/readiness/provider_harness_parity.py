@@ -19,7 +19,8 @@ CAPABILITIES = ("memory:read", "skills:invoke", "workflow:gates")
 
 EXPECTED_DIVERGENCE_REASONS = {
     "external_skill_dirs_configured",
-    # gemini (agy) is router-first-class but dispatch-unsupported (#3190): no local
+    # The "gemini" row = the Gemini surface (agy since #3573; headless dispatch #3207).
+    # Skill dispatch remains unsupported on that surface: no local
     # skill adapter — a known, accepted gap, not a defect.
     "gemini_skill_dispatch_unsupported",
 }
@@ -180,7 +181,8 @@ def _skills_invoke(provider: str, workspace: Path, home: Path, installed: bool) 
             return _cap("expected_divergence", "external_skill_dirs_configured")
         return _cap("absent", "hermes_skill_registry_missing")
     if provider == "gemini":
-        # agy is router-first-class but dispatch-unsupported (#3190): no local skill
+        # Gemini surface = agy (#3573; headless dispatch #3207). Skill dispatch remains
+        # unsupported there: no local skill
         # adapter — an explicit, accepted divergence (not a defect).
         return _cap("expected_divergence", "gemini_skill_dispatch_unsupported")
     return _cap("unknown", "unknown_provider")

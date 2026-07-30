@@ -2255,7 +2255,7 @@ cards:
       - ci
       - priority:high
       - cat:data
-      - cat:automation
+      - cat:tooling
       - status:plan-approved
     initial_status: triage
     priority: 1
@@ -2503,21 +2503,6 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#458
-    title: 'fix(lng): enabled lng_terminals_refresh is still a stub and blocks scheduler freshness'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/458
-    gh_state: open
-    gh_labels:
-      - bug
-      - priority:high
-      - cat:data
-      - cat:automation
-      - lane:claude
-    initial_status: triage
-    priority: 1
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#459
     title: 'fix(brazil_anp): scheduler refresh endpoint returns 404 for configured 2025 semester query'
     source: github_issue
@@ -2527,7 +2512,7 @@ cards:
       - bug
       - priority:high
       - cat:data
-      - cat:automation
+      - cat:tooling
       - status:done
       - lane:claude
     initial_status: triage
@@ -2543,8 +2528,8 @@ cards:
       - bug
       - priority:high
       - cat:data
-      - cat:automation
       - lane:claude
+      - domain:pipeline
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -2557,6 +2542,8 @@ cards:
     gh_labels:
       - priority:high
       - priority:medium
+      - cat:operations
+      - domain:ci-release
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -2589,6 +2576,8 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - cat:data
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2638,7 +2627,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/640
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:research
+      - domain:models
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2648,7 +2639,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/641
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:engineering
+      - domain:subsea
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2688,7 +2681,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/651
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:data
+      - domain:finance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2711,42 +2706,10 @@ cards:
     gh_labels:
       - priority:high
       - cat:engineering
-      - cat:data
       - lane:codex
       - lane:claude
       - status:needs-plan
-    initial_status: triage
-    priority: 1
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#680
-    title: D8 — Establish the production-reservoir database
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/680
-    gh_state: open
-    gh_labels:
-      - priority:high
-      - cat:engineering
-      - cat:data
-      - lane:codex
-      - lane:claude
-      - status:needs-plan
-    initial_status: triage
-    priority: 1
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#681
-    title: D11 — Establish the drilling-well database
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/681
-    gh_state: open
-    gh_labels:
-      - priority:high
-      - cat:engineering
-      - cat:data
-      - lane:codex
-      - lane:claude
-      - status:needs-plan
+      - domain:marine
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -2756,7 +2719,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/683
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:engineering
+      - domain:capability
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2766,7 +2731,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/698
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:data
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2796,7 +2763,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/735
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:engineering
+      - domain:finance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2806,7 +2775,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/736
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:data
+      - domain:finance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2816,7 +2787,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/737
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:data
+      - domain:finance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2828,6 +2801,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:engineering
+      - domain:subsea
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2837,7 +2811,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/774
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:engineering
+      - domain:content
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2847,7 +2823,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/775
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:research
+      - domain:models
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2857,7 +2835,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/776
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:research
+      - domain:models
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2867,7 +2847,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/777
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:engineering
+      - domain:content
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2877,7 +2859,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/778
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:engineering
+      - domain:content
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2887,7 +2871,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/779
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:engineering
+      - domain:content
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2897,7 +2883,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/780
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:engineering
+      - domain:website
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2923,6 +2911,7 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
+      - domain:finance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2941,18 +2930,6 @@ cards:
     priority: 0
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#814
-    title: 'feat(canada): live C-NLOER PDF download + refresh lane (#719 follow-on)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/814
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:data
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#815
     title: 'feat(canada): per-field development-concept override (GBS vs FPSO/subsea) (#719 follow-on)'
     source: github_issue
@@ -2963,42 +2940,7 @@ cards:
       - cat:data
       - status:plan-approved
       - lane:codex
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#816
-    title: 'feat(canada): CNSOER Sable + Deep Panuke legacy gas ingest + gas revenue (#719 follow-on)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/816
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:data
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#817
-    title: 'feat(canada): Hibernia 1997-2001 HTML-modal production backfill (#719 follow-on)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/817
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:data
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#818
-    title: 'feat(canada): ArcGIS Development-Wells water-depth + FieldConcept enrichment (#719 follow-on)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/818
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:data
+      - domain:models
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3011,6 +2953,7 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
+      - domain:governance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3028,18 +2971,6 @@ cards:
     priority: 1
     gh_assignees: []
     body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#823
-    title: 'feat(australia): production feed (AEMO GBB / PEPS-SA) → real economics (#721 follow-on)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/823
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:data
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#824
     title: 'feat(australia): gas-price fiscal marker for AU (not WTI) (#721/#714 follow-on)'
     source: github_issue
@@ -3048,18 +2979,7 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#825
-    title: 'feat(australia): NOPTA/GA wells + water-depth enrichment for FieldConcept (#721 follow-on)'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/825
-    gh_state: open
-    gh_labels:
-      - enhancement
-      - cat:data
+      - domain:finance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3074,6 +2994,7 @@ cards:
       - cat:data
       - status:plan-approved
       - lane:claude
+      - domain:models
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3086,6 +3007,7 @@ cards:
     gh_labels:
       - enhancement
       - cat:data
+      - domain:finance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3097,9 +3019,11 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - cat:research
       - status:plan-approved
       - lane:codex
       - status:needs-plan
+      - domain:models
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3112,7 +3036,7 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
-      - cat:data
+      - domain:finance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3129,6 +3053,7 @@ cards:
       - status:plan-approved
       - lane:codex
       - lane:claude
+      - domain:models
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3139,9 +3064,11 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/875
     gh_state: open
     gh_labels:
+      - cat:engineering
       - status:plan-approved
       - lane:codex
       - lane:claude
+      - domain:pipeline
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3155,6 +3082,7 @@ cards:
       - cat:data
       - status:plan-approved
       - lane:codex
+      - domain:finance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3178,6 +3106,8 @@ cards:
       - enhancement
       - question
       - priority:high
+      - cat:data
+      - domain:finance
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -3198,7 +3128,9 @@ cards:
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/908
     gh_state: open
     gh_labels:
+      - cat:operations
       - status:plan-approved
+      - domain:standards
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3208,22 +3140,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/922
     gh_state: open
-    gh_labels: []
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#928
-    title: Align Landman freshness scorecard with packaged fixture catalog
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/928
-    gh_state: open
     gh_labels:
-      - bug
-      - priority:medium
-      - cat:data
-      - lane:codex
-      - status:needs-plan
+      - cat:engineering
+      - domain:content
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3284,6 +3203,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:data
+      - domain:gis
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3295,6 +3215,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:data
+      - domain:gis
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3306,6 +3227,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:data
+      - domain:gis
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3317,17 +3239,7 @@ cards:
     gh_state: open
     gh_labels:
       - cat:data
-    initial_status: triage
-    priority: 0
-    gh_assignees: []
-    body_excerpt: ''
-  - idempotency_key: gh:vamseeachanta/worldenergydata#910
-    title: 'docs(data): inventory /mnt/ace ecosystem data roots for underwriting readiness'
-    source: github_issue
-    source_url: https://github.com/vamseeachanta/worldenergydata/issues/910
-    gh_state: open
-    gh_labels:
-      - status:plan-approved
+      - domain:gis
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3343,6 +3255,7 @@ cards:
       - lane:claude
       - epic
       - status:needs-plan
+      - domain:capability
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3355,9 +3268,10 @@ cards:
     gh_labels:
       - bug
       - priority:medium
-      - cat:ci
+      - cat:operations
       - status:plan-approved
       - lane:codex
+      - domain:ci-release
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -3370,6 +3284,7 @@ cards:
     gh_labels:
       - priority:high
       - cat:data
+      - domain:finance
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -3378,7 +3293,7 @@ cards:
     title: 'bug: Spain-cores adapter tests fail on main → blocks all PRs (Test PR gate)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/983
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - bug
     initial_status: triage
@@ -3402,7 +3317,7 @@ cards:
     title: 'epic(cost): harden the cost-basis dataset — holistic proof stack across an expanded project set'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1023
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - priority:high
@@ -3428,7 +3343,7 @@ cards:
     title: 'feat(cost): normalize award registry — contract_awards.csv + project_cost_statements.csv with schema rails'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1025
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
@@ -3440,7 +3355,7 @@ cards:
     title: 'data(cost): award + partner-statement research tranche 2+ — remaining and newly added projects'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1026
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
@@ -3452,7 +3367,7 @@ cards:
     title: 'data(cost): outturn cost-trail table — dated sanctioned→revised→final figures per project'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1027
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
@@ -3464,7 +3379,7 @@ cards:
     title: 'feat(cost): reconciliation harness — automated proofs + A1 evidence pack'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1028
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
@@ -3476,7 +3391,7 @@ cards:
     title: 'data(cost): time-series hardening — day-rate density, UCCI gap, heavy-lift/pipelay rates'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1029
-    gh_state: open
+    gh_state: closed
     gh_labels:
       - enhancement
       - cat:data
@@ -3488,10 +3403,2938 @@ cards:
     title: 'feat(cost): regenerate presentation + llm-wiki notes from hardened dataset'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/1030
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1038
+    title: 'epic(cost): bidirectional asset-to-project cost map and correlated CAPEX estimator'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1038
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - route:C
+      - status:plan-approved
+      - lane:claude
+      - epic
+      - domain:finance
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1039
+    title: 'feat(cost): Big Foot end-to-end asset cost-map pilot'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1039
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - cat:data
+      - status:done
+      - route:C
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1040
+    title: 'feat(cost): portfolio required-assets and award-coverage map'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1040
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - route:C
+      - status:plan-review
+      - lane:codex
+      - domain:finance
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1041
+    title: 'feat(cost): portfolio bidirectional asset/project cost synthesis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1041
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - route:C
+      - status:plan-approved
+      - lane:codex
+      - domain:finance
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1042
+    title: 'feat(cost): project component-cost time traces'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1042
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - route:C
+      - status:plan-approved
+      - lane:codex
+      - domain:finance
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1043
+    title: 'feat(cost): correlated CAPEX estimator for undisclosed projects'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1043
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - route:C
+      - status:plan-approved
+      - lane:codex
+      - domain:finance
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1046
+    title: Repair drilling riser component CSV alignment and reject malformed rows
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1046
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:engineering
+      - lane:codex
+      - status:needs-plan
+      - domain:subsea
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1048
+    title: enforce TOCTOU-safe input hashing for deterministic manifests
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1048
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:security
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1050
+    title: 'vessel_fleet: public MODU physical-vessel and loading-condition source contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1050
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:codex
+      - status:needs-plan
+      - domain:marine
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1055
+    title: 'fix(site): 5 site integration tests fail on main — capabilities/index.html is now a redirect stub; link-graph + presentation assertions stale'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1055
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1059
+    title: 'epic(site): report-hub design system across all worldwide field-data surfaces'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1059
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:needs-plan
+      - domain:website
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1062
+    title: 'bug(data): drilling & completion days have three incompatible definitions — adopt BSEE WAR activity codes as the reference basis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1062
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1063
+    title: 'epic(data): rebuild drilling & completion days on a ratified basis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1063
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1064
+    title: 'decide(data): ratify the drilling & completion day basis with the domain owner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1064
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:governance
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1066
+    title: 'fix(build): make data fails — ModuleNotFoundError blocks WAR recomputation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1066
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - domain:ci-release
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1067
+    title: 'feat(data): implement shared war_rig_days module on BSEE activity codes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1067
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1068
+    title: 'fix(data): DRILLING_DAYS mixes two bases behind an undocumented 250-day threshold'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1068
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1069
+    title: 'fix(data): COMPLETION_DAYS counts every post-TD rig-day forever (root of #846)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1069
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1070
+    title: 'fix(data): completion days depend on remark presence, drilling does not (B6)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1070
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1071
+    title: 'fix(data): union_days does not merge back-to-back WAR weeks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1071
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1072
+    title: 'fix(data): drilling and completion use different day-counting conventions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1072
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1073
+    title: 'fix(data): missing spud/TD emits 0 instead of null (38 of 253 bores)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1073
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1074
+    title: 'chore(data): delete dead completion-keyword code and stale comments'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1074
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1075
+    title: 'refactor(data): converge four independent drilling-day implementations'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1075
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1076
+    title: 'feat(data): emit explicit basis, pnd_days and days_status columns'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1076
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1077
+    title: 'fix(reports): benchmark drilling_days is calendar cycle time, not drilling time'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1077
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1078
+    title: 'docs(data): disclose WAR quantization, 2004 floor, MD-vs-TVD and the declared basis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1078
+    gh_state: open
+    gh_labels:
+      - cat:documentation
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1079
+    title: 'task(data): recompute and republish all D&C surfaces after the basis change'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1079
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:pipeline
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1080
+    title: 'feat(data): add Days/10K normalized drilling parameter (days per 10,000 ft)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1080
+    gh_state: open
+    gh_labels:
+      - cat:data
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1081
+    title: 'research(data): API-10 vs API-12 vs API-14 wellbore grain — drives rig-day aggregation (+ llm-wiki note)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1081
+    gh_state: open
+    gh_labels:
+      - cat:research
+      - domain:models
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#2
+    title: engg debt | wind | data APIs
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/2
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - wrk-item
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: Get wind farm and structural data from public sources
+  - idempotency_key: gh:vamseeachanta/worldenergydata#18
+    title: engg debt | TXRRC | Data
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/18
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - wrk-item
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees:
+      - vamseeachanta
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Review if any useful data from below repo code:
+
+      https://github.com/mlbelobraydi/TXRRC_data_harvest'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#37
+    title: Field Reserve Map
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/37
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - wrk-item
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Objective: Create a simple geo map  showing below blocks in one image .
+
+      - Jack Field - Walker Ridge blocks 758 & 759
+
+      - St. Malo Field - Walker Ridge block 678'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#46
+    title: NPV Analysis
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/46
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - wrk-item
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: tracking in the repo spec.
+  - idempotency_key: gh:vamseeachanta/worldenergydata#48
+    title: Repository AI-enablement
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/48
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:operations
+      - wrk-item
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: "- context\n  - repository context\n- task execution guidelines"
+  - idempotency_key: gh:vamseeachanta/worldenergydata#52
+    title: AI Native practices
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/52
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:operations
+      - wrk-item
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: "- [x] Add ai guidelines in .ai fodler\n- [ ] implement uv best practices\n  - [x] update pyproject.toml"
+  - idempotency_key: gh:vamseeachanta/worldenergydata#119
+    title: Nightly build failed - 2026-01-30
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/119
+    gh_state: open
+    gh_labels:
+      - nightly-failure
+      - ci
+      - priority:low
+      - cat:operations
+      - wrk-item
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Nightly Build Failure
+
+
+      The nightly build has failed. Please investigate.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#266
+    title: Operationalize EIA scheduler job — config, API key, first successful data write
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/266
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:codex
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Objective
+
+
+      Operationalize the `eia_us_refresh` scheduler job so it can complete a real production run and write data successfully.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#267
+    title: Fix BSEE scheduler runtime download/extraction compatibility
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/267
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:codex
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Objective
+
+
+      Fix the `bsee_refresh` scheduler job so it can complete successfully against current live BSEE download formats.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#271
+    title: Wire `output_dir` into all scheduler jobs
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/271
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:codex
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+
+      No scheduler job knows where to write output files. There is no `output_dir` wiring between the adapter jobs and the `data/modules/` directory structure.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#273
+    title: Fix SODIR scheduler runtime endpoint contract
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/273
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Objective
+
+
+      Fix the `sodir_refresh` scheduler job so live scheduler runs succeed against the current SODIR API.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#274
+    title: 'fix(ci): remove || true from bandit security scan step'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/274
+    gh_state: open
+    gh_labels:
+      - ci
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+
+      `ci.yml` line 155 still has `|| true` on the bandit step:'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#276
+    title: 'test: add integration test for DataValidator.generate_interactive_report (HTML output)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/276
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:low
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Background
+
+
+      Phase 2B (`6303df0`) added 22 unit tests for `src/validators/data_validator.py` covering `validate_dataframe`, `_check_missing_data`, `_get_quality_color`, and `generate_report`. The `generate_interactive_report` method (Plotly → HTML file) was intentionally left out of unit tests as it requires filesystem + plotly rendering.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#277
+    title: 'perf: investigate test suite performance regressions flagged in Phase 2B run'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/277
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:low
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Findings
+
+
+      The Phase 2B test run (`182s` for 87 tests) flagged three regressions:'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#313
+    title: Test infrastructure cleanup — unify pytest config, restore type_curves, fix broken imports
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/313
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      Follow-up from the closed [PR #310](https://github.com/vamseeachanta/worldenergydata/pull/310). Scope turned out larger than "5 broken imports" — needs a focused test-infra cleanup pass.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#315
+    title: 'Lint: evaluate ruff migration to replace black + isort + flake8'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/315
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:tooling
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Proposal
+
+
+      Replace the current 3-tool linting stack (\`black\` + \`isort\` + \`flake8\`) with a single tool: [\`ruff\`](https://docs.astral.sh/ruff/).'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#316
+    title: 'Type: incremental mypy cleanup — ~2918 untyped-def errors'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/316
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:low
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      After PR #308 (mypy python_version bump + type stubs), mypy runs to completion instead of crashing on torch''s match syntax. The full error count revealed is ~2918, previously hidden behind the crash.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#325
+    title: "Bugs: 8 pre-existing defects surfaced by PR #320's xfail markers"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/325
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      PR #320 (part of #314) replaced a broken `exec()` hack in two compliance test files and resurrected 63 tests that had been silently non-executing since a `modules/` refactor. Of those, 53 pass cleanly and **10 fail on real implementation bugs** — not import issues. They were marked `@pytest.mark.xfail` with specific reasons rather than silenced, so they surface in test reports without breaking CI.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#328
+    title: 'Tooling: flake8 reports different F821 counts across runs on same codebase (uv env race?)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/328
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:tooling
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      During the #314 Block B sweep, three independent `uv run --extra dev flake8 src/ tests/ --select=F821` runs on main returned **three different counts** on the same code. This undercount caused the sweep to miss 33 errors, which required a follow-up mop-up (#322).'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#334
+    title: 'feat(cost): annual operator disclosures dataset for year-over-year project cost tracking'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/334
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:low
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:codex
+      - domain:content
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Create a foundation-only v1 disclosure data layer for annual project/operator cost disclosures.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#336
+    title: 'feat(cost): add currency normalization and comparability policy for annual disclosures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/336
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:codex
+      - domain:content
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent
+
+      - Parent: #334'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#342
+    title: 'bug(cost): restore broken proxy comparison regression boundary'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/342
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Repair the broken sanction-layer proxy comparison regression boundary so the annual disclosure cost wave can verify compatibility without false failures.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#343
+    title: 'feat(cost): build major-operator annual statement source registry and yearly coverage tracker'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/343
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:codex
+      - domain:content
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Create a major-operator annual statement source registry and year-over-year coverage tracker for disclosure cost collection.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#344
+    title: 'feat(cost): add restatement/version lineage for annual disclosure records'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/344
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:codex
+      - domain:content
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add restatement and version-lineage support for annual disclosure records so year-over-year tracking can distinguish original disclosures from later revised statements.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#349
+    title: 'audit(repo): build capability inventory and module readiness matrix'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/349
+    gh_state: open
+    gh_labels:
+      - documentation
+      - cat:engineering
+      - priority:low
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build a repo-grounded capability inventory and readiness matrix for `worldenergydata` so overnight agents can understand what the repo can actually do versus what README/MODULE_INDEX/docs claim.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#350
+    title: 'audit(data): build data completeness and freshness scorecard'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/350
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - cat:data
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Build a data completeness and freshness scorecard for `worldenergydata`, using the live data catalog, source adapters, scheduler jobs, and local data tree to identify which datasets are complete, sample-only, stale, missing, or blocked by credentials/API/runtime contracts.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#351
+    title: 'audit(scheduler): prepare source refresh runtime readiness matrix'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/351
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - cat:tooling
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Audit the `worldenergydata` scheduler/runtime refresh pipeline and prepare a safe overnight batch plan for source refreshes, endpoint probes, and configuration fixes.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#360
+    title: 'ops(scheduler): verify and instrument refresh health — last successful run 2026-03-25 (37 days stale)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/360
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:data
+      - cat:tooling
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Problem
+
+
+      Last successful scheduler refresh across the production data sources is 2026-03-25. Today is 2026-05-01 — **37 days of silence**. The data-product narrative (\"weekly auto-refresh of BSEE/EIA/SODIR/UKCS/Brazil ANP\") is currently unsupported by live state.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#362
+    title: 'feat(report): operator cost benchmarking from annual disclosures (HTML + notebook)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/362
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:codex
+      - lane:claude
+      - domain:content
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Goal
+
+
+      Build a buyer-facing benchmarking report (notebook + HTML export) that surfaces project-cost distributions across major operators by field/region/year, sourced from the annual-disclosure dataset shipped via #334/#335/#337/#338.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#368
+    title: 'chore(hygiene): periodic verifier for recently-closed issues — catch claimed-shipped vs not-actually-shipped drift'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/368
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+
+      Issue #298 (closed 2026-04-16, commit `eedecf5a`, titled *\"extend catalog and metadata to cover /mnt/ace symlinked data\"*) was caught by a 2026-05-01 audit to have not actually wired the symlinks/path resolution it claimed. 9.5 GB of relocated data is still unreachable through the catalog. This is the **closed-issue-was-not-actually-done** failure mode — issues get closed, work is assumed shipped, and audits months later expose the gap.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#416
+    title: 'feat(analysis): intervention-activity HSE patterns + day-to-day operational recommendations'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/416
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - lane:codex
+      - domain:content
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context — the gap
+
+
+      worldenergydata currently has TWO mature thread that don''t yet intersect:'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#419
+    title: 'feat(analysis): intervention HSE — Phase 1B operator-aggregate patterns (#416 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/419
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - machine:dev-primary
+      - dispatch:ready
+      - lane:codex
+      - domain:content
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      Child of [#416](https://github.com/vamseeachanta/worldenergydata/issues/416). Per plan resolution 2026-05-18, Phase 1 was decomposed into:'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#422
+    title: 'chore(legal): exclude reports/coverage/htmlcov/ from legal-deny-list scan (or gitignore)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/422
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:operations
+      - machine:dev-primary
+      - dispatch:ready
+      - lane:claude
+      - domain:testing
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      Surfaced during [#416 Phase 0 exploration](https://github.com/vamseeachanta/worldenergydata/issues/416). When running workspace-hub''s legal-sanity-scan against worldenergydata, the scan reports **125 BLOCK violations** — all in `reports/coverage/htmlcov/*.html` files (pytest-cov HTML output).'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#424
+    title: 'feat(analysis): decommissioning market outlook — 5-yr GoM forecast (#423 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/424
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      Child of marketing-pipeline umbrella **#423**. Market-intelligence framing, lighter on HSE. Forward-looking given the GoM decommissioning wave (many fields reaching end-of-life). Strong commercial relevance — operators, contractors, and capital allocators all care about decom volumes and timing.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#426
+    title: 'feat(analysis): drilling HSE patterns (#423 child, sibling of #416)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/426
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-review
+      - lane:codex
+      - domain:content
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      Child of marketing-pipeline umbrella **#423**. Sibling of [#416](https://github.com/vamseeachanta/worldenergydata/issues/416) intervention HSE. Reuses the same data + classifier + WAR infrastructure but cuts on DRILL.drilling / DRILL.completion subactivities instead of DRILL.workover / DRILL.well_control.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#427
+    title: 'feat(analysis): seasonal intervention risk windows — hurricane × WAR × ops (#423 child, sibling of #403)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/427
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-review
+      - lane:codex
+      - domain:content
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+
+      Child of marketing-pipeline umbrella **#423**. Combines [#403](https://github.com/vamseeachanta/worldenergydata/issues/403) hurricane-mooring infrastructure with BSEE WAR intervention timing. Operational decision-support framing: when to schedule interventions to minimize storm + currents + crew-fatigue risk overlap.'
+  - idempotency_key: gh:vamseeachanta/worldenergydata#431
+    title: 'Review remediation: unify HTTP stack, PHMSA N+1, EIA key-in-URL (2026-05-23)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/431
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:medium
+      - lane:claude
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#450
+    title: 'feat(flywheel): define catalog-to-workflow manifest for well-operations insight runs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/450
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:plan-approved
+      - lane:claude
+      - domain:testing
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#452
+    title: 'feat(flywheel): run well-operations insight workflow from WAR, production, FDAS, and HSE inputs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/452
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#453
+    title: 'feat(flywheel): publish well-operations insight outputs to wiki with provenance and routing gates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/453
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#462
+    title: 'docs(data): define source refresh acceptance criteria contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/462
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:high
+      - cat:data
+      - status:plan-approved
+      - lane:claude
+      - domain:testing
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#470
+    title: 'Durable YAML workflows v1: module engine entry, workflow registry, offline bsee workflows + tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/470
+    gh_state: closed
+    gh_labels:
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#472
+    title: 'Durable workflows v2: engine routes + registry rows for fdas field development, pipeline safety FFS, marine safety, forecasting'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/472
+    gh_state: closed
+    gh_labels:
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#474
+    title: 'CI: module-scoped PR test job (paths-filter) + xdist; full 3-Python matrix on main/nightly only'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/474
+    gh_state: closed
+    gh_labels:
+      - lane:claude
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#481
+    title: 'CI/deps: tame the strict-up-to-date dependabot cascade; keep PRs domain-scoped'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/481
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#487
+    title: 'feat(api): worldenergydata.hse.grounding — failure-mode → 2 latest + 2 highest-severity incidents (#486 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/487
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#488
+    title: 'feat(data): failure-mode keyword library + per-mode source routing — extend mooring → well-control, dropped-object, riser, fire (#486 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/488
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#489
+    title: 'feat(provenance): always-on data-vintage stamp on grounding cards + close HSE refresh provenance gap (#486 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/489
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - domain:testing
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#491
+    title: 'feat(flywheel): grounding demand-signal — log requested failure modes → prioritize next coverage (#486 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/491
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - cat:tooling
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#493
+    title: "Lower Tertiary 3D well-path: select Julia wells by lease (G20351), not 'JU' name-prefix — DC101↔JU101 API collision"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/493
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:data
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#496
+    title: 'ci: extend module-scoped PR gate to all modules + skip non-code paths (parity with digitalmodel)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/496
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - status:plan-review
+      - lane:claude
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#499
+    title: Saved, parameterized GoM well-history benchmarking export
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/499
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#500
+    title: Extend Lower Tertiary field-economics coverage + refresh to latest BSEE
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/500
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#510
+    title: 'well_access_calibration: empirical intervention rates + uptime from BSEE'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/510
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:research
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#523
+    title: 'fix(ci): hse scheduler/MODULE_INDEX drift (quarantined in PR gate)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/523
+    gh_state: closed
+    gh_labels:
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#524
+    title: 'fix(ci): repo_structure contract flags site_assets/*threejs.html (quarantined in PR gate)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/524
+    gh_state: closed
+    gh_labels:
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#526
+    title: 'epic: modular per-domain CI/CD for faster, isolated deployments'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/526
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - status:plan-approved
+      - lane:codex
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#527
+    title: 'P1: domain-matrix PR gate (worldenergydata)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/527
+    gh_state: closed
+    gh_labels:
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#528
+    title: 'P2: per-domain data-site publish'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/528
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#529
+    title: 'P3: independent per-domain package artifacts (design spike + split)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/529
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#530
+    title: 'P4: extract reusable domain-matrix workflow + template to key repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/530
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#558
+    title: 'test: well_production_dashboard lazy_loading tests use fragile src.-prefixed patch (quarantined)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/558
+    gh_state: closed
+    gh_labels:
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#560
+    title: 'perf: test_financial_calculation_performance wall-clock budget flaky on CI (#529)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/560
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#561
+    title: 'src: worldenergydata package-level lazy attribute access for bsee/fdas (TestPackageLevelImports) (#529)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/561
+    gh_state: closed
+    gh_labels:
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#567
+    title: 'epic(field-development): offshore field development playbook — parameters → concept → schematic'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/567
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#570
+    title: 'feat(field-dev): concept recommendation engine — heuristics → ranked scored shortlist (#567 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/570
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#571
+    title: 'feat(field-dev): concept → graph-spec mapper (#567 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/571
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#572
+    title: 'feat(field-dev): block-diagram renderer (D2+ELK / mingrammer → SVG) (#567 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/572
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#573
+    title: 'feat(field-dev): plan-view field-layout renderer — deterministic geometry → SVG (#567 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/573
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#574
+    title: 'feat(field-dev): custom subsea SVG symbol library (#567 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/574
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#575
+    title: 'feat(field-dev): wire FDAS economics + vessel_fleet + jumper/mooring catalogs into the playbook (#567 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/575
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-review
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#576
+    title: 'docs(field-dev): commit concept-selection + AI-CAD reference briefing (#567 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/576
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - cat:engineering
+      - priority:medium
+      - cat:research
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#577
+    title: 'feat(field-dev): LLM concept-completion — loose brief → validated concept JSON, schema+sanity gated (#567 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/577
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:low
+      - cat:harness
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#579
+    title: 'feat(field-dev): layout-optimization module — manifold/well/host positioning (#567 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/579
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:low
+      - cat:research
+      - status:plan-review
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#580
+    title: 'feat(field-dev): equipment-3D via CadQuery — parametric models of catalog hardware (#567 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/580
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:low
+      - cat:research
+      - status:plan-review
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#582
+    title: 'epic(intervention-db): Subsea well intervention & maintenance database — existing + planned wells × water-depth band × intervention-asset class (GoM)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/582
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#586
+    title: "feat(analysis): depth-band → serviceable-by capability matrix (the 'requires a MODU' determination) (#582 child)"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/586
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#588
+    title: 'feat(reports): stats brief + dashboard for Chuck — bands × fleet × planned outlook (#582 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/588
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#589
+    title: 'chore(quality): data-quality guardrail for the intervention DB (WAR null depth, registry undercount, subsea ambiguity) (#582 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/589
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#597
+    title: 'feat(analysis): BSEE-WAR → intervention-vessel cross-reference by water-depth band (#591 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/597
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#598
+    title: 'feat(reports): unified intervention-fleet catalog YAML + GoM-resident fleet summary (#591 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/598
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#599
+    title: 'chore(quality): vessel-fleet dedup + provenance guardrail (#591 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/599
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#623
+    title: 'chore(reports): fold dedup (#599) + dayrates (#596) into fleet catalog (#598) + regenerate brief (#588)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/623
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#626
+    title: 'epic(intervention-analytics): deep-dive — service-types, economics, demand rig-days, RLWI coverage (#582/#591 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/626
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#627
+    title: 'feat(analysis): intervention service-type activity by water-depth band (A)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/627
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#628
+    title: 'feat(analysis): RLWI / dedicated-intervention-fleet WAR coverage probe (B)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/628
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - domain:testing
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#629
+    title: 'feat(analysis): intervention economics by band × scope (C)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/629
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#630
+    title: 'feat(analysis): intervention demand — rig-days + intervention-rate by band (D)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/630
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:plan-review
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#638
+    title: 'feat(analysis): UDW intervention access-gap synthesis (+economics band-fix, brief regen) (#626 capstone)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/638
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#649
+    title: 'docs(intervention): add plots + schematics to the brief (data viz from committed YAMLs)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/649
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#664
+    title: 'feat(onshore): join RRC lifecycle and production into field-development metrics'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/664
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - status:done
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#665
+    title: 'feat(onshore): add Texas RRC pipeline and GIS infrastructure access metrics'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/665
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - status:done
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#666
+    title: 'feat(reports): publish Texas RRC onshore field atlas and deep-dive reports'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/666
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:done
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#695
+    title: 'feat(onshore): rank Texas RRC field opportunities and architecture signals'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/695
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - status:done
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#702
+    title: 'feat(onshore): generate Texas RRC field architecture dossiers from opportunity rankings'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/702
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - status:done
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#707
+    title: 'feat(onshore): build Texas RRC field architecture portfolio report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/707
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - status:done
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#710
+    title: 'feat(analysis): screen + rank under-pressured gas/condensate wells and fields (gradient tiers, Hugoton/Panhandle analog benchmark)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/710
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#723
+    title: 'feat(reports): cross-country field-development benchmark report → capabilities page'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/723
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#732
+    title: 'feat(analysis): add Texas RRC observations to under-pressured pressure screen'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/732
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - cat:data
+      - status:done
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#738
+    title: 'epic(megaproject): field-development life-cycle stage-gate poster — the standard "page 1" summary for every analyzed field'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/738
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - lane:claude
+      - epic
+      - status:needs-plan
+      - domain:content
+      - cat:documentation
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#747
+    title: 'fix(data): reconcile Lower-Tertiary field YAML gate dates + operators vs public record'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/747
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:data
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#754
+    title: 'epic(field-hub): field-centric top-down IA — life-cycle timeline as the fractal spine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/754
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - lane:claude
+      - epic
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#755
+    title: 'feat(registry): canonical fields.yml crosswalk (id ⇄ name ⇄ BSEE lease/block ⇄ slug)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/755
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:done
+      - status:plan-approved
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#756
+    title: 'feat(hub): per-field hub page — life-cycle timeline + kept-displayed reservoir/play + stats'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/756
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:done
+      - status:plan-approved
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#757
+    title: 'feat(hub): economics as a hub subsection + demote well-benchmarking to a small button'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/757
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-approved
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#758
+    title: 'feat(hub): wells subsection + per-well GRANULAR timeline (Spud→Drill→Complete→Produce→Workover→P&A)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/758
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#759
+    title: 'feat(hub): concept/development as a hub subsection (FDP portfolio via crosswalk)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/759
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#760
+    title: 'feat(browse): Region ▸ Play ▸ Field browser with honest density badges + heavy-data default'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/760
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#761
+    title: 'feat(data): populate structured reservoir attributes (depth/pressure/temp, fluid, API)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/761
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:low
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#764
+    title: 'epic(circle): engineering↔asset — digitalmodel + worldenergydata as one integrated life-cycle vision'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/764
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - lane:claude
+      - epic
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#765
+    title: 'docs(circle): shared-thesis narrative + Mermaid flowcharts in BOTH repo READMEs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/765
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#766
+    title: 'feat(browse): capabilities → field-atlas browse funnel (Country→onshore/offshore→Region→Play→Field, scaled)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/766
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - status:plan-approved
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#767
+    title: 'feat(hub): engineering-concept overlay per life-cycle stage (→ digitalmodel)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/767
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#768
+    title: 'feat(hub): asset drill-down — field → facility → asset → component'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/768
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#769
+    title: 'feat(circle): wire the mooring grounded-card to a LIVE digitalmodel run (first closed arc)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/769
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#770
+    title: 'feat(hub): surface the decommissioning arc on the field hub (Abandon stage)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/770
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-approved
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#790
+    title: 'feat(circle): generalize the live engineering bridge to the RISER asset (#768 pattern)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/790
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#797
+    title: 'feat(ukcs): live NSTA reference-chain refresh and HTML report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/797
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - priority:medium
+      - status:plan-approved
+      - lane:codex
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#810
+    title: 'feat(spain): CORES field-development HTML report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/810
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - status:done
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#848
+    title: 'feat(benchmark): phase-norm layer — field vs play vs country on every life-cycle stage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/848
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - status:plan-approved
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#849
+    title: 'feat(wells): per-well economics drill-down — D&C days → cost, production → revenue on the well timeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/849
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - status:plan-approved
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#850
+    title: 'feat(nav): drill-down spine — breadcrumb + consistent up/down links across Region▸Play▸Field▸Well▸Stage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/850
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - status:plan-approved
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#899
+    title: 'FDAS canonical: write V50 assumptions change log'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/899
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - domain:content
+      - cat:documentation
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#901
+    title: 'FDAS canonical: generate official V50 financial workbook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/901
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#907
+    title: 'feat(insights): Na Kika / Coulomb transaction lifecycle and economics package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/907
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#916
+    title: 'feat(underwriting): generate first landman diligence pack from wells, production, pressure, lease/title gaps, infrastructure, and HSE'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/916
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#917
+    title: 'chore(data): reconcile international source-refresh contract with completed country chains'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/917
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - lane:claude
+      - status:needs-plan
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#918
+    title: 'feat(country-coverage): materialized-data inventory badges for international readiness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/918
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#924
+    title: 'fix(landman): make provider routing executable and prove the CLI smoke path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/924
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:data
+      - status:blocked
+      - lane:codex
+      - domain:testing
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#925
+    title: 'feat(federal-acreage): generate a pilot BLM lease-position and acreage evidence slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/925
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - status:plan-approved
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#926
+    title: 'perf(cli): lazy-load command families before root subcommand dispatch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/926
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:engineering
+      - status:plan-approved
+      - lane:codex
+      - domain:testing
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#927
+    title: 'feat: publish a public BSEE algorithm-run pilot to Hugging Face'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/927
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - status:plan-approved
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#939
+    title: 'epic(explorer): World Energy Field Explorer — one-page global drill-down for clients'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/939
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - lane:claude
+      - epic
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#940
+    title: 'epic(explorer-shell): rebuild /field-atlas/ in place as the one-page loaded drill-down'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/940
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - lane:claude
+      - epic
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#942
+    title: 'epic(field-planes): field detail planes — lifecycle, architecture drawing, per-well stages, assets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/942
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - epic
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#943
+    title: 'epic(lenses): commercial lenses — economic analysis, underwriting, landman over one spine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/943
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:business
+      - lane:claude
+      - epic
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#945
+    title: 'epic(client-layer): client presentation — provenance, PDF export, guided demo path'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/945
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+      - lane:claude
+      - epic
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#946
+    title: 'feat(explorer-shell): tracer — Jack/St Malo + Big Foot end-to-end in the one-page shell'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/946
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - status:plan-approved
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#948
+    title: 'feat(field-planes): roll per-well timelines from Big Foot to all rich LT fields'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/948
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#949
+    title: 'feat(lenses): underwriting pilot — per-field risk badges (P&A, under-pressure, HPHT)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/949
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:business
+      - status:plan-approved
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#962
+    title: 'docs(fdp): author FDP portfolio pages for the 7 remaining LT fields'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/962
     gh_state: open
     gh_labels:
       - enhancement
       - cat:data
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#965
+    title: 'feat(explorer): export Field Explorer results as HF-consumable dataset projection'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/965
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#966
+    title: 'feat(explorer): render Explorer visualizations via a Hugging Face API call'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/966
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:tooling
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#969
+    title: 'feat(explorer): field architecture-drawing panel (plan-view SVG)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/969
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#971
+    title: 'fix(economics): LT field NPV/breakeven implausible — all-negative NPV, $79–380 breakevens'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/971
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:data
+      - lane:claude
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#972
+    title: 'design(explorer): decide where Field Explorer visualizations are hosted'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/972
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - lane:claude
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#973
+    title: 'data(economics): validate eur_mmbbl (decline-fit extrapolation) before any full-cycle NPV recompute — gates #971 Tier 1'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/973
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#974
+    title: "fix(capabilities): economics-<slug> envelopes falsely claim 'sanctioned V30 / full-cycle' + advertise uncomputed MIRR/IRR"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/974
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#982
+    title: 'refactor(economics): field_economics_<slug>.md reports V50-only — drop frozen-V30 dual columns'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/982
+    gh_state: closed
+    gh_labels:
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1017
+    title: 'present(cost): stakeholder presentation of the cost-basis time-series — least-assumptions first, approval-gated sequence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1017
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:business
+      - domain:content
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1019
+    title: 'validate(cost): second-source rough validation of sanctioned project costs — pre-circulation gate (#1017)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1019
+    gh_state: closed
+    gh_labels:
+      - cat:data
+      - domain:testing
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1044
+    title: 'feat(cost): FDAS workbook reconciliation and integrated cost-map report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1044
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - route:C
+      - status:plan-approved
+      - lane:codex
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1045
+    title: 'feat(explorer-publish): deterministic exact-revision HF browser snapshot manifest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1045
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - lane:codex
+      - status:needs-plan
+      - domain:content
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1082
+    title: C2 — Publish all 21 capability datasets to Hugging Face (0 of 21 are HF-backed today)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1082
+    gh_state: open
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1083
+    title: 'C6 — Repo architecture drawing: ingestion, capability inventory, data boundary'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1083
+    gh_state: open
+    gh_labels: []
     initial_status: triage
     priority: 0
     gh_assignees: []
