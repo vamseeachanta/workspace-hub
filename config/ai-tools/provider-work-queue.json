@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-30T13:21:28.586217Z",
+  "generated_at": "2026-07-30T17:21:18.444494Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-30T13:21:26.499740Z",
+  "scorecard_generated_at": "2026-07-30T17:21:16.555452Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 26,
-      "total_candidates": 181,
+      "total_candidates": 180,
       "top_issues": [
         {
           "number": 3426,
@@ -958,31 +958,6 @@
           "updatedAt": "2026-07-30T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3424,
-          "title": "[skills] Add transactional metadata-only folder-note publication workflow",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3424",
-          "labels": [
-            "priority:high",
-            "cat:harness",
-            "domain:skills",
-            "status:needs-plan",
-            "gate:completeness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4456,7 +4431,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 5,
-      "total_candidates": 19,
+      "total_candidates": 20,
       "top_issues": [
         {
           "number": 3430,
@@ -5065,6 +5040,25 @@
             "status:needs-plan"
           ],
           "updatedAt": "2026-07-29T13:42:30Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3714,
+          "title": "CI: strict-scan / authority fails on every branch \u2014 missing AUTH_ENVELOPE secret",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3714",
+          "labels": [
+            "bug"
+          ],
+          "updatedAt": "2026-07-30T16:44:11Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
