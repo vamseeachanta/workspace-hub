@@ -72,6 +72,75 @@ def existing_label_value(labels: list[str], prefix: str) -> str | None:
     return None
 
 
+# ---------------------------------------------------------------------------
+# Assignment coverage (deckhand#584) — READ-ONLY reporting.
+#
+# Four buckets, because "has a label" is not "is routable":
+#   missing    no label on the axis
+#   ambiguous  MULTIPLE labels on one axis. existing_label_value() returns the
+#              FIRST match, so routing depends on API label order. This presents
+#              as healthy and is arguably worse than missing.
+#   terminal   deliberately not scheduled — a valid end state, not a finding
+#   skipped    in flight (skip_if_labeled) — not an assignment failure
+#   routable   exactly one label, and it resolves
+#
+# NOTE the `model:` inversion: per #584 decision 1, ABSENCE of a model: label is
+# MEANINGFUL ("executor chooses") and must never be counted as a gap. That is the
+# opposite of machine:/lane:. `model:` is therefore not an axis here at all.
+# ---------------------------------------------------------------------------
+
+COVERAGE_BUCKETS = ("missing", "ambiguous", "terminal", "skipped", "routable")
+
+
+def classify_axis(labels, prefix, terminal, skip) -> str:
+    """Bucket one issue on one label axis. Pure: never mutates `labels`."""
+    labs = list(labels or [])
+
+    # Terminal beats everything: deliberately unscheduled is an answer, not a gap.
+    if any(t in labs for t in terminal):
+        return "terminal"
+    # In-flight work is not an assignment failure.
+    if any(s in labs for s in skip):
+        return "skipped"
+
+    on_axis = [lab for lab in labs if lab.startswith(prefix)]
+    if not on_axis:
+        return "missing"
+    if len(on_axis) > 1:
+        return "ambiguous"
+    return "routable"
+
+
+def coverage_report(issues, axes, terminal, skip) -> dict:
+    """Read-only coverage over an issue list. No gh, no writes, no network.
+
+    `issues` are dicts with `number` and `labels`. Returns per-axis bucket counts
+    plus the issue numbers behind each finding — a count alone is not reviewable.
+    """
+    report = {"axes": {}, "total": len(issues), "missing_all_axes": []}
+
+    for axis in axes:
+        counts = {b: 0 for b in COVERAGE_BUCKETS}
+        counts["missing_issues"] = []
+        counts["ambiguous_issues"] = []
+        for iss in issues:
+            bucket = classify_axis(iss.get("labels"), axis, terminal, skip)
+            counts[bucket] += 1
+            if bucket == "missing":
+                counts["missing_issues"].append(iss["number"])
+            elif bucket == "ambiguous":
+                counts["ambiguous_issues"].append(iss["number"])
+        report["axes"][axis] = counts
+
+    for iss in issues:
+        if all(
+            classify_axis(iss.get("labels"), axis, terminal, skip) == "missing" for axis in axes
+        ):
+            report["missing_all_axes"].append(iss["number"])
+
+    return report
+
+
 def _domain_matches(pattern: str, domain) -> bool:
     """Match a rule's `domain:` pattern against a card's domain.
 
@@ -543,10 +612,68 @@ def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace
               "(domain: shown optimistically; skipped live where one exists).\033[0m")
 
 
+def cmd_coverage(args) -> None:
+    """READ-ONLY coverage report (deckhand#584). Reaches no write path."""
+    cfg = load_rules()
+    defaults = cfg.get("defaults", {}) or {}
+    skip = list(defaults.get("skip_if_labeled", []) or [])
+    # Deliberately-unscheduled markers. These must ALSO be honoured by the
+    # routing engine, not merely named here — see #584: a marker that the
+    # report calls terminal while the engine routes it is a dead control.
+    terminal = list(defaults.get("terminal_if_labeled", []) or
+                    ["machine:unassigned", "status:icebox"])
+    axes = ("machine:", "lane:")
+
+    repos = [args.repo] if args.repo else DEFAULT_COVERAGE_REPOS
+    overall = {}
+    for repo in repos:
+        issues = fetch_open_issues(repo)
+        overall[repo] = coverage_report(issues, axes, terminal, skip)
+
+    if args.json:
+        print(json.dumps(overall, indent=2))
+        return
+
+    for repo, rep_ in overall.items():
+        print(f"\n\033[1m{repo}\033[0m  open={rep_['total']}")
+        for axis, c in rep_["axes"].items():
+            print(f"  {axis:<10} missing={c['missing']:<5} ambiguous={c['ambiguous']:<4} "
+                  f"terminal={c['terminal']:<4} skipped={c['skipped']:<4} routable={c['routable']}")
+        if rep_["missing_all_axes"]:
+            n_all = len(rep_["missing_all_axes"])
+            print(f"  \033[1;33mno axis at all: {n_all}\033[0m "
+                  f"(e.g. {rep_['missing_all_axes'][:8]})")
+    print("\n\033[2mREAD-ONLY — no labels written. `model:` absence is NOT a gap "
+          "(#584: it means the executor chooses).\033[0m")
+
+
+DEFAULT_COVERAGE_REPOS = (
+    "vamseeachanta/workspace-hub",
+    "vamseeachanta/digitalmodel",
+    "vamseeachanta/deckhand",
+)
+
+
+def fetch_open_issues(repo: str) -> list[dict]:
+    """Open issues with labels, via gh. READ-ONLY: `issue list` only."""
+    r = subprocess.run(
+        ["gh", "issue", "list", "--repo", repo, "--state", "open",
+         "--limit", "2000", "--json", "number,labels"],
+        capture_output=True, text=True,
+    )
+    if r.returncode != 0:
+        return []
+    return [{"number": i["number"], "labels": [lab["name"] for lab in i.get("labels", [])]}
+            for i in json.loads(r.stdout or "[]")]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--coverage", action="store_true",
+                    help="READ-ONLY assignment-coverage report (deckhand#584); "
+                         "never writes. Buckets: missing/ambiguous/terminal/skipped/routable")
     ap.add_argument("--detail", action="store_true", help="per-card listing")
     ap.add_argument("--apply", action="store_true", help="write GH labels (Phase B)")
     ap.add_argument("--yes", action="store_true", help="actually write (else apply dry-run)")
@@ -557,6 +684,12 @@ def main():
                     help="override live codex weekly remaining %% for the lane "
                          "quota gate (loud operator escape hatch, #3030)")
     args = ap.parse_args()
+
+    if args.coverage:
+        # Returns BEFORE propose(): the reporter must not touch the routing
+        # engine's proposal path at all, so it cannot reach a write.
+        cmd_coverage(args)
+        return
 
     proposals = propose(args)
     if args.json:
