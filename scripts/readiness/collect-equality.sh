@@ -521,5 +521,17 @@ if [[ -f "$OUT" ]] && have sha256sum; then
     exit 0
   fi
 fi
-printf '%s\n' "$FULL" > "$OUT"
+TMP_OUT=""
+cleanup_tmp() {
+  [[ -n "$TMP_OUT" ]] && rm -f -- "$TMP_OUT"
+}
+trap cleanup_tmp EXIT
+TMP_OUT="$(mktemp "${STATE_DIR}/.equality-${MACHINE}.yaml.tmp.XXXXXX")" \
+  || { echo "collect-equality: could not create temporary report" >&2; exit 1; }
+printf '%s\n' "$FULL" > "$TMP_OUT" \
+  || { echo "collect-equality: could not write temporary report" >&2; exit 1; }
+mv -- "$TMP_OUT" "$OUT" \
+  || { echo "collect-equality: could not publish report atomically" >&2; exit 1; }
+TMP_OUT=""
+trap - EXIT
 echo "wrote ${OUT} (machine=${MACHINE}, os=${OS})"

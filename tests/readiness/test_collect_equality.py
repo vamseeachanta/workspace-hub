@@ -13,7 +13,7 @@ import json
 import re
 import shlex
 import subprocess
-import sys
+import threading
 import time
 from pathlib import Path
 
@@ -227,6 +227,92 @@ def test_collect_commit_on_change_idempotent(tmp_path):
     first_mtime = out.stat().st_mtime_ns
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert out.stat().st_mtime_ns == first_mtime         # unchanged content → not rewritten
+
+
+def _atomic_write_env(ws: Path, bindir: Path | None = None) -> dict[str, str]:
+    path = BASH_PATH if bindir is None else f"{_bash_path(bindir)}:{BASH_PATH}"
+    return {
+        "WORKSPACE_HUB": _bash_path(ws),
+        "PATH": path,
+        "HOME": _bash_path(ws.parent),
+    }
+
+
+def test_collect_atomic_failure_preserves_prior_report(tmp_path):
+    ws = _fixture(tmp_path)
+    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    prior = 'generated_at: "prior"\nmachine: "dev-primary"\nsentinel: old\n'
+    out.write_text(prior)
+    bindir = tmp_path / "bin"
+    bindir.mkdir()
+    fake_mv = bindir / "mv"
+    fake_mv.write_text("#!/usr/bin/env bash\nexit 19\n")
+    fake_mv.chmod(0o755)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--machine", "dev-primary"],
+        env=_atomic_write_env(ws, bindir), capture_output=True, text=True, timeout=60,
+    )
+    assert res.returncode != 0
+    assert out.read_text() == prior
+    assert not list(out.parent.glob(".equality-dev-primary.yaml.tmp.*"))
+
+
+def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
+    ws = _fixture(tmp_path)
+    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    prior = 'generated_at: "prior"\nmachine: "dev-primary"\nsentinel: old\n'
+    out.write_text(prior)
+    bindir = tmp_path / "bin"
+    bindir.mkdir()
+    entered = tmp_path / "mv-entered"
+    release = tmp_path / "mv-release"
+    fake_mv = bindir / "mv"
+    fake_mv.write_text(
+        "#!/usr/bin/env bash\n"
+        f"touch {_bash_path(entered)!r}\n"
+        f"while [[ ! -f {_bash_path(release)!r} ]]; do sleep 0.02; done\n"
+        "exec /usr/bin/mv \"$@\"\n"
+    )
+    fake_mv.chmod(0o755)
+    proc = subprocess.Popen(
+        ["bash", str(SCRIPT), "--machine", "dev-primary"],
+        env=_atomic_write_env(ws, bindir), stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE, text=True,
+    )
+    observations: list[str] = []
+    read_errors: list[Exception] = []
+    stop_reader = threading.Event()
+
+    def read_continuously() -> None:
+        while not stop_reader.is_set():
+            try:
+                observations.append(out.read_text())
+            except Exception as exc:  # surfaced below; never swallowed as a pass
+                read_errors.append(exc)
+            time.sleep(0.001)
+
+    reader = threading.Thread(target=read_continuously)
+    reader.start()
+    deadline = time.time() + 30
+    while not entered.exists() and time.time() < deadline:
+        time.sleep(0.02)
+    assert entered.exists(), proc.communicate(timeout=5)
+    assert out.read_text() == prior
+    release.touch()
+    stdout, stderr = proc.communicate(timeout=60)
+    time.sleep(0.02)
+    stop_reader.set()
+    reader.join(timeout=5)
+    assert proc.returncode == 0, (stdout, stderr)
+    final = out.read_text()
+    parsed = yaml.safe_load(final)
+    assert parsed["machine"] == "dev-primary"
+    assert "dimensions" in parsed
+    assert not read_errors
+    assert prior in observations
+    assert final in observations
+    assert set(observations) <= {prior, final}
+    assert not list(out.parent.glob(".equality-dev-primary.yaml.tmp.*"))
 
 
 SOLVER_NAMES = {"orcaflex", "orcawave", "aqwa", "ansys"}
