@@ -489,11 +489,12 @@ def test_windows_report_ps1_pins_state_and_report_dirs():
         "on the matrix while every scheduled task reported success")
     state_idx = text.index("$env:EQ_STATE_DIR")
     report_idx = text.index("$env:EQ_REPORT_DIR")
-    # the seam must be pinned BEFORE the collector and the builder are invoked
+    # the seam must be pinned before the collector and the builder are INVOKED
+    # (matching the invocation sites, not the `$collector = …` / `$builder = …` assignments)
     invoke_idx = text.index('"-File", $collector')
-    builder_idx = text.index("$builder")
-    assert state_idx < invoke_idx and report_idx < invoke_idx, "seam pinned too late"
-    assert state_idx < builder_idx and report_idx < builder_idx, "seam pinned too late"
+    builder_idx = text.index('"python", $builder')
+    assert state_idx < invoke_idx and report_idx < invoke_idx, "seam pinned after the collector run"
+    assert state_idx < builder_idx and report_idx < builder_idx, "seam pinned after the builder run"
     assert ".claude" in text[state_idx:state_idx + 300], "state seam is not the in-tree path"
     assert "docs" in text[report_idx:report_idx + 300], "report seam is not the in-tree path"
 

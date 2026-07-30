@@ -61,9 +61,21 @@ def _fixture(tmp_path: Path) -> tuple[Path, Path]:
     return origin, clone
 
 
+def _seam(clone: Path) -> dict:
+    """#3702: the publisher reads local evidence from the EQ_STATE_DIR seam, not from the
+    tracked working tree. These cases pin the seam back to the fixture's in-tree
+    `.claude/state` — the documented rollback configuration — so every pre-existing
+    assertion about publisher SEMANTICS (newer-wins, allowlist, locking, commit subject)
+    keeps testing exactly what it tested before. The seam's own behaviour (default
+    location, stale in-tree copy ignored, fail-loud on empty) is covered by
+    tests/readiness/test_equality_tree_cleanliness.py."""
+    return {"EQ_STATE_DIR": str(clone / ".claude" / "state")}
+
+
 def _run(clone: Path, *args: str, expect_rc: int = 0) -> subprocess.CompletedProcess:
     res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone), *args],
-                         env=GIT_ENV, capture_output=True, text=True, timeout=120)
+                         env={**GIT_ENV, **_seam(clone)},
+                         capture_output=True, text=True, timeout=120)
     assert res.returncode == expect_rc, f"rc={res.returncode}\n{res.stdout}\n{res.stderr}"
     return res
 
@@ -193,7 +205,8 @@ def _host_lock_dir(tmp_path: Path) -> Path:
 
 def _run_mkdir_lock(clone: Path, tmp_path: Path, *args: str,
                     expect_rc: int = 0) -> subprocess.CompletedProcess:
-    env = {**GIT_ENV, "PUBLISH_EQUALITY_LOCK": "mkdir", "TMPDIR": str(tmp_path)}
+    env = {**GIT_ENV, "PUBLISH_EQUALITY_LOCK": "mkdir", "TMPDIR": str(tmp_path),
+           **_seam(clone)}
     res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone), *args],
                          env=env, capture_output=True, text=True, timeout=120)
     assert res.returncode == expect_rc, f"rc={res.returncode}\n{res.stdout}\n{res.stderr}"
@@ -301,6 +314,7 @@ def test_commit_subject_uses_public_label_not_hostname(tmp_path):
     hostname.chmod(0o755)
     env = {
         **GIT_ENV,
+        **_seam(clone),
         "WORKSPACE_HUB_MACHINE_IDENTITY": str(idf),
         "PATH": f"{fake_bin.as_posix()}:{GIT_ENV.get('PATH', '')}",
     }
@@ -316,7 +330,7 @@ def test_commit_subject_honors_eq_machine_env(tmp_path):
     origin, clone = _fixture(tmp_path)
     (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
         _yaml("dev-primary", "2026-07-01T12:00:00"))
-    env = {**GIT_ENV, "EQ_MACHINE": "ace-win-2"}
+    env = {**GIT_ENV, **_seam(clone), "EQ_MACHINE": "ace-win-2"}
     res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone)],
                          env=env, capture_output=True, text=True, timeout=120)
     assert res.returncode == 0, f"{res.stdout}\n{res.stderr}"

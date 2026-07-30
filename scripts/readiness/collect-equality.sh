@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 # collect-equality.sh — per-machine self-report for the machine-equality matrix (#2801).
 #
-# Emits .claude/state/equality-<machine>.yaml with 8 dimensions. Design (per approved plan):
+# Emits equality-<machine>.yaml with 8 dimensions into the #3702 generation seam
+# (${XDG_STATE_HOME:-$HOME/.local/state}/workspace-hub/equality by default — OUT of the
+# tracked tree; override with --state-dir / $EQ_STATE_DIR). publish-equality.sh copies it
+# onto origin/main through a sparse worktree, so `.claude/state/equality-<machine>.yaml`
+# remains the published surface. Design (per approved plan):
 #   * compute.static (cores/ram_total_mib/gpu) is graded + hashed; compute.headroom
 #     (ram_avail/disk_avail) is volatile → display-only, EXCLUDED from the idempotency hash.
 #   * data_access emits {repo: bare-name, mode} — no absolute paths (no machine-layout leak).
@@ -10,20 +14,26 @@
 #   * serialization allowlist: counts/booleans/enums only — never tokens, cron lines, env, abs paths.
 #   * commit-on-change: rewrite only when the CANONICAL payload (volatile fields excluded) changes.
 #
-# Usage: collect-equality.sh [--machine <label>] [--stdout] [--now]
+# Usage: collect-equality.sh [--machine <label>] [--stdout] [--now] [--state-dir <path>]
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
 WS="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." 2>/dev/null && pwd)}"
+# READ surface — tracked repo state this collector CONSUMES (harness-readiness,
+# session-curation, skill-currency, memory-freshness, skill-link-health sidecars).
+# #3702 relocates only the collector's OUTPUT; these inputs are tracked repo content
+# and MUST keep resolving in-tree, or five matrix dimensions go MISSING-EVIDENCE on
+# every box. Reading never dirties the tree.
 STATE_DIR="${WS}/.claude/state"
 RUN_TS="$(date +%Y-%m-%dT%H:%M:%S 2>/dev/null)"
 
-MACHINE=""; TO_STDOUT=0
+MACHINE=""; TO_STDOUT=0; STATE_DIR_FLAG=""
 for ((i=1; i<=$#; i++)); do
   case "${!i}" in
     --machine) j=$((i+1)); MACHINE="${!j:-}";;
     --stdout)  TO_STDOUT=1;;
     --now)     :;;  # explicit on-demand; behaviour identical (cadence is the caller's concern)
+    --state-dir) j=$((i+1)); STATE_DIR_FLAG="${!j:-}";;
   esac
 done
 # EQ_MACHINE env == --machine (flag wins). Lets no-arg chain callers — notably the
@@ -33,6 +43,11 @@ MACHINE="${MACHINE:-${EQ_MACHINE:-}}"
 
 # shellcheck source=scripts/readiness/lib/machine-identity.sh
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/machine-identity.sh"
+# WRITE surface — #3702. Resolved OUT of the tracked tree by default so a collection run
+# can never block `git pull --ff-only`. Precedence: --state-dir > $EQ_STATE_DIR > XDG.
+# shellcheck source=scripts/readiness/lib/eq-seam.sh
+. "${SCRIPT_DIR}/lib/eq-seam.sh"
+EQ_OUT_DIR="$(eq_state_dir "${STATE_DIR_FLAG:-}")"
 
 HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
 # A machine may have a private or policy-sensitive OS hostname while using a public
@@ -518,8 +533,8 @@ if [[ "$TO_STDOUT" == "1" ]]; then
   printf '%s\n' "$FULL"
   exit 0
 fi
-mkdir -p "$STATE_DIR"
-OUT="${STATE_DIR}/equality-${MACHINE}.yaml"
+mkdir -p "$EQ_OUT_DIR" || { echo "collect-equality: cannot create ${EQ_OUT_DIR}" >&2; exit 1; }
+OUT="${EQ_OUT_DIR}/equality-${MACHINE}.yaml"
 if [[ -f "$OUT" ]] && have sha256sum; then
   old=$(canonical "$(cat "$OUT")" | sha256sum)
   new=$(canonical "$FULL" | sha256sum)
