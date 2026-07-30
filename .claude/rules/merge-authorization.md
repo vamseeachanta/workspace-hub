@@ -14,6 +14,9 @@
 4. **Authorization is per-PR and non-sticky.** One authorized merge does NOT create a session-wide "merge whatever comes next" policy. Each subsequent merge needs its own trigger under rule 2.
 5. **Never self-authorize gates:** merging never substitutes for `status:plan-approved`, owner review markers, or completeness stamps — those stay human-created regardless of merge authorization.
 6. **After any merge (agent- or human-run): verify MERGED on the remote** and confirm the content landed (`git cat-file -e origin/main:<path>` — squash-merge makes merge-commit reachability meaningless, see `reference_squash_merge_reachability_false_orphan`).
+7. **Explicit user authorization never waives freshness.** Immediately before an agent-run merge, require `mergeStateStatus == CLEAN`; authorization to merge does not authorize landing from `BEHIND`, `BLOCKED`, `DIRTY`, `UNKNOWN`, or `UNSTABLE`.
+8. **Use the CLEAN-only merge helper.** An authorized agent-run merge must use `scripts/operations/merge-when-clean.sh --merge` for the specific PR. Do not replace the helper with a hand-count of checks or a direct `gh pr merge` call.
+9. **Validate the actual landed tree before closeout.** After remote MERGED verification, run `git fetch origin main`, resolve the actual landed `origin/main` commit, and rerun the changed-domain generated-artifact checks against that tree before commenting complete or closing the issue. Synthetic merge commits and the pre-merge working tree are not landed-tree evidence.
 
 **Do NOT apply when:** the user runs the merge themselves (pasting output back) — then the agent's job is only step 6 verification.
 

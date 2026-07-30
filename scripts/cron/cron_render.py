@@ -15,7 +15,7 @@ import argparse
 import os
 import re
 import socket
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 import yaml
@@ -81,10 +81,15 @@ def resolve_machine(
     }
 
 
-def workspace_hub_path(workspace_hub: str | Path | None = None) -> Path:
+def workspace_hub_path(workspace_hub: str | Path | None = None) -> Path | PurePosixPath:
     """Return the checkout path used for render-time $WORKSPACE_HUB expansion."""
     override = workspace_hub or os.environ.get("WORKSPACE_HUB")
-    return Path(override).expanduser().resolve() if override else REPO_ROOT
+    if not override:
+        return REPO_ROOT
+    raw = str(override)
+    if raw.startswith("/") and not raw.startswith("//"):
+        return PurePosixPath(raw)
+    return Path(raw).expanduser().resolve()
 
 
 def build_context(
@@ -96,8 +101,9 @@ def build_context(
     resolved = resolve_machine(machine, registry=registry)
     entry = resolved["machine"]
     hub = workspace_hub_path(workspace_hub)
+    hub_text = hub.as_posix() if isinstance(hub, PurePosixPath) else str(hub)
     schedule_variant = entry.get("schedule_variant", "contribute")
-    log = hub / FULL_VARIANT_LOG if schedule_variant == "full" else Path(CONTRIBUTE_LOG)
+    log = f"{hub_text}/{FULL_VARIANT_LOG}" if schedule_variant == "full" else CONTRIBUTE_LOG
 
     hostname = _norm(entry.get("hostname") or resolved["input_token"])
     aliases = [_norm(alias) for alias in entry.get("hostname_aliases", []) or []]
@@ -109,8 +115,8 @@ def build_context(
 
     return {
         **resolved,
-        "workspace_hub": str(hub),
-        "log": str(log),
+        "workspace_hub": hub_text,
+        "log": log,
         "schedule_variant": schedule_variant,
         "schedule_tokens": ordered_schedule_tokens,
         # Scheduler routing (#3507): setup-cron.sh must key its Windows-Task-Scheduler

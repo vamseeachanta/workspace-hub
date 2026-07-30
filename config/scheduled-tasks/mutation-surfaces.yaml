@@ -259,15 +259,4 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    # digest refreshed 2026-07-23: schedule-tasks.yaml gained gpu-claw in the
-    # repository-sync machines list (#3592 scheduler_baseline follow-on)
-    # digest refreshed 2026-07-30 (#3702): the equality-report, equality-matrix-refresh
-    # and session-curation commands now name the FF-preflight wrappers
-    # (scripts/readiness/equality-preflight.sh, scripts/curation/session-curation-preflight.sh),
-    # each of which EXECs the previous entry point. Regenerating the inventory also
-    # refreshed three identity rows that were ALREADY stale on main — gpu-claw's
-    # equality-report, equivalence-sentinel and repository-sync: the 2026-07-23 refresh
-    # above updated this digest without rebuilding the inventory rows, so
-    # `build-cron-identity-inventory.py --check` has been failing on main since then.
-    # Verified: no collisions, no unsupported rows, no added/removed identities.
-    source_digest: c56754bf219306ffd78777f465c4257a5481e09929e98dad99abba30cec9dffc
+    source_digest: e4d8233009687e3f3a99187c8061d153426513fe8614b9db8ced678a7766dbb1

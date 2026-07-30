@@ -22,7 +22,14 @@
 # Exit codes:
 #   0  All clear (no block-severity violations)
 #   1  Block-severity violations found
-#   2  Usage or resolution error (repo not found; --all resolved zero repos)
+#   2  Usage / resolution error (unknown argument, repository not found,
+#      --all with nothing to scan)
+#
+# Environment:
+#   LEGAL_SCAN_REPO_ROOTS  Semicolon- or newline-separated list of repo root
+#                          paths (semicolons/newlines survive Windows drive
+#                          letters under git-bash). When set, it WINS over the
+#                          default nested -> sibling -> walk-up resolution.
 # =============================================================================
 set -euo pipefail
 
@@ -103,25 +110,112 @@ for arg in "$@"; do
       echo "Usage: legal-sanity-scan.sh [--repo=<name>] [--all] [--diff-only] [--json]"
       echo ""
       echo "Options:"
-      echo "  --repo=<name>   Scan a specific repo (submodule or sibling checkout)"
-      echo "  --all           Scan all submodules (or LEGAL_SCAN_REPO_ROOTS repos)"
+      echo "  --repo=<name>   Scan a specific repo (nested submodule, sibling"
+      echo "                  checkout, or LEGAL_SCAN_REPO_ROOTS entry)"
+      echo "  --all           Scan all submodules (else all LEGAL_SCAN_REPO_ROOTS"
+      echo "                  entries; refuses when both are empty)"
       echo "  --diff-only     Only scan files changed in git diff (HEAD)"
       echo "  --json          Output results as JSON"
       echo ""
       echo "Environment:"
-      echo "  LEGAL_SCAN_REPO_ROOTS    Semicolon- or newline-separated repo roots;"
-      echo "                           wins over nested/sibling/walk-up defaults"
-      echo "  LEGAL_SCAN_RESOLVE_ONLY  =1: print resolved path(s), skip scanning"
+      echo "  LEGAL_SCAN_REPO_ROOTS  Semicolon- or newline-separated repo root"
+      echo "                         paths; wins over default resolution when set"
       echo ""
       echo "Exit codes:"
       echo "  0  Pass (no block-severity violations)"
       echo "  1  Block violations found"
-      echo "  2  Usage or resolution error (repo not found; --all resolved zero repos)"
+      echo "  2  Usage / resolution error (repo not found, --all with nothing to scan)"
       exit 0
       ;;
     *) echo "Unknown argument: $arg" >&2; exit 2 ;;
   esac
 done
+
+# --------------------------------------------------------------------------
+# Candidate resolver — shared by --repo and --all
+#
+# WORKSPACE_ROOT stays anchored to workspace-hub (the global
+# .legal-deny-list.yaml load must not move); only repo *lookup* is flexible:
+#   1. LEGAL_SCAN_REPO_ROOTS (semicolon- or newline-separated repo root
+#      paths) WINS when set. An entry matches <name> when its basename equals
+#      <name>, otherwise <entry>/<name> is tried; entries in listed order.
+#   2. Defaults: nested $WORKSPACE_ROOT/<name> wins, then sibling
+#      $(dirname WORKSPACE_ROOT)/<name>, then a bounded walk-up from the
+#      sibling level (cap 8 levels).
+# On no-match: error to stderr listing every candidate tried, return 2.
+# --------------------------------------------------------------------------
+REGISTERED_ROOTS=()
+
+load_registered_roots() {
+  REGISTERED_ROOTS=()
+  [[ -z "${LEGAL_SCAN_REPO_ROOTS:-}" ]] && return 0
+  local entry
+  while IFS= read -r entry; do
+    entry="${entry%$'\r'}"
+    # Normalize backslashes so git-bash tools (basename, -d) handle
+    # Windows-style entries.
+    entry="${entry//\\//}"
+    # Trim surrounding whitespace
+    entry="${entry#"${entry%%[![:space:]]*}"}"
+    entry="${entry%"${entry##*[![:space:]]}"}"
+    [[ -n "$entry" ]] && REGISTERED_ROOTS+=("$entry")
+  done < <(printf '%s\n' "$LEGAL_SCAN_REPO_ROOTS" | tr ';' '\n')
+  return 0
+}
+
+# resolve_repo_path <name>
+# Prints the resolved repo path on stdout; returns 2 on no-match.
+resolve_repo_path() {
+  local name="$1"
+  local candidates=()
+  local c
+
+  if [[ ${#REGISTERED_ROOTS[@]} -gt 0 ]]; then
+    # Explicit registration wins outright when set.
+    local root
+    for root in "${REGISTERED_ROOTS[@]}"; do
+      if [[ "$(basename "$root")" == "$name" ]]; then
+        candidates+=("$root")
+      else
+        candidates+=("$root/$name")
+      fi
+    done
+  else
+    # Nested checkout wins, then sibling, then bounded walk-up (cap 8).
+    candidates+=("$WORKSPACE_ROOT/$name")
+    local parent walk next level
+    parent="$(dirname "$WORKSPACE_ROOT")"
+    candidates+=("${parent%/}/$name")
+    walk="$parent"
+    level=0
+    while [[ $level -lt 8 ]]; do
+      next="$(dirname "$walk")"
+      [[ "$next" == "$walk" ]] && break
+      walk="$next"
+      candidates+=("${walk%/}/$name")
+      level=$((level + 1))
+    done
+  fi
+
+  for c in "${candidates[@]}"; do
+    if [[ -d "$c" ]]; then
+      printf '%s\n' "$c"
+      return 0
+    fi
+  done
+
+  {
+    echo "ERROR: Repository not found: $name"
+    echo "Candidates tried:"
+    for c in "${candidates[@]}"; do
+      echo "  - $c"
+    done
+    if [[ ${#REGISTERED_ROOTS[@]} -gt 0 ]]; then
+      echo "(resolution used LEGAL_SCAN_REPO_ROOTS; unset it to use nested/sibling/walk-up defaults)"
+    fi
+  } >&2
+  return 2
+}
 
 # --------------------------------------------------------------------------
 # Parse deny-list YAML (lightweight, no yq dependency)
@@ -355,77 +449,44 @@ if [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]]; then
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 fi
 
+load_registered_roots
+
 if [[ -n "$TARGET_REPO" ]]; then
-  # Scan specific repo (shared resolver: env roots, nested, sibling, walk-up)
-  if ! resolve_repo_path "$TARGET_REPO"; then
-    {
-      echo "ERROR: Repository not found: $TARGET_REPO"
-      echo "Candidates tried:"
-      for c in "${RESOLVE_CANDIDATES[@]}"; do
-        echo "  - $c"
-      done
-    } >&2
-    exit 2
-  fi
-  repo_path="$RESOLVED_REPO_PATH"
-  if [[ "${LEGAL_SCAN_RESOLVE_ONLY:-}" == "1" ]]; then
-    echo "$repo_path"
-    exit 0
-  fi
-  [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $TARGET_REPO"
+  # Scan specific repo (shared candidate resolver)
+  repo_path="$(resolve_repo_path "$TARGET_REPO")" || exit 2
+  [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $TARGET_REPO ($repo_path)"
   scan_directory "$repo_path" "$TARGET_REPO" || true
 
 elif [[ "$SCAN_ALL" == "true" ]]; then
-  # Enumerate scan targets: submodules first (original behavior); when the
-  # submodule list is empty and LEGAL_SCAN_REPO_ROOTS is set, fall back to the
-  # immediate child directories of each listed root that contain a .git entry
-  # (sibling checkouts). An empty enumeration is a hard error — a legal scan
-  # must never pass by scanning nothing.
-  scan_paths=()
-  scan_labels=()
+  # Enumerate initialized submodules first; else fall back to env-registered
+  # roots. An empty enumeration is a hard refusal — a legal gate must never
+  # pass by scanning nothing.
+  submodules=()
+  while IFS= read -r sub; do
+    [[ -n "$sub" ]] && submodules+=("$sub")
+  done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach 'echo $sm_path' 2>/dev/null || true)
 
-  submodules="$(git -C "$WORKSPACE_ROOT" submodule --quiet foreach 'echo $sm_path' 2>/dev/null || true)"
-  if [[ -n "$submodules" ]]; then
-    while IFS= read -r sub; do
-      [[ -z "$sub" ]] && continue
-      if resolve_repo_path "$sub"; then
-        scan_paths+=("$RESOLVED_REPO_PATH")
-      else
-        scan_paths+=("$WORKSPACE_ROOT/$sub")
+  if [[ ${#submodules[@]} -gt 0 ]]; then
+    for sub in "${submodules[@]}"; do
+      sub_path="$(resolve_repo_path "$sub")" || exit 2
+      [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $sub ($sub_path)"
+      scan_directory "$sub_path" "$sub" || true
+    done
+  elif [[ ${#REGISTERED_ROOTS[@]} -gt 0 ]]; then
+    for root in "${REGISTERED_ROOTS[@]}"; do
+      if [[ ! -d "$root" ]]; then
+        echo "ERROR: Registered repo root not found: $root (from LEGAL_SCAN_REPO_ROOTS)" >&2
+        exit 2
       fi
-      scan_labels+=("$sub")
-    done <<< "$submodules"
-  elif [[ -n "${LEGAL_SCAN_REPO_ROOTS:-}" ]]; then
-    while IFS= read -r root; do
-      [[ -z "$root" ]] && continue
-      [[ -d "$root" ]] || continue
-      for child in "$root"/*/; do
-        child="${child%/}"
-        [[ -d "$child" ]] || continue
-        [[ -e "$child/.git" ]] || continue
-        scan_paths+=("$child")
-        scan_labels+=("$(basename "$child")")
-      done
-    done < <(split_repo_roots)
-  fi
-
-  if [[ ${#scan_paths[@]} -eq 0 ]]; then
-    echo "ERROR: --all found no repositories to scan (no submodules; no LEGAL_SCAN_REPO_ROOTS repos)" >&2
-    echo "A legal scan must never pass by scanning nothing. Set LEGAL_SCAN_REPO_ROOTS or run from a checkout with submodules." >&2
+      root_label="$(basename "$root")"
+      [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $root_label ($root)"
+      scan_directory "$root" "$root_label" || true
+    done
+  else
+    echo "ERROR: --all found nothing to scan (no initialized submodules and LEGAL_SCAN_REPO_ROOTS is not set)." >&2
+    echo "       A legal gate must never pass by scanning nothing. Initialize submodules or set LEGAL_SCAN_REPO_ROOTS." >&2
     exit 2
   fi
-
-  if [[ "${LEGAL_SCAN_RESOLVE_ONLY:-}" == "1" ]]; then
-    printf '%s\n' "${scan_paths[@]}"
-    exit 0
-  fi
-
-  i=0
-  while [[ $i -lt ${#scan_paths[@]} ]]; do
-    [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: ${scan_labels[$i]}"
-    scan_directory "${scan_paths[$i]}" "${scan_labels[$i]}" || true
-    i=$((i + 1))
-  done
 
 else
   # Scan workspace root (non-submodule files)

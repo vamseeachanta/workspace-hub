@@ -154,7 +154,7 @@ def test_verify_rejects_rollback_revision_reuse_and_tamper():
     key = bytes(range(32))
     manifest = authority.build_manifest(registry(), policy(), private_map(), key)
     anchor = authority.make_anchor(manifest, "f" * 40)
-    ledger = authority.new_ledger("synthetic-key", manifest, key)
+    ledger = authority.new_ledger("phase-a-12345678-1234-4234-9234-123456789abc", manifest, key)
     authority.verify_bundle(
         registry(), policy(), private_map(), manifest, key, anchor, ledger, "f" * 40
     )
@@ -174,7 +174,7 @@ def test_verify_rejects_rollback_revision_reuse_and_tamper():
 def test_verify_binds_ledger_tool_sha_and_pending_head():
     key = bytes(range(32))
     manifest = authority.build_manifest(registry(), policy(), private_map(), key)
-    ledger = authority.new_ledger("synthetic-key", manifest, key)
+    ledger = authority.new_ledger("phase-a-12345678-1234-4234-9234-123456789abc", manifest, key)
     anchor = authority.make_anchor(
         manifest, "f" * 40, slot="pending", expected_head_oid="e" * 40
     )
@@ -223,7 +223,7 @@ def test_structural_scan_rejects_secret_artifacts_under_arbitrary_names(tmp_path
 def test_generation_ledger_append_is_authenticated_and_monotonic():
     key = bytes(range(32))
     manifest = authority.build_manifest(registry(), policy(), private_map(), key)
-    ledger = authority.new_ledger("synthetic-key", manifest, key)
+    ledger = authority.new_ledger("phase-a-12345678-1234-4234-9234-123456789abc", manifest, key)
     authority.verify_ledger(ledger, key)
     next_manifest = dict(manifest)
     next_manifest["generation"] = 2
@@ -233,3 +233,45 @@ def test_generation_ledger_append_is_authenticated_and_monotonic():
     authority.verify_ledger(appended, key)
     with pytest.raises(codec.AuthorityError, match="integrity"):
         authority.append_ledger(appended, next_manifest, key)
+
+
+def test_new_ledger_accepts_canonical_phase_a_key_id():
+    key = bytes(range(32))
+    manifest = authority.build_manifest(registry(), policy(), private_map(), key)
+    key_id = "phase-a-12345678-1234-4234-9234-123456789abc"
+
+    ledger = authority.new_ledger(key_id, manifest, key)
+
+    assert ledger["key_id"] == key_id
+    assert len(key_id.encode("utf-8")) <= 64
+
+
+def test_new_ledger_accepts_canonical_phase_a_key_id_within_byte_bound():
+    key = bytes(range(32))
+    manifest = authority.build_manifest(registry(), policy(), private_map(), key)
+    key_id = "phase-a-12345678-1234-4234-9234-123456789abc"
+
+    assert len(key_id.encode("utf-8")) == 44
+    assert len(key_id.encode("utf-8")) <= 64
+    authority.new_ledger(key_id, manifest, key)
+
+
+@pytest.mark.parametrize(
+    "key_id",
+    [
+        "phase-a-12345678-1234-4234-9234-123456789ABC",
+        "phase-a-not-a-uuid",
+        "12345678-1234-4234-9234-123456789abc",
+        "phase-a-12345678-1234-4234-9234-123456789abc-extra",
+        None,
+        123,
+        "phase-a-12345678-1234-4234-9234-123456789abc\N{SNOWMAN}",
+        "phase-a-12345678-1234-4234-9234-123456789abc" + "x" * 21,
+    ],
+)
+def test_new_ledger_rejects_invalid_phase_a_key_id(key_id):
+    key = bytes(range(32))
+    manifest = authority.build_manifest(registry(), policy(), private_map(), key)
+
+    with pytest.raises(codec.AuthorityError):
+        authority.new_ledger(key_id, manifest, key)

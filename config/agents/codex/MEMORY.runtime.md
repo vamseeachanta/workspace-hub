@@ -1,36 +1,40 @@
 <!-- MANAGED by curate_readback_slice.py — do not hand-edit; regenerate via bridge-hermes-claude.sh -->
 
-- [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" definitions, 0/56 wells agree (6.6× gap); reference basis = BSEE WAR `WELL_ACTIVITY_CD`. EPIC #1063 + #1064–#1081. NEXT: #1064 basis decision w/ Roy (HARD BLOCKER)
-- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). ✅✅✅ **#1634 ARMED 2026-07-29** (`Domain test aggregate` + `Run Quality Gates`, strict=false) — the 60.3%-red-merge root cause is closed. 8 PRs merged; deps 122→55; dashboard app deleted (−34.5k LOC), 9 modules extracted to `solvers/orcaflex/results_analysis/`. ⚠ audit said "3 root causes"; really **2**. OPEN: #1923 (139 hidden tests), #1900, #1907, #1919, #1881. See [[feedback_absence_of_signal_reads_as_success]]
-- [Model-generation reopen slate](project_model_generation_reopen_slate_2026_07_25.md) — wh#3106/#3056/#1019 + llm-wiki#638 REOPENED; #3043 retargeted. NEXT: wh#3051 registry flip (blocks the rest)
-- [Model-registry generation drift blind spot](project_model_generation_drift_registry_blindspot.md) — nightly guard checks ONLY `openai_primary`; Claude lane has zero drift coverage. ✅ wh#3600 FILED. NEXT: #3600 needs-plan
-- [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; hub PR #1058 armed. ⚠ DRILLING_DAYS mixes two bases → batch-drilled undercount. NEXT: owner sends v2 email
-- [Equality matrix reclassification (wh#3592)](project_equality_matrix_reclassification_3592.md) — ✅✅ CLOSED; 5/5 CONFORMS on Linux. On-box left: ace-win-1 #2815, ace-win-2 #3595; ⚠ owner: `systemctl --user disable --now claude-routine-mx-720-cnh-source-watch.timer`
-- [India family trip Jul 21–Aug 19](reference_us_india_travel_apps.md) — 2026-07-19 ✅✅ family departed. NEXT: ~Aug 18 return check-in; Sep 18 DS-11 reminder
-- [iPhone media extraction pipeline](project_iphone_media_taildrop_pipeline.md) — ✅✅ two phones archived 3-2-1. NEXT: #3586 gates next phone
-- [External SSH via Tailscale for fleet](project_external_ssh_tailscale_fleet.md) — ✅ mosh+tmux persistence LIVE on ace-linux-1 (PR #3597). ⚠ two tailscaled daemons; Taildrop node OFFLINE. NEXT: 24h BatchMode re-test gpu-claw
-- [agy replaces gemini (wh#3573)](project_agy_replaces_gemini_provider_swap.md) — ✅✅✅ COMPLETE. RULE: cross-review = Claude+Codex+Agy. Follow-ons #3577-#3580
-- [Floorhand multi-metro outreach (12 shops)](project_floorhand_multi_metro_outreach.md) — 2026-07-26 ✅✅ CLOSED, PRs #180–#185 merged. Partner model SETTLED = **flat 50-50 gross, paid as shop pays** (don't re-litigate). ⚠ analysis engine NOT BUILT. NEXT: owner sends PDFs
-- [Sun Manufacturing Floorhand pamphlet](project_sun_manufacturing_floorhand_pamphlet.md) — ✅ emailed; Austin replied POSITIVE. RULE: copy `strategy/floorhand-pamphlet-TEMPLATE.html`. NEXT: on meeting pick → calendar + kit
-- [Fidelity returns analysis + dashboard](project_fidelity_returns_analysis.md) — ✅ COMPLETE (PR #152). No open work
-- [Elliott Services Floorhand FFS brochure](project_elliott_floorhand_brochure.md) — ✅ PR #178 MERGED. NEXT (HITL): pick send route + flip draft footer → SEND
-- [Krishna daily schedule (wh#3528)](project_krishna_daily_schedule.md) — morning chain APPROVED. NEXT: evening-chain yes/adjust → calendar #3529
-- [wed #844 cost-basis + costing program](project_wed844_cost_basis_timeseries_dispatch.md) — #1023 CLOSED (80 projects/$509bn); EPIC #1038 (#1040-#1044). OPEN: A1–A4 undecided (blocks #651); cost↔FDAS DISCONNECTED; #831 stale
-- [llm-wiki-acma OCR lane gpu-claw (#267)](project_llm_wiki_acma_ocr_lane_gpu_claw.md) — 2026-07-13 ✅ smoke merged; full-queue #272 blocked on staging path
-- [wed parametric economics sweep + HF](project_wed_parametric_economics_sweep.md) — 2026-07-13 ✅ PR #1004 merged; #978 closable. See [[project_wed_economics_c9_session_handoff]]
-- [Fleet dispatch ecosystem (wh#3497)](project_fleet_dispatch_ecosystem_epic.md) — 2026-07-13 ✅ Phase-6 smoke rc 0. RULE: map detail PRIVATE-only. NEXT: merge #563 → soak → VPN retire
-- [aceengineer.com redesign — Subsea7 theme](project_aceengineer_website_redesign_subsea7.md) — navy/teal, no literal "AI". PR #59 OPEN (stacked). NEW: awsite#76
-- [ace-win-1 batch mini-runs (dm#1553)](project_ace_win1_batch_operability_program.md) — E/I/A/B/skill MERGED; F awaits HUMAN merge. NEXT: D dm#1557 sweep catalog
-- [dm#1528 sloshing reduced-order](project_dm1528_sloshing_reduced_order.md) — coeff 0.16·Π. Blocked on user hull data: run dm#1562
-- [HF projection + staged promotion (wh#3433)](project_hf_projection_staged_promotion.md) — PR #3465 plan-approved; gated behind DRAFT #3452
-- [World Energy Field Explorer program](project_world_energy_field_explorer_program.md) — feature-complete; open: #962 SVGs, #966 HF viz, #955/#959/#960 ingest
-- [Rama Lakshmi Indian passport Tatkaal re-issue](project_ramalakshmi_indian_passport_tatkal.md) — SETTLED = II-B-2 (`rld.md` "6-Nov-2027" is WRONG); ₹5,000 POPSK Kakinada. ⚠ husband gravely ill — do NOT propose renewing his. NEXT: her 8 answers (§8)
-- [Devakrishna passport renewal (DS-11)](project_devakrishna_passport_renewal.md) — DEFERRED until family returns. On return: DS-11 + appointment
-- [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-07: #755/#756/#848-#850 LIVE; remaining #759/#761
-- [International field-dev epic (wed #713)](project_wed_international_field_dev_epic.md) — 6 country chains MERGED; DI-loader UNBUILT; ⚠ mx-720 watcher = LOCAL systemd timer. NEXT: #720 loader; #722
-- [FDAS public tier + HSE finding](project_fdas_public_tier_dashboard_hse.md) — HSE does NOT favor dry-tree — don't pitch HSE. OPEN: dashboard + Roy email
-- [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
-- [Machine identity = logical alias (deckhand#565)](feedback_machine_identity_is_logical_alias_565.md) — route by `host_aliases`, NEVER tailnet/physical names; physical bindings are private-tier claims w/ `verified_at`; heartbeat filenames FROZEN; **scan your own plan/handoff artifacts** — deckhand is the promotable tier; `host_aliases` missing ⇒ startup fails from 2026-09-01
-- [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included**
-- [Rig-selector capability depth](feedback_rig_selector_capability_depth.md) — onshore/offshore = FIRST filter; equipment fields over more hull numbers (wed #1006)
-_[133 entries omitted: oversize/over-cap]_
+- [Riser stack-up registry expansion](project_riser_stackup_registry_expansion.md) — 2026-07-07 ✅ COMPLETE: registry 9→84, 5 waves/7 PRs merged, **EPIC #1279 CLOSED**; remainder → lane:codex #1468/#1469/#1470 (handoff-ready). ✅ SESSION CLOSED — NEXT (human): launch Codex on `/tmp/handoff-1468-codex.md`; durable artifacts at wshub `coordination/riser-stackup/`; KEEP worktree wt-llmwiki-rsu (= LLM_WIKI_PATH for dm in-context tests)
+- [Completion D&C reconcile vs WO Article](project_completion_dc_reconciliation_wo_article.md) — 2026-07-07 **V50 PROMOTION DONE** (PRs #889+#891 merged/live): Roy's V50 script run + V50-vs-wed reconciliation (D&C=wed to the day; JSM gap −$3.1B = discount-convention + $103M tax). Handover `/mnt/local-analysis/HANDOVER_codex_fdas_v50.md`; detail+open-tasks in topic file
+- [RUNSPEC Monte Carlo UQ ingest](project_runspec_monte_carlo_uq_ingest.md) — 2026-07-06: llm-wiki #822 ✅ DONE (PR #827 MERGED after rescuing the ingest from auto-sync-clobbered PR #824). NEXT: plan dm #1427 (MC UQ engine); wed #833 also open
+- [Tank sloshing → dm capability + Scott email](project_tank_sloshing_capability.md) — 2026-07-05: dm PRs #1424/#1425/#1428 MERGED (live sloshing-explorer + master curve); llm-wiki **PR #825 MERGED** (anti-roll-tank Kapsenberg&Carette 2022 ingest, open-access); Scott email STAGED (not sent)
+- [wed Well Pressure Atlas page](project_wed_pressure_atlas_page.md) — 2026-07-06 ✅ PR #829 MERGED, page LIVE (HTTP 200 verified). Feeds Reed email (still staged, user-gated)
+- [dm capabilities page expansion](project_dm_capabilities_page_expansion.md) — 2026-07-07 ✅ #1456/#1444 DONE (PR #1460 merged; 10 one-pagers + bijection/pdf/grounding CI ratchet). Backlog: revamp lane owns index.html card-wiring
+- [Richard D'Souza outreach + llm-wiki deepwater](project_richard_dsouza_outreach.md) — 2026-07-04: email STAGED in Drafts (not sent); llm-wiki PR not opened; HOLDING for field-dev
+- [Ecosystem review 2026-07-04 (Fable 5)](project_ecosystem_review_2026_07_04.md) — 12 issues lane-labeled/6 repos; NEXT: CI-recovery slice (wed #526 + wshub #3380)
+- [Motion-forecast offering (dm #1356)](project_motion_forecast_offering_epic.md) — 2026-07-04: **CORE COMPLETE**; #1357 → **PR #1402 OPEN**. NEXT: merge #1402
+- [llm-wiki DP-criteria + min-curvature](project_llm_wiki_dp_criteria_min_curvature_ingest.md) — 2026-07-02 DONE, PR #819 MERGED
+- [Equality wedge ≠ drift recovery](feedback_equality_wedge_vs_drift_recovery.md) — local main BOTH ahead (unpushed auto-sync) AND behind origin → non-FF push loop can't self-heal → matrix STALE. Fix (destructive, get OK): prove regenerable → backup tag → `reset --hard origin/main` → re-green cron
+- [Vamsee's technical-outreach email style](feedback_vamsee_technical_outreach_email_style.md) — prospect follow-ups: reply into EXISTING thread (search `to:<email> in:sent`); personalized humble greeting; every capability gets a LIVE link; warm offers + one ask. [[feedback_vamsee_email_style_skestates]]
+- [Strict-up-to-date ruleset blocks green-PR merge](feedback_strict_uptodate_ruleset_no_admin_bypass.md) — `--admin` does NOT bypass repo *rulesets* (separate bypass list); on a churning main use a background merge-when-CLEAN loop, or owner adds admin to ruleset bypass / flips `strict_required_status_checks_policy` off
+- [Required check must never skip](feedback_required_check_must_not_skip.md) — a required status check with a job-level `if:` deadlocks PRs at BLOCKED forever (skipped ≠ success); signature = BLOCKED + one check `skipping`; fix = job always runs (advisory logic in a non-failing step)
+- [Verify against the real CI lint toolchain pre-push](feedback_verify_against_real_ci_lint_toolchain.md) — run the repo's EXACT black/isort/flake8 (same version/config, verify the binary exists); ruff ≠ black; an absent binary "passes" silently → false-negative red PR
+- [Batch-merge PRs: no rebase, trust CLEAN](feedback_dependabot_merge_no_rebase_trust_clean.md) — under non-strict rulesets don't `update-branch` (cancels queued CI → livelock); merge only on `mergeStateStatus==CLEAN` (not hand-counted `gh pr checks` — missing≠pending); always verify MERGED on remote
+- [Unique live links → traffic + credibility](feedback_unique_live_links_traffic_credibility.md) — every capability/skill links to its OWN purpose-built, indexable live page (specific title), never a shared "dashboards" section; N distinct pages = N front doors
+- [Always update the equality matrix](feedback_always_update_equality_matrix.md) — end equality/fleet-touching work with `publish-equality.sh --repo /mnt/local-analysis/workspace-hub --rebuild`; agent CAN run this
+- [One task at a time](feedback_one_task_at_a_time.md) — end turns with summary + exactly ONE next task, never an option menu
+- [Keep data at fingertips](feedback_keep_data_at_fingertips.md) — in cleanup/dedup, delete only regenerable cruft; keep + back up data even if re-fetchable (re-fetchable ≠ disposable)
+- [Document discovered data sources as GH data issues](feedback_document_discovered_data_sources_as_issues.md) — research side-finds (new source URLs/artifacts) get filed immediately as `cat:data` issues (one per source family, verified URL + consumer); pilot wed #855
+- [Avoid "A&CE" branding](feedback_avoid_ace_branding.md) — describe the work or use "AceEngineer"; Deckhand unaffected
+- [Agent can verify but NOT self-merge its own PR](feedback_agent_can_verify_but_not_self_merge_pr.md) — hand human `gh pr merge <N> --squash --delete-branch --repo owner/name`
+- [Verify generated/state files against origin/main](feedback_verify_generated_state_against_origin_not_working_copy.md) — `git rev-parse --abbrev-ref HEAD` + `git show origin/main:<path>` before "stale" claims
+- Windows (MINGW64): paths use `/d/workspace-hub/` in bash (not `D:\`)
+- All development must be compatible with Linux, Windows, and macOS
+- Windows `core.symlinks=false` — git treats junctions as dirs, not symlinks
+- Never commit symlinks to git cross-platform — use runtime linking + `.gitignore`
+- **OrcFxAPI**: See `orcawave-lessons.md` for detailed API usage
+- **AQWA**: See `aqwa-lessons.md` for DAT format and LIS parsing
+- **BEMRosetta**: CLI does mesh conversion only (`-mesh` mode)
+- **Pre-flight first**: Validate inputs BEFORE running solvers (units, formats, conventions)
+- **Unit traps**: OrcaWave=Hz descending, AQWA=rad/s; rotational RAOs rad/m vs deg/m
+- **Negative correlations**: Almost always means frequency arrays in different order
+- **NaN correlations**: Zero std dev (e.g., yaw at head seas) — handle gracefully
+- **AQWA FATAL mesh errors**: Cannot be overridden with `OPTIONS GOON`; fix the mesh
+- **LIS parser**: Normalize whitespace before keyword matching ("ADDED  MASS" has double space)
+_[97 entries omitted: oversize/over-cap]_

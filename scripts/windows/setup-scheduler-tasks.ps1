@@ -12,6 +12,7 @@
 #   \Claude\EqualityReport             - rendered from config/scheduled-tasks/schedule-tasks.yaml
 #   \Claude\SessionCuration            - rendered from config/scheduled-tasks/schedule-tasks.yaml
 #   \Claude\EcosystemReconcile         - daily report-first reconcile (no unattended apply)
+#   \Claude\EquivalenceSentinel        - YAML-backed six-hour drift sentinel
 
 [CmdletBinding()]
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification='Operator-facing scheduler installer uses console output.')]
@@ -19,11 +20,19 @@ param(
     [string]$WorkspaceRoot = "",
     [switch]$WhatIf,
     [switch]$Remove,
-    [switch]$EquivalenceOnly
+    [switch]$EquivalenceOnly,
+    [string]$MachineIdOverride = ""
 )
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
+
+if ($MachineIdOverride -and $MachineIdOverride -notmatch '^ace-win-[12]$') {
+    throw "MachineIdOverride must be ace-win-1 or ace-win-2"
+}
+if ($MachineIdOverride -and (-not $WhatIf -or $Remove)) {
+    throw "MachineIdOverride is allowed only with non-removal WhatIf"
+}
 
 if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
     $WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
@@ -69,8 +78,7 @@ function Get-DefaultTaskSetting {
 }
 
 function Get-CurrentMachineLabel {
-    $configured = if ($env:RECONCILE_MACHINE) { $env:RECONCILE_MACHINE.ToLowerInvariant() } else { "" }
-    if ($configured -match '^ace-win-[12]$') { return $configured }
+    if ($MachineIdOverride) { return $MachineIdOverride }
     $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "" }
     switch -Wildcard ($hostName) {
         "ace-win-1" { return "ace-win-1" }
@@ -81,103 +89,7 @@ function Get-CurrentMachineLabel {
     }
 }
 
-function Get-ScheduleTaskBlock {
-    param(
-        [Parameter(Mandatory=$true)][string]$TaskId
-    )
-
-    $schedulePath = Join-Path $WorkspaceRoot "config\scheduled-tasks\schedule-tasks.yaml"
-    if (-not (Test-Path $schedulePath)) {
-        throw "Schedule source not found: $schedulePath"
-    }
-
-    $lines = Get-Content $schedulePath
-    $start = -1
-    for ($i = 0; $i -lt $lines.Count; $i++) {
-        if ($lines[$i] -match ("^\s*-\s+id:\s+{0}\s*$" -f [regex]::Escape($TaskId))) {
-            $start = $i
-            break
-        }
-    }
-    if ($start -lt 0) {
-        throw "Task '$TaskId' not found in $schedulePath"
-    }
-
-    $block = New-Object System.Collections.Generic.List[string]
-    for ($i = $start; $i -lt $lines.Count; $i++) {
-        if ($i -gt $start -and $lines[$i] -match "^\s*-\s+id:\s+") {
-            break
-        }
-        $block.Add($lines[$i])
-    }
-    return ,$block.ToArray()
-}
-
-function Get-YamlScalar {
-    param(
-        [string[]]$Block,
-        [Parameter(Mandatory=$true)][string]$Name
-    )
-
-    $pattern = "^\s+{0}:\s*(.+?)\s*$" -f [regex]::Escape($Name)
-    foreach ($line in $Block) {
-        if ($line -match $pattern) {
-            $value = $Matches[1].Trim()
-            if (($value.StartsWith('"') -and $value.EndsWith('"')) -or
-                ($value.StartsWith("'") -and $value.EndsWith("'"))) {
-                $value = $value.Substring(1, $value.Length - 2)
-            }
-            return $value
-        }
-    }
-    throw "Field '$Name' not found in YAML task block"
-}
-
-function Get-YamlInlineList {
-    param(
-        [string[]]$Block,
-        [Parameter(Mandatory=$true)][string]$Name
-    )
-
-    $pattern = "^\s+{0}:\s*\[(.+?)\]\s*$" -f [regex]::Escape($Name)
-    foreach ($line in $Block) {
-        if ($line -match $pattern) {
-            return @($Matches[1].Split(",") | ForEach-Object { $_.Trim() } | Where-Object { $_ })
-        }
-    }
-    throw "Inline list '$Name' not found in YAML task block"
-}
-
-function Get-EqualityReportTask {
-    $block = Get-ScheduleTaskBlock -TaskId "equality-report"
-    $label = Get-YamlScalar -Block $block -Name "label"
-    $description = Get-YamlScalar -Block $block -Name "description"
-    if ($description -match "^[>|]") {
-        $description = $label
-    }
-    [pscustomobject]@{
-        Id = "equality-report"
-        Label = $label
-        Schedule = Get-YamlScalar -Block $block -Name "schedule"
-        Machines = Get-YamlInlineList -Block $block -Name "machines"
-        Description = $description
-    }
-}
-
-function Get-ConfiguredTask {
-    param([Parameter(Mandatory=$true)][string]$TaskId)
-    $block = Get-ScheduleTaskBlock -TaskId $TaskId
-    $label = Get-YamlScalar -Block $block -Name "label"
-    $description = Get-YamlScalar -Block $block -Name "description"
-    if ($description -match "^[>|]") { $description = $label }
-    [pscustomobject]@{
-        Id = $TaskId
-        Label = $label
-        Schedule = Get-YamlScalar -Block $block -Name "schedule"
-        Machines = Get-YamlInlineList -Block $block -Name "machines"
-        Description = $description
-    }
-}
+. "$PSScriptRoot/scheduler-yaml.ps1"
 
 function Convert-CronSchedule {
     param(
@@ -281,6 +193,10 @@ function Register-ClaudeTask {
     $fullName = "${TaskPath}${Name}"
 
     if ($RemoveMode) {
+        if ($WhatIf) {
+            Write-Host "  [WhatIf] Would remove: $fullName"
+            return
+        }
         $existing = Get-ScheduledTask -TaskName $Name -TaskPath $TaskPath -ErrorAction SilentlyContinue
         if ($existing) {
             Unregister-ScheduledTask -TaskName $Name -TaskPath $TaskPath -Confirm:$false
@@ -352,21 +268,35 @@ if (-not $WhatIf -and -not (Test-Admin)) {
     exit 1
 }
 
-if (-not $GitBash -or -not (Test-Path $GitBash)) {
-    if ($WhatIf) {
-        Write-Warning "Git Bash not found at '$GitBash'. Git-Bash-backed tasks would fail until it is installed or `$GitBash is updated."
-    } else {
-        Write-Error "Git Bash not found at '$GitBash'. Install Git for Windows or update `$GitBash."
-        exit 1
-    }
-}
-
 Write-Host ""
 Write-Host "=============================================="
 Write-Host " Claude Workspace Scheduler Tasks"
 Write-Host " Workspace: $WorkspaceRoot"
 Write-Host "=============================================="
 Write-Host ""
+
+if ($Remove) {
+    $names = @('EqualityReport', 'SessionCuration', 'EcosystemReconcile', 'EquivalenceSentinel')
+    if (-not $EquivalenceOnly) { $names = @('ContextManagementDaily', 'WorkstationVersionCheck', 'NightlyReadiness', 'RepoSync', 'MemoryBridgeSync', 'HarnessUpdate') + $names }
+    foreach ($name in $names) { Register-ClaudeTask -Name $name -Description 'remove' -ScriptPath '.' -DailyAt '00:00' }
+    Write-Host ""; Write-Host "Done."
+    exit 0
+}
+
+if (-not $GitBash -or -not (Test-Path $GitBash)) {
+    if ($WhatIf) { Write-Warning "Git Bash not found at '$GitBash'. Git-Bash-backed tasks would fail until it is installed or `$GitBash is updated." }
+    else { Write-Error "Git Bash not found at '$GitBash'. Install Git for Windows or update `$GitBash."; exit 1 }
+}
+
+$currentMachine = Get-CurrentMachineLabel
+$equalityTask = Get-EqualityReportTask
+$curationTask = Get-ConfiguredTask -TaskId "session-curation"
+$reconcileTask = Get-ConfiguredTask -TaskId "ecosystem-reconcile"
+$sentinelTask = Get-ConfiguredTask -TaskId "equivalence-sentinel"
+$sentinelScript = $null
+if ($sentinelTask.Machines -contains $currentMachine) {
+    $sentinelScript = Resolve-RepoTaskScript -RelativePath $sentinelTask.WindowsScript
+}
 
 if (-not $EquivalenceOnly) {
     Register-ClaudeTask `
@@ -408,8 +338,6 @@ if (-not $EquivalenceOnly) {
         -DailyAt "02:15AM"
 }
 
-$equalityTask = Get-EqualityReportTask
-$currentMachine = Get-CurrentMachineLabel
 if ($equalityTask.Machines -contains $currentMachine) {
     Register-ClaudeTask `
         -Name "EqualityReport" `
@@ -422,7 +350,6 @@ if ($equalityTask.Machines -contains $currentMachine) {
     Write-Host "  Skip EqualityReport: $currentMachine is not listed in schedule-tasks.yaml"
 }
 
-$curationTask = Get-ConfiguredTask -TaskId "session-curation"
 if ($curationTask.Machines -contains $currentMachine) {
     Register-ClaudeTask `
         -Name "SessionCuration" `
@@ -433,7 +360,6 @@ if ($curationTask.Machines -contains $currentMachine) {
         -PowerShell
 }
 
-$reconcileTask = Get-ConfiguredTask -TaskId "ecosystem-reconcile"
 if ($reconcileTask.Machines -contains $currentMachine) {
     Register-ClaudeTask `
         -Name "EcosystemReconcile" `
@@ -441,6 +367,16 @@ if ($reconcileTask.Machines -contains $currentMachine) {
         -ScriptPath "scripts/windows/reconcile-ecosystem.ps1" `
         -TaskArguments "-Machine $currentMachine" `
         -CronSchedule $reconcileTask.Schedule `
+        -PowerShell
+}
+
+if ($sentinelTask.Machines -contains $currentMachine) {
+    Register-ClaudeTask `
+        -Name "EquivalenceSentinel" `
+        -Description $sentinelTask.Description `
+        -ScriptPath $sentinelScript `
+        -TaskArguments "-WorkspaceRoot `"$WorkspaceRoot`" -GitBashPath `"$GitBash`"" `
+        -CronSchedule $sentinelTask.Schedule `
         -PowerShell
 }
 
