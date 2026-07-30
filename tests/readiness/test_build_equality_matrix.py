@@ -24,6 +24,17 @@ sys.modules["build_equality_matrix"] = bem  # register BEFORE exec (kebab-case i
 spec.loader.exec_module(bem)
 
 
+@pytest.fixture(autouse=True)
+def _isolate_generation_seam(tmp_path_factory, monkeypatch):
+    """#3702: in default mode the builder reads TWO input layers — the repo's
+    `.claude/state` (monkeypatched per test as `bem.STATE`) and this box's out-of-tree
+    seam (`bem.EQ_STATE`). Leave the seam pointing at the operator's real
+    `~/.local/state/workspace-hub/equality` and a live equality-<machine>.yaml there
+    would silently override the fixture's copy on any machine that has ever run the
+    collector. Pin it to an empty dir so these tests stay hermetic."""
+    monkeypatch.setattr(bem, "EQ_STATE", tmp_path_factory.mktemp("empty-eq-seam"))
+
+
 # ── fixtures ────────────────────────────────────────────────────────────────
 TIER1 = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 
@@ -680,11 +691,19 @@ def test_wiring_single_source_schedule():
     # all 4 active machines, with a Windows render path. The command routes through the
     # fail-loud wrapper (#2972), which must carry collector + builder + publisher — so
     # the collect/build/publish chain stays single-sourced one hop deeper.
+    #
+    # #3702 added ONE more hop in front: the cron command now names equality-preflight.sh,
+    # a thin wrapper that FF-pulls a clean checkout on main and then EXECs
+    # equality-matrix-cron.sh. The chain below is walked end to end so the extra hop cannot
+    # hide a broken link.
     tasks = yaml.safe_load(
         (REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml").read_text())["tasks"]
     eq = next(t for t in tasks if t["id"] == "equality-report")
     assert eq["schedule"].split()[-1] == "1"            # weekly, Monday
-    assert "equality-matrix-cron.sh" in eq["command"]
+    assert "equality-preflight.sh" in eq["command"]
+    preflight = (REPO_ROOT / "scripts" / "readiness" / "equality-preflight.sh").read_text()
+    assert "ff_preflight" in preflight
+    assert "exec bash" in preflight and "equality-matrix-cron.sh" in preflight
     wrapper = (REPO_ROOT / "scripts" / "readiness" / "equality-matrix-cron.sh").read_text()
     assert "collect-equality.sh" in wrapper
     assert "build-equality-matrix.py" in wrapper
@@ -692,9 +711,16 @@ def test_wiring_single_source_schedule():
     for m in ("dev-primary", "dev-secondary", "ace-win-1", "ace-win-2"):
         assert m in eq["machines"]
     assert (REPO_ROOT / "scripts" / "windows" / "equality-report.ps1").exists()
-    # The daily dead-man's-switch rebuild routes through the SAME wrapper.
+    # The 6-hourly dead-man's-switch rebuild routes through the SAME wrapper chain.
     refresh = next(t for t in tasks if t["id"] == "equality-matrix-refresh")
-    assert "equality-matrix-cron.sh" in refresh["command"]
+    assert "equality-preflight.sh" in refresh["command"]
+    # r1 M2: the 6-hourly, 6-machine curation path gets the preflight too, or behind_main
+    # keeps ratcheting on the more frequent of the two collection paths.
+    curation = next(t for t in tasks if t["id"] == "session-curation")
+    assert "session-curation-preflight.sh" in curation["command"]
+    cpre = (REPO_ROOT / "scripts" / "curation" / "session-curation-preflight.sh").read_text()
+    assert "ff_preflight" in cpre
+    assert "exec bash" in cpre and "curate-session-memory.sh" in cpre
 
 
 def test_verdict_behavior_is_uniform_not_expected_diff():

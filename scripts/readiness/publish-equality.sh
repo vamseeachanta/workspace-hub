@@ -10,7 +10,8 @@
 #
 # HOW: fetch origin/main → temp worktree with a sparse checkout of ONLY the artifact
 # paths (.claude/state, docs/reports, scripts/readiness — seconds, not a 22k-file
-# checkout) → copy in any LOCAL equality yaml whose generated_at is NEWER than origin's
+# checkout) → copy in any LOCAL equality yaml (read from the #3702 EQ_STATE_DIR seam,
+# NOT from the tracked working tree) whose generated_at is NEWER than origin's
 # copy (never clobbers a peer's fresher evidence) → optionally rebuild the matrix INSIDE
 # the worktree so the committed render reflects the union of freshest evidence →
 # scoped commit → push (fast-forward by construction; one retry on a push race).
@@ -67,6 +68,20 @@ fail() {
   echo "publish-equality FAIL: $1" >&2
   exit 1
 }
+
+# Local evidence now comes from the #3702 generation seam, NOT the tracked working tree.
+# shellcheck source=scripts/readiness/lib/eq-seam.sh
+. "$SCRIPT_DIR/lib/eq-seam.sh"
+EQ_LOCAL_DIR="$(eq_state_dir "")"
+# FAIL LOUD on an empty seam (r1 M7). Silently publishing nothing is the worst failure
+# mode this change can produce: `attempt()` would stage nothing, print "nothing newer …
+# no commit needed" and exit 0, so the box goes DARK on the matrix while every scheduled
+# task reports success. Checked before the lock so a lock-held skip is unaffected.
+_eq_local_count=0
+for _f in "$EQ_LOCAL_DIR"/equality-*.yaml; do [[ -f "$_f" ]] && _eq_local_count=$((_eq_local_count+1)); done
+if (( _eq_local_count == 0 )); then
+  fail "no local equality evidence at ${EQ_LOCAL_DIR} (EQ_STATE_DIR seam empty or misresolved) — refusing to report success while this machine goes dark on the matrix"
+fi
 
 # One publish per host at a time (a 6h curation refresh racing the daily rebuild).
 # flock is absent on Git for Windows bash; a bare `flock -n || skip` collapses
@@ -147,7 +162,7 @@ attempt() {
 
   # 1. Evidence: copy in each LOCAL equality yaml strictly newer than origin's copy.
   local f base local_gen origin_gen
-  for f in "$REPO_ROOT"/.claude/state/equality-*.yaml; do
+  for f in "$EQ_LOCAL_DIR"/equality-*.yaml; do
     [[ -f "$f" ]] || continue
     base="$(basename "$f")"
     local_gen="$(gen_at "$f")"
@@ -160,12 +175,19 @@ attempt() {
   done
 
   # 2. Render (control-plane): rebuild from the worktree's union-of-freshest evidence.
+  # --state-dir/--out-dir are passed EXPLICITLY and point at the worktree only (#3702).
+  # --state-dir REPLACES the builder's default input layers (r1 M1) — without that the
+  # render would fold the interactive checkout's stale peer evidence, and this box's
+  # local seam copy, into the PUBLISHED matrix and destroy the union-of-freshest
+  # guarantee this whole worktree design exists to provide.
   if [[ "$REBUILD" == 1 ]]; then
+    local render_args=(--state-dir "$WT/.claude/state" --out-dir "$WT/docs/reports")
     if command -v uv >/dev/null 2>&1; then
-      (cd "$WT" && uv run --script scripts/readiness/build-equality-matrix.py) >/dev/null \
-        || return 1
+      (cd "$WT" && uv run --script scripts/readiness/build-equality-matrix.py \
+        "${render_args[@]}") >/dev/null || return 1
     else
-      (cd "$WT" && python3 scripts/readiness/build-equality-matrix.py) >/dev/null || return 1
+      (cd "$WT" && python3 scripts/readiness/build-equality-matrix.py \
+        "${render_args[@]}") >/dev/null || return 1
     fi
   fi
 

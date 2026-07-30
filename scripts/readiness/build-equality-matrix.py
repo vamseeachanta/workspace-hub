@@ -5,7 +5,8 @@
 # ///
 """build-equality-matrix.py — machine-equality matrix verdict engine + HTML render (#2801).
 
-Joins per-machine .claude/state/equality-<machine>.yaml self-reports into one
+Joins per-machine equality-<machine>.yaml self-reports — read from the repo's published
+`.claude/state` overlaid with this box's out-of-tree #3702 seam — into one
 machines × dimensions matrix. Two grading families (D2):
   COLD dims  (compute, data_access, solvers, harness, memory, scheduler) → conformance
              to a DECLARED per-machine baseline in harness-config.yaml → CONFORMS /
@@ -16,10 +17,14 @@ machines × dimensions matrix. Two grading families (D2):
 plus MISSING-EVIDENCE / UNREACHABLE. Roster is read from harness-config.yaml (never
 hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py [--open]
 (PEP-723 inline deps above make the cron/standalone path resolve pyyaml — #2972.)
+
+Flags: --json [--machine <slug>] | --open | --state-dir <path> (repeatable; REPLACES the
+default input layers, #3702 r1 M1) | --out-dir <path> (render destination).
 """
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 from collections import Counter
@@ -29,9 +34,61 @@ from pathlib import Path
 import yaml
 
 REPO = Path(__file__).resolve().parents[2]
-STATE = REPO / ".claude" / "state"
-REPORTS = REPO / "docs" / "reports"
 CONFIG = REPO / "scripts" / "readiness" / "harness-config.yaml"
+
+
+# ── generation seam (#3702) ──────────────────────────────────────────────────
+# The generated matrix used to be written straight into the TRACKED tree, which made
+# `git pull --ff-only` abort on every box the moment a peer published, ratcheting
+# behind_main and stamping STALE-CHECKOUT across all dimensions. Generation now lands
+# out of tree by default; the PUBLISHED surface on origin/main is unchanged because
+# publish-equality.sh renders inside its disposable sparse worktree and passes explicit
+# --state-dir/--out-dir. Mirrors scripts/readiness/lib/eq-seam.sh (bash side) exactly.
+def _seam_root() -> Path:
+    base = os.environ.get("XDG_STATE_HOME") or str(Path.home() / ".local" / "state")
+    return Path(base) / "workspace-hub" / "equality"
+
+
+# PEER evidence as published to origin/main. READ-ONLY: reading never dirties the tree.
+STATE = REPO / ".claude" / "state"
+# This box's freshly collected evidence (collect-equality.sh's output seam).
+EQ_STATE = Path(os.environ["EQ_STATE_DIR"]) if os.environ.get("EQ_STATE_DIR") \
+    else _seam_root()
+# Render destination. Out of tree unless explicitly pinned back (rollback / Windows).
+REPORTS = Path(os.environ["EQ_REPORT_DIR"]) if os.environ.get("EQ_REPORT_DIR") \
+    else _seam_root() / "reports"
+
+
+def _flag_values(flag: str, argv: list[str] | None = None) -> list[str]:
+    """Repeatable `--flag value` / `--flag=value` reader, in command-line order."""
+    argv = sys.argv if argv is None else argv
+    out: list[str] = []
+    for i, a in enumerate(argv):
+        if a == flag and i + 1 < len(argv):
+            out.append(argv[i + 1])
+        elif a.startswith(flag + "="):
+            out.append(a.split("=", 1)[1])
+    return out
+
+
+def resolve_state_inputs(argv: list[str] | None = None) -> list[Path]:
+    """Ordered input layers; a later layer's file wins on a filename collision.
+
+    CRITICAL (r1 M1): `--state-dir` REPLACES the default list — it does NOT add another
+    overlay layer. publish-equality.sh renders with `--state-dir "$WT/.claude/state"`,
+    and folding the interactive checkout's stale peer evidence in on top of the
+    worktree's would destroy the union-of-freshest guarantee the publisher exists to
+    provide and ship a wrong matrix to GitHub Pages.
+    """
+    explicit = _flag_values("--state-dir", argv)
+    if explicit:
+        return [Path(p) for p in explicit]
+    return [STATE, EQ_STATE]
+
+
+def resolve_report_out(argv: list[str] | None = None) -> Path:
+    vals = _flag_values("--out-dir", argv)
+    return Path(vals[-1]) if vals else REPORTS
 
 TIER1_DEFAULT = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 UNREACHABLE_DEFAULT = {"home-win", "macbook-portable"}
@@ -580,9 +637,18 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
 
 
 # ── load + render ────────────────────────────────────────────────────────────
-def load_reports() -> dict[str, dict]:
+def load_reports(dirs: list[Path] | None = None) -> dict[str, dict]:
+    """Merge the ordered input layers by filename; the LAST layer holding a given
+    equality-<machine>.yaml wins (this box's fresh evidence over the published copy)."""
+    picked: dict[str, Path] = {}
+    for d in (resolve_state_inputs() if dirs is None else dirs):
+        if not d.is_dir():
+            continue
+        for f in sorted(d.glob("equality-*.yaml")):
+            picked[f.name] = f
     out = {}
-    for f in sorted(STATE.glob("equality-*.yaml")):
+    for name in sorted(picked):
+        f = picked[name]
         machine = f.stem[len("equality-"):]
         try:
             out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
@@ -921,12 +987,13 @@ function copyGenPrompt(btn){{
 }}
 </script></body></html>"""
 
-    REPORTS.mkdir(parents=True, exist_ok=True)
-    out = REPORTS / f"{date.today().isoformat()}-machine-equality-matrix.html"
+    report_dir = resolve_report_out()
+    report_dir.mkdir(parents=True, exist_ok=True)
+    out = report_dir / f"{date.today().isoformat()}-machine-equality-matrix.html"
     out.write_text(html, encoding="utf-8")
     # Stable (undated) alias so GitHub Pages serves a fixed "latest" URL that never
     # changes as the dated reports roll over (published by scripts/build_pages.py).
-    latest = REPORTS / "machine-equality-matrix.html"
+    latest = report_dir / "machine-equality-matrix.html"
     latest.write_text(html, encoding="utf-8")
     print(f"wrote {out} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
     if "--open" in sys.argv:
