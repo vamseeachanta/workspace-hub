@@ -15,6 +15,7 @@ sync when either side changes.
 | Sync all repos | `scripts/sync/sync-ecosystem.sh` | `scripts/sync/sync-ecosystem.ps1` |
 | Reconcile ecosystem + equality | `scripts/readiness/reconcile-ecosystem.sh` | `scripts/windows/reconcile-ecosystem.ps1` (wraps the .sh via real Git Bash) |
 | Equality collect + matrix | `scripts/readiness/equality-matrix-cron.sh` | `scripts/windows/equality-report.ps1` → `scripts/readiness/collect-equality.ps1` (CIM overlay) → `collect-equality.sh` |
+| Equivalence sentinel | `scripts/monitoring/equivalence-sentinel.sh` | `scripts/windows/equivalence-sentinel.ps1` (wraps the .sh via real Git Bash) |
 
 Run pattern (note the `--` before bash-style flags so PowerShell passes them through):
 
@@ -33,20 +34,37 @@ exact, checksummed target-consent reset/restore; privacy and machine policy are 
 written. See `docs/runbooks/windows-rdp-microphone.md`.
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02 -OutputFormat Human
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost <remote-session-host> -OutputFormat Human
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Server -OutputFormat Human
 ```
 
 Install the Windows machine-equivalence schedules from Git Bash:
 
 ```bash
-# Preview, then install the three equivalence-only tasks.
+# Preview using a test-only identity seam, then install using physical host identity.
 bash scripts/windows/schedule-equivalence-tasks.sh --machine ace-win-1 --what-if
-bash scripts/windows/schedule-equivalence-tasks.sh --machine ace-win-1
+bash scripts/windows/schedule-equivalence-tasks.sh
 ```
 
-The installer is idempotent and registers daily report-only reconciliation, six-hour
-session curation, and the weekly equality report from the canonical schedule configuration.
+The installer is idempotent and registers four jobs from the canonical schedule
+configuration: daily report-only reconciliation at 05:15, the equivalence sentinel every
+six hours at minute 17, session curation every six hours at minute 47, and the weekly
+equality report. `--machine` is intentionally accepted only with `--what-if`; live installs
+derive the physical hostname and never trust `RECONCILE_MACHINE` for scheduler mutation.
+
+Verify or remove the materialized tasks from PowerShell:
+
+```powershell
+Get-ScheduledTask -TaskPath '\Claude\' | Where-Object TaskName -in @(
+  'EcosystemReconcile', 'EquivalenceSentinel', 'SessionCuration', 'EqualityReport'
+)
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\setup-scheduler-tasks.ps1 `
+  -WorkspaceRoot (Get-Location).Path -EquivalenceOnly -Remove
+```
+
+Use `-WhatIf` on the removal command to preview it without querying or changing Task
+Scheduler. Actual installation and one-shot sentinel validation must run from a clean,
+current canonical checkout after merge.
 
 ## Host gotchas (ace-win-2, observed 2026-06)
 

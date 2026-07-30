@@ -39,4 +39,9 @@
 ## Candidates (from 2026-07-13 — Hermes patterns)
 > Auto-emitted by extract_hermes_patterns.py — status: candidate. Promotion to a skill/memory
 > is a HUMAN owner-review action (gate per #3252). Do not edit manually.
-- key: baez-telegram-deckhand-stays-within-transportation-engineering-economics-unless-explicitly-asked-for-multi-domain-work-confirm-before-other-domains  status: candidate  kind: memory  source: MEMORY.md  summary: "baez Telegram: Deckhand stays within transportation/engineering/economics unless explicitly asked for multi-domain work; confirm before other domains."
+- key: client-g-telegram-deckhand-stays-within-transportation-engineering-economics-unless-explicitly-asked-for-multi-domain-work-confirm-before-other-domains  status: candidate  kind: memory  source: MEMORY.md  summary: "client-g Telegram: Deckhand stays within transportation/engineering/economics unless explicitly asked for multi-domain work; confirm before other domains."
+
+## Candidates (from 2026-07-23 — Hermes patterns)
+> Auto-emitted by extract_hermes_patterns.py — status: candidate. Promotion to a skill/memory
+> is a HUMAN owner-review action (gate per #3252). Do not edit manually.
+- key: client-g-telegram-deckhand-stays-within-transportation-engineering-economics-unless-explicitly-asked-for-multi-domain-work-confirm-before-other-domains  status: candidate  kind: memory  source: MEMORY.md  summary: "client-g Telegram: Deckhand stays within transportation/engineering/economics unless explicitly asked for multi-domain work; confirm before other domains."

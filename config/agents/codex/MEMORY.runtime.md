@@ -8,32 +8,33 @@
 - [dm capabilities page expansion](project_dm_capabilities_page_expansion.md) — 2026-07-07 ✅ #1456/#1444 DONE (PR #1460 merged; 10 one-pagers + bijection/pdf/grounding CI ratchet). Backlog: revamp lane owns index.html card-wiring
 - [Richard D'Souza outreach + llm-wiki deepwater](project_richard_dsouza_outreach.md) — 2026-07-04: email STAGED in Drafts (not sent); llm-wiki PR not opened; HOLDING for field-dev
 - [Ecosystem review 2026-07-04 (Fable 5)](project_ecosystem_review_2026_07_04.md) — 12 issues lane-labeled/6 repos; NEXT: CI-recovery slice (wed #526 + wshub #3380)
-- [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-07: #755 (PR #876: canonical fields.yml v2 + loader + 23 tests) + #756 (PR #882) + #848/#849/#850 DONE/LIVE; V30/V50 audit → wed#879. #757 plan-APPROVED → lane:codex (handoff `/tmp/handoff-757-codex.md`). Remaining #759/#761
-- [Digital-twin destination (NeoSight)](project_digital_twin_destination_neosight.md) — 2026-07-06 ✅ **EPIC dm #1372 COMPLETE 7/7, CLOSED** (twin E PR #1450 MERGED; GO deliberately unreachable under zero-thrust-credit screen — documented; units contract #1447 made its first live catch on this PR)
 - [Motion-forecast offering (dm #1356)](project_motion_forecast_offering_epic.md) — 2026-07-04: **CORE COMPLETE**; #1357 → **PR #1402 OPEN**. NEXT: merge #1402
-- [Field-dev life-cycle poster](project_field_development_lifecycle_megaproject_poster.md) — 2026-07-03: **Epic wed #738 OPEN**. NEXT: owner review → 9 LT fields → LNG variant
-- [digitalmodel "moored" logo](project_digitalmodel_logo_moored_mark.md) — 2026-07-04 ✅ COMPLETE: dm #1352 merged; propagation #144 CLOSED
 - [llm-wiki DP-criteria + min-curvature](project_llm_wiki_dp_criteria_min_curvature_ingest.md) — 2026-07-02 DONE, PR #819 MERGED
-- [International field-dev epic (wed #713)](project_wed_international_field_dev_epic.md) — 2026-07-04: #714 MERGED; **#715 plan-APPROVED** (delegable). NEXT: #715 → Norway #716
-- [Under-pressured gas-field screen (wed #708)](project_underpressured_gas_field_screen.md) — 2026-07-03: #728+#729 MERGED; 10,103 severe wells, Greenwood extreme (22%). #709 TX blocked on RRC download
-- [ace share cleanup+dedup](project_ace_share_cleanup_dedup.md) — 2026-07-04: ~1.72 TB deleted; Immich LIVE (:2283). Epic #3370. OPEN: archive import, Tailscale, backups
-- [LinkedIn profile from teamresumes SSOT](project_linkedin_profile_ssot_application.md) — 2026-07-02 DONE + #17 CLOSED. Left: re-point Featured item 2 when Pages incident clears
-- [Subsea7 FDG deck + slogan](project_subsea7_fdg_deck.md) — 2026-07-03 MEETING SET (Mansfield); pre-read SENT. Awaiting owner's 3 decisions: scope/IP/pricing
-- [Reed Goodman / Collide lead](project_reed_goodman_collide_lead.md) — 2026-07-03 PARKED: onepager + reply ready. NEXT: email Reed
-- [dde NFS + drive-file-search epic](project_drive_mounts_and_file_search_epic.md) — 2026-07-03 EPIC #3333 WRAPPED; /mnt/dde 1.35M-file index proof PASSED
-- [Equality-matrix reconcile 2026-07](project_equality_matrix_reconcile_2026_07.md) — 2026-07-02 DONE: publish-equality.sh LIVE; PR #3353 MERGED. Left: Windows fleet prompt, #3347 bugs
-- [Devakrishna school: STAAR + enrollment](project_devakrishna_school_staar_enrollment.md) — 2026-07-01: STAAR Level III both. Enrollment: Digital Academy of TX; complete transfer app
-- [Household utility bills](project_household_utility_bills.md) — 2026-06-30: DON'T switch electricity mid-contract; shop ~Jan 2027. PENDING: water/gas/internet downloads
-- [Floating-wind TOTEX/LCOE (dm #1220)](project_fow_totex_lcoe_economics_epic.md) — 2026-07-02 ✅ COMPLETE: 9 levers merged; 135 tests on main
-- [Voice dictation rollout](project_voice_dictation_ecosystem.md) — 2026-06-30: branch COMMITTED not pushed; ace-linux-1 only. VNC track PARKED
-- [Tug brochure + 3-repo epics](project_tug_analysis_brochure_epics.md) — 2026-06-30: dm PR #1209 OPEN; llm-wiki #795 + strategy #116 not started; brochure needs user logo
-- [Data-source catalog + domain-DB flywheel](project_data_source_catalog_flywheel.md) — 2026-07-03: #1281 COMPLETE. Epic #1279: D #1282 @ plan-review. NEXT: approve #1282
-- [wed capabilities Pages page](project_wed_capabilities_page.md) — 2026-06-29 LIVE. Static-page recipe in topic file (`scripts/build_pages.py`, NOT mkdocs)
-- [dm #1142 repo-health](project_dm_1142_repo_health.md) — 2026-06-29: FIX 1 merged (580s→0.026s); FIX 2 PR #1159 open; remaining: 4.7GB .git + 47MB outputs/
-- [Seamless ecosystem dev epic (#3290)](project_seamless_ecosystem_development_epic.md) — 2026-06-27: #3291-#3296 plan-approved (delegable)
-- [EPIC dm #1080 tubular/structural](project_dm_1080_tubular_structural_epic.md) — 2026-06-28: PRs #1098/#1099 merged; #1094 → lane:codex needs-plan
-- [FFS decision-layer epic (dm #1057)](project_ffs_decision_layer_epic.md) — COMPLETE 10/10 (2026-06-27), ~145 tests; spawned #1080
-- [Howard Day GT-R CFD (NDA)](project_howard_day_cfd_landspeed_study.md) — 2026-06-27: drag&lift analytically FIRST; authorize L1 only; HD waiting since May 11
-- [Contact directory collation](project_contact_directory_collation.md) — 2026-06-28: master_contacts.csv (2,690 deduped). UNCOMMITTED
-- [ACMA Noble warm-window notes](project_acma_noble_warm_window_call_2026_06_26.md) — 2026-06-26: Noble #38 time-sensitive; 4 files UNCOMMITTED
-_[118 entries omitted: oversize/over-cap]_
+- [Equality wedge ≠ drift recovery](feedback_equality_wedge_vs_drift_recovery.md) — local main BOTH ahead (unpushed auto-sync) AND behind origin → non-FF push loop can't self-heal → matrix STALE. Fix (destructive, get OK): prove regenerable → backup tag → `reset --hard origin/main` → re-green cron
+- [Vamsee's technical-outreach email style](feedback_vamsee_technical_outreach_email_style.md) — prospect follow-ups: reply into EXISTING thread (search `to:<email> in:sent`); personalized humble greeting; every capability gets a LIVE link; warm offers + one ask. [[feedback_vamsee_email_style_skestates]]
+- [Strict-up-to-date ruleset blocks green-PR merge](feedback_strict_uptodate_ruleset_no_admin_bypass.md) — `--admin` does NOT bypass repo *rulesets* (separate bypass list); on a churning main use a background merge-when-CLEAN loop, or owner adds admin to ruleset bypass / flips `strict_required_status_checks_policy` off
+- [Required check must never skip](feedback_required_check_must_not_skip.md) — a required status check with a job-level `if:` deadlocks PRs at BLOCKED forever (skipped ≠ success); signature = BLOCKED + one check `skipping`; fix = job always runs (advisory logic in a non-failing step)
+- [Verify against the real CI lint toolchain pre-push](feedback_verify_against_real_ci_lint_toolchain.md) — run the repo's EXACT black/isort/flake8 (same version/config, verify the binary exists); ruff ≠ black; an absent binary "passes" silently → false-negative red PR
+- [Batch-merge PRs: no rebase, trust CLEAN](feedback_dependabot_merge_no_rebase_trust_clean.md) — under non-strict rulesets don't `update-branch` (cancels queued CI → livelock); merge only on `mergeStateStatus==CLEAN` (not hand-counted `gh pr checks` — missing≠pending); always verify MERGED on remote
+- [Unique live links → traffic + credibility](feedback_unique_live_links_traffic_credibility.md) — every capability/skill links to its OWN purpose-built, indexable live page (specific title), never a shared "dashboards" section; N distinct pages = N front doors
+- [Always update the equality matrix](feedback_always_update_equality_matrix.md) — end equality/fleet-touching work with `publish-equality.sh --repo /mnt/local-analysis/workspace-hub --rebuild`; agent CAN run this
+- [One task at a time](feedback_one_task_at_a_time.md) — end turns with summary + exactly ONE next task, never an option menu
+- [Keep data at fingertips](feedback_keep_data_at_fingertips.md) — in cleanup/dedup, delete only regenerable cruft; keep + back up data even if re-fetchable (re-fetchable ≠ disposable)
+- [Document discovered data sources as GH data issues](feedback_document_discovered_data_sources_as_issues.md) — research side-finds (new source URLs/artifacts) get filed immediately as `cat:data` issues (one per source family, verified URL + consumer); pilot wed #855
+- [Avoid "A&CE" branding](feedback_avoid_ace_branding.md) — describe the work or use "AceEngineer"; Deckhand unaffected
+- [Agent can verify but NOT self-merge its own PR](feedback_agent_can_verify_but_not_self_merge_pr.md) — hand human `gh pr merge <N> --squash --delete-branch --repo owner/name`
+- [Verify generated/state files against origin/main](feedback_verify_generated_state_against_origin_not_working_copy.md) — `git rev-parse --abbrev-ref HEAD` + `git show origin/main:<path>` before "stale" claims
+- Windows (MINGW64): paths use `/d/workspace-hub/` in bash (not `D:\`)
+- All development must be compatible with Linux, Windows, and macOS
+- Windows `core.symlinks=false` — git treats junctions as dirs, not symlinks
+- Never commit symlinks to git cross-platform — use runtime linking + `.gitignore`
+- **OrcFxAPI**: See `orcawave-lessons.md` for detailed API usage
+- **AQWA**: See `aqwa-lessons.md` for DAT format and LIS parsing
+- **BEMRosetta**: CLI does mesh conversion only (`-mesh` mode)
+- **Pre-flight first**: Validate inputs BEFORE running solvers (units, formats, conventions)
+- **Unit traps**: OrcaWave=Hz descending, AQWA=rad/s; rotational RAOs rad/m vs deg/m
+- **Negative correlations**: Almost always means frequency arrays in different order
+- **NaN correlations**: Zero std dev (e.g., yaw at head seas) — handle gracefully
+- **AQWA FATAL mesh errors**: Cannot be overridden with `OPTIONS GOON`; fix the mesh
+- **LIS parser**: Normalize whitespace before keyword matching ("ADDED  MASS" has double space)
+_[97 entries omitted: oversize/over-cap]_

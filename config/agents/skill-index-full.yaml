@@ -2948,8 +2948,8 @@ skills:
   family: github
   id: github/github-repo-management
   name: github-repo-management
-  when_to_use: github-repo-management Clone, create, fork, configure, and manage GitHub repositories. Manage remotes, secrets, releases, and workflows. Works with gh CLI or falls back to git + GitHub REST API via curl. github
-  when_to_use_source: backfill
+  when_to_use: Use when creating, cloning, forking, renaming, archiving, or deleting a GitHub repository; managing remotes, default branches, topics, or visibility; configuring repo secrets and variables; cutting releases; or triggering/inspecting workflows — especially when `gh` may be absent and a `git` + REST API fallback is needed. For authentication setup use `github-auth`; for PR flow use `github-pr-workflow`; for issue operations use `github-issues`.
+  when_to_use_source: section
 - description: Reuse and reopen existing roadmap/epic GitHub issues instead of fragmenting work across duplicate replacement epics; retarget children and link active issues for continuity.
   family: github
   id: github/github-roadmap-anchor-reuse

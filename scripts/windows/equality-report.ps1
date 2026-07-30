@@ -372,6 +372,18 @@ try {
     $collector = Join-Path $WorkspaceRoot "scripts\readiness\collect-equality.ps1"
     $builder = Join-Path $WorkspaceRoot "scripts\readiness\build-equality-matrix.py"
 
+    # #3702 Phase 1 --- PIN the generation seam to the in-tree paths so Windows behaviour
+    # is byte-for-byte unchanged. The bash collector and the Python builder both default
+    # OUT of the tracked tree now; this wrapper's whole model (Confirm-MatrixReportClean,
+    # Clear-GeneratedMatrixReport, Sync-EqualityState committing
+    # `.claude/state/equality-<machine>.yaml` and `Get-MatrixReportPaths` from the working
+    # checkout) depends on them landing in-tree. Unpinned, both Windows boxes would commit
+    # nothing and go dark on the matrix while every scheduled task reported success
+    # (Codex r2 MAJOR 1/2). Phase 2 (#3554-gated) cuts Windows over to publish-equality.sh
+    # and removes these two lines.
+    $env:EQ_STATE_DIR = (Join-Path $WorkspaceRoot ".claude\state")
+    $env:EQ_REPORT_DIR = (Join-Path $WorkspaceRoot "docs\reports")
+
     Invoke-Checked -File "powershell" -Arguments @(
         "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $collector, "-Machine", $machine) `
         -FailureMessage "collect-equality.ps1 failed"

@@ -7,6 +7,18 @@
 # Usage:
 #   legal-sanity-scan.sh [--repo=<name>] [--all] [--diff-only] [--json]
 #
+# Environment:
+#   LEGAL_SCAN_REPO_ROOTS    Semicolon- or newline-separated list of root
+#                            directories to resolve repo names against.
+#                            (Semicolons, not colons — ':' collides with
+#                            Windows drive letters under git-bash.)
+#                            When set it WINS: names resolve ONLY against the
+#                            listed roots; no fallback to the defaults.
+#   LEGAL_SCAN_RESOLVE_ONLY  When "1", print the resolved repo path(s) and
+#                            exit 0 before any scanning happens. Minimal
+#                            dry-run hook used by tests/legal/ to assert the
+#                            resolution contract without needing deny-lists.
+#
 # Exit codes:
 #   0  All clear (no block-severity violations)
 #   1  Block-severity violations found
@@ -251,6 +263,82 @@ parse_exclusions() {
       next;
     }
   ' "$file"
+}
+
+# --------------------------------------------------------------------------
+# split_repo_roots: print LEGAL_SCAN_REPO_ROOTS one root per line.
+# Separators: semicolons or newlines (':' would collide with Windows drive
+# letters under git-bash).
+# --------------------------------------------------------------------------
+split_repo_roots() {
+  printf '%s\n' "${LEGAL_SCAN_REPO_ROOTS:-}" | tr ';' '\n'
+}
+
+# --------------------------------------------------------------------------
+# resolve_repo_path: resolve a repository name to a directory.
+# Shared by --repo and --all.
+#
+# Order:
+#   1. LEGAL_SCAN_REPO_ROOTS wins when set: resolve against each listed root
+#      in order; if none match, FAIL (no fallthrough to defaults — the env
+#      being set means the caller took explicit control).
+#   2. Defaults, in order:
+#        nested   $WORKSPACE_ROOT/<name>          (preserves original behavior)
+#        sibling  $(dirname "$WORKSPACE_ROOT")/<name>
+#        walk-up  <ancestor>/<name> from WORKSPACE_ROOT, max 8 levels
+#
+# On success: sets RESOLVED_REPO_PATH, returns 0.
+# On failure: returns 1 with RESOLVE_CANDIDATES holding every path tried.
+# --------------------------------------------------------------------------
+resolve_repo_path() {
+  local name="$1"
+  RESOLVED_REPO_PATH=""
+  RESOLVE_CANDIDATES=()
+
+  if [[ -n "${LEGAL_SCAN_REPO_ROOTS:-}" ]]; then
+    local root
+    while IFS= read -r root; do
+      [[ -z "$root" ]] && continue
+      RESOLVE_CANDIDATES+=("$root/$name")
+      if [[ -d "$root/$name" ]]; then
+        RESOLVED_REPO_PATH="$root/$name"
+        return 0
+      fi
+    done < <(split_repo_roots)
+    return 1
+  fi
+
+  # Default 1: nested under the workspace root (original behavior)
+  RESOLVE_CANDIDATES+=("$WORKSPACE_ROOT/$name")
+  if [[ -d "$WORKSPACE_ROOT/$name" ]]; then
+    RESOLVED_REPO_PATH="$WORKSPACE_ROOT/$name"
+    return 0
+  fi
+
+  # Default 2: sibling of the workspace root
+  local parent
+  parent="$(dirname "$WORKSPACE_ROOT")"
+  RESOLVE_CANDIDATES+=("$parent/$name")
+  if [[ -d "$parent/$name" ]]; then
+    RESOLVED_REPO_PATH="$parent/$name"
+    return 0
+  fi
+
+  # Default 3: bounded walk-up from the workspace root (max 8 levels)
+  local ancestor="$parent"
+  local depth=0
+  while [[ $depth -lt 8 ]]; do
+    [[ "$ancestor" == "$(dirname "$ancestor")" ]] && break
+    ancestor="$(dirname "$ancestor")"
+    RESOLVE_CANDIDATES+=("$ancestor/$name")
+    if [[ -d "$ancestor/$name" ]]; then
+      RESOLVED_REPO_PATH="$ancestor/$name"
+      return 0
+    fi
+    depth=$((depth + 1))
+  done
+
+  return 1
 }
 
 # --------------------------------------------------------------------------

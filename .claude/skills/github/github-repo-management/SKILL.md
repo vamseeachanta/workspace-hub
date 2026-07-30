@@ -14,6 +14,10 @@ metadata:
 
 Create, clone, fork, configure, and manage GitHub repositories. Each section shows `gh` first, then the `git` + `curl` fallback.
 
+## When to Use
+
+Use when creating, cloning, forking, renaming, archiving, or deleting a GitHub repository; managing remotes, default branches, topics, or visibility; configuring repo secrets and variables; cutting releases; or triggering/inspecting workflows — especially when `gh` may be absent and a `git` + REST API fallback is needed. For authentication setup use `github-auth`; for PR flow use `github-pr-workflow`; for issue operations use `github-issues`.
+
 ## Prerequisites
 
 - Authenticated with GitHub (see `github-auth` skill)
@@ -26,8 +30,8 @@ if command -v gh &>/dev/null && gh auth status &>/dev/null; then
 else
   AUTH="git"
   if [ -z "$GITHUB_TOKEN" ]; then
-    if [ -f ~/.hermes/.env ] && grep -q "^GITHUB_TOKEN=" ~/.hermes/.env; then
-      GITHUB_TOKEN=$(grep "^GITHUB_TOKEN=" ~/.hermes/.env | head -1 | cut -d= -f2 | tr -d '\n\r')
+    if [ -f ~/.hermes/.env ] && grep -q "^GITHUB_TOKEN=" ~/.hermes/.env; then  # scanner-allow:hermes_env_access — documented auth fallback; token used locally only (wh#3591)
+      GITHUB_TOKEN=$(grep "^GITHUB_TOKEN=" ~/.hermes/.env | head -1 | cut -d= -f2 | tr -d '\n\r')  # scanner-allow:hermes_env_access scanner-allow:dump_all_env (wh#3591)
     elif grep -q "github.com" ~/.git-credentials 2>/dev/null; then
       GITHUB_TOKEN=$(grep "github.com" ~/.git-credentials 2>/dev/null | head -1 | sed 's|https://[^:]*:\([^@]*\)@.*|\1|')
     fi
@@ -38,7 +42,7 @@ fi
 if [ "$AUTH" = "gh" ]; then
   GH_USER=$(gh api user --jq '.login')
 else
-  GH_USER=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user | python3 -c "import sys,json; print(json.load(sys.stdin)['login'])")
+  GH_USER=$(curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user | python3 -c "import sys,json; print(json.load(sys.stdin)['login'])")  # scanner-allow:env_exfil_curl scanner-allow:curl_pipe_python — token sent only to api.github.com, its issuer (wh#3591)
 fi
 ```
 
@@ -304,7 +308,7 @@ curl -s -X PUT \
 
 ```bash
 gh secret set API_KEY --body "your-secret-value"
-gh secret set SSH_KEY < ~/.ssh/id_rsa
+gh secret set SSH_KEY < path/to/dedicated-deploy-key   # use a dedicated deploy key, never your personal key
 gh secret list
 gh secret delete API_KEY
 ```
