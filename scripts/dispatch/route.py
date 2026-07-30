@@ -461,7 +461,8 @@ def print_summary(proposals: list[dict]):
     print(f"  *active = concurrent slots allowed now per WIP caps; "
           f"the rest sit dispatch:ready in queue.")
     print("\n\033[2mDRY-RUN — no labels written. `--detail` for per-card, "
-          "`--apply` for Phase B (disabled).\033[0m")
+          f"`--apply` to preview writes; `--apply --yes` with {APPLY_FLAG}=1 to "
+          "actually write.\033[0m")
 
 
 # ---------------------------------------------------------------------------
@@ -557,8 +558,52 @@ def labels_for(p: dict, existing: set[str], skip_domain: bool = False) -> list[s
     return [l for l in out if l not in existing]
 
 
+# ---------------------------------------------------------------------------
+# Write gate (deckhand#584 slice 2).
+#
+# route.py used to PRINT "`--apply` for Phase B (disabled)" while --apply/--yes
+# were real flags reaching a live `gh issue edit --add-label`. The "disabled"
+# lived only in a help string. That is dangerous here specifically because the
+# capability map is known-wrong (routing-rules claims a solver capability for a
+# host that cannot obtain the licence, #579), so an accidental mass-apply would
+# dispatch work into guaranteed failure across hundreds of issues.
+#
+# The gate is an ENVIRONMENT flag, deliberately not a config value: config is
+# committed and diffable, so a flag flipped in a PR could be merged without
+# anyone registering that it armed a mass-write path. An env var has to be set
+# by the person running the command, at the moment they run it.
+# ---------------------------------------------------------------------------
+
+APPLY_FLAG = "DISPATCH_APPLY_ENABLED"
+#: Only these open the gate. Anything else — including "0", "false", "off" and
+#: the empty string — fails closed. A naive truthiness check would treat "0" and
+#: "false" as permission, which is worse than no gate because it reads protected.
+_AFFIRMATIVE = {"1", "true", "yes", "on"}
+
+
+def assert_write_allowed() -> None:
+    """Exit unless the operator explicitly armed writes for this invocation."""
+    value = (os.environ.get(APPLY_FLAG) or "").strip().lower()
+    if value not in _AFFIRMATIVE:
+        sys.exit(
+            f"REFUSED: label writes are gated. Set {APPLY_FLAG}=1 to arm this "
+            f"invocation.\n"
+            f"  Before arming, confirm the capability map is correct — "
+            f"routing-rules.yaml currently claims a solver capability for a host "
+            f"that cannot obtain the licence (deckhand#579), and a mass-apply "
+            f"would route work into guaranteed failure.\n"
+            f"  Run `--coverage` first to see what is actually assigned."
+        )
+
+
 def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace: float):
     import time
+
+    # Gate BEFORE any fetch, label-ensure, or write. Dry-run (--apply without
+    # --yes) is a preview and stays ungated: gating it too would push people to
+    # set the flag habitually, which defeats the gate.
+    if do_write:
+        assert_write_allowed()
     proposals = [p for p in proposals if p["repo"] == repo]
     if not proposals:
         sys.exit(f"no open cards for {repo}")
@@ -676,7 +721,8 @@ def main():
                          "never writes. Buckets: missing/ambiguous/terminal/skipped/routable")
     ap.add_argument("--detail", action="store_true", help="per-card listing")
     ap.add_argument("--apply", action="store_true", help="write GH labels (Phase B)")
-    ap.add_argument("--yes", action="store_true", help="actually write (else apply dry-run)")
+    ap.add_argument("--yes", action="store_true",
+                    help=f"actually write (else apply dry-run); requires {APPLY_FLAG}=1")
     ap.add_argument("--batch", type=int, default=50, help="pace every N writes")
     ap.add_argument("--pace", type=float, default=2.0, help="seconds to sleep per batch")
     ap.add_argument("--codex-remaining", type=float, default=None,
