@@ -18,6 +18,7 @@ hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py 
 from __future__ import annotations
 
 import json
+import math
 import re
 import sys
 from collections import Counter
@@ -361,24 +362,36 @@ def harness_checkup_verdict(report: dict) -> str:
     hc = report.get("dimensions", {}).get("harness_checkup")
     if not isinstance(hc, dict) or not isinstance(hc.get("audited_at"), str):
         return "MISSING-EVIDENCE"
-    sok = hc.get("settings_parse_ok")
-    install = hc.get("install_method")
-    if sok is None or not isinstance(install, str) or not install:
-        return "MISSING-EVIDENCE"            # could not audit ⇒ never silently green
-    dup = hc.get("duplicate_installs")
-    bad = hc.get("broken_agents")
-    if (sok is False
-            or (isinstance(dup, int) and not isinstance(dup, bool) and dup > 0)
-            or (isinstance(bad, int) and not isinstance(bad, bool) and bad > 0)):
-        return "CHECKUP-BROKEN"
-    us = hc.get("unused_skills")
-    up = hc.get("unused_plugins")
-    if (hc.get("version_current") is False
-            or hc.get("auto_mode_default") is False
-            or (isinstance(us, int) and not isinstance(us, bool) and us > CHECKUP_CLUTTER_SKILLS)
-            or (isinstance(up, int) and not isinstance(up, bool) and up > 0)):
-        return "CHECKUP-DRIFTED"
-    return "CHECKUP-OK"
+    stamp = ph.get("last_publish_at")
+    if (not isinstance(stamp, str) or
+            not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})", stamp)):
+        return "MISSING-EVIDENCE"
+    try:
+        ts = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
+    except ValueError:
+        return "MISSING-EVIDENCE"     # includes the collector's "missing" sentinel
+    now = now or datetime.now(timezone.utc)
+    if ts.tzinfo is None or ts.utcoffset() is None:
+        return "MISSING-EVIDENCE"
+    if now.tzinfo is None:
+        now = now.replace(tzinfo=timezone.utc)
+    age_h = (now - ts).total_seconds() / 3600.0
+    if age_h < 0:                     # future stamp ⇒ untrustworthy
+        return "MISSING-EVIDENCE"
+    rc = ph.get("last_publish_rc")
+    dur = ph.get("last_publish_duration_s")
+    if isinstance(rc, bool) or not isinstance(rc, int) or not 0 <= rc <= 4:
+        return "MISSING-EVIDENCE"
+    if (isinstance(dur, bool) or not isinstance(dur, (int, float))
+            or not math.isfinite(dur) or dur < 0):
+        return "MISSING-EVIDENCE"
+    failed = rc != 0
+    gated = dur > PUBLISH_SLOW_S
+    if failed or gated:
+        return "PUBLISH-GATED"
+    if age_h > PUBLISH_STALE_H:
+        return "PUBLISH-STALE"
+    return "PUBLISH-OK"
 
 
 # ── value extraction for uniform dims ────────────────────────────────────────

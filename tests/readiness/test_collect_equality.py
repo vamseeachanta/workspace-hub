@@ -9,9 +9,11 @@ depending on the host's real hardware.
 from __future__ import annotations
 
 import os
+import json
 import re
 import shlex
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -54,6 +56,72 @@ def _run(ws: Path, *args: str) -> dict:
         capture_output=True, text=True, timeout=60)
     assert res.returncode == 0, res.stderr
     return yaml.safe_load(res.stdout)
+
+
+def _uv_stub(tmp_path: Path) -> Path:
+    bin_dir = tmp_path / "uv-bin"
+    bin_dir.mkdir()
+    uv = bin_dir / "uv"
+    python = shlex.quote(_bash_path(Path(sys.executable)))
+    uv.write_text(
+        "#!/usr/bin/env bash\n"
+        "[[ \"$1 $2 $3\" == 'run --no-project python' ]] || exit 2\n"
+        f"shift 3\nexec {python} \"$@\"\n"
+    )
+    uv.chmod(0o755)
+    return bin_dir
+
+
+def test_collect_publish_health_uses_working_resolver_and_exact_schema(tmp_path):
+    ws = _fixture(tmp_path)
+    health_dir = ws / ".claude" / "state" / "equivalence"
+    health_dir.mkdir()
+    (health_dir / "publish-health.json").write_text(json.dumps({
+        "schema_version": 1,
+        "ts": "2026-07-14T10:00:00+00:00",
+        "phase": "publish",
+        "duration_s": 2.5,
+        "rc": 0,
+    }))
+    bin_dir = _uv_stub(tmp_path)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        env={"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{bin_dir}:{BASH_PATH}"},
+        capture_output=True, text=True, timeout=60,
+    )
+    assert res.returncode == 0, res.stderr
+    health = yaml.safe_load(res.stdout)["dimensions"]["publish_health"]
+    assert health == {
+        "last_publish_at": "2026-07-14T10:00:00+00:00",
+        "last_publish_duration_s": 2.5,
+        "last_publish_rc": 0,
+    }
+
+
+def test_collect_invalid_publish_health_emits_no_partial_tuple(tmp_path):
+    ws = _fixture(tmp_path)
+    health_dir = ws / ".claude" / "state" / "equivalence"
+    health_dir.mkdir()
+    (health_dir / "publish-health.json").write_text(json.dumps({
+        "schema_version": 1,
+        "ts": "2026-07-14T10:00:00+00:00",
+        "phase": "publish",
+        "duration_s": True,
+        "rc": 0,
+    }))
+    bin_dir = _uv_stub(tmp_path)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        env={"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{bin_dir}:{BASH_PATH}"},
+        capture_output=True, text=True, timeout=60,
+    )
+    assert res.returncode == 0, res.stderr
+    health = yaml.safe_load(res.stdout)["dimensions"]["publish_health"]
+    assert health == {
+        "last_publish_at": "missing",
+        "last_publish_duration_s": None,
+        "last_publish_rc": None,
+    }
 
 
 def test_collect_emits_valid_yaml(tmp_path):
