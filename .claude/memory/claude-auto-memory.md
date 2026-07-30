@@ -4,7 +4,7 @@
 > Last captured: 2026-07-29
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
-# Workspace Hub Memory
+# Memory Index
 
 > Curated live index; full detail lives in each topic file. COMPLETE record is in
 > `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below.
