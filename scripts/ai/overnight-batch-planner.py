@@ -14,7 +14,7 @@ Usage:
 Label conventions:
   agent:claude   — route to Claude
   agent:codex    — route to Codex CLI
-  agent:gemini   — route to Gemini (via Copilot pool)
+  agent:agy      — route to agy (Antigravity, Gemini-backed; agent:gemini is a deprecated alias)
   agent:hermes   — route to Hermes
   overnight      — mark issue for overnight execution
   overnight-batch — same as overnight
@@ -55,7 +55,8 @@ NUM_TERMINALS = 3
 LABEL_AGENT_MAP: dict[str, str] = {
     "agent:claude":  "claude",
     "agent:codex":   "codex",
-    "agent:gemini":  "gemini",
+    "agent:agy":     "agy",
+    "agent:gemini":  "agy",   # DEPRECATED alias — dual-read during #3573 migration window
     "agent:hermes":  "hermes",
 }
 
@@ -84,14 +85,14 @@ def _registry_model(key: str, fallback: str) -> str:
 AGENT_MODEL_MAP: dict[str, dict[str, str]] = {
     "claude":  {"model": _registry_model("claude_primary", "claude-opus-4-8[1m]"), "provider": "anthropic"},  # model-id-ok (registry fallback)
     "codex":   {"model": _registry_model("codex_primary", "codex-cli"),       "provider": "openai-codex"},
-    "gemini":  {"model": _registry_model("gemini_primary", "gemini-2.5-pro"), "provider": "copilot"},
+    "agy":     {"model": _registry_model("gemini_primary", "gemini-2.5-pro"), "provider": "copilot"},  # Gemini surface; copilot -> agy CLI (#3573)
     "hermes":  {"model": _registry_model("openai_primary", "gpt-5.5"),        "provider": "openai-codex"},
 }
 
 AGENT_COMMAND: dict[str, str] = {
     "claude":  "claude",
     "codex":   "codex",
-    "gemini":  "hermes --provider copilot --model gemini-2.5-pro",
+    "agy":     "agy",
     "hermes":  "hermes",
 }
 
@@ -378,6 +379,12 @@ def build_terminal_command(issue: dict) -> str:
     cmd_base = AGENT_COMMAND.get(agent, agent)
     prompt   = issue["prompt"].replace('"', '\\"').replace('\n', '\\n')
     num      = issue["number"]
+    if agent == "agy":
+        # agy headless contract (#3207): prompt is the VALUE of --print; no -e flag
+        return (
+            f'# Issue #{num}\n'
+            f'{cmd_base} --print "{prompt}" --print-timeout 240s'
+        )
     return (
         f'# Issue #{num}\n'
         f'{cmd_base} -e "{prompt}"'

@@ -19,6 +19,7 @@ cards:
       - feature
       - package
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -40,6 +41,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -56,6 +58,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -72,6 +75,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -112,6 +116,7 @@ cards:
     gh_labels:
       - project
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -131,6 +136,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -148,6 +154,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - cat:engineering
       - domain:cad
       - lane:codex
     initial_status: triage
@@ -161,7 +168,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - cat:engineering-models
+      - cat:engineering
       - domain:cad
       - lane:claude
       - host:ace-linux-1
@@ -176,7 +183,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - cat:engineering-models
+      - cat:engineering
       - domain:cad
       - lane:claude
       - host:ace-linux-1
@@ -191,7 +198,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - cat:engineering-models
+      - cat:engineering
       - domain:cad
       - lane:claude
       - host:ace-linux-1
@@ -206,7 +213,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - cat:engineering-models
+      - cat:engineering
       - domain:cad
       - lane:claude
       - host:ace-linux-1
@@ -221,7 +228,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - cat:engineering-models
+      - cat:engineering
       - domain:cad
       - lane:claude
       - host:ace-linux-1
@@ -236,7 +243,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - cat:engineering-models
+      - cat:engineering
       - domain:cad
       - lane:claude
       - host:ace-linux-1
@@ -251,10 +258,86 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - cat:document-intelligence
       - cat:tooling
+      - domain:cad
+      - domain:document-intelligence
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1011
+    title: '[Epic] File-format adapter review — read & convert all CAD/CAM + engineering files on the ace share'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1011
+    gh_state: open
+    gh_labels:
+      - cat:research
       - domain:cad
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1012
+    title: '[Adapters 1/5] CAD-geometry adapter matrix (STEP/IGES/Parasolid/DWG/DXF/SolidWorks/Inventor/STL)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1012
+    gh_state: open
+    gh_labels:
+      - cat:research
+      - domain:cad
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1015
+    title: '[Adapters 4/5] Evaluate license-free CAD readers on real share files'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1015
+    gh_state: open
+    gh_labels:
+      - cat:research
+      - domain:cad
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1016
+    title: '[Adapters 5/5] Recommend & scaffold the digitalmodel/cad/ adapter package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1016
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:cad
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1017
+    title: '[Adapters 6/6] CAD-AI spike: shape-similarity + feature recognition (UV-Net/AAGNet) for dedup/variant leverage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1017
+    gh_state: open
+    gh_labels:
+      - cat:research
+      - domain:cad
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1206
+    title: D12 — Establish the cad-simulation database (geometry + solver-deck + results catalog)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1206
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - domain:cad
+      - lane:claude
+      - lane:frontier-pending
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

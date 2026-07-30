@@ -1,44 +1,36 @@
 <!-- MANAGED by curate_readback_slice.py — do not hand-edit; regenerate via bridge-hermes-claude.sh -->
 
-- [Completion D&C reconcile vs WO Article](project_completion_dc_reconciliation_wo_article.md) — 2026-07-05: Roy QA/QC. **wed PR #841 OPEN** (Total-D&C col + /completion/verification.html). WED D&C 22,478 ≈ Roy 21,944 (page headlined drilling-only 11,124). OPEN: Buckskin missing (crosswalk gap), Shenandoah −357. NEXT: merge #841 → reply Roy
-- [RUNSPEC Monte Carlo UQ ingest](project_runspec_monte_carlo_uq_ingest.md) — 2026-07-05: 3 issues (llm-wiki #822, dm #1427, wed #833). NEXT: land #822 via claim+worktree+PR
-- [Tank sloshing → dm capability + Scott email](project_tank_sloshing_capability.md) — 2026-07-05: dm PRs #1424/#1425/#1428 MERGED (live sloshing-explorer + master curve); llm-wiki **PR #825 MERGED** (anti-roll-tank Kapsenberg&Carette 2022 ingest, open-access); Scott email STAGED (not sent)
-- [wed Well Pressure Atlas page](project_wed_pressure_atlas_page.md) — 2026-07-04: **wed PR #829 OPEN** (merge → pressure-atlas/ live); feeds Reed email
-- [dm capabilities page expansion](project_dm_capabilities_page_expansion.md) — 2026-07-04: EPIC #1391 built; wave 1 live, **wave 2 PR #1396 OPEN**
-- [Richard D'Souza outreach + llm-wiki deepwater](project_richard_dsouza_outreach.md) — 2026-07-04: email STAGED in Drafts (not sent); llm-wiki PR not opened; HOLDING for field-dev
-- [Ecosystem review 2026-07-04 (Fable 5)](project_ecosystem_review_2026_07_04.md) — 12 issues lane-labeled/6 repos; NEXT: CI-recovery slice (wed #526 + wshub #3380)
-- [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-04: **EPIC #754 + #755-761**; well tracer built. NEXT: #755 fields.yml crosswalk
-- [Digital-twin destination (NeoSight)](project_digital_twin_destination_neosight.md) — 2026-07-05: **EPIC dm #1372 6/7 MERGED**; twin E #1377 on `feat/twin-loop-1377` needs suites→PR. Resume `/tmp/handoff-twin-epic-1372.md`
-- [Motion-forecast offering (dm #1356)](project_motion_forecast_offering_epic.md) — 2026-07-04: **CORE COMPLETE**; #1357 → **PR #1402 OPEN**. NEXT: merge #1402
-- [Field-dev life-cycle poster](project_field_development_lifecycle_megaproject_poster.md) — 2026-07-03: **Epic wed #738 OPEN**. NEXT: owner review → 9 LT fields → LNG variant
-- [digitalmodel "moored" logo](project_digitalmodel_logo_moored_mark.md) — 2026-07-04 ✅ COMPLETE: dm #1352 merged; propagation #144 CLOSED
-- [llm-wiki DP-criteria + min-curvature](project_llm_wiki_dp_criteria_min_curvature_ingest.md) — 2026-07-02 DONE, PR #819 MERGED
-- [International field-dev epic (wed #713)](project_wed_international_field_dev_epic.md) — 2026-07-04: #714 MERGED; **#715 plan-APPROVED** (delegable). NEXT: #715 → Norway #716
-- [Under-pressured gas-field screen (wed #708)](project_underpressured_gas_field_screen.md) — 2026-07-03: #728+#729 MERGED; 10,103 severe wells, Greenwood extreme (22%). #709 TX blocked on RRC download
-- [ace share cleanup+dedup](project_ace_share_cleanup_dedup.md) — 2026-07-04: ~1.72 TB deleted; Immich LIVE (:2283). Epic #3370. OPEN: archive import, Tailscale, backups
-- [LinkedIn profile from teamresumes SSOT](project_linkedin_profile_ssot_application.md) — 2026-07-02 DONE + #17 CLOSED. Left: re-point Featured item 2 when Pages incident clears
-- [Subsea7 FDG deck + slogan](project_subsea7_fdg_deck.md) — 2026-07-03 MEETING SET (Mansfield); pre-read SENT. Awaiting owner's 3 decisions: scope/IP/pricing
-- [Reed Goodman / Collide lead](project_reed_goodman_collide_lead.md) — 2026-07-03 PARKED: onepager + reply ready. NEXT: email Reed
-- [dde NFS + drive-file-search epic](project_drive_mounts_and_file_search_epic.md) — 2026-07-03 EPIC #3333 WRAPPED; /mnt/dde 1.35M-file index proof PASSED
-- [Equality-matrix reconcile 2026-07](project_equality_matrix_reconcile_2026_07.md) — 2026-07-02 DONE: publish-equality.sh LIVE; PR #3353 MERGED. Left: Windows fleet prompt, #3347 bugs
-- [Devakrishna school: STAAR + enrollment](project_devakrishna_school_staar_enrollment.md) — 2026-07-01: STAAR Level III both. Enrollment: Digital Academy of TX; complete transfer app
-- [Household utility bills](project_household_utility_bills.md) — 2026-06-30: DON'T switch electricity mid-contract; shop ~Jan 2027. PENDING: water/gas/internet downloads
-- [Floating-wind TOTEX/LCOE (dm #1220)](project_fow_totex_lcoe_economics_epic.md) — 2026-07-02 ✅ COMPLETE: 9 levers merged; 135 tests on main
-- [Voice dictation rollout](project_voice_dictation_ecosystem.md) — 2026-06-30: branch COMMITTED not pushed; ace-linux-1 only. VNC track PARKED
-- [Tug brochure + 3-repo epics](project_tug_analysis_brochure_epics.md) — 2026-06-30: dm PR #1209 OPEN; llm-wiki #795 + strategy #116 not started; brochure needs user logo
-- [Data-source catalog + domain-DB flywheel](project_data_source_catalog_flywheel.md) — 2026-07-03: #1281 COMPLETE. Epic #1279: D #1282 @ plan-review. NEXT: approve #1282
-- [wed capabilities Pages page](project_wed_capabilities_page.md) — 2026-06-29 LIVE. Static-page recipe in topic file (`scripts/build_pages.py`, NOT mkdocs)
-- [dm #1142 repo-health](project_dm_1142_repo_health.md) — 2026-06-29: FIX 1 merged (580s→0.026s); FIX 2 PR #1159 open; remaining: 4.7GB .git + 47MB outputs/
-- [Seamless ecosystem dev epic (#3290)](project_seamless_ecosystem_development_epic.md) — 2026-06-27: #3291-#3296 plan-approved (delegable)
-- [EPIC dm #1080 tubular/structural](project_dm_1080_tubular_structural_epic.md) — 2026-06-28: PRs #1098/#1099 merged; #1094 → lane:codex needs-plan
-- [FFS decision-layer epic (dm #1057)](project_ffs_decision_layer_epic.md) — COMPLETE 10/10 (2026-06-27), ~145 tests; spawned #1080
-- [Howard Day GT-R CFD (NDA)](project_howard_day_cfd_landspeed_study.md) — 2026-06-27: drag&lift analytically FIRST; authorize L1 only; HD waiting since May 11
-- [Contact directory collation](project_contact_directory_collation.md) — 2026-06-28: master_contacts.csv (2,690 deduped). UNCOMMITTED
-- [ACMA Noble warm-window notes](project_acma_noble_warm_window_call_2026_06_26.md) — 2026-06-26: Noble #38 time-sensitive; 4 files UNCOMMITTED
-- [Subsea intervention DB epic (wed #582)](project_subsea_intervention_database_epic.md) — 2026-06-25: #585 @ plan-review; feeds dm #890
-- [Collide PE solver (dm #836)](project_collide_pe_solver_program.md) — 2026-06-19: 161 posts scraped; branch committed not pushed. NEXT: push+PR (user-gated)
-- [Chuck's UDW well access article](project_chuck_udw_well_access_article_backing.md) — 2026-06-19: thesis=ACCESS/CONCENTRATION. Epic #890 dormant. Memo UNCOMMITTED
-- [FDAS public tier + HSE finding](project_fdas_public_tier_dashboard_hse.md) — 2026-06-25: **HSE does NOT favor dry-tree — don't pitch HSE**. OPEN: dashboard + Roy email
-- [Lower Tertiary V50 gold standard](project_lt_v50_gold_standard.md) — 2026-06-27: V50 = V30 on latest OGOR-A; PRs #650/#651; +14% oil/+$432M NPV (still neg)
-- Windows (MINGW64): paths use `/d/workspace-hub/` in bash (not `D:\`)
-_[110 entries omitted: oversize/over-cap]_
+- [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" definitions, 0/56 wells agree (6.6× gap); reference basis = BSEE WAR `WELL_ACTIVITY_CD`. EPIC #1063 + #1064–#1081. NEXT: #1064 basis decision w/ Roy (HARD BLOCKER)
+- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). ✅✅✅ **#1634 ARMED 2026-07-29** (`Domain test aggregate` + `Run Quality Gates`, strict=false) — the 60.3%-red-merge root cause is closed. 8 PRs merged; deps 122→55; dashboard app deleted (−34.5k LOC), 9 modules extracted to `solvers/orcaflex/results_analysis/`. ⚠ audit said "3 root causes"; really **2**. OPEN: #1923 (139 hidden tests), #1900, #1907, #1919, #1881. See [[feedback_absence_of_signal_reads_as_success]]
+- [Model-generation reopen slate](project_model_generation_reopen_slate_2026_07_25.md) — wh#3106/#3056/#1019 + llm-wiki#638 REOPENED; #3043 retargeted. NEXT: wh#3051 registry flip (blocks the rest)
+- [Model-registry generation drift blind spot](project_model_generation_drift_registry_blindspot.md) — nightly guard checks ONLY `openai_primary`; Claude lane has zero drift coverage. ✅ wh#3600 FILED. NEXT: #3600 needs-plan
+- [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; hub PR #1058 armed. ⚠ DRILLING_DAYS mixes two bases → batch-drilled undercount. NEXT: owner sends v2 email
+- [Equality matrix reclassification (wh#3592)](project_equality_matrix_reclassification_3592.md) — ✅✅ CLOSED; 5/5 CONFORMS on Linux. On-box left: ace-win-1 #2815, ace-win-2 #3595; ⚠ owner: `systemctl --user disable --now claude-routine-mx-720-cnh-source-watch.timer`
+- [India family trip Jul 21–Aug 19](reference_us_india_travel_apps.md) — 2026-07-19 ✅✅ family departed. NEXT: ~Aug 18 return check-in; Sep 18 DS-11 reminder
+- [iPhone media extraction pipeline](project_iphone_media_taildrop_pipeline.md) — ✅✅ two phones archived 3-2-1. NEXT: #3586 gates next phone
+- [External SSH via Tailscale for fleet](project_external_ssh_tailscale_fleet.md) — ✅ mosh+tmux persistence LIVE on ace-linux-1 (PR #3597). ⚠ two tailscaled daemons; Taildrop node OFFLINE. NEXT: 24h BatchMode re-test gpu-claw
+- [agy replaces gemini (wh#3573)](project_agy_replaces_gemini_provider_swap.md) — ✅✅✅ COMPLETE. RULE: cross-review = Claude+Codex+Agy. Follow-ons #3577-#3580
+- [Floorhand multi-metro outreach (12 shops)](project_floorhand_multi_metro_outreach.md) — 2026-07-26 ✅✅ CLOSED, PRs #180–#185 merged. Partner model SETTLED = **flat 50-50 gross, paid as shop pays** (don't re-litigate). ⚠ analysis engine NOT BUILT. NEXT: owner sends PDFs
+- [Sun Manufacturing Floorhand pamphlet](project_sun_manufacturing_floorhand_pamphlet.md) — ✅ emailed; Austin replied POSITIVE. RULE: copy `strategy/floorhand-pamphlet-TEMPLATE.html`. NEXT: on meeting pick → calendar + kit
+- [Fidelity returns analysis + dashboard](project_fidelity_returns_analysis.md) — ✅ COMPLETE (PR #152). No open work
+- [Elliott Services Floorhand FFS brochure](project_elliott_floorhand_brochure.md) — ✅ PR #178 MERGED. NEXT (HITL): pick send route + flip draft footer → SEND
+- [Krishna daily schedule (wh#3528)](project_krishna_daily_schedule.md) — morning chain APPROVED. NEXT: evening-chain yes/adjust → calendar #3529
+- [wed #844 cost-basis + costing program](project_wed844_cost_basis_timeseries_dispatch.md) — #1023 CLOSED (80 projects/$509bn); EPIC #1038 (#1040-#1044). OPEN: A1–A4 undecided (blocks #651); cost↔FDAS DISCONNECTED; #831 stale
+- [llm-wiki-acma OCR lane gpu-claw (#267)](project_llm_wiki_acma_ocr_lane_gpu_claw.md) — 2026-07-13 ✅ smoke merged; full-queue #272 blocked on staging path
+- [wed parametric economics sweep + HF](project_wed_parametric_economics_sweep.md) — 2026-07-13 ✅ PR #1004 merged; #978 closable. See [[project_wed_economics_c9_session_handoff]]
+- [Fleet dispatch ecosystem (wh#3497)](project_fleet_dispatch_ecosystem_epic.md) — 2026-07-13 ✅ Phase-6 smoke rc 0. RULE: map detail PRIVATE-only. NEXT: merge #563 → soak → VPN retire
+- [aceengineer.com redesign — Subsea7 theme](project_aceengineer_website_redesign_subsea7.md) — navy/teal, no literal "AI". PR #59 OPEN (stacked). NEW: awsite#76
+- [ace-win-1 batch mini-runs (dm#1553)](project_ace_win1_batch_operability_program.md) — E/I/A/B/skill MERGED; F awaits HUMAN merge. NEXT: D dm#1557 sweep catalog
+- [dm#1528 sloshing reduced-order](project_dm1528_sloshing_reduced_order.md) — coeff 0.16·Π. Blocked on user hull data: run dm#1562
+- [HF projection + staged promotion (wh#3433)](project_hf_projection_staged_promotion.md) — PR #3465 plan-approved; gated behind DRAFT #3452
+- [World Energy Field Explorer program](project_world_energy_field_explorer_program.md) — feature-complete; open: #962 SVGs, #966 HF viz, #955/#959/#960 ingest
+- [Rama Lakshmi Indian passport Tatkaal re-issue](project_ramalakshmi_indian_passport_tatkal.md) — SETTLED = II-B-2 (`rld.md` "6-Nov-2027" is WRONG); ₹5,000 POPSK Kakinada. ⚠ husband gravely ill — do NOT propose renewing his. NEXT: her 8 answers (§8)
+- [Devakrishna passport renewal (DS-11)](project_devakrishna_passport_renewal.md) — DEFERRED until family returns. On return: DS-11 + appointment
+- [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-07: #755/#756/#848-#850 LIVE; remaining #759/#761
+- [International field-dev epic (wed #713)](project_wed_international_field_dev_epic.md) — 6 country chains MERGED; DI-loader UNBUILT; ⚠ mx-720 watcher = LOCAL systemd timer. NEXT: #720 loader; #722
+- [FDAS public tier + HSE finding](project_fdas_public_tier_dashboard_hse.md) — HSE does NOT favor dry-tree — don't pitch HSE. OPEN: dashboard + Roy email
+- [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
+- [Machine identity = logical alias (deckhand#565)](feedback_machine_identity_is_logical_alias_565.md) — route by `host_aliases`, NEVER tailnet/physical names; physical bindings are private-tier claims w/ `verified_at`; heartbeat filenames FROZEN; **scan your own plan/handoff artifacts** — deckhand is the promotable tier; `host_aliases` missing ⇒ startup fails from 2026-09-01
+- [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included**
+- [Rig-selector capability depth](feedback_rig_selector_capability_depth.md) — onshore/offshore = FIRST filter; equipment fields over more hull numbers (wed #1006)
+_[133 entries omitted: oversize/over-cap]_

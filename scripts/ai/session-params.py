@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ABOUTME: Emit session_params JSONL events for each AI provider (Claude, Codex, Gemini).
+# ABOUTME: Emit session_params JSONL events for each AI provider (Claude, Codex, Agy).
 # Usage: uv run --no-project python session-params.py
 # Output: one JSONL line per provider to stdout.
 
@@ -31,6 +31,9 @@ ALIAS_MAP: dict[str, str] = {
     "opus": "claude-opus-4-8",
     "sonnet": "claude-sonnet-4-6",
     "haiku": "claude-haiku-4-5",
+    # agy persists its model as a DISPLAY LABEL (set-antigravity-default-model.sh)
+    "gemini 3.1 pro (high)": "gemini-3.1-pro-preview",
+    "gemini 3.1 pro": "gemini-3.1-pro-preview",
 }
 
 DEFAULT_CTX = 128
@@ -115,19 +118,14 @@ def main() -> None:
     codex_effort = read_toml_key(codex_src, "model_reasoning_effort") or "—"
     emit("codex", codex_model, ctx_k(codex_model), f"effort={codex_effort}")
 
-    # Gemini
-    gemini_cfg = read_json(home / ".gemini" / "settings.json")
-    gemini_model_raw = gemini_cfg.get("model") or {}
-    if isinstance(gemini_model_raw, dict):
-        gemini_model = gemini_model_raw.get("name") or "not-set"
+    # Agy (Antigravity CLI — settings under ~/.gemini/antigravity-cli/, #3573)
+    agy_cfg = read_json(home / ".gemini" / "antigravity-cli" / "settings.json")
+    agy_model_raw = agy_cfg.get("model") or {}
+    if isinstance(agy_model_raw, dict):
+        agy_model = agy_model_raw.get("name") or "not-set"
     else:
-        gemini_model = str(gemini_model_raw) or "not-set"
-    gemini_thinking = gemini_cfg.get("thinking", {})
-    if gemini_thinking and isinstance(gemini_thinking, dict):
-        gemini_effort = f"thinking_budget={gemini_thinking.get('budget', '—')}"
-    else:
-        gemini_effort = "—"
-    emit("gemini", gemini_model, ctx_k(gemini_model), gemini_effort)
+        agy_model = str(agy_model_raw) or "not-set"
+    emit("agy", agy_model, ctx_k(agy_model), "—")
 
 
 if __name__ == "__main__":

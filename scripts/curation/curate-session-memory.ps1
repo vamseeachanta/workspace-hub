@@ -27,7 +27,7 @@
   parity is pinned by the .sh wrapper + the collector contract tests.
 #>
 [CmdletBinding()]
-param()
+param([string]$Machine = "")
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -39,6 +39,14 @@ if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($RepoRoot)) {
     $RepoRoot = (Resolve-Path (Join-Path $ScriptDir '..\..')).Path
 }
 Set-Location $RepoRoot
+
+# Windows PowerShell 5.1 otherwise gives Python a cp1252 stdout stream; the
+# curation engine emits Unicode status text after writing its state.
+$env:PYTHONUTF8 = '1'
+
+if (-not [string]::IsNullOrWhiteSpace($Machine)) {
+    $env:EQ_MACHINE = $Machine
+}
 
 # ── best-effort Git Bash resolver (for notify.sh only; never fatal) ──────────
 function Resolve-GitBash {
@@ -134,17 +142,38 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
 $bashForSkills = Resolve-GitBash
 if ($null -ne $bashForSkills) {
     $resync = (Join-Path $RepoRoot 'scripts/skills/resync-skill-links.sh') -replace '\\', '/'
-    try { & $bashForSkills $resync 2>$null | Out-Null } catch { Write-Warning 'skill-link-health audit failed (soft)' }
+    try {
+        if ([string]::IsNullOrWhiteSpace($Machine)) {
+            & $bashForSkills $resync 2>$null | Out-Null
+        } else {
+            & $bashForSkills $resync --machine $Machine 2>$null | Out-Null
+        }
+    } catch { Write-Warning 'skill-link-health audit failed (soft)' }
 } else {
     Write-Warning 'skill-link-health audit skipped — Git Bash not found'
 }
 
 # ── 2. refresh THIS box's equality column (Windows collector + matrix build) ──
 $collector = (Join-Path $ScriptDir '..\readiness\collect-equality.ps1')
-& $collector
+if ([string]::IsNullOrWhiteSpace($Machine)) {
+    & $collector
+} else {
+    & $collector -Machine $Machine
+}
 if ($LASTEXITCODE -ne 0) { Fail 'collect-equality.ps1 failed' }
 
 $matrix = (Join-Path $RepoRoot 'scripts/readiness/build-equality-matrix.py')
+$matrixReports = @(
+    ("docs/reports/{0}-machine-equality-matrix.html" -f (Get-Date -Format 'yyyy-MM-dd')),
+    'docs/reports/machine-equality-matrix.html'
+)
+foreach ($report in $matrixReports) {
+    $dirtyReport = & git status --porcelain --untracked-files=all -- $report
+    if ($LASTEXITCODE -ne 0) { Fail "unable to inspect generated matrix path: $report" }
+    if (-not [string]::IsNullOrWhiteSpace(($dirtyReport -join ''))) {
+        Fail "generated matrix path was already dirty before curation: $report"
+    }
+}
 if (Get-Command uv -ErrorAction SilentlyContinue) {
     & uv run --no-project --with pyyaml python $matrix
     if ($LASTEXITCODE -ne 0) { Fail 'build-equality-matrix.py failed (uv)' }
@@ -153,6 +182,19 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
     if ($LASTEXITCODE -ne 0) { Fail 'build-equality-matrix.py failed (python)' }
 } else {
     Fail 'no python runtime (uv/python) available for matrix build'
+}
+
+# The six-hour Windows curation job refreshes evidence, but dev-primary owns the
+# committed fleet matrix. Remove this local preview so EqualityReport's clean-path
+# guard is not blocked by curation's generated HTML.
+foreach ($report in $matrixReports) {
+    & git ls-files --error-unmatch -- $report *> $null
+    if ($LASTEXITCODE -eq 0) {
+        & git restore --worktree -- $report
+        if ($LASTEXITCODE -ne 0) { Fail "failed to restore generated matrix path: $report" }
+    } elseif (Test-Path $report) {
+        Remove-Item -LiteralPath $report -Force
+    }
 }
 
 Send-Notify -Status 'pass' -Details 'curated + matrix refreshed'

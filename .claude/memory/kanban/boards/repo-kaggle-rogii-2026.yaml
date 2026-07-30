@@ -20,6 +20,8 @@ cards:
       - status:plan-review
       - lane:claude
       - priority:high
+      - cat:engineering
+      - domain:models
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -39,6 +41,8 @@ cards:
       - machine:dev-primary
       - lane:codex
       - priority:medium
+      - cat:research
+      - domain:models
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -58,6 +62,8 @@ cards:
       - machine:dev-primary
       - lane:codex
       - priority:medium
+      - cat:research
+      - domain:models
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -77,6 +83,8 @@ cards:
       - status:plan-review
       - lane:claude
       - priority:high
+      - cat:research
+      - domain:models
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -95,6 +103,8 @@ cards:
       - status:plan-review
       - lane:claude
       - priority:medium
+      - cat:research
+      - domain:gis
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -114,6 +124,8 @@ cards:
       - machine:dev-primary
       - lane:codex
       - priority:medium
+      - cat:research
+      - domain:models
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -134,6 +146,8 @@ cards:
       - machine:dev-primary
       - lane:codex
       - priority:medium
+      - cat:research
+      - domain:models
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -152,6 +166,8 @@ cards:
       - status:plan-review
       - lane:codex
       - priority:medium
+      - cat:research
+      - domain:models
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -170,6 +186,8 @@ cards:
       - status:plan-review
       - lane:codex
       - priority:medium
+      - cat:research
+      - domain:models
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -183,7 +201,12 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/kaggle-rogii-2026/issues/12
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - status:plan-approved
+      - lane:codex
+      - lane:claude
+      - cat:documentation
+      - domain:website
     initial_status: triage
     priority: 0
     gh_assignees: []

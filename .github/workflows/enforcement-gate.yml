@@ -11,6 +11,28 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+  scheduler-mutation-surfaces:
+    name: Scheduler Mutation Surface Guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+      - name: Validate scheduler mutation registry
+        run: uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
+      - name: Validate exact cron identity inventory
+        run: uv run python scripts/cron/build-cron-identity-inventory.py --check
+      - name: Verify scheduler mutation audit report
+        run: uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py --check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html
+
   stage-prompt-drift:
     name: Stage Prompt Drift Guard
     runs-on: ubuntu-latest
@@ -66,6 +88,13 @@ jobs:
           else
             echo "No stage prompt drift report produced." >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Check brand token drift (#3402)
+        run: |
+          echo "## Brand-Token Drift Guard (#3402)" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          uv run python scripts/enforcement/check-brand-token-drift.py | tee -a $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
   review-evidence:
     name: Review Evidence Check

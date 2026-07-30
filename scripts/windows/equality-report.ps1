@@ -17,6 +17,7 @@
 [CmdletBinding()]
 param(
     [string]$WorkspaceRoot = "",
+    [string]$Machine = "",
     [switch]$RefreshMatrix
 )
 
@@ -58,6 +59,40 @@ function Get-CurrentBranch {
     return $branch
 }
 
+# Mirrors scripts/readiness/lib/machine-identity.sh; the contract test in
+# tests/readiness/test_collect_equality.py asserts the two sets stay identical.
+$KnownMachineLabels = @("dev-primary", "dev-secondary", "macbook-portable", "ace-win-1", "ace-win-2")
+
+function Get-MachineIdentityFromFile {
+    param([Parameter(Mandatory=$true)][string]$HostName)
+    # #3571: off-repo identity file for boxes whose hostname must not enter the
+    # public host map. Consulted ONLY after the hardcoded map fails (a stale copied
+    # file can never override a mapped host); malformed/foreign files throw -
+    # never fall through. Diagnostics omit hostname values (logs may be tracked).
+    $path = if ($env:WORKSPACE_HUB_MACHINE_IDENTITY) { $env:WORKSPACE_HUB_MACHINE_IDENTITY }
+            else { Join-Path $env:USERPROFILE ".config\workspace-hub\machine-identity.yaml" }
+    if (-not (Test-Path $path)) { return $null }
+    $get = {
+        param($key)
+        $line = Get-Content $path | Where-Object { $_ -match "^$key\s*:" } | Select-Object -First 1
+        if ($null -eq $line) { return "" }
+        return ($line -replace "^$key\s*:\s*", "").Trim().Trim('"')
+    }
+    $machine = & $get "machine"
+    if ([string]::IsNullOrWhiteSpace($machine)) {
+        throw "machine-identity: $path lacks the required 'machine:' key"
+    }
+    if ($KnownMachineLabels -notcontains $machine) {
+        throw "machine-identity: label in $path is not one of: $($KnownMachineLabels -join ' ')"
+    }
+    $expected = & $get "expected_hostname"
+    if (-not [string]::IsNullOrWhiteSpace($expected) -and
+        $expected.ToLowerInvariant() -ne $HostName.ToLowerInvariant()) {
+        throw "machine-identity: expected_hostname in $path does not match this box - refusing a copied identity file"
+    }
+    return $machine
+}
+
 function Get-EqualityMachineLabel {
     $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "" }
     switch -Wildcard ($hostName) {
@@ -65,7 +100,11 @@ function Get-EqualityMachineLabel {
         "acma-ansys05*" { return "ace-win-1" }
         "ace-win-2" { return "ace-win-2" }
         "acma-ws014*" { return "ace-win-2" }
-        default { throw "Unknown Windows equality host '$hostName'; refusing to assume a ace-win-* identity" }
+        default {
+            $fromFile = Get-MachineIdentityFromFile -HostName $hostName
+            if ($fromFile) { return $fromFile }
+            throw "Unknown Windows equality host '$hostName'; pass -Machine, or provision the machine-identity file"
+        }
     }
 }
 
@@ -286,14 +325,13 @@ function Sync-EqualityState {
     }
 
     $ahead = Get-RevCount -Range "origin/main..HEAD"
-    $machine = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "windows-machine" }
     if ($ahead -gt 0) {
         if ($ahead -gt 1 -or -not (Test-AheadCommitIsEqualityReport -Machine $Machine)) {
             throw "Local commits ahead of origin/main are not a single equality report; refusing to amend"
         }
-        $commitArgs = @("commit", "--amend", "--only", "-m", "chore: equality report from $machine", "--") + $paths
+        $commitArgs = @("commit", "--amend", "--only", "-m", "chore: equality report from $Machine", "--") + $paths
     } else {
-        $commitArgs = @("commit", "--only", "-m", "chore: equality report from $machine", "--") + $paths
+        $commitArgs = @("commit", "--only", "-m", "chore: equality report from $Machine", "--") + $paths
     }
 
     Invoke-Checked -File "git" -Arguments $commitArgs `
@@ -311,21 +349,40 @@ function Sync-EqualityState {
 $transcriptStarted = $false
 Set-Location $WorkspaceRoot
 try {
-    $machine = Get-EqualityMachineLabel
+    $machine = if ([string]::IsNullOrWhiteSpace($Machine)) {
+        Get-EqualityMachineLabel
+    } else {
+        $Machine
+    }
     $transcriptStarted = Invoke-EqualityTranscript -Machine $machine
 
     Test-CommandAvailable -Name "git"
-    Test-CommandAvailable -Name "bash"
-    Test-CommandAvailable -Name "python"
+    if (-not (Get-Command "uv" -ErrorAction SilentlyContinue)) {
+        Test-CommandAvailable -Name "python"
+    }
 
     $branch = Get-CurrentBranch
     $matrixReports = Get-MatrixReportPaths
     Confirm-FreshCheckout -Branch $branch -Machine $machine
     Confirm-MatrixReportClean -ReportPaths $matrixReports
-    Confirm-PythonYaml
+    if (-not (Get-Command "uv" -ErrorAction SilentlyContinue)) {
+        Confirm-PythonYaml
+    }
 
     $collector = Join-Path $WorkspaceRoot "scripts\readiness\collect-equality.ps1"
     $builder = Join-Path $WorkspaceRoot "scripts\readiness\build-equality-matrix.py"
+
+    # #3702 Phase 1 --- PIN the generation seam to the in-tree paths so Windows behaviour
+    # is byte-for-byte unchanged. The bash collector and the Python builder both default
+    # OUT of the tracked tree now; this wrapper's whole model (Confirm-MatrixReportClean,
+    # Clear-GeneratedMatrixReport, Sync-EqualityState committing
+    # `.claude/state/equality-<machine>.yaml` and `Get-MatrixReportPaths` from the working
+    # checkout) depends on them landing in-tree. Unpinned, both Windows boxes would commit
+    # nothing and go dark on the matrix while every scheduled task reported success
+    # (Codex r2 MAJOR 1/2). Phase 2 (#3554-gated) cuts Windows over to publish-equality.sh
+    # and removes these two lines.
+    $env:EQ_STATE_DIR = (Join-Path $WorkspaceRoot ".claude\state")
+    $env:EQ_REPORT_DIR = (Join-Path $WorkspaceRoot "docs\reports")
 
     Invoke-Checked -File "powershell" -Arguments @(
         "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $collector, "-Machine", $machine) `
@@ -333,8 +390,13 @@ try {
     # PS 5.1 defaults python file reads to cp1252; force UTF-8 so the matrix
     # build doesn't crash on non-ASCII state-yaml content (#2998).
     $env:PYTHONUTF8 = '1'
-    Invoke-Checked -File "python" -Arguments @($builder) `
-        -FailureMessage "build-equality-matrix.py failed"
+    if (Get-Command "uv" -ErrorAction SilentlyContinue) {
+        Invoke-Checked -File "uv" -Arguments @("run", "--no-project", "--with", "pyyaml", "python", $builder) `
+            -FailureMessage "build-equality-matrix.py failed"
+    } else {
+        Invoke-Checked -File "python" -Arguments @($builder) `
+            -FailureMessage "build-equality-matrix.py failed"
+    }
     if (-not $RefreshMatrix) {
         # Default: the published matrix is owned by the Linux cron / Pages build,
         # so discard the locally regenerated reports and commit only the state yaml.

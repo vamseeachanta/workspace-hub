@@ -1,11 +1,11 @@
-generated_at: "2026-07-06T21:44:40"
+generated_at: "2026-07-19T06:59:16"
 schema_version: 4
 machine: "ace-win-2"
-host: "acma-ws014"
+host: "ace-win-2"
 os: windows
 status: active
 provenance:
-  checkout_sha: "ce5a36be7"
+  checkout_sha: "6405dd889"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 16014, gpu_model: "NVIDIA T1000 8GB"}
-    headroom: {ram_avail_mib: 3216, disk_avail_gb: 221}
+    headroom: {ram_avail_mib: 2266, disk_avail_gb: 130}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -25,16 +25,16 @@ dimensions:
     - {name: aqwa, status: absent, evidence: absent}
     - {name: ansys, status: absent, evidence: absent}
   harness:
-    providers: {claude: present, codex: present, gemini: absent, hermes: present}
+    providers: {claude: present, codex: present, gemini: present, hermes: present}
     gh_auth: ok
     python_cmd: python
-    readiness_ref: harness-readiness-acma-ws014.yaml
-    readiness_overall: fail
-  skills: {repo_skill_count: 420}
+    readiness_ref: harness-readiness-ace-win-2.yaml
+    readiness_overall: missing
+  skills: {repo_skill_count: 422}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: absent
-    context_md_mtime: "2026-06-26T10:34:53"
+    context_md_mtime: "2026-07-19T04:30:02"
   provider_harness:
     schema_version: 1
     providers:
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: false
     job_count: 0
   session_curation:
-    last_curated_at: "2026-07-07T02:18:00+00:00"
-    sessions_24h: 7
-    providers_active: "claude,codex"
-    memory_files_changed: 0
+    last_curated_at: "2026-07-19T11:59:02+00:00"
+    sessions_24h: 6
+    providers_active: "claude,codex,gemini"
+    memory_files_changed: 200
   skill_currency:
-    audited_at: "2026-07-07T02:18:03+00:00"
+    audited_at: "2026-07-19T11:59:06+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,12 +84,16 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-07T02:18:04+00:00"
+    audited_at: "2026-07-19T11:59:06+00:00"
     worst_age_hours: null
     freshness: "MISSING-EVIDENCE"
   skill_link_health:
-    audited_at: "2026-07-07T02:25:21+00:00"
+    audited_at: "2026-07-19T11:59:13+00:00"
     repos_total: 6
     healthy: 12
     repairable: 0
     worst_state: "TEMPLATE-ABSENT"
+  publish_health:
+    last_publish_at: "missing"
+    last_publish_duration_s: null
+    last_publish_rc: null

@@ -21,7 +21,7 @@ Ledgers are the audit-trail surface for this private wiki. Every promotion of a 
 | `client` | Short client identifier (matches `<CLIENT_SHORT_NAME>`). |
 | `entries[].source_id` | Stable identifier for the source. Convention: `<CLIENT_SHORT_NAME_UPPER>-SOURCE-NNNN`. |
 | `entries[].source_doc_key` | Stable doc-intel key (shared with #2389). Required for cross-system join. |
-| `entries[].source_path` | Absolute path under `/mnt/ace/<CLIENT_RAW_ROOT>/`. |
+| `entries[].source_path` | Authorized absolute source path for an active entry; `null` in the structural example until a root is registered. |
 | `entries[].source_class` | One of: `raw-data`, `readable-raw-data`, `private-wiki`, `public-derivative`. |
 | `entries[].input_residency` | One of: `private-client`, `private-internal`, `public-eligible`. |
 | `entries[].output_residency` | One of: `readable-local`, `private-wiki`, `public-llm-wiki`. |

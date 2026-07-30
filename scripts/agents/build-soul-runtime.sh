@@ -11,6 +11,7 @@
 #   config/agents/claude/SOUL.delta.md
 #   config/agents/codex/SOUL.delta.md
 #   config/agents/gemini/SOUL.delta.md
+#   config/agents/agy/SOUL.delta.md
 #
 # Outputs (built; committed for review):
 #   config/agents/hermes/SOUL.runtime.md
@@ -18,6 +19,7 @@
 #   config/agents/codex/SOUL.runtime.md
 #   config/agents/codex/AGENTS.runtime.md   (Codex CLI loads ~/.codex/AGENTS.md per existing convention)
 #   config/agents/gemini/SOUL.runtime.md
+#   config/agents/agy/SOUL.runtime.md
 #
 # Idempotent: re-running with no source changes produces identical outputs.
 # Drift detection: scripts/enforcement/check-soul-runtime-drift.sh.
@@ -71,3 +73,4 @@ emit_runtime codex  SOUL.delta.md SOUL.runtime.md
 emit_runtime codex  SOUL.delta.md AGENTS.runtime.md
 append_codex_agents_extras_to_runtime
 emit_runtime gemini SOUL.delta.md SOUL.runtime.md
+emit_runtime agy    SOUL.delta.md SOUL.runtime.md

@@ -61,8 +61,7 @@ cards:
       - enhancement
       - status:pending
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
     initial_status: triage
@@ -79,8 +78,7 @@ cards:
       - enhancement
       - status:pending
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - tracker
       - domain:content
@@ -99,8 +97,7 @@ cards:
       - status:plan-approved
       - status:done
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
       - lane:claude
@@ -118,8 +115,7 @@ cards:
       - enhancement
       - status:done
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
       - lane:claude
@@ -137,8 +133,7 @@ cards:
       - enhancement
       - status:done
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
     initial_status: triage
@@ -155,8 +150,7 @@ cards:
       - enhancement
       - status:pending
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
     initial_status: triage
@@ -173,8 +167,7 @@ cards:
       - enhancement
       - status:pending
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
     initial_status: triage
@@ -191,8 +184,7 @@ cards:
       - enhancement
       - status:pending
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
     initial_status: triage
@@ -209,8 +201,7 @@ cards:
       - enhancement
       - status:pending
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
     initial_status: triage
@@ -227,8 +218,7 @@ cards:
       - enhancement
       - status:pending
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
     initial_status: triage
@@ -245,8 +235,7 @@ cards:
       - enhancement
       - status:pending
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
     initial_status: triage
@@ -263,8 +252,7 @@ cards:
       - enhancement
       - status:pending
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
     initial_status: triage
@@ -281,8 +269,7 @@ cards:
       - enhancement
       - status:pending
       - cat:documentation
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - domain:content
     initial_status: triage

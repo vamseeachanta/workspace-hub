@@ -268,16 +268,20 @@ check_r_skills() {
     issues_local+=("session-signals/ directory absent")
   fi
 
-  # Check skills committed in last 7 days
+  # Skills committed in last 7 days — FLEET authoring cadence, identical on every
+  # box (git log on main), so it must never fail a single machine's readiness
+  # (#3591 item 4). Demoted to an advisory note on the OK line; the per-box
+  # session-signals freshness above remains the failing condition.
+  local cadence_note=""
   if command -v git &>/dev/null && [[ -d "$skills_dir" ]]; then
     local skills_commit
     skills_commit=$(git -C "$WORKSPACE_HUB" log --oneline --since="7 days ago" \
       -- ".claude/skills/" 2>/dev/null | head -1 || echo "")
-    [[ -z "$skills_commit" ]] && issues_local+=("no skills committed in 7 days")
+    [[ -z "$skills_commit" ]] && cadence_note=" (advisory: no skills committed fleet-wide in 7 days)"
   fi
 
   if [[ ${#issues_local[@]} -eq 0 ]]; then
-    log_pass "R-SKILLS: session-signals fresh, skills committed recently"
+    log_pass "R-SKILLS: session-signals fresh${cadence_note}"
   else
     log_fail "R-SKILLS: ${issues_local[*]}"
   fi

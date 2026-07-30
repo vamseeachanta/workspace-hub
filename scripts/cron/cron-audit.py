@@ -62,6 +62,12 @@ def load_cron_transaction(path: Path = CRON_TRANSACTION_PATH):
     return module
 
 
+def build_ownership_context(catalog, registry, state_classes, machine_id):
+    return load_cron_transaction().build_ownership_context(
+        catalog, registry, state_classes, machine_id
+    )
+
+
 def load_cron_render(path: Path = CRON_RENDER_PATH):
     if not path.exists():
         raise FileNotFoundError(f"cron_render.py not found at {path}")
@@ -113,7 +119,11 @@ def _machine_roles(registry: dict, machine_id: str) -> list[str]:
 def _selected_for_machine(catalog: dict, registry: dict, machine_id: str) -> dict:
     ct = load_cron_transaction()
     render = load_cron_render()
-    context = render.build_context(machine_id, registry=registry)
+    resolved = render.resolve_machine(machine_id, registry=registry)
+    workspace_hub = resolved["machine"].get("workspace_root")
+    context = render.build_context(
+        machine_id, registry=registry, workspace_hub=workspace_hub
+    )
     roles = _machine_roles(registry, context["machine_id"])
     selected_raw, conflicts = ct.select_tasks(
         catalog.get("tasks", []) or [],
@@ -144,14 +154,14 @@ def load_catalog_commands(
     tasks = data.get("tasks", []) or []
     ct = load_cron_transaction()
     if machine_id is None:
-        return ct.catalog_command_keys(tasks)
+        return ct.catalog_command_keys(tasks, include_fingerprinted=False)
 
     registry_file = registry_path or (REPO_ROOT / "config" / "workstations" / "registry.yaml")
     registry = yaml.safe_load(registry_file.read_text(encoding="utf-8")) if registry_file.exists() else {}
     selected = _selected_for_machine(data, registry or {}, machine_id)
     return _combine_keys(
-        ct.catalog_command_keys(selected["selected_raw"]),
-        ct.catalog_command_keys(selected["selected"]),
+        ct.catalog_command_keys(selected["selected_raw"], include_fingerprinted=False),
+        ct.catalog_command_keys(selected["selected"], include_fingerprinted=False),
     )
 
 
@@ -213,6 +223,8 @@ def audit_crontab(
     external_fingerprints: list[dict],
     classify_line,
     selected_task_ids: set[str] | None = None,
+    catalog_fingerprints: list[dict] | None = None,
+    ownership_context: dict | None = None,
 ) -> dict:
     """Classify every line; return a structured result."""
     results: list[dict] = []
@@ -229,6 +241,8 @@ def audit_crontab(
                 catalog_commands,
                 external_fingerprints,
                 selected_task_ids=selected_task_ids,
+                catalog_fingerprints=catalog_fingerprints,
+                ownership_context=ownership_context,
             )
             if isinstance(detail, str):
                 detail = {"line": line, "class": detail}
@@ -238,10 +252,9 @@ def audit_crontab(
         counts[cls] = counts.get(cls, 0) + 1
         if cls == "ignore":
             continue
-        result = {"line": line, "class": cls}
-        for key in ("reason", "catalog_task_id", "catalog_key"):
-            if detail.get(key) is not None:
-                result[key] = detail[key]
+        result = dict(detail)
+        result.setdefault("line", line)
+        result.setdefault("class", cls)
         results.append(result)
     return {
         "lines": results,
@@ -262,16 +275,22 @@ def build_audit_context(machine_id: str | None = None) -> dict:
     selected = _selected_for_machine(catalog or {}, registry or {}, target_machine)
     ct = load_cron_transaction()
     catalog_commands = _combine_keys(
-        ct.catalog_command_keys(selected["selected_raw"]),
-        ct.catalog_command_keys(selected["selected"]),
+        ct.catalog_command_keys(selected["selected_raw"], include_fingerprinted=False),
+        ct.catalog_command_keys(selected["selected"], include_fingerprinted=False),
     )
     selected_task_ids = selected["selected_task_ids"]
     machine = selected["context"]["machine_id"]
+    state_classes = yaml.safe_load(CLASSES_PATH.read_text(encoding="utf-8")) if CLASSES_PATH.exists() else {}
+    ownership = build_ownership_context(
+        catalog or {}, registry or {}, state_classes or {}, machine
+    )
     return {
         "machine": machine,
         "catalog_commands": catalog_commands,
+        "catalog_fingerprints": ct.catalog_owned_fingerprints(selected["selected_raw"]),
         "external_fingerprints": load_external_fingerprints(),
         "selected_task_ids": selected_task_ids,
+        "ownership_context": ownership,
     }
 
 
@@ -311,7 +330,6 @@ def main(argv: list[str] | None = None) -> int:
         "--json", action="store_true", help="emit machine-readable JSON instead of text"
     )
     args = parser.parse_args(argv)
-
     ct = load_cron_transaction()
     context = build_audit_context(args.machine)
     try:
@@ -329,15 +347,15 @@ def main(argv: list[str] | None = None) -> int:
         else:
             print(f"FAIL: {payload['reason']}: {payload['stderr']}")
         return 2
-
     audit = audit_crontab(
         crontab_text,
         context["catalog_commands"],
         context["external_fingerprints"],
         ct.classify_line_detail,
         selected_task_ids=context["selected_task_ids"],
+        catalog_fingerprints=context.get("catalog_fingerprints", []),
+        ownership_context=context["ownership_context"],
     )
-
     if args.json:
         print(
             json.dumps(
@@ -353,7 +371,6 @@ def main(argv: list[str] | None = None) -> int:
         )
     else:
         print_human(args.machine, audit)
-
     # Fail-closed: any uncataloged live line blocks a cutover.
     return 1 if audit["uncataloged"] else 0
 

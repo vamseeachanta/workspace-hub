@@ -6,13 +6,12 @@ Private <CLIENT_SHORT_NAME> LLM wiki and evidence workspace.
 
 This repo stores curated <CLIENT_SHORT_NAME> knowledge artifacts derived from local/private project sources. It is the private bridge between local raw data and downstream reports/chatbots.
 
-## Canonical local raw-data root
+## Raw-source posture
 
-```text
-/mnt/ace/<CLIENT_RAW_ROOT>/
-```
-
-That raw-data root is intentionally local/private and may contain large client/project files. Do not push raw files here unless explicitly classified and approved for private wiki residency.
+Raw sources remain outside this repository. Authorized absolute roots are
+recorded only in the private registry and may be absent during metadata-only
+bootstrap. Do not invent a local path or push raw files into this wiki; add a
+source pointer only after the registry explicitly records the root.
 
 ## Initial structure
 

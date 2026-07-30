@@ -47,7 +47,7 @@ def _setup_plan_and_reviews(root: Path, number: int) -> tuple[Path, list[Path]]:
     plan.write_text("# Plan body\n", encoding="utf-8")
     (root / "scripts" / "review" / "results").mkdir(parents=True, exist_ok=True)
     reviews: list[Path] = []
-    for provider in ("claude", "codex", "gemini"):
+    for provider in ("claude", "codex", "agy"):
         rpath = root / "scripts" / "review" / "results" / f"2026-05-12-plan-{number}-{provider}.md"
         rpath.write_text(f"Verdict: MINOR\nProvider: {provider}\n", encoding="utf-8")
         reviews.append(rpath)

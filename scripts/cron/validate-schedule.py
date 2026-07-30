@@ -1,18 +1,28 @@
 #!/usr/bin/env python3
 """Validate schedule-tasks.yaml — parse, check required fields, cron expressions."""
 
+import argparse
+import re
 import sys
 from pathlib import Path
 
 import yaml
 
+CRON_DIR = Path(__file__).resolve().parent
+if str(CRON_DIR) not in sys.path:
+    sys.path.insert(0, str(CRON_DIR))
+from cron_identity import validate_state_classes  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEDULE_FILE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 REGISTRY_FILE = REPO_ROOT / "config" / "workstations" / "registry.yaml"
 ROLES_FILE = REPO_ROOT / "config" / "workstations" / "harness-roles.yaml"
+STATE_CLASSES_FILE = REPO_ROOT / "config" / "workstations" / "harness-state-classes.yaml"
 
 REQUIRED_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
+MIN_RUNTIME_SECONDS = 60
+MAX_RUNTIME_SECONDS = 604_800
 
 
 def _load_valid_machines() -> set[str]:
@@ -74,6 +84,71 @@ def _load_valid_roles() -> set[str]:
 VALID_ROLES = _load_valid_roles()
 
 
+def validate_installed_fingerprint(tid: str, value: object) -> list[str]:
+    """Validate a conjunctive catalog ownership identity."""
+    if value is None:
+        return []
+    if not isinstance(value, dict) or not value:
+        return [f"{tid}: installed_fingerprint must be a non-empty mapping"]
+    allowed = {
+        "command_contains", "command_tokens", "cwd_contains", "cwd_basename",
+        "script_basename",
+    }
+    errors: list[str] = []
+    unknown = set(value) - allowed
+    if unknown:
+        errors.append(f"{tid}: installed_fingerprint has unknown fields {sorted(unknown)}")
+    for key, item in value.items():
+        items = item if isinstance(item, list) else [item]
+        if not items or any(not isinstance(part, str) or not part.strip() for part in items):
+            errors.append(f"{tid}: installed_fingerprint.{key} must contain non-empty strings")
+    command_keys = {"command_contains", "command_tokens", "script_basename"}
+    cwd_keys = {"cwd_contains", "cwd_basename"}
+    if not (set(value) & command_keys and set(value) & cwd_keys):
+        errors.append(f"{tid}: installed_fingerprint requires command and cwd identity")
+    return errors
+
+
+def validate_log_path(tid: str, value: object) -> list[str]:
+    """Require a repo-relative glob that shell iteration cannot split."""
+    if value is None:
+        return []
+    if not isinstance(value, str):
+        return [f"{tid}: log must be a string or null"]
+    path = Path(value)
+    controlled = re.fullmatch(r"(?:logs/|~/|\.claude/state/)[A-Za-z0-9_./*-]+", value)
+    if not controlled or path.is_absolute() or ".." in path.parts:
+        return [f"{tid}: log must be a controlled logs/, .claude/state/, or ~/ glob using only '*' wildcards"]
+    return []
+
+
+def validate_runtime_contract(tid: str, runtime: object, state_dirs: set[str]) -> list[str]:
+    """Validate the optional bounded runtime-health contract."""
+    if runtime is None:
+        return []
+    if not isinstance(runtime, dict):
+        return [f"{tid}: runtime must be a mapping"]
+    errors: list[str] = []
+    singleton = runtime.get("singleton")
+    maximum = runtime.get("max_seconds")
+    state_dir = runtime.get("state_dir")
+    if not isinstance(singleton, bool):
+        errors.append(f"{tid}: runtime.singleton must be boolean")
+    if not isinstance(maximum, int) or isinstance(maximum, bool) or not MIN_RUNTIME_SECONDS <= maximum <= MAX_RUNTIME_SECONDS:
+        errors.append(f"{tid}: runtime.max_seconds must be an integer from 60 to 604800")
+    path = Path(state_dir) if isinstance(state_dir, str) else None
+    if not path or path.is_absolute() or ".." in path.parts or not path.parts:
+        errors.append(f"{tid}: runtime.state_dir must be controlled and repo-relative")
+    elif state_dir in state_dirs:
+        errors.append(f"{tid}: duplicate runtime.state_dir '{state_dir}'")
+    else:
+        state_dirs.add(state_dir)
+    channels = runtime.get("filesystem_wait_wchans", [])
+    if not isinstance(channels, list) or any(not isinstance(item, str) or not item.replace("_", "").isalnum() for item in channels):
+        errors.append(f"{tid}: runtime.filesystem_wait_wchans contains an invalid token")
+    return errors
+
+
 def validate_cron_field(value: str) -> bool:
     """Check that a cron field has valid structure (not full semantic validation)."""
     parts = value.split(",")
@@ -111,12 +186,16 @@ def validate_cron_expression(expr: str) -> list[str]:
     return errors
 
 
-def main() -> int:
-    if not SCHEDULE_FILE.exists():
-        print(f"FAIL: {SCHEDULE_FILE} not found")
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--catalog", type=Path, default=SCHEDULE_FILE)
+    parser.add_argument("--state-classes", type=Path, default=STATE_CLASSES_FILE)
+    args = parser.parse_args(argv)
+    if not args.catalog.exists():
+        print(f"FAIL: {args.catalog} not found")
         return 1
 
-    with open(SCHEDULE_FILE) as f:
+    with open(args.catalog) as f:
         data = yaml.safe_load(f)
 
     if "tasks" not in data or not isinstance(data["tasks"], list):
@@ -126,6 +205,9 @@ def main() -> int:
     tasks = data["tasks"]
     errors = []
     ids_seen = set()
+    state_dirs: set[str] = set()
+    classes = yaml.safe_load(args.state_classes.read_text(encoding="utf-8"))
+    errors.extend(validate_state_classes(classes, {task.get("id") for task in tasks}))
 
     for i, task in enumerate(tasks):
         tid = task.get("id", f"<index-{i}>")
@@ -162,6 +244,12 @@ def main() -> int:
         if not task.get("command", "").strip():
             errors.append(f"{tid}: empty command")
 
+        if scheduler != "cron" and task.get("runtime") is not None:
+            errors.append(f"{tid}: runtime metadata is supported only for cron tasks")
+        errors.extend(validate_runtime_contract(tid, task.get("runtime"), state_dirs))
+        errors.extend(validate_log_path(tid, task.get("log")))
+        errors.extend(validate_installed_fingerprint(tid, task.get("installed_fingerprint")))
+
         # Check if command invokes claude CLI (not just .claude/ paths)
         import re
         cmd = task.get("command", "")
@@ -170,12 +258,12 @@ def main() -> int:
                 errors.append(f"{tid}: invokes claude CLI but is_claude_task != true")
 
     if errors:
-        print(f"FAIL: {len(errors)} error(s) in {SCHEDULE_FILE.name}:")
+        print(f"FAIL: {len(errors)} error(s) in {args.catalog.name}:")
         for e in errors:
             print(f"  - {e}")
         return 1
 
-    print(f"OK: {len(tasks)} tasks validated in {SCHEDULE_FILE.name}")
+    print(f"OK: {len(tasks)} tasks validated in {args.catalog.name}")
     return 0
 
 

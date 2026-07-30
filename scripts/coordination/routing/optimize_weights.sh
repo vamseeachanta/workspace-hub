@@ -24,7 +24,7 @@ echo ""
 # --- Effective routing table ---
 echo "=== Effective Routing Table ==="
 for tier in SIMPLE STANDARD COMPLEX REASONING; do
-    for provider in claude codex gemini; do
+    for provider in claude codex agy; do
         model=$(select_model_for_provider "$provider" "$tier")
         ewma=$(_compute_ewma "$model" "$tier")
         count=$(_count_ratings "$model" "$tier")

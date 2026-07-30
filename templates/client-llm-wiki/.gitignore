@@ -11,8 +11,9 @@ raw/
 private/
 
 # --- Engineering binaries -----------------------------------------------------
-# CAD, simulation, and large solver inputs/outputs stay in the local raw-data
-# root (/mnt/ace/<CLIENT_RAW_ROOT>/), not in the private wiki.
+# CAD, simulation, and large solver inputs/outputs stay in authorized external
+# raw roots recorded in the private registry, not in the private wiki. A new
+# metadata-only wiki may have no registered raw root.
 *.dwg
 *.sim
 

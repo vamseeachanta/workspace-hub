@@ -30,7 +30,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:skills
+      - cat:harness
       - domain:workflow
       - machine:dev-primary
       - agent:claude
@@ -53,6 +53,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:low
+      - cat:harness
       - domain:workflow
       - machine:dev-primary
       - dispatch:ready
@@ -133,6 +134,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:harness
       - domain:workflow
       - machine:dev-primary
       - dispatch:ready
@@ -153,7 +155,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - cat:ai-orchestration
+      - cat:harness
       - domain:workflow
       - machine:dev-primary
       - agent:claude
@@ -204,8 +206,8 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:medium
+      - cat:operations
       - cat:harness
-      - cat:platform
       - domain:workflow
     initial_status: triage
     priority: 0
@@ -233,7 +235,6 @@ cards:
     gh_labels:
       - priority:medium
       - cat:engineering
-      - cat:harness
       - domain:workflow
       - machine:dev-primary
       - dispatch:ready
@@ -254,7 +255,6 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - cat:operations
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -277,7 +277,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:documentation
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -300,7 +299,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:documentation
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -323,7 +321,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:documentation
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -361,7 +358,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:documentation
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -384,6 +380,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:low
+      - cat:operations
       - domain:workflow
       - machine:dev-primary
       - dispatch:ready
@@ -460,7 +457,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:ai-orchestration
       - cat:harness
       - domain:workflow
       - status:plan-approved
@@ -476,7 +472,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:ai-orchestration
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -499,7 +494,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:ai-orchestration
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -522,7 +516,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:ai-orchestration
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -545,7 +538,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:ai-orchestration
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -568,7 +560,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:ai-orchestration
       - cat:harness
       - domain:workflow
       - machine:dev-primary
@@ -614,7 +605,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:ai-orchestration
       - cat:harness
       - domain:workflow
       - status:plan-approved
@@ -712,6 +702,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:harness
       - domain:workflow
       - wrk-item
       - machine:dev-primary
@@ -729,6 +720,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:operations
       - domain:workflow
       - machine:dev-primary
       - dispatch:ready
@@ -792,6 +784,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - cat:harness
       - domain:workflow
       - machine:dev-primary
       - agent:claude
@@ -856,8 +849,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - cat:ai-orchestration
-      - cat:operations
+      - cat:harness
       - domain:workflow
       - status:working
       - machine:dev-primary
@@ -883,6 +875,1513 @@ cards:
       - cat:documentation
       - domain:workflow
       - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3418
+    title: 'feat(landman-desk): turn project intake into an assigned tract work package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3418
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:workflow
+      - status:needs-plan
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3443
+    title: 'governance(legal): define repo-posture scanner profiles and replace private-repo scan skips'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3443
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3457
+    title: 'fix(worktrees): fail closed on an absent sparse-worktree index'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3457
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#10
+    title: 'WRK-1322: Standardize all workflows on GitHub Projects board pattern'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/10
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#65
+    title: 'WRK-1175: Structured progress log for cross-session WRK continuity'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/65
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1175: Structured progress log for cross-session WRK continuity
+
+      **Status:** pending | **Priority:** medium | **Category:** ai-orchestration | **Subcategory:** work-queue
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#69
+    title: 'WRK-1182: Work-queue-workflow interactive stage menu'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/69
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1182: Work-queue-workflow interactive stage menu
+
+      **Status:** pending | **Priority:** medium | **Category:** developer-experience | **Subcategory:** work-queue
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#77
+    title: 'WRK-1209: [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/77
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1209: [script]: Missing back-link: workspace-hub/wrk-lifecycle-testpack should list wo
+
+      **Status:** pending | **Priority:** low | **Category:** work-queue-infrastructure | **Subcategory:** work-queue
+
+      **Repo:** workspace-hub | **Complexity:** unset | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#79
+    title: 'WRK-1227: [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/79
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1227: [script]: Missing back-link: workspace-hub/work-queue-workflow should list data/
+
+      **Status:** pending | **Priority:** low | **Category:** work-queue-infrastructure | **Subcategory:** work-queue
+
+      **Repo:** workspace-hub | **Complexity:** unset | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#80
+    title: 'WRK-1243: Standardize WRK file structure anatomy across all lifecycle stages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/80
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1243: Standardize WRK file structure anatomy across all lifecycle stages
+
+      **Status:** pending | **Priority:** medium | **Category:** skills-improvement | **Subcategory:** work-queue-workflow
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#209
+    title: 'WRK-664: feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/209
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-664: feat(work-queue): multi-agent and multi-workstation execution contract for WRK planning
+
+      **Status:** blocked | **Priority:** high | **Category:** harness/work-queue
+
+      **Complexity:** complex | **Machine:** [ace-linux-1]'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#220
+    title: 'WRK-1031: Single lifecycle HTML: embed full plan content inline, retire snapshot files'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/220
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#225
+    title: 'WRK-1169: Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/225
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#248
+    title: 'WRK-1031: Single lifecycle HTML: embed full plan content inline, retire snapshot files'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/248
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#258
+    title: 'WRK-1169: Fix WRK lifecycle discipline — missed gates, HTML refresh, and stage compliance'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/258
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#440
+    title: 'WRK-381: Trust architecture document — formalise plan gate governance for agent-executed actions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/440
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#485
+    title: 'WRK-381: Trust architecture document — formalise plan gate governance for agent-executed actions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/485
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#694
+    title: 'WRK-655: feat(skills): define Resource Intelligence skill and validator-ready stage contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/694
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#695
+    title: 'WRK-656: fix(review): enforce orchestrator gate evidence contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/695
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#697
+    title: 'WRK-659: test(workflow): sandbox multi-agent gate enforcement'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/697
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#699
+    title: 'WRK-669: test(review): orchestrator gate run with Claude'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/699
+    gh_state: closed
+    gh_labels:
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#700
+    title: 'WRK-670: test(review): orchestrator gate run with Codex'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/700
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#701
+    title: 'WRK-671: test(review): orchestrator gate run with Gemini'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/701
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#702
+    title: 'WRK-672: doc(review): finish Gemini orchestrator summary and variation tests'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/702
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#703
+    title: 'WRK-673: test(review): enforce Resource Intelligence evidence for orchestrator reruns'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/703
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#704
+    title: 'WRK-674: automation: refresh orchestrator timeline reports'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/704
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#705
+    title: 'WRK-675: governance(review): align orchestrator flow & scripts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/705
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#706
+    title: 'WRK-676: test(review): automate plan gate confirmation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/706
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#707
+    title: 'WRK-677: governance(review): strengthen claim gate metadata'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/707
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#708
+    title: 'WRK-678: test(review): automate close gate follow-up capture'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/708
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#710
+    title: 'WRK-683: arch(orchestrator): unify AI agent session logs in workspace-hub/logs/orchestrator/'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/710
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#815
+    title: 'WRK-1034: Enforce Stage 7 and Stage 17 user-review as hard blocking gates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/815
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#816
+    title: 'WRK-1035: Beef up user-review stages in work-queue-workflow SKILL from recent session learnings'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/816
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#821
+    title: 'WRK-1039: Harden gate verifier — 14 gaps from WRK-1035 session audit'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/821
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#822
+    title: 'WRK-1040: Nomenclature canonicalisation — eliminate session/stage/phase confusion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/822
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#823
+    title: 'WRK-1041: Lifecycle HTML — auto-refresh (30s meta tag) for lifecycle + plan HTML'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/823
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#912
+    title: 'WRK-1127: Feature-first planning with AI agent chunking'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/912
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#915
+    title: 'WRK-1130: Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/915
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#917
+    title: 'WRK-1131: Feature layer process — stage contracts, workflow SKILL.md, whats-next'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/917
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#920
+    title: 'WRK-1135: fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/920
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#922
+    title: 'WRK-1034: Enforce Stage 7 and Stage 17 user-review as hard blocking gates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/922
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#924
+    title: 'WRK-1035: Beef up user-review stages in work-queue-workflow SKILL from recent session learnings'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/924
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#934
+    title: 'WRK-1039: Harden gate verifier — 14 gaps from WRK-1035 session audit'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/934
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#935
+    title: 'WRK-1040: Nomenclature canonicalisation — eliminate session/stage/phase confusion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/935
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#938
+    title: 'WRK-1041: Lifecycle HTML — auto-refresh (30s meta tag) for lifecycle + plan HTML'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/938
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#946
+    title: 'WRK-1159: Auto-open lifecycle HTML in browser at human-gate stages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/946
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1115
+    title: 'WRK-1127: Feature-first planning with AI agent chunking'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1115
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1128
+    title: 'WRK-1130: Feature layer tooling — new-feature.sh, status, close-check, dep_graph, INDEX.md'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1128
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1131
+    title: 'WRK-1131: Feature layer process — stage contracts, workflow SKILL.md, whats-next'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1131
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1136
+    title: 'WRK-1135: fix(whats-next): handle coordinating feature WRKs — suppress from WORKING, show child progress'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1136
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1152
+    title: 'WRK-1159: Auto-open lifecycle HTML in browser at human-gate stages'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1152
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:workflow
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1258
+    title: 'WRK-5109: fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1258
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - wrk-item
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-5109: fix(work-queue): GitHub issue workflow discrepancies — summaries, approval UX, attribution
+
+      **Status:** pending | **Priority:** medium | **Category:** harness | **Subcategory:** work-queue
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** sowon'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1287
+    title: 'WRK-1287: Phase 4 cleanup: remove deprecated machine-ranges and next-id.sh legacy wrapper'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1287
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - domain:workflow
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Follow-up from WRK-5097 (Phase 4, deferred). After 30-day deprecation period (after 2026-04-23):
+
+      1. Remove machine-range logic from next-id.sh wrapper
+
+      2. Remove config/work-queue/machine-ranges.yaml'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1327
+    title: 'WRK-1327: Remove deprecated next-id.sh and enforce gh-next-id.sh for WRK ID allocation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1327
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1348
+    title: 'WRK-1348: Update /work add skill to call capture-wrk.sh'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1348
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## workspace-hub-1348: Update /work add skill to call capture-wrk.sh
+
+      **Status:** Stage 2: Resource Intelligence (pending) | **Priority:** medium | **Category:** harness | **Subcategory:** work-queue
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** ace-linux-2'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1349
+    title: 'WRK-1349: Fix update-stage-evidence.py for repo-prefixed WRK IDs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1349
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## workspace-hub-1349: Fix update-stage-evidence.py for repo-prefixed WRK IDs
+
+      **Status:** Stage 4: Plan Draft (in_progress) | **Priority:** high | **Category:** harness | **Subcategory:** work-queue
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** ace-linux-2'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1350
+    title: 'WRK-1350: Fix set-active-wrk.sh regex for repo-prefixed WRK IDs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1350
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## workspace-hub-1350: Fix set-active-wrk.sh regex for repo-prefixed WRK IDs
+
+      **Status:** Stage 2: Resource Intelligence (pending) | **Priority:** high | **Category:** harness | **Subcategory:** work-queue
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** ace-linux-2'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1476
+    title: GWS (Google Workspace CLI) integration — Gmail, Docs, Sheets automation
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1476
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:tooling
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      From Chase AI video review (March 2026): GWS enables Claude Code control over Gmail, Docs, Sheets from terminal.
+
+      ## Current State'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1717
+    title: 'chore(policy): resolve work-queue vs GitHub-issues contradiction in AGENTS.md and active docs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1717
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      AGENTS.md states:
+
+      > Tasks tracked as GitHub issues — no local work-queue'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1744
+    title: 'refactor: stabilize work-queue subsystem — 55% of all 8965 corrections (#1720)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1744
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Phase D finding. Work-queue (.claude/work-queue/ + scripts/work-queue/) accounts for 4959 of 8965 corrections (55.3%). Top files: daily-reflect.sh (103), generate-html-review.py (93), whats-next.sh (66). Action: add YAML schema validation, refactor generate-html-review.py, add test suite for 6 core scripts, consider Python rewrite of daily-reflect.sh.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2024
+    title: 'build: gmail-extract-and-act pipeline — rewrite gmail-archive-extract.py for extract-first, delete-later queue model'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2024
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent: #2017 — Email-as-Queue Workflow
+
+      ## Objective
+
+      Rewrite `scripts/email/gmail-archive-extract.py` to follow the new queue model: extract structured data, commit to repos, track thread state, and delete emails when topics complete. The current script archives entire raw email bodies to repos, which is the wrong approach.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2026
+    title: 'build: Email state tracking system — Gmail labels + local state log + grace period deletion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2026
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - domain:workflow
+      - status:done
+      - machine:dev-primary
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent: #2017 — Email-as-Queue Workflow
+
+      ## Objective
+
+      Build the thread state tracking system that powers the "email as queue" model.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2052
+    title: "Queue refresh: auto-generate 'This Week's Focus' and dependency chains"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2052
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+      - machine:dev-primary
+      - wip:ace-linux-1
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      #1857 delivered deterministic queue generation with priority breakdown. The manually curated queue had two features the auto-generator doesn''t yet produce:
+
+      1. **"This Week''s Focus"** — a curated top-5/top-7 per agent highlighting the most impactful items'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2423
+    title: 'feat: automated Gmail-side delete/archive for email-as-queue (follow-on to #2017)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2423
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - domain:workflow
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Follow-on to #2017 (email-as-queue workflow). Per v6 scope decision (Path 3 hybrid), #2017 v1 delivers **local-queue contract only** — state tracking, extraction, classification. Gmail-side inbox hygiene is handled by the user manually via the Gmail UI.
+
+      This issue tracks the **automated Gmail-side delete/archive** capability that was de-scoped from #2017 v1.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2934
+    title: 'Compliance alert: W23 — 23% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2934
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - priority:critical
+      - domain:workflow
+      - compliance-alert
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3031
+    title: 'triage: backfill placeholder bodies on gh-next-id.sh / backfill-github-refs.sh created issues'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3031
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3032
+    title: 'triage: close-out sweep — migrated WRK issues open on GitHub but body status done/archived (17 found) + duplicate/WRK-ID collisions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3032
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:workflow
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3050
+    title: 'EPIC: confirm tier-1 repos + drive workflows through the UV package (uv run python -m <pkg> <input.yml>)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3050
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3063
+    title: 'uv-workflow(assetutilities): register all 17 routed transforms (blocked on #88 packaging)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3063
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3064
+    title: 'uv-workflow(worldenergydata): clean-clone verify all 9 + offline fixtures for data loaders'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3064
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3065
+    title: 'uv-workflow(digitalmodel): register dm#711 backlog lanes + widen tests-workflows to all rows'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3065
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3066
+    title: 'uv-workflow(assethold): wire portfolio/options/property/risk/dividend/fundamentals into engine + fix substring bug'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3066
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:workflow
+      - status:done
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3067
+    title: 'uv-workflow(workspace-hub): write the canonical UV workflow contract standard doc'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3067
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:workflow
+      - status:plan-review
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3281
+    title: 'EPIC: Deterministic Workflow API — make every tier-1 workflow callable (typed envelope + discovery + determinism), downstream of #3050'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3281
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3282
+    title: 'wf-api(assetutilities): ResultEnvelope + run_workflow() + registry request/response schema [FOUNDATIONAL]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3282
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3283
+    title: 'wf-api(ecosystem): determinism harness — provenance stamp + result hash + golden-baseline template'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3283
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3284
+    title: 'wf-api(ecosystem): discovery manifest — aggregate callable workflows + schemas across repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3284
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3285
+    title: 'wf-api(digitalmodel): adopt ResultEnvelope + schemas + goldens (FFS, buckling, mooring, wall-thickness)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3285
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3286
+    title: 'wf-api(worldenergydata): adopt envelope + generalize typed-query base; scheduler JobResult; hse_api (#363)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3286
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3287
+    title: 'wf-api(assethold): adopt ResultEnvelope after #3066 engine wiring [gated]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3287
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3288
+    title: 'wf-api(deckhand): EXECUTE leg consumes run_workflow + renders envelope [GTM payoff]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3288
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3289
+    title: 'wf-api(workspace-hub): [DEFERRED] HTTP/FastAPI gateway over run_workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3289
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - domain:workflow
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3295
+    title: 'seamless(contract): reconcile registry schema_version into a unified v2 superset (unblocks #3282)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3295
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3297
+    title: 'wf-api(assetutilities): make the engine embeddable — injected root, no cwd-coupled side effects [PREREQ for #3282]'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3297
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3307
+    title: "wf-api(digitalmodel): engine embed-port — mirror #3297 for digitalmodel's own engine [prereq for #3285]"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3307
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3308
+    title: "wf-api(assethold): engine embed-port — mirror #3297 for assethold's own engine [prereq for #3287]"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3308
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3389
+    title: Completeness gate reopens PR-merge-closed plan-approved issues (workflow friction, not a config bug)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3389
+    gh_state: open
+    gh_labels:
+      - cat:tooling
+      - domain:workflow
+      - status:plan-approved
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3414
+    title: 'epic(landman-project-desk): broker workflow, QA, and federal-acreage diligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3414
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:workflow
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3426
+    title: 'feat(governance): deploy completeness closeout contract to worldenergydata'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3426
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3440
+    title: Harden generated HTML against JSON script-tag breakout
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3440
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - domain:security
+      - domain:workflow
+      - status:plan-approved
+      - gate:completeness
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3450
+    title: 'fix(workflow-manifest): distinguish nested-worktree resolution failures from registry drift'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3450
+    gh_state: open
+    gh_labels:
+      - cat:tooling
+      - domain:workflow
     initial_status: triage
     priority: 0
     gh_assignees: []

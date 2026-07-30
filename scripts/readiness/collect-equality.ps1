@@ -112,6 +112,20 @@ if ([string]::IsNullOrWhiteSpace($Machine)) {
     $Machine = Resolve-EqualityMachineLabel
 }
 
+# The logical machine label is public; the underlying Windows hostname may be
+# policy-sensitive.  Keep tracked equality evidence on the public identity.
+$env:EQ_PUBLIC_HOST = $Machine
+
+# Git Bash can see the Microsoft Store python alias even when it is only a
+# non-working installer stub. Prefer uv's real interpreter when available so
+# provider-harness evidence is collected instead of falling back to unknown.
+if (Get-Command uv -ErrorAction SilentlyContinue) {
+    $uvPython = (& uv python find 2>$null).Trim()
+    if ($LASTEXITCODE -eq 0 -and (Test-Path $uvPython)) {
+        $env:Path = "$(Split-Path -Parent $uvPython);$env:Path"
+    }
+}
+
 # ------ CIM compute (the .ps1's real job) ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 $cs = Get-CimInstance Win32_ComputerSystem
 $os = Get-CimInstance Win32_OperatingSystem
@@ -184,6 +198,18 @@ Write-Verbose "collect-equality.ps1: using Git Bash at $bashExe"
 # backslashes in a Windows path (C:\ws\...) as escape characters and collapses them
 # (C:wsworkspace-hub...), so argv[0] becomes an unfindable path. Git Bash accepts the forward-slash
 # form (C:/ws/...), and the .sh's own `dirname "${BASH_SOURCE[0]}"` resolves from it.
+# #3702 Phase 1 --- Windows stays PINNED to the in-tree location. collect-equality.sh's
+# default output moved out of the tracked tree (it is what blocked `git pull --ff-only`
+# on the Linux fleet), but this script delegates straight to it and scripts/windows/
+# equality-report.ps1 then commits `.claude/state/equality-<machine>.yaml` from the
+# working checkout. Without this pin both Windows boxes would find no state yaml, commit
+# nothing, and go DARK on the matrix while every scheduled task reported success
+# (Codex r2 MAJOR 1/2). A caller that has already set the seam wins, so equality-report.ps1
+# and any Phase-2 cutover can override without editing this file.
+if ([string]::IsNullOrWhiteSpace($env:EQ_STATE_DIR)) {
+    $env:EQ_STATE_DIR = (Join-Path $WS '.claude\state')
+}
+
 $shPath = (Join-Path $ScriptDir 'collect-equality.sh') -replace '\\', '/'
 $shArgs = @($shPath)
 if ($Stdout) { $shArgs += '--stdout' }

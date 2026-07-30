@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Completeness — #3475 fix(cron): make reconciler deletion identity semantic and verify exact post-write state</title>
+<style>
+body{margin:0;background:#0f1419;color:#e6edf3;font:15px/1.6 -apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:920px;margin:0 auto;padding:30px 20px}
+h1{font-size:23px} .muted{color:#9aa7b2;font-size:13px}
+.big{font-size:42px;font-weight:800}
+.pass{color:#3fb950}.fail{color:#f85149}
+table{width:100%;border-collapse:collapse;margin:14px 0}
+td,th{border:1px solid #2d3742;padding:8px 10px;text-align:left}
+code,pre{background:#0b0f14;border:1px solid #2d3742;border-radius:5px;padding:2px 6px;
+ font:12.5px ui-monospace,Menlo,monospace;color:#c9d6e0}
+pre{padding:12px;overflow-x:auto;white-space:pre-wrap}
+</style></head><body><div class="wrap">
+<h1>Completeness — #3475: fix(cron): make reconciler deletion identity semantic and verify exact post-write state</h1>
+<div class="muted">class: evidence · threshold: 80 · generated 2026-07-12</div>
+<p class="big pass">100% — <span class="pass">PASS</span></p>
+<h2>Evidence</h2>
+<table><thead><tr><th>Item</th></tr></thead><tbody><tr><td>PR #3492 merged as 4193ec476ddb14e79e9e18eeb775bb98eb765c34: met (w=2)</td></tr><tr><td>exact canonical and legacy full-line destructive identity implemented: met (w=2)</td></tr><tr><td>exact post-write verification and CAS-guarded verified rollback implemented: met (w=2)</td></tr><tr><td>audit and apply share registry-root ownership context: met (w=2)</td></tr><tr><td>deterministic all-Linux-context identity inventory and CI parity implemented: met (w=2)</td></tr><tr><td>delegation registry and source attestations enforce the three scoped surfaces: met (w=2)</td></tr><tr><td>347 cron tests passed: met (w=2)</td></tr><tr><td>141 scheduler enforcement tests passed: met (w=2)</td></tr><tr><td>all required PR checks passed: met (w=2)</td></tr><tr><td>Codex and Claude adversarial code reviews approved: met (w=2)</td></tr><tr><td>follow-up #3490 records non-mutating dry-run observability debt: met (w=1)</td></tr><tr><td>no live crontab, scheduler, or destructive cleanup mutation performed: met (w=1)</td></tr></tbody></table>
+<h2>Authoritative record (gate-read)</h2>
+<pre>```completeness {"completeness_pct": 100, "cls": "evidence", "threshold": 80, "passed": true, "snapshot_sha": null, "issue_number": 3475, "generated_at": "2026-07-12T09:14:05.112312+00:00", "evidence": ["PR #3492 merged as 4193ec476ddb14e79e9e18eeb775bb98eb765c34: met (w=2)", "exact canonical and legacy full-line destructive identity implemented: met (w=2)", "exact post-write verification and CAS-guarded verified rollback implemented: met (w=2)", "audit and apply share registry-root ownership context: met (w=2)", "deterministic all-Linux-context identity inventory and CI parity implemented: met (w=2)", "delegation registry and source attestations enforce the three scoped surfaces: met (w=2)", "347 cron tests passed: met (w=2)", "141 scheduler enforcement tests passed: met (w=2)", "all required PR checks passed: met (w=2)", "Codex and Claude adversarial code reviews approved: met (w=2)", "follow-up #3490 records non-mutating dry-run observability debt: met (w=1)", "no live crontab, scheduler, or destructive cleanup mutation performed: met (w=1)"]}```</pre>
+<div class="muted">This block is the exact record persisted to the issue + kanban; the close gate reads it.</div>
+</div></body></html>

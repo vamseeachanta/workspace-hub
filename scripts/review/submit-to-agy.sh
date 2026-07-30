@@ -58,7 +58,20 @@ if ! command -v "$AGY_CMD" &>/dev/null; then
 fi
 
 # Cap content well under ARG_MAX (agy ignores stdin; content must ride argv).
+# AGY_REVIEW_MODE=1 (#3573): in the REVIEW lane an oversize payload FAILS the
+# dispatch (exit 3) instead of truncating — reviewing a truncated diff can
+# silently produce a false APPROVE. Truncation remains for delegation dispatch.
 AGY_MAX_BYTES="${AGY_MAX_BYTES:-1000000}"
+if [[ -n "$COMMIT_SHA" ]]; then
+  _content_bytes="$(printf '%s' "$CONTENT" | wc -c)"
+else
+  _content_bytes="$(wc -c < "$CONTENT_FILE")"
+fi
+if [[ "${AGY_REVIEW_MODE:-0}" == "1" && "$_content_bytes" -gt "$AGY_MAX_BYTES" ]]; then
+  echo "# agy review failed: payload exceeds review cap (${_content_bytes} > ${AGY_MAX_BYTES} bytes; AGY_REVIEW_MODE=1 forbids truncation)"
+  echo "# agy review failed: payload exceeds review cap — chunk the content or use a lane without the argv bound" >&2
+  exit 3
+fi
 if [[ -n "$COMMIT_SHA" ]]; then
   CONTENT="$(printf '%s' "$CONTENT" | head -c "$AGY_MAX_BYTES" | tr -d '\000')"
 else

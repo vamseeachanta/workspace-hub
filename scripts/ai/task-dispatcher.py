@@ -61,18 +61,18 @@ KEYWORD_SIGNALS: dict[str, list[str]] = {
         "implement", "implementation", "test", "tests", "refactor", "cleanup",
         "configuration", "config", "edit", "fix", "bug", "patch", "diff",
     ],
-    "gemini": [
+    "agy": [
         "large context", "million token", "research", "web", "external source",
         "long document", "overflow", "third lane", "supplementary",
     ],
 }
 
-KNOWN_AGENTS: list[str] = list(KEYWORD_SIGNALS.keys())  # hermes, claude, codex, gemini
+KNOWN_AGENTS: list[str] = list(KEYWORD_SIGNALS.keys())  # hermes, claude, codex, agy
 
 
 def tier_preference(tier: str) -> list[str]:
     """Cost-aligned agent preference for a tier, sourced from routing-config.yaml
-    tiers.* (#3209). The tier chain (claude/codex/gemini) leads; agents not in the
+    tiers.* (#3209). The tier chain (claude/codex/agy) leads; agents not in the
     chain (hermes) are appended so keyword/dimension signals can still surface them.
     """
     try:
@@ -116,8 +116,8 @@ def best_model_for_agent(provider_caps: dict, agent: str, tier: str) -> tuple[st
         provider = "anthropic"
     elif "openai" in display.lower() or agent == "codex":
         provider = "openai-codex"
-    elif "google" in display.lower() or agent == "gemini":
-        provider = "copilot"   # Gemini via Copilot pool in this workspace
+    elif "google" in display.lower() or agent == "agy":
+        provider = "copilot"   # Gemini surface via Copilot pool; TOKEN_TO_CLI resolves copilot -> agy (#3573)
     elif agent == "hermes":
         provider = "copilot"
     else:

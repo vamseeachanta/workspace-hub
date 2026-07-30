@@ -19,7 +19,7 @@ fi
 # Prefer explicit verdict headers over free-text mentions in issue sections.
 # Ignore template lines that contain option lists (e.g. "APPROVE | REQUEST_CHANGES | REJECT").
 verdict_line="$(
-    grep -Ei '^(#{1,6}[[:space:]]*)?verdict[[:space:]]*:' "$infile" \
+    grep -Ei '^(#{1,6}[[:space:]]*)?\*{0,2}[[:space:]]*verdict[[:space:]]*[:=]' "$infile" \
     | tr '[:upper:]' '[:lower:]' \
     | awk '!/\|/{v=$0} END{print v}' \
     || true
@@ -64,11 +64,11 @@ if grep -Eq '^# codex cli not found' <<< "$text"; then
     echo "ERROR"
 elif grep -Eq '^# codex returned no_output|^# codex review failed.*no_output' <<< "$text"; then
     echo "NO_OUTPUT"
-elif grep -Eq '^# (claude|codex|gemini).*(skipped_network|skipped network)' <<< "$text"; then
+elif grep -Eq '^# (claude|codex|gemini|agy).*(skipped_network|skipped network)' <<< "$text"; then
     echo "SKIPPED_NETWORK"
 elif grep -q "conditional.pass\|conditional_pass" <<< "$text"; then
     echo "CONDITIONAL_PASS"
-elif grep -Eq '^# (claude|gemini).*(review failed|timed out)' <<< "$text"; then
+elif grep -Eq '^# (claude|gemini|agy).*(review failed|timed out|cli not found|payload exceeds)' <<< "$text"; then
     echo "NO_OUTPUT"
 else
     validation="$("$(cd "$(dirname "$0")" && pwd)/validate-review-output.sh" "$infile" 2>/dev/null || echo "ERROR")"

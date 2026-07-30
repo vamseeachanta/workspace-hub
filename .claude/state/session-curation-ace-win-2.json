@@ -1,18 +1,19 @@
 {
   "machine": "ace-win-2",
-  "last_curated_at": "2026-07-07T02:18:00+00:00",
+  "last_curated_at": "2026-07-19T11:59:02+00:00",
   "providers": {
-    "claude": 145,
-    "codex": 18,
+    "claude": 259,
+    "codex": 224,
     "gemini": 0,
     "hermes": 0
   },
-  "sessions_24h": 7,
+  "sessions_24h": 6,
   "providers_active": [
     "claude",
-    "codex"
+    "codex",
+    "gemini"
   ],
-  "memory_files_changed": 0,
+  "memory_files_changed": 200,
   "digest_ref": "session-curation-state",
   "schema_version": 1
 }

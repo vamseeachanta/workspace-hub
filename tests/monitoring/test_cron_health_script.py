@@ -22,6 +22,13 @@ def test_cron_health_uses_uv_run_python_stdin_mode():
     assert "uv run --no-project python -" in script
 
 
+def test_cron_health_resolves_catalog_home_logs_against_home():
+    script = SCRIPT_PATH.read_text()
+
+    assert '[[ "${log_pattern:0:2}" == \\~/ ]]' in script
+    assert 'local_log_pattern="${HOME}/${log_pattern#~/}"' in script
+
+
 def test_schedule_yaml_is_loadable():
     import yaml
 

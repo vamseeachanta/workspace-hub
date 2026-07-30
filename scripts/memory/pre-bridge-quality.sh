@@ -222,6 +222,29 @@ fix_compact() {
     fi
 }
 
+# ---------------------------------------------------------------------------
+# Check 6: Claude auto-memory INDEX byte size (wh#3366)
+# The harness loads MEMORY.md up to a ~24.4KB byte cap and silently drops the
+# rest from recall. Delegate to the byte-size guard; warn (don't block the
+# Hermes bridge — the Claude index is a separate artifact fixed independently).
+# ---------------------------------------------------------------------------
+check_claude_index_size() {
+    local guard="${REPO_ROOT}/scripts/enforcement/check-memory-index-size.sh"
+    [[ -x "${guard}" ]] || { log "  claude-index guard not found (skipped)"; return 0; }
+
+    local out rc
+    out="$(bash "${guard}" 2>&1)" && rc=0 || rc=$?
+    if (( rc == 1 )); then
+        CRITICALS+=("Claude auto-memory index over the ~24.4KB load cap — recall is truncated: ${out%%$'\n'*}")
+        SCORE=$((SCORE - 10))
+    elif [[ -n "${out}" ]]; then
+        WARNINGS+=("Claude auto-memory index over the compaction target: ${out%%$'\n'*}")
+        SCORE=$((SCORE - 3))
+    else
+        log "  claude auto-memory index: within budget"
+    fi
+}
+
 # ============================================================================
 # MAIN
 # ============================================================================
@@ -232,23 +255,26 @@ log "Time: ${TIMESTAMP}"
 log ""
 
 # Run checks
-logc "${CYAN}[1/5] File existence:${NC}"
+logc "${CYAN}[1/6] File existence:${NC}"
 check_files_exist "${MEMORY_DIR}/MEMORY.md" "MEMORY.md"
 check_files_exist "${MEMORY_DIR}/USER.md" "USER.md"
 
-logc "\n${CYAN}[2/5] Char limits:${NC}"
+logc "\n${CYAN}[2/6] Char limits:${NC}"
 check_char_limits "${MEMORY_DIR}/MEMORY.md" "MEMORY.md" 2200
 check_char_limits "${MEMORY_DIR}/USER.md" "USER.md" 1375
 
-logc "\n${CYAN}[3/5] Stale entries:${NC}"
+logc "\n${CYAN}[3/6] Stale entries:${NC}"
 check_stale_entries "${MEMORY_DIR}/MEMORY.md" "MEMORY.md"
 check_stale_entries "${MEMORY_DIR}/USER.md" "USER.md"
 
-logc "\n${CYAN}[4/5] Duplicate detection:${NC}"
+logc "\n${CYAN}[4/6] Duplicate detection:${NC}"
 check_duplicates "${MEMORY_DIR}/MEMORY.md" "${MEMORY_DIR}/USER.md"
 
-logc "\n${CYAN}[5/5] Content richness:${NC}"
+logc "\n${CYAN}[5/6] Content richness:${NC}"
 check_content_richness "${MEMORY_DIR}/MEMORY.md" "MEMORY.md"
+
+logc "\n${CYAN}[6/6] Claude auto-memory index size:${NC}"
+check_claude_index_size
 
 # ---------------------------------------------------------------------------
 # Report

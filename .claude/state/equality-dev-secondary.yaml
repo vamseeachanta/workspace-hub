@@ -1,19 +1,19 @@
-generated_at: "2026-07-04T20:00:10"
-schema_version: 4
+generated_at: "2026-07-29T11:38:59"
+schema_version: 5
 machine: "dev-secondary"
 host: "ace-linux-2"
 os: linux
 status: active
 provenance:
-  checkout_sha: "e1af285c3"
+  checkout_sha: "7a7f2e0d1"
   dirty: false
   behind_main: 0
   ahead_main: 0
   origin_ref_age_h: 0
 dimensions:
   compute:
-    static: {cores: 32, ram_total_mib: 32040, gpu_model: "NVIDIA T400 4GB"}
-    headroom: {ram_avail_mib: 24908, disk_avail_gb: 810}
+    static: {cores: 32, ram_total_mib: 32037, gpu_model: "NVIDIA T400 4GB"}
+    headroom: {ram_avail_mib: 25292, disk_avail_gb: 729}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -29,12 +29,12 @@ dimensions:
     gh_auth: ok
     python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-2.yaml
-    readiness_overall: fail
-  skills: {repo_skill_count: 419}
+    readiness_overall: pass
+  skills: {repo_skill_count: 422}
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-07-04T19:59:17"
+    context_md_mtime: "2026-07-29T04:35:01"
   provider_harness:
     schema_version: 1
     providers:
@@ -68,14 +68,14 @@ dimensions:
   scheduler:
     has_repo_sync: true
     has_parity_review: false
-    job_count: 24
+    job_count: 26
   session_curation:
-    last_curated_at: "2026-07-04T23:47:01+00:00"
-    sessions_24h: 9
+    last_curated_at: "2026-07-29T23:47:01+00:00"
+    sessions_24h: 42
     providers_active: "claude,codex,gemini,hermes"
     memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-07-04T23:47:05+00:00"
+    audited_at: "2026-07-29T23:47:10+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,12 +84,16 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-04T23:47:05+00:00"
-    worst_age_hours: 75.323
-    freshness: "MEMORY-EXPIRED"
+    audited_at: "2026-07-29T23:47:10+00:00"
+    worst_age_hours: 14.203
+    freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-07-04T23:47:07+00:00"
-    repos_total: 18
-    healthy: 34
+    audited_at: "2026-07-29T23:47:11+00:00"
+    repos_total: 19
+    healthy: 36
     repairable: 0
     worst_state: "MODIFIED-REAL-DIR"
+  publish_health:
+    last_publish_at: "2026-07-29T23:17:06Z"
+    last_publish_duration_s: 4
+    last_publish_rc: 0

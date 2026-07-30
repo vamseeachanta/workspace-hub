@@ -1,0 +1,1 @@
+{"authority_revision":"12345678-1234-4234-9234-123456789abc","generation":1,"rules":[{"match_mode":"exact-bytes","rule_id":"aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa","severity":"block","target":"both"}],"schema_id":"legal-rule-registry-v1"}

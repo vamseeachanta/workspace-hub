@@ -79,6 +79,8 @@ FALLBACK_PRICING = {
     ("codex",  ""):        (2.00,   8.00),
     ("gemini", "pro"):     (1.25,   5.00),
     ("gemini", "flash"):   (0.15,   0.60),
+    ("agy",    "pro"):     (1.25,   5.00),   # Antigravity, Gemini-backed (#3573)
+    ("agy",    "flash"):   (0.15,   0.60),
     ("openai", "gpt-4"):   (2.00,   8.00),
 }
 DEFAULT_RATE = (3.00, 15.00)
@@ -153,6 +155,8 @@ def infer_provider_model(last_msg):
     m = last_msg.lower()
     if re.search(r'\bcodex\b|o4-mini|openai codex', m):
         return "codex", "codex-cli"
+    if re.search(r'\bagy\b|antigravity', m):
+        return "agy", "gemini-3-1-pro"
     if re.search(r'\bgemini\b', m):
         return "gemini", "gemini-pro"
     if re.search(r'\bfable\b|\bmythos\b', m):

@@ -1,8 +1,51 @@
 # Scheduled Tasks Inventory
 
 > Source of truth: `config/scheduled-tasks/schedule-tasks.yaml`
-> Installer: `scripts/cron/setup-cron.sh`
+> Installer: `scripts/cron/setup-cron.sh` (compatibility wrapper over the transactional `cron_apply.py` engine)
 > Validator: `scripts/cron/validate-schedule.py`
+
+## Mutation Safety Audit
+
+Scheduler mutation ownership is cataloged separately from task cadence in
+`config/scheduled-tasks/mutation-surfaces.yaml`. The registry covers direct
+cron, systemd-user, and Windows Task Scheduler writers plus reviewed transitive
+entrypoints. Its checker derives status from tracked index bytes and does not
+authorize live scheduler changes.
+
+Direct cron ownership is restricted to canonical and declared legacy exact
+lines. Transitive entrypoints declare their complete delegation chain,
+terminal operation, mode arguments, target, exit behavior, and source
+attestation. The onboarding preview gap remains visible as
+[#3490](https://github.com/vamseeachanta/workspace-hub/issues/3490), while the
+harness-update error-swallowing disposition remains #3479.
+
+```bash
+# Validate inventory, source attestations, and dispositions
+uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
+
+# Verify the deterministic exact-identity inventory
+uv run python scripts/cron/build-cron-identity-inventory.py --check
+
+# Verify the committed human audit is byte-current
+uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py \
+  --check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html
+```
+
+The human audit records [#3475](https://github.com/vamseeachanta/workspace-hub/issues/3475)
+as resolved and links active migration issues
+[#3476](https://github.com/vamseeachanta/workspace-hub/issues/3476) through
+[#3479](https://github.com/vamseeachanta/workspace-hub/issues/3479). Issue
+coordinates are checked offline; their live state is informational and does
+not convert a `migration-required` row into compliance.
+
+### Scheduler identity and host binding
+
+- `current-user-cron` is the crontab owned by the invoking local user.
+- `root-cron` is the local root crontab and requires explicit root execution.
+- `systemd-user` is the invoking user's local systemd manager and unit namespace.
+- `windows-current-user-task` is the current Windows user's Task Scheduler namespace.
+- `physical-local` binds mutation to the physical host running the writer, not a machine alias or workspace path.
+- `explicit-remote-transport` is required for intentional mutation through a declared remote transport; remote targeting must never be inferred.
 
 ## Machine Roles
 
@@ -28,19 +71,46 @@
 | 04:00 Mon | skills-curation | Weekly skills curation v2: duplicate names, leaf collisions, wrapper pairs, and filesystem-only active skill loss-risk inventory (local-only JSON + Markdown artifacts) | `logs/maintenance/skills-curation-*.log` |
 | 04:30 Mon | weekly-hermes-parity-review | Hermes cross-machine parity review | `logs/weekly-parity/cron-*.log` |
 | 04:30 daily | notification-purge | Delete notification JSONL > 7 days | — |
+| 04:25 daily | hermes-claude-bridge | Hermes → Claude repo-memory bridge; staggered on ace-linux-1 and invoked as `bridge-hermes-claude.sh --commit` | `logs/orchestrator/memory-bridge/hermes-claude-*.log` |
 | 05:00 daily | claude-memory-backup | rsync memory to dev-secondary | `/tmp/claude-memory-backup.log` |
 | 05:35 daily | repo-ecosystem-hygiene | Read-only repo ecosystem hygiene audit; writes ignored local Markdown/JSON state | `logs/quality/repo-ecosystem-hygiene-*.log` |
 | 05:45 daily | cron-health | Scheduled-task log freshness/error scan | `logs/quality/cron-health-*.log` |
 | 05:57 daily | email-queue-attention-notify | PII-safe email attention route notification writer | `logs/email/queue-attention-notify-*.log` |
 | 06:00 daily | daily-today | Daily productivity summary | `logs/daily/cron.log` |
-| */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
+| */4h | repository-sync | Pull/push all repos through the singleton runtime wrapper | `logs/repository-sync-*.log` |
 
 ## Task Schedule (ace-linux-2 / dev-secondary — contribute variant)
 
 | Time | ID | Description | Log |
 |------|-----|-------------|-----|
 | 01:45 daily | harness-update | AI harness tools update (GStack, Hermes, Superpowers, GSD) | `logs/maintenance/harness-update-*.log` |
-| */4h | repository-sync | Pull/push all repos | `.claude/state/learning-reports/cron.log` |
+| */4h | repository-sync | Pull/push all repos through the singleton runtime wrapper | `logs/repository-sync-*.log` |
+
+## Runtime Health Contract
+
+Tasks may opt in through a `runtime:` mapping in
+`config/scheduled-tasks/schedule-tasks.yaml`. `repository-sync` is the first
+enforced singleton and uses a 10,800-second budget, which is below its four-hour
+cadence. Its local state lives under
+`.claude/state/cron-runtime/repository-sync/`.
+
+Cron health keeps log and runtime evidence independent. Runtime status values
+are:
+
+- `never_started` — no lifecycle evidence exists;
+- `active_within_budget` — the recorded child identity is live and within its budget;
+- `completed_success` — the latest completed invocation exits zero;
+- `completed_failure` — the latest completed invocation exits nonzero or by signal;
+- `overlap` — a second invocation encounters the singleton owner;
+- `filesystem_wait` — the recorded child reports process state `D` or an explicitly configured wait channel;
+- `excessive_runtime` — the live child exceeds `max_seconds`;
+- `stale_or_reused_pid` — the recorded child is absent or its start token differs;
+- `orphan_contention`, `invalid_state`, and `unknown` — evidence is inconsistent or inspection cannot complete safely.
+
+The runner stores `active.json`, `contention.json`, and `last-result.json`
+separately so contention cannot overwrite owner or completion evidence. It
+records the mutating child PID/PGID rather than treating the waiting supervisor
+as the workload.
 
 ## Task Schedule (licensed-win-1 / licensed-win-2 - Windows Task Scheduler)
 
@@ -53,6 +123,8 @@ collector + matrix run.
 | Time | ID | Description | Log |
 |------|-----|-------------|-----|
 | 04:30 Mon | equality-report | Machine-equality self-report plus matrix build; commits/pushes equality state | `logs/quality/equality-*.log` |
+| Every 6h at :47 | session-curation | Refresh session, skill-currency, memory, and skill-link evidence | `logs/monitoring/session-curation-*.log` |
+| 05:15 daily | ecosystem-reconcile | Report-only ecosystem and machine-equivalence reconciliation plan | `logs/quality/reconcile-*.log` |
 
 ## Skills Curation v2 Contract
 
@@ -103,15 +175,30 @@ The `comprehensive-learning` cron entry runs `comprehensive-learning-nightly.sh`
 # Validate YAML
 uv run --no-project python scripts/cron/validate-schedule.py
 
-# Preview what would be installed
-bash scripts/cron/setup-cron.sh --dry-run
+# Preview the fail-closed transaction against this user's live crontab
+bash scripts/cron/setup-cron.sh --dry-run --machine ace-linux-1
 
-# Install/update crontab
-bash scripts/cron/setup-cron.sh
+# Install/update through backup + lock + compare-and-swap + rollback checks
+bash scripts/cron/setup-cron.sh --machine ace-linux-1
+
+# Preview fail-closed transactional reconciliation
+uv run --script scripts/cron/cron_apply.py --machine ace-linux-1 --json
 
 # Check current crontab
 crontab -l
 ```
+
+`setup-cron.sh` no longer has an independent append/fingerprint algorithm. Both
+entrypoints use the same renderer, ownership classification, managed block, and
+transaction. Preview may fail on an unknown live line; classify that ownership
+instead of bypassing the abort. Applying while a communications daemon is live
+also fails unless the operator explicitly supplies `--allow-live-reload` after
+reviewing the preview.
+
+`--machine` selects catalog/registry behavior but never targets another host's
+crontab. Run the command on the machine whose local crontab is being reconciled.
+Windows `contribute-minimal` targets print Task Scheduler guidance and do not
+invoke Linux cron reconciliation.
 
 ## Audit Notes (2026-04-01)
 

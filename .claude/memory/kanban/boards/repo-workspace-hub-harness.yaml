@@ -41,6 +41,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - cat:tooling
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -105,6 +106,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:harness
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -121,6 +123,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:harness
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -141,6 +144,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:harness
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -161,6 +165,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:harness
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -181,6 +186,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:harness
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -197,6 +203,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:harness
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -214,7 +221,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:low
-      - cat:documentation
       - cat:harness
       - machine:dev-primary
       - dispatch:ready
@@ -237,7 +243,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:operations
       - cat:harness
       - machine:dev-primary
       - dispatch:ready
@@ -260,7 +265,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:ai-orchestration
       - cat:harness
       - machine:dev-primary
       - dispatch:ready
@@ -283,7 +287,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:ai-orchestration
       - cat:harness
       - machine:dev-primary
       - dispatch:ready
@@ -304,6 +307,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2431
     gh_state: open
     gh_labels:
+      - cat:operations
       - priority:critical
       - machine:dev-primary
       - compliance-alert
@@ -327,6 +331,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:low
+      - cat:tooling
       - machine:dev-primary
       - tech-debt
       - dispatch:ready
@@ -411,7 +416,6 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - cat:documentation
       - cat:harness
       - machine:dev-primary
       - dispatch:ready
@@ -432,6 +436,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2517
     gh_state: open
     gh_labels:
+      - cat:operations
       - priority:critical
       - machine:dev-primary
       - compliance-alert
@@ -453,6 +458,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2634
     gh_state: open
     gh_labels:
+      - cat:operations
       - priority:critical
       - machine:dev-primary
       - compliance-alert
@@ -474,6 +480,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2660
     gh_state: open
     gh_labels:
+      - cat:operations
       - priority:critical
       - machine:dev-primary
       - compliance-alert
@@ -496,9 +503,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - cat:ai-orchestration
       - cat:harness
-      - cat:maintenance
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
@@ -518,6 +523,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2749
     gh_state: open
     gh_labels:
+      - cat:operations
       - priority:critical
       - machine:dev-primary
       - compliance-alert
@@ -560,6 +566,7 @@ cards:
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2806
     gh_state: open
     gh_labels:
+      - cat:operations
       - priority:critical
       - compliance-alert
       - domain:harness
@@ -592,6 +599,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:high
+      - cat:harness
       - status:plan-review
       - domain:harness
       - lane:claude
@@ -687,6 +695,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:harness
       - domain:harness
       - lane:claude
     initial_status: triage
@@ -884,5 +893,2705 @@ cards:
       - lane:claude
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3408
+    title: Add harness-checkup (/doctor) hygiene dimension to machine-equality matrix
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3408
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - machine:multi
+      - status:plan-approved
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3577
+    title: 'fix(harness): repo-wide exec-bit audit — NTFS-FUSE working copy commits scripts as 100644'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3577
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3578
+    title: "fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3578
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3579
+    title: 'chore(readiness): rename equality/parity provider row gemini→agy (cross-machine snapshot schema migration)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3579
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3580
+    title: 'chore(harness): gemini CLI uninstall decision after agy soak (#3573)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3580
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#43
+    title: 'WRK-1107: assess(sessions): unified provider assessment + compliance audit — parse logs, score gates, emit routing signals'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/43
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - agent:codex
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#63
+    title: 'WRK-1168: Review session logs and eliminate recurring errors'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/63
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1168: Review session logs and eliminate recurring errors
+
+      **Status:** done | **Priority:** medium | **Category:** harness | **Subcategory:** session-health
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#110
+    title: 'WRK-181: Session Replay & Time Travel'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/110
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-181: Session Replay & Time Travel
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** harness | **Subcategory:** uncategorised
+
+      **Repo:** [''workspace-hub''] | **Complexity:** high | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#111
+    title: 'WRK-182: Predictive Session Planning'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/111
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-182: Predictive Session Planning
+
+      **Status:** Stage 17: Reclaim (n) | **Priority:** low | **Category:** harness | **Subcategory:** session
+
+      **Repo:** [''workspace-hub''] | **Complexity:** high | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#194
+    title: 'WRK-636: feat(memory): integrate Codex session archive into comprehensive-learning nightly pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/194
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#249
+    title: 'WRK-173: Session Management Workflow Documentation + Schematic'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/249
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#250
+    title: 'WRK-175: Session Start: Engineering Context Loader'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/250
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#252
+    title: 'WRK-176: Session Start: Design Code Version Guard'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/252
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#267
+    title: 'WRK-224: Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/267
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#272
+    title: 'WRK-229: Skills curation — online research, knowledge graph review, update index, session-input health check'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/272
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#288
+    title: 'WRK-173: Session Management Workflow Documentation + Schematic'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/288
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#289
+    title: 'WRK-262: Add path-handling guidance to session preflight hook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/289
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#290
+    title: 'WRK-175: Session Start: Engineering Context Loader'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/290
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#293
+    title: 'WRK-176: Session Start: Design Code Version Guard'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/293
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#311
+    title: 'WRK-224: Tool-readiness SKILL.md — session-start check for CLI, data sources, statusline, work queue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/311
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#317
+    title: 'WRK-229: Skills curation — online research, knowledge graph review, update index, session-input health check'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/317
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#328
+    title: 'WRK-305: feat: session signal emitters — wire /clear, plan-mode, per-WRK tool-counts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/328
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#333
+    title: 'WRK-262: Add path-handling guidance to session preflight hook'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/333
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#373
+    title: 'WRK-305: feat: session signal emitters — wire /clear, plan-mode, per-WRK tool-counts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/373
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#453
+    title: 'WRK-387: Claude Code session auto-refresh with WRK context persistence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/453
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#497
+    title: 'WRK-387: Claude Code session auto-refresh with WRK context persistence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/497
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#664
+    title: 'WRK-641: fix(agents): formalize and close codex session-wrapper launch bugfix'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/664
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#713
+    title: 'WRK-690: feat(workflow): enforce skill-driven /work gatepass from session start to close'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/713
+    gh_state: closed
+    gh_labels:
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#733
+    title: 'WRK-108: Agent usage credits display — show remaining quota at session start for weekly planning'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/733
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#737
+    title: 'WRK-124: Session 20260211_095832 — 1 file(s) created'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/737
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#746
+    title: 'WRK-108: Agent usage credits display — show remaining quota at session start for weekly planning'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/746
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#751
+    title: 'WRK-124: Session 20260211_095832 — 1 file(s) created'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/751
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#757
+    title: 'WRK-177: Stop Hook: Engineering Calculation Audit Trail'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/757
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#758
+    title: 'WRK-178: Stop Hook: Data Provenance Snapshot'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/758
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#760
+    title: "WRK-177: 'Stop Hook: Engineering Calculation Audit Trail'"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/760
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#762
+    title: "WRK-178: 'Stop Hook: Data Provenance Snapshot'"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/762
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#763
+    title: 'WRK-186: Context budget: trim rules/ to under 16KB'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/763
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#765
+    title: "WRK-186: 'Context budget: trim rules/ to under 16KB'"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/765
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#774
+    title: 'WRK-230: Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/774
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#778
+    title: 'WRK-232: session-bootstrap skill — one-time historical session analysis per machine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/778
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#779
+    title: 'WRK-233: Assess and simplify existing workflows in light of session-analysis self-learning loop'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/779
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#784
+    title: 'WRK-230: Holistic session lifecycle — unify gap surfacing, stop hooks, and skill input pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/784
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#786
+    title: 'WRK-232: session-bootstrap skill — one-time historical session analysis per machine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/786
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#787
+    title: 'WRK-233: Assess and simplify existing workflows in light of session-analysis self-learning loop'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/787
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#807
+    title: 'WRK-1018: feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/807
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#809
+    title: 'WRK-1020: [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/809
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#859
+    title: 'WRK-1076: feat(harness): async completion notifications — cron, CI, benchmark failure alerts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/859
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#893
+    title: 'WRK-1102: fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/893
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#895
+    title: 'WRK-1018: feat(comprehensive-learning): Phase 6 surfaces unqueued future-work.yaml recommendations as WRK candidates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/895
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#897
+    title: 'WRK-1108: Investigate WhatsApp MCP integration for Claude'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/897
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#900
+    title: 'WRK-1020: [Route B] feat(cron): portfolio-signals.yaml — daily agentic activity + capability research signal for repo-portfolio-steering'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/900
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#947
+    title: 'WRK-1161: Suppress non-actionable CLI stderr noise in work-queue scripts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/947
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#970
+    title: 'WRK-641: fix(agents): formalize and close codex session-wrapper launch bugfix'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/970
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1008
+    title: 'WRK-1076: feat(harness): async completion notifications — cron, CI, benchmark failure alerts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1008
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1082
+    title: 'WRK-1102: fix(comprehensive-learning): repair modular chain — signal naming, missing phases, redundant cron, LLM→script conversions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1082
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1087
+    title: 'WRK-1108: Investigate WhatsApp MCP integration for Claude'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1087
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1096
+    title: "WRK-179: 'Start Hook: Agent Capacity Pre-flight'"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1096
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1106
+    title: "WRK-214: 'Session lifecycle compliance — interview-driven review of all workflow scaffolding'"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1106
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1111
+    title: "WRK-217: 'Update ecosystem-health-check.sh — remove stale skill count threshold'"
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1111
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1112
+    title: 'WRK-222: Pre-clear session snapshot — /save skill + save-snapshot.sh script'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1112
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1153
+    title: 'WRK-1161: Suppress non-actionable CLI stderr noise in work-queue scripts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1153
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1218
+    title: 'WRK-179: Start Hook: Agent Capacity Pre-flight'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1218
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1225
+    title: 'WRK-214: Session lifecycle compliance — interview-driven review of all workflow scaffolding'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1225
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1228
+    title: 'WRK-217: Update ecosystem-health-check.sh — remove stale skill count threshold'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1228
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1229
+    title: 'WRK-222: Pre-clear session snapshot — /save skill + save-snapshot.sh script'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1229
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - archived
+      - wrk-item
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1321
+    title: 'WRK-5126: Session-to-execution flow: integrate data intelligence, file structure, and testing into /work'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1321
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - wrk-item
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: Auto-created by backfill-github-refs.sh
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1352
+    title: 'whats-next: targeted index refresh before display + parallel agent updates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1352
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Mission
+
+      whats-next.sh reads a pre-computed wrk-status-index.json that goes stale when files move between pending/working/done or stages advance. Users see incorrect status. Fix by refreshing only displayed items, not the full index.
+
+      ## Design'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1408
+    title: 'WRK-1408: Wire notification consumer — surface logs/notifications to /today or desktop'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1408
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1411
+    title: 'WRK-1411: fix: archive blocker from WRK-workspace-hub-1398 — Wire notification consumer — surface logs/notifications to /'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1411
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1511
+    title: Migrate cron jobs to Claude Desktop scheduled agents for self-healing execution
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1511
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:tooling
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Objective
+
+      Migrate cron jobs from local crontab to Claude-powered scheduled execution for self-healing and higher success rates. Deploy on ace-linux-1 first, then roll out to other ecosystem machines.
+
+      ## Current State'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1679
+    title: Active push notifications for harness-update failures (#1668 follow-up)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1679
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Both reviewers flagged that logging BROKEN to a file at 01:15 is not real alerting.
+
+      Currently notify.sh writes JSONL to logs/notifications/ — no active push.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1900
+    title: 'memory: test cron job 8c797470d7d3 in isolated Hermes session'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1900
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Cron job `8c797470d7d3` (memory-bridge-daily) was created with schedule `0 4 * * *`.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1901
+    title: 'memory: propagate bridge to digitalmodel/ and aceengineer-strategy/ nested repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1901
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Memory bridge (issues #1886, #1890) is only in workspace-hub. Two other nested repos have zero memory context:
+
+      1- digitalmodel/ -- engineering work (OrcaFlex, AQWA, BEMRosetta, vessel master, cache, demos). Used by all agents.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1902
+    title: 'memory: automate memory quality before bridge commit'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1902
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Three quality scripts exist: compact-memory.py, curate-memory.py, eval-memory-quality.py.
+
+      Cron job 8c797470d7d3 reads ~/.hermes/memories/ directly. If memory is stale or bloated, bridge propagates bad data to all machines.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1903
+    title: 'memory: new-machine onboarding documentation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1903
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Onboarding a new machine requires: git clone, bootstrap script, memory context. Knowledge scattered across architecture doc, licensed-win-1 guide, and bootstrap output.
+
+      ## Task'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1917
+    title: 'memory: backup and rollback mechanism for .claude/memory/'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1917
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Bridge script pushes to .claude/memory/ on every run. If something goes wrong (bad memory state, bridge bug, corrupted output), there is no rollback.
+
+      ## Problem'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1918
+    title: 'memory: Claude Code auto-memory sync from Windows back to repo'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1918
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Bridge script syncs: Hermes → .claude/memory/ → all machines via git pull.
+
+      Missing: Windows Claude sessions generate auto-memory corrections (feedback files, working-style updates, project context) that stay local to Windows. These enrichments never reach the repo or Hermes machine.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1919
+    title: 'docs: create memory ecosystem quick-reference card'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1919
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:documentation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      Memory system has grown significantly with bridge, quality gate, drift detection, health checks, and bootstrap scripts.
+
+      New users (or future you after 6 months) need a quick mental model.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1977
+    title: 'chore(memory): remaining memory ecosystem work — backup/rollback, Windows sync, quick-ref card'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1977
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# Summary
+
+      Consolidated tracking for remaining memory ecosystem tasks from the skill unification stream (#1941-#1952).
+
+      # What was done in the skill unification stream (all CLOSED)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1985
+    title: 'Daily system health review 2026-04-06: 4 real cron failures, 8 false positives, 4 missing jobs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1985
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:tooling
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2023
+    title: 'session-log: 2026-04-07 future-work-structuring -- random thoughts to structured issues'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2023
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:operations
+      - machine:dev-primary
+      - maintenance
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Session Log: 2026-04-07 -- Future Work Structuring
+
+      ### What Happened
+
+      Filtered 10+ messages of random thoughts into structured GitHub issues for repos and aceengineer.com website.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2033
+    title: 'session-log: 2026-04-07 -- executed enforcement, self-improvement pipeline, methodology docs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2033
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:operations
+      - machine:dev-primary
+      - maintenance
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Session Log: 2026-04-07 -- Future Work Structuring + Execution
+
+      ### Summary
+
+      Executed 3-session plan: enforcement infrastructure, self-improvement pipeline, methodology docs. Created 7 new issues for follow-up work.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2061
+    title: 'Session governance Phase 4: Hermes-orchestrated session lifecycle'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2061
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      #1839 Phases 1-3 deliver the checkpoint model, runtime enforcement, and restored infrastructure. Phase 4 is the final step: having Hermes orchestrate the full session lifecycle with gate transitions.
+
+      ## Task'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2097
+    title: 'chore(automation): establish recurring execution path for weekly ecosystem review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2097
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Define and implement the recurring execution path for the weekly ecosystem execution + intelligence review in #2089.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2110
+    title: 'feat(governance): Phase 4a session-close structured report generation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2110
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement Phase 4a of session governance: generate a structured session-close report at every session end, using the existing governance checkpoint and hook infrastructure.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2111
+    title: 'feat(governance): Phase 4b inter-session continuity validation from session reports'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2111
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement Phase 4b of session governance: validate prior session state before starting new work by reading the structured session-close report produced by Phase 4a.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2130
+    title: 'fix(bridge): memory bridge auto-commit fails to re-stage after stash/pull'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2130
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      `scripts/memory/bridge-hermes-claude.sh --commit` runs successfully (regenerates 22 memory files) but the commit step fails because it stashes working tree changes, does a `git pull`, then tries to commit without re-staging the updated memory files after popping the stash.
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2131
+    title: 'chore(reflect): regenerate reflect-state.yaml — 47 days stale'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2131
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      `.claude/state/reflect-state.yaml` was last run on 2026-02-22 (47 days ago). It is missing 28+ keys that `daily-reflect-report.sh` expects (session_rag, cc_insights, work_queue, skill_eval, capability_map, knowledge_base sections).
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2132
+    title: 'fix(health-check): cron job counter shows 0 scheduled despite 4 active jobs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2132
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:low
+      - cat:tooling
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Problem
+
+      Health check reports `Cron (2 jobs) — 0 scheduled (0 completed)` which is misleading:
+
+      - Actual state: 4 Hermes jobs in `~/.hermes/cron/jobs.json`'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2138
+    title: 'feat(automation): add scheduled weekly ecosystem review runner and task registration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2138
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add the scheduled weekly ecosystem review runner and task registration.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2144
+    title: 'feat(automation): implement weekly ecosystem review runner wrapper and CLI entrypoint'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2144
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement the weekly ecosystem review runner wrapper and CLI entrypoint.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2145
+    title: 'chore(automation): register weekly ecosystem review in scheduled-task inventory and cron installer'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2145
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Register the weekly ecosystem review in the scheduled-task inventory and cron installer path.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2185
+    title: 'feat(validation): implement unresolved session-read bucket classifier with deterministic reason codes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2185
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement the unresolved session-read bucket classifier with deterministic reason codes.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2191
+    title: 'report(weekly-review): generate unresolved-read suppression renewal queue and stale-waiver digest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2191
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Generate the unresolved-read suppression renewal queue and stale-waiver digest.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2194
+    title: 'feat(reporting): emit cross-tool reporter delta artifacts against previous weekly baseline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2194
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Emit cross-tool reporter delta artifacts against the previous weekly baseline.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2197
+    title: 'report(weekly-review): publish provider-specific repeated-offender unresolved-read exception cohorts and escalation digest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2197
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Publish provider-specific repeated-offender unresolved-read exception cohorts and escalation digest.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2221
+    title: 'feat(daily-report): refresh stale data sources and complete reflect pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2221
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The `/today` daily report pipeline now works end-to-end (fixed 2026-04-11), but several data sources are stale or incomplete.
+
+      ## What Was Fixed This Session'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2232
+    title: 'feat(memory-health): surface stale or missing session-log portability guidance after provider-audit refresh'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2232
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Teach the memory-health / observability workflow to flag when session-log portability guidance is missing or stale after provider-audit refreshes.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2237
+    title: 'feat(automation): build transient-artifact cleanup and archival workflow for handoffs and planning state'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2237
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build a cleanup/archive workflow that enforces the transient artifact retention policy for handoffs, planning state, session signals, and related short-lived artifacts.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2256
+    title: 'feat(operations): automate session-exit handoff generation from live repo state'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2256
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Automate session-exit handoff generation so the repo can persist a clean exit summary with approved issue state, dirty-worktree caveats, live tmux/agent context, and recommended next blocks.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2291
+    title: 'fix(cron-health): harden failure detection and align task evidence contracts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2291
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Cron health reporting is materially inaccurate in the current repo ecosystem snapshot.
+
+      Recent audit evidence shows:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2292
+    title: 'fix(queue-refresh): restore weekly queue refresh evidence and cron execution'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2292
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      `queue-refresh-weekly` is configured in `schedule-tasks.yaml` but currently produces no evidence logs and is marked `[MISSING]` by cron health.
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2335
+    title: 'chore(cron): retro-refactor state-size-report.sh to use cadence-common.sh helpers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2335
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:tooling
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      `scripts/cron/state-size-report.sh` (from #2070) pre-dates the shared `scripts/cron/lib/cadence-common.sh` helpers introduced in commit 07c246513 and rolls its own status-band logic. Claude''s P2 finding from the #2313-#2319 rollout pinned this for retrofit.
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2336
+    title: 'chore(cron): cadence-report retention policy — auto-archive old reports'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2336
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:tooling
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The 8 cadence crons (#2313-#2319 + wed#309) each write one report per period. Without retention, `docs/reports/` will accumulate:
+
+      - 52 weekly reports/year (memory-health, scheduler-health)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2337
+    title: 'chore(cron): cadence-schedule index generator + pre-commit guard'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2337
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:tooling
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The cadence schedule is spread across:
+
+      - `config/scheduled-tasks/schedule-tasks.yaml` (canonical cron entries)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2376
+    title: 'feat(harness): provider assessment — corpus-honest subset (descoped from #43)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2376
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# Provider assessment — corpus-honest subset (descoped from #43)
+
+      ## Background
+
+      #43 was closed after 3 rounds of adversarial review (all returned MAJOR verdicts). The root cause was scope vs. corpus mismatch: #43 asked for 6 dimensions × 3 providers from a verified event corpus that emits only `session_tool_summary`, `stage_exit`, and `codex_session`. This issue is the honest subset that can actually be built from current events.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2377
+    title: 'feat(harness): add missing session-signal event emitters to unblock deferred provider-assessment dimensions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2377
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# Add missing session-signal event emitters
+
+      ## Background
+
+      #43 (closed) and #2376 (sibling corpus-honest subset) together established that 4 of the 6 dimensions the original #43 body asked for cannot be scored from the current event corpus because the required events simply aren''t emitted anywhere. This issue adds those upstream emitters so future provider-assessment work can score the remaining dimensions.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2381
+    title: 'chore(governance): add computable expiration metadata to session handoffs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2381
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add computable expiration metadata to session handoffs so retention, cleanup advisories, and handoff lifecycle signals can be derived from repo content instead of guessed from filenames or issue comments.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2385
+    title: 'chore(harness): consolidate dual session-signals stores — .claude/state/ vs state/ divergence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2385
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '# Consolidate dual session-signals stores
+
+      ## Observation (surfaced during #43 review work 2026-04-19/20)
+
+      Two separate session-signal stores exist with DIFFERENT filename schemas AND different event shapes:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2497
+    title: 'chore(memory): handoff-doc cross-row SHA transcription hazard'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2497
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      The 2026-04-26 morning handoff (`/tmp/handoff-prompt.md`) recorded:
+
+      ```'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2529
+    title: '[Daily] Inbox manageability tracker — auto-comment thread from daily-inbox-manageability agent'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2529
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:operations
+      - machine:dev-primary
+      - maintenance
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Purpose
+
+      Single-issue thread for the `daily-inbox-manageability` remote routine to post its daily report. Each comment is a single day''s inbox state across `aceengineer.com` and `achantav@gmail.com` (personal). Mute this issue when graduated; close it when the routine is disabled.
+
+      ## Graduation criteria (the "under control" definition)'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2563
+    title: Set up Telegram mobile access for Hermes AI control
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2563
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Summary
+
+      Set up Telegram-based mobile access to Hermes/AI so Vamsee can interact with the agent, approve/adjust plans, tweak task lists, and monitor/steer work while on the move.
+
+      ## Current user state'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2647
+    title: 'ANNOUNCE: llm-wiki spinout in progress (parallel-session heads-up)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2647
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:operations
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## What
+
+      A spinout migration is **currently executing** to move the engineering wikis (`knowledge/wikis/`) and seeds (`knowledge/seeds/`) from `vamseeachanta/workspace-hub` into a new dedicated public repo at **`vamseeachanta/llm-wiki`**.
+
+      This issue exists so any other agent or session reading the workspace-hub issue tracker is aware that:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2655
+    title: 'chore(provider-session): route Codex nested-repo path drift to owning tier-1 repos'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2655
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - cat:harness
+      - domain:context-management
+      - status:done
+      - agent:codex
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2657
+    title: 'chore(provider-session): remediate Hermes llm-wiki spinout path drift'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2657
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      The refreshed provider-session audit (`2026-05-08T11:03:24Z`) escalated Hermes to a red/next-up remediation lane for `llm_wiki_spinout_path_drift`.
+
+      Durable transfer report: `docs/reports/2026-05-08-provider-session-learning-transfer.md`.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2720
+    title: 'feat(hermes): multi-machine Telegram dispatch and sync control plane'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2720
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:operations
+      - cat:harness
+      - status:done
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2900
+    title: Plan Deckhand multi-platform notification fanout for Telegram, Signal, WhatsApp, and Teams
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2900
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2901
+    title: Plan Deckhand Telegram/Signal/WhatsApp/Teams platform parity reconnaissance
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2901
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2902
+    title: Plan Deckhand shared delivery group and fanout contract
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2902
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2903
+    title: Plan Deckhand conversation reply policy guardrails for multi-platform fanout
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2903
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2904
+    title: Plan Deckhand send_message multi-target text fanout
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2904
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2905
+    title: Plan Deckhand operator docs for Telegram, Signal, WhatsApp, and Teams fanout
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2905
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2906
+    title: Apply Deckhand product name across the multi-platform bot plan
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2906
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2933
+    title: 'Deckhand gateway availability: keep Hermes gateway always-on and handle every inbound message'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2933
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:operations
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2973
+    title: 'Compliance alert: W24 — 0% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2973
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - priority:critical
+      - compliance-alert
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3033
+    title: 'triage: incorporate Claude session learnings from 2026-05-20 to 2026-06-10'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3033
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:skills
+      - status:needs-plan
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3077
+    title: Orchestrator consistency drift (2026-06-14)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3077
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - domain:harness
+      - consistency-drift
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3103
+    title: 'Retire dead claude-flow orchestration cluster in scripts/automation/ (epic #3078 follow-up)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3103
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - status:plan-approved
+      - gate:completeness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3104
+    title: 'Compliance alert: W25 — 29% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3104
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:operations
+      - priority:critical
+      - compliance-alert
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3143
+    title: 'bug(automation): a preserve/prune process destroys /tmp git worktrees + feature branches mid-session'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3143
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:harness
+      - status:plan-approved
+      - gate:completeness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3212
+    title: 'cron_render: mkdir-prefix uses undefined $WORKSPACE_HUB → managed cron jobs short-circuit (dev-secondary report pipeline re-broken)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3212
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - status:plan-review
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3226
+    title: 'Compliance alert: W26 — 0% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3226
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:operations
+      - priority:critical
+      - compliance-alert
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3231
+    title: Isolate concurrent agent sessions per repo (worktree-per-session) — shared-clone HEAD thrash
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3231
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3290
+    title: 'EPIC: Seamless ecosystem development — fast green CI, a working review gate, consistent contracts, less owner overhead'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3290
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3298
+    title: 'feat(session): per-session live-link HTML work-review doc (human-facing companion to #2110)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3298
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - agent:claude
+      - status:plan-approved
+      - gate:completeness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3306
+    title: 'feat(session): make the live-link review a lean reference layer (artifacts in canonical homes) — refines #3298'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3306
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:harness
+      - agent:claude
+      - status:plan-approved
+      - gate:completeness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3311
+    title: 'feat(session): auto-derive the lean reference payload from git footprint (--from-git) — emit side of #3306'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3311
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - agent:claude
+      - status:plan-approved
+      - gate:completeness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3316
+    title: 'feat(session): SessionEnd hook auto-emits the live-link review (closes the loop) — #2110 hook slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3316
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - agent:claude
+      - status:plan-approved
+      - gate:completeness
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3321
+    title: 'Compliance alert: W27 — 78% (medium)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3321
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:operations
+      - priority:critical
+      - compliance-alert
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3349
+    title: 'Perf: ecosystem-data-nudge.sh UserPromptSubmit hook runs 270-460ms per prompt (budget: 50ms)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3349
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3358
+    title: Propagate UserPromptSubmit hooks cross-repo (propagate-ecosystem.sh is Stop-hook-only)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3358
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3368
+    title: Day-to-day friction guards (session-grounded suite) — reduce recurring time-sinks
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3368
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - status:plan-review
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3392
+    title: 'Compliance alert: W28 — 11% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3392
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - priority:critical
+      - compliance-alert
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3422
+    title: 'feat(landman-desk): connect pilot county and federal-acreage sources to the evidence workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3422
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - status:needs-plan
+      - domain:harness
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3447
+    title: Add cross-format CLI behavior parity tests for option-bearing commands
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3447
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:tooling
+      - domain:testing
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3453
+    title: 'bug(cleanup): daily cleanup assumes nested repos and purges unverified staged evidence by age'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3453
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:tooling
+      - machine:dev-primary
+      - status:needs-plan
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3458
+    title: 'bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3458
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:tooling
+      - status:needs-plan
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3459
+    title: 'bug(enforcement): check-no-abs-paths fails before scanning in sparse checkouts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3459
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3460
+    title: 'bug(hooks): post-commit learning hook fails from sparse linked worktrees'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3460
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3461
+    title: 'bug(validation): make staged evidence handshakes resumable and snapshot-closed'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3461
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:tooling
+      - status:needs-plan
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3476
+    title: 'refactor(cron): migrate three legacy marker installers to transactional reconciliation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3476
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - status:needs-plan
+      - domain:harness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3477
+    title: 'fix(scheduler): make kanban loader timer transactional across systemd-user and cron'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3477
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - status:needs-plan
+      - domain:harness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3479
+    title: 'fix(harness-update): propagate or explicitly surface cron reconciliation failure'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3479
+    gh_state: open
+    gh_labels:
+      - cat:harness
+      - status:needs-plan
+      - domain:harness
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3514
+    title: 'Compliance alert: W29 — 0% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3514
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:operations
+      - priority:critical
+      - compliance-alert
+      - domain:harness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3518
+    title: 'fix(scheduler): keep setup-cron wrapper attestation pin synchronized'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3518
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:operations
+      - status:plan-approved
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3527
+    title: 'fix(scheduler): reconcile identity inventory after merge-base race'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3527
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:harness
+      - status:plan-approved
+      - gate:completeness
+      - domain:harness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3542
+    title: 'audit(config): reject duplicate YAML keys and ambiguous scalar types'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3542
+    gh_state: open
+    gh_labels:
+      - cat:tooling
+      - status:needs-plan
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3596
+    title: 'Compliance alert: W30 — 18% (critical)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3596
+    gh_state: open
+    gh_labels:
+      - cat:operations
+      - priority:critical
+      - compliance-alert
+      - domain:harness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3606
+    title: 'INITIATIVE: Agent harness, memory & ecosystem hardening'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3606
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:harness
+      - domain:harness
+      - initiative
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

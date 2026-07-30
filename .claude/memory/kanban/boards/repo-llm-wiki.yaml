@@ -18,7 +18,7 @@ cards:
       - priority:high
       - machine:dev-primary
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -34,10 +34,10 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:data
       - status:plan-approved
       - status:blocked
       - machine:dev-primary
-      - cat:data-pipeline
       - domain:marine
       - lane:codex
     gh_assignees: []
@@ -54,8 +54,7 @@ cards:
     gh_labels:
       - priority:medium
       - status:done
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -69,8 +68,8 @@ cards:
       - priority:medium
       - status:done
       - cat:documentation
-      - domain:knowledge-management
       - domain:standards
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 0
@@ -85,8 +84,8 @@ cards:
       - priority:high
       - status:done
       - cat:documentation
-      - domain:knowledge-management
       - domain:marine
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 1
@@ -101,8 +100,8 @@ cards:
       - priority:medium
       - status:done
       - cat:documentation
-      - domain:knowledge-management
       - domain:marine
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 0
@@ -115,11 +114,11 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:data
       - status:plan-approved
       - status:blocked
       - machine:dev-primary
-      - cat:data-pipeline
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
       - lane:codex
     gh_assignees: []
@@ -138,7 +137,7 @@ cards:
       - priority:low
       - machine:dev-primary
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -157,7 +156,7 @@ cards:
       - priority:low
       - machine:dev-primary
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -177,7 +176,7 @@ cards:
       - priority:high
       - status:done
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - agent:codex
     initial_status: triage
     priority: 1
@@ -195,7 +194,7 @@ cards:
       - status:blocked
       - machine:dev-primary
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - agent:codex
       - lane:codex
     gh_assignees: []
@@ -212,11 +211,11 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
+      - cat:data
       - status:plan-approved
       - status:blocked
       - machine:dev-primary
-      - cat:data-pipeline
-      - domain:knowledge-management
+      - domain:knowledge
       - agent:codex
       - lane:codex
     gh_assignees: []
@@ -235,7 +234,7 @@ cards:
       - priority:low
       - machine:dev-primary
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -254,7 +253,7 @@ cards:
       - priority:high
       - machine:dev-primary
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
     gh_assignees: []
     initial_status: triage
@@ -272,7 +271,7 @@ cards:
       - priority:high
       - machine:dev-primary
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
     gh_assignees: []
     initial_status: triage
@@ -290,7 +289,7 @@ cards:
       - priority:medium
       - machine:dev-primary
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -309,7 +308,7 @@ cards:
       - priority:medium
       - machine:dev-primary
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -326,6 +325,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - cat:data
       - machine:dev-primary
       - domain:knowledge
       - dispatch:ready
@@ -345,9 +345,10 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - cat:data
       - machine:dev-primary
-      - cat:knowledge-domain
-      - domain:maritime-law
+      - domain:marine
+      - domain:knowledge
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -362,8 +363,9 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - cat:data
       - machine:dev-primary
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -381,8 +383,9 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - cat:tooling
       - machine:dev-primary
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -400,6 +403,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - cat:tooling
       - machine:dev-primary
       - domain:knowledge
       - dispatch:ready
@@ -421,7 +425,7 @@ cards:
       - priority:medium
       - status:done
       - cat:harness
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -434,11 +438,11 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
+      - cat:data
       - status:done
       - machine:dev-primary
-      - cat:data-pipeline
       - cat:harness
-      - domain:knowledge-management
+      - domain:knowledge
       - lane:codex
     gh_assignees: []
     initial_status: triage
@@ -456,7 +460,7 @@ cards:
       - priority:low
       - machine:dev-primary
       - cat:harness
-      - domain:knowledge-management
+      - domain:knowledge
       - dispatch:ready
       - lane:claude
     gh_assignees: []
@@ -484,7 +488,7 @@ cards:
     gh_state: closed
     gh_labels:
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -496,7 +500,7 @@ cards:
     gh_state: closed
     gh_labels:
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -507,9 +511,9 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/43
     gh_state: closed
     gh_labels:
-      - cat:data-pipeline
-      - domain:knowledge-management
+      - cat:data
       - domain:marine
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -520,9 +524,9 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/44
     gh_state: closed
     gh_labels:
-      - cat:data-pipeline
-      - domain:knowledge-management
+      - cat:data
       - domain:document-intelligence
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -533,9 +537,9 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/45
     gh_state: closed
     gh_labels:
-      - cat:data-pipeline
-      - domain:knowledge-management
+      - cat:data
       - domain:document-intelligence
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -546,9 +550,9 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/46
     gh_state: closed
     gh_labels:
-      - cat:data-pipeline
-      - domain:knowledge-management
+      - cat:data
       - domain:document-intelligence
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -560,7 +564,7 @@ cards:
     gh_state: closed
     gh_labels:
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -571,8 +575,8 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/48
     gh_state: closed
     gh_labels:
-      - cat:data-pipeline
-      - domain:knowledge-management
+      - cat:data
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -586,7 +590,7 @@ cards:
       - enhancement
       - priority:high
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -601,7 +605,7 @@ cards:
       - priority:high
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -616,7 +620,7 @@ cards:
       - priority:high
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -631,7 +635,7 @@ cards:
       - priority:high
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -646,7 +650,7 @@ cards:
       - priority:high
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -661,7 +665,7 @@ cards:
       - priority:medium
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -675,7 +679,7 @@ cards:
       - enhancement
       - priority:high
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -690,7 +694,7 @@ cards:
       - priority:high
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -705,7 +709,7 @@ cards:
       - priority:high
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -720,7 +724,7 @@ cards:
       - priority:high
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -735,7 +739,7 @@ cards:
       - priority:medium
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -750,7 +754,7 @@ cards:
       - priority:high
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -764,7 +768,7 @@ cards:
       - enhancement
       - priority:high
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -779,7 +783,7 @@ cards:
       - priority:high
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -794,7 +798,7 @@ cards:
       - priority:high
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -809,7 +813,7 @@ cards:
       - priority:medium
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -824,7 +828,7 @@ cards:
       - priority:medium
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -839,7 +843,7 @@ cards:
       - priority:medium
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -853,7 +857,7 @@ cards:
       - enhancement
       - priority:medium
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -869,7 +873,7 @@ cards:
       - cat:research
       - status:plan-review
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -884,7 +888,7 @@ cards:
       - priority:medium
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -899,7 +903,7 @@ cards:
       - priority:medium
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -914,7 +918,7 @@ cards:
       - priority:medium
       - cat:research
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -947,10 +951,9 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:automation
+      - cat:tooling
       - cadence:weekly
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 1
@@ -965,7 +968,7 @@ cards:
       - enhancement
       - priority:high
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 1
@@ -979,10 +982,10 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
+      - cat:data
       - machine:dev-primary
-      - cat:data-pipeline
       - cat:harness
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     gh_assignees: []
     initial_status: triage
@@ -999,7 +1002,7 @@ cards:
       - enhancement
       - priority:high
       - cat:harness
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 1
@@ -1014,9 +1017,9 @@ cards:
       - enhancement
       - priority:medium
       - cat:research
-      - cat:automation
+      - cat:tooling
       - cadence:weekly
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 0
@@ -1031,9 +1034,9 @@ cards:
       - enhancement
       - priority:medium
       - cat:tooling
-      - cat:ai-orchestration
       - machine:dev-primary
-      - domain:knowledge-management
+      - cat:harness
+      - domain:knowledge
       - llm-wiki
       - dispatch:ready
     gh_assignees: []
@@ -1120,10 +1123,10 @@ cards:
     gh_labels:
       - bug
       - priority:high
-      - cat:automation
+      - cat:tooling
       - cadence:weekly
       - cat:harness
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 1
@@ -1166,8 +1169,7 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 1
@@ -1180,8 +1182,7 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 1
@@ -1194,8 +1195,7 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 1
@@ -1208,8 +1208,7 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 1
@@ -1222,8 +1221,7 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:medium
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 0
@@ -1236,8 +1234,7 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:medium
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 0
@@ -1250,8 +1247,7 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:low
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 0
@@ -1265,7 +1261,7 @@ cards:
     gh_labels:
       - priority:low
       - cat:documentation
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 0
@@ -1280,8 +1276,7 @@ cards:
       - documentation
       - enhancement
       - priority:medium
-      - cat:knowledge-domain
-      - domain:knowledge-management
+      - domain:knowledge
       - llm-wiki
     initial_status: triage
     priority: 0
@@ -1297,7 +1292,7 @@ cards:
       - priority:high
       - machine:dev-primary
       - cat:harness
-      - domain:knowledge-management
+      - domain:knowledge
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1323,6 +1318,7 @@ cards:
     gh_labels:
       - documentation
       - priority:high
+      - cat:data
       - machine:dev-primary
       - dispatch:ready
       - domain:ingest
@@ -1339,9 +1335,9 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:document-intelligence
+      - cat:data
       - machine:dev-primary
-      - cat:data-pipeline
+      - domain:document-intelligence
       - domain:knowledge
       - dispatch:ready
       - lane:codex
@@ -1376,7 +1372,7 @@ cards:
     gh_state: closed
     gh_labels:
       - enhancement
-      - cat:data-pipeline
+      - cat:data
       - domain:marine
       - domain:standards
       - llm-wiki
@@ -1393,7 +1389,7 @@ cards:
     gh_state: closed
     gh_labels:
       - enhancement
-      - cat:data-pipeline
+      - cat:data
       - domain:marine
       - domain:standards
       - domain:document-intelligence
@@ -1410,6 +1406,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:tooling
       - domain:ingest
       - lane:codex
     initial_status: triage
@@ -1423,7 +1420,7 @@ cards:
     gh_state: closed
     gh_labels:
       - enhancement
-      - cat:data-pipeline
+      - cat:data
       - domain:marine
       - domain:standards
       - llm-wiki
@@ -1439,6 +1436,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:high
+      - cat:tooling
       - domain:ingest
       - lane:codex
     initial_status: triage
@@ -1484,7 +1482,7 @@ cards:
       - enhancement
       - priority:high
       - cat:research
-      - domain:knowledge-management
+      - domain:knowledge
       - lane:claude
     initial_status: triage
     priority: 1
@@ -1497,7 +1495,10 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
-      - domain:knowledge-management
+      - status:plan-approved
+      - cat:documentation
+      - domain:knowledge
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 0
@@ -1537,6 +1538,8 @@ cards:
     gh_state: open
     gh_labels:
       - priority:high
+      - cat:data
+      - domain:standards
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -1548,6 +1551,8 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:data
+      - domain:standards
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1559,8 +1564,10 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - cat:engineering-methodology
-      - domain:knowledge-management
+      - cat:engineering
+      - status:plan-approved
+      - domain:knowledge
+      - lane:codex
       - lane:claude
     initial_status: triage
     priority: 0
@@ -1575,9 +1582,9 @@ cards:
       - documentation
       - enhancement
       - status:done
-      - cat:knowledge-domain
       - domain:marine
       - domain:standards
+      - domain:knowledge
       - llm-wiki
       - lane:claude
     initial_status: triage
@@ -1593,9 +1600,9 @@ cards:
       - documentation
       - enhancement
       - status:done
-      - cat:knowledge-domain
       - domain:marine
       - domain:standards
+      - domain:knowledge
       - llm-wiki
       - lane:claude
     initial_status: triage
@@ -1611,10 +1618,9 @@ cards:
       - documentation
       - enhancement
       - status:closed
-      - cat:knowledge-domain
       - domain:marine
       - domain:standards
-      - domain:maritime-law
+      - domain:knowledge
       - llm-wiki
       - lane:claude
     initial_status: triage
@@ -1630,10 +1636,9 @@ cards:
       - documentation
       - enhancement
       - status:closed
-      - cat:knowledge-domain
       - domain:marine
       - domain:standards
-      - domain:maritime-law
+      - domain:knowledge
       - llm-wiki
       - lane:claude
     initial_status: triage
@@ -1760,8 +1765,10 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/736
     gh_state: open
     gh_labels:
+      - cat:operations
       - lane:codex
       - status:implemented
+      - domain:repo
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1816,7 +1823,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/795
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:data
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1826,7 +1835,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/796
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:documentation
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1836,7 +1847,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/797
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:research
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1846,7 +1859,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/798
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - cat:research
+      - domain:marine
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1859,6 +1874,7 @@ cards:
     gh_labels:
       - priority:high
       - cat:data
+      - domain:ingest
       - lane:claude
       - status:needs-plan
       - epic
@@ -1874,6 +1890,7 @@ cards:
     gh_labels:
       - priority:high
       - cat:data
+      - domain:ingest
       - lane:codex
       - lane:claude
       - status:needs-plan
@@ -1890,6 +1907,7 @@ cards:
       - priority:medium
       - cat:data
       - status:plan-approved
+      - domain:ingest
       - lane:claude
     initial_status: triage
     priority: 0
@@ -1905,6 +1923,7 @@ cards:
       - cat:data
       - lane:claude
       - status:needs-plan
+      - domain:routing
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1917,6 +1936,7 @@ cards:
     gh_labels:
       - priority:medium
       - cat:data
+      - domain:ingest
       - lane:codex
       - status:needs-plan
     initial_status: triage
@@ -1931,6 +1951,7 @@ cards:
     gh_labels:
       - priority:medium
       - cat:data
+      - domain:ingest
       - lane:codex
       - status:needs-plan
     initial_status: triage
@@ -1947,6 +1968,7 @@ cards:
       - cat:data
       - lane:codex
       - status:needs-plan
+      - domain:hydro
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -1961,6 +1983,7 @@ cards:
       - cat:data
       - lane:codex
       - status:needs-plan
+      - domain:gis
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1973,6 +1996,7 @@ cards:
     gh_labels:
       - priority:medium
       - cat:data
+      - domain:ingest
       - lane:claude
       - status:needs-plan
     initial_status: triage
@@ -1987,6 +2011,7 @@ cards:
     gh_labels:
       - priority:low
       - cat:data
+      - domain:ingest
       - lane:claude
       - status:needs-plan
     initial_status: triage
@@ -2003,6 +2028,7 @@ cards:
       - cat:data
       - lane:claude
       - status:needs-plan
+      - domain:subsea
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -2013,6 +2039,8 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/811
     gh_state: open
     gh_labels:
+      - cat:data
+      - domain:ingest
       - lane:claude
     initial_status: triage
     priority: 0
@@ -2047,7 +2075,2084 @@ cards:
     source_url: https://github.com/vamseeachanta/llm-wiki/issues/832
     gh_state: open
     gh_labels:
+      - cat:operations
       - status:plan-approved
+      - domain:repo
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#834
+    title: 'docs(ingest): capture PID2Graph benchmark, Boglodite v0.1.0, and Canadian confidential-well signal'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/834
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:medium
+      - status:plan-review
+      - cat:documentation
+      - domain:knowledge
+      - llm-wiki
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#837
+    title: Reconcile DNV-RP-C203 and BS 7608 citation resolver identities
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/837
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:data
+      - domain:standards
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#839
+    title: Separate wiki page provenance from exact primary-source doc_key
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/839
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:data
+      - domain:standards
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#840
+    title: Create private standards authority-evidence registry
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/840
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:standards
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#1
+    title: 'WRK-1245: Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/1
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:high
+      - cat:engineering
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1245: Full corpus intelligence extraction — summaries, data, methodologies, test cases from 426K documents'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#2
+    title: 'WRK-1246: Assess deep extraction yield across text-extractable corpus — tables, charts, equations'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/2
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:high
+      - cat:engineering
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1246: Assess deep extraction yield across text-extractable corpus — tables, charts, equations'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#3
+    title: 'WRK-1253: Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/3
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:low
+      - cat:engineering
+      - status:plan-review
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1253: Batch deep extraction — XLS/XLSX files (11,741 docs, 93% table yield)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#4
+    title: 'WRK-1255: Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/4
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:high
+      - cat:engineering
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1255: Batch deep extraction — large standards PDFs >1MB (1,500 machine-readable)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#5
+    title: 'WRK-1257: Chart image extraction — extract actual images from PDFs, not just metadata'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/5
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:medium
+      - cat:engineering
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1257: Chart image extraction — extract actual images from PDFs, not just metadata'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#6
+    title: 'WRK-1292: Enrich research briefs with key equations and worked examples from downloaded PDFs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/6
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1292: Enrich research briefs with key equations and worked examples from downloaded PDFs'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#7
+    title: 'WRK-1295: Batch LLM summaries — ace_standards + workspace_spec (4,685 docs, Phase 1 of WRK-1245)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/7
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:high
+      - cat:engineering
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1295: Batch LLM summaries — ace_standards + workspace_spec (4,685 docs, Phase 1 of WRK-1245)
+
+
+      **Status:** pending | **Priority:** high | **Category:** engineering/data-extraction'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#8
+    title: 'WRK-1296: Batch deep extraction — ace-linux-1 machine-readable PDFs (154K docs, local disk)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/8
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:high
+      - cat:engineering
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1296: Batch deep extraction — dev-primary machine-readable PDFs (154K docs, local disk)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#9
+    title: 'WRK-1297: Batch deep extraction — ace-linux-2 machine-readable PDFs (125K docs, local NTFS)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/9
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:high
+      - cat:engineering
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1297: Batch deep extraction — dev-secondary machine-readable PDFs (125K docs, local NTFS)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#10
+    title: 'WRK-1298: OCR pipeline — ace-linux-2 scanned PDFs (39K docs, GPU-accelerated)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/10
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:medium
+      - cat:engineering
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1298: OCR pipeline — dev-secondary scanned PDFs (39K docs, GPU-accelerated)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#11
+    title: 'WRK-1299: OCR pipeline — ace-linux-1 scanned PDFs (53K docs)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/11
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:medium
+      - cat:engineering
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1299: OCR pipeline — dev-primary scanned PDFs (53K docs)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#12
+    title: 'WRK-280: ABS standards acquisition: create folder + download CP Guidance Notes'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/12
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - wrk-item
+      - priority:high
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-280: ABS standards acquisition: create folder + download CP Guidance Notes
+
+
+      **Status:** blocked | **Priority:** high | **Category:** data/standards'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#72
+    title: 'feat(execution): dry-tree Lower Tertiary corpus ingestion — child execution lane under #19 (Frontier source family)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/72
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent + clearance
+
+      - **Parent (canonical plan)**: #19 — names client-a as one of three offshore raw-source families pending execution
+
+      - **Clearance checklist**: #46 (CLOSED) — defines public-safe handling for Frontier/offshore-operations material'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#101
+    title: '[meta] Follow-on substance work from 2026-05-18 14-URL ingest batch (2 domain foundings + COLREG family + ~25 named tasks)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/101
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'On 2026-05-18 a 14-URL LinkedIn batch landed (commits `aa7a8ec4..fa13ceb9` fast-forwarded to `main` after rebase over 5 parallel reservoir-engineering commits). The batch surfaced two **domain-founding events** plus a **COLREG family bootstrap** and a number of substance gaps that were explicitly seeded for follow-on work in log entries and source-page "Follow-on work" sections. This issue is the discoverable index of those follow-on tasks — without it they fossilize inside per-source-page bullets nobody re-reads.
+
+
+      ## Domain foundings (this batch)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#103
+    title: '[corpus-ingest] marine-engineering — class societies + IMO regulatory'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/103
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:blocked
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/marine-engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#104
+    title: '[corpus-ingest] civil-structural-engineering — AISC, ASCE, ASME, AWS, NFPA, ANSI structural'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/104
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#105
+    title: '[corpus-ingest] drilling-engineering — API drilling spec family (4F, 7K, 8C, etc.)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/105
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/drilling-engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#106
+    title: '[corpus-ingest] production-engineering — API production specs + SPE technical papers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/106
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/production-engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#107
+    title: '[corpus-ingest] maritime-regulatory — USCG, BSEE, EPA, OSHA, CBP/Jones Act, Canal authorities, ColRegs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/107
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/maritime-law/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#108
+    title: '[corpus-ingest] electrical-instrumentation — marine/shipboard electrical (IEC 60092-series, 61363-1, 61892-7; IEEE 45)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/108
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#109
+    title: '[corpus-ingest] materials-and-mechanical — ASTM, SAE, ANSI mechanical'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/109
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/engineering-standards/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#110
+    title: '[corpus-ingest] specialty-and-international — AMSA, ADCI, IAATO, ILO, JSP, NAVSEA, Matthews Daniel, Noble Denton, PIANC, SAWE, USACE'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/110
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:blocked
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Domain target**: `wikis/engineering/wiki/` (private llm-wiki).
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#111
+    title: '[specialist-corpus] hydrodynamic-mooring OSS — HAMS, MoorDyn, MoorPy'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/111
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:low
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#112
+    title: '[specialist-corpus] BEM hydrodynamics — capytaine'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/112
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:low
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#113
+    title: '[specialist-corpus] offshore renewables — openfast, WEC-Sim'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/113
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:low
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#114
+    title: '[specialist-corpus] reservoir-simulation OSS + meshing — opm-common, gmsh'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/114
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:low
+      - cat:data
+      - cat:tooling
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Target wiki domain**: `wikis/reservoir-engineering/wiki/`
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#115
+    title: '[specialist-corpus] vendor-contractor pdfs — 2H, saipem, doris, frontierdeepwater, OGManufacturing, umbilical, seanation, rock-oil-field'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/115
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:low
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Target wiki domain**: `wikis/marine-engineering/wiki/`
+
+      **Umbrella tracking**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#116
+    title: '[corpus-ingest] marine-engineering/dnv — OS-E301 citation-pilot verification + corpus expansion (Phase 1)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/116
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - status:blocked
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Parent epic**: [llm-wiki#103](https://github.com/vamseeachanta/llm-wiki/issues/103) — marine-engineering corpus ingest, Phase 1
+
+      **Umbrella**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#117
+    title: '[corpus-ingest] marine-engineering/sigtto — 14-document ingest (Phase 1 pattern-validation)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/117
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - machine:dev-primary
+      - dispatch:ready
+      - domain:ingest
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Parent epic**: [llm-wiki#103](https://github.com/vamseeachanta/llm-wiki/issues/103) — marine-engineering corpus ingest, Phase 1
+
+      **Umbrella**: [vamseeachanta/workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774)'
+  - idempotency_key: gh:vamseeachanta/llm-wiki#124
+    title: '[corpus-ingest] O&G-Standards full-fidelity ingest (~54K docs) — untracked gap'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/124
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:plan-approved
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#125
+    title: '[corpus-ingest] docs/conferences → llm-wiki (19,797 PDFs, indexed not ingested)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/125
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - status:blocked
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#126
+    title: '[corpus-ingest] docs/literature → llm-wiki (4,095 docs, indexed not ingested)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/126
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#127
+    title: '[client-wiki] docs/disciplines → client-wiki routing plan (~140K docs / 3.4 TB)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/127
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#128
+    title: '[client-wiki] client_projects triage manifest (76 mixed dirs) — blocking'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/128
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#129
+    title: '[routing] residual /mnt/ace tails — Production/personal, books, engineering-refs, aceengineer-admin'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/129
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#134
+    title: '[corpus-ingest] O&G-Standards catalog↔disk reconciliation — uncataloged live dirs (ABS/ASCE/ASME/AWS/NACE)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/134
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#135
+    title: '[verification] Vision/human pass to verify provisional tables + describe figure imagery (parse_status → verified)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/135
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#138
+    title: '[corpus-ingest] SNAME re-ingest under content-value + dedupe filters (reverted from scale-3) (#124)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/138
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - machine:dev-primary
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#200
+    title: '[quality] Code_id dedup + heuristic refinement: same standard fragmented across code_ids'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/200
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#201
+    title: '[corpus-ingest] OCR backlog: image-only / DRM-locked PDFs in _skipped.csv (low-extractable-text / open-failed)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/201
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#223
+    title: '[quality] _row_identity degrades for no-csv rows with blank table_id (dedup collision risk)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/223
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:plan-approved
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#226
+    title: '[corpus-ingest] content-value-filter should reject personal/non-standard docs (resume/bank/wire) by content'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/226
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#227
+    title: '[verification] flagged bucket dominated by non-tables (forms/figures) + BSI page-attribution unreliable — strategy for #135'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/227
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#259
+    title: '[flywheel] Build Friday-demo dispatch cockpit for llm-wiki Codex/subagent push'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/259
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:tooling
+      - machine:dev-primary
+      - cat:harness
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#260
+    title: '[flywheel] Convert verification and ingest learnings into reusable llm-wiki skills/scripts/tools'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/260
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:tooling
+      - machine:dev-primary
+      - cat:harness
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#265
+    title: '[ABS ingest] Download all ABS rules, codes, guides, and guideline documents'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/265
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#267
+    title: '[ABS ingest] Extract ABS data and add derived artifacts to llm-wiki corpus'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/267
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#269
+    title: '[ABS ingest] Download and export ABS database-backed resources'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/269
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:marine
+      - domain:standards
+      - llm-wiki
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#291
+    title: 'Re-parse candidates + queue duplicate-row provenance (from #135 vision batches)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/291
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:plan-approved
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#375
+    title: '[corpus-ingest] Add structured CSV verification traceability for SIGTTO tables'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/375
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#420
+    title: 'EPIC: storage architecture — how the llm-wikis are saved (assessment + ultra research)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/420
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:tooling
+      - lane:claude
+      - domain:workspace-backup
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#504
+    title: '[conference-canary] add disposition gate runner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/504
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#505
+    title: '[conference-canary] add manual-review lane for failed papers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/505
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#506
+    title: '[civil-structural] AISC methodology/article + structural steel source slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/506
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#507
+    title: '[civil-structural] ASCE dry dock + ASCE 7 dedupe source slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/507
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#508
+    title: '[civil-structural] ASME BPVC/B31 source-overlap slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/508
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#509
+    title: '[civil-structural] AWS welding standards + credential-exclusion slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/509
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#510
+    title: '[civil-structural] NFPA fire/LNG standards slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/510
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#511
+    title: '[civil-structural] ANSI/ACP structural and safety-signage slice'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/511
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#520
+    title: '[materials-mechanical] reconcile #109 ledger with ANSI/ACP #511 decisions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/520
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#521
+    title: '[materials-mechanical] ASTM #109-owned F/B-series page and dataset canary'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/521
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#522
+    title: '[materials-mechanical] NACE corrosion materials source/page canary'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/522
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#523
+    title: '[materials-mechanical] SAE J755 locked-source metadata lane'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/523
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#524
+    title: '[electrical-instrumentation] IEC extractable standards page/dataset canary'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/524
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#525
+    title: '[electrical-instrumentation] locked IEC/IEEE metadata-only lane'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/525
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#526
+    title: '[electrical-instrumentation] IEEE 45 interpretation and support-reference routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/526
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#527
+    title: '[production-api] API RP 14C edition-mismatch reconciliation plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/527
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#528
+    title: '[production-api] API RP 14J canonical page and duplicate-source plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/528
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#529
+    title: '[production-api] extractable API standards page/dataset canary plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/529
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#530
+    title: '[production-api] locked/catalog/missing-source handoff plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/530
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#532
+    title: '[specialty-international] AMSA/ILO maritime-law tranche plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/532
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#533
+    title: '[specialty-international] NAVSEA/USACE authorship verification plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/533
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#534
+    title: '[specialty-international] Matthews Daniel/Noble Denton MWS tranche plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/534
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#535
+    title: '[specialty-international] PIANC ports/fenders canary plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/535
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#536
+    title: '[specialty-international] ADCI/IAATO/JSP/SAWE methods canary plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/536
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#537
+    title: '[specialty-international] locked/non-ingestable handoff plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/537
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#540
+    title: '[maritime-regulatory] public-agency authorship verification tranche plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/540
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#541
+    title: '[maritime-regulatory] licensed-private metadata-only lane plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/541
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#542
+    title: '[maritime-regulatory] Suez HTML source canary plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/542
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#543
+    title: '[maritime-regulatory] OSHA official-source replacement plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/543
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#544
+    title: '[maritime-regulatory] HSE public-agency license-review tranche plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/544
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#545
+    title: '[maritime-regulatory] dataset/support-asset handoff plan'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/545
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:data
+      - status:plan-approved
+      - status:done
+      - machine:dev-primary
+      - agent:codex
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#617
+    title: '[corpus-ingest] O&G-Standards raw unique content quarantine and routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/617
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:done
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#622
+    title: '[corpus-ingest] O&G raw quarantine bucket disposition and #134 rerun gate'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/622
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:done
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#638
+    title: '[corpus-ingest] O&G raw document-support manual review routing'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/638
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:done
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#642
+    title: '[corpus-ingest] O&G document-support local-only path resolver'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/642
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - status:done
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#647
+    title: '[corpus-ingest] O&G document-support human disposition ledger'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/647
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - agent:codex
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#717
+    title: '[private-data-map] Traverse /mnt/ace inventory one item at a time for llm-wiki coverage and completion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/717
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#718
+    title: '[private-data-map] Build ingest gate/readiness matrix for corpus traversal'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/718
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#719
+    title: '[private-data-map] Resolve O&G document-support disposition before standards completion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/719
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#720
+    title: '[private-data-map] Harden content-value filters before broad traversal'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/720
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#721
+    title: '[private-data-map] Follow through conference canary dispositions before scale-out'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/721
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#722
+    title: '[private-data-map] Audit open domain parents for actual remaining ingestion deltas'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/722
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#723
+    title: '[private-data-map] Build client/private routing decision queue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/723
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - machine:dev-primary
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#725
+    title: '[private-data-map] Build all-root /mnt/ace semantic analysis index'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/725
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - status:plan-approved
+      - machine:dev-primary
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#746
+    title: '[private-data-map] Plan O&G document-support extraction follow-up from safe disposition ledger'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/746
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#747
+    title: '[private-data-map] Plan O&G document-support conversion-tooling follow-up from safe disposition ledger'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/747
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#748
+    title: '[private-data-map] Resolve client/private routing boundary-review queue'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/748
+    gh_state: open
+    gh_labels:
+      - documentation
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:document-intelligence
+      - llm-wiki
+      - domain:ingest
+      - lane:codex
+      - gate:completeness
+      - status:implemented
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#756
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-001 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/756
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#757
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-002 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/757
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#758
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-003 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/758
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#759
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-004 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/759
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#760
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-005 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/760
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#761
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-006 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/761
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#762
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-007 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/762
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#763
+    title: '[corpus-ingest] DNV extraction batch dnv-extract-008 - top-ranked standards'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/763
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#767
+    title: '[corpus-ingest] Extract & route the AceEngineer/Achanta Google Drive corpus (4.7GB / 11k files) — dense priority data'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/767
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - route:C
+      - domain:document-intelligence
+      - domain:ingest
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#769
+    title: '[corpus-ingest] Batch 1 — Engineering knowledge → llm-wiki (de-identified)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/769
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - status:plan-review
+      - route:C
+      - domain:ingest
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#770
+    title: '[corpus-ingest] Batch 2 — Finance / tax / audit → aceengineer-admin (restricted)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/770
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - route:B
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#771
+    title: '[corpus-ingest] Batch 3 — HR / people / payroll → aceengineer-admin (PII, aggregate-only)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/771
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - status:plan-review
+      - route:B
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#772
+    title: '[corpus-ingest] Batch 4 — Proposals / NDAs / clients / ops → aceengineer-admin'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/772
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:operations
+      - status:plan-review
+      - route:B
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#773
+    title: '[corpus-ingest] Batch 5 — Personal / family / immigration / legal → achantas-data (PII)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/773
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - route:B
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#774
+    title: '[corpus-ingest] Batch 6 — De-identified reusable methods → digitalmodel (PUBLIC, gated)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/774
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - status:plan-review
+      - route:C
+      - domain:ingest
+      - gate:completeness
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#775
+    title: '[corpus-ingest] Batch 7 — OCR triage of scanned docs → route by content'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/775
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - status:plan-review
+      - route:A
+      - domain:document-intelligence
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#776
+    title: '[corpus-ingest] Batch 8 — Archive index sweep (8,504 backup files, index-only)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/776
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - status:plan-review
+      - route:A
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#779
+    title: '[corpus-ingest] Reusable assets → ecosystem: O&G database, Excel datasets/models, posters/brochures'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/779
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - status:plan-review
+      - route:C
+      - domain:ingest
+      - gate:completeness
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#789
+    title: '[corpus-ingest] DNV next-wave privacy-safe classifier and batch planner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/789
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+      - parent:116
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/llm-wiki#790
+    title: '[corpus-ingest] DNV blank-code private identity-review lane'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/llm-wiki/issues/790
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - lane:codex
+      - status:implemented
+      - parent:116
     initial_status: triage
     priority: 0
     gh_assignees: []

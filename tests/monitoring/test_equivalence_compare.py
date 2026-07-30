@@ -147,3 +147,98 @@ def test_load_dir_skips_malformed(tmp_path):
     (tmp_path / "bad.json").write_text("{not json")
     fps = ec.load_dir(str(tmp_path))
     assert len(fps) == 1
+
+
+# ── #3502: fleet publish-health — absent-fingerprint + publish-slow ──────────
+
+ROSTER = [
+    {"machine": "dev-primary", "hostname": "ace-linux-1", "aliases": ["vamsee-linux1"]},
+    {"machine": "dev-secondary", "hostname": "ace-linux-2", "aliases": []},
+    {"machine": "ace-win-1", "hostname": "acma-ansys05", "aliases": []},
+]
+
+
+def test_absent_fingerprint_flags_roster_machines_missing_from_store():
+    divs = ec.compare([_fp("full", hostname="ace-linux-1")], expected_machines=ROSTER)
+    absent = [d for d in divs if d["code"] == "absent-fingerprint"]
+    assert {list(d["boxes"].keys())[0] for d in absent} == {"dev-secondary", "ace-win-1"}
+    assert all(d["severity"] == ec.WARNING for d in absent)
+
+
+def test_absent_fingerprint_matches_on_alias():
+    divs = ec.compare([_fp("full", hostname="vamsee-linux1")], expected_machines=ROSTER[:1])
+    assert not [d for d in divs if d["code"] == "absent-fingerprint"]
+
+
+def test_absent_fingerprint_silent_without_roster():
+    divs = ec.compare([_fp("full", hostname="ace-linux-1")])
+    assert not [d for d in divs if d["code"] == "absent-fingerprint"]
+
+
+def test_all_roster_machines_present_no_absent_divergence():
+    fps = [_fp("full", hostname="ace-linux-1"),
+           _fp("contribute", hostname="ace-linux-2"),
+           _fp("contribute-minimal", hostname="acma-ansys05")]
+    divs = ec.compare(fps, expected_machines=ROSTER)
+    assert not [d for d in divs if d["code"] == "absent-fingerprint"]
+
+
+def test_publish_slow_flags_gate_length_publish():
+    divs = ec.compare([_fp("full"), _fp("contribute", last_publish_duration_s=3720.0)])
+    slow = [d for d in divs if d["code"] == "publish-slow"]
+    assert len(slow) == 1 and slow[0]["severity"] == ec.WARNING
+    assert "contribute" in slow[0]["boxes"]
+
+
+def test_publish_fast_not_flagged():
+    divs = ec.compare([_fp("full", last_publish_duration_s=1.5)])
+    assert not [d for d in divs if d["code"] == "publish-slow"]
+
+
+def test_load_expected_machines_filters_non_cron(tmp_path):
+    reg = tmp_path / "registry.yaml"
+    reg.write_text(
+        "machines:\n"
+        "  dev-primary:\n    hostname: ace-linux-1\n    hostname_aliases: [vamsee-linux1]\n"
+        "    schedule_variant: full\n"
+        "  macbook-portable:\n    hostname: Vamsees-MacBook-Air\n    schedule_variant: none\n"
+        "  dev-secondary:\n    hostname: ace-linux-2\n    schedule_variant: contribute\n"
+    )
+    roster = ec.load_expected_machines(str(reg))
+    assert {m["machine"] for m in roster} == {"dev-primary", "dev-secondary"}
+    assert roster[0]["aliases"] == ["vamsee-linux1"]
+
+
+def test_load_expected_machines_degrades_open_on_missing_file(tmp_path):
+    assert ec.load_expected_machines(str(tmp_path / "nope.yaml")) == []
+
+
+def test_minimal_registry_parser_matches_needed_fields():
+    text = (
+        "machines:\n"
+        "  dev-primary:\n"
+        "    hostname: ace-linux-1\n"
+        "    hostname_aliases: [vamsee-linux1]\n"
+        "    schedule_variant: full  # daily\n"
+        "  macbook-portable:\n"
+        "    hostname: Vamsees-MacBook-Air\n"
+        "    schedule_variant: none\n"
+    )
+    data = ec._parse_registry_minimal(text)
+    m = data["machines"]
+    assert m["dev-primary"]["hostname"] == "ace-linux-1"
+    assert m["dev-primary"]["hostname_aliases"] == ["vamsee-linux1"]
+    assert m["dev-primary"]["schedule_variant"] == "full"
+    assert m["macbook-portable"]["schedule_variant"] == "none"
+
+
+def test_same_role_boxes_keep_distinct_labels_via_machine_id():
+    """#3516: divergence 'boxes' dicts key by label — two contribute-minimal boxes
+    must not collapse into one key. machine_id wins over role."""
+    fps = [_fp("contribute-minimal", hostname="acma-ansys05",
+               machine_id="ace-win-1", last_publish_duration_s=500.0),
+           _fp("contribute-minimal", hostname="acma-ws014",
+               machine_id="ace-win-2", last_publish_duration_s=700.0)]
+    slow = [d for d in ec.compare(fps) if d["code"] == "publish-slow"]
+    assert len(slow) == 2
+    assert {list(d["boxes"].keys())[0] for d in slow} == {"ace-win-1", "ace-win-2"}
