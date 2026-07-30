@@ -24,17 +24,6 @@ sys.modules["build_equality_matrix"] = bem  # register BEFORE exec (kebab-case i
 spec.loader.exec_module(bem)
 
 
-@pytest.fixture(autouse=True)
-def _isolate_generation_seam(tmp_path_factory, monkeypatch):
-    """#3702: in default mode the builder reads TWO input layers — the repo's
-    `.claude/state` (monkeypatched per test as `bem.STATE`) and this box's out-of-tree
-    seam (`bem.EQ_STATE`). Leave the seam pointing at the operator's real
-    `~/.local/state/workspace-hub/equality` and a live equality-<machine>.yaml there
-    would silently override the fixture's copy on any machine that has ever run the
-    collector. Pin it to an empty dir so these tests stay hermetic."""
-    monkeypatch.setattr(bem, "EQ_STATE", tmp_path_factory.mktemp("empty-eq-seam"))
-
-
 # ── fixtures ────────────────────────────────────────────────────────────────
 TIER1 = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 
@@ -310,75 +299,6 @@ def test_solvers_legacy_v2_report_missing_evidence():
 def test_solvers_in_display_dims_after_data_access():
     assert "solvers" in bem.DISPLAY_DIMS
     assert bem.DISPLAY_DIMS.index("solvers") == bem.DISPLAY_DIMS.index("data_access") + 1
-
-
-# ── harness providers cold-dim conformance (role-aware baselines, #3591) ─────
-FULL_PROVIDERS = {"claude": "present", "codex": "present", "gemini": "present", "hermes": "present"}
-THIN_PROVIDERS = {"claude": "present", "codex": "present", "gemini": "absent", "hermes": "absent"}
-
-
-def _harness(providers):
-    return {"providers": dict(providers), "readiness_overall": "pass", "python_cmd": "uv-run"}
-
-
-def _providers_baseline(**over):
-    base = dict(FULL_PROVIDERS)
-    base.update(over)
-    return {"providers_baseline": base}
-
-
-def test_harness_is_cold_dim():
-    assert "harness" in bem.COLD_DIMS
-
-
-def test_harness_full_box_conforms_to_full_baseline():
-    rep = _report("dev-secondary", harness=_harness(FULL_PROVIDERS))
-    assert bem.cold_verdict("harness", rep, _providers_baseline(), TIER1) == "CONFORMS"
-
-
-def test_harness_thin_box_conforms_to_thin_baseline():
-    # gpu-claw / ace-win-1 intentionally lack gemini+hermes (thin-host policy) — must
-    # grade CONFORMS against their declared thin baseline, not fleet-DIVERGES (#3591).
-    rep = _report("gpu-claw", harness=_harness(THIN_PROVIDERS))
-    bl = _providers_baseline(gemini="absent", hermes="absent")
-    assert bem.cold_verdict("harness", rep, bl, TIER1) == "CONFORMS"
-
-
-def test_harness_missing_expected_provider_below_baseline():
-    rep = _report("dev-secondary", harness=_harness(dict(FULL_PROVIDERS, hermes="absent")))
-    assert bem.cold_verdict("harness", rep, _providers_baseline(), TIER1) == "BELOW-BASELINE"
-
-
-def test_harness_extra_provider_on_thin_box_below_baseline():
-    # thin-host policy drift: a provider installed where the baseline declares absent
-    rep = _report("ace-win-1", harness=_harness(dict(THIN_PROVIDERS, hermes="present")))
-    bl = _providers_baseline(gemini="absent", hermes="absent")
-    assert bem.cold_verdict("harness", rep, bl, TIER1) == "BELOW-BASELINE"
-
-
-def test_harness_no_baseline_fail_closed():
-    rep = _report("dev-secondary", harness=_harness(FULL_PROVIDERS))
-    assert bem.cold_verdict("harness", rep, {"compute_floor": {"cores_min": 8}}, TIER1) == "MISSING-BASELINE"
-
-
-def test_harness_unprobed_provider_is_missing_evidence():
-    # baseline declares hermes but the probe has no entry for it → MISSING-EVIDENCE,
-    # never CONFORMS (unknown is not evidence, mirrors the solvers rule #2849).
-    probed = {k: v for k, v in FULL_PROVIDERS.items() if k != "hermes"}
-    rep = _report("dev-secondary", harness=_harness(probed))
-    assert bem.cold_verdict("harness", rep, _providers_baseline(), TIER1) == "MISSING-EVIDENCE"
-
-
-def test_harness_concrete_miss_dominates_unknown():
-    probed = {"claude": "present", "codex": "present", "gemini": "absent"}  # hermes unprobed
-    rep = _report("dev-secondary", harness=_harness(probed))
-    assert bem.cold_verdict("harness", rep, _providers_baseline(), TIER1) == "BELOW-BASELINE"
-
-
-def test_harness_legacy_report_without_harness_block_missing_evidence():
-    rep = _report("dev-secondary")
-    rep["dimensions"].pop("harness")
-    assert bem.cold_verdict("harness", rep, _providers_baseline(), TIER1) == "MISSING-EVIDENCE"
 
 
 def test_solvers_renders_row_in_html(tmp_path, monkeypatch):
@@ -691,19 +611,11 @@ def test_wiring_single_source_schedule():
     # all 4 active machines, with a Windows render path. The command routes through the
     # fail-loud wrapper (#2972), which must carry collector + builder + publisher — so
     # the collect/build/publish chain stays single-sourced one hop deeper.
-    #
-    # #3702 added ONE more hop in front: the cron command now names equality-preflight.sh,
-    # a thin wrapper that FF-pulls a clean checkout on main and then EXECs
-    # equality-matrix-cron.sh. The chain below is walked end to end so the extra hop cannot
-    # hide a broken link.
     tasks = yaml.safe_load(
         (REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml").read_text())["tasks"]
     eq = next(t for t in tasks if t["id"] == "equality-report")
     assert eq["schedule"].split()[-1] == "1"            # weekly, Monday
-    assert "equality-preflight.sh" in eq["command"]
-    preflight = (REPO_ROOT / "scripts" / "readiness" / "equality-preflight.sh").read_text()
-    assert "ff_preflight" in preflight
-    assert "exec bash" in preflight and "equality-matrix-cron.sh" in preflight
+    assert "equality-matrix-cron.sh" in eq["command"]
     wrapper = (REPO_ROOT / "scripts" / "readiness" / "equality-matrix-cron.sh").read_text()
     assert "collect-equality.sh" in wrapper
     assert "build-equality-matrix.py" in wrapper
@@ -711,16 +623,9 @@ def test_wiring_single_source_schedule():
     for m in ("dev-primary", "dev-secondary", "ace-win-1", "ace-win-2"):
         assert m in eq["machines"]
     assert (REPO_ROOT / "scripts" / "windows" / "equality-report.ps1").exists()
-    # The 6-hourly dead-man's-switch rebuild routes through the SAME wrapper chain.
+    # The daily dead-man's-switch rebuild routes through the SAME wrapper.
     refresh = next(t for t in tasks if t["id"] == "equality-matrix-refresh")
-    assert "equality-preflight.sh" in refresh["command"]
-    # r1 M2: the 6-hourly, 6-machine curation path gets the preflight too, or behind_main
-    # keeps ratcheting on the more frequent of the two collection paths.
-    curation = next(t for t in tasks if t["id"] == "session-curation")
-    assert "session-curation-preflight.sh" in curation["command"]
-    cpre = (REPO_ROOT / "scripts" / "curation" / "session-curation-preflight.sh").read_text()
-    assert "ff_preflight" in cpre
-    assert "exec bash" in cpre and "curate-session-memory.sh" in cpre
+    assert "equality-matrix-cron.sh" in refresh["command"]
 
 
 def test_verdict_behavior_is_uniform_not_expected_diff():
@@ -947,146 +852,71 @@ def test_kanban_membership_difference_still_diverges():
     assert bem.verdict_for("kanban", "a", reports, {}, roster, TIER1) == "DIVERGES"
 
 
-# ── memory + scheduler cold-dim conformance (declared baselines, #3592) ──────
-def test_memory_is_cold_dim():
-    assert "memory" in bem.COLD_DIMS
+# ── harness-checkup verdict (#3408) ──────────────────────────────────────────
+_HC_CLEAN = {
+    "audited_at": "2026-07-09T12:00:00+00:00", "settings_parse_ok": True,
+    "install_method": "npm-global", "duplicate_installs": 0, "broken_agents": 0,
+    "version_current": True, "auto_mode_default": True, "unused_skills": 3, "unused_plugins": 0,
+}
 
 
-def test_scheduler_is_cold_dim():
-    assert "scheduler" in bem.COLD_DIMS
+def _hc(**over):
+    d = dict(_HC_CLEAN)
+    d.update(over)
+    return _report("m", harness_checkup=d)
 
 
-def test_reclassified_dims_not_uniform_voted():
-    # extract_value feeds ONLY the uniform vote; reclassified dims must not map there,
-    # so a mixed-fleet value set can never manufacture DIVERGES/NO-MAJORITY for them.
-    rep = _report("dev-primary")
-    assert bem.extract_value("memory", rep) is None
-    assert bem.extract_value("scheduler", rep) is None
+def test_hc_clean_ok():
+    assert bem.harness_checkup_verdict(_hc()) == "CHECKUP-OK"
 
 
-def _memory_rep(machine="dev-primary", hermes_home="present"):
-    mem = {"context_md_mtime": "2026-07-22T04:25:01"}
-    if hermes_home is not None:
-        mem["hermes_home"] = hermes_home
-    return _report(machine, memory=mem)
+def test_hc_absent_dim_is_missing_evidence():
+    assert bem.harness_checkup_verdict(_report("m")) == "MISSING-EVIDENCE"
 
 
-def test_memory_hermes_home_conforms():
-    rep = _memory_rep(hermes_home="present")
-    assert bem.cold_verdict("memory", rep, {"hermes_home_baseline": "present"}, TIER1) == "CONFORMS"
+def test_hc_no_audited_at_missing_evidence():
+    d = dict(_HC_CLEAN)
+    d.pop("audited_at")
+    assert bem.harness_checkup_verdict(_report("m", harness_checkup=d)) == "MISSING-EVIDENCE"
 
 
-def test_memory_absent_conforms_to_absent_baseline():
-    rep = _memory_rep("gpu-claw", hermes_home="absent")
-    assert bem.cold_verdict("memory", rep, {"hermes_home_baseline": "absent"}, TIER1) == "CONFORMS"
+def test_hc_null_core_evidence_missing():
+    assert bem.harness_checkup_verdict(_hc(settings_parse_ok=None)) == "MISSING-EVIDENCE"
+    assert bem.harness_checkup_verdict(_hc(install_method=None)) == "MISSING-EVIDENCE"
 
 
-def test_memory_below_baseline_on_mismatch():
-    rep = _memory_rep("ace-win-2", hermes_home="absent")
-    assert bem.cold_verdict("memory", rep, {"hermes_home_baseline": "present"}, TIER1) == "BELOW-BASELINE"
+def test_hc_broken_settings_duplicate_agents():
+    assert bem.harness_checkup_verdict(_hc(settings_parse_ok=False)) == "CHECKUP-BROKEN"
+    assert bem.harness_checkup_verdict(_hc(duplicate_installs=1)) == "CHECKUP-BROKEN"
+    assert bem.harness_checkup_verdict(_hc(broken_agents=2)) == "CHECKUP-BROKEN"
 
 
-def test_memory_surplus_hermes_below_baseline():
-    rep = _memory_rep("ace-win-1", hermes_home="present")
-    assert bem.cold_verdict("memory", rep, {"hermes_home_baseline": "absent"}, TIER1) == "BELOW-BASELINE"
+def test_hc_soft_drift():
+    assert bem.harness_checkup_verdict(_hc(version_current=False)) == "CHECKUP-DRIFTED"
+    assert bem.harness_checkup_verdict(_hc(auto_mode_default=False)) == "CHECKUP-DRIFTED"
+    assert bem.harness_checkup_verdict(_hc(unused_skills=16)) == "CHECKUP-DRIFTED"
+    assert bem.harness_checkup_verdict(_hc(unused_plugins=1)) == "CHECKUP-DRIFTED"
 
 
-def test_memory_no_baseline_fail_closed():
-    rep = _memory_rep()
-    assert bem.cold_verdict("memory", rep, {"compute_floor": {"cores_min": 8}}, TIER1) == "MISSING-BASELINE"
+def test_hc_clutter_boundary_and_unknown_currency_are_ok():
+    assert bem.harness_checkup_verdict(_hc(unused_skills=15)) == "CHECKUP-OK"
+    assert bem.harness_checkup_verdict(_hc(version_current=None)) == "CHECKUP-OK"
 
 
-def test_memory_unknown_missing_evidence():
-    rep = _memory_rep(hermes_home=None)
-    assert bem.cold_verdict("memory", rep, {"hermes_home_baseline": "present"}, TIER1) == "MISSING-EVIDENCE"
+def test_hc_broken_beats_drift():
+    assert bem.harness_checkup_verdict(_hc(settings_parse_ok=False, version_current=False)) == "CHECKUP-BROKEN"
 
 
-def _sched_baseline(repo_sync="required", parity="not-required"):
-    return {"scheduler_baseline": {"repo_sync": repo_sync, "parity_review": parity}}
+def test_hc_registered_in_display_group_severity():
+    assert "harness_checkup" in bem.BASE_DISPLAY_DIMS
+    assert any("harness_checkup" in dims for _, _, dims in bem.GROUPS)
+    assert "CHECKUP-OK" in bem.OK_VERDICTS
+    assert bem.ROLLUP_SEVERITY["CHECKUP-BROKEN"] == 6
+    assert bem.ROLLUP_SEVERITY["CHECKUP-DRIFTED"] == 5
+    assert bem.ROLLUP_SEVERITY["CHECKUP-OK"] == 0
 
 
-def _sched_rep(machine="dev-primary", has_sync=True, has_parity=False, job_count=26,
-               schema=5, os="linux"):
-    rep = _report(machine, scheduler={"has_repo_sync": has_sync,
-                                      "has_parity_review": has_parity,
-                                      "job_count": job_count})
-    rep["schema_version"] = schema
-    rep["os"] = os
-    return rep
-
-
-def test_scheduler_required_sync_present_conforms():
-    rep = _sched_rep(has_sync=True, has_parity=False)
-    assert bem.cold_verdict("scheduler", rep, _sched_baseline(), TIER1) == "CONFORMS"
-
-
-def test_scheduler_required_sync_missing_below_baseline():
-    # gpu-claw: measured Linux zeros = a REAL onboarding gap, must stay visible
-    rep = _sched_rep("gpu-claw", has_sync=False, has_parity=False, job_count=0)
-    assert bem.cold_verdict("scheduler", rep, _sched_baseline(), TIER1) == "BELOW-BASELINE"
-
-
-def test_scheduler_leader_parity_required_conforms():
-    rep = _sched_rep(has_sync=True, has_parity=True, job_count=63)
-    assert bem.cold_verdict("scheduler", rep, _sched_baseline(parity="required"), TIER1) == "CONFORMS"
-
-
-def test_scheduler_leader_parity_missing_below_baseline():
-    rep = _sched_rep(has_sync=True, has_parity=False)
-    assert bem.cold_verdict("scheduler", rep, _sched_baseline(parity="required"), TIER1) == "BELOW-BASELINE"
-
-
-def test_scheduler_not_required_false_conforms():
-    rep = _sched_rep(has_sync=False, has_parity=False, job_count=0)
-    bl = _sched_baseline(repo_sync="not-required", parity="not-required")
-    assert bem.cold_verdict("scheduler", rep, bl, TIER1) == "CONFORMS"
-
-
-def test_scheduler_unknown_missing_evidence():
-    # `unknown` is never evidence: neither a baseline pass nor a fail
-    rep = _sched_rep(has_sync="unknown", has_parity="unknown", job_count="unknown")
-    assert bem.cold_verdict("scheduler", rep, _sched_baseline(), TIER1) == "MISSING-EVIDENCE"
-
-
-def test_scheduler_no_baseline_fail_closed():
-    rep = _sched_rep()
-    assert bem.cold_verdict("scheduler", rep, {"compute_floor": {"cores_min": 8}}, TIER1) == "MISSING-BASELINE"
-
-
-def test_scheduler_schema4_windows_placeholder_is_unprobed():
-    # Migration gate (#3592): pre-schema-5 collectors NEVER probed Windows — their
-    # false/0 values are placeholders, not measurements. They must grade
-    # MISSING-EVIDENCE, never BELOW-BASELINE (and never CONFORMS).
-    rep = _sched_rep("ace-win-1", has_sync=False, has_parity=False, job_count=0,
-                     schema=4, os="windows")
-    assert bem.cold_verdict("scheduler", rep, _sched_baseline(), TIER1) == "MISSING-EVIDENCE"
-
-
-def test_scheduler_schema4_linux_measured_values_kept():
-    # Linux probe semantics are unchanged across the bump — legacy evidence stays graded
-    rep = _sched_rep(has_sync=True, has_parity=True, job_count=63, schema=4, os="linux")
-    assert bem.cold_verdict("scheduler", rep, _sched_baseline(parity="required"), TIER1) == "CONFORMS"
-
-
-# ── provider rows must survive the #3592 schema bump (Codex code-review MAJOR) ──
-def test_provider_row_parity_at_schema_5():
-    # The provider-row contract is dimensions.provider_harness.schema_version == 1;
-    # the TOP-LEVEL schema gate must accept every schema that carries it (4+), else
-    # a collector bump silently degrades all 12 capability rows to MISSING-EVIDENCE.
-    rep = _provider_report("dev-primary")
-    rep["schema_version"] = 5
-    assert bem.provider_row_verdict("harness:codex:memory:read", rep) == "PARITY"
-
-
-def test_provider_row_expected_divergence_at_schema_5():
-    rep = _provider_report("dev-primary", {"gemini": {
-        "skills:invoke": {"status": "expected_divergence",
-                          "reason": "gemini_skill_dispatch_unsupported"}}})
-    rep["schema_version"] = 5
-    assert bem.provider_row_verdict("harness:gemini:skills:invoke", rep) == "EXPECTED-DIVERGENCE"
-
-
-def test_provider_row_pre_provider_harness_schema_still_rejected():
-    rep = _provider_report("dev-primary")
-    rep["schema_version"] = 3          # predates the provider_harness dimension (#2889)
-    assert bem.provider_row_verdict("harness:codex:memory:read", rep) == "MISSING-EVIDENCE"
+def test_hc_verdict_via_dispatch():
+    roster = {"m": {"status": "active"}}
+    reports = {"m": _hc(unused_skills=16)}
+    assert bem.verdict_for("harness_checkup", "m", reports, {}, roster, TIER1) == "CHECKUP-DRIFTED"

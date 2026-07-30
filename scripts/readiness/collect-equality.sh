@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 # collect-equality.sh — per-machine self-report for the machine-equality matrix (#2801).
 #
-# Emits equality-<machine>.yaml with 8 dimensions into the #3702 generation seam
-# (${XDG_STATE_HOME:-$HOME/.local/state}/workspace-hub/equality by default — OUT of the
-# tracked tree; override with --state-dir / $EQ_STATE_DIR). publish-equality.sh copies it
-# onto origin/main through a sparse worktree, so `.claude/state/equality-<machine>.yaml`
-# remains the published surface. Design (per approved plan):
+# Emits .claude/state/equality-<machine>.yaml with 8 dimensions. Design (per approved plan):
 #   * compute.static (cores/ram_total_mib/gpu) is graded + hashed; compute.headroom
 #     (ram_avail/disk_avail) is volatile → display-only, EXCLUDED from the idempotency hash.
 #   * data_access emits {repo: bare-name, mode} — no absolute paths (no machine-layout leak).
@@ -14,46 +10,24 @@
 #   * serialization allowlist: counts/booleans/enums only — never tokens, cron lines, env, abs paths.
 #   * commit-on-change: rewrite only when the CANONICAL payload (volatile fields excluded) changes.
 #
-# Usage: collect-equality.sh [--machine <label>] [--stdout] [--now] [--state-dir <path>]
+# Usage: collect-equality.sh [--machine <label>] [--stdout] [--now]
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
 WS="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." 2>/dev/null && pwd)}"
-# READ surface — tracked repo state this collector CONSUMES (harness-readiness,
-# session-curation, skill-currency, memory-freshness, skill-link-health sidecars).
-# #3702 relocates only the collector's OUTPUT; these inputs are tracked repo content
-# and MUST keep resolving in-tree, or five matrix dimensions go MISSING-EVIDENCE on
-# every box. Reading never dirties the tree.
 STATE_DIR="${WS}/.claude/state"
 RUN_TS="$(date +%Y-%m-%dT%H:%M:%S 2>/dev/null)"
 
-MACHINE=""; TO_STDOUT=0; STATE_DIR_FLAG=""
+MACHINE=""; TO_STDOUT=0
 for ((i=1; i<=$#; i++)); do
   case "${!i}" in
     --machine) j=$((i+1)); MACHINE="${!j:-}";;
     --stdout)  TO_STDOUT=1;;
     --now)     :;;  # explicit on-demand; behaviour identical (cadence is the caller's concern)
-    --state-dir) j=$((i+1)); STATE_DIR_FLAG="${!j:-}";;
   esac
 done
-# EQ_MACHINE env == --machine (flag wins). Lets no-arg chain callers — notably the
-# reconcile-printed `EQ_MACHINE=<label> bash equality-matrix-cron.sh` remediations —
-# carry an explicit label through to this collector (#3571).
-MACHINE="${MACHINE:-${EQ_MACHINE:-}}"
-
-# shellcheck source=scripts/readiness/lib/machine-identity.sh
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib/machine-identity.sh"
-# WRITE surface — #3702. Resolved OUT of the tracked tree by default so a collection run
-# can never block `git pull --ff-only`. Precedence: --state-dir > $EQ_STATE_DIR > XDG.
-# shellcheck source=scripts/readiness/lib/eq-seam.sh
-. "${SCRIPT_DIR}/lib/eq-seam.sh"
-EQ_OUT_DIR="$(eq_state_dir "${STATE_DIR_FLAG:-}")"
 
 HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
-# A machine may have a private or policy-sensitive OS hostname while using a public
-# fleet identity.  The Windows wrapper sets this to the validated --machine label so
-# tracked equality evidence never serializes the private hostname.
-PUBLIC_HOST="${EQ_PUBLIC_HOST:-$HOST}"
 case "$(uname -s 2>/dev/null)" in
   Linux) OS="linux";; Darwin) OS="macos";; MINGW*|MSYS*|CYGWIN*) OS="windows";; *) OS="unknown";;
 esac
@@ -73,21 +47,11 @@ if [[ -z "$MACHINE" ]]; then
     ace-win-1*|licensed-win-1*|acma-ansys05*) MACHINE="ace-win-1";;
     ace-win-2*|licensed-win-2*|acma-ws014*) MACHINE="ace-win-2";;
     *)
-      # Identity file is consulted ONLY for hostnames the map does not know — a
-      # stale/copied file can never override a mapped host (#3571). rc 1 (malformed
-      # or foreign file) must fail loud, never fall through.
-      if _identity="$(resolve_identity_file "$HOST")"; then
-        MACHINE="${_identity%% *}"
-        [[ -n "${EQ_PUBLIC_HOST:-}" ]] || PUBLIC_HOST="${_identity##* }"
-      else
-        _rc=$?
-        [[ "$_rc" -eq 1 ]] && exit 1
-        if [[ "$OS" == "windows" ]]; then
-          echo "collect-equality.sh: unknown Windows host '$HOST'; pass --machine ace-win-1 or ace-win-2, or provision $(machine_identity_file)" >&2
-          exit 1
-        fi
-        MACHINE="$HOST"
-      fi;;
+      if [[ "$OS" == "windows" ]]; then
+        echo "collect-equality.sh: unknown Windows host '$HOST'; pass --machine ace-win-1 or ace-win-2" >&2
+        exit 1
+      fi
+      MACHINE="$HOST";;
   esac
 fi
 have() { command -v "$1" >/dev/null 2>&1; }
@@ -171,7 +135,7 @@ for _ubin in "${HOME:-}/.npm-global/bin" "${HOME:-}/.local/bin"; do
 done
 export PATH
 readiness_file="harness-readiness-${MACHINE}.yaml"
-[[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${PUBLIC_HOST}.yaml"
+[[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${HOST}.yaml"
 readiness_overall="missing"
 [[ -f "${STATE_DIR}/${readiness_file}" ]] && \
   readiness_overall=$(awk -F': ' '/^overall:/{print $2; exit}' "${STATE_DIR}/${readiness_file}" 2>/dev/null)
@@ -259,6 +223,30 @@ if [[ -f "$slh_file" ]] && have jq; then
   [[ -n "$_slw" ]] && slh_worst="\"$(yesc "$_slw")\""
 fi
 
+# ── 6f. HARNESS CHECKUP — /doctor hygiene facts (#3408) ──────────────────────
+# References the audit state from scripts/curation/audit_harness_checkup.py (never re-runs it).
+# Missing/garbled file -> audited_at null -> matrix grades MISSING-EVIDENCE. audited_at stays in the
+# canonical payload so a fresh audit forces a rewrite. Every field is type-gated on read (boolean/
+# number/string as declared, else null) so a malformed audit can never inject garbage into the graded
+# cells — allowlist-safe by construction (the audit emits counts/booleans/enums/version strings only).
+hc_file="${STATE_DIR}/harness-checkup-${MACHINE}.json"
+hc_audited="null"; hc_ver="null"; hc_latest="null"; hc_vcur="null"; hc_install="null"
+hc_dupe="null"; hc_sok="null"; hc_bad="null"; hc_uskill="null"; hc_uplug="null"; hc_mode="null"; hc_auto="null"
+if [[ -f "$hc_file" ]] && have jq; then
+  _hca=$(jq -r '.audited_at // empty' "$hc_file" 2>/dev/null);   [[ -n "$_hca" ]] && hc_audited="\"$(yesc "$_hca")\""
+  _hcv=$(jq -r '.cc_version // empty' "$hc_file" 2>/dev/null);   [[ -n "$_hcv" ]] && hc_ver="\"$(yesc "$_hcv")\""
+  _hcl=$(jq -r '.cc_latest // empty' "$hc_file" 2>/dev/null);    [[ -n "$_hcl" ]] && hc_latest="\"$(yesc "$_hcl")\""
+  _hci=$(jq -r '.install_method // empty' "$hc_file" 2>/dev/null); [[ -n "$_hci" ]] && hc_install="\"$(yesc "$_hci")\""
+  _hcm=$(jq -r '.default_mode // empty' "$hc_file" 2>/dev/null); [[ -n "$_hcm" ]] && hc_mode="\"$(yesc "$_hcm")\""
+  _hcvc=$(jq -r 'if (.version_current|type)=="boolean" then .version_current else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcvc" == "true" || "$_hcvc" == "false" ]] && hc_vcur="$_hcvc"
+  _hcso=$(jq -r 'if (.settings_parse_ok|type)=="boolean" then .settings_parse_ok else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcso" == "true" || "$_hcso" == "false" ]] && hc_sok="$_hcso"
+  _hcau=$(jq -r 'if (.auto_mode_default|type)=="boolean" then .auto_mode_default else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcau" == "true" || "$_hcau" == "false" ]] && hc_auto="$_hcau"
+  _hcd=$(jq -r 'if (.duplicate_installs|type)=="number" then .duplicate_installs else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcd" =~ ^[0-9]+$ ]] && hc_dupe="$_hcd"
+  _hcb=$(jq -r 'if (.broken_agents|type)=="number" then .broken_agents else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcb" =~ ^[0-9]+$ ]] && hc_bad="$_hcb"
+  _hcus=$(jq -r 'if (.unused_skills|type)=="number" then .unused_skills else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcus" =~ ^[0-9]+$ ]] && hc_uskill="$_hcus"
+  _hcup=$(jq -r 'if (.unused_plugins|type)=="number" then .unused_plugins else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcup" =~ ^[0-9]+$ ]] && hc_uplug="$_hcup"
+fi
+
 # ── 7. BEHAVIOR — deterministic, SANDBOXED probe corpus (DG4/DC1) ────────────
 # CC3: guard mktemp (never let SBX become /sbx → rm -rf /). GC4: trap-based cleanup.
 SBX_PARENT="$(mktemp -d 2>/dev/null)" || { echo "mktemp failed" >&2; exit 1; }
@@ -289,31 +277,12 @@ fi
 # (sandbox cleanup handled by the EXIT trap above — CC3/GC4)
 
 # ── 8. SCHEDULER (counts/booleans only; never cron lines, C4) ────────────────
-# #3592: fields default to "unknown" (an enum, C4-safe), NEVER false/0 — an unprobed
-# placeholder is indistinguishable from a measurement and poisoned the old uniform
-# vote (Windows placeholders outvoted the two measured Linux boxes 3-to-2). The
-# matrix grades "unknown" as MISSING-EVIDENCE; only a real probe emits booleans.
-job_count="unknown"; has_sync="unknown"; has_parity="unknown"
+job_count=0; has_sync=false; has_parity=false
 if [[ "$OS" != "windows" ]] && have crontab; then
   dump=$(crontab -l 2>/dev/null)
   job_count=$(printf '%s\n' "$dump" | grep -cE '^[[:space:]]*[^[:space:]#]')  # non-blank, non-comment
-  has_sync=false; has_parity=false
   printf '%s' "$dump" | grep -q 'repository-sync\|repo-sync' && has_sync=true
   printf '%s' "$dump" | grep -q 'parity-review' && has_parity=true
-elif [[ "$OS" == "windows" ]] && have schtasks; then
-  # Windows probe (#3592): Task Scheduler via `schtasks /query /fo csv /nh`. Name-match
-  # only (no schedule lines serialized — C4 holds). job_count includes system tasks, so
-  # it is noisy and display-only (never graded); the booleans are the graded signals.
-  tasks=$(schtasks /query /fo csv /nh 2>/dev/null | tr -d '\r')
-  if [[ -n "$tasks" ]]; then
-    job_count=$(printf '%s\n' "$tasks" | grep -c '^"')
-    has_sync=false; has_parity=false
-    # Match BOTH cron-style hyphenated names AND the PascalCase Task Scheduler names
-    # registered by scripts/windows/setup-scheduler-tasks.ps1 (\Claude\RepoSync,
-    # \Claude\EqualityReport) — case-insensitive with an optional separator.
-    printf '%s' "$tasks" | grep -qiE 'repo[-_ ]?sync|repository[-_ ]?sync|equality[-_ ]?report' && has_sync=true
-    printf '%s' "$tasks" | grep -qiE 'parity[-_ ]?review' && has_parity=true
-  fi
 fi
 
 # ── 9. PROVENANCE — checkout freshness guard (#2851) ─────────────────────────
@@ -411,12 +380,6 @@ providers:
     "memory:read": {status: unknown, reason: collector_unavailable}
     "skills:invoke": {status: unknown, reason: collector_unavailable}
     "workflow:gates": {status: unknown, reason: collector_unavailable}
-  gemini:
-    present: false
-    installed: false
-    "memory:read": {status: unknown, reason: collector_unavailable}
-    "skills:invoke": {status: unknown, reason: collector_unavailable}
-    "workflow:gates": {status: unknown, reason: collector_unavailable}
 YAML
 }
 provider_py=""
@@ -434,31 +397,14 @@ else
 fi
 provider_harness_yaml="$(printf '%s\n' "$provider_harness_yaml" | sed 's/^/    /')"
 
-# ── publish_health (#3502): last equivalence-state publish outcome, written by
-#    equivalence-sentinel.sh. A gate-length duration or a stale/missing record is
-#    the #3500 pre-push-deadlock signature; the matrix renders it per machine.
-ph_file="${WS}/.claude/state/equivalence/publish-health.json"
-ph_ts="missing"; ph_dur="null"; ph_rc="null"
-if [[ -f "$ph_file" ]] && have python3; then
-  read -r ph_ts ph_dur ph_rc < <(python3 - "$ph_file" <<'PY' 2>/dev/null || echo "missing null null"
-import json, sys
-try:
-    d = json.load(open(sys.argv[1]))
-    print(d.get("ts") or "missing", d.get("duration_s", "null"), d.get("rc", "null"))
-except Exception:
-    print("missing null null")
-PY
-) || true
-fi
-
 # ── emit (generated_at + headroom + mtime + job_count + checkout_sha are EXCLUDED from the
 #          hash; dirty + behind_main + origin_ref_age_h ARE hashed — A1/BC5: exclude the pure
 #          churn (sha) ONLY, so every freshness-state field stays live in the committed report
 #          and a fresh→stale transition always forces a rewrite) ──
 read -r -d '' BODY <<YAML || true
-schema_version: 5
+schema_version: 4
 machine: "$(yesc "$MACHINE")"
-host: "$(yesc "$PUBLIC_HOST")"
+host: "$(yesc "$HOST")"
 os: ${OS}
 status: active
 provenance:
@@ -517,10 +463,19 @@ ${provider_harness_yaml}
     healthy: ${slh_healthy}
     repairable: ${slh_repairable}
     worst_state: ${slh_worst}
-  publish_health:
-    last_publish_at: "$(yesc "$ph_ts")"
-    last_publish_duration_s: ${ph_dur}
-    last_publish_rc: ${ph_rc}
+  harness_checkup:
+    audited_at: ${hc_audited}
+    cc_version: ${hc_ver}
+    cc_latest: ${hc_latest}
+    version_current: ${hc_vcur}
+    install_method: ${hc_install}
+    duplicate_installs: ${hc_dupe}
+    settings_parse_ok: ${hc_sok}
+    broken_agents: ${hc_bad}
+    unused_skills: ${hc_uskill}
+    unused_plugins: ${hc_uplug}
+    default_mode: ${hc_mode}
+    auto_mode_default: ${hc_auto}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 
@@ -533,8 +488,8 @@ if [[ "$TO_STDOUT" == "1" ]]; then
   printf '%s\n' "$FULL"
   exit 0
 fi
-mkdir -p "$EQ_OUT_DIR" || { echo "collect-equality: cannot create ${EQ_OUT_DIR}" >&2; exit 1; }
-OUT="${EQ_OUT_DIR}/equality-${MACHINE}.yaml"
+mkdir -p "$STATE_DIR"
+OUT="${STATE_DIR}/equality-${MACHINE}.yaml"
 if [[ -f "$OUT" ]] && have sha256sum; then
   old=$(canonical "$(cat "$OUT")" | sha256sum)
   new=$(canonical "$FULL" | sha256sum)

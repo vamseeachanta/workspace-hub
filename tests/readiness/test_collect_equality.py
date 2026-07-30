@@ -17,12 +17,6 @@ from pathlib import Path
 
 import yaml
 
-#3702 note: the collector's default output moved OUT of the tracked tree. The
-# commit-on-change / provenance cases below pin `EQ_STATE_DIR` back to the fixture's
-# in-tree `.claude/state` — the documented rollback configuration — so they keep
-# asserting collector SEMANTICS at a known path. The out-of-tree default, the flag/env
-# precedence, and working-tree cleanliness are covered by
-# tests/readiness/test_equality_tree_cleanliness.py.
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = REPO_ROOT / "scripts" / "readiness" / "collect-equality.sh"
 BASH_PATH = "/mingw64/bin:/usr/bin:/bin:/usr/local/bin"
@@ -160,8 +154,7 @@ def test_collect_commit_on_change_idempotent(tmp_path):
     # D1/DC4: two runs with no real change must not rewrite (hash excludes volatile + generated_at)
     ws = _fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin",
-           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     first_mtime = out.stat().st_mtime_ns
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
@@ -173,11 +166,10 @@ STATUS_ENUM = {"licensed", "present", "absent", "unknown"}
 EVIDENCE_ENUM = {"import", "env", "root", "absent", "unknown"}
 
 
-def test_collect_emits_schema_v5(tmp_path):
-    # #2889: schema 4 added provider_harness; #3592: schema 5 = scheduler `unknown`
-    # semantics (unprobed fields are never placeholder false/0) + Windows schtasks probe.
+def test_collect_emits_schema_v4(tmp_path):
+    # #2889: schema bumped to 4 with the provider_harness dimension added.
     d = _run(_fixture(tmp_path))
-    assert d["schema_version"] == 5
+    assert d["schema_version"] == 4
 
 
 def test_collect_emits_schema_v4_with_complete_provider_harness(tmp_path):
@@ -233,7 +225,7 @@ def test_provider_harness_helper_is_windows_stdlib_safe(tmp_path):
         timeout=60)
     assert res.returncode == 0, res.stderr
     data = yaml.safe_load(res.stdout)
-    assert data["schema_version"] == 5
+    assert data["schema_version"] == 4
     assert "provider_harness" in data["dimensions"]
 
 
@@ -353,8 +345,7 @@ def test_collect_solvers_canonical_hash_includes_block(tmp_path):
     # Toggling a solver status in the committed file is a MEANINGFUL change → rewrite.
     ws = _fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin",
-           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     text = out.read_text().replace(
         "{name: orcaflex, status: absent", "{name: orcaflex, status: licensed")
@@ -369,8 +360,7 @@ def test_collect_commit_on_change_detects_real_drift(tmp_path):
     # canonical()-grep bug where a volatile field sharing a line masked its neighbors.
     ws = _fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin",
-           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin"}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     # tamper a meaningful field in the committed file; real collection differs → must rewrite
     text = out.read_text().replace("hermes_home: absent", "hermes_home: present")
@@ -522,8 +512,7 @@ def test_collect_sha_excluded_from_hash(tmp_path):
     # local and remote move together. Only checkout_sha differs → canonical payload identical.
     ws = _git_fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent),
-           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     first_mtime = out.stat().st_mtime_ns
     _git(ws, "commit", "-q", "--allow-empty", "-m", "advance sha")
@@ -537,8 +526,7 @@ def test_collect_dirty_change_forces_rewrite(tmp_path):
     # cannot keep a stale dirty:false that fools the matrix.
     ws = _git_fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent),
-           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert "dirty: false" in out.read_text()
     (ws.joinpath(*MEASURED_PATH)).write_text("workstations: {}\n# now dirty\n")
@@ -551,8 +539,7 @@ def test_collect_dirty_no_self_trigger(tmp_path):
     # dirty is captured pre-write AND .claude/state is outside the measured allowlist.
     ws = _git_fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent),
-           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert "dirty: false" in out.read_text()         # writing its own report didn't self-dirty
 
@@ -605,8 +592,7 @@ def test_collect_origin_ref_age_refreshed_not_frozen(tmp_path):
     # matrix. Tamper the committed age to a huge stale value; the next run MUST rewrite it back.
     ws = _git_fixture(tmp_path)
     out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
-    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent),
-           "EQ_STATE_DIR": str(ws / ".claude" / "state")}
+    env = {"WORKSPACE_HUB": str(ws), "PATH": "/usr/bin:/bin:/usr/local/bin", "HOME": str(ws.parent)}
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert re.search(r"origin_ref_age_h: \d", out.read_text())          # live numeric value
     out.write_text(re.sub(r"origin_ref_age_h: .*", "origin_ref_age_h: 999", out.read_text()))
@@ -623,203 +609,46 @@ def test_collect_kanban_queue_order_is_byte_sorted(tmp_path):
     assert d["dimensions"]["kanban"]["dispatch_queues"] == "_leader-state,dev-primary,multi"
 
 
-# ── #3571 W2: machine-identity file (private-hostname boxes) ──────────────────
-# Precedence: explicit flag/env > hardcoded hostname map > identity file > fail.
-# The file lives OFF-REPO (default ~/.config/workspace-hub/machine-identity.yaml,
-# override WORKSPACE_HUB_MACHINE_IDENTITY) so no hostname token enters the repo.
-
-IDENTITY_LIB = REPO_ROOT / "scripts" / "readiness" / "lib" / "machine-identity.sh"
-RECONCILE = REPO_ROOT / "scripts" / "readiness" / "reconcile-ecosystem.sh"
-REPORT_PS1 = REPO_ROOT / "scripts" / "windows" / "equality-report.ps1"
-
-
-def _host_stub(tmp_path: Path, name: str) -> Path:
-    bin_dir = tmp_path / "bin"
-    bin_dir.mkdir(exist_ok=True)
-    stub = bin_dir / "hostname"
-    stub.write_text(f"#!/usr/bin/env bash\nprintf '%s\\n' {name}\n")
-    stub.chmod(0o755)
-    return bin_dir
+# ── harness_checkup dimension (#3408) ────────────────────────────────────────
+def test_collect_harness_checkup_failclosed_when_absent(tmp_path):
+    # no harness-checkup-<machine>.json in the fixture → block present but all-null (fail-closed →
+    # the matrix grades MISSING-EVIDENCE; never silently green).
+    d = _run(_fixture(tmp_path))["dimensions"]["harness_checkup"]
+    assert d["audited_at"] is None
+    for k in ("cc_version", "cc_latest", "version_current", "install_method", "duplicate_installs",
+              "settings_parse_ok", "broken_agents", "unused_skills", "unused_plugins",
+              "default_mode", "auto_mode_default"):
+        assert d[k] is None, k
 
 
-def _identity_env(tmp_path: Path, ws: Path, host: str, identity: str | None) -> dict:
-    home = tmp_path / "home"
-    home.mkdir(exist_ok=True)
-    if identity is not None:
-        idf = home / ".config" / "workspace-hub" / "machine-identity.yaml"
-        idf.parent.mkdir(parents=True, exist_ok=True)
-        idf.write_text(identity)
-    return {
-        "WORKSPACE_HUB": _bash_path(ws),
-        "PATH": f"{_host_stub(tmp_path, host)}:{BASH_PATH}",
-        "HOME": str(home),
-    }
+def test_collect_harness_checkup_passthrough(tmp_path):
+    import json as _json
+    ws = _fixture(tmp_path)
+    (ws / ".claude" / "state" / "harness-checkup-dev-primary.json").write_text(_json.dumps({
+        "audited_at": "2026-07-09T12:00:00+00:00", "cc_version": "2.1.205", "cc_latest": "2.1.205",
+        "version_current": True, "install_method": "npm-global", "duplicate_installs": 0,
+        "settings_parse_ok": True, "broken_agents": 0, "unused_skills": 23, "unused_plugins": 8,
+        "default_mode": "auto", "auto_mode_default": True,
+    }))
+    d = _run(ws)["dimensions"]["harness_checkup"]
+    assert d["cc_version"] == "2.1.205" and d["cc_latest"] == "2.1.205"
+    assert d["version_current"] is True and d["auto_mode_default"] is True
+    assert d["install_method"] == "npm-global" and d["default_mode"] == "auto"
+    assert d["duplicate_installs"] == 0 and d["unused_skills"] == 23 and d["unused_plugins"] == 8
 
 
-def _run_env(env: dict, *args: str) -> subprocess.CompletedProcess:
-    return subprocess.run(["bash", str(SCRIPT), "--stdout", *args],
-                          env=env, capture_output=True, text=True, timeout=60)
-
-
-def test_identity_file_resolves_unknown_host(tmp_path):
-    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
-                        'machine: "ace-win-1"\n')
-    res = _run_env(env)
-    assert res.returncode == 0, res.stderr
-    d = yaml.safe_load(res.stdout)
-    assert d["machine"] == "ace-win-1"
-    assert d["host"] == "ace-win-1"          # public_host defaults to the label
-
-
-def test_identity_file_public_host_serialized_never_hostname(tmp_path):
-    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
-                        'machine: "ace-win-1"\npublic_host: "retired-name"\n')
-    res = _run_env(env)
-    assert res.returncode == 0, res.stderr
-    d = yaml.safe_load(res.stdout)
-    assert d["host"] == "retired-name"
-    assert "unknown-box" not in res.stdout   # OS hostname never serialized
-
-
-def test_identity_file_ignored_when_flag_given(tmp_path):
-    # Explicit --machine must short-circuit BEFORE any identity-file read/validation:
-    # a malformed file present must not break the scheduled-task path (r2 finding 1).
-    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
-                        "not: even: close: to valid\n")
-    res = _run_env(env, "--machine", "licensed-win-2")
-    assert res.returncode == 0, res.stderr
-    assert yaml.safe_load(res.stdout)["machine"] == "licensed-win-2"
-
-
-def test_identity_env_eq_machine_resolves(tmp_path):
-    # EQ_MACHINE env == --machine (reconcile remediation commands use it).
-    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box", None)
-    env["EQ_MACHINE"] = "ace-win-2"
-    res = _run_env(env)
-    assert res.returncode == 0, res.stderr
-    assert yaml.safe_load(res.stdout)["machine"] == "ace-win-2"
-
-
-def test_identity_file_never_overrides_mapped_host(tmp_path):
-    # A stale/copied file on a correctly-mapped host must be dead weight (r2 finding 2).
-    env = _identity_env(tmp_path, _fixture(tmp_path), "ace-linux-1",
-                        'machine: "ace-win-1"\n')
-    res = _run_env(env)
-    assert res.returncode == 0, res.stderr
-    assert yaml.safe_load(res.stdout)["machine"] == "dev-primary"
-
-
-def test_identity_file_missing_machine_key_fails_loud(tmp_path):
-    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
-                        'public_host: "x"\n')
-    res = _run_env(env)
-    assert res.returncode != 0
-    assert "machine-identity" in res.stderr
-
-
-def test_identity_file_unknown_label_fails_loud(tmp_path):
-    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
-                        'machine: "bogus-label"\n')
-    res = _run_env(env)
-    assert res.returncode != 0
-    assert "machine-identity" in res.stderr
-
-
-def test_identity_file_expected_hostname_mismatch_fails_loud(tmp_path):
-    # A file copied to the wrong box must die, not mint a false column (r2 finding 2).
-    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
-                        'machine: "ace-win-1"\nexpected_hostname: "some-other-box"\n')
-    res = _run_env(env)
-    assert res.returncode != 0
-    assert "machine-identity" in res.stderr
-
-
-def test_identity_file_expected_hostname_match_succeeds(tmp_path):
-    env = _identity_env(tmp_path, _fixture(tmp_path), "unknown-box",
-                        'machine: "ace-win-1"\nexpected_hostname: "unknown-box"\n')
-    res = _run_env(env)
-    assert res.returncode == 0, res.stderr
-    assert yaml.safe_load(res.stdout)["machine"] == "ace-win-1"
-
-
-def test_identity_label_set_single_sourced_across_mirrors():
-    # One canonical label list (r1 finding 1): the bash lib defines it; the PS1
-    # mirror and reconcile must agree with it.
-    lib = IDENTITY_LIB.read_text(encoding="utf-8")
-    m = re.search(r'KNOWN_MACHINE_LABELS="([^"]+)"', lib)
-    assert m, "lib must define KNOWN_MACHINE_LABELS"
-    labels = set(m.group(1).split())
-    assert labels == {"dev-primary", "dev-secondary", "macbook-portable",
-                      "ace-win-1", "ace-win-2"}
-    ps1 = REPORT_PS1.read_text(encoding="utf-8")
-    ps1_m = re.search(r'\$KnownMachineLabels\s*=\s*@\(([^)]*)\)', ps1)
-    assert ps1_m, "equality-report.ps1 must define $KnownMachineLabels"
-    ps1_labels = set(re.findall(r'"([^"]+)"', ps1_m.group(1)))
-    assert ps1_labels == labels
-    assert "resolve_identity_file" in RECONCILE.read_text(encoding="utf-8")
-
-
-def test_reconcile_remediation_embeds_machine_env():
-    # Printed AUTO-SAFE remediations must be runnable as printed on identity-file
-    # boxes: the cron invocation carries EQ_MACHINE (r2/issue defect 2).
-    text = RECONCILE.read_text(encoding="utf-8")
-    assert "EQ_MACHINE=" in text
-
-
-# ── scheduler probe semantics (#3592): unknown when unprobed, schtasks on windows ──
-def _run_sched(ws: Path, extra: dict, *args: str) -> dict:
-    env = {"WORKSPACE_HUB": _bash_path(ws), "PATH": extra.pop("PATH", BASH_PATH)}
-    env.update(extra)
-    res = subprocess.run(
-        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary", *args],
-        env=env, capture_output=True, text=True, timeout=60)
-    assert res.returncode == 0, res.stderr
-    return yaml.safe_load(res.stdout)
-
-
-def test_scheduler_unknown_when_probe_unavailable(tmp_path):
-    # windows branch without schtasks on PATH → all three fields are the string
-    # "unknown", NEVER placeholder false/0 (placeholders poisoned the old vote, #3592)
-    d = _run_sched(_fixture(tmp_path),
-                 {"EQ_TEST_ENABLE_OS_OVERRIDE": "1", "EQ_OS_OVERRIDE": "windows"})
-    s = d["dimensions"]["scheduler"]
-    assert s["has_repo_sync"] == "unknown"
-    assert s["has_parity_review"] == "unknown"
-    assert s["job_count"] == "unknown"
-
-
-def test_scheduler_windows_schtasks_probe(tmp_path):
-    shim = tmp_path / "bin"
-    shim.mkdir()
-    # Realistic name: scripts/windows/setup-scheduler-tasks.ps1 registers PascalCase
-    # tasks under \Claude\ ("RepoSync", "EqualityReport") — the probe must match
-    # those, not just hyphenated cron-style names (#3592 follow-up fix).
-    (shim / "schtasks").write_text(
-        "#!/usr/bin/env bash\n"
-        'printf \'"\\\\Claude\\\\RepoSync","N/A","Ready"\\r\\n\'\n'
-        'printf \'"\\\\some-other-task","N/A","Ready"\\r\\n\'\n')
-    (shim / "schtasks").chmod(0o755)
-    d = _run_sched(_fixture(tmp_path),
-                 {"EQ_TEST_ENABLE_OS_OVERRIDE": "1", "EQ_OS_OVERRIDE": "windows",
-                  "PATH": f"{shim}:{BASH_PATH}"})
-    s = d["dimensions"]["scheduler"]
-    assert s["has_repo_sync"] is True
-    assert s["has_parity_review"] is False       # measured-false: no parity task found
-    assert s["job_count"] == 2
-
-
-def test_scheduler_linux_crontab_measured(tmp_path):
-    # hermetic: a crontab shim FIRST in PATH so the host's real crontab never leaks in
-    shim = tmp_path / "bin"
-    shim.mkdir()
-    (shim / "crontab").write_text(
-        "#!/usr/bin/env bash\n"
-        "echo '0 3 * * * bash scripts/cron/cron-repository-sync.sh'\n"
-        "echo '0 4 * * 0 bash scripts/readiness/parity-review.sh'\n"
-        "echo '# a comment line'\n")
-    (shim / "crontab").chmod(0o755)
-    d = _run_sched(_fixture(tmp_path), {"PATH": f"{shim}:{BASH_PATH}"})
-    s = d["dimensions"]["scheduler"]
-    assert s["has_repo_sync"] is True
-    assert s["has_parity_review"] is True
-    assert s["job_count"] == 2                   # comment line excluded
+def test_collect_harness_checkup_type_gated(tmp_path):
+    # a malformed audit (wrong JSON types) must NOT inject garbage into the graded cells — the
+    # collector type-gates each field and drops mismatches to null (allowlist-safe by construction).
+    import json as _json
+    ws = _fixture(tmp_path)
+    (ws / ".claude" / "state" / "harness-checkup-dev-primary.json").write_text(_json.dumps({
+        "audited_at": "2026-07-09T12:00:00+00:00",
+        "version_current": "yes",          # wrong type → null
+        "duplicate_installs": "lots",       # wrong type → null
+        "settings_parse_ok": True,          # correct bool passes through
+    }))
+    d = _run(ws)["dimensions"]["harness_checkup"]
+    assert d["version_current"] is None
+    assert d["duplicate_installs"] is None
+    assert d["settings_parse_ok"] is True

@@ -5,26 +5,19 @@
 # ///
 """build-equality-matrix.py — machine-equality matrix verdict engine + HTML render (#2801).
 
-Joins per-machine equality-<machine>.yaml self-reports — read from the repo's published
-`.claude/state` overlaid with this box's out-of-tree #3702 seam — into one
+Joins per-machine .claude/state/equality-<machine>.yaml self-reports into one
 machines × dimensions matrix. Two grading families (D2):
-  COLD dims  (compute, data_access, solvers, harness, memory, scheduler) → conformance
-             to a DECLARED per-machine baseline in harness-config.yaml → CONFORMS /
-             BELOW-BASELINE / MISSING-BASELINE (harness = providers_baseline #3591;
-             memory = hermes_home_baseline, scheduler = scheduler_baseline #3592)
-  UNIFORM dims (skills, kanban, behavior) → equality across
+  COLD dims  (compute, data_access) → conformance to a DECLARED per-machine baseline
+             in harness-config.yaml  → CONFORMS / BELOW-BASELINE / MISSING-BASELINE
+  UNIFORM dims (harness, skills, kanban, memory, behavior, scheduler) → equality across
              active machines → EQUAL / DIVERGES / NO-MAJORITY / EXPECTED-DIFF / PENDING
 plus MISSING-EVIDENCE / UNREACHABLE. Roster is read from harness-config.yaml (never
 hardcoded, M1). Run: uv run --script scripts/readiness/build-equality-matrix.py [--open]
 (PEP-723 inline deps above make the cron/standalone path resolve pyyaml — #2972.)
-
-Flags: --json [--machine <slug>] | --open | --state-dir <path> (repeatable; REPLACES the
-default input layers, #3702 r1 M1) | --out-dir <path> (render destination).
 """
 from __future__ import annotations
 
 import json
-import os
 import re
 import sys
 from collections import Counter
@@ -34,65 +27,13 @@ from pathlib import Path
 import yaml
 
 REPO = Path(__file__).resolve().parents[2]
-CONFIG = REPO / "scripts" / "readiness" / "harness-config.yaml"
-
-
-# ── generation seam (#3702) ──────────────────────────────────────────────────
-# The generated matrix used to be written straight into the TRACKED tree, which made
-# `git pull --ff-only` abort on every box the moment a peer published, ratcheting
-# behind_main and stamping STALE-CHECKOUT across all dimensions. Generation now lands
-# out of tree by default; the PUBLISHED surface on origin/main is unchanged because
-# publish-equality.sh renders inside its disposable sparse worktree and passes explicit
-# --state-dir/--out-dir. Mirrors scripts/readiness/lib/eq-seam.sh (bash side) exactly.
-def _seam_root() -> Path:
-    base = os.environ.get("XDG_STATE_HOME") or str(Path.home() / ".local" / "state")
-    return Path(base) / "workspace-hub" / "equality"
-
-
-# PEER evidence as published to origin/main. READ-ONLY: reading never dirties the tree.
 STATE = REPO / ".claude" / "state"
-# This box's freshly collected evidence (collect-equality.sh's output seam).
-EQ_STATE = Path(os.environ["EQ_STATE_DIR"]) if os.environ.get("EQ_STATE_DIR") \
-    else _seam_root()
-# Render destination. Out of tree unless explicitly pinned back (rollback / Windows).
-REPORTS = Path(os.environ["EQ_REPORT_DIR"]) if os.environ.get("EQ_REPORT_DIR") \
-    else _seam_root() / "reports"
-
-
-def _flag_values(flag: str, argv: list[str] | None = None) -> list[str]:
-    """Repeatable `--flag value` / `--flag=value` reader, in command-line order."""
-    argv = sys.argv if argv is None else argv
-    out: list[str] = []
-    for i, a in enumerate(argv):
-        if a == flag and i + 1 < len(argv):
-            out.append(argv[i + 1])
-        elif a.startswith(flag + "="):
-            out.append(a.split("=", 1)[1])
-    return out
-
-
-def resolve_state_inputs(argv: list[str] | None = None) -> list[Path]:
-    """Ordered input layers; a later layer's file wins on a filename collision.
-
-    CRITICAL (r1 M1): `--state-dir` REPLACES the default list — it does NOT add another
-    overlay layer. publish-equality.sh renders with `--state-dir "$WT/.claude/state"`,
-    and folding the interactive checkout's stale peer evidence in on top of the
-    worktree's would destroy the union-of-freshest guarantee the publisher exists to
-    provide and ship a wrong matrix to GitHub Pages.
-    """
-    explicit = _flag_values("--state-dir", argv)
-    if explicit:
-        return [Path(p) for p in explicit]
-    return [STATE, EQ_STATE]
-
-
-def resolve_report_out(argv: list[str] | None = None) -> Path:
-    vals = _flag_values("--out-dir", argv)
-    return Path(vals[-1]) if vals else REPORTS
+REPORTS = REPO / "docs" / "reports"
+CONFIG = REPO / "scripts" / "readiness" / "harness-config.yaml"
 
 TIER1_DEFAULT = ["assetutilities", "digitalmodel", "worldenergydata", "assethold"]
 UNREACHABLE_DEFAULT = {"home-win", "macbook-portable"}
-COLD_DIMS = {"compute", "data_access", "solvers", "harness", "memory", "scheduler"}
+COLD_DIMS = {"compute", "data_access", "solvers"}
 # Solver verdict acceptance (STRICT, #2849 decision 1): which DETECTED statuses satisfy
 # each DECLARED baseline. `licensed` baseline is satisfied ONLY by a `licensed` signal
 # (an install-only `present` is NOT enough — licensed work must never route to it).
@@ -103,15 +44,6 @@ SOLVER_OK = {
     "absent":   {"absent"},
     "present":  {"present", "licensed"},
     "licensed": {"licensed"},
-}
-# Provider verdict acceptance (role-aware baselines, #3591): which DETECTED provider
-# statuses satisfy each DECLARED providers_baseline entry. Thin hosts (gpu-claw,
-# ace-win-1) intentionally lack gemini/hermes — a declared `absent` baseline makes
-# that CONFORMS instead of fleet-wide DIVERGES. A provider present where the baseline
-# declares absent is thin-host policy drift and grades BELOW-BASELINE.
-PROVIDER_OK = {
-    "absent":  {"absent"},
-    "present": {"present"},
 }
 # Uniform dims whose cross-machine difference is OS-driven, not a defect:
 EXPECTED_DIFF_DIMS = {"python_cmd"}
@@ -134,6 +66,11 @@ CURATION_EXPIRED_H = 24
 # ages the cell past green — the same dead-man's-switch as session_curation.
 MEMORY_STALE_H = 36
 MEMORY_EXPIRED_H = 72
+
+# Harness-checkup clutter threshold (#3408) — keep in sync with audit_harness_checkup.py
+# (CLUTTER_SKILLS). More lifetime-unused user skills than this grades the box's checkup cell
+# CHECKUP-DRIFTED (a SOFT signal — extension clutter — never red).
+CHECKUP_CLUTTER_SKILLS = 15
 
 # #2851 freshness guard: a report whose origin/main ref hasn't been refreshed within this
 # many hours can't be trusted to have a meaningful behind_main, so we fail closed. repo-sync
@@ -225,55 +162,6 @@ def cold_verdict(dim: str, report: dict, baseline: dict | None, probed_repos: li
             if got not in ok:
                 return "BELOW-BASELINE"                   # any concrete miss dominates
         return verdict
-    if dim == "harness":
-        declared = baseline.get("providers_baseline")
-        if not declared:                                 # baseline opted out → fail-closed
-            return "MISSING-BASELINE"
-        detected = dims.get("harness", {}).get("providers", {}) or {}
-        verdict = "CONFORMS"
-        for name, want in declared.items():
-            got = detected.get(name, "unknown")
-            # `unknown`/unprobed is NOT evidence for ANY baseline (incl. absent) —
-            # mirrors the solvers rule (#2849): a report with no probe for a provider
-            # must not masquerade as CONFORMS.
-            if got in (None, "unknown"):
-                verdict = "MISSING-EVIDENCE"
-                continue
-            if got not in PROVIDER_OK.get(want, set()):
-                return "BELOW-BASELINE"                   # any concrete miss dominates
-        return verdict
-    if dim == "memory":
-        declared = baseline.get("hermes_home_baseline")
-        if not declared:                                 # baseline opted out → fail-closed
-            return "MISSING-BASELINE"
-        got = dims.get("memory", {}).get("hermes_home", "unknown")
-        if got in (None, "unknown"):
-            return "MISSING-EVIDENCE"
-        # present-where-declared-absent is drift too (mirrors thin-host policy, #3591)
-        return "CONFORMS" if got == declared else "BELOW-BASELINE"
-    if dim == "scheduler":
-        declared = baseline.get("scheduler_baseline")
-        if not declared:                                 # baseline opted out → fail-closed
-            return "MISSING-BASELINE"
-        sched = dims.get("scheduler", {}) or {}
-        has_sync = sched.get("has_repo_sync")
-        has_parity = sched.get("has_parity_review")
-        # Migration gate (#3592): schema<5 collectors NEVER probed Windows — their
-        # false/0 scheduler values are hardcoded placeholders, not measurements.
-        # Treat them as unprobed so stale evidence can neither pass nor fail the
-        # baseline. Linux probe semantics are unchanged across the bump, so legacy
-        # Linux evidence keeps its measured values.
-        schema = report.get("schema_version")
-        legacy = not isinstance(schema, int) or schema < 5
-        if legacy and report.get("os") == "windows":
-            has_sync = has_parity = "unknown"
-        if has_sync in (None, "unknown") or has_parity in (None, "unknown"):
-            return "MISSING-EVIDENCE"
-        if declared.get("repo_sync") == "required" and has_sync is not True:
-            return "BELOW-BASELINE"
-        if declared.get("parity_review") == "required" and has_parity is not True:
-            return "BELOW-BASELINE"
-        return "CONFORMS"
     raise ValueError(f"not a cold dimension: {dim}")
 
 
@@ -463,46 +351,34 @@ def skill_link_health_verdict(report: dict) -> str:
     return "SKILL-LINKS-DRIFTED" if repairable > 0 else "SKILL-LINKS-OK"
 
 
-# ── publish-health verdict (#3502) — is the equivalence publish landing, fast? ──
-PUBLISH_SLOW_S = 60.0      # gate-length publish = the #3500 pre-push RUN_ALL signature
-PUBLISH_STALE_H = 26.0     # daily cron + 2h grace
-
-
-def publish_health_verdict(report: dict, now: datetime | None = None) -> str:
-    """Grade the last equivalence-state publish (written by equivalence-sentinel.sh).
-    PUBLISH-GATED on a failed or gate-length (>60s) publish — the #3500 pre-push
-    deadlock signature; PUBLISH-STALE when the last publish predates the daily-cron
-    window (sentinel dead or blocked); PUBLISH-OK otherwise. Fail-closed
-    MISSING-EVIDENCE on missing/garbled/future evidence — a box that never
-    published has no record, which is exactly the #3500 absent case."""
-    ph = report.get("dimensions", {}).get("publish_health")
-    if not isinstance(ph, dict):
+# ── harness-checkup verdict (#3408) — /doctor hygiene per box ────────────────
+def harness_checkup_verdict(report: dict) -> str:
+    """Map the audit_harness_checkup.py facts to a verdict. Fail-closed MISSING-EVIDENCE on
+    missing/garbled facts or absent core evidence (settings_parse_ok / install_method). Mirrors
+    the audit's pure checkup_category — hard defects (broken settings / duplicate installs / broken
+    agents) → CHECKUP-BROKEN (red); soft drift (behind latest / non-auto default / extension
+    clutter) → CHECKUP-DRIFTED (amber). version_current None (no network) is NOT drift."""
+    hc = report.get("dimensions", {}).get("harness_checkup")
+    if not isinstance(hc, dict) or not isinstance(hc.get("audited_at"), str):
         return "MISSING-EVIDENCE"
-    stamp = ph.get("last_publish_at")
-    if not isinstance(stamp, str):
-        return "MISSING-EVIDENCE"
-    try:
-        ts = datetime.fromisoformat(stamp.replace("Z", "+00:00"))
-    except ValueError:
-        return "MISSING-EVIDENCE"     # includes the collector's "missing" sentinel
-    now = now or datetime.now(timezone.utc)
-    if ts.tzinfo is None:
-        ts = ts.replace(tzinfo=timezone.utc)
-    if now.tzinfo is None:
-        now = now.replace(tzinfo=timezone.utc)
-    age_h = (now - ts).total_seconds() / 3600.0
-    if age_h < 0:                     # future stamp ⇒ untrustworthy
-        return "MISSING-EVIDENCE"
-    rc = ph.get("last_publish_rc")
-    dur = ph.get("last_publish_duration_s")
-    failed = isinstance(rc, int) and not isinstance(rc, bool) and rc != 0
-    gated = (isinstance(dur, (int, float)) and not isinstance(dur, bool)
-             and dur > PUBLISH_SLOW_S)
-    if failed or gated:
-        return "PUBLISH-GATED"
-    if age_h > PUBLISH_STALE_H:
-        return "PUBLISH-STALE"
-    return "PUBLISH-OK"
+    sok = hc.get("settings_parse_ok")
+    install = hc.get("install_method")
+    if sok is None or not isinstance(install, str) or not install:
+        return "MISSING-EVIDENCE"            # could not audit ⇒ never silently green
+    dup = hc.get("duplicate_installs")
+    bad = hc.get("broken_agents")
+    if (sok is False
+            or (isinstance(dup, int) and not isinstance(dup, bool) and dup > 0)
+            or (isinstance(bad, int) and not isinstance(bad, bool) and bad > 0)):
+        return "CHECKUP-BROKEN"
+    us = hc.get("unused_skills")
+    up = hc.get("unused_plugins")
+    if (hc.get("version_current") is False
+            or hc.get("auto_mode_default") is False
+            or (isinstance(us, int) and not isinstance(us, bool) and us > CHECKUP_CLUTTER_SKILLS)
+            or (isinstance(up, int) and not isinstance(up, bool) and up > 0)):
+        return "CHECKUP-DRIFTED"
+    return "CHECKUP-OK"
 
 
 # ── value extraction for uniform dims ────────────────────────────────────────
@@ -510,6 +386,8 @@ def extract_value(dim: str, report: dict):
     d = report.get("dimensions", {})
     if dim == "python_cmd":
         return d.get("harness", {}).get("python_cmd")
+    if dim == "harness":
+        return json.dumps(d.get("harness", {}).get("providers", {}), sort_keys=True)
     if dim == "skills":
         return d.get("skills", {}).get("repo_skill_count")
     if dim == "kanban":
@@ -519,10 +397,15 @@ def extract_value(dim: str, report: dict):
         # queue set arrived as differently-ordered strings and graded DIVERGES. Order is
         # a collector artifact; membership is the signal.
         return ",".join(sorted(q.split(","))) if isinstance(q, str) else q
+    if dim == "memory":
+        return d.get("memory", {}).get("hermes_home")
     if dim == "behavior":
         b = d.get("behavior", {})
         return json.dumps({"enums": b.get("enums", {}), "hashes": b.get("hashes", {})}, sort_keys=True)
-    # memory + scheduler moved to COLD_DIMS (#3592) — they no longer feed the uniform vote
+    if dim == "scheduler":
+        s = d.get("scheduler", {})
+        return json.dumps({"has_repo_sync": s.get("has_repo_sync"),
+                           "has_parity_review": s.get("has_parity_review")}, sort_keys=True)
     return None
 
 
@@ -576,12 +459,7 @@ def provider_row_verdict(dim: str, report: dict) -> str:
     parsed = parse_provider_row(dim)
     if parsed is None:
         return "MISSING-EVIDENCE"
-    # Accept every top-level schema that carries the provider_harness dimension (4+,
-    # #2889); the row's real contract is provider_harness.schema_version == 1 below.
-    # Pinning == 4 here silently degraded all capability rows to MISSING-EVIDENCE on
-    # the #3592 schema-5 bump (Codex code-review catch).
-    schema = report.get("schema_version")
-    if not isinstance(schema, int) or schema < 4:
+    if report.get("schema_version") != 4:
         return "MISSING-EVIDENCE"
     provider, capability = parsed
     harness = report.get("dimensions", {}).get("provider_harness")
@@ -619,8 +497,8 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
         return memory_freshness_verdict(rep)
     if dim == "skill_link_health":          # shared-skill-link propagation — per-box facts
         return skill_link_health_verdict(rep)
-    if dim == "publish_health":             # equivalence publish landing/speed — per-box facts
-        return publish_health_verdict(rep)
+    if dim == "harness_checkup":            # /doctor hygiene — per-box facts (currency/settings/mode)
+        return harness_checkup_verdict(rep)
     if dim in COLD_DIMS:
         return cold_verdict(dim, rep, baselines.get(machine), probed_repos)
     # Stale peers are EXCLUDED from the uniform value list so a stale report can never
@@ -637,18 +515,9 @@ def verdict_for(dim: str, machine: str, reports: dict, baselines: dict,
 
 
 # ── load + render ────────────────────────────────────────────────────────────
-def load_reports(dirs: list[Path] | None = None) -> dict[str, dict]:
-    """Merge the ordered input layers by filename; the LAST layer holding a given
-    equality-<machine>.yaml wins (this box's fresh evidence over the published copy)."""
-    picked: dict[str, Path] = {}
-    for d in (resolve_state_inputs() if dirs is None else dirs):
-        if not d.is_dir():
-            continue
-        for f in sorted(d.glob("equality-*.yaml")):
-            picked[f.name] = f
+def load_reports() -> dict[str, dict]:
     out = {}
-    for name in sorted(picked):
-        f = picked[name]
+    for f in sorted(STATE.glob("equality-*.yaml")):
         machine = f.stem[len("equality-"):]
         try:
             out[machine] = yaml.safe_load(f.read_text(encoding="utf-8")) or {}
@@ -659,8 +528,7 @@ def load_reports(dirs: list[Path] | None = None) -> dict[str, dict]:
 
 BASE_DISPLAY_DIMS = ["compute", "data_access", "solvers", "harness", "python_cmd", "skills",
                      "kanban", "memory", "behavior", "scheduler", "session_curation",
-                     "skill_currency", "memory_freshness", "skill_link_health",
-                     "publish_health"]
+                     "skill_currency", "memory_freshness", "skill_link_health", "harness_checkup"]
 DISPLAY_DIMS = BASE_DISPLAY_DIMS + provider_rows()
 
 # ── render grouping (#2801 collapsible-rows enhancement) ─────────────────────
@@ -683,8 +551,7 @@ GROUPS = [
     ("skills-currency", "Skill currency — all providers up to date vs canonical", ["skill_currency"]),
     ("memory-freshness", "Memory freshness — memory surfaces refreshed recently", ["memory_freshness"]),
     ("skill-links", "Skill-link health — shared skills propagated to ecosystem repos", ["skill_link_health"]),
-    ("publish-health", "Publish health — equivalence fingerprint publish landing fast on every box",
-        ["publish_health"]),
+    ("harness-checkup", "Harness checkup — /doctor hygiene per box (version · settings · mode)", ["harness_checkup"]),
 ]
 
 # Worst-of severity for the collapsed group rollup. Higher = more operator attention.
@@ -692,14 +559,14 @@ GROUPS = [
 # all-good group collapses to a single green "OK" so a clean box reads at a glance.
 ROLLUP_SEVERITY = {
     "BELOW-BASELINE": 6, "DIVERGES": 6, "CURATED-EXPIRED": 6, "SKILLS-DRIFTED": 6, "MEMORY-EXPIRED": 6,
-    "PUBLISH-GATED": 6,
+    "CHECKUP-BROKEN": 6,
     "MISSING-BASELINE": 5, "NO-MAJORITY": 5, "CURATED-STALE": 5, "SKILLS-INDEX-STALE": 5, "MEMORY-STALE": 5,
-    "SKILL-LINKS-DRIFTED": 5, "PUBLISH-STALE": 5,
+    "SKILL-LINKS-DRIFTED": 5, "CHECKUP-DRIFTED": 5,
     "MISSING-EVIDENCE": 4, "PENDING": 4,
     "STALE-CHECKOUT": 3,
     "EXPECTED-DIFF": 1, "EXPECTED-DIVERGENCE": 1, "UNREACHABLE": 1, "ABSENT": 1,
     "CONFORMS": 0, "EQUAL": 0, "PARITY": 0, "CURATED-FRESH": 0, "SKILLS-CURRENT": 0, "MEMORY-FRESH": 0,
-    "SKILL-LINKS-OK": 0, "PUBLISH-OK": 0,
+    "SKILL-LINKS-OK": 0, "CHECKUP-OK": 0,
 }
 
 
@@ -718,7 +585,7 @@ def rollup_verdict(verdicts: list[str]) -> tuple[str, str]:
 #    .claude/skills/workspace-hub/ecosystem-equivalence-reconcile/SKILL.md + reconcile-ecosystem.sh
 OK_VERDICTS = {"CONFORMS", "EQUAL", "PARITY", "EXPECTED-DIFF", "EXPECTED-DIVERGENCE",
                "UNREACHABLE", "ABSENT", "CURATED-FRESH", "SKILLS-CURRENT", "MEMORY-FRESH",
-               "SKILL-LINKS-OK", "PUBLISH-OK"}
+               "SKILL-LINKS-OK", "CHECKUP-OK"}
 
 
 def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
@@ -746,15 +613,6 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
         if dim == "compute":
             return ("under the declared cores/ram/gpu floor — upgrade box or retune harness-config floor",
                     "operator", False)
-        if dim == "harness":
-            return ("provider set differs from this box's declared providers_baseline — install/remove "
-                    "the provider or retune harness-config.yaml (thin-host policy)", "operator", False)
-        if dim == "memory":
-            return ("hermes home dir differs from this box's declared hermes_home_baseline — "
-                    "install/remove ~/.hermes or retune harness-config.yaml", "operator", False)
-        if dim == "scheduler":
-            return ("a required scheduler job is missing — install the cron set "
-                    "(scripts/cron/setup-cron.sh; Task Scheduler on Windows), then re-collect", "this box", False)
         return ("below the declared baseline — inspect this box's equality report", "operator", False)
     if verdict in ("DIVERGES", "NO-MAJORITY"):
         if is_provider:
@@ -763,8 +621,10 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
         if dim == "skills":
             return ("skills count differs — usually a tracked symlink materialized as a text file; "
                     "git config core.symlinks true, then rm + git checkout the symlink paths", "this box", False)
-        if dim == "behavior":
+        if dim in ("harness", "behavior"):
             return ("runtime/config drift — rebuild + install the soul runtime, then re-collect", "this box", False)
+        if dim == "scheduler":
+            return ("cron jobs differ — reconcile via setup-cron.sh --check, then re-collect", "this box", False)
         return ("differs from peers — OFTEN a stale-peer artifact; refresh ALL machines' reports first, "
                 "then reconcile any genuine config drift", "all boxes", False)
     if verdict == "MISSING-BASELINE":
@@ -787,15 +647,14 @@ def remediate(dim: str, verdict: str) -> tuple[str, str, bool] | None:
         return ("shared-skill links are missing/broken on ecosystem repos (froze at link time) — "
                 "re-sync via scripts/skills/resync-skill-links.sh --apply (or propagate-ecosystem.sh "
                 "--skills-only)", "this box", False)
-    if verdict == "PUBLISH-GATED":
-        return ("last equivalence publish failed or took gate-length time (>60s) — the wh#3500 "
-                "pre-push RUN_ALL deadlock signature; check the box's pre-push hook and that "
-                "equivalence_state.py pushes with GIT_PRE_PUSH_SKIP=1 (skill "
-                "equivalence-publish-health)", "this box", False)
-    if verdict == "PUBLISH-STALE":
-        return ("no equivalence publish in >26h — the sentinel cron is dead or blocked on this box; "
-                "run scripts/monitoring/equivalence-sentinel.sh manually and check its cron/logs",
-                "this box", False)
+    if verdict == "CHECKUP-BROKEN":
+        return ("harness hygiene is broken — a settings file fails to parse, there are duplicate "
+                "claude installs, or an agent def is broken/colliding; run /doctor on this box and "
+                "apply its fixes", "this box", False)
+    if verdict == "CHECKUP-DRIFTED":
+        return ("harness hygiene drift — behind the latest release, auto mode isn't the default, or "
+                "unused skills/plugins have accumulated; run /doctor (claude update; set auto default; "
+                "prune unused extensions)", "this box", False)
     return ("investigate this cell's report", "operator", False)
 
 
@@ -915,7 +774,7 @@ def main() -> None:
 <style>body{{font:14px/1.5 system-ui,sans-serif;margin:2rem;max-width:1100px}}table{{border-collapse:collapse;width:100%}}
 th,td{{border:1px solid #ddd;padding:.4rem .6rem;font-size:.8rem;text-align:center}}thead th{{background:#2d3748;color:#fff}}
 tbody th{{background:#edf2f7;text-align:left}}.conforms,.equal,.parity,.ok,.curated-fresh,.skills-current,.memory-fresh{{background:#c6f6d5}}.ok{{font-weight:700}}
-.below-baseline,.diverges,.curated-expired,.skills-drifted,.memory-expired,.publish-gated{{background:#fed7d7}}.no-majority,.missing-baseline,.curated-stale,.skills-index-stale,.memory-stale,.skill-links-drifted,.publish-stale{{background:#feebc8}}.skill-links-ok,.publish-ok{{background:#c6f6d5}}
+.below-baseline,.diverges,.curated-expired,.skills-drifted,.memory-expired{{background:#fed7d7}}.no-majority,.missing-baseline,.curated-stale,.skills-index-stale,.memory-stale,.skill-links-drifted{{background:#feebc8}}.skill-links-ok{{background:#c6f6d5}}
 .expected-diff,.expected-divergence{{background:#e9d8fd}}
 .pending,.missing-evidence{{background:#fffaf0}}.unreachable,.absent,.na{{background:#f7fafc;color:#a0aec0}}
 .stale-checkout{{background:#e2e8f0;color:#4a5568;font-style:italic}}
@@ -987,13 +846,12 @@ function copyGenPrompt(btn){{
 }}
 </script></body></html>"""
 
-    report_dir = resolve_report_out()
-    report_dir.mkdir(parents=True, exist_ok=True)
-    out = report_dir / f"{date.today().isoformat()}-machine-equality-matrix.html"
+    REPORTS.mkdir(parents=True, exist_ok=True)
+    out = REPORTS / f"{date.today().isoformat()}-machine-equality-matrix.html"
     out.write_text(html, encoding="utf-8")
     # Stable (undated) alias so GitHub Pages serves a fixed "latest" URL that never
     # changes as the dated reports roll over (published by scripts/build_pages.py).
-    latest = report_dir / "machine-equality-matrix.html"
+    latest = REPORTS / "machine-equality-matrix.html"
     latest.write_text(html, encoding="utf-8")
     print(f"wrote {out} (+ {latest.name} alias) ({reporting}/{active} active reporting)")
     if "--open" in sys.argv:
