@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (218)
+## Feedback — execution lessons & hazards (222)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
