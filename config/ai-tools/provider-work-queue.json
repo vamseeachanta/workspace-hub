@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-29T17:21:37.360495Z",
+  "generated_at": "2026-07-30T05:21:22.948179Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-29T17:21:35.428759Z",
+  "scorecard_generated_at": "2026-07-30T05:21:20.971340Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 25,
-      "total_candidates": 181,
+      "execution_ready_count": 26,
+      "total_candidates": 180,
       "top_issues": [
         {
           "number": 3426,
@@ -874,6 +874,32 @@
           ]
         },
         {
+          "number": 3702,
+          "title": "bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3702",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "machine:multi",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-30T02:10:45Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 3552,
           "title": "security: make Gitleaks configuration fail closed with default rules and positive control",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3552",
@@ -932,157 +958,6 @@
           "updatedAt": "2026-07-29T11:45:08Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3417,
-          "title": "security(landman-desk): enforce private records, role access, retention, and audit boundaries",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3417",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:operations",
-            "domain:security",
-            "security",
-            "status:needs-plan",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-27T01:19:16Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3418,
-          "title": "feat(landman-desk): turn project intake into an assigned tract work package",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3418",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:business",
-            "domain:workflow",
-            "status:needs-plan",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-07-10T02:17:29Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3419,
-          "title": "feat(landman-desk): build the tract evidence ledger and exception queue",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3419",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:business",
-            "status:needs-plan",
-            "lane:codex",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3420,
-          "title": "feat(landman-desk): add reviewer QA, exception disposition, and signoff",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3420",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:business",
-            "domain:testing",
-            "status:needs-plan",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3421,
-          "title": "feat(landman-desk): export a broker-ready reviewed diligence packet",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3421",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:business",
-            "domain:content",
-            "status:needs-plan",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3422,
-          "title": "feat(landman-desk): connect pilot county and federal-acreage sources to the evidence workflow",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3422",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:needs-plan",
-            "domain:harness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4437,9 +4312,9 @@
           ]
         },
         {
-          "number": 3702,
-          "title": "bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3702",
+          "number": 3705,
+          "title": "bug(sync): repository_sync auto-commits to protected main branches, stranding commits that can never be pushed",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3705",
           "labels": [
             "bug",
             "cat:harness",
@@ -4447,7 +4322,102 @@
             "machine:multi",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-29T13:41:49Z",
+          "updatedAt": "2026-07-29T23:11:27Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3706,
+          "title": "infra: Git LFS budget exhausted account-wide, blocking binary-heavy repos from version-controlling assets",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3706",
+          "labels": [
+            "cat:harness",
+            "domain:workstations",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-29T23:11:54Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3707,
+          "title": "bug(cron): daily-cleanup has never disposed of anything \u2014 4 independent defects, and its only scheduler died 2026-06-16",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3707",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "machine:multi",
+            "status:needs-plan",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-07-30T00:50:29Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3708,
+          "title": "bug(cron): no safe crontab re-apply path \u2014 audit fail-closed on 47 uncataloged lines and setup-cron --replace disabled",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3708",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "status:needs-plan",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-07-30T00:50:09Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3709,
+          "title": "bug(cron): plan_cutover silently drops managed-block lines instead of blocking on them \u2014 audit and apply path disagree",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3709",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "status:needs-plan",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-30T04:24:47Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4466,7 +4436,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 5,
-      "total_candidates": 19,
+      "total_candidates": 20,
       "top_issues": [
         {
           "number": 3430,
@@ -5075,6 +5045,28 @@
             "status:needs-plan"
           ],
           "updatedAt": "2026-07-29T13:42:30Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3711,
+          "title": "bug(cron): build-cron-identity-inventory.py is host-dependent and silently emits a wrong inventory off Linux",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3711",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-30T02:19:34Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

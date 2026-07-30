@@ -1,6 +1,8 @@
 ---
 name: communication-voice
-description: "Write outbound email and external messages in Vamsee Achanta's voice — a subtle offer to help, never bold or rash claims. Load before drafting ANY email, LinkedIn/Collide reply, proposal note, or outreach sent under his name."
+description: "Write outbound email and external messages in Vamsee Achanta's voice\
+  \ \u2014 a subtle offer to help, never bold or rash claims. Load before drafting\
+  \ ANY email, LinkedIn/Collide reply, proposal note, or outreach sent under his name."
 type: guideline
 version: 1.0.0
 category: guidelines
@@ -13,8 +15,6 @@ tags:
 - voice
 - business-development
 - writing
-related_skills:
-- business-marketing
 freedom: low
 ---
 

@@ -5,7 +5,7 @@
 
 ## Active & Recent Projects
 - [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" definitions, 0/56 wells agree (6.6× gap); reference basis = BSEE WAR `WELL_ACTIVITY_CD`. EPIC #1063 + #1064–#1081. NEXT: #1064 basis decision w/ Roy (HARD BLOCKER)
-- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). Root cause: dm `main` had no required checks → 60.3% red merges. ✅✅ **ALL 3 SHARDS GREEN 2026-07-28** (PRs #1879, #1882, #1886) → **#1634 UNBLOCKED, owner decision**. ⚠ audit said "3 root causes"; really **2** (#1637+#1639 = one page deletion). ⚠ triage reports wrong both ways — verify against code. NEXT: owner arms #1634
+- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). ✅✅✅ **#1634 ARMED 2026-07-29** (`Domain test aggregate` + `Run Quality Gates`, strict=false) — the 60.3%-red-merge root cause is closed. 8 PRs merged; deps 122→55; dashboard app deleted (−34.5k LOC), 9 modules extracted to `solvers/orcaflex/results_analysis/`. ⚠ audit said "3 root causes"; really **2**. OPEN: #1923 (139 hidden tests), #1900, #1907, #1919, #1881. See [[feedback_absence_of_signal_reads_as_success]]
 - [Model-generation reopen slate](project_model_generation_reopen_slate_2026_07_25.md) — wh#3106/#3056/#1019 + llm-wiki#638 REOPENED; #3043 retargeted. NEXT: wh#3051 registry flip (blocks the rest)
 - [Model-registry generation drift blind spot](project_model_generation_drift_registry_blindspot.md) — nightly guard checks ONLY `openai_primary`; Claude lane has zero drift coverage. ✅ wh#3600 FILED. NEXT: #3600 needs-plan
 - [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; hub PR #1058 armed. ⚠ DRILLING_DAYS mixes two bases → batch-drilled undercount. NEXT: owner sends v2 email
@@ -37,6 +37,7 @@
 
 ## Key Lessons (how to work)
 - [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included**
+- [Absence of signal reads as success](feedback_absence_of_signal_reads_as_success.md) — missing check looks GREENER than failing one; verify every suppression's stated reason (comments lie); import scans are blind to `engine=`/entry-point deps
 - [Verify subagent line citations, not just claims](feedback_verify_subagent_line_citations_not_just_claims.md) — a defect existing ≠ it being at that line; cite the SYMBOL when coordinates aren't cheap to confirm
 - [Report-hub design system (owner-approved)](feedback_report_hub_design_system.md) — hub grammar = THE design for ALL field-data surfaces; data → HF `aceengineer/*`; ref impl wed PR #1058
 - [Rig-selector capability depth](feedback_rig_selector_capability_depth.md) — onshore/offshore = FIRST filter; equipment fields over more hull numbers (wed #1006)

@@ -1,0 +1,6 @@
+{"ts":"2026-07-30T06:39:46Z","event":"stop_signal_captured","session_id":"42fc2e73-d30d-4903-8a69-cd06c9cf7765"}
+{"ts":"2026-07-30T06:39:46Z","event":"session_tool_summary","session_id":"42fc2e73-d30d-4903-8a69-cd06c9cf7765","wrk":"none","tool_calls":2,"edits":0,"reads":2}
+{"ts":"2026-07-30T07:54:58Z","event":"session_tool_summary","session_id":"019fb203-9ab8-7d10-9a74-f6282e489fa3","wrk":"none","tool_calls":27,"edits":0,"reads":2}
+{"ts":"2026-07-30T07:54:58Z","event":"stop_signal_captured","session_id":"019fb203-9ab8-7d10-9a74-f6282e489fa3"}
+{"ts":"2026-07-30T08:00:31Z","event":"session_tool_summary","session_id":"019fb209-55dd-7be1-9e80-a7978bc2c627","wrk":"none","tool_calls":27,"edits":0,"reads":2}
+{"ts":"2026-07-30T08:00:31Z","event":"stop_signal_captured","session_id":"019fb209-55dd-7be1-9e80-a7978bc2c627"}
