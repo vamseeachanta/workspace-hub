@@ -18,7 +18,7 @@ WORK_QUEUE_PATH = WORKSPACE_HUB / "config" / "ai-tools" / "provider-work-queue.j
 DEFAULT_JSON_OUT = WORKSPACE_HUB / "config" / "ai-tools" / "provider-autolabel-candidates.json"
 DEFAULT_MD_OUT = WORKSPACE_HUB / "docs" / "reports" / "provider-autolabel-candidates.md"
 CONFIDENCE_THRESHOLD = 0.90
-PROVIDERS = ("claude", "codex", "gemini")
+PROVIDERS = ("claude", "codex", "agy")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -45,9 +45,9 @@ def compute_confidence(provider: str, issue: dict[str, Any]) -> tuple[float, lis
     elif routing_reason == "strategy/workflow/architecture language" and provider == "claude":
         score += 0.35
         reasons.append("strong-claude-language-match")
-    elif routing_reason == "research/triage/audit language" and provider == "gemini":
+    elif routing_reason == "research/triage/audit language" and provider == "agy":
         score += 0.35
-        reasons.append("strong-gemini-language-match")
+        reasons.append("strong-agy-language-match")
     elif routing_reason.startswith("existing "):
         score = 0.0
         reasons.append("already-labeled")

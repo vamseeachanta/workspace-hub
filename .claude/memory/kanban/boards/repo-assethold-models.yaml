@@ -144,6 +144,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:data
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -182,6 +183,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:data
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -201,6 +203,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:data
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -259,6 +262,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:research
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -279,6 +283,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:data
       - wrk-item
       - machine:dev-primary
       - status:plan-approved

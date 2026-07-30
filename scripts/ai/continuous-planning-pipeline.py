@@ -21,7 +21,7 @@ from typing import Any
 WORKSPACE_HUB = Path(__file__).resolve().parents[2]
 DEFAULT_JSON_OUT = WORKSPACE_HUB / "config" / "ai-tools" / "continuous-planning-pipeline.json"
 DEFAULT_MD_OUT = WORKSPACE_HUB / "docs" / "reports" / "continuous-planning-pipeline.md"
-DEFAULT_PROVIDERS = ("claude", "codex", "gemini")
+DEFAULT_PROVIDERS = ("claude", "codex", "agy")
 NON_TERMINAL_DISPATCH_STATES = {"candidate", "scheduled", "running", "blocked", "failed", "no-fire", "stale"}
 LANE_NAMES = {
     "A": "approval_candidates",

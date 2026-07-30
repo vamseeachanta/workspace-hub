@@ -28,13 +28,13 @@ LATEST_QUOTA_PATH = WORKSPACE_HUB / "config" / "ai-tools" / "agent-quota-latest.
 QUOTA_LOG_PATH = Path.home() / ".agent-usage" / "weekly-log.jsonl"
 DEFAULT_JSON_OUT = WORKSPACE_HUB / "config" / "ai-tools" / "provider-utilization-weekly.json"
 DEFAULT_MD_OUT = WORKSPACE_HUB / "docs" / "reports" / "provider-utilization-weekly.md"
-PROVIDERS = ("claude", "codex", "gemini", "hermes")
+PROVIDERS = ("claude", "codex", "agy", "hermes")
 UNDERUTIL_THRESHOLD = 15.0
 
 SUBSCRIPTIONS = {
     "claude": {"cost_monthly": 200.0, "plan": "Claude Max"},
     "codex": {"cost_monthly": 40.0, "plan": "OpenAI / Codex subscriptions"},
-    "gemini": {"cost_monthly": 20.0, "plan": "Google AI Pro"},
+    "agy": {"cost_monthly": 20.0, "plan": "Google AI Pro"},
     "hermes": {"cost_monthly": 0.0, "plan": "Orchestrator / no direct subscription"},
 }
 TOTAL_MONTHLY = sum(item["cost_monthly"] for item in SUBSCRIPTIONS.values())

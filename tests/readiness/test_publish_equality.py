@@ -433,6 +433,161 @@ def test_worktree_always_cleaned_up(tmp_path):
     assert wts.count("worktree ") == 1        # only the main checkout remains
 
 
+# ── #3571: mkdir-lock fallback (flock is absent on Git for Windows bash) ──────
+# Behavioral cases force the fallback via PUBLISH_EQUALITY_LOCK=mkdir (also the
+# operator escape hatch — a mkdir lock is a real lock on any host). Auto-detect
+# is asserted statically: command-not-found must never collapse into the
+# lock-held skip path again.
+
+
+def _host_lock_dir(tmp_path: Path) -> Path:
+    host = subprocess.run(["hostname"], capture_output=True, text=True,
+                          timeout=30).stdout.strip().lower()
+    return tmp_path / f"publish-equality-{host}.lock.d"
+
+
+def _run_mkdir_lock(clone: Path, tmp_path: Path, *args: str,
+                    expect_rc: int = 0) -> subprocess.CompletedProcess:
+    env = {**GIT_ENV, "PUBLISH_EQUALITY_LOCK": "mkdir", "TMPDIR": str(tmp_path),
+           **_seam(clone)}
+    res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone), *args],
+                         env=env, capture_output=True, text=True, timeout=120)
+    assert res.returncode == expect_rc, f"rc={res.returncode}\n{res.stdout}\n{res.stderr}"
+    return res
+
+
+def test_mkdir_lock_publishes(tmp_path):
+    origin, clone = _fixture(tmp_path)
+    (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
+        _yaml("dev-primary", "2026-07-01T12:00:00"))
+    _run_mkdir_lock(clone, tmp_path)
+    assert "2026-07-01T12:00:00" in _origin_file(
+        origin, ".claude/state/equality-dev-primary.yaml")
+    assert not _host_lock_dir(tmp_path).exists()      # lock released on exit
+
+
+def test_mkdir_lock_held_skips_exit_zero(tmp_path):
+    origin, clone = _fixture(tmp_path)
+    before = _git("rev-parse", "main", cwd=origin).strip()
+    (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
+        _yaml("dev-primary", "2026-07-01T12:00:00"))
+    _host_lock_dir(tmp_path).mkdir(parents=True)      # a live holder
+    res = _run_mkdir_lock(clone, tmp_path)            # exit 0, like flock -n
+    assert "another publish in flight" in res.stdout
+    assert _git("rev-parse", "main", cwd=origin).strip() == before
+    assert _host_lock_dir(tmp_path).exists()          # holder's lock untouched
+
+
+def test_mkdir_lock_stale_is_stolen_and_publish_proceeds(tmp_path):
+    origin, clone = _fixture(tmp_path)
+    (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
+        _yaml("dev-primary", "2026-07-01T12:00:00"))
+    lock = _host_lock_dir(tmp_path)
+    lock.mkdir(parents=True)
+    two_hours_ago = 7200
+    import time
+    os.utime(lock, (time.time() - two_hours_ago, time.time() - two_hours_ago))
+    res = _run_mkdir_lock(clone, tmp_path)
+    assert "stale" in res.stdout                      # loud steal
+    assert "2026-07-01T12:00:00" in _origin_file(
+        origin, ".claude/state/equality-dev-primary.yaml")
+    assert not lock.exists()
+    assert not list(tmp_path.glob("publish-equality-*.lock.d.stale.*"))
+
+
+def test_mkdir_lock_released_with_worktree_on_failure(tmp_path):
+    # Reuse the evil-builder failure: rc=1 must still clean BOTH worktree and lock.
+    origin, clone = _fixture(tmp_path)
+    seed = tmp_path / "seed"
+    _git("pull", "origin", "main", cwd=seed)
+    (seed / "scripts" / "readiness" / "build-equality-matrix.py").write_text(
+        STUB_BUILDER.replace("machine-equality-matrix.html", "evil.txt"))
+    _git("add", "-A", cwd=seed); _git("commit", "-m", "evil builder", cwd=seed)
+    _git("push", "origin", "main", cwd=seed)
+    (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
+        _yaml("dev-primary", "2026-07-01T12:00:00"))
+    _run_mkdir_lock(clone, tmp_path, "--rebuild", expect_rc=1)
+    assert not _host_lock_dir(tmp_path).exists()
+    wts = _git("worktree", "list", "--porcelain", cwd=clone)
+    assert wts.count("worktree ") == 1
+
+
+LOCK_PROBE_BUILDER = """\
+import glob, os
+from pathlib import Path
+root = Path(__file__).resolve().parents[2]
+held = bool(glob.glob(os.path.join(os.environ.get("TMPDIR", "/tmp"),
+                                   "publish-equality-*.lock.d")))
+(root / "docs" / "reports" / "machine-equality-matrix.html").write_text(
+    "lock-held" if held else "lock-missing")
+"""
+
+
+def test_mkdir_lock_stays_held_throughout_publish(tmp_path):
+    # Codex r2-code MAJOR: attempt() used to start by releasing the lock, so the
+    # entire fetch/copy/commit/push ran unlocked. A builder stub that runs INSIDE
+    # the publish observes whether the lock dir still exists at that point.
+    origin, clone = _fixture(tmp_path)
+    seed = tmp_path / "seed"
+    _git("pull", "origin", "main", cwd=seed)
+    (seed / "scripts" / "readiness" / "build-equality-matrix.py").write_text(
+        LOCK_PROBE_BUILDER)
+    _git("add", "-A", cwd=seed); _git("commit", "-m", "probe builder", cwd=seed)
+    _git("push", "origin", "main", cwd=seed)
+    (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
+        _yaml("dev-primary", "2026-07-01T12:00:00"))
+    _run_mkdir_lock(clone, tmp_path, "--rebuild")
+    assert _origin_file(origin, "docs/reports/machine-equality-matrix.html") == "lock-held"
+    assert not _host_lock_dir(tmp_path).exists()      # …and released at exit
+
+
+def test_commit_subject_uses_public_label_not_hostname(tmp_path):
+    # 2026-07-18 leak (#3571): the publish commit subject serialized the raw OS
+    # hostname onto public main. With an identity file (or EQ_MACHINE), the
+    # subject must carry the fleet label; the hostname must appear nowhere.
+    origin, clone = _fixture(tmp_path)
+    (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
+        _yaml("dev-primary", "2026-07-01T12:00:00"))
+    idf = tmp_path / "machine-identity.yaml"
+    idf.write_text('machine: "ace-win-1"\npublic_host: "ace-win-1"\n')
+    fake_bin = tmp_path / "fake-bin"
+    fake_bin.mkdir()
+    hostname = fake_bin / "hostname"
+    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' private-ci-host\n")
+    hostname.chmod(0o755)
+    env = {
+        **GIT_ENV,
+        **_seam(clone),
+        "WORKSPACE_HUB_MACHINE_IDENTITY": str(idf),
+        "PATH": f"{fake_bin.as_posix()}:{GIT_ENV.get('PATH', '')}",
+    }
+    res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone)],
+                         env=env, capture_output=True, text=True, timeout=120)
+    assert res.returncode == 0, f"{res.stdout}\n{res.stderr}"
+    subject = _git("log", "-1", "--format=%s", cwd=origin)
+    assert "from ace-win-1" in subject
+    assert "private-ci-host" not in subject.lower()
+
+
+def test_commit_subject_honors_eq_machine_env(tmp_path):
+    origin, clone = _fixture(tmp_path)
+    (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(
+        _yaml("dev-primary", "2026-07-01T12:00:00"))
+    env = {**GIT_ENV, **_seam(clone), "EQ_MACHINE": "ace-win-2"}
+    res = subprocess.run(["bash", str(SCRIPT), "--repo", str(clone)],
+                         env=env, capture_output=True, text=True, timeout=120)
+    assert res.returncode == 0, f"{res.stdout}\n{res.stderr}"
+    assert "from ace-win-2" in _git("log", "-1", "--format=%s", cwd=origin)
+
+
+def test_lock_autodetect_gates_on_command_v_not_exit_code():
+    # Static contract: detection must be `command -v flock`; a bare `flock -n || skip`
+    # conflates command-not-found with lock-held (the #3571 silent no-op).
+    text = SCRIPT.read_text(encoding="utf-8")
+    assert "command -v flock" in text
+    assert "PUBLISH_EQUALITY_LOCK" in text
+
+
 def test_unstamped_local_evidence_is_not_published(tmp_path):
     origin, clone = _fixture(tmp_path)
     (clone / ".claude" / "state" / "equality-dev-primary.yaml").write_text(

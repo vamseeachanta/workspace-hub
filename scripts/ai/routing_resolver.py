@@ -21,7 +21,7 @@ Fail-closed contract (r2-C2): an explicit but UNKNOWN context is an error
 (the interactive path) passes through unchanged by design.
 
 Usage (bash-facing; emit CLI-normalized tokens, one per line, no trailing blank):
-  uv run scripts/ai/routing_resolver.py --context hermes_batch --filter claude,codex,gemini
+  uv run scripts/ai/routing_resolver.py --context hermes_batch --filter claude,codex,agy
   uv run scripts/ai/routing_resolver.py --context hermes_batch --chain
   uv run scripts/ai/routing_resolver.py --context hermes_batch --forbidden
   uv run scripts/ai/routing_resolver.py --context hermes_batch --json
@@ -55,7 +55,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 TOKEN_TO_CLI = {
     "openai-codex": "codex",
     "anthropic": "claude",
-    "copilot": "gemini",
+    "copilot": "agy",  # copilot's Gemini-surface delegate is agy since #3573
 }
 
 EXIT_UNKNOWN_CONTEXT = 3

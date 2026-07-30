@@ -19,5 +19,15 @@ codex:
   default_model: "gpt-5.5"
 
 gemini:
+  # LEGACY (#3573): retired from worker/reviewer routing; probed through the
+  # soak window only. agy (below) is the routed Gemini surface.
   cli_min: "0.27.0"
   default_model: "gemini-2.5-pro"
+
+agy:
+  # Antigravity CLI — third worker/reviewer provider (#3573). Fleet as of
+  # 2026-07-17: 1.1.3 (ace-linux-1). default_model tracks
+  # model-registry latest_models.agy_primary (persisted as a display label
+  # in ~/.gemini/antigravity-cli/settings.json, #3086).
+  cli_min: "1.0.0"
+  default_model: "gemini-3.1-pro"

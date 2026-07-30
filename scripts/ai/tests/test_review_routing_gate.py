@@ -2,8 +2,8 @@
 
 Encodes the routing rules from docs/standards/AI_REVIEW_ROUTING_POLICY.md:
 - Two-provider review by default (Claude + Codex)
-- Three-provider review when Gemini triggers fire
-- Five Gemini triggers: architecture-heavy, research-heavy, ambiguous-requirements,
+- Three-provider review when third-lane (agy) triggers fire
+- Five third-lane triggers: architecture-heavy, research-heavy, ambiguous-requirements,
   high-stakes, context-saturation
 """
 
@@ -35,7 +35,7 @@ from review_routing_gate import (
 # Unit tests: trigger detection from diffs
 # ---------------------------------------------------------------------------
 class TestAnalyzeDiffForTriggers:
-    """Test that diffs are analyzed for Gemini trigger conditions."""
+    """Test that diffs are analyzed for third-lane (agy) trigger conditions."""
 
     def test_routine_change_no_triggers(self):
         """Simple single-file edit should trigger nothing."""
@@ -239,10 +239,10 @@ class TestBuildRecommendation:
         assert rec.priority == "normal"
         assert "two-provider" in rec.reason.lower() or "default" in rec.reason.lower()
 
-    def test_triggers_add_gemini(self):
+    def test_triggers_add_agy(self):
         rec = build_recommendation(triggers=["architecture-heavy"], scope="code")
         assert "codex" in rec.reviewers
-        assert "gemini" in rec.reviewers
+        assert "agy" in rec.reviewers
         assert rec.priority == "high"
         assert "architecture-heavy" in rec.triggers_matched
 
@@ -260,7 +260,7 @@ class TestBuildRecommendation:
             triggers=["architecture-heavy", "high-stakes"], scope="mixed"
         )
         assert rec.priority == "high"
-        assert "gemini" in rec.reviewers
+        assert "agy" in rec.reviewers
         assert len(rec.triggers_matched) == 2
 
     def test_recommendation_to_json(self):
@@ -284,7 +284,7 @@ class TestBuildRecommendation:
 # ---------------------------------------------------------------------------
 # Unit tests: GEMINI_TRIGGERS constant
 # ---------------------------------------------------------------------------
-class TestGeminiTriggers:
+class TestThirdLaneTriggers:
     def test_all_five_triggers_defined(self):
         expected = {
             "architecture-heavy",
@@ -345,7 +345,7 @@ diff --git a/scripts/ai/foo.py b/scripts/ai/foo.py
         )
         assert result.returncode == 0, f"stderr: {result.stderr}"
         output = json.loads(result.stdout)
-        assert "gemini" in output["reviewers"]
+        assert "agy" in output["reviewers"]
         assert "context-saturation" in output["triggers_matched"]
 
     def test_empty_diff_exits_with_error(self):

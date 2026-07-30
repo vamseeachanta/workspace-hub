@@ -107,7 +107,11 @@ def test_recent_a1_catalog_duplicates_are_deduped_into_managed_block():
     )
 
     assert result["status"] == "dry-run"
-    assert result["new_text"].count("curate-session-memory.sh") == 1
+    # #3702: the session-curation entry point is now session-curation-preflight.sh, which
+    # FF-pulls a clean checkout and then EXECs curate-session-memory.sh. The managed block
+    # must still carry exactly ONE rendering of that task (dedup is what this test guards).
+    assert result["new_text"].count("session-curation-preflight.sh") == 1
+    assert result["new_text"].count("session-curation-$(date") == 1
     assert result["new_text"].count("equality-refresh-$(date") == 1
     assert A1_SESSION_CURATION_LINE not in result["new_text"]
     assert A1_EQUALITY_REFRESH_LINE not in result["new_text"]

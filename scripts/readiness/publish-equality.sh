@@ -10,7 +10,8 @@
 #
 # HOW: fetch origin/main → temp worktree with a sparse checkout of ONLY the artifact
 # paths (.claude/state, docs/reports, scripts/readiness — seconds, not a 22k-file
-# checkout) → copy in any LOCAL equality yaml whose generated_at is NEWER than origin's
+# checkout) → copy in any LOCAL equality yaml (read from the #3702 EQ_STATE_DIR seam,
+# NOT from the tracked working tree) whose generated_at is NEWER than origin's
 # copy (never clobbers a peer's fresher evidence) → optionally rebuild the matrix INSIDE
 # the worktree so the committed render reflects the union of freshest evidence →
 # scoped commit → push (fast-forward by construction; bounded retries on a push race).
@@ -56,6 +57,29 @@ done
 [[ -n "$REPO_ROOT" && -d "$REPO_ROOT" ]] || { echo "publish-equality: no repo root" >&2; exit 1; }
 
 HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
+# Public label for anything that can land in tracked/published surfaces (commit
+# subjects!). Raw ${HOST} put a policy-banned private hostname into a public main
+# commit subject on 2026-07-18 (#3571) — resolve the fleet label instead and fall
+# back to HOST only for boxes with no mapping (whose hostnames are public-safe).
+# shellcheck source=scripts/readiness/lib/machine-identity.sh
+. "$SCRIPT_DIR/lib/machine-identity.sh"
+PUBLIC_LABEL="${EQ_MACHINE:-}"
+if [[ -z "$PUBLIC_LABEL" ]]; then
+  case "$HOST" in
+    ace-linux-1*) PUBLIC_LABEL="dev-primary" ;;
+    ace-linux-2*) PUBLIC_LABEL="dev-secondary" ;;
+    *macbook*)    PUBLIC_LABEL="macbook-portable" ;;
+    ace-win-1*|licensed-win-1*|acma-ansys05*) PUBLIC_LABEL="ace-win-1" ;;
+    ace-win-2*|licensed-win-2*|acma-ws014*)   PUBLIC_LABEL="ace-win-2" ;;
+    *)
+      if _identity="$(resolve_identity_file "$HOST")"; then
+        PUBLIC_LABEL="${_identity##* }"
+      else
+        [[ $? -eq 1 ]] && exit 1
+        PUBLIC_LABEL="$HOST"
+      fi ;;
+  esac
+fi
 say()  { echo "publish-equality: $*"; }
 fail() {
   bash "$REPO_ROOT/scripts/notify.sh" cron equality-publish fail "$1" 2>/dev/null || true
@@ -114,7 +138,7 @@ attempt() {
 
   # 1. Evidence: copy in each LOCAL equality yaml strictly newer than origin's copy.
   local f base local_gen origin_gen
-  for f in "$REPO_ROOT"/.claude/state/equality-*.yaml; do
+  for f in "$EQ_LOCAL_DIR"/equality-*.yaml; do
     [[ -f "$f" ]] || continue
     base="$(basename "$f")"
     local_gen="$(gen_at "$f")"
@@ -127,12 +151,19 @@ attempt() {
   done
 
   # 2. Render (control-plane): rebuild from the worktree's union-of-freshest evidence.
+  # --state-dir/--out-dir are passed EXPLICITLY and point at the worktree only (#3702).
+  # --state-dir REPLACES the builder's default input layers (r1 M1) — without that the
+  # render would fold the interactive checkout's stale peer evidence, and this box's
+  # local seam copy, into the PUBLISHED matrix and destroy the union-of-freshest
+  # guarantee this whole worktree design exists to provide.
   if [[ "$REBUILD" == 1 ]]; then
+    local render_args=(--state-dir "$WT/.claude/state" --out-dir "$WT/docs/reports")
     if command -v uv >/dev/null 2>&1; then
-      (cd "$WT" && uv run --script scripts/readiness/build-equality-matrix.py) >/dev/null \
-        || return 1
+      (cd "$WT" && uv run --script scripts/readiness/build-equality-matrix.py \
+        "${render_args[@]}") >/dev/null || return 1
     else
-      (cd "$WT" && python3 scripts/readiness/build-equality-matrix.py) >/dev/null || return 1
+      (cd "$WT" && python3 scripts/readiness/build-equality-matrix.py \
+        "${render_args[@]}") >/dev/null || return 1
     fi
   fi
 
@@ -155,7 +186,7 @@ attempt() {
     esac
   done <<< "$staged"
 
-  git -C "$WT" commit --quiet -m "chore(equality): publish equality artifacts from ${HOST}" \
+  git -C "$WT" commit --quiet -m "chore(equality): publish equality artifacts from ${PUBLIC_LABEL}" \
     || return 1
   if [[ "$DRY_RUN" == 1 ]]; then
     say "dry-run — would push:"

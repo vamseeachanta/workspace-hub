@@ -9,6 +9,7 @@ depending on the host's real hardware.
 from __future__ import annotations
 
 import os
+import json
 import re
 import shlex
 import subprocess
@@ -55,6 +56,72 @@ def _run(ws: Path, *args: str) -> dict:
         capture_output=True, text=True, timeout=60)
     assert res.returncode == 0, res.stderr
     return yaml.safe_load(res.stdout)
+
+
+def _uv_stub(tmp_path: Path) -> Path:
+    bin_dir = tmp_path / "uv-bin"
+    bin_dir.mkdir()
+    uv = bin_dir / "uv"
+    python = shlex.quote(_bash_path(Path(sys.executable)))
+    uv.write_text(
+        "#!/usr/bin/env bash\n"
+        "[[ \"$1 $2 $3\" == 'run --no-project python' ]] || exit 2\n"
+        f"shift 3\nexec {python} \"$@\"\n"
+    )
+    uv.chmod(0o755)
+    return bin_dir
+
+
+def test_collect_publish_health_uses_working_resolver_and_exact_schema(tmp_path):
+    ws = _fixture(tmp_path)
+    health_dir = ws / ".claude" / "state" / "equivalence"
+    health_dir.mkdir()
+    (health_dir / "publish-health.json").write_text(json.dumps({
+        "schema_version": 1,
+        "ts": "2026-07-14T10:00:00+00:00",
+        "phase": "publish",
+        "duration_s": 2.5,
+        "rc": 0,
+    }))
+    bin_dir = _uv_stub(tmp_path)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        env={"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{bin_dir}:{BASH_PATH}"},
+        capture_output=True, text=True, timeout=60,
+    )
+    assert res.returncode == 0, res.stderr
+    health = yaml.safe_load(res.stdout)["dimensions"]["publish_health"]
+    assert health == {
+        "last_publish_at": "2026-07-14T10:00:00+00:00",
+        "last_publish_duration_s": 2.5,
+        "last_publish_rc": 0,
+    }
+
+
+def test_collect_invalid_publish_health_emits_no_partial_tuple(tmp_path):
+    ws = _fixture(tmp_path)
+    health_dir = ws / ".claude" / "state" / "equivalence"
+    health_dir.mkdir()
+    (health_dir / "publish-health.json").write_text(json.dumps({
+        "schema_version": 1,
+        "ts": "2026-07-14T10:00:00+00:00",
+        "phase": "publish",
+        "duration_s": True,
+        "rc": 0,
+    }))
+    bin_dir = _uv_stub(tmp_path)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        env={"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{bin_dir}:{BASH_PATH}"},
+        capture_output=True, text=True, timeout=60,
+    )
+    assert res.returncode == 0, res.stderr
+    health = yaml.safe_load(res.stdout)["dimensions"]["publish_health"]
+    assert health == {
+        "last_publish_at": "missing",
+        "last_publish_duration_s": None,
+        "last_publish_rc": None,
+    }
 
 
 def test_collect_emits_valid_yaml(tmp_path):
@@ -694,3 +761,48 @@ def test_collect_kanban_queue_order_is_byte_sorted(tmp_path):
     (ws / ".claude" / "dispatch" / "_leader-state.yaml").write_text("x")
     d = _run(ws)
     assert d["dimensions"]["kanban"]["dispatch_queues"] == "_leader-state,dev-primary,multi"
+
+
+# ── harness_checkup dimension (#3408) ────────────────────────────────────────
+def test_collect_harness_checkup_failclosed_when_absent(tmp_path):
+    # no harness-checkup-<machine>.json in the fixture → block present but all-null (fail-closed →
+    # the matrix grades MISSING-EVIDENCE; never silently green).
+    d = _run(_fixture(tmp_path))["dimensions"]["harness_checkup"]
+    assert d["audited_at"] is None
+    for k in ("cc_version", "cc_latest", "version_current", "install_method", "duplicate_installs",
+              "settings_parse_ok", "broken_agents", "unused_skills", "unused_plugins",
+              "default_mode", "auto_mode_default"):
+        assert d[k] is None, k
+
+
+def test_collect_harness_checkup_passthrough(tmp_path):
+    import json as _json
+    ws = _fixture(tmp_path)
+    (ws / ".claude" / "state" / "harness-checkup-dev-primary.json").write_text(_json.dumps({
+        "audited_at": "2026-07-09T12:00:00+00:00", "cc_version": "2.1.205", "cc_latest": "2.1.205",
+        "version_current": True, "install_method": "npm-global", "duplicate_installs": 0,
+        "settings_parse_ok": True, "broken_agents": 0, "unused_skills": 23, "unused_plugins": 8,
+        "default_mode": "auto", "auto_mode_default": True,
+    }))
+    d = _run(ws)["dimensions"]["harness_checkup"]
+    assert d["cc_version"] == "2.1.205" and d["cc_latest"] == "2.1.205"
+    assert d["version_current"] is True and d["auto_mode_default"] is True
+    assert d["install_method"] == "npm-global" and d["default_mode"] == "auto"
+    assert d["duplicate_installs"] == 0 and d["unused_skills"] == 23 and d["unused_plugins"] == 8
+
+
+def test_collect_harness_checkup_type_gated(tmp_path):
+    # a malformed audit (wrong JSON types) must NOT inject garbage into the graded cells — the
+    # collector type-gates each field and drops mismatches to null (allowlist-safe by construction).
+    import json as _json
+    ws = _fixture(tmp_path)
+    (ws / ".claude" / "state" / "harness-checkup-dev-primary.json").write_text(_json.dumps({
+        "audited_at": "2026-07-09T12:00:00+00:00",
+        "version_current": "yes",          # wrong type → null
+        "duplicate_installs": "lots",       # wrong type → null
+        "settings_parse_ok": True,          # correct bool passes through
+    }))
+    d = _run(ws)["dimensions"]["harness_checkup"]
+    assert d["version_current"] is None
+    assert d["duplicate_installs"] is None
+    assert d["settings_parse_ok"] is True
