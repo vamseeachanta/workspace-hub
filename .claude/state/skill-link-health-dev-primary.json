@@ -1,16 +1,16 @@
 {
   "machine": "dev-primary",
-  "audited_at": "2026-07-29T17:47:13+00:00",
+  "audited_at": "2026-07-30T00:19:50+00:00",
   "platform": "unix",
   "repos_total": 15,
-  "healthy": 28,
-  "missing": 2,
+  "healthy": 30,
+  "missing": 0,
   "dangling": 0,
   "flattened": 0,
   "modified_real_dir": 0,
   "template_absent": 15,
-  "repairable": 2,
-  "unexpected_missing_repos": ["wt-wh-3559-adjudication"],
-  "worst_state": "MISSING",
+  "repairable": 0,
+  "unexpected_missing_repos": [],
+  "worst_state": "TEMPLATE-ABSENT",
   "schema_version": 1
 }
