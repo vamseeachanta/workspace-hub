@@ -17,7 +17,7 @@ cards:
     gh_state: closed
     gh_labels:
       - enhancement
-      - cat:data-pipeline
+      - cat:data
       - domain:marine
       - domain:standards
       - llm-wiki
@@ -36,8 +36,8 @@ cards:
       - documentation
       - enhancement
       - status:closed
-      - cat:knowledge-domain
       - domain:standards
+      - domain:knowledge
       - llm-wiki
       - domain:governance
     initial_status: triage

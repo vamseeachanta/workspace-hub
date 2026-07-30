@@ -14,6 +14,8 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SETUP_PS1 = REPO_ROOT / "scripts" / "windows" / "setup-scheduler-tasks.ps1"
 WRAPPER_PS1 = REPO_ROOT / "scripts" / "windows" / "equality-report.ps1"
+SENTINEL_WRAPPER_PS1 = REPO_ROOT / "scripts" / "windows" / "equivalence-sentinel.ps1"
+SCHEDULER_YAML_PS1 = REPO_ROOT / "scripts" / "windows" / "scheduler-yaml.ps1"
 CURATION_PS1 = REPO_ROOT / "scripts" / "curation" / "curate-session-memory.ps1"
 SCHEDULE_SH = REPO_ROOT / "scripts" / "windows" / "schedule-equivalence-tasks.sh"
 SCHEDULE = REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
@@ -34,7 +36,8 @@ def test_setup_ps1_reads_schedule_yaml():
     assert "schedule-tasks.yaml" in text
     assert "Get-EqualityReportTask" in text
     assert "Unknown Windows scheduler host" in text
-    assert "RECONCILE_MACHINE" in text
+    assert "MachineIdOverride" in text
+    assert "RECONCILE_MACHINE" not in text
     assert "Resolve-GitBash" in text
 
 
@@ -66,6 +69,129 @@ def test_windows_reconcile_and_curation_sources_are_declared():
     curation = _task("session-curation")
     assert curation["schedule"] == "47 */6 * * *"
     assert set(curation["machines"]) >= {"ace-win-1", "ace-win-2"}
+
+
+def test_equivalence_sentinel_windows_source_is_exact_and_repo_relative():
+    sentinel = _task("equivalence-sentinel")
+    assert sentinel["schedule"] == "17 */6 * * *"
+    assert set(sentinel["machines"]) >= {"ace-win-1", "ace-win-2"}
+    assert sentinel["windows_script"] == "scripts/windows/equivalence-sentinel.ps1"
+    path = Path(sentinel["windows_script"])
+    assert not path.is_absolute() and ".." not in path.parts
+    assert SENTINEL_WRAPPER_PS1.is_file()
+
+
+@pytest.mark.parametrize("machine", ["ace-win-1", "ace-win-2"])
+def test_setup_whatif_renders_equivalence_sentinel_for_each_windows_host(machine):
+    if os.name != "nt":
+        pytest.skip("Windows ScheduledTasks cmdlets are required")
+    powershell = shutil.which("powershell") or shutil.which("pwsh")
+    assert powershell is not None
+    result = subprocess.run(
+        [powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(SETUP_PS1),
+         "-WhatIf", "-EquivalenceOnly", "-MachineIdOverride", machine],
+        cwd=REPO_ROOT, capture_output=True, text=True, timeout=60,
+    )
+    assert result.returncode == 0, result.stderr
+    assert r"\Claude\EquivalenceSentinel" in result.stdout
+    assert "every 6h at minute 17" in result.stdout
+    assert "scripts/windows/equivalence-sentinel.ps1" in result.stdout
+    assert "-WorkspaceRoot" in result.stdout
+    assert "-GitBashPath" in result.stdout
+
+
+@pytest.mark.parametrize("extra", [[], ["-Remove", "-WhatIf"]])
+def test_machine_override_is_rejected_outside_safe_whatif(extra):
+    if os.name != "nt":
+        pytest.skip("PowerShell is required")
+    powershell = shutil.which("powershell") or shutil.which("pwsh")
+    assert powershell is not None
+    result = subprocess.run(
+        [powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(SETUP_PS1),
+         "-EquivalenceOnly", "-MachineIdOverride", "ace-win-2", *extra],
+        cwd=REPO_ROOT, capture_output=True, text=True, timeout=60,
+    )
+    assert result.returncode != 0
+    assert "MachineIdOverride is allowed only with non-removal WhatIf" in (result.stderr + result.stdout)
+
+
+def test_windows_sentinel_wrapper_binds_repo_logs_and_propagates_exit(tmp_path):
+    if os.name != "nt":
+        pytest.skip("Windows PowerShell and Git Bash are required")
+    powershell = shutil.which("powershell") or shutil.which("pwsh")
+    git_bash = shutil.which("bash")
+    assert powershell and git_bash
+    workspace = tmp_path / "repo with spaces"
+    sentinel_dir = workspace / "scripts" / "monitoring"
+    sentinel_dir.mkdir(parents=True)
+    sentinel = sentinel_dir / "equivalence-sentinel.sh"
+    sentinel.write_text(
+        "#!/usr/bin/env bash\n"
+        "printf '%s' \"$WORKSPACE_HUB\" > \"$WORKSPACE_HUB/observed-workspace.txt\"\n"
+        "echo sentinel-test-output\n"
+        "exit 7\n"
+    )
+    result = subprocess.run(
+        [powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+         str(SENTINEL_WRAPPER_PS1), "-WorkspaceRoot", str(workspace),
+         "-GitBashPath", git_bash],
+        cwd=REPO_ROOT, capture_output=True, text=True, timeout=60,
+    )
+    assert result.returncode == 7, result.stderr
+    observed = (workspace / "observed-workspace.txt").read_text()
+    assert observed.endswith("/repo with spaces")
+    logs = list((workspace / "logs" / "monitoring").glob("equivalence-sentinel-*.log"))
+    assert len(logs) == 1 and "sentinel-test-output" in logs[0].read_text()
+    wrapper_text = SENTINEL_WRAPPER_PS1.read_text()
+    assert "$(date)" not in wrapper_text and r"\%" not in wrapper_text
+    assert "Set-Location -LiteralPath $WorkspaceRoot" in wrapper_text
+
+
+def test_yaml_inputs_are_resolved_before_any_scheduler_mutation():
+    text = SETUP_PS1.read_text()
+    preload = text.index("$currentMachine = Get-CurrentMachineLabel")
+    first_registration = text.index("if (-not $EquivalenceOnly) {\n    Register-ClaudeTask", preload)
+    assert preload < first_registration
+    for task in ("$equalityTask", "$curationTask", "$reconcileTask", "$sentinelTask"):
+        assert text.index(f"{task} = ") < first_registration
+
+
+def test_remove_whatif_needs_no_identity_yaml_or_wrapper():
+    if os.name != "nt":
+        pytest.skip("PowerShell is required")
+    powershell = shutil.which("powershell") or shutil.which("pwsh")
+    result = subprocess.run(
+        [powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(SETUP_PS1),
+         "-WhatIf", "-Remove", "-EquivalenceOnly", "-WorkspaceRoot", str(Path.cwd())],
+        cwd=Path.cwd(), capture_output=True, text=True, timeout=30,
+    )
+    assert result.returncode == 0, result.stderr
+    for name in ("EqualityReport", "SessionCuration", "EcosystemReconcile", "EquivalenceSentinel"):
+        assert rf"\Claude\{name}" in result.stdout
+
+
+@pytest.mark.parametrize("candidate", [
+    r"C:\temp\equivalence-sentinel.ps1",
+    r"..\outside.ps1",
+    r"scripts\windows\missing-sentinel.ps1",
+])
+def test_windows_renderer_rejects_unsafe_or_missing_wrapper(candidate):
+    if os.name != "nt":
+        pytest.skip("PowerShell is required")
+    powershell = shutil.which("powershell") or shutil.which("pwsh")
+    assert powershell is not None
+    root = str(REPO_ROOT).replace("'", "''")
+    helper = str(SCHEDULER_YAML_PS1).replace("'", "''")
+    value = candidate.replace("'", "''")
+    command = (
+        f"$WorkspaceRoot='{root}'; . '{helper}'; "
+        f"Resolve-RepoTaskScript -RelativePath '{value}'"
+    )
+    result = subprocess.run(
+        [powershell, "-NoProfile", "-Command", command],
+        cwd=REPO_ROOT, capture_output=True, text=True, timeout=30,
+    )
+    assert result.returncode != 0
 
 
 def test_setup_whatif_renders_equality_report_as_weekly_monday():

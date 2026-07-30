@@ -198,6 +198,18 @@ Write-Verbose "collect-equality.ps1: using Git Bash at $bashExe"
 # backslashes in a Windows path (C:\ws\...) as escape characters and collapses them
 # (C:wsworkspace-hub...), so argv[0] becomes an unfindable path. Git Bash accepts the forward-slash
 # form (C:/ws/...), and the .sh's own `dirname "${BASH_SOURCE[0]}"` resolves from it.
+# #3702 Phase 1 --- Windows stays PINNED to the in-tree location. collect-equality.sh's
+# default output moved out of the tracked tree (it is what blocked `git pull --ff-only`
+# on the Linux fleet), but this script delegates straight to it and scripts/windows/
+# equality-report.ps1 then commits `.claude/state/equality-<machine>.yaml` from the
+# working checkout. Without this pin both Windows boxes would find no state yaml, commit
+# nothing, and go DARK on the matrix while every scheduled task reported success
+# (Codex r2 MAJOR 1/2). A caller that has already set the seam wins, so equality-report.ps1
+# and any Phase-2 cutover can override without editing this file.
+if ([string]::IsNullOrWhiteSpace($env:EQ_STATE_DIR)) {
+    $env:EQ_STATE_DIR = (Join-Path $WS '.claude\state')
+}
+
 $shPath = (Join-Path $ScriptDir 'collect-equality.sh') -replace '\\', '/'
 $shArgs = @($shPath)
 if ($Stdout) { $shArgs += '--stdout' }
