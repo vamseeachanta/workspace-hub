@@ -179,17 +179,97 @@ def test_report_lists_issue_numbers_not_just_counts():
 # --------------------------------------------------------------------------
 
 
-def test_coverage_never_reaches_a_write_path():
-    """--coverage must be incapable of mutating a label, not merely abstain.
+def test_coverage_cli_never_reaches_a_write_even_with_apply_yes(monkeypatch, capsys):
+    """BEHAVIOURAL proof, not a source scan.
 
-    route.py's `--apply` reaches a live `gh issue edit --add-label`; a reporter
-    that shares that module must be provably unable to get there.
+    The dangerous production invocation is `route.py --apply --yes`, which
+    reaches a live `gh issue edit --add-label`. So the adversarial case is
+    `--coverage --apply --yes`: coverage must return BEFORE the engine, with
+    every write primitive booby-trapped.
+
+    An earlier version of this test inspected the source of the two pure
+    helpers, which proved nothing about the CLI path — a write-capable
+    cmd_coverage() would have passed it.
     """
+    def boom(*a, **k):  # noqa: ANN002, ANN003
+        raise AssertionError("coverage reached a write path")
+
+    monkeypatch.setattr(R, "gh", boom, raising=False)
+    monkeypatch.setattr(R, "cmd_apply", boom, raising=False)
+    monkeypatch.setattr(R, "propose", boom, raising=False)
+    monkeypatch.setattr(R, "fetch_open_issues", lambda repo: [
+        {"number": 1, "labels": ["machine:ace-linux-1", "lane:claude"]},
+    ])
+    monkeypatch.setattr(
+        sys, "argv",
+        ["route.py", "--coverage", "--apply", "--yes", "--repo", "owner/name"],
+    )
+
+    R.main()  # must not raise — i.e. must not touch propose/gh/cmd_apply
+    assert "open=1" in capsys.readouterr().out
+
+
+def test_coverage_source_has_no_write_primitives():
+    """Belt-and-braces sentinel, secondary to the behavioural test above."""
     import inspect
 
-    src = inspect.getsource(R.coverage_report) + inspect.getsource(R.classify_axis)
-    for forbidden in ("--add-label", "--remove-label", "issue edit", "gh("):
+    src = "".join(
+        inspect.getsource(f) for f in (R.coverage_report, R.classify_axis, R.cmd_coverage)
+    )
+    for forbidden in ("--add-label", "--remove-label", "issue edit", "cmd_apply"):
         assert forbidden not in src, f"coverage path can reach a write: {forbidden!r}"
+
+
+# --------------------------------------------------------------------------
+# precedence — every overlap pinned, so none can flip silently
+# --------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "labels,expected",
+    [
+        (["status:icebox", "status:plan-review"], "terminal"),          # terminal > skipped
+        (["status:icebox", "lane:claude", "lane:codex"], "terminal"),   # terminal > ambiguous
+        (["status:plan-review", "lane:claude", "lane:codex"], "skipped"),  # skipped > ambiguous
+        (["status:plan-review", "lane:claude"], "skipped"),             # skipped > routable
+        (["status:icebox", "lane:claude"], "terminal"),                 # terminal > routable
+        (["wip"], "skipped"),                                           # skipped > missing
+    ],
+)
+def test_bucket_precedence_is_fully_specified(labels, expected):
+    """terminal > skipped > (ambiguous | routable | missing).
+
+    Without these, an issue carrying both `status:icebox` and `status:plan-review`
+    could flip bucket between runs and no test would notice.
+    """
+    assert R.classify_axis(labels, "lane:", terminal=TERMINAL, skip=SKIP) == expected
+
+
+def test_skipped_issue_with_no_axes_is_not_in_missing_all_axes():
+    """In-flight work must not inflate the no-axis-at-all list."""
+    report = R.coverage_report(
+        [{"number": 9, "labels": ["wip"]}],
+        axes=("machine:", "lane:"),
+        terminal=TERMINAL,
+        skip=SKIP,
+    )
+    assert report["missing_all_axes"] == []
+
+
+def test_routable_means_exactly_one_label_not_that_it_resolves():
+    """Scope boundary, made explicit rather than implied.
+
+    This reporter classifies label CARDINALITY. It deliberately does not
+    validate the value against the capability map — that requires the generated
+    map wiring which is a later slice of #584, and doing it here would couple a
+    read-only reporter to a source of truth that is currently wrong (#579).
+    An unknown-but-single value is therefore `routable`, meaning "assigned".
+    """
+    assert (
+        R.classify_axis(["machine:no-such-host"], "machine:", terminal=TERMINAL, skip=SKIP)
+        == "routable"
+    )
+    assert R.classify_axis(["lane:agy"], "lane:", terminal=TERMINAL, skip=SKIP) == "routable"
 
 
 def test_classify_axis_is_pure():
