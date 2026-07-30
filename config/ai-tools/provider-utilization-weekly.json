@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-30T05:21:20.842558Z",
+  "generated_at": "2026-07-30T09:21:31.425002Z",
   "current_week": "2026-W31",
   "report_weeks": 8,
   "subscriptions": {
@@ -742,56 +742,61 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W31",
-        "sessions": 0,
-        "post_records": 0,
-        "activity_utilization_pct": 0.0,
+        "sessions": 1,
+        "post_records": 24,
+        "activity_utilization_pct": 0.1,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 0.0,
+        "reported_utilization_pct": 0.1,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-07-30T05:20:05Z",
-        "top_tools": [],
-        "first_ts": null,
-        "last_ts": null,
+        "quota_snapshot_ts": "2026-07-30T09:20:05Z",
+        "top_tools": [
+          {
+            "tool": "unknown",
+            "count": 24
+          }
+        ],
+        "first_ts": "2026-07-30T07:49:29Z",
+        "last_ts": "2026-07-30T07:54:20Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
         "provider": "codex",
         "week": "2026-W31",
-        "sessions": 28,
-        "post_records": 1224,
-        "activity_utilization_pct": 3.2,
+        "sessions": 57,
+        "post_records": 2659,
+        "activity_utilization_pct": 6.9,
         "quota_utilization_pct": 0.0,
         "reported_utilization_pct": 0.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl-estimate",
-        "quota_snapshot_ts": "2026-07-30T05:20:05Z",
+        "quota_snapshot_ts": "2026-07-30T09:20:05Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 934
+            "count": 2061
           },
           {
             "tool": "wait",
-            "count": 117
+            "count": 210
           },
           {
             "tool": "wait_agent",
-            "count": 53
+            "count": 122
           },
           {
             "tool": "send_message",
-            "count": 47
+            "count": 103
           },
           {
             "tool": "spawn_agent",
-            "count": 27
+            "count": 57
           }
         ],
         "first_ts": "2026-07-29T03:25:55.819000Z",
-        "last_ts": "2026-07-29T06:40:36.300000Z",
+        "last_ts": "2026-07-29T13:14:29.002000Z",
         "note": "week_messages/weekly_limit from history.jsonl-estimate"
       },
       "agy": {
@@ -833,9 +838,9 @@
   "underutilization_alerts": [
     {
       "provider": "claude",
-      "reported_utilization_pct": 0.0,
+      "reported_utilization_pct": 0.1,
       "basis": "activity_vs_recent_peak",
-      "message": "claude at 0.0% (activity_vs_recent_peak)"
+      "message": "claude at 0.1% (activity_vs_recent_peak)"
     },
     {
       "provider": "codex",

@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-30T05:21:24Z
+Generated: 2026-07-30T09:21:35Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,7 +43,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3711 | bug(cron): build-cron-identity-inventory.py is host-dependent and silently emits a wrong inventory off Linux | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3712 | infra: no CI check is merge-blocking on main — every 'required gate' enforceability argument is currently false | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3711 | bug(cron): build-cron-identity-inventory.py is host-dependent and silently emits a wrong inventory off Linux | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3709 | bug(cron): plan_cutover silently drops managed-block lines instead of blocking on them — audit and apply path disagree | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3708 | bug(cron): no safe crontab re-apply path — audit fail-closed on 47 uncataloged lines and setup-cron --replace disabled | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3707 | bug(cron): daily-cleanup has never disposed of anything — 4 independent defects, and its only scheduler died 2026-06-16 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3427 | epic: repository-linked algorithm run datasets and decision intelligence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3426 | feat(governance): deploy completeness closeout contract to worldenergydata | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3424 | [skills] Add transactional metadata-only folder-note publication workflow | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3423 | feat(landman-desk): route work to landmen or trainees and close the guided-training feedback loop | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-30T05:21:22.948179Z",
+  "generated_at": "2026-07-30T09:21:33.555311Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-30T05:21:20.971340Z",
+  "scorecard_generated_at": "2026-07-30T09:21:31.553371Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 26,
-      "total_candidates": 180,
+      "total_candidates": 181,
       "top_issues": [
         {
           "number": 3426,
@@ -737,7 +737,7 @@
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T02:35:08Z",
+          "updatedAt": "2026-07-30T06:59:05Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -1730,31 +1730,6 @@
           "updatedAt": "2026-07-28T02:11:10Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3423,
-          "title": "feat(landman-desk): route work to landmen or trainees and close the guided-training feedback loop",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3423",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:business",
-            "status:needs-plan",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4417,7 +4392,52 @@
             "status:needs-plan",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-30T04:24:47Z",
+          "updatedAt": "2026-07-30T08:26:23Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3711,
+          "title": "bug(cron): build-cron-identity-inventory.py is host-dependent and silently emits a wrong inventory off Linux",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3711",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "status:plan-review",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-30T07:56:55Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3712,
+          "title": "infra: no CI check is merge-blocking on main \u2014 every 'required gate' enforceability argument is currently false",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3712",
+          "labels": [
+            "cat:harness",
+            "domain:workstations",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-30T08:27:14Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4436,7 +4456,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 5,
-      "total_candidates": 20,
+      "total_candidates": 19,
       "top_issues": [
         {
           "number": 3430,
@@ -5045,28 +5065,6 @@
             "status:needs-plan"
           ],
           "updatedAt": "2026-07-29T13:42:30Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3711,
-          "title": "bug(cron): build-cron-identity-inventory.py is host-dependent and silently emits a wrong inventory off Linux",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3711",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-07-30T02:19:34Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
