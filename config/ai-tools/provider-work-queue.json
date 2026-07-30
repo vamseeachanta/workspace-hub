@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-30T09:21:33.555311Z",
+  "generated_at": "2026-07-30T13:21:28.586217Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-30T09:21:31.553371Z",
+  "scorecard_generated_at": "2026-07-30T13:21:26.499740Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -955,7 +955,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-07-29T11:45:08Z",
+          "updatedAt": "2026-07-30T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -4392,7 +4392,7 @@
             "status:needs-plan",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-30T08:26:23Z",
+          "updatedAt": "2026-07-30T10:55:55Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4416,7 +4416,7 @@
             "status:plan-review",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-30T07:56:55Z",
+          "updatedAt": "2026-07-30T10:47:50Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4437,7 +4437,7 @@
             "domain:workstations",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-30T08:27:14Z",
+          "updatedAt": "2026-07-30T10:58:52Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
