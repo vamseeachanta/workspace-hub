@@ -7,6 +7,8 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/lib/reparse_guard.sh
+. "$SCRIPT_DIR/lib/reparse_guard.sh"
 WS_HUB="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 HOOK_MARKER="consume-signals.sh"
@@ -307,7 +309,13 @@ propagate_skills() {
                 if [[ "$OPT_DRY_RUN" == "true" ]]; then
                     log_link "$repo_name/$shared_dir -> _internal/$shared_dir (would backup existing)"
                     SKILLS_LINKED=$((SKILLS_LINKED+1)); continue; fi
-                [[ -d "$backup" ]] && rm -rf "$backup"
+                # A leftover .bak-* can itself be a junction into the canonical
+                # tree (aborted prior repair); a recursive delete would follow it
+                # and empty the link TARGET — the #3571 incident class. Fail closed.
+                if [[ -d "$backup" ]] && ! guarded_rm_rf "$backup"; then
+                    log_fail "$repo_name/$shared_dir — backup at $backup is a reparse point; refusing recursive delete (remove the link node with rmdir, then re-run)"
+                    continue
+                fi
                 mv "$link_path" "$backup"; log_verbose "Backed up to $backup"
                 if create_directory_link "$target" "$link_path"; then
                     log_link "$repo_name/$shared_dir -> _internal/$shared_dir (backed up existing)"

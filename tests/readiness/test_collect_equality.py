@@ -607,3 +607,48 @@ def test_collect_kanban_queue_order_is_byte_sorted(tmp_path):
     (ws / ".claude" / "dispatch" / "_leader-state.yaml").write_text("x")
     d = _run(ws)
     assert d["dimensions"]["kanban"]["dispatch_queues"] == "_leader-state,dev-primary,multi"
+
+
+# ── harness_checkup dimension (#3408) ────────────────────────────────────────
+def test_collect_harness_checkup_failclosed_when_absent(tmp_path):
+    # no harness-checkup-<machine>.json in the fixture → block present but all-null (fail-closed →
+    # the matrix grades MISSING-EVIDENCE; never silently green).
+    d = _run(_fixture(tmp_path))["dimensions"]["harness_checkup"]
+    assert d["audited_at"] is None
+    for k in ("cc_version", "cc_latest", "version_current", "install_method", "duplicate_installs",
+              "settings_parse_ok", "broken_agents", "unused_skills", "unused_plugins",
+              "default_mode", "auto_mode_default"):
+        assert d[k] is None, k
+
+
+def test_collect_harness_checkup_passthrough(tmp_path):
+    import json as _json
+    ws = _fixture(tmp_path)
+    (ws / ".claude" / "state" / "harness-checkup-dev-primary.json").write_text(_json.dumps({
+        "audited_at": "2026-07-09T12:00:00+00:00", "cc_version": "2.1.205", "cc_latest": "2.1.205",
+        "version_current": True, "install_method": "npm-global", "duplicate_installs": 0,
+        "settings_parse_ok": True, "broken_agents": 0, "unused_skills": 23, "unused_plugins": 8,
+        "default_mode": "auto", "auto_mode_default": True,
+    }))
+    d = _run(ws)["dimensions"]["harness_checkup"]
+    assert d["cc_version"] == "2.1.205" and d["cc_latest"] == "2.1.205"
+    assert d["version_current"] is True and d["auto_mode_default"] is True
+    assert d["install_method"] == "npm-global" and d["default_mode"] == "auto"
+    assert d["duplicate_installs"] == 0 and d["unused_skills"] == 23 and d["unused_plugins"] == 8
+
+
+def test_collect_harness_checkup_type_gated(tmp_path):
+    # a malformed audit (wrong JSON types) must NOT inject garbage into the graded cells — the
+    # collector type-gates each field and drops mismatches to null (allowlist-safe by construction).
+    import json as _json
+    ws = _fixture(tmp_path)
+    (ws / ".claude" / "state" / "harness-checkup-dev-primary.json").write_text(_json.dumps({
+        "audited_at": "2026-07-09T12:00:00+00:00",
+        "version_current": "yes",          # wrong type → null
+        "duplicate_installs": "lots",       # wrong type → null
+        "settings_parse_ok": True,          # correct bool passes through
+    }))
+    d = _run(ws)["dimensions"]["harness_checkup"]
+    assert d["version_current"] is None
+    assert d["duplicate_installs"] is None
+    assert d["settings_parse_ok"] is True

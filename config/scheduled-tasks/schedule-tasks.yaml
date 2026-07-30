@@ -31,13 +31,13 @@ tasks:
   - id: equality-report
     label: Machine-equality self-report (#2801)
     schedule: "30 4 * * 1"
-    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2]
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2, gpu-claw]
     roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, python3, uv, git]
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      bash scripts/readiness/equality-matrix-cron.sh
+      bash scripts/readiness/equality-preflight.sh
       >> $WORKSPACE_HUB/logs/quality/equality-$(date +\%Y-\%m-\%d).log 2>&1
     log: logs/quality/equality-*.log
     is_claude_task: false
@@ -49,6 +49,32 @@ tasks:
       old repo-sync delegation went dark exactly then). Hot dims referenced from
       nightly readiness. Single source for both Linux cron and Windows Task Scheduler
       per this file's HARD RULE (#2801 DC5).
+      #3702: the command is equality-preflight.sh — a THIN wrapper that FF-pulls a
+      clean checkout on main (guard-gated, warn-don't-fail) then EXECs
+      equality-matrix-cron.sh. The exec is load-bearing: a mid-run
+      `git merge --ff-only` can rewrite the script bash is reading. Generation now
+      lands out of tree ($EQ_STATE_DIR / $EQ_REPORT_DIR), so a run no longer blocks
+      `git pull --ff-only`. Windows takes only the SCHEDULE from this block
+      (setup-scheduler-tasks.ps1 supplies scripts/windows/equality-report.ps1),
+      which stays pinned to the in-tree paths in Phase 1.
+
+  - id: ecosystem-reconcile
+    label: Daily report-first ecosystem + machine-equivalence reconcile
+    schedule: "15 5 * * *"
+    machines: [ace-win-1, ace-win-2]
+    roles: [sim-worker]
+    requires: [bash, python3, uv, git]
+    command: >-
+      cd $WORKSPACE_HUB &&
+      powershell -NoProfile -ExecutionPolicy Bypass
+      -File scripts/windows/reconcile-ecosystem.ps1
+      >> $WORKSPACE_HUB/logs/quality/reconcile-scheduled-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/quality/reconcile-*.log
+    is_claude_task: false
+    description: >-
+      Daily Windows scout pass for repo hygiene and machine-equality drift. Report-only:
+      classifies AUTO-SAFE, NEEDS-APPROVAL, and OPERATOR-ONLY actions but never stashes,
+      deletes, pulls, or applies corrections unattended.
 
   - id: drive-index-refresh-ace
     label: Ace drive-index refresh (#3336)
@@ -128,8 +154,11 @@ tasks:
   - id: equivalence-sentinel
     label: Machine-equivalence drift sentinel (#3059)
     schedule: "17 */6 * * *"
-    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
-    roles: [control-plane, comms-dispatch]
+    # #3505/#3506 root cause: the win boxes were roster-EXPECTED to publish
+    # (#3502 absent-fingerprint) but never in this machines list — the sentinel
+    # was simply not scheduled there. gpu-claw added at enrollment (#3507).
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2, gpu-claw]
+    roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, python3, uv, git, claude]
     command: >-
       PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
@@ -154,7 +183,7 @@ tasks:
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      bash scripts/curation/curate-session-memory.sh
+      bash scripts/curation/session-curation-preflight.sh
       >> $WORKSPACE_HUB/logs/monitoring/session-curation-$(date +\%Y-\%m-\%d).log 2>&1
     log: logs/monitoring/session-curation-*.log
     is_claude_task: false
@@ -166,6 +195,34 @@ tasks:
       / >24h red). The 6h cadence keeps a healthy box comfortably under the 12h staleness
       threshold. Windows boxes run the same engine via Git Bash (curate-session-memory.ps1
       is the Task-Scheduler-native companion).
+      #3702: entry point is session-curation-preflight.sh (FF-pull guard + exec into
+      curate-session-memory.sh). This is the HIGHER-frequency of the two collection
+      paths and the one where behind_main actually ratcheted, so it needs the same
+      preflight as equality-matrix-cron.sh (r1 M2).
+
+  - id: harness-checkup-audit
+    label: Harness checkup (/doctor) audit — machine-equality line item (#3408)
+    schedule: "40 4 * * *"
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2]
+    roles: [control-plane, comms-dispatch, sim-worker]
+    requires: [python3, uv, git]
+    command: >-
+      PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      uv run python scripts/curation/audit_harness_checkup.py
+      >> $WORKSPACE_HUB/logs/monitoring/harness-checkup-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/monitoring/harness-checkup-*.log
+    is_claude_task: false
+    description: >-
+      Per-box DAILY (04:40): writes .claude/state/harness-checkup-<machine>.json — the /doctor
+      hygiene facts (version currency vs the published latest, settings-cascade parse validity,
+      broken/colliding agent defs, duplicate installs, unused skill/plugin counts, default
+      permission mode). REUSES equivalence-fingerprint.sh version/install (#3059) — never re-shells
+      claude --version. Drives the "harness checkup" matrix cell (green / amber drift / red broken).
+      DAILY not 6-hourly because the version-currency check does a network latest-lookup (pinned
+      registry, from $HOME, essential-traffic-mode aware) that must not run every 6h. Facts-only +
+      allowlist-safe (counts/booleans/enums/version strings). The 6-hourly collector READS this
+      state fail-closed; it never runs the audit. Pure Python → runs natively on Windows (no .ps1).
 
   - id: equality-matrix-refresh
     label: 6-hourly equality-matrix rebuild (freshness dead-man's-switch for session-curation)
@@ -182,7 +239,7 @@ tasks:
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      bash scripts/readiness/equality-matrix-cron.sh
+      bash scripts/readiness/equality-preflight.sh
       >> $WORKSPACE_HUB/logs/quality/equality-refresh-$(date +\%Y-\%m-\%d).log 2>&1
     log: logs/quality/equality-refresh-*.log
     is_claude_task: false
@@ -195,6 +252,8 @@ tasks:
       dead-man's-switch would never fire. Publishing to origin/main every cycle keeps
       the COMMITTED render current — the fleet compares against origin, not any one
       box's working tree.
+      #3702: entry point is equality-preflight.sh (FF-pull guard + exec); artifacts
+      generate out of tree so behind_main can actually return to 0.
 
   # Linux-only (v1); Windows Task Scheduler parity deferred per epic #3058.
   - id: harness-install-doctor
@@ -841,17 +900,24 @@ tasks:
   - id: repository-sync
     label: Repository sync
     schedule: "0 */4 * * *"
-    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    # gpu-claw added per #3592: scheduler_baseline declares repo_sync REQUIRED on every
+    # Linux execution box — without it the checkout drifts stale and equality evidence
+    # only refreshes manually (its first publish was hand-run, 2026-07-22).
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, gpu-claw]
     roles: [control-plane, comms-dispatch, sim-worker]
-    requires: [bash, git]
+    requires: [bash, git, uv, python3]
+    runtime:
+      singleton: true
+      max_seconds: 10800
+      state_dir: .claude/state/cron-runtime/repository-sync
+      filesystem_wait_wchans: [request_wait_answer]
     command: >-
+      PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
       bash scripts/cron-repository-sync.sh
-      >> $LOG 2>&1
     log: logs/repository-sync-*.log
     is_claude_task: false
     description: Pull from remotes, push derived state; every 4 hours.
-    # NOTE: $LOG is set by setup-cron.sh per machine variant
 
   # ── Windows: contribute-minimal ──────────────────────────────────────────
 
@@ -1176,6 +1242,11 @@ tasks:
     roles: [control-plane]
     requires: [python3, uv, git]
     prefer: dev-primary
+    installed_fingerprint:
+      command_tokens:
+        - python
+        - .claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py
+      cwd_basename: workspace-hub
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       mkdir -p $WORKSPACE_HUB/logs/marketing;

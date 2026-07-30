@@ -9,6 +9,8 @@ import importlib.util
 import sys
 from pathlib import Path
 
+import pytest
+
 REPO = Path(__file__).resolve().parents[2]
 spec = importlib.util.spec_from_file_location("cron_apply", REPO / "scripts" / "cron" / "cron_apply.py")
 ca = importlib.util.module_from_spec(spec)
@@ -17,6 +19,18 @@ spec.loader.exec_module(ca)
 
 DECKHAND = ("30 7 * * * cd /mnt/local-analysis/deckhand && uv run --with telethon python3 "
             "scripts/deckhand/member-audit-cron.py >> $HOME/.hermes/logs/member-audit.log 2>&1")
+
+
+def test_cli_rejects_remote_machine_before_cutover(monkeypatch, capsys):
+    called = []
+    monkeypatch.setattr(ca.socket, "gethostname", lambda: "ace-linux-1")
+    monkeypatch.setattr(ca, "run_cutover", lambda *_a, **_k: called.append(True))
+
+    rc = ca.main(["--machine", "ace-linux-2", "--apply", "--json"])
+
+    assert rc == 2
+    assert called == []
+    assert "refusing local crontab" in capsys.readouterr().out
 
 
 # ── code-review MAJOR fixes (#2969 round 2) ──────────────────────────────────
@@ -44,7 +58,8 @@ def test_read_crontab_empty_when_no_crontab(monkeypatch):
 
 def test_flock_is_real():
     # the lock context manager actually exists and acquires a lock (no exception)
-    import tempfile, os
+    import tempfile
+
     p = Path(tempfile.mkdtemp()) / "lock"
     with ca._flock(p):
         assert p.exists()
@@ -157,6 +172,25 @@ def test_skip_when_no_roles(monkeypatch):
     assert res["status"] == "skip"
 
 
+def test_skip_without_roles_or_tasks_does_not_read_or_plan(monkeypatch):
+    monkeypatch.setattr(ca, "_load", lambda p: (
+        {"tasks": []} if "schedule-tasks" in str(p)
+        else {} if "state-classes" in str(p)
+        else {"machines": {"m1": {"hostname": "m1"}}}
+    ))
+    planned = []
+    monkeypatch.setattr(ca.ct, "plan_cutover", lambda *_a, **_k: planned.append(True))
+
+    result = ca.run_cutover(
+        "m1", apply=True, ts="skip",
+        _read=lambda: pytest.fail("skip must not read crontab"),
+        _write=lambda _text: pytest.fail("skip must not write crontab"),
+    )
+
+    assert result["status"] == "skip"
+    assert planned == []
+
+
 def test_cron_apply_resolves_hostname_alias_before_role_selection(monkeypatch):
     registry = {
         "machines": {
@@ -214,6 +248,70 @@ def test_cron_apply_alias_apply_uses_canonical_backup_name(monkeypatch, tmp_path
     assert res["status"] == "applied"
     assert res["machine"] == "dev-primary"
     assert res["backup"].endswith("dev-primary-alias.crontab")
+
+
+def test_backup_paths_are_unique_and_exclusive(monkeypatch, tmp_path):
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path)
+
+    first = ca.create_backup("dev-primary", None, "original")
+    second = ca.create_backup("dev-primary", None, "second")
+
+    assert second != first
+    assert first.read_text(encoding="utf-8") == "original"
+    with pytest.raises(FileExistsError):
+        ca.create_backup(
+            "dev-primary", first.stem.removeprefix("dev-primary-"), "overwrite"
+        )
+
+
+def test_rollback_aborts_if_crontab_changed_after_failed_verification(monkeypatch, tmp_path):
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "backups")
+    monkeypatch.setattr(
+        ca.ct,
+        "plan_cutover",
+        lambda *_a, **_k: {
+            "new_text": "new\n", "preserved": ["# keep"], "uncataloged": [],
+            "conflicts": [], "abort_reason": None,
+        },
+    )
+    reads = iter([
+        "# keep\n", "# keep\n", "new\n# corrupt\n", "new\n# concurrent\n"
+    ])
+    writes: list[str] = []
+
+    result = ca.run_cutover(
+        "dev-primary", apply=True, ts="race", _read=lambda: next(reads),
+        _write=writes.append, _daemons=lambda _pattern: False,
+    )
+
+    assert result["status"] == "rollback-aborted"
+    assert writes == ["new\n"]
+    assert "concurrent" in result["reason"]
+
+
+def test_rollback_restores_baseline_only_when_post_write_state_is_unchanged(monkeypatch, tmp_path):
+    monkeypatch.setattr(ca, "BACKUP_DIR", tmp_path / "backups")
+    monkeypatch.setattr(
+        ca.ct,
+        "plan_cutover",
+        lambda *_a, **_k: {
+            "new_text": "new\n", "preserved": ["# keep"], "uncataloged": [],
+            "conflicts": [], "abort_reason": None,
+        },
+    )
+    reads = iter([
+        "# keep\n", "# keep\n", "new\n# corrupt\n",
+        "new\n# corrupt\n", "# keep\n",
+    ])
+    writes: list[str] = []
+
+    result = ca.run_cutover(
+        "dev-primary", apply=True, ts="rollback", _read=lambda: next(reads),
+        _write=writes.append, _daemons=lambda _pattern: False,
+    )
+
+    assert result["status"] == "rolled-back"
+    assert writes == ["new\n", "# keep\n"]
 
 
 def test_cron_apply_selects_machine_pinned_tasks_for_hostname_tokens(monkeypatch):
@@ -384,6 +482,53 @@ def test_real_dev_primary_cutover_keeps_bridge_schedule_staggers():
     hermes = next(line for line in lines if "bridge-hermes-claude.sh" in line)
     assert provider.startswith("5 4 * * * ")
     assert hermes.startswith("25 4 * * * ")
+
+
+def test_real_cutover_rejects_non_exact_stale_bridge_line():
+    stale = (
+        "25 4 * * * cd /mnt/local-analysis/workspace-hub && "  # abs-path-allowed
+        "bash scripts/memory/bridge-hermes-claude.sh\n"
+    )
+
+    result = ca.run_cutover(
+        "dev-primary", apply=False, ts="t", _read=lambda: stale
+    )
+
+    assert result["status"] == "abort"
+    assert stale.strip() in result["reason"]
+
+
+def test_sensitive_catalog_tasks_use_rendered_exact_identities():
+    catalog = ca._load(ca.CATALOG)
+    registry = ca._load(ca.REGISTRY)
+    classes = ca._load(ca.STATE_CLASSES)
+    exact = ca.build_ownership_context(
+        catalog, registry, classes, "dev-primary"
+    )["canonical_exact_lines"]
+    assert exact["hermes-claude-bridge"]
+    assert exact["repository-sync"]
+
+
+def test_selection_and_ownership_use_registry_workspace_root(monkeypatch):
+    catalog = {"tasks": [{
+        "id": "one", "scheduler": "cron", "schedule": "0 1 * * *",
+        "command": "$WORKSPACE_HUB/scripts/run.sh", "machines": ["linux-a"],
+        "roles": [],
+    }]}
+    registry = {"machines": {"linux-a": {
+        "hostname": "host-a", "os": "linux",
+        "workspace_root": "/canonical/workspace-hub",
+        "harness_profile": {"roles": []},
+    }}}
+    classes = {"preserved_external": [], "preserved_local": []}
+    monkeypatch.setenv("WORKSPACE_HUB", "/temporary/worktree")
+
+    selection = ca._selection_context(catalog, registry, "linux-a")
+    ownership = ca.build_ownership_context(catalog, registry, classes, "linux-a")
+
+    expected = "0 1 * * * /canonical/workspace-hub/scripts/run.sh"
+    assert selection["selected"][0]["line"] == expected
+    assert ownership["canonical_exact_lines"]["one"] == [expected]
 
 
 def test_real_dev_secondary_preview_does_not_use_ace_linux_1_bridge_staggers():

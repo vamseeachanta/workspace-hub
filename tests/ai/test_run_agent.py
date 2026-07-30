@@ -98,13 +98,13 @@ def test_prepare_run_fails_closed_and_does_not_emit_dispatch():
 
 def test_manifest_has_audit_fields():
     d = load_agent_def(REVIEWER_DEF)
-    m = build_manifest(d, "gemini", BINDINGS)
+    m = build_manifest(d, "gemini", BINDINGS)  # deprecated alias -> agy wrapper (#3573)
     assert m["agent"] == "reviewer"
     assert m["provider"] == "gemini"
     assert len(m["prompt_hash"]) == 64  # sha256 hex
     assert set(m["enforcement"]) == set(d["capabilities"])  # one label per cap
     assert "advisory" in m and "unsupported" in m
-    assert m["wrapper"].endswith("submit-to-gemini.sh")
+    assert m["wrapper"].endswith("submit-to-agy.sh")
 
 
 def test_prompt_hash_is_stable():

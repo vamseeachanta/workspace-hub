@@ -15,6 +15,7 @@ VALIDATOR = REPO_ROOT / "scripts" / "cron" / "validate-schedule.py"
 SETUP_CRON = REPO_ROOT / "scripts" / "cron" / "setup-cron.sh"
 CRON_RENDER = REPO_ROOT / "scripts" / "cron" / "cron_render.py"
 CRON_APPLY = REPO_ROOT / "scripts" / "cron" / "cron_apply.py"
+STATE_CLASSES = REPO_ROOT / "config" / "workstations" / "harness-state-classes.yaml"
 
 REQUIRED_TASK_FIELDS = {"id", "label", "schedule", "machines", "command", "description"}
 VALID_SCHEDULERS = {"cron", "windows-task-scheduler"}
@@ -33,6 +34,97 @@ def _valid_machines_from_registry() -> set[str]:
 
 
 VALID_MACHINES = _valid_machines_from_registry()
+
+
+def test_normal_validation_rejects_catalog_task_on_substring_identity(tmp_path):
+    catalog = tmp_path / "catalog.yaml"
+    classes = tmp_path / "classes.yaml"
+    catalog.write_text(SCHEDULE_FILE.read_text(), encoding="utf-8")
+    classes.write_text(
+        "preserved_external: []\npreserved_local:\n"
+        "  - owner: local\n    catalog_task_id: notification-purge\n"
+        "    fingerprint: {command_contains: notification}\n",
+        encoding="utf-8",
+    )
+    completed = subprocess.run(
+        [sys.executable, str(VALIDATOR), "--catalog", str(catalog),
+         "--state-classes", str(classes)],
+        cwd=REPO_ROOT, text=True, capture_output=True,
+    )
+    assert completed.returncode != 0
+    assert "catalog_task_id requires legacy_exact_lines" in completed.stdout
+
+
+def test_normal_validation_rejects_unbound_legacy_exact_lines(tmp_path):
+    catalog = tmp_path / "catalog.yaml"
+    classes = tmp_path / "classes.yaml"
+    catalog.write_text(SCHEDULE_FILE.read_text(), encoding="utf-8")
+    classes.write_text(
+        "preserved_external: []\npreserved_local:\n"
+        "  - owner: local\n"
+        "    legacy_exact_lines: [{id: old, line: '0 1 * * * echo old'}]\n",
+        encoding="utf-8",
+    )
+    completed = subprocess.run(
+        [sys.executable, str(VALIDATOR), "--catalog", str(catalog),
+         "--state-classes", str(classes)],
+        cwd=REPO_ROOT, text=True, capture_output=True,
+    )
+    assert completed.returncode != 0
+    assert "legacy_exact_lines requires catalog_task_id" in completed.stdout
+
+
+def test_state_class_schema_is_closed():
+    validator = _load_module("validate_schedule_state_classes", VALIDATOR)
+    task_ids = {"owned"}
+    invalid = [
+        {"unknown_top": []},
+        {"preserved_external": [{"owner": "x", "fingerprint": {
+            "command_contains": "x"}, "unknown": True}]},
+        {"preserved_external": [{"owner": "x", "fingerprint": {
+            "unknown_key": "x"}}]},
+        {"preserved_external": [{"owner": "x", "fingerprint": {
+            "command_contains": []}}]},
+        {"preserved_local": [{"owner": "x", "legacy_exact_lines": [
+            {"id": "old", "line": "0 1 * * * echo old"}]}]},
+    ]
+    for classes in invalid:
+        assert validator.validate_state_classes(classes, task_ids), classes
+
+
+@pytest.mark.parametrize(
+    "fingerprint",
+    [
+        {"command_tokens": "python x.py"},
+        {"command_tokens": []},
+        {"command_tokens": ["python", True]},
+        {"cwd_contains": ["/repo"]},
+        {"cwd_contains": True},
+        {"cwd_basename": ["repo"]},
+        {"script_basename": ["x.py"]},
+        {"command_contains": True},
+        {"command_contains": 7},
+        {"command_contains": []},
+        {"command_contains": ["x", False]},
+    ],
+)
+def test_normal_validation_rejects_runtime_incompatible_fingerprint_types(
+    tmp_path, fingerprint
+):
+    catalog = tmp_path / "catalog.yaml"
+    classes = tmp_path / "classes.yaml"
+    catalog.write_text(SCHEDULE_FILE.read_text(), encoding="utf-8")
+    classes.write_text(yaml.safe_dump({
+        "preserved_external": [{"owner": "external", "fingerprint": fingerprint}],
+        "preserved_local": [],
+    }), encoding="utf-8")
+    completed = subprocess.run(
+        [sys.executable, str(VALIDATOR), "--catalog", str(catalog),
+         "--state-classes", str(classes)],
+        cwd=REPO_ROOT, text=True, capture_output=True,
+    )
+    assert completed.returncode != 0
+    assert "fingerprint" in completed.stdout
 
 
 @pytest.fixture(scope="module")
@@ -178,6 +270,102 @@ def test_repo_sync_on_all_linux(tasks):
     assert "dev-secondary" in machines
 
 
+def test_repository_sync_runtime_contract_is_bounded_and_singleton(tasks):
+    task = next(t for t in tasks if t["id"] == "repository-sync")
+    runtime = task["runtime"]
+    assert runtime == {
+        "singleton": True,
+        "max_seconds": 10800,
+        "state_dir": ".claude/state/cron-runtime/repository-sync",
+        "filesystem_wait_wchans": ["request_wait_answer"],
+    }
+    assert "installed_fingerprint" not in task
+
+
+def test_hermes_bridge_uses_canonical_rendered_identity(tasks):
+    task = next(t for t in tasks if t["id"] == "hermes-claude-bridge")
+    assert "installed_fingerprint" not in task
+
+
+def test_deckhand_presence_sync_has_exact_installed_fingerprint(tasks):
+    task = next(t for t in tasks if t["id"] == "deckhand-api-presence-sync")
+
+    assert task["installed_fingerprint"] == {
+        "command_tokens": [
+            "python",
+            ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py",
+        ],
+        "cwd_basename": "workspace-hub",
+    }
+
+
+def test_installed_fingerprint_schema_rejects_broad_or_malformed_values():
+    validator = _load_module("validate_schedule_fingerprint", VALIDATOR)
+
+    invalid = [
+        {},
+        {"command_contains": "deckhand"},
+        {"command_token": "x.py", "cwd_basename": "workspace-hub"},
+        {"command_tokens": ["python", "x.py"]},
+        {"command_tokens": [], "cwd_basename": "workspace-hub"},
+        {"command_tokens": ["python", "x.py"], "cwd_basename": ""},
+        {"command_tokens": ["python", "x.py"], "owner_repo": "workspace-hub"},
+        {"command_tokens": ["python", "x.py"], "cwd_basename": "workspace-hub", "unknown": "x"},
+    ]
+    for fingerprint in invalid:
+        assert validator.validate_installed_fingerprint("task-a", fingerprint)
+
+    assert validator.validate_installed_fingerprint(
+        "task-a", {"command_tokens": ["python", "x.py"], "cwd_basename": "workspace-hub"}
+    ) == []
+
+
+@pytest.mark.parametrize("max_seconds", [59, 604801, 0, "10800"])
+def test_runtime_max_seconds_must_be_integer_in_fixed_range(max_seconds):
+    validator = _load_module("validate_schedule_runtime", VALIDATOR)
+    errors = validator.validate_runtime_contract(
+        "task-a",
+        {
+            "singleton": True,
+            "max_seconds": max_seconds,
+            "state_dir": ".claude/state/cron-runtime/task-a",
+        },
+        set(),
+    )
+    assert any("max_seconds" in error for error in errors)
+
+
+@pytest.mark.parametrize("state_dir", ["/tmp/state", "../state", ".state/../escape"])
+def test_runtime_state_dir_rejects_absolute_and_traversal(state_dir):
+    validator = _load_module("validate_schedule_runtime_path", VALIDATOR)
+    errors = validator.validate_runtime_contract(
+        "task-a",
+        {"singleton": True, "max_seconds": 60, "state_dir": state_dir},
+        set(),
+    )
+    assert any("state_dir" in error for error in errors)
+
+
+@pytest.mark.parametrize(
+    "log_path",
+    [
+        "logs/bad path.log", "../logs/x.log", "/tmp/x.log", "logs/{a,b}.log",
+        "logs/foo?.log", "logs/foo;bar.log", "logs/foo$(date).log",
+    ],
+)
+def test_log_path_rejects_shell_splitting_and_unsafe_globs(log_path):
+    validator = _load_module("validate_schedule_log_path", VALIDATOR)
+
+    assert validator.validate_log_path("task-a", log_path)
+
+
+@pytest.mark.parametrize("log_path", ["logs/research/*.log", "~/.deckhand/alarm.log"])
+def test_log_path_accepts_controlled_workspace_and_home_patterns(log_path):
+    validator = _load_module("validate_schedule_valid_log_path", VALIDATOR)
+
+    assert validator.validate_log_path("task-a", log_path) == []
+
+
 def test_repo_ecosystem_hygiene_task_contract(tasks):
     task = next((t for t in tasks if t["id"] == "repo-ecosystem-hygiene"), None)
     assert task is not None, "repo-ecosystem-hygiene task not found"
@@ -196,6 +384,7 @@ def test_repo_ecosystem_hygiene_task_contract(tasks):
 
 
 def test_setup_cron_installs_audit_and_health_for_hostname_alias(tmp_path):
+    _install_empty_crontab_shim(tmp_path)
     hostname_shim = tmp_path / "hostname"
     hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'vamsee-linux1\\n'\n")
     hostname_shim.chmod(0o755)
@@ -223,9 +412,20 @@ def _load_module(name: str, path: Path):
     return module
 
 
+def _install_empty_crontab_shim(tmp_path: Path) -> None:
+    shim = tmp_path / "crontab"
+    shim.write_text(
+        "#!/usr/bin/env bash\n"
+        "if [[ \"${1:-}\" == \"-l\" ]]; then echo 'no crontab for test' >&2; exit 1; fi\n"
+        "exit 2\n"
+    )
+    shim.chmod(0o755)
+
+
 def test_setup_cron_and_cron_apply_use_shared_renderer_for_same_task(tmp_path):
+    _install_empty_crontab_shim(tmp_path)
     hostname_shim = tmp_path / "hostname"
-    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-2\\n'\n")
+    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-1\\n'\n")
     hostname_shim.chmod(0o755)
     env = os.environ.copy()
     env["PATH"] = f"{tmp_path}:{env['PATH']}"
@@ -246,9 +446,12 @@ def test_setup_cron_and_cron_apply_use_shared_renderer_for_same_task(tmp_path):
     catalog = yaml.safe_load(SCHEDULE_FILE.read_text(encoding="utf-8"))
     registry = yaml.safe_load(REGISTRY_FILE.read_text(encoding="utf-8"))
     repo_sync = next(task for task in catalog["tasks"] if task["id"] == "repository-sync")
-    context = render.build_context("ace-linux-2", registry=registry, workspace_hub=REPO_ROOT)
+    workspace_root = registry["machines"]["dev-primary"]["workspace_root"]
+    context = render.build_context(
+        "ace-linux-1", registry=registry, workspace_hub=workspace_root
+    )
     expected_line = render.render_task(repo_sync, context)["line"]
-    apply_plan = cron_apply.run_cutover("ace-linux-2", apply=False, ts="t", _read=lambda: "")
+    apply_plan = cron_apply.run_cutover("ace-linux-1", apply=False, ts="t", _read=lambda: "")
 
     assert expected_line in result.stdout
     assert expected_line in apply_plan["new_text"]
@@ -262,8 +465,9 @@ def test_setup_cron_delegates_placeholder_rendering_to_shared_renderer():
 
 
 def test_setup_cron_dry_run_expands_workspace_hub_and_log(tmp_path):
+    _install_empty_crontab_shim(tmp_path)
     hostname_shim = tmp_path / "hostname"
-    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-2\\n'\n")
+    hostname_shim.write_text("#!/usr/bin/env bash\nprintf 'ace-linux-1\\n'\n")
     hostname_shim.chmod(0o755)
     env = os.environ.copy()
     env["PATH"] = f"{tmp_path}:{env['PATH']}"
@@ -280,8 +484,10 @@ def test_setup_cron_dry_run_expands_workspace_hub_and_log(tmp_path):
     assert result.returncode == 0, result.stderr + result.stdout
     assert "$WORKSPACE_HUB" not in result.stdout
     assert "$LOG" not in result.stdout
-    assert str(REPO_ROOT) in result.stdout
-    assert "/tmp/workspace-hub-cron.log" in result.stdout
+    registry = yaml.safe_load(REGISTRY_FILE.read_text(encoding="utf-8"))
+    assert registry["machines"]["dev-primary"]["workspace_root"] in result.stdout
+    assert "scripts/cron-repository-sync.sh" in result.stdout
+    assert "/tmp/workspace-hub-cron.log" not in result.stdout
 
 
 def test_setup_cron_renderer_failure_aborts_before_crontab_write(tmp_path):

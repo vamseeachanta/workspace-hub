@@ -117,7 +117,7 @@ def _work_queue_with_full_candidates(numbers: list[int]) -> dict:
                 "full_candidates": [{"number": n, "routing_reason": "fix"} for n in numbers],
             },
             "claude": {"provider": "claude", "top_issues": [], "full_candidates": []},
-            "gemini": {"provider": "gemini", "top_issues": [], "full_candidates": []},
+            "agy": {"provider": "agy", "top_issues": [], "full_candidates": []},
         },
     }
 
@@ -140,7 +140,7 @@ def test_kanban_groups_issues_by_lane_provider_and_machine(tmp_path, monkeypatch
 
     # Issue with all gates clean → execution_ready lane
     sha = cpp.sha256_file(plan_path)
-    _write_reviews(tmp_path, 8001, {"claude": "MINOR", "codex": "MINOR", "gemini": "MINOR"}, sha=sha)
+    _write_reviews(tmp_path, 8001, {"claude": "MINOR", "codex": "MINOR", "agy": "MINOR"}, sha=sha)
     _marker(tmp_path, 8001)
 
     kanban = module.build_kanban(
@@ -199,7 +199,7 @@ def test_hover_summary_includes_plan_risk_tests_and_route(tmp_path, monkeypatch)
     monkeypatch.setattr(cpp_module, "WORKSPACE_HUB", tmp_path)
     plan_path = _write_plan(tmp_path, 8201, with_risks=True, with_tdd=True)
     sha = cpp.sha256_file(plan_path)
-    _write_reviews(tmp_path, 8201, {"claude": "MINOR", "codex": "MINOR", "gemini": "MINOR"}, sha=sha)
+    _write_reviews(tmp_path, 8201, {"claude": "MINOR", "codex": "MINOR", "agy": "MINOR"}, sha=sha)
 
     kanban = module.build_kanban(
         work_queue=_work_queue_with_full_candidates([8201]),
@@ -224,7 +224,7 @@ def test_approve_button_disabled_when_reviews_missing_or_major(tmp_path, monkeyp
     plan_path = _write_plan(tmp_path, 8301)
     sha = cpp.sha256_file(plan_path)
     # Two providers MINOR, one MAJOR → not clean
-    _write_reviews(tmp_path, 8301, {"claude": "MAJOR", "codex": "MINOR", "gemini": "MINOR"}, sha=sha)
+    _write_reviews(tmp_path, 8301, {"claude": "MAJOR", "codex": "MINOR", "agy": "MINOR"}, sha=sha)
 
     kanban = module.build_kanban(
         work_queue=_work_queue_with_full_candidates([8301]),
@@ -245,7 +245,7 @@ def test_approve_button_enabled_only_for_open_plan_review_issue_with_plan_and_cl
     monkeypatch.setattr(cpp_module, "WORKSPACE_HUB", tmp_path)
     plan_path = _write_plan(tmp_path, 8401)
     sha = cpp.sha256_file(plan_path)
-    _write_reviews(tmp_path, 8401, {"claude": "MINOR", "codex": "APPROVE", "gemini": "MINOR"}, sha=sha)
+    _write_reviews(tmp_path, 8401, {"claude": "MINOR", "codex": "APPROVE", "agy": "MINOR"}, sha=sha)
     # NOTE: do NOT create a marker — plan-review status needs absent marker.
 
     # Without served_localhost the button must be disabled.
@@ -277,7 +277,7 @@ def test_render_static_html_contains_no_secrets_and_no_external_mutation_by_defa
     monkeypatch.setattr(cpp_module, "WORKSPACE_HUB", tmp_path)
     plan_path = _write_plan(tmp_path, 8501)
     sha = cpp.sha256_file(plan_path)
-    _write_reviews(tmp_path, 8501, {"claude": "MINOR", "codex": "MINOR", "gemini": "MINOR"}, sha=sha)
+    _write_reviews(tmp_path, 8501, {"claude": "MINOR", "codex": "MINOR", "agy": "MINOR"}, sha=sha)
 
     kanban = module.build_kanban(
         work_queue=_work_queue_with_full_candidates([8501]),

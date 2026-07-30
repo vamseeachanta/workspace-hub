@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>#3475 — Cron semantic ownership plan</title>
+<style>
+body{margin:0;background:#0d1117;color:#e6edf3;font:15px/1.55 system-ui,sans-serif}.wrap{max-width:1080px;margin:auto;padding:32px 22px}h1{font-size:28px;margin-bottom:4px}h2{margin-top:30px;color:#79c0ff}.meta,.note{color:#9da7b3}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px}.bad{color:#ff7b72}.good{color:#56d364}table{width:100%;border-collapse:collapse}th,td{border:1px solid #30363d;padding:9px;text-align:left;vertical-align:top}th{background:#161b22}code{background:#161b22;padding:2px 5px;border-radius:4px}ol li{margin:8px 0}.gate{border-left:4px solid #d29922;padding:10px 14px;background:#161b22}a{color:#58a6ff}
+</style>
+</head>
+<body><main class="wrap">
+<h1>#3475 — Semantic cron ownership and exact write verification</h1>
+<p class="meta">Plan review · T3 · lane:codex · 2026-07-11 · Client: N/A · final focused reviews APPROVE</p>
+<p class="gate">Planning and review only. Implementation will remain blocked until the user applies <code>status:plan-approved</code>. No live crontab or process action is authorized.</p>
+
+<h2>Observed gap</h2>
+<div class="grid">
+<section class="card"><strong class="bad">Unsafe destructive authority</strong><p>Three deletion routes still use substring matching: installed fingerprints, catalog-key fallback, and selected preserved-entry promotion.</p></section>
+<section class="card"><strong class="bad">Incomplete write verification</strong><p>The transaction verifies only preserved-line multiplicity. Corrupted managed state can still return <code>applied</code>.</p></section>
+<section class="card"><strong class="good">Existing safeguards retained</strong><p>Physical-local binding, lock, durable backup, pre-write CAS, preservation, daemon guard, and rollback CAS will remain.</p></section>
+</div>
+
+<h2>Proposed transaction</h2>
+<ol>
+<li>Deterministically render every selected catalog task for every canonical Linux machine id from <code>config/workstations/registry.yaml</code>, require unique complete cron-line identity, and enforce digest-bound JSON byte parity in CI.</li>
+<li>Authorize out-of-block deletion only through complete exact canonical or explicitly allowlisted legacy line bytes—never shell parsing, substring, token fragment, or basename equality.</li>
+<li>Remove destructive <code>cmd in line</code> fallback and migrate the three known selected/catalog legacy identities.</li>
+<li>Model setup and onboarding wrappers as attested pure delegation edges inheriting the direct-owner contract; forbid copied legacy authority/transaction fields.</li>
+<li>After writing planned state B, re-read observed state C and require byte-for-byte <code>C == B</code>.</li>
+<li>On mismatch, restore baseline A only when a rollback CAS proves no concurrent change; re-read A before reporting rollback success.</li>
+</ol>
+
+<h2>Authority boundary</h2>
+<table><thead><tr><th>Route</th><th>Today</th><th>Planned outcome</th></tr></thead><tbody>
+<tr><td>Managed marker block</td><td>Exact structural sentinels</td><td>Retained</td></tr>
+<tr><td>Installed catalog identity</td><td>Token or substring</td><td>Complete exact rendered line identity only</td></tr>
+<tr><td>Catalog-key fallback</td><td>Substring</td><td>Removed from destructive path</td></tr>
+<tr><td>Selected notification-purge promotion</td><td>Substring</td><td>Explicit complete legacy line identity</td></tr>
+<tr><td>External/local keep-verbatim rows</td><td>May use stable substrings</td><td>Preservation only; never deletion authority</td></tr>
+</tbody></table>
+
+<h2>TDD proof set</h2>
+<table><thead><tr><th>Risk</th><th>Required RED/GREEN evidence</th></tr></thead><tbody>
+<tr><td>Corrupted write</td><td>Extra, missing, reordered, duplicated, altered, and newline-different state will roll back.</td></tr>
+<tr><td>Concurrent writer</td><td>Rollback will abort rather than overwrite when current state differs from observed C.</td></tr>
+<tr><td>Failed restoration</td><td>Rollback will not report success until the restored state re-reads exactly as A.</td></tr>
+<tr><td>Identity collision</td><td>Near matches, reordered tokens, basename/path substrings, ambiguous cwd, and unknown grammar will remain unowned and abort.</td></tr>
+<tr><td>Near-match spoofing</td><td>Any schedule, quoting, cwd, operator, argument, substitution, redirect, or command-byte difference will remain unowned.</td></tr>
+<tr><td>Audit drift</td><td>Read-only audit and apply will share one classifier and pass a common adversarial fixture matrix.</td></tr>
+<tr><td>Wrapper registry drift</td><td>Both transitive #3475 members will resolve to the direct-owner operation and may not retain legacy substring or false exact-state fields.</td></tr>
+<tr><td>Inventory drift</td><td>A tracked generator with <code>--check</code> will bind catalog, workstation registry, state classes, and renderer/context sources to canonical JSON bytes.</td></tr>
+<tr><td>Disposition traceability</td><td>The resolved ledger will use issue, PR, member set, date, and source digest—never an impossible self-referential merge SHA.</td></tr>
+<tr><td>I/O exceptions</td><td>Write/read failures after backup will return explicit non-success states and will never trigger blind rollback.</td></tr>
+<tr><td>Disposition integrity</td><td>Only the cron-catalog group may advance; #3476–#3479 will remain migration-required.</td></tr>
+</tbody></table>
+
+<h2>Delivery sequence</h2>
+<ol><li>Generate the catalog-wide exact-line inventory and stop on any render gap/collision.</li><li>Commit RED exact-state tests.</li><li>Implement equality plus verified CAS rollback.</li><li>Commit RED exact-identity/collision tests.</li><li>Migrate data and remove destructive substring branches.</li><li>Refresh registry attestations and deterministic audit HTML.</li><li>Run focused/full tests, legal scan, adversarial code review, completeness gate, and owner verification.</li></ol>
+
+<h2>Dependencies and scope</h2>
+<p><a href="https://github.com/vamseeachanta/workspace-hub/issues/3476">#3476</a> will consume this hardened cron transaction after it lands. <a href="https://github.com/vamseeachanta/workspace-hub/issues/3477">#3477</a> and <a href="https://github.com/vamseeachanta/workspace-hub/issues/3478">#3478</a> remain backend-specific. Failure-reporting changes stay in <a href="https://github.com/vamseeachanta/workspace-hub/issues/3479">#3479</a>.</p>
+<p class="note">Canonical executable plan: <code>docs/plans/2026-07-11-issue-3475-cron-semantic-ownership.md</code></p>
+</main></body></html>

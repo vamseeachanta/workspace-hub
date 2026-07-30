@@ -33,8 +33,17 @@ codex:
   package: "@openai/codex"
 
 gemini:
+  # LEGACY (#3573): retired from worker/reviewer routing (agy is the Gemini
+  # surface). Binary retained through the soak window; uninstall is a separate
+  # post-soak decision.
   install_type: npm
   package: "@google/gemini-cli"
+
+agy:
+  # Antigravity CLI — third worker/reviewer provider (#3573). Standalone binary
+  # (~/.local/bin/agy); self-updates via `agy update` (OAuth/Code Assist).
+  # Default model pinned by scripts/agents/set-antigravity-default-model.sh (#3086).
+  install_type: self_managed
 
 gsd:
   install_type: npm

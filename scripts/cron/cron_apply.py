@@ -16,8 +16,8 @@ Transaction (Codex MAJOR fold):
   4. backup A to logs/cron-backups/<host>-<ts>.crontab.
   5. compare-and-swap: B = re-read crontab; if B != A → ABORT (something changed under us).
   6. write new crontab.
-  7. post-cutover: re-read; assert every preserved_external/ignore line from A is still
-     present (zero net removal); on failure → restore backup, exit non-zero.
+  7. re-read and require byte-for-byte equality with the planned crontab.
+  8. on mismatch, restore A only after a rollback CAS and verify the restoration.
 
 Default is --dry-run (prints the plan, writes nothing, creates no artifact). --apply commits.
 """
@@ -26,12 +26,16 @@ from __future__ import annotations
 import argparse
 import contextlib
 import fcntl
+import hashlib
 import importlib.util
 import json
+import os
+import re
+import secrets
 import socket
 import subprocess
 import sys
-from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -39,7 +43,7 @@ CATALOG = REPO / "config" / "scheduled-tasks" / "schedule-tasks.yaml"
 STATE_CLASSES = REPO / "config" / "workstations" / "harness-state-classes.yaml"
 REGISTRY = REPO / "config" / "workstations" / "registry.yaml"
 LOCKFILE = Path.home() / ".cron-reconcile.lock"
-BACKUP_DIR = REPO / "logs" / "cron-backups"
+BACKUP_DIR = Path(os.environ.get("CRON_BACKUP_DIR", REPO / "logs" / "cron-backups"))
 
 # load the pure core by file path (kebab-safe; module name has underscores)
 _render_spec = importlib.util.spec_from_file_location(
@@ -53,6 +57,7 @@ _spec = importlib.util.spec_from_file_location(
 ct = importlib.util.module_from_spec(_spec)
 sys.modules["cron_transaction"] = ct
 _spec.loader.exec_module(ct)
+build_ownership_context = ct.build_ownership_context
 
 try:
     import yaml
@@ -98,6 +103,22 @@ def write_crontab(text: str, _run=subprocess.run) -> None:
     _run(["crontab", "-"], input=text, text=True, check=True)
 
 
+def create_backup(machine_id: str, tag: str | None, text: str) -> Path:
+    """Atomically create backup content without overwriting recovery evidence."""
+    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
+    if tag is None:
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+        tag = f"{stamp}-{os.getpid()}-{secrets.token_hex(3)}"
+    if not re.fullmatch(r"[A-Za-z0-9_.-]+", tag):
+        raise ValueError("backup tag contains unsafe characters")
+    path = BACKUP_DIR / f"{machine_id}-{tag}.crontab"
+    with path.open("x", encoding="utf-8") as handle:
+        handle.write(text)
+        handle.flush()
+        os.fsync(handle.fileno())
+    return path
+
+
 def detect_comms_daemons(pgrep_fn=None) -> list[str]:
     return ct_detect(pgrep_fn)  # delegate to a small helper for testability
 
@@ -134,7 +155,11 @@ def _combine_keys(*groups: list[str]) -> list[str]:
 
 
 def _selection_context(catalog: dict, registry: dict, machine_id: str) -> dict:
-    context = cr.build_context(machine_id, registry=registry)
+    resolved = cr.resolve_machine(machine_id, registry=registry)
+    workspace_hub = resolved["machine"].get("workspace_root")
+    context = cr.build_context(
+        machine_id, registry=registry, workspace_hub=workspace_hub
+    )
     canonical_id = context["machine_id"]
     roles = machine_roles(registry, canonical_id)
     selected_raw, conflicts = ct.select_tasks(
@@ -161,12 +186,18 @@ def catalog_commands(
     machine_id: str | None = None,
 ) -> list[str]:
     if registry is None or machine_id is None:
-        return ct.catalog_command_keys(catalog.get("tasks", []) or [])
+        return ct.catalog_command_keys(
+            catalog.get("tasks", []) or [], include_fingerprinted=False
+        )
     selection = _selection_context(catalog, registry, machine_id)
     return _combine_keys(
-        ct.catalog_command_keys(selection["selected_raw"]),
-        ct.catalog_command_keys(selection["selected"]),
+        ct.catalog_command_keys(selection["selected_raw"], include_fingerprinted=False),
+        ct.catalog_command_keys(selection["selected"], include_fingerprinted=False),
     )
+
+
+def catalog_fingerprints(tasks: list[dict]) -> list[dict]:
+    return ct.catalog_owned_fingerprints(tasks)
 
 
 def external_fingerprints(state_classes: dict) -> list[dict]:
@@ -177,37 +208,126 @@ def external_fingerprints(state_classes: dict) -> list[dict]:
     return ct.normalize_preserved_entries(entries)
 
 
+def _state_diagnostics(text: str) -> dict:
+    encoded = text.encode("utf-8")
+    return {
+        "sha256": hashlib.sha256(encoded).hexdigest(),
+        "bytes": len(encoded),
+        "lines": len(text.splitlines()),
+    }
+
+
+def _transaction_result(status: str, backup: Path, **states: str) -> dict:
+    result = {"status": status, "backup": str(backup)}
+    result.update({name: _state_diagnostics(text) for name, text in states.items()})
+    return result
+
+
+def _observe_rollback_error(A, C, backup, _read) -> dict:
+    try:
+        observed = _read()
+    except Exception:
+        return _transaction_result("rollback-indeterminate", backup, expected=A)
+    if observed == A:
+        return _transaction_result(
+            "rolled-back-with-write-error", backup, expected=A, observed=observed
+        )
+    status = "rollback-failed" if observed == C else "rollback-aborted"
+    return _transaction_result(status, backup, expected=A, observed=observed)
+
+
+def _rollback(A, C, backup, _read, _write) -> dict:
+    with _flock(LOCKFILE):
+        try:
+            current = _read()
+        except Exception:
+            return _transaction_result("rollback-indeterminate", backup, expected=A)
+        if current != C:
+            result = _transaction_result(
+                "rollback-aborted", backup, expected=A, observed=current
+            )
+            result["reason"] = "concurrent crontab change; rollback not attempted"
+            return result
+        try:
+            _write(A)
+        except Exception:
+            return _observe_rollback_error(A, C, backup, _read)
+        try:
+            restored = _read()
+        except Exception:
+            return _transaction_result("rollback-indeterminate", backup, expected=A)
+    status = "rolled-back" if restored == A else "rollback-failed"
+    return _transaction_result(status, backup, expected=A, observed=restored)
+
+
+def _write_observation(B, _read, _write) -> tuple[bool, bool, str | None]:
+    write_failed = False
+    try:
+        _write(B)
+    except Exception:
+        write_failed = True
+    try:
+        observed = _read()
+    except Exception:
+        return write_failed, True, None
+    return write_failed, False, observed
+
+
+def _finish_exact(A, B, backup, observation, _read, _write) -> dict:
+    write_failed, read_failed, observed = observation
+    if read_failed:
+        return _transaction_result("verification-indeterminate", backup, expected=B)
+    if not write_failed and observed == B:
+        return _transaction_result("applied", backup, expected=B, observed=observed)
+    if write_failed and observed in (A, B):
+        status = "write-failed-no-change" if observed == A else "write-error-state-exact"
+        return _transaction_result(status, backup, expected=B, observed=observed)
+    result = _rollback(A, observed, backup, _read, _write)
+    result["planned"] = _state_diagnostics(B)
+    return result
+
+
 # ── the transaction ──────────────────────────────────────────────────────────
-def run_cutover(machine_id: str, apply: bool, ts: str,
-                _read=read_crontab, _write=write_crontab,
-                _daemons=None, allow_live_reload: bool = False) -> dict:
+def _load_cutover_context(machine_id):
     catalog = _load(CATALOG)
     classes = _load(STATE_CLASSES)
     registry = _load(REGISTRY)
     selection = _selection_context(catalog, registry, machine_id)
+    ownership = build_ownership_context(catalog, registry, classes, machine_id)
+    return selection, classes, ownership
+
+
+def _build_cutover(selection, classes, ownership, _read):
+    selected = selection["selected"]
+    cat_cmds = _combine_keys(
+        ct.catalog_command_keys(selection["selected_raw"], include_fingerprinted=False),
+        ct.catalog_command_keys(selected, include_fingerprinted=False),
+    )
+    baseline = _read()
+    plan = ct.plan_cutover(
+        baseline,
+        selected,
+        selection["roles"],
+        cat_cmds,
+        external_fingerprints(classes),
+        selected_task_ids=selection["selected_task_ids"],
+        catalog_fingerprints=catalog_fingerprints(selection["selected_raw"]),
+        ownership_context=ownership,
+    )
+    return baseline, plan
+
+
+def run_cutover(machine_id: str, apply: bool, ts: str | None,
+                _read=read_crontab, _write=write_crontab,
+                _daemons=None, allow_live_reload: bool = False) -> dict:
+    selection, classes, ownership = _load_cutover_context(machine_id)
     canonical_id = selection["machine_id"]
     roles = selection["roles"]
     selected = selection["selected"]
-    selected_ids = selection["selected_task_ids"]
     conflicts = selection["conflicts"]
     if not roles and not selected:
         return {"status": "skip", "reason": f"{canonical_id} has no harness_profile.roles or machine-pinned cron tasks"}
-
-    cat_cmds = _combine_keys(
-        ct.catalog_command_keys(selection["selected_raw"]),
-        ct.catalog_command_keys(selected),
-    )
-    ext_fps = external_fingerprints(classes)
-
-    A = _read()
-    plan = ct.plan_cutover(
-        A,
-        selected,
-        roles,
-        cat_cmds,
-        ext_fps,
-        selected_task_ids=selected_ids,
-    )
+    A, plan = _build_cutover(selection, classes, ownership, _read)
     if plan.get("abort_reason"):
         return {"status": "abort", "reason": plan["abort_reason"],
                 "uncataloged": plan.get("uncataloged", []), "conflicts": conflicts,
@@ -226,9 +346,6 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
     if daemons and not allow_live_reload:
         return {"status": "abort", "reason": f"live comms daemons {daemons} — pass --allow-live-reload"}
 
-    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-    backup = BACKUP_DIR / f"{canonical_id}-{ts}.crontab"
-
     # Hold an exclusive process lock across the read→write critical section so a concurrent
     # cron-apply / setup-cron cannot interleave (#2969 code-review MAJOR #2). A writer that
     # does NOT honor the lock (e.g. deckhand) is still caught by the compare-and-swap below.
@@ -237,29 +354,12 @@ def run_cutover(machine_id: str, apply: bool, ts: str,
         if current != A:                          # changed since we planned → plan is stale
             return {"status": "abort",
                     "reason": "crontab changed during cutover (CAS) — re-run", "backup": None}
-        backup.write_text(A)                       # A is verified-intact (read succeeded)
-        _write(plan["new_text"])
-        after = _read()
-
-    # post-cutover: every preserved/ignore line present BEFORE must still be present, by
-    # LINE IDENTITY + multiplicity, not substring (#2969 code-review MAJOR #4).
-    after_counts = Counter(after.splitlines())
-    need = Counter(ln for ln in A.splitlines()
-                   if ln.strip()
-                   and ct.classify_line_detail(
-                       ln,
-                       cat_cmds,
-                       ext_fps,
-                       selected_task_ids=selected_ids,
-                   )["class"] in ("preserved_external", "ignore"))
-    for line, n in need.items():
-        if after_counts[line] < n:
-            with _flock(LOCKFILE):
-                _write(A)                          # rollback to verified-intact A
-            return {"status": "rolled-back", "reason": f"preserved line lost: {line!r}",
-                    "backup": str(backup)}
-    result["status"] = "applied"
-    result["backup"] = str(backup)
+        backup = create_backup(canonical_id, ts, A)
+        observation = _write_observation(plan["new_text"], _read, _write)
+    transaction = _finish_exact(
+        A, plan["new_text"], backup, observation, _read, _write
+    )
+    result.update(transaction)
     return result
 
 
@@ -268,12 +368,22 @@ def main(argv=None) -> int:
     ap.add_argument("--apply", action="store_true", help="commit (default: dry-run)")
     ap.add_argument("--allow-live-reload", action="store_true")
     ap.add_argument("--machine", default=None)
-    ap.add_argument("--ts", default="manual", help="backup timestamp tag (caller supplies)")
+    ap.add_argument("--ts", default=None, help="optional unique backup tag")
     ap.add_argument("--json", action="store_true")
     args = ap.parse_args(argv)
     host = args.machine or socket.gethostname().split(".")[0]
     registry = _load(REGISTRY)
     mid = cr.build_context(host, registry=registry)["machine_id"]
+    physical_host = socket.gethostname().split(".")[0]
+    physical_mid = cr.build_context(physical_host, registry=registry)["machine_id"]
+    if mid != physical_mid:
+        res = {
+            "status": "abort",
+            "reason": f"refusing local crontab reconciliation for remote machine {mid}",
+            "machine": mid,
+        }
+        print(json.dumps(res, indent=2) if args.json else f"cron-apply {mid}: abort — {res['reason']}")
+        return 2
     res = run_cutover(mid, args.apply, args.ts, allow_live_reload=args.allow_live_reload)
     if args.json:
         print(json.dumps(res, indent=2))

@@ -24,6 +24,30 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\reconcile-ec
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\equality-report.ps1                # refresh this box's column
 ```
 
+## RDP microphone audit and repair
+
+`rdp-microphone.ps1` is a two-ended, audit-first tool for microphone redirection.
+Run `-Role Client` on the workstation owning the microphone and `-Role Server` inside
+the remote session. Repairs are limited to an explicit `.rdp` capture property or an
+exact, checksummed target-consent reset/restore; privacy and machine policy are never
+written. See `docs/runbooks/windows-rdp-microphone.md`.
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02 -OutputFormat Human
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Server -OutputFormat Human
+```
+
+Install the Windows machine-equivalence schedules from Git Bash:
+
+```bash
+# Preview, then install the three equivalence-only tasks.
+bash scripts/windows/schedule-equivalence-tasks.sh --machine ace-win-1 --what-if
+bash scripts/windows/schedule-equivalence-tasks.sh --machine ace-win-1
+```
+
+The installer is idempotent and registers daily report-only reconciliation, six-hour
+session curation, and the weekly equality report from the canonical schedule configuration.
+
 ## Host gotchas (ace-win-2, observed 2026-06)
 
 - **`python3` is the Microsoft Store stub** (prints an install message, exits non-zero); **`python`

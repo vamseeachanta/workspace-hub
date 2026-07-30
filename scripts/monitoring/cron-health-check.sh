@@ -11,10 +11,8 @@
 #   1 — one or more tasks have issues (STALE, MISSING, ERROR)
 
 set -uo pipefail
-
 # ── Ensure uv is in PATH (cron environment may not have .local/bin) ──────────
 export PATH="$HOME/.local/bin:$PATH"
-
 # ── Parse arguments ──────────────────────────────────────────────────────────
 WS_HUB=""
 while [[ $# -gt 0 ]]; do
@@ -24,7 +22,6 @@ while [[ $# -gt 0 ]]; do
         *) shift ;;
     esac
 done
-
 if [[ -z "$WS_HUB" ]]; then
     # Default: try WORKSPACE_HUB env, then git root, then script-relative
     if [[ -n "${WORKSPACE_HUB:-}" ]]; then
@@ -33,27 +30,22 @@ if [[ -z "$WS_HUB" ]]; then
         WS_HUB="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
     fi
 fi
-
 SCHEDULE_FILE="${WS_HUB}/config/scheduled-tasks/schedule-tasks.yaml"
 REPORT_DIR="${WS_HUB}/.claude/state/cron-health"
 DATE=$(date -u +%Y-%m-%d)
 HOSTNAME_SHORT=$(hostname -s 2>/dev/null || hostname | cut -d. -f1)
-STALENESS_HOURS=25  # daily jobs: flag if log is older than 25 hours
-
 mkdir -p "$REPORT_DIR"
-
 # ── Validate prerequisites ───────────────────────────────────────────────────
 if [[ ! -f "$SCHEDULE_FILE" ]]; then
     echo "[cron-health] ERROR: schedule file not found: $SCHEDULE_FILE"
     exit 1
 fi
-
 # ── Parse schedule YAML ──────────────────────────────────────────────────────
 # Use Python to parse YAML and emit task records as tab-separated lines
 TASK_RECORDS=$(uv run --no-project python - "$SCHEDULE_FILE" <<'PY'
+import json
 import sys
 from pathlib import Path
-
 import yaml
 
 schedule_path = Path(sys.argv[1])
@@ -72,7 +64,9 @@ for task in data.get('tasks', []):
     stale_after_hours = task.get('stale_after_hours', '')
     log_str = str(log_pattern) if log_pattern is not None else 'null'
     machines_str = ','.join(machines)
-    print(f'{tid}\t{label}\t{schedule}\t{machines_str}\t{log_str}\t{scheduler}\t{is_claude}\t{stale_after_hours}\t{description}')
+    stale_str = str(stale_after_hours) if stale_after_hours != '' else '-'
+    runtime_str = json.dumps(task.get('runtime'), separators=(',', ':'))
+    print(f'{tid}\t{label}\t{schedule}\t{machines_str}\t{log_str}\t{scheduler}\t{is_claude}\t{stale_str}\t{runtime_str}\t{description}')
 PY
 )
 if [[ -z "$TASK_RECORDS" ]]; then
@@ -135,7 +129,9 @@ HAS_FAILURES=false
 JSON_TASKS="["
 FIRST_TASK=true
 
-while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is_claude stale_after_hours description; do
+RUNTIME_SCRIPT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../cron" && pwd)/cron_runtime.py"
+
+while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler _is_claude stale_after_hours runtime_contract _description; do
     # Skip Windows-scheduler tasks on Linux
     if [[ "$scheduler" == "windows-task-scheduler" ]]; then
         continue
@@ -172,8 +168,8 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
 
     TOTAL_TASKS=$((TOTAL_TASKS + 1))
 
-    # ── Resolve log path (may be a glob) ────────────────────────────────────
     local_log_pattern="${WS_HUB}/${log_pattern}"
+    [[ "${log_pattern:0:2}" == \~/ ]] && local_log_pattern="${HOME}/${log_pattern#~/}"
     # Find the most recent matching file
     NEWEST_LOG=""
     NEWEST_MTIME=0
@@ -208,11 +204,7 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
         AGE_SECONDS=$((NOW - NEWEST_MTIME))
         AGE_HOURS=$((AGE_SECONDS / 3600))
 
-        if [[ $AGE_HOURS -ge 24 ]]; then
-            LAST_RUN_AGO="${AGE_HOURS}h ago"
-        else
-            LAST_RUN_AGO="${AGE_HOURS}h ago"
-        fi
+        LAST_RUN_AGO="${AGE_HOURS}h ago"
 
         # Determine expected interval from cron schedule
         # Heuristic: check day-of-week (field 5) and day-of-month (field 3)
@@ -312,13 +304,40 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
             fi
         fi
 
-        if [[ "$STATUS" == "OK" ]]; then
-            HEALTHY_TASKS=$((HEALTHY_TASKS + 1))
-            DETAILS="last-run: ${LAST_RUN_AGO}, errors: 0"
-        elif [[ "$STATUS" == "WARN" ]]; then
-            HEALTHY_TASKS=$((HEALTHY_TASKS + 1))
-            DETAILS="${DETAILS}; last-run: ${LAST_RUN_AGO}, errors: 0"
+    fi
+
+    # ── Runtime status is independent from log status ───────────────────────
+    LOG_STATUS="$STATUS"
+    RUNTIME_JSON='{"status":"not_configured"}'
+    RUNTIME_STATUS="not_configured"
+    if [[ "$LOG_STATUS" == "OK" ]]; then
+        DETAILS="last-run: ${LAST_RUN_AGO}, errors: 0"
+    elif [[ "$LOG_STATUS" == "WARN" ]]; then
+        DETAILS="${DETAILS}; last-run: ${LAST_RUN_AGO}, errors: 0"
+    fi
+    if [[ "$runtime_contract" != "null" && -n "$runtime_contract" ]]; then
+        RUNTIME_OUTPUT=""
+        if ! RUNTIME_OUTPUT=$(uv run --script "$RUNTIME_SCRIPT" inspect --format tsv \
+            --schedule-file "$SCHEDULE_FILE" --workspace "$WS_HUB" --task-id "$tid" 2>/dev/null); then
+            RUNTIME_OUTPUT=$'unknown\t{"status":"unknown"}'
         fi
+        IFS=$'\t' read -r RUNTIME_STATUS RUNTIME_JSON <<< "$RUNTIME_OUTPUT"
+        DETAILS="${DETAILS:+${DETAILS}; }runtime: ${RUNTIME_STATUS}"
+        RUNTIME_FAILURE=""
+        case "$RUNTIME_STATUS" in
+            completed_failure|invalid_state|stale_or_reused_pid|orphan_contention|unknown|never_started) RUNTIME_FAILURE="RUNTIME_ERROR" ;;
+            overlap) RUNTIME_FAILURE="OVERLAP" ;;
+            excessive_runtime) RUNTIME_FAILURE="LONGRUN" ;;
+            filesystem_wait) RUNTIME_FAILURE="FSWAIT" ;;
+        esac
+        if [[ -n "$RUNTIME_FAILURE" ]]; then
+            [[ "$LOG_STATUS" == "OK" || "$LOG_STATUS" == "WARN" ]] && PROBLEM_TASKS=$((PROBLEM_TASKS + 1))
+            STATUS="$RUNTIME_FAILURE"
+            HAS_FAILURES=true
+        fi
+    fi
+    if [[ "$STATUS" == "OK" || "$STATUS" == "WARN" ]]; then
+        HEALTHY_TASKS=$((HEALTHY_TASKS + 1))
     fi
 
     # ── Print status line ───────────────────────────────────────────────────
@@ -342,6 +361,9 @@ while IFS=$'\t' read -r tid label schedule machines_str log_pattern scheduler is
     "id": "${tid}",
     "label": "${label}",
     "status": "${STATUS}",
+    "log_status": "${LOG_STATUS}",
+    "runtime_status": "${RUNTIME_STATUS}",
+    "runtime": ${RUNTIME_JSON},
     "details": "${details_escaped}",
     "errors_found": ${ERRORS_FOUND},
     "last_log": "${log_escaped}",

@@ -1,23 +1,9 @@
-# Client wiki registry — RELOCATED PRIVATE (epic #3095, sub-issue #3098).
-#
-# This registry maps client short_names → private llm-wiki-<client> repos and
-# their /mnt/ace/<client>/ raw roots. Those are client-confidential, so the real
-# registry no longer lives in this PUBLIC repo (it listed every client name +
-# bucket — the same deny-list paradox the rest of #3095 fixes).
-#
-# Canonical copy:  vamseeachanta/aceengineer-strategy : config/client-wikis.yml  (PRIVATE)
-#
-# Consumers resolve the real registry by this precedence (all private/local):
-#   1. $WIKI_SIBLING_REGISTRY_PATH (or $REGISTRY_PATH for the bash validator)
-#   2. config/.client-wikis.local.yml   (gitignored; provision per host)
-#   3. .workspace-hub/client-wikis.yml  (vendored into wiki repos by the installer)
-#   4. none → registry-dependent checks degrade to warn-only
-#
-# Provision a host:
-#   cp <aceengineer-strategy>/config/client-wikis.yml config/.client-wikis.local.yml
-#
-# Schema (unchanged) — see docs/governance/2026-05-20-client-llm-wiki-feature-and-mkt-a-instance-design.md
-# and .claude/rules/wiki-sibling-routing.md.
-registry_version: 0.1
+# Client-wiki registry — exact public relocation stub (#3098, #3449).
+# Authoritative entries remain in the approved private registry. Consumers use
+# WIKI_SIBLING_REGISTRY_PATH, REGISTRY_PATH, or a gitignored provisioned copy.
+# Current behavior is implemented by scripts/client_llm_wiki/bootstrap_schema.py
+# and the coordination/client-llm-wiki-factory skill. The earlier governance
+# design remains historical context; it is not the active schema authority.
+registry_version: "0.2"
 relocated: true
-wikis: []   # intentionally empty in the public repo; real entries live private
+wikis: []

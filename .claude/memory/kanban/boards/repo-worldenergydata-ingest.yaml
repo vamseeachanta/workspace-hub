@@ -19,7 +19,6 @@ cards:
       - enhancement
       - priority:medium
       - cat:data
-      - cat:operations
       - machine:dev-primary
       - dispatch:ready
       - domain:ingest
@@ -415,6 +414,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:data
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -435,6 +435,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:data
       - wrk-item
       - machine:dev-primary
       - status:plan-approved
@@ -470,6 +471,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:data
       - status:plan-review
       - domain:ingest
       - lane:codex
@@ -489,7 +491,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
       - domain:ingest
       - lane:codex
     initial_status: triage
@@ -516,7 +517,6 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - cat:engineering-methodology
       - status:plan-review
       - domain:ingest
       - lane:claude
@@ -841,8 +841,9 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - cat:data
+      - status:plan-approved
       - domain:ingest
+      - lane:codex
       - status:needs-plan
     initial_status: triage
     priority: 1
@@ -891,7 +892,6 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - cat:data
       - domain:ingest
       - epic
       - status:needs-plan
@@ -1010,10 +1010,9 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
+      - status:plan-review
       - domain:ingest
       - lane:codex
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1044,7 +1043,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
       - domain:ingest
       - lane:codex
       - status:needs-plan
@@ -1188,9 +1186,9 @@ cards:
     gh_labels:
       - enhancement
       - cat:engineering
+      - status:plan-approved
       - domain:ingest
       - lane:claude
-      - status:needs-plan
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1204,7 +1202,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
       - domain:ingest
       - lane:codex
       - status:needs-plan
@@ -1221,7 +1218,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
       - domain:ingest
       - lane:codex
       - status:needs-plan
@@ -1411,6 +1407,432 @@ cards:
       - domain:ingest
       - lane:codex
       - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#941
+    title: 'epic(global-spine): global canonical field registry, play backfill, regional ingest ladder'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/941
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - epic
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#947
+    title: 'feat(global-spine): wave 1 — global roster federation into Explorer feed + GoM play backfill'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/947
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - status:plan-approved
+      - domain:ingest
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#950
+    title: 'feat(lenses): landman offshore — BSEE lease panel on the field view'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/950
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:business
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#951
+    title: 'feat(lenses): landman onshore — TX RRC lease/county ingest (blocker #709)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/951
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - status:plan-approved
+      - domain:ingest
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#955
+    title: 'data(bsee): Atlas of GoA Gas & Oil Sands — field play/chronozone ingest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/955
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#959
+    title: 'data(bsee): Lease & Lease-Owner ingest — status/dates/block/WI for the landman panel'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/959
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#960
+    title: 'data(bsee): per-field well-plugging P&A — borehole→field join (deferred from #949)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/960
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#987
+    title: 'data(vessel_fleet): ingest contractor rig-summary PDFs → populate spec dimensions (moonpool, draft, VDL) — Noble Valiant worked example'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/987
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#988
+    title: 'data(vessel_fleet): myshiptracking.com as vessel-particulars source family (IMO/MMSI, dimensions, tonnage) for non-rig vessels'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/988
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#991
+    title: 'epic(vessel_fleet): drilling-rig spec database — all leading contractors, all rig classes, → rig-selection insights'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/991
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#992
+    title: 'data(vessel_fleet): Transocean fleet spec ingestion (drillships + HE semis) — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/992
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#993
+    title: 'data(vessel_fleet): Valaris fleet spec ingestion (DS drillships, DPS semis, jackups) — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/993
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#994
+    title: 'data(vessel_fleet): Seadrill fleet spec ingestion (West * units) — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/994
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#995
+    title: 'data(vessel_fleet): jackup specialists — Borr, Shelf Drilling, ADES spec ingestion — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/995
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#996
+    title: 'data(vessel_fleet): other floater contractors — Stena, Odfjell, Saipem, COSL, Vantage — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/996
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#997
+    title: 'data(vessel_fleet): onshore drilling rigs — H&P, Nabors, Patterson-UTI, Precision — #991 child'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/997
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1006
+    title: 'data(vessel_fleet): equipment-level capability fields — cranes, generation, MPD, dual activity, quarters (#991 child)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1006
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1020
+    title: 'data(cost): contract-award asset registry per sanctioned project — sourced stage split (feeds A1)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1020
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#458
+    title: 'fix(lng): enabled lng_terminals_refresh is still a stub and blocks scheduler freshness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/458
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:data
+      - domain:ingest
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#680
+    title: D8 — Establish the production-reservoir database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/680
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - domain:ingest
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#681
+    title: D11 — Establish the drilling-well database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/681
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - domain:ingest
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#814
+    title: 'feat(canada): live C-NLOER PDF download + refresh lane (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/814
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#816
+    title: 'feat(canada): CNSOER Sable + Deep Panuke legacy gas ingest + gas revenue (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/816
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#817
+    title: 'feat(canada): Hibernia 1997-2001 HTML-modal production backfill (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/817
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#818
+    title: 'feat(canada): ArcGIS Development-Wells water-depth + FieldConcept enrichment (#719 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/818
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#823
+    title: 'feat(australia): production feed (AEMO GBB / PEPS-SA) → real economics (#721 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/823
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#825
+    title: 'feat(australia): NOPTA/GA wells + water-depth enrichment for FieldConcept (#721 follow-on)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/825
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:data
+      - domain:ingest
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#910
+    title: 'docs(data): inventory /mnt/ace ecosystem data roots for underwriting readiness'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/910
+    gh_state: open
+    gh_labels:
+      - status:plan-approved
+      - domain:ingest
+      - cat:documentation
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#928
+    title: Align Landman freshness scorecard with packaged fixture catalog
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/928
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:data
+      - domain:ingest
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/worldenergydata#1065
+    title: 'data(bsee): obtain the official WELL_ACTIVITY_CD code list — PND is undocumented'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/worldenergydata/issues/1065
+    gh_state: open
+    gh_labels:
+      - cat:research
+      - domain:ingest
     initial_status: triage
     priority: 0
     gh_assignees: []

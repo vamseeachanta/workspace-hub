@@ -183,47 +183,47 @@ test_codex_invocation_inlines_plan_body() {
   rm -rf "$td"
 }
 
-test_gemini_invocation_inlines_plan_body() {
-  run_test "gemini is invoked with INLINE plan body (not a path reference)"
+test_agy_invocation_inlines_plan_body() {
+  run_test "agy is invoked with INLINE plan body via --print (submit-to-agy wrapper)"
 
   local td; td="$(mktemp -d)"
   run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
 
-  local cap="$td/captures/gemini.capture"
+  local cap="$td/captures/agy.capture"
   if [[ ! -f "$cap" ]]; then
-    fail "gemini capture file not written ($cap)"
+    fail "agy capture file not written ($cap)"
     rm -rf "$td"; return
   fi
 
   if ! grep -qF "$FIXTURE_FIRST_LINE" "$cap"; then
-    fail "gemini invocation missing inline plan body"
-  elif ! grep -qF -- '--- PLAN' "$cap"; then
-    fail "gemini invocation missing '--- PLAN' delimiter"
-  elif ! grep -qF 'GEMINI_CLI_TRUST_WORKSPACE: true' "$cap"; then
-    fail "gemini invocation did not set trusted-workspace env" "$(grep 'GEMINI_CLI_TRUST_WORKSPACE:' "$cap" || true)"
+    fail "agy invocation missing inline plan body"
+  elif ! grep -qF 'UNTRUSTED-CONTENT' "$cap"; then
+    fail "agy invocation missing untrusted-content boundary (#3207 hardening)"
+  elif ! grep -qF 'AGY_REVIEW_MODE: 1' "$cap"; then
+    fail "agy dispatch missing AGY_REVIEW_MODE=1 (oversize fail-closed guard, #3573)" "$(grep 'AGY_REVIEW_MODE:' "$cap" || true)"
   else
-    pass "gemini invoked with inline plan body + delimiter + trust env"
+    pass "agy invoked with inline plan body + untrusted boundary + review mode"
   fi
   rm -rf "$td"
 }
 
-test_gemini_runs_from_tmp_cwd() {
-  run_test "gemini is invoked with cwd=/tmp to dodge .gemini/agents/*.md permissionMode bug"
+test_agy_runs_from_temp_cwd() {
+  run_test "agy is invoked from a throwaway temp cwd (submit-to-agy mktemp dir)"
 
   local td; td="$(mktemp -d)"
   run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
 
-  local cap="$td/captures/gemini.capture"
+  local cap="$td/captures/agy.capture"
   if [[ ! -f "$cap" ]]; then
-    fail "gemini capture file not written ($cap)"
+    fail "agy capture file not written ($cap)"
     rm -rf "$td"; return
   fi
 
   local pwd_line; pwd_line="$(grep '^PWD:' "$cap" || true)"
-  if [[ "$pwd_line" == 'PWD: /tmp' ]]; then
-    pass "gemini cwd was /tmp"
+  if [[ "$pwd_line" == PWD:\ /tmp* ]]; then
+    pass "agy cwd was under /tmp ($pwd_line)"
   else
-    fail "gemini cwd was not /tmp" "$pwd_line"
+    fail "agy cwd was not a temp dir" "$pwd_line"
   fi
   rm -rf "$td"
 }
@@ -256,17 +256,19 @@ test_parallel_execution() {
   run_test "3 providers run in parallel (wall time ≈ slowest, not sum)"
 
   local td; td="$(mktemp -d)"
-  # Each mock sleeps 2s. Serial = 6s, parallel ≈ 2s. Pass threshold: < 4s.
+  # Each mock sleeps 2s. Serial = 6s+, parallel ≈ 2s + leg overhead (the agy leg
+  # runs through submit-to-agy.sh: git rev-parse + mktemp + logging ≈ 1s, #3573).
+  # Pass threshold: < 5s (serial would be ≥ 7s).
   local t0 t1 elapsed
   t0="$(date +%s)"
   MOCK_SLEEP_S=2 run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
   t1="$(date +%s)"
   elapsed=$((t1 - t0))
 
-  if (( elapsed < 4 )); then
-    pass "wall time ${elapsed}s < 4s (parallel behavior confirmed)"
+  if (( elapsed < 5 )); then
+    pass "wall time ${elapsed}s < 5s (parallel behavior confirmed)"
   else
-    fail "wall time ${elapsed}s ≥ 4s (looks serial — 3×2s=6s)" "expected <4s"
+    fail "wall time ${elapsed}s ≥ 5s (looks serial — 3×2s=6s+)" "expected <5s"
   fi
   rm -rf "$td"
 }
@@ -280,23 +282,23 @@ test_disagreement_report_captures_unique_finding() {
 
   # Pre-seed three artifacts with divergent findings.
   # claude + codex both say MAJOR + Shared finding A.
-  # gemini says MINOR + Uniquely-gemini finding OMEGA.
+  # agy says MINOR + Uniquely-agy finding OMEGA.
   printf '## Verdict\nMAJOR\n\n## Findings\n1. Shared finding A\n' > "$rdir/2026-04-17-plan-8888-claude.md"
   printf '## Verdict\nMAJOR\n\n## Findings\n1. Shared finding A\n' > "$rdir/2026-04-17-plan-8888-codex.md"
-  printf '## Verdict\nMINOR\n\n## Findings\n1. Uniquely-gemini finding OMEGA\n' > "$rdir/2026-04-17-plan-8888-gemini.md"
+  printf '## Verdict\nMINOR\n\n## Findings\n1. Uniquely-agy finding OMEGA\n' > "$rdir/2026-04-17-plan-8888-agy.md"
 
   local out="$td/disagreement.md"
   bash "$DISAGREEMENT_LIB" "$rdir" "2026-04-17" "8888" > "$out" 2>/dev/null
 
-  # The unique gemini finding must appear under the gemini section.
-  # Using awk to extract content between "### gemini" and next "###" or EOF.
-  local gemini_section
-  gemini_section="$(awk '/^### gemini$/{flag=1;next}/^### /{flag=0}flag' "$out")"
+  # The unique agy finding must appear under the agy section.
+  # Using awk to extract content between "### agy" and next "###" or EOF.
+  local agy_section
+  agy_section="$(awk '/^### agy$/{flag=1;next}/^### /{flag=0}flag' "$out")"
 
-  if [[ "$gemini_section" == *"Uniquely-gemini finding OMEGA"* ]]; then
-    pass "unique gemini finding appeared under gemini section"
+  if [[ "$agy_section" == *"Uniquely-agy finding OMEGA"* ]]; then
+    pass "unique agy finding appeared under agy section"
   else
-    fail "gemini section missing unique finding" "$(echo "$gemini_section" | head -5)"
+    fail "agy section missing unique finding" "$(echo "$agy_section" | head -5)"
   fi
   rm -rf "$td"
 }
@@ -325,11 +327,11 @@ test_two_fixture_plumbing() {
     bash "$WRAPPER" "$FIXTURES_DIR/2026-04-17-issue-9002-known-broken.md" --output-dir="$td2/results"
   ) >/dev/null 2>&1 || true
 
-  # Each run must produce three per-provider artifacts (claude/codex/gemini).
+  # Each run must produce three per-provider artifacts (claude/codex/agy).
   # The wrapper ALSO writes a <issue>-disagreement.md; we require its presence
   # separately so the provider count stays honest.
   local missing=()
-  for prov in claude codex gemini; do
+  for prov in claude codex agy; do
     [[ -f "$(ls "$td1/results/"*-plan-9001-"$prov".md 2>/dev/null | head -1)" ]] || missing+=("good/$prov")
     [[ -f "$(ls "$td2/results/"*-plan-9002-"$prov".md 2>/dev/null | head -1)" ]] || missing+=("broken/$prov")
   done
@@ -341,7 +343,7 @@ test_two_fixture_plumbing() {
     rm -rf "$td1" "$td2"; return
   fi
 
-  # Capture files must differ: the plan body passed to codex/gemini differs
+  # Capture files must differ: the plan body passed to codex/agy differs
   # between the two fixtures, so the recorded ARGV must differ too.
   if diff -q "$td1/codex.capture" "$td2/codex.capture" >/dev/null 2>&1; then
     fail "codex captures identical across both fixtures (wrapper not routing per-fixture)"
@@ -360,8 +362,8 @@ test_two_fixture_plumbing() {
   rm -rf "$td1" "$td2"
 }
 
-test_gemini_unavailable_does_not_abort_codex() {
-  run_test "gemini CLI failure leaves codex + claude artifacts intact, writes UNAVAILABLE for gemini"
+test_agy_unavailable_does_not_abort_codex() {
+  run_test "agy CLI failure leaves codex + claude artifacts intact, writes UNAVAILABLE for agy"
 
   local td; td="$(mktemp -d)"
 
@@ -369,7 +371,7 @@ test_gemini_unavailable_does_not_abort_codex() {
   (
     export PATH="$MOCKS_DIR:$PATH"
     export PLAN_REVIEW_CAPTURE_DIR="$td/captures"
-    export MOCK_GEMINI_FAIL=1
+    export MOCK_AGY_FAIL=1
     unset CLAUDECODE  # don't trip the #2684 env-guard in test harness
     mkdir -p "$td/captures" "$td/results"
     local fixture="$td/2026-04-17-issue-9999-test-slug.md"
@@ -377,24 +379,24 @@ test_gemini_unavailable_does_not_abort_codex() {
     bash "$WRAPPER" "$fixture" --output-dir="$td/results"
   ) >/dev/null 2>&1 || true
 
-  local gemini_art codex_art claude_art
-  gemini_art="$(ls "$td/results/"*-plan-9999-gemini.md 2>/dev/null | head -1)"
+  local agy_art codex_art claude_art
+  agy_art="$(ls "$td/results/"*-plan-9999-agy.md 2>/dev/null | head -1)"
   codex_art="$(ls "$td/results/"*-plan-9999-codex.md 2>/dev/null | head -1)"
   claude_art="$(ls "$td/results/"*-plan-9999-claude.md 2>/dev/null | head -1)"
 
-  if [[ -z "$gemini_art" || -z "$codex_art" || -z "$claude_art" ]]; then
-    fail "missing one or more artifact files" "gemini='$gemini_art' codex='$codex_art' claude='$claude_art'"
+  if [[ -z "$agy_art" || -z "$codex_art" || -z "$claude_art" ]]; then
+    fail "missing one or more artifact files" "agy='$agy_art' codex='$codex_art' claude='$claude_art'"
     rm -rf "$td"; return
   fi
 
-  if ! grep -q '^UNAVAILABLE' "$gemini_art" && ! grep -qF 'UNAVAILABLE' "$gemini_art"; then
-    fail "gemini artifact missing UNAVAILABLE verdict"
+  if ! grep -q '^UNAVAILABLE' "$agy_art" && ! grep -qF 'UNAVAILABLE' "$agy_art"; then
+    fail "agy artifact missing UNAVAILABLE verdict"
   elif ! grep -qF 'Mock finding from codex' "$codex_art"; then
     fail "codex artifact does not contain normal mock output (was it aborted?)"
   elif ! grep -qF 'Mock finding from claude' "$claude_art"; then
     fail "claude artifact does not contain normal mock output"
   else
-    pass "gemini=UNAVAILABLE, codex + claude = normal mock output"
+    pass "agy=UNAVAILABLE, codex + claude = normal mock output"
   fi
   rm -rf "$td"
 }
@@ -588,48 +590,50 @@ test_codex_guard_still_blocks_genuine_bad_version() {
   rm -rf "$td"
 }
 
-test_gemini_leg_closes_stdin() {
-  run_test "gemini leg gets EOF on stdin (no interactive hang) — primary #3294 fix"
+test_agy_leg_closes_stdin() {
+  run_test "agy leg gets EOF on stdin (no interactive hang) — #3294-class guard"
 
   local td; td="$(mktemp -d)"
   run_wrapper_under_mocks "$td" >/dev/null 2>&1 || true
 
-  local cap="$td/captures/gemini.capture"
+  local cap="$td/captures/agy.capture"
   if [[ ! -f "$cap" ]]; then
-    fail "gemini capture file not written ($cap)"
+    fail "agy capture file not written ($cap)"
     rm -rf "$td"; return
   fi
   # The STDIN section of the capture must be empty (mock cat'd /dev/null -> EOF).
   local stdin_body; stdin_body="$(awk '/^STDIN:$/{flag=1;next}flag' "$cap")"
-  if ! grep -qF '</dev/null' "$WRAPPER"; then
-    fail "gemini leg source does not close stdin with </dev/null"
+  if ! grep -qF '</dev/null' "${SCRIPT_DIR}/../submit-to-agy.sh"; then
+    fail "submit-to-agy.sh does not close stdin with </dev/null"
   elif [[ -z "$stdin_body" ]]; then
-    pass "gemini stdin reached EOF (empty capture body) and source closes stdin"
+    pass "agy stdin reached EOF (empty capture body) and wrapper closes stdin"
   else
-    fail "gemini stdin was not empty/EOF" "$stdin_body"
+    fail "agy stdin was not empty/EOF" "$stdin_body"
   fi
   rm -rf "$td"
 }
 
-test_gemini_unavailable_when_no_auth() {
-  run_test "no gemini auth -> fast UNAVAILABLE, no gemini invocation (#3294 fast-path)"
+test_agy_oversize_fails_closed() {
+  run_test "oversize plan -> agy review dispatch FAILS (no truncation in reviewer lane, #3573)"
 
   local td; td="$(mktemp -d)"
-  run_wrapper_under_mocks "$td" "GEMINI_NO_AUTH=1" >/dev/null 2>&1 || true
+  # Fixture body is larger than this cap; AGY_REVIEW_MODE=1 (set by the fanout
+  # agy leg) must FAIL the dispatch rather than truncate-and-review.
+  run_wrapper_under_mocks "$td" "AGY_MAX_BYTES=8" >/dev/null 2>&1 || true
 
-  local gemini_art cap
-  gemini_art="$(ls "$td/results/"*-plan-9999-gemini.md 2>/dev/null | head -1)"
-  cap="$td/captures/gemini.capture"
-  if [[ -z "$gemini_art" ]]; then
-    fail "gemini artifact missing under GEMINI_NO_AUTH=1"
-  elif ! grep -qF 'UNAVAILABLE' "$gemini_art"; then
-    fail "no-auth did not produce UNAVAILABLE artifact" "$(head -20 "$gemini_art")"
-  elif ! grep -qiF 'auth' "$gemini_art"; then
-    fail "UNAVAILABLE artifact missing auth reason" "$(head -20 "$gemini_art")"
+  local agy_art cap
+  agy_art="$(ls "$td/results/"*-plan-9999-agy.md 2>/dev/null | head -1)"
+  cap="$td/captures/agy.capture"
+  if [[ -z "$agy_art" ]]; then
+    fail "agy artifact missing under AGY_MAX_BYTES=8"
+  elif ! grep -qF 'UNAVAILABLE' "$agy_art"; then
+    fail "oversize did not produce UNAVAILABLE artifact" "$(head -20 "$agy_art")"
+  elif ! grep -qiF 'payload exceeds review cap' "$agy_art"; then
+    fail "UNAVAILABLE artifact missing oversize reason" "$(head -20 "$agy_art")"
   elif [[ -f "$cap" ]]; then
-    fail "gemini was invoked despite no-auth fast-path" "$(head -5 "$cap")"
+    fail "agy was invoked despite oversize fail-closed guard" "$(head -5 "$cap")"
   else
-    pass "no-auth fast-path wrote UNAVAILABLE and skipped gemini"
+    pass "oversize fail-closed: UNAVAILABLE artifact written, agy never invoked"
   fi
   rm -rf "$td"
 }
@@ -641,7 +645,7 @@ test_fanout_no_provider_hangs_under_claudecode() {
   run_wrapper_under_mocks "$td" "CLAUDECODE=1" >/dev/null 2>&1 || true
 
   local missing=() prov art
-  for prov in claude codex gemini; do
+  for prov in claude codex agy; do
     art="$(ls "$td/results/"*-plan-9999-"$prov".md 2>/dev/null | head -1)"
     [[ -n "$art" && -s "$art" ]] || missing+=("$prov")
   done
@@ -683,11 +687,11 @@ test_rejects_nonconforming_filename
 test_prompt_file_contains_all_six_stance_clauses
 test_claude_invocation_uses_path_reference
 test_codex_invocation_inlines_plan_body
-test_gemini_invocation_inlines_plan_body
-test_gemini_runs_from_tmp_cwd
+test_agy_invocation_inlines_plan_body
+test_agy_runs_from_temp_cwd
 test_writes_claude_artifact
 test_parallel_execution
-test_gemini_unavailable_does_not_abort_codex
+test_agy_unavailable_does_not_abort_codex
 test_codex_stderr_review_is_promoted_to_artifact
 test_empty_provider_output_becomes_unavailable_stub
 test_provider_timeout_becomes_unavailable_stub
@@ -695,8 +699,8 @@ test_partial_stderr_timeout_becomes_unavailable_stub
 test_codex_leg_strips_claudecode
 test_codex_produces_review_under_claudecode
 test_codex_guard_still_blocks_genuine_bad_version
-test_gemini_leg_closes_stdin
-test_gemini_unavailable_when_no_auth
+test_agy_leg_closes_stdin
+test_agy_oversize_fails_closed
 test_fanout_no_provider_hangs_under_claudecode
 test_fanout_codex_unavailable_on_bad_version
 test_claude_invocation_sets_plugin_dir_override

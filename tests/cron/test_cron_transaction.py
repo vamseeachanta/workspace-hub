@@ -110,6 +110,18 @@ def test_match_fingerprint_command_contains_str():
     assert not ct.match_fingerprint(line, {"command_contains": "nope"})
 
 
+def test_match_fingerprint_command_tokens_require_adjacent_shell_tokens():
+    token = ".claude/skills/business-marketing/deckhand-api-presence-sync/catalog_delta.py"
+    line = f"0 5 * * 0 uv run python {token} >> logs/out.log"
+
+    fingerprint = {"command_tokens": ["python", token]}
+    assert ct.match_fingerprint(line, fingerprint)
+    assert not ct.match_fingerprint(line.replace(token, f"prefix{token}"), fingerprint)
+    assert not ct.match_fingerprint(line.replace(token, f"{token}.bak"), fingerprint)
+    assert not ct.match_fingerprint(f"0 * * * * echo --input={token}", fingerprint)
+    assert not ct.match_fingerprint(f"0 * * * * printf x > {token}", fingerprint)
+
+
 def test_match_fingerprint_cwd_and_basename():
     line = "30 7 * * * cd /mnt/x/deckhand && python3 scripts/member-audit-cron.py"
     assert ct.match_fingerprint(line, {"cwd_contains": "/deckhand"})
@@ -130,18 +142,17 @@ def test_match_fingerprint_partial_mismatch_is_false():
     )
 
 
-def test_match_fingerprint_owner_repo_like_command_contains():
+def test_match_fingerprint_rejects_descriptive_owner_repo_field():
     line = "0 1 * * * cd /mnt/local-analysis/deckhand && run"
-    assert ct.match_fingerprint(line, {"owner_repo": "deckhand"})
-    assert ct.match_fingerprint(line, {"owner_repo": ["deckhand", "run"]})
-    assert not ct.match_fingerprint(line, {"owner_repo": ["deckhand", "absent"]})
+
+    assert not ct.match_fingerprint(line, {"owner_repo": "deckhand"})
 
 
 # --- classify_line ---------------------------------------------------------
 
-def test_classify_cataloged():
+def test_catalog_substring_does_not_authorize_destructive_identity():
     line = "0 1 * * * /opt/wshub/run-task.sh foo"
-    assert ct.classify_line(line, ["run-task.sh"], []) == "cataloged"
+    assert ct.classify_line(line, ["run-task.sh"], []) == "uncataloged"
 
 
 def test_classify_preserved_external():
@@ -153,6 +164,77 @@ def test_classify_preserved_external():
 def test_classify_uncataloged():
     line = "0 3 * * * /some/unknown/thing --flag"
     assert ct.classify_line(line, ["run-task.sh"], []) == "uncataloged"
+
+
+def test_catalog_fingerprint_never_authorizes_destructive_identity():
+    fingerprint = [{
+        "catalog_task_id": "repository-sync",
+        "fingerprint": {
+            "command_contains": "scripts/cron-repository-sync.sh",
+            "cwd_contains": "/workspace-hub",
+        },
+    }]
+    owned = "0 */4 * * * cd /srv/workspace-hub && bash scripts/cron-repository-sync.sh"
+    external = "0 */4 * * * cd /srv/external && echo scripts/cron-repository-sync.sh"
+
+    owned_detail = ct.classify_line_detail(
+        owned, [], [], catalog_fingerprints=fingerprint
+    )
+    external_detail = ct.classify_line_detail(
+        external, [], [], catalog_fingerprints=fingerprint
+    )
+
+    assert owned_detail["class"] == "uncataloged"
+    assert external_detail["class"] == "uncataloged"
+
+
+def test_catalog_cwd_regex_does_not_claim_similar_repo_name():
+    fingerprint = [{
+        "catalog_task_id": "repository-sync",
+        "fingerprint": {
+            "command_contains": "scripts/cron-repository-sync.sh",
+            "cwd_basename": "workspace-hub",
+        },
+    }]
+    owned = "0 * * * * cd /srv/workspace-hub && bash scripts/cron-repository-sync.sh"
+    unrelated = "0 * * * * cd /tmp/not-workspace-hub && bash scripts/cron-repository-sync.sh"
+
+    assert ct.classify_line_detail(owned, [], [], catalog_fingerprints=fingerprint)["class"] == "uncataloged"
+    assert ct.classify_line_detail(unrelated, [], [], catalog_fingerprints=fingerprint)["class"] == "uncataloged"
+
+
+def test_plan_cutover_drops_only_exactly_owned_stale_duplicate():
+    fingerprint = [{
+        "catalog_task_id": "hermes-claude-bridge",
+        "fingerprint": {
+            "command_contains": "scripts/memory/bridge-hermes-claude.sh",
+            "cwd_contains": "/workspace-hub",
+        },
+    }]
+    stale = "25 4 * * * cd /srv/workspace-hub && bash scripts/memory/bridge-hermes-claude.sh"
+    task = {
+        "id": "hermes-claude-bridge",
+        "schedule": "25 4 * * *",
+        "command": "cd /srv/workspace-hub && bash scripts/memory/bridge-hermes-claude.sh --commit",
+    }
+
+    plan = ct.plan_cutover(
+        stale + "\n",
+        [task],
+        ["control-plane"],
+        catalog_commands=[],
+        external_fingerprints=[],
+        catalog_fingerprints=fingerprint,
+        ownership_context={
+            "line_identities": {stale: {"catalog_task_id": "hermes-claude-bridge",
+                                        "source": "legacy-exact-line", "variant_id": "old"}},
+            "preservation_fingerprints": [],
+        },
+    )
+
+    assert plan["abort_reason"] is None
+    assert stale not in plan["new_text"].splitlines()
+    assert "--commit" in plan["new_text"]
 
 
 def test_classify_ignore_comment_blank_env():
@@ -401,7 +483,7 @@ def test_preserved_fingerprint_entries_retain_catalog_task_id_metadata():
         external_fingerprints=entries,
         selected_task_ids={"notification-purge"},
     )
-    assert detail["class"] == "cataloged"
+    assert detail["class"] == "preserved_external"
     assert detail["catalog_task_id"] == "notification-purge"
 
 

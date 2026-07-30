@@ -8,7 +8,7 @@ This repository is the private <CLIENT_SHORT_NAME> LLM-wiki target. It is for re
 
 | Level | Residency | Purpose | Public eligible? |
 | --- | --- | --- | --- |
-| Raw project data | `/mnt/ace/<CLIENT_RAW_ROOT>/` | Original client/project inputs, large engineering files, PDFs, models, spreadsheets, solver archives | No |
+| Raw project data | Authorized external private roots, possibly none at bootstrap | Original client/project inputs, large engineering files, PDFs, models, spreadsheets, solver archives | No |
 | Readable source derivatives | private/local only, promoted into this repo only when safe | OCR/text/markdown/table extracts with source IDs and privacy class | No, unless explicitly sanitized |
 | Private <CLIENT_SHORT_NAME> wiki | `<CLIENT_PRIVATE_REPO>` | Curated pages, extraction ledgers, report provenance, chatbot knowledge base inputs | No |
 | Public llm-wiki derivatives | public `llm-wiki` only after promotion | Generic sanitized engineering knowledge with client identifiers removed | Yes, after explicit promotion gate |

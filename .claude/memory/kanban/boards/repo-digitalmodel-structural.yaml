@@ -18,6 +18,7 @@ cards:
     gh_labels:
       - feature
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -35,6 +36,7 @@ cards:
     gh_labels:
       - feature
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -56,6 +58,7 @@ cards:
     gh_labels:
       - feature
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:licensed-win-1
       - dispatch:ready
@@ -79,6 +82,7 @@ cards:
     gh_labels:
       - feature
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -96,6 +100,7 @@ cards:
     gh_labels:
       - feature
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -113,6 +118,7 @@ cards:
     gh_labels:
       - feature
       - priority:low
+      - cat:engineering
       - wrk-item
       - machine:dev-primary
       - dispatch:ready
@@ -191,8 +197,269 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - cat:engineering
+      - status:plan-approved
       - domain:structural
       - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1524
+    title: 'bug(ansys): detect versioned ansysNNN launchers and require positive MAPDL completion evidence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1524
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - priority:high
+      - domain:structural
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1525
+    title: 'feat(ansys): register canonical licensed workflow and integrity manifests for MAPDL examples'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1525
+    gh_state: open
+    gh_labels:
+      - feature
+      - cat:engineering
+      - priority:high
+      - domain:structural
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1588
+    title: Verify DNV-RP-C203 seawater-CP S-N basis and fail-closed citations
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1588
+    gh_state: open
+    gh_labels:
+      - bug
+      - cat:engineering
+      - domain:structural
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#785
+    title: Onboard ship_design (SEASAM combined-fatigue) as durable workflow — restore data fixtures from history
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/785
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1057
+    title: 'EPIC: Fitness-For-Service (FFS) decision layer — field-to-office metal-loss assessment'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1057
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1080
+    title: 'EPIC: Ship structural strength expansion + unified material matrix + code provenance'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1080
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1094
+    title: 'Adversarial review findings: FFS strength methods (applicability limits + extensions)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1094
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - domain:structural
+      - lane:codex
+      - status:needs-plan
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1148
+    title: 'fatigue: Efthymiou short-chord F2/F3 factors for pinned-fixity + bending load cases'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1148
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:plan-approved
+      - domain:structural
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1153
+    title: 'Workflow: flange / bolted-connection analysis (ASME Sec VIII Div 1 App 2 / Taylor Forge)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1153
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - cat:engineering
+      - status:plan-approved
+      - domain:structural
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1182
+    title: 'seismic/response_spectrum: elastic + constant-ductility response spectra, SDOF/Newmark, and strong-motion intensity measures from an accelerogram'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1182
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:pending
+      - domain:structural
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1184
+    title: 'seismic: code design spectra (ASCE 7 / Eurocode 8) + spectral matching & ground-motion scaling'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1184
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1185
+    title: 'seismic: 1D site-response / ground-motion propagation (SHAKE-style equivalent-linear)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1185
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1186
+    title: 'seismic: multi-component / HVSR microtremor array + instrument-response deconvolution'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1186
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1187
+    title: 'seismic: multi-DOF / full-FEA seismic time-history (route via AQWA/ANSYS)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1187
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:engineering
+      - domain:structural
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1202
+    title: D4 — Establish the structural-ffs reference database
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1202
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - domain:structural
+      - lane:codex
+      - lane:claude
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1205
+    title: D9 — Establish the geotech database (soil profiles, CPT, p-y/t-z, anchor/pile)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1205
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - priority:high
+      - domain:structural
+      - lane:claude
+      - lane:frontier-pending
+      - status:needs-plan
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1274
+    title: 'ffs: damage-mechanism roadmap — API 579 Parts 3 (brittle fracture), 7 (HIC/blisters), 10 (creep)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1274
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:plan-approved
+      - domain:structural
+      - lane:codex
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/digitalmodel#1296
+    title: 'ffs: composite-repair selection helper behind the REPAIR verdict (ISO 24817 / ASME PCC-2 categories)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/digitalmodel/issues/1296
+    gh_state: open
+    gh_labels:
+      - cat:engineering
+      - status:working
+      - status:plan-approved
+      - domain:structural
+      - lane:codex
+      - lane:claude
     initial_status: triage
     priority: 0
     gh_assignees: []

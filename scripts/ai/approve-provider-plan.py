@@ -41,7 +41,7 @@ APPROVAL_TX_DIR = WORKSPACE_HUB / ".planning" / "approval-transactions"
 APPROVED_DIR = WORKSPACE_HUB / ".planning" / "plan-approved"
 PLANS_DIR = WORKSPACE_HUB / "docs" / "plans"
 REVIEW_RESULTS_DIR = WORKSPACE_HUB / "scripts" / "review" / "results"
-DEFAULT_PROVIDERS = ("claude", "codex", "gemini")
+DEFAULT_PROVIDERS = ("claude", "codex", "agy")
 APPROVE_LABEL = "status:plan-approved"
 REVIEW_LABEL = "status:plan-review"
 

@@ -1,0 +1,335 @@
+"""Hermetic subprocess tests for the client-wiki registry checker."""
+
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+
+import pytest
+import yaml
+
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+CHECKER = REPO_ROOT / "scripts" / "enforcement" / "check-client-wiki-registry.sh"
+REPO_SLUG = "example-org/llm-wiki-example-client"
+YQ = shutil.which("yq")
+
+
+def _entry(**overrides: object) -> dict[str, object]:
+    entry: dict[str, object] = {
+        "short_name": "example-client",
+        "repo": REPO_SLUG,
+        "visibility": "PRIVATE",
+        "posture": "client-private",
+        "status": "planned",
+        "raw_roots": [],
+        "raw_source_status": "not-mounted",
+        "ingestion_enabled": False,
+    }
+    entry.update(overrides)
+    return entry
+
+
+def _write_registry(
+    tmp_path: Path,
+    *,
+    entries: list[dict[str, object]] | None = None,
+    version: object = "0.2",
+    relocated: bool | None = None,
+) -> Path:
+    document: dict[str, object] = {
+        "registry_version": version,
+        "wikis": entries if entries is not None else [_entry()],
+    }
+    if relocated is not None:
+        document["relocated"] = relocated
+    path = tmp_path / "registry.yml"
+    path.write_text(yaml.safe_dump(document, sort_keys=False), encoding="utf-8")
+    return path
+
+
+def _write_executable(path: Path, body: str) -> Path:
+    path.write_text(body, encoding="utf-8")
+    path.chmod(0o755)
+    return path
+
+
+def _fake_uv(tmp_path: Path, *, fail: bool = False) -> Path:
+    script = tmp_path / "fake-uv"
+    return _write_executable(
+        script,
+        f"""#!{sys.executable}
+import os
+import subprocess
+import sys
+
+args = sys.argv[1:]
+expected = ["run", "--directory", {str(REPO_ROOT)!r}, "--frozen", "python"]
+if args[:5] != expected:
+    print("unexpected uv arguments: " + repr(args), file=sys.stderr)
+    raise SystemExit(97)
+if {fail!r}:
+    raise SystemExit(86)
+if os.environ.get("SWAP_REGISTRY_SOURCE") and "validate-registry" in args:
+    result = subprocess.run([sys.executable, *args[5:]])
+    os.replace(os.environ["SWAP_REGISTRY_REPLACEMENT"], os.environ["SWAP_REGISTRY_SOURCE"])
+    raise SystemExit(result.returncode)
+if "verify-private-repo" in args and os.environ.get("FAKE_GH_PAYLOAD"):
+    import json
+    with open(os.environ["FAKE_GH_LOG"], "ab") as stream:
+        stream.write(b"\\0".join(arg.encode() for arg in args) + b"\\0")
+    payload = json.load(open(os.environ["FAKE_GH_PAYLOAD"], encoding="utf-8"))
+    expected_repo = args[args.index("--repo") + 1]
+    valid = (payload.get("nameWithOwner") == expected_repo
+             and payload.get("visibility") == "PRIVATE"
+             and payload.get("isArchived") is False)
+    raise SystemExit(0 if valid and int(os.environ.get("FAKE_GH_RC", "0")) == 0 else 1)
+os.execv(sys.executable, [sys.executable, *args[5:]])
+""",
+    )
+
+
+def _fake_gh(tmp_path: Path) -> tuple[Path, Path, Path]:
+    script = tmp_path / "fake-gh"
+    log = tmp_path / "gh.calls"
+    payload = tmp_path / "gh.json"
+    _write_executable(
+        script,
+        f"""#!{sys.executable}
+import os
+import sys
+
+args = sys.argv[1:]
+with open(os.environ["FAKE_GH_LOG"], "ab") as stream:
+    stream.write(b"\\0".join(arg.encode() for arg in args) + b"\\0")
+expected = ["repo", "view", "github.com/" + {REPO_SLUG!r}, "--hostname", "github.com", "--json", "nameWithOwner,visibility,isArchived"]
+if args != expected:
+    print("unexpected gh arguments", file=sys.stderr)
+    raise SystemExit(97)
+with open(os.environ["FAKE_GH_PAYLOAD"], encoding="utf-8") as stream:
+    sys.stdout.write(stream.read())
+raise SystemExit(int(os.environ.get("FAKE_GH_RC", "0")))
+""",
+    )
+    return script, log, payload
+
+
+def _run_checker(
+    tmp_path: Path,
+    registry: Path,
+    *,
+    uv_bin: str | Path | None = None,
+    gh_bin: str | Path | None = None,
+    yq_bin: str | Path | None = None,
+    extra_env: dict[str, str] | None = None,
+) -> subprocess.CompletedProcess[str]:
+    env = os.environ.copy()
+    env.update(
+        {
+            "REGISTRY_PATH": str(registry),
+            "UV_BIN": str(uv_bin or _fake_uv(tmp_path)),
+            "GH_BIN": str(gh_bin or tmp_path / "missing-gh"),
+            "YQ_BIN": str(yq_bin or YQ or tmp_path / "missing-yq"),
+            "PYTHONDONTWRITEBYTECODE": "1",
+        }
+    )
+    if extra_env:
+        env.update(extra_env)
+    return subprocess.run(
+        [str(CHECKER)],
+        cwd=tmp_path,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+
+
+def _gh_args(log: Path) -> list[str]:
+    if not log.exists():
+        return []
+    return [part.decode() for part in log.read_bytes().split(b"\0") if part]
+
+
+def test_missing_registry_warns_without_resolving_dependencies(tmp_path):
+    result = _run_checker(
+        tmp_path,
+        tmp_path / "absent.yml",
+        uv_bin=tmp_path / "missing-uv",
+        yq_bin=tmp_path / "missing-yq",
+    )
+
+    assert result.returncode == 0
+    assert "WARN" in result.stderr
+
+
+def test_exact_public_stub_skips_without_uv_or_gh(tmp_path):
+    registry = _write_registry(tmp_path, entries=[], relocated=True)
+
+    result = _run_checker(tmp_path, registry, uv_bin=tmp_path / "missing-uv")
+
+    assert result.returncode == 0
+    assert "public stub" in result.stdout
+
+
+@pytest.mark.parametrize(
+    ("version", "relocated", "entries"),
+    [
+        (0.2, True, []),
+        ("0.2", False, []),
+        ("0.2", True, [_entry()]),
+    ],
+)
+def test_public_stub_lookalikes_fail_closed(tmp_path, version, relocated, entries):
+    registry = _write_registry(
+        tmp_path,
+        version=version,
+        relocated=relocated,
+        entries=entries,
+    )
+
+    result = _run_checker(tmp_path, registry, uv_bin=tmp_path / "missing-uv")
+
+    assert result.returncode == 1
+
+
+def test_malformed_yaml_is_not_treated_as_empty_stub(tmp_path):
+    registry = tmp_path / "registry.yml"
+    registry.write_text("registry_version: ['broken'\n", encoding="utf-8")
+
+    result = _run_checker(tmp_path, registry)
+
+    assert result.returncode == 1
+
+
+def test_missing_yq_is_dependency_exit_two(tmp_path):
+    registry = _write_registry(tmp_path)
+
+    result = _run_checker(tmp_path, registry, yq_bin=tmp_path / "missing-yq")
+
+    assert result.returncode == 2
+
+
+def test_nonempty_registry_missing_or_failed_uv_exits_two(tmp_path):
+    registry = _write_registry(tmp_path)
+    missing = _run_checker(tmp_path, registry, uv_bin=tmp_path / "missing-uv")
+    failed = _run_checker(tmp_path, registry, uv_bin=_fake_uv(tmp_path, fail=True))
+
+    assert missing.returncode == 2
+    assert failed.returncode == 2
+
+
+def test_invalid_current_registry_exits_one(tmp_path):
+    registry = _write_registry(tmp_path, entries=[_entry(ingestion_enabled=True)])
+
+    result = _run_checker(tmp_path, registry)
+
+    assert result.returncode == 1
+    assert "ingestion_enabled" in result.stderr
+
+
+def test_legacy_registry_warns_and_planned_row_avoids_gh(tmp_path):
+    legacy = {
+        "short_name": "example-client",
+        "repo": REPO_SLUG,
+        "visibility": "PRIVATE",
+        "posture": "client-private",
+        "status": "planned",
+        "raw_roots": ["/unmounted/legacy-source/"],
+    }
+    registry = _write_registry(tmp_path, entries=[legacy], version=0.1)
+
+    result = _run_checker(tmp_path, registry)
+
+    assert result.returncode == 0
+    assert "legacy" in (result.stdout + result.stderr).lower()
+
+
+@pytest.mark.parametrize(
+    "entry",
+    [
+        _entry(),
+        _entry(status="retired"),
+        _entry(raw_roots=["/unmounted/example"], raw_source_status="mounted"),
+    ],
+)
+def test_disabled_planned_or_retired_rows_do_not_require_gh(tmp_path, entry):
+    registry = _write_registry(tmp_path, entries=[entry])
+
+    result = _run_checker(tmp_path, registry, gh_bin=tmp_path / "missing-gh")
+
+    assert result.returncode == 0
+
+
+LIVE_GH_CASES = [
+    ({"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": False}, 0, 0),
+    (
+        {"nameWithOwner": "other/repo", "visibility": "PRIVATE", "isArchived": False},
+        0,
+        1,
+    ),
+    ({"nameWithOwner": REPO_SLUG, "visibility": "PUBLIC", "isArchived": False}, 0, 1),
+    ({"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": True}, 0, 1),
+    ({"nameWithOwner": REPO_SLUG, "visibility": "PRIVATE", "isArchived": False}, 9, 1),
+]
+
+
+@pytest.mark.parametrize("status", ["bootstrapped", "live"])
+@pytest.mark.parametrize(("payload", "gh_rc", "expected"), LIVE_GH_CASES)
+def test_live_rows_use_exact_gh_contract(tmp_path, status, payload, gh_rc, expected):
+    registry = _write_registry(tmp_path, entries=[_entry(status=status)])
+    gh, log, payload_file = _fake_gh(tmp_path)
+    payload_file.write_text(json.dumps(payload), encoding="utf-8")
+
+    result = _run_checker(
+        tmp_path,
+        registry,
+        gh_bin=gh,
+        extra_env={
+            "FAKE_GH_LOG": str(log),
+            "FAKE_GH_PAYLOAD": str(payload_file),
+            "FAKE_GH_RC": str(gh_rc),
+        },
+    )
+
+    assert result.returncode == expected
+    assert _gh_args(log)[-3:] == ["verify-private-repo", "--repo", REPO_SLUG]
+
+
+def test_live_row_missing_gh_fails_closed(tmp_path):
+    registry = _write_registry(tmp_path, entries=[_entry(status="live")])
+
+    result = _run_checker(tmp_path, registry, gh_bin=tmp_path / "missing-gh")
+
+    assert result.returncode == 1
+
+
+@pytest.mark.parametrize("archived", ["false", 0, None])
+def test_live_row_rejects_non_boolean_archived_state(tmp_path, archived):
+    registry = _write_registry(tmp_path, entries=[_entry(status="live")])
+    gh, _log, payload_file = _fake_gh(tmp_path)
+    payload_file.write_text(
+        json.dumps(
+            {
+                "nameWithOwner": REPO_SLUG,
+                "visibility": "PRIVATE",
+                "isArchived": archived,
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = _run_checker(
+        tmp_path,
+        registry,
+        gh_bin=gh,
+        extra_env={
+            "FAKE_GH_LOG": str(tmp_path / "gh.calls"),
+            "FAKE_GH_PAYLOAD": str(payload_file),
+        },
+    )
+
+    assert result.returncode == 1

@@ -1,213 +1,74 @@
 #!/usr/bin/env bash
-# setup-cron.sh — Hostname-aware crontab installer for workspace-hub.
-# Reads task definitions from config/scheduled-tasks/schedule-tasks.yaml.
-# Idempotent: skips entries already present in crontab.
-# Safe: --dry-run prints what would be installed without modifying crontab.
-#
-# ── New Workstation Onboarding ────────────────────────────────────────────────
-#  1. Clone workspace-hub
-#       git clone git@github.com:<org>/workspace-hub.git
-#       cd workspace-hub && git submodule update --init --recursive
-#  2. Set up SSH key to dev-primary (for state file sync)
-#       ssh-keygen -t ed25519 -C "$(hostname)" # if no key exists
-#       ssh-copy-id vamsee@dev-primary
-#  3. Install crontab
-#       bash scripts/cron/setup-cron.sh
-#  4. Smoke-test readiness
-#       bash scripts/readiness/nightly-readiness.sh
-# ─────────────────────────────────────────────────────────────────────────────
+# setup-cron.sh — compatibility entrypoint for transactional cron reconciliation.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_HUB="${WORKSPACE_HUB:-$(cd "${SCRIPT_DIR}/../.." && pwd)}"
-SCHEDULE_FILE="${WORKSPACE_HUB}/config/scheduled-tasks/schedule-tasks.yaml"
-REGISTRY="${WORKSPACE_HUB}/config/workstations/registry.yaml"
+CRON_RENDER="${WORKSPACE_HUB}/scripts/cron/cron_render.py"
+CRON_APPLY="${WORKSPACE_HUB}/scripts/cron/cron_apply.py"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-${WORKSPACE_HUB}/.claude/state/uv-cache}"
 mkdir -p "$UV_CACHE_DIR"
 
 DRY_RUN=false
 REPLACE=false
-for arg in "$@"; do
-  [[ "$arg" == "--dry-run" ]] && DRY_RUN=true
-  [[ "$arg" == "--replace" ]] && REPLACE=true
+ALLOW_LIVE_RELOAD=false
+TARGET_MACHINE=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run) DRY_RUN=true; shift ;;
+    --replace) REPLACE=true; shift ;;
+    --allow-live-reload) ALLOW_LIVE_RELOAD=true; shift ;;
+    --machine)
+      [[ $# -ge 2 ]] || { echo "ERROR: --machine requires a value" >&2; exit 2; }
+      TARGET_MACHINE="$2"
+      shift 2
+      ;;
+    *) echo "ERROR: unknown argument: $1" >&2; exit 2 ;;
+  esac
 done
 
-if [[ ! -f "$SCHEDULE_FILE" ]]; then
-  echo "ERROR: ${SCHEDULE_FILE} not found"
-  exit 1
-fi
-
-HOSTNAME_SHORT=$(hostname -s 2>/dev/null || hostname | cut -d. -f1)
-HOSTNAME_SHORT=$(printf '%s' "$HOSTNAME_SHORT" | tr '[:upper:]' '[:lower:]')
-
-# ── Determine cron_variant from registry ─────────────────────────────────────
-if [[ -f "$REGISTRY" ]]; then
-  CRON_VARIANT=$(uv run --no-project python -c "
-import yaml
-with open('${REGISTRY}') as f:
-    data = yaml.safe_load(f)
-host = '${HOSTNAME_SHORT}'
-for name, m in data.get('machines', {}).items():
-    candidates = [name, m['hostname']] + m.get('hostname_aliases', [])
-    candidates = [c.lower() for c in candidates]
-    if host in candidates:
-        print(m.get('schedule_variant', 'contribute'))
-        break
-else:
-    print('__unknown__')
-" 2>/dev/null)
-  if [[ "$CRON_VARIANT" == "__unknown__" ]]; then
-    echo "INFO: hostname '${HOSTNAME_SHORT}' not in registry — defaulting to 'contribute'"
-    echo "      Add this machine to: config/workstations/registry.yaml"
-    CRON_VARIANT="contribute"
-  fi
-else
-  echo "WARN: registry not found at ${REGISTRY} — falling back to hostname case match"
-  case "$HOSTNAME_SHORT" in
-    dev-primary|ace-linux-1)   CRON_VARIANT="full" ;;
-    dev-secondary|ace-linux-2) CRON_VARIANT="contribute" ;;
-    ace-win-1|ace-win-2|licensed-win-1|licensed-win-2) CRON_VARIANT="contribute-minimal" ;;
-    *)
-      echo "INFO: hostname '${HOSTNAME_SHORT}' not in registry — defaulting to 'contribute'"
-      CRON_VARIANT="contribute"
-      ;;
-  esac
-fi
-
-echo "Host: ${HOSTNAME_SHORT} → cron_variant: ${CRON_VARIANT}"
-
-# ── Windows / contribute-minimal: print Task Scheduler instructions from YAML ─
-if [[ "$CRON_VARIANT" == "contribute-minimal" ]]; then
-  echo ""
-  echo "  This machine uses cron_variant: contribute-minimal (Windows)."
-  echo "  Automated cron is not supported. Set up Windows Task Scheduler entries"
-  echo "  as documented in: ${SCHEDULE_FILE}"
-  echo "  (look for scheduler: windows-task-scheduler entries)"
-  echo ""
-  exit 0
-fi
-
-# ── Read cron entries from schedule-tasks.yaml for this hostname ─────────────
-# Delegate machine resolution, schedule selection, and placeholder expansion to
-# cron_render.py so setup-cron and cron_apply share one renderer.
-ENTRIES=()
-RENDER_STDOUT="$(mktemp)"
-RENDER_STDERR="$(mktemp)"
-cleanup_render_files() {
-  rm -f "$RENDER_STDOUT" "$RENDER_STDERR"
-}
-trap cleanup_render_files EXIT
-
-if ! SCHEDULE_FILE="$SCHEDULE_FILE" \
-     REGISTRY="$REGISTRY" \
-     HOSTNAME_SHORT="$HOSTNAME_SHORT" \
-     WORKSPACE_HUB="$WORKSPACE_HUB" \
-     uv run --no-project python - >"$RENDER_STDOUT" 2>"$RENDER_STDERR" <<'PY'
-import importlib.util
-import os
-import sys
-from pathlib import Path
-
-import yaml
-
-workspace_hub = Path(os.environ["WORKSPACE_HUB"])
-renderer_path = workspace_hub / "scripts" / "cron" / "cron_render.py"
-spec = importlib.util.spec_from_file_location("cron_render", renderer_path)
-if spec is None or spec.loader is None:
-    raise RuntimeError(f"could not load cron renderer at {renderer_path}")
-cron_render = importlib.util.module_from_spec(spec)
-sys.modules["cron_render"] = cron_render
-spec.loader.exec_module(cron_render)
-
-schedule_file = Path(os.environ["SCHEDULE_FILE"])
-registry_file = Path(os.environ["REGISTRY"])
-with schedule_file.open() as f:
-    data = yaml.safe_load(f) or {}
-try:
-    with registry_file.open() as f:
-        registry = yaml.safe_load(f) or {}
-except Exception:
-    registry = {}
-
-context = cron_render.build_context(
-    os.environ["HOSTNAME_SHORT"],
-    registry=registry,
-    workspace_hub=workspace_hub,
-)
-for line in cron_render.render_machine_cron_lines(data.get("tasks", []) or [], context):
-    print(line)
-PY
-then
-  echo "ERROR: failed to render cron entries" >&2
-  cat "$RENDER_STDERR" >&2
-  exit 1
-fi
-
-if [[ -s "$RENDER_STDERR" ]]; then
-  cat "$RENDER_STDERR" >&2
-fi
-
-while IFS= read -r line; do
-  [[ -n "$line" ]] && ENTRIES+=("$line")
-done < "$RENDER_STDOUT"
-
-echo "Found ${#ENTRIES[@]} task(s) for ${HOSTNAME_SHORT}"
-
-# ── Dry-run: print and exit ───────────────────────────────────────────────────
-if [[ "$DRY_RUN" == "true" ]]; then
-  echo ""
-  echo "DRY RUN — would install the following crontab entries:"
-  for entry in "${ENTRIES[@]}"; do
-    echo "  ${entry}"
-  done
-  echo ""
-  echo "(no changes made)"
-  exit 0
-fi
-
-# ── Install ──────────────────────────────────────────────────────────────────
-if [[ "$REPLACE" == "true" ]]; then
-  # --replace is UNSAFE (#2969, F2): it overwrites the ENTIRE crontab and would DELETE
-  # externally-owned live cron lines (e.g. deckhand Telegram client-SLA automation on
-  # ace-linux-2). Disabled in favor of the fail-closed transactional cutover.
-  echo "ERROR: 'setup-cron.sh --replace' is disabled (#2969) — it would delete uncataloged" >&2
-  echo "       live cron lines (deckhand/Telegram automation). Use the safe transactional path:" >&2
-  echo "         uv run --script scripts/cron/cron-audit.py            # audit live crontab first" >&2
-  echo "         uv run --script scripts/cron/cron_apply.py            # dry-run (default)" >&2
-  echo "         uv run --script scripts/cron/cron_apply.py --apply    # commit: backup + CAS + rollback" >&2
+if [[ "$REPLACE" == true ]]; then
+  echo "ERROR: 'setup-cron.sh --replace' is disabled (#2969)" >&2
+  echo "Use transactional preview/apply through setup-cron.sh instead." >&2
   exit 2
-else
-  # Default: idempotent — skip entries already present
-  CURRENT_CRONTAB=$(crontab -l 2>/dev/null || true)
-  ADDED=0
-  SKIPPED=0
-  NEW_CRONTAB="$CURRENT_CRONTAB"
-
-  for entry in "${ENTRIES[@]}"; do
-    # Use schedule + script basename as the unique key.
-    schedule=$(printf '%s' "$entry" | awk '{print $1,$2,$3,$4,$5}')
-    script_base=$(printf '%s' "$entry" | grep -oE 'scripts/[^ "]+' | head -1 \
-      | xargs -I{} basename {} 2>/dev/null || true)
-    key="${schedule} ${script_base}"
-    if [[ -n "$script_base" ]] \
-       && printf '%s\n' "$CURRENT_CRONTAB" | grep -qF "$script_base" 2>/dev/null \
-       && printf '%s\n' "$CURRENT_CRONTAB" | grep -qF "$schedule" 2>/dev/null; then
-      echo "  SKIP (already present): ${key}"
-      SKIPPED=$((SKIPPED + 1))
-    else
-      NEW_CRONTAB="${NEW_CRONTAB}"$'\n'"${entry}"
-      echo "  ADD: ${entry}"
-      ADDED=$((ADDED + 1))
-    fi
-  done
-
-  if [[ "$ADDED" -gt 0 ]]; then
-    echo "$NEW_CRONTAB" | crontab -
-    echo ""
-    echo "Installed ${ADDED} new crontab entry/entries (skipped ${SKIPPED} already present)."
-    echo "Verify with: crontab -l"
-  else
-    echo ""
-    echo "All ${SKIPPED} entries already present — no changes made."
-  fi
 fi
+
+if [[ -z "$TARGET_MACHINE" ]]; then
+  TARGET_MACHINE="$(hostname -s 2>/dev/null || hostname | cut -d. -f1)"
+fi
+PHYSICAL_HOST="$(hostname -s 2>/dev/null || hostname | cut -d. -f1)"
+
+CANONICAL_MACHINE="$(uv run --no-project python "$CRON_RENDER" \
+  --machine "$TARGET_MACHINE" --field machine_id)"
+PHYSICAL_MACHINE="$(uv run --no-project python "$CRON_RENDER" \
+  --machine "$PHYSICAL_HOST" --field machine_id)"
+SCHEDULE_VARIANT="$(uv run --no-project python "$CRON_RENDER" \
+  --machine "$TARGET_MACHINE" --field schedule_variant)"
+
+echo "Host: ${TARGET_MACHINE} → machine: ${CANONICAL_MACHINE} → cron_variant: ${SCHEDULE_VARIANT}"
+# #3507: key the Task-Scheduler skip on the registry os field, NOT the schedule
+# variant — gpu-claw is a linux contribute-minimal box and must get real crons.
+MACHINE_OS="$(uv run --no-project python "$CRON_RENDER" \
+  --machine "$TARGET_MACHINE" --field os)"
+if [[ "$MACHINE_OS" == "windows" ]]; then
+  echo "This machine uses Windows Task Scheduler; Linux cron reconciliation is skipped."
+  exit 0
+fi
+if [[ "$CANONICAL_MACHINE" != "$PHYSICAL_MACHINE" ]]; then
+  echo "ERROR: refusing to reconcile local crontab for remote machine ${CANONICAL_MACHINE}" >&2
+  echo "Run setup-cron.sh on that machine instead." >&2
+  exit 2
+fi
+
+APPLY_ARGS=(--machine "$CANONICAL_MACHINE")
+if [[ "$DRY_RUN" == false ]]; then
+  APPLY_ARGS+=(--apply)
+else
+  APPLY_ARGS+=(--json)
+fi
+if [[ "$ALLOW_LIVE_RELOAD" == true ]]; then
+  APPLY_ARGS+=(--allow-live-reload)
+fi
+
+exec uv run --script "$CRON_APPLY" "${APPLY_ARGS[@]}"

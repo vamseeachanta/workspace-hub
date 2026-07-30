@@ -14,16 +14,17 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/22
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Objective
 
       Prepare a future Shell interventions outreach touchpoint for Lou Daigle using user-provided contact route.
@@ -35,16 +36,17 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/21
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Objective
 
       Prepare a future Shell interventions outreach touchpoint for Chris Gerace using user-provided contact route.
@@ -56,16 +58,17 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/20
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Objective
 
       Add Mike Blackwell, Chris Gerace, and Lou Daigle as a Shell-side interventions prospect cluster and prepare a squeaky-ready outreach/collateral packet before any contact.
@@ -77,16 +80,17 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/18
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Objective
 
       Prepare a user-approved outreach email and minimum credible collateral packet for Scott Sanantonio around offshore intervention, abandonment, HSE inputs, and riser-analysis automation.
@@ -98,16 +102,17 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/17
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     gh_assignees: []
     initial_status: triage
-    priority: 0
+    priority: 1
     body_excerpt: '## Background
 
       We have an existing digitalmodel vessel-suitability GTM pack with jumper installation, mudmat installation, and shallow pipelay capability examples. The next GTM wedge is smaller installation vessel owners/operators: regional CSV/MPSV/ROV-support fleets, subsea construction contractors, mooring/IMR/decommissioning contractors, and commercial teams that need to prove vessel capability in tenders.
@@ -119,13 +124,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/15
     gh_state: open
     gh_labels:
-      - priority:P2
       - strategy
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
-      - domain:operations-governance
       - lane:claude
+      - priority:medium
+      - domain:governance
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -140,13 +146,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/14
     gh_state: open
     gh_labels:
-      - priority:P4
       - flywheel
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
-      - domain:product
+      - domain:gtm
       - lane:claude
+      - priority:low
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -161,14 +168,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/13
     gh_state: open
     gh_labels:
-      - priority:P3
       - flywheel
       - status:scoping
       - layer:feedback
       - dispatch:ready
       - machine:dev-primary
-      - domain:pilots-data
+      - domain:gtm
       - lane:claude
+      - priority:low
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -183,14 +191,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/12
     gh_state: open
     gh_labels:
-      - priority:P3
       - flywheel
       - status:scoping
       - layer:realtime
       - dispatch:ready
       - machine:dev-primary
-      - domain:pilots-data
+      - domain:gtm
       - lane:claude
+      - priority:low
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -205,14 +214,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/11
     gh_state: open
     gh_labels:
-      - priority:P3
       - flywheel
       - status:scoping
       - layer:client-data
       - dispatch:ready
       - machine:dev-primary
-      - domain:pilots-data
+      - domain:gtm
       - lane:claude
+      - priority:low
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -227,14 +237,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/10
     gh_state: open
     gh_labels:
-      - priority:P2
       - flywheel
       - strategy
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
-      - domain:operations-governance
       - lane:claude
+      - priority:medium
+      - domain:governance
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -249,14 +260,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/9
     gh_state: open
     gh_labels:
-      - priority:P2
       - flywheel
       - strategy
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
-      - domain:commercial
       - lane:claude
+      - priority:medium
+      - domain:business-development
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -271,15 +283,16 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/8
     gh_state: open
     gh_labels:
-      - priority:P2
       - flywheel
       - status:scoping
       - layer:parametric
       - layer:client-data
       - dispatch:ready
       - machine:dev-primary
-      - domain:product
+      - domain:gtm
       - lane:codex
+      - priority:medium
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -294,15 +307,16 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/7
     gh_state: open
     gh_labels:
-      - priority:P2
       - flywheel
       - status:scoping
       - layer:public-data
       - layer:client-data
       - dispatch:ready
       - machine:dev-primary
-      - domain:product
+      - domain:gtm
       - lane:claude
+      - priority:medium
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -317,14 +331,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/6
     gh_state: open
     gh_labels:
-      - priority:P2
       - flywheel
       - status:scoping
       - layer:public-data
       - dispatch:ready
       - machine:dev-primary
-      - domain:product
+      - domain:gtm
       - lane:claude
+      - priority:medium
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -339,14 +354,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/5
     gh_state: open
     gh_labels:
-      - priority:P2
       - flywheel
       - status:plan-approved
       - layer:public-data
       - dispatch:ready
       - machine:dev-primary
-      - domain:product
+      - domain:gtm
       - lane:codex
+      - priority:medium
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -361,14 +377,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/4
     gh_state: open
     gh_labels:
-      - priority:P0
       - flywheel
       - status:plan-approved
       - layer:standards
       - dispatch:ready
       - machine:dev-primary
-      - domain:product
+      - domain:gtm
       - lane:claude
+      - priority:critical
+      - cat:research
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -383,14 +400,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/3
     gh_state: open
     gh_labels:
-      - priority:P2
       - flywheel
       - strategy
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:commercial
       - lane:claude
+      - priority:medium
+      - domain:business-development
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -405,14 +423,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/2
     gh_state: open
     gh_labels:
-      - priority:P3
       - flywheel
       - strategy
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:product
+      - domain:gtm
       - lane:claude
+      - priority:low
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -427,15 +446,16 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/1
     gh_state: open
     gh_labels:
-      - priority:P2
       - epic
       - flywheel
       - strategy
       - status:scoping
       - dispatch:ready
       - machine:dev-primary
-      - domain:product
+      - domain:gtm
       - lane:claude
+      - priority:medium
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -461,11 +481,12 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/25
     gh_state: open
     gh_labels:
-      - priority:P1
-      - domain:pilots-data
+      - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#30
@@ -474,13 +495,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/30
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#31
@@ -489,13 +511,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/31
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
-      - domain:product
+      - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#32
@@ -504,13 +527,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/32
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#33
@@ -519,13 +543,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/33
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#34
@@ -534,13 +559,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/34
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#35
@@ -549,11 +575,12 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/35
     gh_state: open
     gh_labels:
-      - priority:P2
       - strategy
       - status:scoping
-      - domain:pilots-data
+      - domain:gtm
       - lane:claude
+      - priority:medium
+      - cat:research
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -564,11 +591,12 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/36
     gh_state: open
     gh_labels:
-      - priority:P3
       - strategy
       - status:scoping
-      - domain:pilots-data
+      - domain:gtm
       - lane:claude
+      - priority:low
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -589,13 +617,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/42
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
-      - domain:product
+      - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#43
@@ -604,13 +633,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/43
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#44
@@ -619,13 +649,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/44
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#45
@@ -634,13 +665,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/45
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
-      - domain:commercial
       - lane:claude
+      - priority:high
+      - domain:business-development
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#46
@@ -649,13 +681,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/46
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#47
@@ -664,13 +697,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/47
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#48
@@ -679,13 +713,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/48
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#51
@@ -694,14 +729,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/51
     gh_state: open
     gh_labels:
-      - priority:P1
       - epic
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#52
@@ -710,12 +746,13 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/52
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
-      - domain:operations-governance
       - lane:claude
+      - priority:high
+      - domain:governance
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#53
@@ -724,13 +761,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/53
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#54
@@ -739,14 +777,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/54
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - dispatch:ready
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#55
@@ -755,14 +794,15 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/55
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - dispatch:ready
-      - domain:operations-governance
       - lane:claude
+      - priority:high
+      - domain:governance
+      - cat:operations
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#56
@@ -771,12 +811,13 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/56
     gh_state: open
     gh_labels:
-      - priority:P2
       - strategy
       - status:scoping
       - dispatch:ready
       - domain:gtm
       - lane:claude
+      - priority:medium
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -787,11 +828,12 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/57
     gh_state: open
     gh_labels:
-      - priority:P2
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:medium
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -802,12 +844,13 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/58
     gh_state: open
     gh_labels:
-      - priority:P2
       - strategy
       - status:scoping
       - dispatch:ready
-      - domain:pilots-data
+      - domain:gtm
       - lane:claude
+      - priority:medium
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -818,13 +861,14 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/59
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - status:scoping
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#69
@@ -833,12 +877,13 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/69
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
       - domain:gtm
       - lane:claude
+      - priority:high
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#70
@@ -847,12 +892,13 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/70
     gh_state: open
     gh_labels:
-      - priority:P1
       - strategy
-      - domain:commercial
       - lane:claude
+      - priority:high
+      - domain:business-development
+      - cat:business
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#76
@@ -860,7 +906,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/76
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -871,13 +919,13 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/77
     gh_state: closed
     gh_labels:
-      - priority:P1
       - epic
       - strategy
       - domain:gtm
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#78
@@ -886,12 +934,12 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/78
     gh_state: closed
     gh_labels:
-      - priority:P1
       - strategy
       - domain:gtm
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#79
@@ -900,12 +948,12 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/79
     gh_state: closed
     gh_labels:
-      - priority:P1
       - strategy
       - domain:gtm
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#80
@@ -914,10 +962,10 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/80
     gh_state: closed
     gh_labels:
-      - priority:P2
       - strategy
-      - domain:commercial
       - lane:claude
+      - priority:medium
+      - domain:business-development
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -928,10 +976,10 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/81
     gh_state: closed
     gh_labels:
-      - priority:P2
       - strategy
-      - domain:commercial
       - lane:claude
+      - priority:medium
+      - domain:business-development
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -942,12 +990,12 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/82
     gh_state: closed
     gh_labels:
-      - priority:P1
       - strategy
       - domain:gtm
       - lane:claude
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#83
@@ -956,10 +1004,10 @@ cards:
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/83
     gh_state: closed
     gh_labels:
-      - priority:P2
       - strategy
       - domain:gtm
       - lane:claude
+      - priority:medium
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -973,6 +1021,7 @@ cards:
       - epic
       - domain:gtm
       - lane:claude
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -985,6 +1034,7 @@ cards:
     gh_labels:
       - domain:gtm
       - lane:claude
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -997,6 +1047,7 @@ cards:
     gh_labels:
       - domain:gtm
       - lane:claude
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1030,8 +1081,8 @@ cards:
       - epic
       - strategy
       - domain:gtm
-      - domain:product
       - lane:claude
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1041,7 +1092,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/101
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1051,7 +1104,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/102
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1061,7 +1116,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/103
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1071,7 +1128,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/104
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1081,7 +1140,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/105
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1091,7 +1152,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/106
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1101,7 +1164,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/107
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1111,7 +1176,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/116
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1121,7 +1188,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/117
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1131,7 +1200,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/118
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1141,7 +1212,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/119
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:gtm
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1151,7 +1224,9 @@ cards:
     source: github_issue
     source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/120
     gh_state: open
-    gh_labels: []
+    gh_labels:
+      - domain:business-development
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1183,7 +1258,7 @@ cards:
     gh_state: closed
     gh_labels:
       - epic
-      - domain:product
+      - domain:gtm
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1195,7 +1270,7 @@ cards:
     gh_state: closed
     gh_labels:
       - enhancement
-      - domain:product
+      - domain:gtm
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1218,7 +1293,7 @@ cards:
     gh_state: closed
     gh_labels:
       - strategy
-      - domain:product
+      - domain:gtm
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1230,12 +1305,12 @@ cards:
     gh_state: closed
     gh_labels:
       - enhancement
-      - priority:P1
       - strategy
       - domain:gtm
       - lane:codex
+      - priority:high
     initial_status: triage
-    priority: 0
+    priority: 1
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/aceengineer-strategy#155
@@ -1245,9 +1320,9 @@ cards:
     gh_state: closed
     gh_labels:
       - bug
-      - priority:P2
-      - domain:operations-governance
       - lane:codex
+      - priority:medium
+      - domain:governance
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -1259,10 +1334,219 @@ cards:
     gh_state: open
     gh_labels:
       - bug
-      - priority:P2
-      - status:scoping
-      - domain:operations-governance
+      - status:plan-approved
       - lane:codex
+      - lane:claude
+      - priority:medium
+      - domain:governance
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#159
+    title: '[Sun Manufacturing] Bootstrap private client wiki and pre-outreach knowledge pack'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/159
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:gtm
+      - lane:codex
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#160
+    title: '[Sun Manufacturing] Register sun-mfg in private client-wiki registry'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/160
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - domain:gtm
+      - lane:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#161
+    title: '[Sun Manufacturing] Bootstrap private llm-wiki-sun-mfg repository'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/161
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:gtm
+      - lane:codex
+      - cat:tooling
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#162
+    title: '[Sun Manufacturing] Seed public-source knowledge pack and two pre-outreach reviews'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/162
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:gtm
+      - lane:codex
+      - cat:research
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#163
+    title: '[Client-wiki registry] Reconcile HDIC local clone claim on this host'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/163
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:gtm
+      - lane:codex
+      - cat:operations
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#166
+    title: 'Floorhand: establish a rights-aware manufacturing evidence ledger'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/166
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+      - domain:gtm
+      - lane:codex
+      - cat:business
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#167
+    title: 'Floorhand Proof A: demonstrate human-governed job-packet release preflight'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/167
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+      - domain:gtm
+      - lane:codex
+      - cat:business
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#168
+    title: 'Floorhand Proof B: demonstrate comparable-job estimate-versus-actual preflight'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/168
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+      - lane:codex
+      - domain:business-development
+      - cat:business
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#169
+    title: 'Floorhand Proof C: demonstrate a cited parametric engineering batch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/169
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:gtm
+      - lane:codex
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#170
+    title: 'Floorhand Proof D: verify a neutral CAD pipeline spike'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/170
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - domain:gtm
+      - lane:codex
+      - cat:engineering
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#171
+    title: 'Floorhand: produce the evidence-led Sun manufacturing roadmap package'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/171
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:plan-approved
+      - domain:gtm
+      - lane:codex
+      - cat:business
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#172
+    title: 'Sun engagement: prepare preliminary data and client-machine readiness pack'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/172
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - lane:codex
+      - domain:governance
+      - cat:business
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#173
+    title: 'Floorhand/Sun: run adversarial claim, confidentiality, security, and artifact review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/173
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - status:scoping
+      - lane:codex
+      - domain:governance
+      - cat:business
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/aceengineer-strategy#176
+    title: 'Floorhand: 2-page Elliott Services FFS pamphlet (qualification/recertification + new works)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/aceengineer-strategy/issues/176
+    gh_state: open
+    gh_labels:
+      - status:scoping
+      - domain:gtm
+      - lane:claude
+      - cat:business
     initial_status: triage
     priority: 0
     gh_assignees: []

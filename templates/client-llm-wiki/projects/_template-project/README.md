@@ -6,7 +6,7 @@ Navigation aid for this project's wiki content. **No strict frontmatter required
 
 | Subdirectory | Contents |
 |---|---|
-| `raw/` | Raw inputs as received from the client / sourced from `/mnt/ace/<CLIENT_RAW_ROOT>/<PROJECT_SHORT_NAME>/`. Filename-preserved. |
+| `raw/` (optional, post-bootstrap) | Local navigation placeholder only. Raw inputs remain in authorized external storage; the directory and its contents are not part of the initial scaffold. |
 | `extracted/` | Cleaned / extracted intermediate artifacts (CSVs, JSON, normalized text). Derived from `raw/`. |
 | `methodology/` | Client-specific methodology notes — how the calculations / extractions / analyses were performed. References generic concept pages in `vamseeachanta/llm-wiki` via wiki slug (not duplicate copies). |
 | `results/` | Final client-facing calc results, reports (HTML/PDF/DOCX), evidence packs. |
@@ -29,13 +29,9 @@ When `<PROJECT_SHORT_NAME>` is added to the `projects:` list of `<CLIENT_SHORT_N
 
 Methodology or sanitized worked examples may be promoted from this project's `methodology/` to the generic `vamseeachanta/llm-wiki` repo via the abstraction-gate skill: `research/llm-wiki-public-private-routing` (Skill D). The original here remains as the client-attributed audit-trail; the public page in `llm-wiki` is an abstracted copy, never a `git mv`.
 
-## How this project folder was instantiated
+## How this project folder is instantiated
 
-Per the `coordination/client-llm-wiki-factory` skill Step 5b:
-
-```bash
-cp -a /mnt/local-analysis/workspace-hub/templates/client-llm-wiki/projects/_template-project/. \
-      /mnt/local-analysis/llm-wiki-<CLIENT_SHORT_NAME>/projects/<PROJECT_SHORT_NAME>/
-```
-
-Then substitute the two placeholders (`<CLIENT_SHORT_NAME>`, `<PROJECT_SHORT_NAME>`) and add `<PROJECT_SHORT_NAME>` to the client's `projects:` list in `config/client-wikis.yml`.
+Project folders are a post-bootstrap operation. Use repository-local tooling to
+copy this skeleton, resolve `<PROJECT_SHORT_NAME>`, and register that project in
+the authoritative private registry. Do not create or copy raw-source content as
+part of project-folder instantiation.

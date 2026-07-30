@@ -105,6 +105,29 @@ add_repo_hygiene_task() {
 YAML
 }
 
+add_runtime_task() {
+    cat >> "${TMPDIR}/config/scheduled-tasks/schedule-tasks.yaml" <<'YAML'
+
+  - id: repository-sync
+    label: Repository sync
+    schedule: "0 */4 * * *"
+    machines: [dev-primary, ace-linux-1]
+    requires: [bash, python3, uv, git]
+    command: "bash scripts/cron-repository-sync.sh"
+    log: logs/repository-sync-*.log
+    runtime:
+      singleton: true
+      max_seconds: 10800
+      state_dir: .claude/state/cron-runtime/repository-sync
+      filesystem_wait_wchans: [request_wait_answer]
+    is_claude_task: false
+    description: Repository sync.
+YAML
+    echo "sync ok" > "${TMPDIR}/logs/repository-sync-$(date -u +%Y-%m-%d).log"
+    touch -d "1 hour ago" "${TMPDIR}/logs/repository-sync-$(date -u +%Y-%m-%d).log"
+    mkdir -p "${TMPDIR}/.claude/state/cron-runtime/repository-sync"
+}
+
 teardown_temp_workspace() {
     rm -rf "$TMPDIR"
 }
@@ -583,6 +606,44 @@ test_cron_health_uses_path_uv_not_user_absolute_path() {
     fi
 }
 
+test_runtime_completed_success_is_reported_independently() {
+    echo "TEST: completed runtime success remains independent from log health"
+    setup_temp_workspace
+    write_clean_base_logs
+    add_runtime_task
+    cat > "${TMPDIR}/.claude/state/cron-runtime/repository-sync/last-result.json" <<JSON
+{"task_id":"repository-sync","finished_at":$(date +%s),"exit_code":0}
+JSON
+
+    local output report
+    output=$(bash "$SCRIPT_UNDER_TEST" --workspace "$TMPDIR" 2>&1)
+    report="${TMPDIR}/.claude/state/cron-health/$(date -u +%Y-%m-%d).json"
+
+    assert_contains "runtime success is visible" "runtime: completed_success" "$output"
+    assert_json_field "runtime status is in JSON" "$report" "tasks.2.runtime_status" "completed_success"
+    teardown_temp_workspace
+}
+
+test_runtime_failure_makes_health_fail_with_fresh_log() {
+    echo "TEST: runtime failure is not hidden by a fresh log"
+    setup_temp_workspace
+    write_clean_base_logs
+    add_runtime_task
+    cat > "${TMPDIR}/.claude/state/cron-runtime/repository-sync/last-result.json" <<JSON
+{"task_id":"repository-sync","finished_at":$(date +%s),"exit_code":7}
+JSON
+
+    local output rc report
+    output=$(bash "$SCRIPT_UNDER_TEST" --workspace "$TMPDIR" 2>&1)
+    rc=$?
+    report="${TMPDIR}/.claude/state/cron-health/$(date -u +%Y-%m-%d).json"
+
+    assert_eq "runtime failure exits nonzero" "1" "$rc"
+    assert_contains "runtime failure is visible" "RUNTIME_ERROR.*repository-sync" "$output"
+    assert_json_field "runtime failure is in JSON" "$report" "tasks.2.runtime_status" "completed_failure"
+    teardown_temp_workspace
+}
+
 # ── Run all tests ────────────────────────────────────────────────────────────
 
 echo "======================================"
@@ -612,6 +673,8 @@ test_cron_health_hygiene_error_respects_existing_stale_or_missing_status
 test_cron_health_marker_filter_preserves_unrelated_generic_errors
 test_cron_health_generic_error_patterns_still_work
 test_cron_health_uses_path_uv_not_user_absolute_path
+test_runtime_completed_success_is_reported_independently
+test_runtime_failure_makes_health_fail_with_fresh_log
 
 echo ""
 echo "======================================"

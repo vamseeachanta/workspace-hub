@@ -102,25 +102,12 @@
   - `reconciliation_workflow.py` — end-to-end QC → calibrate → confidence → recommendations
 - **Key Vogel formula**: `q/qmax = 1 - 0.2*(Pwf/Pr) - 0.8*(Pwf/Pr)²`
 - **Composite IPR kink**: linear above bubble point (PI model), Vogel below; `qmax = q_b + PI*Pb/1.8`
-- **Test command**: `PYTHONPATH=src python3 -m pytest tests/production_engineering/ -v` (no `--noconftest`)
 
 ## worldenergydata sodir Module (pre-existing, check before WRK-190)
 
-- **Path**: `worldenergydata/src/worldenergydata/sodir/`
-- **Files**: `api_client.py`, `forecasting.py`, `npv_norway.py`, `cross_regional.py`, `analysis.py`, `batch.py`, `cache.py`, `datasets.py`, `visualization.py`, etc.
-- **Status**: substantial NCS module already exists; audit before starting WRK-190 (NPD/Sodir integration)
-- **Risk**: WRK-190 may be mostly/partly done already — diff against the spec before writing new code
 
 ## Cathodic Protection Module (CP-stream, 2026-02-20/21)
 
-- **File**: `digitalmodel/src/digitalmodel/infrastructure/common/cathodic_protection.py`
-- **Router**: `CathodicProtection().router(cfg)` dispatches on `cfg["inputs"]["calculation_type"]`
-- **Routes implemented**: `ABS_gn_ships_2018`, `DNV_RP_F103_2010` (fixed WRK-279)
-- **Routes pending**: `ABS_gn_offshore_2018` (WRK-277, Route C), `DNV_RP_B401_offshore` (WRK-272, Route C)
-- **Tests**: 96 passing in `tests/specialized/cathodic_protection/` (5 test files)
-- **Standards inventory**: `docs/domains/cathodic_protection/standards-inventory.md` (WRK-269 — authoritative)
-- **Calc library**: `docs/domains/cathodic_protection/examples/` — calc-001..011 + example-01/02/03
-- **Brochure**: WRK-273 pending (Route A, unblocked — next up)
 
 ### DNV F103-2010 cfg structure (after WRK-279 fix)
 ```python
@@ -135,22 +122,10 @@ cfg = {"inputs": {"calculation_type": "DNV_RP_F103_2010",
 ```
 
 ### G-1 to G-5 Critical Defect Fixes (WRK-279, commit de6990277)
-- **G-1/G-2**: `_dnv_current_densities` — `_F103_2010_TABLE_5_1` (burial × temp mA/m²); removed coating-quality lookup
-- **G-3**: Arrhenius correction removed entirely
-- **G-4**: `_dnv_coating_breakdown` — linear `f_cm = a + 0.5*b*t_f`; `_F103_2010_TABLE_A1` (FBE, 3LPE, asphalt, bare)
-- **G-5**: `_dnv_pipeline_geometry` RL — F103-2010 Eq.11: `rho_Me / (pi * d * (D-d))`; default 0.2e-6 Ω·m (CMn)
 
 ### Abstracted Calc Library (WRK-276/280)
-- 11 `.md` files: calc-001..009 (WRK-276) + calc-010/011 (WRK-280 FST documents)
-- 3 deny lists created: `digitalmodel/`, `client-d/`, `mkt-a/` `.legal-deny-list.yaml`
-- Legal CI gate: `digitalmodel/.pre-commit-config.yaml` has `legal-sanity-scan` hook
-  - Entry: `scripts/legal/legal-sanity-scan.sh --repo=digitalmodel` (NOT `../scripts/...`)
-- Note: client-d and mkt-a have NO pre-commit config — manual scan gate only
 
 ### Route C items pending plan gate
-- **WRK-272**: DNV-RP-B401 offshore — jacket structures; B401-2021 PDF at `mkt-a/B1522/ctr-2/cal/DNV-RP-B401-2021.pdf`
-- **WRK-277**: ABS GN Offshore 2018 — PDF at `digitalmodel/docs/domains/cathodic_protection/codes/ABS cathodic-protection-offshore-gn-dec18.pdf`
-- Both require plan gate + Codex cross-review before implementation
 
 ## Repo Routing Rule — Wind Energy Work
 
@@ -161,28 +136,5 @@ Boundary test: "Is it energy data/economics?" → worldenergydata. "Is it a stru
 
 ## Wind Energy Module (WRK-688, eval in progress)
 
-- **Tool**: pyWAsP — Python API for WAsP (DTU Wind Energy / Ørsted)
-- **Docs**: https://docs.wasp.dk/pywasp/latest/
-- **Key reference**: https://docs.wasp.dk/pywasp/latest/getting_started/working_with_xarray_and_windkit.html
-- **WindKit data structures**: spatial formats = point / raster / cuboid; wind climate types = TSWC / BWC / WWC / GWC; topography = elevation, roughness, land cover; CRS-aware
-- **xarray-native**: WindKit Datasets align with worldenergydata metocean module plans (NOAA NDBC)
-- **Companion**: PyWake (MIT licence) — AEP + wake modelling without WAsP licence; evaluate as free entry point
-- **GTM relevance**: Orsted, Equinor, CVOW (Tier 3 targets, WRK-148) use WAsP daily
-- **Spec entry**: `specs/data-sources/worldenergydata.yaml` tools → pywasp
-- **Gap entry**: `specs/data-sources/worldenergydata.yaml` gaps → wind-resource-assessment
-- **WRK-688**: eval — install, WindKit xarray compat, AEP example, licence assessment, eval report → `specs/data-sources/pywasp-eval.md`
 
 ## Archived WRK Items (Condensed)
-- **WRK-096** (02-08): Module flatten `worldenergydata.modules.X` → `worldenergydata.X`
-- **WRK-097**: Data residence 3-tier policy (Collection→wed, Engineering→dm, Project→repos)
-- **WRK-098** (02-08): Git history 4.1GB→177MB, 6 filter-repo passes
-- **WRK-011** (02-08): All-fields BSEE analysis, 54 tests, paleowells era classification
-- **WRK-067/068/071** (02-10): HSE imports — OSHA 29.5K + BSEE 68.5K + EPA TRI 51.5K
-- **WRK-104/135** (02-12/13): Rig fleet 2,268 rigs, hull mapping
-- **WRK-102** (02-13): Hull form classification 1,674/2,268 rigs
-- **WRK-119** (02-12): 3-tier test runner, 603 tests in 5.6s
-- **WRK-014** (02-16): HSE risk index module + website visualization
-- **WRK-079** (02-16): Marine safety correlation case study HTML
-- **WRK-105** (02-16): Drilling riser component data, 56 tests
-- **WRK-170** (02-17): Metocean statistics engine, 80 tests
-- **WRK-164** (02-19): Production engineering — well test quality + nodal analysis, 93 tests, `digitalmodel`
