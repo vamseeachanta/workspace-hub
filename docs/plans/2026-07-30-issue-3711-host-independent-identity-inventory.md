@@ -273,13 +273,19 @@ Lexical normalisation is faithful for an absolute, already-normal POSIX path and
 path. `~/…` (R6) and `a/../b` are not. A new `validate_declared_workspace_roots(registry)` will
 return one structural error per offending Linux machine, wired into
 `cron_identity.validate_inventory_inputs`, so `build()` raises `ValueError` and `main()` returns 1
-**naming the machine**:
+**naming the machine**. The guard will also reject the known Darwin firmlink projection
+`/System/Volumes/Data/...` on an `os: linux` row; that cheap structural check covers the exact
+registry-source poison the independent reviewer demonstrated without turning the validator into a
+general machine-truth oracle:
 
 ```
 [both hosts] [C3] guard on a '~'-declared root:
   [('gpu-claw', '~/ws/workspace-hub', 'workspace_root is not an absolute POSIX path')]
 [both hosts] [C3] guard on a non-normal root:
   [('gpu-claw', '/home/undi/../undi/ws/workspace-hub', 'workspace_root is not in normal form')]
+[both hosts] [C3] guard on a Darwin-firmlink projection for a Linux row:
+  [('gpu-claw', '/System/Volumes/Data/home/undi/ws/workspace-hub',
+    'linux workspace_root must not use the macOS firmlink target prefix')]
 [both hosts] [C3] unfaithful declared roots in today's registry.yaml: []
 ```
 
@@ -322,7 +328,7 @@ Measured with the committed prototype `contents_check.py`:
 | Its verdict does not depend on the host | After D1 the regeneration is a pure function of the eight digest sources' bytes. The prototype returns the same verdict on Darwin and Linux for the same index. | D4 block above |
 | It reads what will be committed, not what happens to be on disk | It consumes `read_index_records`' git-index blobs, the same source `_validate_inventory_digest` already uses. | `check-scheduler-mutation-surfaces.py:88-99, 328` |
 | Failure is loud and blocking | Appending to `errors` is the checker's existing non-zero mechanism. | — |
-| It cannot be satisfied by a self-consistent lie | The check recomputes the rows; it does not compare the artifact to itself. A hand-edited `identities` array with a matching `input_digest` — today's undetectable forgery — is rejected. | R5 vs D4 |
+| It cannot be satisfied by an artifact-only lie | The check recomputes the rows from trusted git-index source bytes; it does not compare the artifact to itself. A hand-edited `identities` array, or a Mac-rendered artifact-only poison carrying a matching `input_digest`, is rejected. | R5 vs D4 |
 
 **The executed surface is itself pinned.** `_validate_inventory_contents` will import
 `build-cron-identity-inventory.py`, whose import closure is exactly `cron_identity.py` →
@@ -334,6 +340,16 @@ executed modules are members of the eight-file digest set**
 cannot silently widen the check: `build()` derives `input_digest` from worktree bytes while
 `_validate_inventory_digest` derives it from index bytes, so any divergence trips the **existing**
 digest error first. The failure direction is closed, not open.
+
+**Covered versus uncovered failure modes.** Covered: stale generated inventory, hand-edited
+`identities`/`machines`, artifact-only Mac poison, an artifact carrying a correct `input_digest` but
+rows that do not regenerate from the staged sources, non-absolute or non-normal Linux roots, and the
+known Darwin firmlink target prefix on Linux rows. Uncovered: a bad-but-internally-consistent edit to
+trusted registry source bytes that is outside those cheap structural rules, honestly regenerated with
+the matching `source_digest`. The contents check validates artifact/source agreement, not the physical
+truth of every registry root. Full source-truth validation would require per-machine policy or remote
+attestation for every declared root, which is out of proportion to #3711 and remains code-review
+residue.
 
 **Stated honestly — what this does not close.** The checker executes code imported from the
 worktree, a pre-existing property (`scheduler_mutation_delegation.py:89-91` already does this). The
@@ -572,14 +588,15 @@ counted as change-proofs):
 | enforcement checker | GREEN, exit 0 on **both** hosts | `uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py` |
 | generated HTML report | GREEN, exit 0 `[ace1]` | `… --check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html` |
 | identity inventory freshness | GREEN `[ace1]` exit 0; RED `[mac]` exit 1 — row 4 | `uv run --with pyyaml python scripts/cron/build-cron-identity-inventory.py --check` |
-| existing cron suite | **NOT green on `main`** `[ace1]`: `1 failed, 283 passed in 312.30s` — `test_cron_runtime.py::test_signal_keeps_lock_until_child_exits` already fails at `3fe934da9`, before any change here. Recorded so it is not attributed to this plan. `cron_runtime.py` is untouched. | `uv run pytest tests/cron -q` |
+| existing cron suite | GREEN on `main` `[ace1]`: `284 passed in 25.47s`, re-verified 2026-07-30 on `ace-linux-1` at `ae45d3c81`. The earlier `1 failed, 283 passed` note was a measurement error and must not be whitelisted as pre-existing. | `ssh ace1 'bash -l -s' < <script: cd /mnt/local-analysis/workspace-hub && uv run pytest tests/cron -q>` |
 | existing renderer suite | **NOT green on `main`** `[ace1]`: `1 failed, 65 passed in 273.25s` — `test_validate_schedule.py::test_windows_tasks_have_windows_scheduler` already fails at `3fe934da9`. Windows rows are excluded from the inventory at `build-cron-identity-inventory.py:70`; this plan changes neither the catalog nor `validate-schedule.py`. | `uv run pytest scripts/cron/tests -q` |
 | existing enforcement suite | **NOT green on `main`** `[ace1]`: `2 failed, 417 passed in 865.11s` — `test_check_skill_index_coherence.py::test_real_repo_passes` and `test_soul_auto_load.py::test_drift_script_returns_zero_in_clean_state`. Both are unrelated to the scheduler-mutation contract; the **gate itself** (`check-scheduler-mutation-surfaces.py`) exits 0 on both hosts. | `uv run pytest tests/enforcement -q` |
 
-**None of the three suites is green on `main`** — four tests already fail at `3fe934da9`, none in a
-module this plan touches. The suite acceptance criterion below is therefore stated as "no new
-failures relative to the `3fe934da9` baseline", not "the suites pass". All four pre-existing failures
-are enumerated in the verification log so a reviewer does not attribute them to this change.
+`test_cron_runtime.py` passes today in `tests/cron`. `test_validate_schedule.py` lives under
+`scripts/cron/tests/`, outside both `tests/cron` and `tests/enforcement`; its Windows-scheduler
+failure is the lone known cron-renderer-suite failure. The suite acceptance criterion below is
+therefore stated as "no new failures relative to the true baseline", not "the suites pass" and not a
+phantom `tests/cron` failure that could mask a real regression.
 
 ---
 
@@ -639,12 +656,15 @@ plan will make.
       `input_digest` will change. `mutation-surfaces.yaml` `source_digest` and the safety HTML will be
       refreshed in the same commit as each source change.
 - [ ] `uv run pytest tests/cron tests/enforcement scripts/cron/tests -q` on `ace1` will show **no new
-      failures** relative to the measured `3fe934da9` baseline — `tests/cron`: `1 failed, 283 passed`
-      (`test_cron_runtime.py::test_signal_keeps_lock_until_child_exits`); `scripts/cron/tests`:
-      `1 failed, 65 passed` (`test_validate_schedule.py::test_windows_tasks_have_windows_scheduler`);
-      `tests/enforcement`: `2 failed, 417 passed` (`test_check_skill_index_coherence.py::test_real_repo_passes`,
-      `test_soul_auto_load.py::test_drift_script_returns_zero_in_clean_state`). All four are
-      pre-existing and in modules this plan does not touch. The new tests will additionally pass on macOS.
+      failures** relative to the true baseline — `tests/cron`: `284 passed, 0 failed`
+      (`ssh ace1 'bash -l -s' < <script>` with `cd /mnt/local-analysis/workspace-hub && uv run pytest
+      tests/cron -q`, re-verified 2026-07-30 at `ae45d3c81`); `scripts/cron/tests`: `1 failed,
+      65 passed` (`test_validate_schedule.py::test_windows_tasks_have_windows_scheduler`, outside
+      `tests/cron`); `tests/enforcement`: `2 failed, 417 passed`
+      (`test_check_skill_index_coherence.py::test_real_repo_passes`,
+      `test_soul_auto_load.py::test_drift_script_returns_zero_in_clean_state`). The three known
+      failures are pre-existing and in modules this plan does not touch. Any `tests/cron` failure is
+      new and must block the implementation.
 - [ ] `check-scheduler-mutation-surfaces.py` and `--check-html` will exit 0 at every commit.
 - [ ] No implementation step will run `crontab` (write), `setup-cron.sh`, `cron_apply.py --apply`,
       `daily-cleanup.sh`, `repository_sync`, or `reconcile-ecosystem.sh --apply` on any host.
@@ -670,7 +690,7 @@ plan will make.
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| _(pending)_ | — | Independent adversarial review is REQUIRED before approval. This plan has not been reviewed. |
+| Codex r2 | MINOR | Design sound; required narrowing the contents-check claim to artifact/source agreement rather than source truth, and corrected the `tests/cron` baseline to `284 passed, 0 failed`. Both corrections are applied in v2. |
 
 The author's own verification is recorded in
 `scripts/review/results/2026-07-30-plan-3711-verification-log.md` and is **not** a review. The three
