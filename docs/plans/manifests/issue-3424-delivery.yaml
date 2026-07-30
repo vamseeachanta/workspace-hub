@@ -1,0 +1,67 @@
+version: 1
+issue: 3424
+policy:
+  paths_are_repo_relative: true
+  pathspecs_are_literal: true
+  statuses: [A, M, D]
+  default_regular_mode: "100644"
+phases:
+  pre_review:
+    - {path: .claude/skills/workspace-hub/transactional-metadata-only-folder-notes/SKILL.md, status: A, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/transactional-metadata-only-folder-notes/agents/openai.yaml, status: A, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/transactional-metadata-only-folder-notes/references/verified-private-catalog-prior-art.md, status: A, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/learned/metadata-only-wiki-sweep-workflow/SKILL.md, status: M, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/learned/metadata-only-inventory-sweep/SKILL.md, status: M, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/external-drive-ingest-planning/SKILL.md, status: M, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/workspace-knowledge-doc-contracts/SKILL.md, status: M, mode: "100644"}
+    - {path: .claude/skills/research/llm-wiki/SKILL.md, status: M, mode: "100644"}
+    - {path: scripts/ai/build_skill_index.py, status: M, mode: "100644"}
+    - {path: scripts/skills/verify_issue_delivery.py, status: A, mode: "100644"}
+    - {path: scripts/workflow/plan_approval_local_check.py, status: A, mode: "100644"}
+    - {path: scripts/workflow/completeness_inputs.py, status: A, mode: "100644"}
+    - {path: tests/skills/test_transactional_metadata_only_folder_notes.py, status: A, mode: "100644"}
+    - {path: tests/skills/test_verify_issue_delivery.py, status: A, mode: "100644"}
+    - {path: tests/workflow/test_plan_approval_local_check.py, status: A, mode: "100644"}
+    - {path: tests/workflow/test_completeness_inputs.py, status: A, mode: "100644"}
+    - {path: tests/ai/test_build_skill_index.py, status: M, mode: "100644"}
+    - {path: tests/ai/test_skill_router.py, status: M, mode: "100644"}
+    - {path: config/agents/skill-index-full.yaml, status: M, mode: "100644"}
+    - {path: config/agents/codex/AGENTS.runtime.md, status: M, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-skill-3424-forward-test-archive.md, status: A, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-skill-3424-forward-test-models.md, status: A, mode: "100644"}
+  final:
+    - {path: .claude/skills/workspace-hub/transactional-metadata-only-folder-notes/SKILL.md, status: A, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/transactional-metadata-only-folder-notes/agents/openai.yaml, status: A, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/transactional-metadata-only-folder-notes/references/verified-private-catalog-prior-art.md, status: A, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/learned/metadata-only-wiki-sweep-workflow/SKILL.md, status: M, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/learned/metadata-only-inventory-sweep/SKILL.md, status: M, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/external-drive-ingest-planning/SKILL.md, status: M, mode: "100644"}
+    - {path: .claude/skills/workspace-hub/workspace-knowledge-doc-contracts/SKILL.md, status: M, mode: "100644"}
+    - {path: .claude/skills/research/llm-wiki/SKILL.md, status: M, mode: "100644"}
+    - {path: scripts/ai/build_skill_index.py, status: M, mode: "100644"}
+    - {path: scripts/skills/verify_issue_delivery.py, status: A, mode: "100644"}
+    - {path: scripts/workflow/plan_approval_local_check.py, status: A, mode: "100644"}
+    - {path: scripts/workflow/completeness_inputs.py, status: A, mode: "100644"}
+    - {path: tests/skills/test_transactional_metadata_only_folder_notes.py, status: A, mode: "100644"}
+    - {path: tests/skills/test_verify_issue_delivery.py, status: A, mode: "100644"}
+    - {path: tests/workflow/test_plan_approval_local_check.py, status: A, mode: "100644"}
+    - {path: tests/workflow/test_completeness_inputs.py, status: A, mode: "100644"}
+    - {path: tests/ai/test_build_skill_index.py, status: M, mode: "100644"}
+    - {path: tests/ai/test_skill_router.py, status: M, mode: "100644"}
+    - {path: config/agents/skill-index-full.yaml, status: M, mode: "100644"}
+    - {path: config/agents/codex/AGENTS.runtime.md, status: M, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-skill-3424-forward-test-archive.md, status: A, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-skill-3424-forward-test-models.md, status: A, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-code-3424-claude.md, status: A, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-code-3424-codex.md, status: A, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-code-3424-gemini.md, status: A, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-code-3424-provider-availability.md, status: A, mode: "100644"}
+  closeout:
+    - {path: docs/plans/2026-07-09-issue-3424-transactional-metadata-only-folder-notes.md, status: M, mode: "100644"}
+    - {path: docs/plans/README.md, status: M, mode: "100644"}
+    - {path: docs/reports/issue-3424-completeness-inputs.json, status: A, mode: "100644"}
+    - {path: docs/reports/2026-07-09-3424-completeness.html, status: A, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-completeness-3424-claude.md, status: A, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-completeness-3424-codex.md, status: A, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-completeness-3424-gemini.md, status: A, mode: "100644"}
+    - {path: scripts/review/results/2026-07-09-completeness-3424-provider-availability.md, status: A, mode: "100644"}
