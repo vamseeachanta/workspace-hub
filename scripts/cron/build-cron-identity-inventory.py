@@ -35,16 +35,19 @@ SOURCE_PATHS = (
 )
 
 
+def digest_logical_name(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(ROOT.resolve()).as_posix()
+    except ValueError:
+        return path.name
+
+
 def input_digest(paths: list[Path]) -> str:
     digest = hashlib.sha256()
     digest.update(b"cron-identity-input-v1\0")
     logical = []
     for path in paths:
-        try:
-            name = str(path.resolve().relative_to(ROOT.resolve()))
-        except ValueError:
-            name = path.name
-        logical.append((name, path))
+        logical.append((digest_logical_name(path), path))
     for name_text, path in sorted(logical):
         name = name_text.encode("utf-8")
         body = path.read_bytes()
@@ -132,6 +135,39 @@ def render(payload: dict) -> bytes:
             + "\n").encode("utf-8")
 
 
+def rendered_input_digest(raw: bytes) -> str:
+    try:
+        payload = json.loads(raw)
+    except json.JSONDecodeError:
+        return "<invalid-json>"
+    return str(payload.get("input_digest", "<missing>"))
+
+
+def inventory_mismatch_summary(current: bytes, generated: bytes) -> str:
+    try:
+        current_payload = json.loads(current)
+        generated_payload = json.loads(generated)
+    except json.JSONDecodeError:
+        return "inventory body mismatch: current file is not valid JSON"
+    for key in ("schema_version", "input_digest", "machines", "unsupported", "collisions"):
+        if current_payload.get(key) != generated_payload.get(key):
+            return f"inventory body mismatch at {key}"
+    current_rows = current_payload.get("identities", [])
+    generated_rows = generated_payload.get("identities", [])
+    if len(current_rows) != len(generated_rows):
+        return (
+            "inventory body mismatch: identity row count "
+            f"{len(current_rows)} != {len(generated_rows)}"
+        )
+    for index, (current_row, generated_row) in enumerate(zip(current_rows, generated_rows)):
+        if current_row != generated_row:
+            return (
+                f"inventory body mismatch at identities[{index}]: "
+                f"expected {generated_row!r} but found {current_row!r}"
+            )
+    return "inventory body mismatch: bytes differ after canonical JSON comparison"
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
@@ -148,9 +184,16 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     invalid = bool(payload["unsupported"] or payload["collisions"])
     if args.check:
-        stale = not args.output.is_file() or args.output.read_bytes() != generated
+        current = args.output.read_bytes() if args.output.is_file() else b""
+        stale = current != generated
         if stale:
             print(f"ERROR: stale identity inventory: {args.output}", file=sys.stderr)
+            print(
+                "ERROR: expected input_digest "
+                f"{payload['input_digest']} but found {rendered_input_digest(current)}",
+                file=sys.stderr,
+            )
+            print(f"ERROR: {inventory_mismatch_summary(current, generated)}", file=sys.stderr)
         return 1 if stale or invalid else 0
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(generated)

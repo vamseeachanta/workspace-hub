@@ -108,6 +108,25 @@ def test_generator_source_is_in_versioned_digest_union(tmp_path):
     assert generator.input_digest([first]) != generator.input_digest([second])
 
 
+def test_digest_logical_names_are_posix_stable():
+    generator = load_generator()
+    relative = Path("scripts") / "cron" / "build-cron-identity-inventory.py"
+    assert generator.digest_logical_name(ROOT / relative) == relative.as_posix()
+
+
+def test_stale_inventory_diagnostic_reads_existing_digest():
+    generator = load_generator()
+    assert generator.rendered_input_digest(b'{"input_digest":"abc"}\n') == "abc"
+    assert generator.rendered_input_digest(b"not-json") == "<invalid-json>"
+
+
+def test_inventory_mismatch_summary_names_first_changed_row():
+    generator = load_generator()
+    current = b'{"collisions":[],"identities":[{"task_id":"old"}],"input_digest":"d","machines":[],"schema_version":1,"unsupported":[]}\n'
+    generated = b'{"collisions":[],"identities":[{"task_id":"new"}],"input_digest":"d","machines":[],"schema_version":1,"unsupported":[]}\n'
+    assert "identities[0]" in generator.inventory_mismatch_summary(current, generated)
+
+
 def test_duplicate_exact_lines_emit_collision_and_non_unique_rows(tmp_path):
     tasks = [
         {"id": task_id, "scheduler": "cron", "schedule": "0 1 * * *",

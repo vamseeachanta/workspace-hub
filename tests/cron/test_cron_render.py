@@ -61,6 +61,28 @@ def test_render_task_resolves_alias_schedule_and_placeholders(monkeypatch):
     assert "$LOG" not in rendered["line"]
 
 
+def test_registry_posix_workspace_root_stays_posix_on_windows(monkeypatch):
+    monkeypatch.delenv("WORKSPACE_HUB", raising=False)
+    render = _load_renderer()
+    context = render.build_context(
+        "linux-a",
+        registry={
+            "machines": {
+                "linux-a": {
+                    "hostname": "linux-a",
+                    "os": "linux",
+                    "workspace_root": "/canonical/workspace-hub",
+                    "schedule_variant": "full",
+                }
+            }
+        },
+        workspace_hub="/canonical/workspace-hub",
+    )
+
+    assert context["workspace_hub"] == "/canonical/workspace-hub"
+    assert context["log"] == "/canonical/workspace-hub/logs/quality/cron-wrapper.log"
+
+
 def test_render_task_keeps_current_ace_linux_1_bridge_schedule_values(monkeypatch):
     monkeypatch.setenv("WORKSPACE_HUB", str(REPO))
     render = _load_renderer()
