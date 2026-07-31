@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-31T13:21:23.716887Z",
+  "generated_at": "2026-07-31T17:21:16.945046Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-31T13:21:21.418541Z",
+  "scorecard_generated_at": "2026-07-31T17:21:14.914424Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,61 +11,9 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 20,
+      "execution_ready_count": 18,
       "total_candidates": 179,
       "top_issues": [
-        {
-          "number": 3432,
-          "title": "standard: algorithm-specific metric definition and observation contract",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3432",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:claude",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-07-27T01:19:14Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3433,
-          "title": "feature: per-repository Hugging Face projection and staged promotion",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3433",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:codex",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-07-27T01:19:14Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 3500,
           "title": "bug(pre-push): equivalence-state publish loops full tier-1 suite forever \u2014 remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)",
@@ -225,52 +173,54 @@
             "implementation",
             "strategy"
           ]
-        }
-      ],
-      "full_candidates": [
+        },
         {
-          "number": 3432,
-          "title": "standard: algorithm-specific metric definition and observation contract",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3432",
+          "number": 3566,
+          "title": "fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3566",
           "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
+            "bug",
+            "priority:medium",
+            "cat:harness",
+            "machine:multi",
             "status:plan-approved",
             "type:follow-up",
             "gate:completeness",
             "lane:claude",
-            "domain:governance"
+            "domain:ai"
           ],
-          "updatedAt": "2026-07-27T01:19:14Z",
+          "updatedAt": "2026-07-27T01:19:11Z",
           "execution_ready": true,
-          "priority_rank": 1,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
         },
         {
-          "number": 3433,
-          "title": "feature: per-repository Hugging Face projection and staged promotion",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3433",
+          "number": 3568,
+          "title": "epic(agent-ux): cross-machine input interaction parity",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3568",
           "labels": [
             "enhancement",
-            "priority:high",
-            "cat:data",
+            "priority:medium",
+            "cat:harness",
+            "domain:workstations",
+            "machine:multi",
             "status:plan-approved",
-            "type:follow-up",
             "gate:completeness",
-            "lane:codex",
-            "domain:governance"
+            "lane:claude",
+            "epic",
+            "domain:ai"
           ],
-          "updatedAt": "2026-07-27T01:19:14Z",
+          "updatedAt": "2026-07-27T01:19:10Z",
           "execution_ready": true,
-          "priority_rank": 1,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -279,7 +229,9 @@
             "implementation",
             "strategy"
           ]
-        },
+        }
+      ],
+      "full_candidates": [
         {
           "number": 3500,
           "title": "bug(pre-push): equivalence-state publish loops full tier-1 suite forever \u2014 remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)",
@@ -1621,6 +1573,28 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3736,
+          "title": "Two sources of truth for routing have diverged: kanban board mirror holds 37 retired labels",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3736",
+          "labels": [
+            "priority:high",
+            "cat:operations",
+            "machine:dev-primary",
+            "domain:routing"
+          ],
+          "updatedAt": "2026-07-31T16:50:42Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -3554,6 +3528,29 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3734,
+          "title": "feat(capability): ace-win-1 has idle licensed AQWA capacity that nothing routes to",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3734",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "machine:multi",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-31T13:52:23Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]

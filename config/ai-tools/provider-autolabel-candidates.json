@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-31T13:21:23.851022Z",
+  "generated_at": "2026-07-31T17:21:17.083494Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 10,
@@ -70,76 +70,6 @@
         "priority-labeled",
         "strong-codex-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3432,
-      "title": "standard: algorithm-specific metric definition and observation contract",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3432",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:data",
-        "status:plan-approved",
-        "type:follow-up",
-        "gate:completeness",
-        "lane:claude",
-        "domain:governance"
-      ],
-      "updatedAt": "2026-07-27T01:19:14Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3433,
-      "title": "feature: per-repository Hugging Face projection and staged promotion",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3433",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:data",
-        "status:plan-approved",
-        "type:follow-up",
-        "gate:completeness",
-        "lane:codex",
-        "domain:governance"
-      ],
-      "updatedAt": "2026-07-27T01:19:14Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
       ],
       "eligible": true
     },
@@ -344,6 +274,80 @@
       "provider_status": "underused",
       "work_type": [
         "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3566,
+      "title": "fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3566",
+      "labels": [
+        "bug",
+        "priority:medium",
+        "cat:harness",
+        "machine:multi",
+        "status:plan-approved",
+        "type:follow-up",
+        "gate:completeness",
+        "lane:claude",
+        "domain:ai"
+      ],
+      "updatedAt": "2026-07-27T01:19:11Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3568,
+      "title": "epic(agent-ux): cross-machine input interaction parity",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3568",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:harness",
+        "domain:workstations",
+        "machine:multi",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude",
+        "epic",
+        "domain:ai"
+      ],
+      "updatedAt": "2026-07-27T01:19:10Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
         "implementation",
         "strategy"
       ],

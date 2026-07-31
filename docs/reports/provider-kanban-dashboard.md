@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-31T13:21:25Z
+Generated: 2026-07-31T17:21:18Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3736 | Two sources of truth for routing have diverged: kanban board mirror holds 37 retired labels | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3734 | feat(capability): ace-win-1 has idle licensed AQWA capacity that nothing routes to | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3731 | chore(scheduler): register dispatch-run.ps1 as a mutation surface, and fix the guard's stale digest | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3728 | CI: stale command-identity inventory red-lights every PR, including docs-only ones | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3724 | bug(equality): 4 of 5 matrix rows are stale and render identically to fresh ones | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -241,8 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3436 | bug: make new-branch pre-push checks worktree-aware | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3435 | bug: make hook installation worktree-aware | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3434 | feature: algorithm-scoped cross-run insights and decision briefs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3433 | feature: per-repository Hugging Face projection and staged promotion | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #3432 | standard: algorithm-specific metric definition and observation contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 
 ## Lane: blocked (0)
 
