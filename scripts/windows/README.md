@@ -16,6 +16,7 @@ sync when either side changes.
 | Reconcile ecosystem + equality | `scripts/readiness/reconcile-ecosystem.sh` | `scripts/windows/reconcile-ecosystem.ps1` (wraps the .sh via real Git Bash) |
 | Equality collect + matrix | `scripts/readiness/equality-matrix-cron.sh` | `scripts/windows/equality-report.ps1` → `scripts/readiness/collect-equality.ps1` (CIM overlay) → `collect-equality.sh` |
 | Equivalence sentinel | `scripts/monitoring/equivalence-sentinel.sh` | `scripts/windows/equivalence-sentinel.ps1` (wraps the .sh via real Git Bash) |
+| Inbound SSH provisioning | *(n/a — Linux hosts already reachable)* | `scripts/windows/enable-remote-exec.ps1` (Windows-only; see below) |
 
 Run pattern (note the `--` before bash-style flags so PowerShell passes them through):
 
@@ -24,6 +25,44 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\reconcile-ec
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\reconcile-ecosystem.ps1 -- --apply # safe subset
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\equality-report.ps1                # refresh this box's column
 ```
+
+## Inbound SSH provisioning (`enable-remote-exec.ps1`)
+
+Windows hosts sit in `manual_hosts` in [`config/fleet-ssh-hosts.yml`](../../config/fleet-ssh-hosts.yml),
+so fleet automation cannot reach them and their state drifts unobserved — the 2026-07-30 fleet
+sweep covered 3 of 5 machines, and one Windows host's equality evidence was 11.8 days stale
+before anyone noticed. This script closes the reachability half of that gap (workspace-hub#3721).
+
+**Audit-first, like `rdp-microphone.ps1`.** The default run mutates nothing and does not need
+admin — it reports identity, SSH state, firewall exposure, and the poller's condition, then
+writes an evidence JSON. Read that before applying: one of the two Windows hosts already has a
+working SSH service, and which physical machine each fleet token denotes is still being settled
+(deckhand#579, deckhand#581), so the script *reports* identity rather than assuming it.
+
+```
+:: audit — safe, non-admin, changes nothing
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\enable-remote-exec.ps1
+
+:: provision — ELEVATED PowerShell required
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\enable-remote-exec.ps1 -Apply -PublicKey "ssh-ed25519 AAAA... operator@ace-linux-1"
+```
+
+Every apply step is idempotent. Three things it handles that are easy to get wrong by hand:
+
+- **Administrator keys live elsewhere.** sshd reads `%ProgramData%\ssh\administrators_authorized_keys`
+  for any account in the local Administrators group — not `%USERPROFILE%\.ssh\authorized_keys` —
+  and ignores it unless the ACL is Administrators + SYSTEM only. The failure looks like a bad key
+  but is a permission error.
+- **The firewall rule is scoped** to the tailnet CGNAT range (`100.64.0.0/10`) by default, and the
+  audit reports any *other* enabled rule already opening 22 so an unscoped exposure is visible.
+- **Exit codes, not just output.** The fleet helpers branch on exit status, and a wrong default
+  shell can return correct stdout while losing the exit code — which reads as success. Verify with
+  `ssh <host> "exit 7"; echo $?` and require `7`.
+
+It never starts or stops the licensed-run poller: whether that *should* run on a given host is
+deckhand#579's decision, so the script only reports its state.
+
+Full operator walkthrough: [`docs/runbooks/windows-remote-exec.md`](../../docs/runbooks/windows-remote-exec.md).
 
 ## RDP microphone audit and repair
 
