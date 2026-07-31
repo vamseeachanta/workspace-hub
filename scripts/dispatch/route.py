@@ -137,6 +137,24 @@ def undeclared_axes(labels, single_axes, multi_axes) -> list[str]:
     return sorted(seen - known)
 
 
+def assert_write_preserves_cardinality(merged_labels, single_axes) -> None:
+    """Refuse a write that would leave a scalar axis holding two values.
+
+    The write-side counterpart to `axis_value()`. A read guard without a write
+    guard is half a control: the resolver would refuse an issue the writer had
+    just created.
+
+    Checked on the MERGED set (existing + additions) rather than on the
+    additions alone — a single new `machine:` label is only a violation in the
+    context of a `machine:` label already there, which is exactly the case a
+    "did we add two?" check would miss.
+    """
+    for prefix in sorted(single_axes or ()):
+        values = [lab.split(":", 1)[1] for lab in merged_labels if lab.startswith(prefix)]
+        if len(values) > 1:
+            raise AmbiguousAxis(prefix, values)
+
+
 def classify_card_axes(card: dict, single_axes) -> dict:
     """Decide whether one card is safe to route.
 
@@ -763,6 +781,11 @@ def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace
     # set the flag habitually, which defeats the gate.
     if do_write:
         assert_write_allowed()
+    # `ai:` is included here but NOT in the routing-rules `single` list: it is a
+    # dispatch-time override read by resolve_provider, and two of them would be
+    # the same contradiction. Declared at the write boundary because that is the
+    # only place this process creates one.
+    write_single_axes = set(load_axis_cardinality(load_rules())[0]) | {"ai:"}
     proposals = [p for p in proposals if p["repo"] == repo]
     if not proposals:
         sys.exit(f"no open cards for {repo}")
@@ -796,6 +819,11 @@ def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace
         if not labs:
             noop += 1  # already fully labeled
             continue
+        # Fail closed at the mutation boundary. A wrongly-written label is
+        # expensive to undo across hundreds of issues (#582's 676-issue
+        # migration is the local proof of how far one travels), so the check
+        # goes BEFORE `gh`, not in a report afterwards.
+        assert_write_preserves_cardinality(set(existing) | set(labs), write_single_axes)
         r = gh(["issue", "edit", p["number"], "--repo", repo, "--add-label", ",".join(labs)])
         if r.returncode == 0:
             written += 1
@@ -831,7 +859,7 @@ def cmd_coverage(args) -> None:
     repos = [args.repo] if args.repo else DEFAULT_COVERAGE_REPOS
     overall = {}
     for repo in repos:
-        issues = fetch_open_issues(repo)
+        issues = fetch_issues_for_coverage(repo)
         overall[repo] = coverage_report(issues, axes, terminal, skip)
 
     if args.json:
@@ -858,8 +886,22 @@ DEFAULT_COVERAGE_REPOS = (
 )
 
 
-def fetch_open_issues(repo: str) -> list[dict]:
-    """Open issues with labels, via gh. READ-ONLY: `issue list` only."""
+def fetch_issues_for_coverage(repo: str) -> list[dict]:
+    """Open issues with labels as a LIST, via gh. READ-ONLY: `issue list` only.
+
+    Deliberately named apart from `fetch_open_issues()` (line ~687), which
+    returns a `{number -> set(labels)}` MAPPING for the write path.
+
+    They previously shared a name. Python keeps the last definition, so this one
+    shadowed the mapping version and `cmd_apply`'s `live.get(number)` raised
+    `AttributeError: 'list' object has no attribute 'get'` — the write path was
+    broken on main from the moment the coverage reporter landed (#3713).
+
+    It went unnoticed because the only caller is `--apply --yes`, which is gated
+    behind `DISPATCH_APPLY_ENABLED`: a path nobody had armed since. Two functions
+    with one name and different return types is a collision no test asserts
+    against, which is why the shapes are now in the names.
+    """
     r = subprocess.run(
         ["gh", "issue", "list", "--repo", repo, "--state", "open",
          "--limit", "2000", "--json", "number,labels"],
