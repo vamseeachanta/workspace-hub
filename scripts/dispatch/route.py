@@ -475,7 +475,7 @@ def propose(args) -> list[dict]:
         # human-set labels on the issue always override the rule
         existing_machine = axis_value(labels, "machine:", single_axes)
         machine = existing_machine or assign.get("machine") or defaults.get("machine")
-        machine = aliases.get(machine, machine)  # fold acma-ws014 -> licensed-win-2
+        machine = aliases.get(machine, machine)  # fold a hostname straggler -> its role
         provider, provider_explicit, provider_source = resolve_provider(
             labels, assign, defaults, single_axes=single_axes)
         quota_demoted = False

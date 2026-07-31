@@ -131,7 +131,7 @@ def test_no_rule_routes_licensed_work_to_an_unproven_host(rules, machines):
     the capability list would leave the defect fully intact while looking fixed —
     the same declared-but-unwired shape as an uncalled safety gate.
 
-    UPDATED 2026-07-31 after the owner's correction "ws014 is not powerful
+    UPDATED 2026-07-31 after the owner's correction "that host is not powerful
     enough". The original form of this test demanded a *proven licence* and
     nothing else, so it accepted repointing batch work to a workstation — I
     satisfied it by trading a licence failure for a capacity failure.

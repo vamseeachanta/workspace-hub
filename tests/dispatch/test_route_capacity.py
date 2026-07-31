@@ -8,7 +8,7 @@ that could not obtain an OrcaFlex licence. I fixed it by repointing those rules
 to `licensed-win-2`, the only host carrying a dated licence attestation, and
 shipped that in workspace-hub#3718.
 
-The owner's correction, 2026-07-31: **"ws014 is not powerful enough."**
+The owner's correction, 2026-07-31: **"that host is not powerful enough."**
 
 `licensed-win-2` is a workstation. `licensed-win-1` is the heavy node — 64
 logical cores / 255.7 GB, the declared batch target for OrcaFlex runs of ~57

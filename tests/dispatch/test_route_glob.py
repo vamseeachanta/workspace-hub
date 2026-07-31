@@ -181,7 +181,7 @@ def test_live_rules_route_digitalmodel_splits_to_licensed(route, domain):
     # Capability is LICENCE **and** CAPACITY. This test asserted only the first
     # until 2026-07-31, so it was satisfied by repointing batch work to a
     # workstation — trading a licence failure for a capacity failure. Owner:
-    # "ws014 is not powerful enough."
+    # "that host is not powerful enough."
     assert spec.get("capacity") == "heavy", (
         f"domain {domain!r} routes to {target!r} with capacity="
         f"{spec.get('capacity')!r}; these are batch-scale workloads and need the "

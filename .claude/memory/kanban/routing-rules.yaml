@@ -61,25 +61,34 @@ machines:
                                   THIS the licensed execution host; the licence is a prerequisite in
                                   flight, not a reason to route elsewhere.",
                      notes: "THE heavy node: 64 logical cores / 255.7 GB; declared batch target for
-                             dm#1553 (OrcaFlex N≈57 parallel sims). SHARED ACMA production box — cap
+                             dm#1553 (OrcaFlex N≈57 parallel sims). SHARED client production box — cap
                              concurrency. AQWA/OrcaWave attestation pending deckhand#542/#544."}
   licensed-win-2:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
                      capacity: workstation,
                      licence_verified: {at: "2026-07-30", by: "owner",
                                         how: "bokalift orcawave-diffraction-solve ran end-to-end on this host"},
-                     aliases: [acma-ws014],
-                     notes: "Workstation, NOT sized for batch — owner 2026-07-31: 'ws014 is not powerful
-                             enough'. Holds a working licence and is the queue lane's CANONICAL default
-                             (policy licensed_host) for UN-ADDRESSED requests, which is a routing
-                             fallback, not an execution target for batch work."}
+                     notes: "Workstation, NOT sized for batch — owner 2026-07-31: 'that host is not
+                             powerful enough'. Holds a working licence and is the queue lane's CANONICAL
+                             default (policy licensed_host) for UN-ADDRESSED requests, which is a
+                             routing fallback, not an execution target for batch work.
+                             The physical host binding lives in the PRIVATE machine registry."}
   home-win:         {os: windows, role: aux,        notes: "home windows; statements/scans (e.g. Chase)"}
   macbook-portable: {os: macos,   role: aux,        notes: "portable/mobile work"}
   multi:            {os: any,     role: virtual,    notes: "spans machines / not pinned to one box"}
 
-# Alias map (label-in-the-wild -> canonical machine). route.py folds these so
-# machine:acma-ws014 counts as licensed-win-2 without relabeling existing cards.
+# Alias map (label-in-the-wild -> canonical machine). route.py folds these so a
+# hostname-style straggler counts as its canonical role without relabeling cards.
+#
+# The client-hostname entry was REMOVED 2026-07-31: that label was retired and
+# DELETED from GitHub (40 issues migrated to role labels, deckhand#581), so the
+# alias pointed at nothing. It was also the last client identifier in this
+# PUBLIC file — the Client-PII Gate on PR #3730 is what surfaced it, correctly.
+# Physical host bindings live in the PRIVATE machine registry, never here.
+#
+# The entries below are OURS (see deckhand#581 D7a: a public label may equal a
+# canonical hostname when we own the name). They are retained as read-compat for
+# any card still carrying the old spelling.
 machine_aliases:
-  acma-ws014: licensed-win-2
   ace-linux-1: dev-primary      # hostname-style stragglers -> canonical dispatch name
   ace-linux-2: dev-secondary
   gpu-claw: cfd-dedicated
@@ -155,7 +164,7 @@ rules:
   #     inherited from a RETIRED machine — 177 issues routed to a host that could
   #     not obtain a licence (deckhand#579).
   #  2. I then repointed them to licensed-win-2 because it held the only dated
-  #     licence attestation. Owner, 2026-07-31: "ws014 is not powerful enough."
+  #     licence attestation. Owner, 2026-07-31: "that host is not powerful enough."
   #     licensed-win-2 is a WORKSTATION. I had traded a licence failure for a
   #     capacity failure and called it fixed, because I only re-checked the
   #     dimension I had just been burned by.
