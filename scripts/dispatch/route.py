@@ -740,10 +740,20 @@ def labels_for(p: dict, existing: set[str], skip_domain: bool = False) -> list[s
 #
 # route.py used to PRINT "`--apply` for Phase B (disabled)" while --apply/--yes
 # were real flags reaching a live `gh issue edit --add-label`. The "disabled"
-# lived only in a help string. That is dangerous here specifically because the
-# capability map is known-wrong (routing-rules claims a solver capability for a
-# host that cannot obtain the licence, #579), so an accidental mass-apply would
-# dispatch work into guaranteed failure across hundreds of issues.
+# lived only in a help string.
+#
+# The original justification named a specific defect: routing-rules claimed a
+# solver capability for a host that could not obtain the licence (deckhand#579),
+# so an accidental mass-apply would have dispatched 177 issues into guaranteed
+# failure. **That defect is FIXED** — the rules now target a host carrying a
+# dated `licence_verified` attestation, enforced by
+# tests/dispatch/test_routing_rules_capability_truth.py.
+#
+# The gate stays, because its reason was never that one defect. A mass label
+# write is high-blast-radius whether or not today's map is correct, and the map
+# is a human-maintained file that can go wrong again. Removing a control once
+# its triggering incident is closed is how the next incident gets discovered in
+# production.
 #
 # The gate is an ENVIRONMENT flag, deliberately not a config value: config is
 # committed and diffable, so a flag flipped in a PR could be merged without
@@ -765,10 +775,10 @@ def assert_write_allowed() -> None:
         sys.exit(
             f"REFUSED: label writes are gated. Set {APPLY_FLAG}=1 to arm this "
             f"invocation.\n"
-            f"  Before arming, confirm the capability map is correct — "
-            f"routing-rules.yaml currently claims a solver capability for a host "
-            f"that cannot obtain the licence (deckhand#579), and a mass-apply "
-            f"would route work into guaranteed failure.\n"
+            f"  Before arming, confirm the capability map is correct. Licensed "
+            f"routing is now guarded by a dated `licence_verified` attestation "
+            f"(deckhand#579) — but the map is hand-maintained, and a mass-apply "
+            f"writes labels across hundreds of issues.\n"
             f"  Run `--coverage` first to see what is actually assigned."
         )
 
