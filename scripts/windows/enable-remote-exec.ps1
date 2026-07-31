@@ -316,8 +316,20 @@ if (-not $Apply) {
     Write-Host "`nAUDIT ONLY -- nothing was changed. Re-run elevated with -Apply to provision." -ForegroundColor Cyan
 } else {
     Write-Host "`nApplied $($script:Actions.Count) change(s)." -ForegroundColor Cyan
-    Write-Host "VERIFY FROM ace-linux-1 (exit code matters, not just output):" -ForegroundColor Cyan
-    Write-Host '  ssh <this-host> "exit 7"; echo $?    # must print 7, not 0' -ForegroundColor Cyan
+
+    # The login user MUST be spelled out. ssh defaults the remote user to the CALLING
+    # host's username, which on the Linux fleet is not the Windows account name here --
+    # so a bare `ssh <this-host>` fails with "Permission denied (publickey,...)", which
+    # is indistinguishable from a genuine key failure and sends the operator off to
+    # re-provision a key that was already correct. Measured 2026-07-31 on ace-win-1:
+    # `ssh <host> 'exit 7'` from ace-linux-1 denied; `ssh vamseea@<host> 'exit 7'` -> 7.
+    # BatchMode=yes matters for the same reason: without it a password/kbd-interactive
+    # fallback can make a FAILED key auth look like a pass.
+    $verifyHost = if ($Findings.tailnet_node) { $Findings.tailnet_node } else { $Findings.hostname }
+    $verifyTarget = "$env:USERNAME@$verifyHost"
+    Write-Host "VERIFY FROM ANOTHER FLEET NODE (exit code matters, not just output):" -ForegroundColor Cyan
+    Write-Host "  ssh -o BatchMode=yes $verifyTarget `"exit 7`"; echo `$?    # must print 7, not 0" -ForegroundColor Cyan
+    Write-Host "  The '$env:USERNAME@' prefix is required -- omitting it denies on the wrong username." -ForegroundColor Cyan
 }
 
 # Non-zero exit when gaps remain and we did not apply, so a scheduled audit can alarm.
