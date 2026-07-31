@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-30T21:21:12.805749Z",
+  "generated_at": "2026-07-31T01:21:48.623146Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-30T21:21:10.878371Z",
+  "scorecard_generated_at": "2026-07-31T01:21:46.306195Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,35 +11,9 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 26,
-      "total_candidates": 180,
+      "execution_ready_count": 25,
+      "total_candidates": 179,
       "top_issues": [
-        {
-          "number": 3426,
-          "title": "feat(governance): deploy completeness closeout contract to worldenergydata",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3426",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:harness",
-            "domain:workflow",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 3427,
           "title": "epic: repository-linked algorithm run datasets and decision intelligence",
@@ -224,23 +198,23 @@
             "implementation",
             "strategy"
           ]
-        }
-      ],
-      "full_candidates": [
+        },
         {
-          "number": 3426,
-          "title": "feat(governance): deploy completeness closeout contract to worldenergydata",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3426",
+          "number": 3516,
+          "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3516",
           "labels": [
-            "enhancement",
+            "bug",
             "priority:high",
             "cat:harness",
-            "domain:workflow",
+            "domain:workstations",
+            "machine:multi",
+            "status:plan-review",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:15Z",
+          "updatedAt": "2026-07-27T02:35:32Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -248,11 +222,11 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "research",
-            "implementation",
-            "strategy"
+            "implementation"
           ]
-        },
+        }
+      ],
+      "full_candidates": [
         {
           "number": 3427,
           "title": "epic: repository-linked algorithm run datasets and decision intelligence",
@@ -584,7 +558,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T02:35:32Z",
+          "updatedAt": "2026-07-30T23:45:36Z",
           "execution_ready": true,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -712,7 +686,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T02:35:32Z",
+          "updatedAt": "2026-07-30T23:39:36Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -785,7 +759,7 @@
             "domain:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-07-27T02:35:07Z",
+          "updatedAt": "2026-07-30T23:40:51Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3003,7 +2977,7 @@
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:20:58Z",
+          "updatedAt": "2026-07-30T23:40:51Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4496,7 +4470,7 @@
             "lane:claude",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T02:35:07Z",
+          "updatedAt": "2026-07-30T23:44:39Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4685,7 +4659,7 @@
             "lane:claude",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T02:35:07Z",
+          "updatedAt": "2026-07-30T23:44:39Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -5076,9 +5050,47 @@
       "provider": "agy",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 0,
-      "top_issues": [],
-      "full_candidates": []
+      "total_candidates": 1,
+      "top_issues": [
+        {
+          "number": 3717,
+          "title": "Context budget: harness config is 3.6% of the window \u2014 the cost is tool output (17%), not CLAUDE.md",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3717",
+          "labels": [
+            "cat:harness"
+          ],
+          "updatedAt": "2026-07-30T23:48:49Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "agy",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research"
+          ]
+        }
+      ],
+      "full_candidates": [
+        {
+          "number": 3717,
+          "title": "Context budget: harness config is 3.6% of the window \u2014 the cost is tool output (17%), not CLAUDE.md",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3717",
+          "labels": [
+            "cat:harness"
+          ],
+          "updatedAt": "2026-07-30T23:48:49Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "agy",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research"
+          ]
+        }
+      ]
     }
   }
 }

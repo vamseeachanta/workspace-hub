@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-07-30T21:21:12.805749Z
+Generated: 2026-07-31T01:21:48.623146Z
 Current week: 2026-W31
 Recommended provider order: codex, agy, claude
 
@@ -9,12 +9,11 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 26
-- Total routed candidates: 180
+- Execution-ready candidates: 25
+- Total routed candidates: 179
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #3426 feat(governance): deploy completeness closeout contract to worldenergydata | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:harness, domain:workflow, status:plan-approved, gate:completeness |
 | #3427 epic: repository-linked algorithm run datasets and decision intelligence | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, tracker, gate:completeness |
 | #3428 standard: deterministic run identity and algorithm version contract | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
 | #3429 standard: content-addressed artifact and Hugging Face residency contract | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
@@ -22,6 +21,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3432 standard: algorithm-specific metric definition and observation contract | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
 | #3433 feature: per-repository Hugging Face projection and staged promotion | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
 | #3500 bug(pre-push): equivalence-state publish loops full tier-1 suite forever — remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198) | yes | strategy/workflow/architecture language | bug, priority:high, cat:harness, machine:dev-primary, status:plan-review, status:plan-approved |
+| #3516 bug(equivalence): ref blobs keyed by role — same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json) | yes | strategy/workflow/architecture language | bug, priority:high, cat:harness, domain:workstations, machine:multi, status:plan-review |
 
 ## codex
 
@@ -44,8 +44,9 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: highest
 - Execution-ready candidates: 0
-- Total routed candidates: 0
+- Total routed candidates: 1
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
+| #3717 Context budget: harness config is 3.6% of the window — the cost is tool output (17%), not CLAUDE.md | no | research/triage/audit language | cat:harness |
 
