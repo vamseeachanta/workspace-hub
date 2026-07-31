@@ -90,10 +90,21 @@ rules:
     assign: {machine: cfd-dedicated}
     reason: "Dedicated OpenFOAM CFD node gpu-claw beat ace-linux-2 benchmark in https://github.com/vamseeachanta/digitalmodel/issues/1495"
 
-  # Cross-review work -> codex (finds non-overlapping defects)
-  - match: {gh_label: "needs:cross-review"}
-    assign: {provider: codex}
-    reason: "Codex strong on adversarial cross-review"
+  # `needs:cross-review` is a PHASE marker, NOT a routing target — no rule here.
+  #
+  # It used to read `{gh_label: needs:cross-review} -> {provider: codex}`, but the
+  # label did not exist in any repo, so the rule had never fired. Creating the
+  # label (2026-07-30) would have ARMED it, and rule beats lane: in precedence —
+  # silently rerouting 21 issues to codex over a human's explicit lane: choice.
+  #
+  # Two different ideas were conflated:
+  #   "this issue IS a cross-review task"        -> an ASSIGNMENT (who does it)
+  #   "this work NEEDS a second-provider review" -> a PHASE (what must happen
+  #                                                 before it can close)
+  # `needs:` is the vocabulary of a requirement. The review workflow consumes the
+  # label; the router must not. Enforced by
+  # tests/dispatch/test_cross_review_is_a_phase.py, which generalises to the whole
+  # `needs:` namespace so the next such label need not rediscover this.
 
   # Default catch-all — machine only; provider falls through to defaults.provider
   # (claude) so the ai: label stays ABSENT for default work, written only when a
