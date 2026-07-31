@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-07-31T09:21:31Z
+Generated: 2026-07-31T13:21:25Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3731 | chore(scheduler): register dispatch-run.ps1 as a mutation surface, and fix the guard's stale digest | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3728 | CI: stale command-identity inventory red-lights every PR, including docs-only ones | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3724 | bug(equality): 4 of 5 matrix rows are stale and render identically to fresh ones | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3723 | ops(fleet): derive fleet-ssh-hosts.yml reachability from the generated matrix, not a hand-maintained list | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3434 | feature: algorithm-scoped cross-run insights and decision briefs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3433 | feature: per-repository Hugging Face projection and staged promotion | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3432 | standard: algorithm-specific metric definition and observation contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #3431 | standard: curated output and rolling algorithm report contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 
 ## Lane: blocked (0)
 

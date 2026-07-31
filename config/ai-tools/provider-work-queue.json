@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-31T09:21:29.231886Z",
+  "generated_at": "2026-07-31T13:21:23.716887Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-31T09:21:27.433811Z",
+  "scorecard_generated_at": "2026-07-31T13:21:21.418541Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,35 +11,9 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 21,
+      "execution_ready_count": 20,
       "total_candidates": 179,
       "top_issues": [
-        {
-          "number": 3431,
-          "title": "standard: curated output and rolling algorithm report contract",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3431",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:claude",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 3432,
           "title": "standard: algorithm-specific metric definition and observation contract",
@@ -225,35 +199,35 @@
             "implementation",
             "strategy"
           ]
-        }
-      ],
-      "full_candidates": [
+        },
         {
-          "number": 3431,
-          "title": "standard: curated output and rolling algorithm report contract",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3431",
+          "number": 3525,
+          "title": "[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
           "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
+            "priority:medium",
+            "cat:harness",
+            "domain:workstations",
+            "wrk-item",
             "status:plan-approved",
-            "type:follow-up",
             "gate:completeness",
-            "lane:claude",
-            "domain:governance"
+            "lane:claude"
           ],
-          "updatedAt": "2026-07-27T01:19:15Z",
+          "updatedAt": "2026-07-30T23:45:36Z",
           "execution_ready": true,
-          "priority_rank": 1,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
-        },
+        }
+      ],
+      "full_candidates": [
         {
           "number": 3432,
           "title": "standard: algorithm-specific metric definition and observation contract",
@@ -825,7 +799,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-07-30T11:45:07Z",
+          "updatedAt": "2026-07-31T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -3557,6 +3531,29 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3731,
+          "title": "chore(scheduler): register dispatch-run.ps1 as a mutation surface, and fix the guard's stale digest",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3731",
+          "labels": [
+            "priority:medium",
+            "cat:operations",
+            "domain:security",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-31T12:46:39Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]

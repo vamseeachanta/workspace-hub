@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-07-31T09:21:29.231886Z
+Generated: 2026-07-31T13:21:23.716887Z
 Current week: 2026-W31
 Recommended provider order: codex, agy, claude
 
@@ -9,12 +9,11 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 21
+- Execution-ready candidates: 20
 - Total routed candidates: 179
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #3431 standard: curated output and rolling algorithm report contract | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
 | #3432 standard: algorithm-specific metric definition and observation contract | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
 | #3433 feature: per-repository Hugging Face projection and staged promotion | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:data, status:plan-approved, type:follow-up, gate:completeness |
 | #3500 bug(pre-push): equivalence-state publish loops full tier-1 suite forever — remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198) | yes | strategy/workflow/architecture language | bug, priority:high, cat:harness, machine:dev-primary, status:plan-approved, gate:completeness |
@@ -22,6 +21,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3440 Harden generated HTML against JSON script-tag breakout | yes | strategy/workflow/architecture language | bug, priority:medium, cat:harness, domain:security, domain:workflow, status:plan-approved |
 | #3482 design(repo-health): safe worktree lifecycle with leases and recoverable quarantine | yes | strategy/workflow/architecture language | priority:medium, cat:tooling, domain:testing, status:plan-approved, gate:completeness, lane:codex |
 | #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02 | yes | strategy/workflow/architecture language | bug, priority:medium, cat:operations, domain:workstations, machine:multi, status:plan-approved |
+| #3525 [WRK] Investigate safe remote Claude job dispatch to ACMA-WS014 | yes | strategy/workflow/architecture language | priority:medium, cat:harness, domain:workstations, wrk-item, status:plan-approved, gate:completeness |
 
 ## codex
 
