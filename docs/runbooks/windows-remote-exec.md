@@ -28,12 +28,18 @@ If the audit reports a hostname you did not expect, stop and report it on #3721 
 
 ## Step 1 — audit (safe, changes nothing, no admin needed)
 
-Open PowerShell, `cd` to the workspace-hub checkout (`D:\workspace-hub` on the Windows boxes), and run:
+Open PowerShell and `cd` to the workspace-hub checkout. **The path is not the same on every host** — verified 2026-07-31, one Windows host uses `D:\ws\workspace-hub` (the same `ws` convention as gpu-claw's `~/ws`), not `D:\workspace-hub`. Find it rather than assuming:
 
 ```
+:: whichever of these exists
+if exist D:\ws\workspace-hub  cd /d D:\ws\workspace-hub
+if exist D:\workspace-hub     cd /d D:\workspace-hub
+
 git pull --ff-only
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\enable-remote-exec.ps1
 ```
+
+The script itself resolves its own repo root from `$PSScriptRoot`, so once you are in the right checkout the path never has to be passed.
 
 You get a section per area — Identity, OpenSSH Server, Authorized keys, Firewall, Default shell, Licensed-run poller — with `[ok]`, `[gap]`, and `[info]` lines, plus an evidence JSON path at the end.
 
@@ -55,7 +61,7 @@ The audit exits non-zero when gaps remain, so it can later be scheduled as an al
 Close PowerShell and reopen it as **Run as administrator**. You need the operator public key — get it from ace-linux-1 with `cat ~/.ssh/id_ed25519.pub` (or whichever key you use for the fleet).
 
 ```
-cd D:\workspace-hub
+cd /d D:\ws\workspace-hub    :: or D:\workspace-hub — see Step 1
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\enable-remote-exec.ps1 -Apply -PublicKey "ssh-ed25519 AAAA...REPLACE_ME... operator@ace-linux-1"
 ```
 
@@ -121,7 +127,7 @@ Both Windows hosts have Claude installed. Paste this into a Claude session **on 
 > You are on a Windows fleet host in the workspace-hub ecosystem. Follow
 > `docs/runbooks/windows-remote-exec.md` exactly, for workspace-hub#3721.
 >
-> 1. `cd D:\workspace-hub` and `git pull --ff-only`.
+> 1. `cd` to the workspace-hub checkout — it is `D:\ws\workspace-hub` on at least one host, NOT `D:\workspace-hub`; check both — then `git pull --ff-only`.
 > 2. Run the audit: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\enable-remote-exec.ps1`
 > 3. **Show me the full audit output and stop.** Do not pass `-Apply` yet.
 >
