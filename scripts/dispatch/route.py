@@ -546,18 +546,47 @@ def apply_wip(proposals: list[dict], cfg: dict) -> list[dict]:
     for p in proposals:
         m, prov = p["machine"], p["provider"]
         over = False
-        # provider must be auto-routable (gemini etc. are manual-only)
-        if providers.get(prov, {}).get("auto_routable", True) is False:
+        reason = None
+
+        # (1) UNKNOWN PROVIDER -> refuse. This used to read
+        #     `providers.get(prov, {}).get("auto_routable", True)`, so an
+        #     unrecognised value inherited True and sailed past every scarce cap
+        #     — fail-OPEN, one line below a docstring promising fail-CLOSED.
+        #     A typo (`ai:agi`) or a label left over from a retired provider must
+        #     not become a workhorse: nothing in the roster has vouched for its
+        #     quota or capacity. (deckhand#584 slice 4; found by Codex design
+        #     review before this slice was built on top of it.)
+        if prov not in providers:
             over = True
+            reason = f"unknown provider {prov!r} — not in the providers roster"
+        # (2) NOT AUTO-SELECTABLE != NOT USABLE. `auto_routable: false` exists to
+        #     say "defaults, rules and lanes may not pick this; a human may".
+        #     The old code queued such a provider unconditionally, so the manual
+        #     escape hatch its own config comment documented did not work.
+        #     An explicit `ai:` choice (provider_explicit) now passes; the budget
+        #     pool below still applies, so the override moves the SELECTION, not
+        #     the CAP.
+        elif providers.get(prov, {}).get("auto_routable", True) is False:
+            if not p.get("provider_explicit"):
+                over = True
+                reason = f"provider {prov!r} is manual-only (needs an explicit ai: label)"
         mcap = per_machine.get(m, m_default)         # default applies to home-win/macbook/multi/etc.
         if m_count[m] >= mcap:
             over = True
+            reason = reason or f"machine {m!r} at WIP cap {mcap}"
         if prov in prov_pool:
-            if pool_count[prov_pool[prov]] >= pool_cap.get(prov_pool[prov], 999):
+            pcap = pool_cap.get(prov_pool[prov], 999)
+            if pool_count[prov_pool[prov]] >= pcap:
                 over = True
+                reason = reason or f"budget pool {prov_pool[prov]!r} at cap {pcap}"
         elif p_count[prov] >= per_provider.get(prov, p_default):
             over = True
+            reason = reason or f"provider {prov!r} at WIP cap"
         p["slot"] = "queued" if over else "active-eligible"
+        # A queued card without a stated reason is indistinguishable from one
+        # nobody got to. Every refusal names itself.
+        if over:
+            p["wip_reason"] = reason
         if not over:
             m_count[m] += 1
             p_count[prov] += 1

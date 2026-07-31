@@ -29,6 +29,7 @@ label_axes:
     "machine:": "one execution host; `multi` is the value for work that spans several"
     "lane:":    "one implementing provider; a second opinion is `needs:cross-review`"
     "agent:":   "one agent owns the work item"
+    "ai:":      "the human/dispatch provider override — highest precedence, so two would contradict"
   multi:
     "domain:":  "work genuinely spans domains — 74 open issues legitimately do"
     "cat:":     "categories overlap by design"
@@ -94,9 +95,22 @@ providers:
   claude: {tier: workhorse, auto_routable: true}
   codex:  {tier: workhorse, auto_routable: true, budget_pool: codex_pool}
   hermes: {tier: shared,    auto_routable: true, budget_pool: codex_pool}  # consumes codex quota
-  gemini: {tier: scarce,    auto_routable: false, note: "manual ai:gemini only; never auto-route backlog"}
+  # agy REPLACES gemini (workspace-hub#3573). Verified 2026-07-31: `agent:gemini`
+  # carries ZERO open issues, so the swap was already complete in the wild and
+  # only this config lagged. Cross-review is now Claude + Codex + Agy.
+  #
+  # `auto_routable: false` means NOT AUTO-SELECTABLE — defaults, rules and lanes
+  # may not pick agy — NOT "unusable". An explicit `ai:agy` is honoured; the
+  # budget pool below still caps it, so the override moves the SELECTION, not the
+  # CAP. Until 2026-07-31 apply_wip() queued such providers unconditionally, so
+  # the manual escape hatch this comment describes did not actually work.
+  agy:    {tier: scarce,    auto_routable: false, budget_pool: google_ai_pool,
+           note: "Google AI Pro quota. Explicit ai:agy only; never auto-route backlog."}
 
 budget_pools:
+  google_ai_pool:
+    members: [agy]
+    max_concurrent: 1        # scarce; an explicit ai:agy overrides SELECTION, not this cap
   codex_pool:
     members: [codex, hermes]
     max_concurrent: 3        # codex + hermes COMBINED, not each
