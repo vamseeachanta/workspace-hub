@@ -29,6 +29,7 @@ label_axes:
     "machine:": "one execution host; `multi` is the value for work that spans several"
     "lane:":    "one implementing provider; a second opinion is `needs:cross-review`"
     "agent:":   "one agent owns the work item"
+    "ai:":      "the human/dispatch provider override — highest precedence, so two would contradict"
   multi:
     "domain:":  "work genuinely spans domains — 74 open issues legitimately do"
     "cat:":     "categories overlap by design"
@@ -49,26 +50,45 @@ machines:
   # A licensed capability is only routable when someone recorded that they saw
   # it work, when, and how. `false` is a claim too — it says "checked, does not
   # hold" — and is what keeps a host in the roster without making it a target.
+  # CAPABILITY IS TWO DIMENSIONS, not one: a host must have the LICENCE and the
+  # CAPACITY. Checking only the dimension you were last burned by is how both
+  # defects here happened — see tests/dispatch/test_route_capacity.py.
   licensed-win-1:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
+                     capacity: heavy,
                      licence_verified: false,
-                     notes: "deckhand#579: OrcFxAPI.Model() fails here (DLLError 25) — no Sentinel LDK
-                             runtime, 1947 not listening, hasplms absent. A network soft dongle cannot be
-                             consumed without the client-side runtime. AQWA/OrcaWave are UNVERIFIED here,
-                             not known-good: attestation pending deckhand#542/#544. The capability list
-                             above is inherited from the retired machine this label used to denote — the
-                             name was repointed, the capabilities were not."}
+                     blocked_on: "deckhand#579 — Sentinel LDK runtime absent (OrcFxAPI.Model() fails
+                                  DLLError 25; 1947 not listening, hasplms absent). Owner designates
+                                  THIS the licensed execution host; the licence is a prerequisite in
+                                  flight, not a reason to route elsewhere.",
+                     notes: "THE heavy node: 64 logical cores / 255.7 GB; declared batch target for
+                             dm#1553 (OrcaFlex N≈57 parallel sims). SHARED client production box — cap
+                             concurrency. AQWA/OrcaWave attestation pending deckhand#542/#544."}
   licensed-win-2:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
+                     capacity: workstation,
                      licence_verified: {at: "2026-07-30", by: "owner",
                                         how: "bokalift orcawave-diffraction-solve ran end-to-end on this host"},
-                     aliases: [acma-ws014], notes: "same box as acma-ws014 (mkt-a client workstation)"}
+                     notes: "Workstation, NOT sized for batch — owner 2026-07-31: 'that host is not
+                             powerful enough'. Holds a working licence and is the queue lane's CANONICAL
+                             default (policy licensed_host) for UN-ADDRESSED requests, which is a
+                             routing fallback, not an execution target for batch work.
+                             The physical host binding lives in the PRIVATE machine registry."}
   home-win:         {os: windows, role: aux,        notes: "home windows; statements/scans (e.g. Chase)"}
   macbook-portable: {os: macos,   role: aux,        notes: "portable/mobile work"}
   multi:            {os: any,     role: virtual,    notes: "spans machines / not pinned to one box"}
 
-# Alias map (label-in-the-wild -> canonical machine). route.py folds these so
-# machine:acma-ws014 counts as licensed-win-2 without relabeling existing cards.
+# Alias map (label-in-the-wild -> canonical machine). route.py folds these so a
+# hostname-style straggler counts as its canonical role without relabeling cards.
+#
+# The client-hostname entry was REMOVED 2026-07-31: that label was retired and
+# DELETED from GitHub (40 issues migrated to role labels, deckhand#581), so the
+# alias pointed at nothing. It was also the last client identifier in this
+# PUBLIC file — the Client-PII Gate on PR #3730 is what surfaced it, correctly.
+# Physical host bindings live in the PRIVATE machine registry, never here.
+#
+# The entries below are OURS (see deckhand#581 D7a: a public label may equal a
+# canonical hostname when we own the name). They are retained as read-compat for
+# any card still carrying the old spelling.
 machine_aliases:
-  acma-ws014: licensed-win-2
   ace-linux-1: dev-primary      # hostname-style stragglers -> canonical dispatch name
   ace-linux-2: dev-secondary
   gpu-claw: cfd-dedicated
@@ -84,9 +104,22 @@ providers:
   claude: {tier: workhorse, auto_routable: true}
   codex:  {tier: workhorse, auto_routable: true, budget_pool: codex_pool}
   hermes: {tier: shared,    auto_routable: true, budget_pool: codex_pool}  # consumes codex quota
-  gemini: {tier: scarce,    auto_routable: false, note: "manual ai:gemini only; never auto-route backlog"}
+  # agy REPLACES gemini (workspace-hub#3573). Verified 2026-07-31: `agent:gemini`
+  # carries ZERO open issues, so the swap was already complete in the wild and
+  # only this config lagged. Cross-review is now Claude + Codex + Agy.
+  #
+  # `auto_routable: false` means NOT AUTO-SELECTABLE — defaults, rules and lanes
+  # may not pick agy — NOT "unusable". An explicit `ai:agy` is honoured; the
+  # budget pool below still caps it, so the override moves the SELECTION, not the
+  # CAP. Until 2026-07-31 apply_wip() queued such providers unconditionally, so
+  # the manual escape hatch this comment describes did not actually work.
+  agy:    {tier: scarce,    auto_routable: false, budget_pool: google_ai_pool,
+           note: "Google AI Pro quota. Explicit ai:agy only; never auto-route backlog."}
 
 budget_pools:
+  google_ai_pool:
+    members: [agy]
+    max_concurrent: 1        # scarce; an explicit ai:agy overrides SELECTION, not this cap
   codex_pool:
     members: [codex, hermes]
     max_concurrent: 3        # codex + hermes COMBINED, not each
@@ -122,19 +155,34 @@ rules:
   # Windows-only engineering tooling (OrcaWave/AQWA/OrcaFlex) -> licensed boxes.
   # domain_family so the #2878 splits (solver-orcaflex, hydro-diffraction, ...)
   # inherit, but hydrocarbon/hydrostatic/solverless do NOT get pinned to Windows.
-  # deckhand#579: these two targeted licensed-win-1 until 2026-07-30 — a host that
-  # provably cannot obtain a licence. 177 open digitalmodel issues (80 solver +
-  # 97 hydro) were being routed into guaranteed failure. Repointed to the only
-  # host with a dated attestation. This does NOT repoint policy.yml
-  # licensed_host, which #579 holds until OrcFxAPI.Model() succeeds on the new
-  # box; #579's own sequencing constraint says the working host keeps the lane
-  # until then, and this is that host.
+  # These target licensed-win-1: THE heavy node (64 cores / 255.7 GB) and the
+  # owner-designated licensed execution host.
+  #
+  # Two corrections got us here, both mine, both the same mistake one axis apart:
+  #
+  #  1. Originally they targeted licensed-win-1 while its capability list was
+  #     inherited from a RETIRED machine — 177 issues routed to a host that could
+  #     not obtain a licence (deckhand#579).
+  #  2. I then repointed them to licensed-win-2 because it held the only dated
+  #     licence attestation. Owner, 2026-07-31: "that host is not powerful enough."
+  #     licensed-win-2 is a WORKSTATION. I had traded a licence failure for a
+  #     capacity failure and called it fixed, because I only re-checked the
+  #     dimension I had just been burned by.
+  #
+  # Capability is LICENCE **and** CAPACITY. licensed-win-1 satisfies capacity and
+  # is blocked on the licence prerequisite, which is declared in `blocked_on`
+  # rather than routed around: silently sending batch work to a lesser host hides
+  # the blockage — the work runs badly instead of visibly waiting.
+  #
+  # Unchanged: policy.yml `licensed_host` stays ace-win-2. That is the queue
+  # lane's default owner for UN-ADDRESSED requests — a different role from the
+  # execution target, and #579 holds it until OrcFxAPI.Model() succeeds.
   - match: {repo: vamseeachanta/digitalmodel, domain_family: solver}
-    assign: {machine: licensed-win-2}
-    reason: "AQWA/OrcaWave bridges need a licensed Windows box (solver + solver-* splits)"
+    assign: {machine: licensed-win-1}
+    reason: "AQWA/OrcaWave/OrcaFlex batch needs the heavy licensed node (solver + solver-* splits)"
   - match: {repo: vamseeachanta/digitalmodel, domain_family: hydro}
-    assign: {machine: licensed-win-2}
-    reason: "RAO/QTF/seakeeping runs use OrcaWave/AQWA (hydro + hydro-* splits)"
+    assign: {machine: licensed-win-1}
+    reason: "RAO/QTF/seakeeping runs are batch-scale — heavy node (hydro + hydro-* splits)"
 
   # CFD / OpenFOAM -> dedicated CFD node; ace-linux-2 remains shared/dev.
   - match: {gh_label: "domain:cfd"}
