@@ -2,20 +2,20 @@
 # Audit-first provisioning of an inbound SSH channel on a Windows fleet host (#3721).
 #
 # WHY: Windows hosts sit in `manual_hosts` in config/fleet-ssh-hosts.yml, so fleet
-# automation cannot reach them and their state drifts silently — the 2026-07-30 fleet
+# automation cannot reach them and their state drifts silently -- the 2026-07-30 fleet
 # sweep covered 3 of 5 machines, and one Windows host's equality evidence was 11.8 days
 # stale before anyone noticed. This script closes the reachability half of that gap.
 #
 # AUDIT-FIRST (same posture as rdp-microphone.ps1): the default run MUTATES NOTHING.
 # It reports identity, SSH state, firewall exposure, and the poller's condition, and
 # writes an evidence JSON. Pass -Apply to actually provision. Read the audit output
-# before applying — one of the two Windows hosts already has a working SSH service, and
+# before applying -- one of the two Windows hosts already has a working SSH service, and
 # which physical machine each fleet token denotes is still being settled (deckhand#579,
 # deckhand#581), so this script reports identity rather than assuming it.
 #
 # IDEMPOTENT: every apply step is a no-op when already in the desired state.
 #
-# Usage (run in an ELEVATED PowerShell — provisioning needs admin):
+# Usage (run in an ELEVATED PowerShell -- provisioning needs admin):
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\enable-remote-exec.ps1
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\enable-remote-exec.ps1 -Apply -PublicKey "ssh-ed25519 AAAA... vamsee@ace-linux-1"
 #
@@ -34,7 +34,7 @@ param(
     [string]$EvidenceOut = "",
 
     # Restrict the inbound firewall rule to the tailnet CGNAT range. Set to the empty
-    # string to skip scoping (NOT recommended — an unscoped rule exposes 22 on every
+    # string to skip scoping (NOT recommended -- an unscoped rule exposes 22 on every
     # network the host joins, including untrusted ones).
     [string]$AllowedRemoteAddress = "100.64.0.0/10"
 )
@@ -58,12 +58,12 @@ function Test-Elevated {
         [Security.Principal.WindowsBuiltinRole]::Administrator)
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 1. Identity — report it, never assume it.
+# -----------------------------------------------------------------------------
+# 1. Identity -- report it, never assume it.
 #    deckhand#579/#581 are still settling which physical machine each fleet token
 #    denotes; an alias was bound to a retired machine for ~18 days undetected. So the
 #    first job of this script is to state, from the box itself, who this actually is.
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 Write-Section "Identity"
 $hostName = $env:COMPUTERNAME
 $Findings.hostname = $hostName.ToLower()
@@ -83,13 +83,13 @@ if ($ts) {
         $Findings.tailnet_node = $null
     }
 } else {
-    Write-Gap "tailscale.exe not found — this host has no private transport"
+    Write-Gap "tailscale.exe not found -- this host has no private transport"
     $Findings.tailnet_node = $null
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # 2. OpenSSH Server capability + service
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 Write-Section "OpenSSH Server"
 $cap = Get-WindowsCapability -Online -Name 'OpenSSH.Server*' -ErrorAction SilentlyContinue |
        Select-Object -First 1
@@ -103,9 +103,9 @@ $Findings.sshd_start_type = if ($svc) { "$($svc.StartType)" } else { $null }
 if ($svc) {
     Write-Info "sshd service: $($svc.Status), start=$($svc.StartType)"
     if ($svc.Status -ne 'Running')   { Write-Gap "sshd is not running" }
-    if ($svc.StartType -ne 'Automatic') { Write-Gap "sshd start type is $($svc.StartType), not Automatic — it will not survive reboot" }
+    if ($svc.StartType -ne 'Automatic') { Write-Gap "sshd start type is $($svc.StartType), not Automatic -- it will not survive reboot" }
 } else {
-    Write-Gap "sshd service is absent — OpenSSH Server is not installed"
+    Write-Gap "sshd service is absent -- OpenSSH Server is not installed"
 }
 
 if ($Apply) {
@@ -127,14 +127,14 @@ if ($Apply) {
     }
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 3. authorized_keys — the Windows ACL trap
+# -----------------------------------------------------------------------------
+# 3. authorized_keys -- the Windows ACL trap
 #    Administrators do NOT use %USERPROFILE%\.ssh\authorized_keys. sshd reads
 #    %ProgramData%\ssh\administrators_authorized_keys for any account in the local
 #    Administrators group, and REFUSES it unless the file is owned by Administrators
 #    or SYSTEM with no other write access. Getting this wrong produces auth failures
 #    that look like bad keys but are permission errors.
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 Write-Section "Authorized keys"
 $isAdminUser = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
                ).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
@@ -173,12 +173,12 @@ if ($Apply -and $PublicKey -and -not $keyPresent) {
         icacls.exe $targetKeyPath /inheritance:r /grant "Administrators:F" /grant "SYSTEM:F" | Out-Null
     }
 } elseif ($Apply -and -not $PublicKey -and -not $keyPresent) {
-    Write-Gap "-Apply given without -PublicKey and no key is present — key auth will not work"
+    Write-Gap "-Apply given without -PublicKey and no key is present -- key auth will not work"
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 4. Firewall — private transport only, never public
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
+# 4. Firewall -- private transport only, never public
+# -----------------------------------------------------------------------------
 Write-Section "Firewall"
 $ruleName = 'fleet-ssh-inbound-22'
 $rule = Get-NetFirewallRule -DisplayName $ruleName -ErrorAction SilentlyContinue
@@ -186,10 +186,10 @@ $Findings.firewall_rule = if ($rule) { "$($rule.Enabled)/$($rule.Profile)" } els
 if ($rule) {
     Write-Info "rule '$ruleName': enabled=$($rule.Enabled) profile=$($rule.Profile)"
 } else {
-    Write-Gap "no '$ruleName' rule — inbound 22 may be blocked, or allowed by a broader rule"
+    Write-Gap "no '$ruleName' rule -- inbound 22 may be blocked, or allowed by a broader rule"
 }
 
-# Report any OTHER rule already opening 22 — an unscoped one is a real exposure.
+# Report any OTHER rule already opening 22 -- an unscoped one is a real exposure.
 $other = Get-NetFirewallRule -Direction Inbound -Enabled True -ErrorAction SilentlyContinue |
     Where-Object { $_.DisplayName -ne $ruleName } |
     Where-Object {
@@ -198,7 +198,7 @@ $other = Get-NetFirewallRule -Direction Inbound -Enabled True -ErrorAction Silen
     } | Select-Object -ExpandProperty DisplayName -First 5
 if ($other) {
     $Findings.other_port22_rules = @($other)
-    Write-Gap "other enabled inbound rules already open 22: $($other -join '; ') — review for public exposure"
+    Write-Gap "other enabled inbound rules already open 22: $($other -join '; ') -- review for public exposure"
 }
 
 if ($Apply -and -not $rule) {
@@ -208,23 +208,67 @@ if ($Apply -and -not $rule) {
     New-NetFirewallRule @p | Out-Null
 }
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 5. Default shell — non-interactive exit codes are what the fleet helpers branch on
+# -----------------------------------------------------------------------------
+# 5. Default shell -- non-interactive exit codes are what the fleet helpers branch on
 #    A wrong default shell can return correct stdout while losing the exit code, which
 #    reads as success. #3721's definition of done requires this be verified, not assumed.
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 Write-Section "Default shell"
 $shellKey = 'HKLM:\SOFTWARE\OpenSSH'
-$curShell = (Get-ItemProperty -Path $shellKey -Name DefaultShell -ErrorAction SilentlyContinue).DefaultShell
+# Set-StrictMode makes a missing property THROW rather than yield $null, so probe the
+# property list first. Verified on a live host 2026-07-31: the naive
+# (Get-ItemProperty ...).DefaultShell form aborts the script when DefaultShell is unset,
+# which is exactly the case this section exists to detect.
+$curShell = $null
+$shellProps = Get-ItemProperty -Path $shellKey -ErrorAction SilentlyContinue
+if ($shellProps -and ($shellProps.PSObject.Properties.Name -contains 'DefaultShell')) {
+    $curShell = $shellProps.DefaultShell
+}
 $Findings.default_shell = $curShell
 if ($curShell) { Write-Info "DefaultShell: $curShell" }
 else           { Write-Info "DefaultShell unset (sshd default: cmd.exe)" }
 
-# ─────────────────────────────────────────────────────────────────────────────
-# 6. Licensed-run poller — report only. Whether it SHOULD run here is deckhand#579's
+# Locate Git Bash. It ships with Git for Windows but is NOT on PATH, so `where bash`
+# finds nothing even though it is installed.
+$gitBash = $null
+foreach ($c in @(
+    "$env:LOCALAPPDATA\Programs\Git\bin\bash.exe",
+    "$env:ProgramFiles\Git\bin\bash.exe",
+    "${env:ProgramFiles(x86)}\Git\bin\bash.exe")) {
+    if (Test-Path $c) { $gitBash = $c; break }
+}
+$Findings.git_bash = $gitBash
+
+# Why this matters more than it looks. With cmd.exe as DefaultShell, a POSIX command
+# sent over SSH does not fail -- it MIS-EXECUTES AND RETURNS 0. Measured on a live host
+# 2026-07-31: `ssh <host> 'echo A; echo B'` printed "A; echo B" and exited 0. Every
+# fleet guard branches on exit status, so that is a silent wrong answer, not an error.
+# Routing through Git Bash restores POSIX separators, && chaining, /d/... MSYS paths and
+# exit-code propagation (all verified on the same host).
+if (-not $curShell) {
+    if ($gitBash) {
+        Write-Gap "DefaultShell unset -> sshd serves cmd.exe; POSIX commands will mis-execute and still exit 0"
+        Write-Info "Git Bash available for use as DefaultShell: $gitBash"
+    } else {
+        Write-Gap "DefaultShell unset AND no Git Bash found -- remote POSIX execution cannot be made equivalent here"
+    }
+}
+
+if ($Apply -and -not $curShell -and $gitBash) {
+    Write-Act "setting DefaultShell to Git Bash so remote POSIX commands behave"
+    if (-not (Test-Path $shellKey)) { New-Item -Path $shellKey -Force | Out-Null }
+    New-ItemProperty -Path $shellKey -Name DefaultShell -Value $gitBash -PropertyType String -Force | Out-Null
+    if ((Get-Service sshd -ErrorAction SilentlyContinue).Status -eq 'Running') {
+        Write-Act "restarting sshd to pick up DefaultShell"
+        Restart-Service sshd
+    }
+}
+
+# -----------------------------------------------------------------------------
+# 6. Licensed-run poller -- report only. Whether it SHOULD run here is deckhand#579's
 #    call (one Windows host was reclassified out of the licensed lane on 2026-07-30),
 #    so this script never starts or stops it.
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 Write-Section "Licensed-run poller (report only)"
 $tasks = Get-ScheduledTask -ErrorAction SilentlyContinue |
     Where-Object { $_.TaskName -match 'licensed|deckhand|agent' }
@@ -244,9 +288,9 @@ $agentProc = Get-Process -Name python*,pythonw* -ErrorAction SilentlyContinue | 
 $Findings.python_processes = @($agentProc | ForEach-Object { $_.ProcessName })
 Write-Info "python-ish processes running: $(@($agentProc).Count)"
 
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # 7. Evidence
-# ─────────────────────────────────────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 Write-Section "Summary"
 $Findings.applied    = [bool]$Apply
 $Findings.actions    = @($script:Actions)
@@ -269,7 +313,7 @@ if ($script:Problems.Count -eq 0) {
 }
 
 if (-not $Apply) {
-    Write-Host "`nAUDIT ONLY — nothing was changed. Re-run elevated with -Apply to provision." -ForegroundColor Cyan
+    Write-Host "`nAUDIT ONLY -- nothing was changed. Re-run elevated with -Apply to provision." -ForegroundColor Cyan
 } else {
     Write-Host "`nApplied $($script:Actions.Count) change(s)." -ForegroundColor Cyan
     Write-Host "VERIFY FROM ace-linux-1 (exit code matters, not just output):" -ForegroundColor Cyan
