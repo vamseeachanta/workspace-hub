@@ -64,6 +64,7 @@ def trapped(monkeypatch):
     monkeypatch.setattr(R, "gh", _boom, raising=False)
     monkeypatch.setattr(R, "ensure_labels", _boom, raising=False)
     monkeypatch.setattr(R, "fetch_open_issues", _boom, raising=False)
+    monkeypatch.setattr(R, "fetch_issues_for_coverage", _boom, raising=False)
 
 
 # --------------------------------------------------------------------------
@@ -136,6 +137,7 @@ def test_dry_run_apply_is_never_gated(monkeypatch, capsys):
     monkeypatch.setattr(R, "labels_for", lambda *a, **k: ["machine:m"], raising=False)
     monkeypatch.setattr(R, "gh", _boom, raising=False)
     monkeypatch.setattr(R, "fetch_open_issues", _boom, raising=False)
+    monkeypatch.setattr(R, "fetch_issues_for_coverage", _boom, raising=False)
 
     proposals = [{"repo": "owner/name", "number": 1, "machine": "m", "provider": "claude"}]
     R.cmd_apply(proposals, "owner/name", do_write=False, batch=50, pace=0.0)

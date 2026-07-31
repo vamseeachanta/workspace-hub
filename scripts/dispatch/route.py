@@ -66,10 +66,109 @@ def iter_cards():
 
 
 def existing_label_value(labels: list[str], prefix: str) -> str | None:
+    """Lenient read: FIRST matching label wins.
+
+    Retained for multi-valued axes, where taking one representative value is
+    correct. For a single-valued axis use `axis_value()` — this function's
+    first-wins behaviour makes the result depend on GitHub's API ordering, which
+    is the defect `label_axes` exists to close.
+    """
     for lab in labels or []:
         if lab.startswith(prefix):
             return lab.split(":", 1)[1]
     return None
+
+
+# ---------------------------------------------------------------------------
+# Label axis cardinality — fail closed on a scalar axis carrying two values.
+#
+# See the `label_axes:` block in routing-rules.yaml for the measurement and the
+# argument. In short: a label SET can express states the domain forbids, and
+# resolving those by API order is silent non-determinism.
+# ---------------------------------------------------------------------------
+
+
+class AmbiguousAxis(ValueError):
+    """A single-valued axis carries more than one label.
+
+    Carries the axis and the sorted values so the message is stable regardless
+    of the order GitHub returned them — an error that varies with label order is
+    as unhelpful as the bug it replaces.
+    """
+
+    def __init__(self, prefix: str, values) -> None:
+        self.prefix = prefix
+        self.values = sorted(values)
+        super().__init__(
+            f"{prefix} is single-valued but carries {len(self.values)} labels: "
+            f"{', '.join(self.values)} — routing would depend on API label order"
+        )
+
+
+def load_axis_cardinality(cfg: dict) -> tuple[set[str], set[str]]:
+    """Return (single_axes, multi_axes) declared in routing-rules.yaml."""
+    axes = (cfg or {}).get("label_axes") or {}
+    return set(axes.get("single") or {}), set(axes.get("multi") or {})
+
+
+def axis_value(labels, prefix: str, single_axes) -> str | None:
+    """Read one axis, failing closed when a declared scalar carries 2+ values.
+
+    Undeclared axes are NOT enforced — a new axis must not break routing the day
+    it is invented — but they are surfaced by `undeclared_axes()` so the
+    fail-open cannot become a silent hole.
+    """
+    values = [lab.split(":", 1)[1] for lab in (labels or []) if lab.startswith(prefix)]
+    if not values:
+        return None
+    if prefix in (single_axes or frozenset()) and len(values) > 1:
+        raise AmbiguousAxis(prefix, values)
+    return values[0]
+
+
+def undeclared_axes(labels, single_axes, multi_axes) -> list[str]:
+    """Axes present on an issue that no one has classified.
+
+    The compensating control for `axis_value`'s fail-open: an unclassified axis
+    is reported rather than assumed benign.
+    """
+    known = set(single_axes or ()) | set(multi_axes or ())
+    seen = {lab.split(":", 1)[0] + ":" for lab in (labels or []) if ":" in lab}
+    return sorted(seen - known)
+
+
+def assert_write_preserves_cardinality(merged_labels, single_axes) -> None:
+    """Refuse a write that would leave a scalar axis holding two values.
+
+    The write-side counterpart to `axis_value()`. A read guard without a write
+    guard is half a control: the resolver would refuse an issue the writer had
+    just created.
+
+    Checked on the MERGED set (existing + additions) rather than on the
+    additions alone — a single new `machine:` label is only a violation in the
+    context of a `machine:` label already there, which is exactly the case a
+    "did we add two?" check would miss.
+    """
+    for prefix in sorted(single_axes or ()):
+        values = [lab.split(":", 1)[1] for lab in merged_labels if lab.startswith(prefix)]
+        if len(values) > 1:
+            raise AmbiguousAxis(prefix, values)
+
+
+def classify_card_axes(card: dict, single_axes) -> dict:
+    """Decide whether one card is safe to route.
+
+    Fail-closed here means "do not route THIS card", never "abort the run" — one
+    contradictory issue must not take down a 1,700-issue pass, or the pressure
+    is to disable the check outright.
+    """
+    labels = card.get("labels") or []
+    for prefix in sorted(single_axes or ()):
+        try:
+            axis_value(labels, prefix, single_axes)
+        except AmbiguousAxis as exc:
+            return {"routable": False, "reason": str(exc), "axis": prefix}
+    return {"routable": True, "reason": None, "axis": None}
 
 
 # ---------------------------------------------------------------------------
@@ -198,7 +297,8 @@ def match_rule(rules: list[dict], *, repo, domain, gh_labels) -> dict:
 LANE_PROVIDERS = {"codex", "claude"}
 
 
-def resolve_provider(labels: list[str], assign: dict, defaults: dict) -> tuple[str | None, bool, str]:
+def resolve_provider(labels: list[str], assign: dict, defaults: dict,
+                     single_axes=None) -> tuple[str | None, bool, str]:
     """Resolve (provider, provider_explicit, source) for one card.
 
     source is one of "ai" | "rule" | "lane" | "default" — the quota gate
@@ -215,8 +315,13 @@ def resolve_provider(labels: list[str], assign: dict, defaults: dict) -> tuple[s
     never materializes an ai: label from a lane — lane stays re-classifiable
     at planning time (#3029 adversarial review r2).
     """
-    existing_ai = existing_label_value(labels, "ai:")
-    lane = existing_label_value(labels, "lane:")
+    # `single_axes` defaults to no enforcement for back-compat with the six
+    # existing call sites and their tests. propose() passes the loaded set, and
+    # test_propose_passes_the_loaded_axes_not_the_lenient_default asserts it —
+    # a lenient default is exactly how an enforced guard quietly becomes
+    # optional, so the wiring is pinned rather than trusted.
+    existing_ai = axis_value(labels, "ai:", single_axes)
+    lane = axis_value(labels, "lane:", single_axes)
     accepted_lane = lane if lane in LANE_PROVIDERS else None
     if existing_ai:
         provider, source = existing_ai, "ai"
@@ -335,6 +440,8 @@ def propose(args) -> list[dict]:
     aliases = cfg.get("machine_aliases", {})  # label-in-the-wild -> canonical
     skip_labels = set(defaults.get("skip_if_labeled", []))
     routable_states = set(defaults.get("routable_states", ["open"]))
+    single_axes, multi_axes = load_axis_cardinality(cfg)
+    blocked: list[dict] = []   # cards refused for a contradictory scalar axis
 
     proposals = []
     _QUOTA_UNSET = object()
@@ -349,16 +456,28 @@ def propose(args) -> list[dict]:
         if skip_labels & set(labels):
             continue
 
+        # Fail closed on a contradictory card BEFORE routing it. Excluding one
+        # card is the failure mode; aborting the run is not — a single bad issue
+        # must not take down a 1,700-issue pass, or the pressure is to disable
+        # the check outright.
+        axis_check = classify_card_axes({"labels": labels}, single_axes)
+        if not axis_check["routable"]:
+            blocked.append({
+                "repo": repo, "number": card.get("number"),
+                "reason": axis_check["reason"], "axis": axis_check["axis"],
+            })
+            continue
+
         domain = board.get("domain")  # card's domain = the board it lives in
         rule = match_rule(rules, repo=repo, domain=domain, gh_labels=labels)
         assign = rule.get("assign", {})
 
         # human-set labels on the issue always override the rule
-        existing_machine = existing_label_value(labels, "machine:")
+        existing_machine = axis_value(labels, "machine:", single_axes)
         machine = existing_machine or assign.get("machine") or defaults.get("machine")
         machine = aliases.get(machine, machine)  # fold acma-ws014 -> licensed-win-2
         provider, provider_explicit, provider_source = resolve_provider(
-            labels, assign, defaults)
+            labels, assign, defaults, single_axes=single_axes)
         quota_demoted = False
         # R9: NO source restriction here. This call site previously carried its
         # own `provider_source == "lane"` guard, so relaxing only the function
@@ -388,6 +507,7 @@ def propose(args) -> list[dict]:
             "reason": rule.get("reason", ""),
             "url": card.get("source_url"),
         })
+    report_blocked(blocked)
     # WIP slots must go to the MOST URGENT cards, not whichever were globbed first.
     proposals.sort(key=lambda p: (-int(p.get("priority") or 0), p["repo"], _num(p["number"])))
     return apply_wip(proposals, cfg)
@@ -444,6 +564,27 @@ def apply_wip(proposals: list[dict], cfg: dict) -> list[dict]:
             if prov in prov_pool:
                 pool_count[prov_pool[prov]] += 1
     return proposals
+
+
+def report_blocked(blocked: list[dict]) -> None:
+    """A refused card must be VISIBLE.
+
+    An issue silently dropped from routing is the same defect class as one
+    silently mis-routed — it simply fails to appear, which reads as "nothing to
+    do" rather than "I refused to guess". stderr so it survives `--json`.
+    """
+    if not blocked:
+        return
+    print(
+        f"\n\033[1;31mREFUSED {len(blocked)} card(s) — contradictory single-valued axis\033[0m",
+        file=sys.stderr,
+    )
+    for b in blocked:
+        print(f"  {b['repo']}#{b['number']}: {b['reason']}", file=sys.stderr)
+    print(
+        "  Fix: remove the extra label so the axis carries exactly one value.",
+        file=sys.stderr,
+    )
 
 
 def print_detail(proposals: list[dict]):
@@ -640,6 +781,11 @@ def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace
     # set the flag habitually, which defeats the gate.
     if do_write:
         assert_write_allowed()
+    # `ai:` is included here but NOT in the routing-rules `single` list: it is a
+    # dispatch-time override read by resolve_provider, and two of them would be
+    # the same contradiction. Declared at the write boundary because that is the
+    # only place this process creates one.
+    write_single_axes = set(load_axis_cardinality(load_rules())[0]) | {"ai:"}
     proposals = [p for p in proposals if p["repo"] == repo]
     if not proposals:
         sys.exit(f"no open cards for {repo}")
@@ -673,6 +819,11 @@ def cmd_apply(proposals: list[dict], repo: str, do_write: bool, batch: int, pace
         if not labs:
             noop += 1  # already fully labeled
             continue
+        # Fail closed at the mutation boundary. A wrongly-written label is
+        # expensive to undo across hundreds of issues (#582's 676-issue
+        # migration is the local proof of how far one travels), so the check
+        # goes BEFORE `gh`, not in a report afterwards.
+        assert_write_preserves_cardinality(set(existing) | set(labs), write_single_axes)
         r = gh(["issue", "edit", p["number"], "--repo", repo, "--add-label", ",".join(labs)])
         if r.returncode == 0:
             written += 1
@@ -708,7 +859,7 @@ def cmd_coverage(args) -> None:
     repos = [args.repo] if args.repo else DEFAULT_COVERAGE_REPOS
     overall = {}
     for repo in repos:
-        issues = fetch_open_issues(repo)
+        issues = fetch_issues_for_coverage(repo)
         overall[repo] = coverage_report(issues, axes, terminal, skip)
 
     if args.json:
@@ -735,8 +886,22 @@ DEFAULT_COVERAGE_REPOS = (
 )
 
 
-def fetch_open_issues(repo: str) -> list[dict]:
-    """Open issues with labels, via gh. READ-ONLY: `issue list` only."""
+def fetch_issues_for_coverage(repo: str) -> list[dict]:
+    """Open issues with labels as a LIST, via gh. READ-ONLY: `issue list` only.
+
+    Deliberately named apart from `fetch_open_issues()` (line ~687), which
+    returns a `{number -> set(labels)}` MAPPING for the write path.
+
+    They previously shared a name. Python keeps the last definition, so this one
+    shadowed the mapping version and `cmd_apply`'s `live.get(number)` raised
+    `AttributeError: 'list' object has no attribute 'get'` — the write path was
+    broken on main from the moment the coverage reporter landed (#3713).
+
+    It went unnoticed because the only caller is `--apply --yes`, which is gated
+    behind `DISPATCH_APPLY_ENABLED`: a path nobody had armed since. Two functions
+    with one name and different return types is a collision no test asserts
+    against, which is why the shapes are now in the names.
+    """
     r = subprocess.run(
         ["gh", "issue", "list", "--repo", repo, "--state", "open",
          "--limit", "2000", "--json", "number,labels"],

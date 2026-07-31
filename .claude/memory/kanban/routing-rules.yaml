@@ -4,6 +4,37 @@
 # rule engine's PROPOSALS (which you approve before any label is written).
 
 # ---------------------------------------------------------------------------
+# Label axis cardinality — which axes are SCALARS and which are SETS.
+#
+# A GitHub label set permits states the domain forbids: nothing stops two
+# `status:` labels, but an issue cannot be in two workflow states. Measured
+# 2026-07-30 across 1,761 open issues: 146 carried 2+ labels on one axis, 36 of
+# them on `status:` — including 14 that were `plan-approved` AND `plan-review`
+# at the same time, i.e. approved to one reader and pending to another.
+#
+# route.py used to resolve those by taking the FIRST matching label, so the
+# outcome depended on GitHub's API ordering: silent, non-deterministic, and
+# indistinguishable from a correct issue at the point of use. Silently picking
+# one of two contradictory answers is worse than refusing — a refusal gets
+# fixed, a silent pick gets shipped.
+#
+# The split has to be DECLARED rather than inferred, because no scan can tell
+# "this axis permits multiple" from "this axis was violated 74 times".
+# Each entry carries its reason: a bare list invites flipping an axis on a
+# hunch; a sentence makes the next person argue with it.
+# ---------------------------------------------------------------------------
+label_axes:
+  single:
+    "status:":  "a position in a state machine — an issue cannot be in two at once"
+    "machine:": "one execution host; `multi` is the value for work that spans several"
+    "lane:":    "one implementing provider; a second opinion is `needs:cross-review`"
+    "agent:":   "one agent owns the work item"
+  multi:
+    "domain:":  "work genuinely spans domains — 74 open issues legitimately do"
+    "cat:":     "categories overlap by design"
+    "needs:":   "requirements accumulate; an issue can need cross-review AND the frontier tier"
+
+# ---------------------------------------------------------------------------
 # Machine roster  -> machine:<id> label values + dispatch/<id>.yaml queue files
 # Canonical scheme = the pre-existing in-the-wild vocabulary (user 2026-05-25,
 # "adopt existing scheme"): names encode capability, so 0 cards get relabeled.

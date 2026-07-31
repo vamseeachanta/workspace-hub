@@ -197,7 +197,10 @@ def test_coverage_cli_never_reaches_a_write_even_with_apply_yes(monkeypatch, cap
     monkeypatch.setattr(R, "gh", boom, raising=False)
     monkeypatch.setattr(R, "cmd_apply", boom, raising=False)
     monkeypatch.setattr(R, "propose", boom, raising=False)
-    monkeypatch.setattr(R, "fetch_open_issues", lambda repo: [
+    # renamed from fetch_open_issues: that name collided with the write path's
+    # {number -> labels} mapping and silently shadowed it (see
+    # test_write_preserves_cardinality.py::test_no_two_module_functions_share_a_name)
+    monkeypatch.setattr(R, "fetch_issues_for_coverage", lambda repo: [
         {"number": 1, "labels": ["machine:ace-linux-1", "lane:claude"]},
     ])
     monkeypatch.setattr(
