@@ -1,11 +1,11 @@
-generated_at: "2026-07-30T18:47:10"
-schema_version: 5
+generated_at: "2026-07-31T00:47:03"
+schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "3bf5714ee"
+  checkout_sha: "75911423c"
   dirty: false
   behind_main: 0
   ahead_main: 0
@@ -13,7 +13,7 @@ provenance:
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32037, gpu_model: "none"}
-    headroom: {ram_avail_mib: 27487, disk_avail_gb: 744}
+    headroom: {ram_avail_mib: 27267, disk_avail_gb: 772}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: true
     job_count: 63
   session_curation:
-    last_curated_at: "2026-07-30T23:47:02+00:00"
-    sessions_24h: 29
+    last_curated_at: "2026-07-31T05:47:01+00:00"
+    sessions_24h: 44
     providers_active: "claude,codex,gemini,hermes"
     memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-07-30T23:47:08+00:00"
+    audited_at: "2026-07-31T05:47:02+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,16 +84,25 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-30T23:47:08+00:00"
-    worst_age_hours: 14.369
+    audited_at: "2026-07-31T05:47:03+00:00"
+    worst_age_hours: 20.367
     freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-07-30T23:47:09+00:00"
+    audited_at: "2026-07-31T05:47:03+00:00"
     repos_total: 15
     healthy: 45
     repairable: 0
     worst_state: "HEALTHY"
-  publish_health:
-    last_publish_at: "2026-07-30T23:17:20Z"
-    last_publish_duration_s: 11
-    last_publish_rc: 0
+  harness_checkup:
+    audited_at: null
+    cc_version: null
+    cc_latest: null
+    version_current: null
+    install_method: null
+    duplicate_installs: null
+    settings_parse_ok: null
+    broken_agents: null
+    unused_skills: null
+    unused_plugins: null
+    default_mode: null
+    auto_mode_default: null

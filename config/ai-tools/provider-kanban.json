@@ -36,6 +36,88 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:operations",
+          "domain:security",
+          "machine:multi",
+          "status:needs-plan"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "ops(fleet): derive fleet-ssh-hosts.yml reachability from the generated matrix, not a hand-maintained list"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3723,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "ops(fleet): derive fleet-ssh-hosts.yml reachability from the generated matrix, not a hand-maintained list",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3723",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "enhancement",
+          "priority:medium",
+          "cat:operations",
+          "domain:security",
+          "machine:ace-win-2",
+          "status:needs-plan"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "ops(ace-win-2): provision inbound SSH and diagnose the 17-day heartbeat silence"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3721,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "ops(ace-win-2): provision inbound SSH and diagnose the 17-day heartbeat silence",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3721",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "cat:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -4074,6 +4156,7 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "already has status:plan-approved",
         "no canonical plan file",
         "reviews not clean: missing_review",
@@ -4086,7 +4169,6 @@
           "enhancement",
           "cat:harness",
           "machine:multi",
-          "status:plan-review",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude",
@@ -4116,7 +4198,6 @@
       "warnings": [
         "approved_no_marker",
         "approved_no_plan",
-        "dual_status_labels",
         "missing_review"
       ]
     },
@@ -5764,6 +5845,7 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "already has status:plan-approved",
         "no canonical plan file",
         "reviews not clean: missing_review",
@@ -5778,7 +5860,6 @@
           "cat:harness",
           "domain:workstations",
           "machine:multi",
-          "status:plan-review",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude"
@@ -5786,7 +5867,7 @@
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
+        "provider_route": "codex",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
         "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)"
@@ -5799,15 +5880,14 @@
       "number": 3516,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "claude",
+      "provider_route": "codex",
       "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
+      "routing_reason": "implementation/test/fix language",
       "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3516",
       "warnings": [
         "approved_no_marker",
         "approved_no_plan",
-        "dual_status_labels",
         "missing_review"
       ]
     },
@@ -5980,6 +6060,7 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
         "already has status:plan-approved",
         "no canonical plan file",
         "reviews not clean: missing_review",
@@ -5993,7 +6074,6 @@
           "priority:high",
           "cat:harness",
           "machine:dev-primary",
-          "status:plan-review",
           "status:plan-approved",
           "gate:completeness",
           "lane:claude",
@@ -6023,7 +6103,6 @@
       "warnings": [
         "approved_no_marker",
         "approved_no_plan",
-        "dual_status_labels",
         "missing_review"
       ]
     },
@@ -7498,8 +7577,8 @@
           "domain:workflow",
           "status:plan-approved",
           "gate:completeness",
-          "lane:codex",
-          "lane:claude"
+          "lane:claude",
+          "needs:cross-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -8005,108 +8084,96 @@
         "approved_no_marker",
         "missing_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:data",
-          "status:plan-approved",
-          "type:follow-up",
-          "gate:completeness",
-          "lane:claude",
-          "domain:governance"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- `assetutilities/src/assetutilities/workflow_api/envelope.py` \u2014 `ResultEnvelope` supplies",
-        "provider_route": "claude",
-        "risks": "**Environment-digest scope risk:** over-broad env fields make identity brittle (every machine | **Parent-contract coupling risk:** the contract YAML + decision manual are in draft PR #3452, and | **Reference-implementation home \u2014 DECIDED:** `assetutilities.workflow_api.identity`, inheriting",
-        "tests": "17 TDD tests defined",
-        "title": "standard: deterministic run identity and algorithm version contract"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3428,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-07-11-issue-3428-deterministic-run-identity-contract.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "standard: deterministic run identity and algorithm version contract",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3428",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "issue already has approval marker on disk",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": ".planning/plan-approved/3427.md",
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:data",
-          "status:plan-approved",
-          "tracker",
-          "gate:completeness",
-          "lane:claude",
-          "epic",
-          "domain:governance"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- `docs/architecture/execution-manifest.schema.yaml` defines commands, replay and",
-        "provider_route": "claude",
-        "risks": "**Cross-system transaction risk:** GitHub and Hugging Face cannot commit atomically. | **Existing-envelope drift:** mutable local feature checkouts lag fetched remote main, | **Canonicalization risk:** removing volatile fields can remove real inputs, while raw",
-        "tests": "13 TDD tests defined",
-        "title": "epic: repository-linked algorithm run datasets and decision intelligence"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3427,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-07-10-issue-3427-repository-linked-algorithm-run-datasets.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "epic: repository-linked algorithm run datasets and decision intelligence",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3427",
-      "warnings": [
-        "legacy_review_no_sha",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-07-31T01:21:51Z",
+  "generated_at": "2026-07-31T05:21:17Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "domain:security",
+            "machine:multi",
+            "status:needs-plan"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "ops(fleet): derive fleet-ssh-hosts.yml reachability from the generated matrix, not a hand-maintained list"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3723,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "ops(fleet): derive fleet-ssh-hosts.yml reachability from the generated matrix, not a hand-maintained list",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3723",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:operations",
+            "domain:security",
+            "machine:ace-win-2",
+            "status:needs-plan"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "ops(ace-win-2): provision inbound SSH and diagnose the 17-day heartbeat silence"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3721,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "ops(ace-win-2): provision inbound SSH and diagnose the 17-day heartbeat silence",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3721",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -12156,6 +12223,7 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "already has status:plan-approved",
           "no canonical plan file",
           "reviews not clean: missing_review",
@@ -12168,7 +12236,6 @@
             "enhancement",
             "cat:harness",
             "machine:multi",
-            "status:plan-review",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude",
@@ -12198,7 +12265,6 @@
         "warnings": [
           "approved_no_marker",
           "approved_no_plan",
-          "dual_status_labels",
           "missing_review"
         ]
       },
@@ -13846,6 +13912,7 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "already has status:plan-approved",
           "no canonical plan file",
           "reviews not clean: missing_review",
@@ -13860,7 +13927,6 @@
             "cat:harness",
             "domain:workstations",
             "machine:multi",
-            "status:plan-review",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
@@ -13868,7 +13934,7 @@
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
+          "provider_route": "codex",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
           "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)"
@@ -13881,15 +13947,14 @@
         "number": 3516,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "claude",
+        "provider_route": "codex",
         "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
+        "routing_reason": "implementation/test/fix language",
         "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3516",
         "warnings": [
           "approved_no_marker",
           "approved_no_plan",
-          "dual_status_labels",
           "missing_review"
         ]
       },
@@ -14062,6 +14127,7 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
           "already has status:plan-approved",
           "no canonical plan file",
           "reviews not clean: missing_review",
@@ -14075,7 +14141,6 @@
             "priority:high",
             "cat:harness",
             "machine:dev-primary",
-            "status:plan-review",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude",
@@ -14105,7 +14170,6 @@
         "warnings": [
           "approved_no_marker",
           "approved_no_plan",
-          "dual_status_labels",
           "missing_review"
         ]
       },
@@ -15580,8 +15644,8 @@
             "domain:workflow",
             "status:plan-approved",
             "gate:completeness",
-            "lane:codex",
-            "lane:claude"
+            "lane:claude",
+            "needs:cross-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -16087,100 +16151,6 @@
           "approved_no_marker",
           "missing_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:claude",
-            "domain:governance"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- `assetutilities/src/assetutilities/workflow_api/envelope.py` \u2014 `ResultEnvelope` supplies",
-          "provider_route": "claude",
-          "risks": "**Environment-digest scope risk:** over-broad env fields make identity brittle (every machine | **Parent-contract coupling risk:** the contract YAML + decision manual are in draft PR #3452, and | **Reference-implementation home \u2014 DECIDED:** `assetutilities.workflow_api.identity`, inheriting",
-          "tests": "17 TDD tests defined",
-          "title": "standard: deterministic run identity and algorithm version contract"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3428,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-07-11-issue-3428-deterministic-run-identity-contract.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "standard: deterministic run identity and algorithm version contract",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3428",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "issue already has approval marker on disk",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": ".planning/plan-approved/3427.md",
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:plan-approved",
-            "tracker",
-            "gate:completeness",
-            "lane:claude",
-            "epic",
-            "domain:governance"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- `docs/architecture/execution-manifest.schema.yaml` defines commands, replay and",
-          "provider_route": "claude",
-          "risks": "**Cross-system transaction risk:** GitHub and Hugging Face cannot commit atomically. | **Existing-envelope drift:** mutable local feature checkouts lag fetched remote main, | **Canonicalization risk:** removing volatile fields can remove real inputs, while raw",
-          "tests": "13 TDD tests defined",
-          "title": "epic: repository-linked algorithm run datasets and decision intelligence"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3427,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-07-10-issue-3427-repository-linked-algorithm-run-datasets.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "epic: repository-linked algorithm run datasets and decision intelligence",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3427",
-        "warnings": [
-          "legacy_review_no_sha",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16191,17 +16161,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-07-31T01:21:46.306195Z",
+  "scorecard_generated_at": "2026-07-31T05:21:13.276683Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-31T01:21:45.616160Z",
+  "utilization_generated_at": "2026-07-31T05:21:13.142438Z",
   "warning_summary": {
-    "approved_no_marker": 19,
+    "approved_no_marker": 18,
     "approved_no_plan": 9,
-    "dual_status_labels": 3,
-    "legacy_review_no_sha": 10,
+    "legacy_review_no_sha": 9,
     "major_review": 4,
-    "marker_without_open_approved_issue": 176,
-    "missing_review": 39,
+    "marker_without_open_approved_issue": 177,
+    "missing_review": 37,
     "unavailable_review": 6
   }
 }
