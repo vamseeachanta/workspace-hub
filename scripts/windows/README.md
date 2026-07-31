@@ -26,6 +26,53 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\reconcile-ec
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\equality-report.ps1                # refresh this box's column
 ```
 
+## Durable job dispatch (`dispatch-run.ps1`)
+
+**Windows OpenSSH kills the whole descendant process tree when the SSH session closes.**
+Measured on a live host 2026-07-31: `cmd /c start /b` blocked the session on an inherited
+handle *and* died at close; `Start-Process -WindowStyle Hidden` returned a PID in 1 s but the
+process was already gone and its redirect files were 0 bytes. Neither survives. So nothing
+long-running could be dispatched over plain SSH, which nullified the box's actual asset
+(64 cores, free AQWA seats).
+
+A Scheduled Task is the one mechanism proven durable here. `dispatch-run.ps1` wraps it in a
+fire-and-forget interface. Every action emits a single JSON object, so a caller over SSH can
+parse it directly.
+
+```bash
+# from the control surface. NOTE the forward slashes -- see the path trap below.
+P='C:/path/to/workspace-hub/scripts/windows/dispatch-run.ps1'
+
+ssh <host> "powershell -NoProfile -ExecutionPolicy Bypass -File '$P' \
+  -Action submit -Shell bash -JobId myjob -Command 'long-running-thing.sh'"
+ssh <host> "powershell ... -File '$P' -Action status  -JobId myjob"
+ssh <host> "powershell ... -File '$P' -Action logs    -JobId myjob"
+ssh <host> "powershell ... -File '$P' -Action list"
+ssh <host> "powershell ... -File '$P' -Action cancel  -JobId myjob"
+ssh <host> "powershell ... -File '$P' -Action cleanup -JobId myjob"   # deletes logs too
+```
+
+Verified end-to-end on a live host: submitted a 20-second job, the SSH session closed, the job
+ran to completion detached, and a later session read back `state=finished`, `exit_code=5`, and
+the captured stdout.
+
+Notes that cost real debugging time:
+
+- **Forward slashes in the `-File` path.** Once `DefaultShell` is Git Bash, bash eats the
+  backslashes before PowerShell sees them (`C:\Users\...` arrives as `C:Users...`). PowerShell
+  accepts `/` happily.
+- **`schtasks` writes to stderr on success** ("trigger start time is in the past"), and under
+  `$ErrorActionPreference='Stop'` PowerShell promotes *any* native stderr write to a terminating
+  error. Native calls are judged by `$LASTEXITCODE` instead.
+- **The runner-recorded `exit_code` is authoritative, not the task's `LastTaskResult`** — the
+  latter reports whether the task *launched*, which is 0 for a successfully started job whose
+  payload later failed. Both are reported so they can be compared.
+- **No `/rl HIGHEST`.** Ordinary compute does not need elevation, and requiring it would force
+  dispatch through an admin session.
+- Tasks live under `\WorkspaceHubDispatch\` so they can never be confused with, or collide with,
+  the licensed-run agent's task.
+- **`cleanup` deletes the logs.** Fetch them first.
+
 ## Inbound SSH provisioning (`enable-remote-exec.ps1`)
 
 Windows hosts sit in `manual_hosts` in [`config/fleet-ssh-hosts.yml`](../../config/fleet-ssh-hosts.yml),
