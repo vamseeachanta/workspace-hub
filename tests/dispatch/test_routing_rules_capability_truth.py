@@ -130,6 +130,15 @@ def test_no_rule_routes_licensed_work_to_an_unproven_host(rules, machines):
     a docstring). The `rules:` list is what actually assigns. So correcting only
     the capability list would leave the defect fully intact while looking fixed —
     the same declared-but-unwired shape as an uncalled safety gate.
+
+    UPDATED 2026-07-31 after the owner's correction "ws014 is not powerful
+    enough". The original form of this test demanded a *proven licence* and
+    nothing else, so it accepted repointing batch work to a workstation — I
+    satisfied it by trading a licence failure for a capacity failure.
+
+    An unproven licence is now acceptable **only when `blocked_on` names the
+    prerequisite**, because silently rerouting to a lesser host hides the
+    blockage. Capacity is asserted separately in test_route_capacity.py.
     """
     offenders = []
     for rule in rules.get("rules") or []:
@@ -141,12 +150,15 @@ def test_no_rule_routes_licensed_work_to_an_unproven_host(rules, machines):
             offenders.append(f"rule -> unknown machine {target!r}")
             continue
         needs_licence = set(spec.get("capabilities") or []) & LICENSED_CAPABILITIES
-        if needs_licence and not _licence_proven(spec):
+        if needs_licence and not _licence_proven(spec) and not spec.get("blocked_on"):
             offenders.append(
                 f"rule {rule.get('match')} -> {target} "
-                f"(claims {sorted(needs_licence)}, licence unproven)"
+                f"(claims {sorted(needs_licence)}, licence unproven AND no blocked_on)"
             )
-    assert not offenders, "rules route licensed work to unproven hosts: " + "; ".join(offenders)
+    assert not offenders, (
+        "rules route licensed work to a host whose licence is neither proven nor "
+        "openly blocked: " + "; ".join(offenders)
+    )
 
 
 def test_every_rule_targets_a_machine_in_the_roster(rules, machines):
