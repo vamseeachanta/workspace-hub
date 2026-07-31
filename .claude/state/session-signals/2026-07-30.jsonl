@@ -18,3 +18,6 @@
 {"ts":"2026-07-30T15:58:32Z","event":"stop_signal_captured","session_id":"019fb3bc-5655-7193-8d22-a3b4c4719e92"}
 {"ts":"2026-07-30T16:38:37Z","event":"session_tool_summary","session_id":"019fb3e3-35ce-7430-b439-af314a95d450","wrk":"none","tool_calls":60,"edits":0,"reads":2}
 {"ts":"2026-07-30T16:38:37Z","event":"stop_signal_captured","session_id":"019fb3e3-35ce-7430-b439-af314a95d450"}
+{"ts":"2026-07-31T00:05:20Z","event":"session_tool_summary","session_id":"019fb57c-2744-7220-979d-0a1e39e207d8","wrk":"none","tool_calls":62,"edits":0,"reads":2}
+{"ts":"2026-07-31T00:05:36Z","event":"session_tool_summary","session_id":"019fb57c-57d3-7ec2-9dd3-d4960456b95d","wrk":"none","tool_calls":62,"edits":0,"reads":2}
+{"ts":"2026-07-31T00:14:08Z","event":"session_tool_summary","session_id":"019fb584-8754-7712-8fd5-c98a5619b820","wrk":"none","tool_calls":62,"edits":0,"reads":2}
