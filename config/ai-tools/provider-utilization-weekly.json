@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-31T05:21:13.142438Z",
+  "generated_at": "2026-07-31T09:21:27.277527Z",
   "current_week": "2026-W31",
   "report_weeks": 8,
   "subscriptions": {
@@ -750,7 +750,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-07-31T05:20:05Z",
+        "quota_snapshot_ts": "2026-07-31T09:20:05Z",
         "top_tools": [
           {
             "tool": "unknown",
@@ -764,19 +764,19 @@
       "codex": {
         "provider": "codex",
         "week": "2026-W31",
-        "sessions": 57,
-        "post_records": 2659,
-        "activity_utilization_pct": 6.9,
+        "sessions": 63,
+        "post_records": 2727,
+        "activity_utilization_pct": 7.0,
         "quota_utilization_pct": 0.0,
         "reported_utilization_pct": 0.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl-estimate",
-        "quota_snapshot_ts": "2026-07-31T05:20:05Z",
+        "quota_snapshot_ts": "2026-07-31T09:20:05Z",
         "top_tools": [
           {
             "tool": "Bash",
-            "count": 2061
+            "count": 2129
           },
           {
             "tool": "wait",
@@ -796,7 +796,7 @@
           }
         ],
         "first_ts": "2026-07-29T03:25:55.819000Z",
-        "last_ts": "2026-07-29T13:14:29.002000Z",
+        "last_ts": "2026-07-31T00:04:37.524000Z",
         "note": "week_messages/weekly_limit from history.jsonl-estimate"
       },
       "agy": {

@@ -1,45 +1,10 @@
 {
-  "generated_at": "2026-07-31T05:21:15.293696Z",
+  "generated_at": "2026-07-31T09:21:29.364319Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 11,
+  "eligible_count": 10,
   "applied": [],
   "candidates": [
-    {
-      "number": 3430,
-      "title": "standard: replayable public input and source snapshot contract",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3430",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:data",
-        "status:plan-approved",
-        "type:follow-up",
-        "gate:completeness",
-        "lane:claude",
-        "domain:governance"
-      ],
-      "updatedAt": "2026-07-27T01:19:15Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.95,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": true
-    },
     {
       "number": 3516,
       "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)",
@@ -105,41 +70,6 @@
         "priority-labeled",
         "strong-codex-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3429,
-      "title": "standard: content-addressed artifact and Hugging Face residency contract",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3429",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:data",
-        "status:plan-approved",
-        "type:follow-up",
-        "gate:completeness",
-        "lane:claude",
-        "domain:governance"
-      ],
-      "updatedAt": "2026-07-27T01:19:15Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
       ],
       "eligible": true
     },
@@ -392,6 +322,42 @@
       "eligible": true
     },
     {
+      "number": 3524,
+      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
+      "labels": [
+        "bug",
+        "priority:medium",
+        "cat:operations",
+        "domain:workstations",
+        "machine:multi",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:codex"
+      ],
+      "updatedAt": "2026-07-14T22:41:52Z",
+      "execution_ready": true,
+      "priority_rank": 2,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 3532,
       "title": "fix(memory): reserve cross-provider runtime budget for operational feedback",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3532",
@@ -494,9 +460,10 @@
       "labels": [
         "priority:medium",
         "cat:data",
+        "machine:dev-primary",
         "domain:family"
       ],
-      "updatedAt": "2026-07-27T02:35:31Z",
+      "updatedAt": "2026-07-31T08:33:42Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
@@ -522,9 +489,10 @@
       "labels": [
         "priority:medium",
         "cat:operations",
-        "domain:workstations"
+        "domain:workstations",
+        "machine:dev-primary"
       ],
-      "updatedAt": "2026-07-28T02:26:35Z",
+      "updatedAt": "2026-07-31T08:33:56Z",
       "execution_ready": false,
       "priority_rank": 2,
       "suggested_provider": "codex",
@@ -539,6 +507,36 @@
       "confidence": 0.6,
       "confidence_reasons": [
         "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3594,
+      "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3594",
+      "labels": [
+        "bug",
+        "priority:low",
+        "cat:operations",
+        "domain:workstations",
+        "machine:multi",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-07-29T13:43:07Z",
+      "execution_ready": false,
+      "priority_rank": 3,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.45,
+      "confidence_reasons": [
         "strong-codex-language-match",
         "provider-highest-priority"
       ],

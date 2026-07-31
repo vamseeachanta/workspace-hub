@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-31T05:21:15.140073Z",
+  "generated_at": "2026-07-31T09:21:29.231886Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-31T05:21:13.276683Z",
+  "scorecard_generated_at": "2026-07-31T09:21:27.433811Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,35 +11,9 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 22,
-      "total_candidates": 178,
+      "execution_ready_count": 21,
+      "total_candidates": 179,
       "top_issues": [
-        {
-          "number": 3429,
-          "title": "standard: content-addressed artifact and Hugging Face residency contract",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3429",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:claude",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 3431,
           "title": "standard: curated output and rolling algorithm report contract",
@@ -224,35 +198,36 @@
             "implementation",
             "strategy"
           ]
-        }
-      ],
-      "full_candidates": [
+        },
         {
-          "number": 3429,
-          "title": "standard: content-addressed artifact and Hugging Face residency contract",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3429",
+          "number": 3524,
+          "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
           "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
+            "bug",
+            "priority:medium",
+            "cat:operations",
+            "domain:workstations",
+            "machine:multi",
             "status:plan-approved",
-            "type:follow-up",
             "gate:completeness",
-            "lane:claude",
-            "domain:governance"
+            "lane:codex"
           ],
-          "updatedAt": "2026-07-27T01:19:15Z",
+          "updatedAt": "2026-07-14T22:41:52Z",
           "execution_ready": true,
-          "priority_rank": 1,
+          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
-        },
+        }
+      ],
+      "full_candidates": [
         {
           "number": 3431,
           "title": "standard: curated output and rolling algorithm report contract",
@@ -553,11 +528,12 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3480",
           "labels": [
             "cat:tooling",
+            "machine:dev-primary",
             "status:plan-approved",
             "gate:completeness",
             "domain:capability"
           ],
-          "updatedAt": "2026-07-28T17:18:01Z",
+          "updatedAt": "2026-07-31T08:33:07Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -824,10 +800,11 @@
           "labels": [
             "cat:operations",
             "priority:critical",
+            "machine:dev-primary",
             "compliance-alert",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-27T02:35:06Z",
+          "updatedAt": "2026-07-31T08:33:49Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -896,10 +873,11 @@
             "priority:high",
             "cat:operations",
             "domain:testing",
+            "machine:dev-primary",
             "status:plan-review",
             "domain:ci-release"
           ],
-          "updatedAt": "2026-07-27T01:19:14Z",
+          "updatedAt": "2026-07-31T08:32:49Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -920,9 +898,10 @@
             "bug",
             "priority:high",
             "cat:harness",
-            "domain:security"
+            "domain:security",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-10T09:00:15Z",
+          "updatedAt": "2026-07-31T08:32:51Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -943,9 +922,10 @@
             "bug",
             "priority:high",
             "cat:harness",
-            "domain:testing"
+            "domain:testing",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-27T03:35:21Z",
+          "updatedAt": "2026-07-31T08:32:53Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -992,9 +972,10 @@
             "cat:harness",
             "domain:testing",
             "domain:security",
+            "machine:dev-primary",
             "status:plan-review"
           ],
-          "updatedAt": "2026-07-15T13:12:41Z",
+          "updatedAt": "2026-07-31T08:32:56Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1170,10 +1151,11 @@
           "labels": [
             "priority:high",
             "cat:data",
+            "machine:multi",
             "epic",
             "domain:capability"
           ],
-          "updatedAt": "2026-07-27T09:44:22Z",
+          "updatedAt": "2026-07-31T08:35:34Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1194,9 +1176,10 @@
             "priority:high",
             "cat:harness",
             "domain:workstations",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T09:44:22Z",
+          "updatedAt": "2026-07-31T08:35:35Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1216,9 +1199,10 @@
           "labels": [
             "priority:high",
             "cat:operations",
-            "domain:workstations"
+            "domain:workstations",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-27T02:35:32Z",
+          "updatedAt": "2026-07-31T08:33:12Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1238,9 +1222,10 @@
           "labels": [
             "priority:high",
             "cat:operations",
-            "domain:workstations"
+            "domain:workstations",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-27T02:35:32Z",
+          "updatedAt": "2026-07-31T08:33:14Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1334,10 +1319,11 @@
           "labels": [
             "priority:high",
             "cat:engineering",
+            "machine:multi",
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-07-27T02:35:06Z",
+          "updatedAt": "2026-07-31T08:35:38Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1357,10 +1343,11 @@
           "labels": [
             "priority:high",
             "cat:data",
+            "machine:multi",
             "initiative",
             "domain:ingest"
           ],
-          "updatedAt": "2026-07-27T02:35:06Z",
+          "updatedAt": "2026-07-31T08:35:40Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1379,9 +1366,10 @@
             "priority:high",
             "cat:engineering",
             "domain:gtm",
+            "machine:multi",
             "initiative"
           ],
-          "updatedAt": "2026-07-27T02:35:06Z",
+          "updatedAt": "2026-07-31T08:35:42Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1402,9 +1390,10 @@
             "priority:high",
             "cat:data",
             "domain:knowledge",
+            "machine:multi",
             "initiative"
           ],
-          "updatedAt": "2026-07-27T02:35:06Z",
+          "updatedAt": "2026-07-31T08:35:43Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1423,10 +1412,11 @@
           "labels": [
             "priority:high",
             "cat:business",
+            "machine:multi",
             "domain:business-development",
             "initiative"
           ],
-          "updatedAt": "2026-07-27T02:35:06Z",
+          "updatedAt": "2026-07-31T08:35:45Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1445,10 +1435,11 @@
           "labels": [
             "priority:high",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "initiative"
           ],
-          "updatedAt": "2026-07-27T07:29:34Z",
+          "updatedAt": "2026-07-31T08:35:47Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1468,9 +1459,10 @@
             "priority:high",
             "cat:business",
             "domain:gtm",
+            "machine:multi",
             "initiative"
           ],
-          "updatedAt": "2026-07-27T02:35:06Z",
+          "updatedAt": "2026-07-31T08:35:48Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1489,10 +1481,11 @@
           "labels": [
             "priority:high",
             "cat:engineering",
+            "machine:multi",
             "initiative",
             "domain:cad"
           ],
-          "updatedAt": "2026-07-27T02:35:06Z",
+          "updatedAt": "2026-07-31T08:35:50Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1510,10 +1503,11 @@
           "labels": [
             "priority:high",
             "cat:operations",
+            "machine:multi",
             "initiative",
             "domain:family"
           ],
-          "updatedAt": "2026-07-27T02:35:06Z",
+          "updatedAt": "2026-07-31T08:35:52Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1530,9 +1524,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3669",
           "labels": [
             "priority:high",
+            "machine:multi",
             "initiative"
           ],
-          "updatedAt": "2026-07-27T07:28:40Z",
+          "updatedAt": "2026-07-31T08:37:35Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1550,9 +1545,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3670",
           "labels": [
             "priority:high",
+            "machine:multi",
             "initiative"
           ],
-          "updatedAt": "2026-07-27T07:28:42Z",
+          "updatedAt": "2026-07-31T08:37:37Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1571,9 +1567,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3671",
           "labels": [
             "priority:high",
+            "machine:multi",
             "initiative"
           ],
-          "updatedAt": "2026-07-27T07:28:45Z",
+          "updatedAt": "2026-07-31T08:37:39Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1593,9 +1590,55 @@
           "labels": [
             "priority:high",
             "cat:tooling",
-            "domain:repo-cleanup"
+            "domain:repo-cleanup",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-28T02:11:10Z",
+          "updatedAt": "2026-07-31T08:33:52Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3724,
+          "title": "bug(equality): 4 of 5 matrix rows are stale and render identically to fresh ones",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3724",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:operations",
+            "machine:multi",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-31T06:43:15Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3728,
+          "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3728",
+          "labels": [
+            "priority:high",
+            "cat:operations"
+          ],
+          "updatedAt": "2026-07-31T06:36:48Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1717,9 +1760,10 @@
             "priority:medium",
             "cat:harness",
             "domain:testing",
+            "machine:dev-primary",
             "domain:ci-release"
           ],
-          "updatedAt": "2026-07-27T01:19:14Z",
+          "updatedAt": "2026-07-31T08:32:54Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1741,9 +1785,10 @@
             "priority:medium",
             "cat:tooling",
             "domain:testing",
+            "machine:dev-primary",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-27T01:19:14Z",
+          "updatedAt": "2026-07-31T08:32:58Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1790,9 +1835,10 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-11T01:17:31Z",
+          "updatedAt": "2026-07-31T08:33:05Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -1998,9 +2044,10 @@
             "priority:medium",
             "cat:harness",
             "domain:testing",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-27T02:35:13Z",
+          "updatedAt": "2026-07-31T08:33:31Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2020,9 +2067,10 @@
           "labels": [
             "priority:medium",
             "cat:data",
+            "machine:dev-primary",
             "domain:family"
           ],
-          "updatedAt": "2026-07-27T02:35:31Z",
+          "updatedAt": "2026-07-31T08:33:40Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2040,9 +2088,10 @@
           "labels": [
             "priority:medium",
             "cat:operations",
+            "machine:dev-primary",
             "domain:family"
           ],
-          "updatedAt": "2026-07-27T02:35:31Z",
+          "updatedAt": "2026-07-31T08:33:44Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2060,10 +2109,11 @@
           "labels": [
             "priority:medium",
             "cat:data",
+            "machine:multi",
             "epic",
             "domain:family"
           ],
-          "updatedAt": "2026-07-27T09:44:22Z",
+          "updatedAt": "2026-07-31T08:35:37Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2082,9 +2132,10 @@
             "priority:medium",
             "cat:harness",
             "domain:skills",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:05:55Z",
+          "updatedAt": "2026-07-31T08:35:53Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2105,9 +2156,10 @@
             "priority:medium",
             "cat:harness",
             "domain:skills",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:05:57Z",
+          "updatedAt": "2026-07-31T08:35:55Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2127,9 +2179,10 @@
             "priority:medium",
             "cat:harness",
             "domain:skills",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:06:00Z",
+          "updatedAt": "2026-07-31T08:35:57Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2150,9 +2203,10 @@
             "priority:medium",
             "cat:harness",
             "domain:skills",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:06:04Z",
+          "updatedAt": "2026-07-31T08:35:58Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2172,9 +2226,10 @@
             "priority:medium",
             "cat:harness",
             "domain:skills",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:06:07Z",
+          "updatedAt": "2026-07-31T08:36:00Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2194,10 +2249,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T07:06:54Z",
+          "updatedAt": "2026-07-31T08:36:02Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2218,9 +2274,10 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:06:55Z",
+          "updatedAt": "2026-07-31T08:36:03Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2240,10 +2297,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T07:06:57Z",
+          "updatedAt": "2026-07-31T08:36:05Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2264,9 +2322,10 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:06:57Z",
+          "updatedAt": "2026-07-31T08:36:07Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2287,9 +2346,10 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:00Z",
+          "updatedAt": "2026-07-31T08:36:09Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2309,10 +2369,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T07:07:01Z",
+          "updatedAt": "2026-07-31T08:36:10Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2333,9 +2394,10 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:03Z",
+          "updatedAt": "2026-07-31T08:36:12Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2354,10 +2416,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T07:07:04Z",
+          "updatedAt": "2026-07-31T08:36:14Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2378,9 +2441,10 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:05Z",
+          "updatedAt": "2026-07-31T08:36:15Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2399,10 +2463,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T07:09:14Z",
+          "updatedAt": "2026-07-31T08:36:17Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2421,10 +2486,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T07:07:10Z",
+          "updatedAt": "2026-07-31T08:36:18Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2444,10 +2510,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T07:07:13Z",
+          "updatedAt": "2026-07-31T08:36:20Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2466,10 +2533,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T07:07:16Z",
+          "updatedAt": "2026-07-31T08:36:22Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2488,10 +2556,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ci-release"
           ],
-          "updatedAt": "2026-07-27T07:07:20Z",
+          "updatedAt": "2026-07-31T08:36:23Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2510,10 +2579,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ci-release"
           ],
-          "updatedAt": "2026-07-27T07:07:22Z",
+          "updatedAt": "2026-07-31T08:36:25Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2532,10 +2602,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ci-release"
           ],
-          "updatedAt": "2026-07-27T07:07:25Z",
+          "updatedAt": "2026-07-31T08:36:27Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2555,9 +2626,10 @@
             "priority:medium",
             "cat:data",
             "domain:knowledge",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:25Z",
+          "updatedAt": "2026-07-31T08:36:28Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2577,10 +2649,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:governance"
           ],
-          "updatedAt": "2026-07-27T07:07:27Z",
+          "updatedAt": "2026-07-31T08:36:30Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2600,9 +2673,10 @@
             "priority:medium",
             "cat:data",
             "domain:knowledge",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:28Z",
+          "updatedAt": "2026-07-31T08:36:31Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2622,10 +2696,11 @@
           "labels": [
             "priority:medium",
             "cat:operations",
+            "machine:multi",
             "epic",
             "domain:governance"
           ],
-          "updatedAt": "2026-07-27T07:07:30Z",
+          "updatedAt": "2026-07-31T08:36:33Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2644,9 +2719,10 @@
             "priority:medium",
             "cat:data",
             "domain:knowledge",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:31Z",
+          "updatedAt": "2026-07-31T08:36:35Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2667,10 +2743,11 @@
             "priority:medium",
             "cat:operations",
             "domain:security",
+            "machine:multi",
             "epic",
             "domain:governance"
           ],
-          "updatedAt": "2026-07-27T07:07:33Z",
+          "updatedAt": "2026-07-31T08:36:36Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2691,9 +2768,10 @@
             "priority:medium",
             "cat:data",
             "domain:knowledge",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:34Z",
+          "updatedAt": "2026-07-31T08:36:38Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2714,9 +2792,10 @@
             "priority:medium",
             "cat:operations",
             "domain:security",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-31T03:30:01Z",
+          "updatedAt": "2026-07-31T08:36:40Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2736,9 +2815,10 @@
             "priority:medium",
             "cat:tooling",
             "domain:security",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:38Z",
+          "updatedAt": "2026-07-31T08:36:42Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2758,9 +2838,10 @@
             "priority:medium",
             "cat:harness",
             "domain:security",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:41Z",
+          "updatedAt": "2026-07-31T08:36:44Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2780,9 +2861,10 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:47Z",
+          "updatedAt": "2026-07-31T08:36:45Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2802,9 +2884,10 @@
             "priority:medium",
             "cat:operations",
             "domain:workstations",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:48Z",
+          "updatedAt": "2026-07-31T08:36:47Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2825,9 +2908,10 @@
             "priority:medium",
             "cat:operations",
             "domain:workstations",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:51Z",
+          "updatedAt": "2026-07-31T08:36:48Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2848,9 +2932,10 @@
             "priority:medium",
             "cat:operations",
             "domain:workstations",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:07:54Z",
+          "updatedAt": "2026-07-31T08:36:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2870,10 +2955,11 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T07:07:55Z",
+          "updatedAt": "2026-07-31T08:36:52Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2893,10 +2979,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-30T23:40:51Z",
+          "updatedAt": "2026-07-31T08:36:54Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2917,9 +3004,10 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:08:04Z",
+          "updatedAt": "2026-07-31T08:36:56Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2939,10 +3027,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:08:04Z",
+          "updatedAt": "2026-07-31T08:36:58Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2962,10 +3051,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:21:22Z",
+          "updatedAt": "2026-07-31T08:36:59Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2985,10 +3075,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:08:10Z",
+          "updatedAt": "2026-07-31T08:37:02Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3008,10 +3099,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:08:13Z",
+          "updatedAt": "2026-07-31T08:37:04Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3030,10 +3122,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:08:15Z",
+          "updatedAt": "2026-07-31T08:37:06Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3051,10 +3144,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:21:05Z",
+          "updatedAt": "2026-07-31T08:37:08Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3072,10 +3166,11 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:20:55Z",
+          "updatedAt": "2026-07-31T08:37:10Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3095,9 +3190,10 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:08:22Z",
+          "updatedAt": "2026-07-31T08:37:12Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3116,10 +3212,11 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T07:08:35Z",
+          "updatedAt": "2026-07-31T08:37:13Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3139,9 +3236,10 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:08:38Z",
+          "updatedAt": "2026-07-31T08:37:15Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3162,9 +3260,10 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:08:55Z",
+          "updatedAt": "2026-07-31T08:37:17Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3183,10 +3282,11 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T07:09:00Z",
+          "updatedAt": "2026-07-31T08:37:19Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3207,9 +3307,10 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:09:11Z",
+          "updatedAt": "2026-07-31T08:37:21Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3228,10 +3329,11 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T07:09:23Z",
+          "updatedAt": "2026-07-31T08:37:22Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3252,9 +3354,10 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:09:25Z",
+          "updatedAt": "2026-07-31T08:37:24Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3275,9 +3378,10 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-27T07:09:41Z",
+          "updatedAt": "2026-07-31T08:37:26Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3297,10 +3401,11 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T07:09:45Z",
+          "updatedAt": "2026-07-31T08:37:28Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3320,10 +3425,11 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T07:10:10Z",
+          "updatedAt": "2026-07-31T08:37:30Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3343,10 +3449,11 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T07:10:35Z",
+          "updatedAt": "2026-07-31T08:37:32Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3366,10 +3473,11 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T07:11:05Z",
+          "updatedAt": "2026-07-31T08:37:34Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3389,9 +3497,10 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
-            "domain:repo-cleanup"
+            "domain:repo-cleanup",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-28T02:11:33Z",
+          "updatedAt": "2026-07-31T08:33:54Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3405,17 +3514,17 @@
         },
         {
           "number": 3721,
-          "title": "ops(ace-win-2): provision inbound SSH and diagnose the 17-day heartbeat silence",
+          "title": "ops(ace-win-2): install OpenSSH Server \u2014 host is up and answering, only the service is missing",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3721",
           "labels": [
             "enhancement",
             "priority:medium",
             "cat:operations",
             "domain:security",
-            "machine:ace-win-2",
-            "status:needs-plan"
+            "status:needs-plan",
+            "machine:licensed-win-2"
           ],
-          "updatedAt": "2026-07-31T03:36:00Z",
+          "updatedAt": "2026-07-31T07:03:07Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3459,9 +3568,10 @@
           "labels": [
             "priority:low",
             "cat:operations",
+            "machine:dev-primary",
             "domain:family"
           ],
-          "updatedAt": "2026-07-27T02:35:31Z",
+          "updatedAt": "2026-07-31T08:33:45Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3479,9 +3589,10 @@
           "labels": [
             "priority:low",
             "cat:operations",
+            "machine:dev-primary",
             "domain:family"
           ],
-          "updatedAt": "2026-07-27T02:35:31Z",
+          "updatedAt": "2026-07-31T08:33:47Z",
           "execution_ready": false,
           "priority_rank": 3,
           "suggested_provider": "claude",
@@ -3498,9 +3609,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3448",
           "labels": [
             "cat:tooling",
+            "machine:dev-primary",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-27T02:35:10Z",
+          "updatedAt": "2026-07-31T08:33:00Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3519,9 +3631,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3450",
           "labels": [
             "cat:tooling",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-27T02:35:10Z",
+          "updatedAt": "2026-07-31T08:33:01Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3542,9 +3655,10 @@
             "enhancement",
             "cat:tooling",
             "domain:security",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-27T02:35:09Z",
+          "updatedAt": "2026-07-31T08:33:03Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3657,9 +3771,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3491",
           "labels": [
             "cat:operations",
+            "machine:dev-primary",
             "domain:solver"
           ],
-          "updatedAt": "2026-07-27T02:35:08Z",
+          "updatedAt": "2026-07-31T08:33:08Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3677,9 +3792,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3494",
           "labels": [
             "cat:tooling",
+            "machine:dev-primary",
             "domain:capability"
           ],
-          "updatedAt": "2026-07-27T03:35:21Z",
+          "updatedAt": "2026-07-31T08:33:10Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3768,9 +3884,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3523",
           "labels": [
             "cat:harness",
+            "machine:dev-primary",
             "domain:governance"
           ],
-          "updatedAt": "2026-07-27T02:35:08Z",
+          "updatedAt": "2026-07-31T08:33:16Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3791,11 +3908,11 @@
             "enhancement",
             "cat:harness",
             "domain:workstations",
-            "machine:ace-win-2",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "machine:licensed-win-2"
           ],
-          "updatedAt": "2026-07-27T02:35:32Z",
+          "updatedAt": "2026-07-31T07:03:11Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3863,9 +3980,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3536",
           "labels": [
             "cat:tooling",
-            "domain:security"
+            "domain:security",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-27T02:35:07Z",
+          "updatedAt": "2026-07-31T08:33:18Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3907,9 +4025,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3539",
           "labels": [
             "cat:tooling",
-            "domain:testing"
+            "domain:testing",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-27T02:35:07Z",
+          "updatedAt": "2026-07-31T08:33:20Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3929,9 +4048,10 @@
           "labels": [
             "cat:tooling",
             "domain:testing",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-27T02:35:07Z",
+          "updatedAt": "2026-07-31T08:33:21Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3950,10 +4070,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3542",
           "labels": [
             "cat:tooling",
+            "machine:dev-primary",
             "status:needs-plan",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-27T02:35:07Z",
+          "updatedAt": "2026-07-31T08:33:23Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -3999,10 +4120,11 @@
           "labels": [
             "bug",
             "cat:harness",
+            "machine:dev-primary",
             "status:needs-plan",
             "domain:ai"
           ],
-          "updatedAt": "2026-07-27T02:35:13Z",
+          "updatedAt": "2026-07-31T08:33:25Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4046,10 +4168,11 @@
           "labels": [
             "bug",
             "cat:operations",
+            "machine:dev-primary",
             "status:needs-plan",
             "domain:ci-release"
           ],
-          "updatedAt": "2026-07-27T02:35:07Z",
+          "updatedAt": "2026-07-31T08:33:29Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4068,10 +4191,11 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3578",
           "labels": [
             "cat:harness",
+            "machine:dev-primary",
             "status:plan-review",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-29T13:16:09Z",
+          "updatedAt": "2026-07-31T08:33:35Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4089,9 +4213,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3579",
           "labels": [
             "cat:operations",
+            "machine:dev-primary",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-27T02:35:12Z",
+          "updatedAt": "2026-07-31T08:33:36Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4108,9 +4233,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3580",
           "labels": [
             "cat:harness",
+            "machine:dev-primary",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-27T02:35:12Z",
+          "updatedAt": "2026-07-31T08:33:38Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4149,10 +4275,10 @@
           "labels": [
             "cat:harness",
             "domain:workstations",
-            "machine:ace-win-2",
-            "lane:claude"
+            "lane:claude",
+            "machine:licensed-win-2"
           ],
-          "updatedAt": "2026-07-27T01:19:10Z",
+          "updatedAt": "2026-07-31T07:03:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4171,9 +4297,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3598",
           "labels": [
             "cat:operations",
-            "domain:workstations"
+            "domain:workstations",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-27T02:35:06Z",
+          "updatedAt": "2026-07-31T08:33:51Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4234,9 +4361,10 @@
           "labels": [
             "cat:harness",
             "domain:workstations",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-29T23:11:54Z",
+          "updatedAt": "2026-07-31T08:33:58Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4352,9 +4480,10 @@
           "labels": [
             "cat:harness",
             "domain:workstations",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-30T10:58:52Z",
+          "updatedAt": "2026-07-31T08:34:00Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4372,35 +4501,9 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 6,
-      "total_candidates": 21,
+      "execution_ready_count": 5,
+      "total_candidates": 20,
       "top_issues": [
-        {
-          "number": 3430,
-          "title": "standard: replayable public input and source snapshot contract",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3430",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:claude",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
         {
           "number": 3516,
           "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)",
@@ -4530,9 +4633,10 @@
           "labels": [
             "priority:medium",
             "cat:data",
+            "machine:dev-primary",
             "domain:family"
           ],
-          "updatedAt": "2026-07-27T02:35:31Z",
+          "updatedAt": "2026-07-31T08:33:42Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4550,9 +4654,10 @@
           "labels": [
             "priority:medium",
             "cat:operations",
-            "domain:workstations"
+            "domain:workstations",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-28T02:26:35Z",
+          "updatedAt": "2026-07-31T08:33:56Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4561,38 +4666,35 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3594,
+          "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3594",
+          "labels": [
+            "bug",
+            "priority:low",
+            "cat:operations",
+            "domain:workstations",
+            "machine:multi",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-29T13:43:07Z",
+          "execution_ready": false,
+          "priority_rank": 3,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
             "implementation"
           ]
         }
       ],
       "full_candidates": [
         {
-          "number": 3430,
-          "title": "standard: replayable public input and source snapshot contract",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3430",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:claude",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-07-27T01:19:15Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 3516,
           "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3516",
@@ -4721,9 +4823,10 @@
           "labels": [
             "priority:medium",
             "cat:data",
+            "machine:dev-primary",
             "domain:family"
           ],
-          "updatedAt": "2026-07-27T02:35:31Z",
+          "updatedAt": "2026-07-31T08:33:42Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4741,9 +4844,10 @@
           "labels": [
             "priority:medium",
             "cat:operations",
-            "domain:workstations"
+            "domain:workstations",
+            "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-28T02:26:35Z",
+          "updatedAt": "2026-07-31T08:33:56Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "codex",
@@ -4940,9 +5044,10 @@
           "labels": [
             "cat:tooling",
             "domain:workstations",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
-          "updatedAt": "2026-07-27T02:35:07Z",
+          "updatedAt": "2026-07-31T08:33:27Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
@@ -4960,9 +5065,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3577",
           "labels": [
             "cat:harness",
+            "machine:dev-primary",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-27T02:35:12Z",
+          "updatedAt": "2026-07-31T08:33:33Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

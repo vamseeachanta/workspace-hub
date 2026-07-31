@@ -36,6 +36,83 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:high",
+          "cat:operations"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3728,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3728",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "bug",
+          "priority:high",
+          "cat:operations",
+          "machine:multi",
+          "status:needs-plan"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "bug(equality): 4 of 5 matrix rows are stale and render identically to fresh ones"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3724,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "bug(equality): 4 of 5 matrix rows are stale and render identically to fresh ones",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3724",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "enhancement",
           "priority:medium",
           "cat:operations",
@@ -81,8 +158,8 @@
           "priority:medium",
           "cat:operations",
           "domain:security",
-          "machine:ace-win-2",
-          "status:needs-plan"
+          "status:needs-plan",
+          "machine:licensed-win-2"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -90,7 +167,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "ops(ace-win-2): provision inbound SSH and diagnose the 17-day heartbeat silence"
+        "title": "ops(ace-win-2): install OpenSSH Server \u2014 host is up and answering, only the service is missing"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -103,7 +180,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "ops(ace-win-2): provision inbound SSH and diagnose the 17-day heartbeat silence",
+      "title": "ops(ace-win-2): install OpenSSH Server \u2014 host is up and answering, only the service is missing",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3721",
       "warnings": []
     },
@@ -191,6 +268,7 @@
         "labels": [
           "cat:harness",
           "domain:workstations",
+          "machine:dev-primary",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -395,6 +473,7 @@
         "labels": [
           "cat:harness",
           "domain:workstations",
+          "machine:dev-primary",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -632,7 +711,8 @@
         "labels": [
           "priority:medium",
           "cat:operations",
-          "domain:workstations"
+          "domain:workstations",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -670,7 +750,8 @@
         "labels": [
           "priority:medium",
           "cat:tooling",
-          "domain:repo-cleanup"
+          "domain:repo-cleanup",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -708,7 +789,8 @@
         "labels": [
           "priority:high",
           "cat:tooling",
-          "domain:repo-cleanup"
+          "domain:repo-cleanup",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -782,6 +864,7 @@
       "hover": {
         "labels": [
           "priority:high",
+          "machine:multi",
           "initiative"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -819,6 +902,7 @@
       "hover": {
         "labels": [
           "priority:high",
+          "machine:multi",
           "initiative"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -856,6 +940,7 @@
       "hover": {
         "labels": [
           "priority:high",
+          "machine:multi",
           "initiative"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -894,6 +979,7 @@
         "labels": [
           "priority:medium",
           "cat:tooling",
+          "machine:multi",
           "epic",
           "domain:repo"
         ],
@@ -933,6 +1019,7 @@
         "labels": [
           "priority:medium",
           "cat:tooling",
+          "machine:multi",
           "epic",
           "domain:repo"
         ],
@@ -972,6 +1059,7 @@
         "labels": [
           "priority:medium",
           "cat:tooling",
+          "machine:multi",
           "epic",
           "domain:repo"
         ],
@@ -1011,6 +1099,7 @@
         "labels": [
           "priority:medium",
           "cat:tooling",
+          "machine:multi",
           "epic",
           "domain:repo"
         ],
@@ -1051,6 +1140,7 @@
           "priority:medium",
           "cat:operations",
           "domain:testing",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1090,6 +1180,7 @@
           "priority:medium",
           "cat:operations",
           "domain:testing",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1128,6 +1219,7 @@
         "labels": [
           "priority:medium",
           "cat:tooling",
+          "machine:multi",
           "epic",
           "domain:repo"
         ],
@@ -1168,6 +1260,7 @@
           "priority:medium",
           "cat:operations",
           "domain:testing",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1206,6 +1299,7 @@
         "labels": [
           "priority:medium",
           "cat:tooling",
+          "machine:multi",
           "epic",
           "domain:repo"
         ],
@@ -1246,6 +1340,7 @@
           "priority:medium",
           "cat:operations",
           "domain:testing",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1285,6 +1380,7 @@
           "priority:medium",
           "cat:operations",
           "domain:testing",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1323,6 +1419,7 @@
         "labels": [
           "priority:medium",
           "cat:tooling",
+          "machine:multi",
           "epic",
           "domain:repo"
         ],
@@ -1363,6 +1460,7 @@
           "priority:medium",
           "cat:operations",
           "domain:testing",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1401,6 +1499,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "domain:harness",
           "epic"
         ],
@@ -1440,6 +1539,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "domain:harness",
           "epic"
         ],
@@ -1479,6 +1579,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "domain:harness",
           "epic"
         ],
@@ -1518,6 +1619,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "domain:harness",
           "epic"
         ],
@@ -1557,6 +1659,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "domain:harness",
           "epic"
         ],
@@ -1596,6 +1699,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "domain:harness",
           "epic"
         ],
@@ -1635,6 +1739,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "domain:harness",
           "epic"
         ],
@@ -1675,6 +1780,7 @@
           "priority:medium",
           "cat:operations",
           "domain:testing",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1713,6 +1819,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "domain:harness",
           "epic"
         ],
@@ -1752,6 +1859,7 @@
         "labels": [
           "priority:medium",
           "cat:tooling",
+          "machine:multi",
           "epic",
           "domain:repo"
         ],
@@ -1792,6 +1900,7 @@
           "priority:medium",
           "cat:operations",
           "domain:workstations",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1831,6 +1940,7 @@
           "priority:medium",
           "cat:operations",
           "domain:workstations",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1870,6 +1980,7 @@
           "priority:medium",
           "cat:operations",
           "domain:workstations",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1909,6 +2020,7 @@
           "priority:medium",
           "cat:operations",
           "domain:testing",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1948,6 +2060,7 @@
           "priority:medium",
           "cat:harness",
           "domain:security",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1987,6 +2100,7 @@
           "priority:medium",
           "cat:tooling",
           "domain:security",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2026,6 +2140,7 @@
           "priority:medium",
           "cat:operations",
           "domain:security",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2065,6 +2180,7 @@
           "priority:medium",
           "cat:data",
           "domain:knowledge",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2104,6 +2220,7 @@
           "priority:medium",
           "cat:operations",
           "domain:security",
+          "machine:multi",
           "epic",
           "domain:governance"
         ],
@@ -2144,6 +2261,7 @@
           "priority:medium",
           "cat:data",
           "domain:knowledge",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2182,6 +2300,7 @@
         "labels": [
           "priority:medium",
           "cat:operations",
+          "machine:multi",
           "epic",
           "domain:governance"
         ],
@@ -2222,6 +2341,7 @@
           "priority:medium",
           "cat:data",
           "domain:knowledge",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2260,6 +2380,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:governance"
         ],
@@ -2300,6 +2421,7 @@
           "priority:medium",
           "cat:data",
           "domain:knowledge",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2338,6 +2460,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ci-release"
         ],
@@ -2377,6 +2500,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ci-release"
         ],
@@ -2416,6 +2540,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ci-release"
         ],
@@ -2455,6 +2580,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ai"
         ],
@@ -2494,6 +2620,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ai"
         ],
@@ -2533,6 +2660,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ai"
         ],
@@ -2572,6 +2700,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ai"
         ],
@@ -2612,6 +2741,7 @@
           "priority:medium",
           "cat:harness",
           "domain:workflow",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2650,6 +2780,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ai"
         ],
@@ -2690,6 +2821,7 @@
           "priority:medium",
           "cat:harness",
           "domain:workflow",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2728,6 +2860,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ai"
         ],
@@ -2768,6 +2901,7 @@
           "priority:medium",
           "cat:harness",
           "domain:workflow",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2807,6 +2941,7 @@
           "priority:medium",
           "cat:harness",
           "domain:workflow",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2845,6 +2980,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ai"
         ],
@@ -2885,6 +3021,7 @@
           "priority:medium",
           "cat:harness",
           "domain:workflow",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -2923,6 +3060,7 @@
         "labels": [
           "priority:medium",
           "cat:harness",
+          "machine:multi",
           "epic",
           "domain:ai"
         ],
@@ -2963,6 +3101,7 @@
           "priority:medium",
           "cat:harness",
           "domain:skills",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3002,6 +3141,7 @@
           "priority:medium",
           "cat:harness",
           "domain:skills",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3041,6 +3181,7 @@
           "priority:medium",
           "cat:harness",
           "domain:skills",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3080,6 +3221,7 @@
           "priority:medium",
           "cat:harness",
           "domain:skills",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3119,6 +3261,7 @@
           "priority:medium",
           "cat:harness",
           "domain:skills",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3157,6 +3300,7 @@
         "labels": [
           "priority:high",
           "cat:operations",
+          "machine:multi",
           "initiative",
           "domain:family"
         ],
@@ -3196,6 +3340,7 @@
         "labels": [
           "priority:high",
           "cat:engineering",
+          "machine:multi",
           "initiative",
           "domain:cad"
         ],
@@ -3236,6 +3381,7 @@
           "priority:high",
           "cat:business",
           "domain:gtm",
+          "machine:multi",
           "initiative"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3274,6 +3420,7 @@
         "labels": [
           "priority:high",
           "cat:harness",
+          "machine:multi",
           "domain:harness",
           "initiative"
         ],
@@ -3313,6 +3460,7 @@
         "labels": [
           "priority:high",
           "cat:business",
+          "machine:multi",
           "domain:business-development",
           "initiative"
         ],
@@ -3353,6 +3501,7 @@
           "priority:high",
           "cat:data",
           "domain:knowledge",
+          "machine:multi",
           "initiative"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3392,6 +3541,7 @@
           "priority:high",
           "cat:engineering",
           "domain:gtm",
+          "machine:multi",
           "initiative"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3430,6 +3580,7 @@
         "labels": [
           "priority:high",
           "cat:data",
+          "machine:multi",
           "initiative",
           "domain:ingest"
         ],
@@ -3469,6 +3620,7 @@
         "labels": [
           "priority:high",
           "cat:engineering",
+          "machine:multi",
           "initiative",
           "domain:solver"
         ],
@@ -3548,7 +3700,8 @@
       "hover": {
         "labels": [
           "cat:operations",
-          "domain:workstations"
+          "domain:workstations",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3586,6 +3739,7 @@
         "labels": [
           "cat:operations",
           "priority:critical",
+          "machine:dev-primary",
           "compliance-alert",
           "domain:harness"
         ],
@@ -3625,8 +3779,8 @@
         "labels": [
           "cat:harness",
           "domain:workstations",
-          "machine:ace-win-2",
-          "lane:claude"
+          "lane:claude",
+          "machine:licensed-win-2"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -3750,6 +3904,7 @@
         "labels": [
           "priority:medium",
           "cat:data",
+          "machine:multi",
           "epic",
           "domain:family"
         ],
@@ -3789,6 +3944,7 @@
         "labels": [
           "priority:low",
           "cat:operations",
+          "machine:dev-primary",
           "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3827,6 +3983,7 @@
         "labels": [
           "priority:low",
           "cat:operations",
+          "machine:dev-primary",
           "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3865,6 +4022,7 @@
         "labels": [
           "priority:medium",
           "cat:operations",
+          "machine:dev-primary",
           "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3903,6 +4061,7 @@
         "labels": [
           "priority:medium",
           "cat:data",
+          "machine:dev-primary",
           "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -3941,6 +4100,7 @@
         "labels": [
           "priority:medium",
           "cat:data",
+          "machine:dev-primary",
           "domain:family"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -4017,6 +4177,7 @@
       "hover": {
         "labels": [
           "cat:harness",
+          "machine:dev-primary",
           "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -4054,6 +4215,7 @@
       "hover": {
         "labels": [
           "cat:operations",
+          "machine:dev-primary",
           "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -4089,6 +4251,7 @@
       "hover": {
         "labels": [
           "cat:harness",
+          "machine:dev-primary",
           "status:plan-review",
           "domain:harness"
         ],
@@ -4129,6 +4292,7 @@
       "hover": {
         "labels": [
           "cat:harness",
+          "machine:dev-primary",
           "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -4215,6 +4379,7 @@
           "priority:medium",
           "cat:harness",
           "domain:testing",
+          "machine:dev-primary",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -4484,6 +4649,7 @@
         "labels": [
           "bug",
           "cat:operations",
+          "machine:dev-primary",
           "status:needs-plan",
           "domain:ci-release"
         ],
@@ -4523,6 +4689,7 @@
         "labels": [
           "cat:tooling",
           "domain:workstations",
+          "machine:dev-primary",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -4684,6 +4851,7 @@
         "labels": [
           "bug",
           "cat:harness",
+          "machine:dev-primary",
           "status:needs-plan",
           "domain:ai"
         ],
@@ -5152,6 +5320,7 @@
       "hover": {
         "labels": [
           "cat:tooling",
+          "machine:dev-primary",
           "status:needs-plan",
           "domain:harness"
         ],
@@ -5191,6 +5360,7 @@
         "labels": [
           "cat:tooling",
           "domain:testing",
+          "machine:dev-primary",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -5228,7 +5398,8 @@
       "hover": {
         "labels": [
           "cat:tooling",
-          "domain:testing"
+          "domain:testing",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5346,7 +5517,8 @@
       "hover": {
         "labels": [
           "cat:tooling",
-          "domain:security"
+          "domain:security",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5558,9 +5730,9 @@
           "enhancement",
           "cat:harness",
           "domain:workstations",
-          "machine:ace-win-2",
           "status:needs-plan",
-          "lane:claude"
+          "lane:claude",
+          "machine:licensed-win-2"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -5690,6 +5862,7 @@
       "hover": {
         "labels": [
           "cat:harness",
+          "machine:dev-primary",
           "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -6119,7 +6292,8 @@
         "labels": [
           "priority:high",
           "cat:operations",
-          "domain:workstations"
+          "domain:workstations",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6157,7 +6331,8 @@
         "labels": [
           "priority:high",
           "cat:operations",
-          "domain:workstations"
+          "domain:workstations",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -6196,6 +6371,7 @@
           "priority:high",
           "cat:harness",
           "domain:workstations",
+          "machine:multi",
           "epic"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -6272,6 +6448,7 @@
       "hover": {
         "labels": [
           "cat:tooling",
+          "machine:dev-primary",
           "domain:capability"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -6309,6 +6486,7 @@
       "hover": {
         "labels": [
           "cat:operations",
+          "machine:dev-primary",
           "domain:solver"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -6392,6 +6570,7 @@
         "labels": [
           "priority:high",
           "cat:data",
+          "machine:multi",
           "epic",
           "domain:capability"
         ],
@@ -6477,6 +6656,7 @@
       "hover": {
         "labels": [
           "cat:tooling",
+          "machine:dev-primary",
           "status:plan-approved",
           "gate:completeness",
           "domain:capability"
@@ -7009,6 +7189,7 @@
           "priority:medium",
           "cat:harness",
           "domain:workflow",
+          "machine:dev-primary",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -7218,6 +7399,7 @@
           "enhancement",
           "cat:tooling",
           "domain:security",
+          "machine:dev-primary",
           "status:needs-plan"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -7255,7 +7437,8 @@
       "hover": {
         "labels": [
           "cat:tooling",
-          "domain:workflow"
+          "domain:workflow",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7292,6 +7475,7 @@
       "hover": {
         "labels": [
           "cat:tooling",
+          "machine:dev-primary",
           "domain:repo"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -7332,6 +7516,7 @@
           "priority:medium",
           "cat:tooling",
           "domain:testing",
+          "machine:dev-primary",
           "domain:harness"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -7371,6 +7556,7 @@
           "cat:harness",
           "domain:testing",
           "domain:security",
+          "machine:dev-primary",
           "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -7413,6 +7599,7 @@
           "priority:medium",
           "cat:harness",
           "domain:testing",
+          "machine:dev-primary",
           "domain:ci-release"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -7533,7 +7720,8 @@
           "bug",
           "priority:high",
           "cat:harness",
-          "domain:testing"
+          "domain:testing",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7621,7 +7809,8 @@
           "bug",
           "priority:high",
           "cat:harness",
-          "domain:security"
+          "domain:security",
+          "machine:dev-primary"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7659,6 +7848,7 @@
           "priority:high",
           "cat:operations",
           "domain:testing",
+          "machine:dev-primary",
           "status:plan-review",
           "domain:ci-release"
         ],
@@ -7992,106 +8182,91 @@
         "approved_no_marker",
         "missing_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:data",
-          "status:plan-approved",
-          "type:follow-up",
-          "gate:completeness",
-          "lane:claude",
-          "domain:governance"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- `assetutilities/src/assetutilities/workflow_api/envelope.py` \u2014 `input_hash(cfg)` computes a",
-        "provider_route": "codex",
-        "risks": "**`data_as_of` semantic-overload risk:** the field currently means \"run time\" in the wed runner; | **Selection-canonicalization risk:** an \"exact selection/query/filter\" can be expressed many | **Pointer-vs-payload boundary risk:** an `upstream_run_reference` / `artifact_reference` is a pointer",
-        "tests": "21 TDD tests defined",
-        "title": "standard: replayable public input and source snapshot contract"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3430,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-07-11-issue-3430-replayable-public-input-snapshot-contract.md",
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "standard: replayable public input and source snapshot contract",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3430",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:data",
-          "status:plan-approved",
-          "type:follow-up",
-          "gate:completeness",
-          "lane:claude",
-          "domain:governance"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- `assetutilities/src/assetutilities/workflow_api/envelope.py` \u2014 the substrate for this contract.",
-        "provider_route": "claude",
-        "risks": "**Structured-object canonicalization coupling:** an artifact that is an immutable structured object must | **Compression is descriptive, digest is over stored bytes (DECIDED \u2014 not an owner preference):** the | **Residency-class must not be stamped on the role-free artifact (reconciled with the Design):**",
-        "tests": "18 TDD tests defined",
-        "title": "standard: content-addressed artifact and Hugging Face residency contract"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3429,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-07-11-issue-3429-content-addressed-artifact-residency-contract.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "standard: content-addressed artifact and Hugging Face residency contract",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3429",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-07-31T05:21:17Z",
+  "generated_at": "2026-07-31T09:21:31Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:operations"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3728,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3728",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:operations",
+            "machine:multi",
+            "status:needs-plan"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "bug(equality): 4 of 5 matrix rows are stale and render identically to fresh ones"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3724,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "bug(equality): 4 of 5 matrix rows are stale and render identically to fresh ones",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3724",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8148,8 +8323,8 @@
             "priority:medium",
             "cat:operations",
             "domain:security",
-            "machine:ace-win-2",
-            "status:needs-plan"
+            "status:needs-plan",
+            "machine:licensed-win-2"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8157,7 +8332,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "ops(ace-win-2): provision inbound SSH and diagnose the 17-day heartbeat silence"
+          "title": "ops(ace-win-2): install OpenSSH Server \u2014 host is up and answering, only the service is missing"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -8170,7 +8345,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "ops(ace-win-2): provision inbound SSH and diagnose the 17-day heartbeat silence",
+        "title": "ops(ace-win-2): install OpenSSH Server \u2014 host is up and answering, only the service is missing",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3721",
         "warnings": []
       },
@@ -8258,6 +8433,7 @@
           "labels": [
             "cat:harness",
             "domain:workstations",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8462,6 +8638,7 @@
           "labels": [
             "cat:harness",
             "domain:workstations",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8699,7 +8876,8 @@
           "labels": [
             "priority:medium",
             "cat:operations",
-            "domain:workstations"
+            "domain:workstations",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8737,7 +8915,8 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
-            "domain:repo-cleanup"
+            "domain:repo-cleanup",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8775,7 +8954,8 @@
           "labels": [
             "priority:high",
             "cat:tooling",
-            "domain:repo-cleanup"
+            "domain:repo-cleanup",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8849,6 +9029,7 @@
         "hover": {
           "labels": [
             "priority:high",
+            "machine:multi",
             "initiative"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8886,6 +9067,7 @@
         "hover": {
           "labels": [
             "priority:high",
+            "machine:multi",
             "initiative"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8923,6 +9105,7 @@
         "hover": {
           "labels": [
             "priority:high",
+            "machine:multi",
             "initiative"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8961,6 +9144,7 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
@@ -9000,6 +9184,7 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
@@ -9039,6 +9224,7 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
@@ -9078,6 +9264,7 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
@@ -9118,6 +9305,7 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9157,6 +9345,7 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9195,6 +9384,7 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
@@ -9235,6 +9425,7 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9273,6 +9464,7 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
@@ -9313,6 +9505,7 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9352,6 +9545,7 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9390,6 +9584,7 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
@@ -9430,6 +9625,7 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9468,6 +9664,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
@@ -9507,6 +9704,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
@@ -9546,6 +9744,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
@@ -9585,6 +9784,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
@@ -9624,6 +9824,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
@@ -9663,6 +9864,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
@@ -9702,6 +9904,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
@@ -9742,6 +9945,7 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9780,6 +9984,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "epic"
           ],
@@ -9819,6 +10024,7 @@
           "labels": [
             "priority:medium",
             "cat:tooling",
+            "machine:multi",
             "epic",
             "domain:repo"
           ],
@@ -9859,6 +10065,7 @@
             "priority:medium",
             "cat:operations",
             "domain:workstations",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9898,6 +10105,7 @@
             "priority:medium",
             "cat:operations",
             "domain:workstations",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9937,6 +10145,7 @@
             "priority:medium",
             "cat:operations",
             "domain:workstations",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9976,6 +10185,7 @@
             "priority:medium",
             "cat:operations",
             "domain:testing",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10015,6 +10225,7 @@
             "priority:medium",
             "cat:harness",
             "domain:security",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10054,6 +10265,7 @@
             "priority:medium",
             "cat:tooling",
             "domain:security",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10093,6 +10305,7 @@
             "priority:medium",
             "cat:operations",
             "domain:security",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10132,6 +10345,7 @@
             "priority:medium",
             "cat:data",
             "domain:knowledge",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10171,6 +10385,7 @@
             "priority:medium",
             "cat:operations",
             "domain:security",
+            "machine:multi",
             "epic",
             "domain:governance"
           ],
@@ -10211,6 +10426,7 @@
             "priority:medium",
             "cat:data",
             "domain:knowledge",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10249,6 +10465,7 @@
           "labels": [
             "priority:medium",
             "cat:operations",
+            "machine:multi",
             "epic",
             "domain:governance"
           ],
@@ -10289,6 +10506,7 @@
             "priority:medium",
             "cat:data",
             "domain:knowledge",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10327,6 +10545,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:governance"
           ],
@@ -10367,6 +10586,7 @@
             "priority:medium",
             "cat:data",
             "domain:knowledge",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10405,6 +10625,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ci-release"
           ],
@@ -10444,6 +10665,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ci-release"
           ],
@@ -10483,6 +10705,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ci-release"
           ],
@@ -10522,6 +10745,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
@@ -10561,6 +10785,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
@@ -10600,6 +10825,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
@@ -10639,6 +10865,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
@@ -10679,6 +10906,7 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10717,6 +10945,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
@@ -10757,6 +10986,7 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10795,6 +11025,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
@@ -10835,6 +11066,7 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10874,6 +11106,7 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10912,6 +11145,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
@@ -10952,6 +11186,7 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -10990,6 +11225,7 @@
           "labels": [
             "priority:medium",
             "cat:harness",
+            "machine:multi",
             "epic",
             "domain:ai"
           ],
@@ -11030,6 +11266,7 @@
             "priority:medium",
             "cat:harness",
             "domain:skills",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11069,6 +11306,7 @@
             "priority:medium",
             "cat:harness",
             "domain:skills",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11108,6 +11346,7 @@
             "priority:medium",
             "cat:harness",
             "domain:skills",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11147,6 +11386,7 @@
             "priority:medium",
             "cat:harness",
             "domain:skills",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11186,6 +11426,7 @@
             "priority:medium",
             "cat:harness",
             "domain:skills",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11224,6 +11465,7 @@
           "labels": [
             "priority:high",
             "cat:operations",
+            "machine:multi",
             "initiative",
             "domain:family"
           ],
@@ -11263,6 +11505,7 @@
           "labels": [
             "priority:high",
             "cat:engineering",
+            "machine:multi",
             "initiative",
             "domain:cad"
           ],
@@ -11303,6 +11546,7 @@
             "priority:high",
             "cat:business",
             "domain:gtm",
+            "machine:multi",
             "initiative"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11341,6 +11585,7 @@
           "labels": [
             "priority:high",
             "cat:harness",
+            "machine:multi",
             "domain:harness",
             "initiative"
           ],
@@ -11380,6 +11625,7 @@
           "labels": [
             "priority:high",
             "cat:business",
+            "machine:multi",
             "domain:business-development",
             "initiative"
           ],
@@ -11420,6 +11666,7 @@
             "priority:high",
             "cat:data",
             "domain:knowledge",
+            "machine:multi",
             "initiative"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11459,6 +11706,7 @@
             "priority:high",
             "cat:engineering",
             "domain:gtm",
+            "machine:multi",
             "initiative"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11497,6 +11745,7 @@
           "labels": [
             "priority:high",
             "cat:data",
+            "machine:multi",
             "initiative",
             "domain:ingest"
           ],
@@ -11536,6 +11785,7 @@
           "labels": [
             "priority:high",
             "cat:engineering",
+            "machine:multi",
             "initiative",
             "domain:solver"
           ],
@@ -11615,7 +11865,8 @@
         "hover": {
           "labels": [
             "cat:operations",
-            "domain:workstations"
+            "domain:workstations",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11653,6 +11904,7 @@
           "labels": [
             "cat:operations",
             "priority:critical",
+            "machine:dev-primary",
             "compliance-alert",
             "domain:harness"
           ],
@@ -11692,8 +11944,8 @@
           "labels": [
             "cat:harness",
             "domain:workstations",
-            "machine:ace-win-2",
-            "lane:claude"
+            "lane:claude",
+            "machine:licensed-win-2"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -11817,6 +12069,7 @@
           "labels": [
             "priority:medium",
             "cat:data",
+            "machine:multi",
             "epic",
             "domain:family"
           ],
@@ -11856,6 +12109,7 @@
           "labels": [
             "priority:low",
             "cat:operations",
+            "machine:dev-primary",
             "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11894,6 +12148,7 @@
           "labels": [
             "priority:low",
             "cat:operations",
+            "machine:dev-primary",
             "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11932,6 +12187,7 @@
           "labels": [
             "priority:medium",
             "cat:operations",
+            "machine:dev-primary",
             "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -11970,6 +12226,7 @@
           "labels": [
             "priority:medium",
             "cat:data",
+            "machine:dev-primary",
             "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -12008,6 +12265,7 @@
           "labels": [
             "priority:medium",
             "cat:data",
+            "machine:dev-primary",
             "domain:family"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -12084,6 +12342,7 @@
         "hover": {
           "labels": [
             "cat:harness",
+            "machine:dev-primary",
             "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -12121,6 +12380,7 @@
         "hover": {
           "labels": [
             "cat:operations",
+            "machine:dev-primary",
             "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -12156,6 +12416,7 @@
         "hover": {
           "labels": [
             "cat:harness",
+            "machine:dev-primary",
             "status:plan-review",
             "domain:harness"
           ],
@@ -12196,6 +12457,7 @@
         "hover": {
           "labels": [
             "cat:harness",
+            "machine:dev-primary",
             "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -12282,6 +12544,7 @@
             "priority:medium",
             "cat:harness",
             "domain:testing",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -12551,6 +12814,7 @@
           "labels": [
             "bug",
             "cat:operations",
+            "machine:dev-primary",
             "status:needs-plan",
             "domain:ci-release"
           ],
@@ -12590,6 +12854,7 @@
           "labels": [
             "cat:tooling",
             "domain:workstations",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -12751,6 +13016,7 @@
           "labels": [
             "bug",
             "cat:harness",
+            "machine:dev-primary",
             "status:needs-plan",
             "domain:ai"
           ],
@@ -13219,6 +13485,7 @@
         "hover": {
           "labels": [
             "cat:tooling",
+            "machine:dev-primary",
             "status:needs-plan",
             "domain:harness"
           ],
@@ -13258,6 +13525,7 @@
           "labels": [
             "cat:tooling",
             "domain:testing",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -13295,7 +13563,8 @@
         "hover": {
           "labels": [
             "cat:tooling",
-            "domain:testing"
+            "domain:testing",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13413,7 +13682,8 @@
         "hover": {
           "labels": [
             "cat:tooling",
-            "domain:security"
+            "domain:security",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13625,9 +13895,9 @@
             "enhancement",
             "cat:harness",
             "domain:workstations",
-            "machine:ace-win-2",
             "status:needs-plan",
-            "lane:claude"
+            "lane:claude",
+            "machine:licensed-win-2"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -13757,6 +14027,7 @@
         "hover": {
           "labels": [
             "cat:harness",
+            "machine:dev-primary",
             "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -14186,7 +14457,8 @@
           "labels": [
             "priority:high",
             "cat:operations",
-            "domain:workstations"
+            "domain:workstations",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14224,7 +14496,8 @@
           "labels": [
             "priority:high",
             "cat:operations",
-            "domain:workstations"
+            "domain:workstations",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -14263,6 +14536,7 @@
             "priority:high",
             "cat:harness",
             "domain:workstations",
+            "machine:multi",
             "epic"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -14339,6 +14613,7 @@
         "hover": {
           "labels": [
             "cat:tooling",
+            "machine:dev-primary",
             "domain:capability"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -14376,6 +14651,7 @@
         "hover": {
           "labels": [
             "cat:operations",
+            "machine:dev-primary",
             "domain:solver"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -14459,6 +14735,7 @@
           "labels": [
             "priority:high",
             "cat:data",
+            "machine:multi",
             "epic",
             "domain:capability"
           ],
@@ -14544,6 +14821,7 @@
         "hover": {
           "labels": [
             "cat:tooling",
+            "machine:dev-primary",
             "status:plan-approved",
             "gate:completeness",
             "domain:capability"
@@ -15076,6 +15354,7 @@
             "priority:medium",
             "cat:harness",
             "domain:workflow",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -15285,6 +15564,7 @@
             "enhancement",
             "cat:tooling",
             "domain:security",
+            "machine:dev-primary",
             "status:needs-plan"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -15322,7 +15602,8 @@
         "hover": {
           "labels": [
             "cat:tooling",
-            "domain:workflow"
+            "domain:workflow",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15359,6 +15640,7 @@
         "hover": {
           "labels": [
             "cat:tooling",
+            "machine:dev-primary",
             "domain:repo"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -15399,6 +15681,7 @@
             "priority:medium",
             "cat:tooling",
             "domain:testing",
+            "machine:dev-primary",
             "domain:harness"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -15438,6 +15721,7 @@
             "cat:harness",
             "domain:testing",
             "domain:security",
+            "machine:dev-primary",
             "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -15480,6 +15764,7 @@
             "priority:medium",
             "cat:harness",
             "domain:testing",
+            "machine:dev-primary",
             "domain:ci-release"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -15600,7 +15885,8 @@
             "bug",
             "priority:high",
             "cat:harness",
-            "domain:testing"
+            "domain:testing",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15688,7 +15974,8 @@
             "bug",
             "priority:high",
             "cat:harness",
-            "domain:security"
+            "domain:security",
+            "machine:dev-primary"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -15726,6 +16013,7 @@
             "priority:high",
             "cat:operations",
             "domain:testing",
+            "machine:dev-primary",
             "status:plan-review",
             "domain:ci-release"
           ],
@@ -16059,98 +16347,6 @@
           "approved_no_marker",
           "missing_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:claude",
-            "domain:governance"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- `assetutilities/src/assetutilities/workflow_api/envelope.py` \u2014 `input_hash(cfg)` computes a",
-          "provider_route": "codex",
-          "risks": "**`data_as_of` semantic-overload risk:** the field currently means \"run time\" in the wed runner; | **Selection-canonicalization risk:** an \"exact selection/query/filter\" can be expressed many | **Pointer-vs-payload boundary risk:** an `upstream_run_reference` / `artifact_reference` is a pointer",
-          "tests": "21 TDD tests defined",
-          "title": "standard: replayable public input and source snapshot contract"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3430,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-07-11-issue-3430-replayable-public-input-snapshot-contract.md",
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "standard: replayable public input and source snapshot contract",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3430",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:claude",
-            "domain:governance"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- `assetutilities/src/assetutilities/workflow_api/envelope.py` \u2014 the substrate for this contract.",
-          "provider_route": "claude",
-          "risks": "**Structured-object canonicalization coupling:** an artifact that is an immutable structured object must | **Compression is descriptive, digest is over stored bytes (DECIDED \u2014 not an owner preference):** the | **Residency-class must not be stamped on the role-free artifact (reconciled with the Design):**",
-          "tests": "18 TDD tests defined",
-          "title": "standard: content-addressed artifact and Hugging Face residency contract"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3429,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-07-11-issue-3429-content-addressed-artifact-residency-contract.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "standard: content-addressed artifact and Hugging Face residency contract",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3429",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16161,16 +16357,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-07-31T05:21:13.276683Z",
+  "scorecard_generated_at": "2026-07-31T09:21:27.433811Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-31T05:21:13.142438Z",
+  "utilization_generated_at": "2026-07-31T09:21:27.277527Z",
   "warning_summary": {
-    "approved_no_marker": 18,
+    "approved_no_marker": 16,
     "approved_no_plan": 9,
     "legacy_review_no_sha": 9,
     "major_review": 4,
     "marker_without_open_approved_issue": 177,
-    "missing_review": 37,
+    "missing_review": 35,
     "unavailable_review": 6
   }
 }

@@ -1,19 +1,19 @@
-generated_at: "2026-07-31T00:47:03"
+generated_at: "2026-07-31T06:47:03"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "75911423c"
-  dirty: false
+  checkout_sha: "11bfd2bd3"
+  dirty: true
   behind_main: 0
   ahead_main: 0
-  origin_ref_age_h: 0
+  origin_ref_age_h: 1
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32037, gpu_model: "none"}
-    headroom: {ram_avail_mib: 27267, disk_avail_gb: 772}
+    headroom: {ram_avail_mib: 27025, disk_avail_gb: 773}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -34,7 +34,7 @@ dimensions:
   kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-07-30T04:25:01"
+    context_md_mtime: "2026-07-31T04:25:01"
   provider_harness:
     schema_version: 1
     providers:
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: true
     job_count: 63
   session_curation:
-    last_curated_at: "2026-07-31T05:47:01+00:00"
-    sessions_24h: 44
+    last_curated_at: "2026-07-31T11:47:01+00:00"
+    sessions_24h: 41
     providers_active: "claude,codex,gemini,hermes"
-    memory_files_changed: 0
+    memory_files_changed: 200
   skill_currency:
-    audited_at: "2026-07-31T05:47:02+00:00"
+    audited_at: "2026-07-31T11:47:02+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,11 +84,11 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-31T05:47:03+00:00"
-    worst_age_hours: 20.367
+    audited_at: "2026-07-31T11:47:02+00:00"
+    worst_age_hours: 2.367
     freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-07-31T05:47:03+00:00"
+    audited_at: "2026-07-31T11:47:03+00:00"
     repos_total: 15
     healthy: 45
     repairable: 0
