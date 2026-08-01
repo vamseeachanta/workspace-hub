@@ -56,6 +56,70 @@ def build_queues(proposals):
     return queues
 
 
+# ---------------------------------------------------------------------------
+# Queue staleness.
+#
+# A queue file is a SNAPSHOT of a routing decision, and routing inputs change
+# constantly — labels get corrected, machines retired, capability claims fixed.
+# On 2026-07-31 ~300 labels changed, silently invalidating queue files built the
+# day before. Nothing in the file said so.
+#
+# reachability.py (same week) already writes `observed_at` plus an explicit TTL
+# "so consumers warn on stale data rather than trusting it as static routing
+# truth". Dispatch queues are equally time-varying and had neither. An undated
+# snapshot does not look stale — it looks authoritative.
+#
+# Deliberately VISIBLE, not blocking: a stale queue beats no queue, and hard
+# failing a drain over a clock would push people to delete the field rather than
+# regenerate the file.
+# ---------------------------------------------------------------------------
+
+QUEUE_TTL_HOURS = 24
+
+
+def _utcnow():
+    from datetime import datetime, timezone
+    return datetime.now(timezone.utc)
+
+
+def queue_payload(machine: str, cards: list, now=None) -> dict:
+    """The serialised queue file, carrying its own age."""
+    stamp = (now or _utcnow)()
+    return {
+        "machine": machine,
+        "generated_by": "dispatch.py",
+        "generated_at": stamp.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "ttl_hours": QUEUE_TTL_HOURS,
+        "cards": cards,
+    }
+
+
+def queue_age_hours(payload: dict, now=None) -> float | None:
+    """Hours since generation, or None when the file predates the field."""
+    from datetime import datetime, timezone
+    raw = (payload or {}).get("generated_at")
+    if not raw:
+        return None
+    try:
+        gen = datetime.strptime(raw, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+    return ((now or _utcnow)() - gen).total_seconds() / 3600.0
+
+
+def queue_is_stale(payload: dict, now=None) -> bool:
+    """Unknown age resolves to STALE, never fresh.
+
+    Every queue file on main before 2026-07-31 lacks `generated_at`; treating
+    "I cannot tell" as "it is fine" would be the same defect this field exists
+    to close, self-inflicted.
+    """
+    age = queue_age_hours(payload, now=now)
+    if age is None:
+        return True
+    return age > (payload.get("ttl_hours") or QUEUE_TTL_HOURS)
+
+
 def cmd_build(write: bool):
     proposals = get_proposals()
     queues = build_queues(proposals)
@@ -67,10 +131,27 @@ def cmd_build(write: bool):
         print(f"  {machine:<16} {len(cards):>4} backlog  ({elig} wip-eligible now)")
         if write:
             DISPATCH_DIR.mkdir(parents=True, exist_ok=True)
-            payload = {"machine": machine, "generated_by": "dispatch.py",
-                       "cards": cards}
+            payload = queue_payload(machine, cards)
             with open(DISPATCH_DIR / f"{machine}.yaml", "w") as f:
                 yaml.safe_dump(payload, f, sort_keys=False, width=100)
+    # Report the age of what is ALREADY on disk, so a dry run tells you whether
+    # the live queues are worth regenerating rather than only what would change.
+    if DISPATCH_DIR.is_dir():
+        stale = []
+        for f in sorted(DISPATCH_DIR.glob("*.yaml")):
+            if f.name.startswith("_"):
+                continue
+            try:
+                data = yaml.safe_load(f.read_text()) or {}
+            except Exception:       # noqa: BLE001 — a corrupt queue is "unknown age"
+                data = {}
+            if queue_is_stale(data):
+                age = queue_age_hours(data)
+                stale.append(f"{f.stem} ({'no timestamp' if age is None else f'{age:.0f}h old'})")
+        if stale:
+            print(f"\n  \033[33mSTALE on disk ({len(stale)}):\033[0m {', '.join(stale)}")
+            print("  \033[2mRegenerate with --write; routing inputs change daily.\033[0m")
+
     if not write:
         print("\n\033[2mDRY-RUN — no files written. Re-run with --write (Phase B).\033[0m")
     else:

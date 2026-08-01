@@ -183,14 +183,21 @@ def test_cli_override_skips_subprocess_and_is_loud(route, monkeypatch, capsys):
 # --- propose() integration: memoization, annotation, no sticky labels --------
 
 def _fake_boards(route, monkeypatch, n_cards=2, labels=("lane:codex",)):
-    board = {"repo": "vamseeachanta/workspace-hub", "domain": None}
-    cards = [
-        (board, {"idempotency_key": f"gh:vamseeachanta/workspace-hub#{i}",
-                 "source": "github_issue", "gh_state": "open",
-                 "gh_labels": list(labels), "title": f"card {i}", "priority": 0})
+    """Feed propose() from the LIVE-ISSUE source.
+
+    Renamed in spirit but not in name: since workspace-hub#3736 the routing input
+    is live GitHub, not the kanban board mirror. Patching `iter_cards` here would
+    now silently do nothing AND let the test reach the network — which is how a
+    hermetic suite quietly stops being hermetic.
+    """
+    issues = [
+        {"number": i, "title": f"card {i}", "state": "OPEN",
+         "labels": [{"name": n} for n in labels]}
         for i in range(n_cards)
     ]
-    monkeypatch.setattr(route, "iter_cards", lambda: iter(cards))
+    monkeypatch.setattr(route, "fetch_issues_for_coverage", lambda repo: issues)
+    monkeypatch.setattr(route, "DEFAULT_COVERAGE_REPOS",
+                        ("vamseeachanta/workspace-hub",), raising=False)
     monkeypatch.setattr(route, "load_rules", lambda: {
         "rules": [{"match": {}, "assign": {"machine": "dev-primary"}}],
         "defaults": DEFAULTS})

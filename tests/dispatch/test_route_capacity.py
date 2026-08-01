@@ -172,17 +172,63 @@ def test_blocked_on_names_an_issue(machines):
             assert "#" in str(b), f"{name}.blocked_on must reference an issue: {b!r}"
 
 
-def test_licence_verified_is_still_false_or_a_dated_attestation(machines):
-    """Carried over from deckhand#579 — a bare `true` discards the evidence."""
+def test_licence_verified_is_per_solver_and_dated(machines):
+    """Licence is PER SOLVER, not per host (fleet handover 2026-07-31).
+
+    A single host-level flag was the third version of the same mistake in one
+    day: capability treated as one property. AQWA is licensed and idle on the
+    heavy node while OrcaFlex is genuinely unavailable there — no single boolean
+    can say that, and either value would have been wrong about half the solvers.
+
+    Shape: `licence_verified: {<capability>: {at, by, how}}`.
+    """
     for name, spec in machines.items():
-        if "licence_verified" not in spec:
+        v = spec.get("licence_verified")
+        if v is False or v is None:
             continue
-        v = spec["licence_verified"]
-        if v is False:
-            continue
-        assert isinstance(v, dict), f"{name}: licence_verified must be false or a dated dict"
-        for field in ("at", "by", "how"):
-            assert v.get(field), f"{name}: licence_verified.{field} required"
+        assert isinstance(v, dict), f"{name}: licence_verified must be false or a per-solver map"
+        for cap, att in v.items():
+            assert isinstance(att, dict), (
+                f"{name}.licence_verified.{cap} must be a dated attestation, not {att!r} — "
+                "a bare true records a conclusion and discards the evidence"
+            )
+            for field in ("at", "by", "how"):
+                assert att.get(field), f"{name}.licence_verified.{cap}.{field} required"
+
+
+def test_a_blocked_solver_states_its_real_cause(machines):
+    """`licence_blocked` must name an issue AND survive a wrong first diagnosis.
+
+    deckhand#579 recorded the blocker as a missing Sentinel LDK client runtime.
+    The fleet session proved that is the wrong layer: the licence SERVER
+    publishes no orca* feature at all, so no client install can help. A blocker
+    field that only records the first theory is worse than none — it closes the
+    question.
+    """
+    for name, spec in machines.items():
+        for cap, reason in (spec.get("licence_blocked") or {}).items():
+            assert "#" in str(reason), f"{name}.licence_blocked.{cap} must reference an issue"
+            assert len(str(reason)) > 60, (
+                f"{name}.licence_blocked.{cap} is too terse to carry a diagnosis"
+            )
+
+
+def test_a_capability_is_never_both_verified_and_blocked(machines):
+    for name, spec in machines.items():
+        both = set(spec.get("licence_verified") or {}) & set(spec.get("licence_blocked") or {})
+        assert not both, f"{name}: {sorted(both)} declared both verified and blocked"
+
+
+def test_an_unavailable_host_declares_why(machines):
+    """A host marked down must say what is wrong and where it is tracked.
+
+    Otherwise `available: false` becomes permanent through nobody remembering
+    what it was waiting for.
+    """
+    for name, spec in machines.items():
+        if spec.get("available") is False:
+            assert spec.get("blocked_on"), f"{name} is unavailable with no stated reason"
+            assert spec.get("unavailable_since"), f"{name} is unavailable with no start time"
 
 
 def test_the_checks_are_not_vacuous(cfg, machines):
