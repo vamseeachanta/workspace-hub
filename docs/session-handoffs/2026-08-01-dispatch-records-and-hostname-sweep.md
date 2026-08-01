@@ -317,9 +317,14 @@ path consults. Buying those 10 lines would have meant either a bypass or
 redacting a client slug without the private map, and the second is precisely how
 PR #3149 and this session's own 39 corruptions happened.
 
-**Still open, and unchanged from today's `main`:** the client slug appears in
-~100 issues and many untouched files. That is a separate, larger task needing
-`redact-client-pii.py` with the private map. Worth its own issue.
+**Still open, and unchanged from today's `main`:** ≥83 tracked files carry a
+client identifier. **Filed as #3755** (a lower bound — the authoritative count
+needs `redact-client-pii.py` with the private map).
+
+Note what #3755 records: epic #3095 was CLOSED while the guard added by its own
+child #3099 still reports the condition. A closed epic and a solved problem are
+not the same thing — the same shape as everything else in §2, at the programme
+level rather than the code level.
 
 The two rejected options remain valid if that changes:
 
