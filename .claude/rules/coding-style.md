@@ -12,4 +12,6 @@
 ## Agent Harness Files
 AGENTS.md is the canonical contract. It, MEMORY.md, and GEMINI.md must not exceed 20 lines. Migrate excess to a skill or doc. (enforced: `scripts/enforcement/check-harness-file-size.sh`)
 
-CLAUDE.md is retired in this repo (2026-08-01) — do not reintroduce one. The cap still applies to sibling repos that carry one.
+CLAUDE.md is retired **as a repo file** (2026-08-01) — do not reintroduce one. The cap still applies to sibling repos that carry one.
+
+Claude's auto-load is a machine-level **symlink**: `~/.claude/CLAUDE.md` → `config/agents/claude/SOUL.runtime.md`, installed by `scripts/agents/install-soul-runtime.sh` (same shape as `~/.hermes/SOUL.md` and `~/.codex/AGENTS.md`). It loads in every cwd, unlike the old repo adapter's `@import`. Never replace that link with a regular file — the content must live in exactly one drift-checked place.

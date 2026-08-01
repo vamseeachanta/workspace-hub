@@ -266,4 +266,9 @@ resolved_dispositions:
     # re-affirmed whenever a governed input legitimately changes. Reviewed: the task is
     # a non-destructive daily audit (writes a state JSON + log), so it mutates no
     # scheduler state and the #3475 disposition still holds.
-    source_digest: b993fe29c3270db5fa5967554eeb7c460559a6689c1364305df956ec38ff0e0e
+    # Re-affirmed again 2026-08-01 (#3749): harness-install-doctor extended from the two
+    # ace-linux boxes to every onboarded POSIX machine carrying an agent CLI (adds
+    # gpu-claw, macbook-portable), which changes the governed input union again.
+    # Reviewed: the doctor is an idempotent repair task composing blessed installers; it
+    # mutates no scheduler state, so the #3475 disposition still holds.
+    source_digest: afb467d0a5766d7b14edafbd9cddc5a0cf7409841cbfad8ea1d369f952f81019

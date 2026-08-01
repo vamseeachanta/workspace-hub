@@ -256,11 +256,22 @@ tasks:
       #3702: entry point is equality-preflight.sh (FF-pull guard + exec); artifacts
       generate out of tree so behind_main can actually return to 0.
 
-  # Linux-only (v1); Windows Task Scheduler parity deferred per epic #3058.
+  # POSIX machines (linux + macos); Windows Task Scheduler parity still deferred per
+  # epic #3058 — Windows needs a separate `win-*` task with
+  # `scheduler: windows-task-scheduler`, not extra entries here.
+  #
+  # 2026-08-01: extended from the two ace-linux boxes to every onboarded POSIX machine
+  # that carries an agent CLI. Previously ONLY ace-linux-1/-2 self-healed, so gpu-claw
+  # and macbook-portable — both `agent_clis: [claude]` per config/workstations/registry.yaml
+  # — never received the SOUL runtime symlinks that install-soul-runtime.sh creates.
+  # Excluded: gali-linux-compute-1 (`agent_clis: []`, "not yet onboarded"); ace-win-1/-2
+  # (Windows, see above); and any host not present in config/workstations/registry.yaml,
+  # which is the hard rule for machine identity — a host must be onboarded there before
+  # it can appear in a task's machine list.
   - id: harness-install-doctor
     label: Harness install-doctor — REPAIR arm for equivalence-sentinel (#3058/#3059)
     schedule: "11 */6 * * *"   # :11 — 6 min before sentinel (:17); avoids 04:0x provider-dream-bridge stagger
-    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, gpu-claw, macbook-portable]
     roles: [control-plane, comms-dispatch]
     requires: [bash, git]
     command: >-
