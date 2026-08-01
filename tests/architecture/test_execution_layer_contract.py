@@ -274,12 +274,34 @@ def test_no_execution_direct_publication():
         ), "public output residency requires complete promotion gates"
 
 
+def resolve_machine(registry, machine_id):
+    """A routing id resolves as a registry KEY or as a declared alias of one.
+
+    The property that matters is that every id the routing policy names can be
+    looked up. Requiring it to be a top-level key pins the NAME instead, and
+    WF0 #3001 duly broke it: `licensed-win-*` was renamed to `ace-win-*` with
+    the old name kept as an alias, so two of the four ids below stopped being
+    keys while remaining perfectly resolvable. This assertion had been red ever
+    since — a stale expectation reading as a live contract violation.
+    """
+    machines = registry["machines"]
+    if machine_id in machines:
+        return machine_id
+    for key, entry in machines.items():
+        if machine_id in ((entry or {}).get("hostname_aliases") or []):
+            return key
+    return None
+
+
 def test_routing_policy_references_workstation_registry_without_duplicate_truth():
     registry = load_yaml(WORKSTATION_REGISTRY_PATH)
     policy = ROUTING_POLICY_PATH.read_text(encoding="utf-8")
     assert "config/workstations/registry.yaml" in policy
     for machine_id in ["dev-primary", "dev-secondary", "licensed-win-1", "licensed-win-2"]:
-        assert machine_id in registry["machines"]
+        assert resolve_machine(registry, machine_id), (
+            f"routing policy names {machine_id!r}, which resolves to no registry "
+            f"machine by key or alias — the routing view would reference a host "
+            f"the registry cannot describe")
         assert machine_id in policy
     for field in DUPLICATED_MACHINE_TRUTH_FIELDS:
         assert field not in policy, f"routing policy view must not duplicate canonical field {field}"
