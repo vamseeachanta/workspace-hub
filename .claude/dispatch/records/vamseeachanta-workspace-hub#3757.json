@@ -1,0 +1,33 @@
+{
+ "artifact_refs": [],
+ "attempt": 1,
+ "attempts": [
+  {
+   "attempt": 1,
+   "claimed_at": "2026-08-01T23:30:33Z",
+   "host": "ace-linux-1",
+   "job_id": "drain-20260801T233033Z-280ea8",
+   "outcome": null
+  }
+ ],
+ "claimed_at": "2026-08-01T23:30:33Z",
+ "command_ref": null,
+ "failure_category": null,
+ "finished_at": null,
+ "heartbeat_at": "2026-08-01T23:30:33Z",
+ "host": "ace-linux-1",
+ "issue": "vamseeachanta/workspace-hub#3757",
+ "job_id": "drain-20260801T233033Z-280ea8",
+ "last_transition_at": "2026-08-01T23:30:33Z",
+ "log_ref": null,
+ "machine": "ace-linux-1",
+ "max_attempts": 3,
+ "previous_state": "ready",
+ "queue_generation_id": null,
+ "reason": "claimed",
+ "returncode": null,
+ "schema": 1,
+ "started_at": null,
+ "state": "active",
+ "ttl_minutes": 90
+}
