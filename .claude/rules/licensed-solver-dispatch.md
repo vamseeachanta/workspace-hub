@@ -56,6 +56,17 @@ So model it as **one concurrent dispatch slot that parallelises inside itself** 
 
 **An interactive session holding the seat blocks all dispatch.** Closing the solver releases it; logging off is not required — a logged-in session with no solver running holds nothing.
 
+### Concurrency model for routing
+
+Two **independent** lanes — different licence servers, different features, no contention between them:
+
+| lane | concurrent dispatch slots | notes |
+|---|---|---|
+| **Orcina** (`27002`) | **1**, shared by OrcaFlex *and* OrcaWave | each slot may fan out internally |
+| **ANSYS** (`1055`) | **2** (`aqwa_solve`), + 4 `anshpc` for parallel solve | |
+
+**AQWA work can run at the same time as Orcina work.** Do not serialise across lanes — treating "one seat" as a fleet-wide solver limit idles 2 `aqwa_solve` seats and 64 cores to respect a constraint that only exists inside the Orcina lane.
+
 ## 4. OrcaWave shares the same seat — the constraint is resources, not licence
 
 Measured: `OrcFxAPI.Diffraction()` constructs successfully through the dispatch path, and the Orcina server publishes **only** the `Flex` feature. **There is no separate OrcaWave entitlement.**
