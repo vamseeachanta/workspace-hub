@@ -53,25 +53,48 @@ machines:
   # CAPABILITY IS TWO DIMENSIONS, not one: a host must have the LICENCE and the
   # CAPACITY. Checking only the dimension you were last burned by is how both
   # defects here happened — see tests/dispatch/test_route_capacity.py.
+  # LICENCE IS PER-SOLVER, NOT PER-HOST (fleet handover 2026-07-31).
+  #
+  # A single host-level `licence_verified` was the third version of the same
+  # mistake in one day: capability treated as one property. AQWA is licensed,
+  # healthy and IDLE on licensed-win-1 while OrcaFlex is genuinely unavailable
+  # there — one flag cannot express that, and either value it took would have
+  # been wrong about half the solvers.
   licensed-win-1:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
                      capacity: heavy,
-                     licence_verified: false,
-                     blocked_on: "deckhand#579 — Sentinel LDK runtime absent (OrcFxAPI.Model() fails
-                                  DLLError 25; 1947 not listening, hasplms absent). Owner designates
-                                  THIS the licensed execution host; the licence is a prerequisite in
-                                  flight, not a reason to route elsewhere.",
+                     licence_verified: {aqwa: {at: "2026-07-31", by: "fleet-session",
+                                               how: "lmstat: 2 aqwa_solve + 2 aqwa_pre + 4 anshpc seats
+                                                     free; four diffraction runs completed 2026-07-18
+                                                     (~1 GB output). wh#3734"}},
+                     licence_blocked: {orcaflex: "wh#3734 — the licence SERVER publishes no orca*
+                                                  feature at all (lmutil lmstat -a), while serving ANSYS
+                                                  to this same host. deckhand#579's stated fix (install
+                                                  the Sentinel LDK runtime) is THE WRONG LAYER: a client
+                                                  runtime cannot create an entitlement the server does
+                                                  not publish. FlexNet Error 21 precedes the HASP
+                                                  fallback in the error log — the HASP message is the
+                                                  symptom people read first, not the cause."},
+                     concurrency: {aqwa: 2},
                      notes: "THE heavy node: 64 logical cores / 255.7 GB; declared batch target for
-                             dm#1553 (OrcaFlex N≈57 parallel sims). SHARED client production box — cap
-                             concurrency. AQWA/OrcaWave attestation pending deckhand#542/#544."}
+                             dm#1553. SHARED client production box — cap concurrency. AQWA over-dispatch
+                             FAILS on licence acquisition rather than queueing, so the 2-seat ceiling is
+                             a hard cap, not a preference."}
   licensed-win-2:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
                      capacity: workstation,
-                     licence_verified: {at: "2026-07-30", by: "owner",
-                                        how: "bokalift orcawave-diffraction-solve ran end-to-end on this host"},
-                     notes: "Workstation, NOT sized for batch — owner 2026-07-31: 'that host is not
-                             powerful enough'. Holds a working licence and is the queue lane's CANONICAL
-                             default (policy licensed_host) for UN-ADDRESSED requests, which is a
-                             routing fallback, not an execution target for batch work.
-                             The physical host binding lives in the PRIVATE machine registry."}
+                     available: false,
+                     unavailable_since: "2026-07-31T11:00Z",
+                     blocked_on: "wh#3721 — host DOWN, needs a power cycle. Tailnet pings 1 ms and
+                                  22/3389/445/135 all accept TCP, but SSH stalls exactly at key
+                                  exchange and RDP is unresponsive: the kernel accepts while userland
+                                  cannot service. Resource exhaustion (~2.2 GB free of 16 GB), not a
+                                  network or sshd fault — restarting sshd did not help because sshd was
+                                  never the problem. A TCP-only reachability probe reports this host
+                                  UP; that is the trap.",
+                     licence_verified: {orcawave: {at: "2026-07-30", by: "owner",
+                                                   how: "bokalift orcawave-diffraction-solve ran end-to-end"}},
+                     notes: "Workstation, NOT sized for batch. Queue lane's CANONICAL default
+                             (policy licensed_host) for UN-ADDRESSED requests — a routing fallback, not
+                             a batch execution target. Physical binding is in the PRIVATE registry."}
   home-win:         {os: windows, role: aux,        notes: "home windows; statements/scans (e.g. Chase)"}
   macbook-portable: {os: macos,   role: aux,        notes: "portable/mobile work"}
   multi:            {os: any,     role: virtual,    notes: "spans machines / not pinned to one box"}
