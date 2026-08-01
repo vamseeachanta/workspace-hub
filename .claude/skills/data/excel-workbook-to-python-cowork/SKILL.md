@@ -18,7 +18,7 @@ Windows also produced: COG calculations (both insulated and uninsulated variants
 
 ## Execution Machine
 
-- ws014 (licensed-win-2) with Claude Desktop cowork mode and MCP
+- ace-win-2 (licensed-win-2) with Claude Desktop cowork mode and MCP
 - Excel and openpyxl installed, pytest for testing
 - client-c repo cloned
 
@@ -66,7 +66,7 @@ RULES:
 
 After cowork produces code:
 
-1. Verify all tests pass on ws014 with pytest
+1. Verify all tests pass on ace-win-2 with pytest
 2. Commit to client-c repo under engineering_workbooks
 3. Copy module to digitalmodel src digitalmodel marine ops installation
 4. Copy tests to digitalmodel tests marine ops installation

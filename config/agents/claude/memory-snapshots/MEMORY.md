@@ -111,5 +111,5 @@
 - [digitalmodel python env](reference_digitalmodel_python_env_venv.md) — use `.venv/bin/python` not `uv run`
 - [ace-linux-2 headless VNC](reference_ace_linux_2_headless_vnc.md) — TigerVNC :1/5901; connect via `vnc-ace-linux-2.sh`
 - [Cross-provider dream feed activity (2026-07)](reference_crossprovider_feed_activity_2026_07.md) — only Claude+Codex feed the dream; others `learnings=0` expected
-- [ace-win-1 equality evidence stale](reference_ace_win_1_equality_evidence_stale.md) — acma-ansys05: no scheduler + no gh auth; fix ON-BOX (#2815)
+- [ace-win-1 equality evidence stale](reference_ace_win_1_equality_evidence_stale.md) — no scheduler + no gh auth; fix ON-BOX (#2815)
 - [Dynacard module map (digitalmodel)](reference_dynacard_module_map_digitalmodel.md) — `marine_ops/artificial_lift/dynacard/`; 18 modes; ⚠ 89.4% is synthetic-CV only, real-card benchmark unimplemented

@@ -69,7 +69,7 @@ def test_duplicate_profile_repair_is_narrow_and_backed_up(tmp_path: Path):
 
 def test_profile_repair_preserves_utf16le_bom_and_crlf(tmp_path: Path):
     profile = tmp_path / "utf16.rdp"
-    original_text = "full address:s:RDS02\r\naudiocapturemode:i:0\r\nkeyboardhook:i:1\r\n"
+    original_text = "full address:s:ace-win-1\r\naudiocapturemode:i:0\r\nkeyboardhook:i:1\r\n"
     profile.write_text(original_text, encoding="utf-16", newline="")
     original = profile.read_bytes()
     result = _run(

@@ -10418,7 +10418,7 @@ cards:
   repo: vamseeachanta/workspace-hub
   domain: harness
   provider: claude
-  title: 'WRK-1051: chore(harness): verify Codex config on acma-ansys0'
+  title: 'WRK-1051: chore(harness): verify Codex config on ace-win-1'
   url: https://github.com/vamseeachanta/workspace-hub/issues/37
   dispatch_status: ready
   wip_eligible: false
@@ -11426,7 +11426,7 @@ cards:
   repo: vamseeachanta/workspace-hub
   domain: ops
   provider: claude
-  title: 'WRK-1133: Add acma-ws014 to workstations documentation and r'
+  title: 'WRK-1133: Add ace-win-2 to workstations documentation and r'
   url: https://github.com/vamseeachanta/workspace-hub/issues/52
   dispatch_status: ready
   wip_eligible: false

@@ -178,7 +178,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#34
-    title: 'WRK-1043: tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05'
+    title: 'WRK-1043: tidy-agent-teams: wire Stop hook on ace-linux-2 and ace-win-1'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/34
     gh_state: closed
@@ -5300,7 +5300,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#637
-    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05'
+    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on ace-win-1'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/637
     gh_state: closed
@@ -5639,7 +5639,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#677
-    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05'
+    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on ace-win-1'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/677
     gh_state: closed
@@ -6844,7 +6844,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#848
-    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, acma-ansys05'
+    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, ace-win-1'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/848
     gh_state: closed
@@ -6980,7 +6980,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#860
-    title: 'WRK-1077: acma-ansys05 workstation readiness setup'
+    title: 'WRK-1077: ace-win-1 workstation readiness setup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/860
     gh_state: closed
@@ -8040,7 +8040,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#998
-    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, acma-ansys05'
+    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, ace-win-1'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/998
     gh_state: closed
@@ -8168,7 +8168,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#1009
-    title: 'WRK-1077: acma-ansys05 workstation readiness setup'
+    title: 'WRK-1077: ace-win-1 workstation readiness setup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1009
     gh_state: closed
@@ -18954,7 +18954,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2926
-    title: 'feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]'
+    title: 'feat(workstations): ace-win-2 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2926
     gh_state: open
@@ -20905,7 +20905,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3505
-    title: 'ops(ace-win-1): equivalence fingerprint ABSENT — sentinel not publishing from acma-ansys05 (flagged by #3502 monitoring)'
+    title: 'ops(ace-win-1): equivalence fingerprint ABSENT — sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3505
     gh_state: open
@@ -20920,7 +20920,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3506
-    title: 'ops(ace-win-2): equivalence fingerprint ABSENT — sentinel not publishing from acma-ws014 (flagged by #3502 monitoring)'
+    title: 'ops(ace-win-2): equivalence fingerprint ABSENT — sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3506
     gh_state: open
@@ -21042,7 +21042,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3524
-    title: '[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02'
+    title: '[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3524
     gh_state: open
@@ -21060,7 +21060,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3525
-    title: '[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014'
+    title: '[WRK] Investigate safe remote Claude job dispatch to ace-win-2'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3525
     gh_state: open
@@ -22082,7 +22082,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#37
-    title: 'WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)'
+    title: 'WRK-1051: chore(harness): verify Codex config on ace-win-1 (WRK-1024 follow-up)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/37
     gh_state: open
@@ -22099,11 +22099,11 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)
+    body_excerpt: '## WRK-1051: chore(harness): verify Codex config on ace-win-1 (WRK-1024 follow-up)
 
       **Status:** pending | **Priority:** medium | **Category:** harness/ai-config
 
-      **Repo:** workspace-hub | **Complexity:** simple | **Machine:** acma-ansys05'
+      **Repo:** workspace-hub | **Complexity:** simple | **Machine:** ace-win-1'
   - idempotency_key: gh:vamseeachanta/workspace-hub#42
     title: "WRK-1103: learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings"
     source: github_issue
@@ -22240,7 +22240,7 @@ cards:
 
       **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/workspace-hub#52
-    title: 'WRK-1133: Add acma-ws014 to workstations documentation and routing'
+    title: 'WRK-1133: Add ace-win-2 to workstations documentation and routing'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/52
     gh_state: open
@@ -27908,7 +27908,7 @@ cards:
 
       ### Install Method'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1510
-    title: 'Verify Claude Desktop install: ACMA-WS014'
+    title: 'Verify Claude Desktop install: ace-win-2'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1510
     gh_state: open
@@ -27916,7 +27916,7 @@ cards:
       - priority:low
       - cat:operations
       - domain:workstations
-      - machine:acma-ws014
+      - machine:ace-win-2
       - dispatch:ready
       - gate:completeness
       - lane:claude
@@ -27925,7 +27925,7 @@ cards:
     priority: 0
     body_excerpt: 'Parent: #1504
 
-      ## Machine: ACMA-WS014 (Windows workstation)
+      ## Machine: ace-win-2 (Windows workstation)
 
       ### Install Method'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1514
@@ -31420,7 +31420,7 @@ cards:
 
       Systematically convert productive engineering Excel workbooks to Python code in our repo ecosystem. This enables:'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1934
-    title: 'FEATURE: Excel-to-Code Conversion Pipeline — 100 workbooks via ws014 Claude-in-Excel'
+    title: 'FEATURE: Excel-to-Code Conversion Pipeline — 100 workbooks via ace-win-2 Claude-in-Excel'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1934
     gh_state: open
@@ -31435,9 +31435,9 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '# Excel-to-Code Conversion Pipeline — 100 workbooks via ws014 Claude-in-Excel
+    body_excerpt: '# Excel-to-Code Conversion Pipeline — 100 workbooks via ace-win-2 Claude-in-Excel
 
-      > **Execution Machine**: ws014 (Windows, Claude in Excel add-in)
+      > **Execution Machine**: ace-win-2 (Windows, Claude in Excel add-in)
 
       > **Round Trip**: Workbooks here -> analyze in Claude-in-Excel -> convert to Python -> PR back to digitalmodel/assetutilities repos'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1935
@@ -31460,7 +31460,7 @@ cards:
 
       **Source**: `engineering_workbooks/ballymore/` (10 workbooks)
 
-      **Machine**: ws014 (Windows)'
+      **Machine**: ace-win-2 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1936
     title: 'Batch 2: FDAS Riser Engineering — 20+ workbooks'
     source: github_issue
@@ -31481,7 +31481,7 @@ cards:
 
       **Source**: `engineering_workbooks/0163-FDAS/` (already tracked) + `engineering_workbooks/references/`
 
-      **Machine**: ws014 (Windows)'
+      **Machine**: ace-win-2 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1937
     title: 'Batch 3: Installation Engineering References — 18 workbooks'
     source: github_issue
@@ -31502,7 +31502,7 @@ cards:
 
       **Source**: `engineering_workbooks/references/` + `energy_engineering/` plate buckling
 
-      **Machine**: ws014 (Windows)'
+      **Machine**: ace-win-2 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1938
     title: 'Batch 4: SCR Design DNV F201 + Wall Thickness — 18 workbooks'
     source: github_issue
@@ -31523,7 +31523,7 @@ cards:
 
       **Source**: `engineering_workbooks/training/`
 
-      **Machine**: ws014 (Windows)'
+      **Machine**: ace-win-2 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1939
     title: 'Batch 5: Talos Venice Umbilical Installation — 31 workbooks'
     source: github_issue
@@ -31544,7 +31544,7 @@ cards:
 
       **Source**: `engineering_workbooks/talos_venice/` (31 workbooks)
 
-      **Machine**: ws014 (Windows)'
+      **Machine**: ace-win-2 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1940
     title: 'Batch 6: Shell Perdido + VMCast + Production Eng Library — 71 workbooks'
     source: github_issue
@@ -31565,7 +31565,7 @@ cards:
 
       **Source**: `engineering_workbooks/shell_perdido_south/`, `engineering_workbooks/BP_MD2_FJR_vmcast/`, `client-c/energy_engineering/`
 
-      **Machine**: ws014 (Windows)'
+      **Machine**: ace-win-2 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1953
     title: 'Batch 2: Convert FDAS Riser Engineering workbooks via Windows cowork'
     source: github_issue
@@ -31582,7 +31582,7 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## Machine: ws014 (Windows - Claude cowork)
+    body_excerpt: '## Machine: ace-win-2 (Windows - Claude cowork)
 
       ## Scope
 

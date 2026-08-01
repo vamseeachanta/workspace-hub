@@ -5779,11 +5779,11 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "- `config/workstations/registry.yaml` identifies `ACMA-WS014` as the `ace-win-2` alias, records Windows, `ssh: null`, Claude/Codex/Gemini availability, and `telegram_hermes.dispatch_enabled: false`. The discovery will treat that registry state as local policy evidence, not as pro",
+        "plan_summary": "- `config/workstations/registry.yaml` resolves the box to the `ace-win-2` entry via its declared `hostname_aliases`, records Windows, `ssh: null`, Claude/Codex/Gemini availability, and `telegram_hermes.dispatch_enabled: false`. The discovery will treat that registry state as local policy evidence, not as pro",
         "provider_route": "claude",
-        "risks": "**Risk \u2014 discovery becomes configuration:** even harmless-looking UI navigation can trigger sign-in, pairing, updates, or settings writes. The approved run will use only the exact command allowlist above and will perform no UI navigation. | **Risk \u2014 wrong execution host:** registry evidence is not proof that observations ran on ACMA-WS014. The local lane will fail closed unless the hostname attest",
+        "risks": "**Risk \u2014 discovery becomes configuration:** even harmless-looking UI navigation can trigger sign-in, pairing, updates, or settings writes. The approved run will use only the exact command allowlist above and will perform no UI navigation. | **Risk \u2014 wrong execution host:** registry evidence is not proof that observations ran on ace-win-2. The local lane will fail closed unless the hostname attest",
         "tests": "12 TDD tests defined",
-        "title": "[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014"
+        "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -5796,7 +5796,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014",
+      "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
       "warnings": [
         "legacy_review_no_sha",
@@ -5827,11 +5827,11 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "- Found: `docs/session-handoffs/2026-07-14-rdp-microphone-ws014-rds02-exit.md`",
+        "plan_summary": "- Found: `docs/session-handoffs/2026-07-14-rdp-microphone-ace-win-2-ace-win-1-exit.md`",
         "provider_route": "claude",
         "risks": "**Risk \u2014 client identity:** `.rdp` settings are irrelevant if the user actually | **Risk \u2014 shared RDS host:** service or TermService restarts could disrupt other users. | **Risk \u2014 user data:** signing out closes the user's remote applications. The tool",
         "tests": "28 TDD tests defined",
-        "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02"
+        "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -5844,7 +5844,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02",
+      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
       "warnings": [
         "missing_review"
@@ -6174,7 +6174,7 @@
         "provider_route": "codex",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from acma-ws014 (flagged by #3502 monitoring)"
+        "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -6187,7 +6187,7 @@
       "provider_route": "codex",
       "review_clean": false,
       "routing_reason": "implementation/test/fix language",
-      "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from acma-ws014 (flagged by #3502 monitoring)",
+      "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3506",
       "warnings": []
     },
@@ -6214,7 +6214,7 @@
         "provider_route": "codex",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from acma-ansys05 (flagged by #3502 monitoring)"
+        "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -6227,7 +6227,7 @@
       "provider_route": "codex",
       "review_clean": false,
       "routing_reason": "implementation/test/fix language",
-      "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from acma-ansys05 (flagged by #3502 monitoring)",
+      "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3505",
       "warnings": []
     },
@@ -13944,11 +13944,11 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "- `config/workstations/registry.yaml` identifies `ACMA-WS014` as the `ace-win-2` alias, records Windows, `ssh: null`, Claude/Codex/Gemini availability, and `telegram_hermes.dispatch_enabled: false`. The discovery will treat that registry state as local policy evidence, not as pro",
+          "plan_summary": "- `config/workstations/registry.yaml` resolves the box to the `ace-win-2` entry via its declared `hostname_aliases`, records Windows, `ssh: null`, Claude/Codex/Gemini availability, and `telegram_hermes.dispatch_enabled: false`. The discovery will treat that registry state as local policy evidence, not as pro",
           "provider_route": "claude",
-          "risks": "**Risk \u2014 discovery becomes configuration:** even harmless-looking UI navigation can trigger sign-in, pairing, updates, or settings writes. The approved run will use only the exact command allowlist above and will perform no UI navigation. | **Risk \u2014 wrong execution host:** registry evidence is not proof that observations ran on ACMA-WS014. The local lane will fail closed unless the hostname attest",
+          "risks": "**Risk \u2014 discovery becomes configuration:** even harmless-looking UI navigation can trigger sign-in, pairing, updates, or settings writes. The approved run will use only the exact command allowlist above and will perform no UI navigation. | **Risk \u2014 wrong execution host:** registry evidence is not proof that observations ran on ace-win-2. The local lane will fail closed unless the hostname attest",
           "tests": "12 TDD tests defined",
-          "title": "[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014"
+          "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -13961,7 +13961,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014",
+        "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
         "warnings": [
           "legacy_review_no_sha",
@@ -13992,11 +13992,11 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "- Found: `docs/session-handoffs/2026-07-14-rdp-microphone-ws014-rds02-exit.md`",
+          "plan_summary": "- Found: `docs/session-handoffs/2026-07-14-rdp-microphone-ace-win-2-ace-win-1-exit.md`",
           "provider_route": "claude",
           "risks": "**Risk \u2014 client identity:** `.rdp` settings are irrelevant if the user actually | **Risk \u2014 shared RDS host:** service or TermService restarts could disrupt other users. | **Risk \u2014 user data:** signing out closes the user's remote applications. The tool",
           "tests": "28 TDD tests defined",
-          "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02"
+          "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -14009,7 +14009,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02",
+        "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
         "warnings": [
           "missing_review"
@@ -14339,7 +14339,7 @@
           "provider_route": "codex",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from acma-ws014 (flagged by #3502 monitoring)"
+          "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -14352,7 +14352,7 @@
         "provider_route": "codex",
         "review_clean": false,
         "routing_reason": "implementation/test/fix language",
-        "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from acma-ws014 (flagged by #3502 monitoring)",
+        "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3506",
         "warnings": []
       },
@@ -14379,7 +14379,7 @@
           "provider_route": "codex",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from acma-ansys05 (flagged by #3502 monitoring)"
+          "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -14392,7 +14392,7 @@
         "provider_route": "codex",
         "review_clean": false,
         "routing_reason": "implementation/test/fix language",
-        "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from acma-ansys05 (flagged by #3502 monitoring)",
+        "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3505",
         "warnings": []
       },

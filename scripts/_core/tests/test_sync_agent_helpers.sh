@@ -361,7 +361,7 @@ run_private_host_alias_resolution_test() {
     real_host="$(hostname -s | tr '[:upper:]' '[:lower:]')"
 
     make_workspace "$ws_root"
-    mkdir -p "$home_root/.hermes" "$home_root/.deckhand"
+    mkdir -p "$home_root/.hermes" "$home_root/.config/workspace-hub"
 
     # Registry keyed ONLY by a role id — no alias matching this box.
     mkdir -p "$ws_root/config/workstations"
@@ -387,17 +387,30 @@ EOF
         fail "private_host_alias: expected the fallback WARN with no alias present"
     fi
 
-    cat > "$home_root/.deckhand/host-aliases.yml" <<EOF
-host_aliases:
-  test-role-1:
-    - $real_host
+    cat > "$home_root/.config/workspace-hub/machine-identity.yaml" <<EOF
+machine: "test-role-1"
+public_host: "test-role-1"
+expected_hostname: "$real_host"
 EOF
 
     out="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1 || true)"
     if grep -q "unknown machine for hostname" <<<"$out"; then
-        fail "private_host_alias: private map did not resolve the OS hostname to its role"
+        fail "machine_identity: identity file did not resolve the OS hostname to its role"
     else
-        pass "private_host_alias: private map resolves the OS hostname to its role"
+        pass "machine_identity: identity file resolves the OS hostname to its role"
+    fi
+
+    # A file copied to the WRONG box must fail loud, never fall through — a bad
+    # identity file silently minting the wrong machine is worse than none.
+    cat > "$home_root/.config/workspace-hub/machine-identity.yaml" <<EOF
+machine: "test-role-1"
+expected_hostname: "some-other-box"
+EOF
+    out="$(HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" 2>&1 || true)"
+    if grep -q "refusing a copied identity file" <<<"$out"; then
+        pass "machine_identity: a foreign identity file is refused, not silently used"
+    else
+        fail "machine_identity: foreign identity file was not refused"
     fi
 }
 

@@ -323,7 +323,7 @@
     },
     {
       "number": 3524,
-      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02",
+      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
       "labels": [
         "bug",

@@ -105,14 +105,14 @@ Each task was committed atomically:
 ## Issues Encountered
 None
 
-## Task 2 Completion (2026-03-31, ACMA-ANSYS05)
+## Task 2 Completion (2026-03-31, ace-win-1)
 
 Two bugs discovered and fixed in `setup-scheduler.ps1` during setup on licensed-win-1:
 
 1. **Path bug**: `Split-Path -Parent` called 3× from `$PSScriptRoot` → resolved to `D:\` instead of `D:\workspace-hub`. Fixed to 2×.
 2. **Duration overflow**: `[TimeSpan]::MaxValue` serialises to `P99999999DT23H59M59S`, exceeding Task Scheduler XML limit (HRESULT 0x80041318). Fixed to `New-TimeSpan -Days 3650` (10 years).
 
-**Verification on ACMA-ANSYS05:**
+**Verification on ace-win-1:**
 - `Get-ScheduledTask -TaskName 'SolverQueue'` → State: **Ready**
 - Manual run log: `[2026-03-31T06:11:19Z] No pending jobs` (correct — queue is empty)
 - OrcFxAPI: **DLL version 11.6c** importable

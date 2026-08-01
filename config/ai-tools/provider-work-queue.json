@@ -201,7 +201,7 @@
         },
         {
           "number": 3524,
-          "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02",
+          "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
           "labels": [
             "bug",
@@ -415,7 +415,7 @@
         },
         {
           "number": 3524,
-          "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02",
+          "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
           "labels": [
             "bug",
@@ -442,7 +442,7 @@
         },
         {
           "number": 3525,
-          "title": "[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014",
+          "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
           "labels": [
             "priority:medium",
@@ -4970,7 +4970,7 @@
         },
         {
           "number": 3505,
-          "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from acma-ansys05 (flagged by #3502 monitoring)",
+          "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3505",
           "labels": [
             "bug",
@@ -4993,7 +4993,7 @@
         },
         {
           "number": 3506,
-          "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from acma-ws014 (flagged by #3502 monitoring)",
+          "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3506",
           "labels": [
             "bug",
