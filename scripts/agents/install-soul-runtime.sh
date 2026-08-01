@@ -21,8 +21,12 @@
 
 set -euo pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-TS="$(date +%Y%m%dT%H%M%SZ)"
+# Self-locating rather than cwd-derived (#3752): under cron / Task Scheduler the cwd
+# is not guaranteed, and `git rev-parse` would resolve whatever repo the shell landed
+# in — silently installing links that point at the wrong tree.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+TS="$(date -u +%Y%m%dT%H%M%SZ)"   # -u: the filename suffix claims Z, so make it true
 created=0
 unchanged=0
 backed_up=0
@@ -49,7 +53,11 @@ create_link() {
         return 0
     fi
 
-    MSYS=winsymlinks:nativestrict ln -s "${resolved}" "${runtime_path}" 2>/dev/null || true
+    # Capture stderr rather than discarding it (#3752): an ACL denial, a missing
+    # parent dir, a cross-volume target and a path-length overflow all land here, and
+    # reporting every one of them as "enable Developer Mode" sends the operator down
+    # the wrong path.
+    LINK_ERR="$(MSYS=winsymlinks:nativestrict ln -s "${resolved}" "${runtime_path}" 2>&1)" || true
     [[ -L "${runtime_path}" ]] && return 0
 
     # Native symlink unavailable (no Developer Mode / not elevated). Remove only a
@@ -84,7 +92,16 @@ link_if_needed() {
 
     if [[ -e "${runtime_path}" || -L "${runtime_path}" ]]; then
         local backup="${runtime_path}.pre-install-backup.${TS}"
-        mv "${runtime_path}" "${backup}"
+        # Do not let one path abort the whole run (#3752). Under `set -e` a failed mv
+        # kills the installer outright and the remaining providers are never
+        # processed. Windows uses mandatory file locking, so a live Claude/Codex
+        # process holding this file makes that a routine event on a 6-hourly schedule.
+        if ! mv "${runtime_path}" "${backup}" 2>/dev/null; then
+            echo "NEEDS-ATTENTION ${runtime_path} — could not back up (file locked by a running provider?)"
+            echo "                Skipped so the remaining providers still get processed."
+            failed=$((failed + 1))
+            return 0
+        fi
         echo "BACKUP ${runtime_path} → ${backup}"
         backed_up=$((backed_up + 1))
     fi
@@ -93,9 +110,12 @@ link_if_needed() {
         echo "LINK   ${runtime_path} → ${resolved}"
         created=$((created + 1))
     else
-        echo "NEEDS-ATTENTION ${runtime_path} — native symlink unavailable on Windows."
-        echo "                Enable Developer Mode (or run elevated) and re-run. No copy was left behind:"
-        echo "                a copy would silently drift from ${repo_relative_target} and nothing checks it."
+        echo "NEEDS-ATTENTION ${runtime_path} — native symlink not created."
+        echo "                ln: ${LINK_ERR:-(no error text)}"
+        echo "                Common cause is no Developer Mode / not elevated, but check the error above"
+        echo "                first — ACL denial, missing parent dir and path-length also land here."
+        echo "                No copy was left behind: a copy would silently drift from"
+        echo "                ${repo_relative_target} and nothing checks it."
         failed=$((failed + 1))
     fi
 }
