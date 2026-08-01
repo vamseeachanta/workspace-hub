@@ -62,6 +62,12 @@ machines:
   # been wrong about half the solvers.
   licensed-win-1:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
                      capacity: heavy,
+                     # Multi-tenant: other people's interactive sessions share this
+                     # host. Structured, not just a comment in wip_caps, so the cap
+                     # can be ENFORCED rather than merely explained — see
+                     # tests/dispatch/test_shared_tenancy_cap.py. `capacity` describes
+                     # the hardware; this describes who else is standing on it.
+                     shared_tenancy: true,
                      licence_verified: {aqwa: {at: "2026-07-31", by: "fleet-session",
                                                how: "lmstat port 1055: aqwa_solve x2, aqwa_pre x2,
                                                      anshpc x4 free; four diffraction runs completed
@@ -189,6 +195,18 @@ wip_caps:
     dev-primary: 3
     dev-secondary: 3
     cfd-dedicated: 1
+    # SHARED TENANCY — this cap is a courtesy constraint, NOT a throughput knob.
+    # licensed-win-1 is a multi-tenant host: interactive sessions belonging to
+    # OTHER PEOPLE run on it concurrently with anything we dispatch. Saturating
+    # it degrades their work, and they have no visibility into why.
+    #
+    # Recorded here because the constraint was previously held only in the
+    # operator's head. `capacity: heavy` above describes the HARDWARE honestly
+    # and, read alone, invites exactly the wrong conclusion — the next person
+    # tuning throughput sees a large idle box behind a cap of 2 and removes the
+    # bottleneck. Capacity and permission-to-use-capacity are different facts.
+    #
+    # Do not raise without the owner. Host identity is in the private tier.
     licensed-win-1: 2
     licensed-win-2: 2
   per_provider:
