@@ -3,7 +3,7 @@
 **Date:** 2026-08-01
 **Branch:** `feat/3740-dispatch-records`
 **PR:** [#3741](https://github.com/vamseeachanta/workspace-hub/pull/3741)
-**State at exit:** branch pushed and verified on the remote; working tree DIRTY by design (see §5)
+**State at exit:** branch pushed and verified on the remote; working tree clean. Hostname sweep COMPLETE (§5) — 11 files retain a hostname, all deliberate.
 
 ---
 
@@ -80,15 +80,37 @@ fault changed nothing visible — a pre-existing red hiding a new one.
 
 ---
 
-## 5. UNCOMMITTED work in the tree — deliberate, do not discard
+## 5. Sweep COMPLETE — 11 files remain, every one deliberate
 
-~70 modified files. The hostname sweep is **partial**:
+All lanes done and committed. From 133 files down to **11**, and each of those
+is a decision rather than an oversight:
 
-| lane | state |
+| what | why it keeps the string |
 |---|---|
-| `docs/` | ✅ COMPLETE — 51 files, ~135 replacements, 0 remaining |
-| `scripts/` `tests/` `config/` | ⚠️ PARTIAL — agent stopped mid-run; ~29 files still carry hostnames |
-| `.claude/` `.planning/` `queue/` `state/` `data/` | ❌ NOT STARTED — ~38 files |
+| `.legal-deny-list.yaml` | holds them AS detection patterns — sanitizing the guard disarms it |
+| `config/workstations/registry.yaml` | one alias for the box that is currently DOWN (below) |
+| 9 × runtime host detection | comparing the REAL OS hostname to a literal — see §9 |
+
+**The deny-list therefore stays at severity `warn`, honestly.** Arming `block`
+over a repo that still matches it would only teach people to bypass the gate.
+
+Four classes of leak that a mechanical pass could never have found, all caught by
+the lanes and worth knowing next time:
+
+1. **A hostname split across syntax-highlighting spans** in generated HTML —
+   renders as one string, invisible to a grep for the whole token. Found only
+   because a bare-fragment pattern matched a piece.
+2. **Truncated forms in generated mirrors.** Dispatch titles cut at ~60 chars and
+   correction previews at ~100 had lost the final character, so neither the full
+   token nor the bare fragment matched. Four leaks in two files that no
+   file-listing had surfaced.
+3. **Binary `.owr` files** store the hostname as a length-prefixed field with
+   absolute byte offsets further into the file. Replaced padded to the original
+   length; total size asserted unchanged, or the offsets would be corrupted.
+4. **Mapping statements** — 9 more. "The canonical host is ace-win-2 and X is
+   only an alias" becomes a tautology; "resolves the REAL Windows computer name
+   (e.g. X)" becomes a falsehood, because the alias is precisely not the real
+   computer name.
 
 **The mapping is NOT restated here, on purpose.** It lives in
 `.legal-deny-list.yaml` under `client_infrastructure`: each entry carries the real
@@ -107,7 +129,7 @@ commit message.
 
 ## 6. Next session — in order
 
-1. **Finish the sweep** (2 lanes above), then flip the deny-list to `block`.
+1. ✅ **Sweep finished** — see §5. The deny-list stays at `warn` until the 9 runtime host-detection files migrate to the identity-file mechanism (§9); that is the only thing standing between here and `block`.
 2. **GitHub-side: titles DONE, bodies REMAIN.**
    - ✅ **15 issue titles retitled** 2026-08-01: #34, #37, #52, #637, #677, #848, #860, #998, #1009, #1510, #2926, #3505, #3506, #3524, #3525. Verified by independent re-query — zero titles carry a hostname.
    - **The count was wrong before it was right.** An earlier pass in the same session reported *six*, having searched only two of the three patterns. Adding the third surfaced nine more, all but one CLOSED. **Closed issues are exactly as public and as indexed as open ones** — a scope estimate drawn from a partial search reads as a complete answer.
@@ -149,3 +171,42 @@ commit message.
 - Pushed `recover/ace-win-1-autostash-equality-host-privacy` (preserved stash work; the stash on the box was never applied or dropped).
 
 No merge was performed. No issue was retitled. No force-push. Nothing on `main`.
+
+---
+
+## 9. The 9 runtime host-detection files — a migration, not a rename
+
+These compare `hostname` / `$env:COMPUTERNAME` / `os.uname().nodename` against a
+literal. **Blind removal is worse than the string:**
+
+- `publish-equality.sh` falls back to `PUBLIC_LABEL="$HOST"` — it would write the
+  real hostname into *published equality evidence*, i.e. turn a source-file leak
+  into a published one.
+- `collect-equality.{sh,ps1}` and `setup-scheduler-tasks.ps1` hard-fail, so those
+  boxes stop collecting and stop scheduling.
+- The two Python collectors have no identity-file path at all.
+
+The migration target **already exists**: `scripts/readiness/lib/machine-identity.sh`
+(#3571) — an off-repo, gitignored identity file, precedence *explicit > public map
+> identity file > fail*, written for exactly "hostnames that must never appear in
+this public repo". Confirmed this session: **the identity file is already
+provisioned on the licensed Windows host** and its `expected_hostname` matches.
+
+Remaining work is therefore bounded:
+1. Add the identity-file path to the two Python collectors and the arms lacking it.
+2. Provision the identity file on the second Windows box — **blocked: it is DOWN**.
+3. Then delete the literals in ONE change, coordinated with the tests that pin them.
+4. Then flip the deny-list to `block`.
+
+**A caution learned the hard way here:** `sync-agent-configs.sh` resolves a machine
+by matching the OS hostname against the registry's `hostname_aliases`, and the
+nightly cron invokes it with no explicit machine. Removing an alias without the
+identity-file path in place makes it guess a workspace, warn, and **exit 0** — and
+`harness-update.sh` pipes it through `grep -i hermes`, discarding the warning.
+Fixed in this branch by wiring `machine-identity.yaml` into that resolver. Any
+future alias removal must confirm the same for whatever else reads the field.
+
+**And a mistake worth not repeating:** I first solved this by inventing a *second*
+private-tier host map before discovering #3571 already existed. Two sources of
+truth for one fact, added while fixing a two-sources-of-truth epic. Search for an
+existing mechanism before building one.
