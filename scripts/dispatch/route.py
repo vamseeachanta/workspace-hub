@@ -271,6 +271,52 @@ def _family_matches(base: str, domain) -> bool:
     return domain == base or domain.startswith(base + "-")
 
 
+def _as_domains(domain) -> list[str]:
+    """Normalise a card's domain(s) to a list.
+
+    A kanban BOARD gave each card exactly one domain — the board it lived in. A
+    live GitHub issue carries however many `domain:` labels it has, and 74 open
+    issues legitimately carry more than one (`domain:` is declared multi-valued).
+
+    Taking "the first domain: label" would resolve routing by GitHub's API
+    ordering — the exact defect removed from status:, lane: and machine: today.
+    So every domain is considered and rules stay first-match-wins.
+    """
+    if domain is None:
+        return []
+    if isinstance(domain, str):
+        return [domain]
+    return [d for d in domain if d]
+
+
+def issue_to_card(issue: dict, repo: str) -> dict:
+    """Live GitHub issue -> the card shape propose() consumes.
+
+    Replaces the kanban board mirror as the routing input (workspace-hub#3736):
+    the mirror had no GitHub->board refresh path, so it drifted monotonically and
+    held labels that had been deleted.
+    """
+    labels = [l["name"] if isinstance(l, dict) else l for l in issue.get("labels") or []]
+    number = issue.get("number")
+    prio = 0
+    for lab in labels:
+        if lab.startswith("priority:"):
+            prio = {"high": 3, "medium": 2, "low": 1}.get(lab.split(":", 1)[1].lower(), 1)
+    return {
+        "idempotency_key": f"gh:{repo}#{number}",
+        "repo": repo,
+        # gh returns OPEN/CLOSED; `routable_states` is declared lowercase, and a
+        # case mismatch would filter out every card and report an empty backlog
+        # rather than an error.
+        "gh_state": str(issue.get("state") or "open").lower(),
+        "gh_labels": labels,
+        "domains": [l.split(":", 1)[1] for l in labels if l.startswith("domain:")],
+        "title": issue.get("title") or "",
+        "priority": prio,
+        "source_url": f"https://github.com/{repo}/issues/{number}",
+    }
+
+
 def match_rule(rules: list[dict], *, repo, domain, gh_labels) -> dict:
     """First-match-wins. Empty match {} is the catch-all.
 
@@ -282,9 +328,13 @@ def match_rule(rules: list[dict], *, repo, domain, gh_labels) -> dict:
         m = rule.get("match", {})
         if "repo" in m and m["repo"] != repo:
             continue
-        if "domain" in m and not _domain_matches(m["domain"], domain):
+        # ANY-OF over the card's domains. Order-independent by construction, so
+        # two issues with the same domains in different label order route
+        # identically; rule precedence stays first-match-wins.
+        doms = _as_domains(domain)
+        if "domain" in m and not any(_domain_matches(m["domain"], d) for d in doms):
             continue
-        if "domain_family" in m and not _family_matches(m["domain_family"], domain):
+        if "domain_family" in m and not any(_family_matches(m["domain_family"], d) for d in doms):
             continue
         if "gh_label" in m and m["gh_label"] not in labelset:
             continue
@@ -446,10 +496,22 @@ def propose(args) -> list[dict]:
     proposals = []
     _QUOTA_UNSET = object()
     quota_remaining = _QUOTA_UNSET
-    for board, card in iter_cards():
-        repo = board.get("repo")
-        if args.repo and repo != args.repo:
-            continue
+
+    # LIVE GITHUB, not the kanban board mirror (workspace-hub#3736, owner
+    # decision 2026-07-31 "retire the mirror as a routing input").
+    #
+    # `propose()` used to iterate .claude/memory/kanban/boards/*.yaml, so the
+    # routing ENGINE never read GitHub while every checker did. The mirror held
+    # 6 machine:/lane: labels deleted the same day, and there was no
+    # GitHub -> board refresh path to lapse: load.py runs boards -> Hermes and
+    # nothing runs the reverse, so the gap only grew.
+    repos = [args.repo] if getattr(args, "repo", None) else list(DEFAULT_COVERAGE_REPOS)
+    cards = []
+    for r in repos:
+        for issue in fetch_issues_for_coverage(r):
+            cards.append((r, issue_to_card(issue, r)))
+
+    for repo, card in cards:
         if card.get("gh_state") not in routable_states:
             continue
         labels = card.get("gh_labels") or []
@@ -468,14 +530,17 @@ def propose(args) -> list[dict]:
             })
             continue
 
-        domain = board.get("domain")  # card's domain = the board it lives in
+        # EVERY domain the issue carries, not the one board it happened to sit
+        # on. match_rule is any-of over these, so label order cannot change the
+        # answer.
+        domain = card.get("domains") or []
         rule = match_rule(rules, repo=repo, domain=domain, gh_labels=labels)
         assign = rule.get("assign", {})
 
         # human-set labels on the issue always override the rule
         existing_machine = axis_value(labels, "machine:", single_axes)
         machine = existing_machine or assign.get("machine") or defaults.get("machine")
-        machine = aliases.get(machine, machine)  # fold acma-ws014 -> licensed-win-2
+        machine = aliases.get(machine, machine)  # fold a hostname straggler -> its role
         provider, provider_explicit, provider_source = resolve_provider(
             labels, assign, defaults, single_axes=single_axes)
         quota_demoted = False
@@ -495,7 +560,13 @@ def propose(args) -> list[dict]:
             "key": card.get("idempotency_key"),
             "repo": repo,
             "number": card.get("idempotency_key", "").rsplit("#", 1)[-1],
-            "domain": domain,
+            # Display/serialisation form. `domain` is now a LIST internally (an
+            # issue can carry several), but consumers — print_detail, --json,
+            # dispatch.py's queue files — expect a scalar. Joining keeps every
+            # domain visible instead of silently dropping all but one, which is
+            # what picking `domain[0]` would have done.
+            "domain": ",".join(domain) if domain else None,
+            "domains": list(domain),
             "title": (card.get("title") or "")[:60],
             "machine": machine,
             "has_machine_label": bool(existing_machine),
@@ -546,18 +617,47 @@ def apply_wip(proposals: list[dict], cfg: dict) -> list[dict]:
     for p in proposals:
         m, prov = p["machine"], p["provider"]
         over = False
-        # provider must be auto-routable (gemini etc. are manual-only)
-        if providers.get(prov, {}).get("auto_routable", True) is False:
+        reason = None
+
+        # (1) UNKNOWN PROVIDER -> refuse. This used to read
+        #     `providers.get(prov, {}).get("auto_routable", True)`, so an
+        #     unrecognised value inherited True and sailed past every scarce cap
+        #     — fail-OPEN, one line below a docstring promising fail-CLOSED.
+        #     A typo (`ai:agi`) or a label left over from a retired provider must
+        #     not become a workhorse: nothing in the roster has vouched for its
+        #     quota or capacity. (deckhand#584 slice 4; found by Codex design
+        #     review before this slice was built on top of it.)
+        if prov not in providers:
             over = True
+            reason = f"unknown provider {prov!r} — not in the providers roster"
+        # (2) NOT AUTO-SELECTABLE != NOT USABLE. `auto_routable: false` exists to
+        #     say "defaults, rules and lanes may not pick this; a human may".
+        #     The old code queued such a provider unconditionally, so the manual
+        #     escape hatch its own config comment documented did not work.
+        #     An explicit `ai:` choice (provider_explicit) now passes; the budget
+        #     pool below still applies, so the override moves the SELECTION, not
+        #     the CAP.
+        elif providers.get(prov, {}).get("auto_routable", True) is False:
+            if not p.get("provider_explicit"):
+                over = True
+                reason = f"provider {prov!r} is manual-only (needs an explicit ai: label)"
         mcap = per_machine.get(m, m_default)         # default applies to home-win/macbook/multi/etc.
         if m_count[m] >= mcap:
             over = True
+            reason = reason or f"machine {m!r} at WIP cap {mcap}"
         if prov in prov_pool:
-            if pool_count[prov_pool[prov]] >= pool_cap.get(prov_pool[prov], 999):
+            pcap = pool_cap.get(prov_pool[prov], 999)
+            if pool_count[prov_pool[prov]] >= pcap:
                 over = True
+                reason = reason or f"budget pool {prov_pool[prov]!r} at cap {pcap}"
         elif p_count[prov] >= per_provider.get(prov, p_default):
             over = True
+            reason = reason or f"provider {prov!r} at WIP cap"
         p["slot"] = "queued" if over else "active-eligible"
+        # A queued card without a stated reason is indistinguishable from one
+        # nobody got to. Every refusal names itself.
+        if over:
+            p["wip_reason"] = reason
         if not over:
             m_count[m] += 1
             p_count[prov] += 1
