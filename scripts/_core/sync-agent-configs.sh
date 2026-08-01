@@ -945,9 +945,50 @@ if os.path.exists(registry_path):
             r_root = cfg.get("workspace_root")
             if h_root and r_root and str(h_root) != str(r_root):
                 raise SystemExit(f"registry/harness workspace_root divergence for {candidate}: {r_root} != {h_root}")
+    # PRIVATE-TIER alias map: real OS hostname -> role id.
+    #
+    # This repo is PUBLIC, so real machine hostnames were removed from
+    # registry.yaml's `hostname_aliases`. But that field was load-bearing: the
+    # `else` branch below resolves a machine by matching socket.gethostname()
+    # against it, and the nightly cron (scripts/cron/harness-update.sh) invokes
+    # this script with NO explicit --machine.
+    #
+    # Without a replacement the unknown-host branch fires: it guesses a
+    # workspace, prints a WARN, and exits 0 — and harness-update.sh pipes this
+    # script's output through `grep -i hermes`, which discards that warning.
+    # Silent degradation on a nightly path, indistinguishable from success.
+    #
+    # So the mapping moves to the private tier rather than disappearing. Same
+    # location family as the already-deployed per-host deckhand policy. Absent
+    # file = empty map, which is correct on any box whose OS hostname already
+    # equals its role id.
+    def private_aliases():
+        path = os.environ.get("WH_HOST_ALIASES") or os.path.expanduser(
+            "~/.deckhand/host-aliases.yml")
+        if not os.path.exists(path):
+            return {}
+        try:
+            with open(path) as fh:
+                data = yaml.safe_load(fh) or {}
+        except Exception as exc:                       # noqa: BLE001
+            # Never fail the sync over an unreadable private file, but never
+            # pass over it in silence either — a mapping that quietly stopped
+            # applying is how the fallback becomes invisible again.
+            print(f"[WARN] could not read host alias map {path}: {exc}",
+                  file=sys.stderr)
+            return {}
+        out = {}
+        for role, names in (data.get("host_aliases") or {}).items():
+            for n in (names or []):
+                out.setdefault(str(role), []).append(str(n).split(".")[0].lower())
+        return out
+
+    PRIVATE_ALIASES = private_aliases()
+
     def machine_aliases(candidate, cfg):
         aliases = [str(candidate), str(cfg.get("hostname") or "")]
         aliases += [str(a) for a in (cfg.get("hostname_aliases") or [])]
+        aliases += PRIVATE_ALIASES.get(str(candidate), [])
         return [alias.split(".")[0].lower() for alias in aliases if alias]
     if requested:
         requested_key = requested.split(".")[0].lower()
