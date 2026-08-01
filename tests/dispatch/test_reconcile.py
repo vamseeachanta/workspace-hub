@@ -667,3 +667,34 @@ def test_every_declared_kind_can_still_be_constructed():
     """The guard must not be so tight that the module cannot emit its own classes."""
     for kind, _ in RC.FINDING_KINDS:
         RC.Finding(kind, ISSUE, "detail")
+
+
+def test_the_report_never_claims_armed_when_the_gate_is_shut(tmp_path, monkeypatch, capsys):
+    """Asking for writes is not the same as being permitted them.
+
+    Found by LIVE smoke, not by this suite: `main` passed `armed=args.apply`, so
+    `--apply` without the env flag printed "WRITES ARMED (DISPATCH_APPLY_ENABLED
+    is set)" on the line before refusing because it was not set. The sentence was
+    true of the parameter it was handed and false about the system.
+
+    The existing armed/unarmed test called `format_report` DIRECTLY, so the
+    formatter was correct and the wiring was never exercised — which is exactly
+    why it survived.
+    """
+    monkeypatch.delenv(FLAG, raising=False)
+    labels = tmp_path / "labels.json"
+    labels.write_text(json.dumps({}))
+    with pytest.raises(SystemExit):
+        RC.main(["--records", str(tmp_path), "--labels-json", str(labels), "--apply"])
+    out = capsys.readouterr().out
+    assert "ARMED" not in out, "the report claimed writes were armed while the gate was shut"
+    assert "dry run" in out
+
+
+def test_the_report_says_armed_when_it_genuinely_is(tmp_path, monkeypatch, capsys):
+    """The inverse must still hold, or the fix is just a muted message."""
+    monkeypatch.setenv(FLAG, "1")
+    labels = tmp_path / "labels.json"
+    labels.write_text(json.dumps({}))
+    RC.main(["--records", str(tmp_path), "--labels-json", str(labels), "--apply"])
+    assert "ARMED" in capsys.readouterr().out

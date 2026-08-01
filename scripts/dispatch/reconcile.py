@@ -368,6 +368,21 @@ def reconcile(records_root, labels_by_issue=None, now=None) -> Report:
 # ---------------------------------------------------------------------------
 
 
+def writes_armed() -> bool:
+    """Whether the gate is ACTUALLY open — the environment, not the CLI flag.
+
+    Exists because the report used to be told `armed=args.apply`, so it printed
+    "WRITES ARMED (DISPATCH_APPLY_ENABLED is set)" one line before refusing
+    because the flag was not set. The sentence was true of the parameter it was
+    handed and false about the system, which is this epic's recurring defect:
+    a status line asserting a capability that is not in force.
+
+    One function, consulted by both the report and the gate, so the two cannot
+    disagree about what "armed" means.
+    """
+    return (os.environ.get(APPLY_FLAG) or "").strip().lower() in AFFIRMATIVE
+
+
 def assert_write_allowed() -> None:
     """Exit unless the operator explicitly armed writes for this invocation.
 
@@ -376,8 +391,7 @@ def assert_write_allowed() -> None:
     moment they run it. A config value would be committed and diffable, so a PR
     could arm a mass-write path without anyone registering that it had.
     """
-    value = (os.environ.get(APPLY_FLAG) or "").strip().lower()
-    if value not in AFFIRMATIVE:
+    if not writes_armed():
         sys.exit(
             f"REFUSED: reconcile writes are gated. Set {APPLY_FLAG}=1 to arm "
             f"this invocation.\n"
@@ -523,7 +537,11 @@ def main(argv=None) -> int:
     # The report is printed BEFORE the gate is consulted. Drift is a finding, and
     # a finding that only appears once someone has armed writes is a finding
     # nobody sees until it is already being corrected.
-    print(format_report(report, armed=args.apply))
+    #
+    # `args.apply AND the environment` — asking for writes is not the same as
+    # being permitted them, and the report must describe the system rather than
+    # the request.
+    print(format_report(report, armed=args.apply and writes_armed()))
     if args.apply:
         stats = apply(report, args.records)
         print(f"  {stats}")
