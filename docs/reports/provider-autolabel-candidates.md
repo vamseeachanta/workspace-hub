@@ -12,8 +12,8 @@ Threshold: 0.9
 | #3549 feat(ops): registry-driven Linux connection helpers with TDD | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3440 Harden generated HTML against JSON script-tag breakout | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3482 design(repo-health): safe worktree lifecycle with leases and recoverable quarantine | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1 | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #3525 [WRK] Investigate safe remote Claude job dispatch to ace-win-2 | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02 | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #3525 [WRK] Investigate safe remote Claude job dispatch to ACMA-WS014 | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3566 fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3568 epic(agent-ux): cross-machine input interaction parity | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3532 fix(memory): reserve cross-provider runtime budget for operational feedback | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |

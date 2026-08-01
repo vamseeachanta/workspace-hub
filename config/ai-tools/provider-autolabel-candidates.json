@@ -218,7 +218,7 @@
     },
     {
       "number": 3524,
-      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1",
+      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
       "labels": [
         "bug",
@@ -254,7 +254,7 @@
     },
     {
       "number": 3525,
-      "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
+      "title": "[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
       "labels": [
         "priority:medium",

@@ -135,7 +135,7 @@ hold these strings without publishing them. Per-box identity lives in
    - ✅ **Bare fragments closed too.** The full-token pass deliberately left the prefix-less spellings untouched; a second `\b`-anchored pass caught the remainder (1 issue body, 3 comments, 1 PR body). Anchoring matters — an unanchored fragment would hit longer identifiers that merely contain it.
    - ✅ **Two comments needed writing, not substituting** — the same class as PR #3279. One said *"preserve the OLD identifiers: &lt;list&gt;"*, where substitution relabels the NEW identifiers as old. The other said *"registry maps &lt;X&gt; to ace-win-2"*, which collapses to *"maps ace-win-2 to ace-win-2"*. Both rewritten by hand, with the script refusing to write unless the rewrite verifiably cleared the token.
    - **GitHub is now clean.** Search across issues and PRs returns 0 for all three machine identifiers. One PR still matches on the search index; its title, body and commit headlines are all verified clean, so it is either index lag from a same-minute edit or the PR's DIFF content — which only a history rewrite could reach (see §7.1).
-   - **Bare `acma` is OUT of scope, deliberately.** It matches ~100 issues, but as the ORGANISATION name — initiative titles, the deliberately-named `llm-wiki-acma` repo, a freeze snapshot. That is a different class from machine/network identifiers and is evidently not treated as secret. Do not sweep it without an explicit decision.
+   - **The bare client slug is OUT of scope here** — it matches ~100 issues, but as an organisation/repo name rather than a machine identifier. It IS in the private client map, so it is a real finding; it is simply a different, larger task. See §11.
    - **PR #3730's body was leaked by this session itself**, quoting an owner correction verbatim with the bare hostnames, while doing privacy work. Swept. Second occurrence of that exact mistake in one session — see §2.
    - Why this matters beyond tidiness: `config/ai-tools/provider-*.json` are snapshots of issue text that render into `docs/reports/provider-*`. Clean titles remove the main re-poisoning path; bodies may still feed some fields.
    - ✅ The one orphan `wip:` label naming a real host was deleted — 0 issues carried it, and `apply_wip` sets a state rather than a `wip:<host>` label, so nothing regenerates it. Its exact name is deliberately not written here; this document would otherwise reintroduce the string it records removing, which is the trap the docs lane found in an earlier PII-remediation note.
@@ -250,7 +250,7 @@ person does not repeat it.
 ### 10.3 What made the gate red, and the cheaper fix
 
 It scans **whole files that appear in the diff**, not just changed lines — it
-flagged board lines like `doris calculation workflow` that I never touched. My
+flagged board lines containing a client project name that I never touched. My
 sweep had dragged the kanban boards into the scan, and they carry unrelated
 client names throughout.
 
@@ -263,3 +263,48 @@ scan. Deleting them would be worse still: the cron would recreate them.
 **Rule:** do not hand-edit a mirror whose source you have already fixed. Let it
 regenerate. Editing it buys nothing and drags its entire contents into every
 check that scans changed files.
+
+---
+
+## 11. BLOCKER for the owner — client slugs, a different and larger class
+
+The Client-PII Gate is red on this PR, and it is **right**. It is not flagging
+machine hostnames — those are gone from every file in this diff. It flags a
+**client slug** that appears standalone in files my sweep happened to touch.
+
+Three facts that make this the owner's call, not an agent's:
+
+1. **It is pre-existing and repo-wide.** The gate scans whole files that appear
+   in a diff, not just changed lines. My sweep did not introduce a single one of
+   these; it merely pulled the files into scope. The same strings sit in ~100
+   issues and many untouched files today.
+2. **One of them is a repository you deliberately named.** Rewriting those
+   references breaks links; it does not improve privacy.
+3. **The correct tool needs a secret I do not have.**
+   `scripts/legal/redact-client-pii.py --map <private-map>` is the supported
+   path; the map is a CI secret. Guessing at redactions without it is exactly how
+   PR #3149 ("restore machine hostnames over-redacted by bare-ac…") happened, and
+   how this session produced 39 corruptions of its own (§10.1).
+
+`LEGAL_PII_ALLOW=1` would bypass the gate. **I have not used it and will not** —
+enabling a security-gate bypass is an owner action, not an agent one.
+
+**Diff already minimised.** Every self-healing mirror carrying these strings was
+reverted to `origin/main`: the provider JSON caches and their rendered reports,
+the auto-memory mirrors, the generated freshness dashboard, and the kanban
+boards. All regenerate from sources that are now clean, so reverting costs
+nothing and drops thousands of unrelated lines out of the scan.
+
+**What remains flagged** is a handful of authored historical session-handoffs
+where the hostname removal is genuine but the file also contains the client slug
+on unrelated lines.
+
+Owner options, in order of my preference:
+
+1. **Run the redactor with the private map** over the remaining flagged files —
+   correct, and it fixes a real pre-existing exposure.
+2. **Revert my hostname edits in those specific handoffs** — they are historical
+   records; the hostnames there are lower-value than the ones in live config and
+   code, all of which are already clean.
+3. **Bypass for this PR only**, then file the client-slug redaction as its own
+   issue. Fastest, and the exposure is unchanged from today's `main`.

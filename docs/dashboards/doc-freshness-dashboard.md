@@ -2322,7 +2322,7 @@
 | `docs/runbooks/windows-rdp-microphone.md` | 11 | 2026-07-14 | git |
 | `docs/session-handoffs/2026-07-14-ace-win-1-equivalence-scheduler-exit.md` | 11 | 2026-07-14 | git |
 | `docs/session-handoffs/2026-07-14-rdp-microphone-implementation-ready.md` | 11 | 2026-07-14 | git |
-| `docs/session-handoffs/2026-07-14-rdp-microphone-ace-win-2-ace-win-1-exit.md` | 11 | 2026-07-14 | git |
+| `docs/session-handoffs/2026-07-14-rdp-microphone-ws014-rds02-exit.md` | 11 | 2026-07-14 | git |
 | `docs/README.md` | 10 | 2026-07-15 | git |
 | `docs/ops/ace-linux-2-handoff-runbook.md` | 10 | 2026-07-15 | git |
 | `docs/ops/machine-inventory.md` | 10 | 2026-07-15 | git |
