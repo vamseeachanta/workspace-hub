@@ -10,13 +10,16 @@
 #   \Claude\MemoryBridgeSync           - daily repo-tracked memory refresh
 #   \Claude\HarnessUpdate              - daily AI CLI update (claude/codex/gemini) via native updater
 #   \Claude\EqualityReport             - rendered from config/scheduled-tasks/schedule-tasks.yaml
+#   \Claude\SessionCuration            - rendered from config/scheduled-tasks/schedule-tasks.yaml
+#   \Claude\EcosystemReconcile         - daily report-first reconcile (no unattended apply)
 
 [CmdletBinding()]
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingWriteHost', '', Justification='Operator-facing scheduler installer uses console output.')]
 param(
     [string]$WorkspaceRoot = "",
     [switch]$WhatIf,
-    [switch]$Remove
+    [switch]$Remove,
+    [switch]$EquivalenceOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -25,9 +28,30 @@ Set-StrictMode -Version Latest
 if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
     $WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 }
-$GitBash = "C:\Program Files\Git\bin\bash.exe"
 $TaskPath = "\Claude\"
 $RemoveMode = $Remove
+
+function Resolve-GitBash {
+    $candidates = New-Object System.Collections.Generic.List[string]
+    $gitCommand = (Get-Command git -ErrorAction SilentlyContinue).Source
+    if ($gitCommand) {
+        $gitRoot = Split-Path -Parent (Split-Path -Parent $gitCommand)
+        $candidates.Add((Join-Path $gitRoot 'bin\bash.exe'))
+        $candidates.Add((Join-Path $gitRoot 'usr\bin\bash.exe'))
+    }
+    $candidates.Add('C:\Program Files\Git\bin\bash.exe')
+    $candidates.Add('C:\Program Files\Git\usr\bin\bash.exe')
+    $candidates.Add('C:\Program Files (x86)\Git\bin\bash.exe')
+    $candidates.Add("$env:LOCALAPPDATA\Programs\Git\bin\bash.exe")
+    foreach ($candidate in ($candidates | Select-Object -Unique)) {
+        if (-not $candidate -or -not (Test-Path $candidate)) { continue }
+        $uname = (& $candidate -c 'uname -s' 2>$null)
+        if ($uname -match '^(MINGW|MSYS|CYGWIN)') { return $candidate }
+    }
+    return $null
+}
+
+$GitBash = Resolve-GitBash
 
 function Test-Admin {
     $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -45,6 +69,8 @@ function Get-DefaultTaskSetting {
 }
 
 function Get-CurrentMachineLabel {
+    $configured = if ($env:RECONCILE_MACHINE) { $env:RECONCILE_MACHINE.ToLowerInvariant() } else { "" }
+    if ($configured -match '^ace-win-[12]$') { return $configured }
     $hostName = if ($env:COMPUTERNAME) { $env:COMPUTERNAME.ToLowerInvariant() } else { "" }
     switch -Wildcard ($hostName) {
         "ace-win-1" { return "ace-win-1" }
@@ -138,6 +164,21 @@ function Get-EqualityReportTask {
     }
 }
 
+function Get-ConfiguredTask {
+    param([Parameter(Mandatory=$true)][string]$TaskId)
+    $block = Get-ScheduleTaskBlock -TaskId $TaskId
+    $label = Get-YamlScalar -Block $block -Name "label"
+    $description = Get-YamlScalar -Block $block -Name "description"
+    if ($description -match "^[>|]") { $description = $label }
+    [pscustomobject]@{
+        Id = $TaskId
+        Label = $label
+        Schedule = Get-YamlScalar -Block $block -Name "schedule"
+        Machines = Get-YamlInlineList -Block $block -Name "machines"
+        Description = $description
+    }
+}
+
 function Convert-CronSchedule {
     param(
         [Parameter(Mandatory=$true)][string]$Schedule
@@ -152,13 +193,28 @@ function Convert-CronSchedule {
     if ($dayOfMonth -ne "*" -or $month -ne "*") {
         throw "Only weekly/daily cron schedules are supported for EqualityReport: '$Schedule'"
     }
-    if (-not ($minute -match "^\d+$") -or -not ($hour -match "^\d+$")) {
+    if (-not ($minute -match "^\d+$") -or -not ($hour -match "^(\d+|\*/\d+)$")) {
         throw "Cron minute/hour must be numeric for EqualityReport: '$Schedule'"
     }
 
     $minuteInt = [int]$minute
+    if ($minuteInt -lt 0 -or $minuteInt -gt 59) {
+        throw "Cron minute/hour out of range for EqualityReport: '$Schedule'"
+    }
+
+    if ($hour -match '^\*/(\d+)$') {
+        $intervalHours = [int]$Matches[1]
+        if ($intervalHours -lt 1 -or $intervalHours -gt 23 -or $dayOfWeek -ne '*') {
+            throw "Unsupported interval cron schedule: '$Schedule'"
+        }
+        return [pscustomobject]@{
+            Kind = "Interval"; Time = (New-TimeSpan -Minutes $minuteInt)
+            DaysOfWeek = @(); IntervalHours = $intervalHours
+        }
+    }
+
     $hourInt = [int]$hour
-    if ($minuteInt -lt 0 -or $minuteInt -gt 59 -or $hourInt -lt 0 -or $hourInt -gt 23) {
+    if ($hourInt -lt 0 -or $hourInt -gt 23) {
         throw "Cron minute/hour out of range for EqualityReport: '$Schedule'"
     }
 
@@ -187,6 +243,9 @@ function Format-TriggerSpec {
     if ($Spec.Kind -eq "Weekly") {
         return "weekly {0} {1}" -f ($Spec.DaysOfWeek -join ","), (Format-TimeOfDay -Time $Spec.Time)
     }
+    if ($Spec.Kind -eq "Interval") {
+        return "every {0}h at minute {1:D2}" -f $Spec.IntervalHours, $Spec.Time.Minutes
+    }
     return "daily {0}" -f (Format-TimeOfDay -Time $Spec.Time)
 }
 
@@ -195,6 +254,14 @@ function ConvertTo-TaskTrigger {
     $at = Format-TimeOfDay -Time $Spec.Time
     if ($Spec.Kind -eq "Weekly") {
         return New-ScheduledTaskTrigger -Weekly -DaysOfWeek $Spec.DaysOfWeek -At $at
+    }
+    if ($Spec.Kind -eq "Interval") {
+        $now = Get-Date
+        $start = Get-Date -Hour 0 -Minute $Spec.Time.Minutes -Second 0
+        while ($start -le $now) { $start = $start.AddHours($Spec.IntervalHours) }
+        return New-ScheduledTaskTrigger -Once -At $start `
+            -RepetitionInterval (New-TimeSpan -Hours $Spec.IntervalHours) `
+            -RepetitionDuration (New-TimeSpan -Days 3650)
     }
     return New-ScheduledTaskTrigger -Daily -At $at
 }
@@ -285,7 +352,7 @@ if (-not $WhatIf -and -not (Test-Admin)) {
     exit 1
 }
 
-if (-not (Test-Path $GitBash)) {
+if (-not $GitBash -or -not (Test-Path $GitBash)) {
     if ($WhatIf) {
         Write-Warning "Git Bash not found at '$GitBash'. Git-Bash-backed tasks would fail until it is installed or `$GitBash is updated."
     } else {
@@ -301,45 +368,45 @@ Write-Host " Workspace: $WorkspaceRoot"
 Write-Host "=============================================="
 Write-Host ""
 
-Register-ClaudeTask `
-    -Name "ContextManagementDaily" `
-    -Description "Daily context file health check and improvement suggestions" `
-    -ScriptPath "scripts/coordination/context/daily_context_check.bat" `
-    -DailyAt "06:00AM"
+if (-not $EquivalenceOnly) {
+    Register-ClaudeTask `
+        -Name "ContextManagementDaily" `
+        -Description "Daily context file health check and improvement suggestions" `
+        -ScriptPath "scripts/coordination/context/daily_context_check.bat" `
+        -DailyAt "06:00AM"
 
-Register-ClaudeTask `
-    -Name "WorkstationVersionCheck" `
-    -Description "Daily ANSYS and OrcaFlex version check; appends Readiness section to daily log" `
-    -ScriptPath "scripts/readiness/workstation-version-check.sh" `
-    -DailyAt "07:00AM"
+    Register-ClaudeTask `
+        -Name "WorkstationVersionCheck" `
+        -Description "Daily ANSYS and OrcaFlex version check; appends Readiness section to daily log" `
+        -ScriptPath "scripts/readiness/workstation-version-check.sh" `
+        -DailyAt "07:00AM"
 
-Register-ClaudeTask `
-    -Name "NightlyReadiness" `
-    -Description "11-check ecosystem health; updates shared readiness proof" `
-    -ScriptPath "scripts/readiness/nightly-readiness.sh" `
-    -DailyAt "11:00PM"
+    Register-ClaudeTask `
+        -Name "NightlyReadiness" `
+        -Description "11-check ecosystem health; updates shared readiness proof" `
+        -ScriptPath "scripts/readiness/nightly-readiness.sh" `
+        -DailyAt "11:00PM"
 
-Register-ClaudeTask `
-    -Name "RepoSync" `
-    -Description "Nightly workspace-hub git pull and submodule sync" `
-    -ScriptPath "scripts/windows/repo-sync-daily.sh" `
-    -DailyAt "11:30PM"
+    Register-ClaudeTask `
+        -Name "RepoSync" `
+        -Description "Nightly workspace-hub git pull and submodule sync" `
+        -ScriptPath "scripts/windows/repo-sync-daily.sh" `
+        -DailyAt "11:30PM"
 
-Register-ClaudeTask `
-    -Name "MemoryBridgeSync" `
-    -Description "Refresh repo-tracked memory outputs; commits and pushes (#1918)" `
-    -ScriptPath "scripts/memory/bridge-hermes-claude.sh" `
-    -TaskArguments "--commit" `
-    -DailyAt "04:30AM"
+    Register-ClaudeTask `
+        -Name "MemoryBridgeSync" `
+        -Description "Refresh repo-tracked memory outputs; commits and pushes (#1918)" `
+        -ScriptPath "scripts/memory/bridge-hermes-claude.sh" `
+        -TaskArguments "--commit" `
+        -DailyAt "04:30AM"
 
-# HarnessUpdate — native AI CLI updater (claude/codex/gemini; hermes skipped on Windows).
-# Canonical entry: config/scheduled-tasks/schedule-tasks.yaml id:harness-update
-# (ace-win-1/2 slot 02:15 per its schedule_by_machine). Per #2920 decision A.
-Register-ClaudeTask `
-    -Name "HarnessUpdate" `
-    -Description "Daily AI harness update via native updaters (claude/codex/gemini). #2920" `
-    -ScriptPath "scripts/maintenance/update-harness-tools.sh" `
-    -DailyAt "02:15AM"
+    # HarnessUpdate — native AI CLI updater (claude/codex/gemini; hermes skipped on Windows).
+    Register-ClaudeTask `
+        -Name "HarnessUpdate" `
+        -Description "Daily AI harness update via native updaters (claude/codex/gemini). #2920" `
+        -ScriptPath "scripts/maintenance/update-harness-tools.sh" `
+        -DailyAt "02:15AM"
+}
 
 $equalityTask = Get-EqualityReportTask
 $currentMachine = Get-CurrentMachineLabel
@@ -348,10 +415,33 @@ if ($equalityTask.Machines -contains $currentMachine) {
         -Name "EqualityReport" `
         -Description $equalityTask.Description `
         -ScriptPath "scripts/windows/equality-report.ps1" `
+        -TaskArguments "-Machine $currentMachine" `
         -CronSchedule $equalityTask.Schedule `
         -PowerShell
 } else {
     Write-Host "  Skip EqualityReport: $currentMachine is not listed in schedule-tasks.yaml"
+}
+
+$curationTask = Get-ConfiguredTask -TaskId "session-curation"
+if ($curationTask.Machines -contains $currentMachine) {
+    Register-ClaudeTask `
+        -Name "SessionCuration" `
+        -Description $curationTask.Description `
+        -ScriptPath "scripts/curation/curate-session-memory.ps1" `
+        -TaskArguments "-Machine $currentMachine" `
+        -CronSchedule $curationTask.Schedule `
+        -PowerShell
+}
+
+$reconcileTask = Get-ConfiguredTask -TaskId "ecosystem-reconcile"
+if ($reconcileTask.Machines -contains $currentMachine) {
+    Register-ClaudeTask `
+        -Name "EcosystemReconcile" `
+        -Description $reconcileTask.Description `
+        -ScriptPath "scripts/windows/reconcile-ecosystem.ps1" `
+        -TaskArguments "-Machine $currentMachine" `
+        -CronSchedule $reconcileTask.Schedule `
+        -PowerShell
 }
 
 Write-Host ""

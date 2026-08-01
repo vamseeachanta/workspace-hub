@@ -17,6 +17,7 @@
 [CmdletBinding()]
 param(
     [string]$WorkspaceRoot = "",
+    [string]$Machine = "",
     [switch]$RefreshMatrix
 )
 
@@ -311,18 +312,26 @@ function Sync-EqualityState {
 $transcriptStarted = $false
 Set-Location $WorkspaceRoot
 try {
-    $machine = Get-EqualityMachineLabel
+    $machine = if ([string]::IsNullOrWhiteSpace($Machine)) {
+        Get-EqualityMachineLabel
+    } else {
+        $Machine
+    }
     $transcriptStarted = Invoke-EqualityTranscript -Machine $machine
 
     Test-CommandAvailable -Name "git"
     Test-CommandAvailable -Name "bash"
-    Test-CommandAvailable -Name "python"
+    if (-not (Get-Command "uv" -ErrorAction SilentlyContinue)) {
+        Test-CommandAvailable -Name "python"
+    }
 
     $branch = Get-CurrentBranch
     $matrixReports = Get-MatrixReportPaths
     Confirm-FreshCheckout -Branch $branch -Machine $machine
     Confirm-MatrixReportClean -ReportPaths $matrixReports
-    Confirm-PythonYaml
+    if (-not (Get-Command "uv" -ErrorAction SilentlyContinue)) {
+        Confirm-PythonYaml
+    }
 
     $collector = Join-Path $WorkspaceRoot "scripts\readiness\collect-equality.ps1"
     $builder = Join-Path $WorkspaceRoot "scripts\readiness\build-equality-matrix.py"
@@ -333,8 +342,13 @@ try {
     # PS 5.1 defaults python file reads to cp1252; force UTF-8 so the matrix
     # build doesn't crash on non-ASCII state-yaml content (#2998).
     $env:PYTHONUTF8 = '1'
-    Invoke-Checked -File "python" -Arguments @($builder) `
-        -FailureMessage "build-equality-matrix.py failed"
+    if (Get-Command "uv" -ErrorAction SilentlyContinue) {
+        Invoke-Checked -File "uv" -Arguments @("run", "--no-project", "--with", "pyyaml", "python", $builder) `
+            -FailureMessage "build-equality-matrix.py failed"
+    } else {
+        Invoke-Checked -File "python" -Arguments @($builder) `
+            -FailureMessage "build-equality-matrix.py failed"
+    }
     if (-not $RefreshMatrix) {
         # Default: the published matrix is owned by the Linux cron / Pages build,
         # so discard the locally regenerated reports and commit only the state yaml.

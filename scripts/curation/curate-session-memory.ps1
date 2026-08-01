@@ -27,7 +27,7 @@
   parity is pinned by the .sh wrapper + the collector contract tests.
 #>
 [CmdletBinding()]
-param()
+param([string]$Machine = "")
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -39,6 +39,14 @@ if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($RepoRoot)) {
     $RepoRoot = (Resolve-Path (Join-Path $ScriptDir '..\..')).Path
 }
 Set-Location $RepoRoot
+
+# Windows PowerShell 5.1 otherwise gives Python a cp1252 stdout stream; the
+# curation engine emits Unicode status text after writing its state.
+$env:PYTHONUTF8 = '1'
+
+if (-not [string]::IsNullOrWhiteSpace($Machine)) {
+    $env:EQ_MACHINE = $Machine
+}
 
 # ── best-effort Git Bash resolver (for notify.sh only; never fatal) ──────────
 function Resolve-GitBash {
@@ -134,14 +142,24 @@ if (Get-Command uv -ErrorAction SilentlyContinue) {
 $bashForSkills = Resolve-GitBash
 if ($null -ne $bashForSkills) {
     $resync = (Join-Path $RepoRoot 'scripts/skills/resync-skill-links.sh') -replace '\\', '/'
-    try { & $bashForSkills $resync 2>$null | Out-Null } catch { Write-Warning 'skill-link-health audit failed (soft)' }
+    try {
+        if ([string]::IsNullOrWhiteSpace($Machine)) {
+            & $bashForSkills $resync 2>$null | Out-Null
+        } else {
+            & $bashForSkills $resync --machine $Machine 2>$null | Out-Null
+        }
+    } catch { Write-Warning 'skill-link-health audit failed (soft)' }
 } else {
     Write-Warning 'skill-link-health audit skipped — Git Bash not found'
 }
 
 # ── 2. refresh THIS box's equality column (Windows collector + matrix build) ──
 $collector = (Join-Path $ScriptDir '..\readiness\collect-equality.ps1')
-& $collector
+if ([string]::IsNullOrWhiteSpace($Machine)) {
+    & $collector
+} else {
+    & $collector -Machine $Machine
+}
 if ($LASTEXITCODE -ne 0) { Fail 'collect-equality.ps1 failed' }
 
 $matrix = (Join-Path $RepoRoot 'scripts/readiness/build-equality-matrix.py')
