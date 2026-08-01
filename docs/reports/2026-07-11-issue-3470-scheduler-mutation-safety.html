@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" data-input-digest="d914d1dc7f35f33b64b9aee9b22c0e57779cfdcfd231f249c5e68ddef871bb51"><head><meta charset="utf-8">
+<html lang="en" data-input-digest="fcb93273a2033ec61c8e882db22c1bf694ed591bcf5dcc2878f80d7a66c1cbef"><head><meta charset="utf-8">
 <title>Scheduler Mutation Safety Audit</title>
 <style>body{font:16px system-ui;max-width:1200px;margin:2rem auto;padding:0 1rem}table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbb;padding:.5rem;text-align:left}code{font-size:.9em}.warning{border-left:4px solid #b45309;padding:1rem;background:#fff7ed}</style></head>
 <body><h1>Scheduler Mutation Safety Audit</h1>
-<p><strong>Input digest:</strong> <code>d914d1dc7f35f33b64b9aee9b22c0e57779cfdcfd231f249c5e68ddef871bb51</code></p>
+<p><strong>Input digest:</strong> <code>fcb93273a2033ec61c8e882db22c1bf694ed591bcf5dcc2878f80d7a66c1cbef</code></p>
 <p class="warning">Registry inclusion does not authorize live scheduler mutation.</p>
 <table><thead><tr><th>Surface</th><th>Kind</th><th>Derived status</th><th>Operations</th><th>Disposition</th></tr></thead><tbody>
 <tr data-surface="scripts/coordination/context/setup_cron.sh"><td><code>scripts/coordination/context/setup_cron.sh</code></td><td>direct-owner</td><td>migration-required</td><td><section class="operation" data-operation="scripts/coordination/context/setup_cron.sh::marker-filtered-crontab-replace" data-target-kind="current-user-cron" data-scheduler-identity="local-current-user-crontab" data-execution-host-binding="physical-local"><strong>marker-filtered-crontab-replace</strong><br>Target: current-user-cron; identity: local-current-user-crontab; binding: physical-local<br>Authority:<ul><li data-authority="scripts/coordination/context/setup_cron.sh::marker-filtered-crontab-replace::marker-filter" data-mechanism="command-substring" data-strength="substring">marker-filter:command-substring/substring</li></ul>Transaction gaps: <span class="transaction-gaps" data-transaction-for="scripts/coordination/context/setup_cron.sh::marker-filtered-crontab-replace">lock=false, baseline_snapshot=false, backup=false, pre_write_cas=false, post_write_preservation_verify=false, post_write_exact_state_verify=false, rollback_cas=false</span></section></td><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3476">#3476</a></td></tr>

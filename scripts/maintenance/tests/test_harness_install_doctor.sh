@@ -240,6 +240,60 @@ assert_contains "$OUT5B" "healthy" "second run reports healthy"
 assert_contains "$OUT5B" "soul-runtime-symlinks" "second run still checks soul-runtime symlinks"
 echo ""
 
+# ── Test 6: a no-op installer run must NOT be reported OK (#3752) ─────────────
+# Regression guard. install-soul-runtime.sh returns 0 for every SKIP (missing source
+# artifact, absent provider dir, wrong repo root) and only `failed` reaches its exit
+# gate — so before #3752 the doctor recorded OK on exit status alone and a run that
+# linked NOTHING was indistinguishable from a healthy box.
+#
+# Simulate by pointing the doctor at a stub installer that exits 0 while reporting a
+# fully no-op summary. Asserting on the doctor's own parsing keeps this independent of
+# how the real installer happens to behave on the test host.
+echo "Test 6: installer exits 0 but linked nothing => NEEDS-ATTENTION, not OK"
+HOME6="$(make_sandbox_home)"
+FAKE_REPO="$TEST_DIR/fake-repo-$$"
+mkdir -p "$FAKE_REPO/scripts/agents" "$FAKE_REPO/scripts/maintenance"
+cp "$DOCTOR" "$FAKE_REPO/scripts/maintenance/harness-install-doctor.sh"
+cat > "$FAKE_REPO/scripts/agents/install-soul-runtime.sh" <<'STUB'
+#!/usr/bin/env bash
+echo "SKIP   ~/.hermes/SOUL.md — source missing"
+echo ""
+echo "Summary: 0 created, 0 unchanged, 0 backed-up, 4 skipped, 0 needs-attention."
+exit 0
+STUB
+chmod +x "$FAKE_REPO/scripts/agents/install-soul-runtime.sh"
+
+OUT6="$( HOME="$HOME6" bash "$FAKE_REPO/scripts/maintenance/harness-install-doctor.sh" 2>&1 )"
+RC6=$?
+OUT6_PLAIN="$(printf '%s' "$OUT6" | strip_ansi)"
+
+if echo "$OUT6_PLAIN" | grep -E 'NEEDS-ATTENTION[[:space:]]+soul-runtime-symlinks' >/dev/null; then
+    pass "no-op installer run reported NEEDS-ATTENTION"
+else
+    fail "no-op installer run reported NEEDS-ATTENTION" "got:
+$(echo "$OUT6_PLAIN" | grep -i soul-runtime)"
+fi
+assert_not_contains "$OUT6_PLAIN" "OK               soul-runtime-symlinks" \
+    "no-op run is NOT reported OK"
+assert_eq "1" "$RC6" "doctor exits non-zero on a no-op repair"
+
+# Non-vacuity: the SAME harness with a stub that DID link must still report OK,
+# proving the assertion above discriminates rather than always failing.
+cat > "$FAKE_REPO/scripts/agents/install-soul-runtime.sh" <<'STUB'
+#!/usr/bin/env bash
+echo "Summary: 2 created, 1 unchanged, 0 backed-up, 0 skipped, 0 needs-attention."
+exit 0
+STUB
+OUT6B="$( HOME="$(make_sandbox_home)" bash "$FAKE_REPO/scripts/maintenance/harness-install-doctor.sh" 2>&1 )"
+OUT6B_PLAIN="$(printf '%s' "$OUT6B" | strip_ansi)"
+if echo "$OUT6B_PLAIN" | grep -E 'OK[[:space:]]+soul-runtime-symlinks' >/dev/null; then
+    pass "non-vacuous: a run that DID link is still reported OK"
+else
+    fail "non-vacuous: a run that DID link is still reported OK" "got:
+$(echo "$OUT6B_PLAIN" | grep -i soul-runtime)"
+fi
+echo ""
+
 # ── Results ───────────────────────────────────────────────────────────────────
 echo "============================================"
 echo "Results: $TESTS_PASSED/$TESTS_RUN passed, $TESTS_FAILED failed"
