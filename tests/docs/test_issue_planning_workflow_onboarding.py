@@ -11,7 +11,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 AGENTS_PATH = REPO_ROOT / "AGENTS.md"
-CLAUDE_PATH = REPO_ROOT / "CLAUDE.md"
 PLANS_README = REPO_ROOT / "docs" / "plans" / "README.md"
 PLAN_TEMPLATE = REPO_ROOT / "docs" / "plans" / "_template-issue-plan.md"
 PLANNING_SKILL = REPO_ROOT / ".claude" / "skills" / "coordination" / "issue-planning-mode" / "SKILL.md"
@@ -50,19 +49,8 @@ def test_agents_planning_applies_to_all_issues():
 
 
 # ── CLAUDE.md tests ────────────────────────────────────────────────────────────
-
-def test_claude_md_references_planning_workflow():
-    text = CLAUDE_PATH.read_text()
-    assert "issue-planning-mode" in text or "planning workflow" in text.lower(), (
-        "CLAUDE.md must reference the planning workflow or issue-planning-mode skill"
-    )
-
-
-def test_claude_md_mentions_plan_review_label():
-    text = CLAUDE_PATH.read_text()
-    assert "status:plan-review" in text, (
-        "CLAUDE.md must name status:plan-review so Claude agents know to apply it"
-    )
+# Retired 2026-08-01 along with the CLAUDE.md harness surface. AGENTS.md is the
+# sole canonical contract and its equivalents are asserted above.
 
 
 # ── Skill and template presence ────────────────────────────────────────────────
