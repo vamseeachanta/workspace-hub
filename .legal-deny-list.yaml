@@ -93,44 +93,32 @@ proprietary_tools: []
 # ---------------------------------------------------------------------------
 # Client-specific infrastructure / user identifiers
 # ---------------------------------------------------------------------------
-# Populated 2026-08-01. This section sat EMPTY since v2.0, which is exactly why
-# 133 tracked files in this public repo accumulated real machine hostnames while
-# every PR reported the PII gate green. The gate was not wrong — it had simply
-# never been told that machine and network identifiers are a protected class.
+# INTENTIONALLY EMPTY. Do not populate this with machine hostnames or client
+# identifiers.
 #
-# An empty rule list and a satisfied rule list produce the same green tick. That
-# is the failure mode this whole class of check keeps hitting: absence of a
-# finding reads as absence of a problem.
+# 2026-08-01: I added three real hostnames here as detection patterns, reasoning
+# that the section being empty was why a leak went unnoticed. That was wrong on
+# both counts, and the Client-PII Gate caught it by flagging the lines I had just
+# written.
 #
-# Routing must use the canonical ROLE aliases (ace-win-1, ace-win-2, dev-primary,
-# …) — see deckhand#581. Real hostnames belong only in the private tier, where
-# the per-host deckhand policy `host_aliases` block maps them.
-# SEVERITY IS `warn`, NOT `block`, AND THAT IS DELIBERATE AND TEMPORARY.
-# The sweep that removes these strings is INCOMPLETE — docs/ is clean, but
-# scripts/, tests/, config/, .claude/, .planning/, queue/, state/ and data/ still
-# carry them. Arming `block` now would fail the scan on every subsequent commit,
-# including the commits that finish the cleanup.
+# `scripts/legal/check-client-pii.py` is the authoritative guard, and its design
+# note says why: client identifiers live ONLY in a private map, the script
+# "contains no client names, and it NEVER prints a matched client string — only
+# the file and line number — because CI logs on a public repo would themselves
+# leak." It exists precisely as "the recurrence backstop the incomplete
+# .legal-deny-list.yaml failed to provide".
 #
-# This mirrors the same discipline used for the dispatch labels in #3740: do not
-# arm the enforcement until the thing it enforces is actually true, or the first
-# thing anyone does is route around it.
+# So a pattern written here is (a) redundant, the private map already has it, and
+# (b) itself a leak, because this file is public. A deny-list that must name the
+# secret to detect it cannot live in the open.
 #
-# FLIP TO `block` (delete these three severity lines; default_severity is block)
-# once `git grep -ilE "acma-ansys05|acma-ws014|acma-hou-rds02"` returns nothing.
-# Until then a warn is honest: it reports the leak without pretending it is fixed.
-client_infrastructure:
-  - pattern: "acma-ansys05"
-    case_sensitive: false
-    severity: warn
-    description: "Real machine hostname — use the role alias ace-win-1"
-  - pattern: "acma-ws014"
-    case_sensitive: false
-    severity: warn
-    description: "Real machine hostname — use the role alias ace-win-2"
-  - pattern: "acma-hou-rds02"
-    case_sensitive: false
-    severity: warn
-    description: "Real machine hostname — use the role alias ace-win-1"
+# Machine identifiers belong to that private map. Routing uses the canonical role
+# aliases (deckhand#581); the real-hostname mapping lives per-box in
+# ~/.config/workspace-hub/machine-identity.yaml (#3571), off-repo and gitignored.
+client_infrastructure: []
+  # - pattern: "client-vpc-123"
+  #   case_sensitive: false
+  #   description: "Example client infra"
 
 # ---------------------------------------------------------------------------
 # Files/paths excluded from scanning (glob patterns)

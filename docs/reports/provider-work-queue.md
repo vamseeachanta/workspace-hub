@@ -18,8 +18,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3549 feat(ops): registry-driven Linux connection helpers with TDD | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:tooling, domain:workstations, domain:security, status:plan-approved |
 | #3440 Harden generated HTML against JSON script-tag breakout | yes | strategy/workflow/architecture language | bug, priority:medium, cat:harness, domain:security, domain:workflow, status:plan-approved |
 | #3482 design(repo-health): safe worktree lifecycle with leases and recoverable quarantine | yes | strategy/workflow/architecture language | priority:medium, cat:tooling, domain:testing, status:plan-approved, gate:completeness, lane:codex |
-| #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ACMA-ace-win-2 to ACMA-HOU-ace-win-1 | yes | strategy/workflow/architecture language | bug, priority:medium, cat:operations, domain:workstations, machine:multi, status:plan-approved |
-| #3525 [WRK] Investigate safe remote Claude job dispatch to ACMA-ace-win-2 | yes | strategy/workflow/architecture language | priority:medium, cat:harness, domain:workstations, wrk-item, status:plan-approved, gate:completeness |
+| #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1 | yes | strategy/workflow/architecture language | bug, priority:medium, cat:operations, domain:workstations, machine:multi, status:plan-approved |
+| #3525 [WRK] Investigate safe remote Claude job dispatch to ace-win-2 | yes | strategy/workflow/architecture language | priority:medium, cat:harness, domain:workstations, wrk-item, status:plan-approved, gate:completeness |
 | #3566 fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI | yes | strategy/workflow/architecture language | bug, priority:medium, cat:harness, machine:multi, status:plan-approved, type:follow-up |
 | #3568 epic(agent-ux): cross-machine input interaction parity | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, domain:workstations, machine:multi, status:plan-approved |
 

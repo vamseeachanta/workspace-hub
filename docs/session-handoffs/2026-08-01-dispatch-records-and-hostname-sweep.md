@@ -87,7 +87,7 @@ is a decision rather than an oversight:
 
 | what | why it keeps the string |
 |---|---|
-| `.legal-deny-list.yaml` | holds them AS detection patterns — sanitizing the guard disarms it |
+| `.legal-deny-list.yaml` | ~~detection patterns~~ — REVERTED to empty, see §10.2 |
 | `config/workstations/registry.yaml` | one alias for the box that is currently DOWN (below) |
 | 9 × runtime host detection | comparing the REAL OS hostname to a literal — see §9 |
 
@@ -112,18 +112,11 @@ the lanes and worth knowing next time:
    (e.g. X)" becomes a falsehood, because the alias is precisely not the real
    computer name.
 
-**The mapping is NOT restated here, on purpose.** It lives in
-`.legal-deny-list.yaml` under `client_infrastructure`: each entry carries the real
-hostname as its `pattern` and the correct role alias in its `description`. That file
-is self-excluded from the scan (`exclusions[0]`), so it is the one place the pair can
-be recorded without the record itself being the leak. Two of the three map to
-`ace-win-1` and one to `ace-win-2`; read the descriptions for which.
-
-Those entries are at **severity `warn`, deliberately** — arming `block` before the
-sweep completes would fail the scan on the very commits that finish it. Flip to
-`block` when a repo-wide grep for the three patterns returns nothing; build the grep
-from the deny-list patterns rather than typing the hostnames into a script or a
-commit message.
+**The mapping is not restated here, and it is NOT in `.legal-deny-list.yaml`
+either** — see §10.2. It lives in the private client map that
+`scripts/legal/check-client-pii.py` reads, which is the only mechanism designed to
+hold these strings without publishing them. Per-box identity lives in
+`~/.config/workspace-hub/machine-identity.yaml` (#3571), off-repo and gitignored.
 
 ---
 
@@ -146,7 +139,7 @@ commit message.
    - **PR #3730's body was leaked by this session itself**, quoting an owner correction verbatim with the bare hostnames, while doing privacy work. Swept. Second occurrence of that exact mistake in one session — see §2.
    - Why this matters beyond tidiness: `config/ai-tools/provider-*.json` are snapshots of issue text that render into `docs/reports/provider-*`. Clean titles remove the main re-poisoning path; bodies may still feed some fields.
    - ✅ The one orphan `wip:` label naming a real host was deleted — 0 issues carried it, and `apply_wip` sets a state rather than a `wip:<host>` label, so nothing regenerates it. Its exact name is deliberately not written here; this document would otherwise reintroduce the string it records removing, which is the trap the docs lane found in an earlier PII-remediation note.
-3. **Bare fragments remain** — `ace-win-2`, `ace-win-1`, `ace-win-1` without the `acma-` prefix, ~75 occurrences. Same hostnames, outside the mapping used. Needs a scope decision.
+3. ✅ **Bare fragments swept.** Note what this line said before the sweep ran over it: it *named the three fragments*, and the sweep dutifully replaced them, leaving a sentence claiming three role aliases lack a prefix they never had. A document describing a substitution is itself a substitution target — see §10 for the sharper version of this.
 4. **Mirrors will regress**: `.claude/memory/topics/` mirrors auto-memory living OUTSIDE the repo; `data/document-index/shards/` is generated. Cleaning the copy does not clean the source.
 5. **Rename** `docs/session-handoffs/2026-07-14-rdp-microphone-ace-win-2-ace-win-1-exit.md` (hostnames in the filename). Referenced in 5 places, left intact so links do not break before the rename.
 6. **65 failures in `tests/readiness/`** — none reference anything changed here, but no baseline was established. Triage.
@@ -210,3 +203,63 @@ future alias removal must confirm the same for whatever else reads the field.
 private-tier host map before discovering #3571 already existed. Two sources of
 truth for one fact, added while fixing a two-sources-of-truth epic. Search for an
 existing mechanism before building one.
+
+---
+
+## 10. Two mistakes the Client-PII Gate caught, both mine
+
+### 10.1 Bare-fragment matching corrupted 39 sites
+
+`-` is a word boundary. So a `\b`-anchored bare fragment matched the **suffix** of
+`<CLIENT>-<FRAGMENT>` and left the client prefix stranded, yielding
+`<CLIENT>-ace-win-2`. The full-token pass then found nothing, because the token it
+was looking for had already been destroyed.
+
+(Written with placeholders on purpose — the first draft of this very paragraph
+spelled the hostname out, which is the fifth time this document reintroduced the
+string it exists to record removing.)
+
+The result is **worse than the original leak** — a mangled hybrid that still
+exposes the client prefix, in a form no hostname search would ever find.
+
+I told every lane "match full tokens BEFORE bare fragments". My own re-sweep
+after the merge ran bare-only. The rule was right; I did not apply it to myself.
+
+**PR #3149 is the same bug, previously**: `fix(pii): restore machine hostnames
+over-redacted by bare-ac…`. It had to be reverted then too.
+
+Repaired (39 sites, 6 files) by stripping the stranded prefix — longest pattern
+first, and the repair script refuses to write a file that still matches
+afterwards.
+
+### 10.2 The deny-list addition was itself a leak
+
+I populated `client_infrastructure` with the three hostnames, reasoning that the
+section being empty was why the leak went unnoticed. Wrong on both counts, and
+the gate caught it by flagging *the lines I had just written*.
+
+`check-client-pii.py` is the authoritative guard, and it says why: client
+identifiers live ONLY in a private map; the script "contains no client names, and
+it NEVER prints a matched client string — only the file and line number — because
+CI logs on a public repo would themselves leak."
+
+**A deny-list that must name the secret in order to detect it cannot live in the
+open.** Reverted to empty, with the reasoning recorded in the file so the next
+person does not repeat it.
+
+### 10.3 What made the gate red, and the cheaper fix
+
+It scans **whole files that appear in the diff**, not just changed lines — it
+flagged board lines like `doris calculation workflow` that I never touched. My
+sweep had dragged the kanban boards into the scan, and they carry unrelated
+client names throughout.
+
+Those boards **regenerate from GitHub every 20 minutes** (`kanban-reconcile.yml`,
+`card_for_issue` overwrites `title` and `gh_labels` unconditionally, then pushes),
+and GitHub is now clean. So reverting my board edits reaches the same end state
+while dropping thousands of unrelated client-identifier lines back out of the
+scan. Deleting them would be worse still: the cron would recreate them.
+
+**Rule:** do not hand-edit a mirror whose source you have already fixed. Let it
+regenerate. Editing it buys nothing and drags its entire contents into every
+check that scans changed files.

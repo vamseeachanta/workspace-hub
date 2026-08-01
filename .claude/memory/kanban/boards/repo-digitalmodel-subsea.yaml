@@ -445,7 +445,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/pipeline
 
-      **Complexity:** complex | **Machine:** ace-win-1'
+      **Complexity:** complex | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#137
     title: 'WRK-045: OrcaFlex rigid jumper analysis - stress and VIV for various configurations'
     source: github_issue
@@ -467,7 +467,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/pipeline
 
-      **Complexity:** complex | **Machine:** ace-win-1'
+      **Complexity:** complex | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#138
     title: 'WRK-046: OrcaFlex drilling and completion riser parametric analysis'
     source: github_issue
@@ -489,7 +489,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/marine
 
-      **Complexity:** complex | **Machine:** ace-win-1'
+      **Complexity:** complex | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#140
     title: 'WRK-075: OFFPIPE Integration Module \u2014 pipelay cross-validation against OrcaFlex'
     source: github_issue
@@ -511,7 +511,7 @@ cards:
 
       **Status:** pending | **Priority:** low | **Category:** engineering/marine
 
-      **Complexity:** complex | **Machine:** ace-win-1'
+      **Complexity:** complex | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#176
     title: 'WRK-478: feat(subsea): create Cathodic Protection module (DNV-RP-B401)'
     source: github_issue
@@ -1966,7 +1966,7 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## Machine: ace-win-2 (Windows - Claude cowork)
+    body_excerpt: '## Machine: ws014 (Windows - Claude cowork)
 
       ## Problem
 
@@ -1987,7 +1987,7 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## Machine: ace-win-2 (Windows - Claude cowork)
+    body_excerpt: '## Machine: ws014 (Windows - Claude cowork)
 
       ## Task
 

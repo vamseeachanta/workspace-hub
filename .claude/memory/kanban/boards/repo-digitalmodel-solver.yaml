@@ -32,7 +32,7 @@ cards:
 
       **Status:** blocked | **Priority:** high | **Category:** engineering/marine
 
-      **Complexity:** medium | **Machine:** ace-win-1'
+      **Complexity:** medium | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#139
     title: 'WRK-047: OpenFOAM CFD analysis capability for digitalmodel'
     source: github_issue
@@ -328,7 +328,7 @@ cards:
 
       **Status:** pending | **Priority:** low | **Category:** engineering/structural
 
-      **Complexity:** complex | **Machine:** ace-win-1'
+      **Complexity:** complex | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#156
     title: 'WRK-125: OrcaFlex module roadmap \u2014 evolving coordination and progress tracking'
     source: github_issue
@@ -460,9 +460,9 @@ cards:
 
       **Status:** pending | **Priority:** high | **Category:** engineering/pipeline
 
-      **Complexity:** medium | **Machine:** ace-win-1'
+      **Complexity:** medium | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#255
-    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on ace-win-1'
+    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/255
     gh_state: open
@@ -478,11 +478,11 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 1
-    body_excerpt: '## WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on ace-win-1
+    body_excerpt: '## WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05
 
       **Status:** pending | **Priority:** high | **Category:** engineering/pipeline
 
-      **Complexity:** medium | **Machine:** ace-win-1'
+      **Complexity:** medium | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#279
     title: 'WRK-129: Standardize analysis reporting for each OrcaFlex structure type'
     source: github_issue
@@ -528,7 +528,7 @@ cards:
 
       **Status:** blocked | **Priority:** medium | **Category:** engineering/marine
 
-      **Complexity:** medium | **Machine:** ace-win-1'
+      **Complexity:** medium | **Machine:** acma-ansys05'
   - idempotency_key: gh:vamseeachanta/digitalmodel#281
     title: 'WRK-121: Extract & Catalog OrcaFlex Models from rock-oil-field/s7'
     source: github_issue
@@ -748,7 +748,7 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## Machine: ace-linux-1 (or ace-win-1 for Windows extraction)
+    body_excerpt: '## Machine: ace-linux-1 (or acma-ansys05 for Windows extraction)
 
       ## Context
 

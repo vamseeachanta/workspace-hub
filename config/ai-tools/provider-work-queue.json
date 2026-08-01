@@ -150,7 +150,7 @@
         },
         {
           "number": 3525,
-          "title": "[WRK] Investigate safe remote Claude job dispatch to ACMA-ace-win-2",
+          "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
           "labels": [
             "priority:medium",
