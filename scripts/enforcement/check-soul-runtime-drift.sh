@@ -80,9 +80,12 @@ check_one codex  SOUL.delta.md AGENTS.runtime.md
 check_one gemini SOUL.delta.md SOUL.runtime.md
 
 # ── Auto-load wiring check (workspace-hub#2725) ──
-# CLAUDE.md and GEMINI.md must inline-import their per-provider runtime
-# artifacts via @file.md import syntax (Claude Code @file, Gemini CLI @file.md).
-# Without this, the 14+5 Must-Fire Rules don't reach Claude/Gemini sessions.
+# GEMINI.md must inline-import its per-provider runtime artifact via @file.md
+# import syntax (Gemini CLI @file.md). Without this, the Must-Fire Rules don't
+# reach Gemini sessions.
+#
+# CLAUDE.md was retired 2026-08-01 (#3743) — AGENTS.md is canonical and there is
+# no Claude auto-load surface to verify. Do NOT re-add a CLAUDE.md check here.
 check_autoload_wiring() {
     local file="$1" expected="$2"
     local full_path="${REPO_ROOT}/${file}"
@@ -99,7 +102,6 @@ check_autoload_wiring() {
     fi
 }
 
-check_autoload_wiring CLAUDE.md "@config/agents/claude/SOUL.runtime.md"
 check_autoload_wiring GEMINI.md "@config/agents/gemini/SOUL.runtime.md"
 
 if [[ "${drift_count}" -gt 0 ]]; then
