@@ -63,17 +63,27 @@ machines:
   licensed-win-1:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
                      capacity: heavy,
                      licence_verified: {aqwa: {at: "2026-07-31", by: "fleet-session",
-                                               how: "lmstat: 2 aqwa_solve + 2 aqwa_pre + 4 anshpc seats
-                                                     free; four diffraction runs completed 2026-07-18
-                                                     (~1 GB output). wh#3734"}},
-                     licence_blocked: {orcaflex: "wh#3734 — the licence SERVER publishes no orca*
-                                                  feature at all (lmutil lmstat -a), while serving ANSYS
-                                                  to this same host. deckhand#579's stated fix (install
-                                                  the Sentinel LDK runtime) is THE WRONG LAYER: a client
-                                                  runtime cannot create an entitlement the server does
-                                                  not publish. FlexNet Error 21 precedes the HASP
-                                                  fallback in the error log — the HASP message is the
-                                                  symptom people read first, not the cause."},
+                                               how: "lmstat port 1055: aqwa_solve x2, aqwa_pre x2,
+                                                     anshpc x4 free; four diffraction runs completed
+                                                     2026-07-18. Works on BOTH dispatch paths. wh#3734"},
+                                        orcaflex: {at: "2026-07-31", by: "fleet-session",
+                                                   how: "lmstat port 27002: feature Flex v11.6, expiry
+                                                         2027-03-15. dispatch-run.ps1 submit ->
+                                                         LICENCE_OK dll=11.6c exit 0, reproduced twice.
+                                                         REQUIRES the scheduled-task path. wh#3721"},
+                                        orcawave: {at: "2026-07-31", by: "fleet-session",
+                                                   how: "shares the same single Flex seat as orcaflex"}},
+                     # Orcina products REQUIRE the scheduled-task path. An SSH
+                     # public-key logon token cannot complete a FlexNet checkout;
+                     # a Scheduled Task establishes its own batch logon and works.
+                     # Same probe, same host, minutes apart, seat free:
+                     #   ssh host '<solver>'            -> DLLError 25 / FlexNet 21
+                     #   dispatch-run.ps1 -Action submit -> LICENCE_OK, exit 0
+                     # NOT a credential problem: -RunAsUser/-ru/-rp are not needed
+                     # and adding them was a wrong hypothesis (wh#3738). AQWA is
+                     # unaffected and succeeds on either path.
+                     dispatch_path: {orcaflex: scheduled-task, orcawave: scheduled-task,
+                                     aqwa: any},
                      concurrency: {aqwa: 2},
                      notes: "THE heavy node: 64 logical cores / 255.7 GB; declared batch target for
                              dm#1553. SHARED client production box — cap concurrency. AQWA over-dispatch
@@ -138,6 +148,29 @@ providers:
   # the manual escape hatch this comment describes did not actually work.
   agy:    {tier: scarce,    auto_routable: false, budget_pool: google_ai_pool,
            note: "Google AI Pro quota. Explicit ai:agy only; never auto-route backlog."}
+
+# ---------------------------------------------------------------------------
+# Solver seat pools — a licence seat is FLEET-WIDE, not per host (wh#3721).
+#
+# There is exactly ONE floating Orcina `Flex` seat across the whole fleet, and
+# OrcaWave shares it. Modelling it as a per-host capability would permit two
+# concurrent dispatches on two hosts, both of which then fail on checkout.
+#
+# A seat licenses a SESSION, not a job: one dispatched job may fan out across
+# the host's cores inside that session. So this is ONE CONCURRENT DISPATCH SLOT
+# THAT PARALLELISES INTERNALLY — never "one model at a time". Reading it the
+# latter way idles a 64-core box to respect a limit that does not apply at that
+# level.
+#
+# An interactive session holding the seat blocks all dispatch. Closing the
+# solver releases it; logging off is not required.
+# ---------------------------------------------------------------------------
+solver_pools:
+  orcina_flex:
+    members: [orcaflex, orcawave]
+    max_concurrent: 1        # fleet-wide seats, NOT per host
+    expiry: "2027-03-15"
+    note: "one dispatch slot; parallel model runs INSIDE that job are expected"
 
 budget_pools:
   google_ai_pool:
