@@ -129,7 +129,7 @@ commit message.
 
 ## 8. No external actions taken beyond
 
-- Deleted the orphan GitHub label `wip:ACMA-ANSYS05` (0 issues carried it, nothing regenerates it).
+- Deleted the one orphan GitHub `wip:` label naming a real host (0 issues carried it, nothing regenerates it — `apply_wip` sets a state, not a `wip:<host>` label). Name deliberately not written here.
 - Updated PR #3741's title and body.
 - Pushed `recover/ace-win-1-autostash-equality-host-privacy` (preserved stash work; the stash on the box was never applied or dropped).
 
