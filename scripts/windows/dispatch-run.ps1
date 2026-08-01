@@ -37,6 +37,12 @@ param(
     [string]$WorkDir = "",
     [ValidateSet('bash','cmd','powershell')]
     [string]$Shell = 'bash',
+
+    # Run the task under a PASSWORD logon as this user (e.g. 'DOMAIN\user' or '.\user').
+    # Required for licensed solvers whose FlexNet checkout an SSH key token cannot complete.
+    # The password comes from the machine-level DISPATCH_RUN_PASSWORD env var, never a
+    # parameter -- command-line values are readable from the process list.
+    [string]$RunAsUser = "",
     [int]$Tail = 50
 )
 
@@ -159,9 +165,45 @@ exit /b 0
     $prevEAP = $ErrorActionPreference
     $ErrorActionPreference = 'Continue'
     try {
-        $create = & schtasks /create /tn "$task" /sc ONCE /st 00:00 /f /tr "`"$runnerFile`"" 2>&1
+        # Logon type decides whether licensed solvers work.
+        #
+        # Measured 2026-07-31: OrcaFlex checks out its FlexNet seat fine from an INTERACTIVE
+        # logon and fails over SSH with FlexNet Error 21, while AQWA succeeds on both. Env
+        # vars, ORCINA_LICENSE_FILE, the HKCU hive and TCP reach to every licence port were
+        # byte-identical between the two sessions, so it is not configuration. Session 0 is
+        # not the cause either -- the deckhand licensed-run agent runs in session 0 as the
+        # same user with LogonType=Password and completes OrcaFlex at rc 0.
+        #
+        # What differs is the TOKEN. An SSH public-key logon cannot complete the checkout.
+        # A task created without /ru inherits the caller's token, so an SSH-dispatched job
+        # inherits the broken one. Supplying /ru + /rp registers the task with a stored
+        # credential and it runs under a PASSWORD logon -- the configuration already proven
+        # to work by the deckhand agent.
+        #
+        # The password is read from the environment, never passed as a parameter: a value on
+        # the command line is visible to every other process on the box via the process list.
+        # Set it machine-level, on the box, once:
+        #   [Environment]::SetEnvironmentVariable('DISPATCH_RUN_PASSWORD','<pw>','Machine')
+        # AQWA and ordinary compute do NOT need this -- omit -RunAsUser and nothing changes.
+        $createArgs = @('/create','/tn',$task,'/sc','ONCE','/st','00:00','/f','/tr',"`"$runnerFile`"")
+        $logonMode = 'inherited-token'
+        if ($RunAsUser) {
+            $pw = [Environment]::GetEnvironmentVariable('DISPATCH_RUN_PASSWORD','Machine')
+            if (-not $pw) { $pw = $env:DISPATCH_RUN_PASSWORD }
+            if (-not $pw) {
+                throw "-RunAsUser given but DISPATCH_RUN_PASSWORD is not set (machine-level env var). Licensed-solver jobs need a password logon; see the comment at this line."
+            }
+            $createArgs += @('/ru',$RunAsUser,'/rp',$pw)
+            $logonMode = 'password'
+        }
+        $create = & schtasks @createArgs 2>&1
         $createRc = $LASTEXITCODE
-        if ($createRc -ne 0) { throw "schtasks /create failed (rc=$createRc): $create" }
+        # Never echo $create on the failure path once /rp is in play -- schtasks can reflect
+        # its own argv, which would put the password in the error text and any log capturing it.
+        if ($createRc -ne 0) {
+            if ($RunAsUser) { throw "schtasks /create failed (rc=$createRc) [password logon; output suppressed to avoid echoing the credential]" }
+            throw "schtasks /create failed (rc=$createRc): $create"
+        }
         $run = & schtasks /run /tn "$task" 2>&1
         $runRc = $LASTEXITCODE
         if ($runRc -ne 0) { throw "schtasks /run failed (rc=$runRc): $run" }
@@ -172,6 +214,7 @@ exit /b 0
     Emit ([ordered]@{
         ok = $true; action = 'submit'; job_id = $JobId; task = $task
         dir = $dir; stdout = $outLog; stderr = $errLog; shell = $Shell
+        logon = $logonMode; run_as = $(if ($RunAsUser) { $RunAsUser } else { $null })
     })
     exit 0
 }
