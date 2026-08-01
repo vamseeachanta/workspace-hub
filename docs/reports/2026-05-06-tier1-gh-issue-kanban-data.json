@@ -31572,21 +31572,21 @@
       ],
       "kanban_lane": "Planning Needed / Future Backlog",
       "label_names": [
-        "machine:acma-ws014"
+        "machine:ace-win-2"
       ],
       "labels": [
         {
           "color": "e4e669",
-          "description": "Assigned to ACMA-WS014",
+          "description": "Assigned to ace-win-2",
           "id": "LA_kwDOP48Lhs8AAAACdfOIHQ",
-          "name": "machine:acma-ws014"
+          "name": "machine:ace-win-2"
         }
       ],
       "number": 1510,
       "priority_bucket": "Unranked",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "Verify Claude Desktop install: ACMA-WS014",
+      "title": "Verify Claude Desktop install: ace-win-2",
       "updatedAt": "2026-03-31T11:26:43Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/1510"
     },
@@ -43539,7 +43539,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "WRK-1133: Add acma-ws014 to workstations documentation and routing",
+      "title": "WRK-1133: Add ace-win-2 to workstations documentation and routing",
       "updatedAt": "2026-03-21T13:25:02Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/52"
     },
@@ -44303,7 +44303,7 @@
       "priority_bucket": "MEDIUM",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)",
+      "title": "WRK-1051: chore(harness): verify Codex config on ace-win-1 (WRK-1024 follow-up)",
       "updatedAt": "2026-04-04T20:33:35Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/37"
     },
@@ -53727,7 +53727,7 @@
       "priority_bucket": "HIGH",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "WRK-595: feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on acma-ansys05",
+      "title": "WRK-595: feat(orcaflex): rewrite enrichment pipeline \u2014 worldenergydata-first, all stages on ace-win-1",
       "updatedAt": "2026-03-24T12:48:18Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/255"
     },

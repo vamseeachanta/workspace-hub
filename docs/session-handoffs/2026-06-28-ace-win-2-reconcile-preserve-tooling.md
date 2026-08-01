@@ -1,6 +1,6 @@
 # Session handoff — ace-win-2 reconcile + dirty-work preservation + Windows tooling
 
-- **Machine:** ace-win-2 (ACMA-WS014), Windows
+- **Machine:** ace-win-2, Windows
 - **Span:** 2026-06-25 → 2026-06-28
 - **Scope:** `/reconcile-ecosystem` for this box → equality column refresh → preserve all dirty work across siblings → land Windows-native ecosystem tooling. Operational automation (not issue-gated).
 
@@ -10,7 +10,7 @@ Verified against reflogs throughout; the only deletions were two confirmed-merge
 
 ### Equality (this box's column)
 - CIM-backed collect succeeded; `compute` went MISSING-EVIDENCE → CONFORMS.
-- State published **state-only** (Linux cron owns the matrix HTML): `chore: equality report from acma-ws014` — `334c18659` (06-26), `2d0a296f4` (06-27).
+- State published **state-only** (Linux cron owns the matrix HTML): `chore: equality report from ace-win-2` — `334c18659` (06-26), `2d0a296f4` (06-27).
 - Residual reds (harness/kanban/memory/skills/scheduler) are **stale-peer artifacts** — dev-primary/dev-secondary show identical verdicts; clear when the Linux boxes re-collect. `solvers` BELOW-BASELINE is **by design** (licence probe, PR #2850). 5 codex/hermes provider rows: re-judge after peers refresh.
 
 ### Dirty work preserved (per repo)

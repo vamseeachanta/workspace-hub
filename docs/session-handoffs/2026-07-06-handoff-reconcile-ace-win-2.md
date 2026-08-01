@@ -1,5 +1,5 @@
 ---
-machine: ace-win-2 (ACMA-WS014)
+machine: ace-win-2
 session: machine equivalence reconcile
 date: 2026-07-06
 external_actions: git pushes only

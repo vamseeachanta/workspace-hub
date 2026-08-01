@@ -93,10 +93,44 @@ proprietary_tools: []
 # ---------------------------------------------------------------------------
 # Client-specific infrastructure / user identifiers
 # ---------------------------------------------------------------------------
-client_infrastructure: []
-  # - pattern: "client-vpc-123"
-  #   case_sensitive: false
-  #   description: "Example client infra"
+# Populated 2026-08-01. This section sat EMPTY since v2.0, which is exactly why
+# 133 tracked files in this public repo accumulated real machine hostnames while
+# every PR reported the PII gate green. The gate was not wrong — it had simply
+# never been told that machine and network identifiers are a protected class.
+#
+# An empty rule list and a satisfied rule list produce the same green tick. That
+# is the failure mode this whole class of check keeps hitting: absence of a
+# finding reads as absence of a problem.
+#
+# Routing must use the canonical ROLE aliases (ace-win-1, ace-win-2, dev-primary,
+# …) — see deckhand#581. Real hostnames belong only in the private tier, where
+# the per-host deckhand policy `host_aliases` block maps them.
+# SEVERITY IS `warn`, NOT `block`, AND THAT IS DELIBERATE AND TEMPORARY.
+# The sweep that removes these strings is INCOMPLETE — docs/ is clean, but
+# scripts/, tests/, config/, .claude/, .planning/, queue/, state/ and data/ still
+# carry them. Arming `block` now would fail the scan on every subsequent commit,
+# including the commits that finish the cleanup.
+#
+# This mirrors the same discipline used for the dispatch labels in #3740: do not
+# arm the enforcement until the thing it enforces is actually true, or the first
+# thing anyone does is route around it.
+#
+# FLIP TO `block` (delete these three severity lines; default_severity is block)
+# once `git grep -ilE "acma-ansys05|acma-ws014|acma-hou-rds02"` returns nothing.
+# Until then a warn is honest: it reports the leak without pretending it is fixed.
+client_infrastructure:
+  - pattern: "acma-ansys05"
+    case_sensitive: false
+    severity: warn
+    description: "Real machine hostname — use the role alias ace-win-1"
+  - pattern: "acma-ws014"
+    case_sensitive: false
+    severity: warn
+    description: "Real machine hostname — use the role alias ace-win-2"
+  - pattern: "acma-hou-rds02"
+    case_sensitive: false
+    severity: warn
+    description: "Real machine hostname — use the role alias ace-win-1"
 
 # ---------------------------------------------------------------------------
 # Files/paths excluded from scanning (glob patterns)

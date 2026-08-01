@@ -28,7 +28,7 @@ def _fingerprint(**overrides):
     data = {
         "fingerprint_version": 1,
         "role": "contribute-minimal",
-        "hostname": "acma-ws014",
+        "hostname": "licensed-win-2",
         "machine_id": "ace-win-2",
         "ts": "2026-07-14T10:00:00+00:00",
         "clone_head": "abcdef1",
@@ -470,9 +470,9 @@ def test_same_role_machines_do_not_clobber_end_to_end(tmp_path):
     sp.run(["git", "init", "-q", "--bare", str(origin)], check=True)
     sp.run(["git", "init", "-q", str(work)], check=True)
     sp.run(["git", "-C", str(work), "remote", "add", "origin", str(origin)], check=True)
-    fp1 = _fingerprint(machine_id="ace-win-1", hostname="acma-ansys05")
-    fp2 = _fingerprint(machine_id="ace-win-2", hostname="acma-ws014")
+    fp1 = _fingerprint(machine_id="ace-win-1", hostname="licensed-win-1")
+    fp2 = _fingerprint(machine_id="ace-win-2", hostname="licensed-win-2")
     assert es.publish(str(work), "ace-win-1", fp1) is True
     assert es.publish(str(work), "ace-win-2", fp2) is True
     boxes = es.collect(str(work))
-    assert sorted(b["hostname"] for b in boxes) == ["acma-ansys05", "acma-ws014"]
+    assert sorted(b["hostname"] for b in boxes) == ["licensed-win-1", "licensed-win-2"]

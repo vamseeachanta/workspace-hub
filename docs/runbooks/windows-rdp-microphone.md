@@ -10,13 +10,13 @@ Services, sign out users, or write microphone privacy and machine policy.
 On WS014, in a normal PowerShell window owned by the connecting user:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02 -OutputFormat Human
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1 -OutputFormat Human
 ```
 
 If classic `mstsc.exe` is launched with a specific profile, audit that exact file:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02 -RdpFile "$env:USERPROFILE\Desktop\RDS02.rdp"
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1 -RdpFile "$env:USERPROFILE\Desktop\RDS02.rdp"
 ```
 
 Inside the current RDS02 session:
@@ -58,7 +58,7 @@ If the saved resource prompt decision is suspected, reset only the exact target 
 This requires a checksummed snapshot and prints the rollback command:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02 -Repair -ResetConsent -StateDirectory "$env:LOCALAPPDATA\RdpMicState" -OutputFormat Human
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1 -Repair -ResetConsent -StateDirectory "$env:LOCALAPPDATA\RdpMicState" -OutputFormat Human
 ```
 
 Consent rollback:

@@ -15,7 +15,7 @@ Threshold: 0.9
 | #3549 feat(ops): registry-driven Linux connection helpers with TDD | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3440 Harden generated HTML against JSON script-tag breakout | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3482 design(repo-health): safe worktree lifecycle with leases and recoverable quarantine | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02 | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1 | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3532 fix(memory): reserve cross-provider runtime budget for operational feedback | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |

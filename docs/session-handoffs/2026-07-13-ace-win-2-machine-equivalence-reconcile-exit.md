@@ -1,7 +1,7 @@
 # Exit handoff — ace-win-2 machine-equivalence reconciliation
 
 Date: 2026-07-13
-Machine: `ace-win-2` (`ACMA-WS014`)
+Machine: `ace-win-2`
 Repo: `workspace-hub`
 Branch: `main`
 

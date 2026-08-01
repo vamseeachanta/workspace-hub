@@ -21,7 +21,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3549 feat(ops): registry-driven Linux connection helpers with TDD | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:tooling, domain:workstations, domain:security, status:plan-approved |
 | #3440 Harden generated HTML against JSON script-tag breakout | yes | strategy/workflow/architecture language | bug, priority:medium, cat:harness, domain:security, domain:workflow, status:plan-approved |
 | #3482 design(repo-health): safe worktree lifecycle with leases and recoverable quarantine | yes | strategy/workflow/architecture language | priority:medium, cat:tooling, domain:testing, status:plan-approved, gate:completeness, lane:codex |
-| #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02 | yes | strategy/workflow/architecture language | bug, priority:medium, cat:operations, domain:workstations, machine:multi, status:plan-approved |
+| #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1 | yes | strategy/workflow/architecture language | bug, priority:medium, cat:operations, domain:workstations, machine:multi, status:plan-approved |
 
 ## codex
 

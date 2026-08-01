@@ -112,7 +112,7 @@
 **Issue statuses** (verified 2026-07-14T10:40:00Z via `gh issue view`):
 
 ```text
-3524 OPEN [WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02
+3524 OPEN [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1
      labels: bug, priority:medium, cat:operations, domain:workstations, machine:multi, status:needs-plan, lane:codex
 3403 OPEN Repair Linux voice dictation rollout and VNC consistency contract
      labels include: status:plan-approved, lane:codex
@@ -161,9 +161,9 @@ WRAPPER_REPRODUCED_AT_UTC=2026-07-14T10:59:52.5984437Z
 RDP Microphone Redirection Audit and Repair
 Mode: AUDIT (read-only) | Role: Server
 
-=== SERVER: ACMA-HOU-RDS02 ===
-[INFO   ] Session: ACMA-HOU-RDS02; client ACMA-WS014; session RDP-Tcp#0.
-[PASS   ] RDP user session: RDP-Tcp#0 from ACMA-WS014.
+=== SERVER: ace-win-1 ===
+[INFO   ] Session: ace-win-1; client ace-win-2; session RDP-Tcp#0.
+[PASS   ] RDP user session: RDP-Tcp#0 from ace-win-2.
 [PASS   ] AudioEndpointBuilder: Running; startup type Automatic.
 [PASS   ] Audiosrv: Running; startup type Automatic.
 [PASS   ] User microphone access: Value is 'Allow'; not denied.
@@ -184,7 +184,7 @@ Mode: AUDIT (read-only) | Role: Server
 VERDICT: Microphone redirection is absent; the client did not negotiate audio input.
 Run Client repair on WS014, sign out of RDS02, reconnect, and rerun Server audit.
 
-Report: C:\Users\vamseea\AppData\Local\Temp\2\RdpMicAudit-Server-ACMA-HOU-RDS02-20260714-055953.json
+Report: C:\Users\vamseea\AppData\Local\Temp\2\RdpMicAudit-Server-ace-win-1-20260714-055953.json
 WRAPPER_SCRIPT_EXIT_CODE=2
 ```
 

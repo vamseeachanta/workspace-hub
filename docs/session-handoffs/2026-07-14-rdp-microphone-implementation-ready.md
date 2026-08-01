@@ -39,7 +39,7 @@ printed in Human mode.
 Run from the same commit on WS014:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02 -OutputFormat Human
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1 -OutputFormat Human
 ```
 
 Identify the actual client/configuration source. For an explicitly confirmed classic

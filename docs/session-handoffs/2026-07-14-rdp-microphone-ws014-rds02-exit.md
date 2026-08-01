@@ -4,7 +4,7 @@
 
 **State at exit:** open, `status:needs-plan`, `lane:codex`
 
-**Scope:** ACMA-WS014 microphone redirection into ACMA-HOU-RDS02
+**Scope:** ace-win-2 microphone redirection into ace-win-1
 
 ## Outcome
 
@@ -36,9 +36,9 @@ has not passed the required plan, adversarial-review, and user-approval gates.
 
 Environment:
 
-- Host: `ACMA-HOU-RDS02`
+- Host: `ace-win-1`
 - OS: Windows Server 2025 Standard, build 26100
-- Client reported by the active session: `ACMA-WS014`
+- Client reported by the active session: `ace-win-2`
 - Session: `RDP-Tcp#0`, session ID 2
 
 Passing checks:
@@ -71,7 +71,7 @@ were not promoted into the repository before issue plan approval:
 | Artifact | SHA-256 |
 |---|---|
 | `D:\ws\Repair-RdpMicrophone.ps1` | `D48F23EBD968F68331F75CD2603C36794CE2C3A5310BE84212C5EC34EA5CE561` |
-| `D:\ws\RdpMicAudit-Server-ACMA-HOU-RDS02-20260714-050409.json` | `383C54951B0C3F66C31EAC45986533CC37DD1A8446E563263D037B33E38B7A08` |
+| `D:\ws\RdpMicAudit-Server-ace-win-1-20260714-050409.json` | `383C54951B0C3F66C31EAC45986533CC37DD1A8446E563263D037B33E38B7A08` |
 
 `Repair-RdpMicrophone.ps1` is a commented two-ended tool. Audit mode is
 read-only. Repair requires `-Repair`; consent reset additionally requires
@@ -82,14 +82,14 @@ without a runtime error.
 
 ## Exact next checkpoint
 
-Start on ACMA-WS014, not RDS02. First read issue #3524 and revalidate live state.
+Start on ace-win-2, not RDS02. First read issue #3524 and revalidate live state.
 Then run the client audit against the exact RDP profile that the user launches:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
 .\Repair-RdpMicrophone.ps1 `
   -Role Client `
-  -TargetHost ACMA-HOU-RDS02 `
+  -TargetHost ace-win-1 `
   -RdpFile "$env:USERPROFILE\Documents\Default.rdp"
 ```
 
@@ -107,7 +107,7 @@ Only after inspecting the audit output, use the guarded repair if appropriate:
 ```powershell
 .\Repair-RdpMicrophone.ps1 `
   -Role Client `
-  -TargetHost ACMA-HOU-RDS02 `
+  -TargetHost ace-win-1 `
   -RdpFile "$env:USERPROFILE\Documents\Default.rdp" `
   -Repair `
   -ResetConsent
