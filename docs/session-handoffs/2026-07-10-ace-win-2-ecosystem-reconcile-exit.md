@@ -87,7 +87,7 @@ collection will not clear all of these because several are measurement or policy
    [PR #2850](https://github.com/vamseeachanta/workspace-hub/pull/2850).
 6. The broad full-repo legal scan still finds pre-existing legacy/public engineering
    content. The task-scoped `--diff-only` publication gate passed.
-7. The ace-win-2 evidence uses the canonical role alias `ace-win-2`, which is tracked under
+7. The ace-win-2 evidence uses `acma-ws014`, which is a tracked public alias under
    `config/workstations/registry.yaml`. Unlike ace-win-1, no private-hostname collision
    is documented for this machine. If that policy changes, contain the published
    evidence and route redaction through the legal/issue workflow immediately.

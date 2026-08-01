@@ -299,12 +299,30 @@ nothing and drops thousands of unrelated lines out of the scan.
 where the hostname removal is genuine but the file also contains the client slug
 on unrelated lines.
 
-Owner options, in order of my preference:
+### DECIDED 2026-08-01: option 2 — revert the handoff edits
 
-1. **Run the redactor with the private map** over the remaining flagged files —
-   correct, and it fixes a real pre-existing exposure.
-2. **Revert my hostname edits in those specific handoffs** — they are historical
-   records; the hostnames there are lower-value than the ones in live config and
-   code, all of which are already clean.
-3. **Bypass for this PR only**, then file the client-slug redaction as its own
-   issue. Fastest, and the exposure is unchanged from today's `main`.
+Owner chose to revert the hostname edits in the six flagged session-handoffs
+rather than redact or bypass. Applied: all six restored to `origin/main`.
+
+**What that costs:** 10 hostname lines remain in six historical records —
+`2026-06-28-ace-win-2-reconcile-preserve-tooling`, `2026-06-28-reconcile-ace-win-1-equality-and-pii`,
+`2026-07-06-handoff-reconcile-ace-win-2`, `2026-07-10-ace-win-2-ecosystem-reconcile-exit`,
+`2026-07-13-ace-win-2-machine-equivalence-reconcile-exit`,
+`2026-07-26-handoff-orcaflex-l2-dispatch-prep`.
+
+**Why that is the right trade:** every LIVE surface is clean — config, code,
+tests, GitHub titles/bodies/comments/labels. What is left is prose in dated
+records of past sessions, which nothing reads programmatically and no dispatch
+path consults. Buying those 10 lines would have meant either a bypass or
+redacting a client slug without the private map, and the second is precisely how
+PR #3149 and this session's own 39 corruptions happened.
+
+**Still open, and unchanged from today's `main`:** the client slug appears in
+~100 issues and many untouched files. That is a separate, larger task needing
+`redact-client-pii.py` with the private map. Worth its own issue.
+
+The two rejected options remain valid if that changes:
+
+1. **Run the redactor with the private map** over the flagged files — correct,
+   and fixes the pre-existing exposure properly.
+3. **Bypass for this PR only** and file the redaction separately.
