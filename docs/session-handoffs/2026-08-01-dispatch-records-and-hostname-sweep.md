@@ -326,3 +326,33 @@ The two rejected options remain valid if that changes:
 1. **Run the redactor with the private map** over the flagged files — correct,
    and fixes the pre-existing exposure properly.
 3. **Bypass for this PR only** and file the redaction separately.
+
+---
+
+## 12. FINAL — the file scan passes; the commit-message scan needs a squash
+
+After the option-2 revert, the Client-PII Gate's **file scan passes**. Its
+remaining failure is a *different step*: "Scan PR title/body + commit messages".
+
+- PR title and body: **clean**, verified.
+- **Three of my commit messages carry the identifier.** The worst documented the
+  mapping table verbatim — I wrote the literal hostnames into a public commit
+  message, in a commit about removing them from public files. Fifth instance of
+  this session's signature self-leak, and the only one that lands in permanent
+  history rather than a file.
+
+The gate names its own remedy: *"remove the client name from the message, **or
+squash-merge to drop it from history**."* Rewriting the messages needs a
+force-push, which an agent may not do. Squash-merge collapses the branch into a
+single commit whose message the merger controls — and it is already this repo's
+convention.
+
+Confirmed non-blocking: `protect-main` declares **no required status checks**,
+and `mergeStateStatus` is `UNSTABLE` rather than `BLOCKED`, so the squash-merge
+can proceed with this check red.
+
+**Do NOT use `LEGAL_PII_ALLOW=1`.** It is unnecessary — squash-merge resolves
+this properly — and enabling a security-gate bypass is an owner action regardless.
+
+**The squash message must not reproduce the mapping.** Describe the change; the
+literal belongs only in the private map.
