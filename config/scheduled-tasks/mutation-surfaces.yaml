@@ -259,4 +259,16 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    source_digest: 6d3063b09459747e9f932ab85b617e783f4cf9cacbecb941024e90d05b1b024a
+    # Re-affirmed 2026-08-01 (#3746): the harness-checkup-audit task (#3408) entered
+    # schedule-tasks.yaml after this disposition, changing the governed input union.
+    # resolved_on/pull_request are pinned by scheduler_mutation_contract.py:310 and
+    # identify WHICH disposition this is; source_digest is the change-detector and is
+    # re-affirmed whenever a governed input legitimately changes. Reviewed: the task is
+    # a non-destructive daily audit (writes a state JSON + log), so it mutates no
+    # scheduler state and the #3475 disposition still holds.
+    # Re-affirmed again 2026-08-01 (#3749): harness-install-doctor extended from the two
+    # ace-linux boxes to every onboarded POSIX machine carrying an agent CLI (adds
+    # gpu-claw, macbook-portable), which changes the governed input union again.
+    # Reviewed: the doctor is an idempotent repair task composing blessed installers; it
+    # mutates no scheduler state, so the #3475 disposition still holds.
+    source_digest: 0f7b1c234800aaee04c4a06e86c129aad6a97d3b25b9ec3287839fb83291ef62

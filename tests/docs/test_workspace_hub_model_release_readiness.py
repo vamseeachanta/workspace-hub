@@ -183,17 +183,17 @@ def test_non_contradiction_with_control_plane_contract_uses_concrete_assertions(
 def _line_limit_from_policy() -> int:
     """Source the limit from .claude/rules/coding-style.md so the test tracks policy."""
     text = _read(CODING_STYLE)
-    m = re.search(
-        r"CLAUDE\.md,\s*MEMORY\.md,\s*AGENTS\.md,\s*GEMINI\.md must not exceed\s+(\d+)\s+lines",
-        text,
-    )
+    # Match the limit itself, not the harness-filename list — the old regex pinned
+    # the exact wording and broke when CLAUDE.md was retired from that sentence.
+    m = re.search(r"must not exceed\s+(\d+)\s+lines", text)
     assert m, "coding-style.md must define the agent-harness line limit"
     return int(m.group(1))
 
 
 def test_audited_thin_adapters_remain_within_line_limits():
     limit = _line_limit_from_policy()
-    for path in (CLAUDE_MD, GEMINI_MD, AGENTS):
+    # CLAUDE_MD dropped 2026-08-01 — the harness surface is retired.
+    for path in (GEMINI_MD, AGENTS):
         lines = path.read_text(encoding="utf-8").splitlines()
         assert len(lines) <= limit, (
             f"{path.name} has {len(lines)} lines (limit {limit} from "

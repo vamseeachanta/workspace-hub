@@ -4,22 +4,24 @@
 > `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below.
 
 ## Active & Recent Projects
-- [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" definitions, 0/56 wells agree (6.6× gap); reference basis = BSEE WAR `WELL_ACTIVITY_CD`. EPIC #1063 + #1064–#1081. NEXT: #1064 basis decision w/ Roy (HARD BLOCKER)
-- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). ✅✅✅ **#1634 ARMED 2026-07-29** (`Domain test aggregate` + `Run Quality Gates`, strict=false) — the 60.3%-red-merge root cause is closed. 8 PRs merged; deps 122→55; dashboard app deleted (−34.5k LOC), 9 modules extracted to `solvers/orcaflex/results_analysis/`. ⚠ audit said "3 root causes"; really **2**. OPEN: #1923 (139 hidden tests), #1900, #1907, #1919, #1881. See [[feedback_absence_of_signal_reads_as_success]]
+- [Fleet reachability + solver access](project_fleet_reachability_and_solver_access_2026_07_31.md) — 2026-07-31 fleet **5/5 SSH-reachable**; ⚠ ace-win-2 DOWN. **4 FlexNet servers — enumerate ALL** …
+- [Dispatch surface: label axes made deterministic (EPIC deckhand#584)](project_dispatch_surface_label_axes_2026_07_31.md) — 2026-07-31 ✅ 5 PRs merged; ambiguity 146→74 (rest legitimate `domain:`) …
+- [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" definitions, 0/56 wells agree (6.6× gap) …
+- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). ✅✅✅ **#1634 ARMED 2026-07-29** (`Domain test aggregate` + `Run Quality Gate …
 - [Model-generation reopen slate](project_model_generation_reopen_slate_2026_07_25.md) — wh#3106/#3056/#1019 + llm-wiki#638 REOPENED; #3043 retargeted. NEXT: wh#3051 registry flip (blocks the rest)
-- [Model-registry generation drift blind spot](project_model_generation_drift_registry_blindspot.md) — nightly guard checks ONLY `openai_primary`; Claude lane has zero drift coverage. ✅ wh#3600 FILED. NEXT: #3600 needs-plan
-- [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; hub PR #1058 armed. ⚠ DRILLING_DAYS mixes two bases → batch-drilled undercount. NEXT: owner sends v2 email
-- [Equality matrix reclassification (wh#3592)](project_equality_matrix_reclassification_3592.md) — ✅✅ CLOSED; 5/5 CONFORMS on Linux. On-box left: ace-win-1 #2815, ace-win-2 #3595; ⚠ owner: `systemctl --user disable --now claude-routine-mx-720-cnh-source-watch.timer`
+- [Model-registry generation drift blind spot](project_model_generation_drift_registry_blindspot.md) — nightly guard checks ONLY `openai_primary`; Claude lane has zero drift coverage. ✅ wh#3600 FILED …
+- [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; hub PR #1058 armed. ⚠ DRILLING_DAYS mixes two bases → batch-drilled undercount …
+- [Equality matrix reclassification (wh#3592)](project_equality_matrix_reclassification_3592.md) — ✅✅ CLOSED; 5/5 CONFORMS on Linux. On-box left: ace-win-1 #2815, ace-win-2 #3595 …
 - [India family trip Jul 21–Aug 19](reference_us_india_travel_apps.md) — 2026-07-19 ✅✅ family departed. NEXT: ~Aug 18 return check-in; Sep 18 DS-11 reminder
 - [iPhone media extraction pipeline](project_iphone_media_taildrop_pipeline.md) — ✅✅ two phones archived 3-2-1. NEXT: #3586 gates next phone
-- [External SSH via Tailscale for fleet](project_external_ssh_tailscale_fleet.md) — ✅ mosh+tmux persistence LIVE on ace-linux-1 (PR #3597). ⚠ two tailscaled daemons; Taildrop node OFFLINE. NEXT: 24h BatchMode re-test gpu-claw
+- [External SSH via Tailscale for fleet](project_external_ssh_tailscale_fleet.md) — ✅ mosh+tmux persistence LIVE on ace-linux-1 (PR #3597). ⚠ two tailscaled daemons …
 - [agy replaces gemini (wh#3573)](project_agy_replaces_gemini_provider_swap.md) — ✅✅✅ COMPLETE. RULE: cross-review = Claude+Codex+Agy. Follow-ons #3577-#3580
-- [Floorhand multi-metro outreach (12 shops)](project_floorhand_multi_metro_outreach.md) — 2026-07-26 ✅✅ CLOSED, PRs #180–#185 merged. Partner model SETTLED = **flat 50-50 gross, paid as shop pays** (don't re-litigate). ⚠ analysis engine NOT BUILT. NEXT: owner sends PDFs
-- [Sun Manufacturing Floorhand pamphlet](project_sun_manufacturing_floorhand_pamphlet.md) — ✅ emailed; Austin replied POSITIVE. RULE: copy `strategy/floorhand-pamphlet-TEMPLATE.html`. NEXT: on meeting pick → calendar + kit
+- [Floorhand multi-metro outreach (12 shops)](project_floorhand_multi_metro_outreach.md) — 2026-07-26 ✅✅ CLOSED, PRs #180–#185 merged. Partner model SETTLED = **flat 50-50 gross …
+- [Sun Manufacturing Floorhand pamphlet](project_sun_manufacturing_floorhand_pamphlet.md) — ✅ emailed; Austin replied POSITIVE. RULE: copy `strategy/floorhand-pamphlet-TEMPLATE.html` …
 - [Fidelity returns analysis + dashboard](project_fidelity_returns_analysis.md) — ✅ COMPLETE (PR #152). No open work
 - [Elliott Services Floorhand FFS brochure](project_elliott_floorhand_brochure.md) — ✅ PR #178 MERGED. NEXT (HITL): pick send route + flip draft footer → SEND
 - [Krishna daily schedule (wh#3528)](project_krishna_daily_schedule.md) — morning chain APPROVED. NEXT: evening-chain yes/adjust → calendar #3529
-- [wed #844 cost-basis + costing program](project_wed844_cost_basis_timeseries_dispatch.md) — #1023 CLOSED (80 projects/$509bn); EPIC #1038 (#1040-#1044). OPEN: A1–A4 undecided (blocks #651); cost↔FDAS DISCONNECTED; #831 stale
+- [wed #844 cost-basis + costing program](project_wed844_cost_basis_timeseries_dispatch.md) — #1023 CLOSED (80 projects/$509bn); EPIC #1038 (#1040-#1044). OPEN: A1–A4 undecided (blocks #651) …
 - [llm-wiki-mkt-a OCR lane gpu-claw (#267)](project_llm_wiki_mkt-a_ocr_lane_gpu_claw.md) — 2026-07-13 ✅ smoke merged; full-queue #272 blocked on staging path
 - [wed parametric economics sweep + HF](project_wed_parametric_economics_sweep.md) — 2026-07-13 ✅ PR #1004 merged; #978 closable. See [[project_wed_economics_c9_session_handoff]]
 - [Fleet dispatch ecosystem (wh#3497)](project_fleet_dispatch_ecosystem_epic.md) — 2026-07-13 ✅ Phase-6 smoke rc 0. RULE: map detail PRIVATE-only. NEXT: merge #563 → soak → VPN retire
@@ -28,7 +30,7 @@
 - [dm#1528 sloshing reduced-order](project_dm1528_sloshing_reduced_order.md) — coeff 0.16·Π. Blocked on user hull data: run dm#1562
 - [HF projection + staged promotion (wh#3433)](project_hf_projection_staged_promotion.md) — PR #3465 plan-approved; gated behind DRAFT #3452
 - [World Energy Field Explorer program](project_world_energy_field_explorer_program.md) — feature-complete; open: #962 SVGs, #966 HF viz, #955/#959/#960 ingest
-- [Rama Lakshmi Indian passport Tatkaal re-issue](project_ramalakshmi_indian_passport_tatkal.md) — SETTLED = II-B-2 (`rld.md` "6-Nov-2027" is WRONG); ₹5,000 POPSK Kakinada. ⚠ husband gravely ill — do NOT propose renewing his. NEXT: her 8 answers (§8)
+- [Rama Lakshmi Indian passport Tatkaal re-issue](project_ramalakshmi_indian_passport_tatkal.md) — SETTLED = II-B-2 (`rld.md` "6-Nov-2027" is WRONG); ₹5,000 POPSK Kakinada …
 - [Devakrishna passport renewal (DS-11)](project_devakrishna_passport_renewal.md) — DEFERRED until family returns. On return: DS-11 + appointment
 - [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-07: #755/#756/#848-#850 LIVE; remaining #759/#761
 - [International field-dev epic (wed #713)](project_wed_international_field_dev_epic.md) — 6 country chains MERGED; DI-loader UNBUILT; ⚠ mx-720 watcher = LOCAL systemd timer. NEXT: #720 loader; #722
@@ -36,10 +38,12 @@
 - [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
 
 ## Key Lessons (how to work)
-- [Machine identity — ⚠ #565 SUPERSEDED by deckhand#581](feedback_machine_identity_is_logical_alias_565.md) — 2026-07-30 owner decision: route by **canonical lowercase hostname, PRIVATE tier only**; public workspace-hub keeps **neutral tokens** (`ace-win-1`…), no mkt-a hostname in a public label. Field `host_aliases` stays, values change; casefold on join; never rewrite historical queue JSON. Heartbeat-filename freeze + hostname-rejecting tests now INVERT. Still true: tier split, `verified_at`, deckhand = promotable, **scan your own plan artifacts**
-- [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included**
-- [Absence of signal reads as success](feedback_absence_of_signal_reads_as_success.md) — missing check looks GREENER than failing one; verify every suppression's stated reason (comments lie); import scans are blind to `engine=`/entry-point deps
-- [Verify subagent line citations, not just claims](feedback_verify_subagent_line_citations_not_just_claims.md) — a defect existing ≠ it being at that line; cite the SYMBOL when coordinates aren't cheap to confirm
+- [Machine identity — ⚠ #565 SUPERSEDED by deckhand#581](feedback_machine_identity_is_logical_alias_565.md) — 2026-07-30 owner decision: route by **canonical lowercase hostname, PRIVATE tier only** …
+- [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validati …
+- [Check the dimension you were NOT burned by](feedback_check_the_dimension_you_were_not_burned_by.md) — fixed a licence failure, shipped a capacity failure; the test written that morning passed the wrong answ …
+- [Tests that pin a NAME, not a property](feedback_tests_that_pin_a_name_not_a_property.md) — 4 in one day; if the assertion still passes with the behaviour removed, it tests the text …
+- [Absence of signal reads as success](feedback_absence_of_signal_reads_as_success.md) — missing check looks GREENER than failing one; verify every suppression's stated reason (comments lie) …
+- [Verify subagent line citations, not just claims](feedback_verify_subagent_line_citations_not_just_claims.md) — a defect existing ≠ it being at that line; cite the SYMBOL when coordinates aren't cheap to con …
 - [Report-hub design system (owner-approved)](feedback_report_hub_design_system.md) — hub grammar = THE design for ALL field-data surfaces; data → HF `aceengineer/*`; ref impl wed PR #1058
 - [Rig-selector capability depth](feedback_rig_selector_capability_depth.md) — onshore/offshore = FIRST filter; equipment fields over more hull numbers (wed #1006)
 - [One result everywhere](feedback_one_result_everywhere.md) — SINGLE result on website/HF/client surfaces; versioning internal only; new results auto-pop live
@@ -51,11 +55,11 @@
 - [Fable 5 vs Opus 4.8 routing](reference_fable5_vs_opus48_session_comparison.md) — Fable=orchestration/planning, Opus=execution/merge-CI
 - [Equality wedge ≠ drift recovery](feedback_equality_wedge_vs_drift_recovery.md) — main ahead AND behind → prove regenerable → backup tag → `reset --hard` (destructive, get OK)
 - [Vamsee's technical-outreach email style](feedback_vamsee_technical_outreach_email_style.md) — reply into EXISTING thread; humble greeting; LIVE links; one ask. [[feedback_vamsee_email_style_skestates]]
-- [Emails are ~150 words; the PDF carries the detail](feedback_vamsee_email_short_attachment_carries_detail.md) — NO numbers/tables/reasoning in the body; name the attachment, point at a section, one-sentence ask, phone in sig
+- [Emails are ~150 words; the PDF carries the detail](feedback_vamsee_email_short_attachment_carries_detail.md) — NO numbers/tables/reasoning in the body; name the attachment, point at a section …
 - [Strict-up-to-date ruleset blocks green-PR merge](feedback_strict_uptodate_ruleset_no_admin_bypass.md) — `--admin` doesn't bypass rulesets; merge-when-CLEAN loop
 - [Required check must never skip](feedback_required_check_must_not_skip.md) — job-level `if:` on required check deadlocks PRs (skipped ≠ success)
 - [Verify against the real CI lint toolchain pre-push](feedback_verify_against_real_ci_lint_toolchain.md) — repo's EXACT black/isort/flake8; absent binary "passes" silently
-- [A merge isn't done until its branch and worktree are gone](feedback_merge_is_not_done_until_branch_and_worktree_gone.md) — `--delete-branch` + local branch + worktree; `--merged` UNDER-reports (squash rewrites SHAs) so its silence proves nothing; archive untracked worktree content before `--force`
+- [A merge isn't done until its branch and worktree are gone](feedback_merge_is_not_done_until_branch_and_worktree_gone.md) — `--delete-branch` + local branch + worktree …
 - [Batch-merge PRs: no rebase, trust CLEAN](feedback_dependabot_merge_no_rebase_trust_clean.md) — no `update-branch` (livelock); merge on CLEAN; verify MERGED on remote
 - [Unique live links → traffic + credibility](feedback_unique_live_links_traffic_credibility.md) — every capability gets its OWN indexable page
 - [Always update the equality matrix](feedback_always_update_equality_matrix.md) — end fleet-touching work with `publish-equality.sh --rebuild`
@@ -71,7 +75,7 @@
 - [dev-primary equality "green" is self-healing](feedback_dev_primary_equality_green_is_self_healing.md) — fix drift via PR + STOP; cron re-greens
 - [Autorun resets worktree branches → push immediately](feedback_autorun_clobbers_subagent_worktree_commits.md) — `commit && push -u`; verify on REMOTE
 - [Small calcs go into digitalmodel domain modules](feedback_small_calcs_into_digitalmodel_domains.md) — `src/digitalmodel/<domain>/` + tiny test
-- ["Did this branch land?" — ask the forge, not an LLM](feedback_branch_landed_ask_the_forge_not_an_llm.md) — `gh pr list --state merged --head <branch>` is cheaper AND stronger than a Codex diff read (which timed out at 15min / 0 bytes); a `gh`/`git`-answerable question is a lookup, not token-heavy work
+- ["Did this branch land?" — ask the forge, not an LLM](feedback_branch_landed_ask_the_forge_not_an_llm.md) — `gh pr list --state merged --head <branch>` is cheaper AND stronger than a Codex diff read (which t …
 - [Delegate token-heavy REVIEW to Codex (not authoring)](feedback_delegate_token_heavy_to_codex.md) — `submit-to-codex.sh` (`env -u CLAUDECODE`); verify output exists
 - [Agent CAN --no-verify push a feature branch (not main)](feedback_prepush_no_verify_allowed_on_feature_branch.md) — auto-deny is default-branch-specific
 - [Check issue state before implementing](feedback_check_issue_state_before_implementing_on_detached_head.md) — branch from origin/main + `gh issue view` + PR search FIRST
@@ -105,7 +109,7 @@
 - [Emails are ephemeral; strategy repo is SSOT](feedback_emails_are_ephemeral_strategy_repo_is_ssot.md) — durable record → `aceengineer-strategy`
 - [FDAS team roster](reference_fdas_team_members.md) — Shilling (Pres), White (EVP), Achanta (VP Eng), Hyatt (VP D&C), Ivers (chairman)
 - [Headless Chrome HTML→PDF image gotchas](reference_headless_chrome_pdf_image_gotchas.md) — `--print-to-pdf` drops file:// images; use base64 data-URIs
-- [Headless Chrome browsing on ace-linux-1](reference_headless_chrome_browsing_ace_linux_1.md) — no display at all; page loads hang without `--password-store=basic`; Claude extension can't connect headless; Collide blocked at Cloudflare
+- [Headless Chrome browsing on ace-linux-1](reference_headless_chrome_browsing_ace_linux_1.md) — no display at all; page loads hang without `--password-store=basic`; Claude extension can't connect headless …
 - [rclone + Google Drive on this box](reference_rclone_gdrive_setup.md) — remote `gdrive:` OAuth-authorized; throttle `--tpslimit`
 - [Claude hooks cannot see token/cost spend](reference_claude_hooks_cannot_see_spend.md) — hooks enforce tool-COUNT ceilings only
 - [digitalmodel python env](reference_digitalmodel_python_env_venv.md) — use `.venv/bin/python` not `uv run`
