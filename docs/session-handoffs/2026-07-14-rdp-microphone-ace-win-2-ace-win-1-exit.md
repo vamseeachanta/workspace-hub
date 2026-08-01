@@ -1,4 +1,4 @@
-# Session handoff — RDP microphone WS014 to RDS02 (2026-07-14)
+# Session handoff — RDP microphone ace-win-2 to ace-win-1 (2026-07-14)
 
 **Issue:** [workspace-hub#3524](https://github.com/vamseeachanta/workspace-hub/issues/3524)
 
@@ -8,8 +8,8 @@
 
 ## Outcome
 
-The fault is isolated to RDP client negotiation: RDS02 permits audio capture and
-its required services are healthy, but WS014 negotiates playback channels only.
+The fault is isolated to RDP client negotiation: ace-win-1 permits audio capture and
+its required services are healthy, but ace-win-2 negotiates playback channels only.
 No remote capture endpoint or audio-input virtual channel exists in the active
 RDS session.
 
@@ -32,7 +32,7 @@ has not passed the required plan, adversarial-review, and user-approval gates.
 - Microsoft reference:
   <https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-properties>
 
-## Verified RDS02 evidence
+## Verified ace-win-1 evidence
 
 Environment:
 
@@ -82,7 +82,7 @@ without a runtime error.
 
 ## Exact next checkpoint
 
-Start on ace-win-2, not RDS02. First read issue #3524 and revalidate live state.
+Start on ace-win-2, not ace-win-1. First read issue #3524 and revalidate live state.
 Then run the client audit against the exact RDP profile that the user launches:
 
 ```powershell
@@ -113,9 +113,9 @@ Only after inspecting the audit output, use the guarded repair if appropriate:
   -ResetConsent
 ```
 
-Fully sign out of RDS02, close all RDP client windows, reconnect using the
+Fully sign out of ace-win-1, close all RDP client windows, reconnect using the
 audited profile, expand **Show Details**, and permit microphones. Then verify
-inside RDS02:
+inside ace-win-1:
 
 ```powershell
 .\Repair-RdpMicrophone.ps1 -Role Server

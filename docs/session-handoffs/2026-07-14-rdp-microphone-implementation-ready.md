@@ -1,4 +1,4 @@
-# RDP microphone WS014 to RDS02 — implementation-ready handoff
+# RDP microphone ace-win-2 to ace-win-1 — implementation-ready handoff
 
 Issue: https://github.com/vamseeachanta/workspace-hub/issues/3524
 
@@ -23,7 +23,7 @@ policy. Mutations are limited to an explicit classic `.rdp` capture property and
 exact checksummed target-consent reset/restore. Profile and consent rollback paths are
 printed in Human mode.
 
-## Verification completed on RDS02
+## Verification completed on ace-win-1
 
 - Focused suite: `26 passed`
 - Both PowerShell files: Windows PowerShell 5.1 parser pass
@@ -34,9 +34,9 @@ printed in Human mode.
 - Existing readiness bundle: 31 tests passed and 6 unrelated tests could not launch
   `bash` because Git Bash is not installed/available on this host
 
-## Next operator steps on WS014
+## Next operator steps on ace-win-2
 
-Run from the same commit on WS014:
+Run from the same commit on ace-win-2:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1 -OutputFormat Human
@@ -46,7 +46,7 @@ Identify the actual client/configuration source. For an explicitly confirmed cla
 profile, preview and apply only if the audit supports it:
 
 ```powershell
-$rdp = "$env:USERPROFILE\Desktop\RDS02.rdp"
+$rdp = "$env:USERPROFILE\Desktop\ace-win-1.rdp"
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource $rdp -RdpFile $rdp -Repair -WhatIf -OutputFormat Human
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource $rdp -RdpFile $rdp -Repair -OutputFormat Human
 ```
@@ -55,7 +55,7 @@ Do not apply the classic-profile repair to MSRDC or Windows App. If cached resou
 consent is the evidence-selected fault, use the runbook's exact target reset with a
 state directory outside the repository.
 
-Then save work, fully sign out of RDS02, close all client instances, reconnect with
+Then save work, fully sign out of ace-win-1, close all client instances, reconnect with
 microphone resources enabled, and require:
 
 1. Active `Remote Audio` under `mmsys.cpl -> Recording`.

@@ -1,4 +1,4 @@
-# RDP microphone redirection: WS014 to RDS02
+# RDP microphone redirection: ace-win-2 to ace-win-1
 
 Use this runbook when playback works in an RDP session but `Remote Audio` is absent
 under **Sound > Recording**, applications cannot record, or `Win+H` does nothing.
@@ -7,7 +7,7 @@ Services, sign out users, or write microphone privacy and machine policy.
 
 ## 1. Audit both ends
 
-On WS014, in a normal PowerShell window owned by the connecting user:
+On ace-win-2, in a normal PowerShell window owned by the connecting user:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1 -OutputFormat Human
@@ -16,10 +16,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-micropho
 If classic `mstsc.exe` is launched with a specific profile, audit that exact file:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1 -RdpFile "$env:USERPROFILE\Desktop\RDS02.rdp"
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1 -RdpFile "$env:USERPROFILE\Desktop\ace-win-1.rdp"
 ```
 
-Inside the current RDS02 session:
+Inside the current ace-win-1 session:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Server -OutputFormat Human
@@ -35,10 +35,10 @@ For classic `mstsc.exe`, repair an explicitly identified `.rdp` file:
 
 ```powershell
 # Preview first; this creates no candidate, backup, or report.
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource "$env:USERPROFILE\Desktop\RDS02.rdp" -RdpFile "$env:USERPROFILE\Desktop\RDS02.rdp" -Repair -WhatIf -OutputFormat Human
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource "$env:USERPROFILE\Desktop\ace-win-1.rdp" -RdpFile "$env:USERPROFILE\Desktop\ace-win-1.rdp" -Repair -WhatIf -OutputFormat Human
 
 # Apply: only audiocapturemode is canonicalized to audiocapturemode:i:1.
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource "$env:USERPROFILE\Desktop\RDS02.rdp" -RdpFile "$env:USERPROFILE\Desktop\RDS02.rdp" -Repair -OutputFormat Human
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource "$env:USERPROFILE\Desktop\ace-win-1.rdp" -RdpFile "$env:USERPROFILE\Desktop\ace-win-1.rdp" -Repair -OutputFormat Human
 ```
 
 `-ClientType Mstsc` and `-ConfigurationSource` are an explicit operator assertion that
@@ -73,12 +73,12 @@ and AppPrivacy policy. The tool deliberately does not write those values.
 
 ## 3. Reconnect and prove transport
 
-1. Save work and fully **sign out** of RDS02; disconnecting alone is insufficient.
-2. Close every RDP client instance on WS014.
+1. Save work and fully **sign out** of ace-win-1; disconnecting alone is insufficient.
+2. Close every RDP client instance on ace-win-2.
 3. Reopen the exact audited connection. For classic Remote Desktop Connection, expand
    **Show Options > Local Resources > More** and select **Microphones and other audio
    recording devices**. Accept the resource-security prompt for the exact target.
-4. In the new RDS02 session, run `mmsys.cpl`. Under **Recording**, require an active
+4. In the new ace-win-1 session, run `mmsys.cpl`. Under **Recording**, require an active
    `Remote Audio` or `Remote Audio Microphone` endpoint.
 5. In Sound Recorder, Teams, or the intended browser/application, select that input and
    record 3-5 seconds. Play it back. This recording is the decisive end-to-end proof.

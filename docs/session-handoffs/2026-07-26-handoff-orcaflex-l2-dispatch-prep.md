@@ -26,7 +26,7 @@ Measured from `queue/heartbeat/*.json` + `queue/results/*.json` in the queue clo
 | Host | State 2026-07-26 |
 |---|---|
 | **ace-win-1** (RDS-002) | **Healthy executor** — current heartbeat, `code_sha 2027c64`, 3× `aqwa-diffraction-solve` rc=0 on 07-13 / 07-17 / 07-18 with returned files. The "No module named digitalmodel" break the owner was fixing is fixed. Per [dm#1553](https://github.com/vamseeachanta/digitalmodel/issues/1553): 64 cores / 256 GiB, OrcaFlex + OrcaWave + AQWA + ANSYS licensed. |
-| ace-win-2 (WS014) | **Agent down** since `2026-07-13T21:37:48Z` (~318 h). Alarm has fired every cycle since; the log is ~300 KB of the same finding. |
+| ace-win-2 (ace-win-2) | **Agent down** since `2026-07-13T21:37:48Z` (~318 h). Alarm has fired every cycle since; the log is ~300 KB of the same finding. |
 
 This inverts the standing guidance ("ace-win-1 broken, dispatch to ace-win-2"). **Re-verify heartbeat + recent results before choosing a host — this pair has now flipped twice.** Owner directive still holds: address hosts explicitly with `--host`, never the default lane.
 
