@@ -97,7 +97,7 @@ _None._
 - [workspace-hub#32](https://github.com/vamseeachanta/workspace-hub/issues/32) — WRK-1024: chore(harness): increase context window limits for Claude and Codex _(agent: `agent:codex`, priority: `MEDIUM`, domains: `domain:ai-config`; labels: enhancement, priority:medium, cat:harness, domain:ai-config, agent:codex)_
 - [workspace-hub#33](https://github.com/vamseeachanta/workspace-hub/issues/33) — WRK-1027: DNV-RP-B401 real-world benchmark validation: GOM jacket, FST hull, deepwater RBS _(agent: `agent:claude`, priority: `MEDIUM`, domains: `domain:cathodic-protection`; labels: enhancement, priority:medium, cat:engineering, domain:cathodic-protection)_
 - [workspace-hub#35](https://github.com/vamseeachanta/workspace-hub/issues/35) — WRK-1048: CV gap analysis + repo project alignment for Power Generation Controls Engineer role _(agent: `agent:claude`, priority: `HIGH`, domains: `domain:cv-strategy`; labels: enhancement, priority:high, domain:cv-strategy)_
-- [workspace-hub#37](https://github.com/vamseeachanta/workspace-hub/issues/37) — WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up) _(agent: `agent:codex`, priority: `MEDIUM`, domains: `domain:ai-config`; labels: enhancement, priority:medium, cat:harness, domain:ai-config, agent:codex)_
+- [workspace-hub#37](https://github.com/vamseeachanta/workspace-hub/issues/37) — WRK-1051: chore(harness): verify Codex config on ace-win-1 (WRK-1024 follow-up) _(agent: `agent:codex`, priority: `MEDIUM`, domains: `domain:ai-config`; labels: enhancement, priority:medium, cat:harness, domain:ai-config, agent:codex)_
 - … 763 more in data artifact / dashboard filters
 
 ### Done / Recently Closed (50)

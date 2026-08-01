@@ -91,9 +91,20 @@ def test_ace_win_now_managed(registry):
 
 
 def test_resolve_machine_id_via_alias_and_hostname(registry):
-    """The real Windows hostname (an old alias, often upper-case) must resolve to ace-win-*."""
-    assert hr.resolve_machine_id(registry, "ACMA-ANSYS05") == "ace-win-1"
-    assert hr.resolve_machine_id(registry, "acma-ws014") == "ace-win-2"
+    """Every alias a machine declares must resolve to that machine, in any case.
+
+    Asserted as a property over `hostname_aliases` rather than against pinned literals:
+    registry.yaml is the SSOT for which identifiers a machine answers to (a real Windows
+    computer name is declared there so host detection resolves), and this test must keep
+    testing the resolver, not a copy of the registry's current contents.
+    """
+    for mid in ("ace-win-1", "ace-win-2"):
+        aliases = registry[mid].get("hostname_aliases") or []
+        assert aliases, f"{mid} must declare at least one back-compat alias"
+        for alias in aliases:
+            assert hr.resolve_machine_id(registry, alias) == mid
+            # Windows reports hostnames upper-case; resolution must be case-insensitive.
+            assert hr.resolve_machine_id(registry, str(alias).upper()) == mid
     assert hr.resolve_machine_id(registry, "licensed-win-1") == "ace-win-1"   # WF0 back-compat alias
     assert hr.resolve_machine_id(registry, "ace-win-1") == "ace-win-1"        # new hostname
     assert hr.resolve_machine_id(registry, "ace-linux-1") == "dev-primary"    # linux hostname

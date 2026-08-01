@@ -154,7 +154,7 @@ def test_load_dir_skips_malformed(tmp_path):
 ROSTER = [
     {"machine": "dev-primary", "hostname": "ace-linux-1", "aliases": ["vamsee-linux1"]},
     {"machine": "dev-secondary", "hostname": "ace-linux-2", "aliases": []},
-    {"machine": "ace-win-1", "hostname": "acma-ansys05", "aliases": []},
+    {"machine": "ace-win-1", "hostname": "licensed-win-1", "aliases": []},
 ]
 
 
@@ -178,7 +178,7 @@ def test_absent_fingerprint_silent_without_roster():
 def test_all_roster_machines_present_no_absent_divergence():
     fps = [_fp("full", hostname="ace-linux-1"),
            _fp("contribute", hostname="ace-linux-2"),
-           _fp("contribute-minimal", hostname="acma-ansys05")]
+           _fp("contribute-minimal", hostname="licensed-win-1")]
     divs = ec.compare(fps, expected_machines=ROSTER)
     assert not [d for d in divs if d["code"] == "absent-fingerprint"]
 
@@ -235,9 +235,11 @@ def test_minimal_registry_parser_matches_needed_fields():
 def test_same_role_boxes_keep_distinct_labels_via_machine_id():
     """#3516: divergence 'boxes' dicts key by label — two contribute-minimal boxes
     must not collapse into one key. machine_id wins over role."""
-    fps = [_fp("contribute-minimal", hostname="acma-ansys05",
+    # hostname deliberately DIFFERS from machine_id: if the impl regressed to keying
+    # `boxes` by hostname (or role), these assertions must still catch it.
+    fps = [_fp("contribute-minimal", hostname="licensed-win-1",
                machine_id="ace-win-1", last_publish_duration_s=500.0),
-           _fp("contribute-minimal", hostname="acma-ws014",
+           _fp("contribute-minimal", hostname="licensed-win-2",
                machine_id="ace-win-2", last_publish_duration_s=700.0)]
     slow = [d for d in ec.compare(fps) if d["code"] == "publish-slow"]
     assert len(slow) == 2

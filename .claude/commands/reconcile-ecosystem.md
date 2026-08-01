@@ -25,7 +25,7 @@ If flags look absent/exploratory, treat as the read-only report.
 
 ### 1. Resolve context
 
-!`WS="$(git rev-parse --show-toplevel 2>/dev/null || echo /mnt/local-analysis/workspace-hub)"; echo "WS=$WS"; H="$(hostname | tr '[:upper:]' '[:lower:]')"; case "$H" in ace-linux-1*) M=dev-primary;; ace-linux-2*) M=dev-secondary;; *macbook*) M=macbook-portable;; ace-win-1*|acma-ansys05*) M=ace-win-1;; ace-win-2*|acma-ws014*) M=ace-win-2;; *) M="$H";; esac; echo "machine=$M"`
+!`WS="$(git rev-parse --show-toplevel 2>/dev/null || echo /mnt/local-analysis/workspace-hub)"; echo "WS=$WS"; H="$(hostname | tr '[:upper:]' '[:lower:]')"; case "$H" in ace-linux-1*) M=dev-primary;; ace-linux-2*) M=dev-secondary;; *macbook*) M=macbook-portable;; ace-win-1*) M=ace-win-1;; ace-win-2*) M=ace-win-2;; *) M="$H";; esac; echo "machine=$M"`
 
 This machine reconciles **its own** equality column. On `dev-primary` the driver auto-locks
 destructive disposal (`DESTRUCTIVE_OK=0`) — it owns the daily-cleanup cron + intentional worktrees.

@@ -117,13 +117,17 @@ Path placeholders used in the rows below (see canonical values in the reference 
 
 ---
 
-### acma-ws014 (Windows, on-site mkt-a workstation)
+### ace-win-2 (Windows, on-site mkt-a workstation)
+
+> Stale as written: this row was captured from BUSINESS_BRAIN.md before the registry alias was known.
+> `ace-win-2` is the canonical role id of the box described as `licensed-win-2` above — reconcile the
+> two sections rather than treating them as separate machines.
 
 | Dimension | Value |
 |---|---|
 | Programs / licenses | **unknown** — registry entry: **none**; not in `config/workstations/registry.yaml` |
 | AI-provider auth | **unverified** — not in registry |
-| Repos | **unknown** — not in registry; likely `mkt-a` per machine name |
+| Repos | **unknown** — not in registry; likely `mkt-a` per the on-site siting |
 | Smoke / run command | N/A — no registry entry, no SSH configuration |
 | Dispatch readiness | **blocked** — **add to `config/workstations/registry.yaml` before scheduling work**. Appears only in BUSINESS_BRAIN.md §Machines table |
 

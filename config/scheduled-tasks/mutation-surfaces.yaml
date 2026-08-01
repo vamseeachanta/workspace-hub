@@ -271,4 +271,4 @@ resolved_dispositions:
     # gpu-claw, macbook-portable), which changes the governed input union again.
     # Reviewed: the doctor is an idempotent repair task composing blessed installers; it
     # mutates no scheduler state, so the #3475 disposition still holds.
-    source_digest: afb467d0a5766d7b14edafbd9cddc5a0cf7409841cbfad8ea1d369f952f81019
+    source_digest: 0f7b1c234800aaee04c4a06e86c129aad6a97d3b25b9ec3287839fb83291ef62

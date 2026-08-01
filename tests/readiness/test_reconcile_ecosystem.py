@@ -108,7 +108,14 @@ def test_read_only_smoke_run_mutates_nothing(tmp_path):
 
 def test_machine_slug_mapping_matches_collector():
     # The slug case-map must mirror collect-equality.sh so a box reconciles its own column.
-    for host_alias, slug in [("ace-linux-1", "dev-primary"), ("ace-linux-2", "dev-secondary"),
-                             ("acma-ansys05", "ace-win-1"), ("acma-ws014", "ace-win-2")]:
+    for host_alias, slug in [("ace-linux-1", "dev-primary"), ("ace-linux-2", "dev-secondary")]:
         assert slug in TEXT
         assert host_alias in TEXT
+    # Windows boxes: assert the SHAPE of the case arm (own hostname -> own slug, plus the
+    # WF0 licensed-win-* back-compat alias) rather than pinning the real computer names —
+    # config/workstations/registry.yaml is the SSOT for hostname aliases.
+    for n in (1, 2):
+        arm = re.search(rf'^\s*ace-win-{n}\*[^)]*\)\s*MACHINE="ace-win-{n}"', TEXT, re.M)
+        assert arm, f"ace-win-{n} must have a case arm mapping its own hostname to its slug"
+        assert f"licensed-win-{n}*" in arm.group(0), \
+            f"ace-win-{n} case arm must keep the licensed-win-{n} back-compat alias"

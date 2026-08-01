@@ -493,7 +493,7 @@
   },
   {
     "number": 1510,
-    "title": "Verify Claude Desktop install: ACMA-WS014"
+    "title": "Verify Claude Desktop install: ace-win-2"
   },
   {
     "number": 1509,
@@ -1401,7 +1401,7 @@
   },
   {
     "number": 52,
-    "title": "WRK-1133: Add acma-ws014 to workstations documentation and routing"
+    "title": "WRK-1133: Add ace-win-2 to workstations documentation and routing"
   },
   {
     "number": 50,
@@ -1449,7 +1449,7 @@
   },
   {
     "number": 37,
-    "title": "WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)"
+    "title": "WRK-1051: chore(harness): verify Codex config on ace-win-1 (WRK-1024 follow-up)"
   },
   {
     "number": 35,

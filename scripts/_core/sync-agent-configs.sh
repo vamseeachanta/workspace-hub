@@ -945,6 +945,57 @@ if os.path.exists(registry_path):
             r_root = cfg.get("workspace_root")
             if h_root and r_root and str(h_root) != str(r_root):
                 raise SystemExit(f"registry/harness workspace_root divergence for {candidate}: {r_root} != {h_root}")
+    # PRIVATE-TIER identity — reusing the EXISTING mechanism (#3571), not a new one.
+    #
+    # This repo is PUBLIC, so real hostnames were removed from registry.yaml's
+    # `hostname_aliases`. That field was load-bearing: the `else` branch below
+    # resolves a machine by matching socket.gethostname() against it, and the
+    # nightly cron (scripts/cron/harness-update.sh:346) invokes this script with
+    # NO explicit --machine. Without a replacement the unknown-host branch fires,
+    # GUESSES a workspace root, warns, and exits 0 — and harness-update.sh pipes
+    # this script through `grep -i hermes`, discarding the warning. Silent
+    # nightly degradation, indistinguishable from success.
+    #
+    # `scripts/readiness/lib/machine-identity.sh` already solves exactly this:
+    # boxes whose OS hostname must never appear in a public repo declare their
+    # fleet identity in an off-repo, gitignored file.
+    #
+    #   ~/.config/workspace-hub/machine-identity.yaml
+    #   override: WORKSPACE_HUB_MACHINE_IDENTITY
+    #
+    # Reused rather than reinvented. A second private-tier host map would be a
+    # second source of truth for one fact — the defect this epic exists to remove.
+    #
+    # Same contract as its resolve_identity_file(): absent file falls through;
+    # malformed or FOREIGN fails loud, never falls through, because a bad file
+    # silently minting the wrong machine is worse than no file at all.
+    # Diagnostics omit hostname VALUES — this stderr can reach tracked logs.
+    def identity_machine():
+        path = os.environ.get("WORKSPACE_HUB_MACHINE_IDENTITY") or os.path.join(
+            os.path.expanduser("~"), ".config", "workspace-hub",
+            "machine-identity.yaml")
+        if not os.path.exists(path):
+            return None
+        with open(path) as fh:
+            data = yaml.safe_load(fh) or {}
+        label = str(data.get("machine") or "").strip()
+        if not label:
+            raise SystemExit(
+                f"machine-identity: {path} lacks the required 'machine:' key")
+        # Validated against the REGISTRY, deliberately, rather than against a
+        # copied label list. machine-identity.sh already notes that its
+        # PowerShell mirror duplicates KNOWN_MACHINE_LABELS and needs a test to
+        # keep the two identical; a third copy would need a third such test.
+        if label not in machines:
+            raise SystemExit(
+                f"machine-identity: label in {path} is not a machine in the registry")
+        expected = str(data.get("expected_hostname") or "").strip().lower()
+        if expected and expected != host:
+            raise SystemExit(
+                f"machine-identity: expected_hostname in {path} does not match "
+                f"this box — refusing a copied identity file")
+        return label
+
     def machine_aliases(candidate, cfg):
         aliases = [str(candidate), str(cfg.get("hostname") or "")]
         aliases += [str(a) for a in (cfg.get("hostname_aliases") or [])]
@@ -964,6 +1015,12 @@ if os.path.exists(registry_path):
             if host in machine_aliases(candidate, cfg):
                 name = candidate
                 break
+        if name is None:
+            # Precedence matches machine-identity.sh: explicit > public map >
+            # identity file > fail. Consulted only AFTER the registry, so the
+            # off-repo file can never override a correctly-mapped host — it
+            # exists solely for hostnames the public map must not know.
+            name = identity_machine()
         if name is None:
             name = f"local-fallback-{host}"
             workspace_root = str(pathlib.Path(registry_path).resolve().parents[2])
