@@ -698,3 +698,359 @@ def test_the_report_says_armed_when_it_genuinely_is(tmp_path, monkeypatch, capsy
     labels.write_text(json.dumps({}))
     RC.main(["--records", str(tmp_path), "--labels-json", str(labels), "--apply"])
     assert "ARMED" in capsys.readouterr().out
+
+
+# --------------------------------------------------------------------------
+# the vocabulary: created explicitly, separately, and never by a reconcile pass
+#
+# `dispatch:ready` is the only one of the four that exists on the live repo. The
+# other three land with the WRITER — records.py says why: a vocabulary created
+# ahead of a writer turns every WALL in chain.py into a clean-looking `0` while
+# nothing writes them, so presence of vocabulary reads as capability.
+# --------------------------------------------------------------------------
+
+
+class FakeLabelGh:
+    """A `gh` that answers `label list` and records every `label create`.
+
+    Same injection point `apply` uses. Nothing here touches the network, and a
+    call this class does not recognise raises rather than returning a plausible
+    success — an unrecognised command answered with returncode 0 would let a
+    changed call shape pass unnoticed.
+    """
+
+    def __init__(self, existing=(), list_rc=0, list_stdout=None,
+                 create_rc=0, create_stderr=""):
+        self.existing = list(existing)
+        self.list_rc = list_rc
+        self.list_stdout = list_stdout
+        self.create_rc = create_rc
+        self.create_stderr = create_stderr
+        self.calls: list[list[str]] = []
+
+    @property
+    def creates(self) -> list[list[str]]:
+        return [c for c in self.calls if c[:2] == ["label", "create"]]
+
+    def __call__(self, args, **kw):
+        self.calls.append(list(args))
+        if args[:2] == ["label", "list"]:
+            stdout = (json.dumps([{"name": n} for n in self.existing])
+                      if self.list_stdout is None else self.list_stdout)
+            return subprocess.CompletedProcess(args=args, returncode=self.list_rc,
+                                               stdout=stdout, stderr="")
+        if args[:2] == ["label", "create"]:
+            return subprocess.CompletedProcess(args=args, returncode=self.create_rc,
+                                               stdout="", stderr=self.create_stderr)
+        raise AssertionError(f"unexpected gh call: {args}")
+
+
+ALL_STATE_LABELS = tuple(f"dispatch:{s}" for s in ["ready", "active", "done", "blocked"])
+
+
+def _created_names(gh) -> list[str]:
+    return [c[2] for c in gh.creates]
+
+
+def test_the_labels_created_are_the_ones_the_lifecycle_implies(monkeypatch, tmp_path):
+    """Only `dispatch:ready` exists today; the other three are why this exists."""
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=["dispatch:ready", "domain:marine"])
+    result = RC.ensure_labels("owner/name", gh_fn=gh)
+    assert set(_created_names(gh)) == {"dispatch:active", "dispatch:done",
+                                       "dispatch:blocked"}
+    assert set(result["created"]) == {"dispatch:active", "dispatch:done",
+                                      "dispatch:blocked"}
+    assert result["present"] == ("dispatch:ready",)
+    assert "domain:marine" not in _created_names(gh), "it creates dispatch: only"
+
+
+def test_the_set_is_derived_from_records_STATES_not_a_typed_out_list(monkeypatch):
+    """A second hand-maintained list is a second source of truth, and it drifts.
+
+    Adding a state to the lifecycle with no style entry must REFUSE here. A
+    hardcoded four-name list would create its four and notice nothing, leaving
+    the reconciler projecting into a label nothing ever made — which surfaces
+    later as a per-issue `gh issue edit` failure and gets blamed on GitHub.
+    """
+    monkeypatch.setenv(FLAG, "1")
+    monkeypatch.setattr(R, "STATES", tuple(R.STATES) + ("paused",))
+    gh = FakeLabelGh(existing=[])
+    with pytest.raises(ValueError) as exc:
+        RC.ensure_labels("owner/name", gh_fn=gh)
+    assert "paused" in str(exc.value), "the error must name the state, or it is a hunt"
+    assert gh.creates == [], "it created a partial vocabulary before refusing"
+
+
+def test_every_lifecycle_state_has_a_style_to_be_created_with():
+    """The other direction of the same guarantee: no state is left unpaintable."""
+    labels = [name for name, _, _ in RC.label_specs()]
+    assert labels == [RC.LABEL_FOR_STATE[s] for s in R.STATES]
+    assert set(labels) == set(ALL_STATE_LABELS)
+
+
+def test_creating_a_label_that_already_exists_is_a_no_op(monkeypatch):
+    """Re-running must be safe, and must not report work it did not do."""
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=list(ALL_STATE_LABELS))
+    result = RC.ensure_labels("owner/name", gh_fn=gh)
+    assert gh.creates == [], "it tried to re-create labels that were already there"
+    assert result["created"] == ()
+    assert set(result["present"]) == set(ALL_STATE_LABELS)
+    assert result["failed"] == ()
+
+
+def test_running_it_twice_creates_nothing_the_second_time(monkeypatch):
+    """Idempotence end to end, against a repo that remembers the first run."""
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=["dispatch:ready"])
+    first = RC.ensure_labels("owner/name", gh_fn=gh)
+    gh.existing += list(first["created"])
+    second = RC.ensure_labels("owner/name", gh_fn=gh)
+    assert len(first["created"]) == 3
+    assert second["created"] == ()
+    assert set(second["present"]) == set(ALL_STATE_LABELS)
+
+
+def test_a_label_won_by_a_racing_operator_is_present_not_failed(monkeypatch):
+    """Two people arm the same command a second apart; that is not a failure.
+
+    The list read and the create are not atomic, so `gh` answering "already
+    exists" is the normal outcome of a race. Counting it as an error sends
+    someone looking for a problem that does not exist — and teaches operators
+    that a non-zero exit from this command can be ignored.
+    """
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=[], create_rc=1,
+                     create_stderr='HTTP 422: Label "dispatch:done" already exists')
+    result = RC.ensure_labels("owner/name", gh_fn=gh)
+    assert result["created"] == ()
+    assert set(result["present"]) == set(ALL_STATE_LABELS)
+    assert result["failed"] == ()
+
+
+def test_a_real_creation_failure_is_reported_not_absorbed(monkeypatch):
+    """"Already exists" is the ONLY non-zero exit that means success.
+
+    Absorbing the rest would report a vocabulary that is not there, and the next
+    reconcile pass would fail per issue on a label nobody created.
+    """
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=[], create_rc=1, create_stderr="HTTP 403: Forbidden")
+    result = RC.ensure_labels("owner/name", gh_fn=gh)
+    assert result["created"] == () and result["present"] == ()
+    assert [name for name, _ in result["failed"]] == list(ALL_STATE_LABELS)
+    assert "403" in result["failed"][0][1], "the reason must survive to the operator"
+
+
+def test_created_and_already_present_are_reported_as_different_facts(monkeypatch):
+    """"created 0" and "all four were already there" are not the same claim.
+
+    Conflated into one "4 labels ok", a run pointed at the wrong repo — or one
+    that created nothing because the gate silently did nothing — reads exactly
+    like a successful first run.
+    """
+    monkeypatch.setenv(FLAG, "1")
+    fresh = RC.format_label_creation(
+        RC.ensure_labels("owner/name", gh_fn=FakeLabelGh(existing=[])))
+    rerun = RC.format_label_creation(
+        RC.ensure_labels("owner/name", gh_fn=FakeLabelGh(existing=list(ALL_STATE_LABELS))))
+    assert "created 4" in fresh and "already present 0" in fresh
+    assert "created 0" in rerun and "already present 4" in rerun
+    assert fresh != rerun, "the two runs are indistinguishable in the report"
+    for name in ALL_STATE_LABELS:
+        assert f"CREATED  {name}" in fresh
+        assert f"PRESENT  {name}" in rerun
+
+
+# --------------------------------------------------------------------------
+# creation is a mutation of a public repo, so it is behind the SAME gate
+# --------------------------------------------------------------------------
+
+
+def test_ensure_labels_is_refused_when_the_flag_is_unset(tmp_path, trapped):
+    """A creation path with its own gate — or none — is how the one control
+    everybody reasons about stops covering what they assume it covers."""
+    gh = FakeLabelGh(existing=[])
+    with pytest.raises(SystemExit) as exc:
+        RC.ensure_labels("owner/name", gh_fn=gh)
+    assert FLAG in str(exc.value), "the error must name the flag, or nobody can fix it"
+    assert gh.calls == [], "the gate ran after reaching gh"
+
+
+@pytest.mark.parametrize("value", ["0", "false", "no", "off", "", " "])
+def test_ensure_labels_fails_closed_on_a_non_affirmative_value(monkeypatch, value):
+    """A truthiness check would read "0" and "false" as permission to write."""
+    monkeypatch.setenv(FLAG, value)
+    gh = FakeLabelGh(existing=[])
+    with pytest.raises(SystemExit):
+        RC.ensure_labels("owner/name", gh_fn=gh)
+    assert gh.calls == []
+
+
+def test_an_unreadable_label_list_refuses_rather_than_creating_everything(monkeypatch):
+    """route.existing_labels returns {} on failure; here that is an outage
+    reported as four freshly created labels."""
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=[], list_rc=1)
+    with pytest.raises(RuntimeError):
+        RC.ensure_labels("owner/name", gh_fn=gh)
+    assert gh.creates == []
+
+
+def test_unparseable_label_output_is_not_read_as_no_labels(monkeypatch):
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=[], list_stdout="not json at all")
+    with pytest.raises(RuntimeError):
+        RC.ensure_labels("owner/name", gh_fn=gh)
+    assert gh.creates == []
+
+
+def test_a_possibly_truncated_label_page_refuses(monkeypatch):
+    """A label past the page limit reads as absent, and the run would report
+    creating something that was already there."""
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=[f"filler-{i}" for i in range(500)])
+    with pytest.raises(RuntimeError):
+        RC.ensure_labels("owner/name", gh_fn=gh)
+    assert gh.creates == []
+
+
+def test_an_existing_definition_is_never_overwritten(monkeypatch):
+    """No --force. An existing label's colour and description may follow a
+    convention this module does not know about — and 867 issues already carry
+    `dispatch:ready`."""
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=[])
+    RC.ensure_labels("owner/name", gh_fn=gh)
+    for call in gh.creates:
+        assert "--force" not in call
+        assert "--color" in call and "--description" in call
+        assert "--repo" in call and "owner/name" in call
+
+
+def test_each_label_describes_what_the_STATE_means(monkeypatch):
+    """A description of `done` that says "done" is noise in a tooltip.
+
+    route.py's generic convention would render exactly that — "Dispatch: done" —
+    and `done` is the one that misleads, because it means ran-to-completion, not
+    succeeded. The description must carry information the name does not.
+    """
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=[])
+    RC.ensure_labels("owner/name", gh_fn=gh)
+    seen = {}
+    for call in gh.creates:
+        seen[call[2]] = (call[call.index("--color") + 1],
+                         call[call.index("--description") + 1])
+    assert set(seen) | {"dispatch:ready"} == set(ALL_STATE_LABELS)
+    for name, (colour, description) in seen.items():
+        state = name.split(":", 1)[1]
+        words = description.lower().replace(",", " ").split()
+        assert len(words) > 4, f"{name}: a description that short cannot say much"
+        assert description.lower() not in {state, name, f"dispatch: {state}"}, (
+            f"{name}: the description only repeats the label's own name")
+        assert len(description) <= RC.MAX_DESCRIPTION, (
+            f"{name}: GitHub truncates past {RC.MAX_DESCRIPTION} chars")
+        assert len(colour) == 6 and int(colour, 16) >= 0
+    colours = {c for c, _ in seen.values()}
+    assert len(colours) == len(seen), "two states painted the same colour"
+
+
+# --------------------------------------------------------------------------
+# and the constraint that governs the whole slice: nothing automatic
+# --------------------------------------------------------------------------
+
+
+def test_a_normal_reconcile_and_apply_run_creates_no_labels(monkeypatch, tmp_path):
+    """Labels land LAST, with the writer.
+
+    records.py states the reason: created earlier, they turn every WALL in
+    chain.py into a clean-looking `0` while nothing writes them — presence of
+    vocabulary reading as capability. So even an ARMED apply must not touch the
+    label vocabulary, only the issues' membership of it.
+    """
+    monkeypatch.setenv(FLAG, "1")
+    monkeypatch.setattr(RC, "ensure_labels", _boom)
+    monkeypatch.setattr(RC, "existing_labels", _boom)
+    _done(tmp_path)
+    _stale(tmp_path, issue=OTHER, ttl=30)
+    gh = FakeGh()
+    report = RC.reconcile(tmp_path, {ISSUE: {"dispatch:ready"}},
+                          now=_clock(NOW + timedelta(hours=2)))
+    RC.apply(report, tmp_path, gh_fn=gh)
+    assert gh.calls, "the test proves nothing if the write path did not run"
+    for call in gh.calls:
+        assert call[0] != "label", f"a reconcile pass created vocabulary: {call}"
+
+
+def test_the_dry_run_cli_creates_no_labels(tmp_path, trapped, monkeypatch, capsys):
+    monkeypatch.setattr(RC, "ensure_labels", _boom)
+    _done(tmp_path)
+    labels = tmp_path / "labels.json"
+    labels.write_text(json.dumps({ISSUE: ["dispatch:ready"]}), encoding="utf-8")
+    assert RC.main(["--records", str(tmp_path), "--labels-json", str(labels)]) == 0
+    assert "CREATED" not in capsys.readouterr().out
+
+
+def test_the_live_repo_cli_path_creates_no_labels(tmp_path, monkeypatch, capsys):
+    """`--repo` names a repository, which is the one input creation would need.
+
+    That makes it the tempting place to "helpfully" ensure the vocabulary on the
+    way past — and it is the same ordering error, arriving through the argument
+    the operator supplied for a read.
+    """
+    monkeypatch.setattr(RC, "ensure_labels", _boom)
+    monkeypatch.setattr(RC, "existing_labels", _boom)
+    monkeypatch.setattr(ROUTE, "fetch_open_issues",
+                        lambda repo: {"1885": {"dispatch:ready"}}, raising=False)
+    _done(tmp_path)
+    assert RC.main(["--records", str(tmp_path),
+                    "--repo", "vamseeachanta/digitalmodel"]) == 0
+    out = capsys.readouterr().out
+    assert RC.DRIFT.upper() in out, "the read path itself must still have run"
+    assert "CREATED" not in out
+
+
+def test_the_cli_refuses_to_ensure_labels_during_a_reconcile_run(tmp_path, monkeypatch):
+    """Standalone by construction, not by convention.
+
+    A combined invocation would eventually be run for its side effect, and the
+    vocabulary would appear ahead of the writer — the exact ordering records.py
+    warns about.
+    """
+    monkeypatch.setenv(FLAG, "1")
+    monkeypatch.setattr(RC, "ensure_labels", _boom)
+    labels = tmp_path / "labels.json"
+    labels.write_text(json.dumps({}), encoding="utf-8")
+    with pytest.raises(SystemExit) as exc:
+        RC.main(["--records", str(tmp_path), "--labels-json", str(labels),
+                 "--ensure-labels", "owner/name"])
+    assert exc.value.code == 2
+
+
+def test_the_cli_ensure_labels_path_is_gated_too(monkeypatch, capsys):
+    monkeypatch.delenv(FLAG, raising=False)
+    monkeypatch.setattr(ROUTE, "gh", _boom, raising=False)
+    with pytest.raises(SystemExit) as exc:
+        RC.main(["--ensure-labels", "owner/name"])
+    assert FLAG in str(exc.value)
+
+
+def test_the_cli_ensure_labels_path_reports_what_it_did(monkeypatch, capsys):
+    monkeypatch.setenv(FLAG, "1")
+    gh = FakeLabelGh(existing=["dispatch:ready"])
+    monkeypatch.setattr(ROUTE, "gh", gh, raising=False)
+    assert RC.main(["--ensure-labels", "owner/name"]) == 0
+    out = capsys.readouterr().out
+    assert "created 3" in out and "already present 1" in out
+    assert "CREATED  dispatch:done" in out
+
+
+def test_reconcile_without_a_records_directory_still_refuses(tmp_path):
+    """Relaxing `--records` for the standalone path must not make it optional."""
+    labels = tmp_path / "labels.json"
+    labels.write_text(json.dumps({}), encoding="utf-8")
+    with pytest.raises(SystemExit) as exc:
+        RC.main(["--labels-json", str(labels)])
+    assert exc.value.code == 2
