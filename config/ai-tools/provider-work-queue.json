@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-31T21:21:18.242910Z",
+  "generated_at": "2026-08-01T01:21:12.440934Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-07-31T21:21:15.475586Z",
+  "scorecard_generated_at": "2026-08-01T01:21:10.403979Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -754,32 +754,6 @@
           "updatedAt": "2026-07-31T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3434,
-          "title": "feature: algorithm-scoped cross-run insights and decision briefs",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3434",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "type:follow-up",
-            "status:needs-plan",
-            "lane:claude",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-07-27T01:19:14Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3551,6 +3525,28 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3737,
+          "title": "bug(equality): Windows scheduler probe never runs - MSYS mangles schtasks leading-slash args (#3592 follow-on)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3737",
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:operations"
+          ],
+          "updatedAt": "2026-08-01T01:03:39Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]

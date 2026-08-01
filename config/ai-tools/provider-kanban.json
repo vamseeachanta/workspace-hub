@@ -36,6 +36,44 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "bug",
+          "priority:medium",
+          "cat:operations"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "bug(equality): Windows scheduler probe never runs - MSYS mangles schtasks leading-slash args (#3592 follow-on)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3737,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "bug(equality): Windows scheduler probe never runs - MSYS mangles schtasks leading-slash args (#3592 follow-on)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3737",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "priority:high",
           "cat:operations",
           "machine:dev-primary",
@@ -8120,56 +8158,52 @@
       "title": "bug: make hook installation worktree-aware",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3435",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:data",
-          "type:follow-up",
-          "status:needs-plan",
-          "lane:claude",
-          "domain:governance"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feature: algorithm-scoped cross-run insights and decision briefs"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3434,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feature: algorithm-scoped cross-run insights and decision briefs",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3434",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-07-31T21:21:20Z",
+  "generated_at": "2026-08-01T01:21:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:operations"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "bug(equality): Windows scheduler probe never runs - MSYS mangles schtasks leading-slash args (#3592 follow-on)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3737,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "bug(equality): Windows scheduler probe never runs - MSYS mangles schtasks leading-slash args (#3592 follow-on)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3737",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16265,48 +16299,6 @@
         "title": "bug: make hook installation worktree-aware",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3435",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "type:follow-up",
-            "status:needs-plan",
-            "lane:claude",
-            "domain:governance"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feature: algorithm-scoped cross-run insights and decision briefs"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3434,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feature: algorithm-scoped cross-run insights and decision briefs",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3434",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16317,9 +16309,9 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-07-31T21:21:15.475586Z",
+  "scorecard_generated_at": "2026-08-01T01:21:10.403979Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-07-31T21:21:15.342769Z",
+  "utilization_generated_at": "2026-08-01T01:21:10.263542Z",
   "warning_summary": {
     "approved_no_marker": 13,
     "approved_no_plan": 9,
