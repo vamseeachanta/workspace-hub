@@ -33,6 +33,17 @@ text claimed the path was disabled). The gate covers **record** writes too, not
 just label writes: this pass can transition a stale claim to `ready` or `blocked`,
 and a dry run that advances the state machine is not a dry run.
 
+## The vocabulary is created separately, and last
+
+Only `dispatch:ready` exists on the live repo; `active`, `done` and `blocked` do
+not. `ensure_labels()` creates them — but it is **not** reached by `reconcile()`,
+by `apply()`, or by this module's default CLI flow, and that omission is the
+point. records.py states it: creating the labels early "would turn every WALL in
+chain.py into a clean-looking `0` while nothing wrote them". A vocabulary that
+exists before a writer does is measured as capability; the gap closes on the
+dashboard while nothing at all has changed. So label creation is an explicit,
+separately-invoked, separately-armed operation.
+
 ## What it corrects, and what it refuses to
 
 - expired heartbeat  -> back to `ready`, reason "heartbeat expired"
@@ -68,10 +79,51 @@ import route  # noqa: E402
 
 DISPATCH_PREFIX = "dispatch:"
 
+
+def label_for(state: str) -> str:
+    """The projection rule, in ONE place.
+
+    Spelled out as a function because two expressions of "prefix + state" — one
+    building the lookup below, one building what `ensure_labels` creates — would
+    let the reconciler project into a label the creator never made.
+    """
+    return f"{DISPATCH_PREFIX}{state}"
+
+
 #: The projection itself. Built FROM `records.STATES` rather than typed out, so a
 #: new state cannot be added to the lifecycle without a label to project it into.
-LABEL_FOR_STATE = {state: f"{DISPATCH_PREFIX}{state}" for state in records.STATES}
+LABEL_FOR_STATE = {state: label_for(state) for state in records.STATES}
 STATE_LABELS = frozenset(LABEL_FOR_STATE.values())
+
+#: Colour and MEANING per state, for the labels `ensure_labels` creates. Keyed by
+#: state, never by label name, and consulted through `records.STATES` — a table
+#: of label names would be a second answer to "what states exist" and would drift
+#: from the first one silently.
+#:
+#: The description says what the STATE means, not what the label is called: a
+#: `dispatch:done` described as "Dispatch: done" (route.py's generic convention)
+#: is the tooltip equivalent of a blank — and `done` in particular is the one
+#: that misleads, because it means *ran to completion*, not *succeeded*.
+#: GitHub truncates descriptions past 100 characters, so they stay under it.
+STATE_LABEL_STYLE = {
+    "ready": ("0e8a16",
+              "Claimable: no host holds it and no run is in flight"),
+    "active": ("fbca04",
+               "A host holds a live claim; heartbeat still within the record's own ttl"),
+    "done": ("1d76db",
+             "Ran to completion and wrote a terminal record. NOT a claim that it succeeded"),
+    "blocked": ("b60205",
+                "Attempts exhausted; quarantined rather than requeued into a loop nobody watches"),
+}
+
+#: GitHub silently truncates a longer description, which would cut the `done`
+#: label's warning off mid-sentence — the half that carries the meaning.
+MAX_DESCRIPTION = 100
+
+#: `gh label create` on a name that already exists exits non-zero saying this.
+#: Two operators arming the same command a second apart must not turn into a
+#: reported failure that sends someone looking for a problem that does not exist.
+ALREADY_EXISTS = "already exists"
 
 #: Declared at the write boundary, exactly as `route.cmd_apply` declares `ai:`.
 #: `dispatch:` is not in routing-rules.yaml's `single` list because nothing used
@@ -456,6 +508,152 @@ def apply(report: Report, records_root, gh_fn=None) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# the vocabulary itself — explicit, separate, and never on an automatic path
+#
+# NOTHING in this section is called by `reconcile()`, `apply()`, or the default
+# CLI flow. See the module docstring: labels that exist before a writer does are
+# counted as capability, and every WALL in chain.py reads `0` while nothing has
+# actually advanced.
+# ---------------------------------------------------------------------------
+
+
+def label_specs() -> tuple[tuple[str, str, str], ...]:
+    """(label, colour, description) for every state the lifecycle can hold.
+
+    Walks `records.STATES` at CALL time. A hand-written list of four label names
+    would be a second source of truth for the lifecycle: adding a fifth state
+    would leave the reconciler projecting into a label nothing ever created, and
+    the symptom — `gh issue edit` failing on an unknown label, per issue, only
+    once one reached that state — would be blamed on GitHub.
+
+    Refuses on a state with no entry in `STATE_LABEL_STYLE` rather than inventing
+    a colour and a description: a label described by its own name teaches the
+    reader nothing, and a partial creation run that reports success is worse than
+    one that stops.
+    """
+    specs = []
+    for state in records.STATES:
+        style = STATE_LABEL_STYLE.get(state)
+        if style is None:
+            raise ValueError(
+                f"state {state!r} is in records.STATES but has no entry in "
+                f"STATE_LABEL_STYLE — refusing to create a label with an invented "
+                f"colour and a description that only repeats its own name. Add "
+                f"what the state MEANS, then re-run."
+            )
+        colour, description = style
+        if len(description) > MAX_DESCRIPTION:
+            raise ValueError(
+                f"description for {state!r} is {len(description)} chars; GitHub "
+                f"truncates past {MAX_DESCRIPTION} and would cut it mid-sentence"
+            )
+        specs.append((label_for(state), colour, description))
+    return tuple(specs)
+
+
+def existing_labels(repo: str, gh_fn=None) -> set[str]:
+    """What the repo ALREADY defines. Raises rather than guessing.
+
+    `route.existing_labels` returns an empty set when `gh label list` fails. Here
+    that would read as "this repo defines no labels at all", so a rate limit
+    would be reported as four freshly created labels — an outage recorded as
+    work done, which is this epic's defect exactly.
+
+    A truncated page is the same lie in a smaller size: a label past the limit
+    reads as absent, and the run reports creating something it did not.
+    """
+    gh_fn = gh_fn or route.gh
+    limit = 500
+    result = gh_fn(["label", "list", "--repo", repo, "--limit", str(limit),
+                    "--json", "name"])
+    if getattr(result, "returncode", 1) != 0:
+        raise RuntimeError(
+            f"could not list labels for {repo}: "
+            f"{str(getattr(result, 'stderr', ''))[:200]} — refusing to treat an "
+            f"unreadable repo as an empty one")
+    try:
+        data = json.loads(getattr(result, "stdout", "") or "")
+    except ValueError as exc:
+        raise RuntimeError(
+            f"could not parse the label list for {repo} ({exc}) — refusing to "
+            f"treat unparseable output as 'no labels'")
+    if len(data) >= limit:
+        raise RuntimeError(
+            f"{repo} returned {len(data)} labels at the {limit} limit — the page "
+            f"may be truncated, and a label beyond it would read as missing")
+    return {item["name"] for item in data}
+
+
+def ensure_labels(repo: str, gh_fn=None) -> dict:
+    """Create the `dispatch:` labels the lifecycle implies but the repo lacks.
+
+    Gated, because this mutates a public repo: same `DISPATCH_APPLY_ENABLED`
+    flag, same affirmative set, same function as every other write here. A
+    creation path with its own gate — or none — is how the one control everybody
+    reasons about stops covering the thing they assume it covers.
+
+    Idempotent in BOTH directions that matter. Present labels are skipped, and a
+    creation that loses a race is recognised from `gh`'s "already exists" and
+    counted as present. Neither is an error: this is meant to be re-runnable, and
+    a second run that exits non-zero teaches operators to stop re-running it.
+
+    Never `--force`. An existing definition's colour and description may follow a
+    convention this module does not know about, and overwriting 867 issues' worth
+    of established `dispatch:ready` styling is not a side effect anyone asked for.
+
+    Returns created / present / failed SEPARATELY. "created 4" on a fresh repo
+    and "created 0, present 4" on a re-run are different facts about the world,
+    and a single "4 labels ok" would make the second indistinguishable from a run
+    that did nothing because it was pointed at the wrong repo.
+    """
+    assert_write_allowed()
+    gh_fn = gh_fn or route.gh
+    have = existing_labels(repo, gh_fn=gh_fn)
+
+    created: list[str] = []
+    present: list[str] = []
+    failed: list[tuple[str, str]] = []
+    for name, colour, description in label_specs():
+        if name in have:
+            present.append(name)
+            continue
+        result = gh_fn(["label", "create", name, "--repo", repo,
+                        "--color", colour, "--description", description])
+        stderr = str(getattr(result, "stderr", ""))
+        if getattr(result, "returncode", 1) == 0:
+            created.append(name)
+        elif ALREADY_EXISTS in stderr.lower():
+            present.append(name)
+        else:
+            failed.append((name, stderr[:120]))
+    return {"repo": repo, "created": tuple(created), "present": tuple(present),
+            "failed": tuple(failed)}
+
+
+def format_label_creation(result: dict) -> str:
+    """Say which labels were created and which were already there — separately."""
+    created, present, failed = result["created"], result["present"], result["failed"]
+    lines = [
+        f"dispatch labels — {result['repo']}",
+        f"  created {len(created)}   already present {len(present)}   "
+        f"failed {len(failed)}",
+        "",
+    ]
+    for name in created:
+        lines.append(f"  CREATED  {name}")
+    for name in present:
+        lines.append(f"  PRESENT  {name}  (left exactly as it was defined)")
+    for name, err in failed:
+        lines.append(f"  FAILED   {name}: {err}")
+    lines.append("")
+    lines.append(
+        "  Creating the vocabulary advances nothing on its own — the states are "
+        "written by the writer, and a label with no writer behind it reads as "
+        "progress in every board view.")
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
 # reporting
 # ---------------------------------------------------------------------------
 
@@ -522,13 +720,34 @@ def load_labels_json(path) -> dict[str, set[str]]:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--records", required=True, help="directory of record JSON files")
-    src = ap.add_mutually_exclusive_group(required=True)
+    ap.add_argument("--records", help="directory of record JSON files")
+    src = ap.add_mutually_exclusive_group()
     src.add_argument("--labels-json", help="offline {issue: [labels]} snapshot")
     src.add_argument("--repo", help="fetch live labels for owner/name")
     ap.add_argument("--apply", action="store_true",
                     help=f"write the difference (still requires {APPLY_FLAG})")
+    ap.add_argument("--ensure-labels", metavar="OWNER/NAME",
+                    help=("create the missing dispatch: labels on that repo and do "
+                          f"nothing else (still requires {APPLY_FLAG})"))
     args = ap.parse_args(argv)
+
+    # Standalone BY CONSTRUCTION, not by convention. A reconcile pass that could
+    # also create labels would eventually be run for its side effect, and the
+    # vocabulary would appear ahead of the writer — the exact ordering records.py
+    # calls out, where presence of vocabulary reads as capability.
+    if args.ensure_labels:
+        if args.records or args.labels_json or args.repo or args.apply:
+            ap.error(
+                "--ensure-labels is a standalone operation. Reconciling never "
+                "creates labels: the labels land with the writer, not before it. "
+                "Run --ensure-labels by itself.")
+        print(format_label_creation(ensure_labels(args.ensure_labels)))
+        return 0
+
+    if not args.records:
+        ap.error("--records is required")
+    if not (args.labels_json or args.repo):
+        ap.error("one of --labels-json / --repo is required")
 
     labels = (load_labels_json(args.labels_json) if args.labels_json
               else fetch_labels(args.repo))
