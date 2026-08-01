@@ -90,16 +90,18 @@ fault changed nothing visible — a pre-existing red hiding a new one.
 | `scripts/` `tests/` `config/` | ⚠️ PARTIAL — agent stopped mid-run; ~29 files still carry hostnames |
 | `.claude/` `.planning/` `queue/` `state/` `data/` | ❌ NOT STARTED — ~38 files |
 
-Mapping used (registry-backed):
+**The mapping is NOT restated here, on purpose.** It lives in
+`.legal-deny-list.yaml` under `client_infrastructure`: each entry carries the real
+hostname as its `pattern` and the correct role alias in its `description`. That file
+is self-excluded from the scan (`exclusions[0]`), so it is the one place the pair can
+be recorded without the record itself being the leak. Two of the three map to
+`ace-win-1` and one to `ace-win-2`; read the descriptions for which.
 
-    acma-ansys05    -> ace-win-1
-    acma-hou-rds02  -> ace-win-1
-    acma-ws014      -> ace-win-2
-
-`.legal-deny-list.yaml` now populates `client_infrastructure` at **severity `warn`,
-deliberately** — arming `block` before the sweep completes would fail the scan on the
-very commits that finish it. Flip to `block` when
-`git grep -ilE "acma-ansys05|acma-ws014|acma-hou-rds02"` returns nothing.
+Those entries are at **severity `warn`, deliberately** — arming `block` before the
+sweep completes would fail the scan on the very commits that finish it. Flip to
+`block` when a repo-wide grep for the three patterns returns nothing; build the grep
+from the deny-list patterns rather than typing the hostnames into a script or a
+commit message.
 
 ---
 
