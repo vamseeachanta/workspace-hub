@@ -1,8 +1,8 @@
-coverage-ratchet report — 2026-08-01T08:02:03Z
+coverage-ratchet report — 2026-08-02T04:34:43Z
 ============================================================
+  PASS    assethold  actual=76.9%  floor=74.9%  baseline=76.9%
   PASS    assetutilities  actual=41.2%  floor=39.2%  baseline=41.2%
-  FAIL    no coverage result for 'assethold'
+  PASS    worldenergydata  actual=40.4%  floor=38.4%  baseline=40.4%
   FAIL    no coverage result for 'digitalmodel'
-  FAIL    no coverage result for 'worldenergydata'
 
-Result: 1 PASS, 3 FAIL
+Result: 3 PASS, 1 FAIL
