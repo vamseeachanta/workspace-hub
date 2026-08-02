@@ -1,5 +1,12 @@
 {
-  "generated_at": "2026-08-01T05:21:18.534490Z",
+  "generated_at": "2026-08-02T07:40:18.440128Z",
+  "pii_redaction": {
+    "mode": "redacted",
+    "map_present": true,
+    "map_path": "/mnt/local-analysis/workspace-hub/config/agents/.client-codename-map.local.yaml",
+    "reason": "map_loaded",
+    "policy": "Client identifiers are codename-redacted at write time (#3768). When the private map is unusable, free text is withheld rather than emitted raw; machine-readable fields (numbers, urls, labels) are never withheld."
+  },
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 10,
@@ -7,7 +14,6 @@
   "candidates": [
     {
       "number": 3516,
-      "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3516",
       "labels": [
         "bug",
@@ -40,8 +46,39 @@
       "eligible": true
     },
     {
+      "number": 3740,
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3740",
+      "labels": [
+        "priority:high",
+        "cat:operations",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "gate:completeness",
+        "domain:routing"
+      ],
+      "updatedAt": "2026-08-02T00:53:31Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
       "number": 3472,
-      "title": "feat(operations): add pressure-aware daily OS maintenance cleanup",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3472",
       "labels": [
         "priority:medium",
@@ -75,7 +112,6 @@
     },
     {
       "number": 3500,
-      "title": "bug(pre-push): equivalence-state publish loops full tier-1 suite forever \u2014 remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3500",
       "labels": [
         "bug",
@@ -111,7 +147,6 @@
     },
     {
       "number": 3549,
-      "title": "feat(ops): registry-driven Linux connection helpers with TDD",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3549",
       "labels": [
         "enhancement",
@@ -119,11 +154,12 @@
         "cat:tooling",
         "domain:workstations",
         "domain:security",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-27T01:19:11Z",
+      "updatedAt": "2026-08-01T06:13:53Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -146,55 +182,18 @@
       "eligible": true
     },
     {
-      "number": 3440,
-      "title": "Harden generated HTML against JSON script-tag breakout",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3440",
-      "labels": [
-        "bug",
-        "priority:medium",
-        "cat:harness",
-        "domain:security",
-        "domain:workflow",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude",
-        "needs:cross-review"
-      ],
-      "updatedAt": "2026-07-31T03:28:17Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
       "number": 3482,
-      "title": "design(repo-health): safe worktree lifecycle with leases and recoverable quarantine",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3482",
       "labels": [
         "priority:medium",
         "cat:tooling",
         "domain:testing",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-07-27T03:35:21Z",
+      "updatedAt": "2026-08-01T06:13:29Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -218,7 +217,6 @@
     },
     {
       "number": 3524,
-      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
       "labels": [
         "bug",
@@ -230,7 +228,7 @@
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-07-14T22:41:52Z",
+      "updatedAt": "2026-08-01T11:42:08Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -254,18 +252,18 @@
     },
     {
       "number": 3525,
-      "title": "[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
       "labels": [
         "priority:medium",
         "cat:harness",
         "domain:workstations",
         "wrk-item",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-30T23:45:36Z",
+      "updatedAt": "2026-08-01T11:21:45Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -289,7 +287,6 @@
     },
     {
       "number": 3566,
-      "title": "fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3566",
       "labels": [
         "bug",
@@ -326,7 +323,6 @@
     },
     {
       "number": 3568,
-      "title": "epic(agent-ux): cross-machine input interaction parity",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3568",
       "labels": [
         "enhancement",
@@ -363,17 +359,17 @@
     },
     {
       "number": 3532,
-      "title": "fix(memory): reserve cross-provider runtime budget for operational feedback",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3532",
       "labels": [
         "enhancement",
         "cat:harness",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude",
         "domain:ai"
       ],
-      "updatedAt": "2026-07-30T23:44:39Z",
+      "updatedAt": "2026-08-01T06:13:41Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -395,7 +391,6 @@
     },
     {
       "number": 3554,
-      "title": "bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3554",
       "labels": [
         "bug",
@@ -406,7 +401,7 @@
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-27T01:19:11Z",
+      "updatedAt": "2026-08-01T11:30:25Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -428,16 +423,16 @@
     },
     {
       "number": 3571,
-      "title": "equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3571",
       "labels": [
         "cat:operations",
         "domain:workstations",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-27T02:35:07Z",
+      "updatedAt": "2026-08-01T06:14:00Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -458,8 +453,38 @@
       "eligible": false
     },
     {
+      "number": 3480,
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3480",
+      "labels": [
+        "cat:tooling",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "gate:completeness",
+        "domain:capability"
+      ],
+      "updatedAt": "2026-07-31T08:33:07Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
       "number": 3585,
-      "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
       "labels": [
         "priority:medium",
@@ -488,7 +513,6 @@
     },
     {
       "number": 3696,
-      "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
       "labels": [
         "priority:medium",
@@ -517,43 +541,14 @@
       "eligible": false
     },
     {
-      "number": 3594,
-      "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3594",
-      "labels": [
-        "bug",
-        "priority:low",
-        "cat:operations",
-        "domain:workstations",
-        "machine:multi",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-07-29T13:43:07Z",
-      "execution_ready": false,
-      "priority_rank": 3,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.45,
-      "confidence_reasons": [
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 3717,
-      "title": "Context budget: harness config is 3.6% of the window \u2014 the cost is tool output (17%), not CLAUDE.md",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3717",
       "labels": [
-        "cat:harness"
+        "cat:harness",
+        "machine:dev-primary",
+        "domain:harness"
       ],
-      "updatedAt": "2026-07-30T23:48:49Z",
+      "updatedAt": "2026-08-01T06:00:01Z",
       "execution_ready": false,
       "priority_rank": 4,
       "suggested_provider": "agy",
