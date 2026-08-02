@@ -20,13 +20,25 @@ import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 HOOK_SCRIPT = REPO_ROOT / "scripts" / "hooks" / "pre-push.sh"
-TIER1_REPOS = [
-    "assetutilities",
-    "digitalmodel",
-    "worldenergydata",
-    "assethold",
-    "OGManufacturing",
-]
+
+
+def _tier1_repos() -> list[str]:
+    """Read the tier-1 repo list from the #3023 single source of truth.
+
+    Previously hardcoded here, which drifted: this list still carried
+    ``OGManufacturing`` after it left ``config/tier1-python-repos.txt``, so the
+    test failed against a correct hook. That file's own header says "do NOT
+    hardcode the repo list anywhere else" -- a test is not an exception.
+    """
+    src = REPO_ROOT / "config" / "tier1-python-repos.txt"
+    return [
+        line.strip()
+        for line in src.read_text().splitlines()
+        if line.strip() and not line.strip().startswith("#")
+    ]
+
+
+TIER1_REPOS = _tier1_repos()
 
 
 def _run_hook(
@@ -311,39 +323,101 @@ class TestSkipBypass:
 # ---------------------------------------------------------------------------
 
 
+def _fake_check_scripts(tmp_path):
+    """Build stub check-all/run-all-tests that log their invocations."""
+    calls_log = tmp_path / "calls.log"
+    fake_bin = tmp_path / "fake_bin"
+    fake_bin.mkdir()
+    for script in ("check-all.sh", "run-all-tests.sh"):
+        s = fake_bin / script
+        s.write_text(
+            textwrap.dedent(f"""\
+                #!/usr/bin/env bash
+                echo "{script} $@" >> "{calls_log}"
+            """)
+        )
+        s.chmod(0o755)
+    env = {
+        "PRE_PUSH_DRY_RUN": "0",
+        "PRE_PUSH_CHECK_ALL_SCRIPT": str(fake_bin / "check-all.sh"),
+        "PRE_PUSH_RUN_TESTS_SCRIPT": str(fake_bin / "run-all-tests.sh"),
+    }
+    return calls_log, env
+
+
 class TestNewBranchFallback:
-    """When remote_oid is all-zeros (new branch), fall back to running all repos."""
+    """A new branch must be SCOPED by merge-base, not escalated to every repo.
 
-    def test_new_branch_runs_all_repos(self, tmp_path):
-        calls_log = tmp_path / "calls.log"
-        fake_bin = tmp_path / "fake_bin"
-        fake_bin.mkdir()
+    This class previously asserted the opposite -- ``test_new_branch_runs_all_repos``
+    pinned the escalation as correct behaviour. It is the defect in #3780: because
+    every feature branch is a new branch on its first push, the narrowest possible
+    change got the widest possible gate, and since the gate chains to a suite that
+    is red by baseline, the push could never pass. Measured: three stacked pushes
+    hung 44+ minutes producing zero output.
 
-        for script in ("check-all.sh", "run-all-tests.sh"):
-            s = fake_bin / script
-            s.write_text(
-                textwrap.dedent(f"""\
-                    #!/usr/bin/env bash
-                    echo "{script} $@" >> "{calls_log}"
-                """)
-            )
-            s.chmod(0o755)
+    Scope is not unknowable on a new branch. A branch cut from main has a
+    merge-base. Escalation is correct only for genuinely disjoint history.
+    """
 
-        env = {
-            "PRE_PUSH_DRY_RUN": "0",
-            "PRE_PUSH_CHECK_ALL_SCRIPT": str(fake_bin / "check-all.sh"),
-            "PRE_PUSH_RUN_TESTS_SCRIPT": str(fake_bin / "run-all-tests.sh"),
-        }
+    def test_new_branch_scopes_by_merge_base(self, tmp_path):
+        """A new branch touching one repo must not run the others."""
+        calls_log, env = _fake_check_scripts(tmp_path)
+        env["PRE_PUSH_CHANGED_FILES"] = "digitalmodel/src/foo.py"
 
-        # remote_oid is all zeros → new branch
         stdin = [f"refs/heads/new-feature {FAKE_OID_LOCAL} refs/heads/new-feature {ZERO_OID}"]
         result = _run_hook(stdin, env_extra=env)
 
         assert result.returncode == 0, result.stderr
         log_content = calls_log.read_text() if calls_log.exists() else ""
+        assert "digitalmodel" in log_content, (
+            f"the touched repo must still be checked, got:\n{log_content}"
+        )
+        for repo in TIER1_REPOS:
+            if repo == "digitalmodel":
+                continue
+            assert repo not in log_content, (
+                f"{repo} was untouched and must not be checked, got:\n{log_content}"
+            )
+
+    def test_new_branch_docs_only_skips_repo_gate(self, tmp_path):
+        """A new branch touching no tier-1 path runs no suite at all.
+
+        This is the case that hung for 44 minutes: a one-file change under
+        docs/ops/ triggering every tier-1 repo's full test suite.
+        """
+        calls_log, env = _fake_check_scripts(tmp_path)
+        env["PRE_PUSH_CHANGED_FILES"] = "docs/ops/machine-inventory.md"
+
+        stdin = [f"refs/heads/docs-branch {FAKE_OID_LOCAL} refs/heads/docs-branch {ZERO_OID}"]
+        result = _run_hook(stdin, env_extra=env)
+
+        assert result.returncode == 0, result.stderr
+        log_content = calls_log.read_text() if calls_log.exists() else ""
+        assert log_content == "", f"no repo checks expected, got:\n{log_content}"
+
+    def test_merge_base_failure_does_not_open_the_gate(self, tmp_path):
+        """If scope cannot be determined, ESCALATE -- never check nothing.
+
+        The dangerous failure direction is not "runs too much", it is "runs
+        nothing and exits 0", which is silent and ships unchecked code. The
+        original defect's own fix was nearly written this way: setting a
+        merge-base variable the diff never consumed would leave CHANGED_FILES
+        empty and pass every push unexamined.
+        """
+        calls_log, env = _fake_check_scripts(tmp_path)
+        # A local OID that exists in no repo: merge-base against it cannot resolve.
+        unknown_oid = "d" * 40
+        stdin = [f"refs/heads/orphan {unknown_oid} refs/heads/orphan {ZERO_OID}"]
+        result = _run_hook(stdin, env_extra=env)
+
+        log_content = calls_log.read_text() if calls_log.exists() else ""
+        assert log_content != "", (
+            "unresolvable scope must escalate to all tier-1 repos, but NO checks "
+            "ran -- the gate silently opened"
+        )
         for repo in TIER1_REPOS:
             assert repo in log_content, (
-                f"Expected {repo} in all-repos fallback but got:\n{log_content}"
+                f"escalation must cover {repo}, got:\n{log_content}"
             )
 
     def test_delete_branch_skipped(self):

@@ -97,11 +97,18 @@ if [[ "$FIRST_LOCAL_OID" == "$ZERO_OID" ]]; then
     exit 0
 fi
 
-# ── New-branch guard: remote_oid all-zeros → can't diff, run all repos ────────
-if [[ "$FIRST_REMOTE_OID" == "$ZERO_OID" ]]; then
-    echo "[pre-push] New branch — running all tier-1 repo checks." >&2
-    RUN_ALL=true
-fi
+# ── New-branch guard: scope by merge-base, escalate only if that fails ───────
+# remote_oid all-zeros means we cannot diff against the remote. It does NOT
+# mean the scope is unknowable: a branch cut from main has a merge-base.
+#
+# This previously set RUN_ALL=true unconditionally, which gave the NARROWEST
+# possible change the WIDEST possible gate -- every feature branch is a new
+# branch on its first push, so a one-file docs change ran every tier-1 repo's
+# full suite. Chained to a suite that is red by baseline, the push could not
+# pass at any duration (#3780).
+DIFF_BASE="$FIRST_REMOTE_OID"
+NEW_BRANCH=false
+[[ "$FIRST_REMOTE_OID" == "$ZERO_OID" ]] && NEW_BRANCH=true
 
 # ── Detect changed tier-1 repos ──────────────────────────────────────────────
 declare -a REPOS_TO_CHECK=()
@@ -109,18 +116,49 @@ declare -a REPOS_TO_CHECK=()
 if [[ "$RUN_ALL" == "true" ]]; then
     REPOS_TO_CHECK=("${TIER1_REPOS[@]}")
 else
-    # Use override if set (for testing), otherwise run git diff
+    # Scope resolution, cheapest source first. Escalation happens only when we
+    # genuinely cannot determine scope -- never merely because it was awkward.
     if [[ -n "${PRE_PUSH_CHANGED_FILES:-}" ]]; then
+        # Scope supplied directly; no base to resolve, nothing to escalate.
         CHANGED_FILES="$PRE_PUSH_CHANGED_FILES"
     else
-        CHANGED_FILES="$(git diff --name-only "${FIRST_REMOTE_OID}..${FIRST_LOCAL_OID}" 2>/dev/null || true)"
+        if [[ "$NEW_BRANCH" == "true" ]]; then
+            # remote_oid is all-zeros, so there is nothing to diff against --
+            # but a branch cut from main still has a merge-base. Escalation is
+            # for genuinely disjoint history, not for every first push.
+            if BASE="$(git merge-base origin/main "$FIRST_LOCAL_OID" 2>/dev/null)" \
+               && [[ -n "$BASE" ]]; then
+                DIFF_BASE="$BASE"
+                echo "[pre-push] New branch — scoping against merge-base ${BASE:0:8}." >&2
+            else
+                echo "[pre-push] New branch, no merge-base — running all tier-1 checks." >&2
+                RUN_ALL=true
+            fi
+        fi
+
+        # `|| true` was REMOVED here deliberately. It made a failed diff read as
+        # "no files changed", which reads as "no repos to check", which exits 0
+        # having verified nothing. An error must escalate, never open the gate.
+        if [[ "$RUN_ALL" != "true" ]]; then
+            if ! CHANGED_FILES="$(git diff --name-only "${DIFF_BASE}..${FIRST_LOCAL_OID}" 2>/dev/null)"; then
+                echo "[pre-push] Could not determine changed files — running all tier-1 checks." >&2
+                RUN_ALL=true
+            fi
+        fi
+        [[ "$RUN_ALL" == "true" ]] && CHANGED_FILES=""
     fi
 
-    for repo in "${TIER1_REPOS[@]}"; do
-        if echo "$CHANGED_FILES" | grep -q "^${repo}/"; then
-            REPOS_TO_CHECK+=("$repo")
-        fi
-    done
+    if [[ "$RUN_ALL" == "true" ]]; then
+        # Escalated mid-branch (diff failed). Take every repo and do NOT fall
+        # through to detection -- CHANGED_FILES is unusable by definition here.
+        REPOS_TO_CHECK=("${TIER1_REPOS[@]}")
+    else
+        for repo in "${TIER1_REPOS[@]}"; do
+            if echo "$CHANGED_FILES" | grep -q "^${repo}/"; then
+                REPOS_TO_CHECK+=("$repo")
+            fi
+        done
+    fi
 
     # ── Config drift check on changed harness files (WRK-1094) ───────────────
     # Must run BEFORE the early exit so root-only harness pushes are checked.
@@ -273,34 +311,9 @@ fi
 
 exit "$OVERALL_EXIT"
 
-# ── Stage prompt drift guard (installed by install-hooks.sh) ─────────────
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-STAGE_PROMPT_DRIFT_GATE="${REPO_ROOT}/scripts/enforcement/require-stage-prompt-drift.sh"
-if [[ -f "$STAGE_PROMPT_DRIFT_GATE" ]]; then
-  bash "$STAGE_PROMPT_DRIFT_GATE" || exit $?
-fi
-
-# ── Enforcement environment (installed by install-hooks.sh #2128) ──────
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"
-if [[ -f "${ENFORCEMENT_ENV}" ]]; then
-  source "${ENFORCEMENT_ENV}"
-fi
-
-# ── State-file size guard pre-push (#2070) ───────────────────────────────
-# Pre-push reads <local_ref local_sha remote_ref remote_sha> on stdin; tee it
-# into the size-guard hook so it can scan the to-be-pushed commit range.
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-STATE_SIZE_PREPUSH="${REPO_ROOT}/.claude/hooks/check-state-file-size-prepush.sh"
-if [[ -f "$STATE_SIZE_PREPUSH" ]]; then
-  bash "$STATE_SIZE_PREPUSH" || exit $?
-fi
-
-# ── Cadence-helper sync check (wed#309) ──────────────────────────────────
-# Verifies worldenergydata/scripts/cron/lib/cadence-common.sh is byte-identical
-# to workspace-hub/scripts/cron/lib/cadence-common.sh. Exits 1 on drift.
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-CADENCE_SYNC="${REPO_ROOT}/scripts/sync/sync-cadence-helper.sh"
-if [[ -f "$CADENCE_SYNC" ]]; then
-  bash "$CADENCE_SYNC" || exit $?
-fi
+# NOTE: install-hooks.sh appends enforcement blocks AFTER this point. Anything
+# below an unconditional `exit` never runs. Three gates lived here and had never
+# executed once -- stage-prompt drift, state-size pre-push, cadence sync -- while
+# the installer logged "OK: Wired ... into pre-push" for each. Removed rather
+# than left as decoration. Re-wiring them ABOVE this exit changes what blocks
+# pushes and is a per-gate decision: workspace-hub#3781.
