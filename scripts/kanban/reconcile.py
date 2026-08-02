@@ -10,8 +10,10 @@ from __future__ import annotations
 import argparse
 import copy
 import difflib
+import importlib.util
 import io
 import json
+import os
 import subprocess
 import sys
 from dataclasses import dataclass, field
@@ -22,6 +24,20 @@ from ruamel.yaml import YAML
 
 
 GH_PAGE_SIZE = 100
+
+# --- client-identifier redaction (workspace-hub#3768) -----------------------
+# This repo is PUBLIC and the */20 cron pushes boards straight to main, so every
+# string this writer emits has to be run through the private client-codename map
+# first. Matching is delegated to scripts/legal/redact-client-pii.py so the
+# writer and `check-client-pii.py` (which reuses the same engine) can never
+# disagree about what counts as a client identifier.
+CLIENT_MAP_ENV = "LEGAL_CLIENT_MAP"
+DEFAULT_CLIENT_MAP = Path("config/agents/.client-codename-map.local.yaml")
+REDACT_ENGINE_PATH = Path(__file__).resolve().parents[1] / "legal" / "redact-client-pii.py"
+# Last-resort value for text the map cannot reduce to a fixpoint. Must not itself
+# match the map (asserted in Redactor.__init__).
+REDACTION_PLACEHOLDER = "[withheld: unstable client-identifier match]"
+MAX_REDACTION_ROUNDS = 4
 
 # Target-size policy for the domain->subdomain taxonomy (workspace-hub#2878):
 # boards should hold <= this many active github_issue cards. Reported, not enforced.
@@ -42,6 +58,175 @@ ISSUES_QUERY = (
 )
 
 
+class RedactionUnavailable(RuntimeError):
+    """No usable client-codename map, or a map that cannot be trusted."""
+
+
+_ENGINE = None
+
+
+def redact_engine():
+    """Import scripts/legal/redact-client-pii.py (hyphenated -> needs importlib).
+
+    Imported lazily so reconcile.py keeps a light import surface: the engine
+    pulls in PyYAML, which is only needed on the redacting path.
+    """
+    global _ENGINE
+    if _ENGINE is None:
+        spec = importlib.util.spec_from_file_location(
+            "kanban_redact_engine", REDACT_ENGINE_PATH
+        )
+        if spec is None or spec.loader is None:  # pragma: no cover - packaging error
+            raise RedactionUnavailable(f"cannot load redaction engine {REDACT_ENGINE_PATH}")
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        _ENGINE = module
+    return _ENGINE
+
+
+class Redactor:
+    """Applies the private client map to every string a board write emits.
+
+    Two properties this writer depends on, both enforced here rather than
+    assumed of the map:
+
+    * **Clean output.** `text()` never returns a string the engine would still
+      change, so a written board always passes `check-client-pii.py`.
+    * **Idempotence.** `text(text(s)) == text(s)`. The cron rewrites boards every
+      20 minutes; a redaction that kept shifting would turn each run into a
+      commit. Reached by iterating to a fixpoint, and -- when a pathological map
+      has no fixpoint (a replacement that re-matches a pattern) -- by falling
+      back to a constant placeholder, which is both clean and stable.
+    """
+
+    def __init__(self, rules, *, placeholder: str = REDACTION_PLACEHOLDER,
+                 max_rounds: int = MAX_REDACTION_ROUNDS, engine=None):
+        self._engine = engine if engine is not None else redact_engine()
+        self.rules = list(rules)
+        self.placeholder = placeholder
+        self.max_rounds = max_rounds
+        self.fields_redacted = 0
+        # If the map matched the placeholder, the fallback would itself be a
+        # violation and could never converge. Fail at construction, not at write.
+        _, hits = self._engine.redact_text(placeholder, self.rules)
+        if hits:
+            raise RedactionUnavailable(
+                "client map matches the redaction placeholder; the fallback value "
+                "would itself be a violation — change REDACTION_PLACEHOLDER or the map"
+            )
+
+    def text(self, value: str) -> str:
+        current = value
+        for _ in range(self.max_rounds):
+            new, hits = self._engine.redact_text(current, self.rules)
+            if not hits:
+                return current
+            current = new
+        _, hits = self._engine.redact_text(current, self.rules)
+        return current if not hits else self.placeholder
+
+    def _scalar(self, value: str):
+        new = self.text(value)
+        if new == value:
+            return value
+        self.fields_redacted += 1
+        # Keep ruamel's scalar-string subclass (quote/style preservation) when the
+        # value came from a round-tripped board.
+        cls = type(value)
+        if cls is not str:
+            try:
+                return cls(new)
+            except Exception:  # pragma: no cover - exotic scalar subclass
+                return new
+        return new
+
+    def redact_in_place(self, node):
+        """Redact every string in a loaded board, in place, at any depth.
+
+        Deliberately field-agnostic: `title` is the known offender, but
+        `body_excerpt`, `gh_assignees`, `gh_labels`, board metadata, and any
+        field a human or a future writer adds are carried into the same public
+        file. Mutating in place (rather than rebuilding dicts) preserves the
+        ruamel round-trip structure, so board comments survive.
+        """
+        if isinstance(node, dict):
+            renames: dict = {}
+            for key in list(node.keys()):
+                value = node[key]
+                if isinstance(value, str):
+                    new_value = self._scalar(value)
+                    if new_value != value:
+                        node[key] = new_value
+                else:
+                    self.redact_in_place(value)
+                if isinstance(key, str):
+                    new_key = self.text(key)
+                    if new_key != key:
+                        renames[key] = new_key
+            if renames:
+                # Rebuild in place to preserve key order (a mapping KEY carrying a
+                # client identifier is rare but would flag the same gate).
+                items = [(renames.get(k, k), v) for k, v in node.items()]
+                self.fields_redacted += len(renames)
+                for k in list(node.keys()):
+                    del node[k]
+                for k, v in items:
+                    node[k] = v
+        elif isinstance(node, list):
+            for index, value in enumerate(node):
+                if isinstance(value, str):
+                    new_value = self._scalar(value)
+                    if new_value != value:
+                        node[index] = new_value
+                else:
+                    self.redact_in_place(value)
+        return node
+
+
+def load_redactor(map_path: Path | None) -> Redactor | None:
+    """Build a Redactor from the private map, or None when the map is absent.
+
+    Absent map -> None. Callers that WRITE must then fail closed; see
+    `reconcile_kanban`. A map that exists but yields no rules RAISES instead of
+    degrading to a no-op, because a silently-empty rule set would write raw
+    titles while looking redacted.
+    """
+    if map_path is None:
+        return None
+    path = Path(map_path)
+    if not path.is_file():
+        return None
+    engine = redact_engine()
+    try:
+        rules = engine.load_rules(path)
+    except SystemExit as exc:  # the engine sys.exit()s on an empty rule set
+        raise RedactionUnavailable(
+            f"client map {path} contains no usable rules ({exc})"
+        ) from exc
+    return Redactor(rules, engine=engine)
+
+
+def resolve_client_map(explicit: Path | None, root: Path) -> Path:
+    """--client-map > $LEGAL_CLIENT_MAP > the repo-local default (gitignored)."""
+    if explicit is not None:
+        return explicit
+    from_env = os.environ.get(CLIENT_MAP_ENV)
+    if from_env:
+        return Path(from_env)
+    return root / DEFAULT_CLIENT_MAP
+
+
+NO_MAP_WRITE_ERROR = (
+    "refusing to write kanban boards without the private client-codename map. "
+    "Board cards embed raw GitHub issue titles and this repo is PUBLIC, pushed to "
+    "main every 20 minutes (#3768). Provision "
+    f"{DEFAULT_CLIENT_MAP} or set ${CLIENT_MAP_ENV}; in CI, materialize the "
+    "LEGAL_CLIENT_MAP secret the way .github/workflows/legal-client-pii-gate.yml "
+    "does. Use --dry-run to preview without writing."
+)
+
+
 @dataclass
 class ReconcileResult:
     changed: bool
@@ -50,6 +235,7 @@ class ReconcileResult:
     oversized: list[tuple[str, int]] = field(default_factory=list)
     count_drift: list[tuple[str, int, int]] = field(default_factory=list)
     skipped: list[str] = field(default_factory=list)
+    redaction: str = "not applied"
 
 
 @dataclass(frozen=True)
@@ -541,7 +727,14 @@ def reconcile_kanban(
     allow_empty_repos: set[str] | None = None,
     allow_shrink_repos: set[str] | None = None,
     size_limit: int = DEFAULT_BOARD_SIZE_LIMIT,
+    redactor: "Redactor | None" = None,
 ) -> ReconcileResult:
+    # Fail closed BEFORE any fetch or write. A stale board is recoverable in one
+    # cron tick once the map is provisioned; a client identifier pushed to a
+    # public main is not. #3768
+    write = write_files and not dry_run
+    if write and redactor is None:
+        raise RedactionUnavailable(NO_MAP_WRITE_ERROR)
     entries = load_manifest_entries(kanban_root)
     validate_unmanifested_boards(kanban_root, entries)
     repos = active_repos(entries)
@@ -569,21 +762,36 @@ def reconcile_kanban(
     # board verbatim. #3380
     active_for_rebuild = set(repos) - set(skipped)
     rebuilt = rebuild_boards(board_data, files, active_for_rebuild, live)
+    # Redact BEFORE the changed/unchanged comparison, so a board whose only
+    # problem is an identifier already on disk still gets rewritten (that is how
+    # the already-dirty boards clean themselves up on the first run). #3768
+    if redactor is not None:
+        for path in files:
+            redactor.redact_in_place(rebuilt[path])
+        redaction = f"applied: {redactor.fields_redacted} field(s) redacted"
+    else:
+        redaction = "NOT APPLIED — no client map; diff below is UNREDACTED (dry-run only)"
     after = {}
     for path in files:
         after[path] = before[path] if rebuilt[path] == board_data[path] else dump_yaml(rebuilt[path])
     changed_files = [path for path in files if before[path] != after[path]]
-    write = write_files and not dry_run
     if write:
         for path in changed_files:
             path.write_text(after[path], encoding="utf-8")
+    # The cron prints this diff. Its "-" lines come from the pre-redaction file,
+    # so on the cleanup run they would carry the very identifiers being removed
+    # into a public CI log. Redact the diff's baseline too.
+    diff_before = before
+    if redactor is not None:
+        diff_before = {path: redactor.text(text) for path, text in before.items()}
     return ReconcileResult(
         changed=bool(changed_files),
-        diff=unified_diff(before, after, kanban_root),
+        diff=unified_diff(diff_before, after, kanban_root),
         changed_files=changed_files,
         oversized=board_size_report(rebuilt, limit=size_limit),
         count_drift=card_count_drift(rebuilt, entries),
         skipped=skipped,
+        redaction=redaction,
     )
 
 
@@ -626,23 +834,60 @@ def main(argv: list[str] | None = None) -> int:
         default=DEFAULT_BOARD_SIZE_LIMIT,
         help=f"oversized-board threshold for the size report (default {DEFAULT_BOARD_SIZE_LIMIT})",
     )
+    parser.add_argument(
+        "--client-map",
+        type=Path,
+        help="private client-codename map (default: $%s, else %s)"
+        % (CLIENT_MAP_ENV, DEFAULT_CLIENT_MAP),
+    )
+    parser.add_argument(
+        "--no-redact",
+        action="store_true",
+        help="preview the raw, UNREDACTED diff; requires --dry-run and can never write",
+    )
     args = parser.parse_args(argv)
 
     root = args.kanban_root or repo_root() / ".claude/memory/kanban"
 
+    # --no-redact is preview-only by construction: it is rejected on any run that
+    # could write, so it cannot become a route to publishing raw titles. #3768
+    if args.no_redact and not args.dry_run:
+        print("--no-redact is preview-only and requires --dry-run", file=sys.stderr)
+        return 2
+
+    map_path = resolve_client_map(args.client_map, repo_root())
+    try:
+        redactor = None if args.no_redact else load_redactor(map_path)
+    except RedactionUnavailable as exc:
+        print(f"kanban reconcile: {exc}", file=sys.stderr)
+        return 3
+    if redactor is None and not args.no_redact:
+        print(
+            f"kanban reconcile: client-codename map not found at {map_path}",
+            file=sys.stderr,
+        )
+
     def fetch(repo: str) -> list[dict]:
         return fetch_repo_issues(repo, page_size=args.page_size)
 
-    result = reconcile_kanban(
-        root,
-        issue_fetcher=fetch,
-        dry_run=args.dry_run,
-        write_files=not args.dry_run,
-        repo_filter=args.repo,
-        allow_empty_repos=set(args.allow_empty),
-        allow_shrink_repos=set(args.allow_shrink),
-        size_limit=args.size_limit,
-    )
+    try:
+        result = reconcile_kanban(
+            root,
+            issue_fetcher=fetch,
+            dry_run=args.dry_run,
+            write_files=not args.dry_run,
+            repo_filter=args.repo,
+            allow_empty_repos=set(args.allow_empty),
+            allow_shrink_repos=set(args.allow_shrink),
+            size_limit=args.size_limit,
+            redactor=redactor,
+        )
+    except RedactionUnavailable as exc:
+        print(f"kanban reconcile: {exc}", file=sys.stderr)
+        return 3
+    # Always state the redaction posture — the map-absent choice must be visible
+    # in the run's output, never silent.
+    print(f"kanban reconcile: client-identifier redaction {result.redaction}")
     if result.diff:
         print(result.diff, end="")
     else:

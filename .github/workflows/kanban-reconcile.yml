@@ -41,6 +41,38 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v5
 
+      - name: Materialize private client map from secret
+        # reconcile.py fails CLOSED (exit 3, writes nothing) without the private
+        # client-codename map: board cards embed raw GitHub issue titles, this
+        # repo is PUBLIC, and the board is pushed to main every 20 minutes
+        # (#3768). Without this step the cron exits 3 on every run.
+        #
+        # Same handling as .github/workflows/legal-client-pii-gate.yml: the
+        # secret reaches the shell ONLY through env (never interpolated into the
+        # script body), is written with `printf '%s'` (no trailing newline, no
+        # backslash interpretation), and the file is passed onward BY PATH — it
+        # is never read back to a log, because these logs are public.
+        #
+        # It lands in $RUNNER_TEMP, outside the workspace, so the reconcile
+        # loop's `git reset --hard` cannot disturb it and it can never become a
+        # committable working-tree file in a public repo.
+        #
+        # NO degrade-open here. The PII gate degrades open because it runs on
+        # fork PRs; this workflow is cron/dispatch-only on the main repo, and a
+        # missing secret must go RED rather than let unredacted issue titles
+        # reach a public branch. Failing here also avoids minting an App token
+        # for a run that cannot succeed.
+        env:
+          LEGAL_CLIENT_MAP_SECRET: ${{ secrets.LEGAL_CLIENT_MAP }}
+        run: |
+          if [[ -z "$LEGAL_CLIENT_MAP_SECRET" ]]; then
+            echo "::error::LEGAL_CLIENT_MAP secret is not set — refusing to reconcile. Board cards embed raw issue titles and this repo is PUBLIC (#3768). Provision the secret; do not relax the redaction requirement."
+            exit 1
+          fi
+          printf '%s' "$LEGAL_CLIENT_MAP_SECRET" > "$RUNNER_TEMP/client-map.yaml"
+          echo "LEGAL_CLIENT_MAP=$RUNNER_TEMP/client-map.yaml" >> "$GITHUB_ENV"
+          echo "client map materialized ($(wc -c < "$RUNNER_TEMP/client-map.yaml") bytes)" >&2
+
       - name: Mint GitHub App token
         id: app-token
         uses: actions/create-github-app-token@v1

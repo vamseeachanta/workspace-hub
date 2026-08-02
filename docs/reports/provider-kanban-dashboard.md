@@ -1,7 +1,9 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-08-01T05:21:20Z
+Generated: 2026-08-02T07:40:20Z
 Mode: static (read-only)
+
+Client identifiers in issue titles and plan text are codename-redacted (#3768).
 
 ## How to approve
 
@@ -43,6 +45,16 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3775 | security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3773 | epic(dispatch): six rails required before the loop can run unattended on ace-linux-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3772 | bug(dispatch): lease refs are written to one namespace and synced from another — every host wins every lease | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3770 | security(kanban): PUBLIC repo mirrors ~595 issue cards from 10 PRIVATE repos, republished every 20 minutes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3768 | security(control-surface): ~9,000 raw issue titles + 1,531 body excerpts committed to the public repo across 9 writers | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3762 | fix(harness): both context guards are name-based and miss the 20KB file that actually auto-loads | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3755 | PII: client identifiers persist repo-wide after epic #3095 closed (≥83 files) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3751 | Onboard the remaining RDS host to config/workstations/registry.yaml so it can be scheduled | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3750 | Windows Task Scheduler parity for harness-install-doctor — ace-win-1/-2 never self-heal harness install state | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3740 | 867 issues cannot leave dispatch:ready — nothing advances dispatch state | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3737 | bug(equality): Windows scheduler probe never runs - MSYS mangles schtasks leading-slash args (#3592 follow-on) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3736 | Two sources of truth for routing have diverged: kanban board mirror holds 37 retired labels | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3734 | feat(capability): ace-win-1 has idle licensed AQWA capacity that nothing routes to | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -65,8 +77,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3702 | bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3698 | PR gate is baseline-red: two enforcement checks fail on every PR, plus an undeclared test dep | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3696 | chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3695 | chore(llm-wiki): resolve two empty client-wiki stubs — llm-wiki-seanation and llm-wiki-hd | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3694 | chore(repo): reconcile llm-wiki-mkt-a → llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3695 | chore(llm-wiki): resolve two empty client-wiki stubs — llm-wiki-client-f and llm-wiki-hd | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3694 | chore(repo): reconcile llm-wiki-mkt-a → llm-wiki-mkt-a rename across 62 files (2 scripts + 2 configs are live) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3693 | Compliance alert: W31 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3671 | INITIATIVE: Repo structure, test health & governance | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3670 | INITIATIVE: Fleet operations — machine readiness, cross-platform parity & security | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -133,7 +145,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3608 | INITIATIVE: CAD/CAM & manufacturing capability | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3607 | INITIATIVE: Brand, public surfaces & go-to-market | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3606 | INITIATIVE: Harness runtime, workflow & skills | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3605 | INITIATIVE: ACMA & client delivery | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3605 | INITIATIVE: mkt-a & client delivery | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3604 | INITIATIVE: Knowledge ingestion & the llm-wiki corpus | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3603 | INITIATIVE: Deckhand & Open Deck platform | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3602 | INITIATIVE: World Energy Field Explorer & asset data spine | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -189,8 +201,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3532 | fix(memory): reserve cross-provider runtime budget for operational feedback | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
 | #3527 | fix(scheduler): reconcile identity inventory after merge-base race | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review,unavailable_review |
 | #3526 | feat(windows): daily report-only ecosystem reconciliation audit | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3525 | [WRK] Investigate safe remote Claude job dispatch to ACMA-WS014 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
-| #3524 | [WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
+| #3525 | [WRK] Investigate safe remote Claude job dispatch to ace-win-2 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
+| #3524 | [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3523 | bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3522 | security(legal): migrate sensitive deny-list values out of public repository history | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3521 | Legal scanner: support explicit NUL-safe staged-blob pathsets | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -198,8 +210,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3516 | bug(equivalence): ref blobs keyed by role — same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3513 | bug(harness): Windows soul installer reports LINK for ordinary file and accumulates backups | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3511 | bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review,unavailable_review |
-| #3506 | ops(ace-win-2): equivalence fingerprint ABSENT — sentinel not publishing from acma-ws014 (flagged by #3502 monitoring) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3505 | ops(ace-win-1): equivalence fingerprint ABSENT — sentinel not publishing from acma-ansys05 (flagged by #3502 monitoring) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3506 | ops(ace-win-2): equivalence fingerprint ABSENT — sentinel not publishing from ace-win-2 (flagged by #3502 monitoring) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3505 | ops(ace-win-1): equivalence fingerprint ABSENT — sentinel not publishing from ace-win-1 (flagged by #3502 monitoring) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3500 | bug(pre-push): equivalence-state publish loops full tier-1 suite forever — remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3499 | Zero-touch repo hygiene on all headless nodes (generalized ff-sync watchdog + fleet health in equality matrix) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3498 | Machine-ecosystem map: roles, data-source access, services — admin-tier extension of the equality matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -233,16 +245,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3448 | chore(ecosystem): audit repository detection for linked worktree compatibility | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3447 | Add cross-format CLI behavior parity tests for option-bearing commands | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3446 | Audit bounded JSON parsers for uncaught depth and resource exceptions | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3445 | Require status and readiness checks to validate the same source contract as execution | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3444 | infra: route Python environments off fuseblk worktrees | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3443 | governance(legal): define repo-posture scanner profiles and replace private-repo scan skips | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3442 | Track Codex CLI 0.144 stdin regression in cross-review harness | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3440 | Harden generated HTML against JSON script-tag breakout | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #3439 | Audit descriptor-relative readers for FIFO blocking before fstat | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3438 | Require complete module provenance in installed-wheel smoke tests | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
-| #3437 | standard: require SHA-pinned cross-repository plan evidence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3436 | bug: make new-branch pre-push checks worktree-aware | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3435 | bug: make hook installation worktree-aware | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

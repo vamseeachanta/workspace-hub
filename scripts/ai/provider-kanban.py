@@ -48,6 +48,29 @@ class KanbanError(RuntimeError):
     pass
 
 
+def _load_work_queue_module():
+    """Load the sibling writer for its shared client-PII guard (#3768).
+
+    Resolved from this file's own directory (not WORKSPACE_HUB) so tests that
+    repoint the repo root still reach the real guard.
+    """
+    path = Path(__file__).resolve().parent / "provider-work-queue.py"
+    spec = importlib.util.spec_from_file_location("provider_work_queue_for_kanban", path)
+    if spec is None or spec.loader is None:
+        raise KanbanError(f"could not load provider-work-queue from {path}")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+_wq = _load_work_queue_module()
+PiiGuard = _wq.PiiGuard
+load_pii_guard = _wq.load_pii_guard
+pii_banner = _wq.pii_banner
+PII_WITHHELD = _wq.PII_WITHHELD
+
+
 def _load_pipeline_module():
     """Import scripts/ai/continuous-planning-pipeline.py at runtime."""
     path = WORKSPACE_HUB / "scripts" / "ai" / "continuous-planning-pipeline.py"
@@ -151,11 +174,20 @@ def build_hover_summary(
     workstation: dict[str, Any],
     provider: str,
     root: Path,
+    guard: PiiGuard,
 ) -> dict[str, Any]:
     """Construct a hover card from durable issue/plan/review/workstation data.
 
     NO transient LLM-only summaries — acceptance criterion #2665 explicitly
     forbids them as readiness inputs.
+
+    Client-PII (#3768): `plan_summary` and `risks` are lifted verbatim out of
+    plan files under docs/plans/, which are the second-largest free-text surface
+    here after titles — both are scrubbed. `labels` are NOT scrubbed: they are
+    this repo's own taxonomy and scripts/ai/provider-dispatch-loop.py routes on
+    them, so withholding them would break dispatch. The hover card no longer
+    carries a `title` at all — the card above it already has one and nothing
+    read the hover copy.
     """
     plan_rel = classification.get("plan")
     plan_path = root / plan_rel if plan_rel else None
@@ -163,13 +195,13 @@ def build_hover_summary(
     risks = plan_risks_text(plan_path) if plan_path else ""
     tests = plan_tests_text(plan_path) if plan_path else ""
     return {
-        "title": issue.get("title", ""),
         "labels": [
             (lbl.get("name", "") if isinstance(lbl, dict) else str(lbl))
             for lbl in issue.get("labels", [])
         ],
-        "plan_summary": plan or "(no plan file found)",
-        "risks": risks or "(no risks section captured)",
+        "plan_summary": guard.scrub(plan) if plan else "(no plan file found)",
+        "risks": guard.scrub(risks) if risks else "(no risks section captured)",
+        # Generated text only ("N TDD tests defined") — never plan prose.
         "tests": tests or "(no TDD section)",
         "provider_route": provider,
         "machine_route": workstation.get("name") or "(none ready)",
@@ -245,12 +277,18 @@ def build_kanban(
     served_localhost: bool = False,
     user_intent_metadata: dict[str, Any] | None = None,
     pipeline_module=None,
+    guard: PiiGuard | None = None,
 ) -> dict[str, Any]:
-    """Assemble the Kanban JSON state.
+    """Assemble the Kanban state.
 
     Reuses continuous-planning-pipeline.build_snapshot() for lane classification.
+
+    The returned dict is the RENDER model: it keeps a (scrubbed) `title` per card
+    because a Kanban card without a title is useless. Serialise it through
+    :func:`kanban_json_payload` before writing provider-kanban.json (#3768).
     """
     require_full_candidates(work_queue)
+    guard = guard or load_pii_guard()
     cpp = pipeline_module or _load_pipeline_module()
     snapshot = cpp.build_snapshot(issues, root=root, generated_at=utc_now())
     classification_by_issue = {entry["number"]: entry for entry in snapshot["items"]}
@@ -270,7 +308,7 @@ def build_kanban(
         cls = classification_by_issue.get(number, {"warnings": ["not_classified"], "lane": None})
         provider, reason = issue_to_provider.get(number, ("claude", "default"))
         ws = workstation_for_provider(provider, workstations)
-        hover = build_hover_summary(issue, cls, ws, provider, root)
+        hover = build_hover_summary(issue, cls, ws, provider, root, guard)
         ready, blockers = approval_ready(
             cls, issue,
             served_localhost=served_localhost,
@@ -279,7 +317,8 @@ def build_kanban(
         kanban_lane = LANE_MAP.get(cls.get("lane"), "blocked")
         card = {
             "number": number,
-            "title": issue.get("title", ""),
+            # Render-only; stripped by kanban_json_payload() before serialisation.
+            "title": guard.scrub(issue.get("title", "")),
             "url": issue.get("url", ""),
             "lane": kanban_lane,
             "pipeline_lane": cls.get("lane"),
@@ -293,7 +332,8 @@ def build_kanban(
             "approval_blockers": blockers,
             "review_clean": cls.get("review_clean"),
             "approval_marker": cls.get("approval_marker"),
-            "plan": cls.get("plan"),
+            # Plan FILENAMES carry client names too (docs/plans/<date>-issue-N-<slug>.md).
+            "plan": guard.scrub(cls.get("plan")) if cls.get("plan") else cls.get("plan"),
             "warnings": cls.get("warnings", []),
             "hover": hover,
         }
@@ -302,6 +342,7 @@ def build_kanban(
 
     return {
         "generated_at": snapshot.get("generated_at", utc_now()),
+        "pii_redaction": guard.metadata(),
         "scorecard_generated_at": scorecard.get("generated_at"),
         "utilization_generated_at": utilization.get("generated_at") if isinstance(utilization, dict) else None,
         "recommended_provider_order": scorecard.get("recommended_provider_order", []),
@@ -313,12 +354,47 @@ def build_kanban(
     }
 
 
+def kanban_json_payload(kanban: dict[str, Any]) -> dict[str, Any]:
+    """Strip issue titles from the machine-readable board state (#3768).
+
+    Verified by grep over the ecosystem: the two consumers of
+    provider-kanban.json are scripts/ai/provider-dispatch-loop.py — which reads
+    `number`, `provider_route`, `machine_route`, `machine_blocker`,
+    `hover.labels` and the lane grouping — and scripts/ai/provider-kanban-server.py,
+    which serves the pre-rendered HTML and never opens the JSON. Neither reads a
+    title, so the field is OMITTED rather than redacted: where nothing consumes
+    the value, removing the surface beats narrowing it.
+
+    `lanes` holds the same card objects as `cards` by reference, so both views
+    are rebuilt from one stripped record per issue — they cannot diverge.
+    """
+    stripped_by_number: dict[int, dict[str, Any]] = {}
+    for card in kanban.get("cards", []):
+        stripped_by_number[card["number"]] = {
+            key: value for key, value in card.items() if key != "title"
+        }
+
+    def _strip(card: dict[str, Any]) -> dict[str, Any]:
+        return stripped_by_number.get(
+            card.get("number"), {k: v for k, v in card.items() if k != "title"}
+        )
+
+    payload = dict(kanban)
+    payload["cards"] = [_strip(card) for card in kanban.get("cards", [])]
+    payload["lanes"] = {
+        lane: [_strip(card) for card in cards] for lane, cards in kanban.get("lanes", {}).items()
+    }
+    return payload
+
+
 def render_markdown(kanban: dict[str, Any]) -> str:
     lines = [
         "# Provider-credit Kanban dashboard",
         "",
         f"Generated: {kanban['generated_at']}",
         f"Mode: {'served-localhost' if kanban['served_localhost'] else 'static (read-only)'}",
+        "",
+        pii_banner(kanban),
         "",
         "## How to approve",
         "",
@@ -401,6 +477,7 @@ def render_html(kanban: dict[str, Any]) -> str:
         f"<h1>Provider-credit Kanban dashboard</h1>"
         f"<p>Generated: <code>{escape(kanban['generated_at'])}</code></p>"
         f"<p><strong>Mode:</strong> {escape(head_note)}</p>"
+        f"<p><strong>Client-PII:</strong> {escape(pii_banner(kanban))}</p>"
     )
     sections.append(
         f"<details><summary>Approval commands (CLI fallback)</summary>"
@@ -474,6 +551,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--output-html", default=str(DEFAULT_HTML_OUT))
     parser.add_argument("--served-localhost", action="store_true",
                         help="Set when invoked by provider-kanban-server.py with user-action metadata")
+    parser.add_argument("--pii-map", default=None,
+                        help="private client-codename map (default: $LEGAL_CLIENT_MAP, else "
+                             "config/agents/.client-codename-map.local.yaml)")
+    parser.add_argument("--require-pii-map", action="store_true",
+                        help="fail instead of withholding free text when the map is unusable")
     return parser.parse_args(argv)
 
 
@@ -485,15 +567,27 @@ def main(argv: list[str] | None = None) -> int:
     workstations = load_json(Path(args.workstations_json)) if args.workstations_json else {"workstations": []}
     issues = load_json(Path(args.issues_json)) if args.issues_json else gh_issue_list_full()
 
+    guard = load_pii_guard(args.pii_map)
+    if args.require_pii_map and not guard.available:
+        raise SystemExit(
+            f"provider-kanban: client-codename map unusable ({guard.metadata()['reason']}) "
+            f"and --require-pii-map was given; refusing to generate."
+        )
+    if not guard.available:
+        print(f"WARNING: {guard.banner()}")
+
     kanban = build_kanban(
         work_queue=work_queue, scorecard=scorecard, utilization=utilization,
         workstations=workstations, issues=issues,
         served_localhost=args.served_localhost,
+        guard=guard,
     )
 
     json_out = Path(args.output_json)
     json_out.parent.mkdir(parents=True, exist_ok=True)
-    json_out.write_text(json.dumps(kanban, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    json_out.write_text(
+        json.dumps(kanban_json_payload(kanban), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
     print(f"JSON → {json_out}")
 
     md_out = Path(args.output_md)
