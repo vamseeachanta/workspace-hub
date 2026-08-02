@@ -26,7 +26,22 @@ def make_repo(tmp_path: Path) -> Path:
     shutil.copy2(SOURCE_REVIEW, scripts_dir / "require-review-on-push.sh")
 
     (hooks_dir / "pre-commit").write_text("#!/usr/bin/env bash\nexport PATH=\"$PATH\"\n", encoding="utf-8")
-    (hooks_dir / "pre-push").write_text("#!/usr/bin/env bash\nset -euo pipefail\n", encoding="utf-8")
+    # The fixture pre-push must carry the extension point. install-hooks.sh no
+    # longer appends past the end of the file: appended blocks land below the
+    # terminal exit and never run, which is what #3781 was. It now INSERTS at
+    # this marker and refuses outright when the marker is absent, so a
+    # sentinel-less fixture exercises the refusal path, not the wiring path.
+    # The refusal itself is covered by
+    # tests/hooks/test_install_hooks_extension_point.py::test_refuses_without_sentinel.
+    (hooks_dir / "pre-push").write_text(
+        "#!/usr/bin/env bash\n"
+        "set -euo pipefail\n"
+        "OVERALL_EXIT=0\n"
+        "# <<INSTALL_HOOKS_EXTENSION_POINT>>\n"
+        "\n"
+        'exit "$OVERALL_EXIT"\n',
+        encoding="utf-8",
+    )
     (hooks_dir / "post-commit").write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
     return repo
 

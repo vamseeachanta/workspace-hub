@@ -211,6 +211,17 @@ for repo in "${REPOS_TO_CHECK[@]}"; do
     fi
 done
 
+# ── Enforcement environment (#2128) ──────────────────────────────────────────
+# MUST precede the gates whose strictness it sets. It exports
+# REVIEW_GATE_STRICT=1, while the review wrapper below defaults it to 0 -- so
+# sourcing this afterwards (or not at all) leaves the review gate ADVISORY.
+# It sat below the terminal exit for months and never ran, which is why #1839's
+# strict-mode default has not actually been in force. See #3781.
+ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"
+if [[ -f "${ENFORCEMENT_ENV}" ]]; then
+    source "${ENFORCEMENT_ENV}"
+fi
+
 # ── Review evidence gate (adversarial review enforcement) ────────────────────
 REVIEW_GATE="${REPO_ROOT}/scripts/enforcement/require-review-on-push.sh"
 if [[ -f "$REVIEW_GATE" ]]; then
@@ -309,11 +320,35 @@ if [[ "${_HARNESS_DRIFT_EXIT:-0}" -ne 0 ]]; then
     OVERALL_EXIT=1
 fi
 
-exit "$OVERALL_EXIT"
+# ── Stage-prompt drift guard ─────────────────────────────────────────────────
+STAGE_PROMPT_DRIFT_GATE="${REPO_ROOT}/scripts/enforcement/require-stage-prompt-drift.sh"
+if [[ -f "$STAGE_PROMPT_DRIFT_GATE" ]]; then
+    bash "$STAGE_PROMPT_DRIFT_GATE" || OVERALL_EXIT=1
+fi
 
-# NOTE: install-hooks.sh appends enforcement blocks AFTER this point. Anything
-# below an unconditional `exit` never runs. Three gates lived here and had never
-# executed once -- stage-prompt drift, state-size pre-push, cadence sync -- while
-# the installer logged "OK: Wired ... into pre-push" for each. Removed rather
-# than left as decoration. Re-wiring them ABOVE this exit changes what blocks
-# pushes and is a per-gate decision: workspace-hub#3781.
+# ── State-file size guard (#2070) ────────────────────────────────────────────
+# Reads <local_ref local_sha remote_ref remote_sha> from ITS OWN stdin to scan
+# the to-be-pushed range. This hook already consumed git's stdin into
+# PUSH_LINES, so it must be replayed -- otherwise the guard silently falls back
+# to an inferred current ref and scans the wrong range while appearing to run.
+STATE_SIZE_PREPUSH="${REPO_ROOT}/.claude/hooks/check-state-file-size-prepush.sh"
+if [[ -f "$STATE_SIZE_PREPUSH" ]]; then
+    printf '%s\n' "${PUSH_LINES[@]}" | bash "$STATE_SIZE_PREPUSH" || OVERALL_EXIT=1
+fi
+
+# ── Cadence-helper sync check (wed#309) ──────────────────────────────────────
+# Exits 0 when worldenergydata is absent, so enforcement is machine-dependent
+# by design; see #3781 for the CI-migration argument.
+CADENCE_SYNC="${REPO_ROOT}/scripts/sync/sync-cadence-helper.sh"
+if [[ -f "$CADENCE_SYNC" ]]; then
+    bash "$CADENCE_SYNC" || OVERALL_EXIT=1
+fi
+
+# ── INSTALLER EXTENSION POINT ────────────────────────────────────────────────
+# install-hooks.sh inserts enforcement blocks ABOVE this line. Never append past
+# the end of this file: the exit below is unconditional, and blocks placed after
+# it never run. That is #3781 -- four blocks sat there for months while the
+# installer logged "OK: Wired ... into pre-push" for each one.
+# <<INSTALL_HOOKS_EXTENSION_POINT>>
+
+exit "$OVERALL_EXIT"
