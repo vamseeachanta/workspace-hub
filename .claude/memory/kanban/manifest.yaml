@@ -1,13 +1,13 @@
 manifest:
   generated_at: '2026-05-22'
   source_machine: ace-linux-1
-  total_boards: 45
-  total_cards: 1536
+  total_boards: 88
+  total_cards: 1270
   total_gaps: 75
   tier_counts:
+    domain: 79
     ecosystem: 1
-    repo: 14
-    domain: 30
+    repo: 8
   boards:
   - slug: ecosystem
     tier: ecosystem
@@ -17,22 +17,6 @@ manifest:
     workspace_path: /mnt/local-analysis/workspace-hub
     file: boards/ecosystem.yaml
     card_count: 20
-  - slug: repo-aceengineer-admin
-    tier: repo
-    repo: vamseeachanta/aceengineer-admin
-    domain: null
-    parent_slug: null
-    workspace_path: /mnt/local-analysis/aceengineer-admin
-    file: boards/repo-aceengineer-admin.yaml
-    card_count: 16
-  - slug: repo-aceengineer-strategy
-    tier: repo
-    repo: vamseeachanta/aceengineer-strategy
-    domain: null
-    parent_slug: null
-    workspace_path: /mnt/local-analysis/aceengineer-strategy
-    file: boards/repo-aceengineer-strategy.yaml
-    card_count: 20
   - slug: repo-aceengineer-website
     tier: repo
     repo: vamseeachanta/aceengineer-website
@@ -41,23 +25,6 @@ manifest:
     workspace_path: /mnt/local-analysis/aceengineer-website
     file: boards/repo-aceengineer-website.yaml
     card_count: 5
-  - slug: repo-achantas-data
-    tier: repo
-    repo: vamseeachanta/achantas-data
-    domain: null
-    parent_slug: null
-    workspace_path: /mnt/local-analysis/achantas-data
-    file: boards/repo-achantas-data.yaml
-    card_count: 0
-    children:
-    - repo-achantas-data-devakrishna
-    - repo-achantas-data-family-planning
-    - repo-achantas-data-finance
-    - repo-achantas-data-household
-    - repo-achantas-data-travel-arkansas
-    - repo-achantas-data-travel-gulf-prairie
-    - repo-achantas-data-travel-oklahoma-texas
-    - repo-achantas-data-travel-planning-international
   - slug: repo-assethold
     tier: repo
     repo: vamseeachanta/assethold
@@ -123,40 +90,6 @@ manifest:
     workspace_path: /mnt/local-analysis/kaggle-rogii-2026
     file: boards/repo-kaggle-rogii-2026.yaml
     card_count: 9
-  - slug: repo-llm-wiki
-    tier: repo
-    repo: vamseeachanta/llm-wiki
-    domain: null
-    parent_slug: null
-    workspace_path: /mnt/local-analysis/llm-wiki
-    file: boards/repo-llm-wiki.yaml
-    card_count: 0
-    children:
-    - repo-llm-wiki-content
-    - repo-llm-wiki-governance
-    - repo-llm-wiki-ingest-batch-extraction
-    - repo-llm-wiki-ingest-corpus-acquisition
-    - repo-llm-wiki-tooling
-  - slug: repo-llm-wiki-mkt-a
-    tier: repo
-    repo: vamseeachanta/llm-wiki-mkt-a
-    domain: null
-    parent_slug: null
-    workspace_path: /mnt/local-analysis/llm-wiki-mkt-a
-    file: boards/repo-llm-wiki-mkt-a.yaml
-    card_count: 0
-  - slug: repo-sabithaandkrishnaestates
-    tier: repo
-    repo: vamseeachanta/sabithaandkrishnaestates
-    domain: null
-    parent_slug: null
-    workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
-    file: boards/repo-sabithaandkrishnaestates.yaml
-    card_count: 0
-    children:
-    - repo-sabithaandkrishnaestates-admin-comms
-    - repo-sabithaandkrishnaestates-hoa-vendors
-    - repo-sabithaandkrishnaestates-tax-1099
   - slug: repo-workspace-hub
     tier: repo
     repo: vamseeachanta/workspace-hub
@@ -231,70 +164,6 @@ manifest:
     - repo-worldenergydata-reports
     - repo-worldenergydata-bsee
     - repo-worldenergydata-hse
-  - slug: repo-achantas-data-devakrishna
-    tier: domain
-    repo: vamseeachanta/achantas-data
-    domain: devakrishna
-    parent_slug: repo-achantas-data
-    workspace_path: /mnt/local-analysis/achantas-data
-    file: boards/repo-achantas-data-devakrishna.yaml
-    card_count: 17
-  - slug: repo-achantas-data-family-planning
-    tier: domain
-    repo: vamseeachanta/achantas-data
-    domain: family-planning
-    parent_slug: repo-achantas-data
-    workspace_path: /mnt/local-analysis/achantas-data
-    file: boards/repo-achantas-data-family-planning.yaml
-    card_count: 7
-  - slug: repo-achantas-data-finance
-    tier: domain
-    repo: vamseeachanta/achantas-data
-    domain: finance
-    parent_slug: repo-achantas-data
-    workspace_path: /mnt/local-analysis/achantas-data
-    file: boards/repo-achantas-data-finance.yaml
-    card_count: 10
-  - slug: repo-achantas-data-household
-    tier: domain
-    repo: vamseeachanta/achantas-data
-    domain: household
-    parent_slug: repo-achantas-data
-    workspace_path: /mnt/local-analysis/achantas-data
-    file: boards/repo-achantas-data-household.yaml
-    card_count: 12
-  - slug: repo-achantas-data-travel-arkansas
-    tier: domain
-    repo: vamseeachanta/achantas-data
-    domain: travel-arkansas
-    parent_slug: repo-achantas-data
-    workspace_path: /mnt/local-analysis/achantas-data
-    file: boards/repo-achantas-data-travel-arkansas.yaml
-    card_count: 0
-  - slug: repo-achantas-data-travel-oklahoma-texas
-    tier: domain
-    repo: vamseeachanta/achantas-data
-    domain: travel-oklahoma-texas
-    parent_slug: repo-achantas-data
-    workspace_path: /mnt/local-analysis/achantas-data
-    file: boards/repo-achantas-data-travel-oklahoma-texas.yaml
-    card_count: 0
-  - slug: repo-achantas-data-travel-gulf-prairie
-    tier: domain
-    repo: vamseeachanta/achantas-data
-    domain: travel-gulf-prairie
-    parent_slug: repo-achantas-data
-    workspace_path: /mnt/local-analysis/achantas-data
-    file: boards/repo-achantas-data-travel-gulf-prairie.yaml
-    card_count: 0
-  - slug: repo-achantas-data-travel-planning-international
-    tier: domain
-    repo: vamseeachanta/achantas-data
-    domain: travel-planning-international
-    parent_slug: repo-achantas-data
-    workspace_path: /mnt/local-analysis/achantas-data
-    file: boards/repo-achantas-data-travel-planning-international.yaml
-    card_count: 0
   - slug: repo-assethold-infra
     tier: domain
     repo: vamseeachanta/assethold
@@ -478,70 +347,6 @@ manifest:
     parent_slug: repo-digitalmodel
     workspace_path: /mnt/local-analysis/digitalmodel
     file: boards/repo-digitalmodel-gtm.yaml
-    card_count: 12
-  - slug: repo-llm-wiki-content
-    tier: domain
-    repo: vamseeachanta/llm-wiki
-    domain: content
-    parent_slug: repo-llm-wiki
-    workspace_path: /mnt/local-analysis/llm-wiki
-    file: boards/repo-llm-wiki-content.yaml
-    card_count: 6
-  - slug: repo-llm-wiki-governance
-    tier: domain
-    repo: vamseeachanta/llm-wiki
-    domain: governance
-    parent_slug: repo-llm-wiki
-    workspace_path: /mnt/local-analysis/llm-wiki
-    file: boards/repo-llm-wiki-governance.yaml
-    card_count: 7
-  - slug: repo-llm-wiki-ingest-batch-extraction
-    tier: domain
-    repo: vamseeachanta/llm-wiki
-    domain: ingest-batch-extraction
-    parent_slug: repo-llm-wiki
-    workspace_path: /mnt/local-analysis/llm-wiki
-    file: boards/repo-llm-wiki-ingest-batch-extraction.yaml
-    card_count: 0
-  - slug: repo-llm-wiki-ingest-corpus-acquisition
-    tier: domain
-    repo: vamseeachanta/llm-wiki
-    domain: ingest-corpus-acquisition
-    parent_slug: repo-llm-wiki
-    workspace_path: /mnt/local-analysis/llm-wiki
-    file: boards/repo-llm-wiki-ingest-corpus-acquisition.yaml
-    card_count: 0
-  - slug: repo-llm-wiki-tooling
-    tier: domain
-    repo: vamseeachanta/llm-wiki
-    domain: tooling
-    parent_slug: repo-llm-wiki
-    workspace_path: /mnt/local-analysis/llm-wiki
-    file: boards/repo-llm-wiki-tooling.yaml
-    card_count: 7
-  - slug: repo-sabithaandkrishnaestates-admin-comms
-    tier: domain
-    repo: vamseeachanta/sabithaandkrishnaestates
-    domain: admin-comms
-    parent_slug: repo-sabithaandkrishnaestates
-    workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
-    file: boards/repo-sabithaandkrishnaestates-admin-comms.yaml
-    card_count: 5
-  - slug: repo-sabithaandkrishnaestates-hoa-vendors
-    tier: domain
-    repo: vamseeachanta/sabithaandkrishnaestates
-    domain: hoa-vendors
-    parent_slug: repo-sabithaandkrishnaestates
-    workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
-    file: boards/repo-sabithaandkrishnaestates-hoa-vendors.yaml
-    card_count: 5
-  - slug: repo-sabithaandkrishnaestates-tax-1099
-    tier: domain
-    repo: vamseeachanta/sabithaandkrishnaestates
-    domain: tax-1099
-    parent_slug: repo-sabithaandkrishnaestates
-    workspace_path: /mnt/local-analysis/sabithaandkrishnaestates
-    file: boards/repo-sabithaandkrishnaestates-tax-1099.yaml
     card_count: 12
   - slug: repo-workspace-hub-ai-orchestration
     tier: domain
