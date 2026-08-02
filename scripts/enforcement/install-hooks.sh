@@ -174,14 +174,6 @@ if [[ -f "$REVIEW_GATE" ]]; then
 fi
 EOF
 
-  cat > "${_blk}/drift" <<'EOF'
-
-# ── Stage prompt drift guard (installed by install-hooks.sh) ─────────────
-STAGE_PROMPT_DRIFT_GATE="${REPO_ROOT}/scripts/enforcement/require-stage-prompt-drift.sh"
-if [[ -f "$STAGE_PROMPT_DRIFT_GATE" ]]; then
-  bash "$STAGE_PROMPT_DRIFT_GATE" || OVERALL_EXIT=1
-fi
-EOF
 
   cat > "${_blk}/size" <<'EOF'
 
@@ -207,7 +199,9 @@ EOF
   _install_rc=0
   insert_block "enforcement-env"                   "${_blk}/env"     "enforcement-env" || _install_rc=$?
   insert_block "require-review-on-push.sh"         "${_blk}/review"  "review gate" || _install_rc=$?
-  insert_block "require-stage-prompt-drift.sh"     "${_blk}/drift"   "stage prompt drift guard" || _install_rc=$?
+  # stage-prompt drift is NOT wired into pre-push: .github/workflows/
+  # enforcement-gate.yml already enforces it, and the checker takes MINUTES,
+  # which is the multi-minute-gate defect #3780 removed. CI owns it (#3781).
   insert_block "check-state-file-size-prepush.sh"  "${_blk}/size"    "state-file size guard" || _install_rc=$?
   insert_block "sync-cadence-helper.sh"            "${_blk}/cadence" "cadence-helper sync check" || _install_rc=$?
 

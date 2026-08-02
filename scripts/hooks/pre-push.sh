@@ -336,11 +336,20 @@ if [[ "${_HARNESS_DRIFT_EXIT:-0}" -ne 0 ]]; then
     OVERALL_EXIT=1
 fi
 
-# ── Stage-prompt drift guard ─────────────────────────────────────────────────
-STAGE_PROMPT_DRIFT_GATE="${REPO_ROOT}/scripts/enforcement/require-stage-prompt-drift.sh"
-if [[ -f "$STAGE_PROMPT_DRIFT_GATE" ]]; then
-    bash "$STAGE_PROMPT_DRIFT_GATE" || OVERALL_EXIT=1
-fi
+# ── Stage-prompt drift guard: deliberately NOT wired here ────────────────────
+# Measured on 2026-08-02 before deciding, rather than wired because it was in
+# the dead tail:
+#   * It is already enforced by .github/workflows/enforcement-gate.yml, so a
+#     hook copy is redundant rather than additive.
+#   * It takes MINUTES (the checker imports the ecosystem-audit module and
+#     walks the tree). A multi-minute pre-push gate is what #3780 was about;
+#     re-adding one to fix #3781 would trade the same defect back.
+#   * As invoked it could never have passed: the checker imports
+#     `workspace_hub`, absent from the path under a bare `uv run python`, so it
+#     died on ModuleNotFoundError -- which the wrapper then reported as a drift
+#     verdict. Both bugs are fixed in require-stage-prompt-drift.sh (PYTHONPATH,
+#     and crash-is-not-a-verdict), which benefits the CI path that does run it.
+# CI owns this gate. See #3781.
 
 # ── State-file size guard (#2070) ────────────────────────────────────────────
 # Reads <local_ref local_sha remote_ref remote_sha> from ITS OWN stdin to scan

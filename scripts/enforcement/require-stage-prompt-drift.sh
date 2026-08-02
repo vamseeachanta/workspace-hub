@@ -50,6 +50,12 @@ if [[ "$WRITE_STUBS" == "1" ]]; then
   stub_args+=(--write-evidence-stubs)
 fi
 set +e
+# The checker imports `workspace_hub`, which lives at src/ and is not on the
+# path under a bare `uv run python`. Without this the run dies on
+# ModuleNotFoundError -- and, before the fix below, that crash was reported as a
+# drift verdict. The gate could never have passed as invoked, which is part of
+# why it survived unnoticed below the hook's terminal exit (#3781).
+PYTHONPATH="${REPO_ROOT}/src:${REPO_ROOT}${PYTHONPATH:+:${PYTHONPATH}}" \
 uv run python "$DRIFT_SCRIPT" \
   --base-ref "$BASE_REF" \
   --head-ref "$HEAD_REF" \
@@ -65,6 +71,20 @@ if [[ $exit_code -eq 0 ]]; then
   log_event "pass" "no newly introduced stage prompt drift"
   rm -f "$report_file"
   exit 0
+fi
+
+# A crash and a verdict both exit non-zero. The checker writes its markdown
+# report before concluding, so an EMPTY report means it died rather than
+# decided -- an import error, a missing dep, a bad ref. Reporting that as
+# "drift detected" sends the operator to fix a violation that does not exist,
+# and hides a broken gate behind a plausible policy failure (#3781).
+if [[ ! -s "$report_file" ]]; then
+  echo "[stage-prompt-drift] ERROR: the drift checker failed to run — this is NOT a drift verdict." >&2
+  echo "[stage-prompt-drift] Its output above is the real failure (commonly a missing module or unresolvable ref)." >&2
+  echo "[stage-prompt-drift] Blocking anyway: a gate that cannot run must not read as a pass." >&2
+  log_event "error" "drift checker failed to execute (empty report)"
+  rm -f "$report_file"
+  exit 1
 fi
 
 if [[ "$STRICT_MODE" == "1" ]]; then
