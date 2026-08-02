@@ -1,16 +1,16 @@
 {
   "machine": "dev-secondary",
-  "audited_at": "2026-08-02T11:47:07+00:00",
+  "audited_at": "2026-08-02T17:47:08+00:00",
   "platform": "unix",
-  "repos_total": 19,
-  "healthy": 36,
-  "missing": 17,
+  "repos_total": 15,
+  "healthy": 28,
+  "missing": 13,
   "dangling": 1,
   "flattened": 0,
   "modified_real_dir": 3,
   "template_absent": 0,
-  "repairable": 18,
-  "unexpected_missing_repos": ["aceengineer-admin", "aceengineer-website", "assethold", "assetutilities", "deckhand", "deckhand-live", "deckhand-ops", "digitalmodel", "hobbies", "llm-wiki", "sabithaandkrishnaestates", "teamresumes", "wed-batch5", "wed-phase2-batch3", "wed-phase2-batch4", "wed-phase2-carve", "worldenergydata"],
+  "repairable": 14,
+  "unexpected_missing_repos": ["aceengineer-admin", "aceengineer-website", "assethold", "assetutilities", "deckhand", "deckhand-live", "deckhand-ops", "digitalmodel", "hobbies", "llm-wiki", "sabithaandkrishnaestates", "teamresumes", "worldenergydata"],
   "worst_state": "DANGLING",
   "schema_version": 1
 }
