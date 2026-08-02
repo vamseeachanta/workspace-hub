@@ -99,6 +99,18 @@ def seed_kanban(root: Path) -> Path:
     return kanban
 
 
+def no_op_redactor(reconcile):
+    """A rule-free Redactor for the tests that pin NON-redaction behaviour.
+
+    `reconcile_kanban` refuses to write boards without a client-codename map
+    (#3768 — the boards are public and the cron pushes them to main), so every
+    writing test has to state its redaction posture. A rule-free Redactor makes
+    redaction a no-op while leaving the rest of the behaviour under test intact.
+    Redaction itself is covered in tests/test_kanban_reconcile_redaction.py.
+    """
+    return reconcile.Redactor([])
+
+
 def issue(number: int, title: str, state: str = "OPEN", labels: list[str] | None = None) -> dict:
     return {
         "number": number,
@@ -143,6 +155,7 @@ def test_reconcile_moves_domain_labeled_issue_and_keeps_key_unique(tmp_path: Pat
             issue(2802, "Auto-add every GitHub issue", labels=["domain:ops", "priority:high"])
         ],
         dry_run=False,
+        redactor=no_op_redactor(reconcile),
     )
 
     assert result.changed is True
@@ -179,6 +192,7 @@ def test_reconcile_removes_missing_issue_with_allow_shrink_and_updates_closed_st
         issue_fetcher=lambda repo: [issue(2, "closed issue", state="CLOSED")],
         dry_run=False,
         allow_shrink_repos={"vamseeachanta/workspace-hub"},
+        redactor=no_op_redactor(reconcile),
     )
 
     assert result.changed is True
@@ -236,6 +250,7 @@ def test_reconcile_fails_closed_when_active_repo_fetch_shrinks_existing_cards(tm
             kanban,
             issue_fetcher=lambda repo: [issue(1, "keep")],
             dry_run=False,
+            redactor=no_op_redactor(reconcile),
         )
 
     assert repo_board.read_text(encoding="utf-8") == yaml.safe_dump(repo_data, sort_keys=False)
@@ -257,6 +272,7 @@ def test_reconcile_allows_shrink_with_explicit_repo_override(tmp_path: Path):
         issue_fetcher=lambda repo: [issue(1, "keep")],
         dry_run=False,
         allow_shrink_repos={"vamseeachanta/workspace-hub"},
+        redactor=no_op_redactor(reconcile),
     )
 
     assert result.changed is True
@@ -337,12 +353,14 @@ def test_reconcile_is_idempotent_on_second_run(tmp_path: Path):
         kanban,
         issue_fetcher=lambda repo: [issue(2802, "stable title")],
         dry_run=False,
+        redactor=no_op_redactor(reconcile),
     )
     after_first = repo_board.read_bytes()
     second = reconcile.reconcile_kanban(
         kanban,
         issue_fetcher=lambda repo: [issue(2802, "stable title")],
         dry_run=False,
+        redactor=no_op_redactor(reconcile),
     )
 
     assert first.changed is True
@@ -381,6 +399,7 @@ cards:
         kanban,
         issue_fetcher=lambda repo: [issue(2802, "fresh title")],
         dry_run=False,
+        redactor=no_op_redactor(reconcile),
     )
 
     text = repo_board.read_text(encoding="utf-8")
@@ -755,7 +774,9 @@ def test_reconcile_skips_unresolvable_repo_and_leaves_board_untouched(
             raise RuntimeError(UNRESOLVABLE_MSG)
         return [issue(2802, "fresh issue")]
 
-    result = reconcile.reconcile_kanban(kanban, issue_fetcher=fetcher, dry_run=False)
+    result = reconcile.reconcile_kanban(
+        kanban, issue_fetcher=fetcher, dry_run=False, redactor=no_op_redactor(reconcile)
+    )
 
     assert result.skipped == ["vamseeachanta/gone-repo"]
     err = capsys.readouterr().err
