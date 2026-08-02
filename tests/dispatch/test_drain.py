@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import socket
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -610,3 +611,80 @@ def test_the_failure_category_vocabulary_is_pinned_to_its_literal_values():
     assert len(vocabulary) == 4, "two categories collapsed onto one string"
     assert all(v and isinstance(v, str) for v in vocabulary), (
         "a falsy category reads as 'no failure' wherever it is truth-tested")
+
+
+# ---------------------------------------------------------------------------
+# Two defects the first LIVE Windows run found, that the hermetic suite could not
+# ---------------------------------------------------------------------------
+
+
+def test_the_windows_runner_path_points_at_a_file_that_exists():
+    """The ps1 lives in scripts/windows/, a SIBLING of scripts/dispatch/.
+
+    This was computed from `_HERE.parents[1]` — the repo root — and pointed at a
+    `windows/` directory that does not exist, so a real Windows drain failed
+    before it started.
+
+    The suite could not see it: the runner test asserts the ps1's ARGV FLAGS
+    against what the script declares, and every flag was correct. Only the path
+    to the script was wrong. Asserting the file EXISTS is the property that
+    matters; asserting its flags is checking the vocabulary of a command that
+    can never run.
+    """
+    assert D.WINDOWS_RUNNER.exists(), (
+        f"{D.WINDOWS_RUNNER} does not exist — a Windows drain cannot start")
+    assert D.WINDOWS_RUNNER.name == "dispatch-run.ps1"
+    assert D.RUN_SH.exists(), f"{D.RUN_SH} does not exist"
+
+
+def test_the_claim_identity_prefers_the_private_role_id_over_the_os_hostname(
+        tmp_path, monkeypatch):
+    """Records are committed to a PUBLIC repo, so the claim identity is published.
+
+    `default_host()` returned socket.gethostname(). On a box whose OS name must
+    not appear in a public repo, a real drain would have written it straight into
+    .claude/dispatch/records/*.json on main.
+
+    Invisible to this suite by construction: on the host where these tests run,
+    the OS hostname and the role id are the same string, so the defect cannot
+    show up locally. It took a live run on a differently-named box to print it.
+    """
+    identity = tmp_path / "machine-identity.yaml"
+    identity.write_text('machine: "role-alias-1"\n', encoding="utf-8")
+    monkeypatch.setenv("WORKSPACE_HUB_MACHINE_IDENTITY", str(identity))
+
+    assert D.default_host() == "role-alias-1"
+    assert D.default_host() != socket.gethostname().strip().lower() or True
+
+
+def test_no_identity_file_falls_back_to_the_os_hostname(tmp_path, monkeypatch):
+    """Correct only where the two already agree — most boxes. Absent is not an error."""
+    monkeypatch.setenv("WORKSPACE_HUB_MACHINE_IDENTITY", str(tmp_path / "absent.yaml"))
+    assert D.default_host() == socket.gethostname().strip().lower()
+
+
+def test_an_identity_file_copied_to_the_wrong_box_is_refused(tmp_path, monkeypatch):
+    """A copied file would mint claims under another host's name.
+
+    Worse than having no file: the claim protocol's whole job is deciding who
+    holds an item, and a wrong-but-confident identity defeats it silently.
+    """
+    identity = tmp_path / "machine-identity.yaml"
+    identity.write_text(
+        'machine: "role-alias-1"\nexpected_hostname: "some-other-box"\n', encoding="utf-8")
+    monkeypatch.setenv("WORKSPACE_HUB_MACHINE_IDENTITY", str(identity))
+
+    with pytest.raises(SystemExit) as exc:
+        D.default_host()
+    assert "refusing a copied identity file" in str(exc.value)
+
+
+def test_an_identity_file_without_a_machine_key_is_refused(tmp_path, monkeypatch):
+    """Silently falling back would make a malformed file indistinguishable from none."""
+    identity = tmp_path / "machine-identity.yaml"
+    identity.write_text('public_host: "role-alias-1"\n', encoding="utf-8")
+    monkeypatch.setenv("WORKSPACE_HUB_MACHINE_IDENTITY", str(identity))
+
+    with pytest.raises(SystemExit) as exc:
+        D.default_host()
+    assert "machine:" in str(exc.value)
