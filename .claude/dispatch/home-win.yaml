@@ -1,12 +1,23 @@
 machine: home-win
 generated_by: dispatch.py
+generated_at: '2026-08-02T02:26:55Z'
+ttl_hours: 24
 cards:
 - gh: vamseeachanta/workspace-hub#1507
   repo: vamseeachanta/workspace-hub
-  domain: ai-orchestration
+  domain: workstations
   provider: claude
   title: 'Verify Claude Desktop install: home-win'
   url: https://github.com/vamseeachanta/workspace-hub/issues/1507
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3048
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: "Model parity audit on home-win (Part A) \u2014 epic #3043"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3048
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual

@@ -1,0 +1,149 @@
+machine: cfd-dedicated
+generated_by: dispatch.py
+generated_at: '2026-08-02T02:26:54Z'
+ttl_hours: 24
+cards:
+- gh: vamseeachanta/digitalmodel#630
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: 'feat(openfoam): assess HD ''T1 Suzuka Aero'' dataset for CFD f'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/630
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1166
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: "feat(openfoam): laminar cylinder Re=100 \u2014 foundational vorte"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1166
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1167
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: "feat(openfoam): laminar flat plate (Blasius) \u2014 foundational "
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1167
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1168
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: "feat(openfoam): turbulent flat plate ZPG (k-omega SST) \u2014 NAS"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1168
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1179
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: 'feat(cfd): ephemeral remote-CFD lifecycle scripts over SSH ('
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1179
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1192
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: 'fix(cfd): validation cases generate non-runnable solver setu'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1192
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1173
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: 'feat(openfoam): calm-water hull resistance (interFoam towing'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1173
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1174
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: 'feat(openfoam): NACA0012 airfoil polar (simpleFoam k-omega S'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1174
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1175
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: "feat(openfoam): backward-facing step (pitzDaily) \u2014 reattachm"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1175
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1176
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: "feat(openfoam): square-cylinder bluff-body wind load \u2014 Lyn &"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1176
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1177
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: "feat(openfoam): turbulent cylinder Re=3900 (LES) \u2014 Kravchenk"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1177
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1517
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: 'fix(cfd): harden attested snapshots and fail-closed solver e'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1517
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1528
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: 'feat(cfd): coupled sloshing tank fill/drain over roll cycles'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1528
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1562
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: 'feat(cfd): dm#1528 anti-roll roll-reduction for a specific v'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1562
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1575
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: codex
+  title: 'OpenFOAM batch runner: preserve full case-definition contrac'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1575
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1576
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: codex
+  title: 'OpenFOAM MPI runner: emit post-processing and VTK artifacts'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1576
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual

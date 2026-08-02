@@ -1,84 +1,1832 @@
 machine: multi
 generated_by: dispatch.py
+generated_at: '2026-08-02T02:26:55Z'
+ttl_hours: 24
 cards:
-- gh: vamseeachanta/workspace-hub#1504
-  repo: vamseeachanta/workspace-hub
-  domain: ai-orchestration
+- gh: vamseeachanta/deckhand#24
+  repo: vamseeachanta/deckhand
+  domain: security
   provider: claude
-  title: Install Claude Desktop on all ecosystem machines
-  url: https://github.com/vamseeachanta/workspace-hub/issues/1504
+  title: "Epic: Open Deck hardening \u2014 public-tier launch readiness"
+  url: https://github.com/vamseeachanta/deckhand/issues/24
+  dispatch_status: ready
+  wip_eligible: true
+  routed_by: manual
+- gh: vamseeachanta/deckhand#187
+  repo: vamseeachanta/deckhand
+  domain: capability
+  provider: codex
+  title: 'EPIC: Channels run real engineering compute (subagent expert'
+  url: https://github.com/vamseeachanta/deckhand/issues/187
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
-- gh: vamseeachanta/workspace-hub#1378
-  repo: vamseeachanta/workspace-hub
-  domain: ai-orchestration
+- gh: vamseeachanta/deckhand#192
+  repo: vamseeachanta/deckhand
+  domain: routing,security,onboarding
   provider: claude
-  title: 'WRK-PENDING: Review local-analysis folders for relocation to'
-  url: https://github.com/vamseeachanta/workspace-hub/issues/1378
+  title: "Epic: Personal family Telegram workspace \u2014 private scope wit"
+  url: https://github.com/vamseeachanta/deckhand/issues/192
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
-- gh: vamseeachanta/workspace-hub#2641
-  repo: vamseeachanta/workspace-hub
-  domain: engineering
+- gh: vamseeachanta/deckhand#389
+  repo: vamseeachanta/deckhand
+  domain: capability,onboarding
   provider: claude
-  title: 'feat(solver-queue): hands-off multi-machine inbox ingestion '
-  url: https://github.com/vamseeachanta/workspace-hub/issues/2641
+  title: "Epic: Marketable workflows per Open Deck channel \u2014 define, c"
+  url: https://github.com/vamseeachanta/deckhand/issues/389
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
-- gh: vamseeachanta/workspace-hub#2089
-  repo: vamseeachanta/workspace-hub
-  domain: harness
+- gh: vamseeachanta/deckhand#405
+  repo: vamseeachanta/deckhand
+  domain: routing,security,onboarding
   provider: claude
-  title: 'feat(harness): weekly Hermes + AI provider settings review f'
-  url: https://github.com/vamseeachanta/workspace-hub/issues/2089
+  title: 'Epic: Marketing onboarding funnel + standardized channel reg'
+  url: https://github.com/vamseeachanta/deckhand/issues/405
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#577
+  repo: vamseeachanta/deckhand
+  domain: gateway-ops
+  provider: claude
+  title: '[Epic] What''s reviewed is what runs: config and patch drift '
+  url: https://github.com/vamseeachanta/deckhand/issues/577
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#622
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: codex
+  title: 'Epic: Output-driven diffraction domain module (OrcaWave pilo'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/622
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#890
+  repo: vamseeachanta/digitalmodel
+  domain: udw-well-access
+  provider: claude
+  title: "[Epic] Quantify the UDW well-access supply\u2013demand gap (Front"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/890
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1161
+  repo: vamseeachanta/digitalmodel
+  domain: cfd
+  provider: claude
+  title: "[Epic] CFD capability \u2014 activate OpenFOAM stack for 2D/3D ma"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1161
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1429
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "[Epic] CFD-benchmarked sloshing master curve \u2014 overlay measu"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1429
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1523
+  repo: vamseeachanta/digitalmodel
+  domain: gis
+  provider: claude
+  title: 'epic(explorer-bridge): engineering feeds for the wed World E'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1523
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1825
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "[Epic] Diffraction results agree across solvers \u2014 one strict"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1825
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1826
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: '[Epic] OrcaFlex model library: real models in, semantically-'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1826
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1827
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "[Epic] marine_ops regression suite green \u2014 RAO, OCIMF and mo"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1827
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1833
+  repo: vamseeachanta/digitalmodel
+  domain: solver,marine
+  provider: claude
+  title: '[Epic] Solver queue runs licensed batches unattended across '
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1833
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1835
+  repo: vamseeachanta/digitalmodel
+  domain: subsea,pipeline
+  provider: claude
+  title: '[Epic] Close the design-code gap: pipeline, riser and subsea'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1835
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1837
+  repo: vamseeachanta/digitalmodel
+  domain: subsea,pipeline
+  provider: claude
+  title: '[Epic] VIV and fatigue damage chain: no silent numbers from '
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1837
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1354
+  repo: vamseeachanta/workspace-hub
+  domain: knowledge
+  provider: claude
+  title: 'WRK-1354: frontierdeepwater: sync missing files from remote '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1354
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
 - gh: vamseeachanta/workspace-hub#1782
   repo: vamseeachanta/workspace-hub
-  domain: harness
+  domain: knowledge
   provider: claude
   title: "epic: zero-loss agent learnings \u2014 git-track ALL AI agent mem"
   url: https://github.com/vamseeachanta/workspace-hub/issues/1782
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
-- gh: vamseeachanta/workspace-hub#1678
+- gh: vamseeachanta/workspace-hub#2887
   repo: vamseeachanta/workspace-hub
-  domain: harness
+  domain: workstations
   provider: claude
-  title: Deploy harness-update-windows.sh to licensed-win-1 and licen
-  url: https://github.com/vamseeachanta/workspace-hub/issues/1678
+  title: 'epic(workstations): machine + AI-provider equivalence status'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2887
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
-- gh: vamseeachanta/workspace-hub#1583
+- gh: vamseeachanta/workspace-hub#2894
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'feat(workstations): #0 revive + verify the equality-matrix s'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2894
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2998
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'epic(workstations): extend consistent-experience backbone to'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2998
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3050
+  repo: vamseeachanta/workspace-hub
+  domain: workflow
+  provider: claude
+  title: 'EPIC: confirm tier-1 repos + drive workflows through the UV '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3050
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3281
+  repo: vamseeachanta/workspace-hub
+  domain: workflow
+  provider: claude
+  title: "EPIC: Deterministic Workflow API \u2014 make every tier-1 workflo"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3281
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3290
   repo: vamseeachanta/workspace-hub
   domain: harness
   provider: claude
-  title: Hermes config parity via repo ecosystem templates
-  url: https://github.com/vamseeachanta/workspace-hub/issues/1583
+  title: "EPIC: Seamless ecosystem development \u2014 fast green CI, a work"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3290
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3331
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'feat(codex): frontier-model harness and memory parity harden'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3331
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3414
+  repo: vamseeachanta/workspace-hub
+  domain: workflow
+  provider: claude
+  title: 'epic(landman-project-desk): broker workflow, QA, and federal'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3414
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3427
+  repo: vamseeachanta/workspace-hub
+  domain: governance
+  provider: claude
+  title: 'epic: repository-linked algorithm run datasets and decision '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3427
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3455
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'bug(workstations): reconcile ace-win-1 with the live RDS-002'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3455
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3485
+  repo: vamseeachanta/workspace-hub
+  domain: capability
+  provider: claude
+  title: 'epic: Live HF-backed capability surfaces on aceengineer.com '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3485
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3497
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: "EPIC: Fleet dispatch ecosystem \u2014 ace-linux-1 single dispatch"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3497
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3516
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes "
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3516
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3559
+  repo: vamseeachanta/workspace-hub
+  domain: capability
+  provider: codex
+  title: 'feat(field-explorer): immutable Hugging Face field/well HTML'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3559
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3600
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: "fix(harness): R-MODEL-DRIFT validates only openai_primary \u2014 "
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3600
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3601
+  repo: vamseeachanta/workspace-hub
+  domain: solver
+  provider: claude
+  title: 'INITIATIVE: Engineering compute & solver trust'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3601
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3602
+  repo: vamseeachanta/workspace-hub
+  domain: ingest
+  provider: claude
+  title: 'INITIATIVE: World Energy Field Explorer & asset data spine'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3602
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3603
+  repo: vamseeachanta/workspace-hub
+  domain: gtm
+  provider: claude
+  title: 'INITIATIVE: Deckhand & Open Deck platform'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3603
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3604
+  repo: vamseeachanta/workspace-hub
+  domain: knowledge
+  provider: claude
+  title: 'INITIATIVE: Knowledge ingestion & the llm-wiki corpus'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3604
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3605
+  repo: vamseeachanta/workspace-hub
+  domain: business-development
+  provider: claude
+  title: 'INITIATIVE: ACMA & client delivery'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3605
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3606
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: 'INITIATIVE: Harness runtime, workflow & skills'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3606
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3607
+  repo: vamseeachanta/workspace-hub
+  domain: gtm
+  provider: claude
+  title: 'INITIATIVE: Brand, public surfaces & go-to-market'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3607
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3608
+  repo: vamseeachanta/workspace-hub
+  domain: cad
+  provider: claude
+  title: 'INITIATIVE: CAD/CAM & manufacturing capability'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3608
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3609
+  repo: vamseeachanta/workspace-hub
+  domain: family
+  provider: claude
+  title: 'INITIATIVE: Personal & family operations'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3609
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3669
+  repo: vamseeachanta/workspace-hub
+  domain: null
+  provider: claude
+  title: "INITIATIVE: AI platform \u2014 provider parity, routing, memory &"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3669
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3670
+  repo: vamseeachanta/workspace-hub
+  domain: null
+  provider: claude
+  title: "INITIATIVE: Fleet operations \u2014 machine readiness, cross-plat"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3670
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3671
+  repo: vamseeachanta/workspace-hub
+  domain: null
+  provider: claude
+  title: 'INITIATIVE: Repo structure, test health & governance'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3671
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3724
+  repo: vamseeachanta/workspace-hub
+  domain: null
+  provider: claude
+  title: 'bug(equality): 4 of 5 matrix rows are stale and render ident'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3724
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#38
+  repo: vamseeachanta/deckhand
+  domain: capability
+  provider: claude
+  title: "Epic: flagship-prompt delivery \u2014 technical capability paths "
+  url: https://github.com/vamseeachanta/deckhand/issues/38
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#141
+  repo: vamseeachanta/deckhand
+  domain: onboarding
+  provider: claude
+  title: 'Epic: Onboard a software-side SME via an operator/admin scop'
+  url: https://github.com/vamseeachanta/deckhand/issues/141
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#142
+  repo: vamseeachanta/deckhand
+  domain: onboarding
+  provider: claude
+  title: 'Epic: Onboard an electrical-domain SME (new domain + Open De'
+  url: https://github.com/vamseeachanta/deckhand/issues/142
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#425
+  repo: vamseeachanta/deckhand
+  domain: onboarding
+  provider: claude
+  title: "epic(marketing): demo videos v3 \u2014 exact-UX with real deliver"
+  url: https://github.com/vamseeachanta/deckhand/issues/425
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#572
+  repo: vamseeachanta/deckhand
+  domain: workstations
+  provider: claude
+  title: '[Epic] Licensed-run reaches production: ANSYS/AQWA/OrcaFlex '
+  url: https://github.com/vamseeachanta/deckhand/issues/572
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#573
+  repo: vamseeachanta/deckhand
+  domain: workstations
+  provider: claude
+  title: '[Epic] Execution-host fleet: one role per machine, one reach'
+  url: https://github.com/vamseeachanta/deckhand/issues/573
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#574
+  repo: vamseeachanta/deckhand
+  domain: routing
+  provider: claude
+  title: '[Epic] One resolver decides every route: voice, paths, escal'
+  url: https://github.com/vamseeachanta/deckhand/issues/574
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#575
+  repo: vamseeachanta/deckhand
+  domain: routing
+  provider: claude
+  title: '[Epic] No engineering ask falls through: seven missing disci'
+  url: https://github.com/vamseeachanta/deckhand/issues/575
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#576
+  repo: vamseeachanta/deckhand
+  domain: chat-quality
+  provider: claude
+  title: '[Epic] Every reply is rated, grounded, and free of internal '
+  url: https://github.com/vamseeachanta/deckhand/issues/576
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#578
+  repo: vamseeachanta/deckhand
+  domain: onboarding
+  provider: claude
+  title: '[Epic] Standing up a new client scope is one automated flow,'
+  url: https://github.com/vamseeachanta/deckhand/issues/578
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1530
+  repo: vamseeachanta/digitalmodel
+  domain: subsea
+  provider: claude
+  title: "EPIC: Field-development hardening \u2014 real data, native screen"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1530
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1828
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "[Epic] License-free BEM lane \u2014 Capytaine + parametric hull s"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1828
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1829
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: "[Epic] Station-keeping answers for moored vessels \u2014 dynamic "
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1829
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1830
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: "[Epic] From .sim to a report a client can read \u2014 standard Or"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1830
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1831
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: '[Epic] Installation and marine operations analyses that neve'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1831
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1832
+  repo: vamseeachanta/digitalmodel
+  domain: hydro
+  provider: claude
+  title: '[Epic] Every hydrodynamic method traceable to a cited source'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1832
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1834
+  repo: vamseeachanta/digitalmodel
+  domain: subsea,pipeline
+  provider: claude
+  title: '[Epic] Cathodic protection: a CP design a client can be hand'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1834
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1836
+  repo: vamseeachanta/digitalmodel
+  domain: subsea,marine
+  provider: claude
+  title: '[Epic] Installation analysis end to end: spec to go/no-go de'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1836
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1838
+  repo: vamseeachanta/digitalmodel
+  domain: subsea,pipeline
+  provider: claude
+  title: '[Epic] Soil is modelled, not assumed: geotechnical layer for'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1838
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1839
+  repo: vamseeachanta/digitalmodel
+  domain: naval-architecture,marine
+  provider: claude
+  title: '[Epic] Hydrodynamic coefficients you can defend: hull regist'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1839
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1840
+  repo: vamseeachanta/digitalmodel
+  domain: marine
+  provider: claude
+  title: '[Epic] Open-source solver stack as a licence-free cross-chec'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1840
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1841
+  repo: vamseeachanta/digitalmodel
+  domain: marine,pipeline
+  provider: claude
+  title: '[Epic] Data supply: real external feeds in, legacy engineeri'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1841
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1842
+  repo: vamseeachanta/digitalmodel
+  domain: solver,marine
+  provider: claude
+  title: '[Epic] Deliverables under test: snapshot-verified reports an'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1842
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1843
+  repo: vamseeachanta/digitalmodel
+  domain: structural
+  provider: claude
+  title: "[Epic] Fatigue answers you can defend \u2014 cycle counting, full"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1843
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1844
+  repo: vamseeachanta/digitalmodel
+  domain: standards
+  provider: claude
+  title: "[Epic] Make mooring & station-keeping code-complete \u2014 API RP"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1844
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1845
+  repo: vamseeachanta/digitalmodel
+  domain: standards
+  provider: claude
+  title: "[Epic] Cathodic protection that respects the metallurgy \u2014 IS"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1845
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1846
+  repo: vamseeachanta/digitalmodel
+  domain: structural
+  provider: claude
+  title: "[Epic] A license-free solver stack we can trust \u2014 CalculiX, "
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1846
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1847
+  repo: vamseeachanta/digitalmodel
+  domain: structural
+  provider: claude
+  title: "[Epic] The routine structural component check \u2014 sections, AI"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1847
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1848
+  repo: vamseeachanta/digitalmodel
+  domain: naval-architecture
+  provider: claude
+  title: '[Epic] Turn the naval-architecture reference corpus into val'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1848
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1849
+  repo: vamseeachanta/digitalmodel
+  domain: standards
+  provider: claude
+  title: "[Epic] Floating offshore wind capability \u2014 carry the deepwat"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1849
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1850
+  repo: vamseeachanta/digitalmodel
+  domain: testing
+  provider: claude
+  title: "[Epic] Green the digitalmodel test suite \u2014 clear the marine_"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1850
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1851
+  repo: vamseeachanta/digitalmodel
+  domain: repo
+  provider: claude
+  title: '[Epic] A digitalmodel checkout that agents and CI can operat'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1851
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
 - gh: vamseeachanta/workspace-hub#1462
   repo: vamseeachanta/workspace-hub
-  domain: ops
+  domain: harness
   provider: claude
   title: Install and configure tmux (or chosen multiplexer) across al
   url: https://github.com/vamseeachanta/workspace-hub/issues/1462
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
-- gh: vamseeachanta/workspace-hub#1354
+- gh: vamseeachanta/workspace-hub#1583
   repo: vamseeachanta/workspace-hub
-  domain: ops
+  domain: workstations
   provider: claude
-  title: 'WRK-1354: client-a: sync missing files from remote '
-  url: https://github.com/vamseeachanta/workspace-hub/issues/1354
+  title: Hermes config parity via repo ecosystem templates
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1583
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1678
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: Deploy harness-update-windows.sh to licensed-win-1 and licen
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1678
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2089
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'feat(harness): weekly Hermes + AI provider settings review f'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2089
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2888
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'feat(workstations): AI-tool version-currency cell (installed'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2888
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2890
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'feat(workstations): repo-sync-status cell (ahead/behind/dirt'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2890
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2891
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'feat(workstations): network/data-availability reachability c'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2891
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2892
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'feat(workstations): OSS custom-program inventory + version-c'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2892
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2893
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'feat(workstations): cross-provider statusline parity (Claude'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2893
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3370
+  repo: vamseeachanta/workspace-hub
+  domain: knowledge
+  provider: claude
+  title: 'EPIC: Repo-ecosystem data retention, backup & fingertip-acce'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3370
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3524
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: codex
+  title: '[WRK] bug(workstations): RDP microphone input not negotiated'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3524
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3565
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'feat(agent-ux): align Linux Codex dictation hotkey with Wind'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3565
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3566
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'fix(agent-ux): make keyboard and context-menu text paste equ'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3566
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3567
+  repo: vamseeachanta/workspace-hub
+  domain: workstations,ai
+  provider: claude
+  title: 'feat(machine-equivalence): add interaction-UX evidence and p'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3567
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3568
+  repo: vamseeachanta/workspace-hub
+  domain: workstations,ai
+  provider: claude
+  title: 'epic(agent-ux): cross-machine input interaction parity'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3568
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3589
+  repo: vamseeachanta/workspace-hub
+  domain: family
+  provider: claude
+  title: 'EPIC: family phone-media extraction & archive ecosystem'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3589
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3611
+  repo: vamseeachanta/workspace-hub
+  domain: skills
+  provider: claude
+  title: '[Epic] Make the SKILL.md authoring contract machine-checkabl'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3611
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3612
+  repo: vamseeachanta/workspace-hub
+  domain: skills
+  provider: claude
+  title: '[Epic] One canonical copy per skill, non-zero domain coverag'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3612
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3613
+  repo: vamseeachanta/workspace-hub
+  domain: skills
+  provider: claude
+  title: '[Epic] Finish the agent/command to SKILL.md migration and st'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3613
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3614
+  repo: vamseeachanta/workspace-hub
+  domain: skills
+  provider: claude
+  title: '[Epic] Close eight named domain-skill coverage gaps'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3614
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3615
+  repo: vamseeachanta/workspace-hub
+  domain: skills
+  provider: claude
+  title: '[Epic] Make workspace-hub''s own operational skills and pre-p'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3615
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3616
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: "[Epic] Provider parity \u2014 Claude, Codex and agy are interchan"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3616
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3617
+  repo: vamseeachanta/workspace-hub
+  domain: workflow
+  provider: claude
+  title: "[Epic] Retire the WRK work-queue \u2014 one work-tracking system,"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3617
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3618
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: "[Epic] Model routing & AI credit governance \u2014 right model fo"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3618
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3619
+  repo: vamseeachanta/workspace-hub
+  domain: workflow
+  provider: claude
+  title: "[Epic] Trustworthy autonomous dispatch \u2014 approval, plan-revi"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3619
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3620
+  repo: vamseeachanta/workspace-hub
+  domain: workflow
+  provider: claude
+  title: "[Epic] Make workflow compliance consequential \u2014 a gate behin"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3620
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3621
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: "[Epic] Durable agent memory \u2014 canonical, fresh and lossless "
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3621
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3622
+  repo: vamseeachanta/workspace-hub
+  domain: workflow
+  provider: claude
+  title: "[Epic] Every issue leaves a standard durable trail \u2014 plan, r"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3622
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3623
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: '[Epic] Cross-provider review fanout produces trustworthy, co'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3623
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3624
+  repo: vamseeachanta/workspace-hub
+  domain: workflow
+  provider: claude
+  title: "[Epic] Close the email-as-queue loop \u2014 extract, act, delete,"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3624
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3625
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: "[Epic] Skill & prompt corpus \u2014 measure real usage, remove mo"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3625
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3626
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: '[Epic] Hermes gateway & the self-hosted / free provider tier'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3626
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3627
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: '[Epic] One consistent agent harness configuration on every m'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3627
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3628
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: '[Epic] Security hardening for AI agent workflows and credent'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3628
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3629
+  repo: vamseeachanta/workspace-hub
+  domain: ci-release
+  provider: claude
+  title: '[Epic] Weekly ecosystem review publishes reproducible, promo'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3629
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3630
+  repo: vamseeachanta/workspace-hub
+  domain: ci-release
+  provider: claude
+  title: '[Epic] Adopting a new model or harness update is a verified,'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3630
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3631
+  repo: vamseeachanta/workspace-hub
+  domain: ci-release
+  provider: claude
+  title: '[Epic] Every harness script and scheduled task runs identica'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3631
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3632
+  repo: vamseeachanta/workspace-hub
+  domain: knowledge
+  provider: claude
+  title: '[Epic] llm-wiki ingest pipeline: complete source coverage, i'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3632
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3633
+  repo: vamseeachanta/workspace-hub
+  domain: governance
+  provider: claude
+  title: '[Epic] Plan-approval evidence is fail-closed and machine-ver'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3633
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3634
+  repo: vamseeachanta/workspace-hub
+  domain: knowledge
+  provider: claude
+  title: '[Epic] Promote the named O&G standards backlog into the wiki'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3634
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3635
+  repo: vamseeachanta/workspace-hub
+  domain: governance
+  provider: claude
+  title: '[Epic] Every open issue routes to exactly one domain, board '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3635
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3636
+  repo: vamseeachanta/workspace-hub
+  domain: knowledge
+  provider: claude
+  title: '[Epic] Enforce knowledge promotion: ledger, audit trail, and'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3636
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3637
+  repo: vamseeachanta/workspace-hub
+  domain: security,governance
+  provider: claude
+  title: '[Epic] Public repositories are hardened and contributor inte'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3637
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3638
+  repo: vamseeachanta/workspace-hub
+  domain: knowledge
+  provider: claude
+  title: '[Epic] Make ecosystem intelligence findable and provably fre'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3638
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3639
+  repo: vamseeachanta/workspace-hub
+  domain: security
+  provider: claude
+  title: '[Epic] Every workstation is reachable only over hardened, re'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3639
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3640
+  repo: vamseeachanta/workspace-hub
+  domain: security
+  provider: claude
+  title: '[Epic] Secret and legal scanning fails closed with positive '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3640
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3641
+  repo: vamseeachanta/workspace-hub
+  domain: security
+  provider: claude
+  title: '[Epic] Harness tooling is hardened against hostile and malfo'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3641
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3642
+  repo: vamseeachanta/workspace-hub
+  domain: testing
+  provider: claude
+  title: '[Epic] Weekly review publication pipeline: validated, reprod'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3642
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3643
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: "[Epic] Machine readiness matrix \u2014 evidence bundles on every "
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3643
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3644
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: "[Epic] Clear node bring-up debt \u2014 ace-linux-2 and gpu-claw t"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3644
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3645
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: '[Epic] One-command harness bootstrap + unattended update lif'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3645
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3646
+  repo: vamseeachanta/workspace-hub
+  domain: repo
+  provider: claude
+  title: '[Epic] Every tier-1 repo has the same anatomy and a current '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3646
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3647
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: '[Epic] Every scheduled task installs, runs, and surfaces its'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3647
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3648
+  repo: vamseeachanta/workspace-hub
+  domain: testing
+  provider: claude
+  title: '[Epic] Cross-review enforcement: reliable, blocking, provide'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3648
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3649
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: '[Epic] One trustworthy answer to "is this plan approved?" ac'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3649
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3650
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: '[Epic] A session''s state and learnings survive the session a'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3650
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3651
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: '[Epic] Identical harness behaviour on every machine and ever'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3651
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3652
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: '[Epic] Harness automation never destroys live work or unveri'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3652
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3653
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: '[Epic] The weekly review reports something a human can act o'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3653
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3654
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: '[Epic] Get commit-review compliance out of critical and stop'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3654
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3655
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: '[Epic] The operator can see and steer the harness without op'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3655
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3656
+  repo: vamseeachanta/workspace-hub
+  domain: testing
+  provider: claude
+  title: '[Epic] Pre-push and merge gates: deterministic, passable, by'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3656
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3657
+  repo: vamseeachanta/workspace-hub
+  domain: repo
+  provider: claude
+  title: '[Epic] Wind down secondary repos: extract the value, then ar'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3657
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3658
+  repo: vamseeachanta/workspace-hub
+  domain: testing
+  provider: claude
+  title: '[Epic] Return red test suites to green (digitalmodel, worlde'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3658
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3659
+  repo: vamseeachanta/workspace-hub
+  domain: testing
+  provider: claude
+  title: '[Epic] Coverage uplift for untested engineering and calculat'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3659
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3660
+  repo: vamseeachanta/workspace-hub
+  domain: repo
+  provider: claude
+  title: '[Epic] Delete dead weight: stale code, orphan modules, and m'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3660
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3661
+  repo: vamseeachanta/workspace-hub
+  domain: testing
+  provider: claude
+  title: '[Epic] Smoke coverage for licensed and platform-specific eng'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3661
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3662
+  repo: vamseeachanta/workspace-hub
+  domain: repo
+  provider: claude
+  title: '[Epic] Every repo clean, synced, and free of stray branches'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3662
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3663
+  repo: vamseeachanta/workspace-hub
+  domain: testing
+  provider: claude
+  title: '[Epic] Test-health telemetry: trends, baselines and enforced'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3663
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3664
+  repo: vamseeachanta/workspace-hub
+  domain: testing
+  provider: claude
+  title: '[Epic] Regression coverage for ecosystem-sync and harness mu'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3664
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3665
+  repo: vamseeachanta/workspace-hub
+  domain: repo
+  provider: claude
+  title: '[Epic] Shared dev toolchain works in every checkout: worktre'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3665
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3666
+  repo: vamseeachanta/workspace-hub
+  domain: repo
+  provider: claude
+  title: '[Epic] Architecture and readiness reporting runs itself'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3666
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3667
+  repo: vamseeachanta/workspace-hub
+  domain: repo
+  provider: claude
+  title: '[Epic] One implementation per capability: consolidate duplic'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3667
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3668
+  repo: vamseeachanta/workspace-hub
+  domain: repo
+  provider: claude
+  title: '[Epic] Promote packages up the maturity ladder to PRODUCTION'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3668
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3723
+  repo: vamseeachanta/workspace-hub
+  domain: security
+  provider: claude
+  title: 'ops(fleet): derive fleet-ssh-hosts.yml reachability from the'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3723
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3734
+  repo: vamseeachanta/workspace-hub
+  domain: null
+  provider: claude
+  title: 'feat(capability): ace-win-1 has idle licensed AQWA capacity '
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3734
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1640
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: "INITIATIVE: Trustworthy OrcaFlex results \u2014 arm the merge gat"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1640
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1378
+  repo: vamseeachanta/workspace-hub
+  domain: knowledge
+  provider: claude
+  title: 'WRK-PENDING: Review local-analysis folders for relocation to'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1378
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1504
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: Install Claude Desktop on all ecosystem machines
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1504
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3594
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'chore(registry): gpu-claw entry stale after 2026-07-22 reloc'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3594
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#439
+  repo: vamseeachanta/deckhand
+  domain: routing
+  provider: claude
+  title: "[Epic] Topic/Domain/Subdomain Subagent Specialization \u2014 best"
+  url: https://github.com/vamseeachanta/deckhand/issues/439
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/deckhand#521
+  repo: vamseeachanta/deckhand
+  domain: capability
+  provider: claude
+  title: "[EPIC] Live callable capabilities via Telegram \u2192 hermes (wor"
+  url: https://github.com/vamseeachanta/deckhand/issues/521
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#794
+  repo: vamseeachanta/digitalmodel
+  domain: repo
+  provider: claude
+  title: "[Epic] Parametric Refresh \u2014 atlas-backed instant answers for"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/794
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#807
+  repo: vamseeachanta/digitalmodel
+  domain: subsea
+  provider: claude
+  title: "[Epic] Riser Analysis Automation \u2014 engine hardening, paramet"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/807
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#836
+  repo: vamseeachanta/digitalmodel
+  domain: collide-pe
+  provider: claude
+  title: "[Epic] Collide PE Problem of the Day \u2014 solve the series (hot"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/836
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#837
+  repo: vamseeachanta/digitalmodel
+  domain: collide-pe
+  provider: claude
+  title: '[Epic] Deckhand-routed Claude API solver for Collide PE prob'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/837
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#938
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: "EPIC: Solver run preparedness \u2014 programs (AQWA/ANSYS), use-c"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/938
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1004
+  repo: vamseeachanta/digitalmodel
+  domain: cad
+  provider: claude
+  title: '[Epic] Catalog & understand existing CAD/CAM models on the a'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1004
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1011
+  repo: vamseeachanta/digitalmodel
+  domain: cad
+  provider: claude
+  title: "[Epic] File-format adapter review \u2014 read & convert all CAD/C"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1011
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1057
+  repo: vamseeachanta/digitalmodel
+  domain: structural
+  provider: claude
+  title: "EPIC: Fitness-For-Service (FFS) decision layer \u2014 field-to-of"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1057
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1080
+  repo: vamseeachanta/digitalmodel
+  domain: structural
+  provider: claude
+  title: 'EPIC: Ship structural strength expansion + unified material '
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1080
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1095
+  repo: vamseeachanta/digitalmodel
+  domain: repo
+  provider: claude
+  title: "[Epic] LLM spec-authoring: project SSOT \u2192 analysis SSOT (spe"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1095
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1152
+  repo: vamseeachanta/digitalmodel
+  domain: solver
+  provider: claude
+  title: "[Epic] Open simulation workflows \u2192 future Deckhand API paths"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1152
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1193
+  repo: vamseeachanta/digitalmodel
+  domain: naval-architecture
+  provider: claude
+  title: 'EPIC: Tug analysis toolkit (power, stability, fendering, tow'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1193
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1356
+  repo: vamseeachanta/digitalmodel
+  domain: naval-architecture
+  provider: claude
+  title: "EPIC: Short-horizon vessel/structure MOTION forecast \u2192 opera"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1356
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1391
+  repo: vamseeachanta/digitalmodel
+  domain: capability
+  provider: claude
+  title: "EPIC: capabilities-page content expansion \u2014 7 verified drop-"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1391
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1471
+  repo: vamseeachanta/digitalmodel
+  domain: website
+  provider: claude
+  title: 'EPIC: Brand & layout consistency for public capability pages'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1471
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1858
+  repo: vamseeachanta/digitalmodel
+  domain: collide-pe
+  provider: claude
+  title: '[Epic] Rod-pump artificial lift: dynamometer cards you can d'
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1858
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/digitalmodel#1870
+  repo: vamseeachanta/digitalmodel
+  domain: collide-pe
+  provider: claude
+  title: "INITIATIVE: Dynacard diagnostics you can defend \u2014 solver, ho"
+  url: https://github.com/vamseeachanta/digitalmodel/issues/1870
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3043
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'Model parity: make the repo ecosystem equivalent for Opus an'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3043
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3049
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: "Model parity: synthesize audits \u2192 gap report, PRs, Opus play"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3049
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3056
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'Model parity: analyze the Fable-5 session corpus (behavioral'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3056
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3058
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: "Epic: Harden the repo ecosystem \u2014 enforce equivalence, model"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3058
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3059
+  repo: vamseeachanta/workspace-hub
+  domain: null
+  provider: claude
+  title: "Harden: machine-equivalence drift sentinel \u2014 epic #3058"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3059
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3061
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: "Harden: continuous parity instrumentation \u2014 epic #3058"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3061
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3074
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'Harden: provider-behavior parity across machines (SOUL.runti'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3074
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3112
+  repo: vamseeachanta/workspace-hub
+  domain: skills,ai
+  provider: claude
+  title: 'Harden: instrument true skill/command invocation (the measur'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3112
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3223
+  repo: vamseeachanta/workspace-hub
+  domain: website
+  provider: claude
+  title: 'Epic: Demonstrate ecosystem work via GitHub Pages (determini'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3223
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3248
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'Epic: robust cross-provider self-improvement & skill-currenc'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3248
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3401
+  repo: vamseeachanta/workspace-hub
+  domain: website
+  provider: claude
+  title: 'EPIC: One brand + layout system across all public-facing eco'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3401
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3408
+  repo: vamseeachanta/workspace-hub
+  domain: harness
+  provider: claude
+  title: Add harness-checkup (/doctor) hygiene dimension to machine-e
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3408
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3505
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel no"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3505
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3506
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel no"
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3506
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3511
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'bug(equivalence): Windows sentinel emits empty unknown finge'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3511
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3513
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'bug(harness): Windows soul installer reports LINK for ordina'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3513
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3554
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'bug(equality): Windows publish-equality misclassifies missin'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3554
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3555
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'feat(agent-ux): pilot persistent goals and native Codex stat'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3555
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3557
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'bug(equality): reconcile marks dirty STALE-CHECKOUT auto-saf'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3557
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3573
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  title: 'feat(ai-orchestration): replace gemini with agy as the third'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3573
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3702
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'bug(equality): equality-matrix-cron writes generated artifac'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3702
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3703
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'bug(equality): reconcile-ecosystem.sh fails open to an empty'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3703
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3704
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'bug(equality): reconcile-ecosystem.sh scans stale refs witho'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3704
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3705
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  title: 'bug(sync): repository_sync auto-commits to protected main br'
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3705
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3707
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: codex
+  title: "bug(cron): daily-cleanup has never disposed of anything \u2014 4 "
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3707
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
