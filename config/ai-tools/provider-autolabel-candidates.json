@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-01T05:21:18.534490Z",
+  "generated_at": "2026-08-02T17:22:48.386985Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 10,
@@ -27,6 +27,39 @@
       "provider_priority": "highest",
       "provider_status": "underused",
       "work_type": [
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3740,
+      "title": "867 issues cannot leave dispatch:ready \u2014 nothing advances dispatch state",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3740",
+      "labels": [
+        "priority:high",
+        "cat:operations",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "gate:completeness",
+        "domain:routing"
+      ],
+      "updatedAt": "2026-08-02T00:53:31Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
         "implementation"
       ],
       "target_label": "agent:codex",
@@ -119,50 +152,14 @@
         "cat:tooling",
         "domain:workstations",
         "domain:security",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-27T01:19:11Z",
+      "updatedAt": "2026-08-01T06:13:53Z",
       "execution_ready": true,
       "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3440,
-      "title": "Harden generated HTML against JSON script-tag breakout",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3440",
-      "labels": [
-        "bug",
-        "priority:medium",
-        "cat:harness",
-        "domain:security",
-        "domain:workflow",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude",
-        "needs:cross-review"
-      ],
-      "updatedAt": "2026-07-31T03:28:17Z",
-      "execution_ready": true,
-      "priority_rank": 2,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
@@ -190,11 +187,12 @@
         "priority:medium",
         "cat:tooling",
         "domain:testing",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-07-27T03:35:21Z",
+      "updatedAt": "2026-08-01T06:13:29Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -218,7 +216,7 @@
     },
     {
       "number": 3524,
-      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02",
+      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
       "labels": [
         "bug",
@@ -230,7 +228,7 @@
         "gate:completeness",
         "lane:codex"
       ],
-      "updatedAt": "2026-07-14T22:41:52Z",
+      "updatedAt": "2026-08-01T11:42:08Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -254,18 +252,19 @@
     },
     {
       "number": 3525,
-      "title": "[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014",
+      "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
       "labels": [
         "priority:medium",
         "cat:harness",
         "domain:workstations",
         "wrk-item",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-30T23:45:36Z",
+      "updatedAt": "2026-08-01T11:21:45Z",
       "execution_ready": true,
       "priority_rank": 2,
       "suggested_provider": "claude",
@@ -368,12 +367,13 @@
       "labels": [
         "enhancement",
         "cat:harness",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude",
         "domain:ai"
       ],
-      "updatedAt": "2026-07-30T23:44:39Z",
+      "updatedAt": "2026-08-01T06:13:41Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -406,7 +406,7 @@
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-27T01:19:11Z",
+      "updatedAt": "2026-08-01T11:30:25Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -433,11 +433,12 @@
       "labels": [
         "cat:operations",
         "domain:workstations",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-07-27T02:35:07Z",
+      "updatedAt": "2026-08-01T06:14:00Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "codex",
@@ -454,6 +455,38 @@
         "execution-ready",
         "strong-codex-language-match",
         "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3480,
+      "title": "Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3480",
+      "labels": [
+        "cat:tooling",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "gate:completeness",
+        "domain:capability"
+      ],
+      "updatedAt": "2026-07-31T08:33:07Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-claude-language-match",
+        "provider-high-priority"
       ],
       "eligible": false
     },
@@ -517,43 +550,15 @@
       "eligible": false
     },
     {
-      "number": 3594,
-      "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3594",
-      "labels": [
-        "bug",
-        "priority:low",
-        "cat:operations",
-        "domain:workstations",
-        "machine:multi",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-07-29T13:43:07Z",
-      "execution_ready": false,
-      "priority_rank": 3,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.45,
-      "confidence_reasons": [
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 3717,
       "title": "Context budget: harness config is 3.6% of the window \u2014 the cost is tool output (17%), not CLAUDE.md",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3717",
       "labels": [
-        "cat:harness"
+        "cat:harness",
+        "machine:dev-primary",
+        "domain:harness"
       ],
-      "updatedAt": "2026-07-30T23:48:49Z",
+      "updatedAt": "2026-08-01T06:00:01Z",
       "execution_ready": false,
       "priority_rank": 4,
       "suggested_provider": "agy",
