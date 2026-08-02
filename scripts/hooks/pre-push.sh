@@ -182,14 +182,23 @@ else
 
     if [[ ${#REPOS_TO_CHECK[@]} -eq 0 ]]; then
         echo "[pre-push] No tier-1 repo changes detected — skipping repo CI gate." >&2
-        exit "${_HARNESS_DRIFT_EXIT:-0}"
+        # NOT an exit. This used to `exit` here, which skipped everything below:
+        # the review evidence gate, secrets scan, state-file size guard and
+        # cadence check are NOT repo-scoped and must still run. #3780 made this
+        # path far more common -- docs-only new branches used to escalate to
+        # RUN_ALL and now land here -- so exiting would have quietly widened a
+        # hole rather than narrowed one (#3781).
+        SKIP_REPO_LOOP=true
     fi
 fi
 
 # ── Run checks and tests for each affected repo ───────────────────────────────
 OVERALL_EXIT=0
+[[ "${_HARNESS_DRIFT_EXIT:-0}" -ne 0 ]] && OVERALL_EXIT=1
 
-for repo in "${REPOS_TO_CHECK[@]}"; do
+# REPOS_TO_CHECK is empty when nothing tier-1 changed, so this loop simply does
+# not run. `[@]+` keeps the expansion safe under `set -u` on an empty array.
+for repo in ${REPOS_TO_CHECK[@]+"${REPOS_TO_CHECK[@]}"}; do
     echo "[pre-push] Checking repo: ${repo}" >&2
 
     if [[ -x "$CHECK_ALL" ]]; then
@@ -241,7 +250,12 @@ else
 fi
 
 # ── Legacy gates from WRK-1070 (secrets + coverage) ─────────────────────────
-if command -v gitleaks >/dev/null 2>&1; then
+# REPO-SCOPED, unlike the enforcement chain above. `run-all-tests.sh --coverage`
+# is a full suite run; making it unconditional would put minutes on every
+# docs-only push. Skipped on the same condition as the repo loop.
+if [[ "${SKIP_REPO_LOOP:-false}" == "true" ]]; then
+    echo "[pre-push] No tier-1 repo changes — skipping secrets scan and coverage gate." >&2
+elif command -v gitleaks >/dev/null 2>&1; then
     bash "${REPO_ROOT}/scripts/security/secrets-scan.sh" || OVERALL_EXIT=1
 else
     echo "[pre-push] gitleaks not installed — skipping secrets scan (install via pre-commit)" >&2
@@ -250,7 +264,9 @@ fi
 BASELINE="${REPO_ROOT}/config/testing/coverage-baseline.yaml"
 RATCHET="${REPO_ROOT}/scripts/testing/check_coverage_ratchet.py"
 
-if [[ -f "$BASELINE" && -f "$RATCHET" ]]; then
+if [[ "${SKIP_REPO_LOOP:-false}" == "true" ]]; then
+    :   # repo-scoped; already reported above
+elif [[ -f "$BASELINE" && -f "$RATCHET" ]]; then
     if [[ -n "${SKIP_COVERAGE_REASON:-}" ]]; then
         echo "[pre-push] Coverage gate bypassed. Reason: ${SKIP_COVERAGE_REASON}" >&2
         DATESTAMP="$(date +%Y%m%d)"
