@@ -46,6 +46,26 @@ REQUIRED = ("schema", "issue", "state")
 DEFAULT_TTL_MINUTES = 90
 DEFAULT_MAX_ATTEMPTS = 3
 
+#: How many beats fit inside one TTL. The interval is a FRACTION OF THE TTL, not
+#: a constant, because every beat is a record write and `claim.py` commits AND
+#: PUSHES every record write. A 30-second beat over a four-hour payload is ~480
+#: commits pushed to `main` for one card; at `ttl/4` the same run costs eleven,
+#: and raising the TTL — the very thing a long payload needs — lowers it further.
+#:
+#: Four, not two: after a beat lands at T the record is fresh until T+ttl, and
+#: attempts fall at T+i … T+(N-1)i, so N-1 CONSECUTIVE beats may be lost to a
+#: push race and the claim still survives. A beat is a push, and pushes lose
+#: races to auto-sync routinely; an interval with no slack would turn an ordinary
+#: lost race into an expired claim under a live job.
+BEATS_PER_TTL = 4
+
+#: Floor under the derived interval. `ttl/BEATS_PER_TTL` on a 20-second TTL is a
+#: push every five seconds onto a branch several dispatch lanes and auto-sync are
+#: already contending for — a beater that DoSes the thing it is protecting.
+#: Configurations too tight for this floor are refused by `drain()`, not beaten
+#: at slower than they need: silently under-beating is the original defect.
+MIN_BEAT_SECONDS = 30
+
 #: Hosts do not share a clock. A heartbeat this far ahead of the reader is
 #: tolerated as ordinary drift; beyond it, it is reported as skew rather than
 #: silently treated as either fresh or expired.
@@ -188,11 +208,30 @@ def heartbeat(record: dict, now=None) -> dict:
 
     Beaten OUT-OF-BAND while the child process runs — a job blocked in a solver
     cannot beat for itself, and requiring it to would make every long run look
-    dead.
+    dead. `drain.Heartbeat` is that out-of-band beater and `claim.beat` is the
+    write; this function is PURE and decides nothing.
+
+    In particular it does not check whether the record is still ours or still
+    live, because at this level there is nothing to check it against. That check
+    is `claim.beat`'s, and it is not optional: refreshing a record whose payload
+    is dead strands the issue permanently, which is strictly worse than the
+    expiry-under-a-live-job this function exists to prevent.
     """
     out = dict(record)
     out["heartbeat_at"] = _stamp((now or _utcnow)())
     return out
+
+
+def beat_interval_seconds(ttl_minutes: int | None = None) -> int:
+    """How often a held claim must be beaten, given its own TTL.
+
+    Derived rather than configured so the two numbers cannot drift apart: an
+    interval set independently of the TTL is one deploy away from exceeding it,
+    and the symptom — a live job reclaimed by another host — appears nowhere near
+    the setting that caused it.
+    """
+    ttl = int(ttl_minutes or DEFAULT_TTL_MINUTES) * 60
+    return max(MIN_BEAT_SECONDS, ttl // BEATS_PER_TTL)
 
 
 # ---------------------------------------------------------------------------
