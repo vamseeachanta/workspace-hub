@@ -271,4 +271,11 @@ resolved_dispositions:
     # gpu-claw, macbook-portable), which changes the governed input union again.
     # Reviewed: the doctor is an idempotent repair task composing blessed installers; it
     # mutates no scheduler state, so the #3475 disposition still holds.
-    source_digest: 0f7b1c234800aaee04c4a06e86c129aad6a97d3b25b9ec3287839fb83291ef62
+    # Re-affirmed again 2026-08-02: the dispatch-pull task entered schedule-tasks.yaml,
+    # changing the governed input union a third time. Reviewed: dispatch-pull runs
+    # scripts/cron/dispatch-pull-cron.sh, which execs cron_runtime.py (an already-governed
+    # singleton wrapper) around scripts/operations/dispatch_pull.py. That loop claims git
+    # refs and invokes scripts/dispatch/drain.py; it writes no crontab, no systemd unit and
+    # no Windows task, so it is not a scheduler mutation surface and the #3475 disposition
+    # still holds. resolved_on/pull_request stay pinned per scheduler_mutation_contract.py:310.
+    source_digest: b8fe099c6e205a0ccc4db6292d02328c30c431bc50e5435314874fab1ccb7209
