@@ -190,9 +190,39 @@ function check_budget(provider):
     report total against the cap, labelled with the provider
 ```
 
-The load-bearing property is that **neither the covered set nor the budgeted set is written down
-by hand**. One is derived from the generator, the other from the installer. A future surface that
-escapes both is a surface that is neither generated nor installed — and therefore is not loaded.
+**RETRACTED after r2.** The first revision ended here with: *"A future surface that escapes both is
+a surface that is neither generated nor installed — and therefore is not loaded."* That is false.
+A surface can be loaded by runtime convention, plugin/skill bootstrap, repo instructions, or a
+future agent boot path without passing through either script — and this plan's own Artifact Map
+lists rules files and a workflow that are not generated artifacts. Deriving from two scripts is
+rename-proof for files that still flow through those two scripts. It is not role-proof for harness
+surfaces as a category, which is what the issue is about.
+
+The corrected model: an explicit **auto-load taxonomy**, where every category must name an
+enumerator, and a category with no enumerator is a hard failure rather than an empty set.
+
+```
+categories:                     enumerator
+  generated runtime artifacts   build-soul-runtime.sh output list
+  installer targets             install-soul-runtime.sh install paths
+  repo-level auto-load          AGENTS.md + the rules it cites, resolved by parsing it
+  provider memory runtimes      config/agents/*/MEMORY.runtime.md   (r2 F4 — was missing)
+  inlined shared rules          the set AGENTS.md/runtime actually inlines
+  provider bootstrap/skills     TO BE DETERMINED — see Open Questions
+
+function check_taxonomy_complete():
+    FAIL if any declared category has no enumerator          # empty set != satisfied
+    FAIL if any enumerated path is absent from disk          # per #3744
+    FAIL if any enumerated path is absent from the registry
+```
+
+The `shared:` block is likewise no longer hand-listed membership (r2 F2): it is enumerated by
+parsing what `AGENTS.md` and the runtime artifacts actually cite, so deleting a rule from the
+registry cannot remove it from the budget.
+
+`check_budget(provider)` sums **every category** for that provider, not `AGENTS.md + shared rules +
+one runtime artifact`. The budget scope is stated explicitly below because r2 showed the plan had
+never defined it.
 
 ---
 
@@ -261,10 +291,16 @@ Each guard test will be **mutation-verified**: break the guard, confirm the test
 | Provider | Verdict | Key findings |
 |---|---|---|
 | Claude (r1, inline) | **MAJOR** | (1) completeness check anchored to a filename glob — reproduces the fixed defect; (2) budget summed across providers describes no real session; (3) `counts_toward_session_budget` is a hand-editable backdoor; (4) symlink test has undefined CI behaviour; (5) Phase C has no acceptance criterion |
-| Codex (r2) | pending — dispatch via `scripts/review/submit-to-codex.sh` |  |
-| Agy (r2) | pending — dispatch per #3573 |  |
+| Codex (r2) | **MAJOR** | (1) "escapes both → not loaded" is **false**; derivation is rename-proof, not role-proof; (2) `shared:` is still hand-listed membership — the closed backdoor, relocated; (3) the hermetic symlink test is **tautological** — parsing the installer validates the parser, not the wiring; (4) per-provider budget undercounts: omits `MEMORY.runtime.md`, inlined rules, skill surfaces; budget scope never defined; (5) the cap can be **reported around** — the plan can claim success with 24KB-vs-16KB intact; (+2 MINOR on tautological acceptance criteria and the ambiguous rename criterion) |
+| Agy (r3) | not dispatched — see below |  |
 
-**Overall result:** r1 FAIL → re-drafted. r2 not yet dispatched; T3 requires it before `status:plan-review`.
+**Overall result:** r1 FAIL → re-drafted → r2 FAIL → re-drafted again. Both rounds found the plan
+reproducing, in a new place, the defect class it exists to fix. **Not eligible for `status:plan-review`.**
+
+Agy was deliberately not dispatched: two independent providers already returned MAJOR on
+substantive design grounds, and a third review of a draft that must change anyway spends quota to
+confirm a known answer. Agy runs against the revised draft, per `feedback_r3_inline_loop_break_pattern`
+(when r1 and r2 surface different defects, apply r3 as inline patches rather than dispatching).
 
 Artifact: [`scripts/review/results/2026-08-02-plan-3762-claude.md`](../../scripts/review/results/2026-08-02-plan-3762-claude.md)
 
@@ -276,13 +312,23 @@ Revisions made based on review:
 - **Phase C (trim `SHARED_SOUL.md`) is removed from this plan** and will be filed as its own issue (F5). It cannot be planned until the owner sets a per-provider target, and it is a content decision rather than a coverage one.
 - Two findings generalize and will be promoted to `.claude/rules/` independently of how #3762 lands: a completeness check anchored to a filename pattern is not a completeness check; a declared exemption flag is a backdoor.
 
+**After r2 (Codex):**
+- The "neither generated nor installed → not loaded" claim is **retracted**, and the derivation-from-two-scripts model is replaced by an explicit **auto-load taxonomy** in which every category must name an enumerator and a category without one is a hard failure (F1).
+- `shared:` is no longer hand-listed. It is enumerated by parsing what `AGENTS.md` and the runtime artifacts actually cite, so deleting an entry cannot silently drop it from the budget (F2).
+- The installer-parsing test is demoted from "the hermetic wiring test" to what it is — a **parser unit test**. Live wiring now requires a host-local verification artifact attached before closeout; `UNAVAILABLE` blocks closeout rather than being an acceptable terminal state (F3).
+- `MEMORY.runtime.md` and inlined shared rules are added to the budget, and **budget scope is now defined explicitly** (below) rather than left implicit (F4).
+- **The cap is no longer deferrable.** See the decision recorded in Risks (F5).
+- Acceptance criteria that could pass with the fix doing nothing are replaced with behavioural ones — including a criterion that adds a harness surface *outside* both scripts but inside the taxonomy and proves the guard catches it (F6, F1).
+- A third generalizable finding is added for promotion: **a test that parses the thing it is validating tests the parser, not the behaviour.**
+
 ---
 
 ## Risks and Open Questions
 
 - **Risk — editing `enforcement-gate.yml` stales the scheduler audit digest.** Per `feedback_scheduler_audit_digest_covers_ci_workflows`, the Scheduler Mutation Surface Guard's `source_digest` covers the CI workflows. Adding a job will require regenerating the identity inventory, re-affirming `source_digest`, and regenerating the HTML audit with `--render-html`. `resolved_on` and `pull_request` are hardcoded in `scheduler_mutation_contract.py:310` and must **not** change.
 - **Risk — `check-scheduler-mutation-surfaces.py:88` reads the git index, not the working tree.** Changes must be staged before running it or it reports stale state.
-- **Risk — the 16 KB cap may be wrong.** The real per-provider figure is ~24 KB for Claude and larger for Codex. Raising the cap to fit is capitulation; lowering the content to fit is the intent. The cap value is an **open question for the owner**, not an agent decision. Phase B will *report* the true per-provider figures; whether the cap fails CI is deferred to the owner.
+- **Budget scope — DEFINED (r2 F4).** "Session budget" means **everything automatically loaded before the user's first prompt**, for one provider: `AGENTS.md`, the rules it cites, that provider's `SOUL.runtime.md`/`AGENTS.runtime.md`, that provider's `MEMORY.runtime.md`, and any inlined shared-rule text. It is *not* "repo harness files" and *not* "provider bootstrap files only". Skill/plugin bootstrap text is an open question below, not a silent exclusion.
+- **The cap — DECIDED, not deferred (r2 F5).** r2 is right that leaving this open lets the issue close green while 24 KB against a 16 KB cap survives. So: **the guard fails on an over-cap provider.** If that turns CI red on landing, red is the correct report — the check finally works. What remains genuinely the owner's is only the *number* (whether 16 KB is still the right target once the true figure is visible) and whether trimming or raising closes the gap. The issue may **not** close with a reported-only guard; if the owner chooses to raise the cap, that is an explicit decision recorded on the issue, not a default.
 - **Risk — Phase B makes a currently-green check go red.** Counting what actually loads will take R5 from `PASS 4KB/16KB` to a failing per-provider figure. That is the check finally working, not a regression, but it will surface as a new red and must be communicated as such.
 - **Risk — `config/agents/agy/` and `gemini/` did not appear in the drift script output.** Whether they are intentionally unchecked after the agy swap (#3573) or an omission must be determined before the registry claims to cover them.
 - **Risk — the PII gate scans whole files in a diff.** Touching the runtime artifacts drags their full contents through every diff-scanning check.
