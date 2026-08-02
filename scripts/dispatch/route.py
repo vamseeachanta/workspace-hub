@@ -1012,14 +1012,24 @@ def fetch_issues_for_coverage(repo: str) -> list[dict]:
     with one name and different return types is a collision no test asserts
     against, which is why the shapes are now in the names.
     """
+    # `title` is here for the ROUTING caller, not for coverage. Coverage needs
+    # only number+labels — which is why this function was written with two
+    # fields and why nothing noticed when #3736 reused it as propose()'s input.
+    # `issue_to_card` reads `issue["title"]`, so omitting it here silently gave
+    # every routed card `title: ''`: 1341 of 1341 on dev-primary (#3763).
     r = subprocess.run(
         ["gh", "issue", "list", "--repo", repo, "--state", "open",
-         "--limit", "2000", "--json", "number,labels"],
+         "--limit", "2000", "--json", "number,title,labels"],
         capture_output=True, text=True,
     )
     if r.returncode != 0:
         return []
-    return [{"number": i["number"], "labels": [lab["name"] for lab in i.get("labels", [])]}
+    return [{"number": i["number"],
+             # `or ""` not `.get("title", "")`: gh can return an explicit null,
+             # which the default form would pass through as None and break the
+             # `[:60]` slice in propose().
+             "title": i.get("title") or "",
+             "labels": [lab["name"] for lab in i.get("labels", [])]}
             for i in json.loads(r.stdout or "[]")]
 
 
