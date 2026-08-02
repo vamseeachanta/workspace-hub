@@ -149,6 +149,45 @@ class ClaimResult:
     undo: str | None = None
 
 
+@dataclass
+class BeatResult:
+    """What ONE heartbeat did. It licenses nothing, and it cannot be asked to.
+
+    Deliberately NOT a `ClaimResult`. That type answers "may I execute?", and
+    `record` is None on refusal precisely so a truthiness check cannot become a
+    second way to ask. A beat must not be able to answer that question at all, so
+    it carries no record and has no `ok`: there is nothing here to mistake for
+    permission.
+
+    Three outcomes, and the third is the one that matters:
+
+        written   the record store now holds a fresh heartbeat
+        pushed    ...and it reached the remote, which is where it counts
+        stop      THE CLAIM IS NO LONGER OURS TO BEAT — stop, do not retry
+
+    `stop` is not a failure. It is the beater learning that the thing it was
+    keeping alive is gone, released, or someone else's, and it is the only signal
+    standing between a wedged drain and an issue held forever by a dead holder.
+    """
+
+    written: bool = False
+    pushed: bool = False
+    stop: bool = False
+    reason: str = ""
+
+    @property
+    def landed(self) -> bool:
+        """Fresh WHERE THE RECLAIM DECISION IS MADE.
+
+        `reconcile` has no network surface by design: it settles whatever records
+        the checkout it runs in happens to hold. That checkout is frequently not
+        this host's — the scheduler's, or the next host to pull — so a heartbeat
+        that only reached the working tree is invisible exactly where it is read.
+        A local write is therefore progress, not success.
+        """
+        return self.written and self.pushed
+
+
 def _refuse(reason: str, warnings: list[str] | None = None, *,
             cause: str | None = None, retryable: bool = False,
             undo: str | None = None) -> ClaimResult:
@@ -608,6 +647,94 @@ def acquire(root, record: dict, *, git=None, current_generation: str | None = No
     # sees, so it is the version the caller should carry into release().
     return ClaimResult(ok=True, reason="claim confirmed on the remote",
                        record=remote, warnings=warnings)
+
+
+def beat(root, record: dict, *, git=None) -> BeatResult:
+    """Refresh the heartbeat of a claim WE CAN STILL PROVE WE HOLD.
+
+    `records.heartbeat()` shipped documented as beaten out-of-band and nothing
+    beat it, so every claim's liveness froze at claim time and any payload
+    outliving `ttl_minutes` was reclaimed while still running. This is the beat.
+
+    The whole design is bounded by one asymmetry:
+
+        a missed beat costs one TTL of delay.
+        a beat that makes a DEAD HOLDER LOOK ALIVE strands the issue forever.
+
+    So a beat is not a write this function is entitled to make. It is one it must
+    RE-EARN from the record store every single time, against the record that is
+    there NOW rather than the copy the caller was handed at claim time:
+
+      * the record must still exist — one that vanished is not one we hold, and
+        writing it back would mint a claim out of a liveness signal;
+      * it must still name this host and job — otherwise the beat would refresh
+        somebody ELSE's claim, which is the drain docstring's forbidden second
+        opinion about another host's liveness, in the one place it could strand
+        an issue rather than merely delay it;
+      * it must still be `active` — a terminal record means the outcome is
+        already written, and an `active` record landing on top of it would leave
+        the issue held, by a host that finished, until a human noticed.
+
+    Beating the ON-DISK record rather than the caller's copy is also what keeps
+    this from being a data-loss mechanism: the caller's copy is minutes or hours
+    stale, and writing it would silently revert the log ref, the attempt list and
+    anything else recorded since.
+
+    Best effort by construction. Nothing raises, and a failure is never a reason
+    to stop the payload: a transient git error must not kill a four-hour solver
+    run. Persistent failure is the caller's to report — see `drain.Heartbeat`.
+    """
+    issue = record.get("issue")
+    path = records.record_path(root, issue)
+
+    try:
+        current = records.read_record(path)
+    except FileNotFoundError:
+        return BeatResult(stop=True, reason=(
+            f"the record for {issue} is gone from {path} — a claim we cannot "
+            f"find is not one we may refresh"))
+    except (ValueError, OSError) as exc:
+        # Unreadable is NOT the same as gone: a half-written file from a
+        # concurrent writer reads like this and is fixed by the next tick.
+        # Stopping on it would be a self-inflicted expiry of a healthy job.
+        return BeatResult(reason=f"the record for {issue} is unreadable ({exc})")
+
+    if not _same_claim(record, current):
+        return BeatResult(stop=True, reason=(
+            f"the record for {issue} names "
+            f"{current.get('host')}/{current.get('job_id')}, not "
+            f"{record.get('host')}/{record.get('job_id')} — this claim is no "
+            f"longer ours"))
+
+    if current.get("state") != "active":
+        return BeatResult(stop=True, reason=(
+            f"the record for {issue} is {current.get('state')!r}, not 'active' — "
+            f"refreshing it would put a live claim back over a settled one"))
+
+    git = git or GitBackend(Path(root))
+    try:
+        path = records.write_record(root, records.heartbeat(current))
+    except Exception as exc:                       # noqa: BLE001 — never raise
+        return BeatResult(reason=f"could not write a heartbeat for {issue}: {exc}")
+
+    # No undo and no pull on failure, unlike `acquire`. A beat commit is our own
+    # LIVE claim saying it is still working — legitimately publishable, so
+    # undoing it would delete the liveness we just recorded. And `pull --rebase`
+    # from a beater thread moves the branch under every other lane sharing this
+    # checkout. A rejected beat simply waits for the next push to carry it.
+    try:
+        if not git.commit(path, f"dispatch: heartbeat {issue}"):
+            return BeatResult(written=True,
+                              reason=f"could not commit the heartbeat for {issue}")
+        if not git.push():
+            return BeatResult(written=True, reason=(
+                f"the heartbeat for {issue} is recorded locally but the push was "
+                f"rejected — the remote still shows the older beat"))
+    except Exception as exc:                       # noqa: BLE001 — never raise
+        return BeatResult(written=True,
+                          reason=f"git error while beating {issue}: {exc}")
+
+    return BeatResult(written=True, pushed=True, reason=f"heartbeat pushed for {issue}")
 
 
 def release(root, record: dict, *, state: str, reason: str,

@@ -88,13 +88,38 @@ missing and each of which fails in a way that LOOKS like progress:
   holding the one solver seat — while the record said `unknown-outcome`. Every
   timeout path now invokes the runner's own `cancel` verb, and a cancel that
   did not work is reported (`ExecOutcome.cancelled is False`), never swallowed.
-* **A TTL that cannot be outlived.** `records.heartbeat()` is called once, at
-  claim time; NOTHING beats it while the child runs. A job outliving
-  `ttl_minutes` therefore has an expired record while it is still executing,
-  `reconcile.settle` returns it to `ready`, and the next `prepare` RECLAIMs it:
-  two payloads, one issue. Today's 3600s default sits just under the 90-minute
-  TTL, which masks it. Until an out-of-band beater exists, the coupling is
-  refused at startup rather than left to that coincidence.
+* **A TTL that cannot be outlived.** `records.heartbeat()` shipped documented as
+  beaten out-of-band and NOTHING beat it, so a job outliving `ttl_minutes` had an
+  expired record while it was still executing, `reconcile.settle` returned it to
+  `ready`, and the next `prepare` RECLAIMed it: two payloads, one issue. Refusing
+  the coupling at startup made that safe and made 90 minutes a hard ceiling on
+  every payload. `Heartbeat` is the beater that lifts it — see below.
+
+## The beater, and why the ceiling could be lifted (wh#3773 R4)
+
+`Heartbeat` refreshes the held claim on a thread for exactly as long as the
+payload runs. Three things make it safe enough to relax the refusal:
+
+* **It costs a bounded number of pushes.** Every record write commits AND pushes
+  (`claim.py`), so a 30-second beat over four hours is ~480 commits on `main` for
+  one card. The interval is `ttl / records.BEATS_PER_TTL` instead — eleven pushes
+  for that run, and raising the TTL lowers it. A job shorter than one interval
+  costs nothing at all.
+* **It cannot make a dead holder look alive.** That failure strands an issue
+  FOREVER, where the one being fixed strands it for one TTL, so the beat is a
+  write re-earned from the record store every tick: `claim.beat` refuses unless
+  the on-disk record still exists, still names this host and job, and is still
+  `active`. The beater is a daemon thread (it cannot outlive its process), it is
+  JOINED before `claim.release` writes, and it stops at its own deadline if the
+  drain wedges somewhere it can no longer be signalled from.
+* **The rail moves rather than disappearing.** `--no-heartbeat` restores the
+  original refusal unchanged. With beating on, what is railed is the beat
+  interval against the TTL — an interval that cannot survive one lost push race
+  is the same defect wearing the fix's clothes, and is refused.
+
+A missed beat is reported, never acted on: killing a payload because a push lost
+a race would turn a network blip into a lost four-hour run, and would be a second
+liveness rule racing `reconcile`'s.
 
 And one that made the record lie: a card that exhausted its attempts kept its
 `done`/`returncode 3` record, because the refusal wrote nothing and
@@ -112,6 +137,7 @@ import re
 import socket
 import subprocess
 import sys
+import threading
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -165,6 +191,19 @@ DEFAULT_POLL_SECONDS = 5
 #: point is that we already waited too long. Bounded separately so a hung
 #: `cancel` verb is reported as an uncancelled job rather than hanging the loop.
 CANCEL_TIMEOUT_SECONDS = 60
+
+#: How far past the longest wait the drain may legitimately make, the beater
+#: keeps beating. It must be POSITIVE — a beater that stopped before the payload
+#: was due back would expire the record under a run the drain is still waiting
+#: for, which is R4's own defect reintroduced by the fix — and it must be FINITE,
+#: because that deadline is the only thing that stops a beater whose drain has
+#: wedged somewhere it can no longer signal from.
+BEAT_GRACE_SECONDS = 120
+
+#: How long `Heartbeat.stop()` waits for the thread to actually exit. Longer than
+#: a git call can take, because a beat in flight is exactly what the join is
+#: there to wait out: the outcome write happens next, and it must not be raced.
+BEAT_JOIN_SECONDS = claim.GIT_TIMEOUT_SECONDS + 30
 
 #: The kill switch. Relative to the CHECKOUT (`--repo-root`), not to the records
 #: directory: an operator stopping the fleet reaches for a path in the repo, and
@@ -640,6 +679,159 @@ def classify(outcome: ExecOutcome) -> tuple[str, str, str | None]:
 
 
 # ---------------------------------------------------------------------------
+# keeping a held claim alive while its payload runs
+# ---------------------------------------------------------------------------
+
+
+def beat_deadline_seconds(longest_wait) -> float:
+    """How long the beater may keep beating, in seconds from its start.
+
+    The payload's own permitted wait plus a fixed grace. Both halves matter: too
+    short and the record expires under a run the drain is still legitimately
+    waiting for; unbounded and a wedged drain keeps a dead holder looking alive
+    forever, which is the one failure worse than the one this all fixes.
+    """
+    return float(longest_wait) + BEAT_GRACE_SECONDS
+
+
+class Heartbeat:
+    """Beats a held claim while its payload runs, and stops three ways.
+
+    `records.heartbeat()` was documented as beaten out-of-band and nothing beat
+    it. This is the out-of-band beater, and the reason it is a THREAD rather
+    than a step in the poll loop is `ShellRunner`: it submits `--foreground`, so
+    the entire payload happens inside one `subprocess.run` and the poll loop is
+    not reached until the work is already over. A loop-driven beat would fire
+    zero times on Linux — the platform this runs on.
+
+    The reason it is a thread rather than a detached PROCESS is the whole safety
+    argument. A beater that outlives the drain that owns it would refresh a
+    claim whose payload is gone, and the issue would read as held, by a host
+    that finished, until a human noticed. A daemon thread cannot outlive its
+    interpreter, so the process is a hard upper bound at no cost.
+
+    Inside that bound it stops three independent ways, because losing one signal
+    must not lose them all:
+
+      1. **Asked to** — `stop()`, which the drain calls in a `finally` and which
+         JOINS rather than merely signalling.
+      2. **The claim stopped being ours** — `claim.beat` re-earns the write from
+         the record store every tick and says so when it cannot.
+      3. **Its own deadline** — the fail-safe for a drain that has wedged
+         somewhere it can no longer reach 1, and cannot observe 2.
+
+    A missed beat is REPORTED, never acted on. Killing a payload because a push
+    lost a race would turn a network blip into a lost four-hour solver run, and
+    it would be a second liveness rule racing `reconcile`'s — the exact thing the
+    module docstring refuses. Same discipline as an unconfirmed cancel: the fact
+    that matters is surfaced to whoever decides what this host may do next.
+    """
+
+    def __init__(self, records_root, record: dict, *, git=None,
+                 ttl_seconds: float, interval: float, deadline: float,
+                 beat_fn=None, clock=time.monotonic, wait=None, log=None):
+        self.records_root = records_root
+        #: Identity only. Every beat re-reads the record store, so this copy is
+        #: never the thing written — see `claim.beat`.
+        self.record = dict(record)
+        self.git = git
+        self.ttl_seconds = float(ttl_seconds)
+        self.interval = float(interval)
+        self.deadline = float(deadline)
+        self._beat = beat_fn or claim.beat
+        self._clock = clock
+        self._stop = threading.Event()
+        #: The sleep IS the stop signal: an Event wait returns early when set, so
+        #: `stop()` does not have to outlast a full interval to be obeyed.
+        self._wait = wait or self._stop.wait
+        self._log = log or (lambda _line: None)
+        self._thread: threading.Thread | None = None
+        self.warnings: list[str] = []
+        self.beats = 0
+
+    @property
+    def issue(self):
+        return self.record.get("issue")
+
+    def run(self) -> None:
+        """Beat until one of the three stop conditions fires. Never raises."""
+        started = self._clock()
+        landed = started
+        reported_stale = False
+
+        while True:
+            # Waiting FIRST is what makes a short job free: most cards finish
+            # well inside one interval, and a beat at t=0 would push a heartbeat
+            # the claim itself has just written.
+            if self._wait(self.interval):
+                return
+
+            if self._clock() - started >= self.deadline:
+                self.warnings.append(
+                    f"the heartbeat for {self.issue} stopped at its "
+                    f"{self.deadline:.0f}s deadline — nothing refreshes the record "
+                    f"from here, so the issue becomes reclaimable one ttl later")
+                return
+
+            result = self._beat(self.records_root, self.record, git=self.git)
+
+            if result.stop:
+                # Not a failure. The thing we were keeping alive is gone,
+                # settled, or somebody else's, and beating on would be the
+                # dead-holder failure this beater exists not to cause.
+                self.warnings.append(
+                    f"the heartbeat for {self.issue} stopped: {result.reason}")
+                return
+
+            if result.landed:
+                self.beats += 1
+                landed = self._clock()
+                reported_stale = False
+                continue
+
+            self._log(f"  heartbeat: {result.reason}")
+            if not reported_stale and self._clock() - landed >= self.ttl_seconds:
+                # The record must now be expired wherever it is read. Another
+                # host may settle it back to `ready` and start a SECOND payload
+                # on the one floating solver seat while this one still runs.
+                reported_stale = True
+                self.warnings.append(
+                    f"no heartbeat for {self.issue} has reached the remote for "
+                    f"{self.ttl_seconds:.0f}s — its record has expired and another "
+                    f"host may reclaim the issue while this payload is running")
+
+    def start(self) -> None:
+        self._thread = threading.Thread(
+            target=self.run, name=f"dispatch-heartbeat-{self.record.get('job_id')}",
+            daemon=True)
+        self._thread.start()
+
+    def stop(self, timeout: float | None = None) -> bool:
+        """Signal AND JOIN. Returns False if the beater did not actually stop.
+
+        The join is not politeness. `claim.release` writes the terminal record
+        immediately after this returns, and a beat still in flight would land an
+        `active` record on top of it. `claim.beat` re-checks the on-disk state
+        and would refuse such a write, so the two guards are independent — but a
+        join that was lost is reported rather than assumed, because absence of a
+        signal read as a good signal is this epic's recurring defect.
+        """
+        self._stop.set()
+        thread = self._thread
+        if thread is None:
+            return True
+        limit = BEAT_JOIN_SECONDS if timeout is None else timeout
+        thread.join(limit)
+        if thread.is_alive():
+            self.warnings.append(
+                f"the heartbeat thread for {self.issue} did not stop within "
+                f"{limit}s — a beat may still be in flight; it would have to pass "
+                f"claim.beat's own state check to land, but it was not witnessed")
+            return False
+        return True
+
+
+# ---------------------------------------------------------------------------
 # what to claim, and whether we may
 # ---------------------------------------------------------------------------
 
@@ -828,6 +1020,7 @@ def drain(records_root, issue: str, *, command: str, host: str | None = None,
           max_attempts: int = records.DEFAULT_MAX_ATTEMPTS,
           timeout: int = DEFAULT_TIMEOUT_SECONDS, rules_loader=None,
           pause_file=None, labels=None, gh_fn=None, now=None,
+          heartbeat: bool = True, beat_interval: float | None = None,
           log=None) -> DrainResult:
     """Take one issue through claim -> execute -> release -> project.
 
@@ -857,27 +1050,49 @@ def drain(records_root, issue: str, *, command: str, host: str | None = None,
                            f"(letters, digits, dot, underscore, hyphen; max 64)",
                            dry_run=not apply)
 
-    # A payload allowed to outlive the record's TTL gets a SECOND payload:
-    # nothing beats `heartbeat_at` while the child runs (records.heartbeat is
-    # called once, at claim time), so the record expires under a live job,
-    # `reconcile.settle` returns it to `ready`, and the next prepare RECLAIMs
-    # it. Refused here rather than left to the coincidence that the shipped
-    # 3600s happens to be under 90 minutes. Checked before the write gate so a
-    # dry run surfaces the misconfiguration, and against the RUNNER's own
-    # timeout too — the runner is what actually waits.
+    # A payload allowed to outlive the record's TTL gets a SECOND payload: the
+    # record expires under a live job, `reconcile.settle` returns it to `ready`,
+    # and the next prepare RECLAIMs it. Which of the two rails below applies
+    # depends on whether anything is actually refreshing `heartbeat_at`.
+    #
+    # Both are checked before the write gate so a dry run surfaces the
+    # misconfiguration, and both consider the RUNNER's own timeout — the runner
+    # is what actually waits.
     ttl_seconds = int(ttl_minutes) * 60
     waits = [int(timeout)]
     runner_timeout = getattr(runner, "timeout", None)
     if isinstance(runner_timeout, (int, float)) and not isinstance(runner_timeout, bool):
         waits.append(int(runner_timeout))
     longest = max(waits)
-    if longest >= ttl_seconds:
+    beat_seconds = (records.beat_interval_seconds(ttl_minutes)
+                    if beat_interval is None else float(beat_interval))
+
+    if not heartbeat:
+        # UNBEATEN: the original coupling, unchanged and just as fatal. Nothing
+        # refreshes `heartbeat_at` between the claim and the outcome, so the run
+        # may not outlast the record. This is what `--no-heartbeat` costs.
+        if longest >= ttl_seconds:
+            return DrainResult(
+                False, REFUSED,
+                f"a payload may wait {longest}s but the record's ttl is {ttl_minutes} "
+                f"minutes ({ttl_seconds}s), and --no-heartbeat means nothing refreshes "
+                f"the heartbeat while it runs — the record would expire under a live "
+                f"job and be reclaimed, running the same issue twice. Lower --timeout, "
+                f"raise --ttl-minutes, or drop --no-heartbeat.",
+                dry_run=not apply)
+    elif beat_seconds * 2 >= ttl_seconds:
+        # BEATEN, BUT NOT FAST ENOUGH: the same defect wearing the fix's clothes.
+        # A beater that cannot get round the loop twice inside one TTL expires
+        # the claim on its first lost push race, and a beat is a push. The run
+        # length is no longer the thing that matters — the beat interval is — so
+        # THAT is what is railed, and it is refused rather than beaten at,
+        # because silently under-beating is the defect this replaced.
         return DrainResult(
             False, REFUSED,
-            f"a payload may wait {longest}s but the record's ttl is {ttl_minutes} "
-            f"minutes ({ttl_seconds}s), and nothing refreshes the heartbeat while "
-            f"it runs — the record would expire under a live job and be reclaimed, "
-            f"running the same issue twice. Lower --timeout or raise --ttl-minutes.",
+            f"the beat interval is {beat_seconds:g}s and the record's ttl is "
+            f"{ttl_minutes} minutes ({ttl_seconds}s) — a single lost push would "
+            f"expire the claim under a live job and it would be reclaimed, running "
+            f"the same issue twice. Raise --ttl-minutes or lower --beat-interval.",
             dry_run=not apply)
 
     armed = apply and reconcile.writes_armed()
@@ -959,6 +1174,18 @@ def drain(records_root, issue: str, *, command: str, host: str | None = None,
     rec = dict(held.record)
     rec["started_at"] = _stamp(now)
     rec["command_ref"] = command
+
+    # The beater starts HERE and nowhere earlier: `held.ok is True` is the only
+    # licence to execute, and it is equally the only licence to beat. Started
+    # before the claim verified, it would refresh a record the remote says
+    # belongs to somebody else.
+    beater = None
+    if heartbeat:
+        beater = Heartbeat(records_root, rec, git=git, ttl_seconds=ttl_seconds,
+                           interval=beat_seconds,
+                           deadline=beat_deadline_seconds(longest), log=log)
+        beater.start()
+
     try:
         outcome = runner.execute(issue=issue, job_id=rec.get("job_id"),
                                  command=command, work_dir=work_dir)
@@ -968,6 +1195,14 @@ def drain(records_root, issue: str, *, command: str, host: str | None = None,
         # something re-ran it — work that finished with nothing recording it,
         # which is the original defect one layer up.
         outcome = ExecOutcome(None, detail=f"runner raised {type(exc).__name__}: {exc}")
+    finally:
+        # A `finally`, not a happy-path call, and JOINED rather than signalled.
+        # `claim.release` writes the terminal record next, and the exception path
+        # above is exactly where a forgotten stop leaves a beater refreshing a
+        # claim whose payload is already gone.
+        if beater is not None:
+            beater.stop()
+            warnings.extend(beater.warnings)
 
     state, reason, category = classify(outcome)
     if outcome.cancelled is False:
@@ -1109,6 +1344,17 @@ def main(argv=None) -> int:
     ap.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_SECONDS,
                     help="seconds to wait for the payload before the outcome is "
                          "recorded as unknown (never as success)")
+    ap.add_argument("--no-heartbeat", dest="heartbeat", action="store_false",
+                    help="do NOT refresh the claim while the payload runs. The "
+                         "payload may then not outlive --ttl-minutes: without a "
+                         "beater the record expires under a live job and another "
+                         "host reclaims it, running the same issue twice")
+    ap.add_argument("--beat-interval", type=float, default=None,
+                    help=f"seconds between heartbeats (default: ttl-minutes / "
+                         f"{records.BEATS_PER_TTL}, floor "
+                         f"{records.MIN_BEAT_SECONDS}s). Every beat is a commit "
+                         f"AND a push, so this is the run's push bill; an interval "
+                         f"too coarse for its ttl is refused, not accepted quietly")
     ap.add_argument("--remote", default="origin")
     ap.add_argument("--branch", help="branch to push and verify against")
     ap.add_argument("--labels-json",
@@ -1138,7 +1384,8 @@ def main(argv=None) -> int:
                    current_generation=args.current_generation,
                    queue_generation_id=args.queue_generation,
                    ttl_minutes=args.ttl_minutes, max_attempts=args.max_attempts,
-                   timeout=args.timeout, labels=labels, log=print)
+                   timeout=args.timeout, heartbeat=args.heartbeat,
+                   beat_interval=args.beat_interval, labels=labels, log=print)
 
     for warning in result.warnings:
         print(f"  WARN {warning}")

@@ -19,9 +19,19 @@ R3  timeout kills  `subprocess.run(timeout=)` kills the CHILD. `run.sh` and the
                    the record said the outcome was unknown.
 R4  ttl coupling   nothing refreshes `heartbeat_at` while a job runs, so a job
                    outliving `ttl_minutes` gets settled back to `ready` and
-                   RECLAIMed — two payloads, one issue. Until an out-of-band
-                   beater exists the coupling must be refused, not left to the
-                   coincidence that 3600s < 90min.
+                   RECLAIMed — two payloads, one issue. The coupling must be
+                   refused, not left to the coincidence that 3600s < 90min.
+
+                   The out-of-band beater now EXISTS (`drain.Heartbeat`), so
+                   this refusal is scoped to the case it was always about:
+                   `--no-heartbeat`, where nothing refreshes the record. The
+                   beaten case, the rail that replaces this one when beating is
+                   on, and the beater's own guarantees live in
+                   `test_heartbeat.py`. The tests below are deliberately left
+                   asserting the UNBEATEN behaviour rather than deleted: a
+                   heartbeat that is off must still be safe, and that is now the
+                   only thing standing between `--no-heartbeat` and a double
+                   execution.
 R5  quarantine     a thrice-failed card kept its `done`/`returncode 3` record,
                    projected `dispatch:done`, and was counted as executed. The
                    refusal wrote NOTHING, so nothing downstream could see it.
@@ -530,39 +540,47 @@ def test_the_cancel_verb_exists_in_the_real_runner(tmp_path):
 # ==========================================================================
 
 
-def test_a_timeout_at_or_beyond_the_ttl_is_refused_before_anything_runs(
+def test_an_unbeaten_timeout_at_or_beyond_the_ttl_is_refused_before_anything_runs(
         tmp_path, armed):
-    """Nothing beats `heartbeat_at` while the child runs, so a job that outlives
-    its TTL is settled back to `ready` and RECLAIMed WHILE IT IS STILL RUNNING."""
-    got, calls, _g, runner = run_drain(tmp_path, timeout=90 * 60, ttl_minutes=90)
+    """With `--no-heartbeat` nothing beats `heartbeat_at` while the child runs,
+    so a job that outlives its TTL is settled back to `ready` and RECLAIMed WHILE
+    IT IS STILL RUNNING. Turning the beater off must cost the ceiling back, not
+    silently keep the permission the beater earned."""
+    got, calls, _g, runner = run_drain(tmp_path, timeout=90 * 60, ttl_minutes=90,
+                                       heartbeat=False)
 
     assert got.ok is False and got.stage == D.REFUSED
     assert calls == [] and runner.seen == []
     assert not records.record_path(tmp_path, ISSUE).exists()
 
 
-def test_a_timeout_inside_the_ttl_is_allowed(tmp_path, armed):
+def test_an_unbeaten_timeout_inside_the_ttl_is_allowed(tmp_path, armed):
     """Discriminator."""
-    got, _c, _g, runner = run_drain(tmp_path, timeout=90 * 60 - 1, ttl_minutes=90)
+    got, _c, _g, runner = run_drain(tmp_path, timeout=90 * 60 - 1, ttl_minutes=90,
+                                    heartbeat=False)
     assert got.ok is True and len(runner.seen) == 1
 
 
-def test_the_refusal_does_not_need_the_write_gate_to_fire(tmp_path, disarmed):
+def test_the_unbeaten_refusal_does_not_need_the_write_gate_to_fire(tmp_path, disarmed):
     """An operator learns about the misconfiguration from the PLAN, not from the
     first unattended double-execution."""
     got = D.drain(tmp_path, ISSUE, command="echo pilot", host=OURS, job_id="j1",
                   git=Exploding(), runner=Exploding(), now=clock(),
-                  timeout=5400, ttl_minutes=90, rules_loader=caps(**{OURS: 1}))
+                  timeout=5400, ttl_minutes=90, heartbeat=False,
+                  rules_loader=caps(**{OURS: 1}))
     assert got.ok is False and got.stage == D.REFUSED
 
 
-def test_a_runner_carrying_its_own_oversized_timeout_is_caught(tmp_path, armed):
+def test_an_unbeaten_runner_carrying_its_own_oversized_timeout_is_caught(
+        tmp_path, armed):
     """The runner is what actually waits. A drain told a safe number while its
-    runner holds an unsafe one is the coupling wearing a disguise."""
+    runner holds an unsafe one is the coupling wearing a disguise — and the
+    lifted ceiling must not be reachable through the field the drain was not
+    told about either."""
     runner = D.ShellRunner(script="/x/run.sh", timeout=99 * 60)
     got = D.drain(tmp_path, ISSUE, command="echo pilot", host=OURS, job_id="j1",
                   git=Exploding(), runner=runner, apply=True, now=clock(),
-                  ttl_minutes=90, rules_loader=caps(**{OURS: 1}))
+                  ttl_minutes=90, heartbeat=False, rules_loader=caps(**{OURS: 1}))
 
     assert got.ok is False and got.stage == D.REFUSED
     assert not records.record_path(tmp_path, ISSUE).exists()
@@ -576,10 +594,21 @@ def test_the_shipped_defaults_satisfy_their_own_rule(tmp_path):
 
 def test_the_cli_refuses_the_same_coupling(tmp_path, armed, capsys):
     rc = D.main(["--issue", ISSUE, "--records", str(tmp_path), "--command", "true",
-                 "--timeout", "5400", "--ttl-minutes", "90"])
+                 "--timeout", "5400", "--ttl-minutes", "90", "--no-heartbeat"])
     capsys.readouterr()
     assert rc != 0
     assert list(tmp_path.iterdir()) == []
+
+
+def test_the_cli_defaults_to_beating_rather_than_to_the_ceiling(tmp_path, armed,
+                                                               capsys):
+    """Discriminator, and the shape of the choice: an opt-in heartbeat is one
+    that is off on the host where the four-hour run happens. The same argv the
+    test above refuses is accepted when the beater is left on."""
+    rc = D.main(["--issue", ISSUE, "--records", str(tmp_path), "--command", "true",
+                 "--timeout", "5400", "--ttl-minutes", "90"])
+    capsys.readouterr()
+    assert rc == 0                      # planned, not refused
 
 
 # ==========================================================================
