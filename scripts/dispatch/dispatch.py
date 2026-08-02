@@ -29,6 +29,32 @@ except ImportError:
 ROOT = route.ROOT
 DISPATCH_DIR = ROOT / ".claude/dispatch"
 
+# ---------------------------------------------------------------------------
+# Issue titles are NOT written to the queue files.
+#
+# These files are git-tracked in a PUBLIC repo, and the routed set spans
+# workspace-hub, digitalmodel and deckhand — repos whose issue titles carry
+# client identifiers. CI's Client-PII Gate blocks on exactly that (PR #3765:
+# ten-plus hits in dev-primary.yaml, two in multi.yaml). The values are withheld
+# from the public log by design, so the fix cannot be "redact the ones we can
+# see"; the generator has to stop emitting the field.
+#
+# route.py still FETCHES titles — they feed `--detail` and `--json`, which are
+# local and ephemeral, never tracked. The boundary is serialisation, not
+# retrieval. (#3763/#3767 had just repaired that fetch after every card shipped
+# titleless; narrowing it here would re-break them.)
+#
+# OMITTED rather than blanked: #3763's failure mode was 1341/1341 cards with
+# `title: ""`. A blank or a "<redacted>" stand-in would make a deliberately
+# redacted queue byte-identical to that outage. The payload declares the
+# omission once instead, so absence reads as policy rather than breakage.
+#
+# A card stays identifiable via gh/repo/url/domain/provider/routed_by; a
+# draining session fetches the title from GitHub at drain time.
+# ---------------------------------------------------------------------------
+
+TITLE_POLICY = "omitted: issue titles are not written to a public tracked file"
+
 
 def get_proposals(repo=None):
     args = types.SimpleNamespace(repo=repo)
@@ -47,7 +73,7 @@ def build_queues(proposals):
             "repo": p["repo"],
             "domain": p["domain"],
             "provider": p["provider"],
-            "title": p["title"],
+            # No `title` — see TITLE_POLICY above.
             "url": p["url"],
             "dispatch_status": "ready",
             "wip_eligible": p["slot"] == "active-eligible",
@@ -90,6 +116,9 @@ def queue_payload(machine: str, cards: list, now=None) -> dict:
         "generated_by": "dispatch.py",
         "generated_at": stamp.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "ttl_hours": QUEUE_TTL_HOURS,
+        # Declared once per file, not per card: 1300+ repetitions of the same
+        # string would bloat a tracked artifact to say one thing.
+        "title_policy": TITLE_POLICY,
         "cards": cards,
     }
 
