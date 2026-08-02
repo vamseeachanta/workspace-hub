@@ -148,6 +148,13 @@ def claim_run(
         attempted += 1
         try:
             executor(item)
+        except FleetPaused as exc:
+            # STOP, do not `continue`. The operator set the sentinel; every
+            # remaining card would refuse identically, and recording each as a
+            # failure buries the one fact that matters. Not marked done — the
+            # card was never started and stays claimable.
+            emit({"id": item["id"], "status": "paused", "reason": str(exc)})
+            break
         except Exception as exc:  # noqa: BLE001 — record and keep going; item stays claimable
             emit({"id": item["id"], "status": "failed", "error": str(exc)})
             continue
@@ -284,6 +291,25 @@ class DrainFailed(RuntimeError):
         super().__init__(f"{issue}: drain.py exited {returncode}")
 
 
+#: drain.py's PAUSED exit (#3773 R2) — the `.claude/dispatch/PAUSE` sentinel is
+#: set, so it refused to claim ANYTHING. This is not a property of the card.
+FLEET_PAUSED_EXIT = 3
+
+
+class FleetPaused(RuntimeError):
+    """The operator paused the fleet. Stop the run; do not blame the card.
+
+    Separated from `DrainFailed` because collapsing them makes the kill switch
+    produce the loudest possible false alarm and stop nothing: every card walks
+    the queue recording a failure it did not cause — ~1344 of them on
+    `dev-primary`. An exit that means "the system said no" is not an exit that
+    means "this unit of work broke", and only the first should end the loop.
+    """
+
+    def __init__(self, issue: str):
+        super().__init__(f"{issue}: drain.py reports the fleet is paused")
+
+
 def item_key(item: dict) -> str:
     """The issue ref a card binds under — `owner/repo#N`."""
     card = item.get("card") or {}
@@ -406,6 +432,11 @@ def make_drain_executor(*, repo, records_dir, machine: str, bindings: dict,
         if apply:
             argv.append("--apply")
         done = run(argv, cwd=str(repo), check=False)
+        # Checked BEFORE the generic nonzero branch: a paused fleet is not a
+        # failed card, and the order is what keeps the kill switch from being
+        # reported as 1344 defects (#3773 R2).
+        if done.returncode == FLEET_PAUSED_EXIT:
+            raise FleetPaused(issue)
         if done.returncode != 0:
             raise DrainFailed(issue, done.returncode)
         return done.returncode
