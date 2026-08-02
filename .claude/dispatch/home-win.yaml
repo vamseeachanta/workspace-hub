@@ -1,12 +1,22 @@
 machine: home-win
 generated_by: dispatch.py
+generated_at: '2026-08-02T03:34:51Z'
+ttl_hours: 24
+title_policy: 'omitted: issue titles are not written to a public tracked file'
 cards:
 - gh: vamseeachanta/workspace-hub#1507
   repo: vamseeachanta/workspace-hub
-  domain: ai-orchestration
+  domain: workstations
   provider: claude
-  title: 'Verify Claude Desktop install: home-win'
   url: https://github.com/vamseeachanta/workspace-hub/issues/1507
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3048
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3048
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
