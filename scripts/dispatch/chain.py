@@ -39,6 +39,38 @@ with `evidence: no-records-consulted` — distinct from `records-consulted`, so
 "we looked and found nothing" can never be confused with "we never looked",
 which is the same defect one level up.
 
+## `ran` is not `succeeded` — the second axis (#3773 rail R5)
+
+`records.py` keeps two things apart on purpose:
+
+    state: done      the payload RAN TO COMPLETION — NOT that it worked
+    is_success       `done` AND `returncode == 0` — whether it actually worked
+
+The STAGE axis above answers *how far did this card get*, and a card that ran
+and failed did reach `executed` — it is counted there, correctly. But until
+this file consulted `records.is_success`, that was the ONLY thing it reported,
+so **a night that failed every card printed exactly the same report as a night
+that completed every card.** Over an unattended run of 1344 cards, that is the
+whole morning read saying nothing.
+
+The fix is a second axis rather than a correction to the first: folding failure
+into a stage count would put two questions behind one number again. `executed`
+still counts what RAN; the OUTCOMES block says what WORKED, and it holds the
+same standard as the rest of this file —
+
+  * an absence never reads as a success: no `--records` yields NOT-MEASURED
+    counts, never `failed: 0`, for the same reason `published` is not a zero;
+  * a count never stands in for evidence: every card needing attention is
+    named, with its returncode, failure_category and attempt number;
+  * silence stays evidence-backed: "read N records, none failed", "there are no
+    records", and "we never looked" are three different reports.
+
+`done` with no returncode is its own verdict (UNATTESTED), not a success and
+not a clean failure: nobody observed an exit code, so nobody knows. drain.py
+promises never to write that shape — which is exactly why the reporter cannot
+assume it, since a guarantee held in another module is one this one cannot see
+break.
+
 ## What it found on first run
 
 `SCHEMA.yaml:125` documents `dispatch:<state>` as `ready | active | done`. Only
@@ -48,8 +80,8 @@ next two states have no vocabulary.
 Usage:
     chain.py                          # all default repos
     chain.py --repo owner/name
-    chain.py --records .dispatch/records
-    chain.py --json
+    chain.py --records .dispatch/records   # also measures ran-vs-succeeded
+    chain.py --json                        # {"repos": {...}, "outcomes": {...}}
     chain.py --strict                 # exit non-zero on NEVER-OBSERVED too
 """
 
@@ -60,6 +92,15 @@ import json
 import subprocess
 import sys
 from pathlib import Path
+
+# Sibling scripts, not a package — same loader shape as reconcile.py and
+# drain.py, so `records` resolves whether chain.py is run directly, imported by
+# a test, or exec'd from another cwd.
+_HERE = Path(__file__).resolve().parent
+if str(_HERE) not in sys.path:
+    sys.path.insert(0, str(_HERE))
+
+import records  # noqa: E402
 
 #: Ordered chain. An issue is reported at its FURTHEST stage — reporting the
 #: earliest would make progress invisible.
@@ -107,6 +148,35 @@ EV_RECORDS_CONSULTED = "records-consulted"  # records were read; none reached it
 EV_NO_RECORDS = "no-records-consulted"      # nothing was read; absence proves nothing
 EV_UNREPRESENTABLE = "no-label"
 EV_NOT_APPLICABLE = "not-label-borne"
+
+#: The OUTCOME axis. Deliberately not spellable as flavours of one another: the
+#: cheapest mutation that restores this rail's defect is collapsing two of these
+#: into a single "finished" bucket. Benign verdicts are lowercase, the ones that
+#: want a human are shouted — the same convention `MISSING` and `NEVER-OBSERVED`
+#: already use against `present`.
+OUTCOME_SUCCEEDED = "succeeded"          # records.is_success: done AND exit 0
+OUTCOME_FAILED = "FAILED"                # ran to completion, nonzero exit
+OUTCOME_UNATTESTED = "UNATTESTED"        # done, no exit code — nobody observed one
+OUTCOME_QUARANTINED = "QUARANTINED"      # blocked: terminal, will not be retried
+OUTCOME_IN_FLIGHT = "in-flight"          # ready/active — no outcome YET
+OUTCOME_UNRECOGNISED = "UNRECOGNISED"    # a state this reporter does not know
+
+#: Fixed order so the histogram reads the same every morning, and so a new
+#: outcome cannot be added without deciding where it sits.
+OUTCOME_ORDER = (OUTCOME_SUCCEEDED, OUTCOME_FAILED, OUTCOME_UNATTESTED,
+                 OUTCOME_QUARANTINED, OUTCOME_UNRECOGNISED, OUTCOME_IN_FLIGHT)
+
+#: Everything that is not a success and not still running. Ordered worst-first:
+#: a quarantined card is dead, a failed one gets another attempt, an unattested
+#: one may have worked and we cannot tell. `in-flight` is NOT here — mid-run is
+#: not failure, and crying one trains the reader to ignore both, the same reason
+#: NEVER-OBSERVED is not filed as a BREAK.
+OUTCOMES_NEEDING_ATTENTION = (OUTCOME_QUARANTINED, OUTCOME_UNATTESTED,
+                              OUTCOME_FAILED, OUTCOME_UNRECOGNISED)
+
+#: How many flagged cards land on the morning screen. The DATA keeps all of
+#: them; only the render is capped, and it states the true total when it cuts.
+ATTENTION_PRINT_LIMIT = 12
 
 DEFAULT_REPOS = (
     "vamseeachanta/workspace-hub",
@@ -158,27 +228,146 @@ def states_evidenced_by(record: dict) -> set[str]:
     return seen
 
 
-def observed_states(records_root) -> set[str]:
-    """Every record state this system can PROVE it has reached. READ-ONLY.
+def read_records(records_root) -> list[dict]:
+    """Every readable record under the root, in a stable order. READ-ONLY.
 
-    A missing root yields an empty set rather than an error, and — importantly —
-    is not created on the way past: a reporter that materialises the directory
+    A missing root yields an empty list rather than an error, and — importantly
+    — is not created on the way past: a reporter that materialises the directory
     it is measuring has changed the answer. A single unreadable record is
     skipped rather than fatal, for the reason `reconcile.reconcile` gives: one
     corrupt file must not strand the other 866.
+
+    Both axes read the records ONCE through here. Two readers with two skip
+    rules would let a record count toward the stage evidence and vanish from the
+    outcome tally, and the disagreement would be invisible in either report.
     """
     root = Path(records_root)
-    seen: set[str] = set()
+    out: list[dict] = []
     if not root.is_dir():
-        return seen
+        return out
     for path in sorted(root.glob("*.json")):
         try:
             record = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, ValueError):
             continue
         if isinstance(record, dict):
-            seen |= states_evidenced_by(record)
+            out.append(record)
+    return out
+
+
+def observed_in(records: list[dict]) -> set[str]:
+    """Every record state this population can PROVE was reached. Pure: no IO."""
+    seen: set[str] = set()
+    for record in records:
+        seen |= states_evidenced_by(record)
     return seen
+
+
+def observed_states(records_root) -> set[str]:
+    """Every record state this system can PROVE it has reached. READ-ONLY."""
+    return observed_in(read_records(records_root))
+
+
+# ---------------------------------------------------------------------------
+# the outcome axis: did it WORK, as distinct from did it RUN
+# ---------------------------------------------------------------------------
+
+
+def outcome_of(record: dict) -> str:
+    """What this ONE record says about whether the work succeeded.
+
+    Success is asked of `records.is_success` and never re-derived here. A second
+    definition of "worked" is how the two drift: that function could gain a
+    condition tomorrow and a local copy would go on answering yesterday's
+    question while looking maintained.
+
+    The three ways of not succeeding are kept apart because the follow-up
+    differs. `FAILED` has an exit code to investigate. `QUARANTINED` is terminal
+    — attempts are exhausted and nothing will retry it, so it needs a human, not
+    a rerun. `UNATTESTED` is a `done` carrying no exit code: nobody observed one,
+    so calling it a failure accuses a card that may well have worked, and calling
+    it a success is this rail's defect exactly. It is a measurement defect, and
+    it is reported as one.
+    """
+    if records.is_success(record):
+        return OUTCOME_SUCCEEDED
+    state = record.get("state")
+    if state == "done":
+        rc = record.get("returncode")
+        # bool is an int in Python, and a `returncode: true` is not an exit code.
+        if isinstance(rc, int) and not isinstance(rc, bool):
+            return OUTCOME_FAILED
+        return OUTCOME_UNATTESTED
+    if state == "blocked":
+        return OUTCOME_QUARANTINED
+    if state in records.STATES:
+        return OUTCOME_IN_FLIGHT
+    # No bucket, no count, no line in the report — a record nobody classified is
+    # invisible, and invisible reads as fine. Named instead.
+    return OUTCOME_UNRECOGNISED
+
+
+def _attention_entry(record: dict, outcome: str) -> dict:
+    """The evidence that travels with a flagged card.
+
+    "4 failed" sends nobody anywhere; the returncode and the category do.
+    `attempt`/`max_attempts` is on it because "failed once of three" and "failed
+    the last time it will ever be tried" are different mornings.
+
+    A record with no `issue` is still reported. Dropping it would be an absence
+    manufactured by the very corruption the entry is evidence of.
+    """
+    return {
+        "issue": record.get("issue") or "<record carries no issue field>",
+        "outcome": outcome,
+        "state": record.get("state"),
+        "returncode": record.get("returncode"),
+        "failure_category": record.get("failure_category"),
+        "attempt": record.get("attempt"),
+        "max_attempts": record.get("max_attempts"),
+        "host": record.get("host"),
+    }
+
+
+def outcome_report(consulted: list[dict] | None) -> dict:
+    """Ran-vs-succeeded over a records population. Pure: no IO.
+
+    `None` means records were NOT consulted, and is reported as NOT-MEASURED
+    with `counts: None` — never as a dict of zeros. `failed: 0` from a run that
+    never read a record is the same lie as `published: 0` from an unbuilt join,
+    and it is the more dangerous of the two: zero failures is the answer
+    everyone wants to see.
+
+    An EMPTY population is a third answer again. A typo in `--records` produces
+    one, and it must not print like a clean night — it is NEVER-OBSERVED, on the
+    same three-way distinction the stage axis draws.
+    """
+    if consulted is None:
+        return {"consulted": False, "vocabulary": VOCAB_NOT_MEASURED,
+                "evidence": EV_NO_RECORDS, "records_read": None,
+                "counts": None, "attention": None}
+
+    counts = {o: 0 for o in OUTCOME_ORDER}
+    attention = []
+    for record in consulted:
+        outcome = outcome_of(record)
+        counts[outcome] += 1
+        if outcome in OUTCOMES_NEEDING_ATTENTION:
+            attention.append(_attention_entry(record, outcome))
+
+    # Worst first, then by issue: the cards that will never retry themselves are
+    # the ones worth reading if the reader stops after the first few lines.
+    attention.sort(key=lambda a: (OUTCOMES_NEEDING_ATTENTION.index(a["outcome"]),
+                                  str(a["issue"])))
+
+    return {
+        "consulted": True,
+        "vocabulary": VOCAB_PRESENT if consulted else VOCAB_NEVER_OBSERVED,
+        "evidence": EV_RECORDS_CONSULTED,
+        "records_read": len(consulted),
+        "counts": counts,
+        "attention": attention,
+    }
 
 
 def chain_report(issues: list[dict], vocabulary: set[str],
@@ -264,6 +453,75 @@ def chain_report(issues: list[dict], vocabulary: set[str],
             "records_consulted": observed is not None}
 
 
+def format_outcomes(block: dict) -> list[str]:
+    """The OUTCOMES section as printed lines. Pure: no IO.
+
+    Separate from the per-repo loop on purpose. A records root spans every repo,
+    so printing this per repo would show the same failures three times and imply
+    a per-repo join that was never made.
+    """
+    lines = [""]
+    if not block["consulted"]:
+        # No numbers here at all. A stray `0` beside a bucket name is precisely
+        # the reading this section exists to prevent.
+        lines.append("\033[1mOUTCOMES\033[0m  \033[2mnot measured here\033[0m")
+        lines.append("\033[33m  Whether any card SUCCEEDED is unmeasured. The stages above say how far")
+        lines.append("  each card got, not whether it worked — a night that fails every card and a")
+        lines.append("  night that completes every card print identical stage counts. Pass")
+        lines.append("  --records <dir> to measure it.\033[0m")
+        return lines
+
+    read = block["records_read"]
+    counts = block["counts"]
+    attention = block["attention"]
+
+    if not read:
+        lines.append("\033[1mOUTCOMES\033[0m  \033[33mno records under the root — "
+                     "LABEL EXISTS, NEVER USED\033[0m")
+        lines.append("\033[33m  Nothing attests to any outcome. This is not a clean night;")
+        lines.append("  it is an unexercised one, or a --records path that points "
+                     "somewhere empty.\033[0m")
+        return lines
+
+    lines.append(f"\033[1mOUTCOMES\033[0m  records={read}  "
+                 f"\033[2m(ran ≠ succeeded; {EV_RECORDS_CONSULTED})\033[0m")
+    for outcome in OUTCOME_ORDER:
+        # Pad the NAME, then colour it. Padding the coloured string counts the
+        # escape bytes, which are zero-width on screen — the count column would
+        # sit several places left on exactly the rows that matter most.
+        cell = f"{outcome:<14}"
+        colour = ""
+        if counts[outcome]:
+            if outcome in (OUTCOME_FAILED, OUTCOME_QUARANTINED, OUTCOME_UNRECOGNISED):
+                colour = "\033[1;31m"
+            elif outcome == OUTCOME_UNATTESTED:
+                colour = "\033[1;33m"
+        lines.append(f"    {colour}{cell}\033[0m{counts[outcome]:>6}"
+                     if colour else f"    {cell}{counts[outcome]:>6}")
+
+    if not attention:
+        lines.append(f"  \033[2mevery one of the {read} record(s) consulted reached "
+                     f"exit 0 — verdict from records.is_success\033[0m")
+        return lines
+
+    lines.append(f"  \033[1;31mNOT SUCCEEDED: {len(attention)} of {read} record(s).\033[0m "
+                 "\033[1mThe 'executed' stage counts cards that RAN;\033[0m")
+    lines.append("  \033[1mthese ran and did not work. `done` is completion, not success.\033[0m")
+    for entry in attention[:ATTENTION_PRINT_LIMIT]:
+        rc = entry["returncode"]
+        # An em-dash, never a 0: "no exit code was observed" and "it exited 0"
+        # are the two readings this whole section exists to keep apart.
+        rc_text = "—" if rc is None else str(rc)
+        lines.append(
+            f"    {str(entry['issue']):<34} {entry['outcome']:<13} "
+            f"rc={rc_text:<6} {str(entry['failure_category'] or '—'):<16} "
+            f"attempt {entry['attempt']}/{entry['max_attempts']}")
+    if len(attention) > ATTENTION_PRINT_LIMIT:
+        lines.append(f"    \033[2m… and {len(attention) - ATTENTION_PRINT_LIMIT} more "
+                     f"({len(attention)} flagged in total; --json carries every one)\033[0m")
+    return lines
+
+
 def fetch(repo: str) -> tuple[list[dict], set[str]]:
     def gh(args):
         r = subprocess.run(args, capture_output=True, text=True, check=False)
@@ -280,14 +538,24 @@ def fetch(repo: str) -> tuple[list[dict], set[str]]:
     return issues, vocab
 
 
-def exit_code(reports: dict, strict: bool = False) -> int:
-    """1 on a broken chain; under `--strict`, also on an unexercised one.
+def exit_code(reports: dict, strict: bool = False, *, outcomes: dict | None = None) -> int:
+    """1 on a broken chain OR a card that did not succeed; `--strict` adds the
+    unexercised one.
 
     NEVER-OBSERVED is not an error by default: right after the labels are
     created it is the only honest answer. `--strict` is for the caller who has
     decided enough time has passed that "never used" is a failure.
+
+    A failed card IS an error in either mode. Something automated reads this
+    exit code after an unattended run, and a total-failure night that exits 0 is
+    this rail's defect in its most expensive form — nobody gets as far as
+    reading the report. Cards still in flight are not failures, and an
+    unconsulted records root is not one either: absence proves nothing in both
+    directions, so it stays 0 and says NOT-MEASURED in the text instead.
     """
     if any(r["breaks"] for r in reports.values()):
+        return 1
+    if outcomes is not None and outcomes.get("attention"):
         return 1
     if strict and any(r["unproven"] for r in reports.values()):
         return 1
@@ -304,7 +572,11 @@ def main() -> int:
     ap.add_argument("--json", action="store_true")
     args = ap.parse_args()
 
-    observed = observed_states(args.records) if args.records else None
+    # Read the records ONCE; both axes are derived from the same population so
+    # they cannot disagree about which files were legible.
+    consulted = read_records(args.records) if args.records else None
+    observed = observed_in(consulted) if consulted is not None else None
+    outcomes = outcome_report(consulted)
 
     out = {}
     for repo in ([args.repo] if args.repo else list(DEFAULT_REPOS)):
@@ -312,8 +584,8 @@ def main() -> int:
         out[repo] = chain_report(issues, vocab, observed)
 
     if args.json:
-        print(json.dumps(out, indent=2))
-        return exit_code(out, args.strict)
+        print(json.dumps({"repos": out, "outcomes": outcomes}, indent=2))
+        return exit_code(out, args.strict, outcomes=outcomes)
 
     for repo, rep in out.items():
         print(f"\n\033[1m{repo}\033[0m  open={rep['total']}")
@@ -323,6 +595,12 @@ def main() -> int:
                     VOCAB_NEVER_OBSERVED: "\033[33mLABEL EXISTS, NEVER USED\033[0m",
                     VOCAB_NOT_MEASURED: "\033[2mnot measured here\033[0m",
                     VOCAB_PRESENT: ""}[st["vocabulary"]]
+            # A constant pointer, never a per-repo failure count: the records
+            # root spans every repo, so any number spliced in here would be a
+            # join this tool has not made.
+            if s == "executed" and st["count"]:
+                mark = (mark + "  " if mark else "") + \
+                    "\033[2m← cards that RAN; see OUTCOMES for whether they worked\033[0m"
             print(f"    {s:<12}{st['count']:>6}   {mark}")
         if rep["wall"]:
             w = rep["wall"]
@@ -338,6 +616,9 @@ def main() -> int:
         for u in rep["unproven"]:
             print(f"  \033[33mUNPROVEN\033[0m {u['stage']}: {u['detail']}")
 
+    for line in format_outcomes(outcomes):
+        print(line)
+
     if not any(r["records_consulted"] for r in out.values()):
         print("\n\033[33mNo records root given (--records): 'never observed' above "
               "rests on live labels alone, which forget. Records are the durable "
@@ -345,8 +626,10 @@ def main() -> int:
 
     print("\n\033[2mREAD-ONLY. `result` and `published` need a join against the "
           "licensed-run queue and the website; reported as not-measured rather "
-          "than zero so an unbuilt join cannot read as 'nothing shipped'.\033[0m")
-    return exit_code(out, args.strict)
+          "than zero so an unbuilt join cannot read as 'nothing shipped'. The "
+          "same rule governs OUTCOMES: `done` means ran to completion, and "
+          "whether it WORKED is records.is_success, never a stage count.\033[0m")
+    return exit_code(out, args.strict, outcomes=outcomes)
 
 
 if __name__ == "__main__":
