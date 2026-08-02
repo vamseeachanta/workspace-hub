@@ -31,6 +31,21 @@ Path placeholders used in the rows below (see canonical values in the reference 
 
 ---
 
+## ⚠ Live fleet vs this document — corrected 2026-08-02
+
+**Five machines are active** (owner-confirmed): `ace-linux-1`, `ace-linux-2`, `gpu-claw`,
+`licensed-win-1` (canonical `ace-win-1`), and `macbook-portable` (`Vamsees-MacBook-Air`).
+
+**All five are reachable over Tailscale.**
+
+The rows below list eight hosts, several marked `blocked` on grounds that are now stale or that
+describe machines not in the active fleet. Treat the five above as the dispatch surface and the rest
+as historical until this document is reconciled properly.
+
+Two identity notes that bite when routing: `licensed-win-1` is an **alias** — canonical hostname is
+`ace-win-1` (renamed per WF0 #3001). Likewise `licensed-win-2` → `ace-win-2`. Route by canonical
+lowercase hostname.
+
 ## Inventory
 
 ### ace-linux-1 — `dev-primary` (Linux, primary control plane)
@@ -65,7 +80,7 @@ Path placeholders used in the rows below (see canonical values in the reference 
 | AI-provider auth | **unverified — no SSH**. Registry lists `[claude, codex, gemini]` as agent_clis but auth state requires physical/GUI verification |
 | Repos | `OGManufacturing` (registry `licensed-win-1.repos`); `workspace-hub` at `<windows-workspace-root>` (git-poll target, evidenced by `queue/failed/wamit-val-hemisphere/result.yaml`) |
 | Smoke / run command | N/A from Linux — no SSH. Indirect smoke: submit a no-op job via `scripts/solver/submit-job.sh orcaflex <input> "smoke test"` and verify `queue/processing/` or `queue/done/` reflects pickup within 30 min |
-| Dispatch readiness | **ready** for OrcaFlex via existing git-backed queue (`scripts/solver/submit-job.sh` → push to `queue/pending/` → 30-min `git pull` cycle on the host → solver runs, writes result yaml + artifacts, pushes back). **blocked** for AQWA — queue schema does not yet accept `solver: aqwa`; tracked by [#2641](https://github.com/vamseeachanta/workspace-hub/issues/2641) |
+| Dispatch readiness | **ready for OrcaFlex AND AQWA** (owner-confirmed 2026-08-02). OrcaFlex dispatches via the git-backed queue (`queue/pending/` → 30-min `git pull` on the host → solver runs → result yaml + artifacts pushed back). ⚠ This row previously read "**blocked** for AQWA — queue schema does not yet accept `solver: aqwa`, tracked by [#2641](https://github.com/vamseeachanta/workspace-hub/issues/2641)". The host is ready; verify whether the **queue schema** still needs the `solver: aqwa` extension before dispatching AQWA *through the queue* rather than manually |
 
 ---
 
