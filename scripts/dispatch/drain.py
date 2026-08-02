@@ -81,6 +81,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
+import yaml
+
 # Sibling scripts, not a package — same loader shape as reconcile.py, so these
 # resolve whether drain.py is run directly, imported by a test, or exec'd from
 # another cwd.
@@ -93,7 +95,13 @@ import reconcile  # noqa: E402
 import records  # noqa: E402
 
 RUN_SH = _HERE / "run.sh"
-WINDOWS_RUNNER = _HERE.parents[1] / "windows" / "dispatch-run.ps1"
+#: `_HERE` is scripts/dispatch, so the sibling directory is `_HERE.parent /
+#: "windows"`. This read `parents[1]`, i.e. the REPO ROOT, and pointed at a
+#: `windows/` directory that does not exist. Found by the first real Windows
+#: run, not by the suite: the runner test asserts the ps1's ARGV FLAGS, and the
+#: flags were right — only the path to the script was wrong. A test that looks
+#: like it covers the runner seam and covers only its vocabulary.
+WINDOWS_RUNNER = _HERE.parent / "windows" / "dispatch-run.ps1"
 
 #: One flag for the whole dispatch surface. Imported, not re-declared: a second
 #: constant with the same value is a second thing to forget to change.
@@ -152,12 +160,58 @@ def _stamp(now=None) -> str:
 
 
 def default_host() -> str:
-    """This host's canonical, lowercased name.
+    """This host's canonical ROLE id — not necessarily its OS hostname.
 
-    Read at runtime, never written into the source: a hostname literal in a
-    shared script is a machine identity that travels to every other machine.
+    The original returned `socket.gethostname()` and guarded, correctly, against
+    a hostname LITERAL in shared source. It did not guard against writing the
+    runtime value into a record — and records are committed and pushed to a
+    PUBLIC repo. On a box whose OS name must not appear there, a real drain would
+    have published it in `.claude/dispatch/records/*.json`.
+
+    Found by the first live Windows run, which printed `claim as <real-os-name>`.
+    Nothing in the hermetic suite could see it: on the Linux box the OS hostname
+    and the role id happen to be the same string, so the defect is invisible
+    exactly where the tests run.
+
+    So the private-tier identity is consulted first, via the SAME mechanism as
+    scripts/readiness/lib/machine-identity.sh (#3571) and sync-agent-configs.sh —
+    an off-repo, gitignored file naming the box's fleet identity. Falling back to
+    the OS hostname is correct only where the two already agree.
     """
+    label = identity_machine()
+    if label:
+        return label
     return socket.gethostname().strip().lower()
+
+
+def identity_machine() -> str | None:
+    """The role id this box declares for itself, or None.
+
+    Same contract as machine-identity.sh's resolve_identity_file: absent file
+    falls through; a file naming a DIFFERENT box is refused rather than used,
+    because an identity file copied to the wrong host would mint claims under
+    someone else's name — worse than having no file at all.
+
+    Diagnostics never echo the hostname VALUE: this output can reach tracked logs.
+    """
+    path = os.environ.get("WORKSPACE_HUB_MACHINE_IDENTITY") or os.path.join(
+        os.path.expanduser("~"), ".config", "workspace-hub", "machine-identity.yaml")
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = yaml.safe_load(fh) or {}
+    except Exception as exc:                                    # noqa: BLE001
+        raise SystemExit(f"machine-identity: {path} is unreadable: {type(exc).__name__}")
+    label = str(data.get("machine") or "").strip()
+    if not label:
+        raise SystemExit(f"machine-identity: {path} lacks the required 'machine:' key")
+    expected = str(data.get("expected_hostname") or "").strip().lower()
+    if expected and expected != socket.gethostname().strip().lower():
+        raise SystemExit(
+            f"machine-identity: expected_hostname in {path} does not match this "
+            f"box — refusing a copied identity file")
+    return label
 
 
 # ---------------------------------------------------------------------------
