@@ -62,6 +62,12 @@ def default_lease_name(item: dict) -> str:
 
 
 # ── pure core ────────────────────────────────────────────────────────────────
+#: Status for a card the run declined to reach because it hit its own ceiling.
+#: Distinct from WIP_CAPPED (the ROUTER capped it) — the two need different
+#: actions from an operator, and a shared "skipped" would hide which one fired.
+RUN_CAPPED = "run_capped"
+
+
 def claim_run(
     items: Iterable[dict],
     holder: str,
@@ -74,6 +80,10 @@ def claim_run(
     liveness_fn: Optional[Callable[[str], bool]] = None,
     mark_done: Optional[Callable[[dict], Any]] = None,
     lease_name_fn: Optional[Callable[[dict], str]] = None,
+    max_cards: Optional[int] = None,
+    delay_s: float = 0.0,
+    sleep_fn: Optional[Callable[[float], Any]] = None,
+    on_outcome: Optional[Callable[[dict], Any]] = None,
 ) -> list[dict]:
     """Claim each item under a fenced git-ref lease, run it once, record completion.
 
@@ -86,31 +96,67 @@ def claim_run(
           - superseded mid-run -> status ``lost_fence`` (NOT marked done);
         an executor exception -> status ``failed`` (NOT marked done -> retried later).
 
-    Returns a per-item list of ``{"id", "status"[, "error"]}``. No lease is ever
-    released; it lapses via TTL. Pure — all effects are injected.
+    Pacing (#3773 R6). ``max_cards`` bounds how many cards this run may HAND TO
+    the executor, and ``delay_s`` puts a gap between those hand-offs. Both matter
+    because one card is not one cheap operation: each drain writes two commits to
+    `main` and pushes them, so an unbounded pass over the `dev-primary` queue was
+    ~1344 cards x 2 commits, unattended, into a repo with CI and a PII gate.
+
+      * The budget is spent on EXECUTOR CALLS, not on items seen. A card held by
+        another host writes nothing to `main`, so it must not consume the ceiling
+        — otherwise a busy fleet would starve this host's run of real work.
+      * A card that FAILED still spent its budget: the drain had already run and
+        already committed by the time it returned nonzero.
+      * Cards past the ceiling are reported as ``run_capped``, never dropped. A
+        queue that silently shrinks to the cap reads as a completed night.
+      * The delay separates executions only; the run does not wait out a pause
+        for cards it has already declined.
+      * There is NO retry loop here. A card that failed stays claimable and is
+        picked up by a later run, which is bounded by its own ceiling.
+
+    ``on_outcome`` is called with each outcome dict as it is produced, so a caller
+    can journal progress while the run is still in flight (a summary written only
+    at the end is lost exactly when the run dies mid-way).
+
+    Returns a per-item list of ``{"id", "status"[, "error"|"reason"]}``. No lease
+    is ever released; it lapses via TTL. Pure — all effects are injected.
     """
     name_of = lease_name_fn or default_lease_name
     out: list[dict] = []
+    attempted = 0
+
+    def emit(outcome: dict) -> None:
+        out.append(outcome)
+        if on_outcome is not None:
+            on_outcome(outcome)
+
     for item in items:
+        if max_cards is not None and attempted >= max_cards:
+            emit({"id": item["id"], "status": RUN_CAPPED,
+                  "reason": f"per-run cap of {max_cards} cards reached"})
+            continue
+        if attempted and delay_s > 0 and sleep_fn is not None:
+            sleep_fn(delay_s)
         name = name_of(item)
         tok = token_fn()
         blob = acquire(git, name, holder, ttl_s, now_fn(), tok)
         if blob is None and liveness_fn is not None:
             blob = reclaim(git, name, holder, ttl_s, now_fn(), tok, liveness_fn)
         if blob is None:
-            out.append({"id": item["id"], "status": "skipped_held"})
+            emit({"id": item["id"], "status": "skipped_held"})
             continue
+        attempted += 1
         try:
             executor(item)
         except Exception as exc:  # noqa: BLE001 — record and keep going; item stays claimable
-            out.append({"id": item["id"], "status": "failed", "error": str(exc)})
+            emit({"id": item["id"], "status": "failed", "error": str(exc)})
             continue
         if verify_token(git, name, tok):
             if mark_done is not None:
                 mark_done(item)
-            out.append({"id": item["id"], "status": "ran"})
+            emit({"id": item["id"], "status": "ran"})
         else:
-            out.append({"id": item["id"], "status": "lost_fence"})
+            emit({"id": item["id"], "status": "lost_fence"})
     return out
 
 
@@ -139,16 +185,35 @@ def _git(repo: Path, *args: str) -> subprocess.CompletedProcess:
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True)
 
 
-def _fetch_lease_refs(repo: Path) -> None:
+# The namespace the LEASE WRITER uses, imported — never restated. Two literals
+# that happen to agree are one edit away from the #3772 defect: this module used
+# to sync `refs/heads/dispatch-lease/*` while `dispatch_lease` wrote
+# `refs/heads/dispatch/leases/*`, so no lease ever left the host and every host
+# won every claim it made. Cross-machine mutual exclusion was zero.
+LEASE_REF_GLOB = _dl.REF_PREFIX + "*"
+
+
+def lease_fetch_refspec() -> str:
+    """Force-fetch refspec: overwrite our view with the fleet's (peers are truth)."""
+    return f"+{LEASE_REF_GLOB}:{LEASE_REF_GLOB}"
+
+
+def lease_push_refspec() -> str:
+    """Non-forced push refspec. Each lease commit is parented on the one it
+    supersedes, so a legitimate CAS fast-forwards and a stale one is rejected."""
+    return LEASE_REF_GLOB
+
+
+def _fetch_lease_refs(repo: Path) -> subprocess.CompletedProcess:
     """Bring remote lease refs local so CAS sees other hosts' claims (best-effort)."""
-    _git(repo, "fetch", "origin",
-         "+refs/heads/dispatch-lease/*:refs/heads/dispatch-lease/*")
+    return _git(repo, "fetch", "origin", lease_fetch_refspec())
 
 
-def _push_lease_refs(repo: Path) -> None:
-    """Publish our lease CAS updates to origin (best-effort; per-ref CAS push is the
-    operator-verified live step on the no-SSH hosts)."""
-    _git(repo, "push", "origin", "refs/heads/dispatch-lease/*")
+def _push_lease_refs(repo: Path) -> subprocess.CompletedProcess:
+    """Publish our lease CAS updates to origin. Best-effort, but the return code is
+    handed back so the run summary can say the fleet went unsynced rather than
+    leaving a silent no-op that looks exactly like a clean night."""
+    return _git(repo, "push", "origin", lease_push_refspec())
 
 
 def _dry_run_executor(item: dict) -> None:
@@ -348,9 +413,103 @@ def make_drain_executor(*, repo, records_dir, machine: str, bindings: dict,
     return executor
 
 
-def main(argv=None) -> int:
-    import time
+# ── the run log ─────────────────────────────────────────────────────────────
+#
+# The failure this closes: a night that refused 1344 cards and a night that
+# completed 1344 produced the SAME evidence — the stdout of a process nobody was
+# attached to. There was no artifact to read in the morning, so "nothing broke"
+# and "everything broke" were indistinguishable.
+#
+# It is a dated JSONL under `logs/`, which `.gitignore` excludes wholesale
+# (`logs/*`, with named exceptions this path is not among). That is deliberate
+# and load-bearing, not incidental: this repo is PUBLIC and gated by a PII scan.
 
+#: Log directory, relative to the repo root. Local-only by `.gitignore`.
+RUN_LOG_DIR_REL = Path("logs") / "dispatch-pull"
+
+#: The ONLY keys copied out of an outcome into a log line.
+#:
+#: An allow-list, not a filter. Issue TITLES were removed from the dispatch
+#: surface because they leaked client identifiers into this public repo (#3768);
+#: a journal that serialised the outcome — or worse, the card — would reinstate
+#: exactly that leak one layer below the fix. `owner/repo#N` is a reference, not
+#: prose, and is what an operator needs to act. `reason` and `error` are this
+#: module's own strings (a cap message, a drain exit code), never child output.
+LOGGED_KEYS = ("status", "reason", "error")
+
+
+def run_log_path(repo, *, today: Optional[str] = None) -> Path:
+    """Dated log file for a run: ``<repo>/logs/dispatch-pull/YYYY-MM-DD.jsonl``."""
+    from datetime import datetime, timezone
+    day = today or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    return Path(repo) / RUN_LOG_DIR_REL / f"{day}.jsonl"
+
+
+class RunLog:
+    """Append-only JSONL journal: one line per card, one summary line per run.
+
+    Append, never truncate — two runs can share a night, and the second must not
+    erase the first's evidence. Each line is written and flushed as it happens,
+    so a run killed mid-way still leaves everything it got through.
+    """
+
+    def __init__(self, path, *, run_id: str, machine: str,
+                 now_fn: Optional[Callable[[], float]] = None):
+        import time as _time
+        self.path = Path(path)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.run_id = run_id
+        self.machine = machine
+        self._now = now_fn or _time.time
+
+    def _append(self, record: dict) -> dict:
+        import json
+        with self.path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(record, sort_keys=True) + "\n")
+        return record
+
+    def _stamp(self, event: str) -> dict:
+        return {"event": event, "ts": self._now(), "run_id": self.run_id,
+                "machine": self.machine}
+
+    def card(self, outcome: dict, *, attempt: int = 1) -> dict:
+        """One line for one card on one attempt. Built from `LOGGED_KEYS` only."""
+        record = self._stamp("card")
+        record["issue"] = str(outcome.get("id", ""))
+        record["attempt"] = attempt
+        for key in LOGGED_KEYS:
+            if outcome.get(key) is not None:
+                record[key] = str(outcome[key])
+        return self._append(record)
+
+    def summary(self, outcomes: Iterable[dict], **extra) -> dict:
+        """The end-of-run line: how many of each cause, so the morning question
+        ("did anything happen?") has an answer that outlives the terminal."""
+        counts: dict[str, int] = {}
+        total = 0
+        for outcome in outcomes:
+            counts[str(outcome.get("status"))] = counts.get(str(outcome.get("status")), 0) + 1
+            total += 1
+        record = self._stamp("run_summary")
+        record["counts"] = counts
+        record["total"] = total
+        record.update({k: v for k, v in extra.items() if k not in record})
+        return self._append(record)
+
+
+# ── CLI ─────────────────────────────────────────────────────────────────────
+
+#: Conservative by construction. Five cards is ten commits to `main` per run —
+#: a number an operator can review in the morning. Raising it is a deliberate
+#: flag on the command line, which is where that decision belongs.
+DEFAULT_MAX_CARDS = 5
+
+#: Seconds between hand-offs. Spaces the pushes so a run cannot present CI and
+#: the PII gate with a burst.
+DEFAULT_DELAY_S = 30.0
+
+
+def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(description="lease-arbitrated pull dispatch (#3000)")
     ap.add_argument("--machine", default=None, help="registry machine id (default: this host)")
     ap.add_argument("--ttl", type=int, default=900, help="lease TTL seconds (default 900)")
@@ -359,7 +518,37 @@ def main(argv=None) -> int:
     ap.add_argument("--commands", default=None,
                     help=f"per-issue command map (default: <repo>/{COMMAND_MAP_REL})")
     ap.add_argument("--repo", default=str(_REPO))
-    args = ap.parse_args(argv)
+    # A ceiling, not a switch: there is no value here that means "unbounded".
+    # `0` runs nothing, negatives are rejected, and the default is finite.
+    ap.add_argument("--max-cards", type=_non_negative_int, default=DEFAULT_MAX_CARDS,
+                    help=f"cards this run may hand to the executor "
+                         f"(default {DEFAULT_MAX_CARDS}; 0 runs none)")
+    ap.add_argument("--delay", type=_non_negative_float, default=DEFAULT_DELAY_S,
+                    help=f"seconds between cards (default {DEFAULT_DELAY_S})")
+    ap.add_argument("--log-dir", default=None,
+                    help=f"run-log directory (default: <repo>/{RUN_LOG_DIR_REL})")
+    return ap
+
+
+def _non_negative_int(text: str) -> int:
+    value = int(text)
+    if value < 0:
+        raise argparse.ArgumentTypeError(
+            f"{text}: the per-run cap is a ceiling; there is no unbounded value")
+    return value
+
+
+def _non_negative_float(text: str) -> float:
+    value = float(text)
+    if value < 0:
+        raise argparse.ArgumentTypeError(f"{text}: delay cannot be negative")
+    return value
+
+
+def main(argv=None) -> int:
+    import time
+
+    args = build_parser().parse_args(argv)
 
     # Two gates, checked before anything is fetched, read or claimed. Asking for
     # writes is not being permitted them, and a refusal that happens after the
@@ -384,19 +573,33 @@ def main(argv=None) -> int:
     bindings = load_command_bindings(Path(args.commands) if args.commands
                                      else repo / COMMAND_MAP_REL)
 
-    _fetch_lease_refs(repo)
+    # Opened BEFORE anything is claimed. A journal created only once there is
+    # something to write reports nothing about the runs that died before their
+    # first card — which are the runs worth reading about.
+    run_id = uuid.uuid4().hex[:12]
+    log_path = run_log_path(repo)
+    if args.log_dir:
+        log_path = Path(args.log_dir) / log_path.name
+    log = RunLog(log_path, run_id=run_id, machine=mid)
+
+    fetch = _fetch_lease_refs(repo)
     items = _read_ready_cards(dispatch_file)
     runnable, deferred = partition_runnable(items, bindings)
     print(f"--- dispatch-pull {mid}: {len(items)} ready, {len(runnable)} runnable, "
-          f"{len(deferred)} deferred [{'apply' if args.apply else 'dry-run'}] ---")
+          f"{len(deferred)} deferred, cap {args.max_cards}, delay {args.delay}s "
+          f"[{'apply' if args.apply else 'dry-run'}] run {run_id} ---")
+    for o in deferred:
+        log.card(o)
 
     executor = make_drain_executor(repo=repo, records_dir=repo / ".claude" / "dispatch" / "records",
                                    machine=mid, bindings=bindings, apply=args.apply)
     outcomes = claim_run(
         runnable, holder=holder, git=git_lease, executor=executor,
         ttl_s=args.ttl, now_fn=time.time, token_fn=lambda: uuid.uuid4().hex,
+        max_cards=args.max_cards, delay_s=args.delay, sleep_fn=time.sleep,
+        on_outcome=log.card,
     )
-    _push_lease_refs(repo)
+    push = _push_lease_refs(repo)
 
     # Deferrals are printed with the runs, not summarised away: a card nobody has
     # bound must be as visible as one that ran, or the queue silently stalls at
@@ -405,6 +608,19 @@ def main(argv=None) -> int:
         print(f"  {o['status']:>12}  {o['id']}"
               + (f"  — {o['reason']}" if o.get("reason") else "")
               + (f"  — {o['error']}" if o.get("error") else ""))
+
+    # The line that answers "what happened last night". `fetch_rc`/`push_rc` are
+    # in it because a sync that failed leaves this host's leases invisible to the
+    # fleet — the #3772 failure mode, reachable again transiently (offline host,
+    # rejected push) and otherwise indistinguishable from a quiet night.
+    summary = log.summary(deferred + outcomes, apply=bool(args.apply),
+                          max_cards=args.max_cards, delay_s=args.delay,
+                          ready=len(items), fetch_rc=fetch.returncode,
+                          push_rc=push.returncode)
+    print(f"--- summary {summary['counts']} of {summary['total']} "
+          f"(fetch rc {fetch.returncode}, push rc {push.returncode}) "
+          f"-> {log.path} ---")
+
     # Nonzero only for a drain that actually failed. `no_command` is a standing
     # configuration gap across a 1300-card backlog; alarming on it every poll
     # would train the operator to ignore the exit code that reports a real break.
