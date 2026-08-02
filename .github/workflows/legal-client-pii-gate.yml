@@ -1,7 +1,8 @@
 name: Legal Client-PII Gate
 
 # Recurrence backstop for the public-repo client-PII epic (#3095, sub-issue #3099).
-# Fails a PR that introduces a client identifier into a tracked file.
+# Fails a PR that introduces a client identifier into a tracked file, and — since
+# #3775 — scans the tree that actually lands on `main`.
 #
 # The client list is PRIVATE. It is supplied via the encrypted repo/org secret
 # LEGAL_CLIENT_MAP (the contents of client-codename-map.yaml). No client names
@@ -14,16 +15,53 @@ name: Legal Client-PII Gate
 # If the secret is unset, the job runs in DEGRADE-OPEN mode (warns, does not
 # block) so forks / unconfigured environments don't break — but on the main
 # repo the secret should always be set so the gate is strict.
+#
+# ── #3775: why there are two triggers on main, not one ────────────────────────
+# Until #3775 this gate was `on: pull_request` only, and every automated writer
+# in this repo pushes straight to `main`. Two distinct classes of writer exist,
+# and they need two distinct triggers:
+#
+#   1. Local-cron writers pushing with the OWNER's credentials — sync-ecosystem
+#      (`chore(sync): auto-sync`), the equality publisher, the dispatch claim
+#      loop. These DO raise a `push` event. `on: push` catches them immediately.
+#   2. github-actions[bot] pushing with the default GITHUB_TOKEN — the
+#      kanban-reconcile board commit, every 20 minutes. GitHub does NOT create a
+#      workflow run for events triggered by GITHUB_TOKEN. That is precisely the
+#      "anti-loop split" kanban-reconcile.yml relies on, and it means a `push`
+#      trigger is STRUCTURALLY BLIND to this writer. Only a clock can see it, so
+#      `schedule:` is load-bearing here, not belt-and-braces.
+#
+# The main-branch job is read-only by construction: `contents: read`,
+# `persist-credentials: false`, and no git write command anywhere in it. It
+# cannot restart the loop the anti-loop split exists to prevent. Its escalation
+# channel is a GitHub issue (the repo's own human-reaching mechanism) plus a red
+# run — a failing scheduled run alone is a signal only if somebody looks.
 
 on:
   pull_request:
     branches: [main]
     # `edited` so a title/body changed AFTER opening is re-scanned (#3169).
     types: [opened, synchronize, reopened, edited]
+  push:
+    branches: [main]
+  schedule:
+    # Offset from the kanban reconciler's */20 tick so a full-tree scan never
+    # stacks on top of a board push. Every 3h is the detection window for the
+    # GITHUB_TOKEN-pushed writers that `push` cannot observe at all.
+    - cron: "37 */3 * * *"
+  workflow_dispatch:
+
+# Least privilege by default; the main-branch job widens only `issues`.
+permissions:
+  contents: read
 
 jobs:
   client-pii-gate:
     name: Client-PII Gate
+    # PR-only. This condition is TRUE for every pull_request event, so the
+    # required check can never be reported as "skipped" on a PR (a skipped
+    # required check deadlocks the merge — see feedback_required_check_must_not_skip).
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -98,3 +136,180 @@ jobs:
             echo "**Metadata/commits:** FAIL (exit $rc) — a PR title/body or commit message contains a client identifier (value withheld; amend or squash-merge to remove it)." >> "$GITHUB_STEP_SUMMARY"
             exit $rc
           fi
+
+  main-branch-scan:
+    name: Client-PII Main-Branch Scan
+    # Everything that is NOT a pull_request: push to main, the schedule, and
+    # manual dispatch. Never runs on a PR (that is the job above).
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read   # read-only: this job must never be able to write to the repo
+      issues: write    # its only outward action is the tracking issue
+    concurrency:
+      # A scheduled full-tree scan and a push-triggered one must not race on
+      # issue create/dedup. Do not cancel: each run reports a different commit.
+      group: client-pii-main-scan
+      cancel-in-progress: false
+    steps:
+      - name: Checkout landed tree
+        uses: actions/checkout@v4
+        with:
+          # We scan the tree, not a range — no history needed.
+          fetch-depth: 1
+          # No pushable credential is left in the workspace. The anti-loop
+          # guarantee is structural, not a promise in a comment.
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Materialize private client map from secret
+        env:
+          LEGAL_CLIENT_MAP_SECRET: ${{ secrets.LEGAL_CLIENT_MAP }}
+        run: |
+          if [[ -n "$LEGAL_CLIENT_MAP_SECRET" ]]; then
+            printf '%s' "$LEGAL_CLIENT_MAP_SECRET" > "$RUNNER_TEMP/client-map.yaml"
+            echo "LEGAL_CLIENT_MAP=$RUNNER_TEMP/client-map.yaml" >> "$GITHUB_ENV"
+            echo "STRICT=--strict" >> "$GITHUB_ENV"
+            echo "secret present → strict mode" >&2
+          else
+            echo "::warning::LEGAL_CLIENT_MAP secret not set — main-branch scan runs degrade-open (non-blocking)."
+            echo "STRICT=" >> "$GITHUB_ENV"
+          fi
+
+      - name: Scan the whole tracked tree
+        id: scan
+        # --all        : there is no base ref on main, so the unit of scan is the
+        #                landed tree, not a diff.
+        # --quiet      : withholds PATHS as well as values. The PR job shows paths
+        #                to the author who can act on them; this log is public and
+        #                has no author, and a path can ITSELF contain a client
+        #                identifier (the map carries /mnt/ace/<client>-shaped rules).
+        # --report-json: counts + a digest. No paths, no values. It is the only
+        #                thing the escalation step below copies into a PUBLIC issue.
+        run: |
+          set +e
+          uv run python scripts/legal/check-client-pii.py \
+            --all $STRICT --quiet --report-json "$RUNNER_TEMP/pii-report.json"
+          echo "rc=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Escalate
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          REPORT: ${{ runner.temp }}/pii-report.json
+          BODY_FILE: ${{ runner.temp }}/pii-issue-body.md
+          RC: ${{ steps.scan.outputs.rc }}
+          EVENT: ${{ github.event_name }}   # via env, never interpolated into the script
+          SHA: ${{ github.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          LABEL: "legal:client-pii"
+          TITLE: "Client identifier present in tracked files on main"
+        run: |
+          set -euo pipefail
+
+          if [[ ! -f "$REPORT" ]]; then
+            echo "::error::the scan produced no report — treating as INCONCLUSIVE, not a pass."
+            echo "**Main-branch scan:** ERROR — scanner did not run to completion." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          status="$(jq -r '.status' "$REPORT")"
+          flagged="$(jq -r '.files_flagged' "$REPORT")"
+          scanned="$(jq -r '.scanned' "$REPORT")"
+          fp="$(jq -r '.fingerprint' "$REPORT")"
+
+          {
+            echo "## Legal Client-PII Gate — main-branch scan"
+            echo ""
+            echo "- Trigger: \`$EVENT\`"
+            echo "- Status: \`$status\` (scanner exit $RC)"
+            echo "- Files scanned: $scanned"
+            echo "- Files flagged: $flagged"
+            echo ""
+            echo "_Paths, line numbers and matched values are withheld — this surface is public._"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # ── provisioning defect, not a leak: do not open a PII issue ─────────
+          if [[ "$status" == "inconclusive" ]]; then
+            if [[ "$RC" == "0" ]]; then
+              echo "::warning::LEGAL_CLIENT_MAP unset — main-branch scan degraded open. Nothing was verified."
+              exit 0
+            fi
+            echo "::error::main-branch scan was INCONCLUSIVE (exit $RC) — the map is missing or nothing was scanned. This is not a pass."
+            exit 1
+          fi
+
+          # Idempotent; the label is how dedup stays deterministic (the issue
+          # LIST api is immediately consistent, unlike issue SEARCH).
+          gh label create "$LABEL" --color B60205 \
+            --description "Client identifier found in tracked files on main (#3775)" \
+            >/dev/null 2>&1 || true
+
+          existing="$(gh issue list --state open --label "$LABEL" --limit 20 \
+                        --json number --jq '.[0].number // empty')"
+
+          # ── clean: retire any open alarm ─────────────────────────────────────
+          if [[ "$status" == "clean" ]]; then
+            if [[ -n "$existing" ]]; then
+              gh issue comment "$existing" --body \
+                "Main-branch scan is clean as of \`$SHA\` ($scanned files scanned). Closing. Run: $RUN_URL"
+              gh issue close "$existing"
+            fi
+            exit 0
+          fi
+
+          # ── violations ───────────────────────────────────────────────────────
+          # Static prose in a quoted heredoc (nothing expands, backticks are
+          # literal); the four values are substituted after. None of them can
+          # contain a path — the report carries counts and a digest only.
+          cat > "$BODY_FILE" <<'EOF'
+          **A client identifier is present in tracked files on `main`.** This repository is PUBLIC.
+
+          | | |
+          |---|---|
+          | Files flagged | **__FLAGGED__** |
+          | Files scanned | __SCANNED__ |
+          | Commit | `__SHA__` |
+          | Scan run | __RUN_URL__ |
+
+          **No paths, line numbers or matched values appear here or in the run log.** A file
+          path can itself contain a client identifier and both surfaces are public, so the
+          main-branch scan runs `--quiet` and reports counts only. Reproduce locally against
+          the private map to see which files:
+
+          ```
+          uv run python scripts/legal/check-client-pii.py --all --strict
+          uv run python scripts/legal/redact-client-pii.py --map <private-map> <file>
+          ```
+
+          This scan runs on every push to `main` and on a schedule — bot pushes made with the
+          default `GITHUB_TOKEN` do not raise `push` events, so the clock is what sees them.
+          It is read-only and never writes to the repository.
+
+          Filed by the Legal Client-PII Gate (#3095 / #3099 / #3775). It auto-closes when a
+          later scan comes back clean.
+
+          <!-- pii-fingerprint: __FP__ -->
+          EOF
+          sed -i "s|__FLAGGED__|$flagged|; s|__SCANNED__|$scanned|; s|__SHA__|$SHA|; s|__RUN_URL__|$RUN_URL|; s|__FP__|$fp|" "$BODY_FILE"
+
+          if [[ -z "$existing" ]]; then
+            gh issue create --title "$TITLE" --label "$LABEL" --body-file "$BODY_FILE"
+          else
+            prev="$(gh issue view "$existing" --json body --jq '.body' \
+                      | sed -n 's/.*<!-- pii-fingerprint: \([0-9a-f]*\) -->.*/\1/p')"
+            if [[ "$prev" != "$fp" ]]; then
+              # The flagged set CHANGED — worth a fresh ping. An unchanged
+              # finding stays silent so a 3-hourly scan cannot spam the issue.
+              gh issue edit "$existing" --body-file "$BODY_FILE"
+              gh issue comment "$existing" --body \
+                "Findings changed as of \`$SHA\`: **$flagged** flagged of $scanned scanned. Run: $RUN_URL"
+            fi
+          fi
+
+          echo "::error::client identifier(s) present in $flagged tracked file(s) on main — see issue ${existing:-just filed}."
+          exit 1
