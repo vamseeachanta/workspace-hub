@@ -218,7 +218,6 @@ OWNED = {
     ("agents",): ("enabled", "interrupt_message"),
     ("tui",): ("resume_cwd", "status_line"),
 }
-PROBE_KEY = "__codex_sync_probe__"
 
 
 def flatten(value, prefix=()):
@@ -294,20 +293,16 @@ def statements(text):
     return result
 
 
-def probe_path(value, prefix=()):
-    if isinstance(value, dict):
-        if PROBE_KEY in value:
-            return prefix
-        for key, child in value.items():
-            found = probe_path(child, prefix + (key,))
-            if found is not None:
-                return found
-    elif isinstance(value, list):
-        for child in value:
-            found = probe_path(child, prefix)
-            if found is not None:
-                return found
-    return None
+def header_path(value):
+    path = []
+    while isinstance(value, dict) and len(value) == 1:
+        key, value = next(iter(value.items()))
+        path.append(key)
+    if isinstance(value, list) and len(value) == 1:
+        value = value[0]
+    if value != {}:
+        raise ValueError("TOML table header structure is ambiguous")
+    return tuple(path)
 
 
 def header_kind(statement):
@@ -315,13 +310,10 @@ def header_kind(statement):
         return None, None
     kind = "array" if statement[0].lstrip().startswith("[[") else "normal"
     try:
-        parsed = tomllib.loads(statement[0] + f"{PROBE_KEY} = true\n")
+        parsed = tomllib.loads(statement[0].rstrip("\r\n") + "\n")
     except tomllib.TOMLDecodeError as error:
         raise ValueError("unsupported valid TOML table header") from error
-    path = probe_path(parsed)
-    if path is None:
-        raise ValueError("TOML table header probe failed")
-    return kind, path
+    return kind, header_path(parsed)
 
 
 def leaf_path(value, prefix=()):
@@ -436,7 +428,7 @@ def merge_inline(statement, table, canonical):
     return [text[:opening] + "{ " + ", ".join(entries) + " }" + text[closing + 1:]]
 
 
-def inspect_layout(parts):
+def inspect_layout(parts, local):
     modes, seen = {}, {table: set() for table in OWNED}
     context = ()
     skip_legacy = False
@@ -454,16 +446,17 @@ def inspect_layout(parts):
         semantic_path = context + path
         if semantic_path[:-1] in OWNED and semantic_path[-1] in OWNED[semantic_path[:-1]]:
             seen[semantic_path[:-1]].add(semantic_path[-1])
-        if context == () and len(path) == 1 and path in OWNED:
+        if (context == () and len(path) == 1 and path in OWNED
+                and isinstance(local.get(path[0]), dict)):
             modes[path] = "inline"
         if context == () and len(path) > 1 and path[:1] in OWNED:
             modes[path[:1]] = "dotted"
     return modes, seen
 
 
-def merge_text(text, canonical):
+def merge_text(text, canonical, local):
     parts = statements(text)
-    modes, seen = inspect_layout(parts)
+    modes, seen = inspect_layout(parts, local)
     output = [line for key, line in zip(OWNED[()], owned_lines(canonical, ())) if key not in seen[()]]
     for table, mode in modes.items():
         if table and mode == "dotted":
@@ -498,6 +491,12 @@ def merge_text(text, canonical):
     return "".join(output)
 
 
+def validate_local_shapes(local):
+    for table in (("features",), ("agents",), ("tui",)):
+        if table[0] in local and not isinstance(local[table[0]], dict):
+            raise SystemExit(f"incompatible owned root shape: {table[0]}")
+
+
 with template_path.open("rb") as fh:
     canonical = tomllib.load(fh)
 with target_path.open("rb") as fh:
@@ -505,7 +504,8 @@ with target_path.open("rb") as fh:
 expected_paths = {table + (key,) for table, keys in OWNED.items() for key in keys}
 if flatten(canonical) != expected_paths:
     raise SystemExit("canonical Codex config does not match the owned-key contract")
-merged = merge_text(target_path.read_text(), canonical)
+validate_local_shapes(local)
+merged = merge_text(target_path.read_text(), canonical, local)
 tomllib.loads(merged)
 output_path.write_text(merged)
 PY
