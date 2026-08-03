@@ -75,7 +75,7 @@ jobs:
         env:
           PYTHONPATH: src
         run: |
-          uv sync --group dev
+          uv sync --frozen --group dev
           uv run python -m pytest tests/ci_smoke/test_workspace_hub_importable.py -v --tb=short
 
       - name: Check newly introduced stage prompt drift

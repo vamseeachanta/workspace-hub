@@ -48,7 +48,7 @@ jobs:
 
       - name: Install test dependencies
         run: |
-          uv sync --group dev
+          uv sync --frozen --group dev
 
       - name: Run Python tests
         run: |
