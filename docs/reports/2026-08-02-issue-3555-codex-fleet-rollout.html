@@ -64,14 +64,16 @@
         <td>claude, codex, gemini</td><td>Not run: SSH alias did not resolve</td>
         <td class="bad">UNREACHABLE</td>
         <td>Declared <code>D:\ws\workspace-hub</code> and
-          <code>D:\OGManufacturing</code> roots remain UNVERIFIED; origins unknown.</td>
+          <code>D:\OGManufacturing</code> roots remain
+          <code>MISSING-EVIDENCE</code>; origins unknown.</td>
       </tr>
       <tr>
         <td><code>ace-win-2</code></td><td>none · <span class="bad">UNREACHABLE</span></td>
         <td>claude, codex, gemini</td><td>Not run: no usable transport</td>
         <td class="bad">UNREACHABLE</td>
         <td>Declared <code>D:\workspace-hub</code> and
-          <code>D:\OGManufacturing</code> roots remain UNVERIFIED; origins unknown.</td>
+          <code>D:\OGManufacturing</code> roots remain
+          <code>MISSING-EVIDENCE</code>; origins unknown.</td>
       </tr>
       <tr>
         <td><code>gpu-claw</code></td><td>SSH <code>gpu-claw</code> ·
@@ -87,7 +89,8 @@
           <span class="bad">UNREACHABLE</span></td>
         <td>claude</td><td>Not run: no usable transport</td>
         <td class="bad">UNREACHABLE</td>
-        <td>Declared workspace root remains UNVERIFIED; origin unknown.</td>
+        <td>Declared workspace root remains <code>MISSING-EVIDENCE</code>;
+          origin unknown.</td>
       </tr>
       <tr>
         <td><code>shoerack</code></td><td>none · <span class="bad">UNREACHABLE</span></td>
@@ -123,9 +126,9 @@
     </tbody>
   </table>
   <p>Origin spelling is intentionally exact: the <code>ace-linux-2</code> remote omits
-    <code>.git</code>, while the other two include it. Task 3 must compare the observed
-    origin to the approved string after root normalization; it must not broaden origin
-    equivalence.</p>
+    <code>.git</code>, while the other two include it. Task 3 must call the reusable
+    trust-policy helper, which compares the observed origin to the approved string
+    after root normalization without broadening origin equivalence.</p>
 
   <h2>Observed but unauthorized</h2>
   <ul>
@@ -134,20 +137,23 @@
     <li><code>assethold</code> on <code>ace-linux-1</code> reports
       <code>https://github.com/vamseeachanta/assethold.git</code>, while
       <code>config/repos.conf</code> names <code>samdansk2/assethold.git</code>.
-      The drift is not normalized into trust.</li>
+      The machine-readable state is <code>DIVERGES</code>; the drift is not normalized
+      into trust.</li>
     <li><code>CAD-DEVELOPMENTS</code> reports
       <code>https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS</code> and has no
-      matching canonical origin record in the approved trust policy.</li>
+      matching canonical origin record in the approved trust policy. Its state is
+      <code>MISSING-EVIDENCE</code>.</li>
     <li>All Windows/macOS roots and every checkout on <code>shoerack</code> remain
       unauthorized because live root/origin evidence is absent.</li>
   </ul>
 
   <h2>Normalization and materialization contract</h2>
-  <p>The version-1 manifest requires the Task 3 consumer to resolve symlinks and
-    junctions, normalize Windows drive and UNC spelling, case-fold Windows paths,
-    and reject nonexistent roots before exact tuple comparison. Machine-local
-    allowlists must use POSIX mode <code>0600</code> or a Windows owner-only ACL and
-    must check expiry, revocation, root existence, and exact origin before each use.</p>
+  <p>The reusable <code>scripts/agents/codex_trust_policy.py</code> helper resolves
+    existing roots through realpath, normalizes Windows drive and UNC spelling,
+    case-folds Windows paths, and rejects nonexistent roots before exact tuple
+    comparison. Task 3 must consume this interface. Machine-local allowlists must use
+    POSIX mode <code>0600</code> or a Windows owner-only ACL and must check expiry,
+    revocation, root existence, and exact origin before each use.</p>
 
   <h2>Probe limitations</h2>
   <ul>
@@ -165,9 +171,10 @@
 
   <section class="gate">
     <strong>Launcher activation remains blocked.</strong> Task 0 defines the central
-    authorization and denominator only. Task 3 must render each machine-local manifest,
-    enforce owner-only permissions, compute its SHA-256, and post the machine alias plus
-    SHA to <a href="https://github.com/vamseeachanta/workspace-hub/issues/3555">#3555</a>
+    authorization, denominator, and reusable evaluator. Task 3 must render each
+    machine-local manifest, enforce owner-only permissions, compute its SHA-256, and
+    post the machine alias plus SHA to
+    <a href="https://github.com/vamseeachanta/workspace-hub/issues/3555">#3555</a>
     before activating trusted-repository YOLO behavior.
   </section>
 </main>

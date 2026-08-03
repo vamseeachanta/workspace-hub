@@ -1,19 +1,20 @@
-"""Owner-authorized Codex trusted-repository contract for issue #3555."""
+"""Manifest and fleet-denominator integration contract for issue #3555."""
 
 from __future__ import annotations
 
+import ast
 from copy import deepcopy
-from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlparse
 
 import pytest
 import yaml
+from scripts.agents import codex_trust_policy as policy
 
 
 ROOT = Path(__file__).resolve().parents[2]
 REGISTRY_PATH = ROOT / "config/workstations/registry.yaml"
 TRUST_PATH = ROOT / "config/agents/codex/trusted-repos.yaml"
+POLICY_PATH = ROOT / "scripts/agents/codex_trust_policy.py"
 
 EXPECTED_MACHINES = {
     "ace-linux-1",
@@ -59,170 +60,46 @@ def manifest() -> dict:
     return _load_yaml(TRUST_PATH)
 
 
-def _machine_aliases(registry: dict) -> set[str]:
-    aliases: set[str] = set()
-    for machine in registry["machines"].values():
-        aliases.add(machine["hostname"])
-        aliases.update(machine.get("hostname_aliases", []))
-    return aliases
-
-
-def _fleet_rows(registry: dict) -> dict[str, dict]:
-    return registry.get("codex_fleet", {}).get("machines", {})
-
-
-def _checkout_by_root(row: dict, root: str) -> dict | None:
-    for checkout in row.get("checkouts", []):
-        if checkout.get("canonical_root") == root:
-            return checkout
-    return None
-
-
-def _origin_identity(origin: str) -> str | None:
-    parsed = urlparse(origin)
-    if parsed.scheme != "https" or not parsed.hostname:
-        return None
-    repo_path = parsed.path.strip("/")
-    if repo_path.endswith(".git"):
-        repo_path = repo_path[:-4]
-    return f"{parsed.hostname.casefold()}/{repo_path}"
-
-
-def _manifest_errors(manifest: dict, registry: dict) -> list[str]:
-    errors: list[str] = []
-    required = {
-        "version",
-        "approval_issue",
-        "approved_by",
-        "approved_at",
-        "policy",
-        "materialization",
-        "repositories",
-    }
-    errors.extend(f"missing {key}" for key in sorted(required - manifest.keys()))
-    if errors:
-        return errors
-
-    aliases = _machine_aliases(registry)
-    fleet = _fleet_rows(registry)
-    for index, entry in enumerate(manifest["repositories"]):
-        prefix = f"repositories[{index}]"
-        entry_required = {
-            "repository_identity",
-            "origin",
-            "machine_alias",
-            "canonical_root",
-            "revoked",
-        }
-        missing = entry_required - entry.keys()
-        errors.extend(f"{prefix} missing {key}" for key in sorted(missing))
-        if missing:
-            continue
-        alias = entry["machine_alias"]
-        if alias not in aliases or alias not in fleet:
-            errors.append(f"{prefix} unknown machine_alias")
-            continue
-        checkout = _checkout_by_root(fleet[alias], entry["canonical_root"])
-        if not checkout or checkout.get("verification") != "LIVE":
-            errors.append(f"{prefix} root is not live-verified")
-            continue
-        if checkout.get("origin") != entry["origin"]:
-            errors.append(f"{prefix} origin differs from live evidence")
-        if _origin_identity(entry["origin"]) != entry["repository_identity"]:
-            errors.append(f"{prefix} repository identity differs from origin")
-        if not isinstance(entry["revoked"], bool):
-            errors.append(f"{prefix} revoked must be boolean")
-        expires_at = entry.get("expires_at")
-        if expires_at is not None:
-            if not isinstance(expires_at, str):
-                errors.append(f"{prefix} expires_at must be ISO-8601 or null")
-                continue
-            try:
-                parsed_expiry = datetime.fromisoformat(
-                    expires_at.replace("Z", "+00:00")
-                )
-                if parsed_expiry.tzinfo is None:
-                    raise ValueError("expiry must include a timezone")
-            except ValueError:
-                errors.append(f"{prefix} expires_at must be ISO-8601 or null")
-    return errors
-
-
-def _is_authorized(
-    manifest: dict,
-    *,
-    machine_alias: str,
-    canonical_root: str,
-    repository_identity: str,
-    origin: str,
-    root_exists: bool,
-    now: datetime,
-) -> bool:
-    if not root_exists:
-        return False
-    for entry in manifest["repositories"]:
-        exact = (
-            entry["machine_alias"] == machine_alias
-            and entry["canonical_root"] == canonical_root
-            and entry["repository_identity"] == repository_identity
-            and entry["origin"] == origin
-        )
-        if not exact or entry["revoked"]:
-            continue
-        expires_at = entry.get("expires_at")
-        if expires_at is None:
-            return True
-        expiry = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
-        return now < expiry
-    return False
+def _fleet(registry: dict) -> dict[str, dict]:
+    return registry["codex_fleet"]["machines"]
 
 
 def test_fleet_denominator_enumerates_every_registry_machine(registry: dict) -> None:
     """Dropping unreachable or undeclared hosts from the rollout must fail."""
-    fleet = _fleet_rows(registry)
+    fleet = _fleet(registry)
     assert set(fleet) == EXPECTED_MACHINES
-    registry_hostnames = {
+    assert set(fleet) == {
         machine["hostname"] for machine in registry["machines"].values()
     }
-    assert set(fleet) == registry_hostnames
 
 
-def test_fleet_rows_record_probe_and_checkout_evidence(registry: dict) -> None:
-    """A green fleet row without transport/probe/origin evidence must fail."""
-    registry_by_hostname = {
-        machine["hostname"]: machine for machine in registry["machines"].values()
+def test_production_validators_accept_committed_contract(
+    manifest: dict, registry: dict
+) -> None:
+    """The shipped helper must validate the real denominator and manifest."""
+    assert policy.validate_registry_fleet(registry) == []
+    assert policy.validate_manifest(manifest, registry) == []
+
+
+def test_checkout_evidence_states_are_machine_readable(registry: dict) -> None:
+    """Origin drift and absent approval evidence must not look merely live."""
+    fleet = _fleet(registry)
+    primary = {
+        item["repository"]: item for item in fleet["ace-linux-1"]["checkouts"]
     }
-    for alias, row in _fleet_rows(registry).items():
-        assert row["transport"]["kind"] in {"local", "ssh", "none"}
-        assert row["reachability"] in {"REACHABLE", "UNREACHABLE"}
-        assert row["declared_agent_clis"] == registry_by_hostname[alias][
-            "capabilities"
-        ]["agent_clis"]
-        assert row["codex_probe"]["status"] in {"INSTALLED", "NOT-INSTALLED", "UNREACHABLE"}
-        assert row["classification"] in {
-            "CODEX-TARGET",
-            "NOT-CODEX-TARGET",
-            "UNREACHABLE",
-        }
-        for checkout in row["checkouts"]:
-            assert set(checkout) >= {
-                "repository",
-                "canonical_root",
-                "verification",
-                "origin",
-            }
-            if checkout["verification"] == "LIVE":
-                assert checkout["origin"]
-            else:
-                assert checkout["origin"] is None
+    assert primary["assethold"]["verification"] == "DIVERGES"
+    assert primary["CAD-DEVELOPMENTS"]["verification"] == "MISSING-EVIDENCE"
+    for alias in ("ace-win-1", "ace-win-2", "Vamsees-MacBook-Air"):
+        assert {
+            item["verification"] for item in fleet[alias]["checkouts"]
+        } == {"MISSING-EVIDENCE"}
 
 
 def test_unreachable_hosts_are_named_not_omitted(registry: dict) -> None:
     """Transport gaps must remain explicit denominator failures."""
-    fleet = _fleet_rows(registry)
     assert {
         alias
-        for alias, row in fleet.items()
+        for alias, row in _fleet(registry).items()
         if row["classification"] == "UNREACHABLE"
     } == {"ace-win-1", "ace-win-2", "Vamsees-MacBook-Air", "shoerack"}
 
@@ -232,22 +109,12 @@ def test_manifest_has_owner_authorization_and_fail_closed_policy(
 ) -> None:
     """Removing owner evidence or broadening matching must fail."""
     assert manifest["version"] == 1
-    assert manifest["approval_issue"] == "https://github.com/vamseeachanta/workspace-hub/issues/3555"
+    assert manifest["approval_issue"] == (
+        "https://github.com/vamseeachanta/workspace-hub/issues/3555"
+    )
     assert manifest["approved_by"] == "vamseeachanta"
     assert manifest["approved_at"] == "2026-08-03T04:08:58Z"
-    assert manifest["policy"] == {
-        "authorization_match": "exact-machine-root-identity-origin",
-        "live_discovery_authorizes": False,
-        "organization_prefix_authorizes": False,
-        "directory_parent_authorizes": False,
-        "unverified_roots_authorize": False,
-        "root_normalization": {
-            "resolve_symlinks_and_junctions": True,
-            "normalize_windows_drive_and_unc_spelling": True,
-            "casefold_windows_paths": True,
-            "require_existing_root": True,
-        },
-    }
+    assert manifest["policy"] == policy.SAFE_POLICY
 
 
 def test_materialization_contract_is_owner_only_and_activation_gated(
@@ -274,7 +141,7 @@ def test_only_live_verified_workspace_hub_tuples_are_authorized(
     manifest: dict, registry: dict
 ) -> None:
     """Discovery, an org prefix, or a parent directory must not grant trust."""
-    assert _manifest_errors(manifest, registry) == []
+    assert policy.validate_manifest(manifest, registry) == []
     actual = {
         (entry["machine_alias"], entry["canonical_root"], entry["origin"])
         for entry in manifest["repositories"]
@@ -289,57 +156,23 @@ def test_only_live_verified_workspace_hub_tuples_are_authorized(
     ("field", "value", "message"),
     [
         ("origin", "https://github.com/attacker/workspace-hub.git", "origin differs"),
-        ("canonical_root", "/mnt/local-analysis/discovered", "not live-verified"),  # abs-path-allowed
+        (
+            "canonical_root",
+            "/mnt/local-analysis/discovered",  # abs-path-allowed
+            "not live-verified",
+        ),
         ("machine_alias", "unknown-host", "unknown machine_alias"),
     ],
 )
 def test_schema_rejects_drifted_or_unverified_trust_entries(
     manifest: dict, registry: dict, field: str, value: str, message: str
 ) -> None:
-    """A drifted or discovery-only tuple must fail policy validation."""
+    """A drifted or discovery-only tuple must fail production validation."""
     candidate = deepcopy(manifest)
     candidate["repositories"][0][field] = value
-    assert any(message in error for error in _manifest_errors(candidate, registry))
-
-
-def test_authorization_requires_exact_tuple_and_existing_root(manifest: dict) -> None:
-    """Prefix matches and nonexistent roots must not authorize YOLO."""
-    valid = manifest["repositories"][0]
-    base = {
-        "machine_alias": valid["machine_alias"],
-        "canonical_root": valid["canonical_root"],
-        "repository_identity": valid["repository_identity"],
-        "origin": valid["origin"],
-        "root_exists": True,
-        "now": datetime(2026, 8, 3, tzinfo=timezone.utc),
-    }
-    assert _is_authorized(manifest, **base)
-    for mutation in (
-        {"canonical_root": f"{valid['canonical_root']}-copy"},
-        {"canonical_root": "/mnt/local-analysis"},  # abs-path-allowed
-        {"origin": f"{valid['origin']}/fork"},
-        {"root_exists": False},
-    ):
-        assert not _is_authorized(manifest, **(base | mutation))
-
-
-def test_expiry_and_revocation_fail_closed(manifest: dict) -> None:
-    """Revoked and expired entries must stop authorizing immediately."""
-    candidate = deepcopy(manifest)
-    entry = candidate["repositories"][0]
-    args = {
-        "machine_alias": entry["machine_alias"],
-        "canonical_root": entry["canonical_root"],
-        "repository_identity": entry["repository_identity"],
-        "origin": entry["origin"],
-        "root_exists": True,
-        "now": datetime(2026, 8, 3, tzinfo=timezone.utc),
-    }
-    entry["revoked"] = True
-    assert not _is_authorized(candidate, **args)
-    entry["revoked"] = False
-    entry["expires_at"] = "2026-08-02T00:00:00Z"
-    assert not _is_authorized(candidate, **args)
+    assert any(
+        message in error for error in policy.validate_manifest(candidate, registry)
+    )
 
 
 @pytest.mark.parametrize(("field", "value"), [("expires_at", 7), ("revoked", "no")])
@@ -349,4 +182,102 @@ def test_schema_rejects_invalid_expiry_and_revocation(
     """Malformed optional expiry or revocation data must fail closed."""
     candidate = deepcopy(manifest)
     candidate["repositories"][0][field] = value
-    assert _manifest_errors(candidate, registry)
+    assert policy.validate_manifest(candidate, registry)
+
+
+@pytest.mark.parametrize(
+    ("case", "message"),
+    [
+        ("installed_non_target", "INSTALLED requires CODEX-TARGET"),
+        ("missing_codex_target", "NOT-INSTALLED requires NOT-CODEX-TARGET"),
+        ("unreachable_installed", "UNREACHABLE requires an UNREACHABLE probe"),
+        ("no_transport_reachable", "transport kind none requires UNREACHABLE"),
+    ],
+)
+def test_registry_validator_rejects_contradictory_machine_evidence(
+    registry: dict, case: str, message: str
+) -> None:
+    """Transport, reachability, probe, and classification must agree."""
+    candidate = deepcopy(registry)
+    fleet = _fleet(candidate)
+    if case == "installed_non_target":
+        fleet["ace-linux-1"]["classification"] = "NOT-CODEX-TARGET"
+    elif case == "missing_codex_target":
+        fleet["ace-linux-1"]["codex_probe"] = {
+            "status": "NOT-INSTALLED",
+            "version": None,
+        }
+    elif case == "unreachable_installed":
+        fleet["ace-win-2"]["codex_probe"] = {
+            "status": "INSTALLED",
+            "version": "0.146.0",
+        }
+    else:
+        fleet["ace-win-2"]["reachability"] = "REACHABLE"
+    assert any(
+        message in error for error in policy.validate_registry_fleet(candidate)
+    )
+
+
+def test_registry_validator_accepts_not_codex_target(registry: dict) -> None:
+    """A reachable machine with an absent CLI must be NOT-CODEX-TARGET."""
+    candidate = deepcopy(registry)
+    row = _fleet(candidate)["ace-linux-1"]
+    row["codex_probe"] = {"status": "NOT-INSTALLED", "version": None}
+    row["classification"] = "NOT-CODEX-TARGET"
+    assert policy.validate_registry_fleet(candidate) == []
+
+
+@pytest.mark.parametrize(
+    ("verification", "origin", "detail", "message"),
+    [
+        ("LIVE", None, None, "LIVE requires an origin"),
+        ("ABSENT", "https://example.invalid/repo", None, "ABSENT requires null origin"),
+        ("DIVERGES", None, "origin conflict", "DIVERGES requires an origin"),
+        ("MISSING-EVIDENCE", None, None, "MISSING-EVIDENCE requires detail"),
+    ],
+)
+def test_registry_validator_enforces_checkout_evidence_relationships(
+    registry: dict,
+    verification: str,
+    origin: str | None,
+    detail: str | None,
+    message: str,
+) -> None:
+    """Checkout state must constrain its origin and explanatory evidence."""
+    candidate = deepcopy(registry)
+    checkout = _fleet(candidate)["ace-linux-1"]["checkouts"][0]
+    checkout["verification"] = verification
+    checkout["origin"] = origin
+    if detail is None:
+        checkout.pop("detail", None)
+    else:
+        checkout["detail"] = detail
+    assert any(
+        message in error for error in policy.validate_registry_fleet(candidate)
+    )
+
+
+def test_policy_functions_respect_fifty_line_limit() -> None:
+    """The production helper must retain the repository function-size guardrail."""
+    tree = ast.parse(POLICY_PATH.read_text(encoding="utf-8"))
+    oversized = {
+        node.name: node.end_lineno - node.lineno + 1
+        for node in ast.walk(tree)
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+        and node.end_lineno is not None
+        and node.end_lineno - node.lineno + 1 > 50
+    }
+    assert oversized == {}
+
+
+@pytest.mark.parametrize(
+    "candidate",
+    [
+        {"machines": {}, "codex_fleet": []},
+        {"machines": [], "codex_fleet": {"machines": {}}},
+    ],
+)
+def test_registry_schema_malformations_return_errors(candidate: dict) -> None:
+    """Malformed container types must fail closed without raising exceptions."""
+    assert policy.validate_registry_fleet(candidate)

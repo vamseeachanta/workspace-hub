@@ -21,13 +21,13 @@ codex_fleet:
         - {repository: assetutilities, canonical_root: /mnt/local-analysis/assetutilities, verification: LIVE, origin: 'https://github.com/vamseeachanta/assetutilities.git'}
         - {repository: worldenergydata, canonical_root: /mnt/local-analysis/worldenergydata, verification: LIVE, origin: 'https://github.com/vamseeachanta/worldenergydata.git'}
         - {repository: llm-wiki, canonical_root: /mnt/local-analysis/llm-wiki, verification: LIVE, origin: 'https://github.com/vamseeachanta/llm-wiki.git'}
-        - {repository: assethold, canonical_root: /mnt/local-analysis/assethold, verification: LIVE, origin: 'https://github.com/vamseeachanta/assethold.git'}
+        - {repository: assethold, canonical_root: /mnt/local-analysis/assethold, verification: DIVERGES, origin: 'https://github.com/vamseeachanta/assethold.git', detail: 'live origin conflicts with config/repos.conf canonical origin'}
         - {repository: aceengineer-website, canonical_root: /mnt/local-analysis/aceengineer-website, verification: LIVE, origin: 'https://github.com/vamseeachanta/aceengineer-website.git'}
         - {repository: aceengineer-strategy, canonical_root: /mnt/local-analysis/aceengineer-strategy, verification: LIVE, origin: 'https://github.com/vamseeachanta/aceengineer-strategy.git'}
         - {repository: aceengineer-admin, canonical_root: /mnt/local-analysis/aceengineer-admin, verification: LIVE, origin: 'https://github.com/vamseeachanta/aceengineer-admin'}
         - {repository: achantas-data, canonical_root: /mnt/local-analysis/achantas-data, verification: LIVE, origin: 'https://github.com/vamseeachanta/achantas-data'}
         - {repository: achantas-media, canonical_root: /mnt/local-analysis/achantas-media, verification: LIVE, origin: 'https://github.com/vamseeachanta/achantas-media'}
-        - {repository: CAD-DEVELOPMENTS, canonical_root: /mnt/local-analysis/CAD-DEVELOPMENTS, verification: LIVE, origin: 'https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS'}
+        - {repository: CAD-DEVELOPMENTS, canonical_root: /mnt/local-analysis/CAD-DEVELOPMENTS, verification: MISSING-EVIDENCE, origin: 'https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS', detail: 'no canonical approved origin record'}
         - {repository: hobbies, canonical_root: /mnt/local-analysis/hobbies, verification: LIVE, origin: 'https://github.com/vamseeachanta/hobbies.git'}
         - {repository: kaggle-rogii-2026, canonical_root: /mnt/local-analysis/kaggle-rogii-2026, verification: LIVE, origin: 'https://github.com/vamseeachanta/kaggle-rogii-2026.git'}
         - {repository: llm-wiki-mkt-a, canonical_root: /mnt/local-analysis/llm-wiki-mkt-a, verification: ABSENT, origin: null}
@@ -52,8 +52,8 @@ codex_fleet:
       classification: UNREACHABLE
       probe_detail: SSH alias name resolution failed from the probing runtime.
       checkouts:
-        - {repository: workspace-hub, canonical_root: 'D:\ws\workspace-hub', verification: UNVERIFIED, origin: null}
-        - {repository: OGManufacturing, canonical_root: 'D:\OGManufacturing', verification: UNVERIFIED, origin: null}
+        - {repository: workspace-hub, canonical_root: 'D:\ws\workspace-hub', verification: MISSING-EVIDENCE, origin: null, detail: 'host unreachable from probing runtime'}
+        - {repository: OGManufacturing, canonical_root: 'D:\OGManufacturing', verification: MISSING-EVIDENCE, origin: null, detail: 'host unreachable from probing runtime'}
     ace-win-2:
       transport: {kind: none, endpoint: null}
       reachability: UNREACHABLE
@@ -62,8 +62,8 @@ codex_fleet:
       classification: UNREACHABLE
       probe_detail: Registry declares no usable remote transport.
       checkouts:
-        - {repository: workspace-hub, canonical_root: 'D:\workspace-hub', verification: UNVERIFIED, origin: null}
-        - {repository: OGManufacturing, canonical_root: 'D:\OGManufacturing', verification: UNVERIFIED, origin: null}
+        - {repository: workspace-hub, canonical_root: 'D:\workspace-hub', verification: MISSING-EVIDENCE, origin: null, detail: 'no usable remote transport'}
+        - {repository: OGManufacturing, canonical_root: 'D:\OGManufacturing', verification: MISSING-EVIDENCE, origin: null, detail: 'no usable remote transport'}
     gpu-claw:
       transport: {kind: ssh, endpoint: gpu-claw}
       reachability: REACHABLE
@@ -82,7 +82,7 @@ codex_fleet:
       classification: UNREACHABLE
       probe_detail: Registry declares no usable remote transport.
       checkouts:
-        - {repository: workspace-hub, canonical_root: /Users/krishna/Developer/ws/workspace-hub, verification: UNVERIFIED, origin: null}
+        - {repository: workspace-hub, canonical_root: /Users/krishna/Developer/ws/workspace-hub, verification: MISSING-EVIDENCE, origin: null, detail: 'no usable remote transport'}
     shoerack:
       transport: {kind: none, endpoint: null}
       reachability: UNREACHABLE
