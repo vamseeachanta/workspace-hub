@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03T13:21:33.981711Z",
+  "generated_at": "2026-08-03T17:21:17.949126Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 11,
@@ -193,7 +193,7 @@
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-08-03T06:59:20Z",
+      "updatedAt": "2026-08-03T16:48:56Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",

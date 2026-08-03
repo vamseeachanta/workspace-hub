@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-08-03T13:21:36Z
+Generated: 2026-08-03T17:21:19Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,8 +43,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3795 | bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1 | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3794 | Compliance alert: W32 — 66% (medium) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3793 | Repo ecosystem sits on NTFS-FUSE; ext4 measures 5-7x faster on git metadata — evaluate relocating to /mnt/ace | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3792 | feat(scheduler): no transaction attestation exists for systemd-user surfaces, so they can only ever declare missing_transaction | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3790 | 487 pytest-shaped files are excluded from collection across 3 tier-1 repos — audit and resolve each | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3789 | audit(scheduler): add read-only consumer vocabulary + sanctioned disposition for new non-compliant surfaces (#3470 follow-on) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
