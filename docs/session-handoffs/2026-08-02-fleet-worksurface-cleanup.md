@@ -14,9 +14,12 @@ verified, attested, encrypted bundles. One incident (recovered, no data lost).
 |---|---|---:|---:|---:|
 | ace-linux-2 | `/mnt/local-analysis` | 197 G | 107 G | 90 G |
 | gpu-claw | `~/ws` | 55 G | 26 G | 29 G |
-| ace-linux-1 | `/mnt/local-analysis` | 158 G | 142 G | 16 G |
+| ace-linux-1 | `/mnt/local-analysis` | 158 G | 133 G | 25 G |
 | ace-win-1 | — | \- | \- | **unaudited** (no exec channel) |
 | ace-win-2 | — | \- | \- | **unaudited** (down since 2026-07-13) |
+
+**~144 GB freed fleet-wide.** `/mnt/ace` at 4.8 T / 7.3 T (2.1 T free).
+Final bundle sentinel run: 6 checked, 0 failures.
 
 ## What was done
 
@@ -80,18 +83,27 @@ sudo sh -c 'printf "     veto files = /work-surface-bulk/\n     delete veto file
 
 ## Open work
 
-### Not started — ~8.7 GB, analysis complete, deletions verified safe
-On ace-linux-1 `/mnt/local-analysis`:
-- `wt-digitalmodel-autorun2` 2.7 G — content landed via merged PRs #1209/#871/
-  #1395–97; only branch-unique files are the `orcaflex_dashboard` main
-  **deliberately deleted** in #1632
-- `wt-llmwiki-methods` 521 M — PR #785 merged 2026-06-22
-- `wt-llm-wiki-autorun2` 191 M — zero files absent from `llm-wiki`
-- Orphan copies with no `.git` (5.3 G): `wt-dm-nc`, `wt-dm-scantlings`,
-  `wt-wed-wo-rename`, `wt-wed-810-spain-report-plan`, `wt-wed-598`, `wt-3256`.
-  Their only non-parent files are generated output or the deleted dashboard
-- Cruft: `tests`, `docs`, `.scratch`, `.Trash-1000`, `.pnpm-store`, `acma-projects`
-- 26 loose top-level files needing merge into their owning repos
+### DONE 2026-08-02 — 8,678 MB reclaimed on ace-linux-1 (13 removed, 0 failed)
+- `wt-digitalmodel-autorun2` 2.7 G, `wt-llmwiki-methods` 521 M — removed via
+  `git worktree remove` (never `rm -rf`, which would strand the registration).
+  No dangling registrations remain.
+- Orphan copies with no `.git`: `wt-llm-wiki-autorun2`, `wt-dm-nc`,
+  `wt-dm-scantlings`, `wt-wed-wo-rename`, `wt-wed-810-spain-report-plan`,
+  `wt-wed-598`, `wt-3256`
+- Empty/cache: `tests`, `.scratch`, `.Trash-1000`, `.pnpm-store`
+
+**Two deliberate SKIPS — the audit was wrong about these, the gate caught it:**
+- `docs/` — audit called it empty cruft; holds a cross-repo CFD handoff
+- `acma-projects/` — holds final B1528 DOCX/PDF deliverables
+
+Both must be MERGED into their owning repos, not deleted. Same for the 26 loose
+top-level files still on the surface.
+
+### Landed
+**PR [#3786](https://github.com/vamseeachanta/workspace-hub/pull/3786)** — OPEN,
+not merged. 10 files: this handoff plus the relocation/attestation/sentinel
+tooling. Secret scan clean (repo-wide legal scan fails with 170 pre-existing
+violations on `origin/main`; **zero** intersect the added paths).
 
 ### Deferred by owner
 - **`phone-media`** (28 GB) — scripted at `phone-media-relocate.sh`, dry-run
@@ -152,6 +164,26 @@ the delete is fail-closed and verifies absence explicitly. Regression-tested.
 5. **Subagents inherit the gaps in their evidence packet.** Codex missed the
    third stale `PRESERVATION.md` claim because it was never briefed on deletion
    status. The packet is the dispatcher's responsibility.
+6. **Pathspec commits and `--chmod=+x` conflict in this repo.** `core.fileMode`
+   is `false`, so exec bits never reach the index from the working tree; the
+   pathspec commit form re-reads those ignored modes and silently defeats
+   `git update-index --chmod=+x`. Two practices both individually correct.
+   Fix forward with a second commit rather than force-pushing.
+7. **The auto-sync pusher is live and fast.** During PR work it pushed the
+   agent's own commit before the agent did, producing a spurious
+   non-fast-forward rejection. It also moved the main checkout across three
+   branches unprompted. Check the reflog before reacting to a rejected push.
+
+## Environment state at exit
+
+- Nothing mid-flight; no background jobs of this session still running.
+- ace-linux-1 repo dirt, all **pre-existing**, none caused here:
+  `digitalmodel` 1 dirty, `llm-wiki` 1 dirty, `worldenergydata` 1 stash,
+  `workspace-hub` 18 dirty + 4 stashes. Note `digitalmodel` and `llm-wiki` were
+  moved from feature branches onto `main` by auto-sync during the session.
+- No external actions taken beyond: one PR opened (#3786, not merged), and a
+  key backup the owner uploaded to `gdrive:backups/fleet-age-key/`.
+- Nothing was pushed to `frontierdeepwater` — the attempt failed and was abandoned.
 
 ## Artifacts
 
