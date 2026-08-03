@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-02T17:22:46.177161Z",
+  "generated_at": "2026-08-02T21:21:36.785994Z",
   "current_week": "2026-W31",
   "report_weeks": 8,
   "subscriptions": {
@@ -742,31 +742,31 @@
       "claude": {
         "provider": "claude",
         "week": "2026-W31",
-        "sessions": 6,
-        "post_records": 215,
-        "activity_utilization_pct": 0.5,
+        "sessions": 7,
+        "post_records": 259,
+        "activity_utilization_pct": 0.6,
         "quota_utilization_pct": null,
-        "reported_utilization_pct": 0.5,
+        "reported_utilization_pct": 0.6,
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-08-02T17:20:35Z",
+        "quota_snapshot_ts": "2026-08-02T21:20:05Z",
         "top_tools": [
           {
             "tool": "unknown",
-            "count": 186
+            "count": 216
           },
           {
             "tool": "Bash",
-            "count": 23
+            "count": 36
           },
           {
             "tool": "Read",
-            "count": 6
+            "count": 7
           }
         ],
         "first_ts": "2026-07-30T07:49:29Z",
-        "last_ts": "2026-08-02T12:10:35Z",
+        "last_ts": "2026-08-02T17:33:53Z",
         "note": "quota unavailable from unavailable; using activity fallback"
       },
       "codex": {
@@ -780,7 +780,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl-estimate",
-        "quota_snapshot_ts": "2026-08-02T17:20:35Z",
+        "quota_snapshot_ts": "2026-08-02T21:20:05Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -846,9 +846,9 @@
   "underutilization_alerts": [
     {
       "provider": "claude",
-      "reported_utilization_pct": 0.5,
+      "reported_utilization_pct": 0.6,
       "basis": "activity_vs_recent_peak",
-      "message": "claude at 0.5% (activity_vs_recent_peak)"
+      "message": "claude at 0.6% (activity_vs_recent_peak)"
     },
     {
       "provider": "codex",

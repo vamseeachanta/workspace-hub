@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-08-02T17:22:50Z
+Generated: 2026-08-02T21:21:40Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,8 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3781 | install-hooks.sh appends three pre-push gates after an unconditional exit — none of them have ever run | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3780 | pre-push hook makes every new-branch push unsatisfiable: new branch escalates to full tier-1 suite run | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3781 | install-hooks.sh appends three pre-push gates after an unconditional exit — none of them have ever run | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review,missing_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3775 | security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3773 | epic(dispatch): six rails required before the loop can run unattended on ace-linux-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3772 | bug(dispatch): lease refs are written to one namespace and synced from another — every host wins every lease | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -243,6 +242,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3451 | Legal sanity scan: make empty diff-only runs explicit and fail-closed when evidence is required | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3450 | fix(workflow-manifest): distinguish nested-worktree resolution failures from registry drift | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3448 | chore(ecosystem): audit repository detection for linked worktree compatibility | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3447 | Add cross-format CLI behavior parity tests for option-bearing commands | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

@@ -28,8 +28,7 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: major_review,missing_review,unavailable_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -40,10 +39,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "**Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3781",
         "provider_route": "claude",
         "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "tests": "TDD section present",
         "title": "install-hooks.sh appends three pre-push gates after an unconditional exit \u2014 none of them have ever run"
       },
       "lane": "planning_feedstock",
@@ -53,49 +52,18 @@
       "machine_route": null,
       "number": 3781,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-08-02-issue-3781-installer-extension-point.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "install-hooks.sh appends three pre-push gates after an unconditional exit \u2014 none of them have ever run",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3781",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "pre-push hook makes every new-branch push unsatisfiable: new branch escalates to full tier-1 suite run"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3780,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "pre-push hook makes every new-branch push unsatisfiable: new branch escalates to full tier-1 suite run",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3780",
-      "warnings": []
+      "warnings": [
+        "legacy_review_no_sha",
+        "major_review",
+        "missing_review",
+        "unavailable_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8169,9 +8137,50 @@
       "title": "chore(ecosystem): audit repository detection for linked worktree compatibility",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3448",
       "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "bug",
+          "priority:medium",
+          "cat:tooling",
+          "domain:testing",
+          "machine:dev-primary",
+          "domain:harness"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Add cross-format CLI behavior parity tests for option-bearing commands"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3447,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Add cross-format CLI behavior parity tests for option-bearing commands",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3447",
+      "warnings": []
     }
   ],
-  "generated_at": "2026-08-02T17:22:50Z",
+  "generated_at": "2026-08-02T21:21:40Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8180,8 +8189,7 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: major_review,missing_review,unavailable_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8192,10 +8200,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "**Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3781",
           "provider_route": "claude",
           "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "tests": "TDD section present",
           "title": "install-hooks.sh appends three pre-push gates after an unconditional exit \u2014 none of them have ever run"
         },
         "lane": "planning_feedstock",
@@ -8205,49 +8213,18 @@
         "machine_route": null,
         "number": 3781,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-08-02-issue-3781-installer-extension-point.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "install-hooks.sh appends three pre-push gates after an unconditional exit \u2014 none of them have ever run",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3781",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "pre-push hook makes every new-branch push unsatisfiable: new branch escalates to full tier-1 suite run"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3780,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "pre-push hook makes every new-branch push unsatisfiable: new branch escalates to full tier-1 suite run",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3780",
-        "warnings": []
+        "warnings": [
+          "legacy_review_no_sha",
+          "major_review",
+          "missing_review",
+          "unavailable_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16321,6 +16298,47 @@
         "title": "chore(ecosystem): audit repository detection for linked worktree compatibility",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3448",
         "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:tooling",
+            "domain:testing",
+            "machine:dev-primary",
+            "domain:harness"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Add cross-format CLI behavior parity tests for option-bearing commands"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3447,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Add cross-format CLI behavior parity tests for option-bearing commands",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3447",
+        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16331,16 +16349,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-08-02T17:22:46.334396Z",
+  "scorecard_generated_at": "2026-08-02T21:21:36.937245Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-08-02T17:22:46.177161Z",
+  "utilization_generated_at": "2026-08-02T21:21:36.785994Z",
   "warning_summary": {
     "approved_no_marker": 13,
     "approved_no_plan": 9,
-    "legacy_review_no_sha": 9,
-    "major_review": 4,
+    "legacy_review_no_sha": 10,
+    "major_review": 5,
     "marker_without_open_approved_issue": 177,
-    "missing_review": 30,
-    "unavailable_review": 6
+    "missing_review": 31,
+    "unavailable_review": 7
   }
 }

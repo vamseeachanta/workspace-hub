@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-02T17:22:48.249449Z",
+  "generated_at": "2026-08-02T21:21:38.761479Z",
   "current_week": "2026-W31",
-  "scorecard_generated_at": "2026-08-02T17:22:46.334396Z",
+  "scorecard_generated_at": "2026-08-02T21:21:36.937245Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -1571,6 +1571,30 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3447,
+          "title": "Add cross-format CLI behavior parity tests for option-bearing commands",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3447",
+          "labels": [
+            "bug",
+            "priority:medium",
+            "cat:tooling",
+            "domain:testing",
+            "machine:dev-primary",
+            "domain:harness"
+          ],
+          "updatedAt": "2026-07-31T08:32:58Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -4421,25 +4445,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3780,
-          "title": "pre-push hook makes every new-branch push unsatisfiable: new branch escalates to full tier-1 suite run",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3780",
-          "labels": [
-            "bug"
-          ],
-          "updatedAt": "2026-08-02T11:06:13Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
             "implementation",
             "strategy"
           ]
