@@ -1,4 +1,4 @@
-generated_at: '2026-08-01T07:19:22Z'
+generated_at: '2026-08-03T07:24:12Z'
 machine: dev-primary
 window_days: 14
 recur_days: 3
@@ -11,12 +11,12 @@ candidates:
     refs in commits
   distinct_days: 5
   distinct_sessions: 10
-  total_violations: 79
+  total_violations: 77
   providers:
     claude: 4
     codex: 6
   first_seen: '2026-06-20T07:16:52Z'
-  last_seen: '2026-08-01T07:03:19Z'
+  last_seen: '2026-08-03T07:03:22Z'
   window_days: 14
   rationale: "git_missing_wrk_ref drifted on 5 distinct days over 14d \u2014 repeated\
     \ rule miss; capture as guidance or sanctioned exception."
@@ -39,4 +39,4 @@ candidates:
   rationale: "python_runtime drifted on 3 distinct days over 14d \u2014 repeated rule\
     \ miss; capture as guidance or sanctioned exception."
   status: candidate
-  active: true
+  active: false
