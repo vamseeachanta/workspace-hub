@@ -21,4 +21,5 @@
 {"week": "2026-W28", "violations_per_day": 6.0, "corrections": 0, "sessions": 149, "median_stage_s": 0, "stages_completed": 0, "one_shot_rate": 100.0}
 {"week": "2026-W29", "violations_per_day": 4.2, "corrections": 0, "sessions": 64, "median_stage_s": 0, "stages_completed": 0, "one_shot_rate": 100.0}
 {"week": "2026-W30", "violations_per_day": 23.0, "corrections": 0, "sessions": 6, "median_stage_s": 0, "stages_completed": 0, "one_shot_rate": 100.0}
-{"week": "2026-W31", "violations_per_day": 23.7, "corrections": 0, "sessions": 33, "median_stage_s": 0, "stages_completed": 0, "one_shot_rate": 100.0}
+{"week": "2026-W31", "violations_per_day": 23.7, "corrections": 0, "sessions": 35, "median_stage_s": 0, "stages_completed": 0, "one_shot_rate": 100.0}
+{"week": "2026-W32", "violations_per_day": 5.0, "corrections": 0, "sessions": 0, "median_stage_s": 0, "stages_completed": 0, "one_shot_rate": null}

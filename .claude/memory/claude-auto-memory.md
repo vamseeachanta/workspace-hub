@@ -11,7 +11,7 @@
 
 ## Active & Recent Projects
 - [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" definitions, 0/56 wells agree (6.6× gap); reference basis = BSEE WAR `WELL_ACTIVITY_CD`. EPIC #1063 + #1064–#1081. NEXT: #1064 basis decision w/ Roy (HARD BLOCKER)
-- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). ✅✅✅ **#1634 ARMED 2026-07-29** (`Domain test aggregate` + `Run Quality Gates`, strict=false) — the 60.3%-red-merge root cause is closed. 8 PRs merged; deps 122→55; dashboard app deleted (−34.5k LOC), 9 modules extracted to `solvers/orcaflex/results_analysis/`. ⚠ audit said "3 root causes"; really **2**. OPEN: #1923 (139 hidden tests), #1900, #1907, #1919, #1881. See [[feedback_absence_of_signal_reads_as_success]]
+- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). ✅✅✅ **#1634 ARMED 2026-07-29** (`Domain test aggregate` + `Run Quality Gates`, strict=false) — the 60.3%-red-merge root cause is closed. 8 PRs merged; deps 122→55; dashboard app deleted (−34.5k LOC), 9 modules extracted to `solvers/orcaflex/results_analysis/`. ⚠ audit said "3 root causes"; really **2**. OPEN: #1923 (139 hidden tests), #1900, #1907, #1919, #1881. See [[feedback_absence_of_signal_reads_as_success]] *stale: 2026-08-03*
 - [Model-generation reopen slate](project_model_generation_reopen_slate_2026_07_25.md) — wh#3106/#3056/#1019 + llm-wiki#638 REOPENED; #3043 retargeted. NEXT: wh#3051 registry flip (blocks the rest)
 - [Model-registry generation drift blind spot](project_model_generation_drift_registry_blindspot.md) — nightly guard checks ONLY `openai_primary`; Claude lane has zero drift coverage. ✅ wh#3600 FILED. NEXT: #3600 needs-plan
 - [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; hub PR #1058 armed. ⚠ DRILLING_DAYS mixes two bases → batch-drilled undercount. NEXT: owner sends v2 email
@@ -76,7 +76,7 @@
 - [--delete-branch auto-closes stacked child PR](feedback_delete_branch_closes_stacked_child_pr.md) — merge parent WITHOUT delete → retarget child → merge → delete last
 - [dev-primary equality "green" is self-healing](feedback_dev_primary_equality_green_is_self_healing.md) — fix drift via PR + STOP; cron re-greens
 - [Autorun resets worktree branches → push immediately](feedback_autorun_clobbers_subagent_worktree_commits.md) — `commit && push -u`; verify on REMOTE
-- [Small calcs go into digitalmodel domain modules](feedback_small_calcs_into_digitalmodel_domains.md) — `src/digitalmodel/<domain>/` + tiny test
+- [Small calcs go into digitalmodel domain modules](feedback_small_calcs_into_digitalmodel_domains.md) — `src/digitalmodel/<domain>/` + tiny test *stale: 2026-08-03*
 - ["Did this branch land?" — ask the forge, not an LLM](feedback_branch_landed_ask_the_forge_not_an_llm.md) — `gh pr list --state merged --head <branch>` is cheaper AND stronger than a Codex diff read (which timed out at 15min / 0 bytes); a `gh`/`git`-answerable question is a lookup, not token-heavy work
 - [Delegate token-heavy REVIEW to Codex (not authoring)](feedback_delegate_token_heavy_to_codex.md) — `submit-to-codex.sh` (`env -u CLAUDECODE`); verify output exists
 - [Agent CAN --no-verify push a feature branch (not main)](feedback_prepush_no_verify_allowed_on_feature_branch.md) — auto-deny is default-branch-specific
