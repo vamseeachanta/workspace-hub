@@ -38,6 +38,8 @@ No agents, watchers, or rsync running. No external actions taken (no emails, no 
 
 ## Merged this session
 
+**workspace-hub (post-handoff)** — `944173d4d` restores the auto-sync-reverted installer and pins `REVIEW_GATE_STRICT`; closes #3796.
+
 **digitalmodel** — #1953 (tagging classifier abstains), #1954 (fillage computed, mode count derived), #1956 (field-health stops routing to the Gibbs solver), #1957 (uv caching 9/9)
 
 **workspace-hub** — #3779 (machine inventory), #3782 (pre-push restored to version control + merge-base scoping), #3783 (installer extension point, dead gates re-wired, review gate made blocking), #3785 (uv caching 11/11 + `--frozen`)
@@ -46,13 +48,31 @@ No agents, watchers, or rsync running. No external actions taken (no emails, no 
 
 | Issue | State |
 |---|---|
-| **#3796** | `install-hooks` refusal test fails on main; pre-push suite passes only with `REVIEW_GATE_STRICT=0`. **Highest priority** — the refusal is the safety property of #3781 |
 | **#3787** | Startup tax. Plan **approved**; WIP commit `f4520e26` on `fix/3787-startup-tax` in worldenergydata — **unverified**, with an open question: it drops `config.pluginmanager.register(...)`, which may disable the regression analysis rather than defer it. Do not open a PR from that state |
 | **#3790** | 487 excluded test files. Plan committed, needs review. **Precondition** for the CI-tiering work |
 | CI tiering | `docs/plans/2026-08-03-ci-tiering-and-domain-routing.md`, plan-review, T3 |
 | **#3781** | Three dead gates re-wired; stage-prompt drift left to CI (measured 206 s — too slow for a push gate) |
 | dm#1958 | `workflow-automation-tests.yml` fails on main — `pytest-cov` missing, undetected ~2 months because the workflow never ran |
 | dm#1857 | Gibbs solver returns an affine rescale. **Deferred by owner decision** — `everitt_jennings` already reproduces reference cards at 0.9% nRMSE vs 17.3% |
+
+## ⚠ #3796 — auto-sync reverted merged work (FIXED, but read this)
+
+**Closed.** The root cause is the most consequential finding of the session and changes how to work in this repo.
+
+`382e4a180 chore(gtm): weekly job market scan refresh 2026-08-03` deleted **106 lines** from `scripts/enforcement/install-hooks.sh`, removing the entire #3781 change that had merged hours earlier in `9cfe69501` (#3783) — the extension-point sentinel, the refuse-without-sentinel guard, the reachability-aware idempotence, and `strip_dead_tail()`. The same commit also deleted three plan files and a plan-approval marker (`0+/137-`, `0+/101-`, `0+/89-`, `0+/41-`).
+
+**Mechanism:** the PR merged **on GitHub** while the local working tree still held the pre-merge copy of the file. Auto-sync committed the dirty tree, writing stale content back over the merged version — under a commit message about a job market scan.
+
+**Why this is worse than the sweep contamination already on record:** that variant *adds* unrelated files to a commit, which is visible in any PR diff. This one *deletes merged code under an unrelated message*, which is invisible. It surfaced only because `test_refuses_without_sentinel` existed and went red — a test written for the safety property caught that property being removed.
+
+**Operational rule that follows:**
+- **After any PR merges, `git pull` before doing anything else in that repo.** Merged-on-GitHub plus a stale local tree is a pending revert waiting for the next auto-sync tick.
+- When a merged feature "isn't there", do **not** assume the merge failed. Run `git log --oneline -3 -- <file>` and look for a later unrelated commit; `git show --numstat <sha> | awk '$2>$1'` lists what a commit net-deleted.
+- Restore verbatim: `git show <merge-sha>:<path> > <path>`.
+
+**Second defect, same issue:** the pre-push suite passed in CI and failed on a developer machine. `_run_hook` set `DISABLE_ENFORCEMENT`, but `require-review-on-push.sh` does not honour it (only `require-stage-prompt-drift.sh` does, `:28`), so the review gate stayed live — and since #3781 sources `enforcement-env`, it blocks locally and is advisory in CI. Now pinned in the harness by **unconditional assignment**; the first attempt used `env.setdefault(...)` and changed nothing, because `setdefault` defers to the ambient value that was the problem.
+
+**Verified:** 79 passed, 1 skipped, **with no environment pin on the pytest invocation** — that is the acceptance criterion. Both changes confirmed on `origin/main`. Commit `944173d4d`.
 
 ## Follow-ups from the migration
 
