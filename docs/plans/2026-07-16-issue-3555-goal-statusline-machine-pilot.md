@@ -1,21 +1,22 @@
 # Plan for #3555: Fleet-wide Codex requirements, trusted-repo YOLO, goals, and statuslines
 
-> **Status:** adversarial-reviewed
+> **Status:** draft — Task 2 architecture re-review required
 > **Complexity:** T3
 > **Date:** 2026-08-02
+> **Revision:** 2026-08-03 — Task 2 CST/semantic-preservation replan
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3555
 > **Client:** N/A
 > **Lane:** lane:claude
 > **Execution mode:** single-lane implementation and rollout after plan approval, TDD, and code review; parallel-readonly provider review; no canary
-> **Review artifacts:** historical `scripts/review/results/2026-07-16-plan-3555-{claude,codex,gemini}.md` and `2026-07-16-plan-3555-r2-codex.md`; fresh `scripts/review/results/2026-08-02-plan-3555-{claude,codex,agy}.md`
+> **Review artifacts:** historical `scripts/review/results/2026-07-16-plan-3555-{claude,codex,gemini}.md`, `2026-07-16-plan-3555-r2-codex.md`, and `2026-08-02-plan-3555-{claude,codex,agy}.md`; replacement machine-parseable T3 artifacts will be recorded after this revision
 
 > For agentic workers: follow this plan task by task. Write each named test first, observe the relevant failure, implement only enough to pass, rerun the focused and regression suites, and use pathspec commits. The user approval gate remains mandatory even when Codex runs with `--yolo`.
 
 **Goal:** Every reachable, Codex-capable workstation and trusted repo will receive a repo-managed Codex baseline that enables default-mode requirement questions, persistent goals, multi-agent support, hooks, live web search, useful TUI telemetry, and a trusted-repo `--yolo` launcher with an explicit safe escape path; Claude goal/statusline behavior will converge under the same issue.
 
-**Architecture:** Repo-tracked templates will remain canonical. A semantic, key-level merger will update only owned settings in `~/.codex/config.toml`. A cross-platform launcher will add `--yolo` only when the current Git root matches a user-approved trusted repo root and no directory-changing argument escapes it, while `codex-safe` will inject workspace-write/on-request safety flags. Setup, update, verification, and equality collection will share one locked transaction and will report per-machine evidence without converting missing or unreachable machines into success.
+**Architecture:** Repo-tracked templates will remain canonical. A standalone PEP 723 merger pinned and locked to TOMLKit `0.15.1` will perform comment-preserving CST edits for only the owned Codex paths; an independent `tomllib` projection will reject any staged document whose unowned semantics differ from the source. A cross-platform launcher will add `--yolo` only when the current Git root matches a user-approved trusted repo root and no directory-changing argument escapes it, while `codex-safe` will inject workspace-write/on-request safety flags. Setup, update, verification, and equality collection will share one locked transaction and will report per-machine evidence without converting missing or unreachable machines into success.
 
-**Tech stack:** Bash, Python 3 standard library, TOML, JSON, the existing Node.js GSD statusline sub-renderer, Windows `.cmd` launchers, pytest, shell test harnesses, GitHub Actions-compatible checks.
+**Tech stack:** Bash, Python 3.11+, TOMLKit `0.15.1` via a committed PEP 723 uv script lock, Python `tomllib`, TOML, JSON, the existing Node.js GSD statusline sub-renderer, Windows `.cmd` launchers, pytest, shell test harnesses, GitHub Actions-compatible checks.
 
 ---
 
@@ -27,6 +28,7 @@
 - `--yolo` will bypass Codex sandbox/approval prompts only after user-approved trust authorization. This is an authorization trigger, not OS containment: accepted YOLO execution has host-wide authority. The launcher will reject or safely downgrade Git-environment spoofing and directory-expanding arguments. It will not bypass issue, plan, user-approval, TDD, review, legal, secret, or merge gates.
 - The launcher will provide `codex-safe` and `CODEX_REAL_BIN` escape seams and will prevent wrapper recursion.
 - The merger will migrate `model` and `model_reasoning_effort` from the old managed set to preserved machine-local keys before the canonical template drops them; it will preserve auth, trust, MCP/plugin, project, and every other key outside the new explicit owned-key set.
+- The merger will not carry a hand-written TOML lexer. It will mutate a grammar-complete CST and will fail closed unless an independent semantic projection proves that every unowned path and value is unchanged. Comment-bearing destructive shrinks will fail closed rather than relocating or discarding comments.
 - The installer will take a cross-platform user lock, stage CLI/config/launchers/trust policy together, validate the staged state, write a transaction manifest, commit atomically where the platform allows, and expose one rollback command for crash recovery.
 - Native Codex memories and automatic approval reviewers will remain excluded because they conflict with the repo-managed memory/approval model.
 - The implementation will pin a CLI version only after the feature probe proves that exact version supports `default_mode_request_user_input`; the current candidate is `0.146.0`.
@@ -37,7 +39,8 @@
 ### Existing repo code
 
 - `config/agents/codex/config.toml` currently declares `model = "gpt-5.5"`, medium reasoning, and obsolete `[status_line]` syntax. It does not declare the approved feature baseline.
-- `scripts/_core/sync-agent-configs.sh` currently parses `[status_line]` and performs managed-key sanitation. It will need semantic support for root keys plus `[features]`, `[agents]`, and `[tui]` without replacing unrelated tables.
+- Frozen feature commit `723d58e426ddbb189bf7fe2ccf0b497236b270b4` contains the first four Task 2 fix rounds. Its embedded constrained TOML lexer will remain frozen and will be replaced rather than extended because valid TOML can still cause silent deletion of an unowned following table.
+- `scripts/_core/sync-agent-configs.sh` will retain transaction, dry-run, and atomic-replace responsibilities. TOML mutation will move to a focused locked helper instead of remaining embedded in the shell script.
 - `scripts/install/codex-pin.env` currently pins `0.123.0`; `scripts/install/pin-codex.sh` installs that exact pin, and `scripts/setup/verify-setup.sh` reports drift against it.
 - `scripts/setup/new-machine-setup.sh` already installs the Codex pin but does not install a repo-managed launcher or invoke canonical config sync afterward.
 - `scripts/maintenance/update-harness-tools.sh` updates Codex independently and does not converge launcher/config state.
@@ -53,6 +56,7 @@
 - The supported footer identifiers selected for this work are `model-with-reasoning`, `context-remaining`, `current-dir`, `five-hour-limit`, and `weekly-limit`.
 - `status_line_use_colors` does not appear in the current official manual and will not be introduced.
 - Native goals will remain distinct from TUI telemetry; the plan will not fabricate arbitrary goal text as a footer field.
+- TOMLKit `0.15.1` supports Python `>=3.9`, carries an MIT license, and describes itself as style-preserving, including comments, indentation, whitespace, and internal ordering. Its documented array-of-table placement caveat will require semantic/comment and idempotence assertions rather than a blanket byte-position promise.
 
 ### Fleet and governance sources
 
@@ -69,13 +73,15 @@
 - Official Codex feature registry source: https://github.com/openai/codex/blob/main/codex-rs/features/src/lib.rs
 - Official Codex manual: https://developers.openai.com/codex/codex-manual.md
 - Official Claude Code goal and statusline references: https://code.claude.com/docs/en/goal and https://code.claude.com/docs/en/statusline
+- Official TOMLKit package metadata: https://pypi.org/project/tomlkit/0.15.1/
+- Official TOMLKit source and style-preservation contract: https://github.com/python-poetry/tomlkit/tree/0.15.1
 - Drive-file search from the July planning round returned no relevant deliverable; inaccessible drive indexes remain a coverage limitation, not negative proof.
 
 ### Gaps identified
 
 - No repo-managed cross-platform Codex launcher will enforce user-authorized trusted-root YOLO, Git-environment hardening, directory-argument checks, recursion safety, argument preservation, and an enforced-safe escape path.
 - No canonical config will enable `default_mode_request_user_input = true` across the fleet.
-- No tested merger will own the new nested keys while preserving unrelated local TOML state.
+- No grammar-complete, comment-preserving merger with an independent unowned-semantic equality guard will own the new nested keys while preserving unrelated local TOML state.
 - No fleet registry/equality dimension will distinguish declared Codex capability, installed version, feature state, launcher mode, trusted-root set, and config hash.
 - No rollout command will probe all seven registered machines, distinguish non-target from unreachable, and produce explicit per-machine attempted/succeeded/unreachable evidence.
 - Claude machine-wide statusline convergence from the original issue remains incomplete.
@@ -120,7 +126,19 @@ remote gap:       ace-win-2 has no SSH/Tailscale transport
 
 Reproduction date: 2026-08-02. The stale canonical schema, disabled default-mode input feature, untracked unconditional wrapper, stale version pin, and registry drift match the expanded issue scope.
 
-Distinct sources: 14.
+**Task 2 architecture reproduction** (2026-08-02 against frozen feature SHA `723d58e426ddbb189bf7fe2ccf0b497236b270b4`):
+
+```text
+input:  status_line = ["""tail""""] followed by [plugins.keep]
+input_valid=True
+sync_rc=0
+output_valid=True
+plugins_after=None
+```
+
+The real sync path accepts valid input, exits successfully, and emits valid TOML while deleting the unowned table. Four adversarial fix rounds separately expose header recognition, semantic key/type classification, backslash parity, and multiline delimiter-run defects. This reproduction will remain RED until the CST merger and semantic-preservation guard replace the constrained lexer.
+
+Distinct sources: 16.
 
 ---
 
@@ -137,11 +155,12 @@ Distinct sources: 14.
 | Windows launchers | `config/agents/codex/launcher/codex.cmd`, `config/agents/codex/launcher/codex-safe.cmd` |
 | Launcher installer | `scripts/agents/install-codex-launcher.sh` |
 | Config sync | `scripts/_core/sync-agent-configs.sh` |
+| Locked TOML CST merger | `scripts/agents/codex_config_merge.py`, `scripts/agents/codex_config_merge.py.lock` |
 | Version pin | `scripts/install/codex-pin.env`, `scripts/install/pin-codex.sh` |
 | Setup/update/verify | `scripts/setup/new-machine-setup.sh`, `scripts/maintenance/update-harness-tools.sh`, `scripts/setup/verify-setup.sh` |
 | Claude convergence | `.claude/statusline-command.sh`, `.claude/statusline-combined.sh`, `scripts/_core/sync_statusline.sh` |
 | Fleet evidence | `config/workstations/registry.yaml`, `scripts/readiness/collect-equality.sh`, `scripts/readiness/collect-equality.ps1`, `scripts/readiness/build-equality-matrix.py` |
-| Launcher/config tests | `tests/setup/test_codex_launcher.sh`, `scripts/_core/tests/test_sync_agent_configs.sh`, `tests/setup/test_verify_setup.py` |
+| Launcher/config tests | `tests/setup/test_codex_launcher.sh`, `scripts/_core/tests/test_sync_agent_configs.sh`, `scripts/_core/tests/test_sync_agent_configs_edge_cases.sh`, `tests/setup/test_codex_config_merge.py`, `tests/setup/test_verify_setup.py` |
 | Equality tests | `tests/readiness/test_collect_equality.py`, `tests/readiness/test_collect_equality_ps1_schema.py`, `tests/readiness/test_build_equality_matrix.py` |
 | Plan reviews | `scripts/review/results/2026-08-02-plan-3555-{claude,codex,agy}.md` |
 | Code reviews | `scripts/review/results/2026-08-02-code-3555-r1-{claude,codex,agy}.md` |
@@ -170,10 +189,17 @@ owned_codex_keys := {
 }
 
 merge_codex_config(local, canonical):
-  parse both TOML documents or fail before write
+  parse both documents with TOMLKit CST and independently with tomllib or fail before write
+  require canonical semantic paths and values to equal owned_codex_keys exactly
   remove model and model_reasoning_effort from the legacy managed-key deletion set
-  replace only owned_codex_keys
-  preserve every unowned root key, table, comment-compatible value, and secret-free local setting
+  remove only legacy root status_line; reject non-table features/agents/tui roots
+  replace only owned_codex_keys through CST nodes
+  mutate an existing tui.status_line array in place; fail closed if shrinking would discard comments
+  render staged text and parse it independently with tomllib
+  local_unowned := semantic_projection(local) minus owned_codex_keys and legacy root status_line
+  staged_unowned := semantic_projection(staged) minus owned_codex_keys and empty owned-only containers
+  require staged_unowned == local_unowned or discard staged output
+  require every staged owned value == canonical value or discard staged output
   validate typed enums with an isolated CODEX_HOME CLI load
   compare `codex features list` before/after and require request_user_input false -> true
   validate footer identifiers against the version-pinned source allowlist and TUI attestation
@@ -213,7 +239,9 @@ rollout():
 | Create | `config/agents/codex/trusted-repos.yaml` | Define versioned owner authorization, origins, roots, expiry, and revocation |
 | Create | `config/agents/codex/launcher/codex`, `codex-safe`, `codex.cmd`, `codex-safe.cmd` | Provide POSIX and Windows launch behavior |
 | Create | `scripts/agents/install-codex-launcher.sh` | Lock, stage, validate, commit, and roll back the complete install transaction |
-| Modify | `scripts/_core/sync-agent-configs.sh` and its shell tests | Merge nested owned keys and preserve migrated local model settings |
+| Create | `scripts/agents/codex_config_merge.py`, `scripts/agents/codex_config_merge.py.lock` | Provide a pinned style-preserving CST merger with an independent semantic guard |
+| Modify | `scripts/_core/sync-agent-configs.sh` and its shell tests | Delegate nested-key mutation while retaining dry-run and atomic replacement |
+| Create | `tests/setup/test_codex_config_merge.py` | Exercise the merger API, semantic preservation, comment behavior, and locked dependency failures |
 | Modify | `scripts/install/codex-pin.env`, `pin-codex.sh` | Pin and install the verified feature baseline |
 | Modify | `scripts/setup/new-machine-setup.sh`, `scripts/maintenance/update-harness-tools.sh`, `scripts/setup/verify-setup.sh` | Share the transactional deployment path |
 | Modify | `.claude/statusline-command.sh`, `.claude/statusline-combined.sh`, `scripts/_core/sync_statusline.sh`, `tests/statusline/` | Converge the real tracked Claude renderer paths |
@@ -250,14 +278,20 @@ rollout():
 
 ### Task 2 — Implement merge-safe nested Codex configuration
 
-**Files:** `scripts/_core/sync-agent-configs.sh`, `scripts/_core/tests/test_sync_agent_configs.sh`, `scripts/_core/tests/test_sync_agent_helpers.sh`.
+**Files:** `scripts/agents/codex_config_merge.py`, `scripts/agents/codex_config_merge.py.lock`, `scripts/_core/sync-agent-configs.sh`, `scripts/_core/tests/test_sync_agent_configs.sh`, `scripts/_core/tests/test_sync_agent_configs_edge_cases.sh`, `scripts/_core/tests/test_sync_agent_helpers.sh`, `tests/setup/test_codex_config_merge.py`, `tests/readiness/test_sync_agent_configs_sso.py`.
 
-1. Add failing fixtures containing unrelated root keys, `[tui]` siblings, project trust entries, MCP/plugin tables, comments, paths with spaces, and malformed TOML.
-2. Assert exact ownership of the approved key set, explicit removal of `model` and `model_reasoning_effort` from the legacy deletion set, preservation of existing local model choices, preservation of every other unowned value, idempotence, dry-run purity, and atomic rollback on parse/validation failure.
-3. Run both shell test files and observe RED against the current `[status_line]` parser.
-4. Implement a TOML-aware helper or constrained parser with explicit table/key ownership; remove legacy owned syntax only when the replacement validates.
-5. Rerun focused tests twice to prove idempotence, then run the existing sync regression suite.
-6. Commit only the three named paths with a conventional pathspec commit.
+**Interface:** `uv run --script --locked scripts/agents/codex_config_merge.py CANONICAL LOCAL OUTPUT` will either write one validated staged document and exit 0 or write nothing and exit nonzero. The shell caller will retain temporary-file placement, dry-run purity, atomic rename, and rollback.
+
+1. Add a focused Python RED test that invokes the frozen feature implementation at `723d58e426ddbb189bf7fe2ccf0b497236b270b4` with `status_line = ["""tail""""]` followed by `[plugins.keep]` and requires the unowned table to survive. Record `input_valid=True`, `sync_rc=0`, `output_valid=True`, and the current failing `plugins_after=None` evidence.
+2. Add table-driven RED fixtures for every R1–R4 defect class: arrays-of-tables, bracket-bearing quoted headers, quoted/whitespace dotted keys, inline tables with braces in comments, sentinel-like path components, incompatible root value types, newline-less headers, backslash runs, and four/five-quote multiline terminators. Each fixture will assert parsed unowned semantics, comment preservation where applicable, and real same-file second-run byte identity.
+3. Add RED semantic-guard tests that deliberately delete, insert, mutate, relocate, or type-change one unowned root/nested/table/array-of-table value after CST rendering. Every mutation will fail before `OUTPUT` is created and will leave `LOCAL` byte-identical in normal and dry-run flows.
+4. Add RED tests for root/table/suffix comments, comments inside the five-entry `tui.status_line` array, and a comment-bearing local array that must shrink. The first cases will preserve comments; the destructive shrink will fail closed unless every removed node is comment-free.
+5. Create `scripts/agents/codex_config_merge.py` with PEP 723 metadata pinned to `tomlkit==0.15.1`; generate and commit its adjacent lock with `uv lock --script scripts/agents/codex_config_merge.py`. The runtime command will use `uv run --script --locked`; missing uv, missing/stale lock, dependency resolution failure, malformed input, or incompatible root shape will produce no output.
+6. Parse canonical and local documents through TOMLKit and independently through `tomllib`. Validate that the canonical semantic document contains the eleven owned paths with exact values and contains none of the forbidden model/native-memory/reviewer keys before any mutation.
+7. Remove only legacy root `status_line`, then update the eleven owned paths through TOMLKit nodes. Preserve normal, quoted, dotted, inline, and out-of-order table representations where TOMLKit supports them; mutate an existing statusline array in place to retain element comments and fail closed on comment-bearing destructive shrink.
+8. Implement a recursive semantic projection that removes exactly the eleven owned paths, legacy root `status_line`, and empty containers created solely by owned paths. Parse rendered output with `tomllib` and require projected staged semantics to equal projected local semantics and every staged owned value to equal canonical before writing `OUTPUT`.
+9. Replace the embedded `CODEX_TOML_MERGER` lexer in `sync-agent-configs.sh` with the locked helper call. Retain shell-owned same-directory staging for normal mode, platform temporary staging for dry-run, comparison, atomic rename, and rollback. Update copied-workspace fixtures to include the helper and lock.
+10. Run the standard wired sync entrypoint twice, the focused Python merger suite, helpers, SSO/Hermes readiness regressions, lock-tamper and offline-cache probes, `bash -n`, ShellCheck, Ruff, `git diff --check`, and the diff-only legal scan. Commit only the named Task 2 paths with a conventional pathspec commit.
 
 ### Task 3 — Install trusted-repo YOLO launchers with a safe escape
 
@@ -331,6 +365,11 @@ This task will start only after Task 1 commits its changes to the shared verifie
 | `test_sync_preserves_unowned_nested_tables` | Local trust/MCP/plugin/project/model values survive |
 | `test_sync_migrates_legacy_model_ownership` | Dropping the template model never deletes a machine choice |
 | `test_sync_malformed_toml_rolls_back` | No partial replacement occurs |
+| `test_merge_four_quote_terminator_preserves_following_table` | The frozen R4 silent-loss reproduction becomes green |
+| `test_merge_all_r1_r4_toml_forms` | Every reviewed valid-TOML defect class preserves unowned semantics |
+| `test_unowned_semantic_projection_rejects_any_mutation` | Delete/insert/mutate/relocate/type-change faults produce no output |
+| `test_comment_bearing_statusline_shrink_fails_closed` | CST edits never silently discard comments |
+| `test_locked_merger_dependency_fails_atomically` | Missing/stale lock or dependency failure leaves target untouched |
 | `test_feature_probe_is_differential` | Isolated CLI state changes request input from false to true |
 | `test_footer_ids_match_pinned_allowlist` | Silent-acceptance cannot hide a misspelled footer item |
 | `test_launcher_trusted_root_adds_yolo_once` | Fake CLI receives one `--yolo` plus original argv |
@@ -358,7 +397,8 @@ This task will start only after Task 1 commits its changes to the shared verifie
 - [ ] An isolated before/after `codex features list` probe reports `default_mode_request_user_input` false before and true after candidate config on every reachable Codex target.
 - [ ] The exact installed CLI version supports the feature; pin/config/verifier agree.
 - [ ] The canonical owned-key test proves explicit goals/multi-agent/hooks intent, and live probes prove their recognized feature names/state; default-on behavior without the canonical declarations will not satisfy the criterion. Live/typed probes also verify web search, high plan reasoning, pragmatic personality, resume-CWD, interrupt messaging, and the five pinned statusline identifiers.
-- [ ] Config sync is atomic, idempotent, dry-run safe, and preserves all unowned local settings.
+- [ ] Config sync uses the committed TOMLKit `0.15.1` PEP 723 lock, contains no hand-written TOML lexer, is atomic/idempotent/dry-run safe, preserves required comments, and proves by independent semantic projection that every unowned local path and value is unchanged.
+- [ ] Every R1–R4 silent-loss reproduction passes, and injected unowned delete/insert/mutate/relocate/type-change faults fail closed without creating staged output or changing the target.
 - [ ] Plain `codex` adds `--yolo` exactly once only for user-approved roots with matching origins; Git env spoofing and directory escape arguments downgrade safely.
 - [ ] `codex-safe` and untrusted fallback enforce workspace-write/on-request despite hostile local config.
 - [ ] POSIX and live `cmd.exe` launcher argument/quoting/recursion tests pass.
@@ -379,11 +419,13 @@ This task will start only after Task 1 commits its changes to the shared verifie
 | Claude (historical July r1) | UNAVAILABLE | Authentication unavailable; not evidence for the expanded plan |
 | Codex (historical July r1/r2) | MAJOR | Pilot scope, config schema, evidence privacy, and fleet-claim defects; incorporated into this revision |
 | Gemini (historical July r1) | UNAVAILABLE | Historical provider unavailable; AGY will be used for fresh review |
-| Claude (2026-08-02) | MAJOR → resolved inline | Git env spoofing, model-key deletion, silent config acceptance, seven-host roster, nonexistent renderer, ordering, coverage, and completeness defects were added to tasks/tests |
-| Codex (2026-08-02) | MAJOR → resolved inline | Host-wide YOLO risk, directory escapes, safe-mode semantics, trust authorization, live Windows tests, transaction rollback, denominator, immutable review SHA, and template gaps were added |
-| AGY (2026-08-02) | UNAVAILABLE | Authentication timed out; valid structured unavailable artifact |
+| Claude (2026-08-02, superseded) | MAJOR | Git env spoofing, model-key deletion, silent config acceptance, seven-host roster, nonexistent renderer, ordering, coverage, and completeness defects informed the prior revision; the artifact is historical because it fails the current generic verdict parser |
+| Codex (2026-08-02, superseded) | MAJOR | Host-wide YOLO risk, directory escapes, safe-mode semantics, trust authorization, live Windows tests, transaction rollback, denominator, immutable review SHA, and template gaps informed the prior revision; the artifact is historical because it fails the current generic verdict parser |
+| AGY (2026-08-02, superseded) | UNAVAILABLE | Authentication timed out; the artifact is historical because it fails the current generic verdict parser |
+| Task 2 code review rounds 1–4 | MAJOR — replan required | Four distinct valid-TOML silent-loss classes require a grammar-complete CST plus an independent semantic-preservation postcondition |
+| Replacement T3 plan review | PENDING | Claude, Codex, and AGY outputs will be machine-parseable; valid UNAVAILABLE may degrade T3 to T2, while INVALID_OUTPUT will block |
 
-**Overall result:** ADVERSARIAL-REVIEWED — two independent providers returned MAJOR and their distinct findings are resolved in this revision. The review-iteration loop-break rule prohibits a blind fourth dispatch; the main session will run claim/path/test self-verification, then move the issue to `status:plan-review`. The user has approved the design spec but must separately apply the implementation approval gate.
+**Overall result:** NOT APPROVAL-READY — implementation will remain frozen at `723d58e426ddbb189bf7fe2ccf0b497236b270b4` until the revised Task 2 architecture receives fresh, machine-parseable adversarial review with no unresolved MAJOR finding. The issue will move from `status:needs-plan` to `status:plan-review` only after that evidence is pushed, then will stop for renewed owner approval.
 
 ## Risks and Open Questions
 
@@ -392,6 +434,9 @@ This task will start only after Task 1 commits its changes to the shared verifie
 - **Windows quoting risk:** `.cmd` parsing differs from POSIX shells. Fake-CLI argument capture and static tests will cover metacharacter/space cases before rollout.
 - **Roster drift:** `ace-linux-1` contradicts the registry, while four other hosts were not in the initial three-host probe. All seven registry machines will be classified before any denominator claim.
 - **Immediate rollout blast radius:** there will be no canary by user direction. Atomic installers, backups, dry-run/verification, and `codex-safe` will provide rollback and continued access.
+- **Locked CST dependency:** the merger will depend on TOMLKit `0.15.1` through a committed PEP 723 uv lock rather than the full workspace environment. Missing uv, missing/stale lock, unavailable dependency cache/network, license drift, or hash mismatch will fail before local config changes; setup/rollout evidence will attest the exact lock and package hash.
+- **CST normalization:** TOMLKit may normalize physical placement for nested array-of-table declarations. Acceptance will require unchanged unowned parsed semantics, preserved comments, and second-run byte identity; it will not require first-run byte identity for formatting that the documented CST intentionally normalizes.
+- **Review tooling drift:** existing plan-fanout artifacts and the generic validator disagree on verdict syntax. Replacement reviews will be validated before they count; an artifact that exists but parses as `INVALID_OUTPUT` will block rather than degrade the provider count.
 - **Provider availability:** a valid `UNAVAILABLE` review artifact may degrade T3 to T2; malformed or unparsable output will block.
 
 ## Complexity: T3

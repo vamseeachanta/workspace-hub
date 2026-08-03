@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>#3555 Codex fleet replan — session exit</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { max-width: 960px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    h1, h2 { line-height: 1.2; }
+    code { background: color-mix(in srgb, CanvasText 8%, Canvas); padding: .1rem .3rem; }
+    .blocked { border-left: .35rem solid #c33; padding-left: 1rem; }
+    .ok { border-left: .35rem solid #287a3d; padding-left: 1rem; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #8888; padding: .45rem; text-align: left; vertical-align: top; }
+  </style>
+</head>
+<body>
+  <h1>#3555 Codex fleet configuration — exit handoff</h1>
+  <p><strong>Recorded:</strong> 2026-08-03 (America/Chicago)</p>
+
+  <section class="blocked">
+    <h2>Active state</h2>
+    <p>Implementation is frozen. Issue
+      <a href="https://github.com/vamseeachanta/workspace-hub/issues/3555">#3555</a>
+      is open at <code>status:needs-plan</code>. No launcher activation or fleet rollout has occurred.</p>
+    <p>The exact implementation checkpoint is
+      <code>723d58e426ddbb189bf7fe2ccf0b497236b270b4</code> on
+      <code>feature/3555-codex-fleet-config</code>, verified on the remote.</p>
+  </section>
+
+  <h2>Completed and verified</h2>
+  <ul>
+    <li>Task 0 fleet denominator/trust policy is review-clean.</li>
+    <li>Task 1 Codex <code>0.146.0</code> feature/config baseline is review-clean.</li>
+    <li>Task 2 received four TDD/review fix rounds; those commits and their tests are preserved.</li>
+    <li>The latest reproduction proves a valid four-quote multiline TOML value can still delete a following unowned table while sync exits 0 and emits valid TOML.</li>
+    <li>The approval label was rolled back and the freeze rationale was posted at
+      <a href="https://github.com/vamseeachanta/workspace-hub/issues/3555#issuecomment-5163443490">issue comment 5163443490</a>.</li>
+  </ul>
+
+  <h2>Replan artifact</h2>
+  <p>The canonical plan has a draft 2026-08-03 revision at
+    <code>docs/plans/2026-07-16-issue-3555-goal-statusline-machine-pilot.md</code>.
+    Task 2 will replace the handwritten TOML lexer with a PEP 723 helper locked to
+    TOMLKit <code>0.15.1</code>. An independent <code>tomllib</code> projection will require
+    equality of all unowned semantics before staged output can be written.</p>
+
+  <h2>Blockers and exact next checkpoint</h2>
+  <ol>
+    <li>Run plan self-verification and fresh machine-parseable T3 adversarial review.</li>
+    <li>Resolve every MAJOR finding; <code>INVALID_OUTPUT</code> will block and will not count as provider unavailability.</li>
+    <li>Push the reviewed immutable plan SHA and review artifacts; post label-time evidence.</li>
+    <li>Move <code>status:needs-plan</code> to <code>status:plan-review</code>.</li>
+    <li>Stop for renewed owner approval and create the missing approval marker only after that approval.</li>
+    <li>Resume Task 2 from frozen feature SHA only after the gate passes. Tasks 3–7 remain unstarted.</li>
+  </ol>
+
+  <h2>Repository and worktree disposition</h2>
+  <table>
+    <thead><tr><th>Location</th><th>Branch / state</th><th>Disposition</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>/mnt/local-analysis/agent-worktrees/wh-3555-implementation</code></td>
+        <td><code>feature/3555-codex-fleet-config</code> at <code>723d58e42</code></td>
+        <td>Preserve. Remote branch exists; implementation is frozen.</td>
+      </tr>
+      <tr>
+        <td><code>/mnt/local-analysis/agent-worktrees/wh-3555-replan</code></td>
+        <td><code>plan/3555-toml-cst-replan</code></td>
+        <td>Contains the draft plan revision and this exit report; commit and push as the exit checkpoint.</td>
+      </tr>
+      <tr>
+        <td><code>/mnt/local-analysis/workspace-hub</code></td>
+        <td>Canonical checkout has unrelated pre-existing state</td>
+        <td>Preserve; do not sweep into #3555.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Suggested skills for the next session</h2>
+  <ul>
+    <li><code>coordination/issue-planning-mode</code> — finish review and approval-state reconciliation.</li>
+    <li><code>superpowers:writing-plans</code> — maintain the executable Task 2 revision.</li>
+    <li><code>superpowers:subagent-driven-development</code> and <code>superpowers:test-driven-development</code> — resume only after approval.</li>
+    <li><code>coordination/pre-completion-cleanup-audit</code> — run again at the next closeout.</li>
+  </ul>
+
+  <p class="ok"><strong>No external rollout state changed:</strong> no Codex launcher was installed,
+    no trusted-root YOLO was activated, and no machine was reported fleet-equal.</p>
+</body>
+</html>
