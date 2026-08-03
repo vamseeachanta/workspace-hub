@@ -1,0 +1,47 @@
+# Owner-authorized trust policy for Codex launcher materialization (#3555).
+# Discovery records evidence; it never adds authorization to this file.
+version: 1
+approval_issue: https://github.com/vamseeachanta/workspace-hub/issues/3555
+approved_by: vamseeachanta
+approved_at: '2026-08-03T04:08:58Z'
+
+policy:
+  authorization_match: exact-machine-root-identity-origin
+  live_discovery_authorizes: false
+  organization_prefix_authorizes: false
+  directory_parent_authorizes: false
+  unverified_roots_authorize: false
+  root_normalization:
+    resolve_symlinks_and_junctions: true
+    normalize_windows_drive_and_unc_spelling: true
+    casefold_windows_paths: true
+    require_existing_root: true
+
+materialization:
+  posix_mode: '0600'
+  windows_acl: owner-only
+  checks_before_use: [expiry, revocation, root-exists, exact-origin]
+  activation_gate:
+    issue: https://github.com/vamseeachanta/workspace-hub/issues/3555
+    post_machine_manifest_sha256: true
+    launcher_must_remain_inactive_until_posted: true
+
+repositories:
+  - repository_identity: github.com/vamseeachanta/workspace-hub
+    origin: https://github.com/vamseeachanta/workspace-hub.git
+    machine_alias: ace-linux-1
+    canonical_root: /mnt/local-analysis/workspace-hub
+    expires_at: null
+    revoked: false
+  - repository_identity: github.com/vamseeachanta/workspace-hub
+    origin: https://github.com/vamseeachanta/workspace-hub
+    machine_alias: ace-linux-2
+    canonical_root: /mnt/local-analysis/workspace-hub
+    expires_at: null
+    revoked: false
+  - repository_identity: github.com/vamseeachanta/workspace-hub
+    origin: https://github.com/vamseeachanta/workspace-hub.git
+    machine_alias: gpu-claw
+    canonical_root: /home/undi/ws/workspace-hub
+    expires_at: null
+    revoked: false

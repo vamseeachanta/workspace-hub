@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>#3555 Codex fleet rollout evidence</title>
+  <style>
+    :root { --ink:#172033; --muted:#526173; --line:#cad3df; --panel:#f4f7fb;
+      --ok:#166534; --warn:#9a3412; --bad:#991b1b; --accent:#174ea6; }
+    body { color:var(--ink); font:15px/1.5 system-ui,sans-serif;
+      margin:2rem auto; max-width:1120px; padding:0 1.2rem; }
+    h1,h2 { line-height:1.2; } h2 { margin-top:2rem; }
+    table { border-collapse:collapse; width:100%; }
+    th,td { border:1px solid var(--line); padding:.55rem; text-align:left;
+      vertical-align:top; }
+    th { background:var(--panel); } code { background:#e9eef5; padding:.08rem .3rem; }
+    .ok { color:var(--ok); } .warn { color:var(--warn); }
+    .bad { color:var(--bad); } .muted { color:var(--muted); }
+    .gate { border-left:5px solid var(--bad); background:#fff1f2; padding:1rem; }
+    .decision { border-left:5px solid var(--accent); background:#eef5ff; padding:1rem; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>#3555 Codex fleet rollout evidence</h1>
+  <p><strong>Evidence date:</strong> 2026-08-02 America/Chicago
+    (<code>2026-08-03T04:19:20Z</code>) · <strong>Task:</strong> fleet denominator and
+    owner-authorized trust manifest.</p>
+
+  <section class="decision">
+    <strong>Authorization decision.</strong> Live discovery records evidence but never
+    grants trust. Only an exact tuple of machine alias, canonical existing root,
+    repository identity, and observed origin can qualify after owner approval. A broad
+    GitHub organization, a parent directory, a path prefix, or an unverified checkout
+    grants nothing.
+  </section>
+
+  <h2>Seven-machine denominator</h2>
+  <table>
+    <thead>
+      <tr><th>Machine</th><th>Transport / reachability</th><th>Declared CLIs</th>
+        <th>Live Codex probe</th><th>Classification</th><th>Checkout evidence</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>ace-linux-1</code></td><td>local · <span class="ok">REACHABLE</span></td>
+        <td>claude, gemini</td><td><code>codex-cli 0.146.0</code></td>
+        <td class="ok">CODEX-TARGET</td>
+        <td>16 live registered roots with exact origins; <code>llm-wiki-mkt-a</code>
+          absent. Declared-CLI drift: Codex is installed but omitted.</td>
+      </tr>
+      <tr>
+        <td><code>ace-linux-2</code></td><td>SSH <code>ace-linux-2</code> ·
+          <span class="ok">REACHABLE</span></td>
+        <td>claude</td><td><code>codex-cli 0.146.0</code></td>
+        <td class="ok">CODEX-TARGET</td>
+        <td><code>workspace-hub</code>, <code>digitalmodel</code>, and
+          <code>worldenergydata</code> live. Declared-CLI drift: Codex is installed
+          but omitted.</td>
+      </tr>
+      <tr>
+        <td><code>ace-win-1</code></td><td>SSH <code>ace-win-1</code> ·
+          <span class="bad">UNREACHABLE</span></td>
+        <td>claude, codex, gemini</td><td>Not run: SSH alias did not resolve</td>
+        <td class="bad">UNREACHABLE</td>
+        <td>Declared <code>D:\ws\workspace-hub</code> and
+          <code>D:\OGManufacturing</code> roots remain UNVERIFIED; origins unknown.</td>
+      </tr>
+      <tr>
+        <td><code>ace-win-2</code></td><td>none · <span class="bad">UNREACHABLE</span></td>
+        <td>claude, codex, gemini</td><td>Not run: no usable transport</td>
+        <td class="bad">UNREACHABLE</td>
+        <td>Declared <code>D:\workspace-hub</code> and
+          <code>D:\OGManufacturing</code> roots remain UNVERIFIED; origins unknown.</td>
+      </tr>
+      <tr>
+        <td><code>gpu-claw</code></td><td>SSH <code>gpu-claw</code> ·
+          <span class="ok">REACHABLE</span></td>
+        <td>claude</td><td><code>codex-cli 0.146.0</code></td>
+        <td class="ok">CODEX-TARGET</td>
+        <td><code>workspace-hub</code> and <code>digitalmodel</code> live.
+          Declared-CLI drift: Codex is installed but omitted. The registry note that
+          the workspace-hub clone is pending is stale.</td>
+      </tr>
+      <tr>
+        <td><code>Vamsees-MacBook-Air</code></td><td>none ·
+          <span class="bad">UNREACHABLE</span></td>
+        <td>claude</td><td>Not run: no usable transport</td>
+        <td class="bad">UNREACHABLE</td>
+        <td>Declared workspace root remains UNVERIFIED; origin unknown.</td>
+      </tr>
+      <tr>
+        <td><code>shoerack</code></td><td>none · <span class="bad">UNREACHABLE</span></td>
+        <td>none</td><td>Not run: no usable transport</td>
+        <td class="bad">UNREACHABLE</td><td>No checkout root is registered.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="muted">No reachable machine without Codex was observed, so this probe
+    produced no <code>NOT-CODEX-TARGET</code> row. That state remains part of the
+    schema and will be used if a later reachable probe reports Codex absent.</p>
+
+  <h2>Owner-authorized tuples</h2>
+  <table>
+    <thead><tr><th>Machine</th><th>Canonical root</th><th>Repository identity</th>
+      <th>Exact observed origin</th><th>Expiry / revocation</th></tr></thead>
+    <tbody>
+      <tr><td><code>ace-linux-1</code></td>
+        <td><code>/mnt/local-analysis/workspace-hub</code></td>
+        <td><code>github.com/vamseeachanta/workspace-hub</code></td>
+        <td><code>https://github.com/vamseeachanta/workspace-hub.git</code></td>
+        <td>none / false</td></tr>
+      <tr><td><code>ace-linux-2</code></td>
+        <td><code>/mnt/local-analysis/workspace-hub</code></td>
+        <td><code>github.com/vamseeachanta/workspace-hub</code></td>
+        <td><code>https://github.com/vamseeachanta/workspace-hub</code></td>
+        <td>none / false</td></tr>
+      <tr><td><code>gpu-claw</code></td>
+        <td><code>/home/undi/ws/workspace-hub</code></td>
+        <td><code>github.com/vamseeachanta/workspace-hub</code></td>
+        <td><code>https://github.com/vamseeachanta/workspace-hub.git</code></td>
+        <td>none / false</td></tr>
+    </tbody>
+  </table>
+  <p>Origin spelling is intentionally exact: the <code>ace-linux-2</code> remote omits
+    <code>.git</code>, while the other two include it. Task 3 must compare the observed
+    origin to the approved string after root normalization; it must not broaden origin
+    equivalence.</p>
+
+  <h2>Observed but unauthorized</h2>
+  <ul>
+    <li>Every live repository other than the three tuples above remains unauthorized.
+      Discovery alone is not approval.</li>
+    <li><code>assethold</code> on <code>ace-linux-1</code> reports
+      <code>https://github.com/vamseeachanta/assethold.git</code>, while
+      <code>config/repos.conf</code> names <code>samdansk2/assethold.git</code>.
+      The drift is not normalized into trust.</li>
+    <li><code>CAD-DEVELOPMENTS</code> reports
+      <code>https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS</code> and has no
+      matching canonical origin record in the approved trust policy.</li>
+    <li>All Windows/macOS roots and every checkout on <code>shoerack</code> remain
+      unauthorized because live root/origin evidence is absent.</li>
+  </ul>
+
+  <h2>Normalization and materialization contract</h2>
+  <p>The version-1 manifest requires the Task 3 consumer to resolve symlinks and
+    junctions, normalize Windows drive and UNC spelling, case-fold Windows paths,
+    and reject nonexistent roots before exact tuple comparison. Machine-local
+    allowlists must use POSIX mode <code>0600</code> or a Windows owner-only ACL and
+    must check expiry, revocation, root existence, and exact origin before each use.</p>
+
+  <h2>Probe limitations</h2>
+  <ul>
+    <li>Remote probes were bounded to declared transports and registered candidate
+      roots; no whole-machine search was performed.</li>
+    <li><code>ace-win-1</code> failed at SSH name resolution from this runtime. No
+      alternate address was inferred because the public registry records none.</li>
+    <li><code>ace-win-2</code>, <code>Vamsees-MacBook-Air</code>, and
+      <code>shoerack</code> have no usable transport in the registry; local human
+      evidence may change their state later but is not present here.</li>
+    <li><code>codex --version</code> proves installation/version only. It does not
+      prove authentication, feature state, launcher behavior, or interactive TUI
+      behavior; later tasks own those checks.</li>
+  </ul>
+
+  <section class="gate">
+    <strong>Launcher activation remains blocked.</strong> Task 0 defines the central
+    authorization and denominator only. Task 3 must render each machine-local manifest,
+    enforce owner-only permissions, compute its SHA-256, and post the machine alias plus
+    SHA to <a href="https://github.com/vamseeachanta/workspace-hub/issues/3555">#3555</a>
+    before activating trusted-repository YOLO behavior.
+  </section>
+</main>
+</body>
+</html>

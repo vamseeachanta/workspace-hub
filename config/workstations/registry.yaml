@@ -3,6 +3,95 @@
 # HARD RULE: all machine identity/capability data lives here.
 # Hardware specs remain in .planning/archive/modules/hardware-inventory/ (detailed assessments).
 
+codex_fleet:
+  version: 1
+  approval_issue: https://github.com/vamseeachanta/workspace-hub/issues/3555
+  observed_at: '2026-08-03T04:19:20Z'
+  machines:
+    ace-linux-1:
+      transport: {kind: local, endpoint: null}
+      reachability: REACHABLE
+      declared_agent_clis: [claude, gemini]
+      codex_probe: {status: INSTALLED, version: 0.146.0}
+      classification: CODEX-TARGET
+      registry_drift: declared_agent_clis_missing_codex
+      checkouts:
+        - {repository: workspace-hub, canonical_root: /mnt/local-analysis/workspace-hub, verification: LIVE, origin: 'https://github.com/vamseeachanta/workspace-hub.git'}
+        - {repository: digitalmodel, canonical_root: /mnt/local-analysis/digitalmodel, verification: LIVE, origin: 'https://github.com/vamseeachanta/digitalmodel.git'}
+        - {repository: assetutilities, canonical_root: /mnt/local-analysis/assetutilities, verification: LIVE, origin: 'https://github.com/vamseeachanta/assetutilities.git'}
+        - {repository: worldenergydata, canonical_root: /mnt/local-analysis/worldenergydata, verification: LIVE, origin: 'https://github.com/vamseeachanta/worldenergydata.git'}
+        - {repository: llm-wiki, canonical_root: /mnt/local-analysis/llm-wiki, verification: LIVE, origin: 'https://github.com/vamseeachanta/llm-wiki.git'}
+        - {repository: assethold, canonical_root: /mnt/local-analysis/assethold, verification: LIVE, origin: 'https://github.com/vamseeachanta/assethold.git'}
+        - {repository: aceengineer-website, canonical_root: /mnt/local-analysis/aceengineer-website, verification: LIVE, origin: 'https://github.com/vamseeachanta/aceengineer-website.git'}
+        - {repository: aceengineer-strategy, canonical_root: /mnt/local-analysis/aceengineer-strategy, verification: LIVE, origin: 'https://github.com/vamseeachanta/aceengineer-strategy.git'}
+        - {repository: aceengineer-admin, canonical_root: /mnt/local-analysis/aceengineer-admin, verification: LIVE, origin: 'https://github.com/vamseeachanta/aceengineer-admin'}
+        - {repository: achantas-data, canonical_root: /mnt/local-analysis/achantas-data, verification: LIVE, origin: 'https://github.com/vamseeachanta/achantas-data'}
+        - {repository: achantas-media, canonical_root: /mnt/local-analysis/achantas-media, verification: LIVE, origin: 'https://github.com/vamseeachanta/achantas-media'}
+        - {repository: CAD-DEVELOPMENTS, canonical_root: /mnt/local-analysis/CAD-DEVELOPMENTS, verification: LIVE, origin: 'https://github.com/bakkiprasad5669/CAD-DEVELOPMENTS'}
+        - {repository: hobbies, canonical_root: /mnt/local-analysis/hobbies, verification: LIVE, origin: 'https://github.com/vamseeachanta/hobbies.git'}
+        - {repository: kaggle-rogii-2026, canonical_root: /mnt/local-analysis/kaggle-rogii-2026, verification: LIVE, origin: 'https://github.com/vamseeachanta/kaggle-rogii-2026.git'}
+        - {repository: llm-wiki-mkt-a, canonical_root: /mnt/local-analysis/llm-wiki-mkt-a, verification: ABSENT, origin: null}
+        - {repository: sabithaandkrishnaestates, canonical_root: /mnt/local-analysis/sabithaandkrishnaestates, verification: LIVE, origin: 'https://github.com/vamseeachanta/sabithaandkrishnaestates'}
+        - {repository: teamresumes, canonical_root: /mnt/local-analysis/teamresumes, verification: LIVE, origin: 'https://github.com/vamseeachanta/teamresumes'}
+    ace-linux-2:
+      transport: {kind: ssh, endpoint: ace-linux-2}
+      reachability: REACHABLE
+      declared_agent_clis: [claude]
+      codex_probe: {status: INSTALLED, version: 0.146.0}
+      classification: CODEX-TARGET
+      registry_drift: declared_agent_clis_missing_codex
+      checkouts:
+        - {repository: workspace-hub, canonical_root: /mnt/local-analysis/workspace-hub, verification: LIVE, origin: 'https://github.com/vamseeachanta/workspace-hub'}
+        - {repository: digitalmodel, canonical_root: /mnt/local-analysis/digitalmodel, verification: LIVE, origin: 'https://github.com/vamseeachanta/digitalmodel'}
+        - {repository: worldenergydata, canonical_root: /mnt/local-analysis/worldenergydata, verification: LIVE, origin: 'https://github.com/vamseeachanta/worldenergydata'}
+    ace-win-1:
+      transport: {kind: ssh, endpoint: ace-win-1}
+      reachability: UNREACHABLE
+      declared_agent_clis: [claude, codex, gemini]
+      codex_probe: {status: UNREACHABLE, version: null}
+      classification: UNREACHABLE
+      probe_detail: SSH alias name resolution failed from the probing runtime.
+      checkouts:
+        - {repository: workspace-hub, canonical_root: 'D:\ws\workspace-hub', verification: UNVERIFIED, origin: null}
+        - {repository: OGManufacturing, canonical_root: 'D:\OGManufacturing', verification: UNVERIFIED, origin: null}
+    ace-win-2:
+      transport: {kind: none, endpoint: null}
+      reachability: UNREACHABLE
+      declared_agent_clis: [claude, codex, gemini]
+      codex_probe: {status: UNREACHABLE, version: null}
+      classification: UNREACHABLE
+      probe_detail: Registry declares no usable remote transport.
+      checkouts:
+        - {repository: workspace-hub, canonical_root: 'D:\workspace-hub', verification: UNVERIFIED, origin: null}
+        - {repository: OGManufacturing, canonical_root: 'D:\OGManufacturing', verification: UNVERIFIED, origin: null}
+    gpu-claw:
+      transport: {kind: ssh, endpoint: gpu-claw}
+      reachability: REACHABLE
+      declared_agent_clis: [claude]
+      codex_probe: {status: INSTALLED, version: 0.146.0}
+      classification: CODEX-TARGET
+      registry_drift: declared_agent_clis_missing_codex
+      checkouts:
+        - {repository: workspace-hub, canonical_root: /home/undi/ws/workspace-hub, verification: LIVE, origin: 'https://github.com/vamseeachanta/workspace-hub.git'}
+        - {repository: digitalmodel, canonical_root: /home/undi/ws/digitalmodel, verification: LIVE, origin: 'https://github.com/vamseeachanta/digitalmodel.git'}
+    Vamsees-MacBook-Air:
+      transport: {kind: none, endpoint: null}
+      reachability: UNREACHABLE
+      declared_agent_clis: [claude]
+      codex_probe: {status: UNREACHABLE, version: null}
+      classification: UNREACHABLE
+      probe_detail: Registry declares no usable remote transport.
+      checkouts:
+        - {repository: workspace-hub, canonical_root: /Users/krishna/Developer/ws/workspace-hub, verification: UNVERIFIED, origin: null}
+    shoerack:
+      transport: {kind: none, endpoint: null}
+      reachability: UNREACHABLE
+      declared_agent_clis: []
+      codex_probe: {status: UNREACHABLE, version: null}
+      classification: UNREACHABLE
+      probe_detail: Registry declares no usable remote transport or checkout root.
+      checkouts: []
+
 machines:
   dev-primary:
     hostname: ace-linux-1
