@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>#3555 — Codex fleet configuration design</title>
+  <style>
+    :root{color-scheme:light;--ink:#172033;--muted:#526173;--line:#cad3df;--panel:#f4f7fb;--accent:#174ea6;--warn:#9a3412;--ok:#166534}
+    body{font:16px/1.55 system-ui,sans-serif;max-width:1050px;margin:2rem auto;padding:0 1.2rem;color:var(--ink)}
+    h1,h2{line-height:1.2} h2{margin-top:2rem} code{background:#e9eef5;padding:.08rem .3rem;border-radius:4px}
+    pre{background:#101827;color:#e8eef8;padding:1rem;overflow:auto;border-radius:8px}
+    table{border-collapse:collapse;width:100%}th,td{border:1px solid var(--line);padding:.6rem;text-align:left;vertical-align:top}
+    th{background:var(--panel)}.decision{border-left:5px solid var(--accent);background:#eef5ff;padding:1rem}
+    .warning{border-left:5px solid var(--warn);background:#fff7ed;padding:1rem}.ok{color:var(--ok)}.muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+<main>
+  <h1>#3555 Codex fleet configuration redesign</h1>
+  <p><strong>Date:</strong> 2026-08-02 · <strong>Status:</strong> owner-approved design, implementation still gated by adversarial plan review · <strong>Scope:</strong> every detected Codex installation in the workstation fleet</p>
+
+  <section class="decision">
+    <strong>Owner decisions</strong>
+    <ul>
+      <li>Roll out immediately across the fleet rather than canary-first so requirement gaps surface quickly.</li>
+      <li>Enable <code>request_user_input</code> in Default mode across the fleet.</li>
+      <li>Run Codex with <code>--yolo</code> for work in trusted, solid repositories across the fleet.</li>
+      <li>Record unreachable, incompatible, or undeclared installations explicitly; do not treat configuration intent as successful coverage.</li>
+    </ul>
+  </section>
+
+  <h2>Outcome</h2>
+  <p>The repository will own one merge-safe Codex baseline, one cross-platform mechanism that launches Codex in YOLO mode for trusted registered repo roots, and one attestation path that proves the effective configuration on each detected installation. Default-mode sessions will be able to ask structured requirements questions without switching to Plan mode.</p>
+
+  <h2>Canonical baseline</h2>
+  <pre><code>plan_mode_reasoning_effort = "high"
+personality = "pragmatic"
+web_search = "live"
+
+[features]
+default_mode_request_user_input = true
+goals = true
+multi_agent = true
+hooks = true
+
+[agents]
+enabled = true
+interrupt_message = true
+
+[tui]
+resume_cwd = "session"
+status_line = [
+  "model-with-reasoning",
+  "context-remaining",
+  "current-dir",
+  "five-hour-limit",
+  "weekly-limit"
+]</code></pre>
+  <p><code>default_mode_request_user_input</code> is an under-development Codex 0.146.0 feature. The rollout will therefore probe each installed CLI for the key before replacing that machine's configuration. Stable workflow-critical features will be pinned intentionally; unrelated feature flags will remain at product defaults.</p>
+
+  <h2>YOLO contract</h2>
+  <table>
+    <thead><tr><th>Concern</th><th>Design</th></tr></thead>
+    <tbody>
+      <tr><td>Launch behavior</td><td>The fleet launcher/wrapper will add <code>--yolo</code> at the highest practical CLI precedence for interactive and non-interactive Codex entry points.</td></tr>
+      <tr><td>Scope</td><td>YOLO is authorized when the working directory resolves inside a trusted repo root declared by the fleet registry or an empirically attested checkout inventory.</td></tr>
+      <tr><td>Escape hatch</td><td>A clearly named raw/safe entry point will invoke the real Codex binary without the wrapper for untrusted directories, diagnostics, or future policy changes.</td></tr>
+      <tr><td>Secrets</td><td>YOLO does not authorize hardcoded tokens, credential publication, or expansion outside the user's requested repo scope.</td></tr>
+      <tr><td>Verification</td><td>Attestation will record wrapper resolution, real binary path, CLI version, trusted-root decision, and a bounded effective-permission probe without recording credentials or private task content.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Deployment architecture</h2>
+  <ol>
+    <li><strong>Inventory:</strong> enumerate registered Codex-capable machines and actual reachable installations. Reconcile discrepancies before any fleet-complete claim.</li>
+    <li><strong>Canonical config:</strong> update <code>config/agents/codex/config.toml</code> to current syntax and contract-critical settings.</li>
+    <li><strong>Merge:</strong> extend <code>scripts/_core/sync-agent-configs.sh</code> to own only named keys and preserve authentication, MCP/plugin state, trust entries, machine-local paths, and unrelated settings.</li>
+    <li><strong>Launch:</strong> install a repo-managed cross-platform YOLO wrapper for Bash/Git Bash and PowerShell-compatible machines; avoid modifying vendor package files.</li>
+    <li><strong>Validate:</strong> parse TOML, query <code>codex features list</code>, verify wrapper precedence, and exercise Default-mode <code>request_user_input</code> behavior.</li>
+    <li><strong>Attest:</strong> emit per-machine success, incompatible-version, unreachable, missing-installation, or registry-drift evidence.</li>
+  </ol>
+
+  <h2>Fleet semantics</h2>
+  <p>“Immediate fleet rollout” means every machine will be attempted in the same approved rollout wave. Reachable machines will be updated and verified immediately. Unreachable machines will remain named pending items, not silently excluded. Current evidence already shows roster drift: the public registry declares Codex on two Windows hosts, while the active Linux environment also runs Codex 0.146.0.</p>
+
+  <h2>Settings intentionally excluded</h2>
+  <ul>
+    <li><strong>Native memories:</strong> excluded pending conflict analysis with the repo-managed <code>MEMORY.runtime.md</code> read-back path.</li>
+    <li><strong>Automatic approval reviewer:</strong> excluded because repository plan/user approval gates remain load-bearing even when command sandbox approval is bypassed.</li>
+    <li><strong>Multi-agent v2 and other unstable flags:</strong> excluded; the requested Default-mode input flag is the only deliberate under-development exception.</li>
+    <li><strong>Universal concurrency cap:</strong> excluded from the baseline because shared-tenancy and compute capacity differ by machine; any cap will be a tested machine overlay.</li>
+    <li><strong>Hardcoded model upgrade:</strong> excluded from this configuration change and routed through the existing model-registry drift work.</li>
+  </ul>
+
+  <h2>Failure handling</h2>
+  <ul>
+    <li>An unsupported feature or invalid footer identifier will fail before replacement and preserve the prior machine config.</li>
+    <li>A wrapper that cannot resolve the real Codex binary will fail closed with a repair command.</li>
+    <li>A directory outside the trusted-root set will route to the safe entry point or stop for explicit operator choice.</li>
+    <li>A machine that cannot be reached will be reported as <code>UNREACHABLE</code>; it will not count as rolled out.</li>
+    <li>Default-mode questioning will remain optional model behavior, not a requirement to interrupt every task.</li>
+  </ul>
+
+  <h2>Testing and completion evidence</h2>
+  <p>Implementation will use TDD. Tests will cover TOML key-level merging, legacy statusline migration, unsupported-feature rollback, cross-platform wrapper argument forwarding, trusted-root matching, safe escape behavior, wrapper recursion prevention, Default-mode tool availability, dry-run behavior, and per-machine evidence rendering. Completion will require legal scanning, adversarial code/artifact review, an issue implementation comment, and the repository cleanup audit.</p>
+
+  <section class="warning">
+    <strong>Gate status:</strong> This design approval does not approve implementation. The revised #3555 plan must absorb these decisions, clear the required adversarial provider review with no unresolved MAJOR findings, move to <code>status:plan-review</code>, and receive explicit user approval before <code>status:plan-approved</code> may be applied.
+  </section>
+</main>
+</body>
+</html>
