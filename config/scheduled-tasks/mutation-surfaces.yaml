@@ -294,6 +294,18 @@ disposition_groups:
     issue: {repository: vamseeachanta/workspace-hub, number: 3479}
     members: [scripts/cron/harness-update.sh]
     defect_class: transitive-mutation-error-swallowing
+  # The member DOES implement durable backup, post-write exact-state verify and
+  # rollback-to-backup, verified by tests/tmux/test_setup_tmux_autosave_timer.py.
+  # It still declares missing_transaction because no attestation exists that can
+  # check those properties on a SHELL installer writing systemd units — the
+  # reference transaction's python-*-v1 attestations analyse a Python crontab
+  # implementation. So every systemd-user surface is pinned to the weakest
+  # declaration regardless of what it actually does. #3792 tracks closing that
+  # gap; this group retires when its member can declare accurately.
+  - group_id: tmux-session-persistence
+    issue: {repository: vamseeachanta/workspace-hub, number: 3792}
+    members: [scripts/install/setup-tmux-autosave-timer.sh]
+    defect_class: systemd-user-transaction-unattestable
 
 resolved_dispositions:
   - issue: 3475

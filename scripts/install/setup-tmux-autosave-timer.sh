@@ -69,7 +69,16 @@ install -m 0755 "$WRAPPER_SRC" "$WRAPPER_DEST"
 # ── Install the units, backing up anything already there ────────────────
 mkdir -p "$DEST_DIR"
 
-install_unit() {
+# Named `write_unit` deliberately, not `install_unit`. The scheduler-mutation
+# guard DISCOVERS primitives by static pattern match
+# (check-scheduler-mutation-surfaces.py PRIMITIVE_PATTERNS), and it recognises
+# a systemd-user-unit-write by the `write_unit`/`remove_unit` verb or by a
+# cat/printf touching .config/systemd/user. An `install -m` call inside a
+# differently-named function is invisible to it, so declaring
+# systemd-user-unit-write while writing units this way produced
+# "discovered/declared primitive mismatch". The rename makes the declaration
+# and the implementation agree rather than silencing the check.
+write_unit() {
   local name="$1"
   local src="${SRC_DIR}/${name}"
   local dest="${DEST_DIR}/${name}"
@@ -110,8 +119,8 @@ install_unit() {
   log "${name}: installed"
 }
 
-install_unit "${UNIT_BASE}.service"
-install_unit "${UNIT_BASE}.timer"
+write_unit "${UNIT_BASE}.service"
+write_unit "${UNIT_BASE}.timer"
 
 # ── Arm it ──────────────────────────────────────────────────────────────
 systemctl --user daemon-reload
