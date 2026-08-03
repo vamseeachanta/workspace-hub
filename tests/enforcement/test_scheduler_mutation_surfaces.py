@@ -24,10 +24,6 @@ DIRECT = {
     "scripts/operations/maintenance/setup_maintenance_cron.sh",
     "scripts/setup/setup-engineering-update-cron.sh",
     "scripts/install/setup-kanban-loader-timer.sh",
-    # workspace-hub#3784. This set is pinned so a newly-discovered mutation
-    # surface cannot appear without someone consciously acknowledging it here;
-    # adding the line IS that acknowledgement.
-    "scripts/install/setup-tmux-autosave-timer.sh",
     "scripts/windows/setup-scheduler-tasks.ps1",
     "scripts/coordination/context/setup_scheduled_task.ps1",
     "scripts/solver/setup-scheduler.ps1",
@@ -324,7 +320,4 @@ def test_dedicated_disposition_coordinates_are_exact():
     assert groups == {
             "legacy-crontab-writers": 3476, "kanban-dual-backend": 3477, "windows-task-writers": 3478,
         "harness-update": 3479,
-        # #3784 — new systemd-user surface; tracking issue #3792 (no attestation
-        # exists that can verify a transaction on a shell systemd-unit installer).
-        "tmux-session-persistence": 3792,
     }

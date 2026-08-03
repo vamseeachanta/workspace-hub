@@ -1,11 +1,8 @@
 ---
 name: feedback_absence_of_signal_reads_as_success
 description: "In CI, a missing signal looks greener than a failing one — audit suppressions, aggregate membership, and dynamic deps, not just red tests"
-metadata: 
-  node_type: memory
+metadata:
   type: feedback
-  originSessionId: 19c1569d-4a9e-4d87-bd34-50c2605be4d1
-  modified: 2026-08-02T11:22:56.928Z
 ---
 
 A failing check is a number that looks wrong. A **missing** check is a number that
@@ -42,20 +39,6 @@ Five instances found in one digitalmodel session (2026-07-28/29), each independe
   it had 685 passing tests and two live crashes.
 - Import-based contracts are blind to `engine=`/`backend=`/entry points. Pin
   those separately, with the call site cited and an expiry check.
-
-## 2026-08-02: three self-inflicted instances in one session
-
-The pattern is not only in CI. Three times in one session a **failed operation presented as a successful one**, each through a different mechanism:
-
-1. **Hung push.** `git push` on a new branch stalled 44 min in the pre-push hook — zero bytes of output, no timeout, no error. A hung push is byte-for-byte indistinguishable from a finished one. Only `git ls-remote` distinguishes them. See [[feedback_prepush_no_verify_allowed_on_feature_branch]].
-2. **`| tail` ate a non-zero exit.** Ran `bash review-fanout.sh ... 2>&1 | tail -30`; the script correctly `exit 2`-ed on a filename-convention rejection, but **a pipeline reports the LAST command's status**, so the harness recorded exit 0. I nearly filed a bug against the script for "exiting 0 on rejection." The script was right; the invocation was wrong.
-3. **0-byte artifact = still running, not empty result.** Review artifacts existed on disk with size 0 while the providers were mid-flight. File existence is not completion.
-
-**How to act on it**
-- **`cmd | tail` / `| head` discards the real exit code** — and I reach for those constantly to keep output small. Use `set -o pipefail`, check `${PIPESTATUS[0]}`, or don't pipe when the status matters. This composes with instance 1: piping a push through `tail` hides *both* the hang and the failure.
-- Verify against the **authoritative external state**, never the local command's report: `git ls-remote` over push output, `gh pr list --state merged` over a diff read ([[feedback_branch_landed_ask_the_forge_not_an_llm]]).
-- A **0-byte output file means in-flight or dead, never clean.** Size 0 is not a result.
-- Diagnose a hung command through its **children**, not itself: `pgrep -P <pid> -a` names what it is actually stuck in.
 
 See [[feedback_non_required_checks_hide_regressions]],
 [[feedback_required_check_must_not_skip]], [[project_orcaflex_ecosystem_review_2026_07_25]].

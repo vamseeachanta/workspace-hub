@@ -95,8 +95,7 @@ def test_cron_authority_is_exact_and_3475_is_resolved():
         }
     ]
     assert {group["issue"]["number"] for group in registry["disposition_groups"]} == {
-        # 3792 added by #3784 — first new mutation surface since this was pinned.
-        3476, 3477, 3478, 3479, 3792
+        3476, 3477, 3478, 3479
     }
 
 
@@ -206,7 +205,7 @@ def test_renderer_supports_delegate_rows_and_preserves_migration_issues():
     assert "legacy-exact-line" in rendered
     assert "swallow-3490" in rendered
     assert "swallow-3479" in rendered
-    for issue in (3476, 3477, 3478, 3479, 3792):
+    for issue in (3476, 3477, 3478, 3479):
         assert f"#{issue}" in rendered
     assert "active disposition: #3475" not in rendered
 

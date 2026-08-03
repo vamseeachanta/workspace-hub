@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-08-03T09:23:40.044388Z",
+  "generated_at": "2026-08-02T21:21:38.901501Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 11,
+  "eligible_count": 10,
   "applied": [],
   "candidates": [
     {
@@ -51,7 +51,7 @@
         "gate:completeness",
         "domain:routing"
       ],
-      "updatedAt": "2026-08-03T05:48:46Z",
+      "updatedAt": "2026-08-02T00:53:31Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -158,42 +158,6 @@
         "lane:claude"
       ],
       "updatedAt": "2026-08-01T06:13:53Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3784,
-      "title": "bug(workstations): tmux persistence is attach-gated and unwired \u2014 no reboot survival on any box, no SSH auto-attach",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3784",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:harness",
-        "domain:workstations",
-        "machine:multi",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-08-03T06:59:20Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -495,50 +459,79 @@
       "eligible": false
     },
     {
-      "number": 3787,
-      "title": "pytest pays a large fixed startup tax before any test runs \u2014 38s git call, 59MB DB query on collect-only, 487 hidden test files",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3787",
+      "number": 3480,
+      "title": "Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3480",
       "labels": [
-        "bug",
+        "cat:tooling",
+        "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
-        "lane:claude"
+        "domain:capability"
       ],
-      "updatedAt": "2026-08-03T07:03:39Z",
+      "updatedAt": "2026-07-31T08:33:07Z",
       "execution_ready": true,
       "priority_rank": 4,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3585,
+      "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
+      "labels": [
+        "priority:medium",
+        "cat:data",
+        "machine:dev-primary",
+        "domain:family"
+      ],
+      "updatedAt": "2026-07-31T08:33:42Z",
+      "execution_ready": false,
+      "priority_rank": 2,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
       "provider_status": "underused",
       "work_type": [
-        "research",
         "implementation"
       ],
       "target_label": "agent:codex",
-      "confidence": 0.8,
+      "confidence": 0.6,
       "confidence_reasons": [
-        "execution-ready",
+        "priority-labeled",
         "strong-codex-language-match",
         "provider-highest-priority"
       ],
       "eligible": false
     },
     {
-      "number": 3788,
-      "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3788",
+      "number": 3696,
+      "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
       "labels": [
-        "bug",
-        "priority:high",
+        "priority:medium",
         "cat:operations",
-        "machine:dev-primary",
-        "status:needs-plan",
-        "domain:routing"
+        "domain:workstations",
+        "machine:dev-primary"
       ],
-      "updatedAt": "2026-08-03T05:48:20Z",
+      "updatedAt": "2026-07-31T08:33:56Z",
       "execution_ready": false,
-      "priority_rank": 1,
+      "priority_rank": 2,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
