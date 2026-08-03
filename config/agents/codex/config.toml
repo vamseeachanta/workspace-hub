@@ -1,15 +1,26 @@
-model = "gpt-5.5"
-model_reasoning_effort = "medium"
+# Owned Codex fleet baseline (#3555). Machine-local model selection stays local.
+# TUI selector attestation: Codex CLI 0.146.0, inspected 2026-08-02.
+# Source allowlist: codex-rs/tui footer selectors at the 0.146.0 release.
+plan_mode_reasoning_effort = "high"
+personality = "pragmatic"
+web_search = "live"
 
-[status_line]
+[features]
+default_mode_request_user_input = true
+goals = true
+multi_agent = true
+hooks = true
+
+[agents]
 enabled = true
-items = [
-  "model",
-  "project_root",
-  "git_branch",
-  "cwd",
-  "context_window_used_percentage",
-  "limit_5h_remaining_percentage",
-  "limit_weekly_remaining_percentage",
-  "token_count"
+interrupt_message = true
+
+[tui]
+resume_cwd = "session"
+status_line = [
+  "model-with-reasoning",
+  "context-remaining",
+  "current-dir",
+  "five-hour-limit",
+  "weekly-limit",
 ]

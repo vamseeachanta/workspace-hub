@@ -21,6 +21,59 @@ _pass() { echo "  PASS  $1"; PASS=$((PASS + 1)); }
 _warn() { echo "  WARN  $1"; WARN=$((WARN + 1)); }
 _fail() { echo "  FAIL  $1"; FAIL=$((FAIL + 1)); }
 
+_codex_version_is_older() {
+  local current="$1" pinned="$2"
+  local current_major current_minor current_patch pinned_major pinned_minor pinned_patch
+  IFS=. read -r current_major current_minor current_patch <<<"$current"
+  IFS=. read -r pinned_major pinned_minor pinned_patch <<<"$pinned"
+  (( current_major < pinned_major )) && return 0
+  (( current_major > pinned_major )) && return 1
+  (( current_minor < pinned_minor )) && return 0
+  (( current_minor > pinned_minor )) && return 1
+  (( current_patch < pinned_patch ))
+}
+
+_validate_codex_footer_selectors() {
+  local template="$1"
+  python3 - "$template" <<'PY'
+import sys
+import tomllib
+from pathlib import Path
+
+allowed = {
+    "model-with-reasoning", "context-remaining", "current-dir",
+    "five-hour-limit", "weekly-limit",
+}
+try:
+    data = tomllib.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+    selectors = data["tui"]["status_line"]
+except (KeyError, OSError, tomllib.TOMLDecodeError):
+    raise SystemExit(1)
+raise SystemExit(0 if isinstance(selectors, list) and set(selectors) == allowed else 1)
+PY
+}
+
+_verify_codex_feature_baseline() {
+  local codex_bin="$1" template="$2" candidate_root before after
+  candidate_root="$(mktemp -d "${TMPDIR:-/tmp}/verify-codex.XXXXXX")" || return 1
+  before="$(CODEX_HOME="${candidate_root}/empty" "$codex_bin" features list 2>&1)"
+  mkdir -p "${candidate_root}/candidate"
+  cp "$template" "${candidate_root}/candidate/config.toml"
+  after="$(CODEX_HOME="${candidate_root}/candidate" "$codex_bin" features list 2>&1)"
+  local after_status=$?
+  rm -rf "$candidate_root"
+  if [[ "$after_status" -ne 0 ]]; then
+    _fail "codex isolated config load failed"
+  elif ! grep -q '^default_mode_request_user_input' <<<"$after"; then
+    _fail "codex feature default_mode_request_user_input is absent"
+  elif grep -Eq '^default_mode_request_user_input.*false$' <<<"$before" \
+    && grep -Eq '^default_mode_request_user_input.*true$' <<<"$after"; then
+    _pass "codex feature default_mode_request_user_input: false -> true"
+  else
+    _fail "codex feature default_mode_request_user_input did not change false -> true"
+  fi
+}
+
 # ── Detect platform ───────────────────────────────────────────────────────────
 WH_OS="linux"
 case "$(uname -s 2>/dev/null)" in
@@ -89,17 +142,26 @@ if [[ -f "$PIN_ENV" ]]; then
   # shellcheck source=/dev/null
   source "$PIN_ENV"
 else
-  CODEX_PIN_VERSION="0.123.0"
+  CODEX_PIN_VERSION="0.146.0"
 fi
 for cli in codex gemini; do
   if command -v "$cli" &>/dev/null; then
     if [[ "$cli" == "codex" ]]; then
       CODEX_VER_RAW="$($cli --version 2>/dev/null | head -1 || true)"
       CODEX_VER="$(printf '%s' "$CODEX_VER_RAW" | awk '{print $NF}')"
-      if [[ "$CODEX_VER" == "${CODEX_PIN_VERSION:-0.123.0}" ]]; then
+      if [[ "$CODEX_VER" == "${CODEX_PIN_VERSION:-0.146.0}" ]]; then
         _pass "codex CLI found at pinned version ${CODEX_VER}"
+        CODEX_TEMPLATE="${CODEX_CONFIG_TEMPLATE:-${WORKSPACE_HUB}/config/agents/codex/config.toml}"
+        if _validate_codex_footer_selectors "$CODEX_TEMPLATE"; then
+          _pass "codex TUI footer selectors validated for ${CODEX_PIN_VERSION}"
+          _verify_codex_feature_baseline "$cli" "$CODEX_TEMPLATE"
+        else
+          _fail "codex TUI footer selectors are not in pinned allowlist"
+        fi
+      elif _codex_version_is_older "$CODEX_VER" "${CODEX_PIN_VERSION:-0.146.0}"; then
+        _fail "codex CLI version ${CODEX_VER} is older than pinned ${CODEX_PIN_VERSION}"
       else
-        _warn "codex CLI version drift: ${CODEX_VER:-unknown} (expected ${CODEX_PIN_VERSION:-0.123.0}; run scripts/install/pin-codex.sh)"
+        _fail "codex CLI version drift: ${CODEX_VER:-unknown} (expected ${CODEX_PIN_VERSION}; run scripts/install/pin-codex.sh)"
       fi
     else
       _pass "${cli} CLI found"

@@ -5,7 +5,19 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=/dev/null
 source "${SCRIPT_DIR}/codex-pin.env"
-PIN="${CODEX_PIN_VERSION:-0.123.0}"
+PIN="${CODEX_PIN_VERSION:-0.146.0}"
+
+CODEX_BIN="${CODEX_BIN:-$(command -v codex 2>/dev/null || true)}"
+
+cur="<not-installed>"
+if [[ -n "$CODEX_BIN" ]]; then
+  cur="$($CODEX_BIN --version 2>/dev/null | awk '{print $NF}' || echo '<unknown>')"
+fi
+
+if [[ "$cur" == "$PIN" ]]; then
+  echo "OK: codex-cli $cur already at pin $PIN"
+  exit 0
+fi
 
 if ! command -v npm >/dev/null 2>&1; then
   echo "ERROR: npm not found — install Node.js/npm before pinning Codex" >&2
@@ -22,16 +34,10 @@ if [[ -z "$NPM_GLOBAL_BIN" ]]; then
   fi
 fi
 
-CODEX_BIN="$(command -v codex 2>/dev/null || true)"
 if [[ -z "$CODEX_BIN" && -x "${NPM_GLOBAL_BIN}/codex" ]]; then
   CODEX_BIN="${NPM_GLOBAL_BIN}/codex"
-fi
-
-cur="<not-installed>"
-if [[ -n "$CODEX_BIN" ]]; then
   cur="$($CODEX_BIN --version 2>/dev/null | awk '{print $NF}' || echo '<unknown>')"
 fi
-
 if [[ "$cur" == "$PIN" ]]; then
   echo "OK: codex-cli $cur already at pin $PIN"
   exit 0
