@@ -204,536 +204,137 @@ PY
     return 1
 }
 
-sanitize_codex_managed_keys() {
-    local source_file="$1"
-    local output_file="$2"
-    local strip_status_line="${3:-false}"
-
-    if command -v python3 >/dev/null 2>&1; then
-        if python3 - "$source_file" "$output_file" "$strip_status_line" <<'PY'
+read -r -d '' CODEX_TOML_MERGER <<'PY' || true
+import json
 import pathlib
 import re
 import sys
+import tomllib
 
-source_path = pathlib.Path(sys.argv[1])
-output_path = pathlib.Path(sys.argv[2])
-strip_status_line = sys.argv[3].lower() == 'true'
-managed_keys = {'model', 'model_reasoning_effort'}
-table_header_re = re.compile(r'^\[\[?[^\]]+\]\]?\s*(?:#.*)?$')
-status_line_re = re.compile(r'^\[status_line\]\s*(?:#.*)?$')
-managed_line_re = re.compile(r'^\s*(model|model_reasoning_effort)\s*=')
-
-
-def split_top_level(text, delimiter=','):
-    parts = []
-    start = 0
-    brace = bracket = paren = 0
-    in_string = None
-    escape = False
-    i = 0
-    while i < len(text):
-        ch = text[i]
-        if in_string:
-            if in_string == '"' and escape:
-                escape = False
-            elif in_string == '"' and ch == '\\':
-                escape = True
-            elif ch == in_string:
-                in_string = None
-            i += 1
-            continue
-        if ch in ('"', "'"):
-            in_string = ch
-        elif ch == '{':
-            brace += 1
-        elif ch == '}':
-            brace -= 1
-        elif ch == '[':
-            bracket += 1
-        elif ch == ']':
-            bracket -= 1
-        elif ch == '(':
-            paren += 1
-        elif ch == ')':
-            paren -= 1
-        elif ch == delimiter and brace == 0 and bracket == 0 and paren == 0:
-            parts.append(text[start:i])
-            start = i + 1
-        i += 1
-    parts.append(text[start:])
-    return parts
+template_path, target_path, output_path = map(pathlib.Path, sys.argv[1:])
+OWNED = {
+    (): ("plan_mode_reasoning_effort", "personality", "web_search"),
+    ("features",): ("default_mode_request_user_input", "goals", "multi_agent", "hooks"),
+    ("agents",): ("enabled", "interrupt_message"),
+    ("tui",): ("resume_cwd", "status_line"),
+}
+HEADER = re.compile(r'^\s*\[([^\[\]]+)\]\s*(?:#.*)?$')
+ASSIGNMENT = re.compile(r'^\s*([A-Za-z0-9_-]+)\s*=')
 
 
-def sanitize_inline_tables(text):
-    result = []
-    i = 0
-    in_string = None
-    escape = False
-    while i < len(text):
-        ch = text[i]
-        if in_string:
-            result.append(ch)
-            if in_string == '"' and escape:
-                escape = False
-            elif in_string == '"' and ch == '\\':
-                escape = True
-            elif ch == in_string:
-                in_string = None
-            i += 1
-            continue
-        if ch in ('"', "'"):
-            in_string = ch
-            result.append(ch)
-            i += 1
-            continue
-        if ch != '{':
-            result.append(ch)
-            i += 1
-            continue
-        depth = 1
-        j = i + 1
-        inner_string = None
-        inner_escape = False
-        while j < len(text):
-            cj = text[j]
-            if inner_string:
-                if inner_string == '"' and inner_escape:
-                    inner_escape = False
-                elif inner_string == '"' and cj == '\\':
-                    inner_escape = True
-                elif cj == inner_string:
-                    inner_string = None
-                j += 1
-                continue
-            if cj in ('"', "'"):
-                inner_string = cj
-            elif cj == '{':
-                depth += 1
-            elif cj == '}':
-                depth -= 1
-                if depth == 0:
-                    break
-            j += 1
-        if depth != 0:
-            result.append(ch)
-            i += 1
-            continue
-        inner = text[i + 1:j]
-        entries = split_top_level(inner)
-        sanitized_entries = []
-        for entry in entries:
-            stripped = entry.strip()
-            if not stripped:
-                continue
-            key, sep, value = stripped.partition('=')
-            if sep and key.strip() in managed_keys:
-                continue
-            sanitized_entries.append(sanitize_inline_tables(stripped))
-        if sanitized_entries:
-            result.append('{ ' + ', '.join(sanitized_entries) + ' }')
+def flatten(value, prefix=()):
+    paths = set()
+    for key, child in value.items():
+        path = prefix + (key,)
+        if isinstance(child, dict):
+            paths.update(flatten(child, path))
         else:
-            result.append('{}')
-        i = j + 1
-    return ''.join(result)
+            paths.add(path)
+    return paths
 
 
-def multiline_state_after(line, current_state):
-    i = 0
-    in_string = current_state
-    while i < len(line):
-        if in_string == '"""':
-            if line.startswith('"""', i) and (i == 0 or line[i - 1] != '\\'):
-                in_string = None
-                i += 3
-            else:
-                i += 1
-            continue
-        if in_string == "'''":
-            if line.startswith("'''", i):
-                in_string = None
-                i += 3
-            else:
-                i += 1
-            continue
-        if line.startswith('"""', i) and (i == 0 or line[i - 1] != '\\'):
-            in_string = '"""'
-            i += 3
-            continue
-        if line.startswith("'''", i):
-            in_string = "'''"
-            i += 3
-            continue
-        i += 1
-    return in_string
-
-
-skip_status = False
-multiline = None
-output = []
-for line in source_path.read_text().splitlines(keepends=True):
-    if multiline is None:
-        stripped = line.strip()
-        if skip_status:
-            if stripped and table_header_re.match(stripped):
-                skip_status = False
-            else:
-                multiline = multiline_state_after(line, multiline)
-                continue
-        if strip_status_line and stripped and status_line_re.match(stripped):
-            skip_status = True
-            multiline = multiline_state_after(line, multiline)
-            continue
-        if managed_line_re.match(line):
-            multiline = multiline_state_after(line, multiline)
-            continue
-        line = sanitize_inline_tables(line)
-    output.append(line)
-    multiline = multiline_state_after(line, multiline)
-
-output_path.write_text(''.join(output))
-PY
-        then
-            return
-        fi
-    fi
-
-    if command -v uv >/dev/null 2>&1; then
-        uv run --no-project python - "$source_file" "$output_file" "$strip_status_line" <<'PY'
-import pathlib
-import re
-import sys
-
-source_path = pathlib.Path(sys.argv[1])
-output_path = pathlib.Path(sys.argv[2])
-strip_status_line = sys.argv[3].lower() == 'true'
-managed_keys = {'model', 'model_reasoning_effort'}
-table_header_re = re.compile(r'^\[\[?[^\]]+\]\]?\s*(?:#.*)?$')
-status_line_re = re.compile(r'^\[status_line\]\s*(?:#.*)?$')
-managed_line_re = re.compile(r'^\s*(model|model_reasoning_effort)\s*=')
-
-
-def split_top_level(text, delimiter=','):
-    parts = []
-    start = 0
-    brace = bracket = paren = 0
-    in_string = None
-    escape = False
-    i = 0
-    while i < len(text):
-        ch = text[i]
-        if in_string:
-            if in_string == '"' and escape:
-                escape = False
-            elif in_string == '"' and ch == '\\':
-                escape = True
-            elif ch == in_string:
-                in_string = None
-            i += 1
-            continue
-        if ch in ('"', "'"):
-            in_string = ch
-        elif ch == '{':
-            brace += 1
-        elif ch == '}':
-            brace -= 1
-        elif ch == '[':
-            bracket += 1
-        elif ch == ']':
-            bracket -= 1
-        elif ch == '(':
-            paren += 1
-        elif ch == ')':
-            paren -= 1
-        elif ch == delimiter and brace == 0 and bracket == 0 and paren == 0:
-            parts.append(text[start:i])
-            start = i + 1
-        i += 1
-    parts.append(text[start:])
-    return parts
-
-
-def sanitize_inline_tables(text):
-    result = []
-    i = 0
-    in_string = None
-    escape = False
-    while i < len(text):
-        ch = text[i]
-        if in_string:
-            result.append(ch)
-            if in_string == '"' and escape:
-                escape = False
-            elif in_string == '"' and ch == '\\':
-                escape = True
-            elif ch == in_string:
-                in_string = None
-            i += 1
-            continue
-        if ch in ('"', "'"):
-            in_string = ch
-            result.append(ch)
-            i += 1
-            continue
-        if ch != '{':
-            result.append(ch)
-            i += 1
-            continue
-        depth = 1
-        j = i + 1
-        inner_string = None
-        inner_escape = False
-        while j < len(text):
-            cj = text[j]
-            if inner_string:
-                if inner_string == '"' and inner_escape:
-                    inner_escape = False
-                elif inner_string == '"' and cj == '\\':
-                    inner_escape = True
-                elif cj == inner_string:
-                    inner_string = None
-                j += 1
-                continue
-            if cj in ('"', "'"):
-                inner_string = cj
-            elif cj == '{':
-                depth += 1
-            elif cj == '}':
-                depth -= 1
-                if depth == 0:
-                    break
-            j += 1
-        if depth != 0:
-            result.append(ch)
-            i += 1
-            continue
-        inner = text[i + 1:j]
-        entries = split_top_level(inner)
-        sanitized_entries = []
-        for entry in entries:
-            stripped = entry.strip()
-            if not stripped:
-                continue
-            key, sep, value = stripped.partition('=')
-            if sep and key.strip() in managed_keys:
-                continue
-            sanitized_entries.append(sanitize_inline_tables(stripped))
-        if sanitized_entries:
-            result.append('{ ' + ', '.join(sanitized_entries) + ' }')
-        else:
-            result.append('{}')
-        i = j + 1
-    return ''.join(result)
-
-
-def multiline_state_after(line, current_state):
-    i = 0
-    in_string = current_state
-    while i < len(line):
-        if in_string == '"""':
-            if line.startswith('"""', i) and (i == 0 or line[i - 1] != '\\'):
-                in_string = None
-                i += 3
-            else:
-                i += 1
-            continue
-        if in_string == "'''":
-            if line.startswith("'''", i):
-                in_string = None
-                i += 3
-            else:
-                i += 1
-            continue
-        if line.startswith('"""', i) and (i == 0 or line[i - 1] != '\\'):
-            in_string = '"""'
-            i += 3
-            continue
-        if line.startswith("'''", i):
-            in_string = "'''"
-            i += 3
-            continue
-        i += 1
-    return in_string
-
-
-skip_status = False
-multiline = None
-output = []
-for line in source_path.read_text().splitlines(keepends=True):
-    if multiline is None:
-        stripped = line.strip()
-        if skip_status:
-            if stripped and table_header_re.match(stripped):
-                skip_status = False
-            else:
-                multiline = multiline_state_after(line, multiline)
-                continue
-        if strip_status_line and stripped and status_line_re.match(stripped):
-            skip_status = True
-            multiline = multiline_state_after(line, multiline)
-            continue
-        if managed_line_re.match(line):
-            multiline = multiline_state_after(line, multiline)
-            continue
-        line = sanitize_inline_tables(line)
-    output.append(line)
-    multiline = multiline_state_after(line, multiline)
-
-output_path.write_text(''.join(output))
-PY
-        return
-    fi
-
-    echo "[ERROR] sanitize_codex_managed_keys requires python3 or uv" >&2
-    return 1
-}
-
-validate_toml_file() {
-    local target="$1"
-    local label="$2"
-
-    if command -v uv >/dev/null 2>&1; then
-        uv run python - "$target" <<'PY' >/dev/null
-import pathlib
-import sys
-import tomllib
-
-with pathlib.Path(sys.argv[1]).open('rb') as fh:
-    tomllib.load(fh)
-PY
-        return
-    fi
-
-    if command -v python3 >/dev/null 2>&1; then
-        python3 - "$target" <<'PY' >/dev/null
-import pathlib
-import sys
-import tomllib
-
-with pathlib.Path(sys.argv[1]).open('rb') as fh:
-    tomllib.load(fh)
-PY
-        return
-    fi
-
-    echo "[WARN] Skipping TOML validation for $label -> $target (uv/python3 unavailable)" >&2
-}
-
-validate_codex_managed_key_scope() {
-    local target="$1"
-    local label="$2"
-
-    if command -v uv >/dev/null 2>&1; then
-        uv run python - "$target" <<'PY' >/dev/null
-import pathlib
-import sys
-import tomllib
-
-MANAGED_KEYS = {"model", "model_reasoning_effort"}
-
-
-def walk_tables(value, *, is_root=False):
+def encode(value):
+    if isinstance(value, bool):
+        return str(value).lower()
+    if isinstance(value, str):
+        return json.dumps(value)
     if isinstance(value, list):
-        for child in value:
-            walk_tables(child, is_root=False)
-        return
-    if not isinstance(value, dict):
-        return
-    if not is_root:
-        overlap = MANAGED_KEYS.intersection(value)
-        if overlap:
-            raise SystemExit(f"managed keys leaked into non-root table: {sorted(overlap)}")
-    for child in value.values():
-        walk_tables(child, is_root=False)
+        return "[" + ", ".join(encode(item) for item in value) + "]"
+    raise TypeError(f"unsupported owned value: {value!r}")
 
 
-with pathlib.Path(sys.argv[1]).open('rb') as fh:
-    data = tomllib.load(fh)
+def owned_lines(data, table):
+    values = data
+    for part in table:
+        values = values[part]
+    return [f"{key} = {encode(values[key])}\n" for key in OWNED[table]]
 
-walk_tables(data, is_root=True)
+
+def statement_end(lines, start):
+    quote = None
+    square = curly = 0
+    for index in range(start, len(lines)):
+        line = lines[index]
+        pos = 0
+        while pos < len(line):
+            if quote in ('"""', "'''"):
+                if line.startswith(quote, pos):
+                    quote = None; pos += 3
+                else:
+                    pos += 1
+                continue
+            char = line[pos]
+            if quote:
+                if char == quote and (quote == "'" or pos == 0 or line[pos - 1] != "\\"):
+                    quote = None
+                pos += 1; continue
+            if line.startswith('"""', pos) or line.startswith("'''", pos):
+                quote = line[pos:pos + 3]; pos += 3; continue
+            if char in ('"', "'"):
+                quote = char
+            elif char == '#':
+                break
+            elif char == '[': square += 1
+            elif char == ']': square -= 1
+            elif char == '{': curly += 1
+            elif char == '}': curly -= 1
+            pos += 1
+        if quote not in ('"""', "'''") and square == 0 and curly == 0:
+            return index + 1
+    return len(lines)
+
+
+def merge_text(text, canonical):
+    lines = text.splitlines(keepends=True)
+    output = owned_lines(canonical, ())
+    context = ()
+    seen = set()
+    skip_legacy = False
+    index = 0
+    while index < len(lines):
+        end = statement_end(lines, index)
+        statement = lines[index:end]
+        header = HEADER.match(statement[0]) if end == index + 1 else None
+        if header:
+            name = header.group(1).strip()
+            context = (name,) if name in {"features", "agents", "tui"} else (name,)
+            skip_legacy = name == "status_line"
+            if not skip_legacy:
+                output.extend(statement)
+                if context in OWNED:
+                    output.extend(owned_lines(canonical, context)); seen.add(context)
+        elif not skip_legacy:
+            assignment = ASSIGNMENT.match(statement[0])
+            if not (assignment and context in OWNED and assignment.group(1) in OWNED[context]):
+                output.extend(statement)
+        index = end
+    for table in (("features",), ("agents",), ("tui",)):
+        if table not in seen:
+            output.extend(["\n", f"[{table[0]}]\n", *owned_lines(canonical, table)])
+    return "".join(output)
+
+
+with template_path.open("rb") as fh:
+    canonical = tomllib.load(fh)
+with target_path.open("rb") as fh:
+    local = tomllib.load(fh)
+expected_paths = {table + (key,) for table, keys in OWNED.items() for key in keys}
+if flatten(canonical) != expected_paths:
+    raise SystemExit("canonical Codex config does not match the owned-key contract")
+merged = merge_text(target_path.read_text(), canonical)
+tomllib.loads(merged)
+output_path.write_text(merged)
 PY
-        return
-    fi
 
-    if command -v python3 >/dev/null 2>&1; then
-        python3 - "$target" <<'PY' >/dev/null
-import pathlib
-import sys
-import tomllib
-
-MANAGED_KEYS = {"model", "model_reasoning_effort"}
-
-
-def walk_tables(value, *, is_root=False):
-    if isinstance(value, list):
-        for child in value:
-            walk_tables(child, is_root=False)
-        return
-    if not isinstance(value, dict):
-        return
-    if not is_root:
-        overlap = MANAGED_KEYS.intersection(value)
-        if overlap:
-            raise SystemExit(f"managed keys leaked into non-root table: {sorted(overlap)}")
-    for child in value.values():
-        walk_tables(child, is_root=False)
-
-
-with pathlib.Path(sys.argv[1]).open('rb') as fh:
-    data = tomllib.load(fh)
-
-walk_tables(data, is_root=True)
-PY
-        return
-    fi
-
-    echo "[WARN] Skipping Codex managed-key scope validation for $label -> $target (uv/python3 unavailable)" >&2
-}
-
-upsert_codex_root_model_defaults() {
-    local target="$1"
-    local label="$2"
-    local tmp_clean=""
-    local tmp_final=""
-
-    trap 'rm -f "$tmp_clean" "$tmp_final"' RETURN
-
-    tmp_clean="$(mktemp)"
-    tmp_final="$(mktemp)"
-
-    sanitize_codex_managed_keys "$target" "$tmp_clean"
-
-    cat > "$tmp_final" <<'EOF'
-model = "gpt-5.5"
-model_reasoning_effort = "medium"
-
-EOF
-    cat "$tmp_clean" >> "$tmp_final"
-
-    if ! validate_toml_file "$tmp_final" "$label"; then
-        trap - RETURN
-        rm -f "$tmp_clean" "$tmp_final"
+merge_codex_toml() {
+    local template="$1"
+    local target="$2"
+    local output="$3"
+    if ! command -v uv >/dev/null 2>&1; then
+        echo "[ERROR] uv is required for Codex TOML sync" >&2
         return 1
     fi
-    if ! validate_codex_managed_key_scope "$tmp_final" "$label"; then
-        trap - RETURN
-        rm -f "$tmp_clean" "$tmp_final"
-        return 1
-    fi
-
-    if cmp -s "$tmp_final" "$target"; then
-        log_skip "$label (already current)"
-    else
-        if [[ "$DRY_RUN" == "true" ]]; then
-            log_change "$label (model defaults upsert)"
-        else
-            mv "$tmp_final" "$target"
-            tmp_final=""
-            log_change "$label (model defaults upsert)"
-        fi
-    fi
-
-    trap - RETURN
-    rm -f "$tmp_clean" "$tmp_final"
+    uv run --no-project python - "$template" "$target" "$output" <<<"$CODEX_TOML_MERGER"
 }
 
 sync_json_merge() {
@@ -834,77 +435,31 @@ sync_codex_managed_config() {
     local template="$1"
     local target="$2"
     local label="$3"
-    local tmp=""
     local tmp_new=""
-    local template_clean=""
 
-    trap 'rm -f "$tmp" "$tmp_new" "$template_clean"' RETURN
-
-    template_clean="$(mktemp)"
-    sanitize_codex_managed_keys "$template" "$template_clean"
+    trap 'rm -f "${tmp_new:-}"' RETURN
 
     if [[ ! -f "$target" ]]; then
         if [[ "$DRY_RUN" == "true" ]]; then
+            tmp_new="$(mktemp)"
+            merge_codex_toml "$template" "$template" "$tmp_new"
             log_change "$label -> $target (create)"
             trap - RETURN
-            rm -f "$tmp" "$tmp_new" "$template_clean"
+            rm -f "$tmp_new"
             return
         fi
-
         ensure_parent_dir "$target"
-        tmp_new="$(mktemp)"
-        cat > "$tmp_new" <<'EOF'
-model = "gpt-5.5"
-model_reasoning_effort = "medium"
-
-EOF
-        cat "$template_clean" >> "$tmp_new"
-        if ! validate_toml_file "$tmp_new" "$label"; then
-            trap - RETURN
-            rm -f "$tmp" "$tmp_new" "$template_clean"
-            return 1
-        fi
-        if ! validate_codex_managed_key_scope "$tmp_new" "$label"; then
-            trap - RETURN
-            rm -f "$tmp" "$tmp_new" "$template_clean"
-            return 1
-        fi
-        mv "$tmp_new" "$target"
+        tmp_new="$(sync_make_target_tmp "$target")"
+        merge_codex_toml "$template" "$template" "$tmp_new"
+        mv -f "$tmp_new" "$target"
         tmp_new=""
         log_change "$label -> $target (create)"
         trap - RETURN
-        rm -f "$tmp" "$tmp_new" "$template_clean"
         return
     fi
 
-    tmp="$(mktemp)"
-    tmp_new="$(mktemp)"
-
-    # Remove managed keys from any scope and replace the managed status_line section.
-    sanitize_codex_managed_keys "$target" "$tmp" true
-
-    cat > "$tmp_new" <<'EOF'
-model = "gpt-5.5"
-model_reasoning_effort = "medium"
-
-EOF
-    cat "$tmp" >> "$tmp_new"
-
-    if [[ -s "$tmp_new" ]]; then
-        printf '\n' >> "$tmp_new"
-    fi
-    cat "$template_clean" >> "$tmp_new"
-
-    if ! validate_toml_file "$tmp_new" "$label"; then
-        trap - RETURN
-        rm -f "$tmp" "$tmp_new" "$template_clean"
-        return 1
-    fi
-    if ! validate_codex_managed_key_scope "$tmp_new" "$label"; then
-        trap - RETURN
-        rm -f "$tmp" "$tmp_new" "$template_clean"
-        return 1
-    fi
+    tmp_new="$(sync_make_target_tmp "$target")"
+    merge_codex_toml "$template" "$target" "$tmp_new"
 
     if cmp -s "$tmp_new" "$target"; then
         log_skip "$label -> $target (already current)"
@@ -917,9 +472,8 @@ EOF
             log_change "$label -> $target (managed settings upsert)"
         fi
     fi
-
     trap - RETURN
-    rm -f "$tmp" "$tmp_new" "$template_clean"
+    rm -f "$tmp_new"
 }
 
 resolve_machine_roots() {
@@ -1270,30 +824,9 @@ sync_hermes_plain_file() {
 }
 
 sync_repo_codex_configs() {
-    local ws_root="$1"
-    local list_file="$ws_root/config/sync-items.json"
-    local repo_cfg
-
-    # Always sync the current workspace repo-local Codex config if present.
-    repo_cfg="$ws_root/.codex/config.toml"
-    if [[ -f "$repo_cfg" ]]; then
-        upsert_codex_root_model_defaults "$repo_cfg" "Repo Codex config $repo_cfg"
-    fi
-
-    # Optionally sync additional repos declared in sync-items.json when available locally.
-    if command -v jq >/dev/null 2>&1 && [[ -f "$list_file" ]]; then
-        while IFS= read -r repo_cfg; do
-            [[ -n "$repo_cfg" ]] || continue
-            [[ -f "$repo_cfg" ]] || continue
-            upsert_codex_root_model_defaults "$repo_cfg" "Repo Codex config $repo_cfg"
-        done < <(
-            jq -r '
-              .sync_items.git_repositories.base_path as $base
-              | .sync_items.git_repositories.repos[]
-              | ($base + "/" + . + "/.codex/config.toml")
-            ' "$list_file"
-        )
-    fi
+    # Repo-local Codex files own their model selection and remain untouched.
+    # The fleet-owned baseline applies only to the user-level Codex config.
+    return
 }
 
 echo "=== Syncing Agent Configs ==="

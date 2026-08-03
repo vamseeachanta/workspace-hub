@@ -62,14 +62,7 @@ EOF
 }
 EOF
 
-    cat > "$ws_root/config/agents/codex/config.toml" <<'EOF'
-model = "gpt-5.5"
-model_reasoning_effort = "medium"
-
-[status_line]
-enabled = true
-items = ["model"]
-EOF
+    cp "$REPO_ROOT/config/agents/codex/config.toml" "$ws_root/config/agents/codex/config.toml"
 
     cat > "$ws_root/config/agents/hermes/config.yaml.template" <<'EOF'
 model:

@@ -5,8 +5,6 @@ import shutil
 import subprocess
 from pathlib import Path
 
-import yaml
-
 
 def run_sync(*args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
@@ -45,16 +43,17 @@ def test_sync_dry_run_handles_machine_with_no_present_sibling_skill_dirs():
     assert "could not find expected ':'" not in (result.stderr + result.stdout).lower()
 
 
-def test_sync_dry_run_uses_python3_fallback_when_uv_is_absent():
+def test_sync_dry_run_fails_closed_when_uv_is_absent(tmp_path):
     env = os.environ.copy()
     env["PATH"] = path_without_uv()
+    env["HOME"] = str(tmp_path)
     assert shutil.which("uv", path=env["PATH"]) is None
 
     result = run_sync("--machine", "dev-primary", "--dry-run", env=env)
 
-    assert result.returncode == 0, result.stderr + result.stdout
-    assert "uv: command not found" not in result.stderr
-    assert "unresolved token" not in (result.stderr + result.stdout).lower()
+    assert result.returncode != 0
+    assert "uv is required for Codex TOML sync" in result.stderr
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_sync_dry_run_falls_back_to_uv_when_python3_lacks_yaml(tmp_path):
@@ -104,7 +103,7 @@ def test_sync_accepts_hostname_alias_machine_identifier():
     assert "unknown machine" not in (result.stderr + result.stdout).lower()
 
 
-def test_sync_preserves_legacy_harness_only_workspace_without_registry(tmp_path):
+def test_sync_rejects_legacy_model_only_canonical_atomically(tmp_path):
     repo_root = Path(__file__).resolve().parents[2]
     ws_root = tmp_path / "ws-hub"
     home_root = tmp_path / "home"
@@ -119,7 +118,7 @@ def test_sync_preserves_legacy_harness_only_workspace_without_registry(tmp_path)
         "config/agents/hermes",
     ):
         (ws_root / rel).mkdir(parents=True, exist_ok=True)
-    home_root.mkdir()
+    (home_root / ".codex").mkdir(parents=True)
     shutil.copy(repo_root / "scripts/_core/sync-agent-configs.sh", ws_root / "scripts/_core/sync-agent-configs.sh")
     (ws_root / "scripts/readiness/harness-config.yaml").write_text(
         f"workstations:\n  {hostname}:\n    ws_hub_path: {ws_root}\n"
@@ -133,6 +132,9 @@ def test_sync_preserves_legacy_harness_only_workspace_without_registry(tmp_path)
         "model:\n  default: gpt-5.5\nskills:\n  external_dirs:\n    - __WS_HUB_PATH__/.claude/skills\n"
     )
     (ws_root / "config/agents/hermes/SOUL.md").write_text("# Soul\n")
+    local_codex = home_root / ".codex/config.toml"
+    local_codex.write_text('model = "legacy-local-model"\n')
+    before = local_codex.read_bytes()
 
     env = os.environ.copy()
     env["HOME"] = str(home_root)
@@ -146,6 +148,7 @@ def test_sync_preserves_legacy_harness_only_workspace_without_registry(tmp_path)
         env=env,
     )
 
-    assert result.returncode == 0, result.stderr + result.stdout
-    config = yaml.safe_load((home_root / ".hermes/config.yaml").read_text())
-    assert f"{ws_root}/.claude/skills" in config["skills"]["external_dirs"]
+    assert result.returncode != 0
+    assert "canonical Codex config does not match the owned-key contract" in result.stderr
+    assert local_codex.read_bytes() == before
+    assert not (home_root / ".hermes/config.yaml").exists()
