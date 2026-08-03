@@ -218,9 +218,7 @@ OWNED = {
     ("agents",): ("enabled", "interrupt_message"),
     ("tui",): ("resume_cwd", "status_line"),
 }
-NORMAL_HEADER = re.compile(r'^\s*\[([^\[\]]+)\]\s*(?:#.*)?$')
-ARRAY_HEADER = re.compile(r'^\s*\[\[(.+)\]\]\s*(?:#.*)?$')
-ASSIGNMENT = re.compile(r'^\s*([A-Za-z0-9_.-]+)\s*=')
+PROBE_KEY = "__codex_sync_probe__"
 
 
 def flatten(value, prefix=()):
@@ -296,23 +294,66 @@ def statements(text):
     return result
 
 
+def probe_path(value, prefix=()):
+    if isinstance(value, dict):
+        if PROBE_KEY in value:
+            return prefix
+        for key, child in value.items():
+            found = probe_path(child, prefix + (key,))
+            if found is not None:
+                return found
+    elif isinstance(value, list):
+        for child in value:
+            found = probe_path(child, prefix)
+            if found is not None:
+                return found
+    return None
+
+
 def header_kind(statement):
-    if len(statement) != 1:
+    if len(statement) != 1 or not statement[0].lstrip().startswith("["):
         return None, None
-    array = ARRAY_HEADER.match(statement[0])
-    if array:
-        return "array", array.group(1).strip()
-    normal = NORMAL_HEADER.match(statement[0])
-    if normal:
-        return "normal", normal.group(1).strip()
+    kind = "array" if statement[0].lstrip().startswith("[[") else "normal"
+    try:
+        parsed = tomllib.loads(statement[0] + f"{PROBE_KEY} = true\n")
+    except tomllib.TOMLDecodeError as error:
+        raise ValueError("unsupported valid TOML table header") from error
+    path = probe_path(parsed)
+    if path is None:
+        raise ValueError("TOML table header probe failed")
+    return kind, path
+
+
+def leaf_path(value, prefix=()):
+    for key, child in value.items():
+        path = prefix + (key,)
+        if isinstance(child, dict):
+            return leaf_path(child, path)
+        return path
+    return None
+
+
+def assignment_info(statement):
+    line, quote, escape = statement[0], None, False
+    for index, char in enumerate(line):
+        if quote:
+            if quote == '"' and escape: escape = False
+            elif quote == '"' and char == "\\": escape = True
+            elif char == quote: quote = None
+        elif char in ('"', "'"): quote = char
+        elif char == "=":
+            token = line[:index].strip()
+            try: path = leaf_path(tomllib.loads(f"{token} = 0"))
+            except tomllib.TOMLDecodeError: return None, None
+            return token, path
+        elif char == "#": return None, None
     return None, None
 
 
-def comment_suffix(statement):
-    line = statement[-1].rstrip("\r\n")
+def line_comment(line):
     quote = None
     escape = False
-    for index, char in enumerate(line):
+    for index, char in enumerate(line.rstrip("\r\n")):
         if quote:
             if quote == '"' and escape:
                 escape = False
@@ -323,13 +364,19 @@ def comment_suffix(statement):
         elif char in ('"', "'"):
             quote = char
         elif char == "#":
-            return " " + line[index:]
-    return ""
+            return line[index:].rstrip("\r\n")
+    return None
 
 
 def render_assignment(token, value, statement):
     indent = re.match(r'^\s*', statement[0]).group(0)
-    return [f"{indent}{token} = {encode(value)}{comment_suffix(statement)}\n"]
+    comments = [(index, line_comment(line)) for index, line in enumerate(statement)]
+    comments = [(index, comment) for index, comment in comments if comment]
+    suffix = ""
+    if comments and comments[-1][0] == len(statement) - 1:
+        suffix = " " + comments.pop()[1]
+    preserved = [f"{indent}{comment}\n" for _, comment in comments]
+    return preserved + [f"{indent}{token} = {encode(value)}{suffix}\n"]
 
 
 def split_inline(text):
@@ -353,17 +400,36 @@ def split_inline(text):
     return parts
 
 
+def matching_brace(text, opening):
+    depth, quote, escape = 0, None, False
+    for index in range(opening, len(text)):
+        char = text[index]
+        if quote:
+            if quote == '"' and escape: escape = False
+            elif quote == '"' and char == "\\": escape = True
+            elif char == quote: quote = None
+            continue
+        if char in ('"', "'"): quote = char
+        elif char == "#": break
+        elif char == "{": depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0: return index
+    raise ValueError("inline table closing brace not found")
+
+
 def merge_inline(statement, table, canonical):
     text = "".join(statement)
-    opening, closing = text.find("{"), text.rfind("}")
+    opening = text.find("{")
+    closing = matching_brace(text, opening)
     entries, seen = [], set()
     values = canonical[table]
     for raw in split_inline(text[opening + 1:closing]):
         entry = raw.strip()
-        match = ASSIGNMENT.match(entry)
-        if match and match.group(1) in OWNED[(table,)]:
-            key = match.group(1); seen.add(key)
-            entries.append(f"{key} = {encode(values[key])}")
+        token, path = assignment_info([entry])
+        if path and len(path) == 1 and path[0] in OWNED[(table,)]:
+            key = path[0]; seen.add(key)
+            entries.append(f"{token} = {encode(values[key])}")
         elif entry:
             entries.append(entry)
     entries.extend(f"{key} = {encode(values[key])}" for key in OWNED[(table,)] if key not in seen)
@@ -375,24 +441,23 @@ def inspect_layout(parts):
     context = ()
     skip_legacy = False
     for statement in parts:
-        kind, name = header_kind(statement)
+        kind, path = header_kind(statement)
         if kind:
-            context = (name,) if kind == "normal" else ("array", name)
-            skip_legacy = name == "status_line"
+            context = path if kind == "normal" else ("array",) + path
+            skip_legacy = kind == "normal" and path == ("status_line",)
             if kind == "normal" and context in OWNED:
                 modes[context] = "normal"
             continue
-        assignment = ASSIGNMENT.match(statement[0])
-        if skip_legacy or not assignment:
+        token, path = assignment_info(statement)
+        if skip_legacy or not path:
             continue
-        token = assignment.group(1)
-        if context in OWNED and token in OWNED[context]:
-            seen[context].add(token)
-        if context == () and token in {table[0] for table in OWNED if table}:
-            modes[(token,)] = "inline"
-        if context == () and "." in token and (token.split(".", 1)[0],) in OWNED:
-            table, key = token.split(".", 1); modes[(table,)] = "dotted"
-            if key in OWNED[(table,)]: seen[(table,)].add(key)
+        semantic_path = context + path
+        if semantic_path[:-1] in OWNED and semantic_path[-1] in OWNED[semantic_path[:-1]]:
+            seen[semantic_path[:-1]].add(semantic_path[-1])
+        if context == () and len(path) == 1 and path in OWNED:
+            modes[path] = "inline"
+        if context == () and len(path) > 1 and path[:1] in OWNED:
+            modes[path[:1]] = "dotted"
     return modes, seen
 
 
@@ -406,10 +471,10 @@ def merge_text(text, canonical):
                           for key in OWNED[table] if key not in seen[table])
     context, skip_legacy = (), False
     for statement in parts:
-        kind, name = header_kind(statement)
+        kind, path = header_kind(statement)
         if kind:
-            context = (name,) if kind == "normal" else ("array", name)
-            skip_legacy = kind == "normal" and name == "status_line"
+            context = path if kind == "normal" else ("array",) + path
+            skip_legacy = kind == "normal" and path == ("status_line",)
             if skip_legacy: continue
             output.extend(statement)
             if context in OWNED and modes.get(context) == "normal":
@@ -417,13 +482,14 @@ def merge_text(text, canonical):
                               if key not in seen[context])
             continue
         if skip_legacy: continue
-        match = ASSIGNMENT.match(statement[0])
-        token = match.group(1) if match else None
-        if context == () and token in {table[0] for table in OWNED if table} and modes.get((token,)) == "inline":
-            output.extend(merge_inline(statement, token, canonical)); continue
-        path = tuple(token.split(".", 1)) if context == () and token and "." in token else context + ((token,) if token else ())
-        if path and path[:-1] in OWNED and path[-1] in OWNED[path[:-1]]:
-            output.extend(render_assignment(token, canonical[path[:-1][0]][path[-1]] if path[:-1] else canonical[path[-1]], statement))
+        token, assignment_path = assignment_info(statement)
+        if context == () and assignment_path in OWNED and modes.get(assignment_path) == "inline":
+            output.extend(merge_inline(statement, assignment_path[0], canonical)); continue
+        semantic_path = context + assignment_path if assignment_path else ()
+        if semantic_path and semantic_path[:-1] in OWNED and semantic_path[-1] in OWNED[semantic_path[:-1]]:
+            table, key = semantic_path[:-1], semantic_path[-1]
+            value = canonical[table[0]][key] if table else canonical[key]
+            output.extend(render_assignment(token, value, statement))
         else:
             output.extend(statement)
     for table in (("features",), ("agents",), ("tui",)):

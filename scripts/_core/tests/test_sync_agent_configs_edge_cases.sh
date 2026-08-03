@@ -16,10 +16,35 @@ list_codex_dir() {
     done | sort
 }
 
+assert_second_run_idempotent() {
+    local ws_root="$1" home_root="$2" cfg="$3" before="$4" label="$5"
+    cp "$cfg" "$before"
+    if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1; then
+        assert_same "$before" "$cfg" "$label"
+    else
+        fail "$label (second sync failed)"
+    fi
+}
+
+assert_array_semantics() {
+    local cfg="$1"
+    uv run python - "$cfg" <<'PY' >/dev/null 2>&1
+import pathlib, sys, tomllib
+with pathlib.Path(sys.argv[1]).open("rb") as fh:
+    data = tomllib.load(fh)
+assert data["model"] == "array-local" and "status_line" not in data
+assert data["features"]["goals"] is True
+assert data["plugins"]["a]b"]["keep"] is True
+assert data["plugins"]["normal[key"]["keep"] == "normal"
+assert data["plugins"]["array]key"] == [{"keep": "array"}]
+assert data["features"]["providers"] == [{"goals": False, "model": "nested-provider"}]
+assert data["tui"]["profiles"] == [{"resume_cwd": "project", "animations": True}]
+PY
+}
+
 run_array_scope_and_comment_test() {
-    local tmpdir ws_root home_root cfg
-    tmpdir="$(mktemp -d)"; ws_root="$tmpdir/ws"; home_root="$tmpdir/home"
-    cfg="$home_root/.codex/config.toml"
+    local tmpdir ws_root home_root cfg before
+    tmpdir="$(mktemp -d)"; ws_root="$tmpdir/ws"; home_root="$tmpdir/home"; cfg="$home_root/.codex/config.toml"
     make_workspace "$ws_root"; mkdir -p "$home_root/.codex"
     cat > "$cfg" <<'EOF'
 model = "array-local"
@@ -34,9 +59,14 @@ status_line = ["plugin-before"]
 [status_line]
 enabled = false
 
-[[mcp_servers.pool]]
-name = "after"
-status_line = ["mcp-after"]
+[plugins."a]b"]
+keep = true
+
+[plugins."normal[key"]
+keep = "normal"
+
+[[plugins."array]key"]]
+keep = "array"
 
 [[features.providers]]
 goals = false
@@ -51,35 +81,26 @@ EOF
     else
         fail "array-table scopes converge"
     fi
-    if uv run python - "$cfg" <<'PY' >/dev/null 2>&1
-import pathlib, sys, tomllib
-with pathlib.Path(sys.argv[1]).open("rb") as fh:
-    data = tomllib.load(fh)
-assert data["model"] == "array-local" and "status_line" not in data
-assert data["features"]["goals"] is True
-assert data["plugins"]["routes"] == [{"name": "before", "status_line": ["plugin-before"]}]
-assert data["mcp_servers"]["pool"] == [{"name": "after", "status_line": ["mcp-after"]}]
-assert data["features"]["providers"] == [{"goals": False, "model": "nested-provider"}]
-assert data["tui"]["profiles"] == [{"resume_cwd": "project", "animations": True}]
-PY
-    then pass "array-table scopes preserve colliding unowned leaves"; else fail "array-table scopes preserve colliding unowned leaves"; fi
+    if assert_array_semantics "$cfg"; then pass "quoted/array headers preserve unowned data"; else fail "quoted/array headers preserve unowned data"; fi
     if grep -Fq 'goals = true # owned rationale survives' "$cfg"; then
         pass "owned assignment trailing comment survives"
     else
         fail "owned assignment trailing comment survives"
     fi
+    before="$tmpdir/array.first"
+    assert_second_run_idempotent "$ws_root" "$home_root" "$cfg" "$before" "array fixture is byte-idempotent"
     rm -rf "$tmpdir"
 }
 
 run_inline_owned_table_test() {
-    local tmpdir ws_root home_root cfg
+    local tmpdir ws_root home_root cfg before
     tmpdir="$(mktemp -d)"; ws_root="$tmpdir/ws"; home_root="$tmpdir/home"
     cfg="$home_root/.codex/config.toml"
     make_workspace "$ws_root"; mkdir -p "$home_root/.codex"
     cat > "$cfg" <<'EOF'
 model = "inline-local"
-tui = { animations = false, status_line = ["old"], resume_cwd = "root", theme = { name = "local" } } # inline TUI
-features = { js_repl = true, goals = false }
+tui = { animations = false, status_line = ["old"], resume_cwd = "root", theme = { name = "local" } } # inline TUI }
+features = { js_repl = true, "goals" = false }
 agents = { max_threads = 9, enabled = false }
 EOF
     if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1; then
@@ -98,22 +119,26 @@ assert data["features"]["js_repl"] is True and data["features"]["goals"] is True
 assert data["agents"]["max_threads"] == 9 and data["agents"]["enabled"] is True
 PY
     then pass "inline owned tables preserve unowned siblings"; else fail "inline owned tables preserve unowned siblings"; fi
+    before="$tmpdir/inline.first"
+    assert_second_run_idempotent "$ws_root" "$home_root" "$cfg" "$before" "inline fixture is byte-idempotent"
     rm -rf "$tmpdir"
 }
 
 run_dotted_owned_table_test() {
-    local tmpdir ws_root home_root cfg
+    local tmpdir ws_root home_root cfg before
     tmpdir="$(mktemp -d)"; ws_root="$tmpdir/ws"; home_root="$tmpdir/home"
     cfg="$home_root/.codex/config.toml"
     make_workspace "$ws_root"; mkdir -p "$home_root/.codex"
     cat > "$cfg" <<'EOF'
 model = "dotted-local"
 tui.animations = false
-tui.status_line = ["old"] # dotted footer rationale
-features.js_repl = true
-features.goals = false
-agents.max_threads = 11
-agents.enabled = false
+tui . status_line = [
+  "old", # retain-this-comment
+] # dotted footer rationale
+features . js_repl = true
+features . "goals" = false
+agents . max_threads = 11
+agents . "enabled" = false
 EOF
     if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1; then
         pass "dotted owned tables converge"
@@ -131,6 +156,34 @@ assert data["features"]["js_repl"] is True and data["features"]["goals"] is True
 assert data["agents"]["max_threads"] == 11 and data["agents"]["enabled"] is True
 PY
     then pass "dotted owned tables preserve unowned siblings"; else fail "dotted owned tables preserve unowned siblings"; fi
+    if grep -Fq '# retain-this-comment' "$cfg"; then
+        pass "multiline owned assignment comments survive"
+    else
+        fail "multiline owned assignment comments survive"
+    fi
+    before="$tmpdir/dotted.first"
+    assert_second_run_idempotent "$ws_root" "$home_root" "$cfg" "$before" "dotted fixture is byte-idempotent"
+    rm -rf "$tmpdir"
+}
+
+run_multiline_owned_comment_test() {
+    local tmpdir ws_root home_root cfg
+    tmpdir="$(mktemp -d)"; ws_root="$tmpdir/ws"; home_root="$tmpdir/home"
+    cfg="$home_root/.codex/config.toml"
+    make_workspace "$ws_root"; mkdir -p "$home_root/.codex"
+    cat > "$cfg" <<'EOF'
+[tui]
+status_line = [
+  # retain-before-item
+  "old", # retain-after-item
+]
+EOF
+    HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1 || fail "multiline comment sync completes"
+    if grep -Fq '# retain-before-item' "$cfg" && grep -Fq '# retain-after-item' "$cfg"; then
+        pass "all multiline owned comments survive"
+    else
+        fail "all multiline owned comments survive"
+    fi
     rm -rf "$tmpdir"
 }
 
@@ -161,6 +214,7 @@ echo "=== test_sync_agent_configs_edge_cases.sh ==="
 run_array_scope_and_comment_test
 run_inline_owned_table_test
 run_dotted_owned_table_test
+run_multiline_owned_comment_test
 run_read_only_dry_run_test
 echo ""
 echo "Results: ${PASS} PASS, ${FAIL} FAIL"

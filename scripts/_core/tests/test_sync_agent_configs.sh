@@ -306,5 +306,6 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
     run_hermes_soul_no_clobber_test
     echo ""
     echo "Results: ${PASS} PASS, ${FAIL} FAIL"
-    [[ $FAIL -eq 0 ]]
+    [[ $FAIL -eq 0 ]] || exit 1
+    bash "$(dirname "$0")/test_sync_agent_configs_edge_cases.sh"
 fi
