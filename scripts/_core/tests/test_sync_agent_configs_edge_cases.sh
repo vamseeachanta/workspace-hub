@@ -267,6 +267,74 @@ PY
     rm -rf "$tmpdir"
 }
 
+write_quote_lexer_case() {
+    local cfg="$1" form="$2" count="$3" header_kind="$4"
+    uv run --no-project python - "$form" "$count" "$header_kind" > "$cfg" <<'PY'
+import sys, tomllib
+form, count, header_kind = sys.argv[1], int(sys.argv[2]), sys.argv[3]
+slashes = "\\" * count
+prefix = "first#inside\nvalue" if form.startswith("multiline") else "value#inside"
+if form == "basic":
+    value = f'"{prefix}{slashes}"' if count % 2 == 0 else f'"{prefix}{slashes}"tail"'
+elif form == "multiline_basic":
+    value = f'"""{prefix}{slashes}"""' if count % 2 == 0 else f'"""{prefix}{slashes}"""tail"""'
+elif form == "literal":
+    value = f"'{prefix}{slashes}'"
+else:
+    value = f"'''{prefix}{slashes}'''"
+label = f"{form}-{count}"
+header = ('[plugins."keep]normal"]' if header_kind == "normal"
+          else '[[plugins."keep]array"]]')
+source = f'[tui]\nstatus_line = [{value}] # outside comment " # ] }}\n\n{header}\nvalue = "{label}"\n'
+tomllib.loads(source)
+print(source, end="")
+PY
+}
+
+assert_quote_lexer_semantics() {
+    local cfg="$1" form="$2" count="$3" header_kind="$4"
+    uv run --no-project python - "$cfg" "$form-$count" "$header_kind" <<'PY' >/dev/null 2>&1
+import pathlib, sys, tomllib
+with pathlib.Path(sys.argv[1]).open("rb") as fh:
+    data = tomllib.load(fh)
+expected, header_kind = sys.argv[2:]
+assert len(data["tui"]["status_line"]) == 5
+kept = data["plugins"]["keep]normal"] if header_kind == "normal" else data["plugins"]["keep]array"][0]
+assert kept == {"value": expected}
+PY
+}
+
+run_quote_lexer_case() {
+    local form="$1" count="$2" tmpdir ws_root home_root cfg first header_kind label
+    tmpdir="$(mktemp -d)"; ws_root="$tmpdir/ws"; home_root="$tmpdir/home"
+    cfg="$home_root/.codex/config.toml"; first="$tmpdir/first"
+    header_kind="normal"; (( count % 2 == 0 )) || header_kind="array"
+    label="$form backslashes=$count"
+    make_workspace "$ws_root"; mkdir -p "$home_root/.codex"
+    write_quote_lexer_case "$cfg" "$form" "$count" "$header_kind"
+    if HOME="$home_root" bash "$ws_root/scripts/_core/sync-agent-configs.sh" >/dev/null 2>&1; then
+        if assert_quote_lexer_semantics "$cfg" "$form" "$count" "$header_kind"; then
+            pass "$label preserves following statement"
+        else
+            fail "$label preserves following statement"
+        fi
+        cp "$cfg" "$first"
+        assert_second_run_idempotent "$ws_root" "$home_root" "$cfg" "$first" "$label is byte-idempotent"
+    else
+        fail "$label sync completes"
+    fi
+    rm -rf "$tmpdir"
+}
+
+run_quote_lexer_matrix() {
+    local form count
+    for form in basic literal multiline_basic multiline_literal; do
+        for count in 0 1 2 3 4 5 6; do
+            run_quote_lexer_case "$form" "$count"
+        done
+    done
+}
+
 run_read_only_dry_run_test() {
     local tmpdir ws_root home_root cfg before_listing after_listing
     tmpdir="$(mktemp -d)"; ws_root="$tmpdir/ws"; home_root="$tmpdir/home"
@@ -298,6 +366,7 @@ run_multiline_owned_comment_test
 run_probe_component_collision_test
 run_incompatible_owned_root_tests
 run_final_header_without_newline_test
+run_quote_lexer_matrix
 run_read_only_dry_run_test
 echo ""
 echo "Results: ${PASS} PASS, ${FAIL} FAIL"

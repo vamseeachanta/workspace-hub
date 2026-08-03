@@ -248,35 +248,47 @@ def owned_lines(data, table):
     return [f"{key} = {encode(values[key])}\n" for key in OWNED[table]]
 
 
+def basic_quote_escaped(line, pos):
+    backslashes = 0
+    while pos > backslashes and line[pos - backslashes - 1] == "\\":
+        backslashes += 1
+    return backslashes % 2 == 1
+
+
+def scan_toml_line(line, quote, square, curly):
+    pos = 0
+    while pos < len(line):
+        if quote in ('"""', "'''"):
+            closes = line.startswith(quote, pos)
+            if quote == '"""' and closes:
+                closes = not basic_quote_escaped(line, pos)
+            if closes:
+                quote = None; pos += 3
+            else:
+                pos += 1
+            continue
+        char = line[pos]
+        if quote:
+            if char == quote and (quote == "'" or not basic_quote_escaped(line, pos)):
+                quote = None
+            pos += 1; continue
+        if line.startswith('"""', pos) or line.startswith("'''", pos):
+            quote = line[pos:pos + 3]; pos += 3; continue
+        if char in ('"', "'"): quote = char
+        elif char == '#': break
+        elif char == '[': square += 1
+        elif char == ']': square -= 1
+        elif char == '{': curly += 1
+        elif char == '}': curly -= 1
+        pos += 1
+    return quote, square, curly
+
+
 def statement_end(lines, start):
     quote = None
     square = curly = 0
     for index in range(start, len(lines)):
-        line = lines[index]
-        pos = 0
-        while pos < len(line):
-            if quote in ('"""', "'''"):
-                if line.startswith(quote, pos):
-                    quote = None; pos += 3
-                else:
-                    pos += 1
-                continue
-            char = line[pos]
-            if quote:
-                if char == quote and (quote == "'" or pos == 0 or line[pos - 1] != "\\"):
-                    quote = None
-                pos += 1; continue
-            if line.startswith('"""', pos) or line.startswith("'''", pos):
-                quote = line[pos:pos + 3]; pos += 3; continue
-            if char in ('"', "'"):
-                quote = char
-            elif char == '#':
-                break
-            elif char == '[': square += 1
-            elif char == ']': square -= 1
-            elif char == '{': curly += 1
-            elif char == '}': curly -= 1
-            pos += 1
+        quote, square, curly = scan_toml_line(lines[index], quote, square, curly)
         if quote not in ('"""', "'''") and square == 0 and curly == 0:
             return index + 1
     return len(lines)
