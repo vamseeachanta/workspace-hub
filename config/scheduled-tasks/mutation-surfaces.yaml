@@ -279,3 +279,64 @@ resolved_dispositions:
     # no Windows task, so it is not a scheduler mutation surface and the #3475 disposition
     # still holds. resolved_on/pull_request stay pinned per scheduler_mutation_contract.py:310.
     source_digest: b8fe099c6e205a0ccc4db6292d02328c30c431bc50e5435314874fab1ccb7209
+
+  # --- 2026-08-02 fleet work-surface cleanup tooling -------------------------
+  # Both entries are DELIBERATELY declared non-compliant (disposition_group set,
+  # transaction all-false, attestations []). Neither implements the #3470
+  # transaction contract — no lock, snapshot, CAS, or rollback. Declaring
+  # otherwise would put a false claim into a safety registry, which is worse
+  # than a failing check. They are registered so the surface is VISIBLE and
+  # migration-tracked, not to assert compliance.
+  - path: scripts/monitoring/bundle-sentinel-install/install.sh
+    kind: direct-owner
+    disposition_group: session-tooling-pending-migration
+    operations:
+      - id: install-bundle-sentinel-timer-units
+        primitive: systemd-user-unit-write
+        target_kind: current-user-systemd
+        scheduler_identity: local-current-user-systemd
+        execution_host_binding: physical-local
+        destructive: false
+        authority_branches:
+          - {id: static-unit-files, mechanism: command-substring, config_source: scripts/monitoring/bundle-sentinel-install/install.sh, destructive: false, strength: substring}
+        transaction: &fleet_cleanup_missing_transaction
+          lock: false
+          baseline_snapshot: false
+          backup: false
+          pre_write_cas: false
+          post_write_preservation_verify: false
+          post_write_exact_state_verify: false
+          rollback_cas: false
+        attestations: []
+      - id: enable-bundle-sentinel-timers
+        primitive: systemd-user-enable-disable
+        target_kind: current-user-systemd
+        scheduler_identity: local-current-user-systemd
+        execution_host_binding: physical-local
+        destructive: false
+        authority_branches:
+          - {id: explicit-unit-names, mechanism: command-substring, config_source: scripts/monitoring/bundle-sentinel-install/install.sh, destructive: false, strength: substring}
+        transaction: *fleet_cleanup_missing_transaction
+        attestations: []
+
+  # relocate-to-bulk.sh is READ-ONLY with respect to schedulers: it calls
+  # `crontab -l` and reads ~/.config/systemd/user/* solely to detect whether a
+  # directory it is about to move is a live runtime dependency. It never writes
+  # a crontab or a unit. The guard cannot statically prove a `crontab`
+  # invocation is read-only, so it is conservatively classified direct — a
+  # fail-safe posture that is correct. Registered with destructive: false to
+  # record that no mutation occurs.
+  - path: scripts/operations/relocate-to-bulk.sh
+    kind: direct-owner
+    disposition_group: read-only-scheduler-consumers
+    operations:
+      - id: read-crontab-for-runtime-dependency-scan
+        primitive: crontab-replace
+        target_kind: current-user-cron
+        scheduler_identity: local-current-user-crontab
+        execution_host_binding: physical-local
+        destructive: false
+        authority_branches:
+          - {id: read-only-listing, mechanism: command-substring, config_source: scripts/operations/relocate-to-bulk.sh, destructive: false, strength: substring}
+        transaction: *fleet_cleanup_missing_transaction
+        attestations: []
