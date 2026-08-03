@@ -80,6 +80,47 @@ surfaces:
         transaction: *missing_transaction
         attestations: [crontab-root-target-v1]
 
+  # workspace-hub#3784. Installs the systemd user timer that saves tmux
+  # sessions without an attached client. Split out of scripts/setup/deploy-tmux.sh
+  # deliberately, so the general onboarding path does not become governed.
+  #
+  # Transaction flags follow the systemd-user baseline used by every other
+  # entry of this kind (`*missing_transaction`), NOT `*reference_transaction`.
+  # That is an accurate declaration rather than an aspirational one: the
+  # reference shape is verified by the python-*-v1 attestations, which inspect
+  # a Python crontab implementation and do not apply to a bash script writing
+  # systemd units. Claiming the stronger flags without an attestation that
+  # checks them would make the registry read as capability it does not have.
+  # The script itself does implement backup, post-write exact-state verify and
+  # rollback; tests/tmux/test_setup_tmux_autosave_timer.py is what verifies
+  # those, pending a systemd-user transaction attestation type.
+  - path: scripts/install/setup-tmux-autosave-timer.sh
+    kind: direct-owner
+    disposition_group: tmux-session-persistence
+    operations:
+      - id: install:systemd-unit-write
+        primitive: systemd-user-unit-write
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-tmux-autosave
+        execution_host_binding: physical-local
+        selection_condition: systemd-available
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: config/tmux/tmux-autosave.timer, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-unit-name-v1]
+      - id: install:systemd-enable
+        primitive: systemd-user-enable-disable
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-tmux-autosave
+        execution_host_binding: physical-local
+        selection_condition: systemd-available
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: config/tmux/tmux-autosave.timer, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-enable-disable-v1]
+
   - path: scripts/install/setup-kanban-loader-timer.sh
     kind: direct-owner
     disposition_group: kanban-dual-backend

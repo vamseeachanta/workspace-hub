@@ -91,6 +91,21 @@ def run_installer(home: Path) -> subprocess.CompletedProcess:
     )
 
 
+def directives(path: Path) -> str:
+    """A unit file's DIRECTIVES, with `#` comments stripped.
+
+    Every structural assertion here must use this. Three separate tests in this
+    change initially matched the very string they were asserting absent,
+    because the file's own comment explained why that setting is avoided.
+    Documenting why you do not use X necessarily puts X in the file, so a
+    whole-file grep tests the prose, not the behaviour.
+    """
+    return "\n".join(
+        line for line in path.read_text().splitlines()
+        if not line.lstrip().startswith("#")
+    )
+
+
 def unit_dir(home: Path) -> Path:
     return home / ".config" / "systemd" / "user"
 
@@ -110,22 +125,22 @@ def test_timer_source_has_no_persistent() -> None:
     OnCalendar= only — so its presence would additionally be misleading about
     where the boot-race protection actually comes from.
     """
-    assert "Persistent=" not in TIMER_SRC.read_text()
+    assert "Persistent=" not in directives(TIMER_SRC)
 
 
 def test_timer_source_delays_first_boot_tick() -> None:
-    text = TIMER_SRC.read_text()
+    text = directives(TIMER_SRC)
     m = re.search(r"OnBootSec=(\d+)min", text)
     assert m, f"expected an OnBootSec=<N>min line, got:\n{text}"
     assert int(m.group(1)) >= 5, "first tick must clear an in-flight restore"
 
 
 def test_timer_source_repeats_on_interval() -> None:
-    assert re.search(r"OnUnitActiveSec=\d+min", TIMER_SRC.read_text())
+    assert re.search(r"OnUnitActiveSec=\d+min", directives(TIMER_SRC))
 
 
 def test_service_source_is_oneshot_with_execstart() -> None:
-    text = SERVICE_SRC.read_text()
+    text = directives(SERVICE_SRC)
     assert "Type=oneshot" in text
     assert "ExecStart=" in text
     assert "tmux-autosave.sh" in text

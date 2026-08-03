@@ -1,0 +1,13 @@
+[Unit]
+Description=Save the tmux session tree without needing an attached client (workspace-hub #3784)
+Documentation=https://github.com/vamseeachanta/workspace-hub/issues/3784
+
+[Service]
+Type=oneshot
+ExecStart=%h/.tmux/wh/tmux-autosave.sh
+
+# The wrapper exits 0 on every absent precondition (no tmux, no server, no
+# plugins), so a non-zero exit here is a real fault and worth surfacing. It is
+# still not worth alerting on: a save missed once is recovered by the next
+# tick 15 minutes later.
+TimeoutStartSec=120
