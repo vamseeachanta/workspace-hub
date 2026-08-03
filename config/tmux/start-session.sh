@@ -7,16 +7,30 @@
 
 set -euo pipefail
 
-SESSION="${1:-work}"
-HOST="$(hostname)"
+# `main` is the ONE canonical session name (#3784). It previously defaulted to
+# `work`, while ~/.bashrc carried `alias w='tmux new -A -s main'` and the live
+# sessions were called `overnight` — three names for one thing, which defeats
+# the whole point of `new -A` being attach-or-create.
+SESSION="${1:-main}"
+
+# Injectable so the per-host branches below are testable. A plain
+# HOST="$(hostname)" OVERWRITES any inherited value, so a test that merely
+# exported HOST would silently exercise the current machine's branch.
+HOST="${WH_HOSTNAME:-$(hostname)}"
 
 # Resolve workspace root per machine
 case "$HOST" in
-  ace-linux-1|vamsee-linux1)
+  ace-linux-1)
     WS_ROOT="/mnt/local-analysis/workspace-hub"
     ;;
   ace-linux-2)
-    WS_ROOT="/mnt/workspace-hub"
+    # Both /mnt/workspace-hub and /mnt/local-analysis/workspace-hub exist on
+    # this box; the deployed ~/.tmux.conf symlink resolves to the latter, so
+    # the launcher matches it. The stranded-copy problem itself is #3696.
+    WS_ROOT="/mnt/local-analysis/workspace-hub"
+    ;;
+  gpu-claw)
+    WS_ROOT="$HOME/ws/workspace-hub"   # relocation target per #3507
     ;;
   ace-win-1|ace-win-2|licensed-win-1|licensed-win-2)
     WS_ROOT="/d/workspace-hub"   # Git Bash path
