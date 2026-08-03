@@ -1,0 +1,13 @@
+[Unit]
+Description=Verify encrypted relocation bundles on /mnt/ace (%i mode)
+Documentation=man:sha256sum(1)
+# The bundles are the ONLY copy of ~110 GB whose sources were deleted 2026-08-02.
+# /mnt/ace is a guest-writable SMB share with force user=vamsee, so unix
+# permissions do not protect them. Detection is the available control.
+ConditionPathIsDirectory=/mnt/ace/work-surface-bulk
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/bundle-verify-sentinel.sh %i
+Nice=10
+IOSchedulingClass=idle
