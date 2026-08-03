@@ -1,3 +1,6 @@
+# shellcheck shell=bash
+# (no shebang by design — this file is SOURCED from ~/.bashrc, never executed.
+#  It uses `return`, which is only valid in a sourced context.)
 # autoattach.sh — put interactive SSH logins into the persistent tmux session.
 #
 # SOURCED from ~/.bashrc (see scripts/setup/deploy-tmux.sh, which installs the
