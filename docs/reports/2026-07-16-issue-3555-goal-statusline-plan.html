@@ -18,7 +18,7 @@
     <h1>#3555: fleet Codex requirements, trusted-repo YOLO, goals, and statuslines</h1>
     <p><strong>Status:</strong> draft · <strong>Complexity:</strong> T3 · <strong>Rollout:</strong> immediate attempted fleet wave after gates</p>
     <p class="decision"><strong>Owner decisions (2026-08-02):</strong> the design spec is approved; <code>default_mode_request_user_input = true</code> will be deployed across the Codex fleet; trusted solid repos may use <code>--yolo</code>; rollout will be immediate rather than canary-first.</p>
-    <p class="gate"><strong>Current gate:</strong> the materially revised implementation plan still requires fresh adversarial T3 review and the user-applied <code>status:plan-approved</code> gate. Spec approval does not self-approve implementation.</p>
+    <p class="gate"><strong>Current gate:</strong> fresh Claude and Codex reviews returned MAJOR; AGY authentication timed out. The plan now incorporates the distinct findings inline under the review-iteration loop-break rule. After claim/path/test self-verification it will move to <code>status:plan-review</code>; the user-applied <code>status:plan-approved</code> gate will still be required. Spec approval does not self-approve implementation.</p>
 
     <h2>Outcome</h2>
     <p>Repo-managed Codex configuration will enable requirement questions in Default mode, persistent goals, multi-agent support, hooks, live web search, high planning effort, pragmatic behavior, resume-CWD, interrupt messaging, and useful context/usage telemetry. A cross-platform launcher will add <code>--yolo</code> only inside exactly attested trusted Git roots, while <code>codex-safe</code> will remain available everywhere.</p>
@@ -63,12 +63,18 @@
       <li class="risk">Unsupported feature or older CLI: preserve the prior working install and fail verification.</li>
       <li class="risk">Malformed config or failed semantic validation: do not replace <code>~/.codex/config.toml</code>.</li>
       <li class="risk">Wrapper recursion, ambiguous real binary, or prefix-collision root: run no YOLO path.</li>
+      <li class="risk">Git environment overrides or <code>-C</code>/<code>--cd</code>/<code>--add-dir</code> escaping the approved root: downgrade to enforced workspace-write/on-request mode.</li>
+      <li class="risk">Accepted YOLO is host-wide authority, not filesystem containment; only owner-approved exact roots and origins may activate it.</li>
+      <li class="risk">Partial transaction or concurrent update: recover from the manifest and roll back CLI, config, trust, launchers, and PATH as one unit.</li>
       <li class="risk">Missing/stale direct machine evidence: never grade the host equal.</li>
       <li class="good">Secrets, prompts, transcripts, goal text, and token values will be rejected from fleet evidence.</li>
     </ul>
 
+    <h2>Review resolution</h2>
+    <p>Both available reviewers independently attacked the plan. Their fixes add Git-environment hardening, directory-escape handling, enforced safe mode, owner-authorized trust schema, local-model preservation, differential CLI validation, live <code>cmd.exe</code> testing, a seven-host denominator, a locked rollback-capable transaction, immutable review SHAs, the real Claude renderer paths, and the issue’s completeness gate. The AGY lane produced a valid <code>UNAVAILABLE</code> artifact after authentication timeout.</p>
+
     <h2>Next gate</h2>
-    <p>Fresh Claude, Codex, and AGY adversarial review will attack the revised plan. Provider outages may degrade T3 only through a valid <code>UNAVAILABLE</code> artifact; malformed output blocks. After all MAJOR findings are resolved, the issue will move to <code>status:plan-review</code> for the user’s implementation approval.</p>
+    <p>The review-iteration rule forbids a blind fourth dispatch. After inline self-verification and durable review commits, the issue will move to <code>status:plan-review</code> for the user’s separate implementation approval.</p>
     <p class="muted">Canonical detail: <code>docs/plans/2026-07-16-issue-3555-goal-statusline-machine-pilot.md</code></p>
   </main>
 </body>
