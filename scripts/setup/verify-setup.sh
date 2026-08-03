@@ -33,36 +33,64 @@ _codex_version_is_older() {
   (( current_patch < pinned_patch ))
 }
 
-_validate_codex_footer_selectors() {
-  local template="$1"
-  python3 - "$template" <<'PY'
+_validate_codex_contract() {
+  local template="$1" pinned="$2"
+  command -v uv >/dev/null 2>&1 || return 4
+  uv run --no-project python - "$template" "$pinned" <<'PY'
 import sys
 import tomllib
 from pathlib import Path
 
-allowed = {
-    "model-with-reasoning", "context-remaining", "current-dir",
-    "five-hour-limit", "weekly-limit",
+baselines = {
+    "0.146.0": {
+        "attestation": "# TUI selector attestation: Codex CLI 0.146.0, inspected 2026-08-02.",
+        "config": {
+            "plan_mode_reasoning_effort": "high",
+            "personality": "pragmatic",
+            "web_search": "live",
+            "features": {
+                "default_mode_request_user_input": True,
+                "goals": True,
+                "multi_agent": True,
+                "hooks": True,
+            },
+            "agents": {"enabled": True, "interrupt_message": True},
+            "tui": {
+                "resume_cwd": "session",
+                "status_line": [
+                    "model-with-reasoning", "context-remaining", "current-dir",
+                    "five-hour-limit", "weekly-limit",
+                ],
+            },
+        },
+    },
 }
+baseline = baselines.get(sys.argv[2])
+if baseline is None:
+    raise SystemExit(2)
 try:
-    data = tomllib.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-    selectors = data["tui"]["status_line"]
-except (KeyError, OSError, tomllib.TOMLDecodeError):
-    raise SystemExit(1)
-raise SystemExit(0 if isinstance(selectors, list) and set(selectors) == allowed else 1)
+    text = Path(sys.argv[1]).read_text(encoding="utf-8")
+    data = tomllib.loads(text)
+except (OSError, tomllib.TOMLDecodeError):
+    raise SystemExit(3)
+valid = data == baseline["config"] and baseline["attestation"] in text
+raise SystemExit(0 if valid else 3)
 PY
 }
 
 _verify_codex_feature_baseline() {
   local codex_bin="$1" template="$2" candidate_root before after
-  candidate_root="$(mktemp -d "${TMPDIR:-/tmp}/verify-codex.XXXXXX")" || return 1
+  candidate_root="$(mktemp -d)" || return 1
   before="$(CODEX_HOME="${candidate_root}/empty" "$codex_bin" features list 2>&1)"
+  local before_status=$?
   mkdir -p "${candidate_root}/candidate"
   cp "$template" "${candidate_root}/candidate/config.toml"
   after="$(CODEX_HOME="${candidate_root}/candidate" "$codex_bin" features list 2>&1)"
   local after_status=$?
   rm -rf "$candidate_root"
-  if [[ "$after_status" -ne 0 ]]; then
+  if [[ "$before_status" -ne 0 ]]; then
+    _fail "codex isolated baseline feature probe failed"
+  elif [[ "$after_status" -ne 0 ]]; then
     _fail "codex isolated config load failed"
   elif ! grep -q '^default_mode_request_user_input' <<<"$after"; then
     _fail "codex feature default_mode_request_user_input is absent"
@@ -137,7 +165,7 @@ fi
 # ── 4. Other AI CLIs ─────────────────────────────────────────────────────────
 echo ""
 echo "--- AI CLIs (non-critical)"
-PIN_ENV="${WORKSPACE_HUB}/scripts/install/codex-pin.env"
+PIN_ENV="${CODEX_PIN_ENV:-${WORKSPACE_HUB}/scripts/install/codex-pin.env}"
 if [[ -f "$PIN_ENV" ]]; then
   # shellcheck source=/dev/null
   source "$PIN_ENV"
@@ -149,16 +177,29 @@ for cli in codex gemini; do
     if [[ "$cli" == "codex" ]]; then
       CODEX_VER_RAW="$($cli --version 2>/dev/null | head -1 || true)"
       CODEX_VER="$(printf '%s' "$CODEX_VER_RAW" | awk '{print $NF}')"
-      if [[ "$CODEX_VER" == "${CODEX_PIN_VERSION:-0.146.0}" ]]; then
+      if ! [[ "$CODEX_VER" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        _fail "codex CLI version is malformed: ${CODEX_VER:-empty}"
+      elif ! [[ "${CODEX_PIN_VERSION:-}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        _fail "codex pin version is malformed: ${CODEX_PIN_VERSION:-empty}"
+      elif [[ "$CODEX_VER" == "$CODEX_PIN_VERSION" ]]; then
         _pass "codex CLI found at pinned version ${CODEX_VER}"
         CODEX_TEMPLATE="${CODEX_CONFIG_TEMPLATE:-${WORKSPACE_HUB}/config/agents/codex/config.toml}"
-        if _validate_codex_footer_selectors "$CODEX_TEMPLATE"; then
-          _pass "codex TUI footer selectors validated for ${CODEX_PIN_VERSION}"
-          _verify_codex_feature_baseline "$cli" "$CODEX_TEMPLATE"
+        _validate_codex_contract "$CODEX_TEMPLATE" "$CODEX_PIN_VERSION"
+        CODEX_CONTRACT_STATUS=$?
+        if [[ "$CODEX_CONTRACT_STATUS" -eq 2 ]]; then
+          _fail "no TUI selector attestation for pinned Codex ${CODEX_PIN_VERSION}"
+        elif [[ "$CODEX_CONTRACT_STATUS" -eq 4 ]]; then
+          _fail "uv is required for Codex canonical config validation"
         else
-          _fail "codex TUI footer selectors are not in pinned allowlist"
+          _verify_codex_feature_baseline "$cli" "$CODEX_TEMPLATE"
         fi
-      elif _codex_version_is_older "$CODEX_VER" "${CODEX_PIN_VERSION:-0.146.0}"; then
+        if [[ "$CODEX_CONTRACT_STATUS" -eq 0 ]]; then
+          _pass "codex TUI footer selectors validated for ${CODEX_PIN_VERSION}"
+          _pass "codex canonical config matches owned baseline for ${CODEX_PIN_VERSION}"
+        elif [[ "$CODEX_CONTRACT_STATUS" -eq 3 ]]; then
+          _fail "codex canonical config does not match owned baseline for ${CODEX_PIN_VERSION}"
+        fi
+      elif _codex_version_is_older "$CODEX_VER" "$CODEX_PIN_VERSION"; then
         _fail "codex CLI version ${CODEX_VER} is older than pinned ${CODEX_PIN_VERSION}"
       else
         _fail "codex CLI version drift: ${CODEX_VER:-unknown} (expected ${CODEX_PIN_VERSION}; run scripts/install/pin-codex.sh)"
@@ -260,7 +301,7 @@ else
     _py_cmd="python3"
   fi
   if [[ -n "$_py_cmd" ]]; then
-    # Convert POSIX path to native OS path for Python (MINGW64 /c/... → C:\...)
+    # Convert POSIX path to native OS path for Python (MINGW64 /c/... → C:\...) # abs-path-allowed
     _kb_native="$KEYBINDINGS_FILE"
     command -v cygpath &>/dev/null && _kb_native="$(cygpath -w "$KEYBINDINGS_FILE" 2>/dev/null || echo "$KEYBINDINGS_FILE")"
     _submit=$($_py_cmd -c "
