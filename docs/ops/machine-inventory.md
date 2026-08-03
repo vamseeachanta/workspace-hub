@@ -4,6 +4,7 @@
 > **Issue:** [#2548](https://github.com/vamseeachanta/workspace-hub/issues/2548)
 > **Sources:** `config/workstations/registry.yaml` (canonical for ssh/workspace/capabilities), `docs/ops/2026-05-04-multimachine-baseline-inventory.md` (program availability), `docs/BUSINESS_BRAIN.md` §AI Provider Accounts (provider plan)
 > **Purpose:** Per `docs/BUSINESS_BRAIN.md` §Machines: "Machine inventory must answer installed programs, license availability, AI-provider auth state, repo checkout locations, run/smoke-test commands, and what work may be dispatched safely."
+> **Remote access:** [Canonical remote Linux access runbook](remote-linux-access.md) governs transport, authentication, hardening, verification, and recovery; this inventory records fleet facts only.
 
 ---
 
@@ -29,6 +30,21 @@ Path placeholders used in the rows below (see canonical values in the reference 
 | `<ace-linux-2-bulk-root>` | ace-linux-2 bulk local disk |
 
 ---
+
+## ⚠ Live fleet vs this document — corrected 2026-08-02
+
+**Five machines are active** (owner-confirmed): `ace-linux-1`, `ace-linux-2`, `gpu-claw`,
+`licensed-win-1` (canonical `ace-win-1`), and `macbook-portable` (`Vamsees-MacBook-Air`).
+
+**All five are reachable over Tailscale.**
+
+The rows below list eight hosts, several marked `blocked` on grounds that are now stale or that
+describe machines not in the active fleet. Treat the five above as the dispatch surface and the rest
+as historical until this document is reconciled properly.
+
+Two identity notes that bite when routing: `licensed-win-1` is an **alias** — canonical hostname is
+`ace-win-1` (renamed per WF0 #3001). Likewise `licensed-win-2` → `ace-win-2`. Route by canonical
+lowercase hostname.
 
 ## Inventory
 
@@ -64,7 +80,7 @@ Path placeholders used in the rows below (see canonical values in the reference 
 | AI-provider auth | **unverified — no SSH**. Registry lists `[claude, codex, gemini]` as agent_clis but auth state requires physical/GUI verification |
 | Repos | `OGManufacturing` (registry `licensed-win-1.repos`); `workspace-hub` at `<windows-workspace-root>` (git-poll target, evidenced by `queue/failed/wamit-val-hemisphere/result.yaml`) |
 | Smoke / run command | N/A from Linux — no SSH. Indirect smoke: submit a no-op job via `scripts/solver/submit-job.sh orcaflex <input> "smoke test"` and verify `queue/processing/` or `queue/done/` reflects pickup within 30 min |
-| Dispatch readiness | **ready** for OrcaFlex via existing git-backed queue (`scripts/solver/submit-job.sh` → push to `queue/pending/` → 30-min `git pull` cycle on the host → solver runs, writes result yaml + artifacts, pushes back). **blocked** for AQWA — queue schema does not yet accept `solver: aqwa`; tracked by [#2641](https://github.com/vamseeachanta/workspace-hub/issues/2641) |
+| Dispatch readiness | **ready for OrcaFlex AND AQWA** (owner-confirmed 2026-08-02). OrcaFlex dispatches via the git-backed queue (`queue/pending/` → 30-min `git pull` on the host → solver runs → result yaml + artifacts pushed back). ⚠ This row previously read "**blocked** for AQWA — queue schema does not yet accept `solver: aqwa`, tracked by [#2641](https://github.com/vamseeachanta/workspace-hub/issues/2641)". The host is ready; verify whether the **queue schema** still needs the `solver: aqwa` extension before dispatching AQWA *through the queue* rather than manually |
 
 ---
 
@@ -116,13 +132,17 @@ Path placeholders used in the rows below (see canonical values in the reference 
 
 ---
 
-### acma-ws014 (Windows, on-site mkt-a workstation)
+### ace-win-2 (Windows, on-site mkt-a workstation)
+
+> Stale as written: this row was captured from BUSINESS_BRAIN.md before the registry alias was known.
+> `ace-win-2` is the canonical role id of the box described as `licensed-win-2` above — reconcile the
+> two sections rather than treating them as separate machines.
 
 | Dimension | Value |
 |---|---|
 | Programs / licenses | **unknown** — registry entry: **none**; not in `config/workstations/registry.yaml` |
 | AI-provider auth | **unverified** — not in registry |
-| Repos | **unknown** — not in registry; likely `mkt-a` per machine name |
+| Repos | **unknown** — not in registry; likely `mkt-a` per the on-site siting |
 | Smoke / run command | N/A — no registry entry, no SSH configuration |
 | Dispatch readiness | **blocked** — **add to `config/workstations/registry.yaml` before scheduling work**. Appears only in BUSINESS_BRAIN.md §Machines table |
 

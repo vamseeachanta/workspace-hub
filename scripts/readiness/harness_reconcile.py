@@ -136,8 +136,9 @@ def is_managed(profile: dict | None) -> bool:
 def resolve_machine_id(machines: dict, host: str) -> str | None:
     """Resolve a hostname to its registry key via the canonical idiom: match the key,
     hostname, OR hostname_aliases (case-insensitive — Windows hostnames are often
-    upper-case, e.g. ACMA-ANSYS05 → ace-win-1). WF1 #2999: without alias resolution the
-    reconciler can't identify a Windows host whose real name is the old alias."""
+    reported upper-case, e.g. an ACE-WIN-1 alias must still resolve to ace-win-1).
+    WF1 #2999: without alias resolution the reconciler can't identify a Windows host
+    whose real OS hostname is declared only as a hostname_aliases entry."""
     h = host.lower()
     for mid, e in machines.items():
         cands = [mid, e.get("hostname", "")] + list(e.get("hostname_aliases") or [])

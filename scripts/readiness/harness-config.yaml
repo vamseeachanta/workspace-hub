@@ -53,6 +53,11 @@ workstations:
     required_data_access: [assetutilities, digitalmodel, worldenergydata, assethold]
     # #2849 solvers baseline (cold-dim): a Linux dev box is EXPECTED to lack solvers → absent
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
+    # #3591 providers baseline (cold-dim, role-aware): full provider stack on the Hermes host
+    providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
+    # #3592 memory + scheduler baselines (cold-dim): leader box — repo-sync AND parity-review crons
+    hermes_home_baseline: present
+    scheduler_baseline: {repo_sync: required, parity_review: required}
   dev-secondary:
     ws_hub_path: /mnt/local-analysis/workspace-hub
     ssh_target: ace-linux-2
@@ -61,6 +66,11 @@ workstations:
     compute_floor: {cores_min: 8, ram_gib_min: 8}
     required_data_access: [assetutilities, digitalmodel, worldenergydata, assethold]
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
+    # #3591 providers baseline: full Linux execution box
+    providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
+    # #3592: execution box — repo-sync required; parity-review is leader-only (dev-primary)
+    hermes_home_baseline: present
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   gpu-claw:
     ws_hub_path: /home/undi/ws/workspace-hub
     ssh_target: gpu-claw
@@ -70,16 +80,31 @@ workstations:
     compute_floor: {cores_min: 8, ram_gib_min: 32}
     required_data_access: [digitalmodel]
     solvers_baseline: {orcaflex: absent, orcawave: absent, aqwa: absent, ansys: absent}
+    # #3591 providers baseline: THIN host by policy — CFD lane only, no gemini/hermes
+    providers_baseline: {claude: present, codex: present, gemini: absent, hermes: absent}
+    # #3592: thin host, no hermes home. repo-sync REQUIRED — installed 2026-07-23 via
+    # setup-cron.sh (crontab: repository-sync 4h + equivalence-sentinel 6h + weekly
+    # equality report; evidence measured has_repo_sync:true, job_count:3, publish
+    # 29639aa94). The earlier same-day not-required flip predated that install; its own
+    # flip-back-when-installed condition is now met.
+    hermes_home_baseline: absent
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   ace-win-1:
-    ws_hub_path: 'D:\workspace-hub'
-    ssh_target: null
+    # Corrected 2026-08-01 to match registry.yaml. sync-agent-configs.sh:947 asserts
+    # these two agree and exits hard when they diverge — correcting registry alone
+    # turned "consistently wrong" into "inconsistent" and took 75 tests down with it.
+    # Verified on the box: the previous path is not a git repository there.
+    ws_hub_path: 'D:\ws\workspace-hub'
+    # Corrected: inbound SSH was provisioned 2026-07-31. The alias resolves through
+    # the operator's private ssh_config; the address stays in the private tier.
+    ssh_target: ace-win-1
     linux_reachable: false
     report_path: .claude/state/harness-readiness-ace-win-1.yaml
     notes: "Scout-only (recon + verification); bug fixes OK, NO feature dev (OS-equivalent dev lives on the Linux boxes). Licensed Windows host — primary role: licensed solver runs. Windows/Git Bash; Windows Task Scheduler writes report to shared mount."
     role: licensed-solver
     # ram_gib_min restored (#2816 W4, owner-confirmed 2026-05-31): collect-equality.ps1 now yields a
     # trustworthy ram_total_mib via CIM. Floor = 12 GiB. Evidence: the paired ace-win-2
-    # (acma-ws014) measured ram_total_mib 15982 MiB (~16 GB physical; CIM excludes hardware-reserved)
+    # measured ram_total_mib 15982 MiB (~16 GB physical; CIM excludes hardware-reserved)
     # on a real `-Stdout` run. 12 GiB gives margin below spec while still flagging a degraded sub-12
     # GB box. A floor of 16 would false-fail (15982 < 16384). ace-win-1 is the same
     # licensed-solver class (assumed 16 GB); confirm/retune at its first -Stdout run.
@@ -91,6 +116,13 @@ workstations:
     # most `present` (install/import detection only — no real license probe). Until the
     # Windows-side license probe follow-up lands, these cells grade BELOW-BASELINE by design.
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
+    # #3591 providers baseline: THIN Windows host by policy (keep-Windows-host-thin) — no gemini/hermes
+    providers_baseline: {claude: present, codex: present, gemini: absent, hermes: absent}
+    # #3592: hermes_home aligned with providers_baseline (thin → absent). Evidence currently
+    # reads present — a probe/policy contradiction the BELOW-BASELINE cell surfaces for
+    # on-box cleanup (#2815 companion). Task Scheduler repo-sync required.
+    hermes_home_baseline: absent
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   ace-win-2:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
@@ -99,7 +131,7 @@ workstations:
     notes: "Scout-only (recon + verification); bug fixes OK, NO feature dev (OS-equivalent dev lives on the Linux boxes). Licensed Windows host — primary role: document ingestion, email, marketing & admin. Windows/Git Bash; Windows Task Scheduler writes report to shared mount."
     role: licensed-solver
     # ram_gib_min restored (#2816 W4, owner-confirmed 2026-05-31): measured ram_total_mib on this box
-    # (acma-ws014) = 15982 MiB (~16 GB physical) via collect-equality.ps1 -Stdout on 2026-05-31.
+    # = 15982 MiB (~16 GB physical) via collect-equality.ps1 -Stdout on 2026-05-31.
     # Floor = 12 GiB gives margin below the real spec while still catching a degraded box. A floor of
     # 16 would false-fail (15982 < 16384). See ace-win-1 note above for the class rationale.
     compute_floor: {cores_min: 8, ram_gib_min: 12}
@@ -108,6 +140,13 @@ workstations:
     # NOTE (PR #2850, 2026-05-28): grades BELOW-BASELINE until the Windows license-probe
     # follow-up emits a real `licensed` signal (probe only detects install/import → `present`).
     solvers_baseline: {orcaflex: licensed, orcawave: licensed, aqwa: licensed, ansys: licensed}
+    # #3591 providers baseline: full stack observed + intended on this box (doc/email/marketing lane)
+    providers_baseline: {claude: present, codex: present, gemini: present, hermes: present}
+    # #3592: hermes_home aligned with providers_baseline (full stack → present). Evidence
+    # currently reads absent — the inverse contradiction of ace-win-1; the red cell drives
+    # the on-box probe/install reconciliation. Task Scheduler repo-sync required.
+    hermes_home_baseline: present
+    scheduler_baseline: {repo_sync: required, parity_review: not-required}
   home-win:
     ws_hub_path: 'D:\workspace-hub'
     ssh_target: null
@@ -119,7 +158,12 @@ workstations:
     status: unreachable
     hostname: Vamsees-MacBook-Air
     hostname_aliases: [Vamsees-MacBook-Air.local]
-    ws_hub_path: /Users/krishna/workspace-hub
+    # Corrected 2026-08-01 to match registry.yaml, which auto-sync moved to the
+    # Developer/ws path. PRE-EXISTING divergence, not introduced here: it has been
+    # failing sync-agent-configs.sh:947 since that auto-sync landed, which is why
+    # the ace-win-1 divergence added later went unnoticed — the check was already
+    # red, so a second fault changed nothing visible.
+    ws_hub_path: /Users/krishna/Developer/ws/workspace-hub
     ssh_target: null
     linux_reachable: false
     report_path: .claude/state/harness-readiness-macbook-portable.yaml

@@ -49,6 +49,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:data
       - domain:knowledge
       - machine:dev-secondary
       - dispatch:ready
@@ -80,7 +81,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:data-pipeline
+      - cat:data
       - domain:knowledge
     initial_status: triage
     priority: 0
@@ -94,7 +95,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:automation
+      - cat:tooling
       - domain:knowledge
     initial_status: triage
     priority: 0
@@ -150,7 +151,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:data-pipeline
+      - cat:data
       - domain:knowledge
     initial_status: triage
     priority: 0
@@ -164,7 +165,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:automation
+      - cat:tooling
       - domain:knowledge
     initial_status: triage
     priority: 0
@@ -217,7 +218,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:platform
+      - cat:operations
       - domain:knowledge
     initial_status: triage
     priority: 0
@@ -244,7 +245,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:documentation
       - cat:harness
       - domain:knowledge
       - machine:dev-primary
@@ -267,6 +267,7 @@ cards:
     gh_labels:
       - bug
       - priority:low
+      - cat:tooling
       - domain:knowledge
       - machine:dev-primary
       - dispatch:ready
@@ -288,7 +289,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:documentation
       - cat:harness
       - domain:knowledge
       - machine:dev-primary
@@ -311,7 +311,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:documentation
       - cat:harness
       - domain:knowledge
       - machine:dev-primary
@@ -334,7 +333,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:documentation
       - cat:harness
       - domain:knowledge
       - machine:dev-primary
@@ -357,7 +355,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:documentation
       - cat:harness
       - domain:knowledge
       - machine:dev-primary
@@ -380,7 +377,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:low
-      - cat:documentation
       - cat:harness
       - domain:knowledge
       - machine:dev-primary
@@ -403,7 +399,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:low
-      - cat:documentation
       - cat:harness
       - domain:knowledge
       - machine:dev-primary
@@ -426,7 +421,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:low
-      - cat:documentation
       - cat:harness
       - domain:knowledge
       - machine:dev-primary
@@ -449,7 +443,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:low
-      - cat:documentation
       - cat:harness
       - domain:knowledge
       - machine:dev-primary
@@ -472,10 +465,10 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:data-pipeline
-      - cat:document-intelligence
-      - domain:reporting
+      - cat:data
+      - domain:document-intelligence
       - domain:knowledge
+      - domain:content
       - status:done
     initial_status: triage
     priority: 1
@@ -489,8 +482,8 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:data-pipeline
-      - cat:document-intelligence
+      - cat:data
+      - domain:document-intelligence
       - domain:knowledge
       - status:done
     initial_status: triage
@@ -505,8 +498,8 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:data-pipeline
-      - cat:document-intelligence
+      - cat:data
+      - domain:document-intelligence
       - domain:knowledge
       - machine:dev-primary
       - status:needs-plan
@@ -529,8 +522,8 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:data-pipeline
-      - cat:document-intelligence
+      - cat:data
+      - domain:document-intelligence
       - domain:knowledge
       - status:plan-approved
     initial_status: triage
@@ -545,6 +538,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - cat:data
       - domain:knowledge
       - machine:dev-primary
       - dispatch:ready
@@ -563,7 +557,6 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:documentation
       - cat:harness
       - domain:knowledge
       - machine:dev-primary
@@ -586,11 +579,10 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:data-pipeline
-      - cat:documentation
+      - cat:data
       - domain:knowledge
-      - domain:audit-trail
       - lane:claude
+      - domain:governance
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -603,11 +595,2056 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:data-pipeline
-      - cat:automation
+      - cat:data
       - domain:knowledge
-      - domain:audit-trail
       - lane:claude
+      - domain:governance
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#38
+    title: 'WRK-1088: feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/38
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1088: feat(harness): data pipeline framework — consistent ETL for EIA, BSEE, engineering datasets
+
+      **Status:** pending | **Priority:** medium | **Category:** harness | **Subcategory:** data-pipeline
+
+      **Repo:** [''workspace-hub'', ''worldenergydata'', ''assethold''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#39
+    title: 'WRK-1330: Archive synthesis — backfill knowledge capture + distill into roadmap'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/39
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:knowledge
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#102
+    title: 'WRK-1331: GitHub Issue body template renderer (update-github-issue.py)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/102
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1331: GitHub Issue body template renderer (update-github-issue.py)
+
+      **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#103
+    title: 'WRK-1332: Archive synthesis + knowledge backfill (synthesize-archive.py)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/103
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1332: Archive synthesis + knowledge backfill (synthesize-archive.py)
+
+      **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
+
+      **Repo:** [''workspace-hub''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#104
+    title: 'WRK-1333: Wire Issue updater into stage lifecycle (replace HTML gen)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/104
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1333: Wire Issue updater into stage lifecycle (replace HTML gen)
+
+      **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#105
+    title: 'WRK-1334: Delete HTML infrastructure (generator, sub-skills, files)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/105
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1334: Delete HTML infrastructure (generator, sub-skills, files)
+
+      **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#106
+    title: 'WRK-1335: Patch archive-item.sh for ongoing GitHub Issue creation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/106
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1335: Patch archive-item.sh for ongoing GitHub Issue creation
+
+      **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
+
+      **Repo:** [''workspace-hub''] | **Complexity:** simple | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#107
+    title: 'WRK-1336: Bulk review 38 existing open issues + roadmap update'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/107
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1336: Bulk review 38 existing open issues + roadmap update
+
+      **Status:** done | **Priority:** high | **Category:** harness | **Subcategory:** knowledge-management
+
+      **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#254
+    title: 'WRK-183: Domain Knowledge Graph'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/254
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#294
+    title: 'WRK-183: Domain Knowledge Graph'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/294
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#459
+    title: 'WRK-391: Online Resources Research — expanded discovery of skills, data APIs and references for workspace-hub'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/459
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#503
+    title: 'WRK-391: Online Resources Research — expanded discovery of skills, data APIs and references for workspace-hub'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/503
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - archived
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1353
+    title: 'WRK-1353: Deep extraction & table promotion for ace_standards + workspace_spec (deferred from WRK-1288)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1353
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - machine:dev-secondary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1354
+    title: 'WRK-1354: frontierdeepwater: sync missing files from remote to /mnt/ace/frontierdeepwater'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1354
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:knowledge
+      - machine:multi
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1378
+    title: 'WRK-PENDING: Review local-analysis folders for relocation to knowledge center'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1378
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:operations
+      - domain:knowledge
+      - machine:multi
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1563
+    title: 'Feature: Data & Resource Intelligence — consolidated plan (45 issues, 8 sub-features)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1563
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Data & Resource Intelligence — Epic Tracking Issue
+
+      **Plan document:** [`docs/plans/2026-04-01-data-intelligence-feature-plan.md`](docs/plans/2026-04-01-data-intelligence-feature-plan.md)
+
+      This epic tracks 45 open issues across 8 sub-feature groups covering data enrichment, classification, extraction, standards implementation, data sources, naval architecture, knowledge persistence, and document hygiene.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1579
+    title: Audit /mnt/ace descriptions, dedup/reorg safety, and llm-wiki coverage mapping
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1579
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:document-intelligence
+      - domain:knowledge
+      - machine:dev-primary
+      - status:needs-plan
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+      - domain:repo
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Child of holistic doc-intel feature. Scan /mnt/ace/ for resources not tracked in any registry: (1) 8 cloned GitHub repos (WEC-Sim, openfast, gmsh, capytaine, HAMS, MoorDyn, MoorPy, opm-common) — are they in the OSS catalog? (2) 30 conference paper collections in docs/conferences/ — are they indexed? (3) 38 GB O&G-Standards/ — cross-check against standards-transfer-ledger.yaml. (4) docs/engineering-refs/ subdirs. Script: scripts/data/ace-resource-audit.py. Output: docs/reports/ace-undiscovered-resources.md. TDD. Use uv run.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1611
+    title: Fill domain gaps in resource registry — orcawave, fatigue, subsea, geotechnical
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1611
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Fill domain gaps in online resource registry — orcawave, fatigue, subsea, geotechnical\n\n**Parent:** #1563 (Data & Resource Intelligence)\n**Depends on:** #1576 (closed), #1577 (closed)\n\n### Context\nDomain resource views revealed several domains with thin coverage:\n- **orcawave**: 0 resources (skipped in view generation)\n- **fatigue**: 0 direct entries (17 fatigue standards exist under structural)\n- **subsea**: 1 resource only\n- **geotechnical**: 0 resources\n- **electrical**: 0 resources (issue #57 already tracks this)\n\n### Scope\n1. Research and add at least 10 resources per thin domain:\n   - **orcawave**: Orcina OrcaWave docs, validation papers, BEM theory refs\n   - **fatigue**: S-N curve databases, crack growth tools (NASGRO, AFGROW), DNV-RP-C203 portal, BS 7608\n   - **subsea**: subsea engineering tools, ROV/AUV resources, flexible pipe refs\n   - **geotechnical**: pile design tools (OPILE, PLAXIS), DNV-RP-C212, ISO 19901-4\n\n2. Re-run `scripts/data/build-online-resource-registry.py`
+      to rebuild registry\n3. Re-run `scripts/data/generate-domain-resource-views.py` to update domain pages\n4. New domain pages should appear for orcawave, fatigue (if separated from structural)\n\n### Acceptance Criteria\n- [ ] At least 30 new entries across thin domains\n- [ ] Domain views generated for previously-skipped domains\n- [ ] No domain has fewer than 3 resources\n'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1782
+    title: 'epic: zero-loss agent learnings — git-track ALL AI agent memories, corrections, patterns, and insights'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1782
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:knowledge
+      - status:working
+      - machine:multi
+      - agent:claude
+      - agent:codex
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## Context
+
+      A full audit of all 4 AI agents (Claude Code, Hermes, Codex, Gemini) revealed that **~6.7GB of machine-local state** has NO git protection. If ace-linux-1 dies, the entire institutional memory built over months of agent interaction is lost.
+
+      The learnings that matter most — user corrections, learned patterns, permission rules, cross-agent insights — total only ~400KB but are scattered across 4 different home directories with no unified backup or portability strategy.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1988
+    title: 'feat: Map Google Drive data to git repos — O&G public, personal/proprietary private'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1988
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent: #1963 — Multi-account Gmail Management
+
+      ## Objective
+
+      Audit all 3 Google Drive accounts, classify data by sensitivity/domain, and migrate to appropriate git repos. Oil & gas technical data goes public; personal/proprietary stays private.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2034
+    title: 'feat: engineering LLM wiki seed + incremental ingest pipeline'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2034
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:knowledge
+      - wip:ace-linux-1
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2036
+    title: 'feat: engineering wiki incremental ingest cron'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2036
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2040
+    title: 'feat: cronize engineering wiki incremental ingest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2040
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Automate the engineering wiki incremental ingest as a nightly cron job.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2066
+    title: 'fix(knowledge): build-knowledge-index ingest multiline learned-patterns with stable IDs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2066
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:harness
+      - domain:knowledge
+      - agent:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2067
+    title: 'feat(knowledge): wire .planning/research into engineering wiki nightly ingest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2067
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'Summary
+
+      The LLM wiki operating model depends on nightly researcher outputs flowing into wiki ingest automatically. `scripts/knowledge/wiki-ingest-cron.sh` does not currently scan `.planning/research/`, so researcher artifacts remain siloed.
+
+      Why this matters'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2068
+    title: 'feat(knowledge): add cross-link JSONL package for wiki-to-standard and wiki-to-module intelligence'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2068
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:claude
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Summary
+
+      The current LLM wiki architecture identifies a missing glue layer: append-only cross-link stores connecting wiki pages, standards, repo modules, and gap deltas. Existing cross-wiki discovery is not enough for the integrated intelligence model.
+
+      Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2069
+    title: 'chore(knowledge): reconcile LLM wiki blueprint inconsistencies from adversarial review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2069
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - agent:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2072
+    title: 'chore(knowledge): reconcile LLM wiki blueprint inconsistencies from adversarial review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2072
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - agent:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2074
+    title: 'chore(knowledge): reconcile LLM wiki blueprint inconsistencies from adversarial review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2074
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - agent:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2075
+    title: 'chore(knowledge): reconcile LLM wiki blueprint inconsistencies from adversarial review'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2075
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - agent:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2103
+    title: 'feat(llm-wiki): extend ingestion to AQWA and BEMRosetta documentation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2103
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Extend the llm-wiki pattern to cover AQWA (ANSYS) and BEMRosetta documentation, completing the diffraction/radiation tool coverage alongside OrcaWave.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2123
+    title: 'feat(llm-wiki): add llm-wiki search to OrcaFlex/OrcaWave agent skill invocation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2123
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Integrate search-wiki.py into the agent skill invocation flow so agents automatically look up relevant documentation when handling OrcaFlex/OrcaWave tasks.
+
+      ## Context'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2124
+    title: 'feat(llm-wiki): extend ingestion to Orcina resources, examples, and training materials'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2124
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - status:working
+      - machine:dev-primary
+      - agent:codex
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Extend llm-wiki coverage to remaining Orcina web content beyond the help system.
+
+      ## Sources not yet ingested'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2125
+    title: 'feat(llm-wiki): auto-refresh ingestion on new Orcina releases'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2125
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - status:working
+      - machine:dev-primary
+      - agent:codex
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add version detection and incremental refresh to the llm-wiki ingestion pipeline so new OrcaFlex releases are automatically captured.
+
+      ## Current state'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2126
+    title: 'test(llm-wiki): validate markdown conversion quality across all 717 topics'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2126
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:marine
+      - domain:knowledge
+      - status:done
+      - agent:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2141
+    title: Add fixture-backed tests for llm-wiki ingest and search scripts
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2141
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:codex
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Summary
+
+      The new llm-wiki ingestion and search tooling shipped without meaningful automated test coverage.
+
+      Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2204
+    title: 'feat(knowledge): add anchored repo-root rewrite mode to shared machine/path resolver'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2204
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add an anchored repo-root rewrite mode to the shared machine/path resolver so callers that need canonical current-checkout paths can opt into stronger anchoring semantics.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2233
+    title: 'feat(knowledge): add  frontmatter field to wiki schema and validation guidance'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2233
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Add a `promoted_from` frontmatter field to wiki page conventions so durable knowledge can explicitly record which transient artifact or workflow produced the promoted content.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2283
+    title: 'feat(wiki): promote CSA Z276.2-19 to LNG wiki domain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2283
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Follow-on issue split from #2244 triage artifact to handle a bounded slice of mkt-a breadth discovered outside the approved #2227 scope.
+
+      ## Why this is split'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2284
+    title: 'feat(wiki): promote OCIMF MEG3 and MEG4 to mooring wiki domain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2284
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Follow-on issue split from #2244 triage artifact to handle a bounded slice of mkt-a breadth discovered outside the approved #2227 scope.
+
+      ## Why this is split'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2285
+    title: 'feat(wiki): promote API RP 2SK 3rd ed. to mooring wiki domain'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2285
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Follow-on issue split from #2244 triage artifact to handle a bounded slice of mkt-a breadth discovered outside the approved #2227 scope.
+
+      ## Why this is split'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2286
+    title: 'feat(wiki): promote SIGTTO LNG and mooring publications as batch'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2286
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:documentation
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Follow-on issue split from #2244 triage artifact to handle a bounded slice of mkt-a breadth discovered outside the approved #2227 scope.
+
+      ## Why this is split'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2293
+    title: 'fix(wiki-ingest): make nightly ingest idempotent and push-status truthful'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2293
+    gh_state: open
+    gh_labels:
+      - bug
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      `wiki-ingest-nightly` currently reports a nightly ingest error caused by duplicate-source handling and also emits contradictory push-status messaging.
+
+      ## Evidence'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2303
+    title: 'fix(wiki): batch-ingest creates pages without last_updated — 19K pages non-conformant with DT-1'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2303
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:medium
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2325
+    title: 'Design conference-corpus enrichment (successor to #2305 deferral)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2325
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - domain:document-intelligence
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Successor to #2305. See \`docs/reports/2026-04-17-issue-2305-conference-batch-baseline.md\` for the full baseline and why #2305 deferred.
+
+      ## Problem
+
+      The conference corpus (22,069 + 27,735 records across \`conference-index-batch.jsonl\` and \`conference-index.jsonl\`, plus 14,180 Phase-A extraction results in \`conference-phase-a-results.jsonl\`) has **0% coverage** of the post-#1878 enrichment fields (\`content_type\`, \`summary_done\`). The #1878 enrichment pipeline cannot run unchanged because:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2369
+    title: 'feat(knowledge): execute Batch Pack 2 to promote indexed conference summaries into wiki topic stubs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2369
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:knowledge
+      - status:done
+      - agent:codex
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2370
+    title: 'feat(knowledge): build closed-issue promotion ledger for engineering wiki ingest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2370
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build a closed-issue promotion ledger and ranking for engineering/calculation issues so the repo can systematically convert the best completed work into durable wiki knowledge.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2374
+    title: 'feat(knowledge): build transient-promotion candidate queue from handoffs and review artifacts'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2374
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build a transient-promotion candidate queue that extracts durable knowledge candidates from handoffs, review artifacts, and recurring-run outputs, then routes them into wiki/document-intelligence promotion work.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2380
+    title: 'feat(knowledge): execute Batch Pack 3 Tier A for external engineering software profiles'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2380
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2382
+    title: 'feat(conformance): add promotion audit-trail checker for L5/L6→L3 wiki promotions'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2382
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement a conformance check that verifies promoted wiki pages expose at least one auditable promotion trail, so the repo can enforce the “no silent promotion” rule for L5/L6 → L3 knowledge promotion.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2383
+    title: 'feat(conformance): implement GUARD-1 invented-layer detector for intelligence/governance docs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2383
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement GUARD-1 as a concrete conformance detector that flags invented layer vocabulary such as `L3-adjacent`, `between Lx and Ly`, or other forbidden hybrid-layer classifications in repo-governance/intelligence documents.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2384
+    title: 'feat(governance): add promotion-aware recurring-run output pruner'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2384
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Implement a promotion-aware recurring-run output pruner that archives superseded recurring outputs once enough newer runs exist and no promotable finding still depends on them.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2398
+    title: 'feat(knowledge): assess llm-wiki spinout vs embedded workspace-hub architecture'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2398
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2470
+    title: 'feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2470
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Create a source-grounded, readable-summary unblocker for the mkt-a wiki-promotion targets currently blocking #2227.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2471
+    title: 'feat(knowledge): decide sanctioned CSA Z276 wiki routing and durability contract'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2471
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - status:done
+      - agent:codex
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2479
+    title: 'fix(review): Codex stdin-hang regression post-#2406 closure (size-dependent)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2479
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:harness
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2480
+    title: 'feat(llm-wiki): add end-to-end pipeline smoke test — raw input → wiki → search → MCP'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2480
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2481
+    title: 'feat(llm-wiki): calculation-output citation contract — engineering modules cite wiki-backed provenance'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2481
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - cat:documentation
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2482
+    title: 'docs(knowledge): reconcile llm-wiki → GTM content boundary — resolve #2022 vs firm-copy-out-of-scope decision'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2482
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:documentation
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2483
+    title: 'chore(knowledge): populate freshness-cadence matrix with per-asset cadences and thresholds'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2483
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent
+
+      Split from #2105 (Lane I scope-split, user-approved 2026-04-24 Option A).
+
+      ## Dependency'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2484
+    title: 'feat(knowledge): extend staleness-scanner to cover yaml registries and llm-wiki assets (or defer via ADR)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2484
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent
+
+      Split from #2105 (Lane I scope-split, user-approved 2026-04-24 Option A).
+
+      ## Dependency'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2485
+    title: 'feat(enforcement): mechanical linter + ledger for llm-wiki → GTM boundary (enforces #2482 policy)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2485
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build the mechanical enforcement layer for the llm-wiki → GTM content boundary: a frontmatter-based linter, a revision-binding publish-authorization ledger, and a pre-commit hook that blocks unauthorized ledger edits. Policy content (allow/deny lists, sanitization rules) is defined by the governance doc produced in #2482; this issue is the executable-enforcement side.
+
+      ## Why'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2487
+    title: 'feat(inventory-readiness): raw-data to GTM readiness matrix and dispatch board'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2487
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:documentation
+      - cat:data
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2535
+    title: 'chore(llm-wiki): index Elements ingest data into domain wikis'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2535
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2536
+    title: 'feat(llm-wiki): deep-extract high-value Elements engineering corpora'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2536
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:marine
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2540
+    title: 'epic(llm-wiki): overnight Elements corpus planning wave after #2536'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2540
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2542
+    title: 'feat(llm-wiki): plan Doris University training corpus extraction'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2542
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - status:done
+      - domain:ai
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2543
+    title: 'feat(llm-wiki): plan DORIS codes/specs standards metadata promotion'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2543
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:standards
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2544
+    title: 'feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2544
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:marine
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2586
+    title: 'feat(llm-wiki): bounded API standards summary promotion to engineering-standards wiki (W1-A)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2586
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:standards
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2587
+    title: 'feat(llm-wiki): asset-management wiki topical scaffold + scope boundary (W1-B)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2587
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:asset-integrity
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2588
+    title: 'audit(llm-wiki): engineering wiki gap audit + prioritized backfill sequence (W1-C)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2588
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:documentation
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2590
+    title: 'feat(llm-wiki): bounded DNV standards summary promotion to engineering-standards wiki (W2-A)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2590
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:standards
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2591
+    title: 'feat(llm-wiki): bounded ASME standards summary promotion to engineering-standards wiki (W2-B)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2591
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:standards
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2592
+    title: 'feat(llm-wiki): maritime-law wiki topical expansion — IMO conventions + 10 core concepts (W2-C)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2592
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:marine
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2593
+    title: 'audit(data): online-resource-registry refresh + 2025-2026 standards-revision sweep (W2-D)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2593
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - cat:data
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2594
+    title: 'feat(llm-wiki): bounded ABS standards summary promotion to engineering-standards wiki (W3-A)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2594
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:standards
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2595
+    title: 'feat(llm-wiki): bounded ISO 19900-series offshore standards summary promotion (W3-B)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2595
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:standards
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2596
+    title: 'erratum(plans): correct #2471 sanction-scope over-citation in W1-A and W1-B (W3-C)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2596
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:documentation
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2597
+    title: 'feat(llm-wiki): engineering wiki riser sub-domain topical expansion (W3-D)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2597
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - status:done
+      - domain:hydro
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2599
+    title: 'feat(llm-wiki): bounded NACE/AMPP standards summary promotion to engineering-standards wiki (W4-A)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2599
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:standards
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2600
+    title: 'feat(llm-wiki): bounded BSI offshore-petroleum subset summary promotion (W4-B)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2600
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:standards
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2601
+    title: 'audit(llm-wiki): marine-engineering wiki gap audit + prioritized backfill sequence (W4-C)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2601
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:documentation
+      - domain:marine
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2602
+    title: 'feat(llm-wiki): engineering wiki pipeline sub-domain topical expansion (W4-D)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2602
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:pipeline
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2610
+    title: 'feat(llm-wiki): bounded NORSOK Norwegian-sector standards summary promotion (W5-A)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2610
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:standards
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2611
+    title: 'feat(llm-wiki): bounded AWS welding standards summary promotion (W5-B)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2611
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - domain:standards
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2612
+    title: 'feat(llm-wiki): lng-projects wiki topical expansion — 8 concept/entity pages (W5-C)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2612
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:documentation
+      - domain:marine
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2613
+    title: 'meta(governance): formally sanction wiki/standards/ routing for out-of-principle wikis (W5-D)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2613
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:documentation
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2615
+    title: 'meta(governance): umbrella sanction — wiki/standards/ routing for engineering-standards / asset-management / lng-projects / acma-projects (W5-D follow-up)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2615
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:documentation
+      - domain:knowledge
+      - status:done
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2632
+    title: 'META: rebind 3 llm-wiki plan-approved issues stuck on missing approval markers (#2368/#2124/#2125)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2632
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - domain:knowledge
+      - status:plan-review
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2643
+    title: 'feat(llm-wiki): plan metadata-only /mnt/ace-data raw-like source coverage triage'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2643
+    gh_state: closed
+    gh_labels:
+      - priority:high
+      - cat:documentation
+      - cat:data
+      - domain:document-intelligence
+      - domain:knowledge
+      - status:plan-approved
+      - llm-wiki
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2650
+    title: 'chore(knowledge): post-spinout cleanup for llm-wiki migration'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2650
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:operations
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Track post-migration cleanup work after llm-wiki spinout to vamseeachanta/llm-wiki on 2026-05-05.
+
+      ## Tasks'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2658
+    title: 'O&G-Standards consolidator: 8 catalog-classification defects surfaced by parallel-agent ingest'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2658
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - machine:dev-primary
+      - llm-wiki
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Iterations 8-9 of the LLM-wiki completeness loop ran 9 parallel research agents against `/mnt/ace/O&G-Standards/`. They independently surfaced the same structural classification gap in the upstream **O&G Standards Consolidation System** (per `_catalog.json` `metadata.source`, version 1.0.0, generated 2025-12-25). The consolidator''s outputs — `_catalog.json` (19.5 MB), `_inventory.db` (6.8 GB SQLite), `_catalog.html` — encode the eight defects below, which all downstream wiki ingest, retrieval, and citation consumers inherit.
+
+      Cross-agent confirmation across 9 independent passes makes this a high-confidence, reproducible defect — not a sampling artifact.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2667
+    title: 'Feature: Domain Knowledge Sweep — systematic multi-source research → coverage map → implementation issues'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2667
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:research
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Summary
+
+      Build a systematic workflow that audits a single engineering domain across **all relevant knowledge surfaces** (academic, standards, industry practice, social/marketing, codebase) and emits a coverage map + a tree of subissues capturing every implementation gap.
+
+      This formalizes the ad-hoc LinkedIn-extraction pattern (`field-dev-code-recon` skill) into a defensible knowledge-acquisition system. Per memory feedback (`feedback_llm_wiki_concept_pages_need_public_references`), LinkedIn-only sourcing fails day-one lint — comprehensive sourcing is required for engineering defensibility.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2668
+    title: 'Domain Sweep: Offshore Hydrodynamics (RAOs, motion analysis, wave-structure interaction)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2668
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+      - domain:hydro
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent Feature
+
+      Subissue of [#2667](https://github.com/vamseeachanta/workspace-hub/issues/2667) — Domain Knowledge Sweep framework.
+
+      ## Domain Charter'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2676
+    title: 'Domain Sweep: Mooring Design (catenary, taut, DP-assist, station-keeping, fatigue)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2676
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:marine
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent Feature
+
+      Subissue of [#2667](https://github.com/vamseeachanta/workspace-hub/issues/2667) — Domain Knowledge Sweep framework.
+
+      ## Domain Charter'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2685
+    title: 'Citation pilot contradiction: rule names orcaflex/mooring_design.py but file emits no Citation'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2685
+    gh_state: closed
+    gh_labels:
+      - bug
+      - priority:high
+      - cat:engineering
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2687
+    title: 'Domain Sweep: Subsea Pipelines (design, installation, integrity, on-bottom stability)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2687
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:pipeline
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Parent Feature
+
+      Subissue of [#2667](https://github.com/vamseeachanta/workspace-hub/issues/2667) — Domain Knowledge Sweep framework.
+
+      ## Domain Charter'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2714
+    title: 'research: Gulf of Mexico production progress + Lower Tertiary energy-security thesis (anti-confirmation-bias against FDAS)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2714
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:research
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Goal
+
+      Produce a **data-grounded** analysis of (1) the trajectory of Gulf of Mexico ("Gulf of America" in 2025+ federal nomenclature) crude oil and natural gas production over the last 25 years, (2) the technical and economic role of the **Lower Tertiary / Wilcox / Paleogene** play within that trajectory, and (3) whether Lower Tertiary is in fact strategically important for US energy security — or not.
+
+      The conclusion must follow from the data. **The analysis is NOT to be written toward a predetermined conclusion** — neither pro nor con the FDAS / client-a thesis. If the EIA / BSEE / BOEM / USGS / IEA data supports the thesis, say so and show why. If it contradicts the thesis or qualifies it heavily, say that and show why.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2733
+    title: 'epic: make Hermes agent memory canonical across all AI providers'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2733
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:harness
+      - domain:knowledge
+      - machine:dev-primary
+      - agent:claude
+      - agent:codex
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+      - agent:agy
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: 'Recorded user feedback 2026-05-17 (auto-memory `feedback_memory_aspire_to_hermes_level`): **all AI provider work should flow through Hermes agent''s memory strategy**. Hermes-memory is the canonical backend; per-provider stores (Claude Code auto-memory, Codex state, Gemini session memory) should consolidate to Hermes rather than evolve in parallel.
+
+      ## Architectural ask
+
+      Current state is fragmented:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2734
+    title: 'research: audit current Hermes agent memory capabilities + identify gaps for canonical-backend role'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2734
+    gh_state: closed
+    gh_labels:
+      - priority:medium
+      - cat:research
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2735
+    title: 'design: memory write/read API for non-Hermes providers (Claude / Codex / Gemini) → Hermes canonical memory'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2735
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - domain:knowledge
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Parent epic: filed immediately before this — ''make Hermes agent memory canonical across all AI providers''.
+
+      ## Goal
+
+      Design the interface contract for non-Hermes AI providers (Claude Code, Codex, Gemini) to:'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2736
+    title: 'design: migration plan from per-provider memory stores (Claude / Codex / Gemini local state) into Hermes canonical memory'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2736
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:engineering
+      - domain:knowledge
+      - machine:dev-primary
+      - status:plan-approved
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: 'Parent epic: filed immediately before this — ''make Hermes agent memory canonical across all AI providers''.
+
+      ## Goal
+
+      Design the migration path from existing per-provider memory stores into Hermes canonical memory, without losing existing learnings.'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2747
+    title: 'feat(acma): raw-to-private-wiki promotion ledger with completion confidence scoring'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2747
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:data
+      - domain:document-intelligence
+      - domain:knowledge
+      - agent:claude
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2748
+    title: 'feat(acma): client output scaffolding for reports chatbots and evidence packs'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2748
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:documentation
+      - cat:data
+      - domain:knowledge
+      - status:plan-approved
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2776
+    title: Cross-wiki linking discipline — supersede stale governance + add enforcement script
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2776
+    gh_state: open
+    gh_labels:
+      - documentation
+      - priority:medium
+      - cat:documentation
+      - domain:knowledge
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '**Parent**: [worldenergydata#429](https://github.com/vamseeachanta/worldenergydata/issues/429) (CLOSED 2026-05-20, MAJOR cross-review findings partially remediated in commit \`1adac8871\` 2026-05-21).
+
+      Follow-on findings from code-stage adversarial review of #429 that weren''t critical enough to block close-out but warrant a second pass. Review artifacts at \`scripts/review/results/2026-05-21-code-429-*.md\`.
+
+      ## Scope'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2792
+    title: 'arch(llm-wiki): treat wiki repos as Knowledge Index modules'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2792
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - status:needs-plan
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2835
+    title: 'chore(relocation): remove relocated wiki content + retarget wiki_health_cron (llm-wiki#118 hub-side)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2835
+    gh_state: closed
+    gh_labels:
+      - domain:knowledge
+      - status:plan-approved
+      - gate:completeness
+      - status:completeness-verified
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2854
+    title: 'gap(memory): Hermes read-back leg missing — consolidated memory never flows back into ~/.hermes/memories (parallel to #2841 Codex)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2854
+    gh_state: open
+    gh_labels:
+      - priority:medium
+      - cat:harness
+      - domain:knowledge
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3362
+    title: 'Drive-file-search 30-day metrics review (review after 2026-08-01): unified-DB build/no-build decision'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3362
+    gh_state: open
+    gh_labels:
+      - priority:low
+      - cat:data
+      - domain:knowledge
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3370
+    title: 'EPIC: Repo-ecosystem data retention, backup & fingertip-access (keep data close, back up critical, exploit benchmark data)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3370
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3371
+    title: 'feat(data): critical-data inventory & retention tiering (fingertip-access catalog)'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3371
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:data
+      - domain:knowledge
+      - status:needs-plan
+      - lane:claude
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3604
+    title: 'INITIATIVE: Knowledge ingestion & the llm-wiki corpus'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3604
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:data
+      - domain:knowledge
+      - initiative
     initial_status: triage
     priority: 1
     gh_assignees: []

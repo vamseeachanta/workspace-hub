@@ -70,7 +70,7 @@ echo "--- AI agent readiness: ${RUN_TS} ---"
 # ─────────────────────────────────────────────────────────────────────────────
 # 1. Per-agent: presence + version check
 # ─────────────────────────────────────────────────────────────────────────────
-AGENTS=(claude codex gemini)
+AGENTS=(claude codex gemini agy)  # gemini = legacy soak probe; agy = routed third lane (#3573)
 
 for agent in "${AGENTS[@]}"; do
   cli_min=$(_yaml_get "$agent" "cli_min")
@@ -86,6 +86,7 @@ for agent in "${AGENTS[@]}"; do
     claude)  raw_version=$(claude --version 2>/dev/null | head -1 || true) ;;
     codex)   raw_version=$( codex --version 2>/dev/null | head -1 || true) ;;
     gemini)  raw_version=$(gemini --version 2>/dev/null | head -1 || true) ;;
+    agy)     raw_version=$(agy --version 2>/dev/null | head -1 || true) ;;
   esac
 
   parsed_version=$(printf '%s' "$raw_version" \

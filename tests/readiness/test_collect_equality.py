@@ -9,9 +9,11 @@ depending on the host's real hardware.
 from __future__ import annotations
 
 import os
+import json
 import re
 import shlex
 import subprocess
+import threading
 import time
 from pathlib import Path
 
@@ -54,6 +56,72 @@ def _run(ws: Path, *args: str) -> dict:
         capture_output=True, text=True, timeout=60)
     assert res.returncode == 0, res.stderr
     return yaml.safe_load(res.stdout)
+
+
+def _uv_stub(tmp_path: Path) -> Path:
+    bin_dir = tmp_path / "uv-bin"
+    bin_dir.mkdir()
+    uv = bin_dir / "uv"
+    python = shlex.quote(_bash_path(Path(sys.executable)))
+    uv.write_text(
+        "#!/usr/bin/env bash\n"
+        "[[ \"$1 $2 $3\" == 'run --no-project python' ]] || exit 2\n"
+        f"shift 3\nexec {python} \"$@\"\n"
+    )
+    uv.chmod(0o755)
+    return bin_dir
+
+
+def test_collect_publish_health_uses_working_resolver_and_exact_schema(tmp_path):
+    ws = _fixture(tmp_path)
+    health_dir = ws / ".claude" / "state" / "equivalence"
+    health_dir.mkdir()
+    (health_dir / "publish-health.json").write_text(json.dumps({
+        "schema_version": 1,
+        "ts": "2026-07-14T10:00:00+00:00",
+        "phase": "publish",
+        "duration_s": 2.5,
+        "rc": 0,
+    }))
+    bin_dir = _uv_stub(tmp_path)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        env={"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{bin_dir}:{BASH_PATH}"},
+        capture_output=True, text=True, timeout=60,
+    )
+    assert res.returncode == 0, res.stderr
+    health = yaml.safe_load(res.stdout)["dimensions"]["publish_health"]
+    assert health == {
+        "last_publish_at": "2026-07-14T10:00:00+00:00",
+        "last_publish_duration_s": 2.5,
+        "last_publish_rc": 0,
+    }
+
+
+def test_collect_invalid_publish_health_emits_no_partial_tuple(tmp_path):
+    ws = _fixture(tmp_path)
+    health_dir = ws / ".claude" / "state" / "equivalence"
+    health_dir.mkdir()
+    (health_dir / "publish-health.json").write_text(json.dumps({
+        "schema_version": 1,
+        "ts": "2026-07-14T10:00:00+00:00",
+        "phase": "publish",
+        "duration_s": True,
+        "rc": 0,
+    }))
+    bin_dir = _uv_stub(tmp_path)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        env={"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{bin_dir}:{BASH_PATH}"},
+        capture_output=True, text=True, timeout=60,
+    )
+    assert res.returncode == 0, res.stderr
+    health = yaml.safe_load(res.stdout)["dimensions"]["publish_health"]
+    assert health == {
+        "last_publish_at": "missing",
+        "last_publish_duration_s": None,
+        "last_publish_rc": None,
+    }
 
 
 def test_collect_emits_valid_yaml(tmp_path):
@@ -159,6 +227,92 @@ def test_collect_commit_on_change_idempotent(tmp_path):
     first_mtime = out.stat().st_mtime_ns
     subprocess.run(["bash", str(SCRIPT), "--machine", "dev-primary"], env=env, timeout=60, check=True)
     assert out.stat().st_mtime_ns == first_mtime         # unchanged content → not rewritten
+
+
+def _atomic_write_env(ws: Path, bindir: Path | None = None) -> dict[str, str]:
+    path = BASH_PATH if bindir is None else f"{_bash_path(bindir)}:{BASH_PATH}"
+    return {
+        "WORKSPACE_HUB": _bash_path(ws),
+        "PATH": path,
+        "HOME": _bash_path(ws.parent),
+    }
+
+
+def test_collect_atomic_failure_preserves_prior_report(tmp_path):
+    ws = _fixture(tmp_path)
+    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    prior = 'generated_at: "prior"\nmachine: "dev-primary"\nsentinel: old\n'
+    out.write_text(prior)
+    bindir = tmp_path / "bin"
+    bindir.mkdir()
+    fake_mv = bindir / "mv"
+    fake_mv.write_text("#!/usr/bin/env bash\nexit 19\n")
+    fake_mv.chmod(0o755)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--machine", "dev-primary"],
+        env=_atomic_write_env(ws, bindir), capture_output=True, text=True, timeout=60,
+    )
+    assert res.returncode != 0
+    assert out.read_text() == prior
+    assert not list(out.parent.glob(".equality-dev-primary.yaml.tmp.*"))
+
+
+def test_collect_keeps_old_report_visible_until_atomic_rename(tmp_path):
+    ws = _fixture(tmp_path)
+    out = ws / ".claude" / "state" / "equality-dev-primary.yaml"
+    prior = 'generated_at: "prior"\nmachine: "dev-primary"\nsentinel: old\n'
+    out.write_text(prior)
+    bindir = tmp_path / "bin"
+    bindir.mkdir()
+    entered = tmp_path / "mv-entered"
+    release = tmp_path / "mv-release"
+    fake_mv = bindir / "mv"
+    fake_mv.write_text(
+        "#!/usr/bin/env bash\n"
+        f"touch {_bash_path(entered)!r}\n"
+        f"while [[ ! -f {_bash_path(release)!r} ]]; do sleep 0.02; done\n"
+        "exec /usr/bin/mv \"$@\"\n"
+    )
+    fake_mv.chmod(0o755)
+    proc = subprocess.Popen(
+        ["bash", str(SCRIPT), "--machine", "dev-primary"],
+        env=_atomic_write_env(ws, bindir), stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE, text=True,
+    )
+    observations: list[str] = []
+    read_errors: list[Exception] = []
+    stop_reader = threading.Event()
+
+    def read_continuously() -> None:
+        while not stop_reader.is_set():
+            try:
+                observations.append(out.read_text())
+            except Exception as exc:  # surfaced below; never swallowed as a pass
+                read_errors.append(exc)
+            time.sleep(0.001)
+
+    reader = threading.Thread(target=read_continuously)
+    reader.start()
+    deadline = time.time() + 30
+    while not entered.exists() and time.time() < deadline:
+        time.sleep(0.02)
+    assert entered.exists(), proc.communicate(timeout=5)
+    assert out.read_text() == prior
+    release.touch()
+    stdout, stderr = proc.communicate(timeout=60)
+    time.sleep(0.02)
+    stop_reader.set()
+    reader.join(timeout=5)
+    assert proc.returncode == 0, (stdout, stderr)
+    final = out.read_text()
+    parsed = yaml.safe_load(final)
+    assert parsed["machine"] == "dev-primary"
+    assert "dimensions" in parsed
+    assert not read_errors
+    assert prior in observations
+    assert final in observations
+    assert set(observations) <= {prior, final}
+    assert not list(out.parent.glob(".equality-dev-primary.yaml.tmp.*"))
 
 
 SOLVER_NAMES = {"orcaflex", "orcawave", "aqwa", "ansys"}
@@ -607,3 +761,48 @@ def test_collect_kanban_queue_order_is_byte_sorted(tmp_path):
     (ws / ".claude" / "dispatch" / "_leader-state.yaml").write_text("x")
     d = _run(ws)
     assert d["dimensions"]["kanban"]["dispatch_queues"] == "_leader-state,dev-primary,multi"
+
+
+# ── harness_checkup dimension (#3408) ────────────────────────────────────────
+def test_collect_harness_checkup_failclosed_when_absent(tmp_path):
+    # no harness-checkup-<machine>.json in the fixture → block present but all-null (fail-closed →
+    # the matrix grades MISSING-EVIDENCE; never silently green).
+    d = _run(_fixture(tmp_path))["dimensions"]["harness_checkup"]
+    assert d["audited_at"] is None
+    for k in ("cc_version", "cc_latest", "version_current", "install_method", "duplicate_installs",
+              "settings_parse_ok", "broken_agents", "unused_skills", "unused_plugins",
+              "default_mode", "auto_mode_default"):
+        assert d[k] is None, k
+
+
+def test_collect_harness_checkup_passthrough(tmp_path):
+    import json as _json
+    ws = _fixture(tmp_path)
+    (ws / ".claude" / "state" / "harness-checkup-dev-primary.json").write_text(_json.dumps({
+        "audited_at": "2026-07-09T12:00:00+00:00", "cc_version": "2.1.205", "cc_latest": "2.1.205",
+        "version_current": True, "install_method": "npm-global", "duplicate_installs": 0,
+        "settings_parse_ok": True, "broken_agents": 0, "unused_skills": 23, "unused_plugins": 8,
+        "default_mode": "auto", "auto_mode_default": True,
+    }))
+    d = _run(ws)["dimensions"]["harness_checkup"]
+    assert d["cc_version"] == "2.1.205" and d["cc_latest"] == "2.1.205"
+    assert d["version_current"] is True and d["auto_mode_default"] is True
+    assert d["install_method"] == "npm-global" and d["default_mode"] == "auto"
+    assert d["duplicate_installs"] == 0 and d["unused_skills"] == 23 and d["unused_plugins"] == 8
+
+
+def test_collect_harness_checkup_type_gated(tmp_path):
+    # a malformed audit (wrong JSON types) must NOT inject garbage into the graded cells — the
+    # collector type-gates each field and drops mismatches to null (allowlist-safe by construction).
+    import json as _json
+    ws = _fixture(tmp_path)
+    (ws / ".claude" / "state" / "harness-checkup-dev-primary.json").write_text(_json.dumps({
+        "audited_at": "2026-07-09T12:00:00+00:00",
+        "version_current": "yes",          # wrong type → null
+        "duplicate_installs": "lots",       # wrong type → null
+        "settings_parse_ok": True,          # correct bool passes through
+    }))
+    d = _run(ws)["dimensions"]["harness_checkup"]
+    assert d["version_current"] is None
+    assert d["duplicate_installs"] is None
+    assert d["settings_parse_ok"] is True

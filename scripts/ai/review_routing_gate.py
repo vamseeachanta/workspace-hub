@@ -38,7 +38,7 @@ GEMINI_TRIGGERS = {
     "research-heavy": {
         "rationale": (
             "Task requires synthesizing multiple external sources, standards, "
-            "or large documents where Gemini's context window adds material value"
+            "or large documents where agy's (Gemini-backed) context window adds material value"
         ),
     },
     "ambiguous-requirements": {
@@ -56,7 +56,7 @@ GEMINI_TRIGGERS = {
     "context-saturation": {
         "rationale": (
             "Claude's context is already saturated with task material — "
-            "Gemini can process overflow without losing fidelity"
+            "agy (Gemini-backed) can process overflow without losing fidelity"
         ),
     },
 }
@@ -153,7 +153,7 @@ def _extract_added_content(diff: str) -> str:
 
 
 def analyze_diff_for_triggers(diff: str) -> list[str]:
-    """Analyze a diff and return list of Gemini trigger names that fire.
+    """Analyze a diff and return list of third-lane (agy) trigger names that fire.
 
     Implements the five trigger rules from AI_REVIEW_ROUTING_POLICY.md.
     """
@@ -244,17 +244,17 @@ def build_recommendation(triggers: list[str], scope: str) -> RoutingRecommendati
 
     Per AI_REVIEW_ROUTING_POLICY.md:
     - Default: two-provider (Claude orchestrates, Codex reviews)
-    - If any trigger fires: three-provider (add Gemini)
+    - If any trigger fires: three-provider (add agy)
     """
     rec = RoutingRecommendation()
     rec.triggers_matched = list(triggers)
 
     if triggers:
-        rec.reviewers = ["codex", "gemini"]
+        rec.reviewers = ["codex", "agy"]
         rec.priority = "high"
         trigger_str = ", ".join(triggers)
         rec.reason = (
-            f"Three-provider review: Gemini triggered by [{trigger_str}]. "
+            f"Three-provider review: agy triggered by [{trigger_str}]. "
             f"Per AI_REVIEW_ROUTING_POLICY.md, these conditions justify "
             f"an independent third-lane review."
         )
@@ -262,7 +262,7 @@ def build_recommendation(triggers: list[str], scope: str) -> RoutingRecommendati
         rec.reviewers = ["codex"]
         rec.reason = (
             "Default two-provider review: Claude orchestrates, Codex reviews. "
-            "No Gemini trigger conditions detected."
+            "No agy trigger conditions detected."
         )
         if scope in ("docs-only", "tests-only"):
             rec.priority = "low"

@@ -72,10 +72,33 @@ def test_gate_demotes_lane_codex_strictly_below_10(route):
     assert route.lane_quota_demotion("codex", "lane", 10.0, DEFAULTS) == ("codex", False)
 
 
-def test_gate_never_touches_ai_rule_or_claude(route):
-    assert route.lane_quota_demotion("codex", "ai", 2, DEFAULTS) == ("codex", False)
-    assert route.lane_quota_demotion("codex", "rule", 2, DEFAULTS) == ("codex", False)
-    assert route.lane_quota_demotion("claude", "lane", 2, DEFAULTS) == ("claude", False)
+def test_gate_now_applies_to_ai_and_rule_sourced_codex(route):
+    """SUPERSEDES `test_gate_never_touches_ai_rule_or_claude` (deckhand#584 R9).
+
+    The old contract exempted `ai:`- and rule-sourced codex from the quota gate.
+    That made an `ai:codex` label carry TWO decisions — which provider, and
+    whether to spend into a suspended pool — with the second invisible at the
+    point of labelling.
+
+    Owner decision 2026-07-30: they are separated. `ai:` and rule choose the
+    provider; only the explicit `quota:override` label bypasses the budget guard.
+    Rule-sourced is demotable too, decided rather than inherited: a capability
+    rule is MACHINE-decided and has even less claim on a budget guard than a
+    human's deliberate `ai:`.
+
+    This test is REVERSED on purpose, not repaired. Full coverage of the new
+    contract lives in test_route_quota_decoupling.py.
+    """
+    assert route.quota_demotion("codex", "ai", 2, DEFAULTS, labels=[]) == ("claude", True)
+    assert route.quota_demotion("codex", "rule", 2, DEFAULTS, labels=[]) == ("claude", True)
+
+    # quota:override is the ONLY bypass, and it is a spend decision only.
+    assert route.quota_demotion(
+        "codex", "ai", 2, DEFAULTS, labels=["quota:override"]
+    ) == ("codex", False)
+
+    # Unchanged: the gate is codex-specific and never touches another provider.
+    assert route.quota_demotion("claude", "lane", 2, DEFAULTS, labels=[]) == ("claude", False)
 
 
 def test_gate_fails_open_on_unknown_quota(route):
@@ -160,14 +183,21 @@ def test_cli_override_skips_subprocess_and_is_loud(route, monkeypatch, capsys):
 # --- propose() integration: memoization, annotation, no sticky labels --------
 
 def _fake_boards(route, monkeypatch, n_cards=2, labels=("lane:codex",)):
-    board = {"repo": "vamseeachanta/workspace-hub", "domain": None}
-    cards = [
-        (board, {"idempotency_key": f"gh:vamseeachanta/workspace-hub#{i}",
-                 "source": "github_issue", "gh_state": "open",
-                 "gh_labels": list(labels), "title": f"card {i}", "priority": 0})
+    """Feed propose() from the LIVE-ISSUE source.
+
+    Renamed in spirit but not in name: since workspace-hub#3736 the routing input
+    is live GitHub, not the kanban board mirror. Patching `iter_cards` here would
+    now silently do nothing AND let the test reach the network — which is how a
+    hermetic suite quietly stops being hermetic.
+    """
+    issues = [
+        {"number": i, "title": f"card {i}", "state": "OPEN",
+         "labels": [{"name": n} for n in labels]}
         for i in range(n_cards)
     ]
-    monkeypatch.setattr(route, "iter_cards", lambda: iter(cards))
+    monkeypatch.setattr(route, "fetch_issues_for_coverage", lambda repo: issues)
+    monkeypatch.setattr(route, "DEFAULT_COVERAGE_REPOS",
+                        ("vamseeachanta/workspace-hub",), raising=False)
     monkeypatch.setattr(route, "load_rules", lambda: {
         "rules": [{"match": {}, "assign": {"machine": "dev-primary"}}],
         "defaults": DEFAULTS})

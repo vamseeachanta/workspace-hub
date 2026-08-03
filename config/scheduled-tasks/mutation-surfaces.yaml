@@ -259,4 +259,23 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    source_digest: d5b4fbc4508bf58d8ce0b4c47186204be298bf2586e93b5ab19f375f465b07fb
+    # Re-affirmed 2026-08-01 (#3746): the harness-checkup-audit task (#3408) entered
+    # schedule-tasks.yaml after this disposition, changing the governed input union.
+    # resolved_on/pull_request are pinned by scheduler_mutation_contract.py:310 and
+    # identify WHICH disposition this is; source_digest is the change-detector and is
+    # re-affirmed whenever a governed input legitimately changes. Reviewed: the task is
+    # a non-destructive daily audit (writes a state JSON + log), so it mutates no
+    # scheduler state and the #3475 disposition still holds.
+    # Re-affirmed again 2026-08-01 (#3749): harness-install-doctor extended from the two
+    # ace-linux boxes to every onboarded POSIX machine carrying an agent CLI (adds
+    # gpu-claw, macbook-portable), which changes the governed input union again.
+    # Reviewed: the doctor is an idempotent repair task composing blessed installers; it
+    # mutates no scheduler state, so the #3475 disposition still holds.
+    # Re-affirmed again 2026-08-02: the dispatch-pull task entered schedule-tasks.yaml,
+    # changing the governed input union a third time. Reviewed: dispatch-pull runs
+    # scripts/cron/dispatch-pull-cron.sh, which execs cron_runtime.py (an already-governed
+    # singleton wrapper) around scripts/operations/dispatch_pull.py. That loop claims git
+    # refs and invokes scripts/dispatch/drain.py; it writes no crontab, no systemd unit and
+    # no Windows task, so it is not a scheduler mutation surface and the #3475 disposition
+    # still holds. resolved_on/pull_request stay pinned per scheduler_mutation_contract.py:310.
+    source_digest: b8fe099c6e205a0ccc4db6292d02328c30c431bc50e5435314874fab1ccb7209

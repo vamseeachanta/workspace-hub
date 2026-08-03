@@ -40,8 +40,11 @@ import yaml
 LINE_LIMIT = 20
 
 # Files required (absence → FAIL) vs optional (absence → WARN)
-REQUIRED_FILES = ["CLAUDE.md", "AGENTS.md"]
-OPTIONAL_FILES = ["CODEX.md", "GEMINI.md"]
+# CLAUDE.md moved REQUIRED → OPTIONAL 2026-08-01: the harness CLAUDE.md surface is
+# retired in workspace-hub (AGENTS.md is canonical). Kept in OPTIONAL_FILES so the
+# line-limit check still applies to sibling repos that have not yet dropped theirs.
+REQUIRED_FILES = ["AGENTS.md"]
+OPTIONAL_FILES = ["CLAUDE.md", "CODEX.md", "GEMINI.md"]
 HARNESS_FILES = REQUIRED_FILES + OPTIONAL_FILES
 
 AGENTS_REQUIRED_FIELDS = [

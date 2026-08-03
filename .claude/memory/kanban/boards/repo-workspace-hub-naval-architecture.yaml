@@ -18,7 +18,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:resources
+      - cat:documentation
       - domain:naval-architecture
       - machine:dev-primary
       - dispatch:ready
@@ -171,7 +171,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:ai-orchestration
+      - cat:harness
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -195,7 +195,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:ai-orchestration
+      - cat:harness
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -218,6 +218,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -235,6 +236,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -252,6 +254,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -269,6 +272,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -286,6 +290,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - domain:naval-architecture
       - wrk-item
       - machine:dev-primary
@@ -470,7 +475,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - cat:data-pipeline
+      - cat:data
       - domain:naval-architecture
       - machine:dev-primary
       - dispatch:ready
@@ -492,8 +497,8 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:data-pipeline
       - cat:documentation
+      - cat:data
       - domain:naval-architecture
       - status:plan-approved
     initial_status: triage
@@ -508,8 +513,8 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:data-pipeline
       - cat:documentation
+      - cat:data
       - domain:naval-architecture
       - status:plan-approved
     initial_status: triage
@@ -524,8 +529,8 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:data-pipeline
       - cat:documentation
+      - cat:data
       - domain:naval-architecture
       - status:plan-approved
     initial_status: triage
@@ -540,8 +545,8 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:data-pipeline
       - cat:documentation
+      - cat:data
       - domain:naval-architecture
       - status:plan-approved
     initial_status: triage
@@ -556,8 +561,8 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:data-pipeline
       - cat:documentation
+      - cat:data
       - domain:naval-architecture
       - status:plan-approved
     initial_status: triage
@@ -572,8 +577,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:data-pipeline
-      - cat:documentation
+      - cat:data
       - domain:naval-architecture
       - machine:dev-primary
       - dispatch:ready
@@ -595,8 +599,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:data-pipeline
-      - cat:documentation
+      - cat:data
       - domain:naval-architecture
       - machine:dev-primary
       - dispatch:ready
@@ -619,7 +622,7 @@ cards:
       - priority:medium
       - cat:documentation
       - domain:naval-architecture
-      - domain:knowledge-management
+      - domain:knowledge
       - status:done
     initial_status: triage
     priority: 0
@@ -633,7 +636,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:engineering-calculations
+      - cat:engineering
       - domain:naval-architecture
       - machine:dev-primary
       - status:plan-approved
@@ -648,3 +651,150 @@ cards:
       Capture and execute revisions to the B1528 proj-a moored-current ship/rudder force calculation package through an interactive, force-by-force engineering review.
 
       ## Parent / source issue'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2564
+    title: 'feat(naval-arch): yaw moment sweep input for rudder cases'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2564
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:naval-architecture
+      - status:done
+      - domain:hydro
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2565
+    title: 'feat(naval-arch): rudder stock torque sweep input for typical ship'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2565
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:naval-architecture
+      - status:done
+      - domain:hydro
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2566
+    title: 'test(naval-arch): full CI and package validation for yaw and rudder-stock sweep workflows'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2566
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:naval-architecture
+      - status:plan-approved
+      - domain:hydro
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2567
+    title: 'feat(naval-arch): standards-backed steering gear and rudder-stock design checks'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2567
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:naval-architecture
+      - status:plan-approved
+      - domain:hydro
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2568
+    title: 'feat(naval-arch): preliminary turning-circle and tactical-diameter estimator input workflow'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2568
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:naval-architecture
+      - status:plan-review
+      - domain:hydro
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2569
+    title: 'docs(acma): B1528 SIROCCO rudder source pack and benchmark extraction'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2569
+    gh_state: closed
+    gh_labels:
+      - documentation
+      - priority:high
+      - cat:documentation
+      - domain:naval-architecture
+      - domain:knowledge
+      - status:done
+      - domain:hydro
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2570
+    title: 'feat(naval-arch): B1528 SIROCCO yaw-moment input and interactive static report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2570
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:visualization
+      - domain:naval-architecture
+      - status:done
+      - domain:hydro
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2571
+    title: 'feat(naval-arch): B1528 SIROCCO time-trace benchmark report with rudder inflow feedback'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2571
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:visualization
+      - domain:naval-architecture
+      - status:done
+      - domain:hydro
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#2642
+    title: 'feat(naval-arch): B1528 SIROCCO moored-current rudder force component report'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/2642
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:engineering
+      - domain:visualization
+      - domain:naval-architecture
+      - domain:hydro
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''

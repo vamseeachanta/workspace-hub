@@ -1,119 +1,123 @@
-# Plan for #3555: Persistent goals and native Codex statusline machine pilot
+# Plan for #3555: Fleet-wide Codex requirements, trusted-repo YOLO, goals, and statuslines
 
 > **Status:** draft
 > **Complexity:** T3
-> **Date:** 2026-07-16
+> **Date:** 2026-08-02
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3555
 > **Client:** N/A
 > **Lane:** lane:claude
-> **Execution mode:** parallel-readonly for planning and review; single-lane for the `ace-win-2` pilot; parallel-worktree only for later approved, disjoint rollout validation
-> **Review artifacts:** round 1 legacy `scripts/review/results/2026-07-16-plan-3555-{claude,codex,gemini}.md`; round 2 `scripts/review/results/2026-07-16-plan-3555-r2-codex.md`
+> **Execution mode:** immediate attempted fleet rollout after plan approval, TDD implementation, and code review; no canary
+> **Review artifacts:** historical `scripts/review/results/2026-07-16-plan-3555-{claude,codex,gemini}.md` and `2026-07-16-plan-3555-r2-codex.md`; fresh `scripts/review/results/2026-08-02-plan-3555-r3-{claude,codex,agy}.md`
+
+> For agentic workers: follow this plan task by task. Write each named test first, observe the relevant failure, implement only enough to pass, rerun the focused and regression suites, and use pathspec commits. The user approval gate remains mandatory even when Codex runs with `--yolo`.
+
+**Goal:** Every reachable, Codex-capable workstation and trusted repo will receive a repo-managed Codex baseline that enables default-mode requirement questions, persistent goals, multi-agent support, hooks, live web search, useful TUI telemetry, and a trusted-repo `--yolo` launcher with an explicit safe escape path; Claude goal/statusline behavior will converge under the same issue.
+
+**Architecture:** Repo-tracked templates will remain canonical. A semantic, key-level merger will update only owned settings in `~/.codex/config.toml`. A cross-platform launcher will add `--yolo` only when the current Git root matches an attested trusted repo root, while `codex-safe` will always invoke the real CLI without the flag. Setup, update, verification, and equality collection will share the same installer and will report per-machine evidence without converting missing or unreachable machines into success.
+
+**Tech stack:** Bash, Python 3 standard library, TOML, JSON, Node.js for the existing Claude renderer, Windows `.cmd` launchers, pytest, shell test harnesses, GitHub Actions-compatible checks.
 
 ---
+
+## Global Constraints
+
+- Implementation will not begin until fresh T3 adversarial plan review has no unresolved MAJOR finding and the user applies the approval gate.
+- Tests will precede implementation in every task.
+- The rollout will target all live, reachable Codex-capable machines in one wave; it will not use a canary. A machine will remain `UNREACHABLE`, `MISSING-EVIDENCE`, or `DIVERGES` until direct evidence supports equality.
+- `--yolo` will bypass Codex sandbox/approval prompts only inside an exact trusted Git root. It will not bypass issue, plan, user-approval, TDD, review, legal, secret, or merge gates.
+- The launcher will provide `codex-safe` and `CODEX_REAL_BIN` escape seams and will prevent wrapper recursion.
+- The merger will preserve auth, trust, MCP/plugin, project, model, and machine-local keys outside the explicit owned-key set.
+- Native Codex memories and automatic approval reviewers will remain excluded because they conflict with the repo-managed memory/approval model.
+- The implementation will pin a CLI version only after the feature probe proves that exact version supports `default_mode_request_user_input`; the current candidate is `0.146.0`.
+- Human-facing review material will remain HTML; lifecycle and harness artifacts will remain Markdown/TOML/scripts.
 
 ## Resource Intelligence Summary
 
 ### Existing repo code
 
-- `config/agents/codex/config.toml` declares an obsolete root `[status_line]` table with underscore item names. Current Codex uses `[tui] status_line = [...]` with fixed hyphenated item identifiers.
-- `C:\Users\vamseea\.codex\config.toml` currently uses `[tui] status_line = ["model-with-reasoning", "current-dir", "weekly-limit"]`; it omits remaining context and the five-hour window.
-- `scripts/_core/sync-agent-configs.sh` owns machine config merge behavior, but its managed-section parser recognizes `[status_line]`, so it cannot safely own the current `[tui].status_line` key without revision.
-- `config/agents/claude/settings.json` has no machine-global `statusLine`. Project `.claude/settings.json` invokes `.claude/statusline-combined.sh`, while `scripts/_core/sync_statusline.sh` distributes only `.claude/statusline-command.sh`; these paths produce split behavior across repos and machines.
-- `.claude/hooks/gsd-statusline.js` renders a current todo or GSD phase. It does not represent the provider-native goal condition.
-- `scripts/readiness/collect-equality.sh`, `scripts/readiness/collect-equality.ps1`, and `scripts/readiness/build-equality-matrix.py` provide the canonical machine evidence pipeline. The current matrix reports 4 of 5 active machines; `gpu-claw` has no evidence file.
-- `config/workstations/registry.yaml` and `scripts/readiness/harness-config.yaml` disagree about the roster and record `ace-win-2` at `D:\workspace-hub`, while this pilot runs at `C:\ws\workspace-hub`.
+- `config/agents/codex/config.toml` currently declares `model = "gpt-5.5"`, medium reasoning, and obsolete `[status_line]` syntax. It does not declare the approved feature baseline.
+- `scripts/_core/sync-agent-configs.sh` currently parses `[status_line]` and performs managed-key sanitation. It will need semantic support for root keys plus `[features]`, `[agents]`, and `[tui]` without replacing unrelated tables.
+- `scripts/install/codex-pin.env` currently pins `0.123.0`; `scripts/install/pin-codex.sh` installs that exact pin, and `scripts/setup/verify-setup.sh` reports drift against it.
+- `scripts/setup/new-machine-setup.sh` already installs the Codex pin but does not install a repo-managed launcher or invoke canonical config sync afterward.
+- `scripts/maintenance/update-harness-tools.sh` updates Codex independently and does not converge launcher/config state.
+- `/home/vamsee/.local/bin/codex` on the planning host is an untracked Bash wrapper that unconditionally appends `--yolo`; no repository artifact owns or verifies it.
+- `scripts/_core/sync_statusline.sh` and the Claude settings/statusline paths remain split, so the original #3555 Claude convergence scope will remain in this plan.
+- `scripts/readiness/collect-equality.sh`, `collect-equality.ps1`, and `build-equality-matrix.py` form the existing per-machine evidence pipeline.
 
-### Product contracts
+### Product and configuration contract
 
-- The ecosystem's Gemini-backed CLI surface is now AGY (`agy`, Antigravity). New review dispatch will use `scripts/review/submit-to-agy.sh`; the round-1 `*-gemini.md` artifact remains historical evidence and will not be renamed.
-- Current Codex documentation defines `goals` as stable, `/goal` as the persistent task-goal command, `/statusline` as the native footer configurator, `/status` as the session/context view, and `/usage` as the account-usage view.
-- Current Codex configuration defines the footer as `[tui] status_line = [...]`. The pilot will use only item identifiers accepted by the installed CLI, including `model-with-reasoning`, `current-dir`, `context-remaining`, `five-hour-limit`, and `weekly-limit` when the interactive selector confirms them.
-- Current Claude Code documentation defines `/goal` as a native completion condition with an `◎ /goal active` indicator and status view. It defines `statusLine` as a user- or project-settings command that receives session JSON and may display context and cost data.
-- Neither provider contract establishes arbitrary goal text as a Codex footer item. The implementation will use native goal/progress UI and will not fabricate a custom Codex footer field.
+- Codex CLI `0.146.0` exposes `default_mode_request_user_input` as an under-development feature whose source description is “Allow request_user_input in Default collaboration mode.”
+- The current stable configuration reference documents `plan_mode_reasoning_effort`, `personality`, `web_search`, `[features]`, `[agents]`, and `[tui].status_line`/`resume_cwd`.
+- `goals`, `multi_agent`, and `hooks` are stable in the inspected CLI; declaring them explicitly will make fleet intent auditable.
+- The supported footer identifiers selected for this work are `model-with-reasoning`, `context-remaining`, `current-dir`, `five-hour-limit`, and `weekly-limit`.
+- `status_line_use_colors` does not appear in the current official manual and will not be introduced.
+- Native goals will remain distinct from TUI telemetry; the plan will not fabricate arbitrary goal text as a footer field.
 
-### Standards and governance
+### Fleet and governance sources
 
-- `AGENTS.md` and `.claude/skills/coordination/issue-planning-mode/SKILL.md` require Issue → Resource Intel → Plan → adversarial review → user approval → TDD implementation → code review → close.
-- `config/agents/SHARED_SOUL.md` is the canonical cross-provider instruction source. A goal-use rule will be added there and materialized through existing runtime builders, rather than copied independently into Claude and Codex harness files.
-- `docs/standards/CONTROL_PLANE_CONTRACT.md` will remain the control-plane boundary if present at implementation; if the exact path differs on the reviewed commit, implementation will use the live canonical contract and record the substitution.
+- `config/workstations/registry.yaml` declares Codex for `ace-win-1` and `ace-win-2`, but not for `ace-linux-1`; the current planning host runs Codex `0.146.0`, so the declared roster is incomplete.
+- [#3555](https://github.com/vamseeachanta/workspace-hub/issues/3555) is OPEN with `status:needs-plan` and retains the original persistent-goal/statusline objective.
+- [#2887](https://github.com/vamseeachanta/workspace-hub/issues/2887) is the parent workstation/provider-equivalence epic.
+- `config/agents/SHARED_SOUL.md` and `.claude/rules/goal-invocation.md` will remain the policy sources for goal authorization; `--yolo` will not expand their authority.
+- `docs/standards/CONTROL_PLANE_CONTRACT.md` will remain the runtime/config boundary.
+- The 2026-07-16 #3555 plan and reviews provide historical defect evidence but do not authorize the materially expanded 2026-08-02 fleet scope.
 
-### Documents consulted
+### External sources consulted
 
-- [#3555](https://github.com/vamseeachanta/workspace-hub/issues/3555) defines the Claude/Codex pilot and the three distinct predicates: goal attachment, visible goal/progress, and usage/context telemetry.
-- [#2887](https://github.com/vamseeachanta/workspace-hub/issues/2887) is the parent machine/provider-equivalence epic.
-- [#2893](https://github.com/vamseeachanta/workspace-hub/issues/2893) contains approved, branch-only statusline-provider coverage, but its locked premise that Codex has no native statusline is stale and its implementation commit is not on `origin/main`.
-- [#2844](https://github.com/vamseeachanta/workspace-hub/issues/2844) specifies Codex five-hour and staleness visibility; #3555 will use native five-hour display and will not silently absorb unrelated cache-refresh work.
-- `docs/session-handoffs/2026-07-13-codex-yolo-config-exit.md` records recent machine-local Codex configuration work and reinforces preservation of local-only settings during sync.
-- Drive-file search for `agent goal statusline machine equivalence` returns no relevant prior deliverable. Its major indexes report `unreachable` on this Windows host; this is a coverage gap, not evidence that no external artifact exists.
-- Official Claude Code references: [goal mode](https://code.claude.com/docs/en/goal) and [custom status line](https://code.claude.com/docs/en/statusline).
-- Official [Codex manual](https://developers.openai.com/codex/codex-manual.md) sections consulted through the current OpenAI manual helper: configuration reference, `/goal`, `/statusline`, `/status`, and `/usage`.
+- Official OpenAI configuration reference: https://developers.openai.com/codex/config-reference
+- Official Codex feature registry source: https://github.com/openai/codex/blob/main/codex-rs/features/src/lib.rs
+- Official Codex manual: https://developers.openai.com/codex/codex-manual.md
+- Official Claude Code goal and statusline references: https://code.claude.com/docs/en/goal and https://code.claude.com/docs/en/statusline
+- Drive-file search from the July planning round returned no relevant deliverable; inaccessible drive indexes remain a coverage limitation, not negative proof.
 
 ### Gaps identified
 
-- No canonical cross-provider rule requires a meaningful native goal after a substantive interactive request begins.
-- No single deployment path installs consistent Claude statusline behavior machine-wide and across sibling repos.
-- The canonical Codex template and sync tests do not express the current `[tui].status_line` schema.
-- No matrix evidence separates installed goal contract, visible native goal capability, and context/usage footer capability.
-- No current fleet report supports an “all machines” claim: one active machine is missing, two roster entries disagree, and the Windows checkout path is stale.
+- No repo-managed cross-platform Codex launcher will enforce trusted-root `--yolo`, recursion safety, argument preservation, and a non-YOLO escape path.
+- No canonical config will enable `default_mode_request_user_input = true` across the fleet.
+- No tested merger will own the new nested keys while preserving unrelated local TOML state.
+- No fleet registry/equality dimension will distinguish declared Codex capability, installed version, feature state, launcher mode, trusted-root set, and config hash.
+- No rollout command will enumerate the actual live target set and produce explicit per-machine attempted/succeeded/unreachable evidence.
+- Claude machine-wide statusline convergence from the original issue remains incomplete.
 
-### Evidence
+### Evidence (embedded verification)
 
-**Issue statuses** (verified 2026-07-16 via `gh issue view`):
+**Issue status** (verified 2026-08-02 via `gh issue view`):
 
-- `#3555` — OPEN, `status:needs-plan`, `lane:claude` — persistent goals and native Codex statusline pilot.
-- `#2893` — OPEN, `status:plan-approved` — branch-only provider-coverage implementation; no implementation PR is present.
-- `#2887` — OPEN — parent machine/provider-equivalence epic.
+```text
+#3555 OPEN  status:needs-plan  lane:claude
+#2887 OPEN  parent machine/provider-equivalence epic
+```
 
-**Current Codex probes** (2026-07-16, `ace-win-2`):
+**Current CLI probe** (2026-08-02 on the planning host):
 
 ```text
 $ codex --version
-codex-cli 0.144.5
-
-$ codex features list | select goals
-goals  stable  true
-
-$ ~/.codex/config.toml [tui]
-status_line = ["model-with-reasoning", "current-dir", "weekly-limit"]
+codex-cli 0.146.0
+$ codex features list | grep default_mode_request_user_input
+default_mode_request_user_input  under development  false
 ```
 
-**Machine coverage probe** (2026-07-16):
+**Current repo probe:**
 
 ```text
-matrix roster: 5 active + 2 unreachable
-active evidence present: 4/5
-missing active report: gpu-claw
-registry-only: gali-linux-compute-1
-harness-only: home-win
-live ace-win-2 checkout: C:\ws\workspace-hub
-recorded ace-win-2 checkout: D:\workspace-hub
+config/agents/codex/config.toml       EXISTS; obsolete [status_line]
+scripts/install/codex-pin.env         EXISTS; CODEX_PIN_VERSION=0.123.0
+scripts/_core/sync-agent-configs.sh   EXISTS; recognizes [status_line]
+config/agents/codex/launcher/         MISSING
+tests/setup/test_codex_launcher.sh    MISSING
 ```
 
-**Reproduction proofs:**
+**Current registry probe:**
 
 ```text
-$ compare config/agents/codex/config.toml with ~/.codex/config.toml
-canonical: [status_line] enabled/items
-live 0.144.5: [tui] status_line = [...]
-
-$ inspect live footer item set
-["model-with-reasoning", "current-dir", "weekly-limit"]
+ace-linux-1  agent_clis=[claude, gemini]       # live Codex contradicts declaration
+ace-win-1    agent_clis=[claude, codex, gemini]
+ace-win-2    agent_clis=[claude, codex, gemini]
 ```
 
-- Reproduced at: 2026-07-16T10:55Z
-- Failure mode matches the issue: **YES** — the repo template is schema-stale and the live footer omits remaining context and five-hour usage.
-- Distinct sources: 15.
+Reproduction date: 2026-08-02. The stale canonical schema, disabled default-mode input feature, untracked unconditional wrapper, stale version pin, and registry drift match the expanded issue scope.
 
----
-
-## Scope and Semantic Contract
-
-1. **Substantive interactive session:** a Claude Code or Codex CLI session will become substantive after the user requests multi-step work, issue work, implementation, monitoring, or another task with a verifiable completion condition. Read-only one-shot questions, status checks, and trivial commands will not be forced into a synthetic goal.
-2. **Goal authorization and attachment:** after a substantive request is known, the runtime instruction will consult [#2695](https://github.com/vamseeachanta/workspace-hub/issues/2695), the current weekly picklist, and `.claude/rules/goal-invocation.md` before invoking the provider-native goal mechanism. A pre-approval planning goal may perform resource intelligence, planning, and plan review only and will stop at the user approval gate. An execution goal will require live `status:plan-approved` evidence, the local approval marker, and runner allocation. An explicit user override will be recorded. Idle sessions and trivial/read-only one-shots may display no goal.
-3. **Goal visibility:** Claude will use its native `◎ /goal active` indicator/status; Codex will use native goal/progress UI. The plan will not require arbitrary goal text inside Codex's fixed footer.
-4. **Telemetry visibility:** provider statusline/footer configuration will show context and usage independently of the goal surface.
-5. **Non-interactive boundary:** `claude -p` and `codex exec` have no persistent TUI footer. They will receive the goal condition in their invocation/task metadata and will be graded as non-visual, not falsely marked visually equivalent.
-6. **Fleet claim:** each machine will remain `PENDING`, `MISSING-EVIDENCE`, or `UNREACHABLE` until live evidence from that machine supports the row. Configuration intent alone will not produce `EQUAL`.
+Distinct sources: 14.
 
 ---
 
@@ -122,210 +126,218 @@ $ inspect live footer item set
 | Artifact | Path |
 |---|---|
 | Canonical plan | `docs/plans/2026-07-16-issue-3555-goal-statusline-machine-pilot.md` |
-| Human reviewer | `docs/reports/2026-07-16-issue-3555-goal-statusline-plan.html` |
-| Goal-use rule source | `config/agents/SHARED_SOUL.md` |
-| Goal invocation gate | `.claude/rules/goal-invocation.md` |
-| Generated runtimes | `config/agents/claude/SOUL.runtime.md`, `config/agents/codex/AGENTS.runtime.md`, `config/agents/codex/SOUL.runtime.md` |
-| Runtime builder | `scripts/agents/build-soul-runtime.sh` |
-| Claude machine settings | `config/agents/claude/settings.json` |
-| Claude renderer | `config/agents/claude/statusline.mjs` |
-| Codex machine config | `config/agents/codex/config.toml` |
-| Config deployment | `scripts/_core/sync-agent-configs.sh` |
-| Claude sibling deployment | `scripts/_core/sync_statusline.sh` |
-| Machine setup verification | `scripts/setup/verify-setup.sh` |
-| Equality collector | `scripts/readiness/collect-equality.sh` |
-| Equality renderer | `scripts/readiness/build-equality-matrix.py` |
-| Pilot attestation | `docs/reports/2026-07-16-issue-3555-ace-win-2-session-ux.json` |
-| Sync tests | `scripts/_core/tests/test_sync_agent_configs.sh`, `scripts/_core/tests/test_sync_agent_helpers.sh` |
-| Statusline tests | `tests/statusline/` |
+| Approved design | `docs/superpowers/specs/2026-08-02-codex-fleet-config-design.html` |
+| Human plan report | `docs/reports/2026-07-16-issue-3555-goal-statusline-plan.html` |
+| Codex config | `config/agents/codex/config.toml` |
+| Trusted-root policy | `config/agents/codex/trusted-repos.yaml` |
+| POSIX launchers | `config/agents/codex/launcher/codex`, `config/agents/codex/launcher/codex-safe` |
+| Windows launchers | `config/agents/codex/launcher/codex.cmd`, `config/agents/codex/launcher/codex-safe.cmd` |
+| Launcher installer | `scripts/agents/install-codex-launcher.sh` |
+| Config sync | `scripts/_core/sync-agent-configs.sh` |
+| Version pin | `scripts/install/codex-pin.env`, `scripts/install/pin-codex.sh` |
+| Setup/update/verify | `scripts/setup/new-machine-setup.sh`, `scripts/maintenance/update-harness-tools.sh`, `scripts/setup/verify-setup.sh` |
+| Claude convergence | `config/agents/claude/statusline.mjs`, `scripts/_core/sync_statusline.sh` |
+| Fleet evidence | `config/workstations/registry.yaml`, `scripts/readiness/collect-equality.sh`, `scripts/readiness/collect-equality.ps1`, `scripts/readiness/build-equality-matrix.py` |
+| Launcher/config tests | `tests/setup/test_codex_launcher.sh`, `scripts/_core/tests/test_sync_agent_configs.sh`, `tests/setup/test_verify_setup.py` |
 | Equality tests | `tests/readiness/test_collect_equality.py`, `tests/readiness/test_collect_equality_ps1_schema.py`, `tests/readiness/test_build_equality_matrix.py` |
-| Plan reviews | legacy round 1 `scripts/review/results/2026-07-16-plan-3555-{claude,codex,gemini}.md`; subsequent `scripts/review/results/2026-07-16-plan-3555-r*-{claude,codex,agy}.md` |
-| Code reviews | `scripts/review/results/2026-07-16-code-3555-r*-{claude,codex,agy}.md` |
-
----
+| Plan reviews | `scripts/review/results/2026-08-02-plan-3555-r3-{claude,codex,agy}.md` |
+| Code reviews | `scripts/review/results/2026-08-02-code-3555-r1-{claude,codex,agy}.md` |
+| Rollout report | `docs/reports/2026-08-02-issue-3555-codex-fleet-rollout.html` |
 
 ## Deliverable
 
-The repository will provide a tested, current-schema, machine-deployable Claude/Codex session-UX contract in which substantive interactive work attaches a native goal, native goal progress remains visible, Codex shows remaining context plus five-hour and weekly headroom, and the equality matrix reports per-machine evidence without overstating fleet coverage.
+The repository will provide a tested and auditable fleet configuration/deployment path that enables Codex requirement questions by default, persistent goals and useful telemetry, and trusted-repo YOLO launch behavior with safe fallback, while preserving local settings and reporting machine-level rollout truth.
 
----
-
-## Proposed Implementation
-
-### Phase 0 — Empirical provider attestation
-
-Before any interactive attestation is produced, implementation will add schema/privacy validator tests, observe them fail, implement the validator, and observe them pass. It will then run fresh interactive Claude and Codex sessions on `ace-win-2` in a disposable test repository. A named human verifier will use a PTY-backed session or direct TUI observation, record the provider UI result, and write it through the validated attestation path to `docs/reports/2026-07-16-issue-3555-ace-win-2-session-ux.json`. It will:
+## Semantic Contract and Pseudocode
 
 ```text
-record provider and CLI version
-start a bounded goal with an objective that completes without repo mutation
-verify native active-goal indicator/status is visible
-open the native status/statusline selectors in a PTY-backed or directly observed TUI
-record the exact accepted footer item identifiers
-clear the bounded goal
-store only provider version, accepted footer IDs, visibility booleans, timestamp, and verifier method
-reject goal text, transcripts, token values, credentials, client identifiers, and private task text
-stop if either provider lacks the required native goal surface
+owned_codex_keys := {
+  plan_mode_reasoning_effort = "high",
+  personality = "pragmatic",
+  web_search = "live",
+  features.default_mode_request_user_input = true,
+  features.goals = true,
+  features.multi_agent = true,
+  features.hooks = true,
+  agents.enabled = true,
+  agents.interrupt_message = true,
+  tui.resume_cwd = "session",
+  tui.status_line = [model-with-reasoning, context-remaining, current-dir,
+                     five-hour-limit, weekly-limit]
+}
+
+merge_codex_config(local, canonical):
+  parse both TOML documents or fail before write
+  replace only owned_codex_keys
+  preserve every unowned root key, table, comment-compatible value, and secret-free local setting
+  validate candidate with installed Codex
+  atomically replace local config only after validation
+
+resolve_real_codex():
+  prefer validated CODEX_REAL_BIN
+  otherwise select the platform package-manager binary outside launcher directory
+  reject a path resolving to codex or codex-safe wrapper
+
+launch_codex(args, safe=false):
+  real := resolve_real_codex()
+  if safe: exec real with args unchanged
+  root := git rev-parse --show-toplevel or empty
+  trusted := canonicalize(root) exactly matches an installed attested trusted root
+  if trusted: exec real --yolo args
+  otherwise: exec real args and emit concise safe-mode reason
+
+rollout():
+  derive declared targets from registry
+  add empirical Codex hosts only after attestation and registry reconciliation
+  for every target in the same rollout wave:
+    install pinned CLI, merge config, install launchers, run verification, collect evidence
+  render each target as EQUAL, DIVERGES, MISSING-EVIDENCE, or UNREACHABLE
+  never collapse partial attempted coverage into fleet-complete
 ```
 
-If native Codex goal progress is not persistently visible, the implementation will return #3555 to plan review rather than substituting an unsupported custom footer.
+## Detailed TDD Implementation Tasks
 
-### Phase 1 — Goal contract and generated runtimes
+### Task 1 — Pin and validate the Codex feature baseline
 
-`config/agents/SHARED_SOUL.md` and `.claude/rules/goal-invocation.md` will define one compatible must-fire contract. Every substantive goal will first validate catalog/picklist routing or record an explicit user override. A pre-approval planning goal will be bounded to intelligence, planning, and review and will stop at user approval; an execution goal will require the existing approval and runner predicates. Goals will never widen authority, invent completion criteria, or apply to trivial/read-only one-shots. `scripts/agents/build-soul-runtime.sh` and its tests will verify that `config/agents/claude/SOUL.runtime.md`, `config/agents/codex/AGENTS.runtime.md`, and `config/agents/codex/SOUL.runtime.md` inherit the rule exactly once.
+**Files:** `scripts/install/codex-pin.env`, `scripts/install/pin-codex.sh`, `config/agents/codex/config.toml`, `tests/setup/test_verify_setup.py`, `scripts/setup/verify-setup.sh`.
 
-### Phase 2 — Native statusline configuration and safe sync
+1. Write failing tests that require the pin, canonical config, and verifier to agree on one exact CLI version and require `codex features list` to expose `default_mode_request_user_input`.
+2. Run `pytest -q tests/setup/test_verify_setup.py` and retain the expected RED output.
+3. Set the verified pin to `0.146.0`; add a fixture seam so tests do not require network installation.
+4. Replace the obsolete Codex template with the approved owned keys and documented `[tui]` schema; do not set a hardcoded model or native memories.
+5. Make verification fail closed when the CLI is older, the feature is absent, or effective config differs.
+6. Rerun the focused tests and `bash scripts/setup/verify-setup.sh --strict` against a temporary home.
+7. Commit with `git commit -m "feat(codex): pin fleet feature baseline" -- scripts/install/codex-pin.env scripts/install/pin-codex.sh config/agents/codex/config.toml scripts/setup/verify-setup.sh tests/setup/test_verify_setup.py`.
 
-The Codex template will move to current syntax:
+### Task 2 — Implement merge-safe nested Codex configuration
 
-```toml
-[tui]
-status_line = [
-  "model-with-reasoning",
-  "current-dir",
-  "context-remaining",
-  "five-hour-limit",
-  "weekly-limit"
-]
-status_line_use_colors = true
-```
+**Files:** `scripts/_core/sync-agent-configs.sh`, `scripts/_core/tests/test_sync_agent_configs.sh`, `scripts/_core/tests/test_sync_agent_helpers.sh`.
 
-The exact list will be pinned to the Phase-0 accepted identifiers. `sync-agent-configs.sh` will manage only `tui.status_line` and `tui.status_line_use_colors`; it will preserve unrelated `[tui]` keys, plugin state, trust entries, approval/sandbox settings, and machine-local model choices.
+1. Add failing fixtures containing unrelated root keys, `[tui]` siblings, project trust entries, MCP/plugin tables, comments, paths with spaces, and malformed TOML.
+2. Assert exact ownership of the approved key set, preservation of every unowned value, idempotence, dry-run purity, and atomic rollback on parse/validation failure.
+3. Run both shell test files and observe RED against the current `[status_line]` parser.
+4. Implement a TOML-aware helper or constrained parser with explicit table/key ownership; remove legacy owned syntax only when the replacement validates.
+5. Rerun focused tests twice to prove idempotence, then run the existing sync regression suite.
+6. Commit only the three named paths with a conventional pathspec commit.
 
-Claude user settings will point to one installed, home-relative cross-platform Node renderer sourced from `config/agents/claude/statusline.mjs`. The same synthetic JSON fixture will be executed through Linux Bash, Windows Git Bash, and Windows PowerShell. Installation will fail atomically before config replacement when Node or the installed renderer is unavailable. `sync-agent-configs.sh` and `sync_statusline.sh` will converge on this source. Project-local GSD enrichment may remain optional, but model/context/usage and native `/goal` visibility will remain consistent across machines.
+### Task 3 — Install trusted-repo YOLO launchers with a safe escape
 
-### Phase 3 — Setup, reconciliation, and fail-closed verification
+**Files:** `config/agents/codex/trusted-repos.yaml`, `config/agents/codex/launcher/codex`, `config/agents/codex/launcher/codex-safe`, `config/agents/codex/launcher/codex.cmd`, `config/agents/codex/launcher/codex-safe.cmd`, `scripts/agents/install-codex-launcher.sh`, `tests/setup/test_codex_launcher.sh`.
 
-`scripts/setup/new-machine-setup.sh` and the scheduled `scripts/maintenance/update-harness-tools.sh` path will call the canonical config sync rather than duplicate it. Tests will prove neither path writes the legacy Claude `statusBarEnabled` setting or bypasses the installed renderer. `verify-setup.sh` will parse the effective JSON/TOML and validate semantic fields rather than grepping for a setting name. Dry-run will remain side-effect free; failed validation will preserve the prior config atomically.
+1. Write failing tests using a fake real CLI to capture argv for trusted root, untrusted root, non-Git directory, spaces, quotes, repeated flags, missing real binary, recursion, and `codex-safe` cases.
+2. Add static Windows tests that verify `%*` forwarding, explicit non-wrapper real-binary resolution, quoting, trusted-root lookup, and safe entry behavior.
+3. Run the launcher suite and observe RED because the repo-managed artifacts do not exist.
+4. Implement exact canonical-path matching from a generated machine-local allowlist derived from the registry plus live attestation. Prefix matching and current-directory string matching will be forbidden.
+5. Install wrappers atomically into the user-local bin directory before the package-manager binary; preserve an existing unknown wrapper as a timestamped backup and report it.
+6. Ensure plain `codex` adds one `--yolo` only in a trusted root; outside it, invoke normal Codex without `--yolo`. Ensure `codex-safe` never adds it.
+7. Run shellcheck where available, the focused launcher suite, and a real `codex --version` smoke test from trusted and untrusted temporary repos.
+8. Commit the named launcher, policy, installer, and test paths only.
 
-### Phase 4 — Equality evidence and `ace-win-2` pilot
+### Task 4 — Preserve goal authorization and converge Claude statusline behavior
 
-The equality schema will add separate dimensions:
+**Files:** `config/agents/SHARED_SOUL.md`, `.claude/rules/goal-invocation.md`, `scripts/agents/build-soul-runtime.sh`, `config/agents/claude/statusline.mjs`, `scripts/_core/sync_statusline.sh`, existing runtime/statusline tests.
 
-```text
-session_goal_policy      = installed authorization/attachment rule
-claude_goal_surface      = native goal capability + fresh visibility attestation
-codex_goal_surface       = stable goal capability + fresh visibility attestation
-claude_statusline_config = valid installed renderer + cross-shell verification
-codex_statusline_config  = accepted native footer items + current config schema
-```
+1. Write failing tests that require `--yolo` to remain subordinate to the issue/plan/user-approval gates and that require the goal rule to appear exactly once in generated runtimes.
+2. Add failing cross-shell renderer fixtures for Linux Bash, Windows Git Bash, and PowerShell-shaped paths/input.
+3. Implement the smallest policy/runtime and Claude renderer/deployment changes necessary to satisfy those tests.
+4. Rebuild generated runtime artifacts using `scripts/agents/build-soul-runtime.sh`; do not hand-edit generated files.
+5. Run runtime coherence, statusline, harness-size, and generated-artifact tests.
+6. Commit canonical sources, generated outputs, and tests with explicit pathspecs.
 
-Collector evidence will include provider version, configuration hash, semantic capability flags, and freshness. It will consume only the attestation schema and will fail closed if forbidden content is present; it will not inspect or publish goal text. Builder grading will use `PARITY`, `DIVERGES`, `MISSING-EVIDENCE`, `STALE-CHECKOUT`, and `UNREACHABLE` consistently with existing rows.
+### Task 5 — Integrate setup, scheduled updates, and semantic verification
 
-The pilot will update only `ace-win-2` after tests and code review pass. Fleet rollout will remain a separately observable step: each active machine will run config sync, fresh-session verification, and equality collection. Missing `gpu-claw`, unreachable machines, registry drift, and stale checkout paths will remain explicit rather than being normalized away.
+**Files:** `scripts/setup/new-machine-setup.sh`, `scripts/maintenance/update-harness-tools.sh`, `scripts/setup/verify-setup.sh`, `tests/setup/test_new_machine_setup.py`, `tests/setup/test_verify_setup.py`.
 
----
+1. Add failing tests that require both setup and scheduled maintenance to call the canonical pin, config merge, launcher installer, and verifier in order.
+2. Assert dry-run purity, noninteractive behavior, retry-safe idempotence, failure propagation, and preservation of the prior working install.
+3. Implement shared calls instead of duplicated config/wrapper logic.
+4. Run focused setup/update tests and the broader setup regression suite.
+5. Commit the named paths only.
 
-## Files to Change
+### Task 6 — Add fleet truth and reconcile the target roster
 
-| Action | Path | Reason |
-|---|---|---|
-| Modify | `config/agents/SHARED_SOUL.md` | define the cross-provider substantive-session goal contract |
-| Modify | `.claude/rules/goal-invocation.md` | reconcile visible-goal policy with catalog, picklist, approval, and runner gates |
-| Modify | `config/agents/claude/SOUL.runtime.md`, `config/agents/codex/AGENTS.runtime.md`, `config/agents/codex/SOUL.runtime.md` | materialize the canonical rule through `scripts/agents/build-soul-runtime.sh` |
-| Modify | `config/agents/codex/config.toml` | adopt current native `[tui].status_line` syntax |
-| Modify | `config/agents/claude/settings.json` | install one machine-global Claude statusline command |
-| Create | `config/agents/claude/statusline.mjs` | provide one cross-platform, repo-managed Claude renderer |
-| Modify | `scripts/_core/sync-agent-configs.sh` | merge current Codex TUI keys and Claude settings atomically |
-| Modify | `scripts/_core/sync_statusline.sh` | remove split-brain sibling behavior and use the canonical Claude source |
-| Modify | `scripts/setup/verify-setup.sh` | validate effective goal/statusline semantics |
-| Modify | `scripts/setup/new-machine-setup.sh`, `scripts/maintenance/update-harness-tools.sh` | call the canonical sync path without duplicating config logic |
-| Modify | `scripts/readiness/collect-equality.sh` | emit the five new goal/statusline dimensions |
-| Modify | `scripts/readiness/build-equality-matrix.py` | render and remediate the new dimensions |
-| Modify | `scripts/_core/tests/test_sync_agent_configs.sh` | TDD current-schema merge and local-key preservation |
-| Modify | `scripts/_core/tests/test_sync_agent_helpers.sh` | TDD helper/install convergence |
-| Modify/Create | `tests/statusline/*` | TDD portable Claude output and Codex item contract |
-| Modify | `tests/readiness/test_collect_equality.py` | TDD collector evidence and fail-closed states |
-| Modify | `tests/readiness/test_collect_equality_ps1_schema.py` | keep Windows delegated schema exact |
-| Modify | `tests/readiness/test_build_equality_matrix.py` | TDD row rendering, freshness, and remediation |
-| Create | `docs/reports/2026-07-16-issue-3555-ace-win-2-session-ux.json` | retain de-identified pilot capability evidence |
-| Update | `docs/plans/README.md` | index this plan |
-| Create | `docs/reports/2026-07-16-issue-3555-goal-statusline-plan.html` | provide the human review surface |
+**Files:** `config/workstations/registry.yaml`, `scripts/readiness/collect-equality.sh`, `scripts/readiness/collect-equality.ps1`, `scripts/readiness/build-equality-matrix.py`, existing readiness tests and fixtures.
 
-No machine registry or checkout-path mutation will occur in this issue unless the user separately approves a scoped revision; #3555 will report the drift and use it to constrain coverage claims.
+1. Write failing Bash, PowerShell-schema, and Python tests for `codex_declared`, `codex_version`, `request_user_input_enabled`, `config_hash`, `launcher_mode`, `trusted_roots_hash`, and evidence freshness.
+2. Add fixtures for registry drift, empirically present Codex, unreachable host, stale report, safe-only launcher, and partial rollout.
+3. Assert that only direct fresh evidence can produce `EQUAL`; declared intent or successful SSH alone will not.
+4. Reconcile `ace-linux-1` in the registry only after a live attestation confirms that Codex is intended there; enumerate every declared Codex target rather than assuming the July roster.
+5. Implement collectors and renderer changes without publishing auth material, paths outside allowed repo-root metadata, prompts, goal text, transcripts, or token values.
+6. Run the focused readiness tests and matrix regression suite.
+7. Commit registry, collectors, renderer, fixtures, and tests with explicit pathspecs.
 
----
+### Task 7 — Review, immediate rollout, and durable evidence
+
+**Files:** `scripts/review/results/2026-08-02-code-3555-r1-{claude,codex,agy}.md`, `docs/reports/2026-08-02-issue-3555-codex-fleet-rollout.html`, [#3555](https://github.com/vamseeachanta/workspace-hub/issues/3555).
+
+1. Run focused suites, full relevant regressions, `scripts/legal/legal-sanity-scan.sh`, no-absolute-path enforcement, harness-size checks, and shell/static analysis.
+2. Push the reviewed commit, dispatch adversarial T3 code review, and resolve every MAJOR before rollout. Provider outage may degrade T3 to T2 only with a valid `UNAVAILABLE` artifact; invalid output will block.
+3. Enumerate live Codex targets from the reconciled registry and equality evidence immediately before rollout and record the exact set.
+4. Attempt the same approved installer sequence on every reachable target in one wave. Do not stop after the first success and do not call any one host a canary.
+5. Open a fresh interactive Codex session in one attested trusted repo and one untrusted directory on every reachable target; verify default-mode requirement input capability, statusline fields, trusted-root YOLO, and safe-mode behavior.
+6. Collect fresh equality evidence, render the HTML report, and label each target `EQUAL`, `DIVERGES`, `MISSING-EVIDENCE`, or `UNREACHABLE` with timestamp and command evidence.
+7. Comment the implementation/test/review/rollout summary on #3555. Close only after acceptance criteria pass; otherwise leave it open with exact residue and next action.
+8. Run `.claude/skills/coordination/pre-completion-cleanup-audit/SKILL.md` and resolve unexpected worktrees, stashes, temp clones, locks, and untracked artifacts before completion.
 
 ## TDD Test List
 
-| Test | Verification | Expected result |
-|---|---|---|
-| `test_codex_template_uses_current_tui_status_line` | template parses with `[tui]` array and accepted IDs | pass only for current syntax |
-| `test_codex_sync_replaces_only_managed_tui_keys` | local plugins, trust, sandbox, model, terminal title, and other TUI keys survive | byte/semantic preservation outside managed keys |
-| `test_codex_sync_migrates_legacy_status_line_atomically` | legacy table and current key do not coexist | one valid current key |
-| `test_codex_invalid_item_fails_before_replace` | unsupported footer ID enters template | nonzero; original target unchanged |
-| `test_claude_user_settings_install_portable_statusline` | Linux Bash, Windows Git Bash, and Windows PowerShell run the same fixture | identical valid output and home-relative executable resolution |
-| `test_claude_statusline_install_fails_without_node` | renderer dependency absent | nonzero; prior settings and renderer unchanged |
-| `test_claude_project_and_sibling_paths_use_canonical_source` | workspace-hub and fixture sibling repo | consistent model/context/usage contract |
-| `test_goal_rule_materializes_for_claude_and_codex` | build runtimes from SHARED_SOUL | both contain the rule once |
-| `test_goal_rule_preserves_approval_and_trivial_boundaries` | rule contract fixture | no auto-approval and no synthetic trivial goal |
-| `test_goal_rule_requires_catalog_picklist_and_runner_predicates` | planning and execution fixtures | planning stops at approval; execution requires approval marker and runner |
-| `test_attestation_schema_and_privacy_fail_before_pilot` | no validator implementation yet; fixtures include allowed and forbidden fields | observed red before Phase-0 evidence generation |
-| `test_setup_dry_run_has_no_side_effects` | clean temp HOME | no created/changed config |
-| `test_setup_failure_preserves_prior_config` | invalid staged template | original hashes unchanged |
-| `test_new_machine_setup_delegates_to_canonical_sync` | setup fixture with command spy | canonical sync called; no direct `statusBarEnabled` write |
-| `test_scheduled_update_delegates_to_canonical_sync` | maintenance fixture with command spy | canonical sync called; no legacy settings mutation |
-| `test_collector_emits_session_ux_dimensions` | Linux fixture | exact five-row schema with semantic evidence |
-| `test_windows_collector_schema_matches_shell` | PowerShell delegated fixture | exact same dimension names |
-| `test_matrix_never_upgrades_missing_live_evidence` | config present but no fresh pilot evidence | `MISSING-EVIDENCE`, not `PARITY` |
-| `test_matrix_renders_goal_and_statusline_rows` | mixed fleet fixture | correct cells, group count, and remediation |
-| `test_goal_text_is_not_collected` | evidence fixture contains synthetic objective | output omits objective/transcript content |
-| `test_attestation_rejects_forbidden_content` | fixture includes goal text, token value, credential, or client/private text | fail closed before evidence publication |
-| `test_codex_template_item_ids_match_validated_attestation` | schema-valid PTY/direct-observation fixture from installed CLI | template IDs exactly match the accepted IDs recorded by the named verifier |
-
-Tests will be written and observed failing before implementation changes. In particular, the attestation validator and privacy rejection tests will turn red before any Phase-0 JSON is created. Codex offers no noninteractive strict-config/statusline rendering command in CLI `0.144.5`, so TUI rendering will be a named, timestamped PTY/direct-observation attestation whose accepted IDs are then checked automatically against the template. The focused suite will run before each multi-file edit; the full relevant suite and legal diff scan will run before review.
-
----
+| Test | Required result |
+|---|---|
+| `test_codex_pin_exposes_default_mode_input` | Exact pinned CLI advertises the feature |
+| `test_canonical_config_owned_keys` | Approved keys and footer are present; unsupported keys are absent |
+| `test_sync_preserves_unowned_nested_tables` | Local trust/MCP/plugin/project/model values survive |
+| `test_sync_malformed_toml_rolls_back` | No partial replacement occurs |
+| `test_launcher_trusted_root_adds_yolo_once` | Fake CLI receives one `--yolo` plus original argv |
+| `test_launcher_untrusted_root_is_safe` | No `--yolo` outside exact trusted root |
+| `test_launcher_rejects_prefix_collision` | `/repo-evil` cannot match `/repo` |
+| `test_launcher_prevents_recursion` | Wrapper paths cannot resolve as real CLI |
+| `test_codex_safe_never_adds_yolo` | Safe entry remains available everywhere |
+| `test_windows_cmd_forwards_argv` | Windows launcher preserves argument boundaries |
+| `test_setup_update_share_installer` | Both lifecycle paths converge through one implementation |
+| `test_goal_gate_survives_yolo` | Plan/user approval remains mandatory |
+| `test_equality_requires_fresh_direct_evidence` | Intent and stale evidence cannot produce equality |
+| `test_partial_rollout_not_fleet_complete` | Unreachable/missing targets remain explicit |
+| `test_evidence_rejects_sensitive_content` | No secrets/prompts/transcripts/token values enter reports |
 
 ## Acceptance Criteria
 
-- [ ] Schema/privacy tests fail first, then Phase-0 evidence identifies exact Claude and Codex native goal UI and accepted Codex footer IDs on `ace-win-2` through a named PTY/direct-observation verifier.
-- [ ] Substantive interactive Claude/Codex tasks attach native goals only after catalog/picklist routing or a recorded user override; planning goals stop at approval and execution goals require approval plus runner evidence.
-- [ ] Claude native goal indicator/status remains visible while the goal is active.
-- [ ] Codex native goal/progress remains visible while the goal is active; no custom footer capability is claimed.
-- [ ] Codex footer shows model/reasoning, directory/project, remaining context, five-hour limit, and weekly limit with current accepted identifiers.
-- [ ] Config sync preserves all unrelated machine-local keys and fails atomically on invalid input.
-- [ ] Claude global/project/sibling statusline paths converge on one repo-tracked source.
-- [ ] Machine setup and scheduled harness reconciliation call the same config sync path.
-- [ ] Equality collection and rendering expose separate goal-policy, Claude/Codex goal-surface, and Claude/Codex statusline-config rows.
-- [ ] `ace-win-2` pilot passes fresh interactive verification and publishes fresh local evidence.
-- [ ] Fleet report enumerates all 5 active and 2 unreachable roster entries and names registry disagreement; it makes no unsupported “all machines” claim.
-- [ ] Focused sync/statusline/readiness suites pass; full affected test suites show no regression.
-- [ ] `scripts/legal/legal-sanity-scan.sh --diff-only` passes.
-- [ ] T3 adversarial code/artifact review has no unresolved MAJOR finding.
-- [ ] Completeness score and owner-only completeness label meet the closure threshold before closing #3555.
-- [ ] A GitHub implementation summary comment is posted before closure.
-
----
+- [ ] Fresh T3 plan review has no unresolved MAJOR, and the user applies `status:plan-approved`.
+- [ ] `default_mode_request_user_input = true` is present in effective config on every reachable declared Codex target.
+- [ ] The exact installed CLI version supports the feature; pin/config/verifier agree.
+- [ ] Goals, multi-agent, hooks, live web search, high plan reasoning, pragmatic personality, resume-CWD, interrupt messaging, and the five approved statusline fields are effective.
+- [ ] Config sync is atomic, idempotent, dry-run safe, and preserves all unowned local settings.
+- [ ] Plain `codex` adds `--yolo` exactly once in attested trusted roots and nowhere else; `codex-safe` never adds it.
+- [ ] POSIX and Windows launcher argument/quoting/recursion tests pass.
+- [ ] Claude native goal and machine-wide statusline behavior remain covered from the original issue.
+- [ ] Setup and scheduled maintenance invoke the same pin/config/launcher/verification path.
+- [ ] Every actual Codex-capable host is enumerated and either has fresh passing evidence or an explicit non-success state.
+- [ ] No report claims fleet completion while any target is unenumerated, stale, missing, divergent, or unreachable.
+- [ ] Focused and relevant regression tests, legal scan, enforcement scripts, and adversarial code review pass.
+- [ ] #3555 receives an implementation summary comment with commit, tests, review, and rollout evidence.
+- [ ] Pre-completion cleanup audit returns CLEAN or EXPECTED with named residue.
 
 ## Adversarial Review Summary
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Claude | UNAVAILABLE | CLI OAuth is expired; fanout retained the unavailable artifact. |
-| Codex | MAJOR (r1, r2) | Round 1 found the goal-gate conflict, Windows coverage gap, and unnamed evidence. Round 2 found attestation-before-test sequencing, setup-path bypass coverage, and a nonexistent noninteractive Codex rendering probe. The plan text incorporates responses to all six findings, but no provider has cleared the revised text. |
-| AGY (Gemini-backed) | UNAVAILABLE | Round 1 used the legacy Gemini CLI. The user corrected the provider surface to AGY; `agy` is not installed or discoverable on `ace-win-2`, so a fresh independent review is still pending. |
+| Claude (historical July r1) | UNAVAILABLE | Authentication unavailable; not evidence for the expanded plan |
+| Codex (historical July r1/r2) | MAJOR | Pilot scope, config schema, evidence privacy, and fleet-claim defects; incorporated into this revision |
+| Gemini (historical July r1) | UNAVAILABLE | Historical provider unavailable; AGY will be used for fresh review |
+| Claude (2026-08-02 r3) | PENDING | Fresh adversarial review required |
+| Codex (2026-08-02 r3) | PENDING | Fresh adversarial review required |
+| AGY (2026-08-02 r3) | PENDING | Fresh adversarial review required |
 
-**Overall result:** FAIL / REVISED — two Codex rounds found blocking defects; the main session applied the distinct round-2 findings inline per the r3 loop-break rule. Provider-diversity requirements remain unmet while Claude is unauthenticated and AGY is absent on `ace-win-2`; implementation remains blocked and the plan is not approval-ready.
-
----
+**Overall result:** PENDING — the user has approved the design spec, not the implementation plan gate. The issue will move to `status:plan-review` only after fresh review has no unresolved MAJOR.
 
 ## Risks and Open Questions
 
-- **Native UI risk:** Codex may expose a goal status view without a continuously visible goal row. Phase 0 will fail closed and return the plan for user decision instead of inventing a footer field.
-- **Version skew:** footer item IDs may differ across installed Codex versions. The collector will report version capability, and rollout will require the supported baseline or an explicit expected divergence.
-- **Merge risk:** replacing the root legacy table with `[tui]` can overwrite unrelated TUI settings if implemented as whole-table replacement. Tests will enforce key-level ownership.
-- **Claude precedence risk:** project settings can override user settings. Tests will cover workspace-hub, a sibling repo, and a repo without project settings.
-- **Hot-path risk:** statusline scripts execute frequently. The Claude renderer will avoid network access and unbounded Git commands; cached quota data will remain bounded and visibly stale where applicable.
-- **Privacy risk:** goals may contain client or private details. Equality evidence will record only capability/state booleans and hashes, never goal text or transcripts.
-- **Authorization risk:** making goals ubiquitous could bypass the existing `/goal` catalog, picklist, approval, and runner gates. The reconciled rule and tests will preserve each predicate and bound pre-approval goals to planning/review.
-- **Windows runtime risk:** Claude selects Git Bash when present and PowerShell otherwise. One Node renderer and three-shell fixture execution will keep behavior equivalent without maintaining divergent shell implementations.
-- **Fleet drift:** missing reports, roster mismatch, and incorrect Windows checkout paths prevent a fleet-complete claim. This issue will surface them and will not opportunistically relocate repos.
-- **Stranded branch risk:** #2893 implementation is not on main. #3555 will reuse compatible concepts only after comparing its branch; it will not merge or close #2893 implicitly.
-- **User decision after Phase 0:** if native Codex does not keep goal progress continuously visible, the user must choose between accepting `/goal`/status visibility or filing an upstream product request. The approved plan will not authorize an unsupported emulation.
-
----
+- **Under-development feature:** `default_mode_request_user_input` may change upstream. The exact pin and live feature probe will make failure explicit; upgrades will not float silently.
+- **Approval bypass risk:** `--yolo` is intentionally high-trust. Exact-root matching, safe fallback, and governance tests will keep its scope bounded.
+- **Windows quoting risk:** `.cmd` parsing differs from POSIX shells. Fake-CLI argument capture and static tests will cover metacharacter/space cases before rollout.
+- **Roster drift:** `ace-linux-1` contradicts the registry. Empirical attestation will precede registry change and any fleet denominator claim.
+- **Immediate rollout blast radius:** there will be no canary by user direction. Atomic installers, backups, dry-run/verification, and `codex-safe` will provide rollback and continued access.
+- **Provider availability:** a valid `UNAVAILABLE` review artifact may degrade T3 to T2; malformed or unparsable output will block.
 
 ## Complexity: T3
 
-The change crosses provider-native UI contracts, generated runtime instructions, atomic user-config merge logic, Windows/Linux deployment, and fleet evidence. It requires a three-provider plan review, TDD across shell/Python/PowerShell fixtures, an `ace-win-2` pilot, and code-stage T3 review.
+Cross-platform launch behavior, a security-relevant approval bypass, nested config preservation, provider UX convergence, roster reconciliation, and live multi-machine rollout require three-provider adversarial review and system-level regression coverage.

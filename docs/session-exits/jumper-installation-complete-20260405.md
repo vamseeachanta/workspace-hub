@@ -32,15 +32,15 @@ spec.yml -> jumper_lift.run_jumper_analysis() -> go_no_go.evaluate_go_no_go() ->
 | # | Repo | Title | Machine | Status |
 |---|------|-------|---------|--------|
 | **482** | digitalmodel | Integrate Go/No-Go into pipeline | ace-linux-1 | NEXT STEP - 80% done, needs commit |
-| **481** | digitalmodel | Convert PLET-PLEM workbook | ws014 | Pending |
-| **480** | digitalmodel | BUG: Verify PLET-PLEM segment lengths | ws014 | Pending |
+| **481** | digitalmodel | Convert PLET-PLEM workbook | ace-win-2 | Pending |
+| **480** | digitalmodel | BUG: Verify PLET-PLEM segment lengths | ace-win-2 | Pending |
 | **479** | digitalmodel | HTML/PDF report renderer | ace-linux-1 | Pending |
 | **478** | digitalmodel | OrcaFlex model generator integration | ace-linux-1 | Pending |
-| **1953** | workspace-hub | Batch 2: FDAS Riser Engineering conversions | ws014 | Pending |
-| 477 | digitalmodel | Batch 2: FDAS Riser Engineering | ws014 | Pending |
+| **1953** | workspace-hub | Batch 2: FDAS Riser Engineering conversions | ace-win-2 | Pending |
+| 477 | digitalmodel | Batch 2: FDAS Riser Engineering | ace-win-2 | Pending |
 | 476 | digitalmodel | Connect to OrcaFlex model generator | ace-linux-1 | Same as #478 |
 | 475 | digitalmodel | pytest test suite (81 tests DONE) | - | DONE |
-| 474 | digitalmodel | Verify PLET-PLEM segment lengths | ws014 | Same as #480 |
+| 474 | digitalmodel | Verify PLET-PLEM segment lengths | ace-win-2 | Same as #480 |
 | 473 | digitalmodel | HTML/PDF report renderer | ace-linux-1 | Same as #479 |
 | 472 | digitalmodel | Go/No-Go decision logic | ace-linux-1 | DONE (code in go_no_go.py) |
 | 471 | digitalmodel | STORY: Jumper Installation Pipeline | - | Parent story |
@@ -70,7 +70,7 @@ spec.yml -> jumper_lift.run_jumper_analysis() -> go_no_go.evaluate_go_no_go() ->
 - #478: OrcaFlex model generator integration
 - #479: HTML/PDF report renderer
 
-**ws014 (Windows):**
+**ace-win-2 (Windows):**
 - #480: Verify PLET-PLEM segment lengths from workbook
 - #481: Convert PLET-PLEM workbook via Claude cowork
 - #1953: Batch 2 FDAS Riser Engineering conversions (20+ workbooks)
@@ -92,7 +92,7 @@ spec.yml -> jumper_lift.run_jumper_analysis() -> go_no_go.evaluate_go_no_go() ->
 
 ### Next Session Priority Order
 1. Commit jumper_installation.py + go_no_go.py (pipeline integration for #482)
-2. #480: Verify PLET-PLEM on ws014
+2. #480: Verify PLET-PLEM on ace-win-2
 3. #478: Connect to model generator
 4. #481: Convert PLET-PLEM workbook
 5. #1953: FDAS workbook batch conversions

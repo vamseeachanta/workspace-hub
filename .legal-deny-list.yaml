@@ -93,6 +93,28 @@ proprietary_tools: []
 # ---------------------------------------------------------------------------
 # Client-specific infrastructure / user identifiers
 # ---------------------------------------------------------------------------
+# INTENTIONALLY EMPTY. Do not populate this with machine hostnames or client
+# identifiers.
+#
+# 2026-08-01: I added three real hostnames here as detection patterns, reasoning
+# that the section being empty was why a leak went unnoticed. That was wrong on
+# both counts, and the Client-PII Gate caught it by flagging the lines I had just
+# written.
+#
+# `scripts/legal/check-client-pii.py` is the authoritative guard, and its design
+# note says why: client identifiers live ONLY in a private map, the script
+# "contains no client names, and it NEVER prints a matched client string — only
+# the file and line number — because CI logs on a public repo would themselves
+# leak." It exists precisely as "the recurrence backstop the incomplete
+# .legal-deny-list.yaml failed to provide".
+#
+# So a pattern written here is (a) redundant, the private map already has it, and
+# (b) itself a leak, because this file is public. A deny-list that must name the
+# secret to detect it cannot live in the open.
+#
+# Machine identifiers belong to that private map. Routing uses the canonical role
+# aliases (deckhand#581); the real-hostname mapping lives per-box in
+# ~/.config/workspace-hub/machine-identity.yaml (#3571), off-repo and gitignored.
 client_infrastructure: []
   # - pattern: "client-vpc-123"
   #   case_sensitive: false

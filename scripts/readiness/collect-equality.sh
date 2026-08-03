@@ -28,10 +28,6 @@ for ((i=1; i<=$#; i++)); do
 done
 
 HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
-# A machine may have a private or policy-sensitive OS hostname while using a public
-# fleet identity.  The Windows wrapper sets this to the validated --machine label so
-# tracked equality evidence never serializes the private hostname.
-PUBLIC_HOST="${EQ_PUBLIC_HOST:-$HOST}"
 case "$(uname -s 2>/dev/null)" in
   Linux) OS="linux";; Darwin) OS="macos";; MINGW*|MSYS*|CYGWIN*) OS="windows";; *) OS="unknown";;
 esac
@@ -59,6 +55,10 @@ if [[ -z "$MACHINE" ]]; then
   esac
 fi
 have() { command -v "$1" >/dev/null 2>&1; }
+PYTHON_CMD=()
+if ! source "${SCRIPT_DIR}/../lib/python-resolver.sh" 2>/dev/null; then
+  PYTHON_CMD=()
+fi
 # CC1/GC1: escape a value for a YAML double-quoted scalar (backslash, quote; strip CR/LF).
 yesc() { printf '%s' "$1" | tr -d '\r\n' | sed 's/\\/\\\\/g; s/"/\\"/g'; }
 # #2816 W5: validate an EQ_* compute override is a clean non-negative integer (counts/MiB/GiB).
@@ -139,7 +139,7 @@ for _ubin in "${HOME:-}/.npm-global/bin" "${HOME:-}/.local/bin"; do
 done
 export PATH
 readiness_file="harness-readiness-${MACHINE}.yaml"
-[[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${PUBLIC_HOST}.yaml"
+[[ -f "${STATE_DIR}/${readiness_file}" ]] || readiness_file="harness-readiness-${HOST}.yaml"
 readiness_overall="missing"
 [[ -f "${STATE_DIR}/${readiness_file}" ]] && \
   readiness_overall=$(awk -F': ' '/^overall:/{print $2; exit}' "${STATE_DIR}/${readiness_file}" 2>/dev/null)
@@ -225,6 +225,30 @@ if [[ -f "$slh_file" ]] && have jq; then
   slh_repairable=$(jq -r '.repairable // 0' "$slh_file" 2>/dev/null); [[ "$slh_repairable" =~ ^[0-9]+$ ]] || slh_repairable=0
   _slw=$(jq -r '.worst_state // empty' "$slh_file" 2>/dev/null)
   [[ -n "$_slw" ]] && slh_worst="\"$(yesc "$_slw")\""
+fi
+
+# ── 6f. HARNESS CHECKUP — /doctor hygiene facts (#3408) ──────────────────────
+# References the audit state from scripts/curation/audit_harness_checkup.py (never re-runs it).
+# Missing/garbled file -> audited_at null -> matrix grades MISSING-EVIDENCE. audited_at stays in the
+# canonical payload so a fresh audit forces a rewrite. Every field is type-gated on read (boolean/
+# number/string as declared, else null) so a malformed audit can never inject garbage into the graded
+# cells — allowlist-safe by construction (the audit emits counts/booleans/enums/version strings only).
+hc_file="${STATE_DIR}/harness-checkup-${MACHINE}.json"
+hc_audited="null"; hc_ver="null"; hc_latest="null"; hc_vcur="null"; hc_install="null"
+hc_dupe="null"; hc_sok="null"; hc_bad="null"; hc_uskill="null"; hc_uplug="null"; hc_mode="null"; hc_auto="null"
+if [[ -f "$hc_file" ]] && have jq; then
+  _hca=$(jq -r '.audited_at // empty' "$hc_file" 2>/dev/null);   [[ -n "$_hca" ]] && hc_audited="\"$(yesc "$_hca")\""
+  _hcv=$(jq -r '.cc_version // empty' "$hc_file" 2>/dev/null);   [[ -n "$_hcv" ]] && hc_ver="\"$(yesc "$_hcv")\""
+  _hcl=$(jq -r '.cc_latest // empty' "$hc_file" 2>/dev/null);    [[ -n "$_hcl" ]] && hc_latest="\"$(yesc "$_hcl")\""
+  _hci=$(jq -r '.install_method // empty' "$hc_file" 2>/dev/null); [[ -n "$_hci" ]] && hc_install="\"$(yesc "$_hci")\""
+  _hcm=$(jq -r '.default_mode // empty' "$hc_file" 2>/dev/null); [[ -n "$_hcm" ]] && hc_mode="\"$(yesc "$_hcm")\""
+  _hcvc=$(jq -r 'if (.version_current|type)=="boolean" then .version_current else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcvc" == "true" || "$_hcvc" == "false" ]] && hc_vcur="$_hcvc"
+  _hcso=$(jq -r 'if (.settings_parse_ok|type)=="boolean" then .settings_parse_ok else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcso" == "true" || "$_hcso" == "false" ]] && hc_sok="$_hcso"
+  _hcau=$(jq -r 'if (.auto_mode_default|type)=="boolean" then .auto_mode_default else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcau" == "true" || "$_hcau" == "false" ]] && hc_auto="$_hcau"
+  _hcd=$(jq -r 'if (.duplicate_installs|type)=="number" then .duplicate_installs else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcd" =~ ^[0-9]+$ ]] && hc_dupe="$_hcd"
+  _hcb=$(jq -r 'if (.broken_agents|type)=="number" then .broken_agents else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcb" =~ ^[0-9]+$ ]] && hc_bad="$_hcb"
+  _hcus=$(jq -r 'if (.unused_skills|type)=="number" then .unused_skills else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcus" =~ ^[0-9]+$ ]] && hc_uskill="$_hcus"
+  _hcup=$(jq -r 'if (.unused_plugins|type)=="number" then .unused_plugins else "n" end' "$hc_file" 2>/dev/null); [[ "$_hcup" =~ ^[0-9]+$ ]] && hc_uplug="$_hcup"
 fi
 
 # ── 7. BEHAVIOR — deterministic, SANDBOXED probe corpus (DG4/DC1) ────────────
@@ -360,12 +384,6 @@ providers:
     "memory:read": {status: unknown, reason: collector_unavailable}
     "skills:invoke": {status: unknown, reason: collector_unavailable}
     "workflow:gates": {status: unknown, reason: collector_unavailable}
-  gemini:
-    present: false
-    installed: false
-    "memory:read": {status: unknown, reason: collector_unavailable}
-    "skills:invoke": {status: unknown, reason: collector_unavailable}
-    "workflow:gates": {status: unknown, reason: collector_unavailable}
 YAML
 }
 provider_py=""
@@ -388,12 +406,14 @@ provider_harness_yaml="$(printf '%s\n' "$provider_harness_yaml" | sed 's/^/    /
 #    the #3500 pre-push-deadlock signature; the matrix renders it per machine.
 ph_file="${WS}/.claude/state/equivalence/publish-health.json"
 ph_ts="missing"; ph_dur="null"; ph_rc="null"
-if [[ -f "$ph_file" ]] && have python3; then
-  read -r ph_ts ph_dur ph_rc < <(python3 - "$ph_file" <<'PY' 2>/dev/null || echo "missing null null"
+if [[ -f "$ph_file" && "${#PYTHON_CMD[@]}" -gt 0 ]]; then
+  read -r ph_ts ph_dur ph_rc < <("${PYTHON_CMD[@]}" - "$ph_file" "${SCRIPT_DIR}/../monitoring" <<'PY' 2>/dev/null || echo "missing null null"
 import json, sys
+sys.path.insert(0, sys.argv[2])
+from equivalence_state import validate_publish_health
 try:
-    d = json.load(open(sys.argv[1]))
-    print(d.get("ts") or "missing", d.get("duration_s", "null"), d.get("rc", "null"))
+    d = validate_publish_health(open(sys.argv[1]).read())
+    print(d["ts"], d["duration_s"], d["rc"])
 except Exception:
     print("missing null null")
 PY
@@ -407,7 +427,7 @@ fi
 read -r -d '' BODY <<YAML || true
 schema_version: 4
 machine: "$(yesc "$MACHINE")"
-host: "$(yesc "$PUBLIC_HOST")"
+host: "$(yesc "$HOST")"
 os: ${OS}
 status: active
 provenance:
@@ -466,10 +486,19 @@ ${provider_harness_yaml}
     healthy: ${slh_healthy}
     repairable: ${slh_repairable}
     worst_state: ${slh_worst}
-  publish_health:
-    last_publish_at: "$(yesc "$ph_ts")"
-    last_publish_duration_s: ${ph_dur}
-    last_publish_rc: ${ph_rc}
+  harness_checkup:
+    audited_at: ${hc_audited}
+    cc_version: ${hc_ver}
+    cc_latest: ${hc_latest}
+    version_current: ${hc_vcur}
+    install_method: ${hc_install}
+    duplicate_installs: ${hc_dupe}
+    settings_parse_ok: ${hc_sok}
+    broken_agents: ${hc_bad}
+    unused_skills: ${hc_uskill}
+    unused_plugins: ${hc_uplug}
+    default_mode: ${hc_mode}
+    auto_mode_default: ${hc_auto}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 
@@ -492,5 +521,17 @@ if [[ -f "$OUT" ]] && have sha256sum; then
     exit 0
   fi
 fi
-printf '%s\n' "$FULL" > "$OUT"
+TMP_OUT=""
+cleanup_tmp() {
+  [[ -n "$TMP_OUT" ]] && rm -f -- "$TMP_OUT"
+}
+trap cleanup_tmp EXIT
+TMP_OUT="$(mktemp "${STATE_DIR}/.equality-${MACHINE}.yaml.tmp.XXXXXX")" \
+  || { echo "collect-equality: could not create temporary report" >&2; exit 1; }
+printf '%s\n' "$FULL" > "$TMP_OUT" \
+  || { echo "collect-equality: could not write temporary report" >&2; exit 1; }
+mv -- "$TMP_OUT" "$OUT" \
+  || { echo "collect-equality: could not publish report atomically" >&2; exit 1; }
+TMP_OUT=""
+trap - EXIT
 echo "wrote ${OUT} (machine=${MACHINE}, os=${OS})"

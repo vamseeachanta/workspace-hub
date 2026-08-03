@@ -136,7 +136,6 @@ cards:
     gh_labels:
       - priority:high
       - cat:business
-      - cat:strategy
       - domain:gtm
       - machine:dev-primary
       - dispatch:ready
@@ -157,7 +156,6 @@ cards:
     gh_state: closed
     gh_labels:
       - cat:business
-      - cat:strategy
       - domain:gtm
       - agent:gemini
     initial_status: triage
@@ -172,7 +170,6 @@ cards:
     gh_labels:
       - priority:high
       - cat:business
-      - cat:strategy
       - domain:gtm
       - agent:gemini
     initial_status: triage
@@ -187,7 +184,7 @@ cards:
     gh_labels:
       - priority:high
       - cat:engineering
-      - cat:strategy
+      - cat:business
       - domain:gtm
       - agent:gemini
     initial_status: triage
@@ -238,7 +235,6 @@ cards:
     gh_labels:
       - priority:high
       - cat:business
-      - cat:strategy
       - domain:gtm
       - machine:dev-primary
       - dispatch:ready
@@ -260,7 +256,6 @@ cards:
     gh_labels:
       - priority:high
       - cat:business
-      - cat:strategy
       - domain:gtm
       - machine:dev-primary
       - dispatch:ready
@@ -282,7 +277,6 @@ cards:
     gh_labels:
       - priority:high
       - cat:business
-      - cat:strategy
       - domain:gtm
       - machine:dev-primary
       - dispatch:ready
@@ -641,7 +635,6 @@ cards:
     gh_labels:
       - priority:medium
       - cat:engineering
-      - cat:harness
       - domain:gtm
       - machine:dev-primary
       - status:plan-approved
@@ -680,6 +673,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:business
       - domain:gtm
       - machine:dev-primary
       - review-backlog
@@ -715,6 +709,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:documentation
       - domain:gtm
       - machine:dev-primary
       - dispatch:ready
@@ -735,6 +730,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:business
       - domain:gtm
       - machine:dev-primary
       - dispatch:ready
@@ -755,6 +751,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:business
       - domain:gtm
       - machine:dev-primary
       - claude:design
@@ -861,7 +858,7 @@ cards:
     gh_state: closed
     gh_labels:
       - priority:high
-      - cat:infrastructure
+      - cat:operations
       - domain:gtm
     initial_status: triage
     priority: 1
@@ -888,7 +885,6 @@ cards:
     gh_labels:
       - priority:high
       - cat:business
-      - cat:strategy
       - domain:gtm
     initial_status: triage
     priority: 1
@@ -902,7 +898,6 @@ cards:
     gh_labels:
       - priority:high
       - cat:business
-      - cat:strategy
       - domain:gtm
       - status:done
     initial_status: triage
@@ -917,7 +912,6 @@ cards:
     gh_labels:
       - priority:high
       - cat:business
-      - cat:strategy
       - domain:gtm
     initial_status: triage
     priority: 1
@@ -930,8 +924,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
-      - cat:ai-orchestration
-      - cat:business
+      - cat:harness
       - domain:gtm
       - machine:dev-primary
       - dispatch:ready
@@ -1048,8 +1041,8 @@ cards:
       - enhancement
       - priority:high
       - cat:documentation
-      - domain:reporting
       - domain:gtm
+      - domain:content
       - status:done
     initial_status: triage
     priority: 1
@@ -1063,7 +1056,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:strategy
+      - cat:business
       - domain:gtm
       - machine:dev-primary
       - dispatch:ready
@@ -1085,12 +1078,13 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:personal
+      - cat:business
       - domain:gtm
       - machine:dev-primary
       - dispatch:ready
       - gate:completeness
       - lane:claude
+      - domain:personal
     gh_assignees: []
     initial_status: triage
     priority: 1
@@ -1107,6 +1101,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
+      - cat:business
       - domain:gtm
       - wrk-item
       - machine:dev-primary
@@ -1124,6 +1119,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:data
       - domain:gtm
       - machine:dev-primary
       - gtm
@@ -1145,6 +1141,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:data
       - domain:gtm
       - machine:dev-primary
       - gtm
@@ -1166,6 +1163,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:business
       - domain:gtm
       - machine:dev-primary
       - gtm
@@ -1202,13 +1200,268 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
-      - domain:reporting
+      - cat:business
       - domain:gtm
+      - domain:content
       - status:plan-approved
       - gate:completeness
       - lane:codex
       - lane:claude
     initial_status: triage
     priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#35
+    title: 'WRK-1048: CV gap analysis + repo project alignment for Power Generation Controls Engineer role'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/35
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1048: CV gap analysis + repo project alignment for Power Generation Controls Engineer role
+
+      **Status:** pending | **Priority:** high | **Category:** career | **Subcategory:** cv-strategy
+
+      **Repo:** [''workspace-hub'', ''digitalmodel'', ''worldenergydata''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#58
+    title: 'WRK-1162: Protection relay coordination module'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/58
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1162: Protection relay coordination module
+
+      **Status:** pending | **Priority:** high | **Category:** career | **Subcategory:** cv-strategy
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#59
+    title: 'WRK-1163: IEC 61850 GOOSE messaging model'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/59
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 1
+    body_excerpt: '## WRK-1163: IEC 61850 GOOSE messaging model
+
+      **Status:** pending | **Priority:** high | **Category:** career | **Subcategory:** cv-strategy
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#60
+    title: 'WRK-1164: Power flow / load flow calculator'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/60
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1164: Power flow / load flow calculator
+
+      **Status:** pending | **Priority:** medium | **Category:** career | **Subcategory:** cv-strategy
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#61
+    title: 'WRK-1165: Droop control simulator'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/61
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1165: Droop control simulator
+
+      **Status:** pending | **Priority:** medium | **Category:** career | **Subcategory:** cv-strategy
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#62
+    title: 'WRK-1166: Generator fuel system CP design'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/62
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:business
+      - domain:gtm
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:claude
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## WRK-1166: Generator fuel system CP design
+
+      **Status:** pending | **Priority:** medium | **Category:** career | **Subcategory:** cv-strategy
+
+      **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#120
+    title: 'WRK-5001: Research-to-WRK synthesis — automate paper → action-item capture'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/120
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:tooling
+      - domain:gtm
+      - agent:gemini
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#914
+    title: 'WRK-1128: Observed-exposure tracker — measure AI vs human work % per WRK category'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/914
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:tooling
+      - domain:gtm
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1037
+    title: 'WRK-5003: O*NET task tagging for WRK capture — classify work by occupational category'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1037
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:tooling
+      - domain:gtm
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1126
+    title: 'WRK-1128: Observed-exposure tracker — measure AI vs human work % per WRK category'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1126
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:tooling
+      - archived
+      - domain:gtm
+      - wrk-item
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1180
+    title: 'WRK-5003: O*NET task tagging for WRK capture — classify work by occupational category'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1180
+    gh_state: closed
+    gh_labels:
+      - enhancement
+      - priority:low
+      - cat:tooling
+      - archived
+      - domain:gtm
+      - wrk-item
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3415
+    title: 'research(landman-desk): validate broker workflow and lock a federal-acreage-aware pilot'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3415
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:high
+      - cat:research
+      - domain:gtm
+      - status:plan-approved
+      - gate:completeness
+      - lane:claude
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3603
+    title: 'INITIATIVE: Deckhand & Open Deck platform'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3603
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:engineering
+      - domain:gtm
+      - initiative
+    initial_status: triage
+    priority: 1
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/workspace-hub#3607
+    title: 'INITIATIVE: Brand, public surfaces & go-to-market'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/3607
+    gh_state: open
+    gh_labels:
+      - priority:high
+      - cat:business
+      - domain:gtm
+      - initiative
+    initial_status: triage
+    priority: 1
     gh_assignees: []
     body_excerpt: ''

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Mock agy CLI — captures argv + pwd + env + stdin, emits canned review.
+# Extra: supports ${MOCK_AGY_FAIL:-0}=1 to simulate quota/outage (exit 1, no stdout).
+set -u
+[[ -n "${MOCK_SLEEP_S:-}" ]] && sleep "$MOCK_SLEEP_S"
+capture="${PLAN_REVIEW_CAPTURE_DIR:-/tmp}/agy.capture"
+{
+  printf 'ARGV:'
+  for a in "$@"; do printf ' %s' "$a"; done
+  printf '\n'
+  echo "PWD: $PWD"
+  echo "AGY_REVIEW_MODE: ${AGY_REVIEW_MODE:-(unset)}"
+  echo "CLAUDECODE: ${CLAUDECODE:-(unset)}"
+  echo "STDIN:"
+  if [[ ! -t 0 ]]; then cat; else echo "(no stdin)"; fi
+} > "$capture"
+if [[ "${MOCK_AGY_FAIL:-0}" == "1" ]]; then
+  echo "agy: 429 No capacity" >&2
+  exit 1
+fi
+cat <<'EOF'
+## Verdict
+MINOR
+
+## Retrieval
+- Read inline plan body.
+
+## Findings
+1. Mock finding from agy — a tiny nit only agy noticed.
+
+## Blockers
+(none)
+EOF

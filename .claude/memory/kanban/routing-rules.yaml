@@ -4,6 +4,38 @@
 # rule engine's PROPOSALS (which you approve before any label is written).
 
 # ---------------------------------------------------------------------------
+# Label axis cardinality — which axes are SCALARS and which are SETS.
+#
+# A GitHub label set permits states the domain forbids: nothing stops two
+# `status:` labels, but an issue cannot be in two workflow states. Measured
+# 2026-07-30 across 1,761 open issues: 146 carried 2+ labels on one axis, 36 of
+# them on `status:` — including 14 that were `plan-approved` AND `plan-review`
+# at the same time, i.e. approved to one reader and pending to another.
+#
+# route.py used to resolve those by taking the FIRST matching label, so the
+# outcome depended on GitHub's API ordering: silent, non-deterministic, and
+# indistinguishable from a correct issue at the point of use. Silently picking
+# one of two contradictory answers is worse than refusing — a refusal gets
+# fixed, a silent pick gets shipped.
+#
+# The split has to be DECLARED rather than inferred, because no scan can tell
+# "this axis permits multiple" from "this axis was violated 74 times".
+# Each entry carries its reason: a bare list invites flipping an axis on a
+# hunch; a sentence makes the next person argue with it.
+# ---------------------------------------------------------------------------
+label_axes:
+  single:
+    "status:":  "a position in a state machine — an issue cannot be in two at once"
+    "machine:": "one execution host; `multi` is the value for work that spans several"
+    "lane:":    "one implementing provider; a second opinion is `needs:cross-review`"
+    "agent:":   "one agent owns the work item"
+    "ai:":      "the human/dispatch provider override — highest precedence, so two would contradict"
+  multi:
+    "domain:":  "work genuinely spans domains — 74 open issues legitimately do"
+    "cat:":     "categories overlap by design"
+    "needs:":   "requirements accumulate; an issue can need cross-review AND the frontier tier"
+
+# ---------------------------------------------------------------------------
 # Machine roster  -> machine:<id> label values + dispatch/<id>.yaml queue files
 # Canonical scheme = the pre-existing in-the-wild vocabulary (user 2026-05-25,
 # "adopt existing scheme"): names encode capability, so 0 cards get relabeled.
@@ -14,17 +46,88 @@ machines:
   dev-secondary:    {os: linux, role: secondary,   hostname: ace-linux-2}
   cfd-dedicated:    {os: linux, role: compute,     hostname: gpu-claw, capabilities: [cfd, openfoam],
                      notes: "dedicated CFD node reached from ace-linux-1 over the WireGuard VPN"}
-  licensed-win-1:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex]}
+  # deckhand#579: licence_verified is a DATED ATTESTATION, not an inference.
+  # A licensed capability is only routable when someone recorded that they saw
+  # it work, when, and how. `false` is a claim too — it says "checked, does not
+  # hold" — and is what keeps a host in the roster without making it a target.
+  # CAPABILITY IS TWO DIMENSIONS, not one: a host must have the LICENCE and the
+  # CAPACITY. Checking only the dimension you were last burned by is how both
+  # defects here happened — see tests/dispatch/test_route_capacity.py.
+  # LICENCE IS PER-SOLVER, NOT PER-HOST (fleet handover 2026-07-31).
+  #
+  # A single host-level `licence_verified` was the third version of the same
+  # mistake in one day: capability treated as one property. AQWA is licensed,
+  # healthy and IDLE on licensed-win-1 while OrcaFlex is genuinely unavailable
+  # there — one flag cannot express that, and either value it took would have
+  # been wrong about half the solvers.
+  licensed-win-1:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
+                     capacity: heavy,
+                     # Multi-tenant: other people's interactive sessions share this
+                     # host. Structured, not just a comment in wip_caps, so the cap
+                     # can be ENFORCED rather than merely explained — see
+                     # tests/dispatch/test_shared_tenancy_cap.py. `capacity` describes
+                     # the hardware; this describes who else is standing on it.
+                     shared_tenancy: true,
+                     licence_verified: {aqwa: {at: "2026-07-31", by: "fleet-session",
+                                               how: "lmstat port 1055: aqwa_solve x2, aqwa_pre x2,
+                                                     anshpc x4 free; four diffraction runs completed
+                                                     2026-07-18. Works on BOTH dispatch paths. wh#3734"},
+                                        orcaflex: {at: "2026-07-31", by: "fleet-session",
+                                                   how: "lmstat port 27002: feature Flex v11.6, expiry
+                                                         2027-03-15. dispatch-run.ps1 submit ->
+                                                         LICENCE_OK dll=11.6c exit 0, reproduced twice.
+                                                         REQUIRES the scheduled-task path. wh#3721"},
+                                        orcawave: {at: "2026-07-31", by: "fleet-session",
+                                                   how: "shares the same single Flex seat as orcaflex"}},
+                     # Orcina products REQUIRE the scheduled-task path. An SSH
+                     # public-key logon token cannot complete a FlexNet checkout;
+                     # a Scheduled Task establishes its own batch logon and works.
+                     # Same probe, same host, minutes apart, seat free:
+                     #   ssh host '<solver>'            -> DLLError 25 / FlexNet 21
+                     #   dispatch-run.ps1 -Action submit -> LICENCE_OK, exit 0
+                     # NOT a credential problem: -RunAsUser/-ru/-rp are not needed
+                     # and adding them was a wrong hypothesis (wh#3738). AQWA is
+                     # unaffected and succeeds on either path.
+                     dispatch_path: {orcaflex: scheduled-task, orcawave: scheduled-task,
+                                     aqwa: any},
+                     concurrency: {aqwa: 2},
+                     notes: "THE heavy node: 64 logical cores / 255.7 GB; declared batch target for
+                             dm#1553. SHARED client production box — cap concurrency. AQWA over-dispatch
+                             FAILS on licence acquisition rather than queueing, so the 2-seat ceiling is
+                             a hard cap, not a preference."}
   licensed-win-2:   {os: windows, role: engineering, capabilities: [orcawave, aqwa, orcaflex],
-                     aliases: [acma-ws014], notes: "same box as acma-ws014 (mkt-a client workstation)"}
+                     capacity: workstation,
+                     available: false,
+                     unavailable_since: "2026-07-31T11:00Z",
+                     blocked_on: "wh#3721 — host DOWN, needs a power cycle. Tailnet pings 1 ms and
+                                  22/3389/445/135 all accept TCP, but SSH stalls exactly at key
+                                  exchange and RDP is unresponsive: the kernel accepts while userland
+                                  cannot service. Resource exhaustion (~2.2 GB free of 16 GB), not a
+                                  network or sshd fault — restarting sshd did not help because sshd was
+                                  never the problem. A TCP-only reachability probe reports this host
+                                  UP; that is the trap.",
+                     licence_verified: {orcawave: {at: "2026-07-30", by: "owner",
+                                                   how: "bokalift orcawave-diffraction-solve ran end-to-end"}},
+                     notes: "Workstation, NOT sized for batch. Queue lane's CANONICAL default
+                             (policy licensed_host) for UN-ADDRESSED requests — a routing fallback, not
+                             a batch execution target. Physical binding is in the PRIVATE registry."}
   home-win:         {os: windows, role: aux,        notes: "home windows; statements/scans (e.g. Chase)"}
   macbook-portable: {os: macos,   role: aux,        notes: "portable/mobile work"}
   multi:            {os: any,     role: virtual,    notes: "spans machines / not pinned to one box"}
 
-# Alias map (label-in-the-wild -> canonical machine). route.py folds these so
-# machine:acma-ws014 counts as licensed-win-2 without relabeling existing cards.
+# Alias map (label-in-the-wild -> canonical machine). route.py folds these so a
+# hostname-style straggler counts as its canonical role without relabeling cards.
+#
+# The client-hostname entry was REMOVED 2026-07-31: that label was retired and
+# DELETED from GitHub (40 issues migrated to role labels, deckhand#581), so the
+# alias pointed at nothing. It was also the last client identifier in this
+# PUBLIC file — the Client-PII Gate on PR #3730 is what surfaced it, correctly.
+# Physical host bindings live in the PRIVATE machine registry, never here.
+#
+# The entries below are OURS (see deckhand#581 D7a: a public label may equal a
+# canonical hostname when we own the name). They are retained as read-compat for
+# any card still carrying the old spelling.
 machine_aliases:
-  acma-ws014: licensed-win-2
   ace-linux-1: dev-primary      # hostname-style stragglers -> canonical dispatch name
   ace-linux-2: dev-secondary
   gpu-claw: cfd-dedicated
@@ -40,9 +143,45 @@ providers:
   claude: {tier: workhorse, auto_routable: true}
   codex:  {tier: workhorse, auto_routable: true, budget_pool: codex_pool}
   hermes: {tier: shared,    auto_routable: true, budget_pool: codex_pool}  # consumes codex quota
-  gemini: {tier: scarce,    auto_routable: false, note: "manual ai:gemini only; never auto-route backlog"}
+  # agy REPLACES gemini (workspace-hub#3573). Verified 2026-07-31: `agent:gemini`
+  # carries ZERO open issues, so the swap was already complete in the wild and
+  # only this config lagged. Cross-review is now Claude + Codex + Agy.
+  #
+  # `auto_routable: false` means NOT AUTO-SELECTABLE — defaults, rules and lanes
+  # may not pick agy — NOT "unusable". An explicit `ai:agy` is honoured; the
+  # budget pool below still caps it, so the override moves the SELECTION, not the
+  # CAP. Until 2026-07-31 apply_wip() queued such providers unconditionally, so
+  # the manual escape hatch this comment describes did not actually work.
+  agy:    {tier: scarce,    auto_routable: false, budget_pool: google_ai_pool,
+           note: "Google AI Pro quota. Explicit ai:agy only; never auto-route backlog."}
+
+# ---------------------------------------------------------------------------
+# Solver seat pools — a licence seat is FLEET-WIDE, not per host (wh#3721).
+#
+# There is exactly ONE floating Orcina `Flex` seat across the whole fleet, and
+# OrcaWave shares it. Modelling it as a per-host capability would permit two
+# concurrent dispatches on two hosts, both of which then fail on checkout.
+#
+# A seat licenses a SESSION, not a job: one dispatched job may fan out across
+# the host's cores inside that session. So this is ONE CONCURRENT DISPATCH SLOT
+# THAT PARALLELISES INTERNALLY — never "one model at a time". Reading it the
+# latter way idles a 64-core box to respect a limit that does not apply at that
+# level.
+#
+# An interactive session holding the seat blocks all dispatch. Closing the
+# solver releases it; logging off is not required.
+# ---------------------------------------------------------------------------
+solver_pools:
+  orcina_flex:
+    members: [orcaflex, orcawave]
+    max_concurrent: 1        # fleet-wide seats, NOT per host
+    expiry: "2027-03-15"
+    note: "one dispatch slot; parallel model runs INSIDE that job are expected"
 
 budget_pools:
+  google_ai_pool:
+    members: [agy]
+    max_concurrent: 1        # scarce; an explicit ai:agy overrides SELECTION, not this cap
   codex_pool:
     members: [codex, hermes]
     max_concurrent: 3        # codex + hermes COMBINED, not each
@@ -56,6 +195,18 @@ wip_caps:
     dev-primary: 3
     dev-secondary: 3
     cfd-dedicated: 1
+    # SHARED TENANCY — this cap is a courtesy constraint, NOT a throughput knob.
+    # licensed-win-1 is a multi-tenant host: interactive sessions belonging to
+    # OTHER PEOPLE run on it concurrently with anything we dispatch. Saturating
+    # it degrades their work, and they have no visibility into why.
+    #
+    # Recorded here because the constraint was previously held only in the
+    # operator's head. `capacity: heavy` above describes the HARDWARE honestly
+    # and, read alone, invites exactly the wrong conclusion — the next person
+    # tuning throughput sees a large idle box behind a cap of 2 and removes the
+    # bottleneck. Capacity and permission-to-use-capacity are different facts.
+    #
+    # Do not raise without the owner. Host identity is in the private tier.
     licensed-win-1: 2
     licensed-win-2: 2
   per_provider:
@@ -78,22 +229,55 @@ rules:
   # Windows-only engineering tooling (OrcaWave/AQWA/OrcaFlex) -> licensed boxes.
   # domain_family so the #2878 splits (solver-orcaflex, hydro-diffraction, ...)
   # inherit, but hydrocarbon/hydrostatic/solverless do NOT get pinned to Windows.
+  # These target licensed-win-1: THE heavy node (64 cores / 255.7 GB) and the
+  # owner-designated licensed execution host.
+  #
+  # Two corrections got us here, both mine, both the same mistake one axis apart:
+  #
+  #  1. Originally they targeted licensed-win-1 while its capability list was
+  #     inherited from a RETIRED machine — 177 issues routed to a host that could
+  #     not obtain a licence (deckhand#579).
+  #  2. I then repointed them to licensed-win-2 because it held the only dated
+  #     licence attestation. Owner, 2026-07-31: "that host is not powerful enough."
+  #     licensed-win-2 is a WORKSTATION. I had traded a licence failure for a
+  #     capacity failure and called it fixed, because I only re-checked the
+  #     dimension I had just been burned by.
+  #
+  # Capability is LICENCE **and** CAPACITY. licensed-win-1 satisfies capacity and
+  # is blocked on the licence prerequisite, which is declared in `blocked_on`
+  # rather than routed around: silently sending batch work to a lesser host hides
+  # the blockage — the work runs badly instead of visibly waiting.
+  #
+  # Unchanged: policy.yml `licensed_host` stays ace-win-2. That is the queue
+  # lane's default owner for UN-ADDRESSED requests — a different role from the
+  # execution target, and #579 holds it until OrcFxAPI.Model() succeeds.
   - match: {repo: vamseeachanta/digitalmodel, domain_family: solver}
     assign: {machine: licensed-win-1}
-    reason: "AQWA/OrcaWave bridges need a licensed Windows box (solver + solver-* splits)"
+    reason: "AQWA/OrcaWave/OrcaFlex batch needs the heavy licensed node (solver + solver-* splits)"
   - match: {repo: vamseeachanta/digitalmodel, domain_family: hydro}
     assign: {machine: licensed-win-1}
-    reason: "RAO/QTF/seakeeping runs use OrcaWave/AQWA (hydro + hydro-* splits)"
+    reason: "RAO/QTF/seakeeping runs are batch-scale — heavy node (hydro + hydro-* splits)"
 
   # CFD / OpenFOAM -> dedicated CFD node; ace-linux-2 remains shared/dev.
   - match: {gh_label: "domain:cfd"}
     assign: {machine: cfd-dedicated}
     reason: "Dedicated OpenFOAM CFD node gpu-claw beat ace-linux-2 benchmark in https://github.com/vamseeachanta/digitalmodel/issues/1495"
 
-  # Cross-review work -> codex (finds non-overlapping defects)
-  - match: {gh_label: "needs:cross-review"}
-    assign: {provider: codex}
-    reason: "Codex strong on adversarial cross-review"
+  # `needs:cross-review` is a PHASE marker, NOT a routing target — no rule here.
+  #
+  # It used to read `{gh_label: needs:cross-review} -> {provider: codex}`, but the
+  # label did not exist in any repo, so the rule had never fired. Creating the
+  # label (2026-07-30) would have ARMED it, and rule beats lane: in precedence —
+  # silently rerouting 21 issues to codex over a human's explicit lane: choice.
+  #
+  # Two different ideas were conflated:
+  #   "this issue IS a cross-review task"        -> an ASSIGNMENT (who does it)
+  #   "this work NEEDS a second-provider review" -> a PHASE (what must happen
+  #                                                 before it can close)
+  # `needs:` is the vocabulary of a requirement. The review workflow consumes the
+  # label; the router must not. Enforced by
+  # tests/dispatch/test_cross_review_is_a_phase.py, which generalises to the whole
+  # `needs:` namespace so the next such label need not rediscover this.
 
   # Default catch-all — machine only; provider falls through to defaults.provider
   # (claude) so the ai: label stays ABSENT for default work, written only when a

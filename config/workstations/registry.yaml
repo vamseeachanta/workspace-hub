@@ -215,17 +215,31 @@ machines:
 
   ace-win-1:
     hostname: ace-win-1
-    hostname_aliases: [licensed-win-1, ACMA-ANSYS05, acma-ansys05]  # WF0 #3001: renamed from licensed-win-1
+    # 2026-08-01: the two real hostnames previously listed here were REMOVED, not
+    # replaced. They named a box that is not this role and is absent from the
+    # tailnet entirely, so they were both wrong AND infrastructure detail in a
+    # PUBLIC repo. The host actually serving this role is recorded in the private
+    # tier. Verified at four layers: tailnet membership, `hostname` over SSH, the
+    # deckhand policy file present on the box, and the live licensed-run agent.
+    hostname_aliases: [licensed-win-1]  # WF0 #3001: renamed from licensed-win-1
     os: windows
     role: simulation-license-host
-    workspace_root: 'D:\workspace-hub'
+    # Corrected 2026-08-01: the previous value is not a git repository on the box.
+    workspace_root: 'D:\ws\workspace-hub'
     tier1_repo_root: 'D:\'
     repo_layout: sibling
     schedule_variant: contribute-minimal
     harness_profile:          # WF1 #2999 — converged; Windows deny subset from _base.deny_required_os.windows
       roles: [licensed-solver]
       managed: true
-    ssh: null  # no SSH — physical/GUI access only
+    # Corrected 2026-08-01. Inbound SSH was provisioned 2026-07-31 (Git Bash as
+    # the OpenSSH DefaultShell), so `null` — "no channel exists" — is now false.
+    # The alias resolves through the operator's private ssh_config; the address
+    # is infrastructure detail and stays in the private tier.
+    ssh: ace-win-1
+    # Reachable, but deliberately not recorded here. Note the convention already
+    # in this file: peer hosts carry synthetic 10.1.0.x values rather than their
+    # real tailnet addresses. A wrong address would be worse than none.
     tailscale_ip: null
     capabilities:
       agent_clis: [claude, codex, gemini]
@@ -250,8 +264,20 @@ machines:
       readiness_freshness_thresholds:
         report_hours: 25
     notes: >
-      Windows workstation. Hosts OrcaFlex and ANSYS licenses.
-      No SSH — access physically or via GUI. Git Bash (MINGW64) for scripts.
+      Windows host for OrcaFlex and ANSYS licensed work. Git Bash (MINGW64) for
+      scripts. Reachable over SSH since 2026-07-31 (the earlier "no SSH — access
+      physically or via GUI" note is retired).
+
+      SHARED TENANCY — other people's interactive sessions run on this host at
+      the same time as anything dispatched to it. The wip cap of 2 in
+      routing-rules.yaml is a courtesy constraint, not a throughput setting;
+      saturating this box degrades their work and they cannot see why. See
+      `shared_tenancy: true` there, enforced by
+      tests/dispatch/test_shared_tenancy_cap.py.
+
+      Orcina products REQUIRE the scheduled-task dispatch path: an SSH
+      public-key logon token cannot complete a FlexNet checkout, and the failure
+      surfaces at solve time, long after dispatch appears to have succeeded.
 
   ace-win-2:
     hostname: ace-win-2
@@ -328,7 +354,7 @@ machines:
     hostname_aliases: [Vamsees-MacBook-Air.local]
     os: macos
     role: portable-dev
-    workspace_root: /Users/krishna/workspace-hub
+    workspace_root: /Users/krishna/Developer/ws/workspace-hub
     schedule_variant: none
     ssh: null  # no SSH from Linux hosts
     tailscale_ip: null
@@ -355,7 +381,9 @@ machines:
       readiness_freshness_thresholds:
         report_hours: 25
     notes: >
-      Portable macOS workstation. No cron — manual or launchd-based scheduling.
+      Portable macOS workstation. Not in the equivalence roster (schedule_variant:
+      none) — publishes no fingerprint by design. Runs one local cron job only:
+      the daily repository-sync at 02:00 (see scripts/cron-repository-sync.sh).
       Path conventions differ from Linux (/Users/ vs /home/).
       Some Linux-specific kernel/GPU tools not applicable.
 

@@ -1,4 +1,4 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-07-09
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-07-31
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/network_machines.md
 
 ---
@@ -16,7 +16,7 @@ type: reference
 | home-win | .148 | Windows | devuser | SMB only (port 22 blocked) | SMB share: `\\10.0.0.3\GitHub` → C:\GitHub; repos: aceengineer-admin, achantas-data |
 | macbook-portable | .166 | macOS (ARM64 M1) | krishna | key (passwordless) | Hostname: Vamsees-MacBook-Air.local; `~/workspace-hub/` has aceengineer-admin, achantas-data, sabithaandkrishnaestates; AirPlay ports 5000/7000 also open |
 | licensed-win-1 | — | Windows | — | no SSH | OrcaFlex license machine; not on local LAN |
-| ACMA-WS014 | .132 | Windows | — | unknown | Windows workstation |
+| ace-win-2 | .132 | Windows | — | unknown | Windows workstation |
 
 ## Access Patterns
 

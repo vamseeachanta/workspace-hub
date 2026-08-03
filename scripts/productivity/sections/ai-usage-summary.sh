@@ -178,6 +178,8 @@ ALIAS_MAP = {
     "opus": "claude-opus-4-8",
     "sonnet": "claude-sonnet-4-6",
     "haiku": "claude-haiku-4-5",
+    "gemini 3.1 pro (high)": "gemini-3.1-pro-preview",
+    "gemini 3.1 pro": "gemini-3.1-pro-preview",
 }
 
 def _load_registry_ctx():
@@ -225,12 +227,10 @@ codex_model  = read_toml_key(codex_src, "model") or "not set"
 codex_effort = read_toml_key(codex_src, "model_reasoning_effort") or "—"
 rows.append(("codex", codex_model, ctx_label(codex_model), f"effort={codex_effort}", codex_src.name))
 
-# ── Gemini ────────────────────────────────────────────────────────────────────
-gemini_cfg   = read_json(home / ".gemini/settings.json")
-gemini_model = (gemini_cfg.get("model") or {}).get("name") or str(gemini_cfg.get("model") or "not set")
-gemini_thinking = gemini_cfg.get("thinking", {})
-gemini_effort = f"thinking_budget={gemini_thinking.get('budget','—')}" if gemini_thinking else "—"
-rows.append(("gemini", gemini_model, ctx_label(gemini_model), gemini_effort, "~/.gemini/settings.json"))
+# ── Agy (Antigravity, Gemini-backed — routed third lane since #3573) ─────────
+agy_cfg   = read_json(home / ".gemini/antigravity-cli/settings.json")
+agy_model = (agy_cfg.get("model") or {}).get("name") or str(agy_cfg.get("model") or "not set")
+rows.append(("agy", agy_model, ctx_label(agy_model), "—", "~/.gemini/antigravity-cli/settings.json"))
 
 print("| Provider | Model | Context | Effort/Thinking | Config Source |")
 print("|----------|-------|---------|-----------------|---------------|")

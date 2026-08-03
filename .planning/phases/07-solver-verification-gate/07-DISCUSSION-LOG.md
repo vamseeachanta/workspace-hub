@@ -29,7 +29,7 @@
 
 **User's choice:** Git through all three
 
-**User clarification:** Three machines in play — licensed-win-1 (acma-ansys05) has license, win-2 (ws014) can process non-license items, dev-primary orchestrates. Direct network path between the two Windows machines.
+**User clarification:** Three machines in play — licensed-win-1 (ace-win-1) has license, win-2 (ace-win-2) can process non-license items, dev-primary orchestrates. Direct network path between the two Windows machines.
 
 **Follow-up — win-2 role:**
 

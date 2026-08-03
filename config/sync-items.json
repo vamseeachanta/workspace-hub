@@ -95,6 +95,11 @@
           "agent": "gemini",
           "template": "/mnt/github/workspace-hub/config/agents/gemini/settings.json",
           "target": "~/.gemini/settings.json"
+        },
+        {
+          "agent": "agy",
+          "template": "/mnt/github/workspace-hub/config/agents/agy/settings.json",
+          "target": "~/.gemini/antigravity-cli/settings.json"
         }
       ]
     },

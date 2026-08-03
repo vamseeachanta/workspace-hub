@@ -5,7 +5,6 @@ import hashlib
 import struct
 from dataclasses import dataclass
 from typing import Any
-
 from scheduler_mutation_delegation import validate_delegation_schema
 TX_FIELDS = (
     "lock",
@@ -168,6 +167,7 @@ def digest_record_union(
         b"tests/enforcement/test_scheduler_mutation_hardening.py",
         b"tests/enforcement/test_scheduler_mutation_delivery.py",
         b".github/workflows/enforcement-gate.yml",
+        b".github/workflows/scheduler-mutation-main.yml",
     }
     for row in registry["surfaces"]:
         paths.add(row["path"].encode())

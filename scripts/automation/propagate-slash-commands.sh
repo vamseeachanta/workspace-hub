@@ -110,8 +110,12 @@ propagate_to_repo() {
         fi
     done
     
-    # Check for CLAUDE.md
-    if [ ! -f "$repo/CLAUDE.md" ]; then
+    # CLAUDE.md creation retired 2026-08-01.
+    # This block seeded an Agent-OS-era CLAUDE.md (@.agent-os/product/*, /create-spec,
+    # /execute-tasks) — a workflow superseded by AGENTS.md + issue-planning-mode. It also
+    # resurrected the CLAUDE.md surface that was deliberately deleted. Disabled rather
+    # than deleted so the intended content stays visible in history.
+    if false; then
         print_action "Creating CLAUDE.md with Agent OS references"
         cat > "$repo/CLAUDE.md" << 'EOF'
 ## Agent OS Documentation

@@ -3,65 +3,73 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>#3555 plan — persistent goals and Codex statusline pilot</title>
+  <title>#3555 plan — Codex fleet configuration and trusted-repo YOLO</title>
   <style>
-    body{font:16px/1.5 system-ui,sans-serif;max-width:980px;margin:2rem auto;padding:0 1rem;color:#18212f}
-    h1,h2{line-height:1.2}code{background:#eef2f7;padding:.1rem .3rem;border-radius:4px}
-    table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccd4df;padding:.55rem;text-align:left;vertical-align:top}
-    th{background:#edf2f7}.gate{border-left:5px solid #c2410c;background:#fff7ed;padding:1rem}
-    .ok{color:#166534}.risk{color:#9a3412}
+    :root{color-scheme:light;--ink:#172033;--muted:#526078;--line:#cbd5e1;--panel:#f8fafc;--warn:#9a3412;--good:#166534;--blue:#1d4ed8}
+    body{font:16px/1.55 system-ui,sans-serif;max-width:1040px;margin:2rem auto;padding:0 1rem;color:var(--ink)}
+    h1,h2{line-height:1.2} h2{margin-top:2rem} code{background:#e8eef8;padding:.1rem .3rem;border-radius:4px}
+    table{border-collapse:collapse;width:100%}th,td{border:1px solid var(--line);padding:.6rem;text-align:left;vertical-align:top}th{background:#eef2f7}
+    .gate,.decision{padding:1rem;border-left:5px solid var(--warn);background:#fff7ed}.decision{border-color:var(--blue);background:#eff6ff}
+    .good{color:var(--good)}.risk{color:var(--warn)}.muted{color:var(--muted)}
   </style>
 </head>
 <body>
   <main>
-    <h1>#3555: persistent goals and native Codex statusline</h1>
-    <p><strong>Status:</strong> draft · <strong>Complexity:</strong> T3 · <strong>Lane:</strong> Claude orchestration</p>
-    <p class="gate"><strong>Gate:</strong> Codex returned MAJOR in rounds 1 and 2; the distinct round-2 defects were patched inline. Claude is unauthenticated, and the replacement AGY (Gemini-backed) CLI is not installed on <code>ace-win-2</code>. Provider-diversity review remains unmet, so this plan is not approval-ready and implementation remains blocked.</p>
+    <h1>#3555: fleet Codex requirements, trusted-repo YOLO, goals, and statuslines</h1>
+    <p><strong>Status:</strong> draft · <strong>Complexity:</strong> T3 · <strong>Rollout:</strong> immediate attempted fleet wave after gates</p>
+    <p class="decision"><strong>Owner decisions (2026-08-02):</strong> the design spec is approved; <code>default_mode_request_user_input = true</code> will be deployed across the Codex fleet; trusted solid repos may use <code>--yolo</code>; rollout will be immediate rather than canary-first.</p>
+    <p class="gate"><strong>Current gate:</strong> the materially revised implementation plan still requires fresh adversarial T3 review and the user-applied <code>status:plan-approved</code> gate. Spec approval does not self-approve implementation.</p>
 
     <h2>Outcome</h2>
-    <p>Substantive interactive Claude and Codex work will attach a provider-native goal. Goal progress will use native UI, while the statusline/footer will independently show context and usage. The configuration will be repo-managed, safely merged into machine-local settings, piloted on <code>ace-win-2</code>, and reported through per-machine equivalence evidence.</p>
+    <p>Repo-managed Codex configuration will enable requirement questions in Default mode, persistent goals, multi-agent support, hooks, live web search, high planning effort, pragmatic behavior, resume-CWD, interrupt messaging, and useful context/usage telemetry. A cross-platform launcher will add <code>--yolo</code> only inside exactly attested trusted Git roots, while <code>codex-safe</code> will remain available everywhere.</p>
 
-    <h2>Current defects</h2>
-    <ul>
-      <li>The repo Codex template uses obsolete <code>[status_line]</code> syntax; current Codex uses <code>[tui] status_line = [...]</code>.</li>
-      <li>The live Codex footer omits <code>context-remaining</code> and the five-hour limit.</li>
-      <li>Claude project, global, and sibling-repo statusline paths are split.</li>
-      <li>The current matrix reports only 4 of 5 active machines, and registry paths disagree with the live Windows checkout.</li>
-      <li>The older #2893 implementation is branch-only and assumes Codex has no native footer.</li>
-    </ul>
-
-    <h2>Contract</h2>
+    <h2>Approved baseline</h2>
     <table>
-      <thead><tr><th>Predicate</th><th>Claude</th><th>Codex</th><th>Matrix evidence</th></tr></thead>
+      <thead><tr><th>Area</th><th>Setting/behavior</th><th>Boundary</th></tr></thead>
       <tbody>
-        <tr><td>Goal authorized and attached</td><td>Native <code>/goal</code> after catalog/picklist routing or recorded override</td><td>Native persisted goal under the same gate</td><td>Installed policy; planning goals stop at approval, execution goals require approval + runner</td></tr>
-        <tr><td>Goal visible</td><td>Native <code>◎ /goal active</code> indicator/status</td><td>Native goal/progress UI; no fabricated footer field</td><td>Capability and fresh-session evidence</td></tr>
-        <tr><td>Telemetry visible</td><td>One cross-platform Node renderer tested via Linux Bash, Windows Git Bash, and PowerShell</td><td>Fixed native footer items</td><td>Separate parsed statusline-config rows + freshness</td></tr>
+        <tr><td>Requirements</td><td><code>features.default_mode_request_user_input = true</code></td><td>CLI pin must expose the under-development feature</td></tr>
+        <tr><td>Work orchestration</td><td><code>goals</code>, <code>multi_agent</code>, <code>hooks</code>, agent interrupts</td><td>Issue/plan/user-approval gates remain load-bearing</td></tr>
+        <tr><td>Reasoning and research</td><td>high plan reasoning, pragmatic personality, live web search</td><td>No fleet-wide hardcoded model</td></tr>
+        <tr><td>TUI</td><td>model/reasoning, remaining context, current directory, five-hour and weekly limits</td><td>Only documented identifiers; no invented goal footer field</td></tr>
+        <tr><td>YOLO</td><td>Plain <code>codex</code> adds one <code>--yolo</code> in exact trusted roots</td><td>Untrusted/non-Git paths run safe; <code>codex-safe</code> never adds it</td></tr>
       </tbody>
     </table>
-    <p>Idle and trivial read-only sessions may have no goal. Non-interactive runs have no persistent TUI and will be graded as non-visual rather than falsely marked equivalent.</p>
 
-    <h2>Execution sequence</h2>
+    <h2>Why the old pilot plan is being replaced</h2>
+    <ul>
+      <li>The repo template still uses obsolete <code>[status_line]</code> syntax and the version pin remains <code>0.123.0</code>.</li>
+      <li>The planning host runs Codex <code>0.146.0</code>, but its registry row does not declare Codex; fleet denominator claims are currently unreliable.</li>
+      <li>A machine-local unconditional YOLO wrapper exists, but the repo does not own, test, or safely scope it.</li>
+      <li>The user selected immediate fleet rollout, not the July <code>ace-win-2</code> canary.</li>
+      <li>The original Claude goal/statusline convergence remains in scope rather than being silently dropped.</li>
+    </ul>
+
+    <h2>Execution slices</h2>
     <ol>
-      <li>Write failing schema/privacy tests first, implement the validator, then use a named PTY/direct-observation verifier to attest native goal UI and exact Codex footer identifiers in disposable fresh sessions.</li>
-      <li>Reconcile the goal-use contract in the canonical cross-provider soul and invocation rule, then rebuild the named Claude/Codex runtimes.</li>
-      <li>Migrate Codex to key-level <code>[tui]</code> management and converge Claude deployment paths.</li>
-      <li>Extend setup verification and equality collection with five separate policy, goal-surface, and statusline-config rows.</li>
-      <li>Pilot on <code>ace-win-2</code>, then require fresh evidence from each machine before any fleet-complete claim.</li>
+      <li>Pin and prove the exact Codex version that exposes default-mode requirement input.</li>
+      <li>Build a TOML-aware, key-level merger that preserves all unowned local state and rolls back atomically.</li>
+      <li>Build POSIX and Windows launchers with exact trusted-root matching, recursion protection, argument-preservation tests, and safe escape.</li>
+      <li>Preserve the native-goal authorization boundary and converge Claude statusline deployment.</li>
+      <li>Route setup and scheduled maintenance through the same pin/config/launcher/verifier path.</li>
+      <li>Reconcile the live Codex roster and extend equality evidence with version, feature, config, launcher, trusted-root, and freshness dimensions.</li>
+      <li>After code review, attempt every reachable target in one rollout wave and report every host independently.</li>
     </ol>
+
+    <h2>Fleet truth contract</h2>
+    <p>The rollout report will enumerate the actual target set immediately before execution. Each host will finish as <code>EQUAL</code>, <code>DIVERGES</code>, <code>MISSING-EVIDENCE</code>, or <code>UNREACHABLE</code>. “Immediate rollout” means one attempted wave, not an assertion that unreachable hardware was updated. No partial set will be labeled fleet-complete.</p>
 
     <h2>Fail-closed decisions</h2>
     <ul>
-      <li class="risk">If Codex cannot keep native goal progress visibly available, work will return to plan review; no custom footer emulation will be invented.</li>
-      <li class="risk">An unsupported footer item will preserve the prior config and fail installation.</li>
-      <li class="risk">Missing Node or a renderer failure will preserve the prior Claude settings and fail installation.</li>
-      <li class="risk">New-machine and scheduled-update tests will fail if either path writes legacy <code>statusBarEnabled</code> directly or bypasses canonical sync.</li>
-      <li class="risk">Missing or stale machine evidence will remain <code>MISSING-EVIDENCE</code>, <code>STALE-CHECKOUT</code>, or <code>UNREACHABLE</code>.</li>
-      <li class="ok">Goal text, transcripts, token values, credentials, client identifiers, and private task text will be rejected from equality evidence.</li>
+      <li class="risk">Unsupported feature or older CLI: preserve the prior working install and fail verification.</li>
+      <li class="risk">Malformed config or failed semantic validation: do not replace <code>~/.codex/config.toml</code>.</li>
+      <li class="risk">Wrapper recursion, ambiguous real binary, or prefix-collision root: run no YOLO path.</li>
+      <li class="risk">Missing/stale direct machine evidence: never grade the host equal.</li>
+      <li class="good">Secrets, prompts, transcripts, goal text, and token values will be rejected from fleet evidence.</li>
     </ul>
 
-    <h2>Approval checkpoint</h2>
-    <p>After adversarial review, the issue will move to <code>status:plan-review</code>. Only the user may approve it and create the approval marker. TDD implementation will begin afterward.</p>
+    <h2>Next gate</h2>
+    <p>Fresh Claude, Codex, and AGY adversarial review will attack the revised plan. Provider outages may degrade T3 only through a valid <code>UNAVAILABLE</code> artifact; malformed output blocks. After all MAJOR findings are resolved, the issue will move to <code>status:plan-review</code> for the user’s implementation approval.</p>
+    <p class="muted">Canonical detail: <code>docs/plans/2026-07-16-issue-3555-goal-statusline-machine-pilot.md</code></p>
   </main>
 </body>
 </html>

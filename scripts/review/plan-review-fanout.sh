@@ -40,7 +40,7 @@ PROMPT_FILE="$SCRIPT_DIR/plan-review-prompt.md"
 # ── Argument parsing ─────────────────────────────────────────────────────
 PLAN_FILE=""
 OUTPUT_DIR="${PLAN_REVIEW_RESULTS_DIR:-$SCRIPT_DIR/results}"
-PROVIDERS="claude,codex,gemini"
+PROVIDERS="claude,codex,agy"
 
 usage() {
   sed -n '2,20p' "${BASH_SOURCE[0]}" >&2
@@ -133,21 +133,6 @@ normalize_provider_output() {
   rm -f "$err"
 }
 
-# #3294: non-interactive gemini auth probe (defense-in-depth, NOT the primary fix).
-# Test-overridable: GEMINI_NO_AUTH=1 forces the no-auth branch; GEMINI_AUTH_PROBE
-# (a shell snippet) overrides the probe entirely.
-gemini_auth_present() {
-  if [[ "${GEMINI_NO_AUTH:-0}" == "1" ]]; then
-    return 1
-  fi
-  if [[ -n "${GEMINI_AUTH_PROBE:-}" ]]; then
-    eval "$GEMINI_AUTH_PROBE"
-    return $?
-  fi
-  [[ -n "${GEMINI_API_KEY:-}" || -n "${GOOGLE_API_KEY:-}" \
-     || -f "${GEMINI_HOME:-$HOME/.gemini}/oauth_creds.json" ]]
-}
-
 invoke_provider() {
   local prov="$1"
   local out="$OUTPUT_DIR/${TODAY}-plan-${ISSUE_NUM}-${prov}.md"
@@ -204,25 +189,14 @@ invoke_provider() {
         env -u CLAUDECODE timeout -k 5s "${timeout_s}s" codex exec "$combined" > "$out" 2>"$err" </dev/null || rc=$?
       fi
       ;;
-    gemini)
-      local combined
-      combined="$(printf '%s\n\n--- PLAN (%s) ---\n%s' \
-        "$(cat "$PROMPT_FILE")" "$PLAN_FILE" "$(cat "$PLAN_FILE")")"
-      # #3294: optional non-gating fast-path — when no non-interactive gemini auth
-      # is configured, skip the invocation and emit a fast UNAVAILABLE instead of
-      # waiting on (and timing out) an interactive auth prompt. Defense-in-depth
-      # only; the load-bearing fix is the </dev/null below.
-      if ! gemini_auth_present; then
-        printf 'no non-interactive gemini auth configured (GEMINI_API_KEY/GOOGLE_API_KEY/~/.gemini/oauth_creds.json)\n' > "$err"
-        rc=1
-      else
-        # cwd=/tmp dodges the .gemini/agents/*.md permissionMode validation bug.
-        # GEMINI_CLI_TRUST_WORKSPACE avoids noninteractive rc=55 trust prompts.
-        # #3294 PRIMARY FIX: close stdin with </dev/null so an interactive [Y/n]
-        # auth prompt gets EOF and aborts in seconds instead of blocking to timeout.
-        ( cd /tmp && GEMINI_CLI_TRUST_WORKSPACE="${GEMINI_CLI_TRUST_WORKSPACE:-true}" \
-            timeout -k 5s "${timeout_s}s" gemini -p "$combined" </dev/null ) > "$out" 2>"$err" || rc=$?
-      fi
+    agy|gemini)   # 'gemini' = DEPRECATED alias for the agy lane (#3573)
+      # Third review lane = agy (Antigravity, Gemini-backed) headless via the
+      # #3207 wrapper. AGY_REVIEW_MODE=1: oversize payloads FAIL the dispatch
+      # (exit 3) instead of truncating — a truncated review can false-APPROVE.
+      AGY_REVIEW_MODE=1 AGY_TIMEOUT_SECONDS="$timeout_s" \
+        timeout -k 5s "$((timeout_s + 30))s" \
+        bash "$SCRIPT_DIR/submit-to-agy.sh" --file "$PLAN_FILE" \
+        --prompt "$(cat "$PROMPT_FILE")" > "$out" 2>"$err" </dev/null || rc=$?
       ;;
     *)
       echo "unknown provider: $prov" >&2
@@ -255,7 +229,7 @@ trap - INT TERM EXIT
 
 # ── Disagreement report (stub — fleshed out in next TDD batch) ───────────
 DISAGREEMENT_FILE="$OUTPUT_DIR/${TODAY}-plan-${ISSUE_NUM}-disagreement.md"
-if [[ -x "$SCRIPT_DIR/lib/disagreement-diff.sh" ]]; then
+if [[ -f "$SCRIPT_DIR/lib/disagreement-diff.sh" ]]; then  # -f not -x: exec bits are lost on NTFS-FUSE working copies; invoked via bash below
   bash "$SCRIPT_DIR/lib/disagreement-diff.sh" "$OUTPUT_DIR" "$TODAY" "$ISSUE_NUM" > "$DISAGREEMENT_FILE"
 fi
 

@@ -37,7 +37,7 @@ tasks:
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      bash scripts/readiness/equality-matrix-cron.sh
+      bash scripts/readiness/equality-preflight.sh
       >> $WORKSPACE_HUB/logs/quality/equality-$(date +\%Y-\%m-\%d).log 2>&1
     log: logs/quality/equality-*.log
     is_claude_task: false
@@ -49,6 +49,14 @@ tasks:
       old repo-sync delegation went dark exactly then). Hot dims referenced from
       nightly readiness. Single source for both Linux cron and Windows Task Scheduler
       per this file's HARD RULE (#2801 DC5).
+      #3702: the command is equality-preflight.sh — a THIN wrapper that FF-pulls a
+      clean checkout on main (guard-gated, warn-don't-fail) then EXECs
+      equality-matrix-cron.sh. The exec is load-bearing: a mid-run
+      `git merge --ff-only` can rewrite the script bash is reading. Generation now
+      lands out of tree ($EQ_STATE_DIR / $EQ_REPORT_DIR), so a run no longer blocks
+      `git pull --ff-only`. Windows takes only the SCHEDULE from this block
+      (setup-scheduler-tasks.ps1 supplies scripts/windows/equality-report.ps1),
+      which stays pinned to the in-tree paths in Phase 1.
 
   - id: ecosystem-reconcile
     label: Daily report-first ecosystem + machine-equivalence reconcile
@@ -151,7 +159,8 @@ tasks:
     # was simply not scheduled there. gpu-claw added at enrollment (#3507).
     machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2, gpu-claw]
     roles: [control-plane, comms-dispatch, sim-worker]
-    requires: [bash, python3, uv, git, claude]
+    requires: [bash, uv, git, claude]
+    windows_script: scripts/windows/equivalence-sentinel.ps1
     command: >-
       PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
       cd $WORKSPACE_HUB &&
@@ -175,7 +184,7 @@ tasks:
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      bash scripts/curation/curate-session-memory.sh
+      bash scripts/curation/session-curation-preflight.sh
       >> $WORKSPACE_HUB/logs/monitoring/session-curation-$(date +\%Y-\%m-\%d).log 2>&1
     log: logs/monitoring/session-curation-*.log
     is_claude_task: false
@@ -187,6 +196,34 @@ tasks:
       / >24h red). The 6h cadence keeps a healthy box comfortably under the 12h staleness
       threshold. Windows boxes run the same engine via Git Bash (curate-session-memory.ps1
       is the Task-Scheduler-native companion).
+      #3702: entry point is session-curation-preflight.sh (FF-pull guard + exec into
+      curate-session-memory.sh). This is the HIGHER-frequency of the two collection
+      paths and the one where behind_main actually ratcheted, so it needs the same
+      preflight as equality-matrix-cron.sh (r1 M2).
+
+  - id: harness-checkup-audit
+    label: Harness checkup (/doctor) audit — machine-equality line item (#3408)
+    schedule: "40 4 * * *"
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, ace-win-1, ace-win-2]
+    roles: [control-plane, comms-dispatch, sim-worker]
+    requires: [python3, uv, git]
+    command: >-
+      PATH=$HOME/.local/bin:$HOME/.npm-global/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      uv run python scripts/curation/audit_harness_checkup.py
+      >> $WORKSPACE_HUB/logs/monitoring/harness-checkup-$(date +\%Y-\%m-\%d).log 2>&1
+    log: logs/monitoring/harness-checkup-*.log
+    is_claude_task: false
+    description: >-
+      Per-box DAILY (04:40): writes .claude/state/harness-checkup-<machine>.json — the /doctor
+      hygiene facts (version currency vs the published latest, settings-cascade parse validity,
+      broken/colliding agent defs, duplicate installs, unused skill/plugin counts, default
+      permission mode). REUSES equivalence-fingerprint.sh version/install (#3059) — never re-shells
+      claude --version. Drives the "harness checkup" matrix cell (green / amber drift / red broken).
+      DAILY not 6-hourly because the version-currency check does a network latest-lookup (pinned
+      registry, from $HOME, essential-traffic-mode aware) that must not run every 6h. Facts-only +
+      allowlist-safe (counts/booleans/enums/version strings). The 6-hourly collector READS this
+      state fail-closed; it never runs the audit. Pure Python → runs natively on Windows (no .ps1).
 
   - id: equality-matrix-refresh
     label: 6-hourly equality-matrix rebuild (freshness dead-man's-switch for session-curation)
@@ -203,7 +240,7 @@ tasks:
     command: >-
       PATH=$HOME/.local/bin:$PATH;
       cd $WORKSPACE_HUB &&
-      bash scripts/readiness/equality-matrix-cron.sh
+      bash scripts/readiness/equality-preflight.sh
       >> $WORKSPACE_HUB/logs/quality/equality-refresh-$(date +\%Y-\%m-\%d).log 2>&1
     log: logs/quality/equality-refresh-*.log
     is_claude_task: false
@@ -216,12 +253,25 @@ tasks:
       dead-man's-switch would never fire. Publishing to origin/main every cycle keeps
       the COMMITTED render current — the fleet compares against origin, not any one
       box's working tree.
+      #3702: entry point is equality-preflight.sh (FF-pull guard + exec); artifacts
+      generate out of tree so behind_main can actually return to 0.
 
-  # Linux-only (v1); Windows Task Scheduler parity deferred per epic #3058.
+  # POSIX machines (linux + macos); Windows Task Scheduler parity still deferred per
+  # epic #3058 — Windows needs a separate `win-*` task with
+  # `scheduler: windows-task-scheduler`, not extra entries here.
+  #
+  # 2026-08-01: extended from the two ace-linux boxes to every onboarded POSIX machine
+  # that carries an agent CLI. Previously ONLY ace-linux-1/-2 self-healed, so gpu-claw
+  # and macbook-portable — both `agent_clis: [claude]` per config/workstations/registry.yaml
+  # — never received the SOUL runtime symlinks that install-soul-runtime.sh creates.
+  # Excluded: gali-linux-compute-1 (`agent_clis: []`, "not yet onboarded"); ace-win-1/-2
+  # (Windows, see above); and any host not present in config/workstations/registry.yaml,
+  # which is the hard rule for machine identity — a host must be onboarded there before
+  # it can appear in a task's machine list.
   - id: harness-install-doctor
     label: Harness install-doctor — REPAIR arm for equivalence-sentinel (#3058/#3059)
     schedule: "11 */6 * * *"   # :11 — 6 min before sentinel (:17); avoids 04:0x provider-dream-bridge stagger
-    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, gpu-claw, macbook-portable]
     roles: [control-plane, comms-dispatch]
     requires: [bash, git]
     command: >-
@@ -754,6 +804,53 @@ tasks:
     is_claude_task: false
     description: Windows Task Scheduler — 15-min dispatch-leader health watcher via Git Bash (alert-only). Issue #2847.
 
+  # The cadence is derived from the loop's own worst case, not chosen for
+  # responsiveness. `dispatch_pull` hands at most `--max-cards` (5) cards to
+  # drain.py, and drain.py bounds each payload at `--timeout` (3600 s) before it
+  # invokes the runner's `cancel` verb; with `--delay` 30 s between hand-offs the
+  # arithmetic ceiling for one run is 5*3600 + 4*30 = 18,120 s ≈ 5 h 02 m. A
+  # 6-hourly tick therefore cannot normally meet its own predecessor, and the
+  # singleton runtime contract below refuses the overlap (exit 75, and
+  # `cron_runtime.py inspect` reports `overlap`) rather than running two loops
+  # against one checkout. :07 is an otherwise-empty minute: it clears the
+  # */30 return-to-main-guard and the */5 git-lock-reaper slots at :00/:05/:30,
+  # the 4-hourly repository-sync at :00, and the other 6-hourly tasks at
+  # :11 / :17 / :47 / :50.
+  - id: dispatch-pull
+    label: Continuous pull dispatch — claim routed cards and drain them (#3000/#3773)
+    schedule: "7 */6 * * *"
+    machines: [dev-primary, ace-linux-1]
+    roles: [control-plane]
+    requires: [bash, python3, uv, git]
+    prefer: dev-primary
+    runtime:
+      singleton: true
+      max_seconds: 18600
+      state_dir: .claude/state/cron-runtime/dispatch-pull
+      filesystem_wait_wchans: [request_wait_answer]
+    command: >-
+      PATH=$HOME/.local/bin:$PATH;
+      cd $WORKSPACE_HUB &&
+      bash scripts/cron/dispatch-pull-cron.sh
+    log: logs/dispatch-pull/cron-*.log
+    is_claude_task: false
+    description: >-
+      Every 6h at :07 on the control-plane box — scripts/operations/dispatch_pull.py
+      claims `dispatch_status: ready` cards out of .claude/dispatch/dev-primary.yaml
+      under the F3 git-ref lease and hands each to scripts/dispatch/drain.py. INERT
+      as shipped: the wrapper runs the loop in dry-run unless ~/.workspace-hub/
+      dispatch-pull.env sets BOTH DISPATCH_PULL_APPLY=1 (this wrapper's --apply)
+      and DISPATCH_APPLY_ENABLED=1 (drain's write gate) — two names on purpose, so
+      one variable cannot satisfy both gates. Arming is machine-local, so a fresh
+      checkout never starts dispatching by itself. Cards with no entry in
+      .claude/dispatch/commands.yaml are refused as `no_command` and never run,
+      which is why an armed loop on an unbound queue still does nothing.
+      Coexists with the two other crons that write this checkout: git-lock-reaper
+      (*/5) only reaps a lock that is >=10 min old AND has no live git process, so
+      it cannot touch drain's commits; return-to-main-guard (*/30) refuses to act
+      while a git op is live or staged changes exist, and drain commits+pushes each
+      card rather than leaving long-lived churn for it to stash.
+      Operator runbook: docs/runbooks/dispatch-pull.md. Issues #3000, #3773.
 
   - id: repo-ecosystem-hygiene
     label: Repo ecosystem hygiene audit
@@ -862,7 +959,10 @@ tasks:
   - id: repository-sync
     label: Repository sync
     schedule: "0 */4 * * *"
-    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2]
+    # gpu-claw added per #3592: scheduler_baseline declares repo_sync REQUIRED on every
+    # Linux execution box — without it the checkout drifts stale and equality evidence
+    # only refreshes manually (its first publish was hand-run, 2026-07-22).
+    machines: [dev-primary, ace-linux-1, dev-secondary, ace-linux-2, gpu-claw]
     roles: [control-plane, comms-dispatch, sim-worker]
     requires: [bash, git, uv, python3]
     runtime:
