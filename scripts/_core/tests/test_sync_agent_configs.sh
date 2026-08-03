@@ -154,6 +154,7 @@ bye
 [status_line] # obsolete managed syntax
 enabled = false
 items = ["cwd"]
+
 EOF
 }
 
@@ -294,14 +295,16 @@ run_hermes_soul_no_clobber_test() {
     rm -rf "$tmpdir"
 }
 
-echo "=== test_sync_agent_configs.sh ==="
-run_nested_merge_and_idempotence_test
-run_create_test
-run_repo_model_preservation_test
-run_dry_run_test
-run_malformed_atomicity_test
-run_uv_required_test
-run_hermes_soul_no_clobber_test
-echo ""
-echo "Results: ${PASS} PASS, ${FAIL} FAIL"
-[[ $FAIL -eq 0 ]]
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    echo "=== test_sync_agent_configs.sh ==="
+    run_nested_merge_and_idempotence_test
+    run_create_test
+    run_repo_model_preservation_test
+    run_dry_run_test
+    run_malformed_atomicity_test
+    run_uv_required_test
+    run_hermes_soul_no_clobber_test
+    echo ""
+    echo "Results: ${PASS} PASS, ${FAIL} FAIL"
+    [[ $FAIL -eq 0 ]]
+fi

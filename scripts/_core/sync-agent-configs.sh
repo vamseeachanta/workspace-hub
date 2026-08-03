@@ -218,8 +218,9 @@ OWNED = {
     ("agents",): ("enabled", "interrupt_message"),
     ("tui",): ("resume_cwd", "status_line"),
 }
-HEADER = re.compile(r'^\s*\[([^\[\]]+)\]\s*(?:#.*)?$')
-ASSIGNMENT = re.compile(r'^\s*([A-Za-z0-9_-]+)\s*=')
+NORMAL_HEADER = re.compile(r'^\s*\[([^\[\]]+)\]\s*(?:#.*)?$')
+ARRAY_HEADER = re.compile(r'^\s*\[\[(.+)\]\]\s*(?:#.*)?$')
+ASSIGNMENT = re.compile(r'^\s*([A-Za-z0-9_.-]+)\s*=')
 
 
 def flatten(value, prefix=()):
@@ -284,32 +285,149 @@ def statement_end(lines, start):
     return len(lines)
 
 
-def merge_text(text, canonical):
+def statements(text):
     lines = text.splitlines(keepends=True)
-    output = owned_lines(canonical, ())
-    context = ()
-    seen = set()
-    skip_legacy = False
+    result = []
     index = 0
     while index < len(lines):
         end = statement_end(lines, index)
-        statement = lines[index:end]
-        header = HEADER.match(statement[0]) if end == index + 1 else None
-        if header:
-            name = header.group(1).strip()
-            context = (name,) if name in {"features", "agents", "tui"} else (name,)
-            skip_legacy = name == "status_line"
-            if not skip_legacy:
-                output.extend(statement)
-                if context in OWNED:
-                    output.extend(owned_lines(canonical, context)); seen.add(context)
-        elif not skip_legacy:
-            assignment = ASSIGNMENT.match(statement[0])
-            if not (assignment and context in OWNED and assignment.group(1) in OWNED[context]):
-                output.extend(statement)
+        result.append(lines[index:end])
         index = end
+    return result
+
+
+def header_kind(statement):
+    if len(statement) != 1:
+        return None, None
+    array = ARRAY_HEADER.match(statement[0])
+    if array:
+        return "array", array.group(1).strip()
+    normal = NORMAL_HEADER.match(statement[0])
+    if normal:
+        return "normal", normal.group(1).strip()
+    return None, None
+
+
+def comment_suffix(statement):
+    line = statement[-1].rstrip("\r\n")
+    quote = None
+    escape = False
+    for index, char in enumerate(line):
+        if quote:
+            if quote == '"' and escape:
+                escape = False
+            elif quote == '"' and char == "\\":
+                escape = True
+            elif char == quote:
+                quote = None
+        elif char in ('"', "'"):
+            quote = char
+        elif char == "#":
+            return " " + line[index:]
+    return ""
+
+
+def render_assignment(token, value, statement):
+    indent = re.match(r'^\s*', statement[0]).group(0)
+    return [f"{indent}{token} = {encode(value)}{comment_suffix(statement)}\n"]
+
+
+def split_inline(text):
+    parts, start, braces, brackets = [], 0, 0, 0
+    quote = None
+    escape = False
+    for index, char in enumerate(text):
+        if quote:
+            if quote == '"' and escape: escape = False
+            elif quote == '"' and char == "\\": escape = True
+            elif char == quote: quote = None
+            continue
+        if char in ('"', "'"): quote = char
+        elif char == "{": braces += 1
+        elif char == "}": braces -= 1
+        elif char == "[": brackets += 1
+        elif char == "]": brackets -= 1
+        elif char == "," and braces == 0 and brackets == 0:
+            parts.append(text[start:index]); start = index + 1
+    parts.append(text[start:])
+    return parts
+
+
+def merge_inline(statement, table, canonical):
+    text = "".join(statement)
+    opening, closing = text.find("{"), text.rfind("}")
+    entries, seen = [], set()
+    values = canonical[table]
+    for raw in split_inline(text[opening + 1:closing]):
+        entry = raw.strip()
+        match = ASSIGNMENT.match(entry)
+        if match and match.group(1) in OWNED[(table,)]:
+            key = match.group(1); seen.add(key)
+            entries.append(f"{key} = {encode(values[key])}")
+        elif entry:
+            entries.append(entry)
+    entries.extend(f"{key} = {encode(values[key])}" for key in OWNED[(table,)] if key not in seen)
+    return [text[:opening] + "{ " + ", ".join(entries) + " }" + text[closing + 1:]]
+
+
+def inspect_layout(parts):
+    modes, seen = {}, {table: set() for table in OWNED}
+    context = ()
+    skip_legacy = False
+    for statement in parts:
+        kind, name = header_kind(statement)
+        if kind:
+            context = (name,) if kind == "normal" else ("array", name)
+            skip_legacy = name == "status_line"
+            if kind == "normal" and context in OWNED:
+                modes[context] = "normal"
+            continue
+        assignment = ASSIGNMENT.match(statement[0])
+        if skip_legacy or not assignment:
+            continue
+        token = assignment.group(1)
+        if context in OWNED and token in OWNED[context]:
+            seen[context].add(token)
+        if context == () and token in {table[0] for table in OWNED if table}:
+            modes[(token,)] = "inline"
+        if context == () and "." in token and (token.split(".", 1)[0],) in OWNED:
+            table, key = token.split(".", 1); modes[(table,)] = "dotted"
+            if key in OWNED[(table,)]: seen[(table,)].add(key)
+    return modes, seen
+
+
+def merge_text(text, canonical):
+    parts = statements(text)
+    modes, seen = inspect_layout(parts)
+    output = [line for key, line in zip(OWNED[()], owned_lines(canonical, ())) if key not in seen[()]]
+    for table, mode in modes.items():
+        if table and mode == "dotted":
+            output.extend(f"{table[0]}.{key} = {encode(canonical[table[0]][key])}\n"
+                          for key in OWNED[table] if key not in seen[table])
+    context, skip_legacy = (), False
+    for statement in parts:
+        kind, name = header_kind(statement)
+        if kind:
+            context = (name,) if kind == "normal" else ("array", name)
+            skip_legacy = kind == "normal" and name == "status_line"
+            if skip_legacy: continue
+            output.extend(statement)
+            if context in OWNED and modes.get(context) == "normal":
+                output.extend(line for key, line in zip(OWNED[context], owned_lines(canonical, context))
+                              if key not in seen[context])
+            continue
+        if skip_legacy: continue
+        match = ASSIGNMENT.match(statement[0])
+        token = match.group(1) if match else None
+        if context == () and token in {table[0] for table in OWNED if table} and modes.get((token,)) == "inline":
+            output.extend(merge_inline(statement, token, canonical)); continue
+        path = tuple(token.split(".", 1)) if context == () and token and "." in token else context + ((token,) if token else ())
+        if path and path[:-1] in OWNED and path[-1] in OWNED[path[:-1]]:
+            output.extend(render_assignment(token, canonical[path[:-1][0]][path[-1]] if path[:-1] else canonical[path[-1]], statement))
+        else:
+            output.extend(statement)
     for table in (("features",), ("agents",), ("tui",)):
-        if table not in seen:
+        if table not in modes:
             output.extend(["\n", f"[{table[0]}]\n", *owned_lines(canonical, table)])
     return "".join(output)
 
@@ -458,7 +576,11 @@ sync_codex_managed_config() {
         return
     fi
 
-    tmp_new="$(sync_make_target_tmp "$target")"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        tmp_new="$(mktemp)"
+    else
+        tmp_new="$(sync_make_target_tmp "$target")"
+    fi
     merge_codex_toml "$template" "$target" "$tmp_new"
 
     if cmp -s "$tmp_new" "$target"; then

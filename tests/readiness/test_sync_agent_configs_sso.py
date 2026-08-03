@@ -3,7 +3,10 @@ from __future__ import annotations
 import os
 import shutil
 import subprocess
+import tomllib
 from pathlib import Path
+
+import yaml
 
 
 def run_sync(*args: str, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
@@ -103,7 +106,7 @@ def test_sync_accepts_hostname_alias_machine_identifier():
     assert "unknown machine" not in (result.stderr + result.stdout).lower()
 
 
-def test_sync_rejects_legacy_model_only_canonical_atomically(tmp_path):
+def make_harness_only_workspace(tmp_path: Path, canonical: str) -> tuple[Path, Path, Path]:
     repo_root = Path(__file__).resolve().parents[2]
     ws_root = tmp_path / "ws-hub"
     home_root = tmp_path / "home"
@@ -124,7 +127,7 @@ def test_sync_rejects_legacy_model_only_canonical_atomically(tmp_path):
         f"workstations:\n  {hostname}:\n    ws_hub_path: {ws_root}\n"
     )
     (ws_root / "config/agents/claude/settings.json").write_text('{"statusLine": {"type": "command"}}\n')
-    (ws_root / "config/agents/codex/config.toml").write_text('model = "gpt-5.5"\n')
+    (ws_root / "config/agents/codex/config.toml").write_text(canonical)
     (ws_root / "config/agents/gemini/settings.json").write_text(
         '{"security": {"auth": {"selectedType": "oauth-personal"}}}\n'
     )
@@ -134,6 +137,13 @@ def test_sync_rejects_legacy_model_only_canonical_atomically(tmp_path):
     (ws_root / "config/agents/hermes/SOUL.md").write_text("# Soul\n")
     local_codex = home_root / ".codex/config.toml"
     local_codex.write_text('model = "legacy-local-model"\n')
+    return ws_root, home_root, local_codex
+
+
+def test_sync_rejects_legacy_model_only_canonical_atomically(tmp_path):
+    ws_root, home_root, local_codex = make_harness_only_workspace(
+        tmp_path, 'model = "gpt-5.5"\n'
+    )
     before = local_codex.read_bytes()
 
     env = os.environ.copy()
@@ -152,3 +162,29 @@ def test_sync_rejects_legacy_model_only_canonical_atomically(tmp_path):
     assert "canonical Codex config does not match the owned-key contract" in result.stderr
     assert local_codex.read_bytes() == before
     assert not (home_root / ".hermes/config.yaml").exists()
+
+
+def test_sync_preserves_harness_only_fallback_and_renders_hermes(tmp_path):
+    repo_root = Path(__file__).resolve().parents[2]
+    canonical = (repo_root / "config/agents/codex/config.toml").read_text()
+    ws_root, home_root, local_codex = make_harness_only_workspace(tmp_path, canonical)
+    env = os.environ.copy()
+    env["HOME"] = str(home_root)
+
+    result = subprocess.run(
+        ["bash", str(ws_root / "scripts/_core/sync-agent-configs.sh")],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        timeout=60,
+        check=False,
+        env=env,
+    )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    with local_codex.open("rb") as fh:
+        codex = tomllib.load(fh)
+    assert codex["model"] == "legacy-local-model"
+    assert codex["tui"]["resume_cwd"] == "session"
+    hermes = yaml.safe_load((home_root / ".hermes/config.yaml").read_text())
+    assert f"{ws_root}/.claude/skills" in hermes["skills"]["external_dirs"]
