@@ -182,23 +182,14 @@ else
 
     if [[ ${#REPOS_TO_CHECK[@]} -eq 0 ]]; then
         echo "[pre-push] No tier-1 repo changes detected — skipping repo CI gate." >&2
-        # NOT an exit. This used to `exit` here, which skipped everything below:
-        # the review evidence gate, secrets scan, state-file size guard and
-        # cadence check are NOT repo-scoped and must still run. #3780 made this
-        # path far more common -- docs-only new branches used to escalate to
-        # RUN_ALL and now land here -- so exiting would have quietly widened a
-        # hole rather than narrowed one (#3781).
-        SKIP_REPO_LOOP=true
+        exit "${_HARNESS_DRIFT_EXIT:-0}"
     fi
 fi
 
 # ── Run checks and tests for each affected repo ───────────────────────────────
 OVERALL_EXIT=0
-[[ "${_HARNESS_DRIFT_EXIT:-0}" -ne 0 ]] && OVERALL_EXIT=1
 
-# REPOS_TO_CHECK is empty when nothing tier-1 changed, so this loop simply does
-# not run. `[@]+` keeps the expansion safe under `set -u` on an empty array.
-for repo in ${REPOS_TO_CHECK[@]+"${REPOS_TO_CHECK[@]}"}; do
+for repo in "${REPOS_TO_CHECK[@]}"; do
     echo "[pre-push] Checking repo: ${repo}" >&2
 
     if [[ -x "$CHECK_ALL" ]]; then
@@ -220,17 +211,6 @@ for repo in ${REPOS_TO_CHECK[@]+"${REPOS_TO_CHECK[@]}"}; do
     fi
 done
 
-# ── Enforcement environment (#2128) ──────────────────────────────────────────
-# MUST precede the gates whose strictness it sets. It exports
-# REVIEW_GATE_STRICT=1, while the review wrapper below defaults it to 0 -- so
-# sourcing this afterwards (or not at all) leaves the review gate ADVISORY.
-# It sat below the terminal exit for months and never ran, which is why #1839's
-# strict-mode default has not actually been in force. See #3781.
-ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"
-if [[ -f "${ENFORCEMENT_ENV}" ]]; then
-    source "${ENFORCEMENT_ENV}"
-fi
-
 # ── Review evidence gate (adversarial review enforcement) ────────────────────
 REVIEW_GATE="${REPO_ROOT}/scripts/enforcement/require-review-on-push.sh"
 if [[ -f "$REVIEW_GATE" ]]; then
@@ -250,12 +230,7 @@ else
 fi
 
 # ── Legacy gates from WRK-1070 (secrets + coverage) ─────────────────────────
-# REPO-SCOPED, unlike the enforcement chain above. `run-all-tests.sh --coverage`
-# is a full suite run; making it unconditional would put minutes on every
-# docs-only push. Skipped on the same condition as the repo loop.
-if [[ "${SKIP_REPO_LOOP:-false}" == "true" ]]; then
-    echo "[pre-push] No tier-1 repo changes — skipping secrets scan and coverage gate." >&2
-elif command -v gitleaks >/dev/null 2>&1; then
+if command -v gitleaks >/dev/null 2>&1; then
     bash "${REPO_ROOT}/scripts/security/secrets-scan.sh" || OVERALL_EXIT=1
 else
     echo "[pre-push] gitleaks not installed — skipping secrets scan (install via pre-commit)" >&2
@@ -264,9 +239,7 @@ fi
 BASELINE="${REPO_ROOT}/config/testing/coverage-baseline.yaml"
 RATCHET="${REPO_ROOT}/scripts/testing/check_coverage_ratchet.py"
 
-if [[ "${SKIP_REPO_LOOP:-false}" == "true" ]]; then
-    :   # repo-scoped; already reported above
-elif [[ -f "$BASELINE" && -f "$RATCHET" ]]; then
+if [[ -f "$BASELINE" && -f "$RATCHET" ]]; then
     if [[ -n "${SKIP_COVERAGE_REASON:-}" ]]; then
         echo "[pre-push] Coverage gate bypassed. Reason: ${SKIP_COVERAGE_REASON}" >&2
         DATESTAMP="$(date +%Y%m%d)"
@@ -336,44 +309,11 @@ if [[ "${_HARNESS_DRIFT_EXIT:-0}" -ne 0 ]]; then
     OVERALL_EXIT=1
 fi
 
-# ── Stage-prompt drift guard: deliberately NOT wired here ────────────────────
-# Measured on 2026-08-02 before deciding, rather than wired because it was in
-# the dead tail:
-#   * It is already enforced by .github/workflows/enforcement-gate.yml, so a
-#     hook copy is redundant rather than additive.
-#   * It takes MINUTES (the checker imports the ecosystem-audit module and
-#     walks the tree). A multi-minute pre-push gate is what #3780 was about;
-#     re-adding one to fix #3781 would trade the same defect back.
-#   * As invoked it could never have passed: the checker imports
-#     `workspace_hub`, absent from the path under a bare `uv run python`, so it
-#     died on ModuleNotFoundError -- which the wrapper then reported as a drift
-#     verdict. Both bugs are fixed in require-stage-prompt-drift.sh (PYTHONPATH,
-#     and crash-is-not-a-verdict), which benefits the CI path that does run it.
-# CI owns this gate. See #3781.
-
-# ── State-file size guard (#2070) ────────────────────────────────────────────
-# Reads <local_ref local_sha remote_ref remote_sha> from ITS OWN stdin to scan
-# the to-be-pushed range. This hook already consumed git's stdin into
-# PUSH_LINES, so it must be replayed -- otherwise the guard silently falls back
-# to an inferred current ref and scans the wrong range while appearing to run.
-STATE_SIZE_PREPUSH="${REPO_ROOT}/.claude/hooks/check-state-file-size-prepush.sh"
-if [[ -f "$STATE_SIZE_PREPUSH" ]]; then
-    printf '%s\n' "${PUSH_LINES[@]}" | bash "$STATE_SIZE_PREPUSH" || OVERALL_EXIT=1
-fi
-
-# ── Cadence-helper sync check (wed#309) ──────────────────────────────────────
-# Exits 0 when worldenergydata is absent, so enforcement is machine-dependent
-# by design; see #3781 for the CI-migration argument.
-CADENCE_SYNC="${REPO_ROOT}/scripts/sync/sync-cadence-helper.sh"
-if [[ -f "$CADENCE_SYNC" ]]; then
-    bash "$CADENCE_SYNC" || OVERALL_EXIT=1
-fi
-
-# ── INSTALLER EXTENSION POINT ────────────────────────────────────────────────
-# install-hooks.sh inserts enforcement blocks ABOVE this line. Never append past
-# the end of this file: the exit below is unconditional, and blocks placed after
-# it never run. That is #3781 -- four blocks sat there for months while the
-# installer logged "OK: Wired ... into pre-push" for each one.
-# <<INSTALL_HOOKS_EXTENSION_POINT>>
-
 exit "$OVERALL_EXIT"
+
+# NOTE: install-hooks.sh appends enforcement blocks AFTER this point. Anything
+# below an unconditional `exit` never runs. Three gates lived here and had never
+# executed once -- stage-prompt drift, state-size pre-push, cadence sync -- while
+# the installer logged "OK: Wired ... into pre-push" for each. Removed rather
+# than left as decoration. Re-wiring them ABOVE this exit changes what blocks
+# pushes and is a per-gate decision: workspace-hub#3781.

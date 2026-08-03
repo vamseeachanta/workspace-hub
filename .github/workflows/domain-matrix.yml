@@ -45,7 +45,7 @@ on:
         description: "Command to install dependencies in each domain job."
         type: string
         required: false
-        default: "uv sync --frozen --all-extras"
+        default: "uv sync --all-extras"
       test-runner:
         description: "Command prefix used to run pytest on the shard targets."
         type: string

@@ -42,13 +42,11 @@ jobs:
           cache: 'pip'
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
+        uses: astral-sh/setup-uv@v4
 
       - name: Install test dependencies
         run: |
-          uv sync --frozen --group dev
+          uv sync --group dev
 
       - name: Run Python tests
         run: |

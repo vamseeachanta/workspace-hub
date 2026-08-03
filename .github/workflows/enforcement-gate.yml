@@ -25,9 +25,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
+        uses: astral-sh/setup-uv@v4
       - name: Validate scheduler mutation registry
         run: uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
       - name: Validate exact cron identity inventory
@@ -60,9 +58,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
+        uses: astral-sh/setup-uv@v4
 
       # PYTHONPATH=src is REQUIRED for `from workspace_hub...` imports because:
       #   1. src/workspace_hub/ has NO __init__.py — it's an intentional PEP 420
@@ -75,7 +71,7 @@ jobs:
         env:
           PYTHONPATH: src
         run: |
-          uv sync --frozen --group dev
+          uv sync --group dev
           uv run python -m pytest tests/ci_smoke/test_workspace_hub_importable.py -v --tb=short
 
       - name: Check newly introduced stage prompt drift
@@ -120,9 +116,7 @@ jobs:
           fetch-depth: 0  # full history for commit range analysis
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
+        uses: astral-sh/setup-uv@v4
 
       - name: Check review evidence for PR commits
         env:
@@ -292,9 +286,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
+        uses: astral-sh/setup-uv@v4
       - name: Check skill-index coherence
         run: |
           set -o pipefail

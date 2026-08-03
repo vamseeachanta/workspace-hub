@@ -1,0 +1,33 @@
+[Unit]
+Description=Periodic attach-independent tmux session save (workspace-hub #3784)
+Documentation=https://github.com/vamseeachanta/workspace-hub/issues/3784
+
+[Timer]
+# The first tick after boot must clear an in-flight continuum restore.
+#
+# At a fresh tmux server start @continuum-save-last-timestamp defaults to 0,
+# so continuum's own interval throttle does NOT suppress an early save — it
+# would fire immediately, over a session tree that is still being rebuilt, and
+# repoint the `last` state file at the partial result. The wrapper cannot
+# detect this: there is no durable restore-in-progress marker (resurrect's
+# restore.sh uses a process-local shell variable). continuum_restore begins
+# about a second after server start, so five minutes is ample margin.
+OnBootSec=5min
+
+# Matches @continuum-save-interval. The cadence here does not have to agree
+# with it — continuum_save.sh self-throttles, so a faster timer simply no-ops
+# until the interval elapses.
+OnUnitActiveSec=15min
+
+# Persistent= is deliberately NOT set.
+#
+# Two reasons, and the second is the one that matters. First, systemd.timer(5)
+# applies Persistent= to OnCalendar= only, so on a monotonic timer like this
+# one it is inert — setting it would imply a protection that does not exist.
+# Second, its actual effect where it DOES apply is to fire a missed window
+# immediately at boot, which is precisely the moment OnBootSec above exists to
+# avoid. A missed window costs 15 minutes of layout drift; a boot-time save
+# over a live restore costs the whole restore point.
+
+[Install]
+WantedBy=timers.target

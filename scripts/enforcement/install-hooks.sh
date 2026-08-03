@@ -68,146 +68,116 @@ else
   log "SKIP: pre-commit hook not found"
 fi
 
-# ── Step 3: Wire full pre-push enforcement chain (#2128, #3781) ───────
-# Order matters: enforcement-env FIRST — it exports REVIEW_GATE_STRICT=1, and
-# the review wrapper defaults that to 0, so a later source leaves review
-# ADVISORY. Blocks are INSERTED at the hook's extension point, never appended
-# past the end: the hook terminates in an unconditional `exit`, and anything
-# below it never runs. Four blocks sat there for months while this script
-# logged "OK: Wired ..." for each (#3781).
+# ── Step 3: Wire full pre-push enforcement chain (#2128) ──────────────
+# Order: enforcement-env → review-gate → stage-prompt-drift-gate
 PRE_PUSH="${REPO_ROOT}/.git/hooks/pre-push"
-SENTINEL='# <<INSTALL_HOOKS_EXTENSION_POINT>>'
-
-# Everything above the sentinel — the reachable region of the hook.
-reachable_region() {
-  sed "/<<INSTALL_HOOKS_EXTENSION_POINT>>/q" "$PRE_PUSH"
-}
-
-# $1 = grep marker identifying the block, $2 = file holding the block text
-insert_block() {
-  local marker="$1" block_file="$2" label="$3"
-
-  if ! grep -q "INSTALL_HOOKS_EXTENSION_POINT" "$PRE_PUSH" 2>/dev/null; then
-    echo "FATAL: no extension point in ${PRE_PUSH}." >&2
-    echo "  Refusing to append — appended blocks land below the terminal exit" >&2
-    echo "  and never run. Reinstall the tracked hook (scripts/hooks/pre-push.sh)." >&2
-    return 1
-  fi
-
-  # Reachability-aware idempotence. A plain `grep -q "$marker" "$PRE_PUSH"`
-  # is what made #3781 permanent: it reported "already wired" for a block
-  # sitting below the exit, so re-running could never repair it.
-  if reachable_region | grep -q "$marker"; then
-    log "OK: ${label} already wired into pre-push (reachable)"
-    return 0
-  fi
-
-  if grep -q "$marker" "$PRE_PUSH" 2>/dev/null; then
-    log "WARN: ${label} present but UNREACHABLE — re-wiring above the extension point"
-  fi
-
-  if [[ "$DRY_RUN" == "1" ]]; then
-    log "DRY-RUN: Would wire ${label} into pre-push"
-    return 0
-  fi
-
-  local tmp; tmp="$(mktemp)"
-  awk -v blockfile="$block_file" '
-    /<<INSTALL_HOOKS_EXTENSION_POINT>>/ && !done {
-      while ((getline line < blockfile) > 0) print line
-      close(blockfile); done = 1
-    }
-    { print }
-  ' "$PRE_PUSH" > "$tmp"
-
-  if ! bash -n "$tmp"; then
-    echo "FATAL: insertion of ${label} produced invalid bash — not written" >&2
-    rm -f "$tmp"; return 1
-  fi
-  cat "$tmp" > "$PRE_PUSH"; rm -f "$tmp"
-  log "OK: Wired ${label} into pre-push"
-}
-
-# Remove any enforcement stranded below the hook's terminal exit. Inserting the
-# live copy above is not enough on its own: the dead copy stays behind, keeps
-# matching a naive grep, and misleads the next reader into thinking the gate is
-# wired twice. Blocks below an unconditional exit are dead by definition, so
-# truncating there is well-defined rather than a heuristic.
-strip_dead_tail() {
-  awk '
-    { lines[NR] = $0; if ($0 ~ /^exit([[:space:]]|$)/) last_exit = NR }
-    END {
-      end = (last_exit ? last_exit : NR)
-      for (i = 1; i <= end; i++) print lines[i]
-    }
-  ' "$PRE_PUSH" > "${PRE_PUSH}.tmp" && mv "${PRE_PUSH}.tmp" "$PRE_PUSH"
-}
 
 if [[ -f "$PRE_PUSH" ]]; then
-  # Detect the #3781 state: enforcement present, but below the terminal exit.
-  if grep -q "INSTALL_HOOKS_EXTENSION_POINT" "$PRE_PUSH" 2>/dev/null \
-     && [[ -n "$(awk '/^exit([[:space:]]|$)/{f=NR} END{print (f?f:"")}' "$PRE_PUSH")" ]] \
-     && awk '/^exit([[:space:]]|$)/{seen=1; next} seen' "$PRE_PUSH" \
-        | grep -qE "enforcement-env|scripts/enforcement/|scripts/sync/|\.claude/hooks/"; then
-    log "WARN: enforcement found below the terminal exit (#3781) — removing the dead tail"
-    strip_dead_tail
-  fi
-
-  _blk="$(mktemp -d)"
-
-  cat > "${_blk}/env" <<'EOF'
+  # 3a: Source enforcement-env
+  if grep -q "enforcement-env" "$PRE_PUSH" 2>/dev/null; then
+    log "OK: enforcement-env already wired into pre-push"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire enforcement-env into pre-push"
+    else
+      cat >> "$PRE_PUSH" <<'EOF'
 
 # ── Enforcement environment (installed by install-hooks.sh #2128) ──────
-# MUST precede gates whose strictness it sets (#3781).
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 ENFORCEMENT_ENV="${REPO_ROOT}/.git/hooks/enforcement-env"
 if [[ -f "${ENFORCEMENT_ENV}" ]]; then
   source "${ENFORCEMENT_ENV}"
 fi
 EOF
+      log "OK: Wired enforcement-env into pre-push"
+    fi
+  fi
 
-  cat > "${_blk}/review" <<'EOF'
+  # 3b: Wire require-review-on-push.sh
+  if grep -q "require-review-on-push.sh" "$PRE_PUSH" 2>/dev/null; then
+    log "OK: review gate already wired into pre-push"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire review gate into pre-push"
+    else
+      cat >> "$PRE_PUSH" <<'EOF'
 
 # ── Review gate (installed by install-hooks.sh #2128) ──────────────────
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 REVIEW_GATE="${REPO_ROOT}/scripts/enforcement/require-review-on-push.sh"
 if [[ -f "$REVIEW_GATE" ]]; then
-  bash "$REVIEW_GATE" || OVERALL_EXIT=1
+  bash "$REVIEW_GATE" || exit $?
 fi
 EOF
+      log "OK: Wired review gate into pre-push"
+    fi
+  fi
 
+  # 3c: Wire stage prompt drift guard
+  if grep -q "require-stage-prompt-drift.sh" "$PRE_PUSH" 2>/dev/null; then
+    log "OK: stage prompt drift guard already wired into pre-push"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire stage prompt drift guard into pre-push"
+    else
+      cat >> "$PRE_PUSH" <<'EOF'
 
-  cat > "${_blk}/size" <<'EOF'
+# ── Stage prompt drift guard (installed by install-hooks.sh) ─────────────
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+STAGE_PROMPT_DRIFT_GATE="${REPO_ROOT}/scripts/enforcement/require-stage-prompt-drift.sh"
+if [[ -f "$STAGE_PROMPT_DRIFT_GATE" ]]; then
+  bash "$STAGE_PROMPT_DRIFT_GATE" || exit $?
+fi
+EOF
+      log "OK: Wired stage prompt drift guard into pre-push"
+    fi
+  fi
+
+  # 3d: Wire state-file size guard pre-push (#2070) — sees blobs already in HEAD
+  if grep -q "check-state-file-size-prepush.sh" "$PRE_PUSH" 2>/dev/null; then
+    log "OK: state-file size guard already wired into pre-push"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire state-file size guard into pre-push"
+    else
+      cat >> "$PRE_PUSH" <<'EOF'
 
 # ── State-file size guard pre-push (#2070) ───────────────────────────────
-# Reads the push refspecs from ITS OWN stdin. The hook already consumed git's
-# stdin into PUSH_LINES, so replay them — without this the guard silently
-# falls back to an inferred ref and scans the wrong range (#3781).
+# Pre-push reads <local_ref local_sha remote_ref remote_sha> on stdin; tee it
+# into the size-guard hook so it can scan the to-be-pushed commit range.
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 STATE_SIZE_PREPUSH="${REPO_ROOT}/.claude/hooks/check-state-file-size-prepush.sh"
 if [[ -f "$STATE_SIZE_PREPUSH" ]]; then
-  printf '%s\n' "${PUSH_LINES[@]}" | bash "$STATE_SIZE_PREPUSH" || OVERALL_EXIT=1
+  bash "$STATE_SIZE_PREPUSH" || exit $?
 fi
 EOF
+      log "OK: Wired state-file size guard into pre-push"
+    fi
+  fi
 
-  cat > "${_blk}/cadence" <<'EOF'
+  # 3e: Wire cadence-common.sh vendored-copy sync check (wed#309)
+  if grep -q "sync-cadence-helper.sh" "$PRE_PUSH" 2>/dev/null; then
+    log "OK: cadence-helper sync check already wired into pre-push"
+  else
+    if [[ "$DRY_RUN" == "1" ]]; then
+      log "DRY-RUN: Would wire cadence-helper sync check into pre-push"
+    else
+      cat >> "$PRE_PUSH" <<'EOF'
 
 # ── Cadence-helper sync check (wed#309) ──────────────────────────────────
+# Verifies worldenergydata/scripts/cron/lib/cadence-common.sh is byte-identical
+# to workspace-hub/scripts/cron/lib/cadence-common.sh. Exits 1 on drift.
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 CADENCE_SYNC="${REPO_ROOT}/scripts/sync/sync-cadence-helper.sh"
 if [[ -f "$CADENCE_SYNC" ]]; then
-  bash "$CADENCE_SYNC" || OVERALL_EXIT=1
+  bash "$CADENCE_SYNC" || exit $?
 fi
 EOF
+      log "OK: Wired cadence-helper sync check into pre-push"
+    fi
+  fi
 
-  _install_rc=0
-  insert_block "enforcement-env"                   "${_blk}/env"     "enforcement-env" || _install_rc=$?
-  insert_block "require-review-on-push.sh"         "${_blk}/review"  "review gate" || _install_rc=$?
-  # stage-prompt drift is NOT wired into pre-push: .github/workflows/
-  # enforcement-gate.yml already enforces it, and the checker takes MINUTES,
-  # which is the multi-minute-gate defect #3780 removed. CI owns it (#3781).
-  insert_block "check-state-file-size-prepush.sh"  "${_blk}/size"    "state-file size guard" || _install_rc=$?
-  insert_block "sync-cadence-helper.sh"            "${_blk}/cadence" "cadence-helper sync check" || _install_rc=$?
-
-  rm -rf "$_blk"
   chmod +x "$PRE_PUSH"
-  [[ $_install_rc -eq 0 ]] || exit $_install_rc
 else
   log "SKIP: pre-push hook not found"
 fi

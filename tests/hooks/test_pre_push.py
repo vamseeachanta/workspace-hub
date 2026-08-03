@@ -51,16 +51,6 @@ def _run_hook(
     env = os.environ.copy()
     # Ensure we don't accidentally invoke real check-all.sh / run-all-tests.sh
     env["PRE_PUSH_DRY_RUN"] = "1"
-    # These tests exercise repo SCOPE DETECTION, not the enforcement gates. Once
-    # the gates were re-wired above the terminal exit (#3781) they began running
-    # here for real, and the stage-prompt drift gate failed on unrelated repo
-    # state — a scope test reporting a drift failure. Disable enforcement so a
-    # gate's verdict cannot masquerade as a scoping bug.
-    #
-    # Deliberately NOT applied to the reachability/ordering tests in
-    # test_install_hooks_extension_point.py: those assert the gates are wired
-    # and must not be able to pass with enforcement switched off.
-    env.setdefault("DISABLE_ENFORCEMENT", "1")
     if env_extra:
         env.update(env_extra)
 
