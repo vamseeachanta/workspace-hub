@@ -1,17 +1,26 @@
 # Provider utilization weekly report
 
-Generated: 2026-08-02T21:21:36.785994Z
-Current week: 2026-W31
+Generated: 2026-08-03T13:21:31.494651Z
+Current week: 2026-W32
 Total monthly spend tracked: $260.0/mo
 
 Quota-based utilization is preferred when available; otherwise the report falls back to activity-vs-recent-peak based on exported session logs.
 
-## 2026-W31 (current)
+## 2026-W32 (current)
+
+| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
+|---|---:|---:|---:|---|---:|---|
+| claude | 4 | 142 | 0.3% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 21 | 928 | 0.9% | quota | 0.9% | week_messages/weekly_limit from history.jsonl-estimate |
+| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+
+## 2026-W31
 
 | Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
 |---|---:|---:|---:|---|---:|---|
 | claude | 7 | 259 | 0.6% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
-| codex | 66 | 2823 | 0.0% | quota | 0.0% | week_messages/weekly_limit from history.jsonl-estimate |
+| codex | 72 | 3213 | 0.0% | quota | 0.0% | week_messages/weekly_limit from history.jsonl-estimate |
 | agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 | hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 
@@ -69,18 +78,9 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 | agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 | hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 
-## 2026-W24
-
-| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
-|---|---:|---:|---:|---|---:|---|
-| claude | 42 | 2707 | 6.7% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
-| codex | 351 | 38817 | 54.0% | quota | 54.0% | week_pct from app-server-live |
-| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-
 ## Current-week underutilization alerts
 
-- claude at 0.6% (activity_vs_recent_peak)
-- codex at 0.0% (quota)
+- claude at 0.3% (activity_vs_recent_peak)
+- codex at 0.9% (quota)
 - agy at 0.0% (activity_vs_recent_peak)
 

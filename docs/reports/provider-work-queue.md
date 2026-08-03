@@ -1,33 +1,33 @@
 # Provider work queue
 
-Generated: 2026-08-02T21:21:38.761479Z
-Current week: 2026-W31
-Recommended provider order: codex, agy, claude
+Generated: 2026-08-03T13:21:33.816346Z
+Current week: 2026-W32
+Recommended provider order: agy, codex, claude
 
 Execution-ready means the issue already carries `status:plan-approved`. agent:* labels are routing hints only and do not grant execution approval.
 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 17
-- Total routed candidates: 178
+- Execution-ready candidates: 19
+- Total routed candidates: 173
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #3500 bug(pre-push): equivalence-state publish loops full tier-1 suite forever — remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198) | yes | strategy/workflow/architecture language | bug, priority:high, cat:harness, machine:dev-primary, status:plan-approved, gate:completeness |
 | #3549 feat(ops): registry-driven Linux connection helpers with TDD | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:tooling, domain:workstations, domain:security, machine:dev-primary |
+| #3784 bug(workstations): tmux persistence is attach-gated and unwired — no reboot survival on any box, no SSH auto-attach | yes | strategy/workflow/architecture language | bug, priority:high, cat:harness, domain:workstations, machine:multi, status:plan-approved |
 | #3482 design(repo-health): safe worktree lifecycle with leases and recoverable quarantine | yes | strategy/workflow/architecture language | priority:medium, cat:tooling, domain:testing, machine:dev-primary, status:plan-approved, gate:completeness |
 | #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1 | yes | strategy/workflow/architecture language | bug, priority:medium, cat:operations, domain:workstations, machine:multi, status:plan-approved |
 | #3525 [WRK] Investigate safe remote Claude job dispatch to ace-win-2 | yes | strategy/workflow/architecture language | priority:medium, cat:harness, domain:workstations, wrk-item, machine:dev-primary, status:plan-approved |
 | #3566 fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI | yes | strategy/workflow/architecture language | bug, priority:medium, cat:harness, machine:multi, status:plan-approved, type:follow-up |
 | #3568 epic(agent-ux): cross-machine input interaction parity | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, domain:workstations, machine:multi, status:plan-approved |
-| #3480 Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests) | yes | strategy/workflow/architecture language | cat:tooling, machine:dev-primary, status:plan-approved, gate:completeness, domain:capability |
 
 ## codex
 
 - Routing priority: highest
-- Execution-ready candidates: 6
-- Total routed candidates: 21
+- Execution-ready candidates: 7
+- Total routed candidates: 26
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -37,8 +37,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3532 fix(memory): reserve cross-provider runtime budget for operational feedback | yes | implementation/test/fix language | enhancement, cat:harness, machine:dev-primary, status:plan-approved, gate:completeness, lane:claude |
 | #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | yes | implementation/test/fix language | bug, cat:harness, domain:workstations, machine:multi, status:plan-approved, gate:completeness |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | yes | implementation/test/fix language | cat:operations, domain:workstations, machine:dev-primary, status:plan-approved, gate:completeness, lane:claude |
-| #3585 phone-media: EXIF-date organizer + cross-phone dedupe | no | implementation/test/fix language | priority:medium, cat:data, machine:dev-primary, domain:family |
-| #3696 chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | no | implementation/test/fix language | priority:medium, cat:operations, domain:workstations, machine:dev-primary |
+| #3787 pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | yes | implementation/test/fix language | bug, status:plan-approved, gate:completeness, lane:claude |
+| #3788 bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | no | implementation/test/fix language | bug, priority:high, cat:operations, machine:dev-primary, status:needs-plan, domain:routing |
 
 ## agy
 

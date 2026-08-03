@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-08-02T21:21:40Z
+Generated: 2026-08-03T13:21:36Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,7 +43,14 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3781 | install-hooks.sh appends three pre-push gates after an unconditional exit — none of them have ever run | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: major_review,missing_review,unavailable_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3794 | Compliance alert: W32 — 66% (medium) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3793 | Repo ecosystem sits on NTFS-FUSE; ext4 measures 5-7x faster on git metadata — evaluate relocating to /mnt/ace | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3792 | feat(scheduler): no transaction attestation exists for systemd-user surfaces, so they can only ever declare missing_transaction | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3790 | 487 pytest-shaped files are excluded from collection across 3 tier-1 repos — audit and resolve each | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3789 | audit(scheduler): add read-only consumer vocabulary + sanctioned disposition for new non-compliant surfaces (#3470 follow-on) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3788 | bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3787 | pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
+| #3784 | bug(workstations): tmux persistence is attach-gated and unwired — no reboot survival on any box, no SSH auto-attach | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3775 | security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3773 | epic(dispatch): six rails required before the loop can run unattended on ace-linux-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3772 | bug(dispatch): lease refs are written to one namespace and synced from another — every host wins every lease | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -164,7 +171,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3582 | equality-matrix-cron.sh on Windows collects via bash and publishes degraded compute/provider evidence | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3580 | chore(harness): gemini CLI uninstall decision after agy soak (#3573) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3579 | chore(readiness): rename equality/parity provider row gemini→agy (cross-machine snapshot schema migration) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3578 | fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3578 | fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3577 | fix(harness): repo-wide exec-bit audit — NTFS-FUSE working copy commits scripts as 100644 | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3573 | feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3572 | Harden agent workflows for idempotent external mutations and receipt-bound review degradation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -236,13 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3458 | bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3457 | fix(worktrees): fail closed on an absent sparse-worktree index | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3456 | security(local-analysis): make parent runtime-config permissions enforceable on fuseblk | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3455 | bug(workstations): reconcile ace-win-1 with the live RDS-002 mapping | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3454 | chore(local-analysis): publish sanitized interactive cleanup ledger and prune stale local permission residue | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3453 | bug(cleanup): daily cleanup assumes nested repos and purges unverified staged evidence by age | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3451 | Legal sanity scan: make empty diff-only runs explicit and fail-closed when evidence is required | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3450 | fix(workflow-manifest): distinguish nested-worktree resolution failures from registry drift | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3448 | chore(ecosystem): audit repository detection for linked worktree compatibility | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3447 | Add cross-format CLI behavior parity tests for option-bearing commands | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
