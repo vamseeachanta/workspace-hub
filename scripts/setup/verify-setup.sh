@@ -193,12 +193,15 @@ for cli in codex gemini; do
         else
           _verify_codex_feature_baseline "$cli" "$CODEX_TEMPLATE"
         fi
-        if [[ "$CODEX_CONTRACT_STATUS" -eq 0 ]]; then
-          _pass "codex TUI footer selectors validated for ${CODEX_PIN_VERSION}"
-          _pass "codex canonical config matches owned baseline for ${CODEX_PIN_VERSION}"
-        elif [[ "$CODEX_CONTRACT_STATUS" -eq 3 ]]; then
-          _fail "codex canonical config does not match owned baseline for ${CODEX_PIN_VERSION}"
-        fi
+        case "$CODEX_CONTRACT_STATUS" in
+          0)
+            _pass "codex TUI footer selectors validated for ${CODEX_PIN_VERSION}"
+            _pass "codex canonical config matches owned baseline for ${CODEX_PIN_VERSION}"
+            ;;
+          2|4) : ;;  # Known failure already reported above.
+          3) _fail "codex canonical config does not match owned baseline for ${CODEX_PIN_VERSION}" ;;
+          *) _fail "codex canonical config validator failed with status ${CODEX_CONTRACT_STATUS}" ;;
+        esac
       elif _codex_version_is_older "$CODEX_VER" "$CODEX_PIN_VERSION"; then
         _fail "codex CLI version ${CODEX_VER} is older than pinned ${CODEX_PIN_VERSION}"
       else

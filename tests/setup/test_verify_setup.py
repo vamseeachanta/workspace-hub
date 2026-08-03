@@ -291,6 +291,21 @@ def test_verifier_uses_platform_safe_mktemp_directory(tmp_path: Path) -> None:
     assert mktemp_log.read_text(encoding="utf-8").strip() == "-d"
 
 
+def test_verifier_rejects_unexpected_semantic_validator_status(
+    tmp_path: Path,
+) -> None:
+    """A validator infrastructure error must not disappear behind a green probe."""
+    env = _environment(tmp_path)
+    fake_uv = tmp_path / "bin" / "uv"
+    fake_uv.write_text("#!/bin/sh\nexit 7\n", encoding="utf-8")
+    fake_uv.chmod(0o755)
+    result = _run_verifier(env)
+    assert "PASS  codex feature default_mode_request_user_input: false -> true" in result.stdout
+    _assert_rejected(
+        result, "FAIL  codex canonical config validator failed with status 7"
+    )
+
+
 def test_pin_script_uses_fixture_cli_without_network_install(tmp_path: Path) -> None:
     """A pinned fixture must short-circuit before npm can install from the network."""
     bin_dir = tmp_path / "bin"
