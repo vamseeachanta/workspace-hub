@@ -138,12 +138,15 @@ done
 # become a scheduler mutation surface under
 # .claude/rules/scheduler-mutation-safety.md. A failure is a warning: the box
 # still gets working tmux config, it just falls back to attach-only saves.
-if [ -x "$TIMER_INSTALLER" ]; then
-  if ! "$TIMER_INSTALLER"; then
+# Invoked via `bash`, not executed: a checkout can lose the exec bit (Windows
+# carries none, and this file was committed 100644 by mistake). Guarding on -x
+# reported "missing" for a file plainly present on gpu-claw — #3784 rollout.
+if [ -r "$TIMER_INSTALLER" ]; then
+  if ! bash "$TIMER_INSTALLER"; then
     warn "autosave timer install failed — saves will only happen while ATTACHED."
   fi
 else
-  warn "timer installer missing at $TIMER_INSTALLER — saves will be attach-only."
+  warn "timer installer not readable at $TIMER_INSTALLER — saves will be attach-only."
 fi
 
 # ── 5. Reload a running server ───────────────────────────────────────────

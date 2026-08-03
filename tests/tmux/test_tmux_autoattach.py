@@ -239,3 +239,36 @@ def test_autoattach_does_not_use_exec() -> None:
         if not line.lstrip().startswith("#")
     )
     assert "exec tmux" not in code, "guard must not exec tmux — lockout risk"
+
+
+# ── TERM fallback (found during the gpu-claw rollout, 2026-08-03) ─────────
+
+
+def test_autoattach_falls_back_on_unknown_term(stub_tmux: Path) -> None:
+    """An unknown TERM must not stop tmux from starting.
+
+    SSH forwards the CLIENT's TERM. Ghostty/WezTerm/kitty send names most
+    servers lack, and tmux refuses with "missing or unsuitable terminal".
+    Measured on gpu-claw: xterm-ghostty MISSING, xterm-256color present — so
+    auto-attach was dead for every login from the operator's own terminal.
+    """
+    result = run_guard(
+        stub_tmux,
+        interactive=True,
+        env_overrides={**SSH_ENV, "TERM": "xterm-nonexistent-xyz"},
+    )
+    assert tmux_invocations(stub_tmux), (
+        f"tmux must still be attempted under an unknown TERM: {result.stderr}"
+    )
+
+
+def test_autoattach_does_not_export_term_to_the_shell() -> None:
+    """The override is scoped to the command, not exported to the shell."""
+    code = "\n".join(
+        line for line in GUARD.read_text().splitlines()
+        if not line.lstrip().startswith("#")
+    )
+    assert "export TERM" not in code
+    assert 'TERM="${_wh_term:-xterm-256color}" tmux' in code, (
+        "TERM must be a command prefix, not a global assignment"
+    )

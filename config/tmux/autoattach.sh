@@ -58,11 +58,24 @@ _wh_tmux_session="${WH_TMUX_SESSION:-main}"
 # operator cannot get in to repair it. Here a failure falls through to a
 # working shell instead. On the dispatch surface that difference is the whole
 # argument. tests/tmux/test_tmux_autoattach.py pins it.
-if tmux new -A -s "$_wh_tmux_session"; then
-  unset _wh_tmux_session
+# SSH forwards the CLIENT's TERM, and a modern terminal (Ghostty, WezTerm,
+# kitty) sends a name most servers' terminfo databases do not carry. tmux then
+# refuses with "missing or unsuitable terminal" and auto-attach is dead for
+# every login from that terminal. Measured on gpu-claw 2026-08-03:
+#   xterm-ghostty  MISSING
+#   xterm-256color present
+# Scoped to the tmux invocation, never exported, so a detached session leaves
+# the operator's real TERM untouched.
+_wh_term="${TERM:-}"
+if [ -n "$_wh_term" ] && ! infocmp "$_wh_term" >/dev/null 2>&1; then
+  _wh_term=xterm-256color
+fi
+
+if TERM="${_wh_term:-xterm-256color}" tmux new -A -s "$_wh_tmux_session"; then
+  unset _wh_tmux_session _wh_term
   exit
 fi
 
 echo "warning: tmux auto-attach failed; continuing with a plain shell." >&2
 echo "         set NO_TMUX_AUTOATTACH=1 to skip this next time." >&2
-unset _wh_tmux_session
+unset _wh_tmux_session _wh_term
