@@ -62,6 +62,9 @@ def _environment(tmp_path: Path, **extra: str) -> dict[str, str]:
     (home / ".claude").mkdir(parents=True)
     bin_dir.mkdir()
     _write_fake_codex(bin_dir)
+    fake_claude = bin_dir / "claude"
+    fake_claude.write_text("#!/bin/sh\necho 'claude fixture 1.0'\n", encoding="utf-8")
+    fake_claude.chmod(0o755)
     env = os.environ | {
         "HOME": str(home),
         "CODEX_HOME": str(codex_home),
