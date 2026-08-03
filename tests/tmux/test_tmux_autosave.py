@@ -29,6 +29,7 @@ TDD: written before scripts/tmux/tmux-autosave.sh exists; expected to FAIL.
 
 from __future__ import annotations
 
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -91,13 +92,24 @@ def install_resurrect(env_dir: Path) -> Path:
     return script
 
 
-def run_wrapper(env_dir: Path) -> subprocess.CompletedProcess:
+def run_wrapper(env_dir: Path, *, isolate_path: bool = False
+                ) -> subprocess.CompletedProcess:
+    """Run the wrapper against a fake HOME.
+
+    `isolate_path` drops the system directories from PATH. It is required for
+    the "no tmux on this machine" case: without it the wrapper finds the REAL
+    /usr/bin/tmux and probes this host's REAL server, so the test passes or
+    fails according to whether the developer happens to have tmux running. An
+    earlier draft did exactly that and reported a false failure against a
+    correct wrapper.
+    """
+    path = str(env_dir / "bin") if isolate_path else f"{env_dir / 'bin'}:/usr/bin:/bin"
+    # Absolute interpreter: PATH here governs only the WRAPPER's own lookups
+    # (its `command -v tmux`), never our ability to start a shell.
+    bash = shutil.which("bash") or "/bin/bash"
     return subprocess.run(
-        ["bash", str(WRAPPER)],
-        env={
-            "PATH": f"{env_dir / 'bin'}:/usr/bin:/bin",
-            "HOME": str(env_dir),
-        },
+        [bash, str(WRAPPER)],
+        env={"PATH": path, "HOME": str(env_dir)},
         capture_output=True,
         text=True,
         timeout=30,
@@ -118,7 +130,7 @@ def called(env_dir: Path, name: str) -> int:
 
 def test_autosave_noop_without_tmux(env_dir: Path) -> None:
     install_continuum(env_dir)
-    result = run_wrapper(env_dir)
+    result = run_wrapper(env_dir, isolate_path=True)
     assert result.returncode == 0
     assert called(env_dir, "continuum") == 0
 
