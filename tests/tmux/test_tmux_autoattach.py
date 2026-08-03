@@ -52,10 +52,19 @@ def run_guard(
 ) -> subprocess.CompletedProcess:
     """Source the guard under a controlled shell and environment.
 
-    `interactive` is emulated with `set -i`, because bash only sets the `i`
-    flag in `$-` for a genuinely interactive shell and we cannot spawn one
-    from pytest without a tty. The guard reads `$-`, so setting the flag
-    exercises the real predicate.
+    Interactivity is produced with bash's `-i` INVOCATION flag, not `set -i`.
+    An earlier draft used `set -i` and every "should fire" case failed: bash
+    rejects `set -i` outright ("set: -i: invalid option"), so `$-` never gained
+    the `i` and the guard correctly declined. The tests were wrong, not the
+    guard. Measured:
+
+        bash -i -c 'echo $-'  ->  hiBHc     (interactive)
+        bash    -c 'echo $-'  ->  hBc       (not)
+
+    `bash -i` without a tty also writes "cannot set terminal process group" to
+    stderr, so interactive cases must not assert on stderr being empty. The one
+    test that does assert silence — the scp/sftp guard — runs NON-interactively,
+    which is the path that actually matters for file transfer.
     """
     env = {
         "PATH": f"{bin_dir}:/usr/bin:/bin" if include_tmux else "/usr/bin:/bin",
@@ -63,11 +72,12 @@ def run_guard(
     }
     env.update(env_overrides or {})
 
-    flag = "set -i; " if interactive else ""
-    script = f"{flag}. {GUARD}\n"
+    argv = ["bash", "-i", "-c", f". {GUARD}"] if interactive else [
+        "bash", "-c", f". {GUARD}"
+    ]
 
     return subprocess.run(
-        ["bash", "-c", script],
+        argv,
         env=env,
         capture_output=True,
         text=True,
@@ -219,7 +229,13 @@ def test_autoattach_does_not_use_exec() -> None:
     `exec tmux ...` would replace the login shell, so a tmux failure ends the
     connection. The plan deliberately diverges from the originally-sketched
     `exec` form for this reason; pin it so the divergence is not undone.
+
+    Comments are stripped before matching. The guard's own comments explain
+    why `exec tmux` is rejected, and an earlier draft of this test matched that
+    prose and failed against a correct implementation.
     """
-    assert "exec tmux" not in GUARD.read_text(), (
-        "guard must not exec tmux — lockout risk"
+    code = "\n".join(
+        line for line in GUARD.read_text().splitlines()
+        if not line.lstrip().startswith("#")
     )
+    assert "exec tmux" not in code, "guard must not exec tmux — lockout risk"
