@@ -3,8 +3,14 @@
 **Scope:** audit and clean the work surfaces on all fleet machines; move bulk data
 to `/mnt/ace`; keep only repos on the work surfaces.
 
-**Net result:** ~134 GB freed across three machines. 56.6 GB preserved as six
+**Net result:** ~144 GB freed across three machines. 56.6 GB preserved as six
 verified, attested, encrypted bundles. One incident (recovered, no data lost).
+
+> **Codename-redacted.** `workspace-hub` is a PUBLIC repo, so client and project
+> identifiers are replaced with `client-a` / `client-b` / `<project-ref>`
+> placeholders. The real names appear in the on-disk directory and bundle names;
+> the mapping is deliberately not committed here. This document was blocked by
+> the Client-PII Gate on first push and redacted — see Lessons.
 
 ---
 
@@ -41,7 +47,7 @@ Final bundle sentinel run: 6 checked, 0 failures.
 |---|---|---:|---:|
 | `ocr-lane` | gpu-claw | 23,291,217,033 | 53,235 |
 | `sloshing_cfd_work` | ace-linux-2 | 18,922,557,703 | 766,321 |
-| `acma-projects-freeze-work` | ace-linux-1 | 6,224,512,670 | 108,586 |
+| `client-a-projects-freeze-work` | ace-linux-1 | 6,224,512,670 | 108,586 |
 | `achantas-data-2024-archive` | ace-linux-2 | 4,713,521,041 | 3,433 |
 | `ocr-corpus` | gpu-claw | 2,038,108,765 | 4,630 |
 | `voice-dictation` | ace-linux-2 | 1,398,019,246 | 3,801 |
@@ -94,7 +100,7 @@ sudo sh -c 'printf "     veto files = /work-surface-bulk/\n     delete veto file
 
 **Two deliberate SKIPS — the audit was wrong about these, the gate caught it:**
 - `docs/` — audit called it empty cruft; holds a cross-repo CFD handoff
-- `acma-projects/` — holds final B1528 DOCX/PDF deliverables
+- `client-a-projects/` — holds final <project-ref> DOCX/PDF deliverables
 
 Both must be MERGED into their owning repos, not deleted. Same for the 26 loose
 top-level files still on the surface.
@@ -173,6 +179,12 @@ the delete is fail-closed and verifies absence explicitly. Regression-tested.
    agent's own commit before the agent did, producing a spurious
    non-fast-forward rejection. It also moved the main checkout across three
    branches unprompted. Check the reflog before reacting to a rejected push.
+8. **`workspace-hub` is PUBLIC — codename-redact before writing a handoff.**
+   This document was blocked by the Client-PII Gate on first push: operational
+   accuracy (real directory names) collided with a public repo. The gate
+   withholds matched values from CI logs by design, so read the line numbers it
+   reports and inspect them locally. Write handoffs codenamed from the start
+   rather than redacting after the fact.
 
 ## Environment state at exit
 
@@ -183,7 +195,7 @@ the delete is fail-closed and verifies absence explicitly. Regression-tested.
   moved from feature branches onto `main` by auto-sync during the session.
 - No external actions taken beyond: one PR opened (#3786, not merged), and a
   key backup the owner uploaded to `gdrive:backups/fleet-age-key/`.
-- Nothing was pushed to `frontierdeepwater` — the attempt failed and was abandoned.
+- Nothing was pushed to `client-b` — the attempt failed and was abandoned.
 
 ## Artifacts
 
