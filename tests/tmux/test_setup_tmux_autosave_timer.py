@@ -235,3 +235,20 @@ def test_registry_entry_declares_systemd_user_primitives() -> None:
     assert "systemd-user-enable-disable" in block
     assert "execution_host_binding: physical-local" in block
     assert "local-user-systemd-tmux-autosave" in block
+
+
+def test_service_does_not_reap_the_backgrounded_save() -> None:
+    """The unit must not kill continuum's backgrounded save.sh.
+
+    continuum_save.sh runs `save.sh quiet &` and returns. Under the default
+    KillMode=control-group, systemd tears down the cgroup as soon as a oneshot
+    unit's main process exits, killing the save mid-flight.
+
+    This fails SILENTLY and looks like success — set_last_save_timestamp runs
+    synchronously in the parent, so the timestamp advances on schedule while
+    nothing is ever written. Measured on gpu-claw: timer run produced no
+    resurrect directory at all; a direct save.sh run produced a full save.
+    """
+    assert "KillMode=process" in directives(SERVICE_SRC), (
+        "without KillMode=process the timer advances the timestamp and saves nothing"
+    )

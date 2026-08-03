@@ -4,6 +4,20 @@ Documentation=https://github.com/vamseeachanta/workspace-hub/issues/3784
 
 [Service]
 Type=oneshot
+
+# REQUIRED, not tuning. continuum_save.sh backgrounds resurrect's save.sh
+# (`"$script" quiet &`) and returns immediately. With the default
+# KillMode=control-group systemd declares a oneshot unit finished when its
+# main process exits and kills the whole cgroup — reaping the save before it
+# writes a single byte.
+#
+# The failure is silent and looks like success: set_last_save_timestamp runs
+# synchronously in the parent, so @continuum-save-last-timestamp advances on
+# schedule while ~/.tmux/resurrect/ stays empty. Measured on gpu-claw
+# 2026-08-03 — direct save.sh produced last + tmux_resurrect_*.txt +
+# pane_contents.tar.gz; the identical run via this unit produced no directory
+# at all. #3784 rollout.
+KillMode=process
 ExecStart=%h/.tmux/wh/tmux-autosave.sh
 
 # The wrapper exits 0 on every absent precondition (no tmux, no server, no
