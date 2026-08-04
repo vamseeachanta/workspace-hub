@@ -39,11 +39,20 @@ DIRECTLY_INVOKED_HELPERS = [
 
 
 def _git_mode(path: str) -> str:
+    """Mode as COMMITTED, read from the tree — deliberately not `ls-files -s`.
+
+    `ls-files -s` reports the INDEX. This repo sets `core.fileMode = false`, so
+    a staged `--chmod=+x` can sit in the index while `git commit -- <pathspec>`
+    (which re-reads the working tree and ignores the filesystem bit) commits
+    100644. The index then reports the fix and the tree does not — a false
+    green over a still-broken artifact, hit while writing this very test.
+    HEAD is the artifact that ships; assert on it.
+    """
     out = subprocess.run(
-        ["git", "ls-files", "-s", path],
+        ["git", "ls-tree", "HEAD", "--", path],
         cwd=REPO_ROOT, capture_output=True, text=True, check=True,
     ).stdout.strip()
-    assert out, f"{path} is not tracked by git"
+    assert out, f"{path} is not tracked by git at HEAD"
     return out.split()[0]  # e.g. "100755"
 
 
