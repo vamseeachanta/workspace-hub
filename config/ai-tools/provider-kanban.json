@@ -215,8 +215,7 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -232,10 +231,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "Planning mode: `single-lane` for the draft artifact. The implementation phase will remain blocked until plan review completes, the user approves, and `status:plan-approved` exists.",
         "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** Per-record `gh issue view` calls will be slower than one open-list query if the record corpus grows. The plan will accept that tradeoff now because the current corpus is small and correctness depends on closed and cross-repo issues being visible. | **Risk:** The current CLI accepts one `--repo`, while records may name multiple repos. The implementation will treat `--repo` as the orphan-s",
+        "tests": "7 TDD tests defined",
         "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING"
       },
       "lane": "planning_feedstock",
@@ -245,13 +244,15 @@
       "machine_route": null,
       "number": 3788,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-08-03-issue-3788-reconcile-open-only-snapshot.md",
       "provider_route": "codex",
       "review_clean": false,
       "routing_reason": "implementation/test/fix language",
       "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3788",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8173,7 +8174,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-08-04T05:21:18Z",
+  "generated_at": "2026-08-04T09:21:17Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8369,8 +8370,7 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8386,10 +8386,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "Planning mode: `single-lane` for the draft artifact. The implementation phase will remain blocked until plan review completes, the user approves, and `status:plan-approved` exists.",
           "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** Per-record `gh issue view` calls will be slower than one open-list query if the record corpus grows. The plan will accept that tradeoff now because the current corpus is small and correctness depends on closed and cross-repo issues being visible. | **Risk:** The current CLI accepts one `--repo`, while records may name multiple repos. The implementation will treat `--repo` as the orphan-s",
+          "tests": "7 TDD tests defined",
           "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING"
         },
         "lane": "planning_feedstock",
@@ -8399,13 +8399,15 @@
         "machine_route": null,
         "number": 3788,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-08-03-issue-3788-reconcile-open-only-snapshot.md",
         "provider_route": "codex",
         "review_clean": false,
         "routing_reason": "implementation/test/fix language",
         "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3788",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16335,16 +16337,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-08-04T05:21:14.188407Z",
+  "scorecard_generated_at": "2026-08-04T09:21:13.113363Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-08-04T05:21:14.051018Z",
+  "utilization_generated_at": "2026-08-04T09:21:12.993839Z",
   "warning_summary": {
     "approved_no_marker": 14,
     "approved_no_plan": 9,
     "legacy_review_no_sha": 10,
     "major_review": 5,
     "marker_without_open_approved_issue": 177,
-    "missing_review": 32,
+    "missing_review": 33,
     "unavailable_review": 6
   }
 }

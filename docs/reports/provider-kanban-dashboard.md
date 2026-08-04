@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-08-04T05:21:18Z
+Generated: 2026-08-04T09:21:17Z
 Mode: static (read-only)
 
 ## How to approve
@@ -48,7 +48,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3792 | feat(scheduler): no transaction attestation exists for systemd-user surfaces, so they can only ever declare missing_transaction | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3790 | 487 pytest-shaped files are excluded from collection across 3 tier-1 repos — audit and resolve each | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3789 | audit(scheduler): add read-only consumer vocabulary + sanctioned disposition for new non-compliant surfaces (#3470 follow-on) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3788 | bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3788 | bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3787 | pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
 | #3775 | security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3773 | epic(dispatch): six rails required before the loop can run unattended on ace-linux-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
