@@ -57,6 +57,11 @@ PATH_INVOKED_SCRIPTS: dict[str, str] = {
         'scripts/review/submit-to-codex.sh — "$VALIDATOR" "$rendered_file" (#3142)',
     'scripts/operations/merge-when-clean.sh':
         '.claude/rules/merge-authorization.md rule 8 — mandatory path invocation (#3798)',
+    'scripts/legal/legal-sanity-scan.sh':
+        'scripts/generate-resource-index.sh:121 publishes '
+        '"./scripts/legal/legal-sanity-scan.sh --repo=<name>" as THE documented '
+        'command; tests/legal/lib.sh:28 has to chmod +x its copy to run it at all, '
+        'which is the workaround proving the source lacks the bit',
 
     # --- repo-wide audit of all 717 tracked-100644 *.sh files ---
     # Kept only where a real execution context (shell/CI/systemd/wrapper) or an
