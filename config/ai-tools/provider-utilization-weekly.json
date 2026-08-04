@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-03T13:21:31.494651Z",
+  "generated_at": "2026-08-03T17:21:15.646138Z",
   "current_week": "2026-W32",
   "report_weeks": 8,
   "subscriptions": {
@@ -746,7 +746,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-08-03T13:20:05Z",
+        "quota_snapshot_ts": "2026-08-03T17:20:05Z",
         "top_tools": [
           {
             "tool": "unknown",
@@ -776,7 +776,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl-estimate",
-        "quota_snapshot_ts": "2026-08-03T13:20:05Z",
+        "quota_snapshot_ts": "2026-08-03T17:20:05Z",
         "top_tools": [
           {
             "tool": "wait",
@@ -860,8 +860,8 @@
     }
   ],
   "paths": {
-    "logs_root": "/mnt/local-analysis/workspace-hub/logs/orchestrator",
+    "logs_root": "/mnt/ace/ws/workspace-hub/logs/orchestrator",
     "quota_weekly_log": "/home/vamsee/.agent-usage/weekly-log.jsonl",
-    "quota_latest": "/mnt/local-analysis/workspace-hub/config/ai-tools/agent-quota-latest.json"
+    "quota_latest": "/mnt/ace/ws/workspace-hub/config/ai-tools/agent-quota-latest.json"
   }
 }

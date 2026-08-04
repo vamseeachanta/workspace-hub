@@ -36,6 +36,47 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "bug",
+          "priority:high",
+          "cat:harness",
+          "domain:workstations",
+          "machine:dev-primary",
+          "status:needs-plan"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3795,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3795",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "priority:medium",
           "compliance-alert"
         ],
@@ -60,40 +101,6 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Compliance alert: W32 \u2014 66% (medium)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3794",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Repo ecosystem sits on NTFS-FUSE; ext4 measures 5-7x faster on git metadata \u2014 evaluate relocating to /mnt/ace"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3793,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "Repo ecosystem sits on NTFS-FUSE; ext4 measures 5-7x faster on git metadata \u2014 evaluate relocating to /mnt/ace",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3793",
       "warnings": []
     },
     {
@@ -8178,12 +8185,53 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-08-03T13:21:36Z",
+  "generated_at": "2026-08-03T17:21:19Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:harness",
+            "domain:workstations",
+            "machine:dev-primary",
+            "status:needs-plan"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3795,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3795",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -8219,40 +8267,6 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Compliance alert: W32 \u2014 66% (medium)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3794",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Repo ecosystem sits on NTFS-FUSE; ext4 measures 5-7x faster on git metadata \u2014 evaluate relocating to /mnt/ace"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3793,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "Repo ecosystem sits on NTFS-FUSE; ext4 measures 5-7x faster on git metadata \u2014 evaluate relocating to /mnt/ace",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3793",
         "warnings": []
       },
       {
@@ -16345,9 +16359,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-08-03T13:21:31.656515Z",
+  "scorecard_generated_at": "2026-08-03T17:21:15.776715Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-08-03T13:21:31.494651Z",
+  "utilization_generated_at": "2026-08-03T17:21:15.646138Z",
   "warning_summary": {
     "approved_no_marker": 15,
     "approved_no_plan": 10,

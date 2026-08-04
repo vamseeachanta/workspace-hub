@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-03T13:21:31.656515Z",
+  "generated_at": "2026-08-03T17:21:15.776715Z",
   "current_week": "2026-W32",
   "inputs": {
-    "utilization_path": "/mnt/local-analysis/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
-    "audit_path": "/mnt/local-analysis/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-08-03T13:21:31.494651Z",
+    "utilization_path": "/mnt/ace/ws/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
+    "audit_path": "/mnt/ace/ws/workspace-hub/analysis/provider-session-ecosystem-audit.json",
+    "utilization_generated_at": "2026-08-03T17:21:15.646138Z",
     "audit_generated_at": "2026-08-03T09:15:08Z"
   },
   "recommended_provider_order": [
