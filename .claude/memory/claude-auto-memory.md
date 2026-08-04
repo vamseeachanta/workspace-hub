@@ -114,7 +114,7 @@
 - [Headless Chrome browsing on ace-linux-1](reference_headless_chrome_browsing_ace_linux_1.md) — no display at all; page loads hang without `--password-store=basic`; Claude extension can't connect headless; Collide blocked at Cloudflare
 - [rclone + Google Drive on this box](reference_rclone_gdrive_setup.md) — remote `gdrive:` OAuth-authorized; throttle `--tpslimit`
 - [Claude hooks cannot see token/cost spend](reference_claude_hooks_cannot_see_spend.md) — hooks enforce tool-COUNT ceilings only
-- [digitalmodel python env](reference_digitalmodel_python_env_venv.md) — use `.venv/bin/python` not `uv run`
+- [digitalmodel python env](reference_digitalmodel_python_env_venv.md) — use `.venv/bin/python` not `uv run` *verified: 2026-08-04*
 - [ace-linux-2 headless VNC](reference_ace_linux_2_headless_vnc.md) — TigerVNC :1/5901; connect via `vnc-ace-linux-2.sh`
 - [Cross-provider dream feed activity (2026-07)](reference_crossprovider_feed_activity_2026_07.md) — only Claude+Codex feed the dream; others `learnings=0` expected
 - [ace-win-1 equality evidence stale](reference_ace_win_1_equality_evidence_stale.md) — acma-ansys05: no scheduler + no gh auth; fix ON-BOX (#2815)

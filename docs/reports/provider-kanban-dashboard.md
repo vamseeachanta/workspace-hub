@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-08-04T01:21:18Z
+Generated: 2026-08-04T05:21:18Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,14 +43,13 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
-| #3795 | bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1 | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3804 | legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3794 | Compliance alert: W32 — 66% (medium) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3792 | feat(scheduler): no transaction attestation exists for systemd-user surfaces, so they can only ever declare missing_transaction | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3790 | 487 pytest-shaped files are excluded from collection across 3 tier-1 repos — audit and resolve each | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3789 | audit(scheduler): add read-only consumer vocabulary + sanctioned disposition for new non-compliant surfaces (#3470 follow-on) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3788 | bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3787 | pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
-| #3784 | bug(workstations): tmux persistence is attach-gated and unwired — no reboot survival on any box, no SSH auto-attach | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3775 | security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3773 | epic(dispatch): six rails required before the loop can run unattended on ace-linux-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3772 | bug(dispatch): lease refs are written to one namespace and synced from another — every host wins every lease | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -243,6 +242,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3458 | bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3457 | fix(worktrees): fail closed on an absent sparse-worktree index | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3456 | security(local-analysis): make parent runtime-config permissions enforceable on fuseblk | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3455 | bug(workstations): reconcile ace-win-1 with the live RDS-002 mapping | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
