@@ -208,6 +208,26 @@ exclusions:
   # tests/legal/test_public_field_data_exclusion.py.
   - "data/field-development/"
   - "docs/field-development/"
+  # ── Vendor name in non-#1773 context (owner decision 2026-08-03) ────────
+  # The #1773 constraint is a COPYRIGHT one: specific code, its proprietary
+  # tool name, and its author. The vendor's company NAME is public and appears
+  # here in ordinary market context — competitor analysis, a hiring-company
+  # list, an email domain->company map, a competitor list in the job scanner.
+  # None of that is derivative of the code, so blocking it produced pure noise.
+  # The company name still blocks everywhere else; these are the paths whose
+  # hits were individually inspected and found to be market research.
+  - "notes/prep/gtm-*.md"
+  - "scripts/gtm/"
+  - "scripts/email/contact-normalizer.py"
+  # This script REDACTS these patterns, and its header comment names them to
+  # explain what it redacts. An enforcement artifact must not be blocked by the
+  # rule it enforces.
+  - "scripts/cron/redact-session-signals.sh"
+  # Completes an already-excluded set: the four sibling files above are
+  # exempt for the same reason — a document INDEX catalogs source filenames,
+  # and a vendor's name inside a filename is a provenance record, not a copy
+  # of the vendor's work.
+  - "data/document-index/index-other-bucket-*.yaml"
   - "*.sim"
   - "*.dat"
 
