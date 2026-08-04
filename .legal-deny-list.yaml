@@ -148,6 +148,31 @@ exclusions:
   # from being blocked while keeping the scan effective for actual code and documentation.
   # See: scripts/cron/commit-learning-artifacts.sh, issue #1985.
   - "logs/orchestrator/"
+  # data/field-development/ and docs/field-development/ are the world-energy
+  # field-development corpus: wholly PUBLIC data (BSEE / SubseaIQ / operator
+  # disclosures) about Gulf of Mexico and international fields.
+  #
+  # The patterns above block strings like "Perdido" and "Prelude FLNG" because
+  # they were CLIENT ENGAGEMENT names under /mnt/ace. The same strings are also
+  # the public names of those fields, and public field-development analysis is
+  # work this ecosystem does deliberately. Exact-string matching cannot tell the
+  # two apart: "Perdido" from a client folder is a leak, "Perdido" in a scan of
+  # public SubseaIQ data is the subject matter. Scanning the public corpus
+  # therefore produces only false positives — 22 of them as of 2026-08-03 — and
+  # a gate that is mostly noise stops being read at all.
+  #
+  # Owner decision 2026-08-03: this corpus is wholly public, vendors are
+  # verified from public sources, and the client-name scan does not apply here.
+  #
+  # SCOPE IS DELIBERATELY NARROW. It is these two directories only. The genuine
+  # findings this scan exists for — "2H Offshore" (copyrighted vendor source)
+  # and "Shankar Sundararaman" (named author), both from the #1773 incident —
+  # live in docs/plans, docs/session-handoffs and scripts/, which stay fully in
+  # scope. Do not widen this to `docs/` or `data/`; that would silently disable
+  # the #1773 protection. Guarded by
+  # tests/legal/test_public_field_data_exclusion.py.
+  - "data/field-development/"
+  - "docs/field-development/"
   - "*.sim"
   - "*.dat"
 
