@@ -3,15 +3,15 @@
  "role": "full",
  "hostname": "ace-linux-1",
  "machine_id": "dev-primary",
- "ts": "2026-08-03T23:17:02.259534+00:00",
- "clone_head": "d158eca92",
- "behind_origin": 0,
- "ahead_origin": 0,
- "harness_version": "2.1.220",
+ "ts": "2026-08-04T05:17:03.322133+00:00",
+ "clone_head": "34523a3b5",
+ "behind_origin": 4,
+ "ahead_origin": 3,
+ "harness_version": "2.1.221",
  "harness_install": "npm-global",
  "registry_sha256": "d118c167d168979bb5d53f7622f2924afc4a4759dd66568cd5d2296cc3aa2858",
  "learning_cron_ages_h": {
-  "comprehensive-learning-nightly": 15.9,
+  "comprehensive-learning-nightly": 21.9,
   "session-analysis": null
  },
  "provider_soul_hashes": {
