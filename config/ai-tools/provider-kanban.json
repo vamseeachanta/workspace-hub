@@ -73,6 +73,7 @@
       "hover": {
         "labels": [
           "priority:medium",
+          "priority:critical",
           "compliance-alert"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8174,7 +8175,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-08-04T09:21:17Z",
+  "generated_at": "2026-08-04T13:21:20Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8228,6 +8229,7 @@
         "hover": {
           "labels": [
             "priority:medium",
+            "priority:critical",
             "compliance-alert"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -16337,9 +16339,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-08-04T09:21:13.113363Z",
+  "scorecard_generated_at": "2026-08-04T13:21:15.537001Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-08-04T09:21:12.993839Z",
+  "utilization_generated_at": "2026-08-04T13:21:15.327231Z",
   "warning_summary": {
     "approved_no_marker": 14,
     "approved_no_plan": 9,

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-04T09:21:15.150407Z",
+  "generated_at": "2026-08-04T13:21:17.685842Z",
   "current_week": "2026-W32",
-  "scorecard_generated_at": "2026-08-04T09:21:13.113363Z",
+  "scorecard_generated_at": "2026-08-04T13:21:15.537001Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -759,6 +759,28 @@
             "domain:governance"
           ],
           "updatedAt": "2026-08-02T11:45:07Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3794,
+          "title": "Compliance alert: W32 \u2014 66% (medium)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3794",
+          "labels": [
+            "priority:medium",
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-08-04T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -3388,27 +3410,6 @@
             "cat:harness"
           ],
           "updatedAt": "2026-08-03T05:49:35Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3794,
-          "title": "Compliance alert: W32 \u2014 66% (medium)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3794",
-          "labels": [
-            "priority:medium",
-            "compliance-alert"
-          ],
-          "updatedAt": "2026-08-03T11:45:14Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
