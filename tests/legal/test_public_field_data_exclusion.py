@@ -56,16 +56,23 @@ MUST_STAY_IN_SCOPE = ["docs/plans", "docs/session-handoffs", "scripts"]
 
 
 def _a_denied_pattern() -> str:
-    """Any blocking pattern, read from the deny list rather than hardcoded.
+    """A BLOCK-severity pattern, read from the deny list rather than hardcoded.
 
-    Which one does not matter: the behaviour under test is "excluded path is not
-    reported, other path is", not the semantics of a particular name.
+    Severity matters here even though the behaviour under test is about paths.
+    These tests assert on the exit code, and a `warn` pattern cannot move it —
+    picking one would make them pass vacuously whether the exclusion works or
+    not. An earlier version took the first pattern in the file; when severity
+    tiers landed, that entry became `warn` and the assertion went hollow, which
+    is how this requirement surfaced.
     """
-    for line in DENY_LIST.read_text().splitlines():
-        m = re.match(r'\s*-\s*pattern:\s*"([^"]+)"', line)
-        if m:
-            return m.group(1)
-    pytest.fail("no pattern entries found in .legal-deny-list.yaml")
+    entries = re.findall(
+        r'-\s*pattern:\s*"([^"]+)"((?:\n(?!\s*-\s*pattern:)[^\n]*)*)',
+        DENY_LIST.read_text(),
+    )
+    for pattern, body in entries:
+        if not re.search(r"^\s*severity:\s*warn\s*$", body, re.MULTILINE):
+            return pattern
+    pytest.fail("no block-severity pattern found in .legal-deny-list.yaml")
 
 
 @pytest.fixture
@@ -151,17 +158,27 @@ def test_exclusions_do_not_swallow_in_scope_paths(path: str) -> None:
         )
 
 
-def test_this_guard_does_not_trip_the_scan_it_guards() -> None:
-    """No deny-listed literal may appear in this file.
+def test_no_legal_test_trips_the_scan_it_guards() -> None:
+    """No deny-listed literal may appear in ANY test in this directory.
 
     An enforcement artifact that trips its own check adds noise to the signal it
-    exists to protect. An earlier draft of this file did exactly that.
+    exists to protect — and it corrupts the measurement used to judge the check,
+    which is worse. This has now happened three times: the first draft of this
+    file added 22 violations, and a later severity-tier test added another,
+    each time making a real improvement look smaller than it was.
+
+    Scoped to the whole directory rather than `__file__`, because the earlier
+    self-only version could not see the sibling that broke it.
     """
-    own_text = Path(__file__).read_text()
     patterns = re.findall(r'\s*-\s*pattern:\s*"([^"]+)"', DENY_LIST.read_text())
     assert patterns, "deny list yielded no patterns to check against"
-    hits = [p for p in patterns if p in own_text]
-    assert not hits, (
-        f"this test file contains deny-listed literals {hits}; read them from "
+    offenders = {}
+    for path in sorted(Path(__file__).parent.glob("*.py")):
+        text = path.read_text()
+        hits = [p for p in patterns if p in text]
+        if hits:
+            offenders[path.name] = hits
+    assert not offenders, (
+        f"legal tests contain deny-listed literals {offenders}; read them from "
         f"the deny list at runtime instead"
     )

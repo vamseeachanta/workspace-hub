@@ -26,52 +26,87 @@ updated: "2026-04-03"
 # NOTE: Generic project numbers (0111, 0127, etc.) are NOT blocked because
 # they are internal ACE numbering, not client-identifiable.
 # ---------------------------------------------------------------------------
+# SEVERITY TIERS (owner decision 2026-08-03)
+#
+# The `block`/`warn` levels documented at the top of this file were never
+# implemented — the scanner counted every match toward its exit code. They are
+# implemented now, and used here to separate two things this list had conflated:
+#
+#   block — the identifier itself is the constraint. Copyright holders, named
+#           authors, proprietary tool names (#1773); a specific WELL
+#           designation or an internal PROJECT NUMBER, which name an
+#           engagement deliverable rather than a place.
+#
+#   warn  — public geography. FIELD, PLATFORM and LEASE-BLOCK names are
+#           published by the operator and the regulator, appear in BSEE /
+#           SubseaIQ data, and are the subject matter of this ecosystem's
+#           public field-development work. They were also client engagement
+#           names, and exact-string matching cannot tell those apart.
+#
+# Measured on origin/main before this change: 71 unique violations and NOT ONE
+# was a leak — 60 were public field names in public-data analysis, GTM
+# competitor research, and auto-generated reports. A gate that is ~85% noise
+# stops being read, which is the real risk to what the gate protects.
+#
+# Warn matches are still REPORTED in full and counted in the summary. The tier
+# changes what FAILS, never what is SEEN.
 client_references:
   - pattern: "Prelude FLNG"
     case_sensitive: false
-    description: "Shell Prelude FLNG — client project"
+    severity: warn
+    description: "Shell Prelude FLNG — public facility name; was a client project"
   - pattern: "West Boreas"
     case_sensitive: false
-    description: "Shell West Boreas — client project"
+    severity: warn
+    description: "Shell West Boreas — public field name; was a client project"
   - pattern: "Perdido"
     case_sensitive: true
-    description: "Shell Perdido — client field name"
+    severity: warn
+    description: "Shell Perdido — public field/spar name; was a client field"
   - pattern: "Caesar Tonga"
     case_sensitive: false
-    description: "Chevron Caesar Tonga — client project"
+    severity: warn
+    description: "Chevron Caesar Tonga — public field name; was a client project"
   - pattern: "Lucius PR-02"
     case_sensitive: false
-    description: "Client well designation"
+    description: "Client WELL designation — identifies an engagement, not a place"
   - pattern: "Matterhorn TLP"
     case_sensitive: false
-    description: "Client platform name"
+    severity: warn
+    description: "Public platform name; was a client platform"
   - pattern: "Horn Mountain"
     case_sensitive: false
-    description: "BP Horn Mountain — client field"
+    severity: warn
+    description: "BP Horn Mountain — public field name; was a client field"
   - pattern: "Carcara"
     case_sensitive: true
-    description: "KM Carcara — client project"
+    severity: warn
+    description: "Carcara — public field name; was a client project"
   - pattern: "Yellowtail"
     case_sensitive: true
-    description: "ExxonMobil Yellowtail — client project"
+    severity: warn
+    description: "ExxonMobil Yellowtail — public field name; was a client project"
   - pattern: "Piklis-1DL"
     case_sensitive: false
-    description: "Client well identifier"
+    description: "Client WELL identifier — identifies an engagement, not a place"
   - pattern: "Jujak-1"
     case_sensitive: false
-    description: "Client well identifier"
+    description: "Client WELL identifier — identifies an engagement, not a place"
   - pattern: "Moho Nord"
     case_sensitive: false
-    description: "Total Moho Nord — client project"
+    severity: warn
+    description: "Total Moho Nord — public field name; was a client project"
   - pattern: "Lakach"
     case_sensitive: true
-    description: "lng-a Lakach — client project"
+    severity: warn
+    description: "Lakach — public field name; was a client project"
   - pattern: "61850_zama"
     case_sensitive: false
-    description: "lng-a Zama — client project number"
+    description: "Internal PROJECT NUMBER + field — names an engagement deliverable"
   - pattern: "MC518"
     case_sensitive: true
-    description: "Client block/lease designation"
+    severity: warn
+    description: "Mississippi Canyon block — public BOEM lease designation"
   - pattern: "2HSPANVIV"
     case_sensitive: false
     description: "2H Offshore proprietary VIV tool name — #1773 clean-room required"
@@ -173,6 +208,26 @@ exclusions:
   # tests/legal/test_public_field_data_exclusion.py.
   - "data/field-development/"
   - "docs/field-development/"
+  # ── Vendor name in non-#1773 context (owner decision 2026-08-03) ────────
+  # The #1773 constraint is a COPYRIGHT one: specific code, its proprietary
+  # tool name, and its author. The vendor's company NAME is public and appears
+  # here in ordinary market context — competitor analysis, a hiring-company
+  # list, an email domain->company map, a competitor list in the job scanner.
+  # None of that is derivative of the code, so blocking it produced pure noise.
+  # The company name still blocks everywhere else; these are the paths whose
+  # hits were individually inspected and found to be market research.
+  - "notes/prep/gtm-*.md"
+  - "scripts/gtm/"
+  - "scripts/email/contact-normalizer.py"
+  # This script REDACTS these patterns, and its header comment names them to
+  # explain what it redacts. An enforcement artifact must not be blocked by the
+  # rule it enforces.
+  - "scripts/cron/redact-session-signals.sh"
+  # Completes an already-excluded set: the four sibling files above are
+  # exempt for the same reason — a document INDEX catalogs source filenames,
+  # and a vendor's name inside a filename is a provenance record, not a copy
+  # of the vendor's work.
+  - "data/document-index/index-other-bucket-*.yaml"
   - "*.sim"
   - "*.dat"
 
