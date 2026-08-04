@@ -279,3 +279,44 @@ def test_deploy_survives_timer_installer_failure(fake_home: Path) -> None:
         f"stderr: {result.stderr}"
     )
     assert (fake_home / ".tmux.conf").is_symlink()
+
+
+# ── Physical root resolution (ext4 migration 2026-08-03) ──────────────────
+
+
+def run_deploy_from(home: Path, script: Path) -> subprocess.CompletedProcess:
+    bash = shutil.which("bash") or "/bin/bash"
+    return subprocess.run(
+        [bash, str(script)],
+        env={"PATH": f"{stub_bin(home)}:/usr/bin:/bin", "HOME": str(home)},
+        capture_output=True,
+        text=True,
+        timeout=90,
+    )
+
+
+def test_deploy_writes_the_physical_root_not_the_invoking_symlink(
+    fake_home: Path, tmp_path: Path
+) -> None:
+    """The deploy script is the WRITER of the SSH login path, so whatever root
+    it resolves becomes the fleet's landing directory until the next run.
+
+    `pwd` is logical: invoked through a symlinked ancestor it reports the
+    symlink, so a single run from the legacy `/mnt/local-analysis` path would
+    silently rewrite the compatibility path back into ~/.bashrc and undo the
+    migration. Only `pwd -P` is idempotent under either invocation path.
+    """
+    install_stubs(fake_home)
+    legacy = tmp_path / "legacy-root"
+    legacy.symlink_to(REPO_ROOT)
+
+    result = run_deploy_from(fake_home, legacy / "scripts" / "setup" / "deploy-tmux.sh")
+    assert result.returncode == 0, result.stderr
+
+    bashrc = (fake_home / ".bashrc").read_text()
+    assert str(REPO_ROOT.resolve()) in bashrc, (
+        "sourcing line must name the physical repo root, got:\n" + bashrc
+    )
+    assert str(legacy) not in bashrc, (
+        "sourcing line must not pin the symlink used to invoke the script"
+    )

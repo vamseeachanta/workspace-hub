@@ -21,7 +21,13 @@ HOST="${WH_HOSTNAME:-$(hostname)}"
 # Resolve workspace root per machine
 case "$HOST" in
   ace-linux-1)
-    WS_ROOT="/mnt/local-analysis/workspace-hub"
+    # Canonical ext4 root since the 2026-08-03 migration. The legacy
+    # local-analysis path still resolves here through a compatibility symlink,
+    # so naming that one would also "work" — which is the trap. `pwd` is
+    # LOGICAL, so a session rooted through the symlink reports the legacy path
+    # in every prompt, log line and $PWD-derived path, and anything matching on
+    # the canonical root misses.
+    WS_ROOT="/mnt/ace/ws/workspace-hub" # abs-path-allowed
     ;;
   ace-linux-2)
     # Both /mnt/workspace-hub and /mnt/local-analysis/workspace-hub exist on
