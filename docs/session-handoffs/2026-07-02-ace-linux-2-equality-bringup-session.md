@@ -32,7 +32,7 @@ Live matrix: <https://vamseeachanta.github.io/workspace-hub/machine-equality-mat
 - **memory_freshness: MEMORY-EXPIRED** — `context.md` 143h, hermes memories 121h; content staleness, fleet-wide, needs actual memory-surface refresh, not wiring.
 - **R-PRECOMMIT fail:** assetutilities / worldenergydata / assethold `.pre-commit-config.yaml` lack the `legal-sanity-scan` entry → 3 small sibling PRs.
 - **dev-primary column is STALE-CHECKOUT from its own evidence** (published 06:54 today with `dirty:true, behind:5` from its interactive checkout) — fix belongs on ace-linux-1; it also skews this box's peer-comparison cells (`behavior/scheduler/memory: DIVERGES`, `harness: NO-MAJORITY`).
-- **Legal-scan noise:** full-repo scan FAILs on ~142 pre-existing legacy-log false positives (Prelude FLNG / 2H Offshore in `logs/`), already documented 2026-05-20 with a "scanner should exclude logs/" follow-up — worth a small PR.
+- **Legal-scan noise:** full-repo scan FAILs on ~142 pre-existing legacy-log false positives (deny-list field-name / vendor-name patterns in `logs/`; names withheld 2026-08-04), already documented 2026-05-20 with a "scanner should exclude logs/" follow-up — worth a small PR.
 - ace-win-1 / ace-win-2 steps from the #3342 rollout prompt (gh auth, Git Bash manual publish, #2815 schedules) remain for those boxes.
 
 ## No-external-action status
