@@ -21,7 +21,14 @@
 
 set -euo pipefail
 
-REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+# `pwd -P`, never a bare `pwd`. This script WRITES the sourcing line into
+# ~/.bashrc, so whatever root it resolves becomes the fleet's SSH landing path
+# until the next run. `pwd` is logical: invoked once through a symlinked
+# ancestor (the legacy local-analysis path is now a compatibility symlink onto
+# the ext4 root, per the 2026-08-03 migration) it would silently rewrite that
+# path back in and undo the migration. Only the physical root is idempotent
+# under either invocation path.
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd -P)"
 SRC="${REPO_ROOT}/config/tmux/tmux.conf"
 DEST="$HOME/.tmux.conf"
 AUTOATTACH="${REPO_ROOT}/config/tmux/autoattach.sh"

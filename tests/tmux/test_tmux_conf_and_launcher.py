@@ -136,3 +136,30 @@ def test_launcher_hostname_is_injectable(tmp_path: Path) -> None:
     """Needed so the per-host branches are testable at all."""
     calls = run_launcher("gpu-claw", tmp_path)
     assert calls, "launcher produced no tmux calls under a stubbed hostname"
+
+
+# ── Canonical work surface: /mnt/ace/ws (ext4 migration 2026-08-03) ───────
+#
+# `/mnt/local-analysis` is now only a compatibility symlink onto the real ext4
+# root. Both paths reach the same inodes, so nothing BREAKS while the launcher
+# names the legacy one — which is exactly why this needs a test rather than an
+# eyeball. The cost of the symlink path is silent: `pwd` is logical, so every
+# shell, log line and `$PWD`-derived path started from it reports the legacy
+# root, and any consumer that string-matches the canonical root misses.
+
+
+def test_launcher_roots_ace_linux_1_at_the_canonical_surface(tmp_path: Path) -> None:
+    calls = run_launcher("ace-linux-1", tmp_path)
+    assert "-c /mnt/ace/ws/workspace-hub" in calls, (
+        "ace-linux-1's tmux windows must open on the canonical ext4 root, got:\n"
+        f"{calls}"
+    )
+
+
+def test_launcher_does_not_route_ace_linux_1_through_the_legacy_symlink() -> None:
+    """Asserted on directives, not raw text: the ace-linux-2 branch's comment
+    legitimately names the legacy path, and a whole-file grep would read it."""
+    text = directives(LAUNCHER)
+    assert "/mnt/local-analysis/workspace-hub" not in text.split("ace-linux-2")[0], (
+        "ace-linux-1 must not resolve through the compatibility symlink"
+    )
