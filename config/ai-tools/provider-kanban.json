@@ -848,9 +848,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -860,6 +859,7 @@
           "priority:high",
           "cat:operations",
           "machine:dev-primary",
+          "status:plan-review",
           "domain:ci-release"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -883,7 +883,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3728",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -6710,9 +6712,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -6721,6 +6722,7 @@
         "labels": [
           "cat:harness",
           "machine:dev-primary",
+          "status:plan-review",
           "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -6744,7 +6746,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3523",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8175,7 +8179,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-08-05T09:21:24Z",
+  "generated_at": "2026-08-05T13:21:18Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -9004,9 +9008,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9016,6 +9019,7 @@
             "priority:high",
             "cat:operations",
             "machine:dev-primary",
+            "status:plan-review",
             "domain:ci-release"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9039,7 +9043,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3728",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -14866,9 +14872,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -14877,6 +14882,7 @@
           "labels": [
             "cat:harness",
             "machine:dev-primary",
+            "status:plan-review",
             "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -14900,7 +14906,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3523",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16339,16 +16347,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-08-05T09:21:20.653318Z",
+  "scorecard_generated_at": "2026-08-05T13:21:13.884008Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-08-05T09:21:20.502799Z",
+  "utilization_generated_at": "2026-08-05T13:21:13.740972Z",
   "warning_summary": {
     "approved_no_marker": 14,
     "approved_no_plan": 9,
     "legacy_review_no_sha": 10,
     "major_review": 5,
     "marker_without_open_approved_issue": 177,
-    "missing_review": 33,
+    "missing_review": 35,
     "unavailable_review": 6
   }
 }

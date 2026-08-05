@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-08-05T09:21:24Z
+Generated: 2026-08-05T13:21:18Z
 Mode: static (read-only)
 
 ## How to approve
@@ -64,7 +64,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3736 | Two sources of truth for routing have diverged: kanban board mirror holds 37 retired labels | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3734 | feat(capability): ace-win-1 has idle licensed AQWA capacity that nothing routes to | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3731 | chore(scheduler): register dispatch-run.ps1 as a mutation surface, and fix the guard's stale digest | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3728 | CI: stale command-identity inventory red-lights every PR, including docs-only ones | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3728 | CI: stale command-identity inventory red-lights every PR, including docs-only ones | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3724 | bug(equality): 4 of 5 matrix rows are stale and render identically to fresh ones | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3723 | ops(fleet): derive fleet-ssh-hosts.yml reachability from the generated matrix, not a hand-maintained list | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3721 | ops(ace-win-2): install OpenSSH Server — host is up and answering, only the service is missing | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -208,7 +208,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3526 | feat(windows): daily report-only ecosystem reconciliation audit | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3525 | [WRK] Investigate safe remote Claude job dispatch to ace-win-2 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
 | #3524 | [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #3523 | bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3523 | bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3522 | security(legal): migrate sensitive deny-list values out of public repository history | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3521 | Legal scanner: support explicit NUL-safe staged-blob pathsets | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3518 | fix(scheduler): keep setup-cron wrapper attestation pin synchronized | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
