@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-06T05:21:18.190021Z",
+  "generated_at": "2026-08-06T09:21:12.969118Z",
   "current_week": "2026-W32",
   "report_weeks": 8,
   "subscriptions": {
@@ -746,7 +746,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-08-06T05:20:05Z",
+        "quota_snapshot_ts": "2026-08-06T09:20:05Z",
         "top_tools": [
           {
             "tool": "unknown",
@@ -768,23 +768,23 @@
       "codex": {
         "provider": "codex",
         "week": "2026-W32",
-        "sessions": 42,
-        "post_records": 1472,
-        "activity_utilization_pct": 3.8,
+        "sessions": 44,
+        "post_records": 1536,
+        "activity_utilization_pct": 4.0,
         "quota_utilization_pct": 0.9,
         "reported_utilization_pct": 0.9,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl-estimate",
-        "quota_snapshot_ts": "2026-08-06T05:20:05Z",
+        "quota_snapshot_ts": "2026-08-06T09:20:05Z",
         "top_tools": [
+          {
+            "tool": "Bash",
+            "count": 440
+          },
           {
             "tool": "wait",
             "count": 399
-          },
-          {
-            "tool": "Bash",
-            "count": 376
           },
           {
             "tool": "wait_agent",
@@ -800,7 +800,7 @@
           }
         ],
         "first_ts": "2026-08-03T02:16:17.907000Z",
-        "last_ts": "2026-08-04T16:33:15.997000Z",
+        "last_ts": "2026-08-05T10:58:04.520000Z",
         "note": "week_messages/weekly_limit from history.jsonl-estimate"
       },
       "agy": {
