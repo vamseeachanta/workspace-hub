@@ -1,19 +1,19 @@
-generated_at: "2026-08-06T18:47:03"
+generated_at: "2026-08-07T00:47:03"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "dde3c15d6"
+  checkout_sha: "a86e58f67"
   dirty: false
   behind_main: 7
-  ahead_main: 16
-  origin_ref_age_h: 11
+  ahead_main: 18
+  origin_ref_age_h: 17
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32037, gpu_model: "none"}
-    headroom: {ram_avail_mib: 28958, disk_avail_gb: 1988}
+    headroom: {ram_avail_mib: 28929, disk_avail_gb: 1988}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: true
     job_count: 63
   session_curation:
-    last_curated_at: "2026-08-06T23:47:01+00:00"
+    last_curated_at: "2026-08-07T05:47:02+00:00"
     sessions_24h: 8
     providers_active: "claude,codex,gemini,hermes"
     memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-08-06T23:47:02+00:00"
+    audited_at: "2026-08-07T05:47:03+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,11 +84,11 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-08-06T23:47:02+00:00"
-    worst_age_hours: 14.367
+    audited_at: "2026-08-07T05:47:03+00:00"
+    worst_age_hours: 20.367
     freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-08-06T23:47:03+00:00"
+    audited_at: "2026-08-07T05:47:03+00:00"
     repos_total: 17
     healthy: 45
     repairable: 6
