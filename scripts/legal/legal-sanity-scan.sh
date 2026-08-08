@@ -277,6 +277,72 @@ parse_deny_list() {
 }
 
 # --------------------------------------------------------------------------
+# dedupe_patterns: collapse duplicate patterns from the merged deny lists.
+#
+# Reads `pattern|case_flag|severity` on stdin, emits each distinct PATTERN once,
+# in first-appearance order.
+#
+# WHY THIS EXISTS
+# ---------------
+# scan_directory merges a global and a local deny list. When the scan target IS
+# the workspace root the two paths name THE SAME FILE, so every pattern arrived
+# twice, was searched twice, and every hit was counted twice — the scan reported
+# exactly 2x its real findings, and had done so for as long as it has existed.
+# A submodule that re-declares a pattern the global list already carries (which
+# "extend, not replace" positively invites) produces the same doubling by a
+# different route. Deduplicating the work list fixes both, and needs no realpath
+# comparison — so it is unaffected by symlinked or bind-mounted deny lists, and
+# by realpath/readlink -f not being portable to BSD and git-bash.
+#
+# Searching for the same string twice cannot find anything the first search
+# missed, so collapsing duplicates is information-preserving by construction.
+#
+# MERGE RULES — fail-OPEN on breadth, fail-CLOSED on severity, so the collapsed
+# entry finds exactly the union of what the duplicates found and never demotes:
+#   case_flag  "i" wins — case-insensitive matches are a superset of
+#              case-sensitive ones, so the single search returns the union.
+#   severity   "block" wins — a duplicate declaration must never downgrade a
+#              blocking pattern to advisory. Same posture as the
+#              unrecognised-severity handling below.
+#
+# The split is right-anchored (${x##*|} / ${x%|*}) because a pattern may itself
+# contain '|'; case_flag and severity never do.
+# --------------------------------------------------------------------------
+dedupe_patterns() {
+  local -A seen_case=()
+  local -A seen_sev=()
+  local order=()
+  local line sev rest cf pat p
+
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    sev="${line##*|}"
+    rest="${line%|*}"
+    cf="${rest##*|}"
+    pat="${rest%|*}"
+    [[ -z "$pat" ]] && continue
+
+    if [[ -z "${seen_case[$pat]+set}" ]]; then
+      order+=("$pat")
+      seen_case["$pat"]="$cf"
+      seen_sev["$pat"]="$sev"
+    else
+      # Written as plain `if`s, not `[[ ]] && ...`: under `set -e` a trailing
+      # short-circuit that evaluates false makes the enclosing block return
+      # non-zero. In a legal gate an accidental early return is a silent
+      # scan-nothing pass, so the branch must not depend on that subtlety.
+      if [[ "$cf" == "i" ]]; then seen_case["$pat"]="i"; fi
+      if [[ "$sev" == "block" ]]; then seen_sev["$pat"]="block"; fi
+    fi
+  done
+
+  [[ ${#order[@]} -eq 0 ]] && return 0
+  for p in "${order[@]}"; do
+    printf '%s|%s|%s\n' "$p" "${seen_case[$p]}" "${seen_sev[$p]}"
+  done
+}
+
+# --------------------------------------------------------------------------
 # Build exclusion args for ripgrep from the exclusions list
 # --------------------------------------------------------------------------
 parse_exclusions() {
@@ -384,21 +450,30 @@ scan_directory() {
   local global_list="$WORKSPACE_ROOT/.legal-deny-list.yaml"
   local local_list="$scan_dir/.legal-deny-list.yaml"
 
+  # A local list EXTENDS the global one (per the deny list's own header), but
+  # for a root scan the two are the same file — dedupe_patterns collapses the
+  # resulting duplicates so each pattern is searched, and counted, exactly once.
   local patterns
-  patterns="$(parse_deny_list "$global_list"; parse_deny_list "$local_list")"
+  patterns="$( { parse_deny_list "$global_list"; parse_deny_list "$local_list"; } \
+                 | dedupe_patterns )"
   [[ -z "$patterns" ]] && return 0
+
+  # Exclusions, parsed ONCE and deduped for the same reason. `awk !seen[$0]++`
+  # preserves first-appearance order; every entry is a negation, so order is not
+  # load-bearing, but keeping it makes the change a pure no-op on behaviour.
+  local exclusions
+  exclusions="$( { parse_exclusions "$global_list"; parse_exclusions "$local_list"; } \
+                   | awk 'NF && !seen[$0]++' )"
 
   # Build exclusion globs
   local excl_args=()
-  while IFS= read -r glob; do
-    [[ -n "$glob" ]] && excl_args+=("--glob" "!$glob")
-  done < <(parse_exclusions "$global_list"; parse_exclusions "$local_list")
-
   # Build exclusion pattern list for file filtering
   local excl_patterns=()
   while IFS= read -r glob; do
-    [[ -n "$glob" ]] && excl_patterns+=("$glob")
-  done < <(parse_exclusions "$global_list"; parse_exclusions "$local_list")
+    [[ -n "$glob" ]] || continue
+    excl_args+=("--glob" "!$glob")
+    excl_patterns+=("$glob")
+  done <<< "$exclusions"
 
   # Determine file list
   local file_args=()
