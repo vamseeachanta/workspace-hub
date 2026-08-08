@@ -1,8 +1,8 @@
 {
   "machine": "dev-primary",
-  "last_curated_at": "2026-08-07T23:47:02+00:00",
+  "last_curated_at": "2026-08-08T05:47:01+00:00",
   "providers": {
-    "claude": 5444,
+    "claude": 5445,
     "codex": 4390,
     "gemini": 2177,
     "hermes": 0

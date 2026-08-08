@@ -7,7 +7,7 @@
 # Workspace Hub Memory
 
 > Curated live index; full detail lives in each topic file. COMPLETE record is in
-> `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below.
+> `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below. *stale: 2026-08-08*
 
 ## Active & Recent Projects
 - [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" definitions, 0/56 wells agree (6.6× gap); reference basis = BSEE WAR `WELL_ACTIVITY_CD`. EPIC #1063 + #1064–#1081. NEXT: #1064 basis decision w/ Roy (HARD BLOCKER)
@@ -43,7 +43,7 @@
 
 ## Key Lessons (how to work)
 - [Machine identity — ⚠ #565 SUPERSEDED by deckhand#581](feedback_machine_identity_is_logical_alias_565.md) — 2026-07-30 owner decision: route by **canonical lowercase hostname, PRIVATE tier only**; public workspace-hub keeps **neutral tokens** (`ace-win-1`…), no ACMA hostname in a public label. Field `host_aliases` stays, values change; casefold on join; never rewrite historical queue JSON. Heartbeat-filename freeze + hostname-rejecting tests now INVERT. Still true: tier split, `verified_at`, deckhand = promotable, **scan your own plan artifacts**
-- [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included**
+- [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included** *verified: 2026-08-08*
 - [Absence of signal reads as success](feedback_absence_of_signal_reads_as_success.md) — missing check looks GREENER than failing one; verify every suppression's stated reason (comments lie); import scans are blind to `engine=`/entry-point deps
 - [Verify subagent line citations, not just claims](feedback_verify_subagent_line_citations_not_just_claims.md) — a defect existing ≠ it being at that line; cite the SYMBOL when coordinates aren't cheap to confirm
 - [Report-hub design system (owner-approved)](feedback_report_hub_design_system.md) — hub grammar = THE design for ALL field-data surfaces; data → HF `aceengineer/*`; ref impl wed PR #1058
@@ -69,7 +69,7 @@
 - [Keep data at fingertips](feedback_keep_data_at_fingertips.md) — delete only regenerable cruft; keep + back up data
 - [Document discovered data sources as GH data issues](feedback_document_discovered_data_sources_as_issues.md) — side-finds → `cat:data` issues
 - [Avoid "A&CE" branding](feedback_avoid_ace_branding.md) — use "AceEngineer"
-- [wed PR titles: conventional types only](feedback_wed_pr_title_conventional_types_only.md) — `data(cost):` FAILS Validate-PR-Title; use `feat/fix/docs(...)`, ≤80 chars
+- [wed PR titles: conventional types only](feedback_wed_pr_title_conventional_types_only.md) — `data(cost):` FAILS Validate-PR-Title; use `feat/fix/docs(...)`, ≤80 chars *stale: 2026-08-08*
 - [Agent can verify but NOT self-merge its own PR](feedback_agent_can_verify_but_not_self_merge_pr.md) — hand human the merge line (exceptions: digitalmodel, explicit "merge")
 - [Epic wrap-up → open issues + parallel agents](feedback_epic_wrapup_issues_then_parallel_agents.md) — no dangling lists; ~3 lanes; worktrees sequential
 - [Squash-merge breaks stacked PRs](feedback_squash_merge_breaks_stacked_prs.md) — spine squash auto-closes children; shared lanes → ONE integration PR
@@ -118,4 +118,4 @@
 - [ace-linux-2 headless VNC](reference_ace_linux_2_headless_vnc.md) — TigerVNC :1/5901; connect via `vnc-ace-linux-2.sh`
 - [Cross-provider dream feed activity (2026-07)](reference_crossprovider_feed_activity_2026_07.md) — only Claude+Codex feed the dream; others `learnings=0` expected
 - [ace-win-1 equality evidence stale](reference_ace_win_1_equality_evidence_stale.md) — acma-ansys05: no scheduler + no gh auth; fix ON-BOX (#2815)
-- [Dynacard module map (digitalmodel)](reference_dynacard_module_map_digitalmodel.md) — `marine_ops/artificial_lift/dynacard/`; 18 modes; ⚠ 89.4% is synthetic-CV only, real-card benchmark unimplemented
+- [Dynacard module map (digitalmodel)](reference_dynacard_module_map_digitalmodel.md) — `marine_ops/artificial_lift/dynacard/`; 18 modes; ⚠ 89.4% is synthetic-CV only, real-card benchmark unimplemented *stale: 2026-08-08*
