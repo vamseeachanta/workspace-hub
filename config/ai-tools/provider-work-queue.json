@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-10T09:21:16.090964Z",
+  "generated_at": "2026-08-10T13:21:13.566126Z",
   "current_week": "2026-W33",
-  "scorecard_generated_at": "2026-08-10T09:21:13.965393Z",
+  "scorecard_generated_at": "2026-08-10T13:21:11.454983Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -794,20 +794,16 @@
           ]
         },
         {
-          "number": 3455,
-          "title": "bug(workstations): reconcile ace-win-1 with the live RDS-002 mapping",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3455",
+          "number": 3808,
+          "title": "Compliance alert: W33 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3808",
           "labels": [
-            "bug",
-            "priority:high",
-            "cat:operations",
-            "domain:workstations",
-            "machine:multi",
-            "status:needs-plan"
+            "priority:critical",
+            "compliance-alert"
           ],
-          "updatedAt": "2026-07-27T01:19:13Z",
+          "updatedAt": "2026-08-10T11:45:05Z",
           "execution_ready": false,
-          "priority_rank": 1,
+          "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",

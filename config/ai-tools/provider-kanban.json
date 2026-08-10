@@ -36,6 +36,43 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:critical",
+          "compliance-alert"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Compliance alert: W33 \u2014 0% (critical)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3808,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Compliance alert: W33 \u2014 0% (critical)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3808",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "domain:security"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8136,55 +8173,51 @@
       "title": "security(local-analysis): make parent runtime-config permissions enforceable on fuseblk",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3456",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "priority:high",
-          "cat:operations",
-          "domain:workstations",
-          "machine:multi",
-          "status:needs-plan"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "bug(workstations): reconcile ace-win-1 with the live RDS-002 mapping"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3455,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "bug(workstations): reconcile ace-win-1 with the live RDS-002 mapping",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3455",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-08-10T09:21:18Z",
+  "generated_at": "2026-08-10T13:21:15Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Compliance alert: W33 \u2014 0% (critical)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3808,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Compliance alert: W33 \u2014 0% (critical)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3808",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16296,47 +16329,6 @@
         "title": "security(local-analysis): make parent runtime-config permissions enforceable on fuseblk",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3456",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:operations",
-            "domain:workstations",
-            "machine:multi",
-            "status:needs-plan"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "bug(workstations): reconcile ace-win-1 with the live RDS-002 mapping"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3455,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "bug(workstations): reconcile ace-win-1 with the live RDS-002 mapping",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3455",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16347,9 +16339,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-08-10T09:21:13.965393Z",
+  "scorecard_generated_at": "2026-08-10T13:21:11.454983Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-08-10T09:21:13.865207Z",
+  "utilization_generated_at": "2026-08-10T13:21:11.350855Z",
   "warning_summary": {
     "approved_no_marker": 14,
     "approved_no_plan": 9,
