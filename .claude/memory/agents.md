@@ -1,12 +1,12 @@
 # Agent Workflow Facts
 
 > Git-tracked. Applies to all AI agents working in this repo on any machine.
-> Refreshed by `scripts/memory/bridge-hermes-claude.sh` — edit the template, *verified: 2026-08-10*
+> Refreshed by `scripts/memory/bridge-hermes-claude.sh` — edit the template,
 > not the generated file.
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-08-09)
+## Synced from Hermes Memory (2026-08-10)
 
 ### Environment Facts
 
@@ -90,7 +90,7 @@ Establish weekly GTM targets interactively with the owner, then turn them into b
 - `aceengineer-strategy/` — private nested repo with full GTM strategy
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
 - Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
-- Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron) *verified: 2026-08-10*
+- Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)
 - GTM control rule: continuous AI work should convert external signals, repo engineering work, and approved issue outputs into client-ready material, but keep engineering evidence boundaries explicit.
 - Public-promotion rule: raw data may feed internal code/wiki preparation, but public `llm-wiki` and artifacts must carry provenance plus data/code/standards/methodology separation and pass legal sanity checks.
 - Control-surface rule: `ace-linux-1` remains the approval and reconciliation surface while `ace-linux-1` / `ace-linux-2` long-running lanes keep planning, execution, review, and GTM packaging moving in the background.

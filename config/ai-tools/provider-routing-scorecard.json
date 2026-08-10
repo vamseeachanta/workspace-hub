@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-10T05:21:12.346304Z",
+  "generated_at": "2026-08-10T09:21:13.965393Z",
   "current_week": "2026-W33",
   "inputs": {
     "utilization_path": "/mnt/ace/ws/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/ace/ws/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-08-10T05:21:12.245195Z",
-    "audit_generated_at": "2026-08-03T09:15:08Z"
+    "utilization_generated_at": "2026-08-10T09:21:13.865207Z",
+    "audit_generated_at": "2026-08-10T09:15:04Z"
   },
   "recommended_provider_order": [
     "agy",
@@ -22,23 +22,23 @@
       "quota_source": "unavailable",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 123411,
-      "missing_repo_reads": 9480,
+      "audit_post_records": 123474,
+      "missing_repo_reads": 9478,
       "python3_per_1k_records": 9.1,
-      "migration_debt_per_1k_records": 13.97,
+      "migration_debt_per_1k_records": 13.96,
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 65591
+          "count": 65605
         },
         {
           "tool": "Read",
-          "count": 21603
+          "count": 21607
         },
         {
           "tool": "unknown",
-          "count": 9734
+          "count": 9779
         },
         {
           "tool": "Edit",
@@ -88,19 +88,19 @@
       "quota_source": "history.jsonl-estimate",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 206929,
+      "audit_post_records": 207537,
       "missing_repo_reads": 1705,
-      "python3_per_1k_records": 13.67,
+      "python3_per_1k_records": 13.63,
       "migration_debt_per_1k_records": 0.05,
       "top_migration_hint": "llm_wiki_spinout_path_drift",
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 168572
+          "count": 168941
         },
         {
           "tool": "wait",
-          "count": 12199
+          "count": 12283
         },
         {
           "tool": "Read",
@@ -108,11 +108,11 @@
         },
         {
           "tool": "wait_agent",
-          "count": 6947
+          "count": 7001
         },
         {
           "tool": "send_message",
-          "count": 2308
+          "count": 2353
         },
         {
           "tool": "Grep",
@@ -120,7 +120,7 @@
         },
         {
           "tool": "spawn_agent",
-          "count": 1618
+          "count": 1641
         },
         {
           "tool": "update_plan",
