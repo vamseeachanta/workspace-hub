@@ -34,7 +34,7 @@ Continued from prior handoff `2026-05-20-issue-2746-execution-complete-2745-pend
 | Evidence file 404 on workspace-hub:main | BLOCKER | Committed `f6086ccbd` + `1dea82a57`, pushed; 0/0 divergence confirmed |
 | Backup file-count not literally re-run (path-isolation proxy) | BLOCKER | Re-ran find once ext4 contention eased: 10,729 = 10,729 ✓ |
 | Hook tested via direct-exec only | MAJOR | Verified via actual `git add + git commit`: FROZEN message + blocked commit + working tree restored ✓ |
-| Broad legal-sanity-scan substituted | MAJOR | Ran broad scan; surfaced ONLY legacy-log false-positives (Prelude FLNG=128, 2H Offshore=25, Shankar Sundararaman=8+74+6+6 — all in `logs/quality/comprehensive-learning-*.log` + `logs/orchestrator/hermes/session_*.jsonl`). #2745 artifacts contributed ZERO. Follow-up: scanner should exclude `logs/`. |
+| Broad legal-sanity-scan substituted | MAJOR | Ran broad scan; surfaced ONLY legacy-log false-positives (field-name pattern=128, vendor-name pattern=25, author-name pattern=8+74+6+6 — pattern names withheld 2026-08-04: quoting them here made this handoff itself fail the scan it describes — all in `logs/quality/comprehensive-learning-*.log` + `logs/orchestrator/hermes/session_*.jsonl`). #2745 artifacts contributed ZERO. Follow-up: scanner should exclude `logs/`. |
 
 Claude minor findings (reversal-step gap, cleanup audit) — documented in evidence file + T10 comment.
 
