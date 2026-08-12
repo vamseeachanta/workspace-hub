@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-12T09:21:11.688480Z",
+  "generated_at": "2026-08-12T13:21:16.099333Z",
   "current_week": "2026-W33",
-  "scorecard_generated_at": "2026-08-12T09:21:09.606132Z",
+  "scorecard_generated_at": "2026-08-12T13:21:14.169080Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 18,
-      "total_candidates": 174,
+      "total_candidates": 175,
       "top_issues": [
         {
           "number": 3500,
@@ -801,7 +801,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-08-11T11:45:05Z",
+          "updatedAt": "2026-08-12T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -4114,6 +4114,29 @@
           ]
         },
         {
+          "number": 3703,
+          "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3703",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "machine:multi",
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-08-12T13:12:20Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 3705,
           "title": "bug(sync): repository_sync auto-commits to protected main branches, stranding commits that can never be pushed",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3705",
@@ -4122,9 +4145,9 @@
             "cat:harness",
             "domain:workstations",
             "machine:multi",
-            "status:needs-plan"
+            "status:plan-review"
           ],
-          "updatedAt": "2026-07-29T23:11:27Z",
+          "updatedAt": "2026-08-12T13:12:24Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4371,7 +4394,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 7,
-      "total_candidates": 25,
+      "total_candidates": 24,
       "top_issues": [
         {
           "number": 3516,
@@ -5042,29 +5065,6 @@
             "domain:harness"
           ],
           "updatedAt": "2026-07-31T08:33:33Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3703,
-          "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3703",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-07-29T13:42:28Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

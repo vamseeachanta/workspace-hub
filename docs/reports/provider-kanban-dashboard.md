@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-08-12T09:21:13Z
+Generated: 2026-08-12T13:21:18Z
 Mode: static (read-only)
 
 ## How to approve
@@ -77,9 +77,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3708 | bug(cron): no safe crontab re-apply path — audit fail-closed on 47 uncataloged lines and setup-cron --replace disabled | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3707 | bug(cron): daily-cleanup has never disposed of anything — 4 independent defects, and its only scheduler died 2026-06-16 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3706 | infra: Git LFS budget exhausted account-wide, blocking binary-heavy repos from version-controlling assets | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3705 | bug(sync): repository_sync auto-commits to protected main branches, stranding commits that can never be pushed | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3705 | bug(sync): repository_sync auto-commits to protected main branches, stranding commits that can never be pushed | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3704 | bug(equality): reconcile-ecosystem.sh scans stale refs without fetching, so "0 actions" is not evidence of health | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3703 | bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3703 | bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3702 | bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
 | #3698 | PR gate is baseline-red: two enforcement checks fail on every PR, plus an undeclared test dep | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3696 | chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
