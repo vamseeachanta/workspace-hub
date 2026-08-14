@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "scope": "session_corrections",
-  "updated_at": "2026-08-13T07:20:57+00:00",
+  "updated_at": "2026-08-14T07:20:51+00:00",
   "threshold": 80,
   "previous": 80,
   "default": 80,
