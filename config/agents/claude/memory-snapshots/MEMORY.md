@@ -40,6 +40,7 @@
 - [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
 
 ## Key Lessons (how to work)
+- ⚠ [Dispatch ONLY to gpu-claw + ace-linux-2](feedback_dispatch_only_gpu_claw_and_ace_linux_2.md) — owner 2026-08-14; ace-linux-1 = control surface only (its `/` hit 99%, forcing a shared checkout that crossed two lanes' commits). ace-linux-2 = 32 cores + **825 GB local** scratch, but its `/mnt/ace` is ace-linux-1's disk over NFS — write to local paths or gain nothing
 - [Scheduler audit digest covers the CI workflows](feedback_scheduler_audit_digest_covers_ci_workflows.md) — editing enforcement-gate.yml …
 - [Delegate sync cycles; keep main on work](feedback_delegate_sync_cycles_keep_main_on_work.md) — merge babysitting, check polling, agent …
 - [Infrastructure work must not crowd out delivery](feedback_infrastructure_work_must_not_crowd_out_delivery.md) — tooling findings are self-justifying and chain endlessly; FILE them with the measurement, fix inline only when they block the actual task. Watch the ratio and say so

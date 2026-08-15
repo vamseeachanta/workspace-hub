@@ -1,4 +1,4 @@
-generated_at: '2026-08-14T07:20:49Z'
+generated_at: '2026-08-15T07:21:09Z'
 machine: dev-primary
 window_days: 14
 recur_days: 3
@@ -21,7 +21,7 @@ candidates:
   rationale: "git_missing_wrk_ref drifted on 3 distinct days over 14d \u2014 repeated\
     \ rule miss; capture as guidance or sanctioned exception."
   status: candidate
-  active: true
+  active: false
 - drift_class: git_non_conventional
   kind: skill-guide
   target: git-workflow rule / conventional-commit guide
