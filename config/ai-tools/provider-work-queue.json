@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-16T09:21:12.473172Z",
+  "generated_at": "2026-08-16T13:21:15.599417Z",
   "current_week": "2026-W33",
-  "scorecard_generated_at": "2026-08-16T09:21:10.092166Z",
+  "scorecard_generated_at": "2026-08-16T13:21:13.637268Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -801,7 +801,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-08-15T11:45:07Z",
+          "updatedAt": "2026-08-16T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
