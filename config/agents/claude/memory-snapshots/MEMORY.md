@@ -40,6 +40,7 @@
 - [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
 
 ## Key Lessons (how to work)
+- [Track fleet lanes from the control surface](feedback_track_fleet_lanes_from_control_surface.md) — disk registry + `scripts/fleet/lane-sweep.sh`, NOT memory. **Never poll a remote lane by process name** — `pgrep -f "X"` matches the ssh carrying it (one waiter ran 13.5 h past its job); poll a marker file, kill by PID
 - ⚠ [Dispatch ONLY to gpu-claw + ace-linux-2](feedback_dispatch_only_gpu_claw_and_ace_linux_2.md) — owner 2026-08-14; ace-linux-1 = control surface only (its `/` hit 99%, forcing a shared checkout that crossed two lanes' commits). ace-linux-2 = 32 cores + **825 GB local** scratch, but its `/mnt/ace` is ace-linux-1's disk over NFS — write to local paths or gain nothing
 - [Scheduler audit digest covers the CI workflows](feedback_scheduler_audit_digest_covers_ci_workflows.md) — editing enforcement-gate.yml …
 - [Delegate sync cycles; keep main on work](feedback_delegate_sync_cycles_keep_main_on_work.md) — merge babysitting, check polling, agent …
