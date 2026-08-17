@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-17T05:21:09.950205Z",
+  "generated_at": "2026-08-17T09:21:09.903096Z",
   "current_week": "2026-W34",
   "inputs": {
     "utilization_path": "/mnt/ace/ws/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/ace/ws/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-08-17T05:21:09.848199Z",
-    "audit_generated_at": "2026-08-10T09:15:04Z"
+    "utilization_generated_at": "2026-08-17T09:21:09.797174Z",
+    "audit_generated_at": "2026-08-17T09:15:04Z"
   },
   "recommended_provider_order": [
     "codex",
@@ -88,15 +88,15 @@
       "quota_source": "history.jsonl-estimate",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 207537,
+      "audit_post_records": 207589,
       "missing_repo_reads": 1705,
-      "python3_per_1k_records": 13.63,
+      "python3_per_1k_records": 13.62,
       "migration_debt_per_1k_records": 0.05,
       "top_migration_hint": "llm_wiki_spinout_path_drift",
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 168941
+          "count": 168993
         },
         {
           "tool": "wait",
