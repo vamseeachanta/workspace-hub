@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-17T09:21:11.816370Z",
+  "generated_at": "2026-08-17T13:21:16.206899Z",
   "current_week": "2026-W34",
-  "scorecard_generated_at": "2026-08-17T09:21:09.903096Z",
+  "scorecard_generated_at": "2026-08-17T13:21:14.279894Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -815,22 +815,16 @@
           ]
         },
         {
-          "number": 3456,
-          "title": "security(local-analysis): make parent runtime-config permissions enforceable on fuseblk",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3456",
+          "number": 3809,
+          "title": "Compliance alert: W34 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3809",
           "labels": [
-            "bug",
-            "priority:high",
-            "cat:tooling",
-            "domain:security",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "gate:completeness",
-            "lane:claude"
+            "priority:critical",
+            "compliance-alert"
           ],
-          "updatedAt": "2026-07-27T02:35:33Z",
+          "updatedAt": "2026-08-17T11:45:04Z",
           "execution_ready": false,
-          "priority_rank": 1,
+          "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
