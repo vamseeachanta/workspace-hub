@@ -76,7 +76,7 @@
 - [--delete-branch auto-closes stacked child PR](feedback_delete_branch_closes_stacked_child_pr.md) — merge parent WITHOUT delete → retarget child → merge → delete last
 - [dev-primary equality "green" is self-healing](feedback_dev_primary_equality_green_is_self_healing.md) — fix drift via PR + STOP; cron re-greens
 - [Autorun resets worktree branches → push immediately](feedback_autorun_clobbers_subagent_worktree_commits.md) — `commit && push -u`; verify on REMOTE
-- [Small calcs go into digitalmodel domain modules](feedback_small_calcs_into_digitalmodel_domains.md) — `src/digitalmodel/<domain>/` + tiny test
+- [Small calcs go into digitalmodel domain modules](feedback_small_calcs_into_digitalmodel_domains.md) — `src/digitalmodel/<domain>/` + tiny test *stale: 2026-08-17*
 - ["Did this branch land?" — ask the forge, not an LLM](feedback_branch_landed_ask_the_forge_not_an_llm.md) — `gh pr list --state merged --head <branch>` is cheaper AND stronger than a Codex diff read (which timed out at 15min / 0 bytes); a `gh`/`git`-answerable question is a lookup, not token-heavy work
 - [Delegate token-heavy REVIEW to Codex (not authoring)](feedback_delegate_token_heavy_to_codex.md) — `submit-to-codex.sh` (`env -u CLAUDECODE`); verify output exists
 - [Agent CAN --no-verify push a feature branch (not main)](feedback_prepush_no_verify_allowed_on_feature_branch.md) — auto-deny is default-branch-specific
