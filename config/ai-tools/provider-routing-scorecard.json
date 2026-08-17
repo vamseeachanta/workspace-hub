@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-08-16T21:21:09.788366Z",
-  "current_week": "2026-W33",
+  "generated_at": "2026-08-17T01:21:10.135031Z",
+  "current_week": "2026-W34",
   "inputs": {
     "utilization_path": "/mnt/ace/ws/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/ace/ws/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-08-16T21:21:09.690440Z",
+    "utilization_generated_at": "2026-08-17T01:21:10.033167Z",
     "audit_generated_at": "2026-08-10T09:15:04Z"
   },
   "recommended_provider_order": [
-    "agy",
     "codex",
+    "agy",
     "claude"
   ],
   "recommendations": [
@@ -83,11 +83,11 @@
       "provider": "codex",
       "status": "underused",
       "priority": "highest",
-      "reported_utilization_pct": 0.9,
+      "reported_utilization_pct": 0.0,
       "quota_basis": "quota",
       "quota_source": "history.jsonl-estimate",
-      "sessions_current_week": 1,
-      "post_records_current_week": 52,
+      "sessions_current_week": 0,
+      "post_records_current_week": 0,
       "audit_post_records": 207537,
       "missing_repo_reads": 1705,
       "python3_per_1k_records": 13.63,
@@ -96,7 +96,35 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 52
+          "count": 168941
+        },
+        {
+          "tool": "wait",
+          "count": 12283
+        },
+        {
+          "tool": "Read",
+          "count": 7377
+        },
+        {
+          "tool": "wait_agent",
+          "count": 7001
+        },
+        {
+          "tool": "send_message",
+          "count": 2353
+        },
+        {
+          "tool": "Grep",
+          "count": 2036
+        },
+        {
+          "tool": "spawn_agent",
+          "count": 1641
+        },
+        {
+          "tool": "update_plan",
+          "count": 1074
         }
       ],
       "preferred_work": [
@@ -148,7 +176,7 @@
     }
   ],
   "summary": {
-    "highest_priority_provider": "agy",
-    "highest_priority_reason": "Batch 5-6 related research/recon tasks into agy sessions."
+    "highest_priority_provider": "codex",
+    "highest_priority_reason": "Route bounded implementation/test/refactor issues to Codex immediately."
   }
 }
