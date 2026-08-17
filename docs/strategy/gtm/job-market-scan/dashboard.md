@@ -1,23 +1,24 @@
 # GTM Job Market Scan — Dashboard
 
-> Auto-generated: 2026-08-10
+> Auto-generated: 2026-08-17
 > Related: GitHub issues #1669, #1670, #1671
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Total job postings found | **1288** |
-| Unique companies | **446** |
+| Total job postings found | **1359** |
+| Unique companies | **477** |
 | Keywords searched | 22 |
-| Sources queried | linkedin, career_page |
+| Sources queried | linkedin, indeed, career_page |
 
 ## Results by Source
 
 | Source | Count |
 |--------|-------|
-| linkedin | 1258 |
-| career_page | 30 |
+| linkedin | 1315 |
+| career_page | 28 |
+| indeed | 16 |
 
 ## Results by Keyword Tier
 
@@ -25,76 +26,76 @@
 |------|-------------|-------|
 | Tier 1 | Elite niche (OrcaFlex, riser, mooring, hydro) | 300 |
 | Tier 2 | Strong niche (cathodic, subsea, pipeline, API 579) | 419 |
-| Tier 3 | Broader fit (FEA, structural, corrosion, DNV) | 359 |
-| Tier 4 | Manufacturing / wide net (ANSYS, aerospace) | 180 |
+| Tier 3 | Broader fit (FEA, structural, corrosion, DNV) | 374 |
+| Tier 4 | Manufacturing / wide net (ANSYS, aerospace) | 238 |
 
 ## Top Companies by Posting Volume
 
 | Rank | Company | Postings | Priority Target? |
 |------|---------|----------|------------------|
-| 1 | Blue Origin | 27 |  |
-| 2 | Subsea7 | 21 | ✅ YES |
-| 3 | Panthalassa | 21 |  |
-| 4 | NOV | 21 |  |
-| 5 | SLB | 20 |  |
-| 6 | Core Group Resources | 19 |  |
-| 7 | HDR | 19 |  |
-| 8 | Bechtel Corporation | 18 |  |
-| 9 | ExxonMobil | 15 | ✅ YES |
-| 10 | ONEOK | 13 |  |
-| 11 | Energy Transfer | 13 | ✅ YES |
-| 12 | ABS | 13 | ✅ YES |
-| 13 | Cheniere Energy, Inc. | 12 | ✅ YES |
-| 14 | GE Vernova | 12 | ✅ YES |
-| 15 | Intellectt Inc | 12 |  |
-| 16 | Boeing | 12 |  |
-| 17 | Saipem | 11 |  |
-| 18 | Northrop Grumman | 11 |  |
-| 19 | Phillips 66 | 11 |  |
-| 20 | Enviva | 10 |  |
-| 21 | Intuitive Machines | 9 |  |
-| 22 | L3Harris Technologies | 9 |  |
-| 23 | Trendsetter Engineering, Inc. | 9 |  |
-| 24 | Williams | 9 |  |
-| 25 | Venture Global LNG | 9 | ✅ YES |
-| 26 | Kirby | 9 |  |
-| 27 | Toyon Research Corporation | 9 |  |
-| 28 | Innovate Consulting | 8 |  |
-| 29 | Anduril Industries | 8 |  |
-| 30 | TechnipFMC | 8 | ✅ YES |
+| 1 | Blue Origin | 37 |  |
+| 2 | American Bureau of Shipping (ABS) | 20 | ✅ YES |
+| 3 | Worley | 20 | ✅ YES |
+| 4 | Saronic Technologies | 19 |  |
+| 5 | Zen Sherpa LLC | 19 |  |
+| 6 | Oceaneering | 18 | ✅ YES |
+| 7 | Kiewit | 17 |  |
+| 8 | Anduril Industries | 15 |  |
+| 9 | Saipem | 15 |  |
+| 10 | Airswift | 14 |  |
+| 11 | Panthalassa | 13 |  |
+| 12 | Seatrium | 13 |  |
+| 13 | ABS | 13 | ✅ YES |
+| 14 | Molex | 12 |  |
+| 15 | U.S. Pacific Fleet | 12 |  |
+| 16 | Acuren | 12 |  |
+| 17 | Hawaiian Electric | 11 |  |
+| 18 | IPT Global | 11 |  |
+| 19 | Boeing | 11 |  |
+| 20 | GE Vernova | 11 | ✅ YES |
+| 21 | ABS Dubai | 10 | ✅ YES |
+| 22 | Jacobs | 10 |  |
+| 23 | McDermott International, Ltd | 10 | ✅ YES |
+| 24 | Venture Global LNG | 10 | ✅ YES |
+| 25 | Bechtel Corporation | 10 |  |
+| 26 | SLB | 10 |  |
+| 27 | Soho Square Solutions | 10 |  |
+| 28 | SOGECLAIR | 10 |  |
+| 29 | Newport News Shipbuilding, A Division of HII | 9 |  |
+| 30 | ONEOK | 9 |  |
 
 ## Top 20 Highest-Scoring Job Postings
 
 | Score | Title | Company | Location | Source | Keyword |
 |-------|-------|---------|----------|--------|---------|
-| 150 | Senior Engineer - Inst Analysis | Subsea7 | Houston, TX | linkedin | OrcaFlex engineer |
-| 150 | Senior Engineer - Structures | Subsea7 | Houston, TX | linkedin | OrcaFlex engineer |
-| 150 | Lead Installation Engineer | TechnipFMC | Houston, TX | linkedin | riser engineer offshore |
-| 150 | Senior Engineer - Inst Analysis | Subsea7 | Houston, TX | linkedin | riser engineer offshore |
-| 150 | Senior Engineer - Inst Analysis | Subsea7 | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Lead Installation Engineer | TechnipFMC | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Chief Engineer Marine Vessels Offshore | Genesis Energy, L.P. | Houston, TX | linkedin | mooring engineer offshore |
-| 150 | Senior Engineer - Inst Analysis | Subsea7 | Houston, TX | linkedin | hydrodynamic analyst offshore |
-| 150 | Senior Engineer - Structures | Subsea7 | Houston, TX | linkedin | hydrodynamic analyst offshore |
-| 135 | Sr. Survey Data Processor (Can reside anywhere in the US) | Oceaneering | Morgan City, LA | linkedin | OrcaWave analyst |
-| 135 | Engineer Level II - Pre Comm | Subsea7 | Houston, TX | linkedin | riser engineer offshore |
-| 135 | Senior Engineer, Mechanical - Fixed Equipment & Piping Integ | Venture Global LNG | Cameron, LA | linkedin | riser engineer offshore |
-| 135 | Applications Engineer | Flowserve Corporation | Houston, TX | linkedin | riser engineer offshore |
-| 135 | Sr Engineer - 2610001496 | Energy Transfer | Indianapolis, IN | linkedin | riser engineer offshore |
-| 135 | Engineer Level II - Pre Comm | Subsea7 | Houston, TX | linkedin | mooring engineer offshore |
-| 135 | Lead Engineer - Aerodynamics | GE Vernova | Niskayuna, NY | linkedin | hydrodynamic analyst offshore |
-| 135 | Metallurgy Engineer Consultant | Stress Engineering Services, I | Houston, TX | linkedin | API 579 fitness for service |
-| 130 | Mechanical Integrity Engineer | ExxonMobil | Midland, TX | linkedin | riser engineer offshore |
-| 130 | Engineer | Energy Transfer | San Antonio, TX | linkedin | riser engineer offshore |
-| 130 | Facilities Engineer | Crescent Energy | Three Rivers, TX | linkedin | riser engineer offshore |
+| 150 | Senior Engineering Applications | American Bureau of Shipping (A | Houston, TX | linkedin | OrcaFlex engineer |
+| 150 | Senior Engineering Applications | ABS Dubai | Houston, TX | linkedin | OrcaFlex engineer |
+| 150 | Lead SURF Engineer | Worley | Houston, TX | linkedin | OrcaFlex engineer |
+| 150 | Senior Principal Riser Engineer | McDermott International, Ltd | Houston, TX | linkedin | riser engineer offshore |
+| 150 | Lead SURF Engineer | Worley | Houston, TX | linkedin | riser engineer offshore |
+| 150 | Senior or Above Offshore/Mechanical Engineer | American Bureau of Shipping (A | Houston, TX | linkedin | riser engineer offshore |
+| 150 | Vessel Senior Project Engineer | McDermott International, Ltd | Houston, TX | linkedin | riser engineer offshore |
+| 150 | Lead Engineer, Piping | Venture Global LNG | Houston, TX | linkedin | riser engineer offshore |
+| 150 | Senior or Above Offshore/Mechanical Engineer | American Bureau of Shipping (A | Houston, TX | linkedin | mooring engineer offshore |
+| 150 | Vessel Senior Project Engineer | McDermott International, Ltd | Houston, TX | linkedin | mooring engineer offshore |
+| 150 | Lead SURF Engineer | Worley | Houston, TX | linkedin | mooring engineer offshore |
+| 150 | Senior Engineering Applications | American Bureau of Shipping (A | Houston, TX | linkedin | mooring engineer offshore |
+| 150 | Senior Asset Management Specialist | Lloyd's Register | Houston, TX | linkedin | mooring engineer offshore |
+| 150 | Senior Engineering Applications | ABS Dubai | Houston, TX | linkedin | mooring engineer offshore |
+| 150 | Senior or Above Offshore/Mechanical Engineer | American Bureau of Shipping (A | Houston, TX | linkedin | hydrodynamic analyst offshore |
+| 150 | Senior Engineering Applications | American Bureau of Shipping (A | Houston, TX | linkedin | hydrodynamic analyst offshore |
+| 150 | Senior Associate Technical Consultant, Infrastructure | Worley | Houston, TX | linkedin | naval architect Houston |
+| 150 | Senior Associate Technical Consultant, Infrastructure | Worley | Houston, TX | linkedin | floating wind engineer |
+| 145 | Sr. Stress Analyst | Oceaneering | Clear Lake Shores, T | linkedin | OrcaFlex engineer |
+| 145 | Sr. Stress Analyst | Oceaneering | Clear Lake Shores, T | linkedin | hydrodynamic analyst offshore |
 
 ## Seniority Breakdown
 
 | Level | Count | Consulting Fit |
 |-------|-------|----------------|
-| Senior | 367 | ★★★★★ Best — they need experience NOW |
-| Mid | 914 | ★★★☆☆ Good — can pitch senior-level delivery |
-| Junior | 7 | ★☆☆☆☆ Low — they want cheap labor |
+| Senior | 388 | ★★★★★ Best — they need experience NOW |
+| Mid | 968 | ★★★☆☆ Good — can pitch senior-level delivery |
+| Junior | 3 | ★☆☆☆☆ Low — they want cheap labor |
 
 ---
 
