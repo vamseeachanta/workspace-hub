@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-08-18T01:21:14.211918Z
+Generated: 2026-08-18T05:21:12.711175Z
 Current week: 2026-W34
 Recommended provider order: codex, agy, claude
 
