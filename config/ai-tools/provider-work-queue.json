@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-19T09:21:13.274448Z",
+  "generated_at": "2026-08-19T13:21:12.239008Z",
   "current_week": "2026-W34",
-  "scorecard_generated_at": "2026-08-19T09:21:11.162454Z",
+  "scorecard_generated_at": "2026-08-19T13:21:10.266136Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -822,7 +822,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-08-18T11:45:06Z",
+          "updatedAt": "2026-08-19T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1569,9 +1569,10 @@
           "labels": [
             "priority:high",
             "cat:operations",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-08-02T05:19:00Z",
+          "updatedAt": "2026-08-19T13:15:44Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4367,9 +4368,10 @@
           "title": "legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3804",
           "labels": [
-            "domain:security"
+            "domain:security",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-08-04T05:47:34Z",
+          "updatedAt": "2026-08-19T13:15:42Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",

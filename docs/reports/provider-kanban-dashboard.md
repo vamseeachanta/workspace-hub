@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-08-19T09:21:15Z
+Generated: 2026-08-19T13:21:14Z
 Mode: static (read-only)
 
 ## How to approve
@@ -45,14 +45,14 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 |---|---|---|---|---|---|
 | #3809 | Compliance alert: W34 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3808 | Compliance alert: W33 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3804 | legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3804 | legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3794 | Compliance alert: W32 — 66% (medium) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3792 | feat(scheduler): no transaction attestation exists for systemd-user surfaces, so they can only ever declare missing_transaction | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3790 | 487 pytest-shaped files are excluded from collection across 3 tier-1 repos — audit and resolve each | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3789 | audit(scheduler): add read-only consumer vocabulary + sanctioned disposition for new non-compliant surfaces (#3470 follow-on) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3788 | bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3787 | pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
-| #3775 | security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3775 | security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3773 | epic(dispatch): six rails required before the loop can run unattended on ace-linux-1 | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3772 | bug(dispatch): lease refs are written to one namespace and synced from another — every host wins every lease | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3770 | security(kanban): PUBLIC repo mirrors ~595 issue cards from 10 PRIVATE repos, republished every 20 minutes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
