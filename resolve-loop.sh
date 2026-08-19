@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /tmp/wh-reconcile
-MS_RE='^\.claude/state/|^\.claude/memory/|config/ai-tools/|docs/reports/provider-|machine-equality-matrix|docs/strategy/gtm/|docs/solver/queue-dashboard\.md|config/agents/claude/memory-snapshots/MEMORY\.md'
+MS_RE='^\.claude/state/|^\.claude/memory/|config/ai-tools/|docs/reports/provider-|machine-equality-matrix|docs/strategy/gtm/|docs/solver/queue-dashboard\.md|config/agents/claude/memory-snapshots/MEMORY\.md|MEMORY\.runtime\.md'
 iter=0
 while [ -d .git/sequencer ] && [ $iter -lt 40 ]; do
   iter=$((iter+1))
