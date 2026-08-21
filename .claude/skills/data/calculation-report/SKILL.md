@@ -111,4 +111,7 @@ uv run --no-project --with PyYAML --with pytest python -m pytest tests/reporting
 
 ## See also
 
+- [report-claim-discipline](../../development/report-claim-discipline/SKILL.md) — **read before generating**: what a report may CLAIM and to whom (audience/surface routing, verdict vocabulary, explicit confidence, TBA discipline, reference categories). This skill covers the pipeline; that one covers the content.
+- ⚠ A **second, independent** calc-report system exists — typed Python models at `digitalmodel/src/digitalmodel/reporting/calc_report.py` (fixed seven-section order, required `Confidence` taxonomy). Which is canonical is an owner decision: [workspace-hub#3810](https://github.com/vamseeachanta/workspace-hub/issues/3810). Check which system the target repo already uses; do not introduce a third.
+
 - [data/dark-intel](https://github.com/vamseeachanta/data/tree/main/dark-intel) — dark intelligence archive with worked examples and reference data used in calculation reports

@@ -154,6 +154,7 @@ Avoid overly fragile tests that fail on harmless formatting changes unless snaps
 ## Integration Notes
 
 This skill complements:
+- `report-claim-discipline` for what the report may CLAIM and to whom (run its pre-issue checklist before any report leaves the repo)
 - `html-report-verify` for visual/DOM verification
 - `interactive-report-generator` for richer dashboard/report generation patterns
 - `engineering-report-generator` for engineering-specific outputs

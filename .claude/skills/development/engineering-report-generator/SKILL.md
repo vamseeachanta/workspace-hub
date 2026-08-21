@@ -144,6 +144,8 @@ generate_report(
 
 ## Related Skills
 
+- [report-claim-discipline](../report-claim-discipline/SKILL.md) - what a report may CLAIM and to whom; required before a report becomes a client deliverable or is hosted
+
 - [xlsx](../../document-handling/xlsx/SKILL.md) - Excel data handling
 - [pdf](../../document-handling/pdf/SKILL.md) - PDF report generation
 - [data-pipeline-processor](../data-pipeline-processor/SKILL.md) - Data preparation
