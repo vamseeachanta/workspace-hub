@@ -1,4 +1,4 @@
-generated_at: '2026-08-01T07:19:22Z'
+generated_at: '2026-08-21T07:23:29Z'
 machine: dev-primary
 window_days: 14
 recur_days: 3
@@ -9,19 +9,36 @@ candidates:
   target: git-workflow rule (WRK/issue ref in commit)
   action: Propose a skill-guide note or a documented skill-exception for missing issue
     refs in commits
-  distinct_days: 5
-  distinct_sessions: 10
-  total_violations: 79
+  distinct_days: 3
+  distinct_sessions: 4
+  total_violations: 26
   providers:
-    claude: 4
-    codex: 6
+    claude: 2
+    codex: 2
   first_seen: '2026-06-20T07:16:52Z'
-  last_seen: '2026-08-01T07:03:19Z'
+  last_seen: '2026-08-05T07:02:18Z'
   window_days: 14
-  rationale: "git_missing_wrk_ref drifted on 5 distinct days over 14d \u2014 repeated\
+  rationale: "git_missing_wrk_ref drifted on 3 distinct days over 14d \u2014 repeated\
     \ rule miss; capture as guidance or sanctioned exception."
   status: candidate
-  active: true
+  active: false
+- drift_class: git_non_conventional
+  kind: skill-guide
+  target: git-workflow rule / conventional-commit guide
+  action: Propose a skill-guide note or a documented skill-exception for conventional
+    commit subjects
+  distinct_days: 3
+  distinct_sessions: 3
+  total_violations: 57
+  providers:
+    claude: 3
+  first_seen: '2026-07-23T07:02:01Z'
+  last_seen: '2026-08-04T07:02:26Z'
+  window_days: 14
+  rationale: "git_non_conventional drifted on 3 distinct days over 14d \u2014 repeated\
+    \ rule miss; capture as guidance or sanctioned exception."
+  status: candidate
+  active: false
 - drift_class: python_runtime
   kind: skill-guide
   target: '.claude/rules/coding-style.md (Python runtime: `uv run` vs bare python3)'
@@ -29,14 +46,14 @@ candidates:
     usage
   distinct_days: 3
   distinct_sessions: 5
-  total_violations: 13
+  total_violations: 11
   providers:
-    claude: 1
     codex: 4
+    claude: 1
   first_seen: '2026-06-18T07:15:57Z'
-  last_seen: '2026-07-30T07:02:34Z'
+  last_seen: '2026-08-04T07:02:26Z'
   window_days: 14
   rationale: "python_runtime drifted on 3 distinct days over 14d \u2014 repeated rule\
     \ miss; capture as guidance or sanctioned exception."
   status: candidate
-  active: true
+  active: false

@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-08-04T01:21:16.690208Z",
-  "current_week": "2026-W32",
-  "scorecard_generated_at": "2026-08-04T01:21:14.870579Z",
+  "generated_at": "2026-08-21T09:21:12.437854Z",
+  "current_week": "2026-W34",
+  "scorecard_generated_at": "2026-08-21T09:21:10.075741Z",
   "recommended_provider_order": [
-    "agy",
     "codex",
+    "agy",
     "claude"
   ],
   "provider_queues": {
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 19,
-      "total_candidates": 173,
+      "execution_ready_count": 18,
+      "total_candidates": 175,
       "top_issues": [
         {
           "number": 3500,
@@ -57,33 +57,6 @@
             "lane:claude"
           ],
           "updatedAt": "2026-08-01T06:13:53Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3784,
-          "title": "bug(workstations): tmux persistence is attach-gated and unwired \u2014 no reboot survival on any box, no SSH auto-attach",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3784",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-03T16:48:56Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -231,6 +204,30 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3480,
+          "title": "Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3480",
+          "labels": [
+            "cat:tooling",
+            "machine:dev-primary",
+            "status:plan-approved",
+            "gate:completeness",
+            "domain:capability"
+          ],
+          "updatedAt": "2026-07-31T08:33:07Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ],
       "full_candidates": [
@@ -277,33 +274,6 @@
             "lane:claude"
           ],
           "updatedAt": "2026-08-01T06:13:53Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3784,
-          "title": "bug(workstations): tmux persistence is attach-gated and unwired \u2014 no reboot survival on any box, no SSH auto-attach",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3784",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-03T16:48:56Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -802,22 +772,17 @@
           ]
         },
         {
-          "number": 3456,
-          "title": "security(local-analysis): make parent runtime-config permissions enforceable on fuseblk",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3456",
+          "number": 3794,
+          "title": "Compliance alert: W32 \u2014 66% (medium)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3794",
           "labels": [
-            "bug",
-            "priority:high",
-            "cat:tooling",
-            "domain:security",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "gate:completeness",
-            "lane:claude"
+            "priority:medium",
+            "priority:critical",
+            "compliance-alert"
           ],
-          "updatedAt": "2026-07-27T02:35:33Z",
+          "updatedAt": "2026-08-09T11:45:06Z",
           "execution_ready": false,
-          "priority_rank": 1,
+          "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -829,22 +794,37 @@
           ]
         },
         {
-          "number": 3458,
-          "title": "bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3458",
+          "number": 3808,
+          "title": "Compliance alert: W33 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3808",
           "labels": [
-            "bug",
-            "priority:high",
-            "cat:tooling",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
+            "priority:critical",
+            "compliance-alert"
           ],
-          "updatedAt": "2026-08-01T06:13:13Z",
+          "updatedAt": "2026-08-16T11:45:06Z",
           "execution_ready": false,
-          "priority_rank": 1,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3809,
+          "title": "Compliance alert: W34 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3809",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-08-20T11:45:07Z",
+          "execution_ready": false,
+          "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1404,9 +1384,10 @@
             "priority:high",
             "cat:operations",
             "machine:dev-primary",
+            "status:plan-review",
             "domain:ci-release"
           ],
-          "updatedAt": "2026-08-01T06:00:00Z",
+          "updatedAt": "2026-08-05T13:09:37Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1561,35 +1542,12 @@
           "labels": [
             "priority:high",
             "cat:operations",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-08-02T05:19:00Z",
+          "updatedAt": "2026-08-19T13:15:44Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3457,
-          "title": "fix(worktrees): fail closed on an absent sparse-worktree index",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3457",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:workflow",
-            "machine:dev-primary",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-07-31T08:33:05Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3406,27 +3364,6 @@
           ]
         },
         {
-          "number": 3794,
-          "title": "Compliance alert: W32 \u2014 66% (medium)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3794",
-          "labels": [
-            "priority:medium",
-            "compliance-alert"
-          ],
-          "updatedAt": "2026-08-03T11:45:14Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3587,
           "title": "phone-media: choose the ongoing incremental sync lane",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3587",
@@ -3688,9 +3625,10 @@
           "labels": [
             "cat:harness",
             "machine:dev-primary",
+            "status:plan-review",
             "domain:governance"
           ],
-          "updatedAt": "2026-07-31T08:33:16Z",
+          "updatedAt": "2026-08-05T13:09:39Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4120,6 +4058,29 @@
           ]
         },
         {
+          "number": 3703,
+          "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3703",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "machine:multi",
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-08-12T13:12:20Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 3705,
           "title": "bug(sync): repository_sync auto-commits to protected main branches, stranding commits that can never be pushed",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3705",
@@ -4128,9 +4089,9 @@
             "cat:harness",
             "domain:workstations",
             "machine:multi",
-            "status:needs-plan"
+            "status:plan-review"
           ],
-          "updatedAt": "2026-07-29T23:11:27Z",
+          "updatedAt": "2026-08-12T13:12:24Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4350,6 +4311,63 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3804,
+          "title": "legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3804",
+          "labels": [
+            "domain:security",
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-08-19T13:15:42Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3810,
+          "title": "Two independent calculation-report systems (YAML/script vs typed-Python) \u2014 pick a canonical one",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3810",
+          "labels": [],
+          "updatedAt": "2026-08-21T02:12:19Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3811,
+          "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3811",
+          "labels": [],
+          "updatedAt": "2026-08-21T05:18:58Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4357,7 +4375,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 7,
-      "total_candidates": 26,
+      "total_candidates": 24,
       "top_issues": [
         {
           "number": 3516,
@@ -4541,7 +4559,7 @@
             "status:needs-plan",
             "domain:routing"
           ],
-          "updatedAt": "2026-08-03T05:48:20Z",
+          "updatedAt": "2026-08-04T04:40:39Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4737,7 +4755,7 @@
             "status:needs-plan",
             "domain:routing"
           ],
-          "updatedAt": "2026-08-03T05:48:20Z",
+          "updatedAt": "2026-08-04T04:40:39Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4746,29 +4764,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3795,
-          "title": "bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3795",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-08-03T16:26:50Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
             "implementation"
           ]
         },
@@ -5051,29 +5046,6 @@
             "domain:harness"
           ],
           "updatedAt": "2026-07-31T08:33:33Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3703,
-          "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3703",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-07-29T13:42:28Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
