@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-08-04T01:21:16.805285Z",
+  "generated_at": "2026-08-21T09:21:12.553598Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 11,
+  "eligible_count": 10,
   "applied": [],
   "candidates": [
     {
@@ -158,42 +158,6 @@
         "lane:claude"
       ],
       "updatedAt": "2026-08-01T06:13:53Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3784,
-      "title": "bug(workstations): tmux persistence is attach-gated and unwired \u2014 no reboot survival on any box, no SSH auto-attach",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3784",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:harness",
-        "domain:workstations",
-        "machine:multi",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-08-03T16:48:56Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -525,6 +489,38 @@
       "eligible": false
     },
     {
+      "number": 3480,
+      "title": "Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3480",
+      "labels": [
+        "cat:tooling",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "gate:completeness",
+        "domain:capability"
+      ],
+      "updatedAt": "2026-07-31T08:33:07Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
       "number": 3788,
       "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3788",
@@ -536,7 +532,7 @@
         "status:needs-plan",
         "domain:routing"
       ],
-      "updatedAt": "2026-08-03T05:48:20Z",
+      "updatedAt": "2026-08-04T04:40:39Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
