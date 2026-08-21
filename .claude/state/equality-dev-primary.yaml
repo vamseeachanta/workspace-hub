@@ -1,19 +1,19 @@
-generated_at: "2026-08-21T00:47:03"
+generated_at: "2026-08-21T06:47:04"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "678d3e173"
-  dirty: false
-  behind_main: 24
-  ahead_main: 110
-  origin_ref_age_h: 23
+  checkout_sha: "05f4cf8ac"
+  dirty: true
+  behind_main: 25
+  ahead_main: 111
+  origin_ref_age_h: 5
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32037, gpu_model: "none"}
-    headroom: {ram_avail_mib: 28438, disk_avail_gb: 1975}
+    headroom: {ram_avail_mib: 28559, disk_avail_gb: 1975}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -34,7 +34,7 @@ dimensions:
   kanban: {dispatch_queues: "_leader-state,cfd-dedicated,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-08-20T04:25:01"
+    context_md_mtime: "2026-08-21T04:25:01"
   provider_harness:
     schema_version: 1
     providers:
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: true
     job_count: 63
   session_curation:
-    last_curated_at: "2026-08-21T05:47:01+00:00"
-    sessions_24h: 27
+    last_curated_at: "2026-08-21T11:47:02+00:00"
+    sessions_24h: 25
     providers_active: "claude,codex,gemini,hermes"
-    memory_files_changed: 0
+    memory_files_changed: 3
   skill_currency:
-    audited_at: "2026-08-21T05:47:02+00:00"
+    audited_at: "2026-08-21T11:47:03+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,11 +84,11 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-08-21T05:47:03+00:00"
-    worst_age_hours: 20.367
+    audited_at: "2026-08-21T11:47:03+00:00"
+    worst_age_hours: 2.367
     freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-08-21T05:47:03+00:00"
+    audited_at: "2026-08-21T11:47:04+00:00"
     repos_total: 17
     healthy: 45
     repairable: 6
