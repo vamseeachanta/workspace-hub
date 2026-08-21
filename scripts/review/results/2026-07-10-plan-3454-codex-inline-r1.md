@@ -6,7 +6,7 @@ MAJOR
 
 ## Retrieval
 
-- Public plan v1, approved design HTML, issue #3454, private issue #37.
+- Public plan v1, approved design HTML, issue #3454, and the opaque private evidence authority.
 - Live `origin/main`, cleanup skill, legal/PII scripts, Pages flow, and fuseblk/runtime mount evidence.
 - Linked private plan v1 and official provider UNAVAILABLE artifacts.
 
