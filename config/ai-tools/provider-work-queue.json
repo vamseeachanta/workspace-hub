@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-21T01:21:15.321113Z",
+  "generated_at": "2026-08-21T05:21:15.428638Z",
   "current_week": "2026-W34",
-  "scorecard_generated_at": "2026-08-21T01:21:13.627603Z",
+  "scorecard_generated_at": "2026-08-21T05:21:13.093845Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -836,33 +836,6 @@
           ]
         },
         {
-          "number": 3458,
-          "title": "bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3458",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:tooling",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:13:13Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3461,
           "title": "bug(validation): make staged evidence handshakes resumable and snapshot-closed",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3461",
@@ -1575,30 +1548,6 @@
           "updatedAt": "2026-08-19T13:15:44Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3457,
-          "title": "fix(worktrees): fail closed on an absent sparse-worktree index",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3457",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:workflow",
-            "machine:dev-primary",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-07-31T08:33:05Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4372,6 +4321,42 @@
             "status:plan-review"
           ],
           "updatedAt": "2026-08-19T13:15:42Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3810,
+          "title": "Two independent calculation-report systems (YAML/script vs typed-Python) \u2014 pick a canonical one",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3810",
+          "labels": [],
+          "updatedAt": "2026-08-21T02:12:19Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3811,
+          "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3811",
+          "labels": [],
+          "updatedAt": "2026-08-21T05:18:58Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
