@@ -18,7 +18,7 @@ Score factors: keyword niche level, seniority, priority company flag, location, 
 | 4 | **Oceaneering** | 18 | 1920 | 145 | floating wind engineer, structural engineer offshore, DNV engineer offshore | 📧 Email pitch |
 | 5 | **Kiewit** | 17 | 1515 | 125 | floating wind engineer, structural engineer offshore, DNV engineer offshore | 📧 Email pitch |
 | 6 | **Saronic Technologies** | 19 | 1495 | 105 | floating wind engineer, structural engineer offshore, DNV engineer offshore | 📧 Email pitch |
-| 7 | **Saipem** | 15 | 1430 | 110 | floating wind engineer, DNV engineer offshore, hydrodynamic analyst offshore | 📧 Email pitch |
+| 7 | **client-d** | 15 | 1430 | 110 | floating wind engineer, DNV engineer offshore, hydrodynamic analyst offshore | 📧 Email pitch |
 | 8 | **Airswift** | 14 | 1330 | 125 | floating wind engineer, structural engineer offshore, DNV engineer offshore | 📧 Email pitch |
 | 9 | **McDermott International, Ltd** | 10 | 1320 | 150 | floating wind engineer, DNV engineer offshore, pipeline engineer offshore | 📧 Email pitch |
 | 10 | **ABS** | 13 | 1300 | 100 | career_page_scan | 📧 Email pitch |
@@ -180,7 +180,7 @@ Score factors: keyword niche level, seniority, priority company flag, location, 
 | 4 | Oceaneering | 18 | 1920 | ✅ | floating wind engineer, structural engineer offshore, DNV engineer offshore |
 | 5 | Kiewit | 17 | 1515 |  | floating wind engineer, structural engineer offshore, DNV engineer offshore |
 | 6 | Saronic Technologies | 19 | 1495 |  | floating wind engineer, structural engineer offshore, DNV engineer offshore |
-| 7 | Saipem | 15 | 1430 |  | floating wind engineer, DNV engineer offshore, hydrodynamic analyst offshore |
+| 7 | client-d | 15 | 1430 |  | floating wind engineer, DNV engineer offshore, hydrodynamic analyst offshore |
 | 8 | Airswift | 14 | 1330 |  | floating wind engineer, structural engineer offshore, DNV engineer offshore |
 | 9 | McDermott International, Ltd | 10 | 1320 | ✅ | floating wind engineer, DNV engineer offshore, pipeline engineer offshore |
 | 10 | ABS | 13 | 1300 | ✅ | career_page_scan |
