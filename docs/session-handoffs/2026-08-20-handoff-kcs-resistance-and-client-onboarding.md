@@ -139,8 +139,8 @@ repeat a stage whose log exists. That is an accident, not a guarantee.
 **Access established (my stored note was STALE and said otherwise — verify, don't trust):**
 
 ```
-host    mkt-a-HOU-RDS02   tailnet 100.93.182.24   domain mkt-a-INC.LOCAL
-user    vamseea          (also Administrator)    SSH: WORKS
+host    mkt-a-HOU-RDS02   tailnet <tailnet-ip>   domain mkt-a-INC.LOCAL
+user    <account>        (also local admin)    SSH: WORKS
 drives  C:  D: (Data)  S: (VM storage)           <- NO J:
 ```
 
