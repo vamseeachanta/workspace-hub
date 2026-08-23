@@ -38,4 +38,4 @@
 - **AQWA FATAL mesh errors**: Cannot be overridden with `OPTIONS GOON`; fix the mesh
 - **LIS parser**: Normalize whitespace before keyword matching ("ADDED  MASS" has double space)
 - Stats with EWMA: `route.sh --stats`
-_[110 entries omitted: oversize/over-cap]_
+_[111 entries omitted: oversize/over-cap]_
