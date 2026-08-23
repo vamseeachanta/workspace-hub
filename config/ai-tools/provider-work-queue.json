@@ -1153,7 +1153,7 @@
         },
         {
           "number": 3605,
-          "title": "INITIATIVE: ACMA & client delivery",
+          "title": "INITIATIVE: mkt-a & client delivery",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3605",
           "labels": [
             "priority:high",
@@ -1331,7 +1331,7 @@
         },
         {
           "number": 3694,
-          "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)",
+          "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-mkt-a rename across 62 files (2 scripts + 2 configs are live)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
           "labels": [
             "priority:high",
@@ -3202,7 +3202,7 @@
         },
         {
           "number": 3695,
-          "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd",
+          "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-client-f and llm-wiki-hd",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3695",
           "labels": [
             "priority:medium",
