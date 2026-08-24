@@ -1,7 +1,7 @@
 # Provider routing scorecard
 
-Generated: 2026-08-23T21:21:14.245124Z
-Current week: 2026-W34
+Generated: 2026-08-24T01:21:15.139219Z
+Current week: 2026-W35
 Recommended provider order: codex, agy, claude
 
 This scorecard combines provider utilization with session-audit hygiene to decide where the next work packets should go.
