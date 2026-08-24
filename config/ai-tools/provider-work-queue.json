@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-24T09:21:13.491951Z",
+  "generated_at": "2026-08-24T13:21:13.097215Z",
   "current_week": "2026-W35",
-  "scorecard_generated_at": "2026-08-24T09:21:11.553036Z",
+  "scorecard_generated_at": "2026-08-24T13:21:10.948428Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -823,6 +823,27 @@
             "compliance-alert"
           ],
           "updatedAt": "2026-08-23T11:45:05Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3813,
+          "title": "Compliance alert: W35 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3813",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-08-24T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -3403,31 +3424,6 @@
           "provider_status": "underused",
           "work_type": [
             "general"
-          ]
-        },
-        {
-          "number": 3459,
-          "title": "bug(enforcement): check-no-abs-paths fails before scanning in sparse checkouts",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3459",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "domain:harness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:14Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
           ]
         },
         {
