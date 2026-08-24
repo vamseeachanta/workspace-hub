@@ -100,7 +100,7 @@
 - [ace-linux-1 display: NVIDIA Maxwell dead on kernel 7.0](reference_ace_linux_1_display_nvidia_maxwell_dead.md) — purge nvidia stack → nouveau; never reinstall nvidia-535
 - [ace-linux-1 OOM hang 2026-07-12](reference_ace_linux_1_oom_hang_2026_07_12.md) — earlyoom installed; OPEN: #3504-#3506 fingerprint triage
 - [FUSE mount saturation = process storm](reference_fuse_mount_saturation_process_storm.md) — "filesystem timed out" = runaway jobs; diagnose `ps -eo ppid,stat,etimes,%cpu`
-- [Verify licensed-run hosts headless via heartbeat](reference_ace_win_1_headless_verification_via_heartbeat.md) — queue-repo `heartbeat/<host>.json` = ONLY remote signal
+- [Verify licensed-run hosts headless via heartbeat](reference_ace_win_1_headless_verification_via_heartbeat.md) — queue-repo `heartbeat/<host>.json` = ONLY remote signal *stale: 2026-08-24*
 - [wed local build/run recipe](reference_wed_local_build_run_recipe.md) — namespace-package PYTHONPATH; `--noconftest -o addopts=""`; sparse-clone 0-byte trap
 - [NTFS-FUSE git stalls on /mnt/local-analysis](reference_ntfs_fuse_git_stalls_local_analysis.md) — porcelain git hangs; plumbing commits, local sparse clones
 - [Squash-merge → false "orphaned" PR](reference_squash_merge_reachability_false_orphan.md) — verify merged work by CONTENT, not mergeCommit reachability
