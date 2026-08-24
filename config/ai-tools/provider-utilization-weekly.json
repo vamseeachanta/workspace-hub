@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-24T05:21:15.683040Z",
+  "generated_at": "2026-08-24T09:21:11.442372Z",
   "current_week": "2026-W35",
   "report_weeks": 8,
   "subscriptions": {
@@ -683,7 +683,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-08-24T05:20:08Z",
+        "quota_snapshot_ts": "2026-08-24T09:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -700,7 +700,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl-estimate",
-        "quota_snapshot_ts": "2026-08-24T05:20:08Z",
+        "quota_snapshot_ts": "2026-08-24T09:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,

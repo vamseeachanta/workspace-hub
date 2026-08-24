@@ -8160,7 +8160,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-08-24T05:21:19Z",
+  "generated_at": "2026-08-24T09:21:15Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -16309,9 +16309,9 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-08-24T05:21:15.951543Z",
+  "scorecard_generated_at": "2026-08-24T09:21:11.553036Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-08-24T05:21:15.683040Z",
+  "utilization_generated_at": "2026-08-24T09:21:11.442372Z",
   "warning_summary": {
     "approved_no_marker": 14,
     "approved_no_plan": 9,
