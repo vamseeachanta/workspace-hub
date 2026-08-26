@@ -64,15 +64,16 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "status:plan-review"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -94,7 +95,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3811",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -1683,9 +1686,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -1693,6 +1695,7 @@
       "hover": {
         "labels": [
           "machine:dev-primary",
+          "status:plan-review",
           "domain:ci-release"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -1716,7 +1719,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "PR gate is baseline-red: two enforcement checks fail on every PR, plus an undeclared test dep",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3698",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8156,7 +8161,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-08-26T09:21:19Z",
+  "generated_at": "2026-08-26T13:21:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8201,15 +8206,16 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "status:plan-review"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -8231,7 +8237,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3811",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -9820,9 +9828,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9830,6 +9837,7 @@
         "hover": {
           "labels": [
             "machine:dev-primary",
+            "status:plan-review",
             "domain:ci-release"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9853,7 +9861,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "PR gate is baseline-red: two enforcement checks fail on every PR, plus an undeclared test dep",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3698",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16301,16 +16311,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-08-26T09:21:14.685081Z",
+  "scorecard_generated_at": "2026-08-26T13:21:10.199762Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-08-26T09:21:14.585969Z",
+  "utilization_generated_at": "2026-08-26T13:21:10.099152Z",
   "warning_summary": {
     "approved_no_marker": 14,
     "approved_no_plan": 9,
     "legacy_review_no_sha": 10,
     "major_review": 5,
     "marker_without_open_approved_issue": 177,
-    "missing_review": 39,
+    "missing_review": 41,
     "unavailable_review": 6
   }
 }

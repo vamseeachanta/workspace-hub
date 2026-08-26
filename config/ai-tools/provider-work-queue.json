@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-26T09:21:17.190844Z",
+  "generated_at": "2026-08-26T13:21:12.190984Z",
   "current_week": "2026-W35",
-  "scorecard_generated_at": "2026-08-26T09:21:14.685081Z",
+  "scorecard_generated_at": "2026-08-26T13:21:10.199762Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -843,7 +843,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-08-25T11:45:06Z",
+          "updatedAt": "2026-08-26T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -4038,9 +4038,10 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3698",
           "labels": [
             "machine:dev-primary",
+            "status:plan-review",
             "domain:ci-release"
           ],
-          "updatedAt": "2026-08-01T06:00:04Z",
+          "updatedAt": "2026-08-26T13:09:31Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4351,8 +4352,10 @@
           "number": 3811,
           "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3811",
-          "labels": [],
-          "updatedAt": "2026-08-21T05:18:58Z",
+          "labels": [
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-08-26T13:09:26Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
