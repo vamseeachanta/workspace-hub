@@ -47,7 +47,7 @@ Context parity = compute parity. Zero waste everywhere.
 - **ace-linux-1 control surface**: keep user approvals, launch decisions, GitHub mutations, and cross-lane reconciliation on `ace-linux-1` unless explicit failover is chosen.
 - **Overnight batch**: 3 self-contained prompts, one per terminal, zero git contention.
   Always include a git contention avoidance map.
-- **Long-running lanes**: prefer named `tmux` sessions or Hermes-tracked background processes with logs under `logs/night-runs/` and prompt packs under `docs/plans/overnight-prompts/`.
+- **Long-running lanes**: prefer named `tmux` sessions or Hermes-tracked background processes with logs under `logs/night-runs/` and prompt packs under `docs/plans/overnight-prompts/`. *verified: 2026-08-26*
 - **Adversarial review**: BOTH stages — plan review AND code/artifact review.
   Minimum: Claude + Codex + Gemini all review.
 - **Context parity**: Corrections made in one agent must propagate to all others.
@@ -70,7 +70,7 @@ GSD is the sole workflow system since 2026-03-25.
 ## Skill System (Hermes)
 
 Hermes maintains 691+ skills at `~/.hermes/skills/` on ace-linux-1.
-On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures.
+On non-Hermes machines, consult `.claude/skills/` in this repo for equivalent procedures. *verified: 2026-08-26*
 
 
 ### Harness Throughput Rule
