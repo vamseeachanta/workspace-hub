@@ -23,7 +23,7 @@
 - [Placeholder links to filing issue](feedback_placeholder_links_to_filing_issue.md) — thin UI data → VISIBLE placeholder linking a `cat:data` issue
 - [Equality wedge ≠ drift recovery](feedback_equality_wedge_vs_drift_recovery.md) — main ahead AND behind → prove regenerable → backup tag → `reset --hard` (destructive, get OK)
 - [Strict-up-to-date ruleset blocks green-PR merge](feedback_strict_uptodate_ruleset_no_admin_bypass.md) — `--admin` doesn't bypass rulesets; merge-when-CLEAN loop
-- [Verify generated/state files against origin/main](feedback_verify_generated_state_against_origin_not_working_copy.md) — `git show origin/main:<path>` before "stale" claims
+- [Verify generated/state files against origin/main](feedback_verify_generated_state_against_origin_not_working_copy.md) — `git show origin/main:<path>` before "stale" claims *stale: 2026-08-27*
 - Windows (MINGW64): paths use `/d/workspace-hub/` in bash (not `D:\`)
 - All development must be compatible with Linux, Windows, and macOS
 - Windows `core.symlinks=false` — git treats junctions as dirs, not symlinks
@@ -37,5 +37,4 @@
 - **NaN correlations**: Zero std dev (e.g., yaw at head seas) — handle gracefully
 - **AQWA FATAL mesh errors**: Cannot be overridden with `OPTIONS GOON`; fix the mesh
 - **LIS parser**: Normalize whitespace before keyword matching ("ADDED  MASS" has double space)
-- Stats with EWMA: `route.sh --stats`
-_[111 entries omitted: oversize/over-cap]_
+_[112 entries omitted: oversize/over-cap]_
