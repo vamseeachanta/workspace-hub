@@ -1,7 +1,7 @@
 # Agent Workflow Facts
 
 > Git-tracked. Applies to all AI agents working in this repo on any machine.
-> Refreshed by `scripts/memory/bridge-hermes-claude.sh` — edit the template,
+> Refreshed by `scripts/memory/bridge-hermes-claude.sh` — edit the template, *verified: 2026-08-27*
 > not the generated file.
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
@@ -63,7 +63,7 @@ Context parity = compute parity. Zero waste everywhere.
 ## GSD Workflow
 
 GSD is the sole workflow system since 2026-03-25.
-- Plans live in `.planning/` within each repo
+- Plans live in `.planning/` within each repo *verified: 2026-08-27*
 - Long-duration plans live in `docs/plans/`
 - Use `/gsd:*` commands for task management
 
@@ -87,7 +87,7 @@ Establish weekly GTM targets interactively with the owner, then turn them into b
 
 ## ACE Engineer GTM Context
 
-- `aceengineer-strategy/` — private nested repo with full GTM strategy
+- `aceengineer-strategy/` — private nested repo with full GTM strategy *stale: 2026-08-27*
 - 20+ prospects identified; ICP: offshore firms 10-50 engineers
 - Demo reports: `digitalmodel/examples/demos/gtm/` (5 demos, `report_template.py`)
 - Job market scanner: `scripts/gtm/job-market-scanner.py` (runs Monday cron)
