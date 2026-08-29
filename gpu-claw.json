@@ -3,7 +3,7 @@
  "role": "contribute-minimal",
  "hostname": "gpu-claw",
  "machine_id": "gpu-claw",
- "ts": "2026-08-29T16:17:01.612870+00:00",
+ "ts": "2026-08-29T22:17:02.488880+00:00",
  "clone_head": "06f56acfb",
  "behind_origin": 52,
  "ahead_origin": 0,
@@ -23,5 +23,5 @@
  },
  "on_main": true,
  "index_lock_stale_min": null,
- "last_publish_duration_s": 3.0
+ "last_publish_duration_s": 2.0
 }
