@@ -21,7 +21,7 @@
 - [External SSH via Tailscale for fleet](project_external_ssh_tailscale_fleet.md) — ✅ mosh+tmux persistence LIVE on ace-linux-1 (PR #3597). ⚠ two tailscaled daemons; Taildrop node OFFLINE. NEXT: 24h BatchMode re-test gpu-claw
 - [agy replaces gemini (wh#3573)](project_agy_replaces_gemini_provider_swap.md) — ✅✅✅ COMPLETE. RULE: cross-review = Claude+Codex+Agy. Follow-ons #3577-#3580
 - [Floorhand multi-metro outreach (12 shops)](project_floorhand_multi_metro_outreach.md) — 2026-07-26 ✅✅ CLOSED, PRs #180–#185 merged. Partner model SETTLED = **flat 50-50 gross, paid as shop pays** (don't re-litigate). ⚠ analysis engine NOT BUILT. NEXT: owner sends PDFs
-- [Sun Manufacturing Floorhand pamphlet](project_sun_manufacturing_floorhand_pamphlet.md) — ✅ emailed; Austin replied POSITIVE. RULE: copy `strategy/floorhand-pamphlet-TEMPLATE.html`. NEXT: on meeting pick → calendar + kit
+- [Sun Manufacturing Floorhand pamphlet](project_sun_manufacturing_floorhand_pamphlet.md) — ✅ emailed; Austin replied POSITIVE. RULE: copy `strategy/floorhand-pamphlet-TEMPLATE.html`. NEXT: on meeting pick → calendar + kit *stale: 2026-08-29*
 - [Fidelity returns analysis + dashboard](project_fidelity_returns_analysis.md) — ✅ COMPLETE (PR #152). No open work
 - [Elliott Services Floorhand FFS brochure](project_elliott_floorhand_brochure.md) — ✅ PR #178 MERGED. NEXT (HITL): pick send route + flip draft footer → SEND
 - [Krishna daily schedule (wh#3528)](project_krishna_daily_schedule.md) — morning chain APPROVED. NEXT: evening-chain yes/adjust → calendar #3529
