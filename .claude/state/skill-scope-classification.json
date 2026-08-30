@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "audited_at": "2026-08-29T07:25:39+00:00",
+  "audited_at": "2026-08-30T07:25:57+00:00",
   "canonical_prefix": ".claude/skills",
   "gemini_prefix": ".agents/skills",
   "canonical_count": 44,
