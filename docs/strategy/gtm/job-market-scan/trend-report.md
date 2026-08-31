@@ -1,14 +1,12 @@
 # GTM Trend Report — Week-over-Week Hiring Momentum
 
-> Generated: 2026-08-03
-> Total scans to date: 16
+> Generated: 2026-08-17
+> Total scans to date: 18
 
 ## Scan History
 
 | Date | Total Jobs | New | Returning | Companies |
 |------|-----------|-----|-----------|-----------|
-| 2026-05-18 | 826 | 754 | 72 | 381 |
-| 2026-05-25 | 1170 | 1138 | 32 | 561 |
 | 2026-06-01 | 1105 | 1077 | 28 | 555 |
 | 2026-06-15 | 1010 | 983 | 27 | 441 |
 | 2026-06-22 | 905 | 880 | 25 | 422 |
@@ -17,6 +15,8 @@
 | 2026-07-20 | 872 | 847 | 25 | 365 |
 | 2026-07-27 | 1048 | 1024 | 24 | 457 |
 | 2026-08-03 | 865 | 841 | 24 | 463 |
+| 2026-08-10 | 1288 | 1265 | 23 | 446 |
+| 2026-08-17 | 1359 | 1334 | 25 | 477 |
 
 ## 📈 Trending UP — Companies Hiring MORE This Week
 
@@ -25,44 +25,44 @@ These companies have MORE open roles than last scan — they are getting busier.
 
 | Company | This Week | Last Week | Change | Priority? |
 |---------|-----------|-----------|--------|-----------|
-| **Seatrium** | 25 | 5 | +20 |  |
 | **EY** | 38 | 20 | +18 |  |
-| **Kiewit** | 15 | 3 | +12 |  |
+| **American Bureau of Shipping (ABS)** | 20 | 3 | +17 | ✅ |
+| **Zen Sherpa LLC** | 19 | 2 | +17 |  |
+| **Saronic Technologies** | 19 | 4 | +15 |  |
+| **Worley** | 20 | 6 | +14 | ✅ |
+| **Kiewit** | 17 | 3 | +14 |  |
+| **Oceaneering** | 18 | 6 | +12 | ✅ |
 | **Phillips Infrastructure** | 14 | 2 | +12 |  |
-| **DNV** | 16 | 5 | +11 | ✅ |
-| **Quest Global** | 13 | 3 | +10 |  |
-| **Helix Energy Solutions Group** | 8 | 1 | +7 |  |
-| **Subsea7** | 8 | 1 | +7 | ✅ |
-| **Curtiss-Wright Corporation** | 9 | 2 | +7 |  |
-| **Hanwha Ocean** | 7 | 1 | +6 |  |
-| **Weeks Marine, Inc.** | 7 | 1 | +6 |  |
-| **Amentum** | 7 | 1 | +6 |  |
-| **Geosyntec Consultants** | 8 | 2 | +6 |  |
-| **SOGECLAIR** | 8 | 2 | +6 |  |
-| **Semco Maritime** | 8 | 2 | +6 |  |
-| **TIC - The Industrial Company** | 7 | 1 | +6 |  |
-| **Advanced Technology and Research Corporation** | 7 | 1 | +6 |  |
-| **ABB** | 6 | 1 | +5 |  |
-| **GC-Squared Resources, LLC** | 6 | 1 | +5 |  |
-| **Foley & Lardner LLP** | 6 | 1 | +5 |  |
+| **Blue Origin** | 37 | 27 | +10 |  |
+| **Airswift** | 14 | 4 | +10 |  |
+| **Molex** | 12 | 2 | +10 |  |
+| **Hawaiian Electric** | 11 | 1 | +10 |  |
+| **Cheniere Energy, Inc.** | 12 | 2 | +10 | ✅ |
+| **Seatrium** | 13 | 4 | +9 |  |
+| **Enviva** | 10 | 1 | +9 |  |
+| **Ford Motor Company** | 9 | 1 | +8 |  |
+| **ABS Dubai** | 10 | 2 | +8 | ✅ |
+| **Toyon Research Corporation** | 9 | 1 | +8 |  |
+| **Anduril Industries** | 15 | 8 | +7 |  |
+| **Innovate Consulting** | 8 | 1 | +7 |  |
 
 ## ➡️ Consistently Busy — Stable High Hiring
 
 | Company | Roles (stable) | Priority? |
 |---------|---------------|-----------|
 | ABS | 13 | ✅ |
+| WSP in the U.S. | 8 |  |
 | Orsted | 6 | ✅ |
 | Gilead Sciences | 6 |  |
-| ORION | 6 |  |
-| Audubon Companies | 5 |  |
-| HDR | 4 |  |
-| SpaceX | 4 |  |
+| EDG | 5 |  |
+| DNV | 5 | ✅ |
 | Siemens Gamesa | 4 |  |
 | Energy Sciences | 4 |  |
-| BAE Systems, Inc. | 4 |  |
 | Altrad Sparrows – Americas | 4 |  |
-| Wood | 3 |  |
-| Sargent & Lundy | 3 |  |
+| Textron | 4 |  |
+| Plains | 4 |  |
+| Vestas | 3 |  |
+| Los Alamos National Laboratory | 3 |  |
 | NTT DATA North America | 3 |  |
 | SEPHORA | 3 |  |
 
@@ -73,38 +73,38 @@ They are the most likely to accept a consulting alternative.
 
 | Weeks Seen | Title | Company | Score | First Seen |
 |------------|-------|---------|-------|------------|
-| 15 | Engineering | TechnipFMC | 100 | 2026-04-02 |
-| 15 | Subsea Operations | TechnipFMC | 100 | 2026-04-02 |
-| 15 | Analyst Coverage & Consensus | SBM Offshore | 100 | 2026-04-02 |
-| 15 | Engineering Reviews | ABS | 100 | 2026-04-02 |
-| 15 | Engineering Applications | ABS | 100 | 2026-04-02 |
-| 15 | Marine Engineering Applications | ABS | 100 | 2026-04-02 |
-| 15 | Offshore Engineering Applications | ABS | 100 | 2026-04-02 |
-| 15 | Subsea Solutions | ABS | 100 | 2026-04-02 |
-| 15 | Subsea Mining | ABS | 100 | 2026-04-02 |
-| 15 | Rules and Guides for Naval Ships | ABS | 100 | 2026-04-02 |
-| 15 | Subsea Processing Systems | ABS | 100 | 2026-04-02 |
-| 15 | Engineering Software | ABS | 100 | 2026-04-02 |
-| 15 | Analysts coverage | Bureau Veritas | 100 | 2026-04-02 |
-| 15 | Subsea services | DOF Subsea | 100 | 2026-04-02 |
-| 15 | Digital - Engineering Suite | Chart Industries | 100 | 2026-04-02 |
-| 15 | Engineering &
+| 17 | Engineering | TechnipFMC | 100 | 2026-04-02 |
+| 17 | Subsea Operations | TechnipFMC | 100 | 2026-04-02 |
+| 17 | Analyst Coverage & Consensus | SBM Offshore | 100 | 2026-04-02 |
+| 17 | Engineering Reviews | ABS | 100 | 2026-04-02 |
+| 17 | Engineering Applications | ABS | 100 | 2026-04-02 |
+| 17 | Marine Engineering Applications | ABS | 100 | 2026-04-02 |
+| 17 | Offshore Engineering Applications | ABS | 100 | 2026-04-02 |
+| 17 | Subsea Solutions | ABS | 100 | 2026-04-02 |
+| 17 | Subsea Mining | ABS | 100 | 2026-04-02 |
+| 17 | Rules and Guides for Naval Ships | ABS | 100 | 2026-04-02 |
+| 17 | Subsea Processing Systems | ABS | 100 | 2026-04-02 |
+| 17 | Engineering Software | ABS | 100 | 2026-04-02 |
+| 17 | Analysts coverage | Bureau Veritas | 100 | 2026-04-02 |
+| 17 | Subsea services | DOF Subsea | 100 | 2026-04-02 |
+| 17 | Digital - Engineering Suite | Chart Industries | 100 | 2026-04-02 |
+| 17 | Engineering &
                             Technolo | GE Vernova | 100 | 2026-04-02 |
-| 15 | Engineering & Technology | GE Vernova | 100 | 2026-04-02 |
-| 14 | Engineering Reviews | ABS | 100 | 2026-04-13 |
-| 14 | Engineering Applications | ABS | 100 | 2026-04-13 |
-| 14 | Engineering Reviews | ABS | 100 | 2026-04-13 |
-| 14 | Subsea Solutions | ABS | 100 | 2026-04-13 |
-| 13 | Corpus Christi Pipeline | Cheniere Energy | 100 | 2026-04-20 |
-| 13 | Creole Trail Pipeline | Cheniere Energy | 100 | 2026-04-20 |
+| 17 | Engineering & Technology | GE Vernova | 100 | 2026-04-02 |
+| 16 | Engineering Reviews | ABS | 100 | 2026-04-13 |
+| 16 | Engineering Applications | ABS | 100 | 2026-04-13 |
+| 16 | Engineering Reviews | ABS | 100 | 2026-04-13 |
+| 16 | Subsea Solutions | ABS | 100 | 2026-04-13 |
+| 15 | Corpus Christi Pipeline | Cheniere Energy | 100 | 2026-04-20 |
+| 15 | Creole Trail Pipeline | Cheniere Energy | 100 | 2026-04-20 |
 | 12 | Analyst Coverage | Chart Industries | 100 | 2026-04-02 |
 | 3 | CareersEngineering ·  3 min readEngineering succes | Worley | 115 | 2026-04-02 |
 
 ## Cumulative Statistics
 
-- **12702** unique job postings tracked all-time
-- **3021** unique companies seen
-- **16** scans completed
+- **15301** unique job postings tracked all-time
+- **3288** unique companies seen
+- **18** scans completed
 
 ---
 

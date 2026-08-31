@@ -35,35 +35,62 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [
-          "bug",
-          "priority:high",
-          "cat:harness",
-          "domain:workstations",
-          "machine:dev-primary",
-          "status:needs-plan"
-        ],
+        "labels": [],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
+        "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1"
+        "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
       "machine_ready": false,
       "machine_role": null,
       "machine_route": null,
-      "number": 3795,
+      "number": 3811,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "codex",
+      "provider_route": "claude",
       "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3795",
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3811",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Two independent calculation-report systems (YAML/script vs typed-Python) \u2014 pick a canonical one"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3810,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Two independent calculation-report systems (YAML/script vs typed-Python) \u2014 pick a canonical one",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3810",
       "warnings": []
     },
     {
@@ -77,7 +104,120 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "priority:critical",
+          "compliance-alert"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Compliance alert: W34 \u2014 0% (critical)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3809,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Compliance alert: W34 \u2014 0% (critical)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3809",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:critical",
+          "compliance-alert"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Compliance alert: W33 \u2014 0% (critical)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3808,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Compliance alert: W33 \u2014 0% (critical)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3808",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "no canonical plan file",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "domain:security",
+          "status:plan-review"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3804,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3804",
+      "warnings": [
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "priority:medium",
+          "priority:critical",
           "compliance-alert"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -220,8 +360,7 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -237,10 +376,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "Planning mode: `single-lane` for the draft artifact. The implementation phase will remain blocked until plan review completes, the user approves, and `status:plan-approved` exists.",
         "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** Per-record `gh issue view` calls will be slower than one open-list query if the record corpus grows. The plan will accept that tradeoff now because the current corpus is small and correctness depends on closed and cross-repo issues being visible. | **Risk:** The current CLI accepts one `--repo`, while records may name multiple repos. The implementation will treat `--repo` as the orphan-s",
+        "tests": "7 TDD tests defined",
         "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING"
       },
       "lane": "planning_feedstock",
@@ -250,13 +389,15 @@
       "machine_route": null,
       "number": 3788,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-08-03-issue-3788-reconcile-open-only-snapshot.md",
       "provider_route": "codex",
       "review_clean": false,
       "routing_reason": "implementation/test/fix language",
       "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3788",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -304,8 +445,6 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
         "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
@@ -314,56 +453,10 @@
       "approval_ready": false,
       "hover": {
         "labels": [
-          "bug",
-          "priority:high",
-          "cat:harness",
-          "domain:workstations",
-          "machine:multi",
-          "status:plan-approved",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "bug(workstations): tmux persistence is attach-gated and unwired \u2014 no reboot survival on any box, no SSH auto-attach"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3784,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "bug(workstations): tmux persistence is attach-gated and unwired \u2014 no reboot survival on any box, no SSH auto-attach",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3784",
-      "warnings": [
-        "approved_no_marker",
-        "approved_no_plan",
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
           "priority:high",
           "cat:operations",
-          "machine:dev-primary"
+          "machine:dev-primary",
+          "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -386,7 +479,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3775",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -899,9 +994,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -911,6 +1005,7 @@
           "priority:high",
           "cat:operations",
           "machine:dev-primary",
+          "status:plan-review",
           "domain:ci-release"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -934,7 +1029,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3728",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -1382,9 +1479,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -1395,7 +1491,7 @@
           "cat:harness",
           "domain:workstations",
           "machine:multi",
-          "status:needs-plan"
+          "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1418,7 +1514,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "bug(sync): repository_sync auto-commits to protected main branches, stranding commits that can never be pushed",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3705",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -1462,9 +1560,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -1475,12 +1572,12 @@
           "cat:harness",
           "domain:workstations",
           "machine:multi",
-          "status:needs-plan"
+          "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
+        "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
         "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH"
@@ -1493,12 +1590,14 @@
       "number": 3703,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "codex",
+      "provider_route": "claude",
       "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
+      "routing_reason": "strategy/workflow/architecture language",
       "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3703",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -1643,7 +1742,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd"
+        "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-client-f and llm-wiki-hd"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -1656,7 +1755,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd",
+      "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-client-f and llm-wiki-hd",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3695",
       "warnings": []
     },
@@ -1682,7 +1781,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)"
+        "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-mkt-a rename across 62 files (2 scripts + 2 configs are live)"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -1695,7 +1794,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)",
+      "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-mkt-a rename across 62 files (2 scripts + 2 configs are live)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
       "warnings": []
     },
@@ -4357,7 +4456,7 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
-        "title": "INITIATIVE: ACMA & client delivery"
+        "title": "INITIATIVE: mkt-a & client delivery"
       },
       "lane": "planning_feedstock",
       "machine_blocker": "no_provider_capable_workstation",
@@ -4370,7 +4469,7 @@
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
-      "title": "INITIATIVE: ACMA & client delivery",
+      "title": "INITIATIVE: mkt-a & client delivery",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3605",
       "warnings": []
     },
@@ -6761,9 +6860,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -6772,6 +6870,7 @@
         "labels": [
           "cat:harness",
           "machine:dev-primary",
+          "status:plan-review",
           "domain:governance"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -6795,7 +6894,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3523",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8057,135 +8158,9 @@
       "title": "bug(enforcement): check-no-abs-paths fails before scanning in sparse checkouts",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3459",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "priority:high",
-          "cat:tooling",
-          "machine:dev-primary",
-          "status:needs-plan",
-          "gate:completeness",
-          "domain:harness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3458,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3458",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:harness",
-          "domain:workflow",
-          "machine:dev-primary",
-          "status:needs-plan"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "fix(worktrees): fail closed on an absent sparse-worktree index"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3457,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "fix(worktrees): fail closed on an absent sparse-worktree index",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3457",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "priority:high",
-          "cat:tooling",
-          "domain:security",
-          "machine:dev-primary",
-          "status:needs-plan",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "security(local-analysis): make parent runtime-config permissions enforceable on fuseblk"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3456,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "security(local-analysis): make parent runtime-config permissions enforceable on fuseblk",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3456",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-08-04T01:21:18Z",
+  "generated_at": "2026-08-21T09:21:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8201,35 +8176,62 @@
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:needs-plan"
-          ],
+          "labels": [],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
+          "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1"
+          "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
         "machine_ready": false,
         "machine_role": null,
         "machine_route": null,
-        "number": 3795,
+        "number": 3811,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "codex",
+        "provider_route": "claude",
         "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "bug(tmux): autosave advances the timestamp but writes no save file on ace-linux-1",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3795",
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3811",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Two independent calculation-report systems (YAML/script vs typed-Python) \u2014 pick a canonical one"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3810,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Two independent calculation-report systems (YAML/script vs typed-Python) \u2014 pick a canonical one",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3810",
         "warnings": []
       },
       {
@@ -8243,7 +8245,120 @@
         "approval_ready": false,
         "hover": {
           "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Compliance alert: W34 \u2014 0% (critical)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3809,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Compliance alert: W34 \u2014 0% (critical)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3809",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Compliance alert: W33 \u2014 0% (critical)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3808,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Compliance alert: W33 \u2014 0% (critical)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3808",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "no canonical plan file",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "domain:security",
+            "status:plan-review"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3804,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3804",
+        "warnings": [
+          "missing_review"
+        ]
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
             "priority:medium",
+            "priority:critical",
             "compliance-alert"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8386,8 +8501,7 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -8403,10 +8517,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "Planning mode: `single-lane` for the draft artifact. The implementation phase will remain blocked until plan review completes, the user approves, and `status:plan-approved` exists.",
           "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** Per-record `gh issue view` calls will be slower than one open-list query if the record corpus grows. The plan will accept that tradeoff now because the current corpus is small and correctness depends on closed and cross-repo issues being visible. | **Risk:** The current CLI accepts one `--repo`, while records may name multiple repos. The implementation will treat `--repo` as the orphan-s",
+          "tests": "7 TDD tests defined",
           "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING"
         },
         "lane": "planning_feedstock",
@@ -8416,13 +8530,15 @@
         "machine_route": null,
         "number": 3788,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-08-03-issue-3788-reconcile-open-only-snapshot.md",
         "provider_route": "codex",
         "review_clean": false,
         "routing_reason": "implementation/test/fix language",
         "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3788",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -8470,8 +8586,6 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
           "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
@@ -8480,56 +8594,10 @@
         "approval_ready": false,
         "hover": {
           "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "bug(workstations): tmux persistence is attach-gated and unwired \u2014 no reboot survival on any box, no SSH auto-attach"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3784,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "bug(workstations): tmux persistence is attach-gated and unwired \u2014 no reboot survival on any box, no SSH auto-attach",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3784",
-        "warnings": [
-          "approved_no_marker",
-          "approved_no_plan",
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
             "priority:high",
             "cat:operations",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -8552,7 +8620,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3775",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -9065,9 +9135,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9077,6 +9146,7 @@
             "priority:high",
             "cat:operations",
             "machine:dev-primary",
+            "status:plan-review",
             "domain:ci-release"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -9100,7 +9170,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3728",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -9548,9 +9620,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9561,7 +9632,7 @@
             "cat:harness",
             "domain:workstations",
             "machine:multi",
-            "status:needs-plan"
+            "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9584,7 +9655,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "bug(sync): repository_sync auto-commits to protected main branches, stranding commits that can never be pushed",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3705",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -9628,9 +9701,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9641,12 +9713,12 @@
             "cat:harness",
             "domain:workstations",
             "machine:multi",
-            "status:needs-plan"
+            "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
+          "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
           "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH"
@@ -9659,12 +9731,14 @@
         "number": 3703,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "codex",
+        "provider_route": "claude",
         "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
+        "routing_reason": "strategy/workflow/architecture language",
         "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3703",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -9809,7 +9883,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd"
+          "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-client-f and llm-wiki-hd"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -9822,7 +9896,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd",
+        "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-client-f and llm-wiki-hd",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3695",
         "warnings": []
       },
@@ -9848,7 +9922,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)"
+          "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-mkt-a rename across 62 files (2 scripts + 2 configs are live)"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -9861,7 +9935,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)",
+        "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-mkt-a rename across 62 files (2 scripts + 2 configs are live)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
         "warnings": []
       },
@@ -12523,7 +12597,7 @@
           "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
-          "title": "INITIATIVE: ACMA & client delivery"
+          "title": "INITIATIVE: mkt-a & client delivery"
         },
         "lane": "planning_feedstock",
         "machine_blocker": "no_provider_capable_workstation",
@@ -12536,7 +12610,7 @@
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
-        "title": "INITIATIVE: ACMA & client delivery",
+        "title": "INITIATIVE: mkt-a & client delivery",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3605",
         "warnings": []
       },
@@ -14927,9 +15001,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -14938,6 +15011,7 @@
           "labels": [
             "cat:harness",
             "machine:dev-primary",
+            "status:plan-review",
             "domain:governance"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -14961,7 +15035,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3523",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16223,152 +16299,26 @@
         "title": "bug(enforcement): check-no-abs-paths fails before scanning in sparse checkouts",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3459",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:tooling",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3458,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "bug(cleanup): make archive manifests safe for tabs, newlines, and arbitrary names",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3458",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:workflow",
-            "machine:dev-primary",
-            "status:needs-plan"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "fix(worktrees): fail closed on an absent sparse-worktree index"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3457,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "fix(worktrees): fail closed on an absent sparse-worktree index",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3457",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:tooling",
-            "domain:security",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "security(local-analysis): make parent runtime-config permissions enforceable on fuseblk"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3456,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "security(local-analysis): make parent runtime-config permissions enforceable on fuseblk",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3456",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
     "running_leased": []
   },
   "recommended_provider_order": [
-    "agy",
     "codex",
+    "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-08-04T01:21:14.870579Z",
+  "scorecard_generated_at": "2026-08-21T09:21:10.075741Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-08-04T01:21:14.733238Z",
+  "utilization_generated_at": "2026-08-21T09:21:09.961229Z",
   "warning_summary": {
-    "approved_no_marker": 15,
-    "approved_no_plan": 10,
+    "approved_no_marker": 14,
+    "approved_no_plan": 9,
     "legacy_review_no_sha": 10,
     "major_review": 5,
     "marker_without_open_approved_issue": 177,
-    "missing_review": 33,
+    "missing_review": 39,
     "unavailable_review": 6
   }
 }
