@@ -1,10 +1,10 @@
-# Provider session ecosystem audit — 2026-08-24
+# Provider session ecosystem audit — 2026-08-31
 
 Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orchestrator` with saved provider artifacts used only as fallback when raw logs are unavailable.
 
 ## Executive summary
 - `claude` — source=raw_logs | sessions=104 | post_records=123474 | python3/1k=9.1 | uv-python/1k=50.63
-- `codex` — source=raw_logs | sessions=144 | post_records=207589 | python3/1k=13.62 | uv-python/1k=18.77
+- `codex` — source=raw_logs | sessions=145 | post_records=207602 | python3/1k=13.62 | uv-python/1k=18.77
 - `hermes` — source=raw_logs | sessions=50 | post_records=7829811 | python3/1k=9.55 | uv-python/1k=18.72
 - `gemini` — source=raw_logs | sessions=78 | post_records=6210 | python3/1k=46.86 | uv-python/1k=6.28
 
@@ -46,22 +46,23 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - `claude` — rank=1 (prev=1, move=stable) | health=red | profile=dormant | 24h=0 posts/0 sessions | 7d=0 posts/0 sessions | urgency=60.0 | tier=next_up | activity=idle (stable) | corpus=aligned | debt=high_debt (stable) | drift=stable | python=uv_preferred (stable) | health summary: red: high migration debt | movement: rank unchanged at #1; urgency 60.00 (+0.00 vs previous audit) | primary issue: legacy_work_queue_transition | action: prioritize legacy-path redirect cleanup and prompt/doc updates
 - `gemini` — rank=2 (prev=2, move=stable) | health=red | profile=dormant | 24h=0 posts/0 sessions | 7d=0 posts/0 sessions | urgency=45.74 | tier=next_up | activity=idle (stable) | corpus=aligned | debt=high_debt (stable) | drift=stable | python=python3_heavy (stable) | health summary: red: high migration debt; python3-heavy command hygiene | movement: rank unchanged at #2; urgency 45.74 (+0.00 vs previous audit) | primary issue: legacy_local_work_queue_items | action: prioritize legacy-path redirect cleanup and prompt/doc updates
 - `hermes` — rank=3 (prev=3, move=stable) | health=yellow | profile=dormant | 24h=0 posts/0 sessions | 7d=0 posts/0 sessions | urgency=24.23 | tier=investigate | activity=idle (stable) | corpus=aligned | debt=moderate_debt (stable) | drift=stable | python=mixed (stable) | health summary: yellow: moderate migration debt | movement: rank unchanged at #3; urgency 24.23 (+0.00 vs previous audit) | primary issue: session_local_worktree_path_drift | action: prioritize legacy-path redirect cleanup and prompt/doc updates
-- `codex` — rank=4 (prev=4, move=stable) | health=yellow | profile=dormant | 24h=0 posts/0 sessions | 7d=0 posts/0 sessions | urgency=3.35 | tier=monitor | activity=idle (decreasing) | corpus=aligned | debt=moderate_debt (stable) | drift=stable | python=mixed (stable) | health summary: yellow: moderate migration debt | movement: rank unchanged at #4; urgency 3.35 (-10.20 vs previous audit); recent activity cooled | primary issue: llm_wiki_spinout_path_drift | action: prioritize legacy-path redirect cleanup and prompt/doc updates
+- `codex` — rank=4 (prev=4, move=stable) | health=yellow | profile=light_recent | 24h=0 posts/0 sessions | 7d=13 posts/1 sessions | urgency=9.65 | tier=monitor | activity=quiet (increasing) | corpus=aligned | debt=moderate_debt (stable) | drift=stable | python=mixed (stable) | health summary: yellow: moderate migration debt | movement: rank unchanged at #4; urgency 9.65 (+6.30 vs previous audit); recent activity increased | primary issue: llm_wiki_spinout_path_drift | action: prioritize legacy-path redirect cleanup and prompt/doc updates
 
 ## Recent activity since previous audit
-- Previous audit timestamp: `2026-08-17T09:15:04Z`
+- Previous audit timestamp: `2026-08-24T09:15:04Z`
+- Recent post-audit activity: `codex` 13 post records / 1 sessions.
 - Scope note: This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.
 
 ## Rolling activity windows
-- `last_24h` — `2026-08-23T09:15:04Z` → `2026-08-24T09:15:04Z`
+- `last_24h` — `2026-08-30T09:15:04Z` → `2026-08-31T09:15:04Z`
   - Scope note: Last 24 hours of event-time activity ending at this audit timestamp.
   - Activity leaders: no provider activity captured in this window.
-- `last_7d` — `2026-08-17T09:15:04Z` → `2026-08-24T09:15:04Z`
+- `last_7d` — `2026-08-24T09:15:04Z` → `2026-08-31T09:15:04Z`
   - Scope note: Last 7 days of event-time activity ending at this audit timestamp.
-  - Activity leaders: no provider activity captured in this window.
+  - Activity leaders: `codex` 13 post records / 1 sessions.
 
 ## Corpus change since previous audit
-- Previous audit timestamp: `2026-08-17T09:15:04Z`
+- Previous audit timestamp: `2026-08-24T09:15:04Z`
 - Scope note: Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity.
 - Largest negative reconciliation gap: `claude`
 - Largest positive reconciliation gap: `claude`
@@ -234,10 +235,10 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 
 ## codex
 - Source: raw_logs
-- Sessions: 144
-- Post-hook records: 207589
+- Sessions: 145
+- Post-hook records: 207602
 - Correction sessions: 0
-- Unique runtime sessions: 3329
+- Unique runtime sessions: 3330
 - Prompt-like reads: 40
 - Blank read targets: 0
 - Missing repo reads: 1705
@@ -248,14 +249,14 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - `Bash` — 168993
 - `wait` — 12283
 - `Read` — 7377
-- `wait_agent` — 7001
-- `send_message` — 2353
+- `wait_agent` — 7005
+- `send_message` — 2359
 - `Grep` — 2036
-- `spawn_agent` — 1641
+- `spawn_agent` — 1644
 - `update_plan` — 1074
 
 ### codex top repos
-- `workspace-hub` — 207589
+- `workspace-hub` — 207602
 
 ### codex top reads
 - `docs/plans/README.md` — 274
@@ -316,11 +317,13 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - `git` — 6525
 
 ### codex recent activity since previous audit
-- Post-hook records since prior audit: 0
-- Runtime sessions since prior audit: 0
+- Post-hook records since prior audit: 13
+- Runtime sessions since prior audit: 1
 
 ### codex recent top tools
-- none
+- `send_message` — 6
+- `wait_agent` — 4
+- `spawn_agent` — 3
 
 ### codex recent top reads
 - none
@@ -344,10 +347,10 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - none
 
 ### codex corpus change since previous audit
-- Post-hook records: current 207589 vs previous 207589 (delta 0)
-- Sessions: current 144 vs previous 144 (delta 0)
+- Post-hook records: current 207602 vs previous 207589 (delta 13)
+- Sessions: current 145 vs previous 144 (delta 1)
 - Missing repo reads: current 1705 vs previous 1705 (delta 0)
-- Event-time post records since prior audit: 0
+- Event-time post records since prior audit: 13
 - Reconciliation gap vs event-time delta: 0
 - Status: aligned
 - Interpretation: Snapshot post-record change aligns with recent event-time activity.

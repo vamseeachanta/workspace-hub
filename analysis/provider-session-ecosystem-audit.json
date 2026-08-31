@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-24T09:15:04Z",
+  "generated_at": "2026-08-31T09:15:04Z",
   "repo_root": "/mnt/ace/ws/workspace-hub",
   "logs_root": "/mnt/ace/ws/workspace-hub/logs/orchestrator",
   "providers": {
@@ -415,10 +415,10 @@
     },
     "codex": {
       "source": "raw_logs",
-      "sessions": 144,
+      "sessions": 145,
       "correction_sessions": 0,
-      "unique_runtime_sessions": 3329,
-      "post_records": 207589,
+      "unique_runtime_sessions": 3330,
+      "post_records": 207602,
       "prompt_reads": 40,
       "blank_reads": 0,
       "missing_repo_reads": 1705,
@@ -439,11 +439,11 @@
         },
         {
           "tool": "wait_agent",
-          "count": 7001
+          "count": 7005
         },
         {
           "tool": "send_message",
-          "count": 2353
+          "count": 2359
         },
         {
           "tool": "Grep",
@@ -451,7 +451,7 @@
         },
         {
           "tool": "spawn_agent",
-          "count": 1641
+          "count": 1644
         },
         {
           "tool": "update_plan",
@@ -461,7 +461,7 @@
       "top_repos": [
         {
           "repo": "workspace-hub",
-          "count": 207589
+          "count": 207602
         }
       ],
       "top_reads": [
@@ -754,8 +754,8 @@
         "request_user_input": 5,
         "list_mcp_resources": 212,
         "list_mcp_resource_templates": 19,
-        "spawn_agent": 1641,
-        "wait_agent": 7001,
+        "spawn_agent": 1644,
+        "wait_agent": 7005,
         "close_agent": 838,
         "mcp__codex_apps__github_fetch_file": 192,
         "mcp__codex_apps__github_search": 41,
@@ -837,7 +837,7 @@
         "_add_review_to_pr": 1,
         "wait": 12283,
         "list_agents": 843,
-        "send_message": 2353,
+        "send_message": 2359,
         "interrupt_agent": 105,
         "followup_task": 1041,
         "run": 6
@@ -1758,10 +1758,10 @@
         },
         {
           "provider": "codex",
-          "urgency_score": 3.35,
+          "urgency_score": 9.65,
           "urgency_tier": "monitor",
-          "activity_status": "idle",
-          "activity_trend": "decreasing",
+          "activity_status": "quiet",
+          "activity_trend": "increasing",
           "corpus_status": "aligned",
           "debt_status": "moderate_debt",
           "debt_trend": "stable",
@@ -1770,16 +1770,16 @@
           "drift_trend": "stable",
           "last_24h_post_records": 0,
           "last_24h_sessions": 0,
-          "last_7d_post_records": 0,
-          "last_7d_sessions": 0,
-          "activity_window_profile": "dormant",
+          "last_7d_post_records": 13,
+          "last_7d_sessions": 1,
+          "activity_window_profile": "light_recent",
           "health_status": "yellow",
           "health_reasons": [
             "moderate migration debt"
           ],
           "health_summary": "yellow: moderate migration debt",
-          "recent_post_records": 0,
-          "recent_sessions": 0,
+          "recent_post_records": 13,
+          "recent_sessions": 1,
           "known_migration_debt_reads": 10,
           "known_migration_debt_per_1k_records": 0.05,
           "missing_repo_reads_per_1k_records": 8.21,
@@ -1789,8 +1789,8 @@
           "previous_urgency_rank": 4,
           "urgency_rank_delta": 0,
           "urgency_rank_direction": "stable",
-          "urgency_score_delta": -10.2,
-          "urgency_movement_summary": "rank unchanged at #4; urgency 3.35 (-10.20 vs previous audit); recent activity cooled"
+          "urgency_score_delta": 6.3,
+          "urgency_movement_summary": "rank unchanged at #4; urgency 9.65 (+6.30 vs previous audit); recent activity increased"
         }
       ],
       "focus_this_week": "Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 60.0, issue: legacy_work_queue_transition), then address gemini (urgency 45.74, issue: legacy_local_work_queue_items).",
@@ -2513,7 +2513,7 @@
       "cleared_followup_issue_drafts": []
     },
     "recent_activity_since_previous_audit": {
-      "previous_generated_at": "2026-08-17T09:15:04Z",
+      "previous_generated_at": "2026-08-24T09:15:04Z",
       "status": "ok",
       "scope_note": "This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.",
       "providers": {
@@ -2531,9 +2531,22 @@
           "top_bash_command_families": []
         },
         "codex": {
-          "post_records": 0,
-          "sessions": 0,
-          "top_tools": [],
+          "post_records": 13,
+          "sessions": 1,
+          "top_tools": [
+            {
+              "tool": "send_message",
+              "count": 6
+            },
+            {
+              "tool": "wait_agent",
+              "count": 4
+            },
+            {
+              "tool": "spawn_agent",
+              "count": 3
+            }
+          ],
           "top_missing_repo_reads": [],
           "top_sibling_repo_reads": [],
           "top_non_repo_artifact_reads": [],
@@ -2570,15 +2583,21 @@
           "top_bash_command_families": []
         }
       },
-      "ranked_providers": []
+      "ranked_providers": [
+        {
+          "provider": "codex",
+          "post_records": 13,
+          "sessions": 1
+        }
+      ]
     },
     "recent_activity_windows": {
-      "generated_at": "2026-08-24T09:15:04Z",
+      "generated_at": "2026-08-31T09:15:04Z",
       "status": "ok",
       "windows": {
         "last_24h": {
-          "window_start": "2026-08-23T09:15:04Z",
-          "window_end": "2026-08-24T09:15:04Z",
+          "window_start": "2026-08-30T09:15:04Z",
+          "window_end": "2026-08-31T09:15:04Z",
           "status": "ok",
           "scope_note": "Last 24 hours of event-time activity ending at this audit timestamp.",
           "providers": {
@@ -2638,8 +2657,8 @@
           "ranked_providers": []
         },
         "last_7d": {
-          "window_start": "2026-08-17T09:15:04Z",
-          "window_end": "2026-08-24T09:15:04Z",
+          "window_start": "2026-08-24T09:15:04Z",
+          "window_end": "2026-08-31T09:15:04Z",
           "status": "ok",
           "scope_note": "Last 7 days of event-time activity ending at this audit timestamp.",
           "providers": {
@@ -2657,9 +2676,22 @@
               "top_bash_command_families": []
             },
             "codex": {
-              "post_records": 0,
-              "sessions": 0,
-              "top_tools": [],
+              "post_records": 13,
+              "sessions": 1,
+              "top_tools": [
+                {
+                  "tool": "send_message",
+                  "count": 6
+                },
+                {
+                  "tool": "wait_agent",
+                  "count": 4
+                },
+                {
+                  "tool": "spawn_agent",
+                  "count": 3
+                }
+              ],
               "top_missing_repo_reads": [],
               "top_sibling_repo_reads": [],
               "top_non_repo_artifact_reads": [],
@@ -2696,12 +2728,18 @@
               "top_bash_command_families": []
             }
           },
-          "ranked_providers": []
+          "ranked_providers": [
+            {
+              "provider": "codex",
+              "post_records": 13,
+              "sessions": 1
+            }
+          ]
         }
       }
     },
     "corpus_change_since_previous_audit": {
-      "previous_generated_at": "2026-08-17T09:15:04Z",
+      "previous_generated_at": "2026-08-24T09:15:04Z",
       "status": "ok",
       "scope_note": "Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity.",
       "providers": {
@@ -2728,16 +2766,16 @@
           "previous_source": "raw_logs",
           "current_source": "raw_logs",
           "previous_post_records": 207589,
-          "current_post_records": 207589,
-          "post_record_delta": 0,
+          "current_post_records": 207602,
+          "post_record_delta": 13,
           "previous_sessions": 144,
-          "current_sessions": 144,
-          "session_delta": 0,
+          "current_sessions": 145,
+          "session_delta": 1,
           "previous_missing_repo_reads": 1705,
           "current_missing_repo_reads": 1705,
           "missing_repo_read_delta": 0,
-          "event_time_post_records_since_previous_audit": 0,
-          "event_time_sessions_since_previous_audit": 0,
+          "event_time_post_records_since_previous_audit": 13,
+          "event_time_sessions_since_previous_audit": 1,
           "reconciliation_gap_post_records": 0,
           "interpretation": "Snapshot post-record change aligns with recent event-time activity."
         },
@@ -2788,8 +2826,8 @@
         },
         {
           "provider": "codex",
-          "post_record_delta": 0,
-          "event_time_post_records_since_previous_audit": 0,
+          "post_record_delta": 13,
+          "event_time_post_records_since_previous_audit": 13,
           "reconciliation_gap_post_records": 0,
           "status": "aligned"
         },
