@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-31T09:21:13.679040Z",
+  "generated_at": "2026-08-31T13:21:16.656046Z",
   "current_week": "2026-W36",
-  "scorecard_generated_at": "2026-08-31T09:21:11.697991Z",
+  "scorecard_generated_at": "2026-08-31T13:21:14.575221Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -844,6 +844,27 @@
             "compliance-alert"
           ],
           "updatedAt": "2026-08-30T11:45:05Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3814,
+          "title": "Compliance alert: W36 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3814",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-08-31T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -3424,30 +3445,6 @@
           "provider_status": "underused",
           "work_type": [
             "general"
-          ]
-        },
-        {
-          "number": 3460,
-          "title": "bug(hooks): post-commit learning hook fails from sparse linked worktrees",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3460",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "domain:harness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:16Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
           ]
         },
         {
