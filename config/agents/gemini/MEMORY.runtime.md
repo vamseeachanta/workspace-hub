@@ -13,7 +13,7 @@
 - [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included** *verified: 2026-08-08*
 - [Absence of signal reads as success](feedback_absence_of_signal_reads_as_success.md) — missing check looks GREENER than failing one; verify every suppression's stated reason (comments lie); import scans are blind to `engine=`/entry-point deps
 - [Verify subagent line citations, not just claims](feedback_verify_subagent_line_citations_not_just_claims.md) — a defect existing ≠ it being at that line; cite the SYMBOL when coordinates aren't cheap to confirm
-- [Report-hub design system (owner-approved)](feedback_report_hub_design_system.md) — hub grammar = THE design for ALL field-data surfaces; data → HF `aceengineer/*`; ref impl wed PR #1058
+- [Report-hub design system (owner-approved)](feedback_report_hub_design_system.md) — hub grammar = THE design for ALL field-data surfaces; data → HF `aceengineer/*`; ref impl wed PR #1058 *stale: 2026-09-01*
 - [Rig-selector capability depth](feedback_rig_selector_capability_depth.md) — onshore/offshore = FIRST filter; equipment fields over more hull numbers (wed #1006)
 - [One result everywhere](feedback_one_result_everywhere.md) — SINGLE result on website/HF/client surfaces; versioning internal only; new results auto-pop live
 - [Public by default; client-custom is private](feedback_public_by_default_client_custom_private.md) — analysis/results PUBLIC; only client-commissioned work private; `withheld_columns` = temporary guardrail
@@ -21,8 +21,8 @@
 - [Dispatch = deterministic scripts only](feedback_dispatch_deterministic_scripts_only.md) — licensed-host lane = pinned-input scripts; LLM work is ad-hoc, lands as committed code
 - [AceEngineer standard HTML calc-report format](feedback_ace_standard_html_calc_report.md) — template `/mnt/local-analysis/ace_calc_report_TEMPLATE.html`; provenance=color
 - [Placeholder links to filing issue](feedback_placeholder_links_to_filing_issue.md) — thin UI data → VISIBLE placeholder linking a `cat:data` issue
-- [Equality wedge ≠ drift recovery](feedback_equality_wedge_vs_drift_recovery.md) — main ahead AND behind → prove regenerable → backup tag → `reset --hard` (destructive, get OK)
 - [Strict-up-to-date ruleset blocks green-PR merge](feedback_strict_uptodate_ruleset_no_admin_bypass.md) — `--admin` doesn't bypass rulesets; merge-when-CLEAN loop
+- [Required check must never skip](feedback_required_check_must_not_skip.md) — job-level `if:` on required check deadlocks PRs (skipped ≠ success)
 - [Verify generated/state files against origin/main](feedback_verify_generated_state_against_origin_not_working_copy.md) — `git show origin/main:<path>` before "stale" claims *stale: 2026-08-27*
 - Windows (MINGW64): paths use `/d/workspace-hub/` in bash (not `D:\`)
 - All development must be compatible with Linux, Windows, and macOS
@@ -37,4 +37,4 @@
 - **NaN correlations**: Zero std dev (e.g., yaw at head seas) — handle gracefully
 - **AQWA FATAL mesh errors**: Cannot be overridden with `OPTIONS GOON`; fix the mesh
 - **LIS parser**: Normalize whitespace before keyword matching ("ADDED  MASS" has double space)
-_[110 entries omitted: oversize/over-cap]_
+_[112 entries omitted: oversize/over-cap]_
