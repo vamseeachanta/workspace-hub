@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-02T09:21:13Z
+Generated: 2026-09-02T13:21:14Z
 Mode: static (read-only)
 
 ## How to approve
@@ -89,7 +89,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3698 | PR gate is baseline-red: two enforcement checks fail on every PR, plus an undeclared test dep | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3696 | chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3695 | chore(llm-wiki): resolve two empty client-wiki stubs — llm-wiki-seanation and llm-wiki-hd | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3694 | chore(repo): reconcile llm-wiki-mkt-a → llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3694 | chore(repo): reconcile llm-wiki-mkt-a → llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live) | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3693 | Compliance alert: W31 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3671 | INITIATIVE: Repo structure, test health & governance | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3670 | INITIATIVE: Fleet operations — machine readiness, cross-platform parity & security | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -162,7 +162,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3602 | INITIATIVE: World Energy Field Explorer & asset data spine | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3601 | INITIATIVE: Engineering compute & solver trust | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3600 | fix(harness): R-MODEL-DRIFT validates only openai_primary — no claude_* key is checked by any nightly gate | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3598 | feat(equality): add HF-token health row to the machine equivalence matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3598 | feat(equality): add HF-token health row to the machine equivalence matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3596 | Compliance alert: W30 — 18% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3595 | ace-win-2 on-box: schema-5 equality re-collect verification + hermes home init + revive licensed-runs queue heartbeat (#3592 follow-up) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3594 | chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding — notes say clone pending / uv NOT installed; both now false | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |

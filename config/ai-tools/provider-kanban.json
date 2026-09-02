@@ -1840,9 +1840,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -1852,7 +1851,8 @@
           "priority:high",
           "cat:tooling",
           "domain:repo-cleanup",
-          "machine:dev-primary"
+          "machine:dev-primary",
+          "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1875,7 +1875,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -4755,9 +4757,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -4766,7 +4767,8 @@
         "labels": [
           "cat:operations",
           "domain:workstations",
-          "machine:dev-primary"
+          "machine:dev-primary",
+          "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -4789,7 +4791,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "feat(equality): add HF-token health row to the machine equivalence matrix",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3598",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -8157,7 +8161,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-09-02T09:21:13Z",
+  "generated_at": "2026-09-02T13:21:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -9978,9 +9982,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9990,7 +9993,8 @@
             "priority:high",
             "cat:tooling",
             "domain:repo-cleanup",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10013,7 +10017,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -12893,9 +12899,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -12904,7 +12909,8 @@
           "labels": [
             "cat:operations",
             "domain:workstations",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -12927,7 +12933,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "feat(equality): add HF-token health row to the machine equivalence matrix",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3598",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -16303,16 +16311,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-02T09:21:09.865811Z",
+  "scorecard_generated_at": "2026-09-02T13:21:10.085253Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-02T09:21:09.758968Z",
+  "utilization_generated_at": "2026-09-02T13:21:09.980199Z",
   "warning_summary": {
     "approved_no_marker": 14,
     "approved_no_plan": 9,
     "legacy_review_no_sha": 10,
     "major_review": 5,
     "marker_without_open_approved_issue": 177,
-    "missing_review": 41,
+    "missing_review": 43,
     "unavailable_review": 6
   }
 }
