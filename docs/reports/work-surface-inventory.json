@@ -1,0 +1,419 @@
+{
+  "repositories": [
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": false,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "CAD-DEVELOPMENTS",
+      "observed_local": false,
+      "profile": "code",
+      "sensitivity": "public",
+      "state": "declared-missing"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": true,
+        "claude_dir": true,
+        "claude_in_dir": true,
+        "codex_dir": true,
+        "complete": true,
+        "gemini_dir": true,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "aceengineer-admin",
+      "observed_local": true,
+      "profile": "code",
+      "sensitivity": "business-internal",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": true,
+        "claude_in_dir": true,
+        "codex_dir": true,
+        "complete": false,
+        "gemini_dir": true,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "aceengineer-strategy",
+      "observed_local": true,
+      "profile": "control-product",
+      "sensitivity": "business-internal",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": true,
+        "claude_dir": true,
+        "claude_in_dir": true,
+        "codex_dir": true,
+        "complete": true,
+        "gemini_dir": true,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "aceengineer-website",
+      "observed_local": true,
+      "profile": "code",
+      "sensitivity": "public",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": true,
+        "claude_dir": true,
+        "claude_in_dir": true,
+        "codex_dir": true,
+        "complete": true,
+        "gemini_dir": true,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "achantas-data",
+      "observed_local": true,
+      "profile": "code",
+      "sensitivity": "personal-sensitive",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": false,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "achantas-media",
+      "observed_local": false,
+      "profile": "knowledge",
+      "sensitivity": "personal-sensitive",
+      "state": "declared-missing"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": true,
+        "claude_dir": true,
+        "claude_in_dir": true,
+        "codex_dir": true,
+        "complete": true,
+        "gemini_dir": true,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "assethold",
+      "observed_local": true,
+      "profile": "code",
+      "sensitivity": "personal-sensitive",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": true,
+        "claude_dir": true,
+        "claude_in_dir": true,
+        "codex_dir": true,
+        "complete": true,
+        "gemini_dir": true,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "assetutilities",
+      "observed_local": true,
+      "profile": "code",
+      "sensitivity": "public",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": false,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "deckhand",
+      "observed_local": false,
+      "profile": "control-product",
+      "sensitivity": "public",
+      "state": "declared-missing"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": true,
+        "claude_dir": true,
+        "claude_in_dir": true,
+        "codex_dir": true,
+        "complete": false,
+        "gemini_dir": true,
+        "mcp": "missing-required",
+        "root_claude_md": false
+      },
+      "mcp_required": true,
+      "name": "digitalmodel",
+      "observed_local": true,
+      "profile": "code",
+      "sensitivity": "public",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": false,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "hobbies",
+      "observed_local": false,
+      "profile": "knowledge",
+      "sensitivity": "personal-sensitive",
+      "state": "declared-missing"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": false,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "kaggle-rogii-2026",
+      "observed_local": false,
+      "profile": "code",
+      "sensitivity": "personal-sensitive",
+      "state": "declared-missing"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": true,
+        "claude_in_dir": false,
+        "codex_dir": true,
+        "complete": false,
+        "gemini_dir": true,
+        "mcp": "not-required",
+        "root_claude_md": true
+      },
+      "mcp_required": false,
+      "name": "llm-wiki",
+      "observed_local": true,
+      "profile": "knowledge",
+      "sensitivity": "client-confidential",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": true,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": true
+      },
+      "mcp_required": false,
+      "name": "llm-wiki-fdas",
+      "observed_local": true,
+      "profile": "knowledge",
+      "sensitivity": "client-confidential",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": false,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "llm-wiki-mkt-a",
+      "observed_local": false,
+      "profile": "knowledge",
+      "sensitivity": "client-confidential",
+      "state": "declared-missing"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": true,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "raw-to-knowledge-playbook",
+      "observed_local": true,
+      "profile": "knowledge",
+      "sensitivity": "public",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": true,
+        "claude_dir": true,
+        "claude_in_dir": true,
+        "codex_dir": true,
+        "complete": true,
+        "gemini_dir": true,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "sabithaandkrishnaestates",
+      "observed_local": true,
+      "profile": "code",
+      "sensitivity": "personal-sensitive",
+      "state": "observed-unregistered"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": false,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "teamresumes",
+      "observed_local": false,
+      "profile": "knowledge",
+      "sensitivity": "personal-sensitive",
+      "state": "declared-missing"
+    },
+    {
+      "configured_for_machine": true,
+      "contract": {
+        "agents_md": true,
+        "claude_dir": true,
+        "claude_in_dir": false,
+        "codex_dir": true,
+        "complete": false,
+        "gemini_dir": true,
+        "mcp": "present",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "workspace-hub",
+      "observed_local": true,
+      "profile": "control-product",
+      "sensitivity": "public",
+      "state": "configured-present"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": false,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "missing-required",
+        "root_claude_md": false
+      },
+      "mcp_required": true,
+      "name": "worldenergydata",
+      "observed_local": false,
+      "profile": "code",
+      "sensitivity": "public",
+      "state": "declared-missing"
+    },
+    {
+      "configured_for_machine": false,
+      "contract": {
+        "agents_md": false,
+        "claude_dir": true,
+        "claude_in_dir": false,
+        "codex_dir": false,
+        "complete": false,
+        "gemini_dir": false,
+        "mcp": "not-required",
+        "root_claude_md": false
+      },
+      "mcp_required": false,
+      "name": "worldenergydata-wiki",
+      "observed_local": true,
+      "profile": "knowledge",
+      "sensitivity": "public",
+      "state": "observed-unregistered"
+    }
+  ],
+  "schema_version": 1,
+  "summary": {
+    "adapter_coverage": {
+      "complete": 6,
+      "incomplete": 15
+    },
+    "configured": 1,
+    "contract_complete": 6,
+    "declared": 21,
+    "missing": 8,
+    "non_git": 0,
+    "observed_declared": 13,
+    "present": 13,
+    "unexpected_count": 11,
+    "unknown": 11
+  }
+}
