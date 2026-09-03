@@ -27,9 +27,16 @@ MEMORY_DIR="${REPO_ROOT}/.claude/memory"
 TEMPLATE_DIR="${MEMORY_DIR}/templates"
 TOPICS_DIR="${MEMORY_DIR}/topics"
 HERMES_MEM_DIR="${HOME}/.hermes/memories"
-# Derive Claude auto-memory path from workspace root (portable across Linux / Windows Git Bash)
-_project_slug="$(cd "${REPO_ROOT}" && pwd | tr '/' '-')"
-CLAUDE_MEM_DIR="${HOME}/.claude/projects/${_project_slug}/memory"
+# Resolve Claude auto-memory across workspace moves. Deriving the slug inline from
+# the CURRENT repo path silently broke when the ecosystem moved to /mnt/ace/ws:
+# Claude Code pins the project slug at session start and kept writing to the old
+# one, so the mirror copied nothing while still printing a tick for the stale
+# snapshot. The resolver tries the exact slug, known aliases, then any slug
+# ending in this repo's basename -- and fails LOUDLY rather than resolving to a
+# path it cannot verify.
+# shellcheck source=scripts/memory/resolve-auto-memory.sh
+source "${REPO_ROOT}/scripts/memory/resolve-auto-memory.sh"
+CLAUDE_MEM_DIR="$(resolve_claude_memory_dir "${REPO_ROOT}" "${HOME}")" || CLAUDE_MEM_DIR=""
 TIMESTAMP="$(date +%Y-%m-%d)"
 COMMIT_MODE="${1:-}"
 
@@ -197,7 +204,13 @@ echo "[bridge] context.md regenerated"
 CLAUDE_AUTO="${CLAUDE_MEM_DIR}/MEMORY.md"
 SNAPSHOT_OUT="${MEMORY_DIR}/claude-auto-memory.md"
 
-if [[ -f "${CLAUDE_AUTO}" ]]; then
+if [[ -z "${CLAUDE_MEM_DIR}" || ! -f "${CLAUDE_AUTO}" ]]; then
+    # Never skip silently. An unreachable source and a completed mirror looked
+    # identical before this, which is how the bridge ran dead for weeks.
+    echo -e "${YELLOW}[bridge] WARNING: Claude auto-memory index not found" \
+            "(${CLAUDE_AUTO:-<unresolved>}) — claude-auto-memory.md left STALE," \
+            "not refreshed. The snapshot below is NOT current.${NC}" >&2
+else
     {
         echo "# Claude Code Auto-Memory Snapshot"
         echo ""
