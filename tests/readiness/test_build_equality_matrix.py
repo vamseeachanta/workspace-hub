@@ -615,7 +615,9 @@ def test_wiring_single_source_schedule():
         (REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml").read_text())["tasks"]
     eq = next(t for t in tasks if t["id"] == "equality-report")
     assert eq["schedule"].split()[-1] == "1"            # weekly, Monday
-    assert "equality-matrix-cron.sh" in eq["command"]
+    assert "equality-preflight.sh" in eq["command"]
+    preflight = (REPO_ROOT / "scripts" / "readiness" / "equality-preflight.sh").read_text()
+    assert "equality-matrix-cron.sh" in preflight
     wrapper = (REPO_ROOT / "scripts" / "readiness" / "equality-matrix-cron.sh").read_text()
     assert "collect-equality.sh" in wrapper
     assert "build-equality-matrix.py" in wrapper
@@ -625,7 +627,7 @@ def test_wiring_single_source_schedule():
     assert (REPO_ROOT / "scripts" / "windows" / "equality-report.ps1").exists()
     # The daily dead-man's-switch rebuild routes through the SAME wrapper.
     refresh = next(t for t in tasks if t["id"] == "equality-matrix-refresh")
-    assert "equality-matrix-cron.sh" in refresh["command"]
+    assert "equality-preflight.sh" in refresh["command"]
 
 
 def test_verdict_behavior_is_uniform_not_expected_diff():
@@ -883,6 +885,10 @@ def test_hc_no_audited_at_missing_evidence():
 def test_hc_null_core_evidence_missing():
     assert bem.harness_checkup_verdict(_hc(settings_parse_ok=None)) == "MISSING-EVIDENCE"
     assert bem.harness_checkup_verdict(_hc(install_method=None)) == "MISSING-EVIDENCE"
+
+
+def test_hc_garbled_settings_evidence_fails_closed():
+    assert bem.harness_checkup_verdict(_hc(settings_parse_ok="false")) == "MISSING-EVIDENCE"
 
 
 def test_hc_broken_settings_duplicate_agents():
