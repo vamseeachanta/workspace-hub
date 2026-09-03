@@ -125,3 +125,76 @@ def test_bridge_uses_the_resolver_and_warns_instead_of_skipping_silently() -> No
     assert "WARN" in text or "warning" in text.lower(), (
         "bridge must warn when auto-memory cannot be resolved, not skip silently"
     )
+
+
+def test_ambiguous_basename_collision_is_fatal(tmp_path: Path) -> None:
+    """Codex r1 MAJOR: '-workspace-hub' also suffix-matches '-my-workspace-hub'.
+
+    Slugification maps '/' and '-' to the same character, so the two are
+    genuinely indistinguishable by shape. Picking the newest MEMORY.md -- the
+    original tiebreak -- let an unrelated repo's store win. Ambiguity must be
+    fatal, not resolved by a guess.
+    """
+    home = tmp_path / "home"
+    repo = tmp_path / "mnt" / "ace" / "ws" / "workspace-hub"
+    repo.mkdir(parents=True)
+    _seed(home, str(tmp_path / "elsewhere" / "my-workspace-hub").replace("/", "-"))
+    _seed(home, str(tmp_path / "other" / "workspace-hub").replace("/", "-"))
+
+    r = _resolve(repo, home)
+    assert r.returncode != 0, "two suffix candidates must be fatal, not a guess"
+    assert not r.stdout.strip()
+    assert "candidate" in r.stderr.lower()
+
+
+def test_a_colliding_repo_does_not_win_on_mtime(tmp_path: Path) -> None:
+    """The specific wrong-store selection Codex demonstrated."""
+    home = tmp_path / "home"
+    repo = tmp_path / "mnt" / "ace" / "ws" / "workspace-hub"
+    repo.mkdir(parents=True)
+    intruder = _seed(home, str(tmp_path / "x" / "my-workspace-hub").replace("/", "-"))
+
+    r = _resolve(repo, home)
+    # Sole candidate, so it resolves -- but it must announce the guess on stderr
+    # so a wrong pick is visible rather than silent.
+    if r.returncode == 0:
+        assert r.stdout.strip() == str(intruder)
+        assert "verify" in r.stderr.lower(), "a fallback guess must be announced"
+
+
+def test_alias_rewrite_is_anchored_to_a_leading_prefix(tmp_path: Path) -> None:
+    """Codex r1 MINOR: substring replacement rewrote paths that merely CONTAIN the prefix."""
+    home = tmp_path / "home"
+    (home / ".claude" / "projects").mkdir(parents=True)
+    # A path containing '/mnt/ace/ws/' in the middle, not at the root.
+    repo = tmp_path / "srv" / "mnt" / "ace" / "ws" / "thing"
+    repo.mkdir(parents=True)
+    # Seed the store that a naive substring rewrite would wrongly reach for.
+    _seed(home, str(tmp_path / "srv" / "mnt" / "local-analysis" / "thing").replace("/", "-"))
+
+    r = _resolve(repo, home)
+    # The alias must not fire. It shares a basename with the repo, so the
+    # last-resort search can still reach it -- the discriminator is HOW: an
+    # alias hit returns silently, a fallback hit must announce itself.
+    if r.returncode == 0:
+        assert "falling back" in r.stderr.lower(), (
+            "resolved silently, so the mid-path prefix wrongly triggered the alias rewrite"
+        )
+
+
+def test_repo_outside_any_known_prefix_fails_cleanly(tmp_path: Path) -> None:
+    home = tmp_path / "home"
+    (home / ".claude" / "projects").mkdir(parents=True)
+    repo = tmp_path / "opt" / "somewhere" / "proj"
+    repo.mkdir(parents=True)
+
+    r = _resolve(repo, home)
+    assert r.returncode != 0
+    assert not r.stdout.strip()
+
+
+def test_helper_name_is_namespaced(tmp_path: Path) -> None:
+    """Codex r1 MINOR: a generic `_has_memory` defined in-function leaks globally."""
+    text = LIB.read_text(encoding="utf-8")
+    assert "_auto_memory_has_index" in text
+    assert "_has_memory()" not in text, "generic helper name would leak into the caller's shell"

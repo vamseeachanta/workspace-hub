@@ -210,7 +210,7 @@ if [[ -z "${CLAUDE_MEM_DIR}" || ! -f "${CLAUDE_AUTO}" ]]; then
     echo -e "${YELLOW}[bridge] WARNING: Claude auto-memory index not found" \
             "(${CLAUDE_AUTO:-<unresolved>}) — claude-auto-memory.md left STALE," \
             "not refreshed. The snapshot below is NOT current.${NC}" >&2
-elif [[ -f "${CLAUDE_AUTO}" ]]; then
+else
     {
         echo "# Claude Code Auto-Memory Snapshot"
         echo ""
