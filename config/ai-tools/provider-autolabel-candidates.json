@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-03T21:21:17.588304Z",
+  "generated_at": "2026-09-04T01:21:15.332016Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 9,
+  "eligible_count": 10,
   "applied": [],
   "candidates": [
     {
@@ -124,6 +124,42 @@
         "lane:claude"
       ],
       "updatedAt": "2026-08-01T06:13:53Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3816,
+      "title": "feat(repo): generate authoritative work-surface inventory and adapter coverage report",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3816",
+      "labels": [
+        "enhancement",
+        "priority:high",
+        "cat:tooling",
+        "machine:multi",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:codex",
+        "domain:repo"
+      ],
+      "updatedAt": "2026-09-03T23:32:02Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -451,38 +487,6 @@
         "execution-ready",
         "strong-codex-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3480,
-      "title": "Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3480",
-      "labels": [
-        "cat:tooling",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "gate:completeness",
-        "domain:capability"
-      ],
-      "updatedAt": "2026-07-31T08:33:07Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.75,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-claude-language-match",
-        "provider-high-priority"
       ],
       "eligible": false
     },

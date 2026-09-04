@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-03T21:21:19Z
+Generated: 2026-09-04T01:21:16Z
 Mode: static (read-only)
 
 ## How to approve
@@ -48,7 +48,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3819 | feat(harness): unified ecosystem doctor with stable probe schema | agy | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3818 | chore(operations): rationalize scheduled workflows and shift automation toward business outcomes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3817 | feat(security): classify repository sensitivity zones and enforce sibling-read boundaries | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3816 | feat(repo): generate authoritative work-surface inventory and adapter coverage report | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3816 | feat(repo): generate authoritative work-surface inventory and adapter coverage report | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3815 | [Epic] Repo ecosystem simplification, security, and outcome-equivalence program | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3814 | Compliance alert: W36 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3813 | Compliance alert: W35 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |

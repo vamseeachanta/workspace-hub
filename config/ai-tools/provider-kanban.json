@@ -238,6 +238,8 @@
     },
     {
       "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
         "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
@@ -250,7 +252,8 @@
           "priority:high",
           "cat:tooling",
           "machine:multi",
-          "status:plan-review",
+          "status:plan-approved",
+          "gate:completeness",
           "lane:codex",
           "domain:repo"
         ],
@@ -276,6 +279,8 @@
       "title": "feat(repo): generate authoritative work-surface inventory and adapter coverage report",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3816",
       "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
         "missing_review"
       ]
     },
@@ -8164,7 +8169,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-09-03T21:21:19Z",
+  "generated_at": "2026-09-04T01:21:16Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8383,6 +8388,8 @@
       },
       {
         "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
           "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
@@ -8395,7 +8402,8 @@
             "priority:high",
             "cat:tooling",
             "machine:multi",
-            "status:plan-review",
+            "status:plan-approved",
+            "gate:completeness",
             "lane:codex",
             "domain:repo"
           ],
@@ -8421,6 +8429,8 @@
         "title": "feat(repo): generate authoritative work-surface inventory and adapter coverage report",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3816",
         "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
           "missing_review"
         ]
       },
@@ -16317,12 +16327,12 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-03T21:21:15.641828Z",
+  "scorecard_generated_at": "2026-09-04T01:21:13.387276Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-03T21:21:15.541470Z",
+  "utilization_generated_at": "2026-09-04T01:21:13.288363Z",
   "warning_summary": {
-    "approved_no_marker": 13,
-    "approved_no_plan": 8,
+    "approved_no_marker": 14,
+    "approved_no_plan": 9,
     "legacy_review_no_sha": 10,
     "major_review": 5,
     "marker_without_open_approved_issue": 177,
