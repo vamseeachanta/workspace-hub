@@ -110,8 +110,8 @@ config = {
 
 - OrcaFlex Results: Linked Statistics
 - OrcFxAPI Documentation
-- Source: `src/digitalmodel/modules/orcaflex/opp_linkedstatistics.py`
-- Source: `src/digitalmodel/modules/orcaflex/opp_range_graph.py`
+- Source: `src/digitalmodel/solvers/orcaflex/opp_linkedstatistics.py`
+- Source: `src/digitalmodel/solvers/orcaflex/opp_range_graph.py`
 
 ## Sub-Skills
 

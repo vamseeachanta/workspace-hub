@@ -126,10 +126,10 @@ correlation = analyzer.compute_correlation(
 
 ## References
 
-- Comparison Framework: `src/digitalmodel/modules/diffraction/comparison_framework.py`
+- Comparison Framework: `src/digitalmodel/hydrodynamics/diffraction/comparison_framework.py`
 - Benchmark Data: `docs/modules/orcawave/L01_aqwa_benchmark/`
-- AQWA Converter: `src/digitalmodel/modules/diffraction/aqwa_converter.py`
-- OrcaWave Converter: `src/digitalmodel/modules/diffraction/orcawave_converter.py`
+- AQWA Converter: `src/digitalmodel/hydrodynamics/diffraction/aqwa_converter.py`
+- OrcaWave Converter: `src/digitalmodel/hydrodynamics/diffraction/solver/orcawave_converter.py`
 
 ---
 

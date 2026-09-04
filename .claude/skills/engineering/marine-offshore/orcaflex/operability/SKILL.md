@@ -113,7 +113,7 @@ report_path = analyzer.generate_comprehensive_report(
 - API RP 2SK: Design and Analysis of Stationkeeping Systems
 - DNV-OS-E301: Position Mooring
 - ISO 19901-7: Stationkeeping Systems
-- Source: `src/digitalmodel/modules/orcaflex/operability_analysis.py`
+- Source: `src/digitalmodel/solvers/orcaflex/operability_analysis.py`
 
 ## Sub-Skills
 

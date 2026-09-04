@@ -163,9 +163,9 @@ raw_raos = processor.import_from_aqwa("data/vessel.lis")
 
 - OrcaFlex: Vessel Type RAO Data
 - ANSYS AQWA: Output File Formats
-- Source: `src/digitalmodel/modules/marine_analysis/rao_processor.py`
+- Source: `src/digitalmodel/marine_ops/marine_analysis/rao_processor.py`
 - Source: `src/digitalmodel/modules/marine_analysis/aqwa_reader.py`
-- Source: `src/digitalmodel/modules/marine_analysis/orcaflex_reader.py`
+- Source: `src/digitalmodel/marine_ops/marine_analysis/orcaflex_reader.py`
 - User Story: `.ai/specs/modules/user-story-rao-data-import-processing-2025.md`
 
 ## Sub-Skills

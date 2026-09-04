@@ -96,7 +96,7 @@ all_modes_summary_df = modal.all_file_summary["Case1"]
 - OrcFxAPI Modal Analysis: Orcina Documentation
 - DNV-RP-C205: Environmental Conditions and Environmental Loads
 - API RP 2RD: Design of Risers for Floating Production Systems
-- Source: `src/digitalmodel/modules/orcaflex/orcaflex_modal_analysis.py`
+- Source: `src/digitalmodel/solvers/orcaflex/orcaflex_modal_analysis.py`
 - Config: `src/digitalmodel/base_configs/modules/orcaflex/orcaflex_modal_analysis.yml`
 
 ## Sub-Skills

@@ -101,7 +101,7 @@ cfg = {
 - OrcaFlex Installation Analysis: Orcina Documentation
 - DNV-RP-H103: Modelling and Analysis of Marine Operations
 - API RP 2A: Planning, Designing and Constructing Fixed Offshore Platforms
-- Source: `src/digitalmodel/modules/orcaflex/orcaflex_installation.py`
+- Source: `src/digitalmodel/solvers/orcaflex/orcaflex_installation.py`
 
 ## Sub-Skills
 

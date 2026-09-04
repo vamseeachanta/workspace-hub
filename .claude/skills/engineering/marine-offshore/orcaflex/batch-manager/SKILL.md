@@ -154,7 +154,7 @@ class BatchMetrics:
 - Python concurrent.futures documentation
 - psutil system monitoring
 - Source: `src/digitalmodel/modules/orcaflex/universal/batch_processor.py`
-- Source: `src/digitalmodel/modules/orcaflex/orcaflex_parallel_analysis.py`
+- Source: `src/digitalmodel/solvers/orcaflex/orcaflex_parallel_analysis.py`
 
 ## Sub-Skills
 

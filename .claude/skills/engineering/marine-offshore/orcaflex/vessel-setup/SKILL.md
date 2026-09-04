@@ -121,9 +121,9 @@ def import_multi_body_system(
 - OrcaFlex: Vessel Type Data
 - OrcaFlex: Importing Hydrodynamic Data
 - ANSYS AQWA: Output File Format
-- Source: `src/digitalmodel/modules/fea_model/Vessel_components.py`
-- Source: `src/digitalmodel/modules/fea_model/VesselType_components.py`
-- Source: `src/digitalmodel/modules/fea_model/preprocess/load_vessel.py`
+- Source: `src/digitalmodel/solvers/fea_model/Vessel_components.py`
+- Source: `src/digitalmodel/solvers/fea_model/VesselType_components.py`
+- Source: `src/digitalmodel/solvers/orcaflex/preprocess/load_vessel.py`
 
 ## Sub-Skills
 

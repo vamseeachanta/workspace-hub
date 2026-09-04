@@ -145,8 +145,8 @@ transformer.set_orcawave_origin(
 
 - OrcaWave Data Format Specification
 - OrcaFlex Vessel Type Documentation
-- Converter Implementation: `src/digitalmodel/modules/diffraction/orcawave_converter.py`
-- Exporter Implementation: `src/digitalmodel/modules/diffraction/orcaflex_exporter.py`
+- Converter Implementation: `src/digitalmodel/hydrodynamics/diffraction/solver/orcawave_converter.py`
+- Exporter Implementation: `src/digitalmodel/hydrodynamics/diffraction/orcaflex_exporter.py`
 
 ---
 

@@ -160,7 +160,7 @@ analyzer.load_results("models/fpso.owr")
 - Himeno, Y.: Prediction of Ship Roll Damping - State of the Art
 - Ikeda, Y.: Prediction Methods of Roll Damping of Ships
 - OrcaWave Roll Damping Documentation
-- Script: `scripts/python/digitalmodel/modules/run_orcawave_damping_sweep.py`
+- Script: `scripts/python/digitalmodel/analysis/run_orcawave_damping_sweep.py`
 
 ---
 

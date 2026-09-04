@@ -135,9 +135,9 @@ converter = OrcFxAPIConverter(
 ## References
 
 - Existing Converters:
-  - `src/digitalmodel/modules/orcaflex/orcaflex_yml_converter.py`
-  - `src/digitalmodel/modules/orcaflex/examples_integration/batch_converter.py`
-  - `src/digitalmodel/modules/orcaflex/examples_integration/orcfxapi_converter.py`
+  - `src/digitalmodel/solvers/orcaflex/orcaflex_yml_converter.py`
+  - `src/digitalmodel/solvers/orcaflex/examples_integration/batch_converter.py`
+  - `src/digitalmodel/solvers/orcaflex/examples_integration/orcfxapi_converter.py`
 - OrcFxAPI Documentation
 - YAML Specification: https://yaml.org/
 

@@ -124,7 +124,7 @@ def sensitivity_analysis(
 
 - API RP 2SK: Design and Analysis of Stationkeeping Systems
 - DNV-OS-E301: Position Mooring
-- Source: `src/digitalmodel/modules/orcaflex/analysis/comparative.py`
+- Source: `src/digitalmodel/solvers/orcaflex/analysis/comparative.py`
 
 ## Sub-Skills
 

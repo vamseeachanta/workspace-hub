@@ -201,7 +201,7 @@ def generate_compliance_report(
 - DNV-OS-F201: Dynamic Risers
 - ISO 19901-7: Stationkeeping Systems for Floating Offshore Structures
 - Source: `src/digitalmodel/infrastructure/common/standards_lookup.py`
-- Source: `src/digitalmodel/modules/structural_analysis/capacity.py`
+- Source: `src/digitalmodel/structural/structural_analysis/capacity.py`
 
 ## Sub-Skills
 
