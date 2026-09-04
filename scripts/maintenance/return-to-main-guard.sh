@@ -11,7 +11,8 @@
 #   staged changes present  -> exit 1, ALERT, do NOT restore (user work in flight)
 #   a `git` process is live  -> exit 0, skip (active op — wait for next tick)
 #   fully clean              -> git checkout main
-#   only unstaged/untracked  -> git stash -u (regenerable) + git checkout main
+#   untracked NON-regenerable -> exit 1, ALERT, do NOT stash (see #3826)
+#   only regenerable churn   -> git stash -u + git checkout main
 #
 # Env:
 #   GUARD_AUTO_STASH=0  disable the auto-stash path (then dirty off-main also exit 1).
@@ -72,6 +73,20 @@ if [ "$unstaged" -eq 0 ] && [ "$untracked" -eq 0 ]; then
   echo "GUARD: $current_branch is idle and clean — returning to main" >&2
   git checkout -q main || { echo "GUARD: 'git checkout main' failed — left on $current_branch" >&2; exit 1; }
   exit 0
+fi
+
+# #3826: untracked is NOT a synonym for regenerable. An approval-gate marker, an
+# authored plan or a single-copy script is untracked only because nobody ran
+# `git add` -- and `git stash -u` on a 30-minute cron destroyed
+# .planning/plan-approved/3787.md twice. Treat these the way staged changes are
+# already treated above: refuse, alert, touch nothing.
+# shellcheck source=scripts/maintenance/never-clean-globs.sh
+. "$(dirname "${BASH_SOURCE[0]}")/never-clean-globs.sh"
+if protected="$(never_clean_untracked "$REPO_ROOT")"; then
+  echo "GUARD: $current_branch has UNTRACKED NON-REGENERABLE work — refusing to stash." >&2
+  echo "$protected" | sed 's/^/GUARD:   /' >&2
+  echo "GUARD: commit or move these, then re-run. Gate markers cannot be reconstructed." >&2
+  exit 1
 fi
 
 # Only regenerable churn (unstaged and/or untracked, nothing staged).

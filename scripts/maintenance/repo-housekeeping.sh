@@ -81,6 +81,11 @@ GUARD="${REPO_ROOT}/scripts/lib/worktree_guard.py"  # #3143 deny-by-default work
 # Secret-file denylist: never removed even under --prune-ignored.
 SECRET_GLOBS=('.env' '.env.*' '*.key' '*.pem' 'auth.json' 'id_rsa' 'id_ed25519' '*secret*' '*.secret')
 
+# Paths a sweep must never delete even when untracked (#3826). Sibling in
+# intent to SECRET_GLOBS above: both say "this class is not disposable".
+# shellcheck source=scripts/maintenance/never-clean-globs.sh
+. "$(dirname "${BASH_SOURCE[0]}")/never-clean-globs.sh"
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 act() {
   # act "<description>" <command...> — run if --apply, else just narrate.
@@ -276,10 +281,24 @@ for dir in "${REPO_DIRS[@]}"; do
   # 4c) PRUNE untracked dirs (under --apply), ignored dirs (--prune-ignored).
   #     Skipped entirely under --no-clean-dirs (branch/worktree cleanup only).
   if (( CLEAN_DIRS )); then
-  untracked="$(git clean -nd 2>/dev/null | sed 's/^Would remove //')"
-  if [[ -n "$untracked" ]]; then
-    echo "  untracked dirs/files to remove:"; echo "$untracked" | sed 's/^/      /'
-    act "git clean -fd" git clean -fd >/dev/null 2>&1
+  # #3826: `git clean -fd` ran here with NO exclusions, while the branch below
+  # built -e excludes from SECRET_GLOBS so ignored secrets survived `clean -fdx`.
+  # The denylist existed and was applied to the lower-risk path; untracked
+  # authored work -- approval-gate markers, plans, single-copy scripts -- was
+  # swept unprotected. Protect it the same way, and REFUSE rather than remove:
+  # a gate marker records a user-in-loop decision and cannot be reconstructed.
+  never_excludes=(); for g in "${NEVER_CLEAN_GLOBS[@]}"; do never_excludes+=(-e "$g"); done
+  if protected="$(never_clean_untracked "$PWD")"; then
+    echo -e "  ${RED}REFUSING to clean — untracked NON-REGENERABLE work present:${NC}"
+    echo "$protected" | sed 's/^/      /'
+    echo "      commit or move these first; they are not reconstructable (#3826)."
+    SUMMARY+=("$name: SKIPPED clean (protected untracked work present)")
+  else
+    untracked="$(git clean -nd "${never_excludes[@]}" 2>/dev/null | sed 's/^Would remove //')"
+    if [[ -n "$untracked" ]]; then
+      echo "  untracked dirs/files to remove:"; echo "$untracked" | sed 's/^/      /'
+      act "git clean -fd (denylist-protected)" git clean -fd "${never_excludes[@]}" >/dev/null 2>&1
+    fi
   fi
   if (( PRUNE_IGNORED )); then
     # Build exclude args for the secret denylist so secrets survive.
