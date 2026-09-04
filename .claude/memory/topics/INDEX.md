@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (247)
+## Feedback — execution lessons & hazards (249)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -135,6 +135,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [llm-wiki directory name poisons every Python dotted-path reference below it](feedback_llm_wiki_hyphen_module_path_pattern.md) — The `scripts/data/llm-wiki/` directory name contains a hyphen, which makes every Python dotted module path below it syntactically invalid. Recurred 3 times in plans drafted on 2026-04-24 across different contexts (imports, pytest plugin paths, subprocess invocations). Plan drafters must treat this as a systemic hazard.
 - [llm-wiki-relocation-firewall-gate](feedback_llm_wiki_relocation_firewall_gate.md) — Relocating workspace-hub knowledge artifacts into llm-wiki requires a public-safe firewall screen first; most corpus-index data is non-relocatable pipeline state
 - [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — uv-run local verification (pytest AND linters black/isort) can hang indefinitely on repo venvs (digitalmodel, worldenergydata) even when Python runs fine. Fallbacks — CI, or version-pin-matched STANDALONE tools.
+- [lts-pseudo-time-is-not-transient-time](feedback_lts_pseudo_time_is_not_transient_time.md) — A Courant/dissipation finding from a transient (Euler) tank does NOT transfer to a localEuler (LTS) steady run — the converged LTS state is dt-independent and tight Co caps only starve pseudo-convection; cost 10× iteration budget on B1552 Stage 4
 - [feedback_machine_identity_is_logical_alias_565](feedback_machine_identity_is_logical_alias_565.md) — "All fleet machine-identity work routes by logical alias (deckhand#565); physical names are private-tier only — and the rule applies to plan/handoff artifacts too"
 - [feedback-mechanism-before-publication](feedback_mechanism_before_publication.md) — Before publishing WHY a tool misbehaved, read its source and grep its existing output — a mechanism merely consistent with the symptom is a hypothesis
 - [feedback-memory-aspire-to-hermes-level](feedback_memory_aspire_to_hermes_level.md) — "User feedback 2026-05-17 — All AI provider work should flow through Hermes agent's memory strategy. Hermes-memory is the canonical backend; per-provider memory stores (Claude Code auto-memory, Codex state, Gemini session memory) should consolidate to Hermes rather than evolve in parallel. Originally framed as 'Claude Code memory should match Hermes' then refined same-session to the broader cross-provider architectural ask."
@@ -148,6 +149,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [n-night-blocker-promote-to-replan](feedback_n_night_blocker_promote_to_replan.md) — "When a closure-first / overnight agent reports the SAME blocker on the SAME issue 3+ nights in a row, stop re-running and escalate to a design-replan instead of continuing the polling pattern"
 - [Naive secret-scan false-positive cascade](feedback_naive_secret_scan_false_positive_cascade.md) — Agent-prompt regex `(api_key|token|secret|password)` matches benign prose; rely on hardened pre-commit hook for workspace-hub paths instead of duplicating naive scans
 - [feedback_narrow_grep_false_dead_before_deletion](feedback_narrow_grep_false_dead_before_deletion.md) — "A scope-limited grep can return a confident false-\"dead\" reading and nearly greenlight deleting a LIVE subsystem — always re-grep wide (adversarially) before any archival/deletion."
+- [never-edit-a-running-shell-script](feedback_never_edit_a_running_shell_script.md) — "bash reads scripts incrementally by byte offset — editing a script while an invocation is blocked (e.g. inside an ssh) makes the old process execute the NEW file's bytes on resume; cost a completed 75-min mesh on gpu-claw"
 - [Never offer to self-label status:plan-approved](feedback_never_offer_to_self_label_plan_approved.md) — When presenting a plan for user approval, provide links + CLI commands only — never offer to run the label-transition command on the user's behalf
 - [No fluffing around](feedback_no_fluff.md) — User wants direct execution, not excessive process overhead
 - [No jargon or abbreviations](feedback_no_jargon.md) — User prefers plain language — avoid TL;DR, LGTM, and similar internet shorthand

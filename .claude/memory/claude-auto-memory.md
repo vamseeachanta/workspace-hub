@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-09-03
+> Last captured: 2026-09-04
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -10,8 +10,8 @@
 > `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below.
 
 ## Active & Recent Projects
-- [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — double-body quotable; ALL free-surface runs unusable; ITTC says the wave component is negligible at Fn 0.17 — quote that
-- [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 40+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
+- [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — ±2 % target set 2026-09-03; lanes run WAVE-MAKING ONLY (Stage D wave-cut), A+C deferred; subtraction route dead; v2312 has NO deep-water absorption → codedSource beach; plan r2 awaits T2 review + owner approval
+- [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 53+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
 - [CLAUDE.md harness retired](project_claude_md_harness_retired.md) — 2026-08-01 all three CLAUDE.md surfaces DELETED; **AGENTS.md …
 - [Fleet reachability + solver access](project_fleet_reachability_and_solver_access_2026_07_31.md) — 2026-07-31 fleet **5/5 SSH-reachable**; …
 - [Dispatch surface: label axes made deterministic (EPIC deckhand#584)](project_dispatch_surface_label_axes_2026_07_31.md) — 2026-07-31 ✅ 5 PRs merged; …
@@ -47,6 +47,8 @@
 - [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
 
 ## Key Lessons (how to work)
+- [LTS pseudo-time ≠ transient time](feedback_lts_pseudo_time_is_not_transient_time.md) — a transient-tank Courant finding does NOT set `maxCo/maxAlphaCo` under `localEuler`; take caps from a converged LTS reference (5/2 DTCHull lineage) and budget iterations in hull-lengths of pseudo-convection. Also: Euler-stable source ≠ LTS-stable; `fieldMinMax(V)` reads patch faces; box z-edges vs dz → 86° faces (dm#2047)
+- [Never edit a running shell script](feedback_never_edit_a_running_shell_script.md) — bash executes the NEW bytes at the old offset; a blocked ssh launcher + on-disk edit re-ran a mesh chain and destroyed the finished mesh (1.3 h gpu-claw lost). Wrap in `main(){…}; main "$@"`; launchers return immediately; chains refuse to start over a DONE marker
 - [Mechanism before publication](feedback_mechanism_before_publication.md) — read the tool's SOURCE for the path you blame and grep existing output for the quantity that settles it; a plausible mechanism ends the investigation and produces the wrong fix (published the wrong cause while the confirming number sat in every log)
 - [Track fleet lanes from the control surface](feedback_track_fleet_lanes_from_control_surface.md) — disk registry + `scripts/fleet/lane-sweep.sh`, NOT memory. **Never poll a remote lane by process name** — `pgrep -f "X"` matches the ssh carrying it (one waiter ran 13.5 h past its job); poll a marker file, kill by PID
 - ⚠ [Dispatch ONLY to gpu-claw + ace-linux-2](feedback_dispatch_only_gpu_claw_and_ace_linux_2.md) — owner 2026-08-14; ace-linux-1 = control surface only (its `/` hit 99%, forcing a shared checkout that crossed two lanes' commits). ace-linux-2 = 32 cores + **825 GB local** scratch, but its `/mnt/ace` is ace-linux-1's disk over NFS — write to local paths or gain nothing
@@ -115,6 +117,7 @@
 - [SVG-for-PDF portability](feedback_svg_pdf_portability_no_patterns_clippaths.md) — no `<pattern>`/clipPath/filter/mask in PDF-bound SVG; …
 
 ## Key References
+- [gpu-claw disk reclaim rule](reference_gpu_claw_disk_reclaim_rule.md) — keep-last-time-only per case (45 G freed 2026-09-03); NEVER trim dm1528 sloshing series (#1437 open)
 - ⚠ **[WORKING SURFACE = `/mnt/ace/ws`](reference_ecosystem_migrated_to_ext4_mnt_ace_ws.md)** — canonical root on ace-linux-1 since 2026-08-03; `/mnt/local-analysis` is a legacy compatibility symlink — 2026-08-03 symlinked; `git status` 11.6s → **23ms**. Traps: `worktree repair` repairs the WRONG direction after a whole-tree copy; every rsync buys one slow `git status` (index stat cache)
 - [/mnt/ace is a PUBLIC SMB share](reference_mnt_ace_is_public_smb_share.md) — 777 + NFS-rw + `guest ok = yes` + browseable; …
 - [Fleet age encryption setup](reference_fleet_age_encryption_setup.md) — one keypair, private key on ace-linux-1 ONLY; per-machine install …
