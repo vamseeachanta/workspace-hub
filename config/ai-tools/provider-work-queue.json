@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-04T09:21:14.607669Z",
+  "generated_at": "2026-09-04T13:21:12.985580Z",
   "current_week": "2026-W36",
-  "scorecard_generated_at": "2026-09-04T09:21:12.670914Z",
+  "scorecard_generated_at": "2026-09-04T13:21:10.852420Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -891,10 +891,11 @@
           "title": "Compliance alert: W36 \u2014 0% (critical)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3814",
           "labels": [
+            "priority:medium",
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-09-03T11:45:07Z",
+          "updatedAt": "2026-09-04T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
