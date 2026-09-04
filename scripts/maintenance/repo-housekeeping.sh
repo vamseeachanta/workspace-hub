@@ -84,7 +84,7 @@ SECRET_GLOBS=('.env' '.env.*' '*.key' '*.pem' 'auth.json' 'id_rsa' 'id_ed25519' 
 # Paths a sweep must never delete even when untracked (#3826). Sibling in
 # intent to SECRET_GLOBS above: both say "this class is not disposable".
 # shellcheck source=scripts/maintenance/never-clean-globs.sh
-. "$(dirname "${BASH_SOURCE[0]}")/never-clean-globs.sh"
+. "${REPO_ROOT}/scripts/maintenance/never-clean-globs.sh"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 act() {
@@ -288,7 +288,7 @@ for dir in "${REPO_DIRS[@]}"; do
   # swept unprotected. Protect it the same way, and REFUSE rather than remove:
   # a gate marker records a user-in-loop decision and cannot be reconstructed.
   never_excludes=(); for g in "${NEVER_CLEAN_GLOBS[@]}"; do never_excludes+=(-e "$g"); done
-  if protected="$(never_clean_untracked "$PWD")"; then
+  if protected="$(never_clean_any "$PWD")"; then
     echo -e "  ${RED}REFUSING to clean — untracked NON-REGENERABLE work present:${NC}"
     echo "$protected" | sed 's/^/      /'
     echo "      commit or move these first; they are not reconstructable (#3826)."
@@ -302,11 +302,24 @@ for dir in "${REPO_DIRS[@]}"; do
   fi
   if (( PRUNE_IGNORED )); then
     # Build exclude args for the secret denylist so secrets survive.
-    excludes=(); for g in "${SECRET_GLOBS[@]}"; do excludes+=(-e "$g"); done
-    ignored="$(git clean -ndx "${excludes[@]}" 2>/dev/null | sed 's/^Would remove //')"
-    if [[ -n "$ignored" ]]; then
-      echo -e "  ${YELLOW}ignored dirs/files to remove (secrets preserved):${NC}"; echo "$ignored" | sed 's/^/      /'
-      act "git clean -fdx (denylist-protected)" git clean -fdx "${excludes[@]}" >/dev/null 2>&1
+    # #3826 r1 MAJOR: this path previously excluded only SECRET_GLOBS, so an
+    # IGNORED protected file was deleted outright. `git add -A` does not stage
+    # ignored files, so step 1's commit-WIP does not cover them either -- they
+    # were unprotected from both directions. Carry NEVER_CLEAN_GLOBS here too,
+    # and refuse rather than prune when a protected ignored path is present:
+    # a gate marker is gate evidence whether or not .gitignore happens to cover it.
+    excludes=(); for g in "${SECRET_GLOBS[@]}" "${NEVER_CLEAN_GLOBS[@]}"; do excludes+=(-e "$g"); done
+    if protected_ig="$(never_clean_ignored "$PWD")"; then
+      echo -e "  ${RED}REFUSING to prune ignored — protected paths are git-ignored here:${NC}"
+      echo "$protected_ig" | sed 's/^/      /'
+      echo "      commit or move these first; they are not reconstructable (#3826)."
+      SUMMARY+=("$name: SKIPPED ignored-prune (protected ignored work present)")
+    else
+      ignored="$(git clean -ndx "${excludes[@]}" 2>/dev/null | sed 's/^Would remove //')"
+      if [[ -n "$ignored" ]]; then
+        echo -e "  ${YELLOW}ignored dirs/files to remove (secrets + authored work preserved):${NC}"; echo "$ignored" | sed 's/^/      /'
+        act "git clean -fdx (denylist-protected)" git clean -fdx "${excludes[@]}" >/dev/null 2>&1
+      fi
     fi
   fi
   fi  # CLEAN_DIRS

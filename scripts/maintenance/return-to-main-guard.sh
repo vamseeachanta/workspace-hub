@@ -81,8 +81,15 @@ fi
 # .planning/plan-approved/3787.md twice. Treat these the way staged changes are
 # already treated above: refuse, alert, touch nothing.
 # shellcheck source=scripts/maintenance/never-clean-globs.sh
-. "$(dirname "${BASH_SOURCE[0]}")/never-clean-globs.sh"
-if protected="$(never_clean_untracked "$REPO_ROOT")"; then
+# Source from THIS SCRIPT's directory, resolved through symlinks -- NOT from
+# REPO_ROOT. Review suggested REPO_ROOT, but here REPO_ROOT is the repo being
+# guarded, which need not be the repo the guard lives in; sourcing from it broke
+# every sandbox test instantly. `readlink -f` handles the symlink case that made
+# plain BASH_SOURCE fragile.
+_guard_self="$(readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || echo "${BASH_SOURCE[0]}")"
+# shellcheck source=scripts/maintenance/never-clean-globs.sh
+. "$(dirname "${_guard_self}")/never-clean-globs.sh"
+if protected="$(never_clean_any "$REPO_ROOT")"; then
   echo "GUARD: $current_branch has UNTRACKED NON-REGENERABLE work — refusing to stash." >&2
   echo "$protected" | sed 's/^/GUARD:   /' >&2
   echo "GUARD: commit or move these, then re-run. Gate markers cannot be reconstructed." >&2

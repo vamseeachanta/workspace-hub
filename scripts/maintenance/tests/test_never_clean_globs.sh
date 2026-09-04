@@ -132,6 +132,58 @@ echo "$OUT" | grep -q "REFUSING to clean" \
   || fail "housekeeping: churn still processed" "the sweep did nothing with it"
 echo ""
 
+# ── Test 7: an IGNORED protected file survives --prune-ignored (#3826 r1 MAJOR) ─
+# The hole the first fix missed, and the nastiest of the three. `git add -A` does
+# not stage ignored files, so step 1's commit-WIP never protects them; and
+# `--exclude-standard` hid them from the untracked detector, so the denylist
+# could not see them either. `git clean -fdx` then deleted them outright, with
+# only SECRET_GLOBS excluded. Reproduced by review before this test existed.
+echo "Test 7: ignored protected file survives --prune-ignored"
+R="$(make_repo)"
+printf '.planning/\n' > "$R/.gitignore"
+git -C "$R" add .gitignore >/dev/null 2>&1; git -C "$R" commit -qm ignore >/dev/null 2>&1
+mkdir -p "$R/.planning/plan-approved"
+echo marker > "$R/.planning/plan-approved/123.md"
+# Precondition: git must genuinely consider it ignored, or the test proves nothing.
+[[ -n "$(git -C "$R" ls-files --others --ignored --exclude-standard)" ]] \
+  && pass "ignored-marker precondition: git treats it as ignored" \
+  || fail "ignored-marker precondition: git treats it as ignored" "not ignored — test would be vacuous"
+OUT="$( bash "$HK" --apply --prune-ignored --root "$(dirname "$R")" --repos "$(basename "$R")" 2>&1 )"
+[[ -f "$R/.planning/plan-approved/123.md" ]] \
+  && pass "housekeeping --prune-ignored: ignored marker SURVIVES" \
+  || fail "housekeeping --prune-ignored: ignored marker SURVIVES" "deleted by git clean -fdx"
+echo ""
+
+# ── Test 8: ignored regenerable churn is STILL pruned ─────────────────────────
+# The refusal must be driven by protected paths, not by the presence of any
+# ignored file at all -- otherwise --prune-ignored becomes a permanent no-op.
+echo "Test 8: ignored churn is still pruned"
+R="$(make_repo)"
+printf 'build/\n' > "$R/.gitignore"
+git -C "$R" add .gitignore >/dev/null 2>&1; git -C "$R" commit -qm ignore >/dev/null 2>&1
+mkdir -p "$R/build"; echo junk > "$R/build/out.o"
+OUT="$( bash "$HK" --apply --prune-ignored --root "$(dirname "$R")" --repos "$(basename "$R")" 2>&1 )"
+echo "$OUT" | grep -q "REFUSING to prune ignored" \
+  && fail "housekeeping: pure ignored churn is not refused" "denylist too broad on the -fdx path" \
+  || pass "housekeeping: pure ignored churn is not refused"
+[[ -f "$R/build/out.o" ]] \
+  && fail "housekeeping: ignored churn pruned" "build/out.o survived — --prune-ignored is now inert" \
+  || pass "housekeeping: ignored churn pruned"
+echo ""
+
+# ── Test 9: generated scratch under scripts/ stays sweepable ──────────────────
+# `scripts/*` was narrowed to source extensions at review. A blanket glob would
+# refuse forever on any repo that generates json/log under scripts/, re-creating
+# the stranded-off-main problem #3187 fixed.
+echo "Test 9: scripts/ glob is extension-scoped, not blanket"
+never_clean_match "scripts/fleet/lane-sweep.sh" && pass "scripts/*.sh protected" || fail "scripts/*.sh protected" "not matched"
+never_clean_match "scripts/tools/gen.py"        && pass "scripts/*.py protected" || fail "scripts/*.py protected" "not matched"
+for p in "scripts/out/report.json" "scripts/cache/run.log" "scripts/data/rows.csv"; do
+  never_clean_match "$p" && fail "generated under scripts/ stays sweepable: $p" "wrongly protected" \
+                        || pass "generated under scripts/ stays sweepable: $p"
+done
+echo ""
+
 echo "============================================"
 echo "Results: $TESTS_PASSED/$TESTS_RUN passed, $TESTS_FAILED failed"
 echo "============================================"

@@ -30,7 +30,9 @@ NEVER_CLEAN_GLOBS=(
   '.planning/*.md'              # plans, research, retrospectives
   'docs/plans/*'                # authored plans
   'docs/session-handoffs/*'     # handoffs; often a session's only record
-  'scripts/*'                   # a script is never build output
+  'scripts/*.sh'                # a script is never build output; extension-scoped
+  'scripts/*.py'                #   so generated scratch under scripts/ (json, log,
+  'scripts/*.bash'              #   csv) stays sweepable and cannot strand the guard
   '.claude/rules/*'             # operating rules
   '.claude/skills/*'            # skills
 )
@@ -56,4 +58,30 @@ never_clean_untracked() {
     if never_clean_match "${path}"; then printf '%s\n' "${path}"; found=0; fi
   done < <(git -C "${repo}" ls-files --others --exclude-standard -z 2>/dev/null)
   return "${found}"
+}
+
+# never_clean_ignored <repo_root> -> prints protected GIT-IGNORED paths.
+#
+# Ignored files are a separate hole, and a nastier one. `--exclude-standard`
+# hides them from never_clean_untracked, and `git add -A` does not stage them --
+# so neither the detector above nor repo-housekeeping's commit-WIP step sees
+# them. `git clean -fdx` under --prune-ignored then deletes them outright. A
+# gate marker in a repo whose .gitignore happens to cover .planning/ is exactly
+# that case, and it is still gate evidence.
+never_clean_ignored() {
+  local repo="$1" path found=1
+  while IFS= read -r -d '' path; do
+    if never_clean_match "${path}"; then printf '%s\n' "${path}"; found=0; fi
+  done < <(git -C "${repo}" ls-files --others --ignored --exclude-standard -z 2>/dev/null)
+  return "${found}"
+}
+
+# never_clean_any <repo_root> -> protected paths from either source.
+never_clean_any() {
+  local repo="$1" u i rc=1
+  u="$(never_clean_untracked "${repo}")" && rc=0
+  i="$(never_clean_ignored "${repo}")" && rc=0
+  [[ -n "${u}" ]] && printf '%s\n' "${u}"
+  [[ -n "${i}" ]] && printf '%s\n' "${i}"
+  return "${rc}"
 }
