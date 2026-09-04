@@ -46,22 +46,22 @@ scripts_exempt: true
 
 ```bash
 # Convert .dat to .yml
-python -m digitalmodel.orcaflex.orcaflex_yml_converter model.dat
+python -m digitalmodel.solvers.orcaflex.orcaflex_yml_converter model.dat
 
 # Convert .yml to .dat
-python -m digitalmodel.orcaflex.orcaflex_yml_converter model.yml
+python -m digitalmodel.solvers.orcaflex.orcaflex_yml_converter model.yml
 ```
 ### Batch Conversion
 
 ```bash
 # Convert all .dat files in directory
-python -m digitalmodel.orcaflex.examples_integration.batch_converter \
+python -m digitalmodel.solvers.orcaflex.examples_integration.batch_converter \
     --input-dir models/ \
     --output-dir models_yml/ \
     --pattern "*.dat"
 
 # Convert with validation
-python -m digitalmodel.orcaflex.examples_integration.batch_converter \
+python -m digitalmodel.solvers.orcaflex.examples_integration.batch_converter \
     --input-dir models/ \
     --output-dir models_yml/ \
     --validate \
@@ -73,7 +73,7 @@ python -m digitalmodel.orcaflex.examples_integration.batch_converter \
 ### Basic Conversion
 
 ```python
-from digitalmodel.orcaflex.orcaflex_yml_converter import convert_to_yml
+from digitalmodel.solvers.orcaflex.orcaflex_yml_converter import convert_to_yml
 from pathlib import Path
 
 # Convert single file
@@ -87,7 +87,7 @@ if success:
 ### Batch Conversion with Progress Tracking
 
 ```python
-from digitalmodel.orcaflex.examples_integration.batch_converter import OrcaFlexBatchConverter
+from digitalmodel.solvers.orcaflex.examples_integration.batch_converter import OrcaFlexBatchConverter
 from pathlib import Path
 
 # Initialize converter
@@ -115,7 +115,7 @@ def convert_yml_to_dat(yml_file: str, dat_file: str = None):
 ### Simulation File Conversion
 
 ```python
-from digitalmodel.orcaflex.examples_integration.orcfxapi_converter import OrcFxAPIConverter
+from digitalmodel.solvers.orcaflex.examples_integration.orcfxapi_converter import OrcFxAPIConverter
 from pathlib import Path
 
 # Initialize converter for .sim files

@@ -37,7 +37,7 @@ version: 1.0.0
 ### Rainflow Cycle Counting
 
 ```python
-from digitalmodel.signal_processing.signal_analysis.rainflow import RainflowCounter
+from digitalmodel.signal_processing.signal_analysis.core.rainflow import RainflowCounter
 
 # Initialize counter
 counter = RainflowCounter()
@@ -51,7 +51,7 @@ time = data["time"].values
 ### Spectral Analysis
 
 ```python
-from digitalmodel.signal_processing.signal_analysis.spectral import SpectralAnalyzer
+from digitalmodel.signal_processing.signal_analysis.core.spectral import SpectralAnalyzer
 import numpy as np
 
 # Initialize analyzer

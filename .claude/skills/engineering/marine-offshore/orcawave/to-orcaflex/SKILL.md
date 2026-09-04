@@ -39,7 +39,7 @@ scripts_exempt: true
 
 ```python
 from digitalmodel.diffraction.orcawave_converter import OrcaWaveConverter
-from digitalmodel.diffraction.orcaflex_exporter import OrcaFlexExporter
+from digitalmodel.hydrodynamics.diffraction.orcaflex_exporter import OrcaFlexExporter
 
 # Load OrcaWave results
 import OrcFxAPI
@@ -81,7 +81,7 @@ db_creator.add_condition(
 
 ```python
 from digitalmodel.orcawave.rao_import import RAOImporter
-from digitalmodel.diffraction.output_validator import OutputValidator
+from digitalmodel.hydrodynamics.diffraction.output_validator import OutputValidator
 
 # Import RAOs with validation
 importer = RAOImporter()

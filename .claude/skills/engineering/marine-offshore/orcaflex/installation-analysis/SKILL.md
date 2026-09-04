@@ -49,7 +49,7 @@ scripts_exempt: true
 ### Generate Installation Depth Models
 
 ```python
-from digitalmodel.orcaflex.orcaflex_installation import OrcInstallation
+from digitalmodel.solvers.orcaflex.orcaflex_installation import OrcInstallation
 
 # Initialize
 installer = OrcInstallation()
@@ -63,7 +63,7 @@ cfg = {
 ### Simple Depth Model Generation
 
 ```python
-from digitalmodel.orcaflex.orcaflex_installation import OrcInstallation
+from digitalmodel.solvers.orcaflex.orcaflex_installation import OrcInstallation
 
 installer = OrcInstallation()
 
@@ -77,7 +77,7 @@ cfg = {
 ### With Structure Orientation
 
 ```python
-from digitalmodel.orcaflex.orcaflex_installation import OrcInstallation
+from digitalmodel.solvers.orcaflex.orcaflex_installation import OrcInstallation
 
 installer = OrcInstallation()
 

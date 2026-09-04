@@ -45,7 +45,7 @@ scripts_exempt: true
 ### Basic Modal Analysis
 
 ```python
-from digitalmodel.orcaflex.orcaflex_modal_analysis import OrcModalAnalysis
+from digitalmodel.solvers.orcaflex.orcaflex_modal_analysis import OrcModalAnalysis
 
 # Initialize analyzer
 modal = OrcModalAnalysis()
@@ -73,7 +73,7 @@ spec = OrcFxAPI.ModalAnalysisSpecification(
 ### Extract Dominant DOFs
 
 ```python
-from digitalmodel.orcaflex.orcaflex_modal_analysis import OrcModalAnalysis
+from digitalmodel.solvers.orcaflex.orcaflex_modal_analysis import OrcModalAnalysis
 import pandas as pd
 
 modal = OrcModalAnalysis()

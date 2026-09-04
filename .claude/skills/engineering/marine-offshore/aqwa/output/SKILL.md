@@ -106,7 +106,7 @@ python run_proper_comparison.py
 ### Module-Level Integration
 
 ```python
-from digitalmodel.diffraction.aqwa_converter import AQWAConverter
+from digitalmodel.hydrodynamics.diffraction.aqwa_converter import AQWAConverter
 
 converter = AQWAConverter(
     analysis_folder="docs/modules/orcawave/L01_aqwa_benchmark",

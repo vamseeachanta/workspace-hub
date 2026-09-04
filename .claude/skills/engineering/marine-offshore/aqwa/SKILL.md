@@ -78,7 +78,7 @@ raos.export_orcaflex("vessel_raos.yml")
 ### Analysis Router
 
 ```python
-from digitalmodel.aqwa.aqwa_analysis import AqwaAnalysis
+from digitalmodel.hydrodynamics.aqwa.aqwa_analysis import AqwaAnalysis
 
 aqwa = AqwaAnalysis()
 cfg = {
@@ -94,7 +94,7 @@ results = aqwa.run(cfg)
 ### Coefficient Extraction
 
 ```python
-from digitalmodel.aqwa.aqwa_reader import AqwaReader
+from digitalmodel.hydrodynamics.aqwa.aqwa_reader import AqwaReader
 
 reader = AqwaReader()
 data = reader.read("aqwa_results/vessel.LIS")

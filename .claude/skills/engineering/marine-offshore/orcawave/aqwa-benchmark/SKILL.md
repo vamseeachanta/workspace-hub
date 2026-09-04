@@ -43,7 +43,7 @@ from digitalmodel.diffraction.comparison_framework import (
     DiffractionComparator,
     PeakRAOComparator
 )
-from digitalmodel.diffraction.aqwa_converter import AQWAConverter
+from digitalmodel.hydrodynamics.diffraction.aqwa_converter import AQWAConverter
 from digitalmodel.diffraction.orcawave_converter import OrcaWaveConverter
 
 # Load AQWA results

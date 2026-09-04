@@ -60,7 +60,7 @@ Log consulted wiki pages in your output per the retrieval contract (#2208).
 ### Basic Batch Processing
 
 ```python
-from digitalmodel.orcaflex.universal.batch_processor import BatchProcessor
+from digitalmodel.solvers.orcaflex.universal.batch_processor import BatchProcessor
 from pathlib import Path
 
 def run_batch(input_dir: str, output_dir: str, max_workers: int = 20):
@@ -74,7 +74,7 @@ def run_batch(input_dir: str, output_dir: str, max_workers: int = 20):
 ### Adaptive Parallel Processing
 
 ```python
-from digitalmodel.orcaflex.universal.batch_processor import BatchProcessor
+from digitalmodel.solvers.orcaflex.universal.batch_processor import BatchProcessor
 from pathlib import Path
 import psutil
 
@@ -88,7 +88,7 @@ class AdaptiveBatchProcessor(BatchProcessor):
 ### Chunk-Based Processing
 
 ```python
-from digitalmodel.orcaflex.universal.batch_processor import BatchProcessor
+from digitalmodel.solvers.orcaflex.universal.batch_processor import BatchProcessor
 from pathlib import Path
 import time
 
@@ -102,7 +102,7 @@ def process_in_chunks(
 ### Progress Tracking and Checkpoints
 
 ```python
-from digitalmodel.orcaflex.universal.batch_processor import BatchProcessor
+from digitalmodel.solvers.orcaflex.universal.batch_processor import BatchProcessor
 from pathlib import Path
 import json
 import time

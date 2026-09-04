@@ -47,7 +47,7 @@ scripts_exempt: true
 ### Basic Operability Analysis
 
 ```python
-from digitalmodel.orcaflex.operability_analysis import OperabilityAnalyzer
+from digitalmodel.solvers.orcaflex.operability_analysis import OperabilityAnalyzer
 
 # Initialize analyzer
 analyzer = OperabilityAnalyzer(
@@ -61,7 +61,7 @@ analyzer = OperabilityAnalyzer(
 ### Weather Downtime Calculation
 
 ```python
-from digitalmodel.orcaflex.operability_analysis import OperabilityAnalyzer
+from digitalmodel.solvers.orcaflex.operability_analysis import OperabilityAnalyzer
 import pandas as pd
 
 analyzer = OperabilityAnalyzer(
@@ -75,7 +75,7 @@ analyzer = OperabilityAnalyzer(
 ### Critical Headings Analysis
 
 ```python
-from digitalmodel.orcaflex.operability_analysis import OperabilityAnalyzer
+from digitalmodel.solvers.orcaflex.operability_analysis import OperabilityAnalyzer
 
 analyzer = OperabilityAnalyzer(
     simulation_directory="results/.sim/",
@@ -89,7 +89,7 @@ critical = analyzer.generate_critical_headings_report(
 ### Comprehensive Report Generation
 
 ```python
-from digitalmodel.orcaflex.operability_analysis import OperabilityAnalyzer
+from digitalmodel.solvers.orcaflex.operability_analysis import OperabilityAnalyzer
 
 analyzer = OperabilityAnalyzer(
     simulation_directory="results/.sim/",
