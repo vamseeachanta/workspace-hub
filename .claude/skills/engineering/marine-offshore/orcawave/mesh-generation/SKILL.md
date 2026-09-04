@@ -41,8 +41,12 @@ scripts_exempt: true
 >   - `digitalmodel.orcawave.mesh_study.MeshConvergenceStudy`
 >
 > The surrounding engineering content — method, conventions, what to
-> watch for — is unaffected and remains usable. Tracked in
-> aceengineer-strategy#267.
+> watch for — is unaffected and remains usable.
+>
+> **The intended API is now specified in `digitalmodel`**, at
+> `docs/domains/orcawave/intended-api/mesh-generation.md`, where it is a build
+> target rather than something an agent may mistake for working code.
+> Tracked in aceengineer-strategy#267, digitalmodel#2045.
 
 <!-- ace:known-missing: digitalmodel.orcawave.converters, digitalmodel.orcawave.converters.STLtoGDFConverter, digitalmodel.orcawave.mesh, digitalmodel.orcawave.mesh.OrcaWaveMeshGenerator, digitalmodel.orcawave.mesh.WaterlineRefiner, digitalmodel.orcawave.mesh_study, digitalmodel.orcawave.mesh_study.MeshConvergenceStudy -->
 

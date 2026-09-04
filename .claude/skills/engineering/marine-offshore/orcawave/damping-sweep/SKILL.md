@@ -39,8 +39,12 @@ scripts_exempt: true
 >   - `digitalmodel.orcawave.damping.MultiParameterDampingSweep`
 >
 > The surrounding engineering content — method, conventions, what to
-> watch for — is unaffected and remains usable. Tracked in
-> aceengineer-strategy#267.
+> watch for — is unaffected and remains usable.
+>
+> **The intended API is now specified in `digitalmodel`**, at
+> `docs/domains/orcawave/intended-api/damping-sweep.md`, where it is a build
+> target rather than something an agent may mistake for working code.
+> Tracked in aceengineer-strategy#267, digitalmodel#2045.
 
 <!-- ace:known-missing: digitalmodel.orcawave.damping, digitalmodel.orcawave.damping.BilgeKeelDamping, digitalmodel.orcawave.damping.CriticalDampingCalculator, digitalmodel.orcawave.damping.DampingPeriodAnalyzer, digitalmodel.orcawave.damping.DampingSweep, digitalmodel.orcawave.damping.ModelTestComparison, digitalmodel.orcawave.damping.MultiParameterDampingSweep -->
 

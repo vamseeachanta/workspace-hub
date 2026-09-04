@@ -38,8 +38,12 @@ scripts_exempt: true
 >   - `digitalmodel.orcawave.multibody.SideBySideAnalysis`
 >
 > The surrounding engineering content — method, conventions, what to
-> watch for — is unaffected and remains usable. Tracked in
-> aceengineer-strategy#267.
+> watch for — is unaffected and remains usable.
+>
+> **The intended API is now specified in `digitalmodel`**, at
+> `docs/domains/orcawave/intended-api/multi-body.md`, where it is a build
+> target rather than something an agent may mistake for working code.
+> Tracked in aceengineer-strategy#267, digitalmodel#2045.
 
 <!-- ace:known-missing: digitalmodel.orcawave.multibody, digitalmodel.orcawave.multibody.CouplingMatrixExtractor, digitalmodel.orcawave.multibody.GapResonanceAnalyzer, digitalmodel.orcawave.multibody.MultiBodyAnalysis, digitalmodel.orcawave.multibody.ShieldingAnalyzer, digitalmodel.orcawave.multibody.SideBySideAnalysis -->
 

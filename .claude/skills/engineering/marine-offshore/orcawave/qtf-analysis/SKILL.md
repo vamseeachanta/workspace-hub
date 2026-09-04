@@ -39,8 +39,12 @@ scripts_exempt: true
 >   - `digitalmodel.orcawave.qtf.SlowDriftResponse`
 >
 > The surrounding engineering content — method, conventions, what to
-> watch for — is unaffected and remains usable. Tracked in
-> aceengineer-strategy#267.
+> watch for — is unaffected and remains usable.
+>
+> **The intended API is now specified in `digitalmodel`**, at
+> `docs/domains/orcawave/intended-api/qtf-analysis.md`, where it is a build
+> target rather than something an agent may mistake for working code.
+> Tracked in aceengineer-strategy#267, digitalmodel#2045.
 
 <!-- ace:known-missing: digitalmodel.orcawave.qtf, digitalmodel.orcawave.qtf.FullQTFComputation, digitalmodel.orcawave.qtf.MeanDriftAnalyzer, digitalmodel.orcawave.qtf.NewmanApproximation, digitalmodel.orcawave.qtf.OrcaWaveQTF, digitalmodel.orcawave.qtf.SlowDriftResponse -->
 
