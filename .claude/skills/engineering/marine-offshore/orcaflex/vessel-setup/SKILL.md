@@ -22,6 +22,23 @@ tags: []
 scripts_exempt: true
 ---
 
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.solvers.fea_model.preprocess.load_vessel`
+>   - `digitalmodel.solvers.fea_model.preprocess.load_vessel.LoadVessel`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable. Tracked in
+> aceengineer-strategy#267.
+
+<!-- ace:known-missing: digitalmodel.solvers.fea_model.preprocess.load_vessel, digitalmodel.solvers.fea_model.preprocess.load_vessel.LoadVessel -->
+
 # Orcaflex Vessel Setup
 
 ## When to Use

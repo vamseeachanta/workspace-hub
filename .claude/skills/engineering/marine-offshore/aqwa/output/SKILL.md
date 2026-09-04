@@ -20,6 +20,25 @@ see_also:
 tags: []
 scripts_exempt: true
 ---
+
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.aqwa.aqwa_postprocess`
+>   - `digitalmodel.aqwa.aqwa_postprocess.AqwaPostProcess`
+>   - `digitalmodel.aqwa.aqwa_validator`
+>   - `digitalmodel.aqwa.aqwa_validator.AqwaValidator`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable. Tracked in
+> aceengineer-strategy#267.
+
+<!-- ace:known-missing: digitalmodel.aqwa.aqwa_postprocess, digitalmodel.aqwa.aqwa_postprocess.AqwaPostProcess, digitalmodel.aqwa.aqwa_validator, digitalmodel.aqwa.aqwa_validator.AqwaValidator -->
 # AQWA Output Skill
 
 Output formats, LIS parsing conventions, result validation, and benchmark comparison for ANSYS AQWA. See [aqwa](../SKILL.md) for Python API.

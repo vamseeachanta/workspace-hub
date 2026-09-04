@@ -23,6 +23,27 @@ tags: []
 scripts_exempt: true
 ---
 
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.orcawave.qtf`
+>   - `digitalmodel.orcawave.qtf.FullQTFComputation`
+>   - `digitalmodel.orcawave.qtf.MeanDriftAnalyzer`
+>   - `digitalmodel.orcawave.qtf.NewmanApproximation`
+>   - `digitalmodel.orcawave.qtf.OrcaWaveQTF`
+>   - `digitalmodel.orcawave.qtf.SlowDriftResponse`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable. Tracked in
+> aceengineer-strategy#267.
+
+<!-- ace:known-missing: digitalmodel.orcawave.qtf, digitalmodel.orcawave.qtf.FullQTFComputation, digitalmodel.orcawave.qtf.MeanDriftAnalyzer, digitalmodel.orcawave.qtf.NewmanApproximation, digitalmodel.orcawave.qtf.OrcaWaveQTF, digitalmodel.orcawave.qtf.SlowDriftResponse -->
+
 # Orcawave Qtf Analysis
 
 ## When to Use
