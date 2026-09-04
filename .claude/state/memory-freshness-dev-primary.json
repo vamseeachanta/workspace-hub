@@ -1,6 +1,6 @@
 {
   "machine": "dev-primary",
-  "audited_at": "2026-09-03T23:47:02+00:00",
+  "audited_at": "2026-09-04T05:47:03+00:00",
   "surfaces": {
     "bridge_heartbeat": {
       "present": false,
@@ -11,7 +11,7 @@
     "hermes_memories": {
       "present": true,
       "refreshed_at": "2026-09-03T23:38:39+00:00",
-      "age_hours": 0.14,
+      "age_hours": 6.14,
       "signal": "file-mtime"
     },
     "context_md": {
@@ -40,7 +40,7 @@
     }
   },
   "newest_refresh": "2026-09-03T23:38:39+00:00",
-  "worst_age_hours": 0.14,
+  "worst_age_hours": 6.14,
   "freshness": "MEMORY-FRESH",
   "schema_version": 2
 }
