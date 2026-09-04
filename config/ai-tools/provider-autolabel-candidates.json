@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-03T17:21:12.946041Z",
+  "generated_at": "2026-09-03T21:21:17.588304Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 10,
+  "eligible_count": 9,
   "applied": [],
   "candidates": [
     {
@@ -54,40 +54,6 @@
       "updatedAt": "2026-08-03T05:48:46Z",
       "execution_ready": true,
       "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.95,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3472,
-      "title": "feat(operations): add pressure-aware daily OS maintenance cleanup",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3472",
-      "labels": [
-        "priority:medium",
-        "cat:tooling",
-        "domain:testing",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:codex"
-      ],
-      "updatedAt": "2026-07-27T03:35:20Z",
-      "execution_ready": true,
-      "priority_rank": 2,
       "suggested_provider": "codex",
       "routing_reason": "implementation/test/fix language",
       "provider_priority": "highest",
@@ -548,6 +514,71 @@
       "confidence_reasons": [
         "priority-labeled",
         "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3821,
+      "title": "bug(equality): restore collector idempotency and macOS atomic-publish test portability",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3821",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:harness",
+        "domain:testing",
+        "machine:multi",
+        "status:needs-plan",
+        "lane:codex"
+      ],
+      "updatedAt": "2026-09-03T18:01:25Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3819,
+      "title": "feat(harness): unified ecosystem doctor with stable probe schema",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3819",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:harness",
+        "machine:multi",
+        "status:needs-plan",
+        "domain:harness",
+        "lane:codex"
+      ],
+      "updatedAt": "2026-09-03T17:47:43Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "agy",
+      "routing_reason": "research/triage/audit language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research"
+      ],
+      "target_label": "agent:agy",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-agy-language-match",
         "provider-highest-priority"
       ],
       "eligible": false

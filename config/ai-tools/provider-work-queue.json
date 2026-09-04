@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-03T17:21:12.833006Z",
+  "generated_at": "2026-09-03T21:21:17.480107Z",
   "current_week": "2026-W36",
-  "scorecard_generated_at": "2026-09-03T17:21:10.688918Z",
+  "scorecard_generated_at": "2026-09-03T21:21:15.641828Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 18,
-      "total_candidates": 175,
+      "total_candidates": 176,
       "top_issues": [
         {
           "number": 3500,
@@ -878,59 +878,6 @@
           ]
         },
         {
-          "number": 3461,
-          "title": "bug(validation): make staged evidence handshakes resumable and snapshot-closed",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3461",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:tooling",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:13:17Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3467,
-          "title": "Build an independent retained-input bootstrap for structured cross-provider review evidence",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3467",
-          "labels": [
-            "priority:high",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "gate:completeness",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-08-01T06:13:21Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3485,
           "title": "epic: Live HF-backed capability surfaces on aceengineer.com \u2014 self-perpetuating algorithm showcase",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3485",
@@ -1589,6 +1536,136 @@
             "status:plan-review"
           ],
           "updatedAt": "2026-08-19T13:15:44Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3815,
+          "title": "[Epic] Repo ecosystem simplification, security, and outcome-equivalence program",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3815",
+          "labels": [
+            "priority:high",
+            "cat:harness",
+            "machine:multi",
+            "status:needs-plan",
+            "lane:claude",
+            "epic",
+            "domain:repo"
+          ],
+          "updatedAt": "2026-09-03T17:47:38Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3816,
+          "title": "feat(repo): generate authoritative work-surface inventory and adapter coverage report",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3816",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:tooling",
+            "machine:multi",
+            "status:plan-review",
+            "lane:codex",
+            "domain:repo"
+          ],
+          "updatedAt": "2026-09-03T18:28:07Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3817,
+          "title": "feat(security): classify repository sensitivity zones and enforce sibling-read boundaries",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3817",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:harness",
+            "domain:security",
+            "machine:multi",
+            "status:needs-plan",
+            "lane:claude",
+            "domain:repo"
+          ],
+          "updatedAt": "2026-09-03T17:47:40Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3818,
+          "title": "chore(operations): rationalize scheduled workflows and shift automation toward business outcomes",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3818",
+          "labels": [
+            "enhancement",
+            "priority:high",
+            "cat:operations",
+            "domain:workflow",
+            "machine:multi",
+            "status:needs-plan",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-03T17:47:42Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3820,
+          "title": "bug(review): invoke non-executable provider submitters portably from cross-review",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3820",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:tooling",
+            "domain:workflow",
+            "machine:multi",
+            "status:needs-plan",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-09-03T18:01:22Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2832,7 +2909,7 @@
             "domain:harness",
             "epic"
           ],
-          "updatedAt": "2026-07-31T08:37:02Z",
+          "updatedAt": "2026-09-03T18:01:22Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3446,55 +3523,6 @@
           "provider_status": "underused",
           "work_type": [
             "general"
-          ]
-        },
-        {
-          "number": 3462,
-          "title": "Fix Windows plan-review fanout argument overflow and auth diagnostics",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3462",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "machine:dev-primary",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:19Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3464,
-          "title": "Harden descriptor-bound Git and filesystem enforcement primitives",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3464",
-          "labels": [
-            "enhancement",
-            "cat:tooling",
-            "domain:security",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:20Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
           ]
         },
         {
@@ -4372,8 +4400,8 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 7,
-      "total_candidates": 24,
+      "execution_ready_count": 6,
+      "total_candidates": 22,
       "top_issues": [
         {
           "number": 3516,
@@ -4415,31 +4443,6 @@
           "updatedAt": "2026-08-03T05:48:46Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3472,
-          "title": "feat(operations): add pressure-aware daily OS maintenance cleanup",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3472",
-          "labels": [
-            "priority:medium",
-            "cat:tooling",
-            "domain:testing",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-07-27T03:35:20Z",
-          "execution_ready": true,
-          "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -4568,6 +4571,31 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 3821,
+          "title": "bug(equality): restore collector idempotency and macOS atomic-publish test portability",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3821",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:harness",
+            "domain:testing",
+            "machine:multi",
+            "status:needs-plan",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-09-03T18:01:25Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ],
       "full_candidates": [
@@ -4611,31 +4639,6 @@
           "updatedAt": "2026-08-03T05:48:46Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3472,
-          "title": "feat(operations): add pressure-aware daily OS maintenance cleanup",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3472",
-          "labels": [
-            "priority:medium",
-            "cat:tooling",
-            "domain:testing",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-07-27T03:35:20Z",
-          "execution_ready": true,
-          "priority_rank": 2,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -4754,6 +4757,31 @@
             "domain:routing"
           ],
           "updatedAt": "2026-08-04T04:40:39Z",
+          "execution_ready": false,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3821,
+          "title": "bug(equality): restore collector idempotency and macOS atomic-publish test portability",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3821",
+          "labels": [
+            "bug",
+            "priority:high",
+            "cat:harness",
+            "domain:testing",
+            "machine:multi",
+            "status:needs-plan",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-09-03T18:01:25Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4845,51 +4873,6 @@
           "updatedAt": "2026-07-29T13:43:07Z",
           "execution_ready": false,
           "priority_rank": 3,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3476,
-          "title": "refactor(cron): migrate three legacy marker installers to transactional reconciliation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3476",
-          "labels": [
-            "cat:operations",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "domain:harness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:23Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3477,
-          "title": "fix(scheduler): make kanban loader timer transactional across systemd-user and cron",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3477",
-          "labels": [
-            "cat:operations",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "domain:harness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:24Z",
-          "execution_ready": false,
-          "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -5124,8 +5107,32 @@
       "provider": "agy",
       "routing_priority": "highest",
       "execution_ready_count": 0,
-      "total_candidates": 1,
+      "total_candidates": 2,
       "top_issues": [
+        {
+          "number": 3819,
+          "title": "feat(harness): unified ecosystem doctor with stable probe schema",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3819",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "machine:multi",
+            "status:needs-plan",
+            "domain:harness",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-09-03T17:47:43Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "agy",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research"
+          ]
+        },
         {
           "number": 3717,
           "title": "Context budget: harness config is 3.6% of the window \u2014 the cost is tool output (17%), not CLAUDE.md",
@@ -5148,6 +5155,30 @@
         }
       ],
       "full_candidates": [
+        {
+          "number": 3819,
+          "title": "feat(harness): unified ecosystem doctor with stable probe schema",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3819",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "machine:multi",
+            "status:needs-plan",
+            "domain:harness",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-09-03T17:47:43Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "agy",
+          "routing_reason": "research/triage/audit language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research"
+          ]
+        },
         {
           "number": 3717,
           "title": "Context budget: harness config is 3.6% of the window \u2014 the cost is tool output (17%), not CLAUDE.md",

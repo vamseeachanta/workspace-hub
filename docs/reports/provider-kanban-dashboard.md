@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-03T17:21:14Z
+Generated: 2026-09-03T21:21:19Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,13 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3821 | bug(equality): restore collector idempotency and macOS atomic-publish test portability | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3820 | bug(review): invoke non-executable provider submitters portably from cross-review | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3819 | feat(harness): unified ecosystem doctor with stable probe schema | agy | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3818 | chore(operations): rationalize scheduled workflows and shift automation toward business outcomes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3817 | feat(security): classify repository sensitivity zones and enforce sibling-read boundaries | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3816 | feat(repo): generate authoritative work-surface inventory and adapter coverage report | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3815 | [Epic] Repo ecosystem simplification, security, and outcome-equivalence program | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3814 | Compliance alert: W36 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3813 | Compliance alert: W35 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3811 | openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
@@ -236,13 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3480 | Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3479 | fix(harness-update): propagate or explicitly surface cron reconciliation failure | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3478 | refactor(windows): add semantic ownership and recovery to scheduled-task installers | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3477 | fix(scheduler): make kanban loader timer transactional across systemd-user and cron | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3476 | refactor(cron): migrate three legacy marker installers to transactional reconciliation | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3472 | feat(operations): add pressure-aware daily OS maintenance cleanup | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #3467 | Build an independent retained-input bootstrap for structured cross-provider review evidence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3464 | Harden descriptor-bound Git and filesystem enforcement primitives | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3462 | Fix Windows plan-review fanout argument overflow and auth diagnostics | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3461 | bug(validation): make staged evidence handshakes resumable and snapshot-closed | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
