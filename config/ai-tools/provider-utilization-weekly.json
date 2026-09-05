@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-04T21:21:10.856898Z",
+  "generated_at": "2026-09-05T01:21:09.593954Z",
   "current_week": "2026-W36",
   "report_weeks": 8,
   "subscriptions": {
@@ -654,7 +654,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-09-04T21:20:05Z",
+        "quota_snapshot_ts": "2026-09-05T01:20:05Z",
         "top_tools": [
           {
             "tool": "Bash",
@@ -680,7 +680,7 @@
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl-estimate",
-        "quota_snapshot_ts": "2026-09-04T21:20:05Z",
+        "quota_snapshot_ts": "2026-09-05T01:20:05Z",
         "top_tools": [
           {
             "tool": "Bash",
