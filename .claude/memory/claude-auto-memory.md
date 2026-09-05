@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-09-04
+> Last captured: 2026-09-05
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -10,7 +10,7 @@
 > `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below.
 
 ## Active & Recent Projects
-- [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — ±2 % target set 2026-09-03; lanes run WAVE-MAKING ONLY (Stage D wave-cut), A+C deferred; subtraction route dead; v2312 has NO deep-water absorption → codedSource beach; plan r2 awaits T2 review + owner approval
+- [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-04 r3 `fs_G07_13kn_r3` RUNNING on gpu-claw (bare hull, 5/2 LTS caps, wedge ladder to 5.5λ); passed it 222. NEXT: reduce `surfaces` frames with `fs_radiation_metric.py` (trapped ≤ 0.13, radiating ≥ 0.4) — frames 300/400 un-boxed, stern crest forming; 1500 PASSED: full Kelvin pattern to 5λ astern, no box edge, ratios 2–3λ 0.49 / 4–5λ 0.14; continue to 2500 (4–5λ ≥ 0.4) and 4000 (settling + Newman–Sharma cuts). Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
 - [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 53+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
 - [CLAUDE.md harness retired](project_claude_md_harness_retired.md) — 2026-08-01 all three CLAUDE.md surfaces DELETED; **AGENTS.md …
 - [Fleet reachability + solver access](project_fleet_reachability_and_solver_access_2026_07_31.md) — 2026-07-31 fleet **5/5 SSH-reachable**; …
@@ -117,6 +117,7 @@
 - [SVG-for-PDF portability](feedback_svg_pdf_portability_no_patterns_clippaths.md) — no `<pattern>`/clipPath/filter/mask in PDF-bound SVG; …
 
 ## Key References
+- [CFD run statusline](reference_cfd_run_statusline.md) — gpu-claw cron `*/15` → `~/cfd/b1552/status/latest.txt` (+ `status.log`); both Claude status bars read it; ace-linux-1 mirror self-refreshes (crontab denied there); combined wrapper keeps the hub line
 - [gpu-claw disk reclaim rule](reference_gpu_claw_disk_reclaim_rule.md) — keep-last-time-only per case (45 G freed 2026-09-03); NEVER trim dm1528 sloshing series (#1437 open)
 - ⚠ **[WORKING SURFACE = `/mnt/ace/ws`](reference_ecosystem_migrated_to_ext4_mnt_ace_ws.md)** — canonical root on ace-linux-1 since 2026-08-03; `/mnt/local-analysis` is a legacy compatibility symlink — 2026-08-03 symlinked; `git status` 11.6s → **23ms**. Traps: `worktree repair` repairs the WRONG direction after a whole-tree copy; every rsync buys one slow `git status` (index stat cache)
 - [/mnt/ace is a PUBLIC SMB share](reference_mnt_ace_is_public_smb_share.md) — 777 + NFS-rw + `guest ok = yes` + browseable; …
@@ -149,4 +150,4 @@
 - [Cross-provider dream feed activity (2026-07)](reference_crossprovider_feed_activity_2026_07.md) — only Claude+Codex feed the dream; …
 - ⚠ **[ace-win-1 RETIRED → use acma-hou-rds02](reference_ace_win_1_retired_use_acma_hou_rds02.md)** — owner 2026-08-04; tailnet 100.93.182.24 but **SSH not provisioned** (publickey denied, no config/known_hosts); blocks dm#1633 closeout run
 - [ace-win-1 equality evidence stale](reference_ace_win_1_equality_evidence_stale.md) — acma-ansys05: no scheduler + no gh auth; fix ON-BOX …
-- [Dynacard module map (digitalmodel)](reference_dynacard_module_map_digitalmodel.md) — `marine_ops/artificial_lift/dynacard/`; 18 modes; … *stale: 2026-09-05*
+- [Dynacard module map (digitalmodel)](reference_dynacard_module_map_digitalmodel.md) — `marine_ops/artificial_lift/dynacard/`; 18 modes; …
