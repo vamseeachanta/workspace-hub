@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-06T09:24:09.265515Z",
+  "generated_at": "2026-09-06T13:23:29.036387Z",
   "current_week": "2026-W36",
-  "scorecard_generated_at": "2026-09-06T09:24:07.261013Z",
+  "scorecard_generated_at": "2026-09-06T13:23:26.405724Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -895,7 +895,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-09-05T11:45:05Z",
+          "updatedAt": "2026-09-06T11:45:09Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -4888,51 +4888,6 @@
           ]
         },
         {
-          "number": 3478,
-          "title": "refactor(windows): add semantic ownership and recovery to scheduled-task installers",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3478",
-          "labels": [
-            "cat:operations",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:26Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3479,
-          "title": "fix(harness-update): propagate or explicitly surface cron reconciliation failure",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3479",
-          "labels": [
-            "cat:harness",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "domain:harness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:27Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
           "number": 3505,
           "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3505",
@@ -5096,6 +5051,44 @@
             "bug"
           ],
           "updatedAt": "2026-08-03T07:03:29Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3828,
+          "title": "quirk(codex): Codex config runs with approval never and full access, so briefs must be bounded and non-destructive",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3828",
+          "labels": [
+            "quirk"
+          ],
+          "updatedAt": "2026-09-06T12:03:27Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3829,
+          "title": "quirk(coordination): one Codex task per repo at a time is needed to avoid concurrent edits with Claude subagents",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3829",
+          "labels": [
+            "quirk"
+          ],
+          "updatedAt": "2026-09-06T12:03:30Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
