@@ -4,7 +4,7 @@
 > `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below.
 
 ## Active & Recent Projects
-- [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-04 r3 `fs_G07_13kn_r3` RUNNING on gpu-claw (bare hull, 5/2 LTS caps, wedge ladder to 5.5λ); passed it 222. NEXT: reduce `surfaces` frames with `fs_radiation_metric.py` (trapped ≤ 0.13, radiating ≥ 0.4) — frames 300/400 un-boxed, stern crest forming; STOP RULE CORRECTED: judge 1–2λ trend + plan view at 500→1000→1500 (≈2.3 L pseudo-convection per 500 it), 4–5λ ratio only at ≥2500. Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
+- [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-04 r3 `fs_G07_13kn_r3` RUNNING on gpu-claw (bare hull, 5/2 LTS caps, wedge ladder to 5.5λ); passed it 222. NEXT: reduce `surfaces` frames with `fs_radiation_metric.py` (trapped ≤ 0.13, radiating ≥ 0.4) — frames 300/400 un-boxed, stern crest forming; **RADIATING at 2100** (4–5λ ratio 0.49, far-field RMS above the old run’s final and rising) — campaign question answered; remaining: 4000 settling gate (≈16:00Z 09-06) → Newman–Sharma cuts → C_W. Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
 - [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 53+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
 - [CLAUDE.md harness retired](project_claude_md_harness_retired.md) — 2026-08-01 all three CLAUDE.md surfaces DELETED; **AGENTS.md …
 - [Fleet reachability + solver access](project_fleet_reachability_and_solver_access_2026_07_31.md) — 2026-07-31 fleet **5/5 SSH-reachable**; …
