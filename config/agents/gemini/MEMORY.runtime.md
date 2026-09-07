@@ -1,6 +1,6 @@
 <!-- MANAGED by curate_readback_slice.py — do not hand-edit; regenerate via bridge-hermes-claude.sh -->
 
-- [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-04 r3 `fs_G07_13kn_r3` RUNNING on gpu-claw (bare hull, 5/2 LTS caps, wedge ladder to 5.5λ); passed it 222. NEXT: reduce `surfaces` frames with `fs_radiation_metric.py` (trapped ≤ 0.13, radiating ≥ 0.4) — frames 300/400 un-boxed, stern crest forming; **RADIATING at 2100** (4–5λ ratio 0.49, far-field RMS above the old run’s final and rising) — campaign question answered; remaining: 4000 settling gate (≈16:00Z 09-06) → Newman–Sharma cuts → C_W. Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
+- [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-07 r3 STOPPED at 4479 by the OWNER’S parallel gpu-claw session (cycle-averaged R_T ≈226–227 kN at 13 kn firm; mesh promoted; matrix of 11 conditions building; gpu-claw → condition 2). This thread’s execution role is SUPERSEDED — read `reports/internal-draft/status-neutral-<latest>.md` first; never restart r3. Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
 - [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 53+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
 - [CLAUDE.md harness retired](project_claude_md_harness_retired.md) — 2026-08-01 all three CLAUDE.md surfaces DELETED; **AGENTS.md …
 - [Fleet reachability + solver access](project_fleet_reachability_and_solver_access_2026_07_31.md) — 2026-07-31 fleet **5/5 SSH-reachable**; …
@@ -12,6 +12,7 @@
 - [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; …
 - [Equality matrix reclassification (wh#3592)](project_equality_matrix_reclassification_3592.md) — ✅✅ CLOSED; 5/5 CONFORMS on Linux. …
 - [India family trip Jul 21–Aug 19](reference_us_india_travel_apps.md) — 2026-07-19 ✅✅ family departed. NEXT: ~Aug 18 return check-in; …
+- [iPhone media extraction pipeline](project_iphone_media_taildrop_pipeline.md) — ✅✅ two phones archived 3-2-1. NEXT: #3586 gates next …
 - [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
 - [LTS pseudo-time ≠ transient time](feedback_lts_pseudo_time_is_not_transient_time.md) — a transient-tank Courant finding does NOT set `maxCo/maxAlphaCo` under `localEuler`; take caps from a converged LTS reference (5/2 DTCHull lineage) and budget iterations in hull-lengths of pseudo-convection. Also: Euler-stable source ≠ LTS-stable; `fieldMinMax(V)` reads patch faces; box z-edges vs dz → 86° faces (dm#2047)
 - [Never edit a running shell script](feedback_never_edit_a_running_shell_script.md) — bash executes the NEW bytes at the old offset; a blocked ssh launcher + on-disk edit re-ran a mesh chain and destroyed the finished mesh (1.3 h gpu-claw lost). Wrap in `main(){…}; main "$@"`; launchers return immediately; chains refuse to start over a DONE marker
@@ -42,4 +43,4 @@
 - **NaN correlations**: Zero std dev (e.g., yaw at head seas) — handle gracefully
 - **AQWA FATAL mesh errors**: Cannot be overridden with `OPTIONS GOON`; fix the mesh
 - **LIS parser**: Normalize whitespace before keyword matching ("ADDED  MASS" has double space)
-_[132 entries omitted: oversize/over-cap]_
+_[131 entries omitted: oversize/over-cap]_
