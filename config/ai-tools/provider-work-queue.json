@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-07T09:21:30.583228Z",
+  "generated_at": "2026-09-07T13:21:31.957528Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-07T09:21:28.204913Z",
+  "scorecard_generated_at": "2026-09-07T13:21:29.619644Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 19,
+      "execution_ready_count": 18,
       "total_candidates": 176,
       "top_issues": [
         {
@@ -453,30 +453,6 @@
           ]
         },
         {
-          "number": 3480,
-          "title": "Land generic HF-dataset publisher: scripts/hf/save_results_to_hf.py (+ --card-note gate disclosures + tests)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3480",
-          "labels": [
-            "cat:tooling",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:capability"
-          ],
-          "updatedAt": "2026-07-31T08:33:07Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3490,
           "title": "fix(onboarding): surface cron preview failure during new-machine dry-run",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3490",
@@ -896,6 +872,27 @@
             "compliance-alert"
           ],
           "updatedAt": "2026-09-06T11:45:09Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3830,
+          "title": "Compliance alert: W37 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3830",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-09-07T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",

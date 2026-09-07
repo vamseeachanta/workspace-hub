@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-09-07T09:21:28.204913Z",
+  "generated_at": "2026-09-07T13:21:29.619644Z",
   "current_week": "2026-W37",
   "inputs": {
     "utilization_path": "/mnt/ace/ws/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/ace/ws/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-09-07T09:21:27.956978Z",
-    "audit_generated_at": "2026-08-31T09:15:04Z"
+    "utilization_generated_at": "2026-09-07T13:21:29.310270Z",
+    "audit_generated_at": "2026-09-07T09:15:05Z"
   },
   "recommended_provider_order": [
     "codex",
@@ -22,19 +22,19 @@
       "quota_source": "unavailable",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 123474,
+      "audit_post_records": 123526,
       "missing_repo_reads": 9478,
-      "python3_per_1k_records": 9.1,
+      "python3_per_1k_records": 9.09,
       "migration_debt_per_1k_records": 13.96,
       "top_migration_hint": "legacy_work_queue_transition",
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 65605
+          "count": 65656
         },
         {
           "tool": "Read",
-          "count": 21607
+          "count": 21608
         },
         {
           "tool": "unknown",
@@ -88,7 +88,7 @@
       "quota_source": "history.jsonl-estimate",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 207602,
+      "audit_post_records": 207675,
       "missing_repo_reads": 1705,
       "python3_per_1k_records": 13.62,
       "migration_debt_per_1k_records": 0.05,
@@ -96,7 +96,7 @@
       "top_tools": [
         {
           "tool": "Bash",
-          "count": 168993
+          "count": 169066
         },
         {
           "tool": "wait",
