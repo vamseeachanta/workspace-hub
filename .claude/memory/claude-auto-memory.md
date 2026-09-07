@@ -7,7 +7,7 @@
 # Workspace Hub Memory
 
 > Curated live index; full detail lives in each topic file. COMPLETE record is in
-> `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below.
+> `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below. *stale: 2026-09-07*
 
 ## Active & Recent Projects
 - [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-04 r3 `fs_G07_13kn_r3` RUNNING on gpu-claw (bare hull, 5/2 LTS caps, wedge ladder to 5.5λ); passed it 222. NEXT: reduce `surfaces` frames with `fs_radiation_metric.py` (trapped ≤ 0.13, radiating ≥ 0.4) — frames 300/400 un-boxed, stern crest forming; **RADIATING at 2100** (4–5λ ratio 0.49, far-field RMS above the old run’s final and rising) — campaign question answered; remaining: 4000 settling gate (≈16:00Z 09-06) → Newman–Sharma cuts → C_W. Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
