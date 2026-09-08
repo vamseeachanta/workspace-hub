@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-08T05:21:24.396365Z",
+  "generated_at": "2026-09-08T09:21:29.402926Z",
   "current_week": "2026-W37",
   "report_weeks": 8,
   "subscriptions": {
@@ -634,7 +634,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-09-08T05:20:05Z",
+        "quota_snapshot_ts": "2026-09-08T09:20:06Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -643,18 +643,31 @@
       "codex": {
         "provider": "codex",
         "week": "2026-W37",
-        "sessions": 0,
-        "post_records": 0,
+        "sessions": 2,
+        "post_records": 5,
         "activity_utilization_pct": 0.0,
         "quota_utilization_pct": 0.0,
         "reported_utilization_pct": 0.0,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl-estimate",
-        "quota_snapshot_ts": "2026-09-08T05:20:05Z",
-        "top_tools": [],
-        "first_ts": null,
-        "last_ts": null,
+        "quota_snapshot_ts": "2026-09-08T09:20:06Z",
+        "top_tools": [
+          {
+            "tool": "spawn_agent",
+            "count": 3
+          },
+          {
+            "tool": "wait_agent",
+            "count": 1
+          },
+          {
+            "tool": "send_message",
+            "count": 1
+          }
+        ],
+        "first_ts": "2026-09-07T20:39:53.150000Z",
+        "last_ts": "2026-09-07T20:47:11.198000Z",
         "note": "week_messages/weekly_limit from history.jsonl-estimate"
       },
       "agy": {

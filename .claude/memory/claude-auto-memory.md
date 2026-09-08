@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-09-07
+> Last captured: 2026-09-08
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -11,7 +11,7 @@
 
 ## Active & Recent Projects
 - [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-07 r3 STOPPED at 4479 by the OWNER’S parallel gpu-claw session (cycle-averaged R_T ≈226–227 kN at 13 kn firm; mesh promoted; matrix of 11 conditions building; gpu-claw → condition 2). This thread’s execution role is SUPERSEDED — read `reports/internal-draft/status-neutral-<latest>.md` first; never restart r3. Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
-- [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 53+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
+- [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 57+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
 - [CLAUDE.md harness retired](project_claude_md_harness_retired.md) — 2026-08-01 all three CLAUDE.md surfaces DELETED; **AGENTS.md …
 - [Fleet reachability + solver access](project_fleet_reachability_and_solver_access_2026_07_31.md) — 2026-07-31 fleet **5/5 SSH-reachable**; …
 - [Dispatch surface: label axes made deterministic (EPIC deckhand#584)](project_dispatch_surface_label_axes_2026_07_31.md) — 2026-07-31 ✅ 5 PRs merged; …

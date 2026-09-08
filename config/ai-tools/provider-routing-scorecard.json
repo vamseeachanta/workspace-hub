@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-08T05:21:24.688465Z",
+  "generated_at": "2026-09-08T09:21:29.775179Z",
   "current_week": "2026-W37",
   "inputs": {
     "utilization_path": "/mnt/ace/ws/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/ace/ws/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-09-08T05:21:24.396365Z",
+    "utilization_generated_at": "2026-09-08T09:21:29.402926Z",
     "audit_generated_at": "2026-09-07T09:15:05Z"
   },
   "recommended_provider_order": [
@@ -86,8 +86,8 @@
       "reported_utilization_pct": 0.0,
       "quota_basis": "quota",
       "quota_source": "history.jsonl-estimate",
-      "sessions_current_week": 0,
-      "post_records_current_week": 0,
+      "sessions_current_week": 2,
+      "post_records_current_week": 5,
       "audit_post_records": 207675,
       "missing_repo_reads": 1705,
       "python3_per_1k_records": 13.62,
@@ -95,36 +95,16 @@
       "top_migration_hint": "llm_wiki_spinout_path_drift",
       "top_tools": [
         {
-          "tool": "Bash",
-          "count": 169066
-        },
-        {
-          "tool": "wait",
-          "count": 12283
-        },
-        {
-          "tool": "Read",
-          "count": 7377
+          "tool": "spawn_agent",
+          "count": 3
         },
         {
           "tool": "wait_agent",
-          "count": 7005
+          "count": 1
         },
         {
           "tool": "send_message",
-          "count": 2359
-        },
-        {
-          "tool": "Grep",
-          "count": 2036
-        },
-        {
-          "tool": "spawn_agent",
-          "count": 1644
-        },
-        {
-          "tool": "update_plan",
-          "count": 1074
+          "count": 1
         }
       ],
       "preferred_work": [
