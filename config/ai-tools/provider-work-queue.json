@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-09T09:21:24.270731Z",
+  "generated_at": "2026-09-09T13:21:15.236605Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-09T09:21:22.209968Z",
+  "scorecard_generated_at": "2026-09-09T13:21:13.181453Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -892,7 +892,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-09-08T11:45:06Z",
+          "updatedAt": "2026-09-09T11:45:08Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -3962,13 +3962,14 @@
           "labels": [
             "cat:operations",
             "machine:dev-primary",
+            "status:plan-review",
             "domain:harness"
           ],
-          "updatedAt": "2026-07-31T08:33:36Z",
+          "updatedAt": "2026-09-09T13:15:03Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
-          "routing_reason": "default long-context routing",
+          "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
@@ -4364,8 +4365,10 @@
           "number": 3810,
           "title": "Two independent calculation-report systems (YAML/script vs typed-Python) \u2014 pick a canonical one",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3810",
-          "labels": [],
-          "updatedAt": "2026-08-21T02:12:19Z",
+          "labels": [
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-09-09T13:15:05Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",

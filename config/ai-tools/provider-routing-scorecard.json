@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-09T09:21:22.209968Z",
+  "generated_at": "2026-09-09T13:21:13.181453Z",
   "current_week": "2026-W37",
   "inputs": {
     "utilization_path": "/mnt/ace/ws/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/ace/ws/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-09-09T09:21:22.092562Z",
+    "utilization_generated_at": "2026-09-09T13:21:13.058406Z",
     "audit_generated_at": "2026-09-07T09:15:05Z"
   },
   "recommended_provider_order": [
