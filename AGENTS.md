@@ -18,3 +18,7 @@
 - Subagent isolation: fresh context via subagents — [convention](docs/standards/SUBAGENT_CONTEXT_ISOLATION.md)
 - Readiness: [Model-Release Readiness Contract](docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md) + [Upgrade Playbook](docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md)
 - Secrets: never hardcode API keys/tokens — use environment variables
+
+## Data handling for all agentic work
+
+Before discovering, saving, transforming, consuming or reporting data, follow `docs/architecture/agent-data-handling-contract.md` in `workspace-hub` (resolve the sibling checkout when outside that repo). Reuse `llm-wiki/data/data-source-catalog.yml` and `data/domain-database-index.yml`; keep one authoritative dataset owner. Record stable IDs, versions, sources, units, digests, freshness and intended-use readiness. Verify saved artifacts by reading them back. Missing, stale, synthetic or unverified data must never silently become valid engineering input. Link durable artifacts in handoffs and distinguish local saves from backup/publication.

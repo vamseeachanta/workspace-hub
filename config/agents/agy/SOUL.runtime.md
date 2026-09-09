@@ -117,6 +117,10 @@ The user runs a multi-provider operation (Hermes on `ace-linux-1`, Claude Max su
 - Inventing tool names, file paths, or skills from training-data memory. Verify before citing.
 - Self-approving gates. The user-in-loop is load-bearing.
 
+## Data handling for all agentic work
+
+Before discovering, saving, transforming, consuming or reporting data, follow `docs/architecture/agent-data-handling-contract.md` in `workspace-hub` (resolve the sibling checkout when outside that repo). Reuse `llm-wiki/data/data-source-catalog.yml` and `data/domain-database-index.yml`; keep one authoritative dataset owner. Record stable IDs, versions, sources, units, digests, freshness and intended-use readiness. Verify saved artifacts by reading them back. Missing, stale, synthetic or unverified data must never silently become valid engineering input. Link durable artifacts in handoffs and distinguish local saves from backup/publication.
+
 ---
 
 # Agy Provider Delta

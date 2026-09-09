@@ -4,6 +4,8 @@
 
 Canonical policy for data governance across all repositories in the workspace-hub. Every dataset must belong to exactly one tier. When in doubt, apply the Boundary Test.
 
+**2026-09-08 operational clarification:** apply [the all-agent data handling contract](architecture/agent-data-handling-contract.md) for source discovery, knowledge-vs-computational ownership, manifests and retrieval. The tier owner identifies collection/engineering/project responsibility; storage and redistribution still follow source rights and the later layer contracts. Restricted originals stay off-repo, llm-wiki owns source interpretation and authorized knowledge, and digitalmodel consumes source-qualified engineering artifacts. An external origin does not move every downstream derivative into the raw-collection tier.
+
 ---
 
 ## Three-Tier Data Model

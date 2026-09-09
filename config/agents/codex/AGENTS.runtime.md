@@ -117,6 +117,10 @@ The user runs a multi-provider operation (Hermes on `ace-linux-1`, Claude Max su
 - Inventing tool names, file paths, or skills from training-data memory. Verify before citing.
 - Self-approving gates. The user-in-loop is load-bearing.
 
+## Data handling for all agentic work
+
+Before discovering, saving, transforming, consuming or reporting data, follow `docs/architecture/agent-data-handling-contract.md` in `workspace-hub` (resolve the sibling checkout when outside that repo). Reuse `llm-wiki/data/data-source-catalog.yml` and `data/domain-database-index.yml`; keep one authoritative dataset owner. Record stable IDs, versions, sources, units, digests, freshness and intended-use readiness. Verify saved artifacts by reading them back. Missing, stale, synthetic or unverified data must never silently become valid engineering input. Link durable artifacts in handoffs and distinguish local saves from backup/publication.
+
 ---
 
 # Codex Provider Delta
@@ -197,15 +201,15 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 - **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
 - **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
 - **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
-- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
-- **business_admin/** — 2 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
 - **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
+- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
+- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **coordination/** — 59 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
 - **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
-- **data/** — 85 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
 - **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
+- **data/** — 85 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
 - **development/** — 71 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
 - **devops/** — 8 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
 - **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
@@ -229,14 +233,13 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 - **red-teaming/** — 1 skill(s); `ls .claude/skills/red-teaming/*/SKILL.md` to enumerate
 - **research/** — 15 skill(s); `ls .claude/skills/research/*/SKILL.md` to enumerate
 - **science/** — 6 skill(s); `ls .claude/skills/science/*/SKILL.md` to enumerate
-- **session-logs/** — 0 skill(s); `ls .claude/skills/session-logs/*/SKILL.md` to enumerate
 - **smart-home/** — 1 skill(s); `ls .claude/skills/smart-home/*/SKILL.md` to enumerate
 - **social-media/** — 2 skill(s); `ls .claude/skills/social-media/*/SKILL.md` to enumerate
 - **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
 - **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
 - **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
-- **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 - **workspace-hub-learned/** — 70 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
+- **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 
 ## Universal rules (inlined for Codex)
 > Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.
@@ -256,7 +259,9 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 ## Agent Harness Files
 AGENTS.md is the canonical contract. It, MEMORY.md, and GEMINI.md must not exceed 20 lines. Migrate excess to a skill or doc. (enforced: `scripts/enforcement/check-harness-file-size.sh`)
 
-CLAUDE.md is retired in this repo (2026-08-01) — do not reintroduce one. The cap still applies to sibling repos that carry one.
+CLAUDE.md is retired **as a repo file** (2026-08-01) — do not reintroduce one. The cap still applies to sibling repos that carry one.
+
+Claude's auto-load is a machine-level **symlink**: `~/.claude/CLAUDE.md` → `config/agents/claude/SOUL.runtime.md`, installed by `scripts/agents/install-soul-runtime.sh` (same shape as `~/.hermes/SOUL.md` and `~/.codex/AGENTS.md`). It loads in every cwd, unlike the old repo adapter's `@import`. Never replace that link with a regular file — the content must live in exactly one drift-checked place.
 
 ### patterns
 # Design Patterns Rules — Universal
