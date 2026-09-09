@@ -8159,7 +8159,7 @@
       ]
     }
   ],
-  "generated_at": "2026-09-09T13:21:17Z",
+  "generated_at": "2026-09-09T17:21:32Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -16303,13 +16303,13 @@
     "running_leased": []
   },
   "recommended_provider_order": [
-    "codex",
     "agy",
+    "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-09T13:21:13.181453Z",
+  "scorecard_generated_at": "2026-09-09T17:21:27.254795Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-09T13:21:13.058406Z",
+  "utilization_generated_at": "2026-09-09T17:21:26.956354Z",
   "warning_summary": {
     "approved_no_marker": 13,
     "approved_no_plan": 8,

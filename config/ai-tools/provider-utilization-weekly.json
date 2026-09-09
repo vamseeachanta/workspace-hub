@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-09T13:21:13.058406Z",
+  "generated_at": "2026-09-09T17:21:26.956354Z",
   "current_week": "2026-W37",
   "report_weeks": 8,
   "subscriptions": {
@@ -634,7 +634,7 @@
         "utilization_basis": "activity_vs_recent_peak",
         "quota_basis": "unavailable",
         "quota_source": "unavailable",
-        "quota_snapshot_ts": "2026-09-09T13:20:04Z",
+        "quota_snapshot_ts": "2026-09-09T17:20:05Z",
         "top_tools": [],
         "first_ts": null,
         "last_ts": null,
@@ -646,12 +646,12 @@
         "sessions": 3,
         "post_records": 8,
         "activity_utilization_pct": 0.0,
-        "quota_utilization_pct": 0.0,
-        "reported_utilization_pct": 0.0,
+        "quota_utilization_pct": 0.1,
+        "reported_utilization_pct": 0.1,
         "utilization_basis": "quota",
         "quota_basis": "quota",
         "quota_source": "history.jsonl-estimate",
-        "quota_snapshot_ts": "2026-09-09T13:20:04Z",
+        "quota_snapshot_ts": "2026-09-09T17:20:05Z",
         "top_tools": [
           {
             "tool": "spawn_agent",
@@ -715,9 +715,9 @@
     },
     {
       "provider": "codex",
-      "reported_utilization_pct": 0.0,
+      "reported_utilization_pct": 0.1,
       "basis": "quota",
-      "message": "codex at 0.0% (quota)"
+      "message": "codex at 0.1% (quota)"
     },
     {
       "provider": "agy",
