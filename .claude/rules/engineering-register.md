@@ -16,7 +16,11 @@ Canonical statement for agents: `config/agents/SHARED_SOUL.md`, section
 ## Governing rules
 
 - The subject is the analysis, result, component, document or company — not a
-  person. First-person plural belongs to proposals and qualifications.
+  person. **This applies to every document, including internal working records**:
+  "the survey records", not "we recorded"; "the triage excludes", not "we are not
+  chasing". The single exemption is the proposal genre, where the corpus itself
+  uses first-person plural. Checked as R6, which exempts paths and frontmatter
+  marked as proposal or qualification.
 - Bind every conclusion to its criterion, comparator and governing case.
 - State plainly when something is not established: name the missing evidence, say
   what cannot be calculated, mark the affected result approximate, and condition
@@ -46,6 +50,14 @@ Two exclusions are deliberate and load-bearing:
 - **A list item that is only a quoted phrase is a citation.** A style guide must
   be able to list the constructions it bans. `<!-- register-lint: ignore -->`
   suppresses a line that must carry an example.
+
+A negated intensifier is a **hedge, not an intensifier**, and is reported
+separately as R5. "Not obviously correct" admits something is unproven, which is
+what the register asks for; the first version of R1.2 flagged that admission
+while passing the bare assertion "X is correct". The remedy for R5 differs from
+R1.2: supply the criterion, do not delete the word. (Raised by a peer session
+against `llm-wiki-risersintl`, where three of four `obviously` findings were the
+negated form.)
 
 The unsupported-adjective rule accepts a criterion **named**, **cited**, or
 **explained in the following clause**. Its first version recognised only the

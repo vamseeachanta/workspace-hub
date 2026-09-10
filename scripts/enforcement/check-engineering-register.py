@@ -35,6 +35,16 @@ _QUOTE = re.compile(r"^\s*>.*$", re.M)
 _QUOTED_ITEM = re.compile(r"^\s*[-*]\s*[\"\u201c\u2018'].{0,120}?[\"\u201d\u2019'\u2026]\s*$", re.M)
 # Explicit suppression, for a line that must contain an example.
 _SUPPRESSED = re.compile(r"^.*<!--\s*register-lint:\s*ignore\s*-->.*$", re.M)
+# Bare URLs and paths are identifiers. "noblecorp.com/our-fleet" is not
+# first-person plural, and markdown-link exemption alone does not cover a URL
+# written in running text.
+_URL = re.compile(r"(?:https?://|www\.)\S+|\b[\w.-]+\.(?:com|org|net|gov|io|ai)/\S*", re.I)
+# A short inline quotation is citation, not the author's prose -- a page may quote
+# the directive that founded it without adopting its register.
+# A quotation may wrap. Correspondence quoted into a record routinely spans two
+# or three lines, and requiring a single line left the quoted party's own words
+# being checked against our register.
+_INLINE_QUOTE = re.compile(r"[\u201c\"](?:[^\u201d\"]|\n(?!\n)){0,400}[\u201d\"]")
 
 
 def prose_only(text: str) -> str:
@@ -48,7 +58,7 @@ def prose_only(text: str) -> str:
         end = out.find("\n", b)
         end = len(out) if end == -1 else end
         out = out[:a] + re.sub(r"\S", " ", out[a:end]) + out[end:]
-    for pat in (_INLINE, _LINK, _QUOTE, _QUOTED_ITEM, _SUPPRESSED):
+    for pat in (_INLINE, _LINK, _URL, _INLINE_QUOTE, _QUOTE, _QUOTED_ITEM, _SUPPRESSED):
         out = pat.sub(blank, out)
     return out
 
@@ -64,7 +74,13 @@ class Rule:
 # ordinary technical prose does not trip them.
 BANNED = [
     (r"\bI think\b|\bin my opinion\b|\bI believe\b", "first-person opinion"),
-    (r"\bobviously\b|\bclearly,|\bdefinitely\b", "unsupported intensifier"),
+    # Negated forms are excluded here and handled by HEDGE below. "Not obviously
+    # correct" asserts the OPPOSITE of an intensifier: it admits something is
+    # unproven, which is what the register asks for. Flagging the admission while
+    # passing the bare assertion "X is correct" inverts the rule.
+    (r"(?<!not )(?<!n't )(?<!nor )\bobviously\b"
+     r"|(?<!not )\bclearly,"
+     r"|(?<!not )\bdefinitely\b", "unsupported intensifier"),
     (r"\bworld[- ]class\b|\bbest[- ]in[- ]class\b|\bvalue[- ]add\b"
      r"|\bactionable insights?\b|\bholistic approach\b|\btransformative\b"
      r"|\bgame changer\b|\bstrategic roadmap\b", "marketing register"),
@@ -97,15 +113,65 @@ UNSUPPORTED = re.compile(
     rf"(?![^.]{{0,160}}(?:{_CRITERION}))",
     re.I)
 
+# A hedge is honest but weak when it names no criterion. This is a separate
+# finding from an unsupported intensifier because the remedy differs: supply the
+# criterion, do not delete the word. Raised by ws-8c against llm-wiki-risersintl,
+# where three of four "obviously" hits were the negated form.
+# The justification may follow anywhere in the sentence, not immediately after the
+# hedge: "does not obviously fit behind it: the long-lead items exceed the window"
+# explains itself four words later. Scan the remainder of the sentence for a named
+# criterion or an explanatory mark.
+HEDGE = re.compile(
+    r"\b(?:not|n't|nor)\s+(?:obviously|clearly|evidently|necessarily)\b"
+    rf"(?![^.]{{0,200}}(?:{_CRITERION}|[:\u2013\u2014]))",
+    re.I)
+
 # Caption placed above its table rather than below it.
 CAPTION_ABOVE = re.compile(r"^\s*(?:Table|Figure)\s+\d+[.\-]\d+\s*[-–:].*\n\s*\|", re.M)
+
+
+# First-person plural. The rule applies to every document, including internal
+# working records: "the survey records", not "we recorded". The single exemption
+# is the proposal genre, where the corpus itself uses first-person plural --
+# "2H are considered to be particularly well qualified". That exemption is
+# corpus-evidenced, not a convenience.
+FIRST_PERSON = re.compile(r"\b(?:we|our|us)\b(?!\s*[\u2019']s\b)", re.I)
+# Dimensionless groups and unit symbols that collide with the pronoun forms.
+# Two-letter pronouns collide with engineering notation in more than one field.
+# "We" is the Weber number in dimensional analysis AND cumulative water influx in
+# the material-balance equation, where it sits beside Wp, Np and Bo. The
+# surrounding symbols disambiguate; the pronoun never keeps that company.
+SYMBOL_CONTEXT = re.compile(
+    r"(?<![A-Za-z])(?:Re|Fr|Eu|Ma|Pr|Nu|Sc|Sh|Pe|St|Ca|Bo|Ra|Gr|Ec|Kn|Wo"      # dimensionless groups
+    r"|Wp|Np|Gp|Bg|Bw|Eo|Eg|Efw|Rs|Rsi|Boi|Bgi|STB|MMSTB)(?![A-Za-z])"          # material balance
+    r"|\bdimensionless\b|\bWeber\b|\bwater (?:influx|drive)\b|\bmaterial balance\b"
+    r"|\bstock-tank\b|\breservoir-barrel\b"
+    r"|\bmicrosiemens\b|\u00b5S|\bS/cm\b|=\s*0\b")
+
+
+TABLE_CELL_SYMBOL = re.compile(r"^\s*\|")
+
+
+def line_of(text: str, pos: int) -> str:
+    a = text.rfind("\n", 0, pos) + 1
+    b = text.find("\n", pos)
+    return text[a:b if b != -1 else len(text)]
+PROPOSAL_MARKERS = ("proposal", "-prp-", "-pro-", "qualification", "capability-statement")
+
+
+def is_proposal(path: Path, head: str) -> bool:
+    posix = path.as_posix().lower()
+    if any(m in posix for m in PROPOSAL_MARKERS):
+        return True
+    return bool(re.search(r"^(?:type|document_type|genre)\s*:\s*(?:proposal|qualification)",
+                          head, re.M | re.I))
 
 
 # Verbatim transcriptions of third-party material are not our prose. Linting a
 # standard's own wording for register produced 1,489 findings on first run, none
 # of them actionable, which is exactly how a linter teaches people to ignore it.
 TRANSCRIBED_DIRS = ("/standards/", "/papers/", "/sources/", "/datasets/papers/",
-                    "/corpus/", "/extracted/")
+                    "/corpus/", "/extracted/", "/raw/", "/_archive/", "/vendor/")
 TRANSCRIBED_NAMES = ("full-text", "-ocr.", "verbatim", "transcript")
 
 
@@ -140,6 +206,30 @@ def check(path: Path) -> list[str]:
     for m in UNSUPPORTED.finditer(text):
         report(m.start(), "R3", f"{m.group(1)!r} without its governing criterion",
                m.group(0)[:60])
+    for m in HEDGE.finditer(text):
+        report(m.start(), "R5", "hedge without a criterion; supply the criterion rather "
+               "than remove the hedge", m.group(0)[:60])
+    if not is_proposal(path, raw[:600]):
+        for m in FIRST_PERSON.finditer(text):
+            # "US" is the country, not first-person plural. Matching it case-
+            # insensitively turned "US Outer Continental Shelf" into a register
+            # violation and inflated the backlog several-fold on first run.
+            if m.group(0) == "US":
+                continue
+            # "We" is the Weber number and sits beside Re, Fr, Eu, Ma in any
+            # dimensional-analysis page. A two-letter pronoun collides with
+            # engineering notation; the surrounding groups disambiguate it.
+            if m.group(0) in ("We", "us", "uS") and SYMBOL_CONTEXT.search(line_of(text, m.start())):
+                continue
+            # A pronoun is never the whole content of a table cell. "| We |" is a
+            # symbol column -- water influx, Weber number -- not a sentence.
+            if m.group(0) in ("We", "us") and TABLE_CELL_SYMBOL.match(
+                    line_of(text, m.start()), 0):
+                cells = [c.strip() for c in line_of(text, m.start()).split("|")]
+                if m.group(0) in cells:
+                    continue
+            report(m.start(), "R6", "first-person plural outside a proposal; the subject "
+                   "is the analysis, record or practice", m.group(0))
     for m in CAPTION_ABOVE.finditer(text):
         report(m.start(), "R4", "caption placed above its table; captions sit below",
                m.group(0).split("\n")[0][:60])
@@ -162,10 +252,28 @@ SELF_TEST = {
                             "contained by the second barrier.\n", 0),
     "criterion_clause": ("The value is conservative and analogous to a screen-out.\n", 0),
     "caption_above": ("Table 4.1 – Wall thickness\n| a | b |\n|---|---|\n", 1),
+    # Negated intensifier is a hedge, not an intensifier (ws-8c, llm-wiki-risersintl).
+    "negated_with_criterion": ("X80 is not obviously correct because the mill "
+                                "certificate is absent.\n", 0),
+    "negated_explained": ("Manufacture does not obviously fit behind it: the long-lead "
+                           "items exceed the window.\n", 0),
+    "negated_bare": ("The grade is not obviously correct.\n", 1),
+    "bare_intensifier_still_caught": ("This entire file, obviously.\n", 1),
     "quoted_exemplar_exempt": ("> I think the joint is fine.\n", 0),
     "code_exempt": ("```\nI think this is fine\n```\n", 0),
     "quoted_list_item_exempt": ('- "It is exciting to note..."\n', 0),
     "suppression_comment": ("I think so. <!-- register-lint: ignore -->\n", 0),
+    "first_person_plural": ("We design the riser to the stated basis.\n", 1),
+    "impersonal_ok": ("The riser is designed to the stated basis.\n", 0),
+    "us_country_not_pronoun": ("Wells on the US Outer Continental Shelf are recorded.\n", 0),
+    "url_not_pronoun": ("Canonical source: noblecorp.com/our-fleet for fleet status.\n", 0),
+    "weber_number_exempt": ("The groups Re, Fr, We, Eu and Ma govern the response.\n", 0),
+    "water_influx_exempt": ("With m = 0 and We = Wp = 0 the equation reduces.\n", 0),
+    "influx_table_exempt": ("| Water drive | We | 35-75% |\n", 0),
+    "we_pronoun_still_caught": ("We assessed the riser last quarter.\n", 1),
+    "inline_quote_exempt": ('Founded under the directive "we need all rig specs".\n', 0),
+    "wrapped_quote_exempt": ('Bini: "We are moving in many directions at the moment\n'
+                              'and it is best that we wait till you get back."\n', 0),
 }
 
 

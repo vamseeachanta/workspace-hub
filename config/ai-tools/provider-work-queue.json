@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-10T13:21:44.993223Z",
+  "generated_at": "2026-09-10T17:21:42.361573Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-10T13:21:42.646874Z",
+  "scorecard_generated_at": "2026-09-10T17:21:39.754756Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -4380,7 +4380,7 @@
           "labels": [
             "lane:claude"
           ],
-          "updatedAt": "2026-09-10T02:09:11Z",
+          "updatedAt": "2026-09-10T15:24:32Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
