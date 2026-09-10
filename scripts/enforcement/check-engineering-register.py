@@ -35,6 +35,13 @@ _QUOTE = re.compile(r"^\s*>.*$", re.M)
 _QUOTED_ITEM = re.compile(r"^\s*[-*]\s*[\"\u201c\u2018'].{0,120}?[\"\u201d\u2019'\u2026]\s*$", re.M)
 # Explicit suppression, for a line that must contain an example.
 _SUPPRESSED = re.compile(r"^.*<!--\s*register-lint:\s*ignore\s*-->.*$", re.M)
+# Bare URLs and paths are identifiers. "noblecorp.com/our-fleet" is not
+# first-person plural, and markdown-link exemption alone does not cover a URL
+# written in running text.
+_URL = re.compile(r"(?:https?://|www\.)\S+|\b[\w.-]+\.(?:com|org|net|gov|io|ai)/\S*", re.I)
+# A short inline quotation is citation, not the author's prose -- a page may quote
+# the directive that founded it without adopting its register.
+_INLINE_QUOTE = re.compile(r"[\u201c\"][^\u201d\"\n]{0,200}[\u201d\"]")
 
 
 def prose_only(text: str) -> str:
@@ -48,7 +55,7 @@ def prose_only(text: str) -> str:
         end = out.find("\n", b)
         end = len(out) if end == -1 else end
         out = out[:a] + re.sub(r"\S", " ", out[a:end]) + out[end:]
-    for pat in (_INLINE, _LINK, _QUOTE, _QUOTED_ITEM, _SUPPRESSED):
+    for pat in (_INLINE, _LINK, _URL, _INLINE_QUOTE, _QUOTE, _QUOTED_ITEM, _SUPPRESSED):
         out = pat.sub(blank, out)
     return out
 
@@ -181,6 +188,11 @@ def check(path: Path) -> list[str]:
                "than remove the hedge", m.group(0)[:60])
     if not is_proposal(path, raw[:600]):
         for m in FIRST_PERSON.finditer(text):
+            # "US" is the country, not first-person plural. Matching it case-
+            # insensitively turned "US Outer Continental Shelf" into a register
+            # violation and inflated the backlog several-fold on first run.
+            if m.group(0) == "US":
+                continue
             report(m.start(), "R6", "first-person plural outside a proposal; the subject "
                    "is the analysis, record or practice", m.group(0))
     for m in CAPTION_ABOVE.finditer(text):
@@ -218,6 +230,9 @@ SELF_TEST = {
     "suppression_comment": ("I think so. <!-- register-lint: ignore -->\n", 0),
     "first_person_plural": ("We design the riser to the stated basis.\n", 1),
     "impersonal_ok": ("The riser is designed to the stated basis.\n", 0),
+    "us_country_not_pronoun": ("Wells on the US Outer Continental Shelf are recorded.\n", 0),
+    "url_not_pronoun": ("Canonical source: noblecorp.com/our-fleet for fleet status.\n", 0),
+    "inline_quote_exempt": ('Founded under the directive "we need all rig specs".\n', 0),
 }
 
 
