@@ -68,3 +68,15 @@ Consulted: workspace-hub issue-plan template/planning skill; pre-completion clea
 Drive search command: `scripts/data/drive-index-search/search.py 'OrcaFlex remote execution' --json --caller plan-resource-intel --limit 3 --timeout-per-index 1`. No matches; five indexes unreachable, one catalog accessible. This is incomplete coverage, not proof that no relevant drive files exist. The search wrote its standard ignored metrics entry.
 
 No new engineering calculations or standards-derived constants were proposed; standards citation sidecars are not applicable. No external notifications or production runs were sent. The local native test's files were removed by TemporaryDirectory cleanup.
+
+## First repair: engine batch acceptance
+
+Under the user's instruction to continue the proposed sequence, the isolated digitalmodel branch `bugfix/orcaflex-batch-reliability` repairs the packaged base config, native scalar rendering and central failure verdict for [1564](https://github.com/vamseeachanta/digitalmodel/issues/1564) and [2051](https://github.com/vamseeachanta/digitalmodel/issues/2051).
+
+At 2026-09-10T00:18:49Z (9 September local time), the real engine CLI on the patched source ran one exported generic line through statics and dynamics on DLL 11.6c. It saved and reloaded a simulation, reached SimulationStopped and returned four finite effective-tension samples. Summary: completed=1, failed=0, mock=false; central verdict PASS; CLI exit 0. The batch used one process, with the executor's default internal solver thread count. The proposed one-thread resource guard is not yet enforced.
+
+An earlier run during this repair failed at dynamics because a blank RestartStateRecordingTest became literal `~`. That run correctly returned exit 1 and preserved diagnostics. New RED-first regressions and a SafeLoader subclass now preserve blank text separately from explicit numeric-default tokens. The final focused test command passed 54 tests with one skip; additional converter coverage passed 20 tests with two skips.
+
+Detailed sanitized hashes, exact bounded input and limitations are in digitalmodel's `docs/reports/orcaflex-batch-reliability.html` and `orcaflex-batch-native-proof.json` on the repair branch. Raw generic proof directories are intentionally retained locally as audit evidence. The existing production environment and tasks remain unchanged. Neither Linux-origin dispatch nor scheduled-task execution has been accepted by this test.
+
+The [operational runbook](../solver/orcaflex-execution-runbook.html) now links the existing owner map, supported command templates, qualification method, recovery boundaries and ordered next work. Root/batch/readiness skills route agents to it. Claude and Codex review this bounded repair independently; review dispositions accompany the implementation rather than changing approval labels.

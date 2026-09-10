@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OrcaFlex execution and model qualification runbook</title>
+<style>
+body{margin:0;background:#f2f5f7;color:#183043;font:16px/1.6 system-ui,sans-serif}main{max-width:1000px;margin:auto;padding:32px 22px 60px}header,section{background:white;padding:24px;margin-bottom:20px;border:1px solid #d8e2e8;border-radius:10px}header{background:#183043;color:white}header a{color:#abe4ec}h1{line-height:1.2}h2{font-size:23px}a{color:#086d89}table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid #d8e2e8;text-align:left;vertical-align:top;padding:10px}.scroll{overflow:auto}.status{background:#fff4dc;border-left:4px solid #b98627;padding:14px}code{overflow-wrap:anywhere}li{margin:8px 0}footer{font-size:13px;color:#536777}
+pre{max-width:100%;overflow-x:auto;white-space:pre;padding:14px;background:#eef3f6;border-radius:6px}pre code{overflow-wrap:normal}
+</style>
+</head>
+<body><main>
+<header>
+<p>Operational methodology · 9 September 2026</p>
+<h1>From engineering question to traceable OrcaFlex result</h1>
+<p>Use the existing model, execution and evidence owners. Qualify a bounded case before expanding the model family or campaign.</p>
+<p><a href="../reports/2026-09-09-orcaflex-fea-strategy.html">Ecosystem strategy</a> · <a href="../plans/2026-09-09-issue-3831-orcaflex-execution.md">Execution plan</a> · <a href="https://github.com/vamseeachanta/workspace-hub/issues/3831">Execution workstream</a></p>
+</header>
+<section id="status"><h2>Read the status before executing</h2>
+<p class="status">This runbook records the proposed operational sequence and existing evidence boundaries. It is not a release certificate. The execution plan and its child scopes govern implementation and activation; documentation does not grant new project, licence or publication permissions.</p>
+<p>A native smoke has been observed on one Windows workstation. That does not prove the engine batch path, credentialed task context, signed project canary, remote producer route or full model library. See the <a href="../reports/2026-09-09-orcaflex-execution-evidence.md">dated execution evidence</a> for measured state.</p>
+<p>The reconciled Deckhand lane is the intended execution owner. The <a href="README.md">legacy solver queue documentation</a> is retained for discovery and migration. Do not activate a second queue, scheduler or lock namespace from its examples.</p>
+</section>
+<section id="ownership"><h2>Resolve the existing owners</h2>
+<div class="scroll"><table><thead><tr><th>Owner</th><th>Authoritative responsibility</th></tr></thead><tbody>
+<tr><td>digitalmodel</td><td>Generic specifications, generators, solver adapters, numerical tests and reports. Start with its <a href="https://github.com/vamseeachanta/digitalmodel/blob/main/docs/maps/digitalmodel-operator-map.md">operator map</a> and existing use-case registry.</td></tr>
+<tr><td>Deckhand</td><td>Authenticated submission, target selection, execution and result transport. Follow <a href="https://github.com/vamseeachanta/deckhand/issues/572">production lane ownership</a> and the linked child contracts.</td></tr>
+<tr><td>workspace-hub</td><td>Cross-repository sequencing, measured machine readiness and deployment handoff.</td></tr>
+<tr><td>worldenergydata</td><td>Reusable vessel and component reference datasets; preserve source provenance and distinguish reference data from a project's selected properties.</td></tr>
+<tr><td>llm-wiki</td><td>Cited fundamentals and general methods under <a href="https://github.com/vamseeachanta/llm-wiki/issues/898">knowledge placement</a>.</td></tr>
+<tr><td>Private project repository</td><td>Source models, geometry, selected data, private criteria overlays, run records and engineering approval. Reuse its existing workflow-pack and qualification records.</td></tr>
+</tbody></table></div>
+<p>Use repository-qualified issue URLs. Reconcile current source and tests with old issue bodies before planning new code. Keep credentials, host mappings and client paths in private deployment configuration.</p>
+</section>
+<section id="prepare"><h2>Prepare a bounded analysis</h2>
+<ol>
+<li>State the engineering question, quantities of interest, intended decisions and applicable model-family limits. Route detailed shell/solid stress to the qualified structural FE adapter; OrcaFlex supplies global marine response and slender-member results.</li>
+<li>Resolve source data, geometry, units, axes, sections, material properties, connections, environment and load combinations. Mark values as sourced, derived, assumed or missing; unresolved required inputs block the solve.</li>
+<li>Choose the existing typed specification and generator. Record unmapped fields explicitly. Schema validity and a high specification-audit score do not demonstrate physical adequacy.</li>
+<li>Bind code revision, solver/API version, complete input dependencies and content hashes to a unique run attempt. Preserve private inputs in project-scoped storage.</li>
+<li>Confirm the actual task account, executor capability, current licence availability and authority to use that seat for this project. Licence availability is not evidence of cross-project permission.</li>
+<li>Check the current plan and child approvals. The proposed initial ceiling is one worker, one solver thread and one active managed OrcaFlex job. Treat enforcement as planned until its tests and deployment evidence exist; CPU count does not establish licence capacity.</li>
+</ol>
+</section>
+<section id="execute"><h2>Execute and collect through the reconciled lane</h2>
+<p>The operation names in the table below describe required outcomes. Verify command syntax against the reviewed, pinned Deckhand release and record the command actually run.</p>
+<p>Verified entry points below are templates to run from their owning checkout. Replace uppercase placeholders with reviewed configuration values, retaining quotes around paths. QUEUE means the queue repository's <code>queue/</code> subdirectory, not its clone root. The batch command requires the repair and environment described in its release evidence; these templates do not activate a workflow or grant dispatch approval.</p>
+<pre><code># digitalmodel: bounded local input must explicitly set workers: 1
+uv run --no-sync python -m digitalmodel "input.yml"
+
+# Deckhand: inspect the installed interface and local lane state
+uv run --no-sync python scripts/deckhand/licensed-run-ops.py --help
+uv run --no-sync python scripts/deckhand/licensed-run-ops.py --policy "POLICY" --scopes "SCOPES" --queue-dir "QUEUE" status --no-remote
+
+# Prepare an approved workflow/input; preflight does not accept --host
+uv run --no-sync python scripts/deckhand/licensed-run-ops.py --policy "POLICY" --scopes "SCOPES" --queue-dir "QUEUE" preflight --scope SCOPE --workflow WORKFLOW --input "INPUT"
+
+uv run --no-sync python scripts/deckhand/licensed-run-ops.py --policy "POLICY" --scopes "SCOPES" --queue-dir "QUEUE" watch RUN_ID --timeout 300</code></pre>
+<h3>Dispatch only after lane, scope, input and target approval</h3>
+<pre><code># --commit submits remotely; substitute approved configuration values
+uv run --no-sync python scripts/deckhand/licensed-run-ops.py --policy "POLICY" --scopes "SCOPES" --queue-dir "QUEUE" dispatch --scope SCOPE --workflow WORKFLOW --input "INPUT" --approver APPROVER --host HOST --commit</code></pre>
+<p>The current preflight checks the input and policy, not a fresh target-context solve. Always select the target explicitly at dispatch and verify the returned identity and numerical evidence. Inspect the actual CLI before upgrading these templates; automatic heavy-result fetch and cancellation commands are not supplied here because their deployed contract has not been verified.</p>
+<div class="scroll"><table><thead><tr><th>Operation</th><th>Required observable evidence</th><th>Current boundary</th></tr></thead><tbody>
+<tr><td>Bootstrap / doctor</td><td>Resolved environment and code pins; actual task identity; solver/API availability; native smoke with finite results and saved-result reload.</td><td>Desktop smoke does not qualify a scheduled-task account. Task-context activation remains subject to the execution plan.</td></tr>
+<tr><td>Explicit-target submit</td><td>Enrolled producer, authorized scope, selected target, approved input identity and attempt ID.</td><td>Use the existing lane. Envelope/resource/host-guard changes are planned controls until deployed and verified.</td></tr>
+<tr><td>Watch / status</td><td>Request and attempt identity, running/terminal state, logs, failure class and real resource use.</td><td>Absence of an error message is not success; stale files cannot satisfy a new attempt.</td></tr>
+<tr><td>Collect bounded results</td><td>Terminal manifest, completed required cases, finite expected quantities, output hashes and reload/readback evidence.</td><td>Retain diagnostics and failure status for partial failures. Metadata receipt alone does not qualify the analysis.</td></tr>
+<tr><td>Fetch heavy artifacts</td><td>Authenticated scope, result lease and verified artifact identity.</td><td>Unavailable under this runbook until <a href="https://github.com/vamseeachanta/deckhand/issues/564">result-return ownership</a> supplies approved and verified instructions.</td></tr>
+</tbody></table></div>
+<p>The Linux machine is the producer: it submits through Deckhand's repository-backed queue to the selected licensed Windows worker. OrcaFlex executes on Windows. The current producer enrollment, queue authorization and Windows task context must be reconciled and verified before this route is accepted.</p>
+<p>First prove one engine-CLI case locally, then submit the same bounded case from the primary Linux producer through that lane. Record each origin, context, timestamp, revisions and verdict. Additional origins remain untested until measured; portable code is not evidence of fleet connectivity.</p>
+</section>
+<section id="qualification"><h2>Qualify the engineering result separately</h2>
+<p>Preserve the existing workflow-pack lifecycle: <strong>located → extracted → parameterized → reproducible → engineering-validated → approved-for-reuse</strong>. Keep the registry's existing template-readiness meaning; do not silently upgrade it to numerical qualification.</p>
+<ul>
+<li><strong>Semantic proof:</strong> compare engineering-significant data, units and conventions; list unsupported residuals. Reuse <a href="https://github.com/vamseeachanta/digitalmodel/blob/main/docs/domains/orcaflex/SEMANTIC_EQUIVALENCE_CLAIM_BOUNDARY.md">the existing claim boundary</a>.</li>
+<li><strong>Native proof:</strong> record loadability and bounded run outcomes with the <a href="orcawave-orcaflex-native-load-run-proof-protocol.md">native proof protocol</a> and its <a href="templates/semantic-proof-evidence-manifest.yaml">evidence template</a>. Its pass-run classification alone does not mean engineering validation.</li>
+<li><strong>Numerical verification:</strong> define force/moment balance, mesh and time-step sensitivity, comparison references and tolerances for the particular quantities of interest. Avoid universal numerical thresholds without a method basis.</li>
+<li><strong>Physical applicability:</strong> verify loads, restraints, material/element models and geometry against the intended question. Reject unsupported elements or mappings instead of silently omitting them.</li>
+<li><strong>Global-to-local transfer:</strong> preserve coordinate transforms, units and simultaneous force/moment or displacement states. Verify transferred balance; do not assemble a load case from unrelated maxima.</li>
+<li><strong>Engineering acceptance:</strong> cite the applicable standard edition/section and existing Citation sidecar for derived constants. Record human review and permitted reuse limits. Wiki heuristics and solver agreement alone are insufficient.</li>
+</ul>
+<p>Advance through the <a href="../reports/2026-09-09-orcaflex-fea-strategy.html">strategy's qualification ladder</a>: beam, plate, suspended line, coupled assembly, detailed joint, then additional nonlinear/shell/fatigue families. A method, input, template or solver-version change requires impact review of affected qualification records.</p>
+</section>
+<section id="recovery"><h2>Recover, upgrade and hand off</h2>
+<ul>
+<li><strong>Cancellation / timeout:</strong> use the deployed lane's owned-process cancellation contract; verify the process tree has stopped before releasing its execution guard. Preserve logs and mark the attempt failed or cancelled. Planned containment controls must not be claimed as installed.</li>
+<li><strong>Retry:</strong> classify the error and confirm the input is still authorized. A changed input, revision, target or resource request requires a new bound attempt and the applicable approval; never overwrite the old evidence.</li>
+<li><strong>Upgrade:</strong> inventory active consumers, drain the selected lane and retain prior task/environment/pins privately. Enable new batch contracts only after compatibility and task-context acceptance pass.</li>
+<li><strong>Rollback:</strong> quarantine requests requiring the new contract and keep that workflow disabled. Restoring backup configuration does not authorize reactivation: first prove the owned process tree has stopped and resolve execution-guard ownership. Uncertain ownership or an unkillable process keeps both consumers disabled. Do not assume an old worker understands new safety fields.</li>
+<li><strong>Handoff:</strong> record exact commands, source revisions, input/output hashes, solver/API versions, origin/target contexts, resource limits, results, unresolved findings and next issue checkpoint. Distinguish executed, failed, skipped and untested cases.</li>
+</ul>
+<p>Publish only authorized synthetic/public derivatives. Private project reports and raw result files remain in their existing storage tier. This runbook creates no additional publication permission.</p>
+</section>
+<footer>Maintained under the existing execution workstream. Review this page when the lane contract changes; measured capability lives in linked evidence and release records, not in this document's date.</footer>
+</main></body></html>
