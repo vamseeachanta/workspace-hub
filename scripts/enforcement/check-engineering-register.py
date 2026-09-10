@@ -41,7 +41,10 @@ _SUPPRESSED = re.compile(r"^.*<!--\s*register-lint:\s*ignore\s*-->.*$", re.M)
 _URL = re.compile(r"(?:https?://|www\.)\S+|\b[\w.-]+\.(?:com|org|net|gov|io|ai)/\S*", re.I)
 # A short inline quotation is citation, not the author's prose -- a page may quote
 # the directive that founded it without adopting its register.
-_INLINE_QUOTE = re.compile(r"[\u201c\"][^\u201d\"\n]{0,200}[\u201d\"]")
+# A quotation may wrap. Correspondence quoted into a record routinely spans two
+# or three lines, and requiring a single line left the quoted party's own words
+# being checked against our register.
+_INLINE_QUOTE = re.compile(r"[\u201c\"](?:[^\u201d\"]|\n(?!\n)){0,400}[\u201d\"]")
 
 
 def prose_only(text: str) -> str:
@@ -269,6 +272,8 @@ SELF_TEST = {
     "influx_table_exempt": ("| Water drive | We | 35-75% |\n", 0),
     "we_pronoun_still_caught": ("We assessed the riser last quarter.\n", 1),
     "inline_quote_exempt": ('Founded under the directive "we need all rig specs".\n', 0),
+    "wrapped_quote_exempt": ('Bini: "We are moving in many directions at the moment\n'
+                              'and it is best that we wait till you get back."\n', 0),
 }
 
 
