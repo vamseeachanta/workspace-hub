@@ -10,16 +10,26 @@ pre{max-width:100%;overflow-x:auto;white-space:pre;padding:14px;background:#eef3
 </head>
 <body><main>
 <header>
-<p>Operational methodology · 9 September 2026</p>
+<p>Operational methodology · updated 10 September 2026</p>
 <h1>From engineering question to traceable OrcaFlex result</h1>
-<p>Use the existing model, execution and evidence owners. Qualify a bounded case before expanding the model family or campaign.</p>
+<p>Objectives: reliable OrcaFlex execution from enrolled ecosystem machines through the licensed Windows executor, and qualified component/structure FEA through existing solver adapters. Qualify bounded model families before expanding their applicability or campaigns.</p>
 <p><a href="../reports/2026-09-09-orcaflex-fea-strategy.html">Ecosystem strategy</a> · <a href="../plans/2026-09-09-issue-3831-orcaflex-execution.md">Execution plan</a> · <a href="https://github.com/vamseeachanta/workspace-hub/issues/3831">Execution workstream</a></p>
 </header>
 <section id="status"><h2>Read the status before executing</h2>
 <p>Start with the <a href="../reports/2026-09-09-orcaflex-integration-readiness.html">integration and deployment checkpoint</a> for the repaired local engine, current CI evidence and remaining task/scope prerequisites. Review verdicts and unresolved gates are recorded there and in the linked handoff.</p>
 <p class="status">This runbook records the proposed operational sequence and existing evidence boundaries. It is not a release certificate. The execution plan and its child scopes govern implementation and activation; documentation does not grant new project, licence or publication permissions.</p>
-<p>A native smoke has been observed on one Windows workstation. That does not prove the engine batch path, credentialed task context, signed project canary, remote producer route or full model library. See the <a href="../reports/2026-09-09-orcaflex-execution-evidence.md">dated execution evidence</a> for measured state.</p>
+<p>The batch repair is merged at <code>80da6e09b649707ef7bdb09c9d112f1650bf3d6a</code>. Merged-revision acceptance passed 54 focused tests with one skip and one real OrcaFlex 11.6c engine case: statics/dynamics, saved-simulation reload, four finite tension samples and PASS/exit zero. The <a href="../reports/2026-09-09-orcaflex-merged-proof.json">merged proof</a> records one process with the existing default internal thread policy. This qualifies that local interactive case; credentialed task, remote route, signed canary and library qualification remain outstanding.</p>
 <p>The reconciled Deckhand lane is the intended execution owner. The <a href="README.md">legacy solver queue documentation</a> is retained for discovery and migration. Do not activate a second queue, scheduler or lock namespace from its examples.</p>
+</section>
+<section id="next"><h2>Current next steps</h2>
+<ol>
+<li>Strengthen the existing bounded smoke under <a href="https://github.com/vamseeachanta/digitalmodel/issues/2082">digitalmodel 2082</a>, using <a href="https://github.com/vamseeachanta/digitalmodel/pull/2084">planning PR 2084</a> (owner approval pending): explicit one-thread operation, finite requested results and saved-simulation reload, with tests first. Verify the resulting revision before task cutover; the merged batch repair does not supply these smoke controls.</li>
+<li>Prepare the neutral service scope, exact fixture/repository revision, effective policy, private workdir/target mapping and rollback package. Resolve the existing scope/cutover decisions before live enqueue; do not reuse a client scope implicitly.</li>
+<li>After those gates pass, qualify one smoke in the credentialed Windows task and one from the Linux producer through the same lane. Record request/result identity and actual numerical evidence. Batch contract completion remains a separate acceptance step.</li>
+<li>Qualify the suspended-line family, then beam/plate structural benchmarks through existing adapters. Preserve unsupported mappings and applicability limits.</li>
+<li>Verify balanced global-to-local load transfer before expanding coupled model families and parameter campaigns.</li>
+</ol>
+<p>Continue under the existing issue owners and <a href="../session-handoffs/2026-09-09-orcaflex-strategy.md">handoff</a>. The integrated repair is no longer awaiting merge; deployment and engineering acceptance retain their separate gates.</p>
 </section>
 <section id="ownership"><h2>Resolve the existing owners</h2>
 <div class="scroll"><table><thead><tr><th>Owner</th><th>Authoritative responsibility</th></tr></thead><tbody>
@@ -68,7 +78,7 @@ uv run --no-sync python scripts/deckhand/licensed-run-ops.py --policy "POLICY" -
 <tr><td>Fetch heavy artifacts</td><td>Authenticated scope, result lease and verified artifact identity.</td><td>Unavailable under this runbook until <a href="https://github.com/vamseeachanta/deckhand/issues/564">result-return ownership</a> supplies approved and verified instructions.</td></tr>
 </tbody></table></div>
 <p>The Linux machine is the producer: it submits through Deckhand's repository-backed queue to the selected licensed Windows worker. OrcaFlex executes on Windows. The current producer enrollment, queue authorization and Windows task context must be reconciled and verified before this route is accepted.</p>
-<p>First prove one engine-CLI case locally, then submit the same bounded case from the primary Linux producer through that lane. Record each origin, context, timestamp, revisions and verdict. Additional origins remain untested until measured; portable code is not evidence of fleet connectivity.</p>
+<p>The local merged engine-CLI case is verified. Next strengthen the smoke and qualify the task/producer route as described above, then verify bounded batch execution under its own contract. Record each origin, context, timestamp, revisions and verdict. Additional origins remain untested until measured; portable code is not evidence of fleet connectivity.</p>
 </section>
 <section id="qualification"><h2>Qualify the engineering result separately</h2>
 <p>Preserve the existing workflow-pack lifecycle: <strong>located → extracted → parameterized → reproducible → engineering-validated → approved-for-reuse</strong>. Keep the registry's existing template-readiness meaning; do not silently upgrade it to numerical qualification.</p>
@@ -80,7 +90,7 @@ uv run --no-sync python scripts/deckhand/licensed-run-ops.py --policy "POLICY" -
 <li><strong>Global-to-local transfer:</strong> preserve coordinate transforms, units and simultaneous force/moment or displacement states. Verify transferred balance; do not assemble a load case from unrelated maxima.</li>
 <li><strong>Engineering acceptance:</strong> cite the applicable standard edition/section and existing Citation sidecar for derived constants. Record human review and permitted reuse limits. Wiki heuristics and solver agreement alone are insufficient.</li>
 </ul>
-<p>Advance through the <a href="../reports/2026-09-09-orcaflex-fea-strategy.html">strategy's qualification ladder</a>: beam, plate, suspended line, coupled assembly, detailed joint, then additional nonlinear/shell/fatigue families. A method, input, template or solver-version change requires impact review of affected qualification records.</p>
+<p>The next model-family sequence will start with a suspended line, then beam/plate benchmarks, balanced global-to-local transfer and campaigns, reusing the <a href="../reports/2026-09-09-orcaflex-fea-strategy.html">strategy's qualification cases</a>. Coupled assemblies, detailed joints and additional nonlinear/shell/fatigue families will retain their own acceptance evidence. A method, input, template or solver-version change requires impact review of affected qualification records.</p>
 </section>
 <section id="recovery"><h2>Recover, upgrade and hand off</h2>
 <ul>
