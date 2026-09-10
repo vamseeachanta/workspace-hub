@@ -13,7 +13,7 @@ metadata:
 **Why:** 2026-07-31, twice in one day, same subsystem.
 
 1. deckhand#579: solver/hydro work routed to a host whose capability list was **inherited from a retired machine** — 177 issues aimed at a box that could not obtain an OrcaFlex licence. I fixed it by repointing to the host with the only dated **licence** attestation.
-2. Owner: *"ws014 is not powerful enough."* That host is a **workstation**. The one I routed away from is the 64-core / 255.7 GB batch node. I had traded a licence failure for a **capacity** failure and called it fixed.
+2. Owner: *"ace-win-2 is not powerful enough."* That host is a **workstation**. The one I routed away from is the 64-core / 255.7 GB batch node. I had traded a licence failure for a **capacity** failure and called it fixed.
 
 Capability was two dimensions — licence AND capacity — and I only re-checked the one I had just been burned by.
 
