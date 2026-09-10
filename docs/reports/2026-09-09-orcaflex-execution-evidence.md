@@ -71,6 +71,8 @@ No new engineering calculations or standards-derived constants were proposed; st
 
 ## First repair: engine batch acceptance
 
+Post-merge acceptance: the user explicitly authorized merging PR 2081. GitHub reports MERGED at 2026-09-10T02:07:36Z, commit `80da6e09b649707ef7bdb09c9d112f1650bf3d6a`. The isolated worktree was detached at that exact revision; source and contract tests match reviewed `ce372809`. Revalidation passed 54 tests with one skip. A fresh native 11.6c engine run completed statics/dynamics and saved-simulation reload with four finite tension samples, PASS and exit zero. [Sanitized merged proof](2026-09-09-orcaflex-merged-proof.json) records timestamps and hashes. Production tasks, environments and queues were not changed. Earlier observations below remain historical evidence.
+
 Under the user's instruction to continue the proposed sequence, the isolated digitalmodel branch `bugfix/orcaflex-batch-reliability` repairs the packaged base config, native scalar rendering and central failure verdict for [1564](https://github.com/vamseeachanta/digitalmodel/issues/1564) and [2051](https://github.com/vamseeachanta/digitalmodel/issues/2051).
 
 At 2026-09-10T00:18:49Z (9 September local time), the real engine CLI on the patched source ran one exported generic line through statics and dynamics on DLL 11.6c. It saved and reloaded a simulation, reached SimulationStopped and returned four finite effective-tension samples. Summary: completed=1, failed=0, mock=false; central verdict PASS; CLI exit 0. The batch used one process, with the executor's default internal solver thread count. The proposed one-thread resource guard is not yet enforced.
