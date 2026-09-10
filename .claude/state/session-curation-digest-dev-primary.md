@@ -1,11 +1,11 @@
 # Session-curation digest — dev-primary
-_Curated 2026-09-09T17:47:02+00:00 · transferable to sibling machines via `session-curation-state` ref_
+_Curated 2026-09-09T23:47:01+00:00 · transferable to sibling machines via `session-curation-state` ref_
 
 ## Provider session activity (this box)
 | Provider | Present | Sessions | Last 24h | Newest |
 |---|---|---|---|---|
-| claude | yes | 3885 | 9 | 2026-09-09T12:22:54 |
-| codex | yes | 4417 | 11 | 2026-09-09T11:31:42 |
+| claude | yes | 3885 | 9 | 2026-09-09T18:45:39 |
+| codex | yes | 4417 | 7 | 2026-09-09T11:31:42 |
 | gemini | yes | 2177 | 0 | 2026-07-07T04:17:24 |
 | hermes | yes | 0 | 0 | — |
 

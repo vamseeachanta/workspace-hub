@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-09T17:21:32Z
+Generated: 2026-09-09T21:21:33Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3831 | feat(orcaflex): unify local and ecosystem submission to the licensed Windows executor | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3830 | Compliance alert: W37 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3829 | quirk(coordination): one Codex task per repo at a time is needed to avoid concurrent edits with Claude subagents | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3828 | quirk(codex): Codex config runs with approval never and full access, so briefs must be bounded and non-destructive | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3491 | chore(solver-queue): reconcile legacy solver-queue issues (#2641/#1586/#2524) with the live deckhand licensed-run lane [dm#1553 H] | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3490 | fix(onboarding): surface cron preview failure during new-machine dry-run | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review,unavailable_review |
 | #3485 | epic: Live HF-backed capability surfaces on aceengineer.com — self-perpetuating algorithm showcase | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3482 | design(repo-health): safe worktree lifecycle with leases and recoverable quarantine | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 
 ## Lane: blocked (0)
 

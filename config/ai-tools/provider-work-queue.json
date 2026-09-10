@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-09T17:21:29.598752Z",
+  "generated_at": "2026-09-09T21:21:31.492650Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-09T17:21:27.254795Z",
+  "scorecard_generated_at": "2026-09-09T21:21:28.814135Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 18,
+      "execution_ready_count": 17,
       "total_candidates": 176,
       "top_issues": [
         {
@@ -86,32 +86,6 @@
           "updatedAt": "2026-09-03T23:32:02Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3482,
-          "title": "design(repo-health): safe worktree lifecycle with leases and recoverable quarantine",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3482",
-          "labels": [
-            "priority:medium",
-            "cat:tooling",
-            "domain:testing",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:29Z",
-          "execution_ready": true,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -231,6 +205,30 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3490,
+          "title": "fix(onboarding): surface cron preview failure during new-machine dry-run",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3490",
+          "labels": [
+            "cat:operations",
+            "domain:onboarding",
+            "machine:dev-primary",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:codex"
+          ],
+          "updatedAt": "2026-08-01T06:13:30Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
         }
       ],
       "full_candidates": [
@@ -306,32 +304,6 @@
           "updatedAt": "2026-09-03T23:32:02Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3482,
-          "title": "design(repo-health): safe worktree lifecycle with leases and recoverable quarantine",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3482",
-          "labels": [
-            "priority:medium",
-            "cat:tooling",
-            "domain:testing",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:29Z",
-          "execution_ready": true,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1086,7 +1058,7 @@
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-07-31T08:35:38Z",
+          "updatedAt": "2026-09-09T18:04:48Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4389,6 +4361,26 @@
             "status:plan-review"
           ],
           "updatedAt": "2026-08-26T13:09:26Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3831,
+          "title": "feat(orcaflex): unify local and ecosystem submission to the licensed Windows executor",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3831",
+          "labels": [
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-09T18:04:47Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
