@@ -7,7 +7,7 @@
 # Workspace Hub Memory
 
 > Curated live index; full detail lives in each topic file. COMPLETE record is in
-> `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below.
+> `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below. *stale: 2026-09-10*
 
 ## Active & Recent Projects
 - [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-07 r3 STOPPED at 4479 by the OWNER’S parallel gpu-claw session (cycle-averaged R_T ≈226–227 kN at 13 kn firm; mesh promoted; matrix of 11 conditions building; gpu-claw → condition 2). This thread’s execution role is SUPERSEDED — read `reports/internal-draft/status-neutral-<latest>.md` first; never restart r3. Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
