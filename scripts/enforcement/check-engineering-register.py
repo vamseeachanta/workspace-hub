@@ -133,6 +133,26 @@ CAPTION_ABOVE = re.compile(r"^\s*(?:Table|Figure)\s+\d+[.\-]\d+\s*[-–:].*\n\s*
 # "2H are considered to be particularly well qualified". That exemption is
 # corpus-evidenced, not a convenience.
 FIRST_PERSON = re.compile(r"\b(?:we|our|us)\b(?!\s*[\u2019']s\b)", re.I)
+# Dimensionless groups and unit symbols that collide with the pronoun forms.
+# Two-letter pronouns collide with engineering notation in more than one field.
+# "We" is the Weber number in dimensional analysis AND cumulative water influx in
+# the material-balance equation, where it sits beside Wp, Np and Bo. The
+# surrounding symbols disambiguate; the pronoun never keeps that company.
+SYMBOL_CONTEXT = re.compile(
+    r"(?<![A-Za-z])(?:Re|Fr|Eu|Ma|Pr|Nu|Sc|Sh|Pe|St|Ca|Bo|Ra|Gr|Ec|Kn|Wo"      # dimensionless groups
+    r"|Wp|Np|Gp|Bg|Bw|Eo|Eg|Efw|Rs|Rsi|Boi|Bgi|STB|MMSTB)(?![A-Za-z])"          # material balance
+    r"|\bdimensionless\b|\bWeber\b|\bwater (?:influx|drive)\b|\bmaterial balance\b"
+    r"|\bstock-tank\b|\breservoir-barrel\b"
+    r"|\bmicrosiemens\b|\u00b5S|\bS/cm\b|=\s*0\b")
+
+
+TABLE_CELL_SYMBOL = re.compile(r"^\s*\|")
+
+
+def line_of(text: str, pos: int) -> str:
+    a = text.rfind("\n", 0, pos) + 1
+    b = text.find("\n", pos)
+    return text[a:b if b != -1 else len(text)]
 PROPOSAL_MARKERS = ("proposal", "-prp-", "-pro-", "qualification", "capability-statement")
 
 
@@ -193,6 +213,18 @@ def check(path: Path) -> list[str]:
             # violation and inflated the backlog several-fold on first run.
             if m.group(0) == "US":
                 continue
+            # "We" is the Weber number and sits beside Re, Fr, Eu, Ma in any
+            # dimensional-analysis page. A two-letter pronoun collides with
+            # engineering notation; the surrounding groups disambiguate it.
+            if m.group(0) in ("We", "us", "uS") and SYMBOL_CONTEXT.search(line_of(text, m.start())):
+                continue
+            # A pronoun is never the whole content of a table cell. "| We |" is a
+            # symbol column -- water influx, Weber number -- not a sentence.
+            if m.group(0) in ("We", "us") and TABLE_CELL_SYMBOL.match(
+                    line_of(text, m.start()), 0):
+                cells = [c.strip() for c in line_of(text, m.start()).split("|")]
+                if m.group(0) in cells:
+                    continue
             report(m.start(), "R6", "first-person plural outside a proposal; the subject "
                    "is the analysis, record or practice", m.group(0))
     for m in CAPTION_ABOVE.finditer(text):
@@ -232,6 +264,10 @@ SELF_TEST = {
     "impersonal_ok": ("The riser is designed to the stated basis.\n", 0),
     "us_country_not_pronoun": ("Wells on the US Outer Continental Shelf are recorded.\n", 0),
     "url_not_pronoun": ("Canonical source: noblecorp.com/our-fleet for fleet status.\n", 0),
+    "weber_number_exempt": ("The groups Re, Fr, We, Eu and Ma govern the response.\n", 0),
+    "water_influx_exempt": ("With m = 0 and We = Wp = 0 the equation reduces.\n", 0),
+    "influx_table_exempt": ("| Water drive | We | 35-75% |\n", 0),
+    "we_pronoun_still_caught": ("We assessed the riser last quarter.\n", 1),
     "inline_quote_exempt": ('Founded under the directive "we need all rig specs".\n', 0),
 }
 
