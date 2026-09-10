@@ -3,23 +3,23 @@
  "role": "full",
  "hostname": "ace-linux-1",
  "machine_id": "dev-primary",
- "ts": "2026-09-10T11:17:02.909322+00:00",
- "clone_head": "bf0f71599",
- "behind_origin": 64,
- "ahead_origin": 247,
+ "ts": "2026-09-10T17:17:03.605749+00:00",
+ "clone_head": "d1170fada",
+ "behind_origin": 70,
+ "ahead_origin": 249,
  "harness_version": "2.1.267",
  "harness_install": "npm-global",
  "registry_sha256": "d118c167d168979bb5d53f7622f2924afc4a4759dd66568cd5d2296cc3aa2858",
  "learning_cron_ages_h": {
-  "comprehensive-learning-nightly": 3.0,
+  "comprehensive-learning-nightly": 9.0,
   "session-analysis": null
  },
  "provider_soul_hashes": {
-  "hermes": "5e2fa1b0d1672625",
-  "claude": "68ced6c41945bb4f",
-  "codex": "a789a938f830664c",
-  "codex_agents": "958b24aa8df4825b",
-  "gemini": "bc986f2d4ff63311"
+  "hermes": "ebf719cb858c2bbd",
+  "claude": "94e08476e630fee9",
+  "codex": "73423fd2ddad842d",
+  "codex_agents": "e108441bd381271a",
+  "gemini": "889e9bd4d8b81732"
  },
  "on_main": true,
  "index_lock_stale_min": null,
