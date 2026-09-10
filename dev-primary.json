@@ -3,25 +3,25 @@
  "role": "full",
  "hostname": "ace-linux-1",
  "machine_id": "dev-primary",
- "ts": "2026-09-10T17:17:03.605749+00:00",
- "clone_head": "d1170fada",
- "behind_origin": 70,
- "ahead_origin": 249,
- "harness_version": "2.1.267",
+ "ts": "2026-09-10T23:17:04.280647+00:00",
+ "clone_head": "04089427d",
+ "behind_origin": 74,
+ "ahead_origin": 250,
+ "harness_version": "2.1.268",
  "harness_install": "npm-global",
  "registry_sha256": "d118c167d168979bb5d53f7622f2924afc4a4759dd66568cd5d2296cc3aa2858",
  "learning_cron_ages_h": {
-  "comprehensive-learning-nightly": 9.0,
+  "comprehensive-learning-nightly": 15.0,
   "session-analysis": null
  },
  "provider_soul_hashes": {
-  "hermes": "ebf719cb858c2bbd",
-  "claude": "94e08476e630fee9",
-  "codex": "73423fd2ddad842d",
-  "codex_agents": "e108441bd381271a",
-  "gemini": "889e9bd4d8b81732"
+  "hermes": "b240fc2ffad53b05",
+  "claude": "32d7a21acaffdb1b",
+  "codex": "dc4bf988327ebf40",
+  "codex_agents": "43d6ea2b0887eed1",
+  "gemini": "9c1b95ded2f69ef5"
  },
  "on_main": true,
  "index_lock_stale_min": null,
- "last_publish_duration_s": 3.0
+ "last_publish_duration_s": 4.0
 }
