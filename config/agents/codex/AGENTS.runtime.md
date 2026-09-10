@@ -121,6 +121,48 @@ The user runs a multi-provider operation (Hermes on `ace-linux-1`, Claude Max su
 
 Before discovering, saving, transforming, consuming or reporting data, follow `docs/architecture/agent-data-handling-contract.md` in `workspace-hub` (resolve the sibling checkout when outside that repo). Reuse `llm-wiki/data/data-source-catalog.yml` and `data/domain-database-index.yml`; keep one authoritative dataset owner. Record stable IDs, versions, sources, units, digests, freshness and intended-use readiness. Verify saved artifacts by reading them back. Missing, stale, synthetic or unverified data must never silently become valid engineering input. Link durable artifacts in handoffs and distinguish local saves from backup/publication.
 
+## Engineering register — documents, chat, email, agent output
+
+Every repository in this ecosystem is engineering. One register applies to all
+output: issued reports, wiki pages, commit messages, chat replies, email, and the
+text an agent produces for another agent. Full guide, with a quoted exemplar per
+rule from our own issued reports: `llm-wiki` engineering/concepts/engineering-report-house-style.
+Enforced by `scripts/enforcement/check-engineering-register.py`.
+
+The governing rules:
+
+- **The subject is the analysis, result, component, document or company — not a
+  person.** "The analysis is performed"; not "I performed the analysis". Reserve
+  first-person plural for proposals and qualifications, where the corpus uses it.
+- **Bind every conclusion to its criterion, comparator and governing case.** A
+  bare verdict is not a conclusion. "MAWP is 2,850 psi, above the design MAOP of
+  2,220 psi" — the number, the comparator, the disposition.
+- **Say directly when something is not established.** Identify the missing
+  evidence, state what cannot be calculated, mark the affected result approximate,
+  and condition acceptance on obtaining the evidence. A generic disclaimer is not
+  a limitation.
+- **`should` and `is recommended` carry advice. `shall` and `must` denote
+  requirements**, not emphasis.
+- **`-`, `n/a`, `TBD`, `Not Evaluated` and a true zero mean different things.**
+- **Never write `acceptable`, `conservative` or `safe` without the criterion that
+  makes it so.**
+- **Qualify measured values** with "at the time of measurement" or the applicable
+  condition.
+- Tense: report-present passive for method, past for completed events, simple
+  present for findings.
+- Table and figure captions sit below the object. Units in the header. Three
+  decimals for thickness and corrosion allowance.
+
+Excluded constructions: first-person self-reference in findings; "obviously",
+"clearly", "definitely"; "world-class", "best-in-class", "value-add",
+"actionable insights", "holistic", "transformative", "game changer"; "the
+analysis proves" where it only indicates; enthusiasm as a substitute for a
+result.
+
+This governs technical content in email. It does not override the correspondence
+conventions for the wrapper — greeting, shared benefit before an ask, and the
+tonal handling of commercial exposure remain as separately recorded.
+
 ---
 
 # Codex Provider Delta
@@ -201,10 +243,10 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 - **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
 - **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
 - **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
+- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
 - **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
 - **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
-- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **coordination/** — 59 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
 - **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate

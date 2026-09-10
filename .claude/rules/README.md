@@ -3,6 +3,7 @@ Universal constraints only. Stage-specific rules live in micro-skills (`.claude/
 
 Files:
 - `coding-style.md` — edit safety, path handling, harness file size
+- `engineering-register.md` — one writing register across every repo: documents, chat, email, commit messages and agent-to-agent text. Derived by reading our own issued reports rather than prescribed; enforced by Level-2 `scripts/enforcement/check-engineering-register.py`
 - `patterns.md` — enforcement gradient (prose → script → hook)
 - `calc-citation-contract.md` — citation emission for standards-derived constants (per [#2481](https://github.com/vamseeachanta/workspace-hub/issues/2481), [#2685](https://github.com/vamseeachanta/workspace-hub/issues/2685))
 - `codes-standards-data-routing.md` — vendor-licensed codes/standards data → private `vamseeachanta/llm-wiki` (post 2026-05-20 visibility flip)
