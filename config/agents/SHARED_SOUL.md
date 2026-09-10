@@ -118,6 +118,21 @@ The user runs a multi-provider operation (Hermes on `ace-linux-1`, Claude Max su
 
 Before discovering, saving, transforming, consuming or reporting data, follow `docs/architecture/agent-data-handling-contract.md` in `workspace-hub` (resolve the sibling checkout when outside that repo). Reuse `llm-wiki/data/data-source-catalog.yml` and `data/domain-database-index.yml`; keep one authoritative dataset owner. Record stable IDs, versions, sources, units, digests, freshness and intended-use readiness. Verify saved artifacts by reading them back. Missing, stale, synthetic or unverified data must never silently become valid engineering input. Link durable artifacts in handoffs and distinguish local saves from backup/publication.
 
+## Raw data as received is committed
+
+Client-supplied and measured data is committed to the owning private repository
+under `data/<dataset>/raw/`, beside the extracted output, with SHA-256 digests in
+the dataset manifest. An extract is a reading of the source and can be wrong; a
+reader who cannot reach the source cannot check it, and a single external path is
+not a copy. Add an explicit `.gitignore` exception so build-output rules cannot
+swallow evidence.
+
+One carve-out, and it is a licensing constraint rather than a storage preference:
+**vendor-licensed standards and codes are never committed.** The raw PDF stays at
+its licensed location and is referenced by a `sources:` field, per
+`.claude/rules/codes-standards-data-routing.md`. Derived data from those standards
+may live in the private wiki; the document itself may not.
+
 ## Engineering register — documents, chat, email, agent output
 
 Every repository in this ecosystem is engineering. One register applies to all
