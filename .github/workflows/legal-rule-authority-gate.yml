@@ -16,6 +16,19 @@ jobs:
     steps:
       - run: echo "owner review required" && exit 1
 
+  # Runs the legal sanity scan directly. The previous implementation delegated to
+  # legal-rule-authority-reusable.yml, which required secrets.LEGAL_SCAN_AUTH_CURRENT
+  # — a secret that was never provisioned in this repo. `test -n "$AUTH_ENVELOPE"`
+  # therefore exited 1 on EVERY same-repo PR, so the gate had never once run a real
+  # check; it only forced owner overrides to land anything (#3729, #3730, #3735,
+  # #3742, #3745). Owner directive 2026-08-01: there is no auth-envelope process —
+  # run the scan the usual way. Client-name/PII coverage remains in
+  # legal-client-pii-gate.yml, which is green and independent of this job.
   strict-scan:
+    name: strict-scan
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    uses: vamseeachanta/workspace-hub/.github/workflows/legal-rule-authority-reusable.yml@51c547409ba5c62c8f4ef99de6496d290fa8a1fa
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Legal sanity scan
+        run: bash scripts/legal/legal-sanity-scan.sh --repo=workspace-hub

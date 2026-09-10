@@ -45,7 +45,7 @@ scripts_exempt: true
 ### Basic Linked Statistics
 
 ```python
-from digitalmodel.orcaflex.opp_linkedstatistics import OPPLinkedStatistics
+from digitalmodel.solvers.orcaflex.opp_linkedstatistics import OPPLinkedStatistics
 
 # Initialize extractor
 extractor = OPPLinkedStatistics()
@@ -73,7 +73,7 @@ def extract_extremes_with_linked(sim_file: str, config: dict) -> dict:
 ### Batch Extreme Analysis
 
 ```python
-from digitalmodel.orcaflex.opp_linkedstatistics import OPPLinkedStatistics
+from digitalmodel.solvers.orcaflex.opp_linkedstatistics import OPPLinkedStatistics
 from pathlib import Path
 import pandas as pd
 
@@ -87,7 +87,7 @@ def batch_extreme_analysis(sim_directory: str, config: dict) -> pd.DataFrame:
 ### Range Graph Extremes
 
 ```python
-from digitalmodel.orcaflex.opp_range_graph import OPPRangeGraph
+from digitalmodel.solvers.orcaflex.opp_range_graph import OPPRangeGraph
 
 # Extract range graph (min/max/mean along arc length)
 range_extractor = OPPRangeGraph()
@@ -110,8 +110,8 @@ config = {
 
 - OrcaFlex Results: Linked Statistics
 - OrcFxAPI Documentation
-- Source: `src/digitalmodel/modules/orcaflex/opp_linkedstatistics.py`
-- Source: `src/digitalmodel/modules/orcaflex/opp_range_graph.py`
+- Source: `src/digitalmodel/solvers/orcaflex/opp_linkedstatistics.py`
+- Source: `src/digitalmodel/solvers/orcaflex/opp_range_graph.py`
 
 ## Sub-Skills
 

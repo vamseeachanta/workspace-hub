@@ -43,8 +43,8 @@ These gates apply to **all meaningful work** on this repo. Provider runtimes inh
 3. **Gate order**: Issue → Plan → USER APPROVES → Implement → Cross-review → Close.
 4. **Adversarial review at BOTH stages**: plan AND code/artifact. Scale: T1 = 1 provider (simple, single-file), T2 = 2 providers (medium, multi-file or harness), T3 = 3 providers (large, cross-provider or systemic). Never skip; dial depth to scope.
 5. **Cross-review default 3-agent**: Claude + Codex + Agy (Antigravity, Gemini-backed; #3573) per AGENTS.md AI Review Policy (Claude orchestrates).
-6. **Legal/security scan**: code must pass `scripts/legal/legal-sanity-scan.sh`; no client identifiers in code (see `.claude/rules/legal-compliance.md` and `.legal-deny-list.yaml`); secrets via environment variables only; never hardcode API keys/tokens.
-7. **Security baseline**: input validation, parameterized queries, no hardcoded secrets (see `.claude/rules/security.md`).
+6. **Legal/security scan**: code must pass `scripts/legal/legal-sanity-scan.sh`; no client identifiers in code (see [`.claude/docs/legal-scanning.md`](../../.claude/docs/legal-scanning.md) and `.legal-deny-list.yaml`); secrets via environment variables only; never hardcode API keys/tokens.
+7. **Security baseline**: input validation, parameterized queries, no hardcoded secrets.
 
 # Must-Fire Rules (per-message reinforcement)
 
@@ -181,7 +181,7 @@ Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:
 1. **Every implementation task maps to a WRK-* in `.claude/work-queue/`** OR a GitHub issue per the broader workspace `feedback_no_reserved_wrk_ids` rule. Codex's `submit-to-codex.sh` Stage-5 gate validates WRK evidence when `--wrk-id` is supplied.
 2. **Workflow lifecycle skills are mandatory**: `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` + `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md` for WRK-mode work.
 3. **Coding style guardrails**: max 400 lines/file, max 50 lines/function, snake_case Python, camelCase JS — see `.claude/rules/coding-style.md`.
-4. **Git workflow**: conventional commits, branch prefixes (`feature/`, `bugfix/`, `chore/`) — see `.claude/rules/git-workflow.md`.
+4. **Git workflow**: conventional commits, branch prefixes (`feature/`, `bugfix/`, `chore/`). Merges are governed by [`.claude/rules/merge-authorization.md`](../../../.claude/rules/merge-authorization.md) and [`merge-cleanup.md`](../../../.claude/rules/merge-cleanup.md).
 
 ## Bootstrap Hazard — `~/.codex/AGENTS.md` Untracked Generator
 

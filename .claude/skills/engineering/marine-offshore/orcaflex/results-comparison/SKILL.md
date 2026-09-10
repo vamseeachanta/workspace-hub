@@ -45,7 +45,7 @@ scripts_exempt: true
 ### Basic Comparison
 
 ```python
-from digitalmodel.orcaflex.analysis.comparative import MooringComparativeAnalysis
+from digitalmodel.solvers.orcaflex.analysis.comparative import MooringComparativeAnalysis
 from pathlib import Path
 
 # Initialize analyzer
@@ -59,7 +59,7 @@ analyzer = MooringComparativeAnalysis(
 ### Stiffness Comparison
 
 ```python
-from digitalmodel.orcaflex.analysis.comparative import MooringComparativeAnalysis
+from digitalmodel.solvers.orcaflex.analysis.comparative import MooringComparativeAnalysis
 
 analyzer = MooringComparativeAnalysis(results_directory=Path("results/"))
 
@@ -73,7 +73,7 @@ stiffness_comparison = analyzer.compare_stiffness(
 ### Line Force Distribution
 
 ```python
-from digitalmodel.orcaflex.analysis.comparative import MooringComparativeAnalysis
+from digitalmodel.solvers.orcaflex.analysis.comparative import MooringComparativeAnalysis
 
 analyzer = MooringComparativeAnalysis(results_directory=Path("results/"))
 
@@ -124,7 +124,7 @@ def sensitivity_analysis(
 
 - API RP 2SK: Design and Analysis of Stationkeeping Systems
 - DNV-OS-E301: Position Mooring
-- Source: `src/digitalmodel/modules/orcaflex/analysis/comparative.py`
+- Source: `src/digitalmodel/solvers/orcaflex/analysis/comparative.py`
 
 ## Sub-Skills
 

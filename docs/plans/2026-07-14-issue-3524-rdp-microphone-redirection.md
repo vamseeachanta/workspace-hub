@@ -1,4 +1,4 @@
-# Plan for #3524: Restore RDP Microphone Redirection from WS014 to RDS02
+# Plan for #3524: Restore RDP Microphone Redirection from ace-win-2 to ace-win-1
 
 > **Status:** plan-approved
 > **Complexity:** T2
@@ -19,7 +19,7 @@
 
 ### Existing repo code
 
-- Found: `docs/session-handoffs/2026-07-14-rdp-microphone-ws014-rds02-exit.md`
+- Found: `docs/session-handoffs/2026-07-14-rdp-microphone-ace-win-2-ace-win-1-exit.md`
   records the current two-machine evidence, local artifact hashes, rollback boundary,
   and the exact next client-side checkpoint.
 - Found: `scripts/windows/README.md` contains the repository's existing Windows-native
@@ -30,7 +30,7 @@
   behavior while owner-machine verification exercises native CIM and Windows APIs.
 - Found: `tests/readiness/test_windows_scheduler_single_source.py` demonstrates a
   Windows-only execution test guarded by a platform/PowerShell availability check.
-- Found locally on RDS02 but not tracked: `D:\ws\Repair-RdpMicrophone.ps1`, SHA-256
+- Found locally on ace-win-1 but not tracked: `D:\ws\Repair-RdpMicrophone.ps1`, SHA-256
   `D48F23EBD968F68331F75CD2603C36794CE2C3A5310BE84212C5EC34EA5CE561`.
   It provides guarded Client and Server audits, optional repair, RDP-file backup,
   consent reset, JSON output, and event-channel classification. Its parser validation,
@@ -62,8 +62,8 @@
 - GitHub issue #3524 — authoritative scope and acceptance criteria; live state is
   OPEN with `status:needs-plan`, `machine:multi`, and exactly one lane label,
   `lane:codex`.
-- `docs/session-handoffs/2026-07-14-rdp-microphone-ws014-rds02-exit.md` — proves
-  RDS02 services/policy/privacy are healthy while the active session has playback
+- `docs/session-handoffs/2026-07-14-rdp-microphone-ace-win-2-ace-win-1-exit.md` — proves
+  ace-win-1 services/policy/privacy are healthy while the active session has playback
   channels only and no capture endpoint.
 - GitHub issue #3403 and
   `docs/plans/2026-07-09-issue-3403-voice-dictation-vnc-contract.md` — establish
@@ -71,8 +71,8 @@
   hardware validation must be distinct from fixture/contract tests. #3403 is a
   Linux-local dictation issue and does not solve Windows RDP audio transport.
 - GitHub issue #2998 — documents the Windows/no-SSH operational constraint; live
-  WS014 work must use an operator/local PowerShell path rather than assuming remote
-  automation from RDS02.
+  ace-win-2 work must use an operator/local PowerShell path rather than assuming remote
+  automation from ace-win-1.
 - GitHub issue #2816 and `tests/readiness/test_collect_equality_ps1_schema.py` —
   establish the existing owner-machine-verification pattern for PowerShell/CIM code.
 - `scripts/windows/README.md` — identifies the Windows-native script location and
@@ -90,7 +90,7 @@
   Windows App), so the correct per-application privacy and configuration surface
   is still unknown.
 - For classic `mstsc.exe`, the exact effective `.rdp` profile/command line used for
-  the failing connection has not been captured on WS014. A correct unused profile is
+  the failing connection has not been captured on ace-win-2. A correct unused profile is
   not sufficient proof. MSRDC/Windows App must follow a separate configuration branch
   and must not be forced to supply an unrelated `.rdp` file.
 - Client-side TerminalServices-RDPClient events have not been captured during a
@@ -105,14 +105,14 @@
   a review reproduction created unignored worktree residue. The repo-owned tool must
   use stdout-only output by default and write a file only when `-ReportPath` is explicit.
 - Hardware success still requires an operator-controlled sign-out/reconnect and a
-  real recording test. CI cannot negotiate a physical WS014 microphone into RDS02.
+  real recording test. CI cannot negotiate a physical ace-win-2 microphone into ace-win-1.
 
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-07-14T10:40:00Z via `gh issue view`):
 
 ```text
-3524 OPEN [WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02
+3524 OPEN [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1
      labels: bug, priority:medium, cat:operations, domain:workstations, machine:multi, status:needs-plan, lane:codex
 3403 OPEN Repair Linux voice dictation rollout and VNC consistency contract
      labels include: status:plan-approved, lane:codex
@@ -125,7 +125,7 @@
 **File existence** (verified 2026-07-14T10:40:00Z):
 
 ```text
-EXISTS  docs/session-handoffs/2026-07-14-rdp-microphone-ws014-rds02-exit.md
+EXISTS  docs/session-handoffs/2026-07-14-rdp-microphone-ace-win-2-ace-win-1-exit.md
 EXISTS  scripts/windows/README.md
 EXISTS  tests/readiness/test_collect_equality_ps1_schema.py
 EXISTS  tests/readiness/test_windows_scheduler_single_source.py
@@ -146,8 +146,8 @@ tests/readiness/test_collect_equality_ps1_schema.py:16:
   The .ps1's own PowerShell logic ... is owner-machine-verified per the plan's owner runbook
 tests/readiness/test_windows_scheduler_single_source.py:56:
   pytest.skip("PowerShell is required to execute the Windows renderer")
-docs/session-handoffs/2026-07-14-rdp-microphone-ws014-rds02-exit.md:12-13:
-  WS014 negotiates playback channels only. No remote capture endpoint or audio-input virtual channel exists
+docs/session-handoffs/2026-07-14-rdp-microphone-ace-win-2-ace-win-1-exit.md:12-13:
+  ace-win-2 negotiates playback channels only. No remote capture endpoint or audio-input virtual channel exists
 ```
 
 **Reproduction proof** (refreshed inside the active RDS session):
@@ -161,9 +161,9 @@ WRAPPER_REPRODUCED_AT_UTC=2026-07-14T10:59:52.5984437Z
 RDP Microphone Redirection Audit and Repair
 Mode: AUDIT (read-only) | Role: Server
 
-=== SERVER: ACMA-HOU-RDS02 ===
-[INFO   ] Session: ACMA-HOU-RDS02; client ACMA-WS014; session RDP-Tcp#0.
-[PASS   ] RDP user session: RDP-Tcp#0 from ACMA-WS014.
+=== SERVER: ace-win-1 ===
+[INFO   ] Session: ace-win-1; client ace-win-2; session RDP-Tcp#0.
+[PASS   ] RDP user session: RDP-Tcp#0 from ace-win-2.
 [PASS   ] AudioEndpointBuilder: Running; startup type Automatic.
 [PASS   ] Audiosrv: Running; startup type Automatic.
 [PASS   ] User microphone access: Value is 'Allow'; not denied.
@@ -182,18 +182,18 @@ Mode: AUDIT (read-only) | Role: Server
 [PASS   ] Online speech: Accepted.
 
 VERDICT: Microphone redirection is absent; the client did not negotiate audio input.
-Run Client repair on WS014, sign out of RDS02, reconnect, and rerun Server audit.
+Run Client repair on ace-win-2, sign out of ace-win-1, reconnect, and rerun Server audit.
 
-Report: C:\Users\vamseea\AppData\Local\Temp\2\RdpMicAudit-Server-ACMA-HOU-RDS02-20260714-055953.json
+Report: C:\Users\vamseea\AppData\Local\Temp\2\RdpMicAudit-Server-ace-win-1-20260714-055953.json
 WRAPPER_SCRIPT_EXIT_CODE=2
 ```
 
 - Reproduced at: 2026-07-14T10:59:52Z
 - Failure mode observed matches issue claim: **YES** — policy and services pass,
   but the session has neither a capture endpoint nor an input virtual channel.
-- A read-only remote-management probe from RDS02 to the active client address timed
+- A read-only remote-management probe from ace-win-1 to the active client address timed
   out, consistent with #2998's no-SSH/no-remote-management constraint. Client evidence
-  must be gathered locally on WS014.
+  must be gathered locally on ace-win-2.
 - Distinct source count: 10 (issue #3524, handoff, local script/audit, Microsoft RDP
   docs, Windows README, two PowerShell test patterns, issues #3403/#2998/#2816, and
   the drive-index query).
@@ -232,7 +232,7 @@ machine/user identifiers and volatile event data.
 A repo-owned, tested Windows RDP microphone diagnostic/remediation tool and runbook
 that identify the exact client-side layer suppressing audio input, apply only an
 explicitly selected reversible profile/consent repair, and prove success through an
-actual WS014 to RDS02 capture endpoint, recording smoke test, and remote voice-typing
+actual ace-win-2 to ace-win-1 capture endpoint, recording smoke test, and remote voice-typing
 check. Privacy and machine-policy changes remain audit-and-guidance only.
 
 ---
@@ -274,7 +274,7 @@ function invoke_rdp_microphone(role, mode=Audit, target, rdp_file, report_path,
         require a target-session correlation key from LocalSessionManager/current session
         if the provider XML lacks or cannot match that key, classify event evidence inconclusive
         classify successful channel-connect events using schemas grounded in captured,
-        sanitized RDS02 event XML; never infer success from EventId or token alone
+        sanitized ace-win-1 event XML; never infer success from EventId or token alone
         treat event evidence as supporting; require current-user endpoint plus recording for final success
     emit either machine JSON or a human summary, never both in the same output mode
     exit 0 only when role-specific health criteria pass; exit 2 for diagnosed failure
@@ -326,10 +326,10 @@ function classify_audio_events(events, reconnect_marker):
     return no-evidence
 
 function live_two_machine_validation():
-    run Client audit locally on WS014 against exact launched client/configuration surface
+    run Client audit locally on ace-win-2 against exact launched client/configuration surface
     select repair from evidence; do not apply every possible repair
     record server max event RecordId and UTC reconnect marker before disconnect
-    save work and explicitly sign out of RDS02
+    save work and explicitly sign out of ace-win-1
     close all client instances, reconnect, and accept resource prompt
     run Server audit in the newly created session
     require active Remote Audio capture endpoint plus current-user recording;
@@ -345,16 +345,16 @@ function live_two_machine_validation():
 
 ### Phase 0 — reproduce and freeze pre-change evidence (read-only)
 
-Use the already executed Server audit plus native manual WS014 commands to freeze the
+Use the already executed Server audit plus native manual ace-win-2 commands to freeze the
 pre-change state; do not rely on the untested local script's Client result as authoritative.
 Record the executable, command line, local capture endpoint, privacy entries, machine
 policy, and client operational events. For mstsc, also record the profile/configuration
 source; for MSRDC/Windows App, record that client's package/admin surface. Do not repair.
-Also verify the delivery prerequisite on WS014: `git --version`, presence of a
+Also verify the delivery prerequisite on ace-win-2: `git --version`, presence of a
 `workspace-hub` clone, and `git ls-remote https://github.com/vamseeachanta/workspace-hub`
 or authenticated `gh auth status`. Record a browser-only HTTPS fallback if git/gh is
 unavailable. Export the actually available RdpCoreTS playback-connect/close/failure XML
-on RDS02, de-identify user/host/activity values, and use those captures as fixture
+on ace-win-1, de-identify user/host/activity values, and use those captures as fixture
 provenance. Do not require a successful-input fixture before repair: until a real,
 correlated successful-input event is captured, positive event classification is
 `inconclusive` and the endpoint plus recording remain the decisive proof.
@@ -372,7 +372,7 @@ Write fixture/contract tests first and observe failure. Refactor the host-local 
 into a thin entry point plus pure helper module. Preserve audit as the default and keep
 all mutations behind `-Repair`; consent reset/restore remain separately gated. Push the
 reviewed implementation to a temporary issue branch (permitted because this is a
-multi-machine workflow), record its commit SHA, and have the WS014 operator fetch that
+multi-machine workflow), record its commit SHA, and have the ace-win-2 operator fetch that
 exact commit. If git/gh is unavailable but HTTPS browser access works, download the
 entry point and module from GitHub's commit-pinned file view and verify published
 SHA-256 hashes with `Get-FileHash` before execution. If neither path exists, stop and
@@ -381,7 +381,7 @@ clipboard content as the transfer path.
 
 ### Phase 2 — client evidence gate with the tested tool
 
-Run the exact branch/commit locally on WS014. Emit JSON to stdout or use an explicit
+Run the exact branch/commit locally on ace-win-2. Emit JSON to stdout or use an explicit
 host-local `-ReportPath` outside any repository. Prove client type and the applicable
 configuration source. If the client/configuration source remains unresolved, stop with
 an admin/operator decision rather than associating an arbitrary `.rdp` file.
@@ -498,8 +498,8 @@ write actual Terminal Server policy or actual RDP consent values.
   inconclusive; the current-user endpoint plus real recording remain sufficient decisive
   transport proof and no event-success claim is made.
 - [ ] `mmsys.cpl -> Recording` shows an active Remote Audio capture endpoint in the
-  new RDS02 session.
-- [ ] A remote application records 3-5 seconds from the WS014 microphone and the
+  new ace-win-1 session.
+- [ ] A remote application records 3-5 seconds from the ace-win-2 microphone and the
   recording/level meter proves usable input.
 - [ ] With `keyboardhook:i:2` **and** a full-screen classic RDP session (or another
   separately documented client setting that sends Windows combinations remotely),
@@ -528,7 +528,7 @@ write actual Terminal Server policy or actual RDP consent values.
 |---|---|---|
 | Claude r1 | MINOR | Correct citations; prevent audit JSON worktree residue; make Phase 0 executable; avoid duplicate-key assumptions/fixed three-property repair; use existing pytest discovery. |
 | Codex r1 | MAJOR | Resolve audit/report contradiction, branch by client type, correlate events, constrain/test mutations and rollback, correct keyboardhook semantics, reject token-only input evidence. |
-| Claude r2 | MINOR | Persist review evidence; reconcile Gemini/map rows; use verbatim reproduction; verify WS014 transfer; fix parser wording; ground event fixtures empirically. |
+| Claude r2 | MINOR | Persist review evidence; reconcile Gemini/map rows; use verbatim reproduction; verify ace-win-2 transfer; fix parser wording; ground event fixtures empirically. |
 | Codex r2 | UNAVAILABLE | Windows argument-list limit prevented the repository fan-out wrapper from passing the revised plan. |
 | Codex r3 | MAJOR | Separate JSON/human output, remove circular positive fixture, publish reviews before the gate, fail closed without correlation, and strengthen replacement rollback tests. |
 | Codex r4 | MINOR | Align restore truthfulness, mark the conditional fixture post-repair, make event support conditional, and index final review artifacts. No blockers. |
@@ -552,10 +552,10 @@ Revisions made based on review:
   Gemini rows are removed and disagreement artifacts are indexed.
 - Reproduction evidence is now complete wrapper output, including the legacy script's
   default report write that motivates stdout-only behavior.
-- WS014 delivery now has a tested git/auth prerequisite, commit-pinned HTTPS fallback,
+- ace-win-2 delivery now has a tested git/auth prerequisite, commit-pinned HTTPS fallback,
   SHA-256 verification, and a fail-closed prerequisite state.
 - PowerShell parser validation and Python pytest validation are separated correctly.
-- Event parsing fixtures must originate from sanitized real RDS02 XML; EventId/token
+- Event parsing fixtures must originate from sanitized real ace-win-1 XML; EventId/token
   presence alone cannot define success.
 - Default machine output is exactly one JSON document; Human output is explicit and
   mutually exclusive, with native whole-stdout parsing required by tests.
@@ -589,7 +589,7 @@ Revisions made based on review:
 - **Risk — test boundary:** Linux CI cannot exercise Windows Core Audio or RDP virtual
   channels. Contract tests plus native owner-machine tests and a live recording smoke are
   all required; none substitutes for the others.
-- **Open question:** which RDP client executable and profile are actually used on WS014?
+- **Open question:** which RDP client executable and profile are actually used on ace-win-2?
   Phase 0 resolves this without a mutation.
 - **Risk — event correlation:** RdpCoreTS is shared on a multi-user host. RecordId/time/
   ActivityId filtering reduces false attribution, but current-user endpoint plus a real

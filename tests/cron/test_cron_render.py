@@ -184,7 +184,7 @@ def test_build_context_exposes_registry_os_for_scheduler_routing():
     registry = {"machines": {
         "gpu-claw": {"hostname": "gpu-claw", "os": "linux",
                      "schedule_variant": "contribute-minimal"},
-        "ace-win-1": {"hostname": "acma-ansys05", "os": "windows",
+        "ace-win-1": {"hostname": "ace-win-1", "os": "windows",
                       "schedule_variant": "contribute-minimal"},
         "legacy-box": {"hostname": "legacy-box",
                        "schedule_variant": "contribute"},

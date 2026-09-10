@@ -254,7 +254,9 @@ def test_wrapper_runs_from_main_only():
     text = WRAPPER_PS1.read_text()
     assert 'EqualityReport must run from main' in text
     assert "Unknown Windows equality host" in text
-    assert "acma-ws014" in text
+    # The host switch must still resolve both Windows boxes to their canonical labels.
+    assert 'return "ace-win-1"' in text
+    assert 'return "ace-win-2"' in text
 
 
 def test_wrapper_commit_and_matrix_dirty_guards_are_path_scoped():

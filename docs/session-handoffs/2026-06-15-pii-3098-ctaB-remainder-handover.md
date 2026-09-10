@@ -33,7 +33,7 @@ Only change **how the repo list is acquired** — leave the commit/push/route lo
 
 ## Gotchas (all learned the hard way this epic)
 1. **Hyphen vs underscore:** codenames use hyphens (`lng-a`, `client-a`, `mkt-a`, `proj-a`). Hyphens are fine in strings/keys/paths but **break Python/shell identifiers** → use the underscore map for identifier positions only.
-2. **Machine-hostname collision:** the overloaded short marketing token also appears in dev-fleet **machine hostnames** (`…-ansys05`, `…-ws014`). The refined map excludes those (`(?!-ansys|-ws)`); do NOT redact hostnames (functional, tied to real hardware). A prior over-redaction corrupted 85 files — fixed in #3149.
+2. **Machine-hostname collision:** the overloaded short marketing token also appears in dev-fleet **machine hostnames** (`…-ace-win-1`, `…-ace-win-2`). The refined map excludes those (`(?!-ansys|-ws)`); do NOT redact hostnames (functional, tied to real hardware). A prior over-redaction corrupted 85 files — fixed in #3149.
 3. **Can't run commit/push scripts** to verify — that's why the pattern changes only list-acquisition.
 4. **#3099 guard is live + strict** (CI `legal-client-pii-gate` + pre-commit). Run it on changed files before pushing:
    `uv run python scripts/legal/check-client-pii.py --map config/agents/.client-codename-map.local.yaml <files>` (it withholds matched values; reads the `LEGAL_CLIENT_MAP` secret in CI).

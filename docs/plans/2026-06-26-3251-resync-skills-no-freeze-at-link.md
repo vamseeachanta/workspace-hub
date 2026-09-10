@@ -253,8 +253,8 @@ machine_label() {                       # honors EQ_MACHINE / arg override, iden
     case "$host" in
       ace-linux-1*) echo dev-primary;;  ace-linux-2*) echo dev-secondary;;
       *macbook*)    echo macbook-portable;;
-      ace-win-1*|licensed-win-1*|acma-ansys05*) echo ace-win-1;;
-      ace-win-2*|licensed-win-2*|acma-ws014*)   echo ace-win-2;;
+      ace-win-1*|licensed-win-1*) echo ace-win-1;;
+      ace-win-2*|licensed-win-2*) echo ace-win-2;;
       *) echo "${host:-unknown}";;
     esac
 }

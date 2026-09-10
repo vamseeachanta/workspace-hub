@@ -23,6 +23,24 @@ tags: []
 scripts_exempt: true
 ---
 
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.bemrosetta`
+>   - `digitalmodel.bemrosetta.OrcaFlexConverter`
+>   - `digitalmodel.bemrosetta.QTFParser`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable. Tracked in
+> aceengineer-strategy#267.
+
+<!-- ace:known-missing: digitalmodel.bemrosetta, digitalmodel.bemrosetta.OrcaFlexConverter, digitalmodel.bemrosetta.QTFParser -->
+
 # Bemrosetta
 
 ## When to Use

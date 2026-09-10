@@ -93,6 +93,6 @@ All templates score 100/100 quality and pass schema validation.
 
 - Audit script: `scripts/audit_spec_library.py`
 - Tests: `tests/scripts/test_audit_spec_library.py`
-- Template catalog: `docs/modules/orcaflex/library/templates/catalog.yaml`
-- Audit results: `docs/modules/orcaflex/library/templates/audit_results.yaml`
+- Template catalog: `docs/domains/orcaflex/library/templates/catalog.yaml`
+- Audit results: `docs/domains/orcaflex/library/templates/audit_results.yaml`
 - Schema: `src/digitalmodel/solvers/orcaflex/modular_generator/schema/root.py`

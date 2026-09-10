@@ -18,7 +18,7 @@ powershell -ExecutionPolicy Bypass -File scripts\windows\setup-scheduler-tasks.p
 Get-ScheduledTask -TaskPath "\Claude\" | Format-Table TaskName,State                          # verify
 ```
 
-Idempotent; auto-detects host (`ace-win-1`/`acma-ansys05*`, `ace-win-2`/`acma-ws014*`);
+Idempotent; auto-detects host (canonical role ids `ace-win-1`, `ace-win-2`);
 `WorkspaceRoot` auto-resolves; Git Bash at `C:\Program Files\Git\bin\bash.exe`. `-Remove` to undo.
 Prereqs: repo at `D:\workspace-hub`, `gh` authed, Tailscale up. Confirm the boxes are online first
 (they were unreachable from ace-linux-2 — no Tailscale Windows peers).

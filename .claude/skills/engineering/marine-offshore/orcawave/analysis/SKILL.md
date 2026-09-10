@@ -25,6 +25,33 @@ tags: []
 scripts_exempt: true
 ---
 
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.orcawave.batch`
+>   - `digitalmodel.orcawave.batch.OrcaWaveBatch`
+>   - `digitalmodel.orcawave.mesh_study`
+>   - `digitalmodel.orcawave.mesh_study.MeshConvergenceStudy`
+>   - `digitalmodel.orcawave.orcaflex_export`
+>   - `digitalmodel.orcawave.orcaflex_export.OrcaFlexExporter`
+>   - `digitalmodel.orcawave.orcawave_analysis`
+>   - `digitalmodel.orcawave.orcawave_analysis.OrcaWaveAnalysis`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable.
+>
+> **The intended API is now specified in `digitalmodel`**, at
+> `docs/domains/orcawave/intended-api/analysis.md`, where it is a build
+> target rather than something an agent may mistake for working code.
+> Tracked in aceengineer-strategy#267, digitalmodel#2045.
+
+<!-- ace:known-missing: digitalmodel.orcawave.batch, digitalmodel.orcawave.batch.OrcaWaveBatch, digitalmodel.orcawave.mesh_study, digitalmodel.orcawave.mesh_study.MeshConvergenceStudy, digitalmodel.orcawave.orcaflex_export, digitalmodel.orcawave.orcaflex_export.OrcaFlexExporter, digitalmodel.orcawave.orcawave_analysis, digitalmodel.orcawave.orcawave_analysis.OrcaWaveAnalysis -->
+
 # Orcawave Analysis
 
 ## When to Use

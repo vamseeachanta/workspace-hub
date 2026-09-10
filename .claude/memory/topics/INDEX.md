@@ -5,7 +5,7 @@
 
 Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/memory/recall.py`.
 
-## Feedback — execution lessons & hazards (227)
+## Feedback — execution lessons & hazards (229)
 
 - [data-format-guidelines](data_format_guidelines.md) — When to use YAML vs JSON vs Markdown for AI agent-readable/writable files — token cost, corruption patterns, and format decision rules
 - [feedback_3provider_review_wrappers_env_workarounds](feedback_3provider_review_wrappers_env_workarounds.md) — How to run the 3-provider adversarial review wrappers (Codex/Gemini) from inside a Claude Code session on ace-linux-1
@@ -28,6 +28,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [Auto-sync as silent pusher (resolves contention, doesn't only cause it)](feedback_autosync_silent_pusher.md) — Workspace-hub's auto-sync also pushes local-ahead commits when its window opens — a `[rejected]` push from your shell may already have been resolved by auto-sync seconds later
 - [feedback_avoid_ace_branding](feedback_avoid_ace_branding.md) — "Don't brand as \"A&CE\"; use \"AceEngineer\" or just describe the work"
 - [feedback_bare_dir_gitignore_swallows_libs](feedback_bare_dir_gitignore_swallows_libs.md) — "Bare directory patterns in workspace-hub .gitignore (lib/, reports/) silently untrack paths tree-wide; verify git tracking before committing a script fix"
+- [feedback_branch_landed_ask_the_forge_not_an_llm](feedback_branch_landed_ask_the_forge_not_an_llm.md) — "To decide whether a branch's work already landed, query the merged-PR record with gh --head; never delegate it to an LLM diff read"
 - [feedback-browser-capture-to-disk-webgl](feedback_browser_capture_to_disk_webgl.md) — How to get web imagery into a file for video/PDF pipelines — bridge save_to_disk writes no host file; headless chrome --screenshot works but has no WebGL (no Google Earth/Street View)
 - [feedback_bulk_comment_cumulative_volume_threshold](feedback_bulk_comment_cumulative_volume_threshold.md) — "GitHub addComment secondary rate-limit is cumulative-volume-aware, not just rate-aware — ~500 posts on a single token in ~25min trips it even at 30/min pacing"
 - [Bundle orphan SHAs from inside the worktree, not the parent repo](feedback_bundle_orphan_sha_from_worktree.md) — `git bundle create` from the parent repo fails for unreachable orphan SHAs; bundle from inside the worktree where HEAD points at the SHA, then optionally tag+push for cross-machine durability
@@ -128,6 +129,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 - [Local venv pytest import hang](feedback_local_venv_pytest_import_hang.md) — uv-run local verification (pytest AND linters black/isort) can hang indefinitely on repo venvs (digitalmodel, worldenergydata) even when Python runs fine. Fallbacks — CI, or version-pin-matched STANDALONE tools.
 - [feedback_machine_identity_is_logical_alias_565](feedback_machine_identity_is_logical_alias_565.md) — "All fleet machine-identity work routes by logical alias (deckhand#565); physical names are private-tier only — and the rule applies to plan/handoff artifacts too"
 - [feedback-memory-aspire-to-hermes-level](feedback_memory_aspire_to_hermes_level.md) — "User feedback 2026-05-17 — All AI provider work should flow through Hermes agent's memory strategy. Hermes-memory is the canonical backend; per-provider memory stores (Claude Code auto-memory, Codex state, Gemini session memory) should consolidate to Hermes rather than evolve in parallel. Originally framed as 'Claude Code memory should match Hermes' then refined same-session to the broader cross-provider architectural ask."
+- [feedback-merge-is-not-done-until-branch-and-worktree-gone](feedback_merge_is_not_done_until_branch_and_worktree_gone.md) — "Every merge to main must be paired with deleting the remote branch, the local branch, and the worktree — and `git branch --merged` under-reports because squash rewrites SHAs"
 - [Merge-race silent revert](feedback_merge_race_silent_revert.md) — Under aggressive auto-sync, `git merge --no-ff` followed by `git commit --no-edit` after a HEAD-lock failure can produce a merge commit that records the correct parents but silently drops the second-parent's tree; always verify merged content matches the branch tip
 - [mnt-ace-corpus-claims-unreliable](feedback_mnt_ace_corpus_claims_unreliable.md) — /mnt/ace corpus size/scope figures in issues & estimates are systematically wrong — always source-verify (catalog/pdfinfo/ls) before planning ingest
 - [Mock tests can pass while live invocation fails](feedback_mock_vs_live_invocation_divergence.md) — For fixes that depend on external CLI behavior, mocks often accept what reality rejects; always run live repro before declaring done

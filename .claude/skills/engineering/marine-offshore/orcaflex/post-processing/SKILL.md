@@ -47,7 +47,7 @@ version: 1.0.0
 ### Basic Post-Processing
 
 ```python
-from digitalmodel.orcaflex.opp import OrcaFlexPostProcess
+from digitalmodel.solvers.orcaflex.opp import OrcaFlexPostProcess
 
 # Initialize post-processor
 opp = OrcaFlexPostProcess()
@@ -61,7 +61,7 @@ cfg = {
 ### Batch Processing with Parallel Execution
 
 ```python
-from digitalmodel.orcaflex.opp import OrcaFlexPostProcess
+from digitalmodel.solvers.orcaflex.opp import OrcaFlexPostProcess
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
@@ -75,7 +75,7 @@ sim_files = list(Path("results/.sim/").glob("*.sim"))
 ### Extract Specific Results
 
 ```python
-from digitalmodel.orcaflex.orcaflex_utilities import OrcaflexUtilities
+from digitalmodel.solvers.orcaflex.orcaflex_utilities import OrcaflexUtilities
 
 utils = OrcaflexUtilities()
 

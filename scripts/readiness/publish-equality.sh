@@ -63,6 +63,8 @@ HOST="$(hostname 2>/dev/null | tr '[:upper:]' '[:lower:]')"
 # back to HOST only for boxes with no mapping (whose hostnames are public-safe).
 # shellcheck source=scripts/readiness/lib/machine-identity.sh
 . "$SCRIPT_DIR/lib/machine-identity.sh"
+# shellcheck source=scripts/readiness/lib/eq-seam.sh
+. "$SCRIPT_DIR/lib/eq-seam.sh"
 PUBLIC_LABEL="${EQ_MACHINE:-}"
 if [[ -z "$PUBLIC_LABEL" ]]; then
   case "$HOST" in
@@ -86,6 +88,27 @@ fail() {
   echo "publish-equality FAIL: $1" >&2
   exit 1
 }
+
+# #3702 seam. Resolve local evidence through eq_state_dir() — the SAME resolution
+# order every other entry point uses (explicit flag > $EQ_STATE_DIR > XDG state dir),
+# so a machine cannot publish from one location while collecting into another.
+#
+# Before this, $EQ_LOCAL_DIR was referenced at the evidence loop below but never
+# assigned anywhere, so under `set -u` the script aborted with "unbound variable" on
+# any host that did not happen to export it — while hosts whose cron environment did
+# export it published normally. That split is why the failure stayed invisible: the
+# scheduled path worked, and only an interactive run ever hit it.
+EQ_LOCAL_DIR="$(eq_state_dir "")"
+
+# Fail loud on an empty seam. A seam directory with no evidence means this machine
+# collected nothing, and publishing anyway would push a rebuild that silently drops
+# this host from the matrix — the dark-box case: the render looks complete precisely
+# because a missing row is indistinguishable from a machine that has nothing to say.
+shopt -s nullglob
+_eq_local_evidence=( "$EQ_LOCAL_DIR"/equality-*.yaml )
+shopt -u nullglob
+(( ${#_eq_local_evidence[@]} > 0 )) \
+  || fail "no local equality evidence in ${EQ_LOCAL_DIR} — refusing to publish a silent no-op (run collect-equality.sh first; see #3702)"
 
 WT=""
 WT_REGISTERED=0

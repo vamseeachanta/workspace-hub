@@ -80,6 +80,47 @@ surfaces:
         transaction: *missing_transaction
         attestations: [crontab-root-target-v1]
 
+  # workspace-hub#3784. Installs the systemd user timer that saves tmux
+  # sessions without an attached client. Split out of scripts/setup/deploy-tmux.sh
+  # deliberately, so the general onboarding path does not become governed.
+  #
+  # Transaction flags follow the systemd-user baseline used by every other
+  # entry of this kind (`*missing_transaction`), NOT `*reference_transaction`.
+  # That is an accurate declaration rather than an aspirational one: the
+  # reference shape is verified by the python-*-v1 attestations, which inspect
+  # a Python crontab implementation and do not apply to a bash script writing
+  # systemd units. Claiming the stronger flags without an attestation that
+  # checks them would make the registry read as capability it does not have.
+  # The script itself does implement backup, post-write exact-state verify and
+  # rollback; tests/tmux/test_setup_tmux_autosave_timer.py is what verifies
+  # those, pending a systemd-user transaction attestation type.
+  - path: scripts/install/setup-tmux-autosave-timer.sh
+    kind: direct-owner
+    disposition_group: tmux-session-persistence
+    operations:
+      - id: install:systemd-unit-write
+        primitive: systemd-user-unit-write
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-tmux-autosave
+        execution_host_binding: physical-local
+        selection_condition: systemd-available
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: config/tmux/tmux-autosave.timer, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-unit-name-v1]
+      - id: install:systemd-enable
+        primitive: systemd-user-enable-disable
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-tmux-autosave
+        execution_host_binding: physical-local
+        selection_condition: systemd-available
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: config/tmux/tmux-autosave.timer, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-enable-disable-v1]
+
   - path: scripts/install/setup-kanban-loader-timer.sh
     kind: direct-owner
     disposition_group: kanban-dual-backend
@@ -253,10 +294,41 @@ disposition_groups:
     issue: {repository: vamseeachanta/workspace-hub, number: 3479}
     members: [scripts/cron/harness-update.sh]
     defect_class: transitive-mutation-error-swallowing
+  # The member DOES implement durable backup, post-write exact-state verify and
+  # rollback-to-backup, verified by tests/tmux/test_setup_tmux_autosave_timer.py.
+  # It still declares missing_transaction because no attestation exists that can
+  # check those properties on a SHELL installer writing systemd units — the
+  # reference transaction's python-*-v1 attestations analyse a Python crontab
+  # implementation. So every systemd-user surface is pinned to the weakest
+  # declaration regardless of what it actually does. #3792 tracks closing that
+  # gap; this group retires when its member can declare accurately.
+  - group_id: tmux-session-persistence
+    issue: {repository: vamseeachanta/workspace-hub, number: 3792}
+    members: [scripts/install/setup-tmux-autosave-timer.sh]
+    defect_class: systemd-user-transaction-unattestable
 
 resolved_dispositions:
   - issue: 3475
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    source_digest: e4d8233009687e3f3a99187c8061d153426513fe8614b9db8ced678a7766dbb1
+    # Re-affirmed 2026-08-01 (#3746): the harness-checkup-audit task (#3408) entered
+    # schedule-tasks.yaml after this disposition, changing the governed input union.
+    # resolved_on/pull_request are pinned by scheduler_mutation_contract.py:310 and
+    # identify WHICH disposition this is; source_digest is the change-detector and is
+    # re-affirmed whenever a governed input legitimately changes. Reviewed: the task is
+    # a non-destructive daily audit (writes a state JSON + log), so it mutates no
+    # scheduler state and the #3475 disposition still holds.
+    # Re-affirmed again 2026-08-01 (#3749): harness-install-doctor extended from the two
+    # ace-linux boxes to every onboarded POSIX machine carrying an agent CLI (adds
+    # gpu-claw, macbook-portable), which changes the governed input union again.
+    # Reviewed: the doctor is an idempotent repair task composing blessed installers; it
+    # mutates no scheduler state, so the #3475 disposition still holds.
+    # Re-affirmed again 2026-08-02: the dispatch-pull task entered schedule-tasks.yaml,
+    # changing the governed input union a third time. Reviewed: dispatch-pull runs
+    # scripts/cron/dispatch-pull-cron.sh, which execs cron_runtime.py (an already-governed
+    # singleton wrapper) around scripts/operations/dispatch_pull.py. That loop claims git
+    # refs and invokes scripts/dispatch/drain.py; it writes no crontab, no systemd unit and
+    # no Windows task, so it is not a scheduler mutation surface and the #3475 disposition
+    # still holds. resolved_on/pull_request stay pinned per scheduler_mutation_contract.py:310.
+    source_digest: b8fe099c6e205a0ccc4db6292d02328c30c431bc50e5435314874fab1ccb7209

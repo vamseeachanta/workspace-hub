@@ -499,6 +499,10 @@ ${provider_harness_yaml}
     unused_plugins: ${hc_uplug}
     default_mode: ${hc_mode}
     auto_mode_default: ${hc_auto}
+  publish_health:
+    last_publish_at: "$(yesc "$ph_ts")"
+    last_publish_duration_s: ${ph_dur}
+    last_publish_rc: ${ph_rc}
 YAML
 FULL="generated_at: \"${RUN_TS}\""$'\n'"${BODY}"
 

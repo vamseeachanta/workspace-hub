@@ -17,11 +17,11 @@
 | # | Repo | Title | Machine | Status |
 |---|------|-------|---------|--------|
 | **482** | digitalmodel | Integrate Go/No-Go into pipeline | ace-linux-1 | Next step |
-| **481** | digitalmodel | Convert PLET-PLEM workbook | ws014 | Pending |
-| **480** | digitalmodel | BUG: Verify PLET-PLEM segment lengths | ws014 | Pending |
+| **481** | digitalmodel | Convert PLET-PLEM workbook | ace-win-2 | Pending |
+| **480** | digitalmodel | BUG: Verify PLET-PLEM segment lengths | ace-win-2 | Pending |
 | **479** | digitalmodel | HTML/PDF report renderer | ace-linux-1 | Pending |
 | **478** | digitalmodel | OrcaFlex model generator integration | ace-linux-1 | Pending |
-| **1953** | workspace-hub | Batch 2: FDAS Riser conversions | ws014 | Pending |
+| **1953** | workspace-hub | Batch 2: FDAS Riser conversions | ace-win-2 | Pending |
 
 Plus 7 issues from earlier session: #471, #472, #473, #474, #475 (DONE), #476, #477, and aceengineer-website#5
 
@@ -39,7 +39,7 @@ Plus 7 issues from earlier session: #471, #472, #473, #474, #475 (DONE), #476, #
 - Issue #479: HTML/PDF report renderer  
 - Issue #482: Integrate Go/No-Go into pipeline
 
-### ws014 (Windows)  
+### ace-win-2 (Windows)  
 - Issue #480: Verify PLET-PLEM segment lengths
 - Issue #481: Convert PLET-PLEM workbook via cowork
 - Issue #1953: Batch 2 FDAS workbook conversions (20+ workbooks)
@@ -52,13 +52,13 @@ Plus 7 issues from earlier session: #471, #472, #473, #474, #475 (DONE), #476, #
    - Test with both jumper configs
    - ~30 minutes
 
-2. **#480** (ws014): Verify PLET-PLEM segment lengths
+2. **#480** (ace-win-2): Verify PLET-PLEM segment lengths
    - Open workbook, extract A-G lengths
    - Update config and spec.yml
    - ~15 minutes
 
 ### Short Term (This Week)
-3. **#481** (ws014): Convert PLET-PLEM workbook
+3. **#481** (ace-win-2): Convert PLET-PLEM workbook
    - Use excel-workbook-to-python-cowork skill
    - 20+ functions, 80+ tests target
    - ~2-3 hours
@@ -69,7 +69,7 @@ Plus 7 issues from earlier session: #471, #472, #473, #474, #475 (DONE), #476, #
    - ~2 hours
 
 ### Medium Term (Next Week)
-5. **#1953** (ws014): Batch 2 FDAS conversions
+5. **#1953** (ace-win-2): Batch 2 FDAS conversions
    - 20+ workbooks, one at a time
    - ~2-3 hours each = 1-2 days total
 

@@ -58,7 +58,7 @@ Two jumper models from one code path:
 
 ### Next Session Should
 
-1. Close #474: Open SZ_Ballymore_Jumper_MF.xlsm on ws014, extract PLET-PLEM segment lengths
+1. Close #474: Open SZ_Ballymore_Jumper_MF.xlsm on ace-win-2, extract PLET-PLEM segment lengths
 2. Start #472: Implement Go/No-Go decision logic per DNV-RP-H103
 3. Close #475 (DONE): Tests already passing
 4. Work #476: Connect jumper pipeline to OrcaFlex modular model generator

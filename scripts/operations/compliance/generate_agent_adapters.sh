@@ -62,6 +62,14 @@ write_claude_adapter() {
   local repo_path="$1"
   local repo_name
   repo_name="$(basename "$repo_path")"
+
+  # workspace-hub retired its CLAUDE.md harness surface (2026-08-01); AGENTS.md is
+  # canonical here and needs no adapter pointing at itself. Without this guard every
+  # mode below (--workspace-only, --repos, default) would recreate the deleted file.
+  if [[ "$repo_path" == "$WORKSPACE_ROOT" ]]; then
+    echo "skip: workspace-hub CLAUDE.md is retired — not regenerating"
+    return 0
+  fi
   cat > "$repo_path/CLAUDE.md" << ADAPTER
 # ${repo_name^} Agent Adapter
 

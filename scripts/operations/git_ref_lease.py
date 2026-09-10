@@ -16,20 +16,40 @@ lease JSON is stored as the MESSAGE of a commit over the empty tree, and the ref
 points at that commit — because `refs/heads/*` must point to commits (git rejects a
 bare blob there) and GitHub only accepts pushes to `refs/heads/*`.
 
-LOCAL refs (default) arbitrate processes on one host. For CROSS-MACHINE arbitration
-the same semantics map to `git push --force-with-lease=<ref>:<old-sha>` (CAS) and a
-non-forced push (create); the remote binding is wired at the operator-cutover step.
-This module is the local/single-repo adapter, fully testable with real git.
+LOCAL refs arbitrate processes on one host. CROSS-MACHINE arbitration is the same
+refs moved by `dispatch_pull._fetch_lease_refs` / `_push_lease_refs`; a lease that
+never leaves the host arbitrates nothing, because every host then CASes against
+refs only it can see and wins every claim (#3772).
+
+The lease NAMESPACE is owned by `dispatch_lease.REF_PREFIX` and imported here
+rather than restated. It used to be a second string literal that happened to
+agree — and a third, in the pull loop's refspecs, that did not.
 """
 from __future__ import annotations
 
+import importlib.util
 import json
 import subprocess
 from pathlib import Path
 
+_HERE = Path(__file__).resolve().parent
+
+
+def _load(name: str, path: Path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+#: Single source of truth for the lease namespace (scripts/ is not a package, so
+#: the sibling core is loaded by path — same shape as dispatch_pull does it).
+_dl = _load("dispatch_lease", _HERE / "dispatch_lease.py")
+REF_PREFIX = _dl.REF_PREFIX
+
 
 def lease_ref(name: str) -> str:
-    return f"refs/heads/dispatch/leases/{name}"
+    return _dl.lease_ref(name)
 
 
 class GitRefLease:

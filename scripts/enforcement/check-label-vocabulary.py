@@ -64,6 +64,69 @@ DEFAULT_REPOS = (
 MACHINE_EXTRAS = frozenset({"unassigned"})
 
 
+#: Axes the ROUTING engine reads. Comparing every axis would bury the finding
+#: that matters under taxonomy churn — the mirror legitimately lags on labels the
+#: router never consults.
+ROUTING_AXES = ("machine:", "lane:", "ai:", "agent:")
+
+BOARDS_DIR = REPO_ROOT / ".claude" / "memory" / "kanban" / "boards"
+
+
+def mirror_routing_labels(boards: list[dict]) -> set[str]:
+    """Routing labels the board mirror actually uses.
+
+    A malformed or empty board contributes nothing rather than raising: one bad
+    file must not abort the check and thereby mask drift in all the others.
+    """
+    out: set[str] = set()
+    for board in boards or []:
+        for card in (board or {}).get("cards") or []:
+            for lab in (card or {}).get("gh_labels") or []:
+                if any(lab.startswith(a) for a in ROUTING_AXES):
+                    out.add(lab)
+    return out
+
+
+def mirror_drift(mirror: set[str], live: set[str]) -> dict:
+    """Compare mirror routing labels against the labels that actually exist.
+
+    The two directions have different causes and different fixes, so they are
+    reported separately:
+
+        retired  in the mirror, absent from GitHub -> the engine routes to
+                 something that is gone. This is the dangerous one.
+        unknown  on GitHub, absent from the mirror -> the mirror has not caught
+                 up; real work the engine cannot see.
+
+    `live_was_empty` exists because an API failure would otherwise make EVERY
+    mirror label look retired — turning one failed query into a fleet-wide false
+    alarm, which is exactly how a real drift report gets ignored.
+    """
+    def routing_only(labels):
+        return {l for l in labels or () if any(l.startswith(a) for a in ROUTING_AXES)}
+
+    # BOTH sides are filtered. Filtering only `live` would report every non-routing
+    # mirror label as retired — the function must not assume its caller
+    # pre-filtered, or it produces a fleet of false positives when reused.
+    mirror_routing, live_routing = routing_only(mirror), routing_only(live)
+    return {
+        "retired": sorted(mirror_routing - live_routing),
+        "unknown": sorted(live_routing - mirror_routing),
+        "live_was_empty": not live_routing,
+    }
+
+
+def read_boards() -> list[dict]:
+    docs = []
+    if BOARDS_DIR.is_dir():
+        for f in sorted(BOARDS_DIR.glob("*.yaml")):
+            try:
+                docs.append(yaml.safe_load(f.read_text(encoding="utf-8")) or {})
+            except Exception:   # noqa: BLE001 — an unparseable board contributes nothing
+                docs.append({})
+    return docs
+
+
 def load_cfg() -> dict:
     return yaml.safe_load(RULES_PATH.read_text(encoding="utf-8")) or {}
 
@@ -148,6 +211,17 @@ def main() -> int:
     repos = [args.repo] if args.repo else list(DEFAULT_REPOS)
     results = [check_repo(r, cfg, accepted) for r in repos]
 
+    # Mirror drift (workspace-hub#3736). The routing ENGINE reads the kanban
+    # board mirror, not GitHub, so every check above can be clean while the
+    # dispatcher routes to a machine that no longer exists. There is no
+    # GitHub -> board refresh path, so this gap grows monotonically.
+    mirror = mirror_routing_labels(read_boards())
+    live_all: set[str] = set()
+    for repo in repos:
+        live_all |= {l["name"] for l in gh_json(
+            ["gh", "label", "list", "--repo", repo, "--limit", "400", "--json", "name"])}
+    drift = mirror_drift(mirror, live_all)
+
     if args.json:
         print(json.dumps(results, indent=2))
     else:
@@ -169,7 +243,30 @@ def main() -> int:
             if not (res["unknown_values"] or res["ambiguous"]):
                 print("  \033[32mOK\033[0m — vocabulary closed, every scalar axis single-valued")
 
-    failed = any(r["unknown_values"] or r["ambiguous"] for r in results)
+    if not args.json:
+        print("\n\033[1mkanban board mirror vs live GitHub\033[0m  (workspace-hub#3736)")
+        if drift["live_was_empty"]:
+            print("  \033[31mCANNOT CHECK\033[0m — no live routing labels returned; "
+                  "not treating that as 'everything retired'")
+        elif drift["retired"]:
+            print(f"  \033[31mRETIRED IN USE ({len(drift['retired'])})\033[0m "
+                  "— the mirror routes to labels that no longer exist on GitHub:")
+            for v in drift["retired"][:20]:
+                print(f"    {v}")
+            print("  \033[2mdispatch.py proposes from the mirror, so --write would bake "
+                  "these into the queue files.\033[0m")
+        else:
+            print("  \033[32mOK\033[0m — mirror uses no retired routing label")
+        if drift["unknown"]:
+            print(f"  \033[33mnot yet mirrored ({len(drift['unknown'])})\033[0m: "
+                  f"{', '.join(drift['unknown'][:10])}")
+
+    # `retired` FAILS: it means the engine can route to something that is gone.
+    # `unknown` does NOT: a mirror lagging behind a new label is normal between
+    # refreshes, and failing on it would make the check red permanently — which
+    # is how a real finding gets ignored.
+    failed = (any(r["unknown_values"] or r["ambiguous"] for r in results)
+              or bool(drift["retired"]) or drift["live_was_empty"])
     return 1 if failed else 0
 
 

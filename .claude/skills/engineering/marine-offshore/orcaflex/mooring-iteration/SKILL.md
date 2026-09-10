@@ -47,7 +47,7 @@ scripts_exempt: true
 ### Basic Usage
 
 ```python
-from digitalmodel.orcaflex.mooring_tension_iteration import (
+from digitalmodel.solvers.orcaflex.mooring_tension_iteration import (
     MooringTensionIterator,
     IterationConfig,
     LineConfig,
@@ -61,7 +61,7 @@ config = IterationConfig(
 ### With Vessel Fixing
 
 ```python
-from digitalmodel.orcaflex.mooring_tension_iteration import (
+from digitalmodel.solvers.orcaflex.mooring_tension_iteration import (
     MooringTensionIterator,
     IterationConfig,
     VesselConfig

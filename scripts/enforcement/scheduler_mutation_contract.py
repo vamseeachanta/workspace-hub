@@ -42,31 +42,16 @@ SELECTION_CONDITIONS = {
     "systemd-available-uninstall", "systemd-unavailable-uninstall",
     "remove-mode", "replace-mode",
 }
-DEFECT_CLASSES = {
-    "mixed-destructive-ownership-authority",
-    "untransactional-whole-crontab-replacement",
-    "untransactional-dual-backend-replacement",
-    "windows-task-mutation-without-verified-transaction",
-    "transitive-mutation-error-swallowing",
-}
-DISPOSITION_CONTRACT = {
-    "legacy-crontab-writers": (
-        3476, "untransactional-whole-crontab-replacement",
-        {"scripts/coordination/context/setup_cron.sh", "scripts/operations/maintenance/setup_maintenance_cron.sh", "scripts/setup/setup-engineering-update-cron.sh"},
-    ),
-    "kanban-dual-backend": (
-        3477, "untransactional-dual-backend-replacement",
-        {"scripts/install/setup-kanban-loader-timer.sh"},
-    ),
-    "windows-task-writers": (
-        3478, "windows-task-mutation-without-verified-transaction",
-        {"scripts/windows/setup-scheduler-tasks.ps1", "scripts/coordination/context/setup_scheduled_task.ps1", "scripts/solver/setup-scheduler.ps1"},
-    ),
-    "harness-update": (
-        3479, "transitive-mutation-error-swallowing",
-        {"scripts/cron/harness-update.sh"},
-    ),
-}
+# Pinned disposition governance lives in a sibling module: this file is
+# capped at 400 lines by tests/enforcement/test_scheduler_mutation_task3.py
+# and was at exactly 400 when #3784 needed to register a new surface.
+# Extracted rather than raising the cap — relaxing a guard to fit a change
+# under it is the failure the guard exists to prevent.
+from scheduler_mutation_dispositions import (  # noqa: E402
+    DEFECT_CLASSES,
+    DISPOSITION_CONTRACT,
+)
+
 ATT_SOURCES = {
     "python-physical-host-equality-guard-v1": b"scripts/cron/cron_apply.py",
     "shell-physical-host-equality-guard-v1": b"scripts/cron/setup-cron.sh",
@@ -157,6 +142,8 @@ def digest_record_union(
     paths = {
         b"scripts/enforcement/check-scheduler-mutation-surfaces.py",
         b"scripts/enforcement/scheduler_mutation_contract.py",
+        # #3784: carries the pinned DISPOSITION_CONTRACT — must be digested.
+        b"scripts/enforcement/scheduler_mutation_dispositions.py",
         b"scripts/enforcement/scheduler_mutation_attestations.py",
         b"scripts/enforcement/scheduler_mutation_python_flow.py",
         b"scripts/enforcement/scheduler_mutation_discovery.py",

@@ -82,7 +82,7 @@ The runtime failure matches the issue: **YES**. The test uses a disposable tempo
 $ uv run pytest tests/monitoring/test_equivalence_state.py tests/readiness/test_windows_scheduler_single_source.py -q
 .......F..........
 FAILED tests/monitoring/test_equivalence_state.py::test_same_role_machines_do_not_clobber_end_to_end
-E assert [] == ['acma-ansys05', 'acma-ws014']
+E assert [] == ['ace-win-1', 'ace-win-2']
 1 failed, 17 passed
 ```
 

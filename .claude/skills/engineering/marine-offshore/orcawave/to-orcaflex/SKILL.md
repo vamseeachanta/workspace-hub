@@ -21,6 +21,34 @@ tags: []
 scripts_exempt: true
 ---
 
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.diffraction.orcawave_converter`
+>   - `digitalmodel.diffraction.orcawave_converter.OrcaWaveConverter`
+>   - `digitalmodel.orcawave.coordinate_transform`
+>   - `digitalmodel.orcawave.coordinate_transform.CoordinateTransformer`
+>   - `digitalmodel.orcawave.orcaflex_export`
+>   - `digitalmodel.orcawave.orcaflex_export.HydrodynamicDatabaseCreator`
+>   - `digitalmodel.orcawave.orcaflex_export.OrcaWaveToOrcaFlex`
+>   - `digitalmodel.orcawave.rao_import`
+>   - `digitalmodel.orcawave.rao_import.RAOImporter`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable.
+>
+> **The intended API is now specified in `digitalmodel`**, at
+> `docs/domains/orcawave/intended-api/to-orcaflex.md`, where it is a build
+> target rather than something an agent may mistake for working code.
+> Tracked in aceengineer-strategy#267, digitalmodel#2045.
+
+<!-- ace:known-missing: digitalmodel.diffraction.orcawave_converter, digitalmodel.diffraction.orcawave_converter.OrcaWaveConverter, digitalmodel.orcawave.coordinate_transform, digitalmodel.orcawave.coordinate_transform.CoordinateTransformer, digitalmodel.orcawave.orcaflex_export, digitalmodel.orcawave.orcaflex_export.HydrodynamicDatabaseCreator, digitalmodel.orcawave.orcaflex_export.OrcaWaveToOrcaFlex, digitalmodel.orcawave.rao_import, digitalmodel.orcawave.rao_import.RAOImporter -->
+
 # Orcawave To Orcaflex
 
 ## When to Use
@@ -39,7 +67,7 @@ scripts_exempt: true
 
 ```python
 from digitalmodel.diffraction.orcawave_converter import OrcaWaveConverter
-from digitalmodel.diffraction.orcaflex_exporter import OrcaFlexExporter
+from digitalmodel.hydrodynamics.diffraction.orcaflex_exporter import OrcaFlexExporter
 
 # Load OrcaWave results
 import OrcFxAPI
@@ -81,7 +109,7 @@ db_creator.add_condition(
 
 ```python
 from digitalmodel.orcawave.rao_import import RAOImporter
-from digitalmodel.diffraction.output_validator import OutputValidator
+from digitalmodel.hydrodynamics.diffraction.output_validator import OutputValidator
 
 # Import RAOs with validation
 importer = RAOImporter()
@@ -117,8 +145,8 @@ transformer.set_orcawave_origin(
 
 - OrcaWave Data Format Specification
 - OrcaFlex Vessel Type Documentation
-- Converter Implementation: `src/digitalmodel/modules/diffraction/orcawave_converter.py`
-- Exporter Implementation: `src/digitalmodel/modules/diffraction/orcaflex_exporter.py`
+- Converter Implementation: `src/digitalmodel/hydrodynamics/diffraction/solver/orcawave_converter.py`
+- Exporter Implementation: `src/digitalmodel/hydrodynamics/diffraction/orcaflex_exporter.py`
 
 ---
 

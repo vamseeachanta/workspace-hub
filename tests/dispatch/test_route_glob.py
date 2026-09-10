@@ -177,11 +177,25 @@ def test_live_rules_route_digitalmodel_splits_to_licensed(route, domain):
         f"domain {domain!r} fell through to the catch-all, got {got}")
 
     spec = cfg.get("machines", {}).get(target, {})
-    assert isinstance(spec.get("licence_verified"), dict), (
-        f"domain {domain!r} routes to {target!r}, which carries no dated "
-        f"licence attestation — licence_verified is "
-        f"{spec.get('licence_verified')!r}. Licensed work must only be routed "
-        f"to a host someone recorded as working (deckhand#579)."
+
+    # Capability is LICENCE **and** CAPACITY. This test asserted only the first
+    # until 2026-07-31, so it was satisfied by repointing batch work to a
+    # workstation — trading a licence failure for a capacity failure. Owner:
+    # "that host is not powerful enough."
+    assert spec.get("capacity") == "heavy", (
+        f"domain {domain!r} routes to {target!r} with capacity="
+        f"{spec.get('capacity')!r}; these are batch-scale workloads and need the "
+        f"heavy node. See tests/dispatch/test_route_capacity.py."
+    )
+
+    # The licence must be attested OR the block must be openly named. Routing to
+    # a host with a pending prerequisite is legitimate; hiding that it is pending
+    # is not.
+    attested = isinstance(spec.get("licence_verified"), dict)
+    assert attested or spec.get("blocked_on"), (
+        f"domain {domain!r} routes to {target!r}, whose licence is neither "
+        f"attested nor openly blocked — licence_verified="
+        f"{spec.get('licence_verified')!r}, blocked_on absent (deckhand#579)."
     )
 
 

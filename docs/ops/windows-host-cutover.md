@@ -50,8 +50,8 @@ git status --porcelain
   Administrator** (Task Scheduler registration can need elevation).
 - **No bot token needed** — these are pull workers; only outbound `git`/`gh` auth is required (step 2
   commits + pushes `equality-$MACHINE.yaml`).
-- Hostname auto-resolves (`ACMA-ANSYS05` → `ace-win-1`, `acma-ws014` → `ace-win-2`) via the registry
-  `hostname_aliases`, but `--machine` is passed explicitly to avoid ambiguity.
+- Each box's OS hostname auto-resolves to its canonical role id (`ace-win-1`, `ace-win-2`) via the
+  registry `hostname_aliases`, but `--machine` is passed explicitly to avoid ambiguity.
 - Step 4 is **dry-run** (no `--apply`): it proves claim → lease → release without executing real work.
   A real executor + scheduling the poll are the promotion follow-up (see the parity checklist).
 
