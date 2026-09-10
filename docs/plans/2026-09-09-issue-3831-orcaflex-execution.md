@@ -1,7 +1,7 @@
 # Plan: one OrcaFlex execution contract for local and remote producers
 
 Issue: [#3831](https://github.com/vamseeachanta/workspace-hub/issues/3831)
-Status: draft; revision 3; implementation will await user approval and child-scope reconciliation
+Status: draft; revision 5; deployment will await scope/cutover approval and child-scope reconciliation
 Complexity: T3 | Mode: parallel-readonly planning, isolated implementation lanes after approval
 Client: N/A | Lane: lane:claude
 
@@ -34,14 +34,22 @@ Engineering standards-derived constants will not be introduced. Drive-index resu
 4. The worker will run the native smoke check in its actual task account/environment, with a bounded timeout. The readiness record will bind host role, runtime context, code revisions, Python/DLL versions, check time and expiry; legacy text PASS and stale/unbound markers will be rejected. The job itself will still acquire its licence rather than trust an earlier probe as a reservation.
 5. The digitalmodel batch will validate all cases before launching, enforce worker/thread caps, isolate same-stem inputs, preserve allowed relative dependencies, and write a fresh versioned manifest before returning a nonzero verdict for any failure. Explicit mock will remain available only for offline tests and will never satisfy production acceptance.
 6. Success will require process exit zero AND expected job identity AND nonempty expected case set AND mock=false AND completed=total AND failed=0 AND finite requested outputs AND required artifacts present. Result records will include input/summary/artifact digests, code/DLL versions, times, and actual resources.
-7. Collection will reuse bounded small-result return. Heavy simulations will remain in private host storage. Automated heavy fetch will be gated on the open [result-return issue](https://github.com/vamseeachanta/deckhand/issues/564), whose lease/fetch implementation has not been verified. That dependency will require authenticated ownership, expiry, path confinement and digest checks. Until it passes, reports will state that heavy fetch is unavailable and provide private operator retrieval instructions; the core submission release will require returned summaries and verified host-side simulations, not an invented fetch service.
+7. Collection will reuse observed small-result transport without claiming atomic or complete CSV/JSON return. The open [result-return issue](https://github.com/vamseeachanta/deckhand/issues/564) will own transactional bounded returns as well as heavy-artifact leases. Heavy simulations will remain in private host storage. Automated heavy fetch will remain unavailable until authenticated ownership, expiry, path confinement and digest checks pass. The core submission release will require independently checked returned summaries and host-side simulations; missing or incomplete returned artifacts will fail acceptance.
 8. Timeout/cancellation will terminate the entire owned process tree, confirm it is gone, and only then release the execution guard. If cleanup cannot be proved, the executor will become unavailable for new jobs. Crash recovery will require owner/process-identity validation, not deleting a lock based only on age.
 
 ## Implementation sequence and ownership
 
 ### A. Deployment reconciliation and native canary
 
-The operator will inventory current tasks, agent PID, pending/running jobs, local overrides, code revisions, private aliases, and environment dependencies. Existing benchmark edits and the agent's local-only commit will be preserved. The operator will review the divergent agent commit and compare upstream fixes; no reset or bulk sync will touch active checkouts.
+The first deployment increment will qualify ordinary `solver-smoke-test` task/route operation, separately from batch onboarding and signed project canaries. It will reuse the allowlisted upstream workflow from [Deckhand 588](https://github.com/vamseeachanta/deckhand/issues/588). Its readiness measurement will not imply completion of batch/resource [550](https://github.com/vamseeachanta/deckhand/issues/550) or signed-canary [570](https://github.com/vamseeachanta/deckhand/issues/570).
+
+Preparation will propose the existing internal `software-ops` scope with a generic fixture in an allowed repository, subject to owner confirmation of the exact repository, revision, private workdir and host mapping. It will not reuse the currently mapped client scope. The operator will preserve both active checkouts and prepare isolated producer/executor candidates. Candidate Deckhand pin will be `ea24989c521dcab30ba5428cc5c8f791d273ed36`; digitalmodel will use the owner-integrated successor of reviewed repair `ce3728094a631ca6da3d3f8c99a331b3d80db33f`, after revision-specific acceptance. A PR head will not be called an integrated release.
+
+The existing smoke will require RED-first strengthening before task cutover: current probe code will not by itself prove finite values, saved-simulation reload, or enforced solver thread limits. Native acceptance will require those assertions, explicit one-thread operation and bounded owned-process cleanup. Renaming a run observation-only will not bypass this resource ceiling. Offline compatibility checks will precede activation; policy will supply explicit host aliases, solver root, smoke allowlist and a reviewed wall-clock timeout. Exact private scope mapping, effective policy and rollback backup digests will accompany the cutover request.
+
+After the owner approves the prepared scope and cutover, the operator will rerun fresh queue/process/lock checks, switch the existing credentialed task to the pinned candidate, submit one generic request locally and then from an isolated Linux producer, and verify each request/result identity and native evidence. The Linux feature checkout will remain preserved. The ordinary smoke will not activate batch or signed-project workflows. A missing scope, failed cleanup, stale readiness or incomplete returned result will stop this increment.
+
+The operator will inventory current tasks, agent PID, pending/running jobs, local overrides, code revisions, private aliases, and environment dependencies. Existing benchmark edits, the agent's local-only commit and all four observed untracked Linux producer files will be preserved. Before any producer update, a private path/SHA256 manifest and backup will protect those files; byte-identical originals will be verified after preparation and cutover. The operator will review the divergent agent commit and compare upstream fixes; no reset or bulk sync will touch active checkouts.
 
 A new pinned deployment directory and dedicated environment will be prepared from reviewed revisions, initially using the upstream references recorded in evidence. Any later pin will require refreshed diff/test evidence. Host-local overrides will include the now-required host_aliases and solver_root before startup. The running agent/watchdog will not update pins automatically during rollout. An idle/drained checkpoint will precede a controlled task switch. Task export and prior environment/pin will be retained privately for rollback.
 
@@ -49,9 +57,13 @@ The upstream OrcaFlex smoke workflow will be reused and strengthened with finite
 
 ### B. Batch correctness — digitalmodel
 
+Dependent digitalmodel implementation will wait for independent adversarial review and owner integration of [repair PR 2081](https://github.com/vamseeachanta/digitalmodel/pull/2081). The bounded repair will retain its documented T2 review requirement: Claude and Codex plan/code reviews with material findings resolved; Gemini's recorded unavailability will remain explicit rather than imply a three-provider review. This will not reduce the broader execution plan's T3 review requirement. The authoring agent will not merge its own PR. The integrated revision will receive acceptance before it becomes a deployment pin. Green CI or a draft PR will not substitute for that gate; isolated discovery and planning will continue while it is pending.
+
 The existing batch umbrella will link [engine base-config repair](https://github.com/vamseeachanta/digitalmodel/issues/1564) and [native YAML fidelity/failure propagation](https://github.com/vamseeachanta/digitalmodel/issues/2051), which already own the immediate blockers. It will own remaining unique case IDs, complete dependent inputs, per-model threadCount, and enforced resource configuration. Tests will precede edits. Batch result semantics will use the existing run_contract.py rather than a new exit convention. Partial failure will preserve diagnostic manifests and return failure. Fresh run directories will prevent stale files from satisfying acceptance.
 
 ### C. Dispatch and arbitration — Deckhand
+
+Before envelope/schema implementation, discovery will compare the current source and tests for approved [dispatch 582](https://github.com/vamseeachanta/deckhand/issues/582) and [identity 581](https://github.com/vamseeachanta/deckhand/issues/581) with their approved plans and deployed state. A revision-stamped drift/reuse report will identify completed scope, remaining work and incompatible assumptions; stale approval will not authorize duplicate implementation or unreviewed expansion.
 
 The existing batch-onboarding issue will own policy mapping and resource enforcement; it will require a revised child plan because its current scope specifies convention-only resource hints. Local submission will use the existing queue transport. [Execution trust](https://github.com/vamseeachanta/deckhand/issues/568) will retain ownership of authenticated envelopes, signing/receipts and data-plane schemas; [rejection proof](https://github.com/vamseeachanta/deckhand/issues/569) and [signed canary](https://github.com/vamseeachanta/deckhand/issues/570) will retain their separate gates. The hash-binding design below will remain a proposal for that owner's review and will not replace signed trust requirements. A generic operational smoke will not satisfy the signed-riser canary. Shared host guard and readiness changes will receive explicit child ownership before implementation.
 
@@ -100,7 +112,7 @@ collect(run):
 | Owner | Existing or proposed files | Purpose |
 |---|---|---|
 | workspace-hub | this plan; docs/plans/README.md; docs/reports/2026-09-09-orcaflex-execution-evidence.md; docs/reports/2026-09-09-orcaflex-fea-strategy.html | Plan, evidence, human review |
-| workspace-hub | proposed docs/operations/orcaflex-execution.html | Runbook and measured coverage |
+| workspace-hub | docs/solver/orcaflex-execution-runbook.html | Runbook and measured coverage |
 | digitalmodel | src/digitalmodel/workflows/orcaflex_run_batch.py; src/digitalmodel/solvers/orcaflex/orcaflex_parallel_analysis.py; src/digitalmodel/run_contract.py | Batch correctness and verdict integration |
 | digitalmodel | src/digitalmodel/solvers/smoke/probes.py; src/digitalmodel/solvers/smoke/workflow.py; scripts/solver_smoke_test.py | Reuse and strengthen upstream native probe |
 | digitalmodel | tests/workflows/test_orcaflex_run_batch.py; tests/solvers/orcaflex/run_tests.py; proposed tests/solvers/orcaflex/test_native_execution_contract.py | RED-first regression and opt-in licensed acceptance |
@@ -122,7 +134,7 @@ collect(run):
 | Resource defaults, over-budget request, thread setting | One worker/thread by default; cap enforced; no CPU-based seat inference |
 | Local + remote submission contention, multiple queue clones | At most one managed process tree on the executor |
 | Timeout, cancellation, process-tree kill failure, crashed owner | No premature guard release; executor quarantined on uncertain cleanup |
-| Missing host_aliases, wrong solver root or deployment pin | Preflight fails before task switch |
+| Missing host_aliases, solver_root or max_wall_seconds; wrong deployment pin | Preflight fails before task switch; timeout must be finite and positive |
 | Replay/retry of existing request and result | No duplicate live execution or stale-success substitution |
 | Old/new producers and consumers; rollback with published requests | Wire schema 1 remains readable; unsupported contracts cannot execute; new requests quarantined before rollback |
 | Small result return and heavy-fetch unavailable path | Ownership, bounds and digest checked; heavy fetch unavailable until dependency passes |
@@ -134,7 +146,7 @@ collect(run):
 
 The user will approve this revision before implementation. Each existing child issue will reference the approved shared contract and retain its own lifecycle tracking; any expanded child scope will return for plan review. Code-stage review will use T3 adversarial review and legal scan. No actor will self-apply plan-approved or completeness-verified labels.
 
-Completion will require checked-in implementation, approved deployment, successful native local and primary-Linux remote runs, failure-path tests, result readback, a coverage matrix that names untested origins, and a cleanup/rollback audit. Arbitrary shell execution, unconstrained sweeps, automatic consumption of all licence seats, host identity migration, and customer-model validation will remain excluded.
+Completion will require checked-in implementation, approved deployment, successful native local and primary-Linux remote batch execution-contract runs satisfying proposed contract item 6, failure-path tests, result readback, a coverage matrix that names untested origins, and a cleanup/rollback audit. Ordinary smoke success will qualify only its task/route increment, not this full completion bar or signed-project acceptance. Arbitrary shell execution, unconstrained sweeps, automatic consumption of all licence seats, host identity migration, and customer-model validation will remain excluded.
 
 ## Risks and rollback
 
