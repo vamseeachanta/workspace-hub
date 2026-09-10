@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-09T21:21:31.492650Z",
+  "generated_at": "2026-09-10T01:21:30.095373Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-09T21:21:28.814135Z",
+  "scorecard_generated_at": "2026-09-10T01:21:27.869759Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -1058,7 +1058,7 @@
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-09-09T18:04:48Z",
+          "updatedAt": "2026-09-10T00:25:47Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4320,7 +4320,7 @@
             "domain:security",
             "status:plan-review"
           ],
-          "updatedAt": "2026-08-19T13:15:42Z",
+          "updatedAt": "2026-09-10T00:21:55Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4380,7 +4380,7 @@
           "labels": [
             "lane:claude"
           ],
-          "updatedAt": "2026-09-09T18:04:47Z",
+          "updatedAt": "2026-09-10T00:44:38Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
