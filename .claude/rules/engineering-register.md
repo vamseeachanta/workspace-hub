@@ -16,7 +16,11 @@ Canonical statement for agents: `config/agents/SHARED_SOUL.md`, section
 ## Governing rules
 
 - The subject is the analysis, result, component, document or company — not a
-  person. First-person plural belongs to proposals and qualifications.
+  person. **This applies to every document, including internal working records**:
+  "the survey records", not "we recorded"; "the triage excludes", not "we are not
+  chasing". The single exemption is the proposal genre, where the corpus itself
+  uses first-person plural. Checked as R6, which exempts paths and frontmatter
+  marked as proposal or qualification.
 - Bind every conclusion to its criterion, comparator and governing case.
 - State plainly when something is not established: name the missing evidence, say
   what cannot be calculated, mark the affected result approximate, and condition

@@ -120,11 +120,28 @@ HEDGE = re.compile(
 CAPTION_ABOVE = re.compile(r"^\s*(?:Table|Figure)\s+\d+[.\-]\d+\s*[-–:].*\n\s*\|", re.M)
 
 
+# First-person plural. The rule applies to every document, including internal
+# working records: "the survey records", not "we recorded". The single exemption
+# is the proposal genre, where the corpus itself uses first-person plural --
+# "2H are considered to be particularly well qualified". That exemption is
+# corpus-evidenced, not a convenience.
+FIRST_PERSON = re.compile(r"\b(?:we|our|us)\b(?!\s*[\u2019']s\b)", re.I)
+PROPOSAL_MARKERS = ("proposal", "-prp-", "-pro-", "qualification", "capability-statement")
+
+
+def is_proposal(path: Path, head: str) -> bool:
+    posix = path.as_posix().lower()
+    if any(m in posix for m in PROPOSAL_MARKERS):
+        return True
+    return bool(re.search(r"^(?:type|document_type|genre)\s*:\s*(?:proposal|qualification)",
+                          head, re.M | re.I))
+
+
 # Verbatim transcriptions of third-party material are not our prose. Linting a
 # standard's own wording for register produced 1,489 findings on first run, none
 # of them actionable, which is exactly how a linter teaches people to ignore it.
 TRANSCRIBED_DIRS = ("/standards/", "/papers/", "/sources/", "/datasets/papers/",
-                    "/corpus/", "/extracted/")
+                    "/corpus/", "/extracted/", "/raw/", "/_archive/", "/vendor/")
 TRANSCRIBED_NAMES = ("full-text", "-ocr.", "verbatim", "transcript")
 
 
@@ -162,6 +179,10 @@ def check(path: Path) -> list[str]:
     for m in HEDGE.finditer(text):
         report(m.start(), "R5", "hedge without a criterion; supply the criterion rather "
                "than remove the hedge", m.group(0)[:60])
+    if not is_proposal(path, raw[:600]):
+        for m in FIRST_PERSON.finditer(text):
+            report(m.start(), "R6", "first-person plural outside a proposal; the subject "
+                   "is the analysis, record or practice", m.group(0))
     for m in CAPTION_ABOVE.finditer(text):
         report(m.start(), "R4", "caption placed above its table; captions sit below",
                m.group(0).split("\n")[0][:60])
@@ -195,6 +216,8 @@ SELF_TEST = {
     "code_exempt": ("```\nI think this is fine\n```\n", 0),
     "quoted_list_item_exempt": ('- "It is exciting to note..."\n', 0),
     "suppression_comment": ("I think so. <!-- register-lint: ignore -->\n", 0),
+    "first_person_plural": ("We design the riser to the stated basis.\n", 1),
+    "impersonal_ok": ("The riser is designed to the stated basis.\n", 0),
 }
 
 

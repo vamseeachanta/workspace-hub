@@ -129,8 +129,10 @@ Enforced by `scripts/enforcement/check-engineering-register.py`.
 The governing rules:
 
 - **The subject is the analysis, result, component, document or company — not a
-  person.** "The analysis is performed"; not "I performed the analysis". Reserve
-  first-person plural for proposals and qualifications, where the corpus uses it.
+  person.** "The analysis is performed"; not "I performed the analysis". This holds
+  for every document including internal working records — "the survey records",
+  not "we recorded". The one exemption is the proposal genre, where the corpus
+  itself uses first-person plural.
 - **Bind every conclusion to its criterion, comparator and governing case.** A
   bare verdict is not a conclusion. "MAWP is 2,850 psi, above the design MAOP of
   2,220 psi" — the number, the comparator, the disposition.
