@@ -64,7 +64,13 @@ class Rule:
 # ordinary technical prose does not trip them.
 BANNED = [
     (r"\bI think\b|\bin my opinion\b|\bI believe\b", "first-person opinion"),
-    (r"\bobviously\b|\bclearly,|\bdefinitely\b", "unsupported intensifier"),
+    # Negated forms are excluded here and handled by HEDGE below. "Not obviously
+    # correct" asserts the OPPOSITE of an intensifier: it admits something is
+    # unproven, which is what the register asks for. Flagging the admission while
+    # passing the bare assertion "X is correct" inverts the rule.
+    (r"(?<!not )(?<!n't )(?<!nor )\bobviously\b"
+     r"|(?<!not )\bclearly,"
+     r"|(?<!not )\bdefinitely\b", "unsupported intensifier"),
     (r"\bworld[- ]class\b|\bbest[- ]in[- ]class\b|\bvalue[- ]add\b"
      r"|\bactionable insights?\b|\bholistic approach\b|\btransformative\b"
      r"|\bgame changer\b|\bstrategic roadmap\b", "marketing register"),
@@ -95,6 +101,19 @@ UNSUPPORTED = re.compile(
     r"\b(?:is|are|remains?|were)\s+(acceptable|conservative|safe)\b"
     r"(?!\s*(?:[-\u2013\u2014:;,]|\band\b|\bwhich\b|\bbut\b))"      # an explanation follows
     rf"(?![^.]{{0,160}}(?:{_CRITERION}))",
+    re.I)
+
+# A hedge is honest but weak when it names no criterion. This is a separate
+# finding from an unsupported intensifier because the remedy differs: supply the
+# criterion, do not delete the word. Raised by ws-8c against llm-wiki-risersintl,
+# where three of four "obviously" hits were the negated form.
+# The justification may follow anywhere in the sentence, not immediately after the
+# hedge: "does not obviously fit behind it: the long-lead items exceed the window"
+# explains itself four words later. Scan the remainder of the sentence for a named
+# criterion or an explanatory mark.
+HEDGE = re.compile(
+    r"\b(?:not|n't|nor)\s+(?:obviously|clearly|evidently|necessarily)\b"
+    rf"(?![^.]{{0,200}}(?:{_CRITERION}|[:\u2013\u2014]))",
     re.I)
 
 # Caption placed above its table rather than below it.
@@ -140,6 +159,9 @@ def check(path: Path) -> list[str]:
     for m in UNSUPPORTED.finditer(text):
         report(m.start(), "R3", f"{m.group(1)!r} without its governing criterion",
                m.group(0)[:60])
+    for m in HEDGE.finditer(text):
+        report(m.start(), "R5", "hedge without a criterion; supply the criterion rather "
+               "than remove the hedge", m.group(0)[:60])
     for m in CAPTION_ABOVE.finditer(text):
         report(m.start(), "R4", "caption placed above its table; captions sit below",
                m.group(0).split("\n")[0][:60])
@@ -162,6 +184,13 @@ SELF_TEST = {
                             "contained by the second barrier.\n", 0),
     "criterion_clause": ("The value is conservative and analogous to a screen-out.\n", 0),
     "caption_above": ("Table 4.1 – Wall thickness\n| a | b |\n|---|---|\n", 1),
+    # Negated intensifier is a hedge, not an intensifier (ws-8c, llm-wiki-risersintl).
+    "negated_with_criterion": ("X80 is not obviously correct because the mill "
+                                "certificate is absent.\n", 0),
+    "negated_explained": ("Manufacture does not obviously fit behind it: the long-lead "
+                           "items exceed the window.\n", 0),
+    "negated_bare": ("The grade is not obviously correct.\n", 1),
+    "bare_intensifier_still_caught": ("This entire file, obviously.\n", 1),
     "quoted_exemplar_exempt": ("> I think the joint is fine.\n", 0),
     "code_exempt": ("```\nI think this is fine\n```\n", 0),
     "quoted_list_item_exempt": ('- "It is exciting to note..."\n', 0),

@@ -47,6 +47,14 @@ Two exclusions are deliberate and load-bearing:
   be able to list the constructions it bans. `<!-- register-lint: ignore -->`
   suppresses a line that must carry an example.
 
+A negated intensifier is a **hedge, not an intensifier**, and is reported
+separately as R5. "Not obviously correct" admits something is unproven, which is
+what the register asks for; the first version of R1.2 flagged that admission
+while passing the bare assertion "X is correct". The remedy for R5 differs from
+R1.2: supply the criterion, do not delete the word. (Raised by a peer session
+against `llm-wiki-risersintl`, where three of four `obviously` findings were the
+negated form.)
+
 The unsupported-adjective rule accepts a criterion **named**, **cited**, or
 **explained in the following clause**. Its first version recognised only the
 first two forms and flagged two pages that had given their reason; the rule was
