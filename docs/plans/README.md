@@ -203,6 +203,7 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 
 | Issue # | Title / Slug | Plan File | Date | Status | Complexity | Notes |
 |---|---|---|---|---|---|---|
+| [Digitalmodel 2093](https://github.com/vamseeachanta/digitalmodel/issues/2093) | mooring-buoy-native-workflow | [Plan](2026-09-11-digitalmodel-2093-mooring-buoy.html) | 2026-09-11 | adversarial-reviewed | T2 | Full-duration local configuration-to-results proof; explicit physical-qualification gaps; bounded native approval required. |
 | [Digitalmodel 716](https://github.com/vamseeachanta/digitalmodel/issues/716) | orcaflex-validator | `docs/plans/2026-09-11-digitalmodel-716-validator.html` | 2026-09-11 | adversarial-reviewed | T2 | Conditional property/section recognition; preserve generated physics and qualification boundaries. |
 | [Deckhand 591](https://github.com/vamseeachanta/deckhand/issues/591) | licensed-run-cleanup | `docs/plans/2026-09-11-deckhand-591-cleanup.html` | 2026-09-11 | adversarial-reviewed | T2 | Windows containment, verified cleanup and persistent execution guard; deployment excluded. |
 | [#3831](https://github.com/vamseeachanta/workspace-hub/issues/3831) | orcaflex-execution | `docs/plans/2026-09-09-issue-3831-orcaflex-execution.md` | 2026-09-09 | draft | T3 | Reuse upstream fixes; unify local/remote submission, host arbitration, native result validation and measured rollout. |

@@ -6,6 +6,8 @@ User-requested running record: [OrcaFlex work log](../reports/orcaflex-work-log.
 
 ## Objectives — updated 2026-09-11
 
+Latest checkpoint: all 30 CI checks passed for validator PR 2091 at `cb309cbc`; it remains draft/open. The next logical engineering task is [mooring-buoy workflow 2093](https://github.com/vamseeachanta/digitalmodel/issues/2093), not a mandatory detour through cross-seed ordering. Its [revision-3 plan](../plans/2026-09-11-digitalmodel-2093-mooring-buoy.html) and [actual review disposition](../../scripts/review/results/2026-09-11-digitalmodel-2093-plan-disposition.md) await user approval for implementation and bounded local native runs. No source or native change occurred in this planning increment. The work log records single-line topology, damping-reference mismatch, whole-job cleanup requirements and the separate physical-acceptance gap.
+
 1. Reliable OrcaFlex execution from enrolled ecosystem machines through the existing licensed Windows execution lane, with truthful failure/result evidence and measured per-origin coverage.
 2. Qualified FEA models for component and structure families through existing specifications, libraries and solver adapters: OrcaFlex global/slender-system response, structural FE for detailed components, and verified load transfer between them.
 
