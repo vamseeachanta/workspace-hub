@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-09-10T21:21:31.186610Z
+Generated: 2026-09-11T01:21:27.493540Z
 Current week: 2026-W37
 Recommended provider order: agy, codex, claude
 
@@ -9,7 +9,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 17
+- Execution-ready candidates: 16
 - Total routed candidates: 176
 
 | Issue | Ready | Why routed here | Labels |
@@ -21,7 +21,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3525 [WRK] Investigate safe remote Claude job dispatch to ace-win-2 | yes | strategy/workflow/architecture language | priority:medium, cat:harness, domain:workstations, wrk-item, machine:dev-primary, status:plan-approved |
 | #3566 fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI | yes | strategy/workflow/architecture language | bug, priority:medium, cat:harness, machine:multi, status:plan-approved, type:follow-up |
 | #3568 epic(agent-ux): cross-machine input interaction parity | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, domain:workstations, machine:multi, status:plan-approved |
-| #3490 fix(onboarding): surface cron preview failure during new-machine dry-run | yes | strategy/workflow/architecture language | cat:operations, domain:onboarding, machine:dev-primary, status:plan-approved, gate:completeness, lane:codex |
+| #3511 bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames | yes | strategy/workflow/architecture language | bug, cat:harness, domain:workstations, machine:multi, status:plan-approved, gate:completeness |
 
 ## codex
 

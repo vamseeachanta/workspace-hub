@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-10T21:21:31.506537Z",
+  "generated_at": "2026-09-11T01:21:27.820144Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 9,
@@ -456,18 +456,19 @@
       "eligible": false
     },
     {
-      "number": 3490,
-      "title": "fix(onboarding): surface cron preview failure during new-machine dry-run",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3490",
+      "number": 3511,
+      "title": "bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3511",
       "labels": [
-        "cat:operations",
-        "domain:onboarding",
-        "machine:dev-primary",
+        "bug",
+        "cat:harness",
+        "domain:workstations",
+        "machine:multi",
         "status:plan-approved",
         "gate:completeness",
-        "lane:codex"
+        "lane:claude"
       ],
-      "updatedAt": "2026-08-01T06:13:30Z",
+      "updatedAt": "2026-08-01T11:30:20Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "claude",
@@ -475,6 +476,7 @@
       "provider_priority": "high",
       "provider_status": "underused",
       "work_type": [
+        "research",
         "implementation",
         "strategy"
       ],

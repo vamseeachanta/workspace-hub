@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-09-10T21:21:31.506537Z
+Generated: 2026-09-11T01:21:27.820144Z
 Apply mode: False
 Threshold: 0.9
 
@@ -19,7 +19,7 @@ Threshold: 0.9
 | #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3787 pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
-| #3490 fix(onboarding): surface cron preview failure during new-machine dry-run | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
+| #3511 bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #3788 bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3821 bug(equality): restore collector idempotency and macOS atomic-publish test portability | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3819 feat(harness): unified ecosystem doctor with stable probe schema | agent:agy | 0.60 | no | priority-labeled, strong-agy-language-match, provider-highest-priority |

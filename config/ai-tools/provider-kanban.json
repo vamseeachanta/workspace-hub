@@ -36,6 +36,123 @@
       "approval_ready": false,
       "hover": {
         "labels": [
+          "bug",
+          "cat:harness",
+          "cat:tooling",
+          "wrk-item"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "[WRK] R3/R5 recognise a criterion only when it follows the claim, so a preceding clause reads as a violation"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3835,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "[WRK] R3/R5 recognise a criterion only when it follows the claim, so a preceding clause reads as a violation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3835",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "bug",
+          "cat:harness",
+          "cat:tooling",
+          "wrk-item"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "[WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3834,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "[WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3834",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "bug",
+          "cat:harness",
+          "cat:tooling",
+          "wrk-item"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "[WRK] Soul deployment-drift gate checks two provider paths the installer refuses to create"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3833,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "[WRK] Soul deployment-drift gate checks two provider paths the installer refuses to create",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3833",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
           "lane:claude"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
@@ -8022,138 +8139,131 @@
       "title": "design(capabilities): reconcile existing per-repo GitHub Pages capabilities pages with the HF-backed aceengineer.com surface [C10]",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3494",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:operations",
-          "machine:dev-primary",
-          "domain:solver"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "chore(solver-queue): reconcile legacy solver-queue issues (#2641/#1586/#2524) with the live deckhand licensed-run lane [dm#1553 H]"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3491,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "chore(solver-queue): reconcile legacy solver-queue issues (#2641/#1586/#2524) with the live deckhand licensed-run lane [dm#1553 H]",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3491",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review,unavailable_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:operations",
-          "domain:onboarding",
-          "machine:dev-primary",
-          "status:plan-approved",
-          "gate:completeness",
-          "lane:codex"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- `scripts/setup/new-machine-setup.sh:190-202` delegates cron onboarding in four branches. The Linux dry-run branch passes `--dry-run` but appends `|| true`; default Linux already propagates the callee status, and the Windows branch intentionally remains best-effort.",
-        "provider_route": "claude",
-        "risks": "**Risk:** Any wrapper edit invalidates the staged-blob SHA pin; implementation will refresh the pin only after executable behavior and source-shape tests are green. | **Risk:** A broad removal of `|| true` would change Windows behavior; tests will bind the dry-run and Windows branches separately. | **Risk:** A test using the real callee could read the live crontab; all executable tests will use a ",
-        "tests": "15 TDD tests defined",
-        "title": "fix(onboarding): surface cron preview failure during new-machine dry-run"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3490,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-07-12-issue-3490-onboarding-cron-preview-failure.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "fix(onboarding): surface cron preview failure during new-machine dry-run",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3490",
-      "warnings": [
-        "approved_no_marker",
-        "legacy_review_no_sha",
-        "missing_review",
-        "unavailable_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:high",
-          "cat:data",
-          "machine:multi",
-          "epic",
-          "domain:capability"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "epic: Live HF-backed capability surfaces on aceengineer.com \u2014 self-perpetuating algorithm showcase"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3485,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "epic: Live HF-backed capability surfaces on aceengineer.com \u2014 self-perpetuating algorithm showcase",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3485",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-09-10T21:21:33Z",
+  "generated_at": "2026-09-11T01:21:29Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "cat:harness",
+            "cat:tooling",
+            "wrk-item"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "[WRK] R3/R5 recognise a criterion only when it follows the claim, so a preceding clause reads as a violation"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3835,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "[WRK] R3/R5 recognise a criterion only when it follows the claim, so a preceding clause reads as a violation",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3835",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "cat:harness",
+            "cat:tooling",
+            "wrk-item"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "[WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3834,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "[WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3834",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug",
+            "cat:harness",
+            "cat:tooling",
+            "wrk-item"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "[WRK] Soul deployment-drift gate checks two provider paths the installer refuses to create"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3833,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "[WRK] Soul deployment-drift gate checks two provider paths the installer refuses to create",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3833",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16151,130 +16261,6 @@
         "title": "design(capabilities): reconcile existing per-repo GitHub Pages capabilities pages with the HF-backed aceengineer.com surface [C10]",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3494",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:operations",
-            "machine:dev-primary",
-            "domain:solver"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "chore(solver-queue): reconcile legacy solver-queue issues (#2641/#1586/#2524) with the live deckhand licensed-run lane [dm#1553 H]"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3491,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "chore(solver-queue): reconcile legacy solver-queue issues (#2641/#1586/#2524) with the live deckhand licensed-run lane [dm#1553 H]",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3491",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review,unavailable_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:operations",
-            "domain:onboarding",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- `scripts/setup/new-machine-setup.sh:190-202` delegates cron onboarding in four branches. The Linux dry-run branch passes `--dry-run` but appends `|| true`; default Linux already propagates the callee status, and the Windows branch intentionally remains best-effort.",
-          "provider_route": "claude",
-          "risks": "**Risk:** Any wrapper edit invalidates the staged-blob SHA pin; implementation will refresh the pin only after executable behavior and source-shape tests are green. | **Risk:** A broad removal of `|| true` would change Windows behavior; tests will bind the dry-run and Windows branches separately. | **Risk:** A test using the real callee could read the live crontab; all executable tests will use a ",
-          "tests": "15 TDD tests defined",
-          "title": "fix(onboarding): surface cron preview failure during new-machine dry-run"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3490,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-07-12-issue-3490-onboarding-cron-preview-failure.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "fix(onboarding): surface cron preview failure during new-machine dry-run",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3490",
-        "warnings": [
-          "approved_no_marker",
-          "legacy_review_no_sha",
-          "missing_review",
-          "unavailable_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:high",
-            "cat:data",
-            "machine:multi",
-            "epic",
-            "domain:capability"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "epic: Live HF-backed capability surfaces on aceengineer.com \u2014 self-perpetuating algorithm showcase"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3485,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "epic: Live HF-backed capability surfaces on aceengineer.com \u2014 self-perpetuating algorithm showcase",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3485",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16285,16 +16271,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-10T21:21:27.656007Z",
+  "scorecard_generated_at": "2026-09-11T01:21:25.325017Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-10T21:21:27.421054Z",
+  "utilization_generated_at": "2026-09-11T01:21:25.090027Z",
   "warning_summary": {
-    "approved_no_marker": 12,
+    "approved_no_marker": 11,
     "approved_no_plan": 7,
-    "legacy_review_no_sha": 10,
+    "legacy_review_no_sha": 9,
     "major_review": 5,
     "marker_without_open_approved_issue": 177,
-    "missing_review": 43,
-    "unavailable_review": 6
+    "missing_review": 42,
+    "unavailable_review": 5
   }
 }

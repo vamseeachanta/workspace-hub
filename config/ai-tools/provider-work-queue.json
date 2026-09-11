@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-10T21:21:31.186610Z",
+  "generated_at": "2026-09-11T01:21:27.493540Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-10T21:21:27.656007Z",
+  "scorecard_generated_at": "2026-09-11T01:21:25.325017Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 17,
+      "execution_ready_count": 16,
       "total_candidates": 176,
       "top_issues": [
         {
@@ -207,18 +207,19 @@
           ]
         },
         {
-          "number": 3490,
-          "title": "fix(onboarding): surface cron preview failure during new-machine dry-run",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3490",
+          "number": 3511,
+          "title": "bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3511",
           "labels": [
-            "cat:operations",
-            "domain:onboarding",
-            "machine:dev-primary",
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "machine:multi",
             "status:plan-approved",
             "gate:completeness",
-            "lane:codex"
+            "lane:claude"
           ],
-          "updatedAt": "2026-08-01T06:13:30Z",
+          "updatedAt": "2026-08-01T11:30:20Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -226,6 +227,7 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -415,30 +417,6 @@
           "updatedAt": "2026-07-27T01:19:10Z",
           "execution_ready": true,
           "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3490,
-          "title": "fix(onboarding): surface cron preview failure during new-machine dry-run",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3490",
-          "labels": [
-            "cat:operations",
-            "domain:onboarding",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:30Z",
-          "execution_ready": true,
-          "priority_rank": 4,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -867,30 +845,6 @@
           "updatedAt": "2026-09-10T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3485,
-          "title": "epic: Live HF-backed capability surfaces on aceengineer.com \u2014 self-perpetuating algorithm showcase",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3485",
-          "labels": [
-            "priority:high",
-            "cat:data",
-            "machine:multi",
-            "epic",
-            "domain:capability"
-          ],
-          "updatedAt": "2026-07-31T08:35:34Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3501,27 +3455,6 @@
           ]
         },
         {
-          "number": 3491,
-          "title": "chore(solver-queue): reconcile legacy solver-queue issues (#2641/#1586/#2524) with the live deckhand licensed-run lane [dm#1553 H]",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3491",
-          "labels": [
-            "cat:operations",
-            "machine:dev-primary",
-            "domain:solver"
-          ],
-          "updatedAt": "2026-07-31T08:33:08Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "strategy"
-          ]
-        },
-        {
           "number": 3494,
           "title": "design(capabilities): reconcile existing per-repo GitHub Pages capabilities pages with the HF-backed aceengineer.com surface [C10]",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3494",
@@ -4380,7 +4313,74 @@
           "labels": [
             "lane:claude"
           ],
-          "updatedAt": "2026-09-10T15:24:32Z",
+          "updatedAt": "2026-09-11T00:43:37Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3833,
+          "title": "[WRK] Soul deployment-drift gate checks two provider paths the installer refuses to create",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3833",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "cat:tooling",
+            "wrk-item"
+          ],
+          "updatedAt": "2026-09-10T21:54:47Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3834,
+          "title": "[WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3834",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "cat:tooling",
+            "wrk-item"
+          ],
+          "updatedAt": "2026-09-10T21:57:43Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3835,
+          "title": "[WRK] R3/R5 recognise a criterion only when it follows the claim, so a preceding clause reads as a violation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3835",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "cat:tooling",
+            "wrk-item"
+          ],
+          "updatedAt": "2026-09-10T22:00:41Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
