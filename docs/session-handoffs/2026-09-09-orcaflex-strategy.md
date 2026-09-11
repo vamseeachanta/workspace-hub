@@ -18,6 +18,12 @@ The merged batch repair is an accepted local software checkpoint, not deployment
 - Three subagent lanes handled tests, methodology/skill routing and review. Claude/Codex plan reviews occurred. Claude code findings and source-based dispositions are recorded; its full-source follow-up was unavailable. Independent final Codex review approved the bounded repair. No unanimous approval or deployment certification is claimed.
 - Existing skills, the legacy queue README and digitalmodel operator map now route to the [runbook](../solver/orcaflex-execution-runbook.html), [strategy](../reports/2026-09-09-orcaflex-fea-strategy.html) and [measured evidence](../reports/2026-09-09-orcaflex-execution-evidence.md).
 
+## Validator repair checkpoint — 2026-09-11
+
+The six strict errors and 19 warnings were traced to stale validator classifications; generated active timestep values must remain preserved. The [reviewed bounded 716 plan](../plans/2026-09-11-digitalmodel-716-validator.html) awaits user implementation approval. Source-order/inherited-context findings and exact Claude/Codex verdicts are linked from the plan. Current upstream 90bcff85 does not change the affected source/tests from a7fe3775.
+
+The [mooring readiness report](../reports/2026-09-11-orcaflex-mooring-readiness.html) keeps the next native gate explicit: generated restart-script null spelling needs a field-specific disposition; turret has a drawing dependency; no reviewed arbitrary-master one-thread harness was established. Start with the mooring buoy after those gates, then CALM/turret and installation. No source changes or native run occurred during this diagnostic/planning increment.
+
 ## Component-family qualification — latest user steering
 
 The user requires the existing digitalmodel and primary Linux producer examples to form the acceptance corpus, with hull/mooring first and installation next. The [family qualification report](../reports/2026-09-11-orcaflex-family-qualification.html) records actual schema/generation checks, the bounded cross-machine inventory and stage gates. Every example needs visible pass/fail/blocker evidence; no skipped case or successful file write establishes family qualification. Existing library/corpus issues own this track, in parallel with execution safety. Native execution and engineering parity remain separate from offline checks.
