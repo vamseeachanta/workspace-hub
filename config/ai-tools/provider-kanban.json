@@ -35,6 +35,40 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "docs(review): verify Python test-runner entrypoint imports independently of pytest module invocation"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3837,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "docs(review): verify Python test-runner entrypoint imports independently of pytest module invocation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3837",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [
           "bug",
           "cat:harness",
@@ -8101,52 +8135,48 @@
       "title": "test(enforcement): make hash-pinned semantic mutation tests exercise refreshed pins",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3495",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:tooling",
-          "machine:dev-primary",
-          "domain:capability"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "design(capabilities): reconcile existing per-repo GitHub Pages capabilities pages with the HF-backed aceengineer.com surface [C10]"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3494,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "design(capabilities): reconcile existing per-repo GitHub Pages capabilities pages with the HF-backed aceengineer.com surface [C10]",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3494",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-09-11T01:21:29Z",
+  "generated_at": "2026-09-11T05:21:32Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "docs(review): verify Python test-runner entrypoint imports independently of pytest module invocation"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3837,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "docs(review): verify Python test-runner entrypoint imports independently of pytest module invocation",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3837",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16223,44 +16253,6 @@
         "title": "test(enforcement): make hash-pinned semantic mutation tests exercise refreshed pins",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3495",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:tooling",
-            "machine:dev-primary",
-            "domain:capability"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "design(capabilities): reconcile existing per-repo GitHub Pages capabilities pages with the HF-backed aceengineer.com surface [C10]"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3494,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "design(capabilities): reconcile existing per-repo GitHub Pages capabilities pages with the HF-backed aceengineer.com surface [C10]",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3494",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -16271,9 +16263,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-11T01:21:25.325017Z",
+  "scorecard_generated_at": "2026-09-11T05:21:28.346091Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-11T01:21:25.090027Z",
+  "utilization_generated_at": "2026-09-11T05:21:28.081521Z",
   "warning_summary": {
     "approved_no_marker": 11,
     "approved_no_plan": 7,

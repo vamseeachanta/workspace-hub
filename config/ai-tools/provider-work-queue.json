@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-11T01:21:27.493540Z",
+  "generated_at": "2026-09-11T05:21:30.609842Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-11T01:21:25.325017Z",
+  "scorecard_generated_at": "2026-09-11T05:21:28.346091Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -3455,28 +3455,6 @@
           ]
         },
         {
-          "number": 3494,
-          "title": "design(capabilities): reconcile existing per-repo GitHub Pages capabilities pages with the HF-backed aceengineer.com surface [C10]",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3494",
-          "labels": [
-            "cat:tooling",
-            "machine:dev-primary",
-            "domain:capability"
-          ],
-          "updatedAt": "2026-07-31T08:33:10Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3495,
           "title": "test(enforcement): make hash-pinned semantic mutation tests exercise refreshed pins",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3495",
@@ -4313,7 +4291,7 @@
           "labels": [
             "lane:claude"
           ],
-          "updatedAt": "2026-09-11T00:43:37Z",
+          "updatedAt": "2026-09-11T04:09:54Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4381,6 +4359,24 @@
             "wrk-item"
           ],
           "updatedAt": "2026-09-10T22:00:41Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3837,
+          "title": "docs(review): verify Python test-runner entrypoint imports independently of pytest module invocation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3837",
+          "labels": [],
+          "updatedAt": "2026-09-11T02:41:28Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
