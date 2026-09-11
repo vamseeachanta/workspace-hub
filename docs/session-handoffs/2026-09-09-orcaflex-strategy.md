@@ -2,6 +2,8 @@
 
 Tracking: [execution 3831](https://github.com/vamseeachanta/workspace-hub/issues/3831), [documentation PR 3832](https://github.com/vamseeachanta/workspace-hub/pull/3832), [repair PR 2081](https://github.com/vamseeachanta/digitalmodel/pull/2081), [portfolio 3601](https://github.com/vamseeachanta/workspace-hub/issues/3601).
 
+User-requested running record: [OrcaFlex work log](../reports/orcaflex-work-log.md). Update its worked/failed evidence and current checkpoint at every meaningful continuation; keep native, engineering and deployment claims separate.
+
 ## Objectives — updated 2026-09-11
 
 1. Reliable OrcaFlex execution from enrolled ecosystem machines through the existing licensed Windows execution lane, with truthful failure/result evidence and measured per-origin coverage.
@@ -20,9 +22,11 @@ The merged batch repair is an accepted local software checkpoint, not deployment
 
 ## Validator repair checkpoint — 2026-09-11
 
-The six strict errors and 19 warnings were traced to stale validator classifications; generated active timestep values must remain preserved. The [reviewed bounded 716 plan](../plans/2026-09-11-digitalmodel-716-validator.html) awaits user implementation approval. Source-order/inherited-context findings and exact Claude/Codex verdicts are linked from the plan. Current upstream 90bcff85 does not change the affected source/tests from a7fe3775.
+The user authorized the [reviewed bounded 716 plan](../plans/2026-09-11-digitalmodel-716-validator.html) by saying “continue with the work.” The validator repair is pushed in [draft PR 2091](https://github.com/vamseeachanta/digitalmodel/pull/2091), code `72dd0f53`, based on `90bcff85`. No approval label was self-applied. Final focused tests: 206 passed. [Code-review disposition](../../scripts/review/results/2026-09-11-digitalmodel-716-code-disposition.md) preserves Claude MAJOR and Codex REQUEST_CHANGES, exact reproduced defects and inline fixes.
 
-The [mooring readiness report](../reports/2026-09-11-orcaflex-mooring-readiness.html) keeps the next native gate explicit: generated restart-script null spelling needs a field-specific disposition; turret has a drawing dependency; no reviewed arbitrary-master one-thread harness was established. Start with the mooring buoy after those gates, then CALM/turret and installation. No source changes or native run occurred during this diagnostic/planning increment.
+The controlled replay covered 94 source paths and compared all 534 generated files byte-for-byte under the same hash seed: no difference, no normalization, zero native Model attempts. Final strict validation passed all 441 model YAML files across 93 generated cases with zero errors/warnings/exceptions; the passing-ship path remains schema-only. Eleven generator profile warnings remain. Evidence is pushed at `cb309cbc`. The first unseeded replay differed in 60 case manifests; [2092](https://github.com/vamseeachanta/digitalmodel/issues/2092) owns deterministic ordering, with resource intelligence posted and a reviewed plan still required. [2090](https://github.com/vamseeachanta/digitalmodel/issues/2090) preserves generalizable YAML context/diagnostic/graph-limit lessons. The [repair and corpus report](https://github.com/vamseeachanta/digitalmodel/blob/bugfix/orcaflex-validator-716/docs/reports/orcaflex-validator-716.html) owns per-stage evidence and remaining findings. Read live PR checks before integration; offline evidence does not qualify physics or deployment.
+
+The [mooring readiness report](../reports/2026-09-11-orcaflex-mooring-readiness.html) keeps the next native gate explicit: generated restart-script null spelling needs a field-specific disposition; turret has a drawing dependency; no reviewed arbitrary-master one-thread harness was established. Start with the mooring buoy after those gates, then CALM/turret and installation. This increment changed validator source/tests only and did not perform a native run.
 
 ## Component-family qualification — latest user steering
 
@@ -52,6 +56,8 @@ Claude's adversarial plan review found preservation, stale-approved-work discove
 5. Qualify balanced global-to-local load transfer, then expand coupled families and campaigns within demonstrated applicability limits. Follow the existing strategy issue map and report/qualification owners.
 
 ## Cleanup audit and boundaries
+
+- Current increment: validator worktree retained on `bugfix/orcaflex-validator-716`, pushed with source/tests and corpus evidence; documentation worktree retained for the linked work log and reviews. Private audit directory `orcaflex-validator-716-62f91d4483a44b6f9d549177071334a0` retains original and controlled replay evidence (approximately 202 MiB). This is EXPECTED evidence, not disposable untraced scratch. New issue/PR message scratch was removed; scoped temporary/partial and cleanup-lock scans found no new residue. The historical exceptions below remain preserved.
 
 - CLEAN: actual-path legal scans, local HTML links and diff checks passed. No new stash. Local/remote review-prompt scratch removed. Production tasks retain Running/Ready states; no task/environment configuration changed.
 - EXPECTED: three isolated worktrees retained: execution documentation, detached merged repair, and smoke implementation; the two temporary subagent worktrees were removed after verifying their exact files were preserved in commit `02547400`; repair PR 2081 is merged, documentation PR 3832 remains draft. The isolated solver worktree is detached at the merge revision for reproducibility. Generic proof directories `orcaflex-merged-proof-v79j4sey`, `orcaflex-batch-proof-3ytc_ubo` and `orcaflex-batch-proof-4cc0glvu` remain in the current user's temporary directory; sanitized evidence is committed. Private portfolio inventory and Deckhand raw export remain local; do not publish raw private issue bodies.
