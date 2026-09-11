@@ -18,6 +18,12 @@ The merged batch repair is an accepted local software checkpoint, not deployment
 - Three subagent lanes handled tests, methodology/skill routing and review. Claude/Codex plan reviews occurred. Claude code findings and source-based dispositions are recorded; its full-source follow-up was unavailable. Independent final Codex review approved the bounded repair. No unanimous approval or deployment certification is claimed.
 - Existing skills, the legacy queue README and digitalmodel operator map now route to the [runbook](../solver/orcaflex-execution-runbook.html), [strategy](../reports/2026-09-09-orcaflex-fea-strategy.html) and [measured evidence](../reports/2026-09-09-orcaflex-execution-evidence.md).
 
+## Current planning checkpoint — 2026-09-11 UTC
+
+Parallel agents researched cleanup architecture, prepared the [queue recovery preview](../reports/2026-09-11-deckhand-queue-recovery-preview.html), and reviewed the [Deckhand 591 repair plan](../plans/2026-09-11-deckhand-591-cleanup.html). The plan proposes Windows containment before resume, observed whole-job cleanup and a retained execution guard on uncertainty; unsupported non-Windows licensed execution would fail before spawn. Linux producer operation remains separate. The stronger injected-runner cleanup contract is an explicit compatibility decision in the approval scope.
+
+Queue recovery is still a preview: exact private roots, full writer inventory, restoration capability and maintenance window must be specified before operational approval. Existing private evidence remains preserved. Generalizable watchdog kill-then-respawn risk is tracked separately in [Deckhand 592](https://github.com/vamseeachanta/deckhand/issues/592). No implementation, task mutation or queue recovery occurred during this planning checkpoint.
+
 ## Ordered next work
 
 Smoke repair [PR 2084](https://github.com/vamseeachanta/digitalmodel/pull/2084) is merged at `a7fe3775717db3f67ff1e4d4e8733c5a9f285357` (2026-09-11 00:36:32 UTC), following all 30 final-head checks passing. Post-merge revalidation passed 63 focused tests and native OrcaFlex 11.6c in 4.5 seconds: all three models observed one thread, 81 finite dynamics samples and 81 finite simulation-reload samples, exit zero. See [merged proof](../reports/2026-09-10-orcaflex-smoke-merged-proof.json). The worktree is detached at that merge. Actual earlier Claude MAJOR cleanup findings and main-session RED-test/fix dispositions remain preserved in the merged repair report; no unanimous approval is inferred.
