@@ -27,7 +27,7 @@ Do not infer that a checkout already exists at a remembered absolute path. Do no
 | Change | Recorded state |
 |---|---|
 | [digitalmodel PR 2091](https://github.com/vamseeachanta/digitalmodel/pull/2091), validator repair | MERGED at `14abde3fd96dffc79d802e0329fc9bc090cd270c` |
-| [digitalmodel PR 2100](https://github.com/vamseeachanta/digitalmodel/pull/2100), bounded mooring qualification | Integration target: main. Reviewed source `833f8526`; main integration head `8b60410908d758612bfa9571f25c605caa28f340`. Resolve live merge state and merge SHA using the commands above before proceeding. |
+| [digitalmodel PR 2100](https://github.com/vamseeachanta/digitalmodel/pull/2100), bounded mooring qualification | Integration target: main. Reviewed source `833f8526`; initial main integration head `8b60410908d758612bfa9571f25c605caa28f340`; fixture-only CI repair `e4f30e27`. Resolve live merge state and merge SHA using the commands above before proceeding. |
 | [workspace-hub PR 3832](https://github.com/vamseeachanta/workspace-hub/pull/3832), strategy/reports/handoff | This handover is included in this PR. Resolve its final merge SHA and verify main ancestry at destination bootstrap. |
 
 If already merged, verify the actual merged revision and avoid duplicate changes. If still open, finish the authorized integration only when all required checks and reviews permit it; preserve failed-check evidence and repair within the approved scope. Do not equate a green local suite with hosted CI completion.
@@ -58,12 +58,14 @@ Issue ownership:
 
 ## Verified software evidence
 
-- Final local scope suite: **178 passed in 19.36 seconds**; legal scan passed. Earlier focused suites overlap this total. Hosted CI remains a separate source of truth.
+- Initial local suite: 178 passed in 19.36 seconds. After the merge-time missing-API fixture regression and repair, **179 passed in 19.90 seconds**; legal scan passed. Earlier focused suites overlap this total. Hosted CI remains a separate source of truth.
 - Corpus: **94 paths**, 91 direct generations plus two jumper adapter generations, and one passing-ship own-schema case whose generation integration remains unknown. Three direct-schema rejections remain visible.
 - **534 generated files:** 93 change only the implicit General `RestartStateRecordingTest` from tilde to quoted empty; 441 are byte-identical. No unexpected generated changes. Explicit generic overrides retain their values.
 - Hash seed was pinned to zero. Initial unpinned ordering differences were preserved and routed to the existing follow-on issue rather than normalized away.
 - Template changes are comments only: single mooring line, regular-wave height and period. Parsed YAML is unchanged. Current source-template SHA-256 at this checkpoint: `1fa7c6879eca05511a330dfd042fec39cdf21ba65f0f82b1653810b464d43be6`.
 - Offline source/reference comparison has **56 unresolved differences**. Reference compatibility is false; the original-reference route is blocked. Code/test success is not engineering equivalence.
+
+The first main-target Linux CI run reported seven packaging fixture setup errors because the test unconditionally imported OrcFxAPI. A missing-module regression reproduced this locally; the fixture now blocks the optional API and guards any already-loaded Model constructor. Production generator/native code and all model inputs remained unchanged. Verify the hosted rerun on the latest PR head; never treat the earlier failed check as green.
 
 ## Native attempt — do not repeat automatically
 
