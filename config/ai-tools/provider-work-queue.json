@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-11T13:21:33.902891Z",
+  "generated_at": "2026-09-11T17:21:31.769070Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-11T13:21:31.579909Z",
+  "scorecard_generated_at": "2026-09-11T17:21:29.623603Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 16,
-      "total_candidates": 176,
+      "execution_ready_count": 17,
+      "total_candidates": 175,
       "top_issues": [
         {
           "number": 3500,
@@ -84,6 +84,31 @@
             "domain:repo"
           ],
           "updatedAt": "2026-09-03T23:32:02Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3838,
+          "title": "fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3838",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-11T16:38:48Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -205,32 +230,6 @@
             "implementation",
             "strategy"
           ]
-        },
-        {
-          "number": 3511,
-          "title": "bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3511",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T11:30:20Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
         }
       ],
       "full_candidates": [
@@ -304,6 +303,31 @@
             "domain:repo"
           ],
           "updatedAt": "2026-09-03T23:32:02Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3838,
+          "title": "fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3838",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-11T16:38:48Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -851,75 +875,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3497,
-          "title": "EPIC: Fleet dispatch ecosystem \u2014 ace-linux-1 single dispatch surface; all other machines headless",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3497",
-          "labels": [
-            "priority:high",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "epic"
-          ],
-          "updatedAt": "2026-07-31T08:35:35Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3498,
-          "title": "Machine-ecosystem map: roles, data-source access, services \u2014 admin-tier extension of the equality matrix",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3498",
-          "labels": [
-            "priority:high",
-            "cat:operations",
-            "domain:workstations",
-            "machine:dev-primary"
-          ],
-          "updatedAt": "2026-07-31T08:33:12Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3499,
-          "title": "Zero-touch repo hygiene on all headless nodes (generalized ff-sync watchdog + fleet health in equality matrix)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3499",
-          "labels": [
-            "priority:high",
-            "cat:operations",
-            "domain:workstations",
-            "machine:dev-primary"
-          ],
-          "updatedAt": "2026-07-31T08:33:14Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -3413,6 +3368,29 @@
           ]
         },
         {
+          "number": 3841,
+          "title": "fix(digitalmodel/tests): OrcaFlex statics tests lack the solver marker and cannot be deselected on a licensed host",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3841",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-11T16:34:00Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 3587,
           "title": "phone-media: choose the ongoing incremental sync lane",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3587",
@@ -3452,30 +3430,6 @@
           "provider_status": "underused",
           "work_type": [
             "general"
-          ]
-        },
-        {
-          "number": 3495,
-          "title": "test(enforcement): make hash-pinned semantic mutation tests exercise refreshed pins",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3495",
-          "labels": [
-            "cat:tooling",
-            "domain:testing",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:32Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
           ]
         },
         {
@@ -4291,7 +4245,7 @@
           "labels": [
             "lane:claude"
           ],
-          "updatedAt": "2026-09-11T04:09:54Z",
+          "updatedAt": "2026-09-11T14:07:38Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4388,14 +4342,34 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3840,
+          "title": "[review learning] Explicit integer bounds before canonical JSON serialization",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3840",
+          "labels": [
+            "lane:codex"
+          ],
+          "updatedAt": "2026-09-11T15:49:41Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 6,
-      "total_candidates": 22,
+      "execution_ready_count": 7,
+      "total_candidates": 23,
       "top_issues": [
         {
           "number": 3516,
@@ -4435,6 +4409,30 @@
             "domain:routing"
           ],
           "updatedAt": "2026-08-03T05:48:46Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3839,
+          "title": "fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3839",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-11T16:14:12Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4565,31 +4563,6 @@
             "research",
             "implementation"
           ]
-        },
-        {
-          "number": 3821,
-          "title": "bug(equality): restore collector idempotency and macOS atomic-publish test portability",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3821",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "domain:testing",
-            "machine:multi",
-            "status:needs-plan",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-09-03T18:01:25Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
         }
       ],
       "full_candidates": [
@@ -4631,6 +4604,30 @@
             "domain:routing"
           ],
           "updatedAt": "2026-08-03T05:48:46Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3839,
+          "title": "fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3839",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-11T16:14:12Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",

@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-11T13:21:34.212722Z",
+  "generated_at": "2026-09-11T17:21:32.026612Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 9,
+  "eligible_count": 11,
   "applied": [],
   "candidates": [
     {
@@ -52,6 +52,39 @@
         "domain:routing"
       ],
       "updatedAt": "2026-08-03T05:48:46Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.95,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3839,
+      "title": "fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3839",
+      "labels": [
+        "priority:high",
+        "cat:engineering",
+        "domain:marine",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-09-11T16:14:12Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -160,6 +193,40 @@
         "domain:repo"
       ],
       "updatedAt": "2026-09-03T23:32:02Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3838,
+      "title": "fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3838",
+      "labels": [
+        "priority:high",
+        "cat:engineering",
+        "domain:marine",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-09-11T16:38:48Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",
@@ -456,40 +523,6 @@
       "eligible": false
     },
     {
-      "number": 3511,
-      "title": "bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3511",
-      "labels": [
-        "bug",
-        "cat:harness",
-        "domain:workstations",
-        "machine:multi",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-08-01T11:30:20Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.75,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 3788,
       "title": "bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3788",
@@ -502,39 +535,6 @@
         "domain:routing"
       ],
       "updatedAt": "2026-08-04T04:40:39Z",
-      "execution_ready": false,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.6,
-      "confidence_reasons": [
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3821,
-      "title": "bug(equality): restore collector idempotency and macOS atomic-publish test portability",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3821",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:harness",
-        "domain:testing",
-        "machine:multi",
-        "status:needs-plan",
-        "lane:codex"
-      ],
-      "updatedAt": "2026-09-03T18:01:25Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",

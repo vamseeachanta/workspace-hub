@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-11T13:21:36Z
+Generated: 2026-09-11T17:21:34Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,10 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3841 | fix(digitalmodel/tests): OrcaFlex statics tests lack the solver marker and cannot be deselected on a licensed host | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3840 | [review learning] Explicit integer bounds before canonical JSON serialization | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3839 | fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
+| #3838 | fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3837 | docs(review): verify Python test-runner entrypoint imports independently of pytest module invocation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3835 | [WRK] R3/R5 recognise a criterion only when it follows the claim, so a preceding clause reads as a violation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3834 | [WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -239,10 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3506 | ops(ace-win-2): equivalence fingerprint ABSENT — sentinel not publishing from ace-win-2 (flagged by #3502 monitoring) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3505 | ops(ace-win-1): equivalence fingerprint ABSENT — sentinel not publishing from ace-win-1 (flagged by #3502 monitoring) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3500 | bug(pre-push): equivalence-state publish loops full tier-1 suite forever — remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #3499 | Zero-touch repo hygiene on all headless nodes (generalized ff-sync watchdog + fleet health in equality matrix) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3498 | Machine-ecosystem map: roles, data-source access, services — admin-tier extension of the equality matrix | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3497 | EPIC: Fleet dispatch ecosystem — ace-linux-1 single dispatch surface; all other machines headless | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3495 | test(enforcement): make hash-pinned semantic mutation tests exercise refreshed pins | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
