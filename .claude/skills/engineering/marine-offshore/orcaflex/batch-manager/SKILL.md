@@ -35,6 +35,19 @@ scripts_exempt: true
 
 # Orcaflex Batch Manager
 
+## Operational entry point
+
+Use the [execution runbook](../../../../../../docs/solver/orcaflex-execution-runbook.html)
+before local or remote batches. It routes to the existing execution owner and
+separates proposed controls from verified deployment. Start with a bounded case
+under the approved host budget; licence availability and CPU count do not authorize
+additional workers or project use.
+
+The Python fragments below are historical examples, not a runnable dispatch
+contract. Their `max_workers=20` is not an approved capacity setting. Check imports
+against the selected digitalmodel revision and obtain exact operational commands
+from the pinned lane release; do not start a parallel queue from these examples.
+
 ## Wiki Context (query before execution)
 
 Before starting a batch simulation campaign, query the wiki for relevant domain knowledge:
