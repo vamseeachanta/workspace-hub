@@ -2,7 +2,7 @@
 
 Tracking: [execution 3831](https://github.com/vamseeachanta/workspace-hub/issues/3831), [documentation PR 3832](https://github.com/vamseeachanta/workspace-hub/pull/3832), [repair PR 2081](https://github.com/vamseeachanta/digitalmodel/pull/2081), [portfolio 3601](https://github.com/vamseeachanta/workspace-hub/issues/3601).
 
-## Objectives — updated 2026-09-10
+## Objectives — updated 2026-09-11
 
 1. Reliable OrcaFlex execution from enrolled ecosystem machines through the existing licensed Windows execution lane, with truthful failure/result evidence and measured per-origin coverage.
 2. Qualified FEA models for component and structure families through existing specifications, libraries and solver adapters: OrcaFlex global/slender-system response, structural FE for detailed components, and verified load transfer between them.
@@ -17,6 +17,10 @@ The merged batch repair is an accepted local software checkpoint, not deployment
 - Final focused suite: 54 passed, one skipped. Overlapping converter check: 20 passed, two skipped; counts are not additive. Source hashes and sanitized proof are in digitalmodel's report. Skipped native-corpus fixtures remain a coverage gap.
 - Three subagent lanes handled tests, methodology/skill routing and review. Claude/Codex plan reviews occurred. Claude code findings and source-based dispositions are recorded; its full-source follow-up was unavailable. Independent final Codex review approved the bounded repair. No unanimous approval or deployment certification is claimed.
 - Existing skills, the legacy queue README and digitalmodel operator map now route to the [runbook](../solver/orcaflex-execution-runbook.html), [strategy](../reports/2026-09-09-orcaflex-fea-strategy.html) and [measured evidence](../reports/2026-09-09-orcaflex-execution-evidence.md).
+
+## Component-family qualification — latest user steering
+
+The user requires the existing digitalmodel and primary Linux producer examples to form the acceptance corpus, with hull/mooring first and installation next. The [family qualification report](../reports/2026-09-11-orcaflex-family-qualification.html) records actual schema/generation checks, the bounded cross-machine inventory and stage gates. Every example needs visible pass/fail/blocker evidence; no skipped case or successful file write establishes family qualification. Existing library/corpus issues own this track, in parallel with execution safety. Native execution and engineering parity remain separate from offline checks.
 
 ## Current planning checkpoint — 2026-09-11 UTC
 
@@ -38,7 +42,7 @@ Claude's adversarial plan review found preservation, stale-approved-work discove
 1. Start from accepted smoke merge `a7fe3775`. Prepare the reviewed cleanup-repair plan for Deckhand 591 and the private queue recovery preview; resolve both blockers before selecting a deployment candidate.
 2. Prepare the neutral service scope and task-cutover package: exact allowed repository/fixture revision, private workdir/host mapping, effective policy and rollback evidence. Reconcile existing Deckhand trust, host, resource and result-return owners; inventory tasks/consumers and verify process-stop/lock ownership before replacement. Scope/cutover approval remains outstanding; no approval label will be self-applied.
 3. After the preceding gates pass, prove the bounded smoke in the credentialed Windows task context, then submit from Linux through Deckhand's repository-backed queue. Capture origin/target, attempt identity, revisions, resources, verdict and saved-result readback. SSH and ordinary smoke success will not satisfy the separate full batch or signed-project acceptance contracts.
-4. Qualify the suspended-line family, then beam/plate FE benchmarks. Reuse typed specifications, MonolithicExtractor and generators for corpus/residual audit; preserve unsupported fields and mappings explicitly. [digitalmodel 2080](https://github.com/vamseeachanta/digitalmodel/issues/2080) owns adapter element/material fidelity.
+4. Follow the user-selected order: qualify the existing hull/vessel-mooring examples, then installation, then riser/jumper and other represented families; detailed beam/plate FE remains a separate physics track. Reuse typed specifications, MonolithicExtractor and generators for corpus/residual audit; preserve unsupported fields and mappings explicitly. [digitalmodel 2080](https://github.com/vamseeachanta/digitalmodel/issues/2080) owns adapter element/material fidelity.
 5. Qualify balanced global-to-local load transfer, then expand coupled families and campaigns within demonstrated applicability limits. Follow the existing strategy issue map and report/qualification owners.
 
 ## Cleanup audit and boundaries
