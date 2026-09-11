@@ -1,7 +1,7 @@
 # Plan: one OrcaFlex execution contract for local and remote producers
 
 Issue: [#3831](https://github.com/vamseeachanta/workspace-hub/issues/3831)
-Status: draft; revision 5; deployment will await scope/cutover approval and child-scope reconciliation
+Status: draft; revision 6; deployment will await runtime cleanup repair, queue preservation/recovery and scope/cutover approval
 Complexity: T3 | Mode: parallel-readonly planning, isolated implementation lanes after approval
 Client: N/A | Lane: lane:claude
 
@@ -43,7 +43,9 @@ Engineering standards-derived constants will not be introduced. Drive-index resu
 
 The first deployment increment will qualify ordinary `solver-smoke-test` task/route operation, separately from batch onboarding and signed project canaries. It will reuse the allowlisted upstream workflow from [Deckhand 588](https://github.com/vamseeachanta/deckhand/issues/588). Its readiness measurement will not imply completion of batch/resource [550](https://github.com/vamseeachanta/deckhand/issues/550) or signed-canary [570](https://github.com/vamseeachanta/deckhand/issues/570).
 
-Preparation will propose the existing internal `software-ops` scope with a generic fixture in an allowed repository, subject to owner confirmation of the exact repository, revision, private workdir and host mapping. It will not reuse the currently mapped client scope. The operator will preserve both active checkouts and prepare isolated producer/executor candidates. Candidate Deckhand pin will be `ea24989c521dcab30ba5428cc5c8f791d273ed36`; digitalmodel will use the owner-integrated successor of reviewed repair `ce3728094a631ca6da3d3f8c99a331b3d80db33f`, after revision-specific acceptance. A PR head will not be called an integrated release.
+Preparation will propose the existing internal `software-ops` scope with a generic fixture in an allowed repository, subject to owner confirmation of the exact repository, revision, private workdir and host mapping. It will not reuse the currently mapped client scope. The operator will preserve both active checkouts and prepare isolated producer/executor candidates. The digitalmodel smoke pin will be `a7fe3775717db3f67ff1e4d4e8733c5a9f285357`. Deckhand candidate selection will wait for reviewed integration and acceptance of [cleanup repair 591](https://github.com/vamseeachanta/deckhand/issues/591); `ea24989c521dcab30ba5428cc5c8f791d273ed36` will serve only as the discovery baseline. Preparation will consult the [cutover blockers and merged proof](../reports/2026-09-10-orcaflex-cutover-readiness.html). A PR head will not be called an integrated release.
+
+Queue recovery will follow a separate private preview and approval under [queue owner 566](https://github.com/vamseeachanta/deckhand/issues/566). After approved writer quiescence, the operator will preserve and verify detached and original-main histories, refs, reflogs and rebase metadata before any abort or upgraded-agent startup. The heartbeat-only change scope will be rechecked after quiescence; broader changes will require replanning. Remote synchronization and process ownership will be verified before drain is declared. Failed or uncertain cleanup will retain quarantine; rollback will not reactivate a consumer before process absence and ownership are proven.
 
 The existing smoke will require RED-first strengthening before task cutover: current probe code will not by itself prove finite values, saved-simulation reload, or enforced solver thread limits. Native acceptance will require those assertions, explicit one-thread operation and bounded owned-process cleanup. Renaming a run observation-only will not bypass this resource ceiling. Offline compatibility checks will precede activation; policy will supply explicit host aliases, solver root, smoke allowlist and a reviewed wall-clock timeout. Exact private scope mapping, effective policy and rollback backup digests will accompany the cutover request.
 
