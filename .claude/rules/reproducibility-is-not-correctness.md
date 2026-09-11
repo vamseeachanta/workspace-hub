@@ -25,6 +25,16 @@ The shape is identical. Each suite asserted a relationship **between artifacts i
 system** — deck against generator, output against previous output, implementation against
 itself — and never a relationship between an artifact and a truth **outside** it.
 
+A third instance from the same day is worse than either, because the standard verification
+ritual would have **concealed** it rather than merely missed it. The mudmat deck never issued
+`FCUM`, so the default `FCUM,REPL` made its overturning couple replace, rather than add to,
+the short-edge nodes' share of the uniform load. The applied resultant fell short by
+`2/(L/ESIZE + 1)` — **a function of mesh density**. Refining the mesh therefore changed the
+answer, which is exactly what a mesh-convergence study expects to see. The study would have
+reported convergence behaviour, been read as evidence of a converging model, and the load
+would have been wrong at every refinement level. The ritual that exists to build confidence
+would have produced it, falsely.
+
 **How to apply:**
 
 1. **Name the comparator, and name its class.** Every artifact encoding physics or a
@@ -50,19 +60,27 @@ itself — and never a relationship between an artifact and a truth **outside** 
    800 kN applied load. Equilibrium, mass balance, energy balance, count conservation,
    round-trip identity — ask what must be true regardless of the answer, and assert that first.
 
-3. **Fix the tolerance before the run, not after.** "A tolerance stated at implementation" is a
+3. **Ask what your verification ritual cannot see — and whether the defect would wear its
+   disguise.** A convergence study, a regression baseline, a repeatability run and a
+   cross-platform check each assume the quantity under test is the only thing varying. When a
+   defect varies with the *same* parameter the ritual sweeps, the ritual reports the defect as
+   the expected behaviour. Before trusting a sweep, state what the sweep would look like if the
+   thing being swept were itself wrong. For a mesh study: assert the applied load is
+   mesh-independent *before* comparing results across meshes.
+
+4. **Fix the tolerance before the run, not after.** "A tolerance stated at implementation" is a
    tolerance chosen once the discrepancy is visible, which launders the defect into the
    baseline permanently.
 
-4. **Reject an assertion that cannot fail.** "Within its limit, or a stated exceedance" is
+5. **Reject an assertion that cannot fail.** "Within its limit, or a stated exceedance" is
    satisfied by every real number. A skip on both branches is satisfied by every host. Read
    each assertion and ask what input would make it fail; if none would, it certifies nothing.
 
-5. **A golden captured from code just changed proves self-consistency only.** Capturing one is
+6. **A golden captured from code just changed proves self-consistency only.** Capturing one is
    correct practice, and it is not sufficient on its own. Pair the capture with a comparator
    from class 1, or label the golden `archived-run` and state the absence.
 
-6. **Record the run configuration with the value.** A number reproduces only under the
+7. **Record the run configuration with the value.** A number reproduces only under the
    conditions that produced it. Solver version, argv, core count, parallel mode, platform, and
    the producing code's commit — otherwise a later mismatch reads as a regression, or a real
    regression reads as a configuration difference.
