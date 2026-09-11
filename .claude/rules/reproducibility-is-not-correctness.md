@@ -9,7 +9,9 @@ deterministic. It proves nothing about whether the artifact is right. Both are u
 one is validation, and the two are routinely confused because a green suite reads the same
 either way.
 
-Two independent instances surfaced in one repository on one day, 2026-09-11:
+Nine instances surfaced across two lanes in one repository on one day, 2026-09-11. Three are
+set out below; the rest are catalogued on
+[workspace-hub#3844](https://github.com/vamseeachanta/workspace-hub/issues/3844):
 
 - **Three Ansys example decks** were guarded by tests asserting the committed `.inp`
   byte-matches its generator's output. The guards were green. On the first run ever performed,
