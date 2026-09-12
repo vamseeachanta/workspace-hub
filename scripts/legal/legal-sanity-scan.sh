@@ -101,7 +101,13 @@ WARNINGS=0
 # Parse arguments
 for arg in "$@"; do
   case "$arg" in
-    --repo=*) TARGET_REPO="${arg#*=}" ;;
+    --repo=*)
+      TARGET_REPO="${arg#*=}"
+      if [[ -z "$TARGET_REPO" ]]; then
+        echo "ERROR: --repo requires a non-empty repository name" >&2
+        exit 2
+      fi
+      ;;
     --all) SCAN_ALL=true ;;
     --diff-only) DIFF_ONLY=true ;;
     --json) JSON_OUTPUT=true ;;
@@ -297,82 +303,6 @@ parse_exclusions() {
 }
 
 # --------------------------------------------------------------------------
-# split_repo_roots: print LEGAL_SCAN_REPO_ROOTS one root per line.
-# Separators: semicolons or newlines (':' would collide with Windows drive
-# letters under git-bash).
-# --------------------------------------------------------------------------
-split_repo_roots() {
-  printf '%s\n' "${LEGAL_SCAN_REPO_ROOTS:-}" | tr ';' '\n'
-}
-
-# --------------------------------------------------------------------------
-# resolve_repo_path: resolve a repository name to a directory.
-# Shared by --repo and --all.
-#
-# Order:
-#   1. LEGAL_SCAN_REPO_ROOTS wins when set: resolve against each listed root
-#      in order; if none match, FAIL (no fallthrough to defaults — the env
-#      being set means the caller took explicit control).
-#   2. Defaults, in order:
-#        nested   $WORKSPACE_ROOT/<name>          (preserves original behavior)
-#        sibling  $(dirname "$WORKSPACE_ROOT")/<name>
-#        walk-up  <ancestor>/<name> from WORKSPACE_ROOT, max 8 levels
-#
-# On success: sets RESOLVED_REPO_PATH, returns 0.
-# On failure: returns 1 with RESOLVE_CANDIDATES holding every path tried.
-# --------------------------------------------------------------------------
-resolve_repo_path() {
-  local name="$1"
-  RESOLVED_REPO_PATH=""
-  RESOLVE_CANDIDATES=()
-
-  if [[ -n "${LEGAL_SCAN_REPO_ROOTS:-}" ]]; then
-    local root
-    while IFS= read -r root; do
-      [[ -z "$root" ]] && continue
-      RESOLVE_CANDIDATES+=("$root/$name")
-      if [[ -d "$root/$name" ]]; then
-        RESOLVED_REPO_PATH="$root/$name"
-        return 0
-      fi
-    done < <(split_repo_roots)
-    return 1
-  fi
-
-  # Default 1: nested under the workspace root (original behavior)
-  RESOLVE_CANDIDATES+=("$WORKSPACE_ROOT/$name")
-  if [[ -d "$WORKSPACE_ROOT/$name" ]]; then
-    RESOLVED_REPO_PATH="$WORKSPACE_ROOT/$name"
-    return 0
-  fi
-
-  # Default 2: sibling of the workspace root
-  local parent
-  parent="$(dirname "$WORKSPACE_ROOT")"
-  RESOLVE_CANDIDATES+=("$parent/$name")
-  if [[ -d "$parent/$name" ]]; then
-    RESOLVED_REPO_PATH="$parent/$name"
-    return 0
-  fi
-
-  # Default 3: bounded walk-up from the workspace root (max 8 levels)
-  local ancestor="$parent"
-  local depth=0
-  while [[ $depth -lt 8 ]]; do
-    [[ "$ancestor" == "$(dirname "$ancestor")" ]] && break
-    ancestor="$(dirname "$ancestor")"
-    RESOLVE_CANDIDATES+=("$ancestor/$name")
-    if [[ -d "$ancestor/$name" ]]; then
-      RESOLVED_REPO_PATH="$ancestor/$name"
-      return 0
-    fi
-    depth=$((depth + 1))
-  done
-
-  return 1
-}
-
-# --------------------------------------------------------------------------
 # Scan a single directory against merged patterns
 # --------------------------------------------------------------------------
 scan_directory() {
@@ -491,9 +421,52 @@ fi
 
 load_registered_roots
 
+if [[ "${LEGAL_SCAN_RESOLVE_ONLY:-}" == "1" ]]; then
+  if [[ -n "$TARGET_REPO" ]]; then
+    resolve_repo_path "$TARGET_REPO" || exit 2
+    exit 0
+  elif [[ "$SCAN_ALL" == "true" ]]; then
+    resolved_any=false
+    if [[ ${#REGISTERED_ROOTS[@]} -gt 0 ]]; then
+      for root in "${REGISTERED_ROOTS[@]}"; do
+        [[ -d "$root" ]] || continue
+        if [[ -e "$root/.git" ]]; then
+          printf '%s\n' "$root"
+          resolved_any=true
+        fi
+        while IFS= read -r child; do
+          [[ -n "$child" ]] || continue
+          printf '%s\n' "$child"
+          resolved_any=true
+        done < <(find "$root" -mindepth 1 -maxdepth 1 -type d -exec test -e '{}/.git' ';' -print 2>/dev/null)
+      done
+    else
+      while IFS= read -r sub; do
+        [[ -n "$sub" ]] || continue
+        resolve_repo_path "$sub" || exit 2
+        resolved_any=true
+      done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach 'echo $sm_path' 2>/dev/null || true)
+    fi
+    if [[ "$resolved_any" != "true" ]]; then
+      echo "ERROR: --all found no repositories to scan; nothing to scan." >&2
+      echo "       A legal gate must never pass by scanning nothing. Initialize submodules or set LEGAL_SCAN_REPO_ROOTS." >&2
+      exit 2
+    fi
+    exit 0
+  else
+    printf '%s\n' "$WORKSPACE_ROOT"
+    exit 0
+  fi
+fi
+
 if [[ -n "$TARGET_REPO" ]]; then
   # Scan specific repo (shared candidate resolver)
   repo_path="$(resolve_repo_path "$TARGET_REPO")" || exit 2
+  if [[ -z "$repo_path" || ! -d "$repo_path" ]]; then
+    echo "ERROR: Resolved repository path is empty or not a directory: $TARGET_REPO" >&2
+    echo "       A legal gate must never pass by scanning nothing." >&2
+    exit 2
+  fi
   [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $TARGET_REPO ($repo_path)"
   scan_directory "$repo_path" "$TARGET_REPO" || true
 
@@ -509,6 +482,11 @@ elif [[ "$SCAN_ALL" == "true" ]]; then
   if [[ ${#submodules[@]} -gt 0 ]]; then
     for sub in "${submodules[@]}"; do
       sub_path="$(resolve_repo_path "$sub")" || exit 2
+      if [[ -z "$sub_path" || ! -d "$sub_path" ]]; then
+        echo "ERROR: Resolved repository path is empty or not a directory: $sub" >&2
+        echo "       A legal gate must never pass by scanning nothing." >&2
+        exit 2
+      fi
       [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $sub ($sub_path)"
       scan_directory "$sub_path" "$sub" || true
     done
@@ -523,7 +501,7 @@ elif [[ "$SCAN_ALL" == "true" ]]; then
       scan_directory "$root" "$root_label" || true
     done
   else
-    echo "ERROR: --all found nothing to scan (no initialized submodules and LEGAL_SCAN_REPO_ROOTS is not set)." >&2
+    echo "ERROR: --all found no repositories to scan; nothing to scan (no initialized submodules and LEGAL_SCAN_REPO_ROOTS is not set)." >&2
     echo "       A legal gate must never pass by scanning nothing. Initialize submodules or set LEGAL_SCAN_REPO_ROOTS." >&2
     exit 2
   fi
