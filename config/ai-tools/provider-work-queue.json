@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-11T17:21:31.769070Z",
+  "generated_at": "2026-09-11T21:21:40.406816Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-11T17:21:29.623603Z",
+  "scorecard_generated_at": "2026-09-11T21:21:38.235025Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -12,35 +12,8 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 17,
-      "total_candidates": 175,
+      "total_candidates": 176,
       "top_issues": [
-        {
-          "number": 3500,
-          "title": "bug(pre-push): equivalence-state publish loops full tier-1 suite forever \u2014 remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3500",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude",
-            "domain:repo"
-          ],
-          "updatedAt": "2026-07-31T02:26:55Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 3549,
           "title": "feat(ops): registry-driven Linux connection helpers with TDD",
@@ -109,6 +82,31 @@
             "lane:claude"
           ],
           "updatedAt": "2026-09-11T16:38:48Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3843,
+          "title": "refactor(orcaflex): consolidate four model generators onto modular_generator",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3843",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-11T20:33:18Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -234,33 +232,6 @@
       ],
       "full_candidates": [
         {
-          "number": 3500,
-          "title": "bug(pre-push): equivalence-state publish loops full tier-1 suite forever \u2014 remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3500",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude",
-            "domain:repo"
-          ],
-          "updatedAt": "2026-07-31T02:26:55Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3549,
           "title": "feat(ops): registry-driven Linux connection helpers with TDD",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3549",
@@ -328,6 +299,31 @@
             "lane:claude"
           ],
           "updatedAt": "2026-09-11T16:38:48Z",
+          "execution_ready": true,
+          "priority_rank": 1,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3843,
+          "title": "refactor(orcaflex): consolidate four model generators onto modular_generator",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3843",
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-11T20:33:18Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -3391,6 +3387,28 @@
           ]
         },
         {
+          "number": 3844,
+          "title": "enforce(rules): promote reproducibility-is-not-correctness to Level 2 and cover the structural-read failure",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3844",
+          "labels": [
+            "priority:medium",
+            "cat:harness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-11T20:33:47Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 3587,
           "title": "phone-media: choose the ongoing incremental sync lane",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3587",
@@ -4245,7 +4263,7 @@
           "labels": [
             "lane:claude"
           ],
-          "updatedAt": "2026-09-11T14:07:38Z",
+          "updatedAt": "2026-09-11T21:09:31Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4369,7 +4387,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 7,
-      "total_candidates": 23,
+      "total_candidates": 22,
       "top_issues": [
         {
           "number": 3516,
@@ -4432,7 +4450,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-09-11T16:14:12Z",
+          "updatedAt": "2026-09-11T20:21:08Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4627,7 +4645,7 @@
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-09-11T16:14:12Z",
+          "updatedAt": "2026-09-11T20:21:08Z",
           "execution_ready": true,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4850,6 +4868,28 @@
           ]
         },
         {
+          "number": 3842,
+          "title": "refactor(fatigue): consolidate seven rainflow counting paths onto one",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3842",
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-11T20:21:01Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 3594,
           "title": "chore(registry): gpu-claw entry stale after 2026-07-22 relocation+onboarding \u2014 notes say clone pending / uv NOT installed; both now false",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3594",
@@ -4869,52 +4909,6 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3505,
-          "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3505",
-          "labels": [
-            "bug",
-            "cat:operations",
-            "domain:workstations",
-            "machine:multi",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T11:30:12Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3506,
-          "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3506",
-          "labels": [
-            "bug",
-            "cat:operations",
-            "domain:workstations",
-            "machine:multi",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T11:39:00Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation"
           ]
         },

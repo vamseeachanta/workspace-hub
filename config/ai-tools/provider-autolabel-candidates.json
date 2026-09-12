@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-11T17:21:32.026612Z",
+  "generated_at": "2026-09-11T21:21:40.739647Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 11,
@@ -84,7 +84,7 @@
         "gate:completeness",
         "lane:claude"
       ],
-      "updatedAt": "2026-09-11T16:14:12Z",
+      "updatedAt": "2026-09-11T20:21:08Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "codex",
@@ -102,42 +102,6 @@
         "priority-labeled",
         "strong-codex-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3500,
-      "title": "bug(pre-push): equivalence-state publish loops full tier-1 suite forever \u2014 remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3500",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:harness",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude",
-        "domain:repo"
-      ],
-      "updatedAt": "2026-07-31T02:26:55Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
       ],
       "eligible": true
     },
@@ -227,6 +191,40 @@
         "lane:claude"
       ],
       "updatedAt": "2026-09-11T16:38:48Z",
+      "execution_ready": true,
+      "priority_rank": 1,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.9,
+      "confidence_reasons": [
+        "execution-ready",
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": true
+    },
+    {
+      "number": 3843,
+      "title": "refactor(orcaflex): consolidate four model generators onto modular_generator",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3843",
+      "labels": [
+        "priority:high",
+        "cat:engineering",
+        "domain:marine",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-09-11T20:33:18Z",
       "execution_ready": true,
       "priority_rank": 1,
       "suggested_provider": "claude",

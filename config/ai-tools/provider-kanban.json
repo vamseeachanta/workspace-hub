@@ -37,6 +37,129 @@
       "hover": {
         "labels": [
           "priority:medium",
+          "cat:harness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "enforce(rules): promote reproducibility-is-not-correctness to Level 2 and cover the structural-read failure"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3844,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "enforce(rules): promote reproducibility-is-not-correctness to Level 2 and cover the structural-read failure",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3844",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "already has status:plan-approved",
+        "no canonical plan file",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:high",
+          "cat:engineering",
+          "domain:marine",
+          "status:plan-approved",
+          "gate:completeness",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "refactor(orcaflex): consolidate four model generators onto modular_generator"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3843,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "refactor(orcaflex): consolidate four model generators onto modular_generator",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3843",
+      "warnings": [
+        "approved_no_marker",
+        "approved_no_plan",
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:medium",
+          "cat:engineering",
+          "domain:marine",
+          "lane:claude"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "refactor(fatigue): consolidate seven rainflow counting paths onto one"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3842,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "refactor(fatigue): consolidate seven rainflow counting paths onto one",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3842",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "priority:medium",
           "cat:engineering",
           "domain:marine",
           "lane:claude"
@@ -8016,142 +8139,137 @@
         "missing_review",
         "unavailable_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "cat:operations",
-          "domain:workstations",
-          "machine:multi",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3506,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3506",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "cat:operations",
-          "domain:workstations",
-          "machine:multi",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3505,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3505",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "no canonical plan file",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "priority:high",
-          "cat:harness",
-          "machine:dev-primary",
-          "status:plan-approved",
-          "gate:completeness",
-          "lane:claude",
-          "domain:repo"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "bug(pre-push): equivalence-state publish loops full tier-1 suite forever \u2014 remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3500,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "bug(pre-push): equivalence-state publish loops full tier-1 suite forever \u2014 remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3500",
-      "warnings": [
-        "approved_no_marker",
-        "approved_no_plan",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-09-11T17:21:34Z",
+  "generated_at": "2026-09-11T21:21:42Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:medium",
+            "cat:harness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "enforce(rules): promote reproducibility-is-not-correctness to Level 2 and cover the structural-read failure"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3844,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "enforce(rules): promote reproducibility-is-not-correctness to Level 2 and cover the structural-read failure",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3844",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "already has status:plan-approved",
+          "no canonical plan file",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:high",
+            "cat:engineering",
+            "domain:marine",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "refactor(orcaflex): consolidate four model generators onto modular_generator"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3843,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "refactor(orcaflex): consolidate four model generators onto modular_generator",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3843",
+        "warnings": [
+          "approved_no_marker",
+          "approved_no_plan",
+          "missing_review"
+        ]
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "priority:medium",
+            "cat:engineering",
+            "domain:marine",
+            "lane:claude"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "refactor(fatigue): consolidate seven rainflow counting paths onto one"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3842,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "refactor(fatigue): consolidate seven rainflow counting paths onto one",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3842",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16143,134 +16261,6 @@
           "missing_review",
           "unavailable_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "cat:operations",
-            "domain:workstations",
-            "machine:multi",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3506,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "ops(ace-win-2): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-2 (flagged by #3502 monitoring)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3506",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "cat:operations",
-            "domain:workstations",
-            "machine:multi",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3505,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "ops(ace-win-1): equivalence fingerprint ABSENT \u2014 sentinel not publishing from ace-win-1 (flagged by #3502 monitoring)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3505",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "no canonical plan file",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude",
-            "domain:repo"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "bug(pre-push): equivalence-state publish loops full tier-1 suite forever \u2014 remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3500,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "bug(pre-push): equivalence-state publish loops full tier-1 suite forever \u2014 remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3500",
-        "warnings": [
-          "approved_no_marker",
-          "approved_no_plan",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16281,9 +16271,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-11T17:21:29.623603Z",
+  "scorecard_generated_at": "2026-09-11T21:21:38.235025Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-11T17:21:29.411758Z",
+  "utilization_generated_at": "2026-09-11T21:21:37.910875Z",
   "warning_summary": {
     "approved_no_marker": 13,
     "approved_no_plan": 9,

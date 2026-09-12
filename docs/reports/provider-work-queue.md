@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-09-11T17:21:31.769070Z
+Generated: 2026-09-11T21:21:40.406816Z
 Current week: 2026-W37
 Recommended provider order: agy, codex, claude
 
@@ -10,14 +10,14 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: high
 - Execution-ready candidates: 17
-- Total routed candidates: 175
+- Total routed candidates: 176
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #3500 bug(pre-push): equivalence-state publish loops full tier-1 suite forever — remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198) | yes | strategy/workflow/architecture language | bug, priority:high, cat:harness, machine:dev-primary, status:plan-approved, gate:completeness |
 | #3549 feat(ops): registry-driven Linux connection helpers with TDD | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:tooling, domain:workstations, domain:security, machine:dev-primary |
 | #3816 feat(repo): generate authoritative work-surface inventory and adapter coverage report | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:tooling, machine:multi, status:plan-approved, gate:completeness |
 | #3838 fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
+| #3843 refactor(orcaflex): consolidate four model generators onto modular_generator | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
 | #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1 | yes | strategy/workflow/architecture language | bug, priority:medium, cat:operations, domain:workstations, machine:multi, status:plan-approved |
 | #3525 [WRK] Investigate safe remote Claude job dispatch to ace-win-2 | yes | strategy/workflow/architecture language | priority:medium, cat:harness, domain:workstations, wrk-item, machine:dev-primary, status:plan-approved |
 | #3566 fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI | yes | strategy/workflow/architecture language | bug, priority:medium, cat:harness, machine:multi, status:plan-approved, type:follow-up |
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: highest
 - Execution-ready candidates: 7
-- Total routed candidates: 23
+- Total routed candidates: 22
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|

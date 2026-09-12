@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-11T17:21:34Z
+Generated: 2026-09-11T21:21:42Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,9 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3844 | enforce(rules): promote reproducibility-is-not-correctness to Level 2 and cover the structural-read failure | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3843 | refactor(orcaflex): consolidate four model generators onto modular_generator | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
+| #3842 | refactor(fatigue): consolidate seven rainflow counting paths onto one | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3841 | fix(digitalmodel/tests): OrcaFlex statics tests lack the solver marker and cannot be deselected on a licensed host | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3840 | [review learning] Explicit integer bounds before canonical JSON serialization | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3839 | fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
@@ -240,9 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3516 | bug(equivalence): ref blobs keyed by role — same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3513 | bug(harness): Windows soul installer reports LINK for ordinary file and accumulates backups | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3511 | bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review,unavailable_review |
-| #3506 | ops(ace-win-2): equivalence fingerprint ABSENT — sentinel not publishing from ace-win-2 (flagged by #3502 monitoring) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3505 | ops(ace-win-1): equivalence fingerprint ABSENT — sentinel not publishing from ace-win-1 (flagged by #3502 monitoring) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3500 | bug(pre-push): equivalence-state publish loops full tier-1 suite forever — remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 
 ## Lane: blocked (0)
 

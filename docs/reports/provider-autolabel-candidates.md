@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-09-11T17:21:32.026612Z
+Generated: 2026-09-11T21:21:40.739647Z
 Apply mode: False
 Threshold: 0.9
 
@@ -9,10 +9,10 @@ Threshold: 0.9
 | #3516 bug(equivalence): ref blobs keyed by role — same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json) | agent:codex | 0.95 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3740 867 issues cannot leave dispatch:ready — nothing advances dispatch state | agent:codex | 0.95 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3839 fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage | agent:codex | 0.95 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #3500 bug(pre-push): equivalence-state publish loops full tier-1 suite forever — remote ref never created, every push gated as new-branch RUN_ALL (sub-case of #3198) | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3549 feat(ops): registry-driven Linux connection helpers with TDD | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3816 feat(repo): generate authoritative work-surface inventory and adapter coverage report | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3838 fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
+| #3843 refactor(orcaflex): consolidate four model generators onto modular_generator | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3524 [WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1 | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3525 [WRK] Investigate safe remote Claude job dispatch to ace-win-2 | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3566 fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
