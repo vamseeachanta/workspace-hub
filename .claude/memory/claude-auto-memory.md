@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-09-11
+> Last captured: 2026-09-12
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -11,7 +11,7 @@
 
 ## Active & Recent Projects
 - [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-07 r3 STOPPED at 4479 by the OWNER’S parallel gpu-claw session (cycle-averaged R_T ≈226–227 kN at 13 kn firm; mesh promoted; matrix of 11 conditions building; gpu-claw → condition 2). This thread’s execution role is SUPERSEDED — read `reports/internal-draft/status-neutral-<latest>.md` first; never restart r3. Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
-- [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 59+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
+- [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 61+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
 - [CLAUDE.md harness retired](project_claude_md_harness_retired.md) — 2026-08-01 all three CLAUDE.md surfaces DELETED; **AGENTS.md …
 - [Fleet reachability + solver access](project_fleet_reachability_and_solver_access_2026_07_31.md) — 2026-07-31 fleet **5/5 SSH-reachable**; …
 - [Dispatch surface: label axes made deterministic (EPIC deckhand#584)](project_dispatch_surface_label_axes_2026_07_31.md) — 2026-07-31 ✅ 5 PRs merged; …
@@ -55,7 +55,7 @@
 - [Scheduler audit digest covers the CI workflows](feedback_scheduler_audit_digest_covers_ci_workflows.md) — editing enforcement-gate.yml …
 - [Delegate sync cycles; keep main on work](feedback_delegate_sync_cycles_keep_main_on_work.md) — merge babysitting, check polling, agent …
 - [Infrastructure work must not crowd out delivery](feedback_infrastructure_work_must_not_crowd_out_delivery.md) — tooling findings are self-justifying and chain endlessly; FILE them with the measurement, fix inline only when they block the actual task. Watch the ratio and say so
-- [Untracked = transient; commit plans immediately](feedback_untracked_is_transient_commit_plans_immediately.md) — auto-sync DELETES untracked files; a reviewed+approved plan and its `.planning/plan-approved/` marker vanished. Gate evidence must be tracked *verified: 2026-09-12*
+- [Untracked = transient; commit plans immediately](feedback_untracked_is_transient_commit_plans_immediately.md) — auto-sync DELETES untracked files; a reviewed+approved plan and its `.planning/plan-approved/` marker vanished. Gate evidence must be tracked
 - [Verify the BRANCH, not your commits](feedback_verify_the_branch_not_your_commits.md) — auto-sync commits the dirty tree onto whatever …
 - [Client-PII Gate scans commit MESSAGES too](feedback_client_pii_gate_scans_commit_messages.md) — redacting the file doesn't clear it; …
 - [Machine identity — ⚠ #565 SUPERSEDED by deckhand#581](feedback_machine_identity_is_logical_alias_565.md) …
