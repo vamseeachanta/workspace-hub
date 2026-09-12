@@ -26,20 +26,23 @@ This domain has multiple issues that still read like greenfield work even though
 
 ## Audit sequence
 
-1. Read the three anchor docs first:
-   - `docs/maps/digitalmodel-orcawave-orcaflex-operator-map.md`
-   - `docs/roadmaps/orcawave-orcaflex-capability-roadmap.md`
-   - `docs/reports/digitalmodel-orcawave-orcaflex-issue-reconciliation.md`
+1. Start with the current routing and measured evidence:
+   - digitalmodel's `docs/maps/digitalmodel-operator-map.md` is its canonical code/tests/docs map.
+   - [Execution runbook](../../../../docs/solver/orcaflex-execution-runbook.html) routes to the operational owner and evidence.
+   - [Ecosystem strategy](../../../../docs/reports/2026-09-09-orcaflex-fea-strategy.html) identifies existing workstreams and qualification boundaries.
+   - The older narrow operator map, capability roadmap and issue-reconciliation report under `docs/` are historical discovery context, not current acceptance evidence.
 
-2. Query issues from `workspace-hub`, not from `digitalmodel/`.
-   - The canonical issue tracker for this domain is the workspace-hub repo.
-   - `gh issue view` from `digitalmodel/` may fail with “Could not resolve to an issue” for valid issue numbers.
+2. Resolve each issue's actual repository before querying it.
+   - Use the full issue URL or an explicit `gh --repo` argument; a number alone is ambiguous across repositories.
+   - digitalmodel owns solver behaviour, Deckhand owns execution transport, workspace-hub owns cross-repository coordination, and knowledge/project issues retain their existing owners.
 
 3. Reconcile issue state against source + tests.
-   Important historically stale / already-implemented issues to verify first:
-   - `#1588`, `#1596`, `#1598` — DiffractionSpec / parametric-spec pipeline
-   - `#1597` — RAO extractor and DB population
-   - `#1592`, `#1605`, `#1768` — OrcaWave -> OrcaFlex handoff and validation
+   Unresolved historical references (owning repositories have not been reverified):
+   - Historical numbers 1588, 1596, 1598 — DiffractionSpec / parametric-spec pipeline
+   - Historical number 1597 — RAO extractor and DB population
+   - Historical numbers 1592, 1605, 1768 — OrcaWave -> OrcaFlex handoff and validation
+   Resolve each title and repository before treating these references as issue IDs,
+   implementation evidence, or dispatch authority.
 
 4. Verify readiness with focused tests before making claims.
    High-signal test slice:
