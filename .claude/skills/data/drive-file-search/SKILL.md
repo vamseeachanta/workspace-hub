@@ -1,11 +1,6 @@
 ---
 name: drive-file-search
-description: "Surface SPECIFIC FILES on the shared drives (/mnt/ace, /mnt/dde) relevant
-  to the current task — the FILE-level complement to ecosystem-data-sources (domain-catalog
-  level). Extracts query terms from work context, runs the drive-index CLI once,
-  presents ranked canonical paths with freshness caveats. Use for similar-past-work,
-  prior-project, or files/examples/precedent asks; when domain work needs past deliverables
-  (mooring calc → xlsx/py; CAD → dwg/step; standards → PDF inventory)."
+description: "Find specific files, examples and prior deliverables through the shared-drive indexes. Use for file/precedent searches; domain datasets and source ownership belong to ecosystem-data-sources."
 version: 1.0.0
 category: data
 related_skills:
@@ -26,6 +21,9 @@ freedom: high
 # Drive File Search — context-aware related-file surfacing
 
 FILE-level asks only; domain-catalog asks belong to `ecosystem-data-sources`.
+
+Resolve tools/configuration against the pinned workspace-hub checkout in task
+context, not the skill folder. Missing checkout: unavailable; no unbounded scans.
 
 ## Procedure
 
@@ -58,12 +56,13 @@ FILE-level asks only; domain-catalog asks belong to `ecosystem-data-sources`.
 5. **Present top 10**. Per result: `canonical_path`, `source_index`, `score`,
    `rank_basis` (`meta.*` optional; `raw_path` never shown). Show the canonical
    `/mnt/...` path; why relevant: matched terms, `rank_basis`, extension-vs-hint
-   (reorder within equal scores only); source index + freshness caveat from the
-   registry's `freshness/built_at` ("freshness unknown" if absent). Quote each
+   (reorder within equal scores only). Runtime `index_status` and CLI warnings
+   govern freshness; registry dates are fallback-only (unknown if absent). Quote each
    `coverage_gaps` `reason` VERBATIM (opaque free text — never
    paraphrase); name the excluded drive. Offer three next actions: open one
    listed file (bounded read); record chosen paths under "Documents consulted" in
-   the plan's Resource Intel section; refine terms, re-run once.
+   the plan's Resource Intel section; refine terms, re-run once. Zero matches with
+   coverage gaps are partial coverage, not proof that no relevant files exist.
 
 ## Guardrails (never violate)
 
@@ -71,8 +70,8 @@ FILE-level asks only; domain-catalog asks belong to `ecosystem-data-sources`.
 - **De-identification** (public repo): drive paths embed client names/project codes.
   Before quoting a surfaced path into an issue, plan, PR, or commit, scan for client
   tokens; if found, describe as metadata only ("a past <domain> deliverable on
-  /mnt/ace") or redact. In-session display is fine; persisting into public artifacts
-  is the gated act. De-id stays on lane:claude.
+  /mnt/ace") or redact. Persisting into public artifacts
+  requires the destination's authority. Provider identity grants no extra access.
 - **Unreachable drive is normal**: present partial results plus
   the coverage_gaps caveat; never mount, never sudo.
 - **Usage playbook** (#3340): integration points, freshness authority, metrics, and

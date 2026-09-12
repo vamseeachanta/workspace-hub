@@ -225,7 +225,10 @@ Codex `exec` (and the Codex GitHub connector) cannot read local files outside th
 
 ## Skill Loader
 
-- `~/.codex/skills/` is currently empty on this machine; `.codex/skills/` symlinks to `.claude/skills/` (workspace-hub canonical).
+- Codex supports native skill discovery. Repository discovery uses `.agents/skills` from the working directory to the repository root; user/admin/system and plugin skills can also be present. Verify the installed version and effective roots before diagnosing a missing skill.
+- `.claude/skills/` remains the workspace's canonical authored source. This ownership convention does not override Codex discovery precedence. Inspect copies and resolved links before claiming parity; a text file containing a target path is not a filesystem link.
+- Preserve native .system skills, installed plugins and unrelated user settings. Task profiles will select canonical skills for thin provider adapters; the isolated foundation profile is `config/skills/profiles/foundation.yaml`, not an installed loader configuration.
+- Current discovery reference: [OpenAI skill documentation](https://learn.chatgpt.com/docs/build-skills). Record observed runtime/version evidence separately from portable guidance.
 - Codex roles vs skills mapping: `.claude/docs/codex-roles-vs-skills.md`.
 - Parity audit: `specs/architecture/work-queue-codex-parity.md`.
 
@@ -233,9 +236,9 @@ Codex `exec` (and the Codex GitHub connector) cannot read local files outside th
 
 At the start of a session, read **`config/agents/codex/MEMORY.runtime.md`** (repo-tracked, relative to the workspace root). It is a curated, budget-capped slice of the consolidated cross-provider memory (the Claude "dream" — durable learnings distilled from Codex/Gemini/Hermes/Claude sessions). It is **machine-invariant and auto-generated** by `scripts/memory/bridge-hermes-claude.sh` (#2841) — do not hand-edit. Treat its entries as durable workspace conventions/learnings; they complement (do not replace) the SHARED_SOUL gates above.
 
-## Skills (no native loader — use the Skill index)
+## Skills (native discovery and source index)
 
-Codex has no native skill loader. The **Skill index** at the bottom of `AGENTS.runtime.md` lists every workspace skill family (`.claude/skills/<family>/`) with a count + an `ls` command to enumerate a family's skills. Consult it and **use** the relevant skill rather than improvising; workspace `.claude/skills/` wins over `.agents/skills/` and `~/.claude/plugins/`. Mandatory lifecycle skills: `coordination/issue-planning-mode` and `coordination/pre-completion-cleanup-audit`.
+Use native discovery for available skills; the task profile identifies intended skills and does not configure discovery. The **Skill index** at the bottom of `AGENTS.runtime.md` is a fallback map to canonical source families, not proof that those skills are installed or loaded. Read the relevant source when native discovery is unavailable, and report that fallback. Do not load every family or recursively activate related skills. Existing lifecycle requirements remain in the shared contract; a profile does not grant authority to change installed roots or policy gates.
 
 ## Required Gates (Codex-specific extensions to SHARED_SOUL Hard Gates)
 
@@ -255,15 +258,15 @@ The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.
 ---
 
 ## Skill index
-> Codex has no native skill loader — enumerate + USE these. Indexed by FAMILY (top-level `.claude/skills/<family>/`); run `ls .claude/skills/<family>/*/SKILL.md` to list a family's skills. Workspace `.claude/skills/` wins over `.agents/skills/` and `~/.claude/plugins/`. Mandatory lifecycle skills: `coordination/issue-planning-mode`, `coordination/pre-completion-cleanup-audit`. Auto-generated — do not hand-edit.
+> Canonical source map, not an installed-skill inventory. Codex supports native skill discovery through its effective roots, including repository `.agents/skills`. Use the active task profile; consult `.claude/skills/<family>/` only for relevant source lookup when needed. Source ownership does not set loader precedence. Preserve native .system skills and unrelated plugins/settings. Do not recursively activate this index. Auto-generated — do not hand-edit.
 
 - **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
 - **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
 - **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
-- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
 - **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
 - **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
+- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **coordination/** — 59 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
 - **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate

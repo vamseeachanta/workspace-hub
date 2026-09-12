@@ -10,7 +10,7 @@ append_codex_agents_extras() {
         echo "---"
         echo
         echo "## Skill index"
-        echo "> Codex has no native skill loader — enumerate + USE these. Indexed by FAMILY (top-level \`.claude/skills/<family>/\`); run \`ls .claude/skills/<family>/*/SKILL.md\` to list a family's skills. Workspace \`.claude/skills/\` wins over \`.agents/skills/\` and \`~/.claude/plugins/\`. Mandatory lifecycle skills: \`coordination/issue-planning-mode\`, \`coordination/pre-completion-cleanup-audit\`. Auto-generated — do not hand-edit."
+        echo "> Canonical source map, not an installed-skill inventory. Codex supports native skill discovery through its effective roots, including repository \`.agents/skills\`. Use the active task profile; consult \`.claude/skills/<family>/\` only for relevant source lookup when needed. Source ownership does not set loader precedence. Preserve native .system skills and unrelated plugins/settings. Do not recursively activate this index. Auto-generated — do not hand-edit."
         echo
         if [[ -d "${skills_root}" ]]; then
             # FAMILY-level index (~50 lines) — NOT one line per nested SKILL.md (1000+),

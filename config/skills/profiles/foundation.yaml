@@ -1,0 +1,112 @@
+schema_version: 1
+name: foundation
+status: isolated-pilot-not-installed
+purpose: Shared resource discovery and report-only closeout for Claude and Codex.
+canonical_source: .claude/skills
+path_base: explicit pinned workspace-hub checkout; never the adapter directory
+activation:
+  skills:
+  - path: .claude/skills/data/ecosystem-data-sources/SKILL.md
+    sha256: d892ef80c81e47d4eb15c175574c2bcb1dd78952ed3160f68404859a9856c5cb
+  - path: .claude/skills/data/drive-file-search/SKILL.md
+    sha256: 61e7b8957a8bc65930fcff27f4c68fd87ef23da3ba14cfc287d821395ad53234
+  - path: .claude/skills/research/wiki-context/SKILL.md
+    sha256: 7fe41e3de461ceaeca231e8d4fa476ee1ec4456422eddd0821d4d21ed0a71ad1
+  - path: .claude/skills/coordination/pre-completion-cleanup-audit/SKILL.md
+    sha256: 9e2105bd5175c9d8ae9af783754d327d8f5e1636b1e3a83ac1e0fce79a74c6e4
+  references:
+  - path: .claude/skills/data/drive-file-search/references/context-extraction.md
+    sha256: 9e4cc88176577cd98bb601991126d496fff07159b995ef89f47da70b1f1d5d0d
+  - path: .claude/skills/coordination/pre-completion-cleanup-audit/references/user-facing-scratch-artifacts.md
+    sha256: e9e4d72ea1d33296c63a5519b646a7cd3425947df0e91e3d0f4af7312770db42
+  automatic_expansion: false
+  additional_skills: Require explicit profile revision and scope approval; related links do not activate
+    skills.
+adapters:
+  claude:
+    fixture_root: claude/.claude/skills
+    layout: <skill-name>/SKILL.md; preserve reference-relative paths
+  codex:
+    fixture_root: codex/.agents/skills
+    layout: <skill-name>/SKILL.md; preserve reference-relative paths
+    preflight: Before an isolated CLI trial, select the available host sandbox backend explicitly and
+      verify the actual discovered shell executable inside the intended read-only sandbox. A shell-type
+      argument need not pin its executable. Use version-specific observations; do not change installed
+      settings.
+  installation: No installer consumes this declarative profile. Fixture assembly must copy enumerated
+    sources and verify digests; disposable copies are not new authored authorities.
+  native_preservation: Retain existing system skills, plugins and unrelated settings; enumerate them separately
+    from the four project skills.
+runtime_dependencies:
+- path: scripts/data/drive-index-search/search.py
+  sha256: c6f5e04acc776531f3294862e85bd5df2cebedf792d2f1f78227b89515c25461
+- path: config/drive-index-registry.yml
+  sha256: fec2f19d6fe9adbef759e68705d242f37dbb41c66801d4fb3d71cd2dc6712ddb
+- path: .claude/hooks/ecosystem-domain-map.json
+  sha256: f9e6aca9577e8c417bd96e22c1aecc1946e41b19c1540cf907b4ba7840369768
+- path: docs/guides/drive-file-search-playbook.md
+  sha256: 836976a8e3abb8453bca37ecd88e2453f47c06ba975d272fa9d02a17afcfd309
+runtime_boundary: Existing repository tools and their package modules will execute from a pinned owning
+  checkout; this manifest is a skill activation boundary, not a standalone application package or complete
+  software bill of materials.
+external_read_dependencies:
+- repo: llm-wiki
+  paths:
+  - llms.txt
+  - data/data-source-catalog.yml
+  - data/domain-database-index.yml
+  - docs/query-surface.md
+  - data/query_sources.json
+  - scripts/llm_wiki_query.py
+  mode: Read known catalog/metadata paths; run the supported read-only query CLI from the explicitly resolved
+    owner checkout with its existing package. No raw corpus crawl.
+lookup_contract:
+  resolve_owner: Validate explicit existing checkout and known paths. Invalid/missing path or malformed
+    configuration is unavailable; no creation or silent fallback.
+  catalogs: Read the two known ownership catalogs directly; query registration is separate.
+  coverage: Zero matches with coverage gaps remain partial, not evidence of absence.
+  source_rights: Discovery grants no ingestion or publication authority. Retain the explicit private raw-evidence
+    and licensed-original restrictions.
+  reuse: Reuse evidence only for matching source identity/version/digest, access state, freshness/expiry
+    and intended-use criteria. Recheck mutable dependencies.
+  engineering_input: Missing, stale, synthetic or unverified data is not valid engineering input.
+authorization:
+  basis: User-approved risk-based operating model for this isolated pilot.
+  standing: Routine reversible work within approved scope and report-only cleanup.
+  explicit_approval: Substantial unapproved plans, publication, destructive actions, access changes and
+    changes to engineering basis.
+  enforcement: Declarative guidance only; existing live hooks and shared runtime gates are unchanged.
+  lifecycle: The four-skill fixture omits issue-planning-mode intentionally; SHARED_SOUL Hard Gates and
+    Must-Fire Rules retain planning and cleanup requirements. This profile does not replace the shared
+    contract.
+unresolved_live_prerequisites:
+- Missing all-agent data contract.
+- Missing allocation-ledger next hop.
+- Current wiki query CLI does not register the two ownership catalogs; read them directly.
+excluded_from_activation:
+- All related_skills and see_also neighbors; adding an activated skill requires an explicit manifest revision
+- research-literature
+- worldenergydata-source-readiness
+- llm-wiki broad maintenance workflow
+- engineering-issue-workflow
+- heavyweight cleanup skills
+- all _archive and _archived trees
+- provider-routing-guide model assignments and historical completion claims
+validation:
+  provider_parity: Requires observed native discovery and equivalent bounded fixture outcomes from both
+    clients. Unavailable trials do not pass.
+  effective_roots: Record retained global instructions and native skills; fixture location alone does
+    not establish isolation.
+  fixture_data: Synthetic only; cannot establish live dataset authority.
+  digest_enforcement: Pilot verification checks these hashes; no CI consumer currently enforces profile
+    digests.
+  selection_limit: Explicit invocation/discovery fixtures do not establish unchanged implicit selection
+    for domain-only prompts.
+  fixture_actions: The current task read whitelist overrides generic skill checklists. Fixture answers
+    must not authorize live status, stash, parent-directory or temporary-directory probes. No operational
+    commands are executed.
+  example_boundary: The mock-envelope walkthrough is optional and not bundled. Report its absence if relevant;
+    do not expand the profile to execute it.
+workspace_hub_base_revision: bf3f02580bf10b64f464510a8b8f2268602cdc22
+revision_contract: The base revision anchors unchanged tools; activation hashes pin the edited pilot skill
+  content. Resolve both before reusing evidence.

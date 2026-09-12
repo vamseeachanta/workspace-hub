@@ -4,7 +4,7 @@
 
 Canonical policy for data governance across all repositories in the workspace-hub. Every dataset must belong to exactly one tier. When in doubt, apply the Boundary Test.
 
-**2026-09-08 operational clarification:** apply [the all-agent data handling contract](architecture/agent-data-handling-contract.md) for source discovery, knowledge-vs-computational ownership, manifests and retrieval. The tier owner identifies collection/engineering/project responsibility; storage and redistribution still follow source rights and the later layer contracts. Restricted originals stay off-repo, llm-wiki owns source interpretation and authorized knowledge, and digitalmodel consumes source-qualified engineering artifacts. An external origin does not move every downstream derivative into the raw-collection tier.
+**2026-09-08 operational clarification:** apply [the all-agent data handling contract](architecture/agent-data-handling-contract.md) for source discovery, knowledge-vs-computational ownership, manifests and retrieval. The tier owner identifies collection/engineering/project responsibility; storage and redistribution still follow source rights and the later layer contracts. Vendor-licensed standards originals stay outside Git; client-supplied and measured originals stay in their owning private repository under the required-original exception below, llm-wiki owns source interpretation and authorized knowledge, and digitalmodel consumes source-qualified engineering artifacts. An external origin does not move every downstream derivative into the raw-collection tier.
 
 ---
 
@@ -49,6 +49,12 @@ Industry standard lookup tables, material properties, and design code parameters
 ### Tier 2a — Research Literature (`/mnt/ace-data/digitalmodel/docs/domains/`)
 
 Downloaded academic papers, conference proceedings, ITTC guidelines, classification society rules, and textbooks used as reference material for engineering analysis. Organized by domain (hydrodynamics, naval_architecture, pipeline, etc.) with per-domain `download-literature.sh` scripts for reproducible acquisition.
+
+Acquisition and retention require source-specific rights evidence; a download script
+is not permission. Vendor-licensed or copyrighted items require a `sources:`
+reference, edition and authorized-access record for the permitted location.
+Unknown rights block acquisition/retention decisions. Historical path examples
+below do not establish a current licensed location or authorize bulk downloads.
 
 **Not committed to git** — stored on local drive (`/mnt/ace` on ace-linux-1). Each domain folder contains a download script that documents provenance.
 
@@ -112,12 +118,19 @@ External dependencies are declared in `config/data_sources.yaml` within the cons
 
 ## Git Commit Strategy for Data Files
 
+### Required-original exception (evaluate first)
+
+Client-supplied and measured originals shall be retained in the owning private repository under `data/<dataset>/raw/`, beside extracts, with SHA-256 manifest entries and narrow `.gitignore` exceptions. Regeneration, ZIP packaging and file size do not remove this evidence requirement. Vendor-licensed standards originals shall never be committed, even privately; retain authorized `sources:` references at their licensed location. Derived artifacts require source-specific rights independently of private visibility.
+
+If rights, terms or storage limits prevent required private retention, ingest acceptance remains blocked pending an explicit owner decision. An external path alone is not retained evidence. No silent off-repo substitution or weakening of the licensed-original exclusion is permitted. See [the authority contract](architecture/agent-data-handling-contract.md).
+
 ### The Decision Tree
 
-For every data file, ask: **"Can this be regenerated from a pipeline?"**
+After the required-original exception above, for other data files ask: **"Can this be regenerated from a pipeline?"**
 
 ```
-Is the file regenerable from a pipeline/acquirer script?
+Required original? Apply the required-original exception above before this tree.
+Otherwise, is the file regenerable from a pipeline/acquirer script?
 ├── YES → Do NOT commit. Add to .gitignore. Commit only the pipeline script + config.
 │         Document regeneration command in a README.
 └── NO → Is the file < 10 MB?
@@ -133,12 +146,12 @@ Is the file regenerable from a pipeline/acquirer script?
 | Category | Commit? | Method | Examples |
 |----------|---------|--------|----------|
 | **Pipeline scripts & configs** | Always | Normal git | `osha_acquirer.py`, `download_osha_data.sh` |
-| **Engineering reference data** | Always | Normal git | SN curves YAML, steel grades YAML (<1MB) |
+| **Engineering reference data** | Only where source-specific rights permit | Normal git | SN curves YAML, steel grades YAML (<1MB) |
 | **Curated/filtered datasets** | If <10MB | Normal git | Filtered oil & gas safety records |
 | **Curated datasets 10-100MB** | Yes | Git LFS | Processed BSEE production summaries |
-| **Raw API downloads** | Never | .gitignore | OSHA CSVs (6.6GB), EPA TRI bulk data |
-| **ZIP archives of raw data** | Never | .gitignore | `osha_inspection_20260201.csv.zip` |
-| **Analysis outputs/reports** | Never | .gitignore | Generated HTML reports, plots |
+| **Raw API downloads outside the required-original exception** | Never | .gitignore | OSHA CSVs (6.6GB), EPA TRI bulk data |
+| **ZIP archives outside the required-original exception** | Never | .gitignore | `osha_inspection_20260201.csv.zip` |
+| **Regenerable analysis outputs/reports outside issued-evidence requirements** | Normally exclude | .gitignore | Generated HTML reports, plots |
 | **Binary data files** | If needed | Git LFS | `.bin` conversion files |
 
 ### Regeneration Documentation
@@ -152,6 +165,8 @@ Every `.gitignore`'d data directory MUST contain a `README.md` with:
 5. **Dependencies**: Any API keys, rate limits, or access requirements
 
 ### Size Thresholds
+
+These thresholds apply after the required-original exception; a storage conflict for required originals blocks ingest acceptance rather than changing ownership or permitting evidence loss.
 
 | Threshold | Action |
 |-----------|--------|
@@ -167,7 +182,7 @@ Repos should configure a pre-commit hook or CI check that blocks commits contain
 
 ## Generated Data — Physical Placement Map
 
-Pipeline-generated artifacts that exceed git thresholds live on the ace NFS drive. Scripts use `$SUMMARIES_DIR` env var or read from `config.yaml` to resolve paths.
+Pipeline-generated artifacts outside the required-original exception that exceed git thresholds live on the ace NFS drive. Scripts use `$SUMMARIES_DIR` env var or read from `config.yaml` to resolve paths.
 
 | Artifact | Ace Drive Path | Generator Script | Notes |
 |----------|---------------|-----------------|-------|
