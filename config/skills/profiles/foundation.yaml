@@ -39,7 +39,8 @@ adapters:
     from the four project skills.
 runtime_dependencies:
 - path: scripts/data/drive-index-search/search.py
-  sha256: c6f5e04acc776531f3294862e85bd5df2cebedf792d2f1f78227b89515c25461
+  sha256: aac9b8982669f0c57bfe9b99a48b8e1d862200aefde1b252e5b0ce3ed22d8750
+  sha256_normalization: crlf-to-lf
 - path: config/drive-index-registry.yml
   sha256: fec2f19d6fe9adbef759e68705d242f37dbb41c66801d4fb3d71cd2dc6712ddb
 - path: .claude/hooks/ecosystem-domain-map.json
@@ -110,3 +111,5 @@ validation:
 workspace_hub_base_revision: bf3f02580bf10b64f464510a8b8f2268602cdc22
 revision_contract: The base revision anchors unchanged tools; activation hashes pin the edited pilot skill
   content. Resolve both before reusing evidence.
+
+digest_verification: Hash actual working-file bytes by default. Only an entry declaring sha256_normalization crlf-to-lf permits replacing CRLF with LF before hashing; preserve all other bytes and reject unknown normalization modes. Never substitute HEAD blob hashes for changed working content.
