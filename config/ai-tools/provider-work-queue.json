@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-11T21:21:40.406816Z",
+  "generated_at": "2026-09-12T01:21:27.978435Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-11T21:21:38.235025Z",
+  "scorecard_generated_at": "2026-09-12T01:21:25.764436Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -3395,7 +3395,7 @@
             "cat:harness",
             "lane:claude"
           ],
-          "updatedAt": "2026-09-11T20:33:47Z",
+          "updatedAt": "2026-09-11T22:27:20Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4263,7 +4263,7 @@
           "labels": [
             "lane:claude"
           ],
-          "updatedAt": "2026-09-11T21:09:31Z",
+          "updatedAt": "2026-09-11T22:23:55Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
