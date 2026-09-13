@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-13T01:22:16.649115Z",
+  "generated_at": "2026-09-13T05:21:35.711051Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-13T01:22:13.776774Z",
+  "scorecard_generated_at": "2026-09-13T05:21:33.421680Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 16,
+      "execution_ready_count": 14,
       "total_candidates": 177,
       "top_issues": [
         {
@@ -442,56 +442,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3518,
-          "title": "fix(scheduler): keep setup-cron wrapper attestation pin synchronized",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3518",
-          "labels": [
-            "bug",
-            "cat:operations",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:13:34Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3522,
-          "title": "security(legal): migrate sensitive deny-list values out of public repository history",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3522",
-          "labels": [
-            "cat:operations",
-            "domain:security",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:37Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
@@ -937,7 +887,7 @@
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-09-12T22:25:17Z",
+          "updatedAt": "2026-09-13T02:58:48Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1913,7 +1863,7 @@
             "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-07-31T08:36:00Z",
+          "updatedAt": "2026-09-13T03:42:36Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3425,30 +3375,6 @@
           ]
         },
         {
-          "number": 3521,
-          "title": "Legal scanner: support explicit NUL-safe staged-blob pathsets",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3521",
-          "labels": [
-            "cat:tooling",
-            "domain:security",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:35Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3523,
           "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3523",
@@ -4384,6 +4310,59 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3849,
+          "title": "Verification composition: bind full domain and applicable solver settings",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3849",
+          "labels": [],
+          "updatedAt": "2026-09-13T02:24:05Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3850,
+          "title": "Engineering result precision: distinguish native storage, recovery and report formatting",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3850",
+          "labels": [],
+          "updatedAt": "2026-09-13T03:52:04Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3851,
+          "title": "Separate caller-recorded evidence classes from verified provenance and readiness",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3851",
+          "labels": [],
+          "updatedAt": "2026-09-13T04:01:26Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
