@@ -1,131 +1,158 @@
-"""Tests for SOUL.runtime.md auto-load wiring (#2725).
-
-6 cases verifying the wiring layer added in Phases 1-3 of #2725:
-  - @file import directive present in CLAUDE.md and GEMINI.md
-  - target runtime artifacts exist on disk
-  - sentinel rule from SHARED_SOUL.md propagates through build into runtime
-    artifacts (cross-check for drift between SHARED source and built artifact)
-  - drift script returns exit 0 in clean state (integrates the auto-load
-    wiring assertion added by Phase 3)
-
-These tests cannot verify that a LIVE Claude or Gemini session actually
-loads the runtime artifact into its system prompt — that requires a fresh
-session and is captured per the §Empirical Session Test Protocol in
-docs/sessions/2026-05-XX-2725-fresh-session-test-{claude,gemini}.md. The
-tests here verify the wiring is *in place*; the transcripts verify the
-wiring *resolves*.
-"""
-
-from __future__ import annotations
-
-import subprocess
+"""Installer wiring in disposable roots; no live provider-loading assertion."""
 from pathlib import Path
+import os
+import shutil
+import subprocess
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-CLAUDE_MD = REPO_ROOT / "CLAUDE.md"
-GEMINI_MD = REPO_ROOT / "GEMINI.md"
-CLAUDE_RUNTIME = REPO_ROOT / "config" / "agents" / "claude" / "SOUL.runtime.md"
-GEMINI_RUNTIME = REPO_ROOT / "config" / "agents" / "gemini" / "SOUL.runtime.md"
-SHARED_SOUL = REPO_ROOT / "config" / "agents" / "SHARED_SOUL.md"
-DRIFT_SCRIPT = REPO_ROOT / "scripts" / "enforcement" / "check-soul-runtime-drift.sh"
+import pytest
 
-CLAUDE_IMPORT = "@config/agents/claude/SOUL.runtime.md"
-GEMINI_IMPORT = "@config/agents/gemini/SOUL.runtime.md"
-
-# Stable sentinel rule that existed before #2724 (line 63 of SHARED_SOUL.md
-# at HEAD `4676f6d6b`). Chosen because it's a stable rule unlikely to be
-# renamed and is unique to SHARED_SOUL.md (not present in standard rules).
-SENTINEL = "Subagent Write phantom hazard"
+ROOT = Path(__file__).resolve().parents[2]
+SUPPORTED = {".claude/CLAUDE.md": "claude/SOUL.runtime.md",
+             ".codex/AGENTS.md": "codex/AGENTS.runtime.md",
+             ".hermes/SOUL.md": "hermes/SOUL.runtime.md"}
 
 
-def _file_contains_line(path: Path, line: str) -> bool:
-    """Return True if `path` contains `line` as an exact line (matches grep -Fxq)."""
-    if not path.exists():
-        return False
-    with path.open("r", encoding="utf-8") as fh:
-        return any(raw.rstrip("\n") == line for raw in fh)
+def bash_executable():
+    candidates = [shutil.which("bash")]
+    local = os.environ.get("LOCALAPPDATA")
+    if local:
+        candidates.insert(0, str(Path(local) / "Programs/Git/usr/bin/bash.exe"))
+    found = next((p for p in candidates if p and Path(p).is_file()), None)
+    assert found, "Bash capability unavailable; installer coverage is not established"
+    return found
 
 
-def test_claude_md_has_autoload_directive():
-    """CLAUDE.md must contain the @file import directive for SOUL.runtime.md."""
-    assert _file_contains_line(CLAUDE_MD, CLAUDE_IMPORT), (
-        f"CLAUDE.md missing literal line: {CLAUDE_IMPORT!r}. "
-        f"Without this, the Must-Fire Rules from SHARED_SOUL.md do not reach "
-        f"Claude Code sessions. See #2725."
-    )
+@pytest.fixture
+def installation(tmp_path):
+    repo, user_root = tmp_path / "repo", tmp_path / "user"
+    for relative in ["scripts/agents/install-soul-runtime.sh", "scripts/setup/lib/detect-os.sh"]:
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / relative, target)
+    for runtime in SUPPORTED.values():
+        target = repo / "config/agents" / runtime
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("Synthetic runtime fixture\n", encoding="utf-8")
+    for provider in [".claude", ".codex", ".hermes", ".gemini", ".agy"]:
+        (user_root / provider).mkdir(parents=True)
+    # Only the installer child receives this fixture HOME.
+    env = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR", "TEMP", "TMP", "PATH")
+           if key in os.environ}
+    env.update(HOME=user_root.as_posix(), MSYS="winsymlinks:nativestrict")
+    env["PATH"] = str(Path(bash_executable()).parent) + os.pathsep + env.get("PATH", "")
+    return repo, user_root, env
 
 
-def test_gemini_md_has_autoload_directive():
-    """GEMINI.md must contain the @file.md import directive for SOUL.runtime.md."""
-    assert _file_contains_line(GEMINI_MD, GEMINI_IMPORT), (
-        f"GEMINI.md missing literal line: {GEMINI_IMPORT!r}. "
-        f"Without this, the Must-Fire Rules from SHARED_SOUL.md do not reach "
-        f"Gemini CLI sessions. See #2725."
-    )
+def install(installation, cwd=None):
+    repo, user_root, env = installation
+    assert user_root.resolve().parent == repo.resolve().parent
+    assert user_root.is_dir() and not user_root.is_symlink()
+    return subprocess.run([bash_executable(), str(repo / "scripts/agents/install-soul-runtime.sh")],
+                          cwd=cwd or user_root, env=env, capture_output=True,
+                          text=True, encoding="utf-8", timeout=30)
 
 
-def test_claude_runtime_artifact_target_exists():
-    """The path CLAUDE.md @-imports must resolve to an existing file."""
-    assert CLAUDE_RUNTIME.exists(), (
-        f"CLAUDE.md imports {CLAUDE_IMPORT} but the target file does not exist. "
-        f"Run: bash scripts/agents/build-soul-runtime.sh"
-    )
+def assert_supported_links(repo, user_root):
+    for relative, runtime in SUPPORTED.items():
+        link = user_root / relative
+        assert link.is_symlink(), "Real symlink capability required; copies do not pass"
+        assert link.resolve() == (repo / "config/agents" / runtime).resolve()
+        assert link.read_text(encoding="utf-8") == "Synthetic runtime fixture\n"
 
 
-def test_gemini_runtime_artifact_target_exists():
-    """The path GEMINI.md @-imports must resolve to an existing file."""
-    assert GEMINI_RUNTIME.exists(), (
-        f"GEMINI.md imports {GEMINI_IMPORT} but the target file does not exist. "
-        f"Run: bash scripts/agents/build-soul-runtime.sh"
-    )
+def test_fixture_installer_creates_only_supported_real_links(installation):
+    repo, user_root, _ = installation
+    result = install(installation)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert_supported_links(repo, user_root)
+    for relative in [".codex/SOUL.md", ".gemini/SOUL.md", ".gemini/GEMINI.md", ".agy/SOUL.md"]:
+        assert not (user_root / relative).exists()
+    assert not (repo / "CLAUDE.md").exists()
 
 
-def test_sentinel_propagates_from_shared_to_both_runtime_artifacts():
-    """A sentinel rule in SHARED_SOUL.md must appear in both runtime artifacts.
-
-    This is the build-pipeline check: if scripts/agents/build-soul-runtime.sh
-    has drifted from SHARED_SOUL.md, the sentinel won't propagate. Redundant
-    with check-soul-runtime-drift.sh's diff-based check but explicit and
-    catches the case where the runtime artifacts exist but were built from
-    a stale SHARED_SOUL.md.
-    """
-    shared_content = SHARED_SOUL.read_text(encoding="utf-8")
-    claude_content = CLAUDE_RUNTIME.read_text(encoding="utf-8")
-    gemini_content = GEMINI_RUNTIME.read_text(encoding="utf-8")
-
-    assert SENTINEL in shared_content, (
-        f"Sentinel {SENTINEL!r} not found in SHARED_SOUL.md. The test sentinel "
-        f"may have been renamed; update SENTINEL at top of test_soul_auto_load.py."
-    )
-    assert SENTINEL in claude_content, (
-        f"Sentinel {SENTINEL!r} present in SHARED_SOUL.md but missing from "
-        f"claude/SOUL.runtime.md. Build pipeline drift; "
-        f"run: bash scripts/agents/build-soul-runtime.sh"
-    )
-    assert SENTINEL in gemini_content, (
-        f"Sentinel {SENTINEL!r} present in SHARED_SOUL.md but missing from "
-        f"gemini/SOUL.runtime.md. Build pipeline drift; "
-        f"run: bash scripts/agents/build-soul-runtime.sh"
-    )
+def test_fixture_installer_repeat_is_idempotent(installation):
+    repo, user_root, _ = installation
+    assert install(installation).returncode == 0
+    before = {p: (os.readlink(user_root / p), (user_root / p).lstat().st_mtime_ns)
+              for p in SUPPORTED}
+    result = install(installation)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert_supported_links(repo, user_root)
+    assert before == {p: (os.readlink(user_root / p), (user_root / p).lstat().st_mtime_ns)
+                      for p in SUPPORTED}
+    assert not list(user_root.rglob("*.pre-install-backup.*"))
 
 
-def test_drift_script_returns_zero_in_clean_state():
-    """check-soul-runtime-drift.sh must exit 0 when all wiring is in place.
+def test_fixture_installer_preserves_regular_file_backup(installation):
+    repo, user_root, _ = installation
+    original = user_root / ".claude/CLAUDE.md"
+    original.write_bytes(b"Original fixture instructions\n")
+    result = install(installation)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert_supported_links(repo, user_root)
+    backups = list(original.parent.glob("CLAUDE.md.pre-install-backup.*"))
+    assert len(backups) == 1
+    assert backups[0].read_bytes() == b"Original fixture instructions\n"
 
-    This is the integration check: positive case of Phase 3's auto-load
-    wiring assertion. The negative case (script returns 1 when wiring is
-    broken) is verified manually per the plan's §Drift-check regression
-    test because it requires destructive working-tree edits which are
-    not test-safe.
-    """
-    result = subprocess.run(
-        ["bash", str(DRIFT_SCRIPT), "--quiet"],
-        capture_output=True,
-        text=True,
-        cwd=REPO_ROOT,
-    )
-    assert result.returncode == 0, (
-        f"check-soul-runtime-drift.sh returned exit {result.returncode} "
-        f"in what should be a clean state.\nstdout:\n{result.stdout}\n"
-        f"stderr:\n{result.stderr}"
-    )
+
+def test_fixture_installer_self_locates_from_unrelated_directory(installation, tmp_path):
+    repo, user_root, _ = installation
+    foreign = tmp_path / "foreign"
+    foreign.mkdir()
+    (foreign / "sentinel").write_bytes(b"Caller must remain untouched")
+    before = {p.name: p.read_bytes() for p in foreign.iterdir()}
+    result = install(installation, cwd=foreign)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert_supported_links(repo, user_root)
+    assert before == {p.name: p.read_bytes() for p in foreign.iterdir()}
+
+
+def test_fixture_installer_does_not_provision_absent_provider_directory(installation):
+    _, user_root, _ = installation
+    (user_root / ".claude").rmdir()
+    result = install(installation)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert not (user_root / ".claude").exists()
+    assert (user_root / ".codex/AGENTS.md").is_symlink()
+
+
+def tree_bytes(root):
+    return {p.relative_to(root).as_posix(): p.read_bytes() for p in root.rglob("*") if p.is_file()}
+
+
+@pytest.fixture
+def generation(tmp_path):
+    repo, caller = tmp_path / "source", tmp_path / "caller"
+    inputs = ["config/agents/SHARED_SOUL.md", "scripts/agents/build-soul-runtime.sh",
+              "scripts/agents/soul-runtime-lib.sh", "scripts/enforcement/check-soul-runtime-drift.sh",
+              "scripts/agents/tests/test_build_soul_runtime_codex.sh", ".claude/rules/coding-style.md",
+              ".claude/rules/patterns.md", "GEMINI.md"]
+    inputs += ["config/agents/" + provider + "/" + ("SOUL.md" if provider == "hermes" else "SOUL.delta.md")
+               for provider in ["hermes", "claude", "codex", "gemini", "agy"]]
+    for relative in inputs:
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(ROOT / relative, target)
+    caller.mkdir()
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+    env["PATH"] = str(Path(bash_executable()).parent) + os.pathsep + env.get("PATH", "")
+    for target in [repo, caller]:
+        subprocess.run(["git", "-c", "init.templateDir=", "init", "-q", str(target)], env=env, check=True)
+    subprocess.run([bash_executable(), "scripts/agents/build-soul-runtime.sh"], cwd=repo, env=env,
+                   capture_output=True, check=True, timeout=60)
+    return repo, caller, env
+
+
+@pytest.mark.parametrize("script", ["scripts/agents/tests/test_build_soul_runtime_codex.sh",
+                                  "scripts/enforcement/check-soul-runtime-drift.sh"])
+def test_generation_tools_ignore_foreign_git_bindings(generation, script):
+    repo, caller, env = generation
+    before = tree_bytes(caller)
+    source_before = tree_bytes(repo)
+    env.update(GIT_DIR=(caller / ".git").as_posix(), GIT_WORK_TREE=caller.as_posix(),
+               GIT_COMMON_DIR=(caller / ".git").as_posix())
+    result = subprocess.run([bash_executable(), (repo / script).as_posix()], cwd=caller, env=env,
+                            capture_output=True, encoding="utf-8", timeout=150)
+    assert tree_bytes(caller) == before, "Foreign Git files or metadata changed"
+    assert tree_bytes(repo) == source_before, "Source fixture changed"
+    assert result.returncode == 0, result.stdout + result.stderr

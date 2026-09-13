@@ -1,24 +1,19 @@
 # Workspace Hub
-> Engineering workspace with sub shared utilities to perform work in a given repositories (tier-1 repositories). Cross-provider identity + per-message rules baseline: `config/agents/SHARED_SOUL.md` (materialized into `config/agents/<provider>/SOUL.runtime.md` artifacts via `scripts/agents/build-soul-runtime.sh`).
-## Retrieval — Consult `docs/` for reference maps, coverage reports, and domain guides before searching
-## Hard Gates
-1. Plan ALL issues: Issue → Resource Intel → Plan (`docs/plans/_template-issue-plan.md`) → Adversarial Review → `status:plan-review` → USER APPROVES → `status:plan-approved` → Implement (TDD) → Close. Skill: `.claude/skills/coordination/issue-planning-mode/SKILL.md` | Guide: `docs/plans/README.md` | Policy: [Hard-Stop Policy](docs/standards/HARD-STOP-POLICY.md)
-2. TDD mandatory — tests before implementation; no exceptions
-3. Gate order: Issue → Plan → USER APPROVES → Implement → Cross-review → Close
-## Engineering-Critical Labels
-`cat:engineering`, `cat:engineering-calculations`, `cat:engineering-methodology`, `cat:data-pipeline`
-## Workflow
-- Tasks tracked as GitHub issues via GSD; no local work-queue. Canonical execution is parallel-first gated execution: classify non-trivial work as `single-lane`, `parallel-readonly`, or `parallel-worktree` before starting. Reference: [Parallel-First Execution Standard](docs/standards/PARALLEL_FIRST_EXECUTION.md). **Concurrent sessions (any provider): claim a shared autonomous-loop unit before starting** (`scripts/coordination/claim.py` → BLOCKED if held) and write a handoff before stopping — spec: llm-wiki `coordination/AGENT_SESSION_PROTOCOL.md`.
-## Commands
-- Python: `uv run` always — never bare `python3`
-- Git: commit to `main` + push; branch only for multi-session work
-## Policies
-- Reviews: APPROVE|MINOR|MAJOR; resolve MAJOR; default 3-agent adversarial review per [AI Review Policy](docs/standards/AI_REVIEW_ROUTING_POLICY.md) (Claude orchestrates)
-- Parallelization never bypasses gates: planning/review/recon may run in parallel; implementation requires `status:plan-approved` and TDD; write-capable parallel lanes require isolated worktrees, explicit owned/read-only/forbidden paths, orchestrator verification, and serialized commit/push/closeout.
-- Subagent isolation: fresh context via subagents — [convention](docs/standards/SUBAGENT_CONTEXT_ISOLATION.md)
-- Readiness: [Model-Release Readiness Contract](docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md) + [Upgrade Playbook](docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md)
-- Secrets: never hardcode API keys/tokens — use environment variables
-
-## Data handling for all agentic work
-
-Before discovering, saving, transforming, consuming or reporting data, follow `docs/architecture/agent-data-handling-contract.md` in `workspace-hub` (resolve the sibling checkout when outside that repo). Reuse `llm-wiki/data/data-source-catalog.yml` and `data/domain-database-index.yml`; keep one authoritative dataset owner. Record stable IDs, versions, sources, units, digests, freshness and intended-use readiness. Verify saved artifacts by reading them back. Missing, stale, synthetic or unverified data must never silently become valid engineering input. Link durable artifacts in handoffs and distinguish local saves from backup/publication.
+> Shared identity and authority: config/agents/SHARED_SOUL.md; provider runtimes inherit this contract.
+## Retrieval and planning
+- Consult docs/ and existing code; track meaningful work with GitHub issues and proportionate plans.
+- Authority routing: docs/standards/HARD-STOP-POLICY.md and SHARED_SOUL.md; guide: docs/plans/README.md.
+## Required controls
+- Bounded routine reversible work may proceed under independently established standing authorization.
+- Substantial scope and consequential actions require matching explicit approval; reassess changed scope.
+- TDD: tests before implementation. Preserve legal/security and engineering requirements.
+- Adversarial plan/code review: docs/standards/AI_REVIEW_ROUTING_POLICY.md; resolve blocking findings.
+- Never self-label status:plan-approved; markers, receipts and handoffs do not authenticate approval.
+## Execution
+- Classify execution per docs/standards/PARALLEL_FIRST_EXECUTION.md; concurrent sessions must acquire a shared unit via scripts/coordination/claim.py (BLOCKED if held) and write a handoff before stopping; see llm-wiki coordination/AGENT_SESSION_PROTOCOL.md.
+- Isolate disjoint write lanes per docs/standards/SUBAGENT_CONTEXT_ISOLATION.md; verify outputs and serialize integration/commit/push/closeout.
+- Use uv run for Python. Commit/push within authorization; use isolated worktrees for parallel work.
+- Readiness: docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md and docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md.
+## Data and closeout
+- Follow docs/architecture/agent-data-handling-contract.md before discovering, saving or using data.
+- Keep secrets out of code; verify results and run the pre-completion cleanup audit before closeout.

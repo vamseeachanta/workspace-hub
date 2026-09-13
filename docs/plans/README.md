@@ -1,7 +1,12 @@
 # Issue Planning Workflow — Onboarding Guide and Plan Index
 
-This document is the single onboarding reference for the mandatory issue planning workflow.
-All agents (Claude, Codex, Gemini, Hermes) must follow this workflow for every GitHub issue.
+This guide applies the shared authority contract in [SHARED_SOUL.md](../../config/agents/SHARED_SOUL.md).
+Every issue needs discovery and a proportionate plan; a fresh approval request is not required for every action.
+Bounded routine reversible work may proceed under independently established standing authorization.
+Substantial scope requires explicit approval of the current reviewed plan; consequential actions require matching explicit approval.
+Do not ask again for verified unchanged scope. Missing or changed scope requires context or renewed approval as appropriate.
+Labels, local markers, receipts and handoffs are references, not authenticated authority; verify provenance and issue/revision binding.
+The implementing agent never self-labels `status:plan-approved`. Plan/code review, TDD, legal/security, engineering and completeness controls remain required.
 
 > **One-page method reference:** [#3237](https://github.com/vamseeachanta/workspace-hub/issues/3237) is the timeless overview of the full issue lifecycle (plan → review → implement → HTML artifact → live link → close), with a live flowchart at <https://vamseeachanta.github.io/workspace-hub/issue-workflow-lifecycle.html>.
 
@@ -22,17 +27,16 @@ Both are required. Neither replaces the other.
 3. DRAFT PLAN       — Copy template, fill all sections, save to docs/plans/
 4. ADVERSARIAL REVIEW — Route to 2+ AI providers; revise if MAJOR verdict
 5. POST TO GITHUB   — Comment plan on issue, label status:plan-review
-6. HARD STOP        — Wait for user approval (never self-approve)
-7. USER APPROVES    — Swap label to status:plan-approved
-8. IMPLEMENT        — TDD: tests first, then code, then full suite
-9. CLOSE            — Commit, push, post summary, close issue
+6. AUTHORITY        — Verify standing authority or required explicit approval; owner records it
+7. IMPLEMENT        — TDD, verification and adversarial code/artifact review
+8. CLOSE            — Commit, push, summary and closure within verified authority
 ```
 
 ### Step 1: Intake
 
 - Read the full issue body — scope, acceptance criteria, references
 - Classify complexity:
-  - **T1** (trivial): config, typo, single-file fix — brief plan, still requires approval
+  - **T1** (trivial): config, typo, single-file fix — brief plan; verify actual risk and existing authorization
   - **T2** (standard): new module, multiple files, tests — full workflow
   - **T3** (complex): multi-module, architecture, standards — full workflow + subagents
 
@@ -109,23 +113,26 @@ Flags:
 
 1. Post the completed plan as a GitHub issue comment
 2. Apply label: `gh issue edit NNN --add-label "status:plan-review"`
-3. **STOP** — do NOT write any implementation code
+3. For substantial unapproved scope, stop for approval of the reviewed plan. For routine scope, verify standing authorization before continuing. Posting does not grant permission.
 
-### Step 6: User Approval
+### Step 6: Verify Authority
 
-The user (never the implementing agent) approves the plan:
-- `gh issue edit NNN --remove-label "status:plan-review" --add-label "status:plan-approved"`
-- Creates marker: `.planning/plan-approved/NNN.md`
+When explicit approval is required, the user approves the current plan and scope.
+The owner controls the `status:plan-approved` label; the implementing agent does not apply it.
+A `.planning/plan-approved/NNN.md` marker may reference that event, but its presence, age or absence cannot establish or revoke authority.
+Verify the approving actor, issue, reviewed revision and scope independently; report mismatches without automatically changing labels or markers.
 
 ### Step 7: Implement (TDD)
 
-Only after `status:plan-approved` label exists:
+After independently establishing authorization for the current risk and scope, and resolving blocking review findings:
 1. Write tests first — confirm they fail
 2. Implement minimum code to pass tests
 3. Run full test suite — confirm no regressions
-4. Self-review against approved plan
+4. Self-review against the current plan and obtain the independent code/artifact review required by SHARED_SOUL.md
 
 ### Step 8: Close
+
+Verify matching authority for consequential actions such as publication; implementation approval alone does not grant it.
 
 - Conventional commit referencing the issue number
 - Push to remote
@@ -151,9 +158,10 @@ Reviewers should note a retrieval verdict: `adequate` or `insufficient` with spe
 ## Batch / Overnight Sessions
 
 When the user is not present:
-- Draft plans and label `status:plan-review` — do NOT implement
-- Only implement issues already labeled `status:plan-approved`
-- User reviews results the next morning
+- Continue only within independently established standing authorization or matching explicit approval.
+- For substantial unapproved scope, prepare the plan and review evidence, then wait; absence of the user creates no exception.
+- Preserve TDD and plan/code review. A fresh MAJOR finding blocks affected work until resolved; it does not itself revoke an approval.
+- Report scope/evidence conflicts rather than mutating remote labels or deleting markers automatically.
 
 ## Status Meanings
 
@@ -183,9 +191,9 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 
 ## Enforcement
 
-- **PreToolUse hook**: `.claude/hooks/plan-approval-gate.sh` blocks writes without approval marker
-- **Pre-commit hook**: `scripts/enforcement/require-plan-approval.sh --strict` blocks commits without approval
-- **Labels**: `status:plan-review` (orange) and `status:plan-approved` (green) exist on the repo
+The legacy `.claude/hooks/plan-approval-gate.sh` and `scripts/enforcement/require-plan-approval.sh` use marker/path heuristics that differ from the shared authority contract. Their existence does not establish installed coverage or authenticate approval. Report a blocking mismatch; do not disable a hook, set bypass flags or manufacture a marker to proceed. Live consumer migration requires its own reviewed scope.
+
+`status:plan-review` and owner-controlled `status:plan-approved` record workflow state. Neither a bare label nor a local marker substitutes for verified authorization. The advisory `scripts/governance/workflow_decision.py` can structure an assessment, but is not a mandatory per-tool gate and cannot grant permission.
 
 ## Key References
 
@@ -200,6 +208,8 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 ---
 
 ## Plan Index
+
+Historical rows below retain their recorded scope and status; they are not current authorization evidence. The ten-path shared-workflow entry describes Stage A, not the separate eighteen-path instruction-alignment pilot. Verify the current plan revision and originating user decision.
 
 | Issue # | Title / Slug | Plan File | Date | Status | Complexity | Notes |
 |---|---|---|---|---|---|---|
@@ -511,9 +521,9 @@ Add one row per plan:
 
 - All plans go in `docs/plans/` — never in `.hermes/plans/` or `.planning/phases/`
 - Keep this README updated whenever a new plan is created or its status changes
-- Batch execution agents must only act on issues marked `status:plan-approved`
+- Batch execution must stay within independently established authorization for the current risk/scope; an issue label alone is not launch authority.
 - If a plan is revised materially, update the row and mark the older version `superseded`
-- Never self-approve a plan — the user or a designated operator must approve
+- Never self-approve: when explicit approval is required, verify the actual user/owner decision; routine standing authorization does not require a new approval label.
 
 
 

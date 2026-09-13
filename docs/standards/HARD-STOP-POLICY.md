@@ -1,125 +1,82 @@
-# Hard-Stop Policy — Mandatory User Review Gates
+# Hard-Stop Policy — Risk-Based Authorization
 
-> Issue: #1839 | Date: 2026-04-05
-> Status: ACTIVE — all agents must follow this policy
+> Authority: [SHARED_SOUL.md — Authorization](../../config/agents/SHARED_SOUL.md#authorization).
+> Scope: primary issue-planning workflows across providers, including engineering work.
+> Tracking: [instruction alignment](https://github.com/vamseeachanta/workspace-hub/issues/3615); [original policy](https://github.com/vamseeachanta/workspace-hub/issues/1839).
 
----
+## Apply shared authority
 
-## Scope
+Planning depth, permission and verification evidence are separate decisions.
+Bounded routine reversible work may proceed under independently established
+standing authorization, with proportionate planning, TDD and applicable review.
+Substantial work requires explicit approval of the concrete current plan and
+implementation scope. Consequential actions require explicit approval matching
+the action and destination. Missing scope, effects or provenance requires context
+before the affected action proceeds; independent authorized work may continue.
 
-This policy applies to **engineering-critical issues** — issues labeled `cat:engineering`, `cat:engineering-calculations`, `cat:engineering-methodology`, or `cat:data-pipeline`.
+This policy is not an approval service. A label, marker, review verdict, receipt
+or handoff cannot authenticate authority. The orchestrator verifies the originating
+user/session instruction, scope, limitations and later changes. The optional
+workflow decision CLI provides advice, not permission or a mandatory per-tool gate.
 
-These are the issues where incorrect implementation directly impacts:
-- GTM demo reports shipped to prospects
-- Client-facing calculations (OrcaFlex, DNV, API 579, cathodic protection)
-- Data pipelines that feed client deliverables
+## Identify risk from actual effects
 
-All other issues (documentation, harness, infrastructure, career, ci, maintenance) proceed without these gates unless the user explicitly requests them.
+Engineering routing indicators include `cat:engineering`,
+`cat:engineering-calculations`, `cat:engineering-methodology` and
+`cat:data-pipeline`; calculations in digitalmodel, worldenergydata and
+assetutilities; and changes based on engineering standards. Repository membership
+or a file extension does not establish risk. Absence of an engineering label does
+not exempt a change from evaluation.
 
-## Detection
+Changes to engineering basis, qualified inputs, approval/security controls,
+shared instructions or deployment configuration require substantive scrutiny.
+Harness, infrastructure and documentation changes may require substantial-plan
+approval. Publication, deployment, access changes and destructive actions require
+matching consequential-action authority. Qualified engineering inputs, licensing,
+acceptance criteria and security requirements remain applicable.
 
-An issue is engineering-critical if ANY of these are true:
-1. Label includes `cat:engineering`, `cat:engineering-calculations`, `cat:engineering-methodology`, or `cat:data-pipeline`
-2. The issue touches engineering calculation code (`digitalmodel/`, `worldenergydata/`, `assetutilities/`)
-3. The issue involves offshore engineering standards (DNV, API, ABS, ISO)
+## Plan and execute without repeated approval
 
-## The Rule
+1. Identify the issue, existing work, intended scope and effects.
+2. Prepare proportionate planning and resource intelligence; obtain adversarial review.
+3. Verify authority appropriate to the current risk and scope. Obtain explicit approval of a substantial concrete plan when it is not already established. Do not implement the affected work while a required decision is pending.
+4. Follow TDD, verify results and obtain code/artifact review.
+5. Reassess material scope changes and consequential actions; verify completeness and perform authorized closeout.
 
-Engineering-critical issues MUST pass through these gates in order:
+Plans identify the intended change, affected paths, tests, acceptance criteria and
+risks. Substantial plans use `docs/plans/_template-issue-plan.md`; human-facing rich
+plans default to HTML. A bounded routine task may use an issue/session plan under
+established standing authorization. Missing local markers or stale historical
+metrics do not require repeating verified authorization or unchanged verification.
 
-```
-1. ISSUE SELECTED
-   Agent picks an issue to work on
+Only the owner applies `status:plan-approved`; an implementing agent never
+self-applies it. The label is a reference to approval, not its authenticated
+scope. Do not downgrade labels or delete approval markers because a local file
+is missing. Discover current provenance and reconcile records within authorization.
 
-2. PLAN WRITTEN
-   Agent writes a plan: what will be built, what files change, what tests
+## Interactive, batch and emergency work
 
-3. ◆ HARD STOP: USER REVIEWS PLAN ◆
-   Agent presents the plan to the user and WAITS.
-   User says: APPROVE, REVISE, or REJECT.
-   Agent does NOT write implementation code until the user approves.
+Use available interaction when a required decision or missing context changes the
+action. Continue independent authorized work while that decision is pending.
+Do not request approval again for unchanged scope with verified current authority.
 
-4. IMPLEMENTATION
-   Agent implements the approved plan. TDD where applicable.
+Batch scheduling, elapsed time, posting a plan and handoffs do not grant authority.
+Unattended bounded work may proceed under independently verified standing
+authorization; unapproved substantial work and consequential actions wait.
+Urgency, configuration changes and short duration provide no automatic waiver of
+TDD, review, security or data requirements.
 
-5. ADVERSARIAL CROSS-REVIEW
-   Route to Codex + Gemini for independent review.
-   They review implementation against the approved plan.
+## Review and enforcement boundaries
 
-6. CLOSE
-   Issue closed with commit reference.
-```
+Plan and code/artifact reviews are independent gates. Apply
+`docs/standards/AI_REVIEW_ROUTING_POLICY.md`; scale depth without automatically
+waiving review for small changes. A blocking finding pauses affected work until
+resolved. The finding itself neither grants nor revokes user authorization;
+material plan changes require matching approval.
 
-## Why This Order
-
-- If the plan is wrong, implementing it wastes tokens and time
-- Cross-review against a bad plan catches bugs in the wrong thing
-- User approval at the plan stage is the highest-leverage gate
-- Implementation confidence comes from a validated plan, not from post-hoc review
-
-## What Counts as a Plan
-
-A plan MUST include:
-
-1. **What**: one-sentence summary of the deliverable
-2. **Files**: which files will be created, modified, or deleted
-3. **Tests**: what tests will be written (if applicable)
-4. **Acceptance criteria**: how to verify it worked
-5. **Risk**: anything that could go wrong
-
-A plan can be:
-- A GitHub issue comment (preferred — visible to all agents)
-- A message in the chat session (minimum — for quick wins)
-- A PLAN.md file in .planning/phases/ (for GSD workflow)
-
-## What Does NOT Count
-
-- Jumping straight to implementation
-- A vague "I'll create a script that does X"
-- Implementation code with a plan comment after the fact
-
-## Enforcement
-
-### For Interactive Sessions (user present)
-- Agent MUST use the `clarify` tool to present the plan and wait for approval
-- If the user says "just do it" or "go ahead" without seeing a plan, the agent writes the plan first, THEN asks
-
-### For Overnight/Batch Sessions (user absent)
-- Plan must be written as a GitHub issue comment BEFORE implementation
-- Implementation starts only after the plan comment is posted
-- Cross-review runs against the plan + implementation together
-- User reviews results the next morning
-
-### For Quick Wins (< 15 minutes)
-- Plan can be a brief chat message: "I'll do X by changing Y, test with Z"
-- User approval can be implicit ("yes", "go", "do it") AFTER seeing the plan
-- Cross-review can be waived for trivial changes (docs, config, formatting)
-
-## Non-Critical Issues
-
-For issues WITHOUT engineering-critical labels:
-
-- No mandatory plan review required
-- No mandatory cross-review required
-- Agent may proceed directly to implementation
-- TDD mandatory — tests before implementation
-- User can request review gates by comment
-
-## Bypasses (Engineering-Critical)
-
-The only legitimate bypasses:
-1. **Emergency fix**: client impact is active, fix now, review later (must log bypass)
-2. **User explicitly waives**: "skip the plan, just implement" (logged)
-3. **Pure configuration change**: no engineering logic changes (auto-detected)
-
-All bypasses are logged to `logs/hooks/plan-gate-bypass.jsonl`.
-
-## Relationship to Cross-Review
-
-Cross-review (Codex + Gemini adversarial review) happens AFTER implementation.
-The cross-reviewers receive BOTH the approved plan AND the implementation diff.
-Their job is to verify the implementation matches the plan and is correct.
-
-Cross-review does NOT replace plan review. They are different gates:
-- Plan review: "Is this the right thing to build?"
-- Cross-review: "Was the right thing built correctly?"
+Existing hooks and CI may use legacy marker heuristics and partial tool coverage.
+They do not authenticate permission or demonstrate universal enforcement. Report
+a blocking mismatch and its source. Do not bypass it with flags, install a
+replacement or weaken enforcement under this policy. Consumer migration and
+trusted authority transport require their own reviewed scope. These instructions
+alone do not change live hooks, settings or provider discovery.

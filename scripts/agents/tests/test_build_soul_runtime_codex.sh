@@ -1,59 +1,98 @@
 #!/usr/bin/env bash
-# TDD — #2841 Phase B: build-soul-runtime.sh appends a Skill index + inlined universal
-# rules to the Codex AGENTS.runtime.md ONLY (F3: codex/claude SOUL.runtime.md unchanged).
-set -uo pipefail
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(git -C "${SCRIPT_DIR}" rev-parse --show-toplevel)"
-AGENTS="${REPO_ROOT}/config/agents/codex/AGENTS.runtime.md"
-CODEX_SOUL="${REPO_ROOT}/config/agents/codex/SOUL.runtime.md"
-CLAUDE_SOUL="${REPO_ROOT}/config/agents/claude/SOUL.runtime.md"
-
-fail=0
-chk() { if eval "$2"; then echo "  PASS: $1"; else echo "  FAIL: $1"; fail=$((fail+1)); fi; }
-
-if ! bash "${REPO_ROOT}/scripts/agents/build-soul-runtime.sh" >/dev/null 2>&1; then
-    echo "FAIL: runtime generation failed"; exit 1
-fi
-
-# Native discovery and canonical authorship are distinct contracts (#3186).
-for runtime in "${AGENTS}" "${CODEX_SOUL}"; do
-    chk "native discovery documented: ${runtime##*/}" "grep -Fq 'Codex supports native skill discovery' '${runtime}'"
-    chk "native roots documented: ${runtime##*/}" "grep -Fq 'Repository discovery uses' '${runtime}'"
-    chk "native preservation documented: ${runtime##*/}" "grep -Fq 'Preserve native .system skills' '${runtime}'"
-    chk "false loader claims absent from skills guidance: ${runtime##*/}" "! sed -n '/^## Skill Loader/,/^## Required Gates/p; /^## Skill index/,/^## Universal rules/p' '${runtime}' | grep -Eqi 'no native skill loader|no native loader|skills/.*currently empty|wins over.*agents/skills'"
+# Real generation/checking occurs only in a disposable Git fixture.
+set -euo pipefail
+# Git hooks export repository bindings; clear them in this child before locating roots.
+while IFS= read -r git_binding; do unset "${git_binding}"; done < <(git rev-parse --local-env-vars)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+SOURCE_ROOT="$(git -C "${SCRIPT_DIR}" rev-parse --show-toplevel)"
+TEMP_PARENT="$(cd "${TMPDIR:-/tmp}" && pwd -P)"
+FIXTURE="$(mktemp -d "${TEMP_PARENT}/soul-runtime-test.XXXXXXXX")"
+FIXTURE="$(cd "${FIXTURE}" && pwd -P)"
+touch "${FIXTURE}/.owned-soul-runtime-fixture"
+cleanup() {
+    [[ -d "${FIXTURE}" && ! -L "${FIXTURE}" ]] || return 1
+    local resolved
+    resolved="$(cd "${FIXTURE}" && pwd -P)" || return 1
+    [[ "${resolved}" == "${FIXTURE}" && "${resolved%/*}" == "${TEMP_PARENT}" ]] || return 1
+    [[ "${resolved##*/}" == soul-runtime-test.* && -f "${resolved}/.owned-soul-runtime-fixture" ]] || return 1
+    [[ "${resolved}" != "${SOURCE_ROOT}" ]] || return 1
+    cd "${TEMP_PARENT}" || return 1
+    rm -rf -- "${resolved}"
+}
+trap cleanup EXIT
+outputs=(hermes/SOUL.runtime.md claude/SOUL.runtime.md codex/SOUL.runtime.md
+         codex/AGENTS.runtime.md gemini/SOUL.runtime.md agy/SOUL.runtime.md)
+sources=(config/agents/SHARED_SOUL.md config/agents/hermes/SOUL.md
+         config/agents/claude/SOUL.delta.md config/agents/codex/SOUL.delta.md
+         config/agents/gemini/SOUL.delta.md config/agents/agy/SOUL.delta.md)
+inputs=("${sources[@]}" scripts/agents/build-soul-runtime.sh
+        scripts/agents/soul-runtime-lib.sh scripts/enforcement/check-soul-runtime-drift.sh
+        .claude/rules/coding-style.md .claude/rules/patterns.md GEMINI.md)
+for path in "${inputs[@]}"; do
+    mkdir -p "${FIXTURE}/$(dirname "${path}")"
+    cp "${SOURCE_ROOT}/${path}" "${FIXTURE}/${path}"
 done
-
-# AGENTS.runtime.md gains the Codex-only sections
-chk "AGENTS.runtime.md has Skill index"          "grep -q '## Skill index' '${AGENTS}'"
-chk "Skill index lists at least one SKILL"        "grep -qE '^- \*\*' '${AGENTS}'"
-chk "AGENTS.runtime.md inlines universal rules"   "grep -q 'Universal rules (inlined for Codex)' '${AGENTS}'"
-chk "AGENTS.runtime.md inlines coding-style"      "grep -qi 'Edit Safety\|Path Handling' '${AGENTS}'"
-chk "AGENTS.runtime.md inlines patterns"          "grep -qi 'Enforcement Gradient' '${AGENTS}'"
-
-# F3: the codex + claude SOUL.runtime.md must NOT gain those sections (divergence)
-chk "codex SOUL.runtime.md has NO Skill index"    "! grep -q '## Skill index' '${CODEX_SOUL}'"
-chk "claude SOUL.runtime.md has NO Skill index"   "! grep -q '## Skill index' '${CLAUDE_SOUL}'"
-
-# Claude-only rules NOT inlined into Codex (goal-invocation 'binds Claude only')
-chk "goal-invocation NOT inlined into AGENTS"     "! grep -qi '/goal invocation contract' '${AGENTS}'"
-
-# Drift checker must mirror the Codex-only append, not flag the skill index as drift.
-chk "drift check accepts Codex AGENTS extras"     "bash '${REPO_ROOT}/scripts/enforcement/check-soul-runtime-drift.sh' --quiet"
-
-# Idempotent: a second build does not double-append
-# cmp is available on GNU/BSD; avoid requiring GNU-only sha256sum on macOS.
-before_agents=$(mktemp) || exit 1
-before_soul=$(mktemp) || { rm -f "${before_agents}"; exit 1; }
-trap 'rm -f "${before_agents}" "${before_soul}"' EXIT
-if ! cp "${AGENTS}" "${before_agents}" || ! cp "${CODEX_SOUL}" "${before_soul}"; then
-    echo "FAIL: runtime snapshot failed"; exit 1
-fi
-if ! bash "${REPO_ROOT}/scripts/agents/build-soul-runtime.sh" >/dev/null 2>&1; then
-    echo "FAIL: runtime regeneration failed"; exit 1
-fi
-chk "rebuild is byte-identical for both Codex artifacts" "cmp -s '${before_agents}' '${AGENTS}' && cmp -s '${before_soul}' '${CODEX_SOUL}'"
-
-echo "---"
-if [ "${fail}" -gt 0 ]; then echo "FAILED: ${fail} check(s)"; exit 1; fi
-echo "ALL PASS"
+mkdir -p "${FIXTURE}/.claude/skills/fixture/sample" "${FIXTURE}/.claude/skills/_archive/ignored"
+printf '%s\n' '---' 'name: sample' 'description: Fixture skill' '---' > "${FIXTURE}/.claude/skills/fixture/sample/SKILL.md"
+printf '%s\n' 'archive fixture' > "${FIXTURE}/.claude/skills/_archive/ignored/SKILL.md"
+git -c init.templateDir= -C "${FIXTURE}" init -q
+git -C "${FIXTURE}" config core.autocrlf false
+cd "${FIXTURE}"
+fail=0
+checks=0
+check() {
+    checks=$((checks + 1))
+    if "$@"; then echo "PASS ${checks}"; else echo "FAIL ${checks}: $*"; fail=$((fail + 1)); fi
+}
+build() { bash "${FIXTURE}/scripts/agents/build-soul-runtime.sh" >/dev/null; }
+drift() { bash "${FIXTURE}/scripts/enforcement/check-soul-runtime-drift.sh" --quiet >/dev/null; }
+reject_drift() {
+    local rc=0
+    bash "${FIXTURE}/scripts/enforcement/check-soul-runtime-drift.sh" "$@" > "${FIXTURE}/drift.log" 2>&1 || rc=$?
+    [[ "${rc}" == 1 ]]
+}
+check build
+actual=$(find config/agents -type f -name '*.runtime.md' | wc -l | tr -d ' ')
+check test "${actual}" -eq 6
+for path in "${outputs[@]}"; do
+    check test -f "config/agents/${path}"
+    check grep -Fq 'Subagent Write phantom hazard' "config/agents/${path}"
+    if [[ "${path}" == codex/AGENTS.runtime.md ]]; then
+        check grep -Fq '## Skill index' "config/agents/${path}"
+        check grep -Fq '## Universal rules (inlined for Codex)' "config/agents/${path}"
+        check grep -Fq 'fixture/' "config/agents/${path}"
+    else
+        check bash -c '! grep -Fq "## Skill index" "$1"' _ "config/agents/${path}"
+        check bash -c '! grep -Fq "## Universal rules (inlined for Codex)" "$1"' _ "config/agents/${path}"
+    fi
+done
+check drift
+mkdir snapshots
+for path in "${outputs[@]}"; do cp "config/agents/${path}" "snapshots/${path//\//-}"; done
+check build
+for path in "${outputs[@]}"; do check cmp -s "config/agents/${path}" "snapshots/${path//\//-}"; done
+for path in "${outputs[@]}"; do
+    printf '%s\n' 'tampered fixture content' >> "config/agents/${path}"
+    check reject_drift --quiet
+    cp "snapshots/${path//\//-}" "config/agents/${path}"
+    mv "config/agents/${path}" "${FIXTURE}/held-runtime"
+    check reject_drift --quiet
+    mv "${FIXTURE}/held-runtime" "config/agents/${path}"
+done
+for path in "${sources[@]}"; do
+    mv "${path}" "${FIXTURE}/held-source"
+    check reject_drift --quiet
+    mv "${FIXTURE}/held-source" "${path}"
+done
+# A verbose negative must complete its report rather than exit at diff|head.
+printf '%s\n' 'verbose drift' >> config/agents/agy/SOUL.runtime.md
+check reject_drift
+check grep -Fq 'DRIFT DETECTED:' "${FIXTURE}/drift.log"
+cp snapshots/agy-SOUL.runtime.md config/agents/agy/SOUL.runtime.md
+mkdir foreign
+git -c init.templateDir= -C foreign init -q
+cd foreign
+check drift
+check test ! -e config
+echo "RESULT: ${checks} checks, ${fail} failures; fixture-only generation"
+[[ "${fail}" == 0 ]]

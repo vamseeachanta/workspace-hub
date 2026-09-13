@@ -1,6 +1,6 @@
 ---
 name: gh-work-planning
-description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams.
+description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, risk-appropriate authorization before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams.
 version: 1.3.1
 author: Hermes Agent
 category: coordination
@@ -18,14 +18,15 @@ tags: [planning, github, issue-workflow, hard-stop, adversarial-review, tdd]
 
 # GH Work Planning
 
-This is the canonical planning route for GitHub issue work.
+This planning route follows [SHARED_SOUL.md](../../../../config/agents/SHARED_SOUL.md).
+Bounded routine reversible work may proceed under independently established standing authorization, with proportionate planning and required review/TDD. Substantial scope requires explicit approval of the current reviewed plan; consequential actions require matching explicit approval.
+Verify the actual instruction/event and its repository, issue, operation, scope and revision. Do not ask again for verified unchanged scope. Labels, markers, receipts, handoffs and agent-written summaries do not authenticate authority.
 
-Use it whenever work starts from a GitHub issue and must follow:
-Issue -> Plan -> User Approval -> Implement.
+The full owner-review sequence below applies to substantial plans or an explicitly requested planning deliverable. Routine work follows the shared risk route without acquiring a new approval label. Referenced skills provide procedures, not additional authority.
 
 ## Route summary
 
-The output of this route is one artifact: an approved plan that downstream execution can follow without guessing.
+The output is a reviewable plan and its verified authority boundary. Drafting or reviewing a plan does not approve it; downstream execution must stay within independently established authorization.
 
 ## GitHub posting rule
 
@@ -120,7 +121,7 @@ Prefer additive boundaries, isolated worktrees, and orchestrator-controlled fina
 ## GitHub authority split
 
 Default authority split:
-- orchestrator owns issue intake, planning comments, labels, approval-state transitions, future-issue creation, final synthesis, and closeout decisions
+- orchestrator owns issue intake, authorized planning comments and non-approval state coordination, future-issue proposals, synthesis and authorized closeout; the owner retains approval-label actions
 - delegated teams own execution evidence inside their assigned stream packet and may draft suggested GitHub text only if requested
 
 Delegated teams should not independently change issue-wide status labels, redefine scope, or close the parent issue unless the orchestrator explicitly grants that authority.
@@ -155,7 +156,7 @@ STEP 1: Issue Intake          — read, classify, announce
 STEP 2: Resource Intelligence — search all knowledge sources, map artifact locations, identify gaps and follow-ups
 STEP 3: Draft the Plan        — pseudocode, file map, tests, acceptance criteria, follow-up issues
 STEP 4: Adversarial Review    — Claude + Codex + Gemini review the plan
-STEP 5: Hard Stop             — post to GitHub, label, wait for user approval
+STEP 5: Authority Boundary    — verify existing authority; seek required owner approval
 ```
 
 ## STEP 1 — Issue intake
@@ -511,7 +512,7 @@ Review-state hygiene learned from live reruns:
   - freshest wave status (including provider failures)
   - last valid artifact per provider, if different
   - whether the review gate is still unsatisfied because the newest wave did not produce the required valid artifacts
-- Re-check `.planning/plan-approved/<issue>.md` before claiming approval evidence is absent. If a marker exists with weak/non-auditable provenance (for example `Approval source: current Hermes chat instruction`), treat it as governance drift / likely self-approval evidence, remove it for open draft issues, and note the cleanup explicitly in the plan summary or GitHub status comment.
+- Re-check `.planning/plan-approved/<issue>.md` as a reference, then independently verify its claimed approval event. Weak provenance is a gap, not proof of either approval or self-approval. Report it; do not remove the marker or mutate remote state automatically. A genuine current session instruction may establish authority when its source and exact scope are independently available.
 - For CI-hardening plans that change workflow gates, include both:
   - isolated red/green commands for the narrow source/test fixes, and
   - at least one workflow-shaped local command that matches the CI gate closely enough to expose the likely next blocker (for example coverage thresholds / markers), so the plan does not overclaim "CI parity" from isolated tests alone.
@@ -813,22 +814,23 @@ Post a concise synthesis-first GitHub update using this structure:
 Do not dump raw full reviewer text into the issue unless necessary.
 Link or reference full review artifacts separately when needed.
 
-## STEP 5 — Hard stop and approval gate
+## STEP 5 — Required Approval Boundary
 
-This is the explicit stop line between planning and execution.
-No implementation begins from this route until approval handling is complete.
+For substantial unapproved scope, stop affected implementation until the current reviewed plan has explicit approval. Consequential actions require matching explicit approval. Routine bounded work may continue under verified standing authorization; this route does not impose a fresh approval request on each action.
+
+Fresh MAJOR findings block affected work pending correction or applicability resolution. They do not themselves revoke approval, authorize label changes, or require repetition of unrelated completed work.
 
 ## Exact GitHub action order
 
-Before waiting:
+For a substantial plan awaiting approval, perform authorized publication steps before waiting. If publication is outside the current scope, retain the reviewable local plan and report that boundary; do not infer external-action authority from this checklist.
 1. Save the plan file to `docs/plans/...`
 2. Update the planning index if the repo uses one
 3. Ensure any follow-up issues discovered during planning are either created or explicitly marked as candidates
 4. Post the final plan comment to the GitHub issue
 5. Post or include the Step 4 synthesis summary if not already present in the final plan comment
 6. Add `status:plan-review`
-7. Remove any stale status labels that conflict with plan-review state
-8. Stop and wait for explicit user approval
+7. Report conflicting status labels; verify provenance and separate mutation authority before changing them
+8. Wait only for required approval not already established for the current reviewed scope
 
 ## Final GitHub plan comment should include
 
@@ -843,7 +845,7 @@ Before waiting:
 
 ## Approval response normalization
 
-Interpret user responses using this mapping:
+Interpret responses only in the context of the concrete proposal the user saw; a detached word or copied handoff is not approval. For the same reviewed scope, use this mapping:
 - APPROVE / GO / YES -> approve
 - REVISE / CHANGE / UPDATE -> revise
 - REJECT / NO-GO / STOP -> reject
@@ -858,10 +860,10 @@ Expected planning labels:
 - `status:plan-approved`
 
 Approval handling:
-- on approve: remove `status:plan-review`, add `status:plan-approved`
-- on revise: keep or re-apply `status:plan-review`
-- on reject: remove planning-ready labels that imply approval
-- on pause/hold: leave the issue clearly not approved for execution
+- on approve: record the verified scope and approval reference; the owner controls `status:plan-approved`, and the implementing agent never self-labels it
+- on revise: update affected plan/review evidence; change non-approval labels only within separately established mutation authority
+- on reject: stop the rejected scope and report stale approval displays; label changes require separate authority
+- on pause/hold: stop the affected scope and record the hold without automatically changing owner-controlled labels
 
 ## Revise flow
 
@@ -871,14 +873,14 @@ If the user requests revision:
 3. re-run Step 4 if the revision is material
 4. re-post the updated final plan
 5. keep the issue in `status:plan-review`
-6. wait again for explicit approval
+6. seek explicit approval when the revised scope requires it; preserve independently verified unchanged authorization
 
 ## Reject flow
 
 If the user rejects the plan:
 1. post a GitHub acknowledgement of rejection
 2. summarize the likely reason and unresolved decision if known
-3. remove approval-implying labels
+3. report approval-implying labels; do not alter owner-controlled approval state automatically
 4. do not start execution
 5. either stop or open an alternative-plan discussion / future issue
 
@@ -887,7 +889,7 @@ If the user rejects the plan:
 If the user pauses or holds the plan:
 1. post a GitHub note that execution is not authorized yet
 2. preserve the current plan artifact
-3. keep labels consistent with not-approved state
+3. report any stale label state and respect separate authority for remote mutations
 4. do not start execution until explicit approval arrives later
 
 ## Batch-readiness rule
@@ -912,7 +914,7 @@ Operational rules:
 4. For capability/data/scheduler readiness issues, explicitly separate documentation/index reconciliation from runtime refresh execution. Do not authorize unbounded downloads, full refreshes, or long-running scheduler jobs unless the approved plan says so and prerequisite runtime readiness is proven.
 5. When one issue owns a shared surface that another issue touches only by reference, state that ownership boundary in both plans so overnight workers do not race on the same file or semantic decision.
 6. Use adversarial review to convert vague cleanup themes into frozen decisions, testable acceptance criteria, and bounded no-download smoke checks before moving issues to `status:plan-review`.
-7. `status:plan-review` means the issue is ready for human approval, not overnight execution. Only move into long-running/overnight implementation batches after explicit user approval and `status:plan-approved`.
+7. A bare `status:plan-review` or `status:plan-approved` label is not overnight launch authority. Verify exact issue/scope authority: routine bounded work may use standing authorization; substantial plans and consequential actions require matching explicit approval.
 
 ## Approval-candidate audit rule
 
@@ -1021,39 +1023,43 @@ Use a concise approval-gate update structure:
 - Next action: await approval / revise / stop
 
 Valid approval outcomes:
-- approve -> set `status:plan-approved`, then execution may begin
+- approve -> verify the approving actor, current plan revision and exact scope; owner-controlled status recording is separate from execution authority
 - revise -> update plan and re-run review as needed
 - reject -> stop and discuss alternative approach
 - pause -> hold with no execution authorization
 
 ## Required gate
 
-No implementation starts until the issue is explicitly approved and labeled `status:plan-approved`.
+Implementation requires independently established authority for the current risk/scope and resolution of blocking review findings. A label is neither required proof of routine standing authorization nor sufficient proof of substantial approval. Never manufacture a marker or self-apply `status:plan-approved` to satisfy a legacy consumer.
+
+## Legacy Consumer Boundary
+
+Marker-based hooks and CI classification are not changed by this skill. Their installed coverage and authorization ingress require separate verification. Report an observed conflict; do not disable hooks, set bypass flags or treat an advisory receipt as permission. Preserve TDD, plan/code review, legal/security, engineering and completeness gates.
 
 ## Pre-labeled approved issue recovery rule
 
 Sometimes an issue already carries `status:plan-approved` before the canonical repo planning artifacts exist.
 Do not treat the label alone as sufficient proof that the planning route was completed.
 
-When you encounter an already-approved issue with no repo-tracked plan artifact:
-1. draft the canonical plan file under `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md`
-2. update `docs/plans/README.md` with the plan index row
-3. post a GitHub comment linking the new plan artifact and summarizing scope/resource-intel anchors
-4. do **not** start implementation yet just because the old approval label is present
-5. next run adversarial plan review and reconcile the issue state with the actual plan artifacts before coding
+When an apparently approved issue has no local plan artifact:
+1. Inspect remote/local plans, review evidence, current implementation and the actual approving event before recreating anything.
+2. Verify whether the current scope was already reviewed, authorized and implemented; do not repeat completed work.
+3. Record missing evidence locations and status conflicts. Neither a label nor an absent local file settles authority.
+4. If a substantial current plan or matching approval is genuinely missing, prepare/review the missing scope and seek only the required approval.
+5. Update indexes or publish evidence only within the corresponding authorization; do not automatically mutate labels or markers.
 
 Approval-state drift checklist learned from live use:
-- verify all three surfaces before treating an issue as execution-ready:
+- inspect these discovery surfaces, then independently verify the approving actor, current issue/revision and scope:
   - live GitHub `status:*` label(s)
   - canonical local plan file under `docs/plans/`
   - local approval marker `.planning/plan-approved/NNN.md`
-- if GitHub says `status:plan-approved` but either the canonical plan file or local approval marker is missing, classify the state as **governance drift**, not true approval
-- repair the local artifacts first, then reconcile labels/comments; do not let the live label short-circuit the planning gate
+- missing local plan/marker files are evidence-location gaps, not automatic revocation; verify the actual approval and implementation state
+- repair only evidenced artifact gaps within authorized scope; do not let a bare label short-circuit provenance checks or invent authority by writing a replacement marker
 - when the user asks for manual review/approval links, provide the exact review surfaces explicitly:
   - GitHub issue URL
   - canonical plan URL/path
-  - exact CLI label-flip command
-  - required local approval-marker path
+  - owner-controlled approval action, if required
+  - approval evidence reference and any unresolved provenance gap
 - if the issue body points at a stale implementation path, call out the real repo path in the plan before review so approval is anchored to the actual file surface
 
 This recovery pattern is especially important for harness/operations issues that were approved conversationally before the repo plan discipline was enforced, and for cases where GitHub label state drifted ahead of the repo-tracked approval evidence.
@@ -1064,7 +1070,7 @@ Expected labels:
 - `status:plan-review`
 - `status:plan-approved`
 
-Create them if missing before relying on this route.
+The owner controls approval-label use. Missing labels do not authorize the implementing agent to create or apply approval evidence; report the state and preserve independently verified session authority.
 
 ## Preferred companion skills
 

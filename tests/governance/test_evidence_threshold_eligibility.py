@@ -215,3 +215,67 @@ def test_bool_metric_rejected():
     # bool is an int subclass; must be rejected as non-numeric
     v = ete.evaluate_eligibility(DOCS, [], _passing_raw(adversarial_review_approve_rate=True), _config())
     assert not v.eligible
+
+
+@pytest.mark.parametrize("path", [
+    "docs/standards/HARD-STOP-POLICY.md", "docs/governance/README.md",
+    "docs/architecture/agent-data-handling-contract.md",
+    ".claude/rules/routing.md", ".claude/skills/data/example/SKILL.md",
+    ".agents/skills/example/SKILL.md", "config/skills/profiles/foundation.yaml",
+    "scripts/agents/install-soul-runtime.sh", "scripts/governance/example.py",
+    "AGENTS.md", "CLAUDE.md", "GEMINI.md", "MEMORY.md", "SHARED_SOUL.md",
+    "config/schemas/resource-descriptor-v1.schema.json",
+    "docs/security/guide.md", "docs/permissions/access.md",
+    r"DOCS\STANDARDS\hard-stop-policy.MD", r".CLAUDE\RULES\routing.md",
+    r".GITHUB\WORKFLOWS\ci.YML", ".codex/config.toml",
+])
+def test_protected_paths_dominate_benign_docs_labels(path):
+    assert ete.classify(["docs/notes.md", path], ["docs"]) in ete.INELIGIBLE_CLASSES
+    verdict = ete.evaluate_eligibility([path], [], _passing_raw(), _config())
+    assert not verdict.eligible
+
+
+@pytest.mark.parametrize("paths", [
+    None, "docs/foo.md", {"docs/foo.md": True}, 1, [None], [1], [""],
+    ["../README.md"], ["docs/../README.md"], ["./README.md"],
+    ["/docs/foo.md"], [r"C:\docs\foo.md"], ["C:docs/foo.md"],
+    [r"\\host\share\foo.md"], ["docs/foo.md\x00"],
+    ["docs//foo.md"], ["docs/foo.md/"], ["docs/foo.md:stream"],
+    ["docs /foo.md"], ["docs/foo.md."],
+    [{"old_path": "docs/a.md"}],
+    [{"old_path": "docs/a.md", "new_path": "docs/b.md", "extra": True}],
+    [{"old_path": "docs/a.md", "new_path": None}],
+])
+def test_malformed_paths_reject_and_classifier_fails_closed(paths):
+    with pytest.raises(ValueError):
+        ete.normalize_changed_paths(paths)
+    assert ete.classify(paths, []) == "unknown"
+
+
+def test_normalizer_canonical_order_uniqueness_and_rename_endpoints():
+    paths = [r"docs\b.md", "docs/a.md", "docs/b.md",
+             {"old_path": "docs/c.md", "new_path": r"docs\d.md"}]
+    assert ete.normalize_changed_paths(paths) == [
+        "docs/a.md", "docs/b.md", "docs/c.md", "docs/d.md"]
+    assert ete.normalize_changed_paths([]) == []
+
+
+@pytest.mark.parametrize("old,new", [
+    ("docs/governance/policy.md", "docs/archive.md"),
+    ("docs/notes.md", ".claude/rules/new-policy.md"),
+])
+def test_rename_cannot_hide_protected_endpoint(old, new):
+    assert ete.classify([{"old_path": old, "new_path": new}], []) in ete.INELIGIBLE_CLASSES
+
+
+def test_classifier_case_insensitive_but_reuse_paths_preserve_identity():
+    assert ete.normalize_changed_paths(["Docs/Notes.MD"]) == ["Docs/Notes.MD"]
+    assert ete.classify(["Docs/Notes.MD"], []) == "docs-typo-index"
+
+
+@pytest.mark.parametrize("path", [".github/CODEOWNERS", ".git/config",
+    "scripts/review/cross-review.sh", "config/security.yaml",
+    "docs/architecture/authorization.md", "docs/engineering/design-basis.md",
+    "scripts/workflow/completeness_gate_runner.py"])
+def test_review_found_control_and_engineering_surfaces(path):
+    assert ete.classify([path], []) in ete.INELIGIBLE_CLASSES
