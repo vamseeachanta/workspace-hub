@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-12T17:21:30.113089Z",
+  "generated_at": "2026-09-12T21:21:35.650375Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-12T17:21:26.909971Z",
+  "scorecard_generated_at": "2026-09-12T21:21:33.638865Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 17,
+      "execution_ready_count": 16,
       "total_candidates": 176,
       "top_issues": [
         {
@@ -442,32 +442,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3511,
-          "title": "bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3511",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T11:30:20Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
@@ -963,7 +937,7 @@
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-09-10T00:25:47Z",
+          "updatedAt": "2026-09-12T20:59:49Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1079,7 +1053,7 @@
             "domain:harness",
             "initiative"
           ],
-          "updatedAt": "2026-07-31T08:35:47Z",
+          "updatedAt": "2026-09-12T19:33:26Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -3451,30 +3425,6 @@
           ]
         },
         {
-          "number": 3513,
-          "title": "bug(harness): Windows soul installer reports LINK for ordinary file and accumulates backups",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3513",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-08-01T11:30:21Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3521,
           "title": "Legal scanner: support explicit NUL-safe staged-blob pathsets",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3521",
@@ -4369,6 +4319,46 @@
             "lane:codex"
           ],
           "updatedAt": "2026-09-11T15:49:41Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3846,
+          "title": "fix(data): audit Git normalization of digest-bound engineering originals",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3846",
+          "labels": [
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-09-12T19:21:34Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3847,
+          "title": "Audit solver evidence parsers for normalized duplicates and exact runtime identity",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3847",
+          "labels": [
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-09-12T20:54:26Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",

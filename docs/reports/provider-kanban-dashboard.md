@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-12T17:21:32Z
+Generated: 2026-09-12T21:21:37Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3847 | Audit solver evidence parsers for normalized duplicates and exact runtime identity | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3846 | fix(data): audit Git normalization of digest-bound engineering originals | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3844 | enforce(rules): promote reproducibility-is-not-correctness to Level 2 and cover the structural-read failure | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3843 | refactor(orcaflex): consolidate four model generators onto modular_generator | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3842 | refactor(fatigue): consolidate seven rainflow counting paths onto one | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -241,8 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3521 | Legal scanner: support explicit NUL-safe staged-blob pathsets | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3518 | fix(scheduler): keep setup-cron wrapper attestation pin synchronized | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3516 | bug(equivalence): ref blobs keyed by role — same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
-| #3513 | bug(harness): Windows soul installer reports LINK for ordinary file and accumulates backups | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3511 | bug(equivalence): Windows sentinel emits empty unknown fingerprint and corrupts mktree filenames | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review,unavailable_review |
 
 ## Lane: blocked (0)
 
