@@ -351,7 +351,7 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 - **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
 - **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
 - **workspace-hub-learned/** — 70 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
-- **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
+- **workspace-hub/** — 149 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 
 ## Universal rules (inlined for Codex)
 > Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.

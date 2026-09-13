@@ -62,6 +62,8 @@ command families, event-time trends, repo distribution and within-session module
 co-occurrence. Keep provider-specific denominators beside any combined summary.
 Normalize command families without discarding effectful subcommands; retain raw
 commands only in authorized evidence. Reads and writes measure activity, not quality.
+Where captured, report per-session read/write/exec/delegation counts or percentages,
+with their denominators and native model field; mark unavailable fields as unknown.
 
 For prompt-focused audits, classify prompt reads as stage prompts, planning/review
 templates, plugin prompts or other prompt-like paths. Examine neighboring events
@@ -108,6 +110,9 @@ conflict markers and linked-file availability across enumerated owner checkouts.
 Record machine-local versus tracked state; secrets and identity-bearing memory must
 not be copied into public reports. Do not assume old CLAUDE.md/AGENTS.md path layouts
 or historical conflict percentages still apply. Git history belongs to each owner.
+Do not infer that `.claude/state/` is machine-local: verify tracked and ignored status.
+For `workspace-hub:.claude/state/portfolio-signals.yaml`, regression checks should
+assert tracked and not ignored against the current owner revision.
 
 For routing intelligence, compare observed capabilities and capture coverage with
 `config/agents/routing-config.yaml` and `config/agents/provider-capabilities.yaml`
@@ -119,6 +124,9 @@ Per-repo ecosystem checks may enumerate current harnesses, skills, hooks, qualit
 gates, tests and agent support. Scope the repo set from verified workspace ownership.
 Treat file presence as configuration evidence only; runtime activation needs a probe.
 Cross-repo duplicates require content, provenance and caller checks, not name equality.
+Compare each harness-declared `test_command` with actual test discovery in its owning
+repo. Flag missing commands or no collected tests; an empty `tests/` directory alone
+does not establish a gap when the declared command discovers tests elsewhere.
 
 ## Product conversation catch-up
 

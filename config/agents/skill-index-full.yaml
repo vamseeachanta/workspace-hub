@@ -758,11 +758,11 @@ skills:
   name: enforcement-audit-and-upgrade
   when_to_use: enforcement-audit-and-upgrade Audit existing enforcement infrastructure, identify gaps between advisory and strict modes, create hard-gate scripts, and incrementally roll out enforcement. Pattern from coordination
   when_to_use_source: backfill
-- description: Mandatory workflow for engineering-critical GitHub issues — resource intelligence, plan review, TDD, implementation, and 3-provider cross-review.
+- description: Engineering-specific discovery, qualification, implementation and verification for calculation, standards, solver and data-pipeline issues. Generic planning and authority follow the shared lifecycle.
   family: coordination
   id: coordination/engineering-issue-workflow
   name: engineering-issue-workflow
-  when_to_use: engineering-issue-workflow Mandatory workflow for engineering-critical GitHub issues — resource intelligence, plan review, TDD, implementation, and 3-provider cross-review. coordination
+  when_to_use: engineering-issue-workflow Engineering-specific discovery, qualification, implementation and verification for calculation, standards, solver and data-pipeline issues. Generic planning and authority follow the shared lifecycle. coordination
   when_to_use_source: backfill
 - description: 'Use this at the end of substantial repo or agent waves to convert evidence-backed lessons into proposed durable assets: skills, scripts, rules/checks, prompt templates, docs, or issues. Always use it when the user mentions flywheel, wave closeout, repo ecosystem learning, durable asset promotion, or learning-to-tools.'
   family: coordination
@@ -770,11 +770,11 @@ skills:
   name: flywheel-closeout
   when_to_use: 'flywheel-closeout Use this at the end of substantial repo or agent waves to convert evidence-backed lessons into proposed durable assets: skills, scripts, rules/checks, prompt templates, docs, or issues. Always use it when the user mentions flywheel, wave closeout, repo ecosystem learning, durable asset promotion, or learning-to-tools. coordination'
   when_to_use_source: backfill
-- description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams.
+- description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, risk-appropriate authorization before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams.
   family: coordination
   id: coordination/gh-work-planning
   name: gh-work-planning
-  when_to_use: gh-work-planning Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams. coordination
+  when_to_use: gh-work-planning Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, risk-appropriate authorization before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams. coordination
   when_to_use_source: backfill
 - description: Compact live-execution checklist companion for the canonical gh-work-planning route. Use for fast operational tracking during issue planning without replacing the full route.
   family: coordination
@@ -800,11 +800,11 @@ skills:
   name: hermes-workflow-audit
   when_to_use: '- User asks "what''s going on with our workflow?" or "are reviews happening?" - Investigating why code quality has degraded - Periodic health check (weekly/biweekly) - Before making workflow changes — establish baseline - After major repo changes — verify systems still functioning - When user asks to "document findings" for later action'
   when_to_use_source: section
-- description: Mandatory planning workflow for ALL GitHub issues — plan, review, approve, then implement.
+- description: Risk-aware issue planning — discovery, proportionate plans, review, independently established authorization, and TDD implementation.
   family: coordination
   id: coordination/issue-planning-mode
   name: issue-planning-mode
-  when_to_use: issue-planning-mode Mandatory planning workflow for ALL GitHub issues — plan, review, approve, then implement. coordination
+  when_to_use: issue-planning-mode Risk-aware issue planning — discovery, proportionate plans, review, independently established authorization, and TDD implementation. coordination
   when_to_use_source: backfill
 - description: Reconnaissance pattern to inventory all knowledge sources across the workspace-hub ecosystem's existing intelligence infrastructure. Maps raw sources for LLM Wiki ingestion planning. Leverages pre-built registries and indexes rather than re-scanning directories.
   family: coordination
@@ -970,6 +970,12 @@ skills:
   name: session-start-routine
   when_to_use: '- Start of every interactive session - After a context reset or conversation compression - When resuming work after a break - When the user asks for a terse live "status update" from mobile/Telegram'
   when_to_use_source: section
+- description: Assess bounded agent operations and prior verification evidence through the shared advisory CLI. Use for Claude or Codex workflow decisions; does not execute work, authenticate approval, install profiles or replace live gates.
+  family: coordination
+  id: coordination/shared-risk-workflow
+  name: shared-risk-workflow
+  when_to_use: shared-risk-workflow Assess bounded agent operations and prior verification evidence through the shared advisory CLI. Use for Claude or Codex workflow decisions; does not execute work, authenticate approval, install profiles or replace live gates. coordination
+  when_to_use_source: backfill
 - description: Refactor large or frequently-run skills into context-efficient chains using isolated execution, file-backed handoffs, minimal summaries, and runtime-aware command substitution.
   family: coordination
   id: coordination/skill-chain-context-optimization
@@ -1378,17 +1384,17 @@ skills:
   name: xlsx
   when_to_use: '- Reading and analyzing Excel data with pandas - Creating formatted spreadsheets programmatically - Building financial models with formulas - Generating reports with charts and graphs - Automating data entry and updates - Converting between Excel and other formats - Batch processing multiple spreadsheets - Creating templates for repeated use'
   when_to_use_source: section
-- description: Surface SPECIFIC FILES on the shared drives (/mnt/ace, /mnt/dde) relevant to the current task — the FILE-level complement to ecosystem-data-sources (domain-catalog level). Extracts query terms from work context, runs the drive-index CLI once, presents ranked canonical paths with freshness caveats. Use for similar-past-work, prior-project, or files/examples/precedent asks; when domain work needs past deliverables (mooring calc → xlsx/py; CAD → dwg/step; standards → PDF inventory).
+- description: Find specific files, examples and prior deliverables through the shared-drive indexes. Use for file/precedent searches; domain datasets and source ownership belong to ecosystem-data-sources.
   family: data
   id: data/drive-file-search
   name: drive-file-search
-  when_to_use: drive-file-search Surface SPECIFIC FILES on the shared drives (/mnt/ace, /mnt/dde) relevant to the current task — the FILE-level complement to ecosystem-data-sources (domain-catalog level). Extracts query terms from work context, runs the drive-index CLI once, presents ranked canonical paths with freshness caveats. Use for similar-past-work, prior-project, or files/examples/precedent asks; when domain work needs past deliverables (mooring calc → xlsx/py; CAD → dwg/step; standards → PDF inventory). data
+  when_to_use: drive-file-search Find specific files, examples and prior deliverables through the shared-drive indexes. Use for file/precedent searches; domain datasets and source ownership belong to ecosystem-data-sources. data
   when_to_use_source: backfill
-- description: Proactively surface what DATA the ecosystem already has for an engineering domain — before starting analysis, points to the consolidated data-source catalog, any latent ACE_SHARE project precedent, and the domain-database issue that curates it. Use when work touches an engineering domain (riser, mooring, pipeline, structural/FFS, naval-arch/hydro, metocean, materials, production, geotech, drilling, CAD/sim, or financial/asset), when someone asks 'do we have data for X', 'where do we get X data', 'build the X database', or before implementing a calculation that needs reference data.
+- description: Find existing engineering datasets, source ownership and readiness before analysis or database work. Use for 'do we have data for X', source selection and reference-data discovery; specific file searches belong to drive-file-search.
   family: data
   id: data/ecosystem-data-sources
   name: ecosystem-data-sources
-  when_to_use: ecosystem-data-sources Proactively surface what DATA the ecosystem already has for an engineering domain — before starting analysis, points to the consolidated data-source catalog, any latent ACE_SHARE project precedent, and the domain-database issue that curates it. Use when work touches an engineering domain (riser, mooring, pipeline, structural/FFS, naval-arch/hydro, metocean, materials, production, geotech, drilling, CAD/sim, or financial/asset), when someone asks 'do we have data for X', 'where do we get X data', 'build the X database', or before implementing a calculation that needs reference data. data
+  when_to_use: ecosystem-data-sources Find existing engineering datasets, source ownership and readiness before analysis or database work. Use for 'do we have data for X', source selection and reference-data discovery; specific file searches belong to drive-file-search. data
   when_to_use_source: backfill
 - description: Analyze drilling performance and metrics using API 12-digit well numbering system. Use for drilling time analysis, cost benchmarking, well comparison, sidetracks tracking, and drilling efficiency metrics across GOM fields.
   family: data
@@ -1924,12 +1930,12 @@ skills:
   name: planning-goal
   when_to_use: '- Complex multi-step tasks with dependencies requiring optimal ordering - High-level goals needing systematic breakdown into concrete actions - Deployment workflows with many prerequisites - Refactoring projects requiring incremental, safe transformations - Any task where conditions must be met before actions can execute'
   when_to_use_source: section
-- description: Use when you have a spec or requirements for a multi-step task. Creates comprehensive implementation plans with bite-sized tasks, exact file paths, and complete code examples.
+- description: Turn a scoped objective into an implementation plan with affected files, dependencies, acceptance criteria and verification. Use the canonical issue template and shared lifecycle authority.
   family: development
   id: development/planning/writing-plans
   name: writing-plans
-  when_to_use: '**Always use before:** - Implementing multi-step features - Breaking down complex requirements - Delegating to subagents via subagent-driven-development **Don''t skip when:** - Feature seems simple (assumptions cause bugs) - You plan to implement it yourself (future you needs guidance) - Working alone (documentation matters)'
-  when_to_use_source: section
+  when_to_use: writing-plans Turn a scoped objective into an implementation plan with affected files, dependencies, acceptance criteria and verification. Use the canonical issue template and shared lifecycle authority. development
+  when_to_use_source: backfill
 - description: Customize or personalize a Claude Code plugin for a specific organization's tools and workflows by replacing placeholders and configuring MCP servers.
   family: development
   id: development/plugin-management/cowork-plugin-customizer
@@ -3432,11 +3438,11 @@ skills:
   name: llm-wiki-page-shape-contract
   when_to_use: llm-wiki-page-shape-contract Enforce the page-shape contract when a repo-side document or analysis output gets converted into an llm-wiki page. Use when (1) running `scripts/knowledge/llm_wiki.py ingest`, (2) writing or rewriting a wiki page from docs/reports/*, docs/handoffs/*, scripts/review/results/*, or calc citation outputs, (3) deciding whether a page should be split into a folder of sub-pages, (4) reviewing wiki PRs for length / diagram / divide-and-conquer compliance. Codifies the Karpathy + Astro-Han + lewislulu page rules applied to workspace-hub's domain-wiki layout under /mnt/local-analysis/llm-wiki/wikis/<domain>/. Sibling to research/llm-wiki (which owns the CLI ops) — this skill is the quality gate every converted page must clear before commit. research
   when_to_use_source: backfill
-- description: 'Firewall between the public llm-wiki repo (vamseeachanta/llm-wiki, MIT + CC-BY-4.0) and per-client private wikis (vamseeachanta/llm-wiki-<client>, e.g. llm-wiki-mkt-a per #2746). Use when (1) deciding whether a converted wiki page lands in public or private surface, (2) applying the project-name abstraction rule to public-bound content, (3) evaluating the public- availability exception that lets actual project names pass through unmodified, (4) promoting content from private to public after sanitization. Encodes the 2026-05-20 user routing directive verbatim: exact client results → private; abstracted (project-name only) → public; project name + all key data publicly available → exception applies. Companion to research/llm-wiki-page-shape-contract (which calls this skill at Rule 8) and research/llm-wiki-source-extraction-coverage (which produces the source pages this skill decides where to send).'
+- description: Route wiki content using current source rights, ownership and destination authority. Apply project-name abstraction only after checking whether publication is permitted; private visibility and anonymization do not grant rights.
   family: research
   id: research/llm-wiki-public-private-routing
   name: llm-wiki-public-private-routing
-  when_to_use: 'llm-wiki-public-private-routing Firewall between the public llm-wiki repo (vamseeachanta/llm-wiki, MIT + CC-BY-4.0) and per-client private wikis (vamseeachanta/llm-wiki-<client>, e.g. llm-wiki-mkt-a per #2746). Use when (1) deciding whether a converted wiki page lands in public or private surface, (2) applying the project-name abstraction rule to public-bound content, (3) evaluating the public- availability exception that lets actual project names pass through unmodified, (4) promoting content from private to public after sanitization. Encodes the 2026-05-20 user routing directive verbatim: exact client results → private; abstracted (project-name only) → public; project name + all key data publicly available → exception applies. Companion to research/llm-wiki-page-shape-contract (which calls this skill at Rule 8) and research/llm-wiki-source-extraction-coverage (which produces the source pages this skill decides where to send). research'
+  when_to_use: llm-wiki-public-private-routing Route wiki content using current source rights, ownership and destination authority. Apply project-name abstraction only after checking whether publication is permitted; private visibility and anonymization do not grant rights. research
   when_to_use_source: backfill
 - description: Doc-type-aware extraction contract for llm-wiki source ingestion with measurable coverage and source-anchored traceability. Use when (1) ingesting a PDF, DOCX, XLSX, PPTX, HTML, or scanned-image source into a wiki `sources/` page, (2) computing the pre-extraction estimate (what fraction of the source we expect to recover) and post-extraction yield (what fraction we actually recovered), (3) anchoring wiki claims back to specific page / paragraph / cell / slide positions in the source so a reviewer can re-verify or revise against the actual document, (4) deciding whether OCR fallback or manual transcription is needed. Codifies workspace-hub's existing OCR fallback chain and python-docx / openpyxl / trafilatura patterns into a format-specific routing table. Companion to research/llm-wiki-page-shape-contract (Rule 7 input-layer pages) and research/llm-wiki — this skill is the defense against silent extraction failure.
   family: research
@@ -3474,11 +3480,11 @@ skills:
   name: research-paper-writing
   when_to_use: 'Use this skill when: - **Starting a new research paper** from an existing codebase or idea - **Designing and running experiments** to support paper claims - **Writing or revising** any section of a research paper - **Preparing for submission** to a specific conference - **Responding to reviews** with additional experiments or revisions - **Converting** a paper between conference formats'
   when_to_use_source: section
-- description: Auto-query llm-wiki domains for relevant context before executing domain tasks
+- description: Retrieve bounded curated wiki context and source metadata for domain tasks. Resolve the existing owner checkout and supported query surface; report unavailable operations and missing provenance.
   family: research
   id: research/wiki-context
   name: wiki-context
-  when_to_use: wiki-context Auto-query llm-wiki domains for relevant context before executing domain tasks research
+  when_to_use: wiki-context Retrieve bounded curated wiki context and source metadata for domain tasks. Resolve the existing owner checkout and supported query surface; report unavailable operations and missing provenance. research
   when_to_use_source: backfill
 - description: Generate clinical trial protocols for medical devices or drugs through a modular, waypoint-based architecture with research-only and full protocol modes.
   family: science
