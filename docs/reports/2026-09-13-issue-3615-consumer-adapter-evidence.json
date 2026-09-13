@@ -1,0 +1,729 @@
+{
+  "schema_version": "1",
+  "issue_url": "https://github.com/vamseeachanta/workspace-hub/issues/3615",
+  "base_commit": "d2955d71ee5ee156dfe33fbacfe1c0bcf083e54e",
+  "status": "PARTIAL_CHECKPOINT_NATIVE_ACCEPTANCE_BLOCKED",
+  "normalizer_tests": {
+    "passed": 89,
+    "red_evidence": "task_local_evidence:normalizer/red.json",
+    "final_evidence": "task_local_evidence:normalizer/final-green.json"
+  },
+  "fixture_provenance": "conjectural",
+  "native_versions": {
+    "claude": "2.1.269",
+    "codex": "0.154.0"
+  },
+  "native_trials": [
+    {
+      "provider": "claude",
+      "session": "1",
+      "exit_code": 0,
+      "final_file": "fixture-two\n",
+      "events": [
+        {
+          "sha256": "17e4551e2f97fb5d34c6f8328a9ca9531a463e88898bc968b0233074ddaec01c",
+          "event": "PreToolUse",
+          "tool": "Edit",
+          "keys": [
+            "cwd",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path",
+            "new_string",
+            "old_string",
+            "replace_all"
+          ]
+        },
+        {
+          "sha256": "83a409de21a12944e88982fc14309dfe04e86c3de507e25088025ea7aa72f955",
+          "event": "PreToolUse",
+          "tool": "Read",
+          "keys": [
+            "cwd",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "0793e82f2e62e49de1cd6f06bd0e401b9b6ce03a6b7ed180b9ce23dd8845f548",
+          "event": "PostToolUse",
+          "tool": "Write",
+          "keys": [
+            "cwd",
+            "duration_ms",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_response",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "content",
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "fb0b64e45f28c42c06c66d342d62ef8612ff6b311679c690eff1fee0c85252bc",
+          "event": "PostToolUse",
+          "tool": "Read",
+          "keys": [
+            "cwd",
+            "duration_ms",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_response",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "d436762c5ae5cb291804b1244da4656f9f387fa7eafe76e6e49bd6164e995757",
+          "event": "PreToolUse",
+          "tool": "Write",
+          "keys": [
+            "cwd",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "content",
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "abf8e290992d9bf70ba8eb93e1bb027ae4dd57e82a42ef00cda3d2f30c3d4b3e",
+          "event": "PostToolUse",
+          "tool": "Read",
+          "keys": [
+            "cwd",
+            "duration_ms",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_response",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "7500d5bb7f723202bee4b99477024d444c09d6fa7e168631846791ed7f0b459c",
+          "event": "PreToolUse",
+          "tool": "Read",
+          "keys": [
+            "cwd",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "f2f69b63a282afbd0de9813bb611fd299275548046082497a5d99ccd1ae21ee9",
+          "event": "PostToolUse",
+          "tool": "Edit",
+          "keys": [
+            "cwd",
+            "duration_ms",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_response",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path",
+            "new_string",
+            "old_string",
+            "replace_all"
+          ]
+        }
+      ],
+      "state": "CAPTURED_UNSUPPORTED_NATIVE_ENVELOPE",
+      "raw_mapping_results": [
+        {
+          "event_sha256": "17e4551e2f97fb5d34c6f8328a9ca9531a463e88898bc968b0233074ddaec01c",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "83a409de21a12944e88982fc14309dfe04e86c3de507e25088025ea7aa72f955",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "0793e82f2e62e49de1cd6f06bd0e401b9b6ce03a6b7ed180b9ce23dd8845f548",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "fb0b64e45f28c42c06c66d342d62ef8612ff6b311679c690eff1fee0c85252bc",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "d436762c5ae5cb291804b1244da4656f9f387fa7eafe76e6e49bd6164e995757",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "abf8e290992d9bf70ba8eb93e1bb027ae4dd57e82a42ef00cda3d2f30c3d4b3e",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "7500d5bb7f723202bee4b99477024d444c09d6fa7e168631846791ed7f0b459c",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "f2f69b63a282afbd0de9813bb611fd299275548046082497a5d99ccd1ae21ee9",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        }
+      ],
+      "trial_receipt_sha256": "b601359f47b59d0501b3a9ca2774a25b8d621be76359455f33dbb34fc46caf45",
+      "capture_handler_form": "executable plus argument array"
+    },
+    {
+      "provider": "claude",
+      "session": "2",
+      "exit_code": 0,
+      "final_file": "fixture-two\n",
+      "events": [
+        {
+          "sha256": "51a6c7b831cc21b7fe36906fbb9cf9f05680be046d660985969e4f48b4f0095f",
+          "event": "PostToolUse",
+          "tool": "Write",
+          "keys": [
+            "cwd",
+            "duration_ms",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_response",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "content",
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "c543992396d554ec4bb4dc287172eed65a9d752fe9d6a816dd10f4cba61150f6",
+          "event": "PreToolUse",
+          "tool": "Read",
+          "keys": [
+            "cwd",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "931368203bad950474e053b369dcbab28e90de35d280c8e9a2f41a379f2f1652",
+          "event": "PreToolUse",
+          "tool": "Read",
+          "keys": [
+            "cwd",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "abae3210e9ff90518aeb4af3e74e2a71e35d871731e8d39e48f32138841529a0",
+          "event": "PostToolUse",
+          "tool": "Read",
+          "keys": [
+            "cwd",
+            "duration_ms",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_response",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "a6071cf3dd4a3a62ade53460cb95f9d8e0dd872fb270fd851a6577a824c3932d",
+          "event": "PreToolUse",
+          "tool": "Write",
+          "keys": [
+            "cwd",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "content",
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "025223b77a22d1d8f78596f2d5b03faacc77d424737e56ad0beec6c8a1b47567",
+          "event": "PostToolUse",
+          "tool": "Read",
+          "keys": [
+            "cwd",
+            "duration_ms",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_response",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path"
+          ]
+        },
+        {
+          "sha256": "c56e9728d002dccafe5fc0fb2944ae9dab5855066d88277bb488318b7ce947ff",
+          "event": "PostToolUse",
+          "tool": "Edit",
+          "keys": [
+            "cwd",
+            "duration_ms",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_response",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path",
+            "new_string",
+            "old_string",
+            "replace_all"
+          ]
+        },
+        {
+          "sha256": "1b6e6b02f6d53e5338cdb6d4f22e5cdfa40ad713f45816d6af9d61edb892cb9e",
+          "event": "PreToolUse",
+          "tool": "Edit",
+          "keys": [
+            "cwd",
+            "effort",
+            "hook_event_name",
+            "permission_mode",
+            "prompt_id",
+            "session_id",
+            "tool_input",
+            "tool_name",
+            "tool_use_id",
+            "transcript_path"
+          ],
+          "input_keys": [
+            "file_path",
+            "new_string",
+            "old_string",
+            "replace_all"
+          ]
+        }
+      ],
+      "state": "CAPTURED_UNSUPPORTED_NATIVE_ENVELOPE",
+      "raw_mapping_results": [
+        {
+          "event_sha256": "51a6c7b831cc21b7fe36906fbb9cf9f05680be046d660985969e4f48b4f0095f",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "c543992396d554ec4bb4dc287172eed65a9d752fe9d6a816dd10f4cba61150f6",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "931368203bad950474e053b369dcbab28e90de35d280c8e9a2f41a379f2f1652",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "abae3210e9ff90518aeb4af3e74e2a71e35d871731e8d39e48f32138841529a0",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "a6071cf3dd4a3a62ade53460cb95f9d8e0dd872fb270fd851a6577a824c3932d",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "025223b77a22d1d8f78596f2d5b03faacc77d424737e56ad0beec6c8a1b47567",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "c56e9728d002dccafe5fc0fb2944ae9dab5855066d88277bb488318b7ce947ff",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        },
+        {
+          "event_sha256": "1b6e6b02f6d53e5338cdb6d4f22e5cdfa40ad713f45816d6af9d61edb892cb9e",
+          "result": {
+            "mapping_status": "unsupported",
+            "request": null,
+            "reason_codes": [
+              "MALFORMED_EVENT"
+            ]
+          }
+        }
+      ],
+      "trial_receipt_sha256": "5f4100d50f8db775bcd4d8b6581af70c29f60d6cf6bfe9f1aa0173c04d8c1e3f",
+      "capture_handler_form": "executable plus argument array"
+    },
+    {
+      "provider": "codex",
+      "session": "1",
+      "exit_code": 0,
+      "final_file": "fixture-two\n",
+      "events": [],
+      "state": "UNAVAILABLE_NO_HOOK_CAPTURE",
+      "raw_mapping_results": [],
+      "trial_receipt_sha256": "0e30cfaf9b8feaa53d954bf156007a2e5bff246cc0ae4ca2a8ee8da9e0850261",
+      "capture_handler_form": "inline command hook configuration; no firing observed"
+    },
+    {
+      "provider": "codex",
+      "session": "2",
+      "exit_code": 0,
+      "final_file": "fixture-two\n",
+      "events": [],
+      "state": "UNAVAILABLE_NO_HOOK_CAPTURE",
+      "raw_mapping_results": [],
+      "trial_receipt_sha256": "78bc621d84e117e09050ae4b0723b35a2ba790fd47833acdff08172ed654f583",
+      "capture_handler_form": "inline command hook configuration; no firing observed"
+    }
+  ],
+  "native_acceptance": false,
+  "limits": [
+    "Original native captures are task-local and are not published. Digests refer to original captured bytes.",
+    "Claude native envelopes are rejected by the synthetic prototype; no ingress transformation is implemented.",
+    "Codex produced no hook captures in either trial. The cause is not established by empty stderr or successful file edits.",
+    "Native Read/Edit/Write were captured only for Claude. Native patch, shell and PowerShell capture coverage is not established.",
+    "Saved machine settings were not snapshotted before the trials; full before/after preservation of those settings is not established.",
+    "No native activation, machine installation, canonical integration, commit or publication is claimed."
+  ],
+  "sources": [
+    "https://learn.chatgpt.com/docs/hooks",
+    "https://code.claude.com/docs/en/hooks"
+  ],
+  "promotion": {
+    "independent_local_repositories": 10,
+    "configured_machines": 7,
+    "ssh_aliases_probed": 5,
+    "authenticated_commands": 0,
+    "machine_identity": "Naming policy established; private host-role attestation unavailable locally.",
+    "linked_hub_worktrees": 2,
+    "sibling_repositories_with_resolving_references": 4,
+    "method": "First-level D:/ws Git roots and explicit AGENTS reference resolution; SSH configured aliases with existing host-key checking.",
+    "inventory_sha256": "367644f12ba596966d9d51c3696aff3add38bc54276ff5a99b80f7a0023090c8",
+    "wiki_entrypoint": "LOCAL_PROMOTED_UNCOMMITTED",
+    "wiki_promotion_receipt_sha256": "3ff2cb985a10f15c076bbf7f8c1bc3d0696cdc655a525b5a7d11753a9f45a25e",
+    "identity_followup_sha256": "9deb497c45e65496a755502770f546e1823038cc20913341b363e9b471c26a01"
+  },
+  "observed_at": "2026-09-13T02:38:36.127945+00:00",
+  "python_version": "3.14.6",
+  "platform": "Windows",
+  "filename_date_basis": "UTC",
+  "test_results": {
+    "governance_before_review": {
+      "passed": 367,
+      "failed": 0,
+      "skipped": 0
+    },
+    "affected_adapter_suites_after_review": {
+      "passed": 133,
+      "failed": 0,
+      "skipped": 0
+    },
+    "normal_checkout_boundary_after_portability_fix": {
+      "passed": 42,
+      "failed": 0,
+      "skipped": 0
+    },
+    "legacy_python": {
+      "passed": 81,
+      "failed": 0,
+      "skipped": 0
+    },
+    "legacy_shell": {
+      "status": "PASS",
+      "passed": 1,
+      "failed": 0,
+      "seconds": 250.06,
+      "prior_timeout_seconds": 240,
+      "unchanged_source": true
+    },
+    "aggregate_note": "Runs overlap; counts must not be added as unique tests."
+  },
+  "review": {
+    "claude": "MAJOR on initial snapshot",
+    "codex": "MAJOR on initial snapshot",
+    "root_disposition": "Inline fixes and bounded deferrals; no fresh provider APPROVE",
+    "disposition_sha256": "ee9b7c828dc734b0b310c297a0da2bbd0ffeff5e40d38d15662374a5998cf753",
+    "root_disposition_details": {
+      "status": "ROOT_INLINE_DISPOSITION_NO_FRESH_PROVIDER_APPROVE",
+      "claude_original_verdict": "MAJOR",
+      "codex_original_verdict": "MAJOR",
+      "items": {
+        "1": "Accepted: contract now distinguishes module no-I/O from absent pre-trial settings snapshots.",
+        "2": "Accepted documentation alternative: raw-event duplicate rejection only; parsed context belongs to harness. Raw-context API extension deferred outside frozen contract.",
+        "3": "Rejected: filenames use UTC observation date 2026-09-13, matching recorded UTC trial timestamps; local timezone date is 2026-09-12. A filename is not a resource verified_at field.",
+        "4": "Accepted: final report promotes three legacy gate observations and the test-prefix false-positive class as follow-on requirements under issue3615; legacy code remains read-only.",
+        "5": "Accepted: final evidence binds six other artifacts and task-local red/green receipts by digest; external closeout binds all seven, avoiding impossible self-hash cycles.",
+        "6": "Accepted evidence pairing: source event digest attached to every mapping result. API stays three fields under frozen contract; wrapper owns provenance.",
+        "7": "Accepted: explicit actual validation pipeline documented and three overlap cases added.",
+        "8": "No API change: MALFORMED_EVENT is approved v1 malformed-input label on either side; documented. Distinct future diagnostic vocabulary requires contract revision.",
+        "9": "Partial: test renamed to its actual RuntimeError claim. Existing validation exceptions remain fail-closed; arbitrary hostile Python objects and classification of all future implementation bugs are outside this fixture contract.",
+        "10": "Partial: expanded denial patches to io.open/os.fdopen and asserted no bound assess. Permanent global audit hook rejected because it cannot be removed and would contaminate shared pytest runtime; no exhaustive side-effect detection claim.",
+        "11": "Accepted by both providers: normal-checkout red reproduced7errors; metadata snapshot now distinguishes .git directory/config from worktree pointer; normal-checkout42green. Canonical state separately audited externally.",
+        "12": "Accepted: POSIX backslash aliasing explicitly disclosed as ingress requirement.",
+        "13": "Accepted: conditional-routine reference behavior explicitly documented without granting authority.",
+        "14": "Accepted: misleading huge-integer parser-bound case removed; documented bounds remain byte/depth/node only.",
+        "15": "Partial: duplicate fixture IDs and unmapped assessment-null checked; missing context/provider conflict/optional metrics already covered by unit suite. Corpus is representative, not exhaustive native coverage.",
+        "16": "Accepted environment evidence;89 is historical normalizer-only run, not boundary capability claim. Final133 suite has0skips; unavailable future platform observations remain not established.",
+        "17": "Accepted: promotion counts/method and task-local source digest added to evidence.",
+        "18": "Partly rejected: developers.openai.com/codex/hooks redirected to learn.chatgpt.com/docs/hooks during official tool browsing. Native capture digest requirements do not apply to documentation pages. Trial config hashes and relevant nonsecret handler form recorded; user-settings missing baseline remains disclosed.",
+        "19": "No frozen API expansion: singleton reason satisfies sorted-unique; normalized path replacement clarified. Cosmetic parametrization/import concerns do not establish incorrect runtime behavior."
+      },
+      "generalizable_follow_on": [
+        "Run filesystem-sensitive tests from both normal checkouts and linked worktrees.",
+        "Legacy */test_* exemptions can accidentally exempt pytest temporary absolute paths; use owner-relative paths and verify fixture containment.",
+        "Legacy clean-index, unrelated-marker and governance-path exemptions do not establish authorization."
+      ]
+    }
+  },
+  "task_local_evidence": {
+    "normalizer/red.json": {
+      "sha256": "69c50dea8da67f76fe227dd63ed42db07633d23d08b1c676966d989675ebecd7",
+      "storage": "task scratch; not published"
+    },
+    "normalizer/final-green.json": {
+      "sha256": "06bdd60984c51c2e2e919210c3b3b3c0f649ada79bc0d98e9e15158294f2c3b4",
+      "storage": "task scratch; not published"
+    },
+    "governance-result.json": {
+      "sha256": "a1593cb5afd52bf2e3b8edcdb7e5c1f95521fc69f85392c347f7d9bfe772398a",
+      "storage": "task scratch; not published"
+    },
+    "legacy/summary.json": {
+      "sha256": "c83e48334a02ce0e0dff18bd938947e8d49c3cb479ef979dcc453f19ebd7f086",
+      "storage": "task scratch; not published"
+    },
+    "normal-checkout-red.txt": {
+      "sha256": "1853ea74a26e25ba7f897e61f3ff954e1d6096e98a12adc932311235fe5bfe96",
+      "storage": "task scratch; not published"
+    },
+    "normal-checkout-green.txt": {
+      "sha256": "cb05465e213778e92342c731ee15afeb55359f319093f5722820d1cf0d165369",
+      "storage": "task scratch; not published"
+    },
+    "legacy/shell-recheck/result.json": {
+      "sha256": "ba49f8cec7347664bddc26d8772275d0a183e0fc8f492ac3251d6c2cbd79bdcd",
+      "storage": "task scratch; not published"
+    }
+  },
+  "artifacts": {
+    "docs/governance/consumer-adapter-contract.html": "cf034e63a7c0a1927ecf2164e62da3f42f8ab47dcd958f2ced74a30078be9733",
+    "scripts/governance/consumer_event.py": "4730917725e5b1e9ec05fa76377fd364ad58fa73c48d0453ae859bfbcdcdbad9",
+    "tests/governance/test_consumer_event.py": "e90f6019ff1b11b5a67606e2dd11a07377ac959ff8b49e1f8b63240bfae4dd81",
+    "tests/governance/test_consumer_adapter_boundaries.py": "653c43cbeca40654dcc26950e0de019f780037467dcf2da5da4a19762b2753aa",
+    "tests/governance/fixtures/consumer-adapter-events-v1.json": "9f715d36afc2a2708bacc8b5add26ddddaa6df5e42558335feb123763f8166cf",
+    "docs/reports/2026-09-13-issue-3615-consumer-adapter-fixtures.html": "e7acc31e756808969d6408f0ebb2f4ff1d74e148fde353e3931d768495400c5c"
+  },
+  "artifact_hash_scope": "Final LF repository candidates; historical test input hashes retained separately. Self hash is in the external transaction manifest.",
+  "native_diagnosis": {
+    "codex_file_changes_completed": true,
+    "missing_capture_cause": "unestablished",
+    "diagnostic_sha256": "1f8ea6b3ee28f90a083bd6348a09012a8f18ebc5ba9a73301973cc33e6d2d457"
+  },
+  "historical_working_artifact_hashes": {
+    "docs/governance/consumer-adapter-contract.html": "cf034e63a7c0a1927ecf2164e62da3f42f8ab47dcd958f2ced74a30078be9733",
+    "scripts/governance/consumer_event.py": "4730917725e5b1e9ec05fa76377fd364ad58fa73c48d0453ae859bfbcdcdbad9",
+    "tests/governance/test_consumer_event.py": "e90f6019ff1b11b5a67606e2dd11a07377ac959ff8b49e1f8b63240bfae4dd81",
+    "tests/governance/test_consumer_adapter_boundaries.py": "653c43cbeca40654dcc26950e0de019f780037467dcf2da5da4a19762b2753aa",
+    "tests/governance/fixtures/consumer-adapter-events-v1.json": "58e58a8528b1afa7e53499838228a67f3fc3007693f5723430873e4fcd8fb2c4",
+    "docs/reports/2026-09-13-issue-3615-consumer-adapter-fixtures.html": "24f473346e904ffbfacd622e1bd7a3388298dbb43c5d332db943f6935cec112c"
+  }
+}
