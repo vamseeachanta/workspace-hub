@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-13T13:21:44.997889Z",
+  "generated_at": "2026-09-13T17:21:47.838268Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 10,
+  "eligible_count": 9,
   "applied": [],
   "candidates": [
     {
@@ -193,42 +193,6 @@
       "updatedAt": "2026-09-11T20:33:18Z",
       "execution_ready": true,
       "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3524,
-      "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
-      "labels": [
-        "bug",
-        "priority:medium",
-        "cat:operations",
-        "domain:workstations",
-        "machine:multi",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:codex"
-      ],
-      "updatedAt": "2026-08-01T11:42:08Z",
-      "execution_ready": true,
-      "priority_rank": 2,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
@@ -483,6 +447,40 @@
         "execution-ready",
         "strong-codex-language-match",
         "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3527,
+      "title": "fix(scheduler): reconcile identity inventory after merge-base race",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3527",
+      "labels": [
+        "bug",
+        "cat:harness",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "gate:completeness",
+        "domain:harness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-08-01T06:13:40Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-claude-language-match",
+        "provider-high-priority"
       ],
       "eligible": false
     },

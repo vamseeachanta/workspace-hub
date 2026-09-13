@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-13T13:21:44.555416Z",
+  "generated_at": "2026-09-13T17:21:47.505059Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-13T13:21:41.604238Z",
+  "scorecard_generated_at": "2026-09-13T17:21:43.605035Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 14,
+      "execution_ready_count": 13,
       "total_candidates": 177,
       "top_issues": [
         {
@@ -120,33 +120,6 @@
           ]
         },
         {
-          "number": 3524,
-          "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:operations",
-            "domain:workstations",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T11:42:08Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3525,
           "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
@@ -225,6 +198,32 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3527,
+          "title": "fix(scheduler): reconcile identity inventory after merge-base race",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3527",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "machine:dev-primary",
+            "status:plan-approved",
+            "gate:completeness",
+            "domain:harness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-08-01T06:13:40Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
@@ -326,33 +325,6 @@
           "updatedAt": "2026-09-11T20:33:18Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3524,
-          "title": "[WRK] bug(workstations): RDP microphone input not negotiated from ace-win-2 to ace-win-1",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3524",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:operations",
-            "domain:workstations",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T11:42:08Z",
-          "execution_ready": true,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -887,7 +859,7 @@
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-09-13T02:58:48Z",
+          "updatedAt": "2026-09-13T17:16:41Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1863,7 +1835,7 @@
             "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-09-13T11:35:01Z",
+          "updatedAt": "2026-09-13T16:43:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4357,6 +4329,24 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3853,
+          "title": "docs: route engineering analysis criteria and lookup dataset requirements across repositories",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3853",
+          "labels": [],
+          "updatedAt": "2026-09-13T17:16:13Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]
