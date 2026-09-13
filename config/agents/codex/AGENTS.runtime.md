@@ -246,12 +246,13 @@ tonal handling of commercial exposure remain as separately recorded.
 
 Do NOT generalize a single-session sandbox failure to a permanent constraint. (`feedback_codex_sandbox_no_execution`, `feedback_codex_sandbox_fallback_paths`)
 
-## Pre-Exec Pushed-Artifact Requirement
+## Review Artifact Access
 
-Codex `exec` (and the Codex GitHub connector) cannot read local files outside the sandbox. Before invoking `codex exec` on a plan or artifact:
+Choose artifact transport from the reviewer session's verified capabilities. Use an accessible local file or a bounded inline prompt when supported; local-only artifacts are not inherently invisible to Codex.
 
-- **Push the plan/issue to GitHub first.** Codex's GH connector can fetch tracked content; local-only files are invisible. (`feedback_codex_needs_pushed_artifact`)
-- For inline-prompt review, the prompt body itself may be passed via `codex exec "$PROMPT"`; this works without push.
+When local access is blocked, an available GitHub connector may read repository content that is already published. Publish additional content only when the selected remote review requires it and the user has authorized that destination. A review request does not grant publication authority. Verify connector-derived findings against the owning checkout when available.
+
+The historical `feedback_codex_needs_pushed_artifact` entry describes a restricted session, not a universal push prerequisite.
 
 ## Authentication and Quota
 
@@ -296,11 +297,13 @@ Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:
 3. **Coding style guardrails**: max 400 lines/file, max 50 lines/function, snake_case Python, camelCase JS — see `.claude/rules/coding-style.md`.
 4. **Git workflow**: conventional commits, branch prefixes (`feature/`, `bugfix/`, `chore/`). Merges are governed by [`.claude/rules/merge-authorization.md`](../../../.claude/rules/merge-authorization.md) and [`merge-cleanup.md`](../../../.claude/rules/merge-cleanup.md).
 
-## Bootstrap Hazard — `~/.codex/AGENTS.md` Untracked Generator
+## Runtime Link Maintenance
 
-`~/.codex/AGENTS.md` on this machine contains a `sed`-derived copy of `~/.claude/CLAUDE.md` with `s/claude/Codex/g` substitutions (broken — should have been `s/claude/codex/g`). Resulting `.Codex/memory/` path is wrong (capital C). The generator is NOT in any tracked script. (`feedback_codex_bootstrap_untracked_sed_origin` — write-time pending)
+Inspect the current type and resolved target of `~/.codex/AGENTS.md` before repair. The canonical target is `config/agents/codex/AGENTS.runtime.md`; preserve a correct link and its repo-owned source.
 
-The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.com/vamseeachanta/workspace-hub/issues/2719) Phase 4) which symlinks `~/.codex/AGENTS.md` to the committed `config/agents/codex/AGENTS.runtime.md` artifact, bypassing the broken sed pattern entirely.
+A historical bootstrap generated a broken sed-derived copy with a `.Codex/memory/` path (`feedback_codex_bootstrap_untracked_sed_origin`). This is an incident record, not current-machine state. Do not recreate that generator or infer that every installation needs repair.
+
+For a verified mismatch within authorized installation scope, use `scripts/agents/install-soul-runtime.sh`, then verify the resulting link. Edit this delta and rebuild runtimes through `scripts/agents/build-soul-runtime.sh`; never hand-edit generated runtime artifacts.
 
 ---
 
