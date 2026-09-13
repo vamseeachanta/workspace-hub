@@ -1,44 +1,10 @@
 {
-  "generated_at": "2026-09-12T21:21:35.915164Z",
+  "generated_at": "2026-09-13T01:22:17.008547Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 11,
+  "eligible_count": 10,
   "applied": [],
   "candidates": [
-    {
-      "number": 3516,
-      "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3516",
-      "labels": [
-        "bug",
-        "priority:high",
-        "cat:harness",
-        "domain:workstations",
-        "machine:multi",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-07-31T02:26:54Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.95,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": true
-    },
     {
       "number": 3740,
       "title": "867 issues cannot leave dispatch:ready \u2014 nothing advances dispatch state",
@@ -533,6 +499,39 @@
         "domain:routing"
       ],
       "updatedAt": "2026-08-04T04:40:39Z",
+      "execution_ready": false,
+      "priority_rank": 1,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3821,
+      "title": "bug(equality): restore collector idempotency and macOS atomic-publish test portability",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3821",
+      "labels": [
+        "bug",
+        "priority:high",
+        "cat:harness",
+        "domain:testing",
+        "machine:multi",
+        "status:needs-plan",
+        "lane:codex"
+      ],
+      "updatedAt": "2026-09-03T18:01:25Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",

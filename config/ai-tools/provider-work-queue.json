@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-12T21:21:35.650375Z",
+  "generated_at": "2026-09-13T01:22:16.649115Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-12T21:21:33.638865Z",
+  "scorecard_generated_at": "2026-09-13T01:22:13.776774Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 16,
-      "total_candidates": 176,
+      "total_candidates": 177,
       "top_issues": [
         {
           "number": 3549,
@@ -937,7 +937,7 @@
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-09-12T20:59:49Z",
+          "updatedAt": "2026-09-12T22:25:17Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4358,7 +4358,7 @@
           "labels": [
             "status:needs-plan"
           ],
-          "updatedAt": "2026-09-12T20:54:26Z",
+          "updatedAt": "2026-09-12T22:18:34Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4370,40 +4370,32 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3848,
+          "title": "Report provenance: distinguish checkout bytes from published Git blobs",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3848",
+          "labels": [],
+          "updatedAt": "2026-09-13T00:35:06Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 7,
-      "total_candidates": 22,
+      "execution_ready_count": 6,
+      "total_candidates": 21,
       "top_issues": [
-        {
-          "number": 3516,
-          "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3516",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-31T02:26:54Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation"
-          ]
-        },
         {
           "number": 3740,
           "title": "867 issues cannot leave dispatch:ready \u2014 nothing advances dispatch state",
@@ -4571,34 +4563,34 @@
             "research",
             "implementation"
           ]
-        }
-      ],
-      "full_candidates": [
+        },
         {
-          "number": 3516,
-          "title": "bug(equivalence): ref blobs keyed by role \u2014 same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3516",
+          "number": 3821,
+          "title": "bug(equality): restore collector idempotency and macOS atomic-publish test portability",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3821",
           "labels": [
             "bug",
             "priority:high",
             "cat:harness",
-            "domain:workstations",
+            "domain:testing",
             "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
+            "status:needs-plan",
+            "lane:codex"
           ],
-          "updatedAt": "2026-07-31T02:26:54Z",
-          "execution_ready": true,
+          "updatedAt": "2026-09-03T18:01:25Z",
+          "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
+            "research",
             "implementation"
           ]
-        },
+        }
+      ],
+      "full_candidates": [
         {
           "number": 3740,
           "title": "867 issues cannot leave dispatch:ready \u2014 nothing advances dispatch state",

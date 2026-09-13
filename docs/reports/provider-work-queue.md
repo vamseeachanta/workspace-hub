@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-09-12T21:21:35.650375Z
+Generated: 2026-09-13T01:22:16.649115Z
 Current week: 2026-W37
 Recommended provider order: agy, codex, claude
 
@@ -10,7 +10,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: high
 - Execution-ready candidates: 16
-- Total routed candidates: 176
+- Total routed candidates: 177
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -26,12 +26,11 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## codex
 
 - Routing priority: highest
-- Execution-ready candidates: 7
-- Total routed candidates: 22
+- Execution-ready candidates: 6
+- Total routed candidates: 21
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #3516 bug(equivalence): ref blobs keyed by role — same-role boxes (ace-win-1/2) will clobber each other; role detection hardcoded to 2 hosts (gpu-claw published as unknown.json) | yes | implementation/test/fix language | bug, priority:high, cat:harness, domain:workstations, machine:multi, status:plan-approved |
 | #3740 867 issues cannot leave dispatch:ready — nothing advances dispatch state | yes | implementation/test/fix language | priority:high, cat:operations, machine:dev-primary, status:plan-approved, gate:completeness, domain:routing |
 | #3839 fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage | yes | implementation/test/fix language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
 | #3532 fix(memory): reserve cross-provider runtime budget for operational feedback | yes | implementation/test/fix language | enhancement, cat:harness, machine:dev-primary, status:plan-approved, gate:completeness, lane:claude |
@@ -39,6 +38,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | yes | implementation/test/fix language | cat:operations, domain:workstations, machine:dev-primary, status:plan-approved, gate:completeness, lane:claude |
 | #3787 pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | yes | implementation/test/fix language | bug, status:plan-approved, gate:completeness, lane:claude |
 | #3788 bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | no | implementation/test/fix language | bug, priority:high, cat:operations, machine:dev-primary, status:needs-plan, domain:routing |
+| #3821 bug(equality): restore collector idempotency and macOS atomic-publish test portability | no | implementation/test/fix language | bug, priority:high, cat:harness, domain:testing, machine:multi, status:needs-plan |
 
 ## agy
 
