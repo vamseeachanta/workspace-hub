@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-13T09:21:46.881635Z",
+  "generated_at": "2026-09-13T13:21:44.555416Z",
   "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-13T09:21:44.395377Z",
+  "scorecard_generated_at": "2026-09-13T13:21:41.604238Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -786,7 +786,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-09-12T11:45:06Z",
+          "updatedAt": "2026-09-13T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1863,7 +1863,7 @@
             "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-09-13T03:42:36Z",
+          "updatedAt": "2026-09-13T11:35:01Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3375,29 +3375,6 @@
           ]
         },
         {
-          "number": 3523,
-          "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3523",
-          "labels": [
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-review",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-08-05T13:09:39Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3526,
           "title": "feat(windows): daily report-only ecosystem reconciliation audit",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3526",
@@ -4363,6 +4340,23 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3852,
+          "title": "Repair hook wiring against effective paths and consumer protocols",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3852",
+          "labels": [],
+          "updatedAt": "2026-09-13T11:34:59Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]

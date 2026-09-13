@@ -42,6 +42,40 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
+        "title": "Repair hook wiring against effective paths and consumer protocols"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3852,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Repair hook wiring against effective paths and consumer protocols",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3852",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
         "title": "Separate caller-recorded evidence classes from verified provenance and readiness"
       },
       "lane": "planning_feedstock",
@@ -8041,54 +8075,48 @@
       "warnings": [
         "missing_review"
       ]
-    },
-    {
-      "approval_blockers": [
-        "no canonical plan file",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:harness",
-          "machine:dev-primary",
-          "status:plan-review",
-          "domain:governance"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3523,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3523",
-      "warnings": [
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-09-13T09:21:49Z",
+  "generated_at": "2026-09-13T13:21:47Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Repair hook wiring against effective paths and consumer protocols"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3852,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Repair hook wiring against effective paths and consumer protocols",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3852",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16105,46 +16133,6 @@
         "warnings": [
           "missing_review"
         ]
-      },
-      {
-        "approval_blockers": [
-          "no canonical plan file",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-review",
-            "domain:governance"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3523,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "bug(enforcement): plan-approval gate rejects valid markers when sparse checkout omits STATE.md",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3523",
-        "warnings": [
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16155,16 +16143,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-13T09:21:44.395377Z",
+  "scorecard_generated_at": "2026-09-13T13:21:41.604238Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-13T09:21:43.969060Z",
+  "utilization_generated_at": "2026-09-13T13:21:41.072464Z",
   "warning_summary": {
     "approved_no_marker": 11,
     "approved_no_plan": 7,
     "legacy_review_no_sha": 8,
     "major_review": 5,
     "marker_without_open_approved_issue": 179,
-    "missing_review": 40,
+    "missing_review": 39,
     "unavailable_review": 4
   }
 }
