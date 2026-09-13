@@ -1,0 +1,119 @@
+{
+  "issue": "https://github.com/vamseeachanta/workspace-hub/issues/3601",
+  "observed_at_utc": "2026-09-13T02:53:31.249204+00:00",
+  "scope": "Bounded secondary Windows session intake; current conversation unidentified",
+  "snapshot_count": 10,
+  "snapshot_bytes": 715986,
+  "local_readback_verified": true,
+  "remote_mutations": false,
+  "raw_publication": false,
+  "independent_backup_verified": false,
+  "snapshots": [
+    {
+      "artifact_id": "snapshot-01",
+      "class": "private transcript",
+      "bytes": 623844,
+      "sha256": "3a4baaff1cba8826d6175a41ec145d2a8bbe73798f468789459cdaecffda626d",
+      "source_mtime_utc": "2026-09-09T17:58:56.913033+00:00",
+      "stable": true
+    },
+    {
+      "artifact_id": "snapshot-02",
+      "class": "private transcript",
+      "bytes": 62324,
+      "sha256": "bd1c322efa73c0a3bb6d2e45583b97ca8116290d98677d14fe0115ee1618eb16",
+      "source_mtime_utc": "2026-09-11T02:34:21.363768+00:00",
+      "stable": true
+    },
+    {
+      "artifact_id": "snapshot-03",
+      "class": "historical cleanup evidence",
+      "bytes": 5725,
+      "sha256": "5df10eb35e19456616142de051951a1c3d535bab61510839f2cbeeca15778b95",
+      "source_mtime_utc": "2026-09-12T10:38:58.328390+00:00",
+      "stable": true
+    },
+    {
+      "artifact_id": "snapshot-04",
+      "class": "historical cleanup evidence",
+      "bytes": 3959,
+      "sha256": "7ab6afb32b4ad859aba99437fb70d1f55b6874d98a3b992364adc993e44b3252",
+      "source_mtime_utc": "2026-09-12T10:36:43.273163+00:00",
+      "stable": true
+    },
+    {
+      "artifact_id": "snapshot-05",
+      "class": "historical cleanup evidence",
+      "bytes": 3288,
+      "sha256": "a8bce66346ae8f121ad06c3754830daf32e7b65a2adb8540c9f51c36c6f591a0",
+      "source_mtime_utc": "2026-09-12T10:37:33.191603+00:00",
+      "stable": true
+    },
+    {
+      "artifact_id": "snapshot-06",
+      "class": "historical cleanup evidence",
+      "bytes": 3100,
+      "sha256": "e09cdc7ce15b63ab5575957a32112898c6dfe79dfd7943144f6290f5da642567",
+      "source_mtime_utc": "2026-09-12T10:38:58.066245+00:00",
+      "stable": true
+    },
+    {
+      "artifact_id": "snapshot-07",
+      "class": "historical cleanup evidence",
+      "bytes": 1414,
+      "sha256": "ce46265b689d8985a2e31be454c166999c25d84115efc9bec797624cf1ee7826",
+      "source_mtime_utc": "2026-09-12T10:38:58.288186+00:00",
+      "stable": true
+    },
+    {
+      "artifact_id": "snapshot-08",
+      "class": "historical cleanup evidence",
+      "bytes": 2337,
+      "sha256": "d372084a01682fc3a6be6dada7e309ea4896bfbbbecd372e309c59101cab469d",
+      "source_mtime_utc": "2026-09-12T10:36:16.635971+00:00",
+      "stable": true
+    },
+    {
+      "artifact_id": "snapshot-09",
+      "class": "historical cleanup evidence",
+      "bytes": 828,
+      "sha256": "5843d66cbc2139170d1726a7d374c76416acbc3be21aea4ca599acbd817380cc",
+      "source_mtime_utc": "2026-09-12T10:36:16.566797+00:00",
+      "stable": true
+    },
+    {
+      "artifact_id": "snapshot-10",
+      "class": "historical cleanup evidence",
+      "bytes": 9167,
+      "sha256": "75dcb201b0722c3d8c0d9d08bd2e4d6546d25c35c38be9d7724d9fdb6911f8b5",
+      "source_mtime_utc": "2026-09-12T10:36:16.617112+00:00",
+      "stable": true
+    }
+  ],
+  "ancestry_checks": [
+    {
+      "repo": "digitalmodel",
+      "head": "80da6e09b649707ef7bdb09c9d112f1650bf3d6a",
+      "local_origin_main": "7e71d6b26eb863e95ae3f0ec9957b081d85dea28",
+      "is_ancestor": true
+    },
+    {
+      "repo": "digitalmodel",
+      "head": "a7fe3775717db3f67ff1e4d4e8733c5a9f285357",
+      "local_origin_main": "7e71d6b26eb863e95ae3f0ec9957b081d85dea28",
+      "is_ancestor": true
+    },
+    {
+      "repo": "digitalmodel",
+      "head": "cb309cbcdc28c5ce9998bc4f04f1120c53f34ac6",
+      "local_origin_main": "7e71d6b26eb863e95ae3f0ec9957b081d85dea28",
+      "is_ancestor": true
+    },
+    {
+      "repo": "workspace-hub",
+      "head": "60c0d372b7230642af7d222735f2abd14a97e6b1",
+      "local_origin_main": "d2955d71ee5ee156dfe33fbacfe1c0bcf083e54e",
+      "is_ancestor": true
+    }
+  ]
+}
