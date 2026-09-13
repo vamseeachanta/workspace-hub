@@ -6,7 +6,7 @@ import json
 import re
 from collections import Counter
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 from typing import Iterable
 
 from workspace_hub.workstations.resolver import WorkstationPathResolver
@@ -30,6 +30,9 @@ def normalize_path(raw_path: str | None, repo_root: Path) -> tuple[str, bool, st
             return rel.as_posix(), path.exists(), "repo"
         except ValueError:
             return raw, path.exists(), "external"
+    if PurePosixPath(raw).is_absolute() or PureWindowsPath(raw).is_absolute():
+        # Unmapped foreign paths have no established local existence.
+        return raw, False, "external"
     candidate = repo_root / raw
     return raw, candidate.exists(), "repo"
 

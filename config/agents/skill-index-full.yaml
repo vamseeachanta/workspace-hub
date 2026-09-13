@@ -958,11 +958,11 @@ skills:
   name: roadmap-to-github-issue-wave
   when_to_use: '- A roadmap identifies future work and the user wants issues created - The user names a new domain/career lane and asks to research practices, create GitHub features/issues, or build job-ready capability; first create a lightweight roadmap artifact, then turn it into an issue wave - You have an issue/review/readiness summary and need to convert only the missing items into GitHub issues - You need one umbrella issue plus a small set of focused child issues'
   when_to_use_source: section
-- description: Analyze session quality trends — identify high-churn patterns, report waste, flag sessions exceeding 500 tool calls
+- description: Audit session quality, provider log coverage, workflow drift and skill gaps. Reuse existing conversation ratings for product catch-up; distinguish tool events, file reads and review artifacts.
   family: coordination
   id: coordination/session-corpus-audit
   name: session-corpus-audit
-  when_to_use: '- Weekly quality review - After a day with many session restarts - When investigating tool-call ceiling hits - When a product/chatbot already has rated conversation examples and the user asks to review provider sessions to catch up on inconsistencies'
+  when_to_use: '- Weekly session quality review or investigation of repeated restarts and tool-call ceiling hits. - Cross-provider activity baselines, workflow or prompt drift, and skill-gap investigations. - Conversation-rating provider catch-up using existing rated examples and the established rubric.'
   when_to_use_source: section
 - description: Pre-flight checks at session start — load context, check prior state, validate env, check for in-flight work from other terminals
   family: coordination
@@ -5064,12 +5064,6 @@ skills:
   name: repo-sync
   when_to_use: repo-sync Smart repository synchronization across workspace-hub ecosystem — diagnoses and fixes pull failures (detached HEAD, diverged branches, uncommitted changes) workspace-hub
   when_to_use_source: backfill
-- description: Analyze orchestrator session JSONL logs across Claude/Hermes/Codex to produce cross-agent baselines, tool/file frequency analysis, and skill gap detection. Use when auditing agent activity patterns or identifying skill gaps from session data.
-  family: workspace-hub
-  id: workspace-hub/session-corpus-audit
-  name: session-corpus-audit
-  when_to_use: '- Auditing agent activity patterns across Claude, Hermes, and Codex - Identifying skill gaps from repeated manual workflows - Producing tool/file frequency baselines for planning - Assessing skill-to-work alignment (are hot skills actually being used?) - Cross-agent comparison of work patterns'
-  when_to_use_source: section
 - description: Operate and reason about the 'session analysis & memory curation' line item of the machine-equality matrix — the per-box engine that analyzes every AI-provider session log + curates the memory delta, its daily-freshness verdict (green ≤12h / orange >12h / red >24h), the dead-man's-switch rebuild, and the cross-machine fingerprint transfer. Use to read, refresh, or debug the cell.
   family: workspace-hub
   id: workspace-hub/session-curation

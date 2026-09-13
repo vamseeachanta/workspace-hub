@@ -99,9 +99,9 @@ Starter template: `templates/interactive-rating-app.html`.
 
 ## Related Skills
 
-- [frontend-design](../../content-design/frontend-design/SKILL.md) - Advanced UI design
-- [algorithmic-art](../../content-design/algorithmic-art/SKILL.md) - Generative visuals
-- [theme-factory](../../content-design/theme-factory/SKILL.md) - Color and typography
+- [frontend-design](../../../business/content-design/frontend-design/SKILL.md) - Advanced UI design
+- [algorithmic-art](../../../business/content-design/algorithmic-art/SKILL.md) - Generative visuals
+- [theme-factory](../../../business/content-design/theme-factory/SKILL.md) - Color and typography
 
 ---
 

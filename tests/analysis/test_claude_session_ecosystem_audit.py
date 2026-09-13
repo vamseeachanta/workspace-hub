@@ -37,6 +37,27 @@ def test_normalize_path_for_missing_external_file(tmp_path: Path) -> None:
     assert scope == "external"
 
 
+def test_foreign_absolute_path_is_external_without_local_probe(tmp_path: Path, monkeypatch) -> None:
+    repo_root = tmp_path / "repo"
+    repo_root.mkdir()
+    raw = r"Z:\foreign-corpus-test\prompt.md" if Path("/").is_absolute() else "/foreign-corpus-test/prompt.md"
+
+    def reject_probe(path):
+        raise AssertionError("An unmapped foreign path must not probe the local filesystem")
+
+    with monkeypatch.context() as patcher:
+        patcher.setattr(module.Path, "exists", reject_probe)
+        result = module.normalize_path(raw, repo_root)
+    assert result == (raw, False, "external")
+
+
+def test_relative_existing_path_remains_repo_local(tmp_path: Path) -> None:
+    target = tmp_path / "docs" / "report.md"
+    target.parent.mkdir()
+    target.write_text("ok", encoding="utf-8")
+    assert module.normalize_path("docs/report.md", tmp_path) == ("docs/report.md", True, "repo")
+
+
 def test_normalize_path_for_windows_workspace_file(tmp_path: Path) -> None:
     repo_root = tmp_path / "repo"
     repo_root.mkdir()

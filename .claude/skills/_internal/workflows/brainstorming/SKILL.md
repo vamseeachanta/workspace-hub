@@ -154,9 +154,8 @@ After validation:
 
 ## Related Skills
 
-- [writing-plans](../development/planning/writing-plans/SKILL.md) - Create implementation plans
-- [sparc-workflow](../development/sparc-workflow/SKILL.md) - Development methodology
-- [product-roadmap](../product/product-roadmap/SKILL.md) - Product planning
+- [writing-plans](../../../development/planning/writing-plans/SKILL.md) - Create implementation plans
+- [product-roadmap](../../../business/product/product-roadmap/SKILL.md) - Product planning
 
 ---
 

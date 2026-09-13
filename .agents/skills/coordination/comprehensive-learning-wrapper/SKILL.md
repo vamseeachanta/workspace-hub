@@ -44,10 +44,10 @@ wrapper makes it accessible via `/learn-extended` or similar commands.
 ## Canonical Pipeline
 
 The full pipeline lives at:
-- **Skill definition**: `.Codex/skills/workspace-hub/comprehensive-learning/`
+- **Skill definition**: `.claude/skills/workspace-hub/comprehensive-learning/`
 - **Cron wrapper**: `scripts/cron/comprehensive-learning-nightly.sh`
 - **Pipeline script**: `scripts/learning/comprehensive-learning.sh`
-- **Phase specs**: `.Codex/skills/workspace-hub/comprehensive-learning/references/pipeline-detail.md`
+- **Phase specs**: `.claude/skills/workspace-hub/comprehensive-learning/references/pipeline-detail.md`
 
 ## On-Demand Commands
 
@@ -117,7 +117,7 @@ echo "Pipeline phases:"
 head -30 "$REPO_ROOT/scripts/learning/comprehensive-learning.sh" 2>/dev/null || echo "Script not found"
 echo ""
 echo "WARNING: Running the pipeline mid-session violates the Iron Law."
-echo "Use nightly cron instead. See: .Codex/skills/workspace-hub/comprehensive-learning/"
+echo "Use nightly cron instead. See: .claude/skills/workspace-hub/comprehensive-learning/"
 ```
 
 ## Scheduling Reference
@@ -137,7 +137,7 @@ actual pipeline execution is reserved for cron.
 
 ## Related
 
-- Primary skill: `.Codex/skills/workspace-hub/comprehensive-learning/`
-- Extract to issues: `.Codex/skills/extract-learnings-to-issues/`
-- Session corpus audit: `.Codex/skills/coordination/session-corpus-audit/`
+- Primary skill: `.claude/skills/workspace-hub/comprehensive-learning/`
+- Extract to issues: `.claude/skills/extract-learnings-to-issues/`
+- Session corpus audit: `.claude/skills/coordination/session-corpus-audit/`
 - Cron scripts: `scripts/cron/comprehensive-learning-nightly.sh`

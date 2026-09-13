@@ -534,9 +534,10 @@ skills. Driven by #1839's Phase 3 scope.
 
 **Commits**: e582d7e70..ef8e7826b (overnight batch 2026-04-09)
 
-**Note**: `session-corpus-audit` also exists at `.claude/skills/workspace-hub/session-corpus-audit/SKILL.md`
-(434 lines, Hermes-authored, comprehensive). The coordination version is a slim reference copy.
-The workspace-hub version is canonical for detailed signal analysis.
+**Current routing (2026-09-13)**: `.claude/skills/coordination/session-corpus-audit/SKILL.md`
+is the canonical quality and cross-provider corpus workflow, with focused method and
+conversation-rating references. `.agents/skills/coordination/session-corpus-audit/SKILL.md`
+is its thin provider adapter. The historical restoration counts above are not current inventory.
 
 ## What Remains (Phase 5)
 

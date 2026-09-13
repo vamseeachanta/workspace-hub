@@ -1,25 +1,42 @@
-# .agents/skills — cross-agent skills surface (NOT dead weight)
+# Provider skill discovery surface
 
-**Do not delete.** Live-verified 2026-06-11: the Gemini CLI loads skills from this
-directory (it reports "Skill conflict detected ... from .agents/skills/... is
-overriding ... .gemini/skills/..." at startup). `.agents/` is the cross-provider
-agent surface, analogous to `AGENTS.md`.
+The authored source is [`.claude/skills`](../../.claude/skills).
+This directory contains provider-facing copies and, where migrated, thin adapters.
+Source ownership does not determine runtime discovery precedence.
 
-Relationship to the other skill trees:
+Codex repository discovery uses `.agents/skills` between the working directory and
+repository root. Duplicate names are not merged by the loader. See the
+[official skill documentation](https://learn.chatgpt.com/docs/build-skills).
+Other consumers require their own current runtime evidence.
 
-| Tree | Consumer | Notes |
-|---|---|---|
-| `.claude/skills/` | Claude Code (canonical, freshest) | wins on conflicts per SOUL.delta |
-| `.codex/skills` | Codex CLI | symlink → `.claude/skills` (no duplication) |
-| `.agents/skills/` | Gemini CLI (+ any AGENTS-convention runtime) | full copy with provider-adapted deltas; drifts |
-| `.gemini/skills/` | Gemini CLI (overridden by `.agents/skills` on conflict) | legacy location |
+| Tree | Role and evidence |
+|---|---|
+| `.claude/skills/` | Canonical authored source; ownership does not override loader precedence. |
+| `.agents/skills/` | Documented Codex discovery root; Gemini loading was historically observed. |
+| `.codex/skills` | Legacy compatibility link referenced by repository tooling; not proof of native loading. |
+| `.gemini/skills/` | Historical Gemini skill location; current configuration and precedence require inspection. |
 
-Known hazards:
-- This tree is a periodic copy of `.claude/skills/` with mechanical provider rewrites;
-  some rewrites are nonsense (e.g., `dspy.Codex(model="Codex-sonnet-...")` is not a real
-  API). Treat `.claude/skills/` as authoritative when content disagrees.
-- Last bulk sync 2026-05-04. If drift matters for a skill you need under Gemini,
-  re-copy that skill family from `.claude/skills/`.
+The June 2026 Gemini record reported: `Skill conflict detected ... from .agents/skills/... is overriding ... .gemini/skills/...`.
+That startup signal can be checked in a bounded native trial; it was not reproduced
+by this documentation cleanup.
 
-Disposition decision (workspace-hub #3039, 2026-06-11): KEEP + document (this file).
-A sync script is deliberately deferred until drift causes a real incident.
+## Migration
+
+- Use one canonical skill and focused references; keep provider adapters thin.
+- Before retiring a copy, inspect its differences and migrate unique requirements
+  and active callers. Verify the replacement path and reference resolution.
+- Do not mechanically replace provider names throughout skill bodies.
+- Do not bulk-delete this discovery tree before replacing verified consumers.
+- Preserve native system skills, plugins, credentials and unrelated user settings.
+- A task profile selects intended skills; it does not install or configure discovery.
+
+The historical [retention decision](https://github.com/vamseeachanta/workspace-hub/issues/3039)
+recorded Gemini loading this directory in June 2026. That explains why unqualified
+deletion is inappropriate; it does not establish current fleet loading or justify
+permanent duplicate authorities. The current
+[cleanup decision record](../../docs/reports/2026-09-13-issue-3615-ecosystem-cleanup.html#operating-decisions)
+requires verified consolidation and retirement.
+
+The tracked `.codex/skills` compatibility link may be materialized as a text file
+on Windows. Its existence is not proof of Codex loading; repository tooling still
+references it, so its retirement requires caller migration.

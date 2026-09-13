@@ -1,65 +1,69 @@
 ---
 name: session-corpus-audit
-description: Analyze session quality trends — identify high-churn patterns, report waste, flag sessions exceeding 500 tool calls
-version: 1.0.0
-category: coordination
-tags: [session, audit, quality, signals]
-related_skills:
-  - session-start-routine
-  - comprehensive-learning
+description: Audit session quality, provider log coverage, workflow drift and skill gaps. Reuse existing conversation ratings for product catch-up; distinguish tool events, file reads and review artifacts.
+metadata:
+  version: 1.1.0
+  category: coordination
+  author: Hermes Agent (cross-provider methods); Workspace Hub coordination workflow
+  tags: [session, audit, quality, signals, cross-agent, skill-gaps]
+  related_skills:
+    - session-start-routine
+    - comprehensive-learning
+  hermes:
+    tags: [analysis, session-logs, skill-gaps, cross-agent, frequency, orchestrator]
+    related_skills: [claude-reflect, skill-eval, repo-architecture-analysis]
 ---
 
 # Session Corpus Audit
 
-Analyze session signals to identify quality trends and waste patterns.
-
-## Data source
-
-Session signals live at `.claude/state/session-signals/YYYY-MM-DD.jsonl`.
-Each line is a JSON object with: session_id, transcript_path, cwd, permission_mode, hook_event_name, stop_hook_active, last_assistant_message.
-
-## Audit procedure
-
-### 1. Collect recent signals
-```bash
-# Last 7 days of session signals
-for f in $(ls -t .claude/state/session-signals/*.jsonl | head -7); do
-  echo "=== $(basename $f) ==="
-  wc -l "$f"
-  cat "$f"
-done
-```
-
-### 2. Identify high-churn sessions
-- Sessions that fired multiple Stop hooks (restarts/crashes)
-- Sessions with last_assistant_message indicating errors or blocks
-- Sessions ending with permission denials
-
-### 3. Estimate tool-call volume
-- Check `.claude/state/session-governor/tool-call-count` for daily totals
-- Flag any day exceeding 500 tool calls (potential runaway session)
-
-### 4. Detect recurring patterns
-- Same error messages across sessions (systemic issues)
-- Sessions that ended mid-task (unreleased wip labels, uncommitted changes)
-- Permission mode patterns (bypassPermissions vs default)
-
-### 5. Produce quality report
-Output a markdown report with:
-- Session count by day (last 7 days)
-- High-churn sessions with root cause
-- Recurring error patterns
-- Waste estimate (sessions that produced no commits)
-- Recommendations for workflow improvement
-
 ## When to use
-- Weekly quality review
-- After a day with many session restarts
-- When investigating tool-call ceiling hits
-- When a product/chatbot already has rated conversation examples and the user asks to review provider sessions to catch up on inconsistencies
 
-## Conversation-rating provider catch-up
+- Weekly session quality review or investigation of repeated restarts and tool-call ceiling hits.
+- Cross-provider activity baselines, workflow or prompt drift, and skill-gap investigations.
+- Conversation-rating provider catch-up using existing rated examples and the established rubric.
 
-When auditing Claude/Codex/Hermes/Gemini sessions for a chatbot or product with existing conversation ratings, **load the rated baseline first** and treat provider logs as meta-evidence. Do not restart the rubric. Review provider sessions for workflow defects that explain or predict conversation-quality failures: delivery-state overclaims, internal/tool leakage, canary-before-live drift, channel/scope/domain terminology confusion, and user-blame before log inspection.
+## Select a bounded audit
 
-Use `references/conversation-rating-provider-catchup.md` for the detailed procedure and output shape.
+Resolve the owning checkout and authorized log roots from task context. State the
+period, providers, source formats and question before reading a corpus. Start with
+existing audit receipts and indexes; expand only to evidence needed for the question.
+Follow `docs/architecture/agent-data-handling-contract.md`; session text may contain
+private messages, credentials or project data. Public reports should use redacted
+findings and authorized evidence references, not transcript mirrors.
+
+- **Session quality:** inspect `.claude/state/session-signals/` for repeated stops,
+  errors, permission failures and incomplete delivery; verify their meaning.
+- **Provider/workflow comparison:** use
+  [corpus methods](references/corpus-analysis-methods.md) for format adapters,
+  deduplication, file/tool frequencies, prompt drift and skill-gap candidates.
+- **Conversation-rating catch-up:** load the rated baseline first, then use
+  [the retained rating procedure](references/conversation-rating-provider-catchup.md).
+  Provider logs are meta-evidence explaining quality defects, not replacement ratings.
+
+## Evidence and interpretation
+
+Inventory actual sources and schema coverage per provider. Filter post-hook records
+only where the schema defines paired pre/post events; use call IDs for other streams
+when available. Do not infer format, capability or role from provider name.
+Review-only logs cannot supply tool-frequency denominators. Missing observations
+remain unknown; zero usage, high tool counts or no commits do not prove wasted work.
+
+Separate explicit skill invocation, file-body reads, discovery exposure and inferred
+use. Historical hot/warm/cold/dead scores are prioritization metadata, not deletion
+permission. Verify replacements, unique content and current callers before proposing
+consolidation. Existing historical observations will not change when code is fixed;
+measure later sessions separately to assess improvement.
+
+## Output and continuation
+
+Report scope, scanned/skipped sources, deduplication rules, time basis, measured
+counts and limitations. Bind each finding to evidence and its current replacement
+or unresolved gap. Rank bounded remedies by demonstrated impact; keep assumptions
+and rubric candidates distinct from verified failures.
+
+For technical audit output, prefer an HTML summary and machine-readable evidence;
+existing scripts may emit Markdown, which can remain a supporting artifact. Store
+private evidence only in its authorized owner. Read back generated outputs and name
+what remains unverified. The audit grants no permission to delete skills, publish
+logs, mutate Git history or install hooks. Apply shared lifecycle/cleanup controls;
+never automatically stash another session's work or rebase to finish an audit.

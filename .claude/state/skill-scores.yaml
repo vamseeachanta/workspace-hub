@@ -6201,7 +6201,7 @@ skills:
     effective_reference_count: 5
     framework_usage: false
     tier: hot
-    path: workspace-hub/session-corpus-audit
+    path: coordination/session-corpus-audit
   session-start-dirty-state-triage-with-background-agents:
     baseline_usage_rate: 0.0
     calls_in_period: 0
