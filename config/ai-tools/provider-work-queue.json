@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-13T21:21:40.984666Z",
-  "current_week": "2026-W37",
-  "scorecard_generated_at": "2026-09-13T21:21:38.738249Z",
+  "generated_at": "2026-09-14T01:21:55.864311Z",
+  "current_week": "2026-W38",
+  "scorecard_generated_at": "2026-09-14T01:21:53.732308Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -859,7 +859,7 @@
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-09-13T17:16:41Z",
+          "updatedAt": "2026-09-14T00:48:55Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1835,7 +1835,7 @@
             "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-09-13T16:43:50Z",
+          "updatedAt": "2026-09-13T22:54:04Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4028,7 +4028,7 @@
             "domain:security",
             "status:plan-review"
           ],
-          "updatedAt": "2026-09-10T00:21:55Z",
+          "updatedAt": "2026-09-14T00:55:09Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4338,7 +4338,7 @@
           "title": "docs: route engineering analysis criteria and lookup dataset requirements across repositories",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3853",
           "labels": [],
-          "updatedAt": "2026-09-13T17:16:13Z",
+          "updatedAt": "2026-09-14T00:40:45Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
