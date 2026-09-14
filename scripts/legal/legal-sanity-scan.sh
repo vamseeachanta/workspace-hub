@@ -302,7 +302,12 @@ scan_directory() {
   local file_args=()
   if [[ "$DIFF_ONLY" == "true" ]]; then
     local changed_files
-    changed_files="$(cd "$scan_dir" && git diff --name-only HEAD 2>/dev/null || true)"
+    if changed_files="$(cd "$scan_dir" && git diff --name-only HEAD)"; then
+      : # A successful empty selection retains its existing behavior below.
+    else
+      echo "ERROR: LEGAL_SCAN_INCOMPLETE: Git file selection failed: $label" >&2
+      return 2
+    fi
     [[ -z "$changed_files" ]] && return 0
     while IFS= read -r f; do
       [[ -f "$scan_dir/$f" ]] || continue
