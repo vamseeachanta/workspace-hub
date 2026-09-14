@@ -14,22 +14,12 @@
 #                            Windows drive letters under git-bash.)
 #                            When set it WINS: names resolve ONLY against the
 #                            listed roots; no fallback to the defaults.
-#   LEGAL_SCAN_RESOLVE_ONLY  When "1", print the resolved repo path(s) and
-#                            exit 0 before any scanning happens. Minimal
-#                            dry-run hook used by tests/legal/ to assert the
-#                            resolution contract without needing deny-lists.
 #
 # Exit codes:
 #   0  All clear (no block-severity violations)
 #   1  Block-severity violations found
-#   2  Usage / resolution error (unknown argument, repository not found,
-#      --all with nothing to scan)
+#   2  Usage, resolution, dependency or incomplete-scan error
 #
-# Environment:
-#   LEGAL_SCAN_REPO_ROOTS  Semicolon- or newline-separated list of repo root
-#                          paths (semicolons/newlines survive Windows drive
-#                          letters under git-bash). When set, it WINS over the
-#                          default nested -> sibling -> walk-up resolution.
 # =============================================================================
 set -euo pipefail
 
@@ -37,56 +27,30 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # --------------------------------------------------------------------------
-# Locate ripgrep — check PATH, common locations, fall back to grep
+# Deterministic ripgrep backend; dependency checked after argument parsing.
 # --------------------------------------------------------------------------
-RG_BIN=""
-if command -v rg &>/dev/null; then
-  RG_BIN="rg"
-else
-  # Check known vendor locations
-  for candidate in \
-    "$HOME/.npm-global/lib/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/x64-linux/rg" \
-    "$HOME/.cargo/bin/rg" \
-    "/usr/local/bin/rg" \
-    "/usr/bin/rg"; do
-    if [[ -x "$candidate" ]]; then
-      RG_BIN="$candidate"
-      break
-    fi
-  done
-fi
+RG_BIN="rg"
 
-if [[ -z "$RG_BIN" ]]; then
-  echo "WARNING: ripgrep (rg) not found — falling back to grep (slower)" >&2
-fi
-
-# --------------------------------------------------------------------------
-# search_patterns: wrapper around rg or grep
-#   Args: case_flag pattern [rg_extra_flags...] -- [files/dirs...]
-# --------------------------------------------------------------------------
+# Args: case_flag pattern [rg_extra_flags...] -- [files/dirs...]
 run_search() {
   local case_flag="$1"; shift
   local pattern="$1"; shift
-
-  # Split extra flags and targets at "--"
-  local extra_flags=()
-  local targets=()
+  local extra_flags=() targets=()
   local saw_sep=false
   for a in "$@"; do
     if [[ "$a" == "--" ]]; then saw_sep=true; continue; fi
     if $saw_sep; then targets+=("$a"); else extra_flags+=("$a"); fi
   done
-
-  if [[ -n "$RG_BIN" ]]; then
-    local rg_flags=("--no-heading" "--line-number" "--color" "never" "--no-ignore" "--max-filesize" "1M" "--fixed-strings")
-    [[ "$case_flag" == "i" ]] && rg_flags+=("-i")
-    rg_flags+=("${extra_flags[@]}")
-    "$RG_BIN" "${rg_flags[@]}" "$pattern" "${targets[@]}" 2>/dev/null || true
-  else
-    local grep_flags=("-r" "-n" "--include=*" "-F")
-    [[ "$case_flag" == "i" ]] && grep_flags+=("-i")
-    grep "${grep_flags[@]}" "$pattern" "${targets[@]}" 2>/dev/null || true
+  local rg_flags=("--no-config" "--with-filename" "--no-heading" "--line-number" "--color" "never" "--no-ignore" "--max-filesize" "1M" "--fixed-strings")
+  [[ "$case_flag" == "i" ]] && rg_flags+=("-i")
+  rg_flags+=("${extra_flags[@]}")
+  local search_status=0
+  "$RG_BIN" "${rg_flags[@]}" -- "$pattern" "${targets[@]}" || search_status=$?
+  if [[ "$search_status" -gt 1 ]]; then
+    echo "ERROR: LEGAL_SCAN_INCOMPLETE: ripgrep exited $search_status" >&2
+    return 2
   fi
+  return 0
 }
 
 # Defaults
@@ -101,7 +65,13 @@ WARNINGS=0
 # Parse arguments
 for arg in "$@"; do
   case "$arg" in
-    --repo=*) TARGET_REPO="${arg#*=}" ;;
+    --repo=*)
+      TARGET_REPO="${arg#*=}"
+      if [[ -z "$TARGET_REPO" ]]; then
+        echo "ERROR: --repo requires a non-empty repository name" >&2
+        exit 2
+      fi
+      ;;
     --all) SCAN_ALL=true ;;
     --diff-only) DIFF_ONLY=true ;;
     --json) JSON_OUTPUT=true ;;
@@ -124,12 +94,17 @@ for arg in "$@"; do
       echo "Exit codes:"
       echo "  0  Pass (no block-severity violations)"
       echo "  1  Block violations found"
-      echo "  2  Usage / resolution error (repo not found, --all with nothing to scan)"
+      echo "  2  Usage, resolution, dependency or incomplete-scan error"
       exit 0
       ;;
     *) echo "Unknown argument: $arg" >&2; exit 2 ;;
   esac
 done
+
+if ! command -v "$RG_BIN" >/dev/null 2>&1; then
+  echo "ERROR: RIPGREP_REQUIRED: install ripgrep and expose rg on PATH" >&2
+  exit 2
+fi
 
 # --------------------------------------------------------------------------
 # Candidate resolver — shared by --repo and --all
@@ -297,88 +272,11 @@ parse_exclusions() {
 }
 
 # --------------------------------------------------------------------------
-# split_repo_roots: print LEGAL_SCAN_REPO_ROOTS one root per line.
-# Separators: semicolons or newlines (':' would collide with Windows drive
-# letters under git-bash).
-# --------------------------------------------------------------------------
-split_repo_roots() {
-  printf '%s\n' "${LEGAL_SCAN_REPO_ROOTS:-}" | tr ';' '\n'
-}
-
-# --------------------------------------------------------------------------
-# resolve_repo_path: resolve a repository name to a directory.
-# Shared by --repo and --all.
-#
-# Order:
-#   1. LEGAL_SCAN_REPO_ROOTS wins when set: resolve against each listed root
-#      in order; if none match, FAIL (no fallthrough to defaults — the env
-#      being set means the caller took explicit control).
-#   2. Defaults, in order:
-#        nested   $WORKSPACE_ROOT/<name>          (preserves original behavior)
-#        sibling  $(dirname "$WORKSPACE_ROOT")/<name>
-#        walk-up  <ancestor>/<name> from WORKSPACE_ROOT, max 8 levels
-#
-# On success: sets RESOLVED_REPO_PATH, returns 0.
-# On failure: returns 1 with RESOLVE_CANDIDATES holding every path tried.
-# --------------------------------------------------------------------------
-resolve_repo_path() {
-  local name="$1"
-  RESOLVED_REPO_PATH=""
-  RESOLVE_CANDIDATES=()
-
-  if [[ -n "${LEGAL_SCAN_REPO_ROOTS:-}" ]]; then
-    local root
-    while IFS= read -r root; do
-      [[ -z "$root" ]] && continue
-      RESOLVE_CANDIDATES+=("$root/$name")
-      if [[ -d "$root/$name" ]]; then
-        RESOLVED_REPO_PATH="$root/$name"
-        return 0
-      fi
-    done < <(split_repo_roots)
-    return 1
-  fi
-
-  # Default 1: nested under the workspace root (original behavior)
-  RESOLVE_CANDIDATES+=("$WORKSPACE_ROOT/$name")
-  if [[ -d "$WORKSPACE_ROOT/$name" ]]; then
-    RESOLVED_REPO_PATH="$WORKSPACE_ROOT/$name"
-    return 0
-  fi
-
-  # Default 2: sibling of the workspace root
-  local parent
-  parent="$(dirname "$WORKSPACE_ROOT")"
-  RESOLVE_CANDIDATES+=("$parent/$name")
-  if [[ -d "$parent/$name" ]]; then
-    RESOLVED_REPO_PATH="$parent/$name"
-    return 0
-  fi
-
-  # Default 3: bounded walk-up from the workspace root (max 8 levels)
-  local ancestor="$parent"
-  local depth=0
-  while [[ $depth -lt 8 ]]; do
-    [[ "$ancestor" == "$(dirname "$ancestor")" ]] && break
-    ancestor="$(dirname "$ancestor")"
-    RESOLVE_CANDIDATES+=("$ancestor/$name")
-    if [[ -d "$ancestor/$name" ]]; then
-      RESOLVED_REPO_PATH="$ancestor/$name"
-      return 0
-    fi
-    depth=$((depth + 1))
-  done
-
-  return 1
-}
-
-# --------------------------------------------------------------------------
 # Scan a single directory against merged patterns
 # --------------------------------------------------------------------------
 scan_directory() {
   local scan_dir="$1"
   local label="$2"
-  local local_violations=0
 
   # Merge global + local deny lists
   local global_list="$WORKSPACE_ROOT/.legal-deny-list.yaml"
@@ -404,7 +302,12 @@ scan_directory() {
   local file_args=()
   if [[ "$DIFF_ONLY" == "true" ]]; then
     local changed_files
-    changed_files="$(cd "$scan_dir" && git diff --name-only HEAD 2>/dev/null || true)"
+    if changed_files="$(cd "$scan_dir" && git diff --name-only HEAD)"; then
+      : # A successful empty selection retains its existing behavior below.
+    else
+      echo "ERROR: LEGAL_SCAN_INCOMPLETE: Git file selection failed: $label" >&2
+      return 2
+    fi
     [[ -z "$changed_files" ]] && return 0
     while IFS= read -r f; do
       [[ -f "$scan_dir/$f" ]] || continue
@@ -444,9 +347,9 @@ scan_directory() {
 
     local matches=""
     if [[ "$DIFF_ONLY" == "true" && ${#file_args[@]} -gt 0 ]]; then
-      matches="$(run_search "$case_flag" "$pattern" "${excl_args[@]}" -- "${file_args[@]}")"
+      matches="$(run_search "$case_flag" "$pattern" "${excl_args[@]}" -- "${file_args[@]}")" || return 2
     else
-      matches="$(run_search "$case_flag" "$pattern" "${excl_args[@]}" -- "$scan_dir")"
+      matches="$(run_search "$case_flag" "$pattern" "${excl_args[@]}" -- "$scan_dir")" || return 2
     fi
 
     if [[ -n "$matches" ]]; then
@@ -456,7 +359,6 @@ scan_directory() {
       # reported in full — the tier changes what FAILS, never what is SEEN.
       if [[ "$severity" == "block" ]]; then
         VIOLATIONS=$((VIOLATIONS + count))
-        local_violations=$((local_violations + count))
       else
         WARNINGS=$((WARNINGS + count))
       fi
@@ -476,7 +378,7 @@ scan_directory() {
     fi
   done <<< "$patterns"
 
-  return $local_violations
+  return 0
 }
 
 # ==========================================================================
@@ -494,8 +396,13 @@ load_registered_roots
 if [[ -n "$TARGET_REPO" ]]; then
   # Scan specific repo (shared candidate resolver)
   repo_path="$(resolve_repo_path "$TARGET_REPO")" || exit 2
+  if [[ -z "$repo_path" || ! -d "$repo_path" ]]; then
+    echo "ERROR: Resolved repository path is empty or not a directory: $TARGET_REPO" >&2
+    echo "       A legal gate must never pass by scanning nothing." >&2
+    exit 2
+  fi
   [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $TARGET_REPO ($repo_path)"
-  scan_directory "$repo_path" "$TARGET_REPO" || true
+  scan_directory "$repo_path" "$TARGET_REPO" || exit 2
 
 elif [[ "$SCAN_ALL" == "true" ]]; then
   # Enumerate initialized submodules first; else fall back to env-registered
@@ -509,8 +416,13 @@ elif [[ "$SCAN_ALL" == "true" ]]; then
   if [[ ${#submodules[@]} -gt 0 ]]; then
     for sub in "${submodules[@]}"; do
       sub_path="$(resolve_repo_path "$sub")" || exit 2
+      if [[ -z "$sub_path" || ! -d "$sub_path" ]]; then
+        echo "ERROR: Resolved repository path is empty or not a directory: $sub" >&2
+        echo "       A legal gate must never pass by scanning nothing." >&2
+        exit 2
+      fi
       [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $sub ($sub_path)"
-      scan_directory "$sub_path" "$sub" || true
+      scan_directory "$sub_path" "$sub" || exit 2
     done
   elif [[ ${#REGISTERED_ROOTS[@]} -gt 0 ]]; then
     for root in "${REGISTERED_ROOTS[@]}"; do
@@ -520,10 +432,10 @@ elif [[ "$SCAN_ALL" == "true" ]]; then
       fi
       root_label="$(basename "$root")"
       [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $root_label ($root)"
-      scan_directory "$root" "$root_label" || true
+      scan_directory "$root" "$root_label" || exit 2
     done
   else
-    echo "ERROR: --all found nothing to scan (no initialized submodules and LEGAL_SCAN_REPO_ROOTS is not set)." >&2
+    echo "ERROR: --all found no repositories to scan; nothing to scan (no initialized submodules and LEGAL_SCAN_REPO_ROOTS is not set)." >&2
     echo "       A legal gate must never pass by scanning nothing. Initialize submodules or set LEGAL_SCAN_REPO_ROOTS." >&2
     exit 2
   fi
@@ -531,7 +443,7 @@ elif [[ "$SCAN_ALL" == "true" ]]; then
 else
   # Scan workspace root (non-submodule files)
   [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: workspace-hub (root)"
-  scan_directory "$WORKSPACE_ROOT" "workspace-hub" || true
+  scan_directory "$WORKSPACE_ROOT" "workspace-hub" || exit 2
 fi
 
 # Summary
