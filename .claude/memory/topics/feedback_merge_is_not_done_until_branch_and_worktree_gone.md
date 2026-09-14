@@ -1,4 +1,4 @@
-> Git-tracked snapshot from Claude auto-memory. Captured: 2026-09-13
+> Git-tracked snapshot from Claude auto-memory. Captured: 2026-09-14
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_merge_is_not_done_until_branch_and_worktree_gone.md
 
 ---
