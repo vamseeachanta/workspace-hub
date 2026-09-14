@@ -1,6 +1,6 @@
 # Provider utilization weekly report
 
-Generated: 2026-09-14T04:01:36.129327Z
+Generated: 2026-09-14T05:21:54.216724Z
 Current week: 2026-W38
 Total monthly spend tracked: $260.0/mo
 
@@ -48,6 +48,33 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 |---|---:|---:|---:|---|---:|---|
 | claude | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
 | codex | 0 | 0 | 0.0% | quota | 0.0% | week_messages/weekly_limit from history.jsonl-estimate |
+| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+
+## 2026-W33
+
+| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
+|---|---:|---:|---:|---|---:|---|
+| claude | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 1 | 52 | 0.9% | quota | 0.9% | week_messages/weekly_limit from history.jsonl-estimate |
+| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+
+## 2026-W32
+
+| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
+|---|---:|---:|---:|---|---:|---|
+| claude | 4 | 142 | 0.3% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 44 | 1536 | 0.9% | quota | 0.9% | week_messages/weekly_limit from history.jsonl-estimate |
+| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+
+## 2026-W31
+
+| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
+|---|---:|---:|---:|---|---:|---|
+| claude | 7 | 259 | 0.6% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 72 | 3213 | 0.0% | quota | 0.0% | week_messages/weekly_limit from history.jsonl-estimate |
 | agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 | hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 

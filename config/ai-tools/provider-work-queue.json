@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-14T01:21:55.864311Z",
+  "generated_at": "2026-09-14T05:21:56.780907Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-14T01:21:53.732308Z",
+  "scorecard_generated_at": "2026-09-14T05:21:54.509729Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 13,
-      "total_candidates": 177,
+      "execution_ready_count": 12,
+      "total_candidates": 176,
       "top_issues": [
         {
           "number": 3549,
@@ -120,33 +120,6 @@
           ]
         },
         {
-          "number": 3525,
-          "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:workstations",
-            "wrk-item",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T11:21:45Z",
-          "execution_ready": true,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3566,
           "title": "fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3566",
@@ -216,6 +189,31 @@
             "lane:claude"
           ],
           "updatedAt": "2026-08-01T06:13:40Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3544,
+          "title": "security(legal): correct and operationalize Phase A authority activation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
+          "labels": [
+            "cat:operations",
+            "machine:dev-primary",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:codex",
+            "domain:governance"
+          ],
+          "updatedAt": "2026-08-01T06:13:49Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -325,33 +323,6 @@
           "updatedAt": "2026-09-11T20:33:18Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3525,
-          "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:workstations",
-            "wrk-item",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T11:21:45Z",
-          "execution_ready": true,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -859,7 +830,7 @@
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-09-14T00:48:55Z",
+          "updatedAt": "2026-09-14T03:29:19Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4028,7 +3999,7 @@
             "domain:security",
             "status:plan-review"
           ],
-          "updatedAt": "2026-09-14T00:55:09Z",
+          "updatedAt": "2026-09-14T03:00:37Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4357,7 +4328,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 6,
-      "total_candidates": 21,
+      "total_candidates": 22,
       "top_issues": [
         {
           "number": 3740,
@@ -5013,6 +4984,23 @@
             "quirk"
           ],
           "updatedAt": "2026-09-06T12:03:30Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3854,
+          "title": "Legal scanner named-repo resolver can return a false pass with empty path",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3854",
+          "labels": [],
+          "updatedAt": "2026-09-14T01:25:23Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

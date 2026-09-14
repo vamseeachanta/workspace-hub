@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-14T01:21:56.173807Z",
+  "generated_at": "2026-09-14T05:21:57.112777Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 9,
+  "eligible_count": 8,
   "applied": [],
   "candidates": [
     {
@@ -193,42 +193,6 @@
       "updatedAt": "2026-09-11T20:33:18Z",
       "execution_ready": true,
       "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3525,
-      "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
-      "labels": [
-        "priority:medium",
-        "cat:harness",
-        "domain:workstations",
-        "wrk-item",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-08-01T11:21:45Z",
-      "execution_ready": true,
-      "priority_rank": 2,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
@@ -464,6 +428,39 @@
         "lane:claude"
       ],
       "updatedAt": "2026-08-01T06:13:40Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3544,
+      "title": "security(legal): correct and operationalize Phase A authority activation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
+      "labels": [
+        "cat:operations",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:codex",
+        "domain:governance"
+      ],
+      "updatedAt": "2026-08-01T06:13:49Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "claude",

@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-09-14T01:21:55.864311Z
+Generated: 2026-09-14T05:21:56.780907Z
 Current week: 2026-W38
 Recommended provider order: agy, codex, claude
 
@@ -9,8 +9,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 13
-- Total routed candidates: 177
+- Execution-ready candidates: 12
+- Total routed candidates: 176
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -18,16 +18,16 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3816 feat(repo): generate authoritative work-surface inventory and adapter coverage report | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:tooling, machine:multi, status:plan-approved, gate:completeness |
 | #3838 fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
 | #3843 refactor(orcaflex): consolidate four model generators onto modular_generator | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
-| #3525 [WRK] Investigate safe remote Claude job dispatch to ace-win-2 | yes | strategy/workflow/architecture language | priority:medium, cat:harness, domain:workstations, wrk-item, machine:dev-primary, status:plan-approved |
 | #3566 fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI | yes | strategy/workflow/architecture language | bug, priority:medium, cat:harness, machine:multi, status:plan-approved, type:follow-up |
 | #3568 epic(agent-ux): cross-machine input interaction parity | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, domain:workstations, machine:multi, status:plan-approved |
 | #3527 fix(scheduler): reconcile identity inventory after merge-base race | yes | strategy/workflow/architecture language | bug, cat:harness, machine:dev-primary, status:plan-approved, gate:completeness, domain:harness |
+| #3544 security(legal): correct and operationalize Phase A authority activation | yes | strategy/workflow/architecture language | cat:operations, machine:dev-primary, status:plan-approved, gate:completeness, lane:codex, domain:governance |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 6
-- Total routed candidates: 21
+- Total routed candidates: 22
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|

@@ -39,6 +39,40 @@
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Legal scanner named-repo resolver can return a false pass with empty path"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3854,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "Legal scanner named-repo resolver can return a false pass with empty path",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3854",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
@@ -8015,62 +8049,48 @@
       "title": "feat(windows): daily report-only ecosystem reconciliation audit",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3526",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: major_review,missing_review",
-        "issue already has approval marker on disk",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": ".planning/plan-approved/3525.md",
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:harness",
-          "domain:workstations",
-          "wrk-item",
-          "machine:dev-primary",
-          "status:plan-approved",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- `config/workstations/registry.yaml` identifies `ace-win-2` as a canonical role alias, records Windows, `ssh: null`, Claude/Codex/Gemini availability, and `telegram_hermes.dispatch_enabled: false`. The discovery will treat that registry state as local policy evidence, not as pro",
-        "provider_route": "claude",
-        "risks": "**Risk \u2014 discovery becomes configuration:** even harmless-looking UI navigation can trigger sign-in, pairing, updates, or settings writes. The approved run will use only the exact command allowlist above and will perform no UI navigation. | **Risk \u2014 wrong execution host:** registry evidence is not proof that observations ran on ace-win-2. The local lane will fail closed unless the hostname attesta",
-        "tests": "12 TDD tests defined",
-        "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3525,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-07-14-issue-3525-claude-remote-worker-discovery.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
-      "warnings": [
-        "legacy_review_no_sha",
-        "major_review",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-09-14T01:21:58Z",
+  "generated_at": "2026-09-14T05:21:59Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Legal scanner named-repo resolver can return a false pass with empty path"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3854,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "Legal scanner named-repo resolver can return a false pass with empty path",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3854",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -16061,54 +16081,6 @@
         "title": "feat(windows): daily report-only ecosystem reconciliation audit",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3526",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: major_review,missing_review",
-          "issue already has approval marker on disk",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": ".planning/plan-approved/3525.md",
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:workstations",
-            "wrk-item",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- `config/workstations/registry.yaml` identifies `ace-win-2` as a canonical role alias, records Windows, `ssh: null`, Claude/Codex/Gemini availability, and `telegram_hermes.dispatch_enabled: false`. The discovery will treat that registry state as local policy evidence, not as pro",
-          "provider_route": "claude",
-          "risks": "**Risk \u2014 discovery becomes configuration:** even harmless-looking UI navigation can trigger sign-in, pairing, updates, or settings writes. The approved run will use only the exact command allowlist above and will perform no UI navigation. | **Risk \u2014 wrong execution host:** registry evidence is not proof that observations ran on ace-win-2. The local lane will fail closed unless the hostname attesta",
-          "tests": "12 TDD tests defined",
-          "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3525,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-07-14-issue-3525-claude-remote-worker-discovery.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "[WRK] Investigate safe remote Claude job dispatch to ace-win-2",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3525",
-        "warnings": [
-          "legacy_review_no_sha",
-          "major_review",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -16119,16 +16091,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-14T01:21:53.732308Z",
+  "scorecard_generated_at": "2026-09-14T05:21:54.509729Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-14T01:21:53.263571Z",
+  "utilization_generated_at": "2026-09-14T05:21:54.216724Z",
   "warning_summary": {
     "approved_no_marker": 11,
     "approved_no_plan": 7,
-    "legacy_review_no_sha": 8,
-    "major_review": 5,
-    "marker_without_open_approved_issue": 180,
-    "missing_review": 38,
+    "legacy_review_no_sha": 7,
+    "major_review": 4,
+    "marker_without_open_approved_issue": 181,
+    "missing_review": 37,
     "unavailable_review": 4
   }
 }
