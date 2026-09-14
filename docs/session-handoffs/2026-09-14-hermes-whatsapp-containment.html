@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hermes WhatsApp containment — exit handoff</title>
+<style>body{font:16px/1.6 system-ui,sans-serif;max-width:960px;margin:3rem auto;padding:0 1rem;color:#17212b}h1,h2{line-height:1.25}table{border-collapse:collapse;width:100%}th,td{border:1px solid #ccd3da;padding:.65rem;text-align:left;vertical-align:top}code{background:#eef1f4;padding:.1rem .25rem}caption{caption-side:bottom;text-align:left;padding:.5rem 0;color:#465568}</style></head>
+<body>
+<h1>Hermes WhatsApp containment</h1>
+<p>Session date: 14 September 2026. Status: the identified gateway was stopped and its automatic startup disabled. This handoff records operational containment, not a software implementation or permission to restart.</p>
+<h2>Authority and scope</h2>
+<p>The originating user reported unauthorized Hermes replies to WhatsApp messages and requested review and shutdown across Linux, macOS and Windows. The user confirmed that machines should be accessible through Tailscale SSH, then requested documentation and preparation to exit. That session authorizes the bounded containment and documented closeout. This record supplies context; it does not independently authenticate authority for future changes.</p>
+<h2>Observed responder and action</h2>
+<p>On <code>ace-linux-2</code>, the enabled, running user service <code>hermes-gateway.service</code> contained Hermes gateway PID 517973 and WhatsApp bridge PID 518185. The child process ran the Hermes <code>scripts/whatsapp-bridge/bridge.js</code> entrypoint.</p>
+<pre><code>systemctl --user disable --now hermes-gateway.service</code></pre>
+<p>The service was stopped and its enablement symlink removed. Immediate verification found both original processes absent. A separate main-session recheck at <strong>2026-09-14T11:41:14-05:00</strong> returned:</p>
+<pre><code>MainPID=0
+ActiveState=failed
+SubState=failed
+UnitFileState=disabled</code></pre>
+<p>No process matched the WhatsApp bridge or inspected gateway entrypoint at that recheck. The retained <code>failed</code> state is diagnostic state after termination; <code>MainPID=0</code> and process absence establish cessation at the observation time. Disabled enablement prevents that unit's normal automatic startup, but does not prevent a deliberate manual start or an unidentified alternate launcher.</p>
+<p>Stopping the gateway also stopped any other messaging channels served by that gateway. No credential or WhatsApp session-file edits or deletions were performed. The linked-device session was not revoked. A bounded review of seven Hermes-named cron entries found no gateway restart invocation; the update sentinel deferred restart. This is not proof that every possible launch path was inspected.</p>
+<h2>Fleet inspection coverage</h2>
+<table><thead><tr><th>Host role</th><th>Observed state on 14 September 2026</th></tr></thead><tbody>
+<tr><td>ace-linux-2</td><td>Active Hermes gateway and WhatsApp bridge identified; stopped and disabled; later recheck above.</td></tr>
+<tr><td>ace-linux-1</td><td>No Hermes or WhatsApp responder found in inspected processes and system/user service listings.</td></tr>
+<tr><td>GPU Linux host</td><td>No Hermes/WhatsApp processes, matching system/user services or matching user cron entries found.</td></tr>
+<tr><td>MacBook</td><td>Inspected through a trusted SSH hop from ace-linux-1 after direct host trust was unavailable. At 2026-09-14T14:16:22Z, no Hermes, Python or Node processes and no matching launch jobs, inspected plists or cron entries were found. Native WhatsApp remained untouched.</td></tr>
+<tr><td>Local Windows host</td><td>No matching responder processes, services or scheduled tasks found. WSL was not installed.</td></tr>
+<tr><td>Second online Windows host</td><td>Inspected through ace-linux-1 after direct authentication failed. No responder process or matching service found. MemoryBridgeSync was a memory synchronization task, not a WhatsApp responder.</td></tr>
+<tr><td>Offline Windows host</td><td>Tailscale reported offline, last seen about 56 days earlier. Process and startup state remain unverified.</td></tr>
+</tbody><caption>Table 1. Point-in-time coverage of the six online computers attributed to the user's fleet and one offline Windows computer.</caption></table>
+<p>The phone and a Linux peer listed under another tailnet account were outside this computer inspection. No claim of universal tailnet coverage is made. Machine addresses, private hostnames, account identities, secrets and message bodies are omitted from this publishable handoff.</p>
+<h2>Evidence limitations and next checkpoint</h2>
+<p>The active WhatsApp bridge was established from service and process evidence. Specific recent outbound replies were not independently attributed: message bodies and conversation logs were not read. No test or other outbound messages were sent. The immediate shutdown check and later recheck do not establish continuous monitoring between observations.</p>
+<p>The gateway is to remain stopped. Any proposed restart requires a fresh check of the originating user's authority and intended messaging scope. When the offline Windows host returns, inspect its Hermes processes and startup paths. If replies continue, inspect WhatsApp linked devices and repeat the service/process inventory before attributing another responder. No future implementation or automatic restart is authorized by this handoff.</p>
+<h2>Repository and cleanup disposition</h2>
+<p>The canonical workspace-hub checkout remained on main with 14 pre-existing modified or untracked paths: eight state artifacts, one OrcaFlex plan, the equality report and four solver reports. The local main had two commits absent from the previously fetched origin/main and was also behind it. Those commits and working files were preserved. The handoff was prepared on the isolated branch <code>chore/hermes-whatsapp-containment-handoff-20260914</code> from fetched origin/main; its publication is separate from canonical main integration.</p>
+<p><strong>CLEAN:</strong> containment created no application source changes, credential copies or message exports. <strong>EXPECTED:</strong> this handoff and its documentation branch; retained gateway diagnostic state and existing WhatsApp session files. <strong>UNEXPECTED / preserved for owner disposition:</strong> pre-existing autostash, <code>PMESSAGE.TMP</code>, and solver cleanup staging were observed without establishing their complete ownership. The unrelated dirty canonical checkout and sibling worktrees were preserved. No claim of workspace-wide cleanup is made.</p>
+<p>The only service mutation was the identified gateway stop/disable. No software deployment, merge, issue mutation or outbound messaging occurred during containment. Documentation publication will consist only of this handoff branch; the final session response will identify its verified commit and remote status. The scoped filesystem coordination claim will be released after publication. No unrelated stash, scratch file or checkout will be deleted.</p>
+</body></html>
