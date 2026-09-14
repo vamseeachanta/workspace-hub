@@ -1,5 +1,7 @@
 # Session handoff — ace-linux-2 (dev-secondary) equality bring-up + curation-cron revival
 
+> Editorial note (2026-09-14): names in the historical legal-scan discussion are replaced with generic references; other identifying text is outside this edit, and this file is not represented as fully anonymized. Counts and historical dispositions are retained as historical observations, not current scan results or waivers. The original wording remains in Git history at main-history revision `f9676ab896c03f0881d4e2ea64ff46a9e0c22830`; history is not rewritten.
+
 **Date:** 2026-07-02 · **Host:** ace-linux-2 · **Scope:** workspace-hub [#3342](https://github.com/vamseeachanta/workspace-hub/issues/3342) rollout prompt (merged PRs #3343/#3332)
 
 ## Outcome
@@ -32,7 +34,7 @@ Live matrix: <https://vamseeachanta.github.io/workspace-hub/machine-equality-mat
 - **memory_freshness: MEMORY-EXPIRED** — `context.md` 143h, hermes memories 121h; content staleness, fleet-wide, needs actual memory-surface refresh, not wiring.
 - **R-PRECOMMIT fail:** assetutilities / worldenergydata / assethold `.pre-commit-config.yaml` lack the `legal-sanity-scan` entry → 3 small sibling PRs.
 - **dev-primary column is STALE-CHECKOUT from its own evidence** (published 06:54 today with `dirty:true, behind:5` from its interactive checkout) — fix belongs on ace-linux-1; it also skews this box's peer-comparison cells (`behavior/scheduler/memory: DIVERGES`, `harness: NO-MAJORITY`).
-- **Legal-scan noise:** full-repo scan FAILs on ~142 pre-existing legacy-log false positives (Prelude FLNG / 2H Offshore in `logs/`), already documented 2026-05-20 with a "scanner should exclude logs/" follow-up — worth a small PR.
+- **Legal-scan noise:** full-repo scan FAILs on ~142 pre-existing legacy-log false positives (historical project reference / historical company reference in `logs/`), already documented 2026-05-20 with a "scanner should exclude logs/" follow-up — worth a small PR.
 - ace-win-1 / ace-win-2 steps from the #3342 rollout prompt (gh auth, Git Bash manual publish, #2815 schedules) remain for those boxes.
 
 ## No-external-action status

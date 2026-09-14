@@ -3,6 +3,35 @@
 > Detailed scan commands and deny list management for legal compliance.
 > Rule statements live in `.claude/rules/legal-compliance.md`.
 
+## Runtime contract and coverage
+
+Require Bash 4.4+ and ripgrep (`rg`) on PATH. Provider-bundled executable discovery
+and the grep fallback are removed. `--help` and usage diagnostics work without rg.
+Missing rg reports `RIPGREP_REQUIRED` and exits 2; search backend errors preserve
+stderr, report `LEGAL_SCAN_INCOMPLETE` and exit 2. A completed search with block
+findings exits 1; no block findings exits 0. Reject every nonzero status.
+An incomplete scan takes precedence over partial findings. User ripgrep config
+is ignored with `--no-config` so it cannot silently suppress matches.
+
+Coverage retains ripgrep's existing exclusions, 1 MB file limit and default binary
+file handling. Tree traversal skips dot-files and dot-directories, including
+`.claude/` and `.github/`, and does not follow recursively encountered links.
+Explicit diff-file arguments can include hidden paths. File contents are searched;
+filenames are not themselves searched. The deny list excludes `scripts/legal/`.
+This is not coverage parity with the former grep fallback, which ignored exclusion
+arguments. Empty/unparseable pattern sets and empty/fully excluded diffs can still
+exit 0 without searching; those cases remain separate hardening work.
+Git-diff failures (including missing HEAD or a non-repository target) are also
+suppressed by the existing diff-selection code and can report PASS without a search.
+The backend repair does not qualify that path; a PASS requires a verified nonempty
+selection and active patterns.
+
+The same-repository strict-scan CI job verifies/provisions rg and runs `tests/legal`
+before its full-root scan, which omits those hidden directories. This does not
+establish machine-fleet readiness.
+Machine prerequisite qualification belongs in `scripts/setup/verify-setup.sh`;
+this repair does not change machine settings or install local hooks.
+
 ## Scan Commands
 
 ```bash
@@ -32,9 +61,11 @@
 3. Include a clear `description` for audit purposes
 4. Run a full scan to check for existing violations
 
-## Pre-commit Integration (CP-stream repos)
+## Historical pre-commit integration (CP-stream repos)
 
-The following CP-stream repositories have the legal scan wired into `.pre-commit-config.yaml` as a local hook (WRK-278):
+The following table records the historical WRK-278 wiring, not verified current
+installation. The 2026-09-13 caller audit found digitalmodel using a different
+public-surface hook; the other two checkouts were unavailable on this machine.
 
 | Repo | Deny list | Hook entry |
 |---|---|---|
@@ -47,7 +78,14 @@ The hook uses `language: script` with `pass_filenames: false` so it always scans
 ### Hook behaviour
 - Exits 0 (pass) when no block-severity violations found
 - Exits 1 (fail) when block violations found — commit is blocked
-- The script resolves `WORKSPACE_ROOT` from its own location, so the `--repo=<name>` argument must match the submodule directory name at workspace root
+- Exits 2 on usage, resolution, dependency or incomplete-scan errors — commit is blocked
+- The script anchors global policy to its own workspace root. Named repositories
+  resolve through explicit registered roots or nested/sibling/walk-up defaults.
+
+Phase D/E document-index callers reject nonzero scanner status, but currently
+pass unsupported positional targets and permit missing-script bypasses. Phase E
+also permits timeout/OSError bypasses. Their effective coverage requires separate
+qualification; caller presence alone is not evidence of enforcement.
 
 ### Running manually from workspace root
 ```bash
