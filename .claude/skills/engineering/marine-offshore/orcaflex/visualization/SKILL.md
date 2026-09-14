@@ -44,7 +44,7 @@ scripts_exempt: true
 ### Model View Generation
 
 ```python
-from digitalmodel.orcaflex.opp_visualization import OPPVisualization
+from digitalmodel.solvers.orcaflex.opp_visualization import OPPVisualization
 from pathlib import Path
 
 def generate_model_views(
@@ -114,7 +114,7 @@ def generate_html_report(
 ### Parallel View Generation
 
 ```python
-from digitalmodel.orcaflex.opp_visualization import OPPVisualization
+from digitalmodel.solvers.orcaflex.opp_visualization import OPPVisualization
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 

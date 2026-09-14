@@ -1,5 +1,19 @@
 # Solver Queue — Documentation
 
+## Current operational routing
+
+Start with the [OrcaFlex execution and qualification runbook](orcaflex-execution-runbook.html)
+and its linked strategy, execution plan and measured evidence. The reconciled
+Deckhand lane is the intended owner of local and remote execution. Proposed
+controls remain planned until their implementation and deployment are verified.
+
+The Git-queue instructions below are retained as **legacy reference for discovery
+and migration**, not instructions to activate a competing queue or scheduled task.
+Host names, sole-host claims and schedules below describe the historical design;
+resolve current capabilities from the private inventory and actual runtime probes.
+Existing users will follow the approved lane-reconciliation sequence before any
+task is disabled or replaced.
+
 ## Overview
 
 The solver queue enables asynchronous job submission from any machine to

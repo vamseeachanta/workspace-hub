@@ -2,6 +2,12 @@
 
 This contract defines how workspace-hub separates data inputs, wiki corpora, generated indexes, and publication targets. It implements the approved #2727 scope only; execution-layer routing and report-layer publication remain in their own issues unless explicitly referenced as downstream boundaries.
 
+## Authority and actual visibility
+
+The [agent data handling contract](agent-data-handling-contract.md) governs original retention, source rights and readiness. Client-supplied and measured originals belong in the owning private repository under `data/<dataset>/raw/`, with SHA-256 manifest evidence. Vendor-licensed standards originals never enter Git; source-specific rights separately govern derivatives.
+
+`llm-wiki-private` and `llm-wiki-public` are logical residency/publication classes, not claims about a checkout. The 2026-09-12 visibility observation identifies `llm-wiki` as private; verify actual destination visibility and audience at use time. A public surface requires separately authorized provisioning and source rights.
+
 ## Related policy references
 
 - `docs/BUSINESS_BRAIN.md` — existing knowledge-promotion policy: raw/public data enters `llm-wiki` only through source, provenance, license, and legal sanity gates.
@@ -15,16 +21,16 @@ This contract defines how workspace-hub separates data inputs, wiki corpora, gen
 | D-L1 | Raw data | Original public, mounted, client, standards, or repo-native sources. | raw-data | Never publish directly. |
 | D-L2 | Readable raw data | Extracted text/metadata/views derived from D-L1 for review. | readable-raw-data | Private unless source/license/publication checks pass. |
 | D-L3 | Curated derivative | Human/agent-reviewed summaries, facts, and learnings with provenance. | llm-wiki-private or repo-public depending on source class | Candidate for private/public wiki only after gates. |
-| D-L4 | Publication/retrieval corpus | Public llm-wiki, private client llm-wiki, report/query/chatbot surfaces. | llm-wiki-private or llm-wiki-public | Must match source sensitivity and audience. |
+| D-L4 | Publication/retrieval corpus | Authorized public wiki surfaces, private domain/client wikis, report/query/chatbot surfaces. | llm-wiki-private or llm-wiki-public | Must match source sensitivity and audience. |
 
 ## Data residence crosswalk
 
 | Residence | Meaning | Allowed examples | Hard stop examples |
 |---|---|---|---|
-| raw-data | Untouched source files, mounted project directories, public API snapshots, vendor/reference PDFs. | `/mnt/ace/<client-or-project-root>`, external public source downloads outside git. | Committing raw PDFs or raw client files to public repos. |
+| raw-data | Untouched source files, mounted project directories, public API snapshots, vendor/reference PDFs. | `/mnt/ace/<client-or-project-root>`, external public source downloads outside Git; required originals in owning private `data/<dataset>/raw/`. | Committing raw PDFs or raw client files to public repos. |
 | readable-raw-data | OCR/text/extracted rows, metadata ledgers, temporary review packs. | Private extraction caches, document index metadata. | Publishing extracted licensed/client text as public wiki content. |
-| llm-wiki-private | Private/domain/client corpus for restricted learnings. | `/mnt/local-analysis/<client-private-wiki-root>`, private staging. | Treating private corpus as public llm-wiki. |
-| llm-wiki-public | Public knowledge graph/wiki content. | `/mnt/local-analysis/llm-wiki` public-safe pages. | Raw private paths, client facts, licensed text, or unreviewed outputs. |
+| llm-wiki-private | Private/domain/client corpus for restricted learnings. | `/mnt/local-analysis/<client-private-wiki-root>`, private staging. | Treating a private corpus as an authorized public destination. |
+| llm-wiki-public | Public knowledge graph/wiki content. | Separately authorized public wiki target with verified source rights and visibility. | Raw private paths, client facts, licensed text, or unreviewed outputs. |
 
 ## Default routing rules
 

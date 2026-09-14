@@ -20,6 +20,23 @@ see_also:
 tags: []
 scripts_exempt: true
 ---
+
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.aqwa.mesh_check`
+>   - `digitalmodel.aqwa.mesh_check.AqwaMeshCheck`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable. Tracked in
+> aceengineer-strategy#267.
+
+<!-- ace:known-missing: digitalmodel.aqwa.mesh_check, digitalmodel.aqwa.mesh_check.AqwaMeshCheck -->
 # AQWA Input Skill
 
 Input file formats, analysis configurations, DAT file conventions, and mesh quality for ANSYS AQWA. See [aqwa](../SKILL.md) for Python API.

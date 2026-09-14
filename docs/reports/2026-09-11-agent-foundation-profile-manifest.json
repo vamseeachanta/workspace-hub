@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-11T20:19:12.329251+00:00",
+  "status": "bounded planning manifest; not installed",
+  "authored_source": ".claude/skills",
+  "approved_architecture": "One shared source, thin Claude/Codex adapters, task profiles",
+  "approved_sequence": "Shared foundation first",
+  "activation_seeds": [
+    {
+      "skill": "data/ecosystem-data-sources",
+      "path": ".claude/skills/data/ecosystem-data-sources/SKILL.md",
+      "sha256": "ff7fe0052eb90c1a8044f12cfa98ff10beb23d07bcdc5d8829969a1b3782876c"
+    },
+    {
+      "skill": "data/drive-file-search",
+      "path": ".claude/skills/data/drive-file-search/SKILL.md",
+      "sha256": "7c16e00f33d07c28d6388d40eb57c0fffe321aa78c119755299bd6b5b640398b"
+    },
+    {
+      "skill": "research/wiki-context",
+      "path": ".claude/skills/research/wiki-context/SKILL.md",
+      "sha256": "9649fc6cfe9199910b4a974168397f581e3bfe7319004ea6b0c3624d733d5f1e"
+    },
+    {
+      "skill": "coordination/pre-completion-cleanup-audit",
+      "path": ".claude/skills/coordination/pre-completion-cleanup-audit/SKILL.md",
+      "sha256": "9e2105bd5175c9d8ae9af783754d327d8f5e1636b1e3a83ac1e0fce79a74c6e4"
+    }
+  ],
+  "bundled_required_references": [
+    {
+      "path": ".claude/skills/data/drive-file-search/references/context-extraction.md",
+      "sha256": "9e4cc88176577cd98bb601991126d496fff07159b995ef89f47da70b1f1d5d0d",
+      "activation": "reference only; not a separate skill"
+    },
+    {
+      "path": ".claude/skills/coordination/pre-completion-cleanup-audit/references/user-facing-scratch-artifacts.md",
+      "sha256": "e9e4d72ea1d33296c63a5519b646a7cd3425947df0e91e3d0f4af7312770db42",
+      "activation": "reference only; not a separate skill"
+    }
+  ],
+  "runtime_dependencies": [
+    {
+      "path": "scripts/data/drive-index-search/search.py",
+      "exists": true,
+      "sha256": "c6f5e04acc776531f3294862e85bd5df2cebedf792d2f1f78227b89515c25461"
+    },
+    {
+      "path": "config/drive-index-registry.yml",
+      "exists": true,
+      "sha256": "fec2f19d6fe9adbef759e68705d242f37dbb41c66801d4fb3d71cd2dc6712ddb"
+    },
+    {
+      "path": ".claude/hooks/ecosystem-domain-map.json",
+      "exists": true,
+      "sha256": "f9e6aca9577e8c417bd96e22c1aecc1946e41b19c1540cf907b4ba7840369768"
+    },
+    {
+      "path": "docs/guides/drive-file-search-playbook.md",
+      "exists": true,
+      "sha256": "836976a8e3abb8453bca37ecd88e2453f47c06ba975d272fa9d02a17afcfd309"
+    }
+  ],
+  "runtime_dependency_boundary": "Existing repository tools and their package modules will execute from a pinned owning checkout; this manifest is a skill activation boundary, not a standalone application package or complete software bill of materials.",
+  "fixture_only": [
+    ".claude/skills/data/drive-file-search/references/mock-envelope.json"
+  ],
+  "external_read_dependencies": [
+    {
+      "repo": "llm-wiki",
+      "paths": [
+        "llms.txt",
+        "data/data-source-catalog.yml",
+        "data/domain-database-index.yml",
+        "docs/query-surface.md",
+        "data/query_sources.json"
+      ],
+      "mode": "read known catalog/metadata paths; no raw corpus crawl"
+    }
+  ],
+  "excluded_from_activation": [
+    "All related_skills and see_also neighbors; adding an activated skill requires an explicit manifest revision",
+    "research-literature",
+    "worldenergydata-source-readiness",
+    "llm-wiki broad maintenance workflow",
+    "engineering-issue-workflow",
+    "heavyweight cleanup skills",
+    "all _archive and _archived trees",
+    "provider-routing-guide model assignments and historical completion claims"
+  ],
+  "required_repairs_before_pilot": [
+    "Remove fixed provider assignments and stale inventory counts from ecosystem-data-sources.",
+    "Reconcile source rights/raw evidence instructions with the canonical data-authority slice; no invented substitute ledger.",
+    "Replace wiki-context old knowledge/wikis routing with supported known-path metadata access; preserve unavailable operations.",
+    "Use runtime index_status for freshness and coverage; retain bounded lookup.",
+    "Describe risk-based scope and report-only cleanup without importing broad lifecycle/deletion authority.",
+    "Validate each provider effective skill/config roots in isolation before native loading claims."
+  ],
+  "unresolved_live_prerequisites": [
+    "Missing all-agent data contract.",
+    "Missing allocation-ledger next hop.",
+    "Current wiki query CLI does not register the two ownership catalogs; read them directly."
+  ],
+  "installation_changes": []
+}

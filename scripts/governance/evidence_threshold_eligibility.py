@@ -152,44 +152,64 @@ def _eligible_shadow(reason: str, issue_class: str, audit: dict) -> Verdict:
     return Verdict(eligible=True, mode="shadow", reason=reason, issue_class=issue_class, audit=audit)
 
 
-# ── Deterministic classifier (D5: derived, never caller-supplied) ─────────
-def _load_bearing_class_for_file(f: str) -> str | None:
-    """Return the load-bearing class for a single changed file, or None.
+# Paths retain case for receipt identity; classification separately folds case.
+def normalize_changed_paths(changed_files) -> list[str]:
+    """Return a sorted owner-relative set, including both rename endpoints.
 
-    Ordered so the highest-priority load-bearing signal wins. A cross-cutting
-    change can therefore never down-classify itself into an eligible bucket.
+    Reject ambiguous Windows aliases, rooted paths and traversal rather than
+    resolving paths against the current machine or silently changing identity.
     """
-    # CI / workflow
-    if f.startswith(".github/workflows/") or f.startswith(".github/actions/"):
+    if not isinstance(changed_files, list):
+        raise ValueError("changed paths must be a list")
+    paths = []
+    for item in changed_files:
+        if isinstance(item, dict) and set(item) == {"old_path", "new_path"}:
+            entries = [item["old_path"], item["new_path"]]
+        elif isinstance(item, str):
+            entries = [item]
+        else:
+            raise ValueError("path entry must be a string or exact rename pair")
+        for entry in entries:
+            if not isinstance(entry, str) or not entry:
+                raise ValueError("path must be a nonempty string")
+            path = entry.replace("\\", "/")
+            parts = path.split("/")
+            if (":" in path or any(ord(c) < 32 or ord(c) == 127 for c in path)
+                    or any(p in ("", ".", "..") or p != p.rstrip(" .") for p in parts)):
+                raise ValueError("path must be unambiguous and owner-relative")
+            paths.append(path)
+    return sorted(set(paths))
+
+
+def _load_bearing_class_for_file(f: str) -> str | None:
+    """Protect instruction and policy surfaces before ordinary file categories."""
+    if f.startswith(".github/"):
         return "ci-workflow"
-    # schema / contract / registry
-    if f.startswith("schema/") or "/schema/" in f or f.endswith(".schema.json") or "registry" in f:
+    if (any(p in {"schema", "schemas", "contracts"} for p in f.split("/"))
+            or f.endswith(".schema.json") or "registry" in f or "contract" in f):
         return "schema-contract"
-    # security / legal / secrets
-    if (
-        f.startswith(".legal-")
-        or f.startswith("scripts/legal/")
-        or "/legal/" in f
-        or "secret" in f.lower()
-    ):
+    if (f.startswith((".legal-", "scripts/legal/")) or "secret" in f or "security" in f
+            or "authorization" in f or f.endswith("codeowners")
+            or any(p in {"legal", "security", "permissions"} for p in f.split("/"))):
         return "security-legal"
-    # gate / hook self-modification
     if f.startswith(".claude/hooks/") or "plan-approval-gate" in f:
         return "gate-self-modification"
-    # harness / enforcement / agent identity
-    if (
-        f.startswith("scripts/enforcement/")
-        or "SOUL" in f
-        or f.endswith("agents.md")
-        or f.endswith("AGENTS.md")
-        or f.startswith("config/agents/")
-    ):
+    if (f.startswith(("scripts/enforcement/", "scripts/agents/", "scripts/governance/",
+                      "scripts/review/", "scripts/workflow/", ".git/",
+                      "config/agents/", "config/skills/", ".claude/", ".agents/", ".codex/"))
+            or f.rsplit("/", 1)[-1] in {"pyproject.toml", "package.json", "package-lock.json",
+                "tsconfig.json", "renovate.json", ".gitmodules", ".gitattributes", ".gitignore",
+                "docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml"}
+            or "soul" in f or "policy" in f or "approval" in f
+            or any(p in {"governance", "standards", "instructions", "skills", "loaders",
+                         "plans", "deploy", "infra", "ops", "helm", ".vscode", ".idea"}
+                   for p in f.split("/"))
+            or f.rsplit("/", 1)[-1] in {"agents.md", "claude.md", "gemini.md", "memory.md"}):
         return "harness-enforcement"
-    # engineering calc (source packages) — over-broad on purpose (fail-safe: stays manual)
-    if f.startswith("src/") or "/src/" in f or f.startswith("packages/"):
+    if (f.startswith(("src/", "packages/")) or "/src/" in f
+            or "engineering" in f.split("/") or "design-basis" in f):
         return "engineering-calc"
-    # outward-facing (client-shared reports / public sites)
-    if "client" in f.lower() or "/public/" in f or f.startswith("public/") or "/sites/" in f:
+    if "client" in f or any(p in {"public", "sites"} for p in f.split("/")):
         return "outward-facing"
     return None
 
@@ -199,10 +219,8 @@ def _is_doc_file(f: str) -> bool:
     return (
         f.endswith(".md")
         or f.endswith(".rst")
-        or f.startswith("docs/")
-        or "/docs/" in f
-        or base.startswith("readme")
-        or base.startswith("index")
+        or (f.endswith(".html") and (f.startswith("docs/") or "/docs/" in f))
+        or base == "readme"
     )
 
 
@@ -232,7 +250,10 @@ def classify(changed_files, labels) -> str:
     into an eligible bucket (all-docs / all-tests / all-low-risk-config), else
     ``"unknown"`` (fail-closed to manual downstream).
     """
-    files = list(changed_files or [])
+    try:
+        files = [p.lower() for p in normalize_changed_paths(changed_files)]
+    except ValueError:
+        return "unknown"
 
     # 1. First load-bearing file wins.
     for f in files:

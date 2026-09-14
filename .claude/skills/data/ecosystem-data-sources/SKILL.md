@@ -1,6 +1,6 @@
 ---
 name: ecosystem-data-sources
-description: "Proactively surface what DATA the ecosystem already has for an engineering domain — before starting analysis, points to the consolidated data-source catalog, any latent ACE_SHARE project precedent, and the domain-database issue that curates it. Use when work touches an engineering domain (riser, mooring, pipeline, structural/FFS, naval-arch/hydro, metocean, materials, production, geotech, drilling, CAD/sim, or financial/asset), when someone asks 'do we have data for X', 'where do we get X data', 'build the X database', or before implementing a calculation that needs reference data."
+description: "Find existing engineering datasets, source ownership and readiness before analysis or database work. Use for 'do we have data for X', source selection and reference-data discovery; specific file searches belong to drive-file-search."
 version: 1.0.0
 category: data
 related_skills:
@@ -23,61 +23,46 @@ freedom: high
 
 # Ecosystem Data Sources — proactive surfacing
 
-## Why this exists
+## Bounded lookup
 
-Data discovery used to be tribal: each repo knew its own sources, and the **7.3 TB of latent
-past-project data** in `ACE_SHARE_ROOT` was invisible unless the owner pointed at it. This skill
-makes a session **proactively answer** — *before* re-deriving anything — "we already have data X
-for this domain; here's the catalog, the latent precedent, and the issue that curates it."
+Resolve the existing `llm-wiki` checkout from explicit task context or a verified
+workspace mapping. Do not assume it is nested under the current checkout or next
+to an isolated worktree. A missing explicit location is unavailable; do not create
+a replacement wiki or crawl the workspace.
 
-**Fire this skill early** when work enters an engineering domain, or when anyone asks where data
-comes from / to build a domain database. Don't wait to be asked twice.
+Read `llms.txt`, then these known paths relative to that owner root:
+- `data/data-source-catalog.yml`: source IDs, rights, routes and domain associations.
+- `data/domain-database-index.yml`: domain tables, seed-source IDs, consuming
+  calculations and linked issues. Read current entries rather than copied counts.
 
-## What to do
+The wiki query CLI does not necessarily register these catalogs. Read the known
+files directly; do not invent a query operation. Follow the selected dataset's
+owner manifest before treating values as computational input. Missing manifests
+or allocation-ledger references are gaps, not permission to create a new registry.
 
-1. **Identify the domain** of the current work (riser, mooring, pipeline-subsea, structural-ffs,
-   naval-arch-hydro, metocean, materials-standards, production-reservoir, geotech, asset-financial,
-   drilling-well, cad-simulation).
-2. **Consult the canonical catalog** (source of truth — read these if available):
-   - `llm-wiki/data/data-source-catalog.yml` — 25 sources, tagged route/relevance/lane/fed-calcs
-   - `llm-wiki/data/domain-database-index.yml` — domain → tables → seed sources → the `digitalmodel` calcs each feeds
-   - `llm-wiki/site_assets/data-sources.html` — human quick-reference (flywheel, coverage matrix, gaps)
-   - `llm-wiki/docs/data-sources/README.md` + `provider-routing-guide.md`
-3. **Surface, proactively**: (a) the online/public sources for the domain, (b) whether **latent
-   `ACE_SHARE` precedent** exists (register as metadata only — see governance), (c) the standards
-   that feed it, and (d) the **"Establish the `<domain>` database" issue** so the work connects to
-   the flywheel instead of a one-off.
-4. **Route the work** using the provider-routing guide (`lane:claude` reasoning/de-id, `lane:codex`
-   bulk/review, `lane:frontier-pending` = T3, reserved for frontier models).
+Return the domain, matching source IDs, owner, source/manifest revision, freshness
+basis, intended-use readiness and linked issue where recorded. Distinguish a
+catalog entry from acquired, verified data. Name unavailable sources and unknown
+rights or readiness. Use `drive-file-search` for a bounded specific-file lookup.
 
-## Quick lookup — read from the source of truth (do NOT hardcode issue numbers here)
+## Source rights and authority
 
-Epic: **llm-wiki #799**. The authoritative per-domain map lives in
-`llm-wiki/data/domain-database-index.yml` — each domain entry carries its
-`issue`, `tables`, `seed_sources`, and `feeds_calcs`. **Read that file** to get the
-current "Establish the `<domain>` database" issue and its sources; do not rely on a
-stale copy pasted here.
+This skill authorizes discovery only. Source rights, source ownership and publication
+permission are separate. Do not infer copying rights from private repository visibility.
 
-Domains covered: riser, mooring, pipeline-subsea, structural-ffs, naval-arch-hydro,
-metocean, materials-standards, production-reservoir, geotech, asset-financial,
-drilling-well, cad-simulation. Latent `ACE_SHARE` precedent is strongest for riser,
-naval-arch-hydro, and cad-simulation (registered metadata-only). Completeness
-follow-ups are the `C*` issues under the epic.
+Consult `docs/architecture/agent-data-handling-contract.md` in workspace-hub when
+present. If absent or contradictory, report the gap and retain explicit session
+requirements; do not invent replacement policy. The supplied raw-evidence rule
+requires client-supplied/measured originals in the owning private repository under
+`data/<dataset>/raw/`, with SHA-256 digests and an extraction manifest. This lookup
+does not perform that ingest. Vendor-licensed standards originals remain outside
+Git at their licensed location; only permitted derivatives may be retained.
 
-> Implementation note (#801): this section and the hook's keyword→pointer map are
-> **generated from `domain-database-index.yml`** by `scripts/data-sources/gen_domain_pointers.py`
-> so they never drift. No hand-maintained issue numbers.
+Treat `ACE_SHARE_ROOT` precedent as restricted discovery metadata until its rights
+and owner are established. Keep client names, raw paths and restricted content out
+of public artifacts; perform only bounded reads. A source-rights conflict remains
+unresolved for copying/publication even when metadata lookup can continue.
 
-## Governance (never violate)
-
-- `ACE_SHARE_ROOT` holds **client data** — never reproduce raw content or client names in any repo;
-  surface it as **metadata only** ("we have ~N past-project X analyses"). Bounded reads only
-  (`ls`/`find -maxdepth N` + `timeout`); never an unbounded share crawl.
-- De-identification and public/private routing **stay on `lane:claude`** — never delegate them.
-- `llm-wiki` is private/re-publishable; the public tier is `worldenergydata-wiki` + tier-1 repos.
-
-## Related
-
-- `research-literature` — deeper standards/literature briefs for a calculation.
-- `worldenergydata-source-readiness` — freshness/completeness of the live energy feeds.
-- Full flywheel context: `llm-wiki/docs/data-sources/README.md`.
+Choose execution by verified access and capability; provider names do not assign
+authority. Related skills are optional references, not an instruction to activate
+another workflow or expand the approved task profile.

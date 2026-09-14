@@ -22,6 +22,31 @@ tags: []
 scripts_exempt: true
 ---
 
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.diffraction.comparison_framework`
+>   - `digitalmodel.diffraction.comparison_framework.MatrixComparator`
+>   - `digitalmodel.diffraction.comparison_framework.PeakRAOComparator`
+>   - `digitalmodel.diffraction.comparison_framework.StatisticalAnalyzer`
+>   - `digitalmodel.diffraction.orcawave_converter`
+>   - `digitalmodel.diffraction.orcawave_converter.OrcaWaveConverter`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable.
+>
+> **The intended API is now specified in `digitalmodel`**, at
+> `docs/domains/orcawave/intended-api/aqwa-benchmark.md`, where it is a build
+> target rather than something an agent may mistake for working code.
+> Tracked in aceengineer-strategy#267, digitalmodel#2045.
+
+<!-- ace:known-missing: digitalmodel.diffraction.comparison_framework, digitalmodel.diffraction.comparison_framework.MatrixComparator, digitalmodel.diffraction.comparison_framework.PeakRAOComparator, digitalmodel.diffraction.comparison_framework.StatisticalAnalyzer, digitalmodel.diffraction.orcawave_converter, digitalmodel.diffraction.orcawave_converter.OrcaWaveConverter -->
+
 # Orcawave Aqwa Benchmark
 
 ## When to Use
@@ -43,7 +68,7 @@ from digitalmodel.diffraction.comparison_framework import (
     DiffractionComparator,
     PeakRAOComparator
 )
-from digitalmodel.diffraction.aqwa_converter import AQWAConverter
+from digitalmodel.hydrodynamics.diffraction.aqwa_converter import AQWAConverter
 from digitalmodel.diffraction.orcawave_converter import OrcaWaveConverter
 
 # Load AQWA results
@@ -101,10 +126,10 @@ correlation = analyzer.compute_correlation(
 
 ## References
 
-- Comparison Framework: `src/digitalmodel/modules/diffraction/comparison_framework.py`
+- Comparison Framework: `src/digitalmodel/hydrodynamics/diffraction/comparison_framework.py`
 - Benchmark Data: `docs/modules/orcawave/L01_aqwa_benchmark/`
-- AQWA Converter: `src/digitalmodel/modules/diffraction/aqwa_converter.py`
-- OrcaWave Converter: `src/digitalmodel/modules/diffraction/orcawave_converter.py`
+- AQWA Converter: `src/digitalmodel/hydrodynamics/diffraction/aqwa_converter.py`
+- OrcaWave Converter: `src/digitalmodel/hydrodynamics/diffraction/solver/orcawave_converter.py`
 
 ---
 

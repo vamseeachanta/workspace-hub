@@ -1,7 +1,12 @@
 # Issue Planning Workflow — Onboarding Guide and Plan Index
 
-This document is the single onboarding reference for the mandatory issue planning workflow.
-All agents (Claude, Codex, Gemini, Hermes) must follow this workflow for every GitHub issue.
+This guide applies the shared authority contract in [SHARED_SOUL.md](../../config/agents/SHARED_SOUL.md).
+Every issue needs discovery and a proportionate plan; a fresh approval request is not required for every action.
+Bounded routine reversible work may proceed under independently established standing authorization.
+Substantial scope requires explicit approval of the current reviewed plan; consequential actions require matching explicit approval.
+Do not ask again for verified unchanged scope. Missing or changed scope requires context or renewed approval as appropriate.
+Labels, local markers, receipts and handoffs are references, not authenticated authority; verify provenance and issue/revision binding.
+The implementing agent never self-labels `status:plan-approved`. Plan/code review, TDD, legal/security, engineering and completeness controls remain required.
 
 > **One-page method reference:** [#3237](https://github.com/vamseeachanta/workspace-hub/issues/3237) is the timeless overview of the full issue lifecycle (plan → review → implement → HTML artifact → live link → close), with a live flowchart at <https://vamseeachanta.github.io/workspace-hub/issue-workflow-lifecycle.html>.
 
@@ -22,17 +27,16 @@ Both are required. Neither replaces the other.
 3. DRAFT PLAN       — Copy template, fill all sections, save to docs/plans/
 4. ADVERSARIAL REVIEW — Route to 2+ AI providers; revise if MAJOR verdict
 5. POST TO GITHUB   — Comment plan on issue, label status:plan-review
-6. HARD STOP        — Wait for user approval (never self-approve)
-7. USER APPROVES    — Swap label to status:plan-approved
-8. IMPLEMENT        — TDD: tests first, then code, then full suite
-9. CLOSE            — Commit, push, post summary, close issue
+6. AUTHORITY        — Verify standing authority or required explicit approval; owner records it
+7. IMPLEMENT        — TDD, verification and adversarial code/artifact review
+8. CLOSE            — Commit, push, summary and closure within verified authority
 ```
 
 ### Step 1: Intake
 
 - Read the full issue body — scope, acceptance criteria, references
 - Classify complexity:
-  - **T1** (trivial): config, typo, single-file fix — brief plan, still requires approval
+  - **T1** (trivial): config, typo, single-file fix — brief plan; verify actual risk and existing authorization
   - **T2** (standard): new module, multiple files, tests — full workflow
   - **T3** (complex): multi-module, architecture, standards — full workflow + subagents
 
@@ -109,23 +113,26 @@ Flags:
 
 1. Post the completed plan as a GitHub issue comment
 2. Apply label: `gh issue edit NNN --add-label "status:plan-review"`
-3. **STOP** — do NOT write any implementation code
+3. For substantial unapproved scope, stop for approval of the reviewed plan. For routine scope, verify standing authorization before continuing. Posting does not grant permission.
 
-### Step 6: User Approval
+### Step 6: Verify Authority
 
-The user (never the implementing agent) approves the plan:
-- `gh issue edit NNN --remove-label "status:plan-review" --add-label "status:plan-approved"`
-- Creates marker: `.planning/plan-approved/NNN.md`
+When explicit approval is required, the user approves the current plan and scope.
+The owner controls the `status:plan-approved` label; the implementing agent does not apply it.
+A `.planning/plan-approved/NNN.md` marker may reference that event, but its presence, age or absence cannot establish or revoke authority.
+Verify the approving actor, issue, reviewed revision and scope independently; report mismatches without automatically changing labels or markers.
 
 ### Step 7: Implement (TDD)
 
-Only after `status:plan-approved` label exists:
+After independently establishing authorization for the current risk and scope, and resolving blocking review findings:
 1. Write tests first — confirm they fail
 2. Implement minimum code to pass tests
 3. Run full test suite — confirm no regressions
-4. Self-review against approved plan
+4. Self-review against the current plan and obtain the independent code/artifact review required by SHARED_SOUL.md
 
 ### Step 8: Close
+
+Verify matching authority for consequential actions such as publication; implementation approval alone does not grant it.
 
 - Conventional commit referencing the issue number
 - Push to remote
@@ -151,9 +158,10 @@ Reviewers should note a retrieval verdict: `adequate` or `insufficient` with spe
 ## Batch / Overnight Sessions
 
 When the user is not present:
-- Draft plans and label `status:plan-review` — do NOT implement
-- Only implement issues already labeled `status:plan-approved`
-- User reviews results the next morning
+- Continue only within independently established standing authorization or matching explicit approval.
+- For substantial unapproved scope, prepare the plan and review evidence, then wait; absence of the user creates no exception.
+- Preserve TDD and plan/code review. A fresh MAJOR finding blocks affected work until resolved; it does not itself revoke an approval.
+- Report scope/evidence conflicts rather than mutating remote labels or deleting markers automatically.
 
 ## Status Meanings
 
@@ -183,9 +191,9 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 
 ## Enforcement
 
-- **PreToolUse hook**: `.claude/hooks/plan-approval-gate.sh` blocks writes without approval marker
-- **Pre-commit hook**: `scripts/enforcement/require-plan-approval.sh --strict` blocks commits without approval
-- **Labels**: `status:plan-review` (orange) and `status:plan-approved` (green) exist on the repo
+The legacy `.claude/hooks/plan-approval-gate.sh` and `scripts/enforcement/require-plan-approval.sh` use marker/path heuristics that differ from the shared authority contract. Their existence does not establish installed coverage or authenticate approval. Report a blocking mismatch; do not disable a hook, set bypass flags or manufacture a marker to proceed. Live consumer migration requires its own reviewed scope.
+
+`status:plan-review` and owner-controlled `status:plan-approved` record workflow state. Neither a bare label nor a local marker substitutes for verified authorization. The advisory `scripts/governance/workflow_decision.py` can structure an assessment, but is not a mandatory per-tool gate and cannot grant permission.
 
 ## Key References
 
@@ -201,8 +209,17 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 
 ## Plan Index
 
+Historical rows below retain their recorded scope and status; they are not current authorization evidence. The ten-path shared-workflow entry describes Stage A, not the separate eighteen-path instruction-alignment pilot. Verify the current plan revision and originating user decision.
+
 | Issue # | Title / Slug | Plan File | Date | Status | Complexity | Notes |
 |---|---|---|---|---|---|---|
+| [#3296](https://github.com/vamseeachanta/workspace-hub/issues/3296) / [#3615](https://github.com/vamseeachanta/workspace-hub/issues/3615) | Shared risk workflow | [HTML plan](2026-09-12-issue-3615-shared-risk-workflow.html) | 2026-09-12 | reviewed; implementation approval pending | T3 | Ten-path advisory extension of existing evaluator; live enforcement deferred. |
+| [#3606](https://github.com/vamseeachanta/workspace-hub/issues/3606) | Resource authority | [HTML plan](2026-09-12-issue-3606-resource-authority.html) | 2026-09-12 | implemented; local integration verified | T3 | Six-path authority reconciliation and descriptor schema; no data movement. |
+| [Digitalmodel 2093](https://github.com/vamseeachanta/digitalmodel/issues/2093) | mooring-buoy-native-workflow | [Plan](2026-09-11-digitalmodel-2093-mooring-buoy.html) | 2026-09-11 | adversarial-reviewed | T2 | Full-duration local configuration-to-results proof; explicit physical-qualification gaps; bounded native approval required. |
+| [Digitalmodel 716](https://github.com/vamseeachanta/digitalmodel/issues/716) | orcaflex-validator | `docs/plans/2026-09-11-digitalmodel-716-validator.html` | 2026-09-11 | adversarial-reviewed | T2 | Conditional property/section recognition; preserve generated physics and qualification boundaries. |
+| [Deckhand 591](https://github.com/vamseeachanta/deckhand/issues/591) | licensed-run-cleanup | `docs/plans/2026-09-11-deckhand-591-cleanup.html` | 2026-09-11 | adversarial-reviewed | T2 | Windows containment, verified cleanup and persistent execution guard; deployment excluded. |
+| [#3831](https://github.com/vamseeachanta/workspace-hub/issues/3831) | orcaflex-execution | `docs/plans/2026-09-09-issue-3831-orcaflex-execution.md` | 2026-09-09 | draft | T3 | Reuse upstream fixes; unify local/remote submission, host arbitration, native result validation and measured rollout. |
+| [#3816](https://github.com/vamseeachanta/workspace-hub/issues/3816) | generated-work-surface-inventory | `docs/plans/2026-09-03-issue-3816-generated-work-surface-inventory.md` | 2026-09-03 | plan-review | T2 | Adversarially reviewed to Codex APPROVE (Agy unavailable). Selects `mission-map.yaml` as membership authority, fixes exact profile/sensitivity/MCP metadata, keeps unknown siblings aggregate-only, and produces deterministic evidence-only JSON/Markdown without changing sync or placement. |
 | [#3708](https://github.com/vamseeachanta/workspace-hub/issues/3708) | crontab-reapply-path | `docs/plans/2026-07-30-issue-3708-crontab-reapply-path.md` | 2026-07-30 | adversarial-reviewed | T3 | Plan-only unblocker for #3707. Classifies ace1's 47 uncataloged lines as 44 renderer-owned mkdir-prefix normalization cases, 2 catalog command-content drifts, and 1 unresolved equality-report legacy body; preserves llm-wiki external line, requires command-only notification-purge matching/dedupe, ace2 verification, Windows non-mutation, and scheduler-rule-compliant CAS/rollback cutover. |
 | [#3707](https://github.com/vamseeachanta/workspace-hub/issues/3707) | cron-upkeep-clockwork | `docs/plans/2026-07-30-issue-3707-cron-upkeep-clockwork.md` | 2026-07-30 | plan-review | T3 | Plan-only clockwork cleanup design. Sequences live system-cron deployment behind blocker [#3708](https://github.com/vamseeachanta/workspace-hub/issues/3708); preserves Hermes down, keeps existing health/runtime/reaper/return guards, requires RED fixtures for squash-merged branches, sibling roots, owned worktrees, aged stashes, and cleanup semantic no-op health. |
 | [#3709](https://github.com/vamseeachanta/workspace-hub/issues/3709) | managed-block-classification (v5) | `docs/plans/2026-07-30-issue-3709-managed-block-classification-v5.md` | 2026-07-30 | plan-review | T3 | **Restructure of the control model, not another predicate round.** Independent Codex r2 on v4 returned **MAJOR**: a seventh accepted-and-destructive evasion (`z07_r01_intent_blocking_cleared`) that clears `intent['blocking']` between the intent assignment and the pinned guard — all 19 predicates PASS, the committed behavioural harness reports `DROPS 4/5 LIVE LINES`. Five rounds have now produced **thirteen** distinct evasions of a static AST attestation, and this revision adds a fourteenth, so v5 stops hardening shape predicates and changes what carries the guarantee. **Primary control = a required behavioural TEST** (`tests/cron/test_cutover_preservation.py`) that imports the **committed** module and asserts a multiset preservation invariant over six scenarios (synthetic A-D plus the committed ace1/ace2 fixtures); it detects by **outcome**, so a novel evasion needs no new predicate. **v3's rejection of a behavioural ATTESTATION is preserved and is why the design is shaped this way** — the checker builds `records` from git-index blobs, so executing them would put unreviewed staged code inside the enforcement gate; the test runs under pytest on the committed tree instead, and a new regression guard asserts the checker still never executes an indexed blob. **Secondary control = the AST predicates**, explicitly demoted to a cheap, execution-free early signal. **FIX 1:** no predicate change is proposed for z07 — the primary control catches it in 4 of 4 scenarios, and a sixth predicate round has a thirteen-for-thirteen failure record. **New finding:** a fourteenth evasion (`z10_new_text_dedupes`) was found **in the control being promoted** — it renders `new_text` from a de-duplicated copy of `new_lines`, which all 19 predicates AND v4's membership-based harness score as safe; the invariant is now a multiset comparison and the corpus gains two duplicate-line scenarios drawn from the ace1 fixture's own duplicate pairs. **FIX 2 (governance):** the fail-closed clause is a *necessary* condition and is still satisfied verbatim after demotion; what was never stated is sufficiency, so a rule amendment is **proposed and flagged as an owner-approval item** — not applied. A failed test blocks a **merge**, not an **apply**; apply-time safety stays with the runtime guards. **FIX 3:** the predicate set is right-sized **19 → 13** on measured evidence (identical coverage over 35 shapes; going to 11 costs `e09` and `M12`, both destructive), with two new composed cases (`z08`, `z09`) proving predicate 17 must stay. **FIX 4:** #3518's implementation is **already on `origin/main`** (`1c3d7f683`, PR #3517 merged 2026-07-14; pin equals the staged blob; task-3 suite 89 passed), so the projected collision does not occur — it needs a completeness closeout, not an implementation. **Also surfaced:** the `protect-main` ruleset has **no required status checks at all**, so no CI check on this repo is merge-blocking today. ace1 baseline is **not** green, so acceptance is **no new failures**: `tests/enforcement` 2 failed / 417 passed, `tests/cron` 284 passed, `scripts/cron/tests/test_validate_schedule.py` 1 failed / 53 passed. 17 TDD rows: 15 RED, 2 declared GREEN guards. [#3711](https://github.com/vamseeachanta/workspace-hub/issues/3711) remains a hard blocking prerequisite for commits 2-4. Independent r2 review required; `status:plan-approved` NOT applied. |
@@ -504,9 +521,9 @@ Add one row per plan:
 
 - All plans go in `docs/plans/` — never in `.hermes/plans/` or `.planning/phases/`
 - Keep this README updated whenever a new plan is created or its status changes
-- Batch execution agents must only act on issues marked `status:plan-approved`
+- Batch execution must stay within independently established authorization for the current risk/scope; an issue label alone is not launch authority.
 - If a plan is revised materially, update the row and mark the older version `superseded`
-- Never self-approve a plan — the user or a designated operator must approve
+- Never self-approve: when explicit approval is required, verify the actual user/owner decision; routine standing authorization does not require a new approval label.
 
 
 

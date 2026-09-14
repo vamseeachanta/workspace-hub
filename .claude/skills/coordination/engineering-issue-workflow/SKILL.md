@@ -11,12 +11,15 @@ version: 1.2.0
 
 # Engineering Issue Workflow
 
-**MANDATORY** for all engineering-critical issues.
+Engineering procedures follow [SHARED_SOUL.md](../../../../config/agents/SHARED_SOUL.md).
+Bounded routine reversible work may proceed under independently established standing authorization. Engineering basis changes, substantial scope and consequential actions require matching explicit approval; substantial work needs approval of the current reviewed plan.
+Classify actual effects, not only labels, filenames or estimated effort. Verify scope and approval provenance; do not repeat approval for verified unchanged scope. Local markers, labels, receipts and handoffs are references, never authenticated authority. The implementing agent never self-labels `status:plan-approved`.
+Plan/code adversarial review, TDD, legal/security, engineering qualification and completeness gates remain required.
 
 > **Planning Steps delegated to `issue-planning-mode` skill.**
-> Steps 1-5 of this workflow (Triage → Resource Intelligence → Plan → Adversarial Review → User Approval)
+> Steps 1-4 of this workflow (Triage → Resource Intelligence → Plan including Adversarial Review → Risk-appropriate Authorization)
 > are now fully defined in `.claude/skills/coordination/issue-planning-mode/SKILL.md`.
-> Load that skill for all planning work. This skill picks up at STEP 6 (Implement).
+> Load that skill for all planning work. This skill picks up at STEP 5 (Implement, TDD).
 
 ## Scope
 
@@ -32,12 +35,11 @@ Reference: `docs/standards/HARD-STOP-POLICY.md`
 ```
 STEP 1: Triage              — classify issue, announce  \
 STEP 2: Resource Intel      — search all knowledge sources, map artifact locations  | issue-planning-mode
-STEP 3: Draft Plan          — pseudocode, file map, tests, acceptance criteria      |
-STEP 4: Adversarial Review  — Claude + Codex + Gemini review the plan              |
-STEP 5: ◆ HARD STOP ◆       — post to GitHub, label, wait for user approval        /
-STEP 6: Implement           — TDD: tests first, then code
-STEP 7: Cross-Review        — Codex + Gemini review implementation vs approved plan
-STEP 8: Close               — commit, push, close issue with summary
+STEP 3: Draft and Review Plan — file map, tests, criteria; adversarial plan review |
+STEP 4: Authority Boundary  — verify standing authority or required explicit approval /
+STEP 5: Implement           — TDD: tests first, then code
+STEP 6: Cross-Review        — provider review against current plan and acceptance criteria
+STEP 7: Close               — commit, push and issue summary within verified authority
 ```
 
 ### STEP 1: Triage
@@ -45,7 +47,7 @@ STEP 8: Close               — commit, push, close issue with summary
 On first contact with an engineering issue:
 1. Read the **full issue body** — scope, acceptance criteria, references
 2. Classify complexity:
-   - **T1** (trivial): single-line fix, config, typo → brief plan, still requires approval
+   - **T1** (trivial): single-line fix, config, typo → brief plan; routine scope may use standing authorization, but engineering consequences still require matching approval
    - **T2** (standard): new module, multiple file changes, tests needed → full workflow
    - **T3** (complex): multi-module, architecture change, standards implementation → full workflow + subagents
 3. Identify what **standards, modules, test fixtures, and documents** are relevant
@@ -81,6 +83,8 @@ d) **Engineering reference data** — what parameters/constants apply?
 **Index metadata usage (post #1878):** `index.jsonl` now carries `content_type` (100% populated, derived from extension) and `summary_done` (True iff a non-empty summary exists on the ace drive). Across the 649K-record corpus, `content_type` is highly discriminating but `summary_done=True` is only ~16% because ~72% of records are CAD files with no extractable text. For curated lookups still prefer `online-resource-registry.yaml` (247 entries) and `standards-transfer-ledger.yaml` (425 standards). See #1878 for enrichment provenance and #2309 for the planned `summary_file_exists` split.
 
 ### STEP 3: Write the Plan
+
+Obtain adversarial plan review through `issue-planning-mode` before the authority checkpoint. Resolve blocking findings under SHARED_SOUL.md.
 
 Present the plan to the user. Format:
 
@@ -121,26 +125,19 @@ One sentence: what will be built or changed.
 ### Complexity: T1 | T2 | T3
 ```
 
-### STEP 4: ◆ HARD STOP — USER APPROVAL REQUIRED ◆
+### STEP 4: Verify the Required Authority
 
-**STOP. Do NOT write any code. Do NOT create any files. Do NOT run any tests.**
+For substantial unapproved work, present the reviewed current plan and wait for explicit approval. For consequential actions, verify matching action approval. For routine bounded work, independently verify standing authorization and proceed within that scope. Required context and blocking findings must be resolved before affected work continues.
 
-Wait for the user to respond with one of:
-- **APPROVE** / **GO** / **YES** → continue to Step 5
-- **REVISE** / **CHANGE** → user provides feedback, re-do Step 3
-- **REJECT** → ask what approach the user prefers
+A response such as APPROVE, GO or YES applies only to the concrete proposal the user saw. REVISE changes the affected plan; REJECT or HOLD stops that scope. Do not repeatedly seek approval already established for unchanged scope, and do not treat copied responses or detached handoffs as authority.
 
-**If the user says "just do it" or "go ahead" WITHOUT seeing the plan:**
-Present the plan first. Then wait. The approval must come AFTER seeing the plan.
+Read-only discovery and verification may continue while substantial implementation awaits approval. Preserve TDD before authorized implementation. A fresh MAJOR finding blocks affected work; it does not itself revoke approval or authorize label/marker mutations.
 
-For **overnight/batch sessions** (user not present):
-- Write the plan as a **GitHub issue comment** before implementing
-- Implementation starts only after the plan comment is posted
-- User reviews results the next morning
+Overnight work has the same boundary. Posting a plan creates an artifact, not approval. Continue only within independently established authority; otherwise retain the reviewed plan and wait. The owner's absence grants no waiver.
 
 ### STEP 5: Implement (TDD)
 
-After user approval:
+After verifying the authority required for the current risk/scope and resolving blocking findings:
 
 1. **Tests FIRST** — write the test file, run it, confirm it FAILS
 2. **Implement** — minimum code to make tests pass
@@ -156,13 +153,15 @@ After user approval:
 
 After implementation passes all tests:
 
-1. Route to **Codex AND Gemini**
+1. Apply SHARED_SOUL.md review routing: Claude, Codex and Agy (Antigravity, Gemini-backed); record unavailable providers, never count them as passing.
 2. Each reviewer receives: the approved plan, the diff, test results, acceptance criteria
 3. Collect verdicts: APPROVE | MINOR | MAJOR
 4. If any MAJOR: present to user, fix, re-test
 5. If all APPROVE or MINOR (resolved): proceed to Step 7
 
 ### STEP 7: Close
+
+Verify matching authority for consequential actions such as publication; implementation approval alone does not grant it.
 
 - Conventional commit message referencing the issue
 - Push
@@ -172,10 +171,10 @@ After implementation passes all tests:
 
 ## Non-Critical Issues
 
-Issues WITHOUT engineering-critical labels:
-- **Do NOT skip planning.** `issue-planning-mode` applies to ALL issues going forward.
-- Run the same planning sequence: Issue Intake → Resource Intelligence → Draft Plan → Adversarial Review → User Approval
-- After approval, implementation may use a lighter execution workflow if the issue is not engineering-critical
+Issues without engineering-critical labels still need actual risk classification:
+- Use discovery, a proportionate plan and required plan/code review through `issue-planning-mode`.
+- Routine bounded work may proceed under independently established standing authorization.
+- Substantial scope and consequential actions retain matching explicit approval requirements, including protected governance/configuration changes.
 - **TDD is still mandatory** — tests before implementation, always
 - Implement → review as appropriate → commit → close
 
@@ -191,19 +190,19 @@ When planning or executing engineering-calculation issues, especially in `digita
 
 **What happened:** 120+ engineering commits in 14 days, 542 commits since Mar 24, only 1 review artifact. The existing enforcement scripts (cross-review gate, review router, pre-push hook) all default to WARNING mode. Nobody blocked anything.
 
-**How to avoid:** This skill is the new baseline. The plan must be presented BEFORE implementation. The user must approve. If you're unsure whether an issue is engineering-critical, ASK — don't assume.
+**How to avoid:** Establish the engineering basis, scope and applicable authority before implementation. Substantial current plans and consequential engineering changes require matching explicit approval. Inspect uncertainty first; ask only when unresolved context changes the action.
 
 ### User Says "Just Implement It"
 
 **What happened:** User tells the agent to skip planning and go straight to code. Agent complies, producing code without context.
 
-**How to handle:** Show a brief plan first. The user can still approve quickly, but they must SEE the plan. "Here's what I'll do: [3 lines]. OK?" is sufficient.
+**How to handle:** Inspect whether the instruction already authorizes the current bounded scope. Retain proportionate planning and review. Present a reviewed substantial plan when its approval is missing; do not ask again merely because an already-authorized routine action is described as implementation.
 
 ### Thinking Work Is "Too Trivial" for a Plan
 
 **What happened:** Agent decides a change is simple and skips the plan. Often the "simple" change was actually part of a larger system and broke something.
 
-**How to handle:** Even T1 trivial changes need at least a one-line plan statement and user acknowledgment. No exceptions.
+**How to handle:** Even T1 changes need a proportionate plan and actual effect classification. Independently established standing authorization suffices for routine bounded work; neither triviality nor a configuration filename waives engineering, review or security requirements.
 
 ### Digitalmodel Is a Separate Git Repo
 
@@ -217,11 +216,9 @@ When planning or executing engineering-calculation issues, especially in `digita
 
 **How to query:** Read records directly from `data/document-index/index.jsonl` — fields are present on every record. Validator at `scripts/data/document-index/validate-index-metadata.py` enforces coverage thresholds. For curated engineering lookups (small, domain-specific), `online-resource-registry.yaml` and `standards-transfer-ledger.yaml` remain the reliable complementary sources.
 
-### Bypass Environment Variables
+### Legacy Enforcement Mismatches
 
-**What happened:** The enforcement scripts support `SKIP_REVIEW_GATE=1` and `GIT_PRE_PUSH_SKIP=1`. Agents discover and use them to skip checks.
-
-**How to handle:** These are for emergencies only. If you're considering using them, present the reason to the user first and get explicit approval.
+Historical hooks use marker/path heuristics that differ from the shared risk contract. Their presence does not establish installed coverage or authenticate approval. Report observed blocking mismatches and the responsible consumer; do not disable hooks, set bypass flags or manufacture approval markers. Consumer migration requires its own reviewed scope.
 
 ### Cross-Review Artifacts Location
 
@@ -249,28 +246,10 @@ When planning or executing engineering-calculation issues, especially in `digita
 
 ---
 
-## Enforcement Escalation Strategy (from #1839)
+## Enforcement Migration Boundary
 
-This skill is Option 1 of a 3-phase enforcement approach:
+The historical skill, Hermes prefill and Claude hook proposals are separate from verified installation. This source-only alignment does not install profiles, edit user settings or alter live hooks.
 
-**Option 1: Skill-based (CURRENT — implementing now)**
-- Works across all agents (Claude, Codex, Gemini, Hermes)
-- Instructions, not enforcement — agent can ignore it
-- Deployed as `engineering-issue-workflow` skill
-
-**Option 2: Hermes prefill (LAYER IF AGENCY IS 2 WEEKS)**
-- Set `~/.hermes/config.yaml`: `prefill_messages_file: 'docs/standards/engineering-workflow-prefill.md'`
-- Auto-injects workflow at every Hermes session start
-- Hermes only, requires `hermes chat` invocation
-
-**Option 3: Claude Code hooks (LAYER IF OPTION 1 FAIL AFTER 2 weeks)**
-- SessionStart hook in `.claude/settings.json` detects engineering issues and injects workflow
-- PreToolUse hook blocks Write/Edit/Agent if no `.planning/plan-approved/${ISSUE_NUM}.md` exists
-- Cannot be bypassed without hooks disabled
-
-**Escalation triggers (check after 2 weeks):**
-- Engineering commits still ship without plan review
-- Cross-review rate stays below 30%
-- User reports agents skipping the workflow
+A later consumer plan must verify actual loader/hook paths, tool coverage and trusted authority ingress. Shared advisory outputs remain assessments, never approval evidence. Preserve owner-only approval labels and current scope/revision checks. Do not infer enforcement coverage from a script's existence or an old deployment description.
 
 Reference: Issue #1876 tracks Option 2+3 implementation.

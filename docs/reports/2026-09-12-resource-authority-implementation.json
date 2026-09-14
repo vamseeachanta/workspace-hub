@@ -1,0 +1,273 @@
+{
+  "status": "LOCALLY_INTEGRATED_AND_VERIFIED",
+  "captured_at": "2026-09-12T17:50:47.499773+00:00",
+  "issue": "https://github.com/vamseeachanta/workspace-hub/issues/3606",
+  "authorization": {
+    "authorization": "User: approve; continue (isolated six-file implementation only)",
+    "base": "48464eef05c47cb63f856b7b9be2221c16ba62ca",
+    "plan_sha256": "43daf98f0bae79517906566bef1e9bedda86e2e7169c778bb2566da14aa88efb",
+    "paths": {
+      "docs/architecture/agent-data-handling-contract.md": null,
+      "docs/DATA_RESIDENCE_POLICY.md": "4bb87950ce3c71452f5ccd5b21d02f36faedf2de26cc4ab4d4514b6ec99c4547",
+      "docs/architecture/data-layer-contract.md": "79cb9a6a9f1b302aca5753fc8f175004632fedc6392aa9c69b573af4a85892b7",
+      ".claude/rules/codes-standards-data-routing.md": "f508597c857299e241041ae7ee96004c8a07a835282317ec5f9c8225fc543996",
+      "config/schemas/resource-descriptor-v1.schema.json": null,
+      "tests/architecture/test_resource_authority_contract.py": null
+    },
+    "worktree": "D:\\ws\\_worktrees\\3606-resource-authority",
+    "started_at": "2026-09-12T16:51:19.675992+00:00"
+  },
+  "snapshot": {
+    "six_files": [
+      {
+        "path": "docs/architecture/agent-data-handling-contract.md",
+        "before_sha256": null,
+        "after_sha256": "c12a1e003c2abd695621b264a7da2fb7d49be62ece085b803687667ee2c1e110",
+        "lines": 184,
+        "targeted_legal_hits": 0
+      },
+      {
+        "path": "docs/DATA_RESIDENCE_POLICY.md",
+        "before_sha256": "4bb87950ce3c71452f5ccd5b21d02f36faedf2de26cc4ab4d4514b6ec99c4547",
+        "after_sha256": "315deb622d53ccf9a0528cd379cf73f713453966976db628acc457d3c8c298bd",
+        "lines": 199,
+        "targeted_legal_hits": 0
+      },
+      {
+        "path": "docs/architecture/data-layer-contract.md",
+        "before_sha256": "79cb9a6a9f1b302aca5753fc8f175004632fedc6392aa9c69b573af4a85892b7",
+        "after_sha256": "ec92236e2701d85831760e2d6fcaa1e010e0e9b2b53b3601bfa4f4d219725d8d",
+        "lines": 50,
+        "targeted_legal_hits": 0
+      },
+      {
+        "path": ".claude/rules/codes-standards-data-routing.md",
+        "before_sha256": "f508597c857299e241041ae7ee96004c8a07a835282317ec5f9c8225fc543996",
+        "after_sha256": "f35b0e68fb8c5c3b9bcbf09795e57719a69eadae7adc0ae742d2655fb7ab4b49",
+        "lines": 58,
+        "targeted_legal_hits": 0
+      },
+      {
+        "path": "config/schemas/resource-descriptor-v1.schema.json",
+        "before_sha256": null,
+        "after_sha256": "f7449aba64788cd9a29bd069f3b0433b303bede67402f832122c784489d94a3a",
+        "lines": 62,
+        "targeted_legal_hits": 0
+      },
+      {
+        "path": "tests/architecture/test_resource_authority_contract.py",
+        "before_sha256": null,
+        "after_sha256": "3fdda38013d3d314780ad79cc32af68bfae23151e5c83c9819c4a87f83e0ac01",
+        "lines": 268,
+        "targeted_legal_hits": 0,
+        "max_function_lines": 27
+      }
+    ],
+    "configured_deny_patterns": 23,
+    "catalog_fixture_join": "candidate IDs present; unknown membership absent",
+    "production_canonicalizer": "deferred to workflow slice",
+    "checks": "PASS",
+    "pre_integration_canonical_baseline_verified": {
+      "docs/architecture/agent-data-handling-contract.md": true,
+      "docs/DATA_RESIDENCE_POLICY.md": true,
+      "docs/architecture/data-layer-contract.md": true,
+      ".claude/rules/codes-standards-data-routing.md": true,
+      "config/schemas/resource-descriptor-v1.schema.json": true,
+      "tests/architecture/test_resource_authority_contract.py": true
+    }
+  },
+  "tests": {
+    "command": [
+      "uv",
+      "run",
+      "--no-project",
+      "--with",
+      "pytest==9.1.1",
+      "--with",
+      "pyyaml==6.0.3",
+      "--with",
+      "jsonschema[format-nongpl]==4.26.0",
+      "--with",
+      "rfc3339-validator==0.1.4",
+      "python",
+      "-B",
+      "-m",
+      "pytest",
+      "-p",
+      "no:cacheprovider",
+      "--import-mode=importlib",
+      "tests/architecture/test_resource_authority_contract.py",
+      "tests/architecture/test_data_layer_contract.py",
+      "scripts/data/llm-wiki/tests/test_resolve_wiki_path.py",
+      "-q"
+    ],
+    "exit": 0,
+    "output": "........................................................................ [ 88%]\n.........                                                                [100%]\n81 passed in 9.00s\n"
+  },
+  "tdd": {
+    "initial_red": "38 failed before contract/schema/policy implementation",
+    "format_regression": "39th case added after missing optional RFC3339 support was discovered; 38red vs39green was not a hidden passing test",
+    "codex_regressions": "4 failed before owner-ID, future-evidence and lineage fixes",
+    "review_expansion": "12 failed,44passed before additional reviewed corrections; final56new+25existing81passed"
+  },
+  "dependencies": {
+    "pytest": "9.1.1",
+    "PyYAML": "6.0.3",
+    "jsonschema": "4.26.0",
+    "rfc3339-validator": "0.1.4",
+    "python": "3.14.6"
+  },
+  "legal": {
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "scope": "Exact six payload files plus unchanged scanner and deny-list fixture; no git-diff discovery",
+    "prior_run": "INVALID: interrupted Git diff could be swallowed; do not count as clearance"
+  },
+  "reviews": {
+    "codex": "MAJOR: catalog IDs, future vector, malformed lineage. Reproduced then corrected.",
+    "claude": "MAJOR: licensed Git metadata, required flag, derivative lineage, duplicate vectors, parse-case ownership, literature rights. Corrected within six paths.",
+    "adjudication": "Main-session inline corrections and regression verification; no claim final bytes received another provider approval.",
+    "third_provider": "UNAVAILABLE: agy and gemini absent from current PATH",
+    "receipt_paths": [
+      "D:/ws/_pilot-fixtures/3606/resource-authority/claude-code-review.txt",
+      "D:/ws/_pilot-fixtures/3606/resource-authority/claude-code-review.json"
+    ]
+  },
+  "review_dispositions": {
+    "M1": "Licensed-location branch rejects Git-copy metadata.",
+    "M2": "raw_copy_allowed false required; edition/access field mappings explicit.",
+    "M3": "Ready derivatives require lineage; private originals cannot target public or silently omit retention status.",
+    "M4": "Dimensioned/dimensionless and inapplicable identity vectors now distinct; duplicate candidate hash guard.",
+    "M5": "Parse-level duplicate/nonfinite cases explicitly workflow-owned raw-string fixtures.",
+    "M6": "Literature acquisition/retention now rights-gated.",
+    "m1": "required_pending explicitly records blocked ingest; retained metadata required independently of ready.",
+    "m2": "Single dataset path segment documented for private originals; public collection conventions unchanged.",
+    "m3_m4_m5_m7_m8": "Digest assertions, authority links, paired identity evidence, single manifest reference and legacy/case tests addressed.",
+    "m6": "gap/unreachable cannot claim ready.",
+    "m9": "38 initialred; invalidcalendar regression was subsequently added, then further review tests.",
+    "m10": "Historical placement discrepancy retained as non-authoritative; fleet/path migration outside approved scope.",
+    "m11": "Rejected factual premise: exact prohibited phrases exist in the pre-change rule; git baseline supports removal canaries."
+  },
+  "generalized_findings_promoted": {
+    "path": ".claude/rules/codes-standards-data-routing.md",
+    "rules": [
+      "Preserve owner-issued IDs",
+      "Enable date/time format validation explicitly",
+      "Structural claims do not authenticate permission/readiness"
+    ]
+  },
+  "limits": [
+    "Schema and fixture validity do not establish live rights, freshness, catalog membership or engineering readiness",
+    "Production canonicalizer agreement and mutable evidence checks remain workflow-successor work",
+    "No installed-root change, data movement, commits, remote comments or publication",
+    "Dependency versions frozen for final verification; initial discovery/red runs used environment-resolved versions"
+  ],
+  "cleanup": {
+    "worktree_changed_paths": [
+      ".claude/rules/codes-standards-data-routing.md",
+      "config/schemas/resource-descriptor-v1.schema.json",
+      "docs/DATA_RESIDENCE_POLICY.md",
+      "docs/architecture/agent-data-handling-contract.md",
+      "docs/architecture/data-layer-contract.md",
+      "tests/architecture/test_resource_authority_contract.py"
+    ],
+    "new_scoped_tmp_partial": [],
+    "scratch": [
+      "claude-code-review.json",
+      "claude-code-review.txt",
+      "cleanup.json",
+      "dependencies.json",
+      "final-checks.json",
+      "final-tests.json",
+      "final-tests.txt",
+      "legal-diff.txt",
+      "legal-payload",
+      "legal-payload-result.json",
+      "legal-scan.index",
+      "legal-six-paths.json",
+      "legal-six-paths.txt",
+      "red.txt",
+      "transaction.json"
+    ],
+    "stash": "stash@{0}: autostash",
+    "cleanup_markers": [],
+    "handoff_changes": "",
+    "verdict": "EXPECTED: isolated six-file payload and named review/test receipts preserved; unrelated adjacent repos not touched",
+    "workspace_first_level_count": 37,
+    "workspace_inventory_location": "Local task scratch cleanup.json; private sibling names omitted from repo report",
+    "claim": "Released",
+    "buckets": {
+      "CLEAN": [
+        "No scoped temporary/partial files or cleanup markers",
+        "Exact six-path isolated diff",
+        "Canonical originals and prior integrated payload preserved"
+      ],
+      "EXPECTED": [
+        "Isolated six-file worktree",
+        "Named local test/review/legal fixtures and temporary legal index",
+        "Implementation HTML/JSON report uncommitted",
+        "Pre-existing canonical dirty state and autostash"
+      ],
+      "UNEXPECTED": []
+    },
+    "integration_residue": "EXPECTED: canonical six-file integration, isolated source and rollback receipts retained, uncommitted"
+  },
+  "prior_nine_path_integration": "All nine hashes preserved",
+  "next_transaction": {
+    "scope": "Ten-file shared workflow implementation remains pending separate approval",
+    "plan": "docs/plans/2026-09-12-issue-3615-shared-risk-workflow.html",
+    "prerequisite": "Resource-authority predecessor now available in canonical checkout"
+  },
+  "integration": {
+    "authorization": "User: yes. approved",
+    "manifest": "D:\\ws\\_pilot-fixtures\\3606\\resource-authority\\integration-20260912\\manifest.json",
+    "verified_at": "2026-09-12T18:42:16.887342+00:00",
+    "tests": {
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "--with",
+        "pytest==9.1.1",
+        "--with",
+        "pyyaml==6.0.3",
+        "--with",
+        "jsonschema[format-nongpl]==4.26.0",
+        "--with",
+        "rfc3339-validator==0.1.4",
+        "python",
+        "-B",
+        "-m",
+        "pytest",
+        "-p",
+        "no:cacheprovider",
+        "--import-mode=importlib",
+        "tests/architecture/test_resource_authority_contract.py",
+        "tests/architecture/test_data_layer_contract.py",
+        "scripts/data/llm-wiki/tests/test_resolve_wiki_path.py",
+        "-q"
+      ],
+      "exit": 0,
+      "output": "........................................................................ [ 88%]\n.........                                                                [100%]\n81 passed in 8.71s\n"
+    },
+    "checks": {
+      "hashes": "6/6 match approved payload",
+      "legal": "23 patterns zero hits; exact bytes match passing standard-scanner fixture",
+      "temp_scan_depth3": [],
+      "stash": "stash@{0}: autostash",
+      "handoff_changes": "",
+      "cleanup_markers": []
+    },
+    "rollback_originals": 3,
+    "new_paths": 3,
+    "independent_preservation": "All nine prior foundation files match; solver metadata declares no overlap, exact solver write set not established"
+  },
+  "publication_boundary": {
+    "prepared_at": "2026-09-12T19:27:02.400558+00:00",
+    "authorization": "User requested commit and push to origin main",
+    "historical_states": "No-publication and uncommitted statements describe the recorded checkpoint, not current Git status",
+    "local_only_evidence": "Absolute worktree, _pilot-fixtures, user-runtime and rollback paths are local_only/not_published; hashes are preserved but fresh clones cannot retrieve those receipts",
+    "portable_artifacts": "Repository-relative committed files only; private sibling catalogs require a separately authorized checkout"
+  }
+}

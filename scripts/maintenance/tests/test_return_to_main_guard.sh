@@ -138,6 +138,69 @@ assert_eq "1" "$RC" "test_guard_detached_head: exits 1 (refuse)"
 assert_contains "$OUT" "in-flight" "test_guard_detached_head: logs in-flight refusal"
 echo ""
 
+# ── Test 9: untracked GATE EVIDENCE is not "regenerable churn" (#3826) ────────
+# The guard's decision tree equated untracked with regenerable and stashed it via
+# `git stash -u` on a 30-minute cron. That destroyed .planning/plan-approved/3787.md
+# twice. An approval marker records a user-in-loop decision: it is not derivable
+# from the repo and no agent may re-issue one, so losing it silently un-approves
+# approved work. The guard must take its existing staged-changes branch instead --
+# refuse, alert, leave the tree alone.
+echo "Test 9: untracked approval-gate marker is protected"
+R="$(make_guard_repo)"
+mkdir -p "$R/.planning/plan-approved"
+printf '# Plan approval — #4242
+Approved by: owner, in session chat.
+' > "$R/.planning/plan-approved/4242.md"
+OUT="$(run_guard "$R" 1)"; RC="$(read_rc)"
+assert_eq "1" "$RC" "test_guard_gate_marker: exits 1 (refuse)"
+assert_eq "handoff" "$(branch_of "$R")" "test_guard_gate_marker: stays on handoff"
+[[ -f "$R/.planning/plan-approved/4242.md" ]] \
+  && pass "test_guard_gate_marker: marker SURVIVES on disk" \
+  || fail "test_guard_gate_marker: marker SURVIVES on disk" "the guard removed it"
+assert_eq "0" "$(git -C "$R" stash list | wc -l | tr -d ' ')" "test_guard_gate_marker: nothing stashed"
+echo ""
+
+# ── Test 10: authored plans and scripts are protected too ─────────────────────
+# An approval whose plan has been deleted approves nothing, and a script is never
+# build output. Both were among the six files stranded on one disk on 2026-09-03.
+echo "Test 10: untracked plans and scripts are protected"
+for path in "docs/plans/2026-01-01-a-plan.md" "docs/session-handoffs/2026-01-01-exit.md" "scripts/fleet/some-tool.sh"; do
+  R="$(make_guard_repo)"
+  mkdir -p "$R/$(dirname "$path")"; echo "content" > "$R/$path"
+  OUT="$(run_guard "$R" 1)"; RC="$(read_rc)"
+  assert_eq "1" "$RC" "test_guard_protects[$path]: exits 1"
+  [[ -f "$R/$path" ]] && pass "test_guard_protects[$path]: survives" \
+                      || fail "test_guard_protects[$path]: survives" "removed"
+done
+echo ""
+
+# ── Test 11: genuinely regenerable churn STILL gets stashed ───────────────────
+# The fix is only an improvement if it does not disable the guard. A denylist that
+# swallows everything would strand sessions off main, which is what #3187 fixed.
+echo "Test 11: regenerable untracked churn still stashes and returns"
+R="$(make_guard_repo)"
+mkdir -p "$R/docs/reports"; echo "<html>" > "$R/docs/reports/dashboard.html"
+echo "log line" > "$R/build.log"
+OUT="$(run_guard "$R" 1)"; RC="$(read_rc)"
+assert_eq "0" "$RC" "test_guard_churn_still_stashes: exits 0"
+assert_eq "main" "$(branch_of "$R")" "test_guard_churn_still_stashes: returned to main"
+assert_eq "1" "$(git -C "$R" stash list | wc -l | tr -d ' ')" "test_guard_churn_still_stashes: churn was stashed"
+echo ""
+
+# ── Test 12: a protected path beside churn still refuses ──────────────────────
+# The dangerous shape: one marker hidden among 200 regenerable files. The decision
+# must be driven by the presence of ANY protected path, not by the majority.
+echo "Test 12: one protected file among churn still refuses"
+R="$(make_guard_repo)"
+mkdir -p "$R/docs/reports" "$R/.planning/plan-approved"
+for i in 1 2 3 4 5; do echo "x" > "$R/docs/reports/gen-$i.html"; done
+echo "marker" > "$R/.planning/plan-approved/9999.md"
+OUT="$(run_guard "$R" 1)"; RC="$(read_rc)"
+assert_eq "1" "$RC" "test_guard_mixed: exits 1 despite mostly-churn"
+[[ -f "$R/.planning/plan-approved/9999.md" ]] \
+  && pass "test_guard_mixed: marker survives" || fail "test_guard_mixed: marker survives" "removed"
+echo ""
+
 echo "============================================"
 echo "Results: $TESTS_PASSED/$TESTS_RUN passed, $TESTS_FAILED failed"
 echo "============================================"

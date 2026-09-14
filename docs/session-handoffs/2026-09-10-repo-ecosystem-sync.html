@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Repository sync — 10 September 2026</title>
+<style>body{font:16px/1.5 system-ui;max-width:1100px;margin:40px auto;padding:0 20px}table{border-collapse:collapse;width:100%}th,td{padding:8px;text-align:left;border-bottom:1px solid #ccc}code{font-size:.9em}</style>
+<h1>Repository ecosystem synchronization</h1>
+<p>Verification date: 10 September 2026. Scope: 15 canonical checkouts under the local workspace and its workspace-hub child. Thirteen match fetched upstream main; two remain blocked. Nine fast-forwards completed. During synchronization, no local commits were created or pushed. Existing edits, untracked files, stashes, and linked worktree branches were preserved.</p>
+<table><thead><tr><th>Repository</th><th>HEAD</th><th>Result</th></tr></thead><tbody>
+<tr><td>aceengineer-website</td><td>dbe1b33</td><td>Fast-forwarded 6 commits; skill junction status preserved</td></tr>
+<tr><td>assetutilities</td><td>9ac83f09</td><td>Fast-forwarded 2 commits; skill junction status preserved</td></tr>
+<tr><td>deckhand</td><td>ea24989</td><td>Fast-forwarded 1 commit; clean</td></tr>
+<tr><td>deckhand-licensed-runs-queue</td><td>f3cd8f2d7</td><td>Fast-forwarded 2,126 commits; clean</td></tr>
+<tr><td>digitalmodel</td><td>80da6e09</td><td>Fast-forwarded 33 commits; clean</td></tr>
+<tr><td>llm-wiki</td><td>807c034b0</td><td>Already current; clean</td></tr>
+<tr><td>Private wiki 1</td><td>54160cc</td><td>Fast-forwarded 383 commits; 10 pre-existing untracked solver results preserved</td></tr>
+<tr><td>Private wiki 2</td><td>19f52ab</td><td>Already current; clean</td></tr>
+<tr><td>workspace-hub</td><td>e4a796e8f</td><td>Already current; 8 pre-existing state-file edits preserved</td></tr>
+<tr><td>worldenergydata</td><td>001a670ee</td><td>Fast-forwarded 2 commits; skill junction status preserved</td></tr>
+<tr><td>assethold (nested)</td><td>3c7dd5f</td><td>Fetched; 150 behind. Incoming changes overlap local skill edits, junction paths, and investment CSV edits. Checkout contains backslash-named tracked paths incompatible with Windows. Integration deferred.</td></tr>
+<tr><td>CAD-DEVELOPMENTS (nested)</td><td>82c69ad</td><td>Fetch failed: HTTP 403, access not granted. Cached upstream is 5 ahead; current remote state unverified.</td></tr>
+<tr><td>doris (nested)</td><td>8be86bc</td><td>Fast-forwarded 1 commit; existing local residue preserved</td></tr>
+<tr><td>OGManufacturing (nested)</td><td>7483564</td><td>Already current; existing local residue preserved</td></tr>
+<tr><td>sd-work (nested)</td><td>f5dc25a</td><td>Fast-forwarded 1 commit; existing local residue preserved</td></tr>
+</tbody></table>
+<p>Table 1. Canonical checkout results. Private wiki labels omit client identifiers for publication; commit IDs identify the local checkouts. Current means zero ahead and zero behind the successfully fetched tracking branch, not a claim of a clean working tree or unchanged remote after verification.</p>
+<h2>Coverage and verification</h2>
+<p>The legacy config/repos.conf contains 24 entries: 7 present and 17 absent. Additional locally observed repositories account for the total of 15. No absent repositories were cloned. Nineteen linked worktrees were inventoried separately; their branch checkouts were not merged into main.</p>
+<p>Absent configured repositories: aceengineer-admin, achantas-data, achantas-media, hobbies, investments, sabithaandkrishnaestates, mkt-a, ai-native-traditional-eng, client-c, lng-a, energy, client-a, pyproject-starter, client-b, client-d, client-f, teamresumes.</p>
+<p>Verification used git fetch origin, merge --ff-only, status --porcelain, rev-list --left-right --count HEAD...@{upstream}, stash list, and index-lock probes. The workspace-hub encoding hook returned exit 0. No application code was authored; application test suites were not run. Ownership exceptions were scoped to individual commands, with no global safe.directory changes.</p>
+<p>Linked-worktree audit found three unpublished commits on branches without upstreams: workspace-hub codex/3522-promote-final (d204f2e36), workspace-hub codex/3522-protection-final (b43f80982), and digitalmodel feat/campaign-comparability (2ffbbbb6). The last branch changed HEAD during this sync, confirming concurrent work. These commits were preserved without publication. Three other worktrees remain behind their configured upstreams by 7, 1, and 667 commits; these are independent feature/plan checkouts, not canonical main branches. Five worktrees have tracked changes; untracked contents were excluded from this supplementary audit.</p>
+<p>The repo-sync skill references an ecosystem-health 14-check suite, but its skill and executable definition were not found. That health suite was not run; the successful encoding hook is not a substitute for it.</p>
+<h2>Cleanup audit and next checkpoint</h2>
+<p>CLEAN: no index.lock found in the 15 canonical checkouts; no session-created stashes or scratch scripts. EXPECTED: this local handoff, preserved skill junctions, active-session state edits and solver outputs. UNEXPECTED/PRESERVED: legacy dirty nested checkouts, the existing hub autostash and PMESSAGE.TMP dated 5 February 2026. These were not deleted or swept into commits. The residue scan covered repository roots and relevant coordination and recent temporary-file locations, not an exhaustive scan of data trees.</p>
+<p>Next checkpoint: restore authenticated access to CAD-DEVELOPMENTS; reconcile assethold local changes and Windows path/junction compatibility before integration. Existing linked worktrees and unpublished feature work require their owners' disposition.</p>
+<h2>Exit handoff</h2>
+<p>The user requested documentation and exit preparation after the sync. This document is the only file selected for the closeout commit. Publication will be verified against origin/main after push; the final chat receipt will record the commit and confirmed publication state. The repository table records the preceding sync checkpoint, before this documentation commit.</p>
+<p>At exit preflight, workspace-hub still had eight pre-existing state-file edits plus another session's untracked docs/session-handoffs/2026-09-10-engineering-register-rollout.md. Those paths are excluded from this commit. No other session was stopped. No issues, pull requests, or messages to other people were created by the sync or closeout; only this handoff is selected for Git publication.</p>
+<p>The repo-sync/all filesystem claim was released and its absence was verified. No active claim is left for the next session. The existing hub autostash and old PMESSAGE.TMP remain preserved; this is an exit with documented exceptions, not a clean-ecosystem assertion.</p>
+<p>Resume by inspecting active sessions and git status in the two blocked repositories. Fetch CAD-DEVELOPMENTS after its repository access is restored. For assethold, compare local edits and HEAD..origin/main, preserve the investment CSV changes, and resolve the Windows path and skill-junction constraints before any checkout-changing operation. Never restore or stash the junction paths blindly. Review unpublished feature branches with their active owners before publishing or merging them. No authorization to discard their work is implied by this handoff.</p>
+</html>

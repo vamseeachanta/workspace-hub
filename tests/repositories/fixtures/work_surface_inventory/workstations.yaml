@@ -1,0 +1,4 @@
+machines:
+  macbook-portable:
+    hostname: test-mac
+    repos: [alpha]
