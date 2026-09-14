@@ -18,8 +18,7 @@
 # Exit codes:
 #   0  All clear (no block-severity violations)
 #   1  Block-severity violations found
-#   2  Usage / resolution error (unknown argument, repository not found,
-#      --all with nothing to scan)
+#   2  Usage, resolution, dependency or incomplete-scan error
 #
 # =============================================================================
 set -euo pipefail
@@ -28,56 +27,30 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKSPACE_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # --------------------------------------------------------------------------
-# Locate ripgrep — check PATH, common locations, fall back to grep
+# Deterministic ripgrep backend; dependency checked after argument parsing.
 # --------------------------------------------------------------------------
-RG_BIN=""
-if command -v rg &>/dev/null; then
-  RG_BIN="rg"
-else
-  # Check known vendor locations
-  for candidate in \
-    "$HOME/.npm-global/lib/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/x64-linux/rg" \
-    "$HOME/.cargo/bin/rg" \
-    "/usr/local/bin/rg" \
-    "/usr/bin/rg"; do
-    if [[ -x "$candidate" ]]; then
-      RG_BIN="$candidate"
-      break
-    fi
-  done
-fi
+RG_BIN="rg"
 
-if [[ -z "$RG_BIN" ]]; then
-  echo "WARNING: ripgrep (rg) not found — falling back to grep (slower)" >&2
-fi
-
-# --------------------------------------------------------------------------
-# search_patterns: wrapper around rg or grep
-#   Args: case_flag pattern [rg_extra_flags...] -- [files/dirs...]
-# --------------------------------------------------------------------------
+# Args: case_flag pattern [rg_extra_flags...] -- [files/dirs...]
 run_search() {
   local case_flag="$1"; shift
   local pattern="$1"; shift
-
-  # Split extra flags and targets at "--"
-  local extra_flags=()
-  local targets=()
+  local extra_flags=() targets=()
   local saw_sep=false
   for a in "$@"; do
     if [[ "$a" == "--" ]]; then saw_sep=true; continue; fi
     if $saw_sep; then targets+=("$a"); else extra_flags+=("$a"); fi
   done
-
-  if [[ -n "$RG_BIN" ]]; then
-    local rg_flags=("--no-heading" "--line-number" "--color" "never" "--no-ignore" "--max-filesize" "1M" "--fixed-strings")
-    [[ "$case_flag" == "i" ]] && rg_flags+=("-i")
-    rg_flags+=("${extra_flags[@]}")
-    "$RG_BIN" "${rg_flags[@]}" "$pattern" "${targets[@]}" 2>/dev/null || true
-  else
-    local grep_flags=("-r" "-n" "--include=*" "-F")
-    [[ "$case_flag" == "i" ]] && grep_flags+=("-i")
-    grep "${grep_flags[@]}" "$pattern" "${targets[@]}" 2>/dev/null || true
+  local rg_flags=("--no-config" "--with-filename" "--no-heading" "--line-number" "--color" "never" "--no-ignore" "--max-filesize" "1M" "--fixed-strings")
+  [[ "$case_flag" == "i" ]] && rg_flags+=("-i")
+  rg_flags+=("${extra_flags[@]}")
+  local search_status=0
+  "$RG_BIN" "${rg_flags[@]}" -- "$pattern" "${targets[@]}" || search_status=$?
+  if [[ "$search_status" -gt 1 ]]; then
+    echo "ERROR: LEGAL_SCAN_INCOMPLETE: ripgrep exited $search_status" >&2
+    return 2
   fi
+  return 0
 }
 
 # Defaults
@@ -121,12 +94,17 @@ for arg in "$@"; do
       echo "Exit codes:"
       echo "  0  Pass (no block-severity violations)"
       echo "  1  Block violations found"
-      echo "  2  Usage / resolution error (repo not found, --all with nothing to scan)"
+      echo "  2  Usage, resolution, dependency or incomplete-scan error"
       exit 0
       ;;
     *) echo "Unknown argument: $arg" >&2; exit 2 ;;
   esac
 done
+
+if ! command -v "$RG_BIN" >/dev/null 2>&1; then
+  echo "ERROR: RIPGREP_REQUIRED: install ripgrep and expose rg on PATH" >&2
+  exit 2
+fi
 
 # --------------------------------------------------------------------------
 # Candidate resolver — shared by --repo and --all
@@ -299,7 +277,6 @@ parse_exclusions() {
 scan_directory() {
   local scan_dir="$1"
   local label="$2"
-  local local_violations=0
 
   # Merge global + local deny lists
   local global_list="$WORKSPACE_ROOT/.legal-deny-list.yaml"
@@ -365,9 +342,9 @@ scan_directory() {
 
     local matches=""
     if [[ "$DIFF_ONLY" == "true" && ${#file_args[@]} -gt 0 ]]; then
-      matches="$(run_search "$case_flag" "$pattern" "${excl_args[@]}" -- "${file_args[@]}")"
+      matches="$(run_search "$case_flag" "$pattern" "${excl_args[@]}" -- "${file_args[@]}")" || return 2
     else
-      matches="$(run_search "$case_flag" "$pattern" "${excl_args[@]}" -- "$scan_dir")"
+      matches="$(run_search "$case_flag" "$pattern" "${excl_args[@]}" -- "$scan_dir")" || return 2
     fi
 
     if [[ -n "$matches" ]]; then
@@ -377,7 +354,6 @@ scan_directory() {
       # reported in full — the tier changes what FAILS, never what is SEEN.
       if [[ "$severity" == "block" ]]; then
         VIOLATIONS=$((VIOLATIONS + count))
-        local_violations=$((local_violations + count))
       else
         WARNINGS=$((WARNINGS + count))
       fi
@@ -397,7 +373,7 @@ scan_directory() {
     fi
   done <<< "$patterns"
 
-  return $local_violations
+  return 0
 }
 
 # ==========================================================================
@@ -421,7 +397,7 @@ if [[ -n "$TARGET_REPO" ]]; then
     exit 2
   fi
   [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $TARGET_REPO ($repo_path)"
-  scan_directory "$repo_path" "$TARGET_REPO" || true
+  scan_directory "$repo_path" "$TARGET_REPO" || exit 2
 
 elif [[ "$SCAN_ALL" == "true" ]]; then
   # Enumerate initialized submodules first; else fall back to env-registered
@@ -441,7 +417,7 @@ elif [[ "$SCAN_ALL" == "true" ]]; then
         exit 2
       fi
       [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $sub ($sub_path)"
-      scan_directory "$sub_path" "$sub" || true
+      scan_directory "$sub_path" "$sub" || exit 2
     done
   elif [[ ${#REGISTERED_ROOTS[@]} -gt 0 ]]; then
     for root in "${REGISTERED_ROOTS[@]}"; do
@@ -451,7 +427,7 @@ elif [[ "$SCAN_ALL" == "true" ]]; then
       fi
       root_label="$(basename "$root")"
       [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $root_label ($root)"
-      scan_directory "$root" "$root_label" || true
+      scan_directory "$root" "$root_label" || exit 2
     done
   else
     echo "ERROR: --all found no repositories to scan; nothing to scan (no initialized submodules and LEGAL_SCAN_REPO_ROOTS is not set)." >&2
@@ -462,7 +438,7 @@ elif [[ "$SCAN_ALL" == "true" ]]; then
 else
   # Scan workspace root (non-submodule files)
   [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: workspace-hub (root)"
-  scan_directory "$WORKSPACE_ROOT" "workspace-hub" || true
+  scan_directory "$WORKSPACE_ROOT" "workspace-hub" || exit 2
 fi
 
 # Summary

@@ -28,7 +28,29 @@ jobs:
     name: strict-scan
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - name: Verify required ripgrep
+        run: |
+          if ! command -v rg >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install --yes ripgrep
+          fi
+          rg --version
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+      - name: Legal scanner regression tests
+        run: |
+          uv run --no-project --with pytest python -B -m pytest tests/legal -q --junitxml="$RUNNER_TEMP/legal-tests.xml"
+          uv run --no-project python - "$RUNNER_TEMP/legal-tests.xml" <<'PY'
+          import sys
+          import xml.etree.ElementTree as ET
+          cases = ET.parse(sys.argv[1]).getroot().findall(".//testcase")
+          if not cases or any(case.find("skipped") is not None for case in cases):
+              raise SystemExit("Legal regressions must execute without skipped cases")
+          if not any("test_ripgrep_contract.sh" in case.get("name", "") for case in cases):
+              raise SystemExit("Required ripgrep contract regression was not collected")
+          PY
       - name: Legal sanity scan
-        run: bash scripts/legal/legal-sanity-scan.sh --repo=workspace-hub
+        run: bash scripts/legal/legal-sanity-scan.sh
