@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-14T09:22:17.508946Z",
+  "generated_at": "2026-09-14T13:22:13.214155Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-14T09:22:15.052136Z",
+  "scorecard_generated_at": "2026-09-14T13:22:10.810607Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -743,6 +743,27 @@
           ]
         },
         {
+          "number": 3855,
+          "title": "Compliance alert: W38 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3855",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-09-14T11:45:07Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
           "number": 3559,
           "title": "feat(field-explorer): immutable Hugging Face field/well HTML drill-down program [C11]",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3559",
@@ -830,7 +851,7 @@
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-09-14T03:29:19Z",
+          "updatedAt": "2026-09-14T13:19:29Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -3318,31 +3339,6 @@
           ]
         },
         {
-          "number": 3526,
-          "title": "feat(windows): daily report-only ecosystem reconciliation audit",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3526",
-          "labels": [
-            "enhancement",
-            "cat:harness",
-            "domain:workstations",
-            "status:needs-plan",
-            "lane:claude",
-            "machine:licensed-win-2"
-          ],
-          "updatedAt": "2026-08-01T11:30:24Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3533,
           "title": "Make standards registries edition, amendment, access, and rights aware",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3533",
@@ -3999,7 +3995,7 @@
             "domain:security",
             "status:plan-review"
           ],
-          "updatedAt": "2026-09-14T03:00:37Z",
+          "updatedAt": "2026-09-14T11:58:12Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
