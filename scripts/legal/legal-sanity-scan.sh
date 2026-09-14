@@ -14,10 +14,6 @@
 #                            Windows drive letters under git-bash.)
 #                            When set it WINS: names resolve ONLY against the
 #                            listed roots; no fallback to the defaults.
-#   LEGAL_SCAN_RESOLVE_ONLY  When "1", print the resolved repo path(s) and
-#                            exit 0 before any scanning happens. Minimal
-#                            dry-run hook used by tests/legal/ to assert the
-#                            resolution contract without needing deny-lists.
 #
 # Exit codes:
 #   0  All clear (no block-severity violations)
@@ -25,11 +21,6 @@
 #   2  Usage / resolution error (unknown argument, repository not found,
 #      --all with nothing to scan)
 #
-# Environment:
-#   LEGAL_SCAN_REPO_ROOTS  Semicolon- or newline-separated list of repo root
-#                          paths (semicolons/newlines survive Windows drive
-#                          letters under git-bash). When set, it WINS over the
-#                          default nested -> sibling -> walk-up resolution.
 # =============================================================================
 set -euo pipefail
 
@@ -420,44 +411,6 @@ if [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]]; then
 fi
 
 load_registered_roots
-
-if [[ "${LEGAL_SCAN_RESOLVE_ONLY:-}" == "1" ]]; then
-  if [[ -n "$TARGET_REPO" ]]; then
-    resolve_repo_path "$TARGET_REPO" || exit 2
-    exit 0
-  elif [[ "$SCAN_ALL" == "true" ]]; then
-    resolved_any=false
-    if [[ ${#REGISTERED_ROOTS[@]} -gt 0 ]]; then
-      for root in "${REGISTERED_ROOTS[@]}"; do
-        [[ -d "$root" ]] || continue
-        if [[ -e "$root/.git" ]]; then
-          printf '%s\n' "$root"
-          resolved_any=true
-        fi
-        while IFS= read -r child; do
-          [[ -n "$child" ]] || continue
-          printf '%s\n' "$child"
-          resolved_any=true
-        done < <(find "$root" -mindepth 1 -maxdepth 1 -type d -exec test -e '{}/.git' ';' -print 2>/dev/null)
-      done
-    else
-      while IFS= read -r sub; do
-        [[ -n "$sub" ]] || continue
-        resolve_repo_path "$sub" || exit 2
-        resolved_any=true
-      done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach 'echo $sm_path' 2>/dev/null || true)
-    fi
-    if [[ "$resolved_any" != "true" ]]; then
-      echo "ERROR: --all found no repositories to scan; nothing to scan." >&2
-      echo "       A legal gate must never pass by scanning nothing. Initialize submodules or set LEGAL_SCAN_REPO_ROOTS." >&2
-      exit 2
-    fi
-    exit 0
-  else
-    printf '%s\n' "$WORKSPACE_ROOT"
-    exit 0
-  fi
-fi
 
 if [[ -n "$TARGET_REPO" ]]; then
   # Scan specific repo (shared candidate resolver)
