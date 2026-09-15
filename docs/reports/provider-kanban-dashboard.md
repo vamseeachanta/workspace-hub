@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-15T01:22:21Z
+Generated: 2026-09-15T13:21:18Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,12 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3869 | fix(operations): bind CLEAN-only merges to the reviewed head | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3868 | Audit rollback helpers for mutation of refused or unstarted paths | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3866 | Audit generated repair commands for caller-versus-target directory mismatch | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3865 | Audit readiness receipt provenance and absolute context identity | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3864 | Repair pre-existing generated skill-index drift exposed by scoped contract CI | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3862 | Align residence-policy routing with reusable solver-result ownership | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3861 | Bind Python replay reviews to actual production and test import closure | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3860 | Audit mixed clock domains in runtime admission and telemetry validation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3859 | Audit analysis acceptance comparisons for ambient Decimal context dependence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -237,12 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3547 | feat(ops): secure remote Linux access architecture and staged rollout | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3545 | Plan bounded same-account Claude Remote Control pilot on Windows | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3544 | security(legal): correct and operationalize Phase A authority activation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review,unavailable_review |
-| #3542 | audit(config): reject duplicate YAML keys and ambiguous scalar types | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3541 | test(enforcement): assert exact schemas for equivalent bypass fields | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3539 | Refactor oversized equality modules and make Windows collector tests hermetic | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3538 | Evolve calculation citation contract for amendment and exact-source identity | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3537 | [WRK] Make plan-review fanout artifacts atomic and revision-stamped | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3536 | CLI boundaries: prevent argparse from echoing rejected caller-controlled tokens | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

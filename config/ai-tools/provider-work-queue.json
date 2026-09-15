@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-15T01:22:19.057341Z",
+  "generated_at": "2026-09-15T13:21:16.349898Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-15T01:22:16.490101Z",
+  "scorecard_generated_at": "2026-09-15T13:21:14.361167Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -724,7 +724,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-09-14T11:45:07Z",
+          "updatedAt": "2026-09-15T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -941,7 +941,7 @@
             "domain:harness",
             "initiative"
           ],
-          "updatedAt": "2026-09-12T19:33:26Z",
+          "updatedAt": "2026-09-15T11:44:02Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1416,31 +1416,6 @@
           "provider_status": "underused",
           "work_type": [
             "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3537,
-          "title": "[WRK] Make plan-review fanout artifacts atomic and revision-stamped",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3537",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "wrk-item",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-08-01T06:13:46Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -3313,120 +3288,6 @@
           ]
         },
         {
-          "number": 3536,
-          "title": "CLI boundaries: prevent argparse from echoing rejected caller-controlled tokens",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3536",
-          "labels": [
-            "cat:tooling",
-            "domain:security",
-            "machine:dev-primary"
-          ],
-          "updatedAt": "2026-07-31T08:33:18Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3538,
-          "title": "Evolve calculation citation contract for amendment and exact-source identity",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3538",
-          "labels": [
-            "bug",
-            "cat:engineering",
-            "domain:standards",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:47Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3539,
-          "title": "Refactor oversized equality modules and make Windows collector tests hermetic",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3539",
-          "labels": [
-            "cat:tooling",
-            "domain:testing",
-            "machine:dev-primary"
-          ],
-          "updatedAt": "2026-07-31T08:33:20Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3541,
-          "title": "test(enforcement): assert exact schemas for equivalent bypass fields",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3541",
-          "labels": [
-            "cat:tooling",
-            "domain:testing",
-            "machine:dev-primary",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-07-31T08:33:21Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3542,
-          "title": "audit(config): reject duplicate YAML keys and ambiguous scalar types",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3542",
-          "labels": [
-            "cat:tooling",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "domain:harness"
-          ],
-          "updatedAt": "2026-07-31T08:33:23Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3555,
           "title": "feat(agent-ux): pilot persistent goals and native Codex statusline across machines",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3555",
@@ -4309,6 +4170,115 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3862,
+          "title": "Align residence-policy routing with reusable solver-result ownership",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3862",
+          "labels": [],
+          "updatedAt": "2026-09-15T03:52:12Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3864,
+          "title": "Repair pre-existing generated skill-index drift exposed by scoped contract CI",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3864",
+          "labels": [],
+          "updatedAt": "2026-09-15T03:59:26Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3865,
+          "title": "Audit readiness receipt provenance and absolute context identity",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3865",
+          "labels": [],
+          "updatedAt": "2026-09-15T04:35:00Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3866,
+          "title": "Audit generated repair commands for caller-versus-target directory mismatch",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3866",
+          "labels": [],
+          "updatedAt": "2026-09-15T06:53:21Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3868,
+          "title": "Audit rollback helpers for mutation of refused or unstarted paths",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3868",
+          "labels": [
+            "cat:harness"
+          ],
+          "updatedAt": "2026-09-15T10:53:30Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3869,
+          "title": "fix(operations): bind CLEAN-only merges to the reviewed head",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3869",
+          "labels": [],
+          "updatedAt": "2026-09-15T11:44:04Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]
