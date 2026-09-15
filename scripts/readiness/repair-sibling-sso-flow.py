@@ -13,6 +13,8 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "skills"))
+from native_skill_root import classify_native_root
 
 ISSUE_NUMBER = 2775
 REPO = "vamseeachanta/workspace-hub"
@@ -265,8 +267,13 @@ def build_manifest(machine: str) -> dict[str, Any]:
             continue
         expected = "../.claude/skills" if repo == "workspace-hub" else "../../workspace-hub/.claude/skills"
         actions = []
+        native_state = classify_native_root(repo_path)
         for provider in (".codex", ".gemini"):
             path = repo_path / provider / "skills"
+            if provider == ".codex" and native_state != "absent":
+                if native_state != "native":
+                    actions.append({"kind": "blocked", "path": str(path), "reason": "native_skill_root_unresolved"})
+                continue
             classification = classify_owned_skill_path(path, expected)
             if classification["status"] == "ok":
                 continue
@@ -274,14 +281,14 @@ def build_manifest(machine: str) -> dict[str, Any]:
                 actions.append({"kind": "rewrite_symlink", "path": str(path), "target": expected})
             else:
                 actions.append({"kind": "blocked", "path": str(path), "reason": classification["kind"]})
-        agents = repo_path / "AGENTS.md"
         if repo != "workspace-hub":
             classification = classify_agents_contract(repo_path, tier1)
             if classification["status"] == "rewrite":
                 actions.append({key: classification[key] for key in ("kind", "path", "from", "to")})
             elif classification["status"] == "blocked":
                 actions.append({"kind": "blocked", **classification})
-        repos.append({"repo": repo, "status": "present", "path": str(repo_path), "actions": actions})
+        repos.append({"repo": repo, "status": "present", "path": str(repo_path), "actions": actions,
+                      "codex_admission": "native_preserved" if native_state == "native" else native_state})
     return {"machine": machine_name, "workspace_root": str(workspace_root), "tier1_repo_root": str(tier1), "repos": repos}
 
 
@@ -299,9 +306,7 @@ def rewrite_agents_pointer(path: Path, old: str, new: str) -> None:
         previous_was_inherits = stripped == "This repository inherits the canonical contract from:"
     path.write_text("".join(rewritten_lines))
 
-
 REPAIRABLE_ACTION_KINDS = frozenset({"rewrite_symlink", "rewrite_agents_pointer"})
-
 
 def _split_actions(actions: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     repairable = [action for action in actions if action.get("kind") in REPAIRABLE_ACTION_KINDS]
@@ -309,11 +314,28 @@ def _split_actions(actions: list[dict[str, Any]]) -> tuple[list[dict[str, Any]],
     return repairable, blocked
 
 
-def _apply_repairable_actions(repo_name: str, actions: list[dict[str, Any]]) -> int:
-    backups = capture_owned_paths([Path(action["path"]) for action in actions])
+def _apply_repairable_actions(repo_name: str, actions: list[dict[str, Any]], repo_path: Path) -> int:
+    def validate(action):
+        path = Path(action["path"])
+        allowed = {"rewrite_symlink": {repo_path / ".codex/skills", repo_path / ".gemini/skills"},
+                   "rewrite_agents_pointer": {repo_path / "AGENTS.md"}}
+        if path not in allowed.get(action["kind"], set()):
+            raise ValueError("action outside selected repository-owned paths")
+        if path == repo_path / ".codex/skills" and classify_native_root(repo_path) != "absent":
+            raise ValueError("stale Codex action: native ownership present or unresolved")
     try:
         for action in actions:
+            validate(action)
+    except (KeyError, TypeError, ValueError) as exc:
+        print(f"blocked {repo_name}: {exc}", file=sys.stderr)
+        return 4
+    backups = capture_owned_paths([Path(action["path"]) for action in actions])
+    started = []
+    try:
+        for action in actions:
+            validate(action)
             path = Path(action["path"])
+            started.append(str(path))
             if action["kind"] == "rewrite_symlink":
                 if path.exists() or path.is_symlink():
                     remove_path(path)
@@ -330,7 +352,7 @@ def _apply_repairable_actions(repo_name: str, actions: list[dict[str, Any]]) -> 
         print(f"applied {repo_name}: {len(actions)} repairable actions")
         return 0
     except Exception as exc:
-        restore_owned_paths(backups)
+        restore_owned_paths({path: backups[path] for path in started})
         print(f"rollback {repo_name}: {exc}", file=sys.stderr)
         return 4
 
@@ -350,7 +372,7 @@ def apply_manifest(manifest: dict[str, Any]) -> int:
             return 3
         repairable_actions, blocked_actions = _split_actions(repo["actions"])
         if repairable_actions:
-            result = _apply_repairable_actions(repo["repo"], repairable_actions)
+            result = _apply_repairable_actions(repo["repo"], repairable_actions, repo_path)
             if result != 0:
                 return result
         if blocked_actions:

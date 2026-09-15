@@ -24,6 +24,7 @@ OPT_HOOKS=true; OPT_SKILLS=true; OPT_DRY_RUN=false; OPT_VERBOSE=false; OPT_ONLY=
 HOOKS_ADDED=0; HOOKS_SKIPPED=0; HOOKS_FAILED=0
 PERMS_ADDED=0; PERMS_SKIPPED=0; PERMS_FAILED=0
 SKILLS_LINKED=0; SKILLS_SKIPPED_MODIFIED=0; SKILLS_ALREADY_LINKED=0; SKILLS_CREATED=0
+CODEX_BLOCKED=0
 
 # Colors (disabled in pipes)
 if [[ -t 1 ]]; then
@@ -444,6 +445,19 @@ main() {
                 local repo_name; repo_name="$(basename "$repo_dir")"
                 local adapter_dir="$repo_dir/.$provider"
                 local link="$adapter_dir/skills"
+                if [[ "$provider" == codex ]]; then
+                    local state native_rc probe_root="$repo_dir" probe="$SCRIPT_DIR/skills/native_skill_root.py"
+                    if [[ "$PLATFORM" == windows ]]; then
+                        probe_root="$(cygpath -m "$repo_dir")" || { CODEX_BLOCKED=1; log_fail "$repo_name Codex classification blocked"; continue; }
+                        probe="$(cygpath -m "$probe")" || { CODEX_BLOCKED=1; log_fail "$repo_name Codex classification blocked"; continue; }
+                    fi
+                    state="$(uv run --no-project --quiet python -B "$probe" "$probe_root" 2>/dev/null)"; native_rc=$?
+                    case "$native_rc:$state" in
+                        0:native) log_skip "$repo_name native skills preserved; Codex adapter untouched"; continue ;;
+                        0:absent) ;;
+                        *) CODEX_BLOCKED=1; log_fail "$repo_name Codex classification blocked; adapter untouched"; continue ;;
+                    esac
+                fi
                 # Valid link that still resolves to the hub skills tree — keep it.
                 if is_link "$link" && { [[ "$PLATFORM" == "windows" ]] || { [[ -d "$link" ]] \
                      && [[ "$(realpath "$link" 2>/dev/null)" == "$(realpath "$hub_skills" 2>/dev/null)" ]]; }; }; then
@@ -485,4 +499,4 @@ main() {
 }
 
 main "$@"
-exit 0
+exit "$CODEX_BLOCKED"
