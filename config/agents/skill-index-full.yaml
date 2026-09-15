@@ -770,11 +770,11 @@ skills:
   name: flywheel-closeout
   when_to_use: 'flywheel-closeout Use this at the end of substantial repo or agent waves to convert evidence-backed lessons into proposed durable assets: skills, scripts, rules/checks, prompt templates, docs, or issues. Always use it when the user mentions flywheel, wave closeout, repo ecosystem learning, durable asset promotion, or learning-to-tools. coordination'
   when_to_use_source: backfill
-- description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams.
+- description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, risk-appropriate authorization before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams.
   family: coordination
   id: coordination/gh-work-planning
   name: gh-work-planning
-  when_to_use: gh-work-planning Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams. coordination
+  when_to_use: gh-work-planning Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, risk-appropriate authorization before execution, machine-dispatch readiness checks, and execution-ready delegation packaging for Claude agent teams. coordination
   when_to_use_source: backfill
 - description: Compact live-execution checklist companion for the canonical gh-work-planning route. Use for fast operational tracking during issue planning without replacing the full route.
   family: coordination
@@ -800,11 +800,11 @@ skills:
   name: hermes-workflow-audit
   when_to_use: '- User asks "what''s going on with our workflow?" or "are reviews happening?" - Investigating why code quality has degraded - Periodic health check (weekly/biweekly) - Before making workflow changes — establish baseline - After major repo changes — verify systems still functioning - When user asks to "document findings" for later action'
   when_to_use_source: section
-- description: Mandatory planning workflow for ALL GitHub issues — plan, review, approve, then implement.
+- description: Risk-aware issue planning — discovery, proportionate plans, review, independently established authorization, and TDD implementation.
   family: coordination
   id: coordination/issue-planning-mode
   name: issue-planning-mode
-  when_to_use: issue-planning-mode Mandatory planning workflow for ALL GitHub issues — plan, review, approve, then implement. coordination
+  when_to_use: issue-planning-mode Risk-aware issue planning — discovery, proportionate plans, review, independently established authorization, and TDD implementation. coordination
   when_to_use_source: backfill
 - description: Reconnaissance pattern to inventory all knowledge sources across the workspace-hub ecosystem's existing intelligence infrastructure. Maps raw sources for LLM Wiki ingestion planning. Leverages pre-built registries and indexes rather than re-scanning directories.
   family: coordination
@@ -970,6 +970,12 @@ skills:
   name: session-start-routine
   when_to_use: '- Start of every interactive session - After a context reset or conversation compression - When resuming work after a break - When the user asks for a terse live "status update" from mobile/Telegram'
   when_to_use_source: section
+- description: Assess bounded agent operations and prior verification evidence through the shared advisory CLI. Use for Claude or Codex workflow decisions; does not execute work, authenticate approval, install profiles or replace live gates.
+  family: coordination
+  id: coordination/shared-risk-workflow
+  name: shared-risk-workflow
+  when_to_use: shared-risk-workflow Assess bounded agent operations and prior verification evidence through the shared advisory CLI. Use for Claude or Codex workflow decisions; does not execute work, authenticate approval, install profiles or replace live gates. coordination
+  when_to_use_source: backfill
 - description: Refactor large or frequently-run skills into context-efficient chains using isolated execution, file-backed handoffs, minimal summaries, and runtime-aware command substitution.
   family: coordination
   id: coordination/skill-chain-context-optimization
@@ -1378,17 +1384,17 @@ skills:
   name: xlsx
   when_to_use: '- Reading and analyzing Excel data with pandas - Creating formatted spreadsheets programmatically - Building financial models with formulas - Generating reports with charts and graphs - Automating data entry and updates - Converting between Excel and other formats - Batch processing multiple spreadsheets - Creating templates for repeated use'
   when_to_use_source: section
-- description: Surface SPECIFIC FILES on the shared drives (/mnt/ace, /mnt/dde) relevant to the current task — the FILE-level complement to ecosystem-data-sources (domain-catalog level). Extracts query terms from work context, runs the drive-index CLI once, presents ranked canonical paths with freshness caveats. Use for similar-past-work, prior-project, or files/examples/precedent asks; when domain work needs past deliverables (mooring calc → xlsx/py; CAD → dwg/step; standards → PDF inventory).
+- description: Find specific files, examples and prior deliverables through the shared-drive indexes. Use for file/precedent searches; domain datasets and source ownership belong to ecosystem-data-sources.
   family: data
   id: data/drive-file-search
   name: drive-file-search
-  when_to_use: drive-file-search Surface SPECIFIC FILES on the shared drives (/mnt/ace, /mnt/dde) relevant to the current task — the FILE-level complement to ecosystem-data-sources (domain-catalog level). Extracts query terms from work context, runs the drive-index CLI once, presents ranked canonical paths with freshness caveats. Use for similar-past-work, prior-project, or files/examples/precedent asks; when domain work needs past deliverables (mooring calc → xlsx/py; CAD → dwg/step; standards → PDF inventory). data
+  when_to_use: drive-file-search Find specific files, examples and prior deliverables through the shared-drive indexes. Use for file/precedent searches; domain datasets and source ownership belong to ecosystem-data-sources. data
   when_to_use_source: backfill
-- description: Proactively surface what DATA the ecosystem already has for an engineering domain — before starting analysis, points to the consolidated data-source catalog, any latent ACE_SHARE project precedent, and the domain-database issue that curates it. Use when work touches an engineering domain (riser, mooring, pipeline, structural/FFS, naval-arch/hydro, metocean, materials, production, geotech, drilling, CAD/sim, or financial/asset), when someone asks 'do we have data for X', 'where do we get X data', 'build the X database', or before implementing a calculation that needs reference data.
+- description: Find existing engineering datasets, source ownership and readiness before analysis or database work. Use for 'do we have data for X', source selection and reference-data discovery; specific file searches belong to drive-file-search.
   family: data
   id: data/ecosystem-data-sources
   name: ecosystem-data-sources
-  when_to_use: ecosystem-data-sources Proactively surface what DATA the ecosystem already has for an engineering domain — before starting analysis, points to the consolidated data-source catalog, any latent ACE_SHARE project precedent, and the domain-database issue that curates it. Use when work touches an engineering domain (riser, mooring, pipeline, structural/FFS, naval-arch/hydro, metocean, materials, production, geotech, drilling, CAD/sim, or financial/asset), when someone asks 'do we have data for X', 'where do we get X data', 'build the X database', or before implementing a calculation that needs reference data. data
+  when_to_use: ecosystem-data-sources Find existing engineering datasets, source ownership and readiness before analysis or database work. Use for 'do we have data for X', source selection and reference-data discovery; specific file searches belong to drive-file-search. data
   when_to_use_source: backfill
 - description: Analyze drilling performance and metrics using API 12-digit well numbering system. Use for drilling time analysis, cost benchmarking, well comparison, sidetracks tracking, and drilling efficiency metrics across GOM fields.
   family: data
@@ -3474,11 +3480,11 @@ skills:
   name: research-paper-writing
   when_to_use: 'Use this skill when: - **Starting a new research paper** from an existing codebase or idea - **Designing and running experiments** to support paper claims - **Writing or revising** any section of a research paper - **Preparing for submission** to a specific conference - **Responding to reviews** with additional experiments or revisions - **Converting** a paper between conference formats'
   when_to_use_source: section
-- description: Auto-query llm-wiki domains for relevant context before executing domain tasks
+- description: Retrieve bounded curated wiki context and source metadata for domain tasks. Resolve the existing owner checkout and supported query surface; report unavailable operations and missing provenance.
   family: research
   id: research/wiki-context
   name: wiki-context
-  when_to_use: wiki-context Auto-query llm-wiki domains for relevant context before executing domain tasks research
+  when_to_use: wiki-context Retrieve bounded curated wiki context and source metadata for domain tasks. Resolve the existing owner checkout and supported query surface; report unavailable operations and missing provenance. research
   when_to_use_source: backfill
 - description: Generate clinical trial protocols for medical devices or drugs through a modular, waypoint-based architecture with research-only and full protocol modes.
   family: science
