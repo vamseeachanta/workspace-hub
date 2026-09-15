@@ -25,10 +25,48 @@ and retains its source relationships; a catalog entry is not a copy of the data.
 | Public-source collection | `worldenergydata`, where the collection contract applies |
 | Authorized curated interpretation | Private `llm-wiki` or the owning private project wiki |
 | Qualified computational references and calculations | Engineering owner, including `digitalmodel` |
+| Solver workflow code, schemas and validation | Engineering owner, including `digitalmodel` |
+| Reusable solver results and their retained execution evidence | Private `digitalmodel-data`, under the ownership rule below |
 | Client-supplied or measured originals | Owning private project repository |
 | Catalogs, discovery maps and workflow policy | Existing metadata owner; hub coordinates references |
 
 Table 1. Ownership follows artifact responsibility; public origin alone does not reassign derivatives.
+
+## Foundational solver-result ownership and consumption
+
+Owner decision, 2026-09-14: private `digitalmodel-data` is the authoritative
+repository for reusable solver results, including generalized client-derived
+results. Client repositories shall reference those results rather than maintain
+independent authoritative copies. This ownership rule applies across the
+repository, machine and AI-provider ecosystem; repository creation, data migration
+and consumer readiness require separate verified implementation evidence.
+
+- Each reference shall identify the owning repository, existing stable dataset
+  and run identifiers, owner-relative manifest locator, pinned revision and
+  SHA-256 digest. Preserve existing identities and catalog relationships.
+- `digitalmodel` owns solver workflows, schemas and validation. Existing result
+  matrices remain the authoritative lookup views and shall link to owned evidence;
+  a new storage repository shall not create a competing result matrix.
+- Original client-supplied and measured records remain in their owning private
+  project repositories. Generalized client-derived solver results belong in
+  private `digitalmodel-data`, with recorded transformations and restricted
+  provenance back to the originals. Generalization shall preserve the physical
+  basis, units, governing case, limitations and review status. It does not itself
+  establish source rights, wider validity or public-publication authority.
+- Machine working directories, caches and execution staging are replicas or
+  temporary execution locations, not alternate authoritative result stores.
+  Offline copies shall retain their pinned source identity and digest; stale or
+  inaccessible references shall expose their status rather than silently fall
+  back to an unverified result.
+- A machine/provider readiness claim shall verify actual authorized access,
+  reference resolution, revision and digest agreement, units, review status and
+  intended-use eligibility for that observed context. Policy publication or one
+  successful machine check shall not establish fleet-wide readiness.
+- Existing catalogs remain the discovery authority. Record ownership and consumer
+  relationships there; do not create a second allocation registry. Original
+  retention, licensed-standard exclusions and private/public boundaries below
+  remain binding. Migration shall preserve originals and verify copied evidence
+  before any backup or publication claim.
 
 The reference `digitalmodel:data/dataset-allocation-ledger.json` remains unresolved
 in the inspected checkout. `digitalmodel:config/data_sources.yaml` declares
