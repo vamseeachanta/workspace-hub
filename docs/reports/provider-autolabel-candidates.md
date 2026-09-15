@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-09-15T13:21:16.460587Z
+Generated: 2026-09-15T17:21:43.806712Z
 Apply mode: False
 Threshold: 0.9
 
@@ -17,8 +17,8 @@ Threshold: 0.9
 | #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3787 pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
-| #3544 security(legal): correct and operationalize Phase A authority activation | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #3573 feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
+| #3578 fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #3788 bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3821 bug(equality): restore collector idempotency and macOS atomic-publish test portability | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3585 phone-media: EXIF-date organizer + cross-phone dedupe | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |

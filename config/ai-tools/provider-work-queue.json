@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-15T13:21:16.349898Z",
+  "generated_at": "2026-09-15T17:21:43.450284Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-15T13:21:14.361167Z",
+  "scorecard_generated_at": "2026-09-15T17:21:40.217542Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 11,
+      "execution_ready_count": 10,
       "total_candidates": 177,
       "top_issues": [
         {
@@ -176,31 +176,6 @@
           ]
         },
         {
-          "number": 3544,
-          "title": "security(legal): correct and operationalize Phase A authority activation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
-          "labels": [
-            "cat:operations",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-08-01T06:13:49Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3573,
           "title": "feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3573",
@@ -222,6 +197,29 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3578,
+          "title": "fix(review): submit-to-codex.sh hangs \u2014 codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3578",
+          "labels": [
+            "cat:harness",
+            "machine:dev-primary",
+            "status:plan-approved",
+            "gate:completeness",
+            "domain:harness"
+          ],
+          "updatedAt": "2026-08-03T04:53:00Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]
@@ -385,31 +383,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3544,
-          "title": "security(legal): correct and operationalize Phase A authority activation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
-          "labels": [
-            "cat:operations",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:codex",
-            "domain:governance"
-          ],
-          "updatedAt": "2026-08-01T06:13:49Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
@@ -4279,6 +4252,24 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3871,
+          "title": "fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3871",
+          "labels": [],
+          "updatedAt": "2026-09-15T14:08:42Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]

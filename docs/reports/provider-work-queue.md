@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-09-15T13:21:16.349898Z
+Generated: 2026-09-15T17:21:43.450284Z
 Current week: 2026-W38
 Recommended provider order: agy, codex, claude
 
@@ -9,7 +9,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 11
+- Execution-ready candidates: 10
 - Total routed candidates: 177
 
 | Issue | Ready | Why routed here | Labels |
@@ -20,8 +20,8 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3843 refactor(orcaflex): consolidate four model generators onto modular_generator | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
 | #3566 fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI | yes | strategy/workflow/architecture language | bug, priority:medium, cat:harness, machine:multi, status:plan-approved, type:follow-up |
 | #3568 epic(agent-ux): cross-machine input interaction parity | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, domain:workstations, machine:multi, status:plan-approved |
-| #3544 security(legal): correct and operationalize Phase A authority activation | yes | strategy/workflow/architecture language | cat:operations, machine:dev-primary, status:plan-approved, gate:completeness, lane:codex, domain:governance |
 | #3573 feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide | yes | strategy/workflow/architecture language | enhancement, cat:harness, machine:multi, status:plan-approved, gate:completeness, lane:claude |
+| #3578 fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation | yes | strategy/workflow/architecture language | cat:harness, machine:dev-primary, status:plan-approved, gate:completeness, domain:harness |
 
 ## codex
 
