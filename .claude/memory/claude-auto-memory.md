@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-09-14
+> Last captured: 2026-09-15
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -117,7 +117,7 @@
 - [SVG-for-PDF portability](feedback_svg_pdf_portability_no_patterns_clippaths.md) — no `<pattern>`/clipPath/filter/mask in PDF-bound SVG; …
 
 ## Key References
-- [CFD run statusline](reference_cfd_run_statusline.md) — gpu-claw cron `*/15` → `~/cfd/b1552/status/latest.txt` (+ `status.log`); both Claude status bars read it; ace-linux-1 mirror self-refreshes (crontab denied there); combined wrapper keeps the hub line *stale: 2026-09-15*
+- [CFD run statusline](reference_cfd_run_statusline.md) — gpu-claw cron `*/15` → `~/cfd/b1552/status/latest.txt` (+ `status.log`); both Claude status bars read it; ace-linux-1 mirror self-refreshes (crontab denied there); combined wrapper keeps the hub line
 - [gpu-claw disk reclaim rule](reference_gpu_claw_disk_reclaim_rule.md) — keep-last-time-only per case (45 G freed 2026-09-03); NEVER trim dm1528 sloshing series (#1437 open)
 - ⚠ **[WORKING SURFACE = `/mnt/ace/ws`](reference_ecosystem_migrated_to_ext4_mnt_ace_ws.md)** — canonical root on ace-linux-1 since 2026-08-03; `/mnt/local-analysis` is a legacy compatibility symlink — 2026-08-03 symlinked; `git status` 11.6s → **23ms**. Traps: `worktree repair` repairs the WRONG direction after a whole-tree copy; every rsync buys one slow `git status` (index stat cache)
 - [/mnt/ace is a PUBLIC SMB share](reference_mnt_ace_is_public_smb_share.md) — 777 + NFS-rw + `guest ok = yes` + browseable; …
