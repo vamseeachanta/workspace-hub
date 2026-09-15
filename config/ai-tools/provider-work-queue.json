@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-14T21:21:56.145624Z",
+  "generated_at": "2026-09-15T01:22:19.057341Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-14T21:21:53.273276Z",
+  "scorecard_generated_at": "2026-09-15T01:22:16.490101Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 12,
-      "total_candidates": 176,
+      "execution_ready_count": 11,
+      "total_candidates": 177,
       "top_issues": [
         {
           "number": 3549,
@@ -176,19 +176,18 @@
           ]
         },
         {
-          "number": 3527,
-          "title": "fix(scheduler): reconcile identity inventory after merge-base race",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3527",
+          "number": 3544,
+          "title": "security(legal): correct and operationalize Phase A authority activation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
           "labels": [
-            "bug",
-            "cat:harness",
+            "cat:operations",
             "machine:dev-primary",
             "status:plan-approved",
             "gate:completeness",
-            "domain:harness",
-            "lane:claude"
+            "lane:codex",
+            "domain:governance"
           ],
-          "updatedAt": "2026-08-01T06:13:40Z",
+          "updatedAt": "2026-08-01T06:13:49Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -202,18 +201,19 @@
           ]
         },
         {
-          "number": 3544,
-          "title": "security(legal): correct and operationalize Phase A authority activation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
+          "number": 3573,
+          "title": "feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3573",
           "labels": [
-            "cat:operations",
-            "machine:dev-primary",
+            "enhancement",
+            "cat:harness",
+            "machine:multi",
             "status:plan-approved",
             "gate:completeness",
-            "lane:codex",
-            "domain:governance"
+            "lane:claude",
+            "domain:ai"
           ],
-          "updatedAt": "2026-08-01T06:13:49Z",
+          "updatedAt": "2026-07-31T02:26:39Z",
           "execution_ready": true,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -385,32 +385,6 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3527,
-          "title": "fix(scheduler): reconcile identity inventory after merge-base race",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3527",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:13:40Z",
-          "execution_ready": true,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation",
             "strategy"
           ]
@@ -851,7 +825,7 @@
             "initiative",
             "domain:solver"
           ],
-          "updatedAt": "2026-09-14T21:17:42Z",
+          "updatedAt": "2026-09-15T00:40:45Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1827,7 +1801,7 @@
             "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-09-14T18:40:59Z",
+          "updatedAt": "2026-09-14T21:44:45Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -3339,57 +3313,6 @@
           ]
         },
         {
-          "number": 3533,
-          "title": "Make standards registries edition, amendment, access, and rights aware",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3533",
-          "labels": [
-            "bug",
-            "cat:data",
-            "domain:standards",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:codex"
-          ],
-          "updatedAt": "2026-08-01T06:13:43Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3534,
-          "title": "secure(main): require latest-base checks and block unchecked direct pushes",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3534",
-          "labels": [
-            "enhancement",
-            "cat:operations",
-            "domain:security",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:13:44Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3536,
           "title": "CLI boundaries: prevent argparse from echoing rejected caller-controlled tokens",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3536",
@@ -4288,7 +4211,7 @@
           "title": "Repair hook wiring against effective paths and consumer protocols",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3852",
           "labels": [],
-          "updatedAt": "2026-09-13T11:34:59Z",
+          "updatedAt": "2026-09-14T21:51:27Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4317,14 +4240,86 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3858,
+          "title": "Foundation materializer: harden interrupted recovery and clarify evidence contracts",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3858",
+          "labels": [],
+          "updatedAt": "2026-09-14T21:28:40Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3859,
+          "title": "Audit analysis acceptance comparisons for ambient Decimal context dependence",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3859",
+          "labels": [],
+          "updatedAt": "2026-09-14T22:17:28Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3860,
+          "title": "Audit mixed clock domains in runtime admission and telemetry validation",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3860",
+          "labels": [],
+          "updatedAt": "2026-09-14T22:34:36Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3861,
+          "title": "Bind Python replay reviews to actual production and test import closure",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3861",
+          "labels": [],
+          "updatedAt": "2026-09-14T23:47:55Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 6,
-      "total_candidates": 22,
+      "execution_ready_count": 5,
+      "total_candidates": 21,
       "top_issues": [
         {
           "number": 3740,
@@ -4365,31 +4360,6 @@
           "updatedAt": "2026-09-11T20:21:08Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3532,
-          "title": "fix(memory): reserve cross-provider runtime budget for operational feedback",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3532",
-          "labels": [
-            "enhancement",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-08-01T06:13:41Z",
-          "execution_ready": true,
-          "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -4518,6 +4488,27 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 3585,
+          "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
+          "labels": [
+            "priority:medium",
+            "cat:data",
+            "machine:dev-primary",
+            "domain:family"
+          ],
+          "updatedAt": "2026-07-31T08:33:42Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation"
+          ]
         }
       ],
       "full_candidates": [
@@ -4560,31 +4551,6 @@
           "updatedAt": "2026-09-11T20:21:08Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3532,
-          "title": "fix(memory): reserve cross-provider runtime budget for operational feedback",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3532",
-          "labels": [
-            "enhancement",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-08-01T06:13:41Z",
-          "execution_ready": true,
-          "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",

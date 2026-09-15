@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14T21:21:56.540229Z",
+  "generated_at": "2026-09-15T01:22:19.381114Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 8,
@@ -287,39 +287,6 @@
       "eligible": true
     },
     {
-      "number": 3532,
-      "title": "fix(memory): reserve cross-provider runtime budget for operational feedback",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3532",
-      "labels": [
-        "enhancement",
-        "cat:harness",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude",
-        "domain:ai"
-      ],
-      "updatedAt": "2026-08-01T06:13:41Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.8,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 3554,
       "title": "bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3554",
@@ -415,19 +382,18 @@
       "eligible": false
     },
     {
-      "number": 3527,
-      "title": "fix(scheduler): reconcile identity inventory after merge-base race",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3527",
+      "number": 3544,
+      "title": "security(legal): correct and operationalize Phase A authority activation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
       "labels": [
-        "bug",
-        "cat:harness",
+        "cat:operations",
         "machine:dev-primary",
         "status:plan-approved",
         "gate:completeness",
-        "domain:harness",
-        "lane:claude"
+        "lane:codex",
+        "domain:governance"
       ],
-      "updatedAt": "2026-08-01T06:13:40Z",
+      "updatedAt": "2026-08-01T06:13:49Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "claude",
@@ -449,18 +415,19 @@
       "eligible": false
     },
     {
-      "number": 3544,
-      "title": "security(legal): correct and operationalize Phase A authority activation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3544",
+      "number": 3573,
+      "title": "feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3573",
       "labels": [
-        "cat:operations",
-        "machine:dev-primary",
+        "enhancement",
+        "cat:harness",
+        "machine:multi",
         "status:plan-approved",
         "gate:completeness",
-        "lane:codex",
-        "domain:governance"
+        "lane:claude",
+        "domain:ai"
       ],
-      "updatedAt": "2026-08-01T06:13:49Z",
+      "updatedAt": "2026-07-31T02:26:39Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "claude",
@@ -535,6 +502,35 @@
       "provider_status": "underused",
       "work_type": [
         "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3585,
+      "title": "phone-media: EXIF-date organizer + cross-phone dedupe",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3585",
+      "labels": [
+        "priority:medium",
+        "cat:data",
+        "machine:dev-primary",
+        "domain:family"
+      ],
+      "updatedAt": "2026-07-31T08:33:42Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
         "implementation"
       ],
       "target_label": "agent:codex",

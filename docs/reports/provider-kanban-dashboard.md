@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-14T21:21:59Z
+Generated: 2026-09-15T01:22:21Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,10 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3861 | Bind Python replay reviews to actual production and test import closure | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3860 | Audit mixed clock domains in runtime admission and telemetry validation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3859 | Audit analysis acceptance comparisons for ambient Decimal context dependence | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3858 | Foundation materializer: harden interrupted recovery and clarify evidence contracts | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3855 | Compliance alert: W38 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3854 | Legal scanner named-repo resolver can return a false pass with empty path | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3853 | docs: route engineering analysis criteria and lookup dataset requirements across repositories | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -239,10 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3538 | Evolve calculation citation contract for amendment and exact-source identity | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3537 | [WRK] Make plan-review fanout artifacts atomic and revision-stamped | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3536 | CLI boundaries: prevent argparse from echoing rejected caller-controlled tokens | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3534 | secure(main): require latest-base checks and block unchecked direct pushes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3533 | Make standards registries edition, amendment, access, and rights aware | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3532 | fix(memory): reserve cross-provider runtime budget for operational feedback | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review |
-| #3527 | fix(scheduler): reconcile identity inventory after merge-base race | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review,unavailable_review |
 
 ## Lane: blocked (0)
 
