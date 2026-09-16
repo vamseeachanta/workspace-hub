@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-09-16T05:22:38.130782Z
+Generated: 2026-09-16T09:22:29.558774Z
 Current week: 2026-W38
 Recommended provider order: agy, codex, claude
 
@@ -9,12 +9,11 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 10
+- Execution-ready candidates: 9
 - Total routed candidates: 177
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
-| #3549 feat(ops): registry-driven Linux connection helpers with TDD | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:tooling, domain:workstations, domain:security, machine:dev-primary |
 | #3816 feat(repo): generate authoritative work-surface inventory and adapter coverage report | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:tooling, machine:multi, status:plan-approved, gate:completeness |
 | #3838 fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
 | #3843 refactor(orcaflex): consolidate four model generators onto modular_generator | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
@@ -22,6 +21,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 | #3568 epic(agent-ux): cross-machine input interaction parity | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, domain:workstations, machine:multi, status:plan-approved |
 | #3573 feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide | yes | strategy/workflow/architecture language | enhancement, cat:harness, machine:multi, status:plan-approved, gate:completeness, lane:claude |
 | #3578 fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation | yes | strategy/workflow/architecture language | cat:harness, machine:dev-primary, status:plan-approved, gate:completeness, domain:harness |
+| #3592 equality matrix: reclassify harness/scheduler/memory rows — uniform vote mis-grades per-role differences + Windows placeholder data poisons majority | yes | strategy/workflow/architecture language | cat:harness, domain:workstations, machine:dev-primary, status:plan-approved, gate:completeness, lane:claude |
 
 ## codex
 

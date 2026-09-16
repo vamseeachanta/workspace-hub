@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-09-16T05:22:38.378112Z
+Generated: 2026-09-16T09:22:29.819472Z
 Apply mode: False
 Threshold: 0.9
 
@@ -8,7 +8,6 @@ Threshold: 0.9
 |---|---|---:|---|---|
 | #3740 867 issues cannot leave dispatch:ready — nothing advances dispatch state | agent:codex | 0.95 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3839 fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage | agent:codex | 0.95 | yes | execution-ready, priority-labeled, strong-codex-language-match, provider-highest-priority |
-| #3549 feat(ops): registry-driven Linux connection helpers with TDD | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3816 feat(repo): generate authoritative work-surface inventory and adapter coverage report | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3838 fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3843 refactor(orcaflex): consolidate four model generators onto modular_generator | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
@@ -19,6 +18,7 @@ Threshold: 0.9
 | #3787 pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3573 feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #3578 fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
+| #3592 equality matrix: reclassify harness/scheduler/memory rows — uniform vote mis-grades per-role differences + Windows placeholder data poisons majority | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #3788 bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3821 bug(equality): restore collector idempotency and macOS atomic-publish test portability | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3585 phone-media: EXIF-date organizer + cross-phone dedupe | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |

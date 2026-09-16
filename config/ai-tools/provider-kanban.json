@@ -42,6 +42,40 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
+        "title": "Harden shell test selectors against undefined-helper false greens"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3876,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Harden shell test selectors against undefined-helper false greens",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3876",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
         "title": "Fail closed on incomplete capture snapshots and repository-path validation order"
       },
       "lane": "planning_feedstock",
@@ -7898,61 +7932,48 @@
       "title": "ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3550",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:tooling",
-          "domain:workstations",
-          "domain:security",
-          "machine:dev-primary",
-          "status:plan-approved",
-          "gate:completeness",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- `src/workspace_hub/workstations/resolver.py` is the canonical YAML parser but",
-        "provider_route": "claude",
-        "risks": "**Risk \u2014 dependency drift:** implementation will verify its base descends from the merged #3553 commit before RED tests begin. | **Risk \u2014 old endpoints remain in Git history:** current-tree cleanup will not | **Risk \u2014 registry strictness affects path consumers:** collision validation",
-        "tests": "TDD section present",
-        "title": "feat(ops): registry-driven Linux connection helpers with TDD"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3549,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-07-16-issue-3549-registry-connection-helpers.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(ops): registry-driven Linux connection helpers with TDD",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3549",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-09-16T05:22:40Z",
+  "generated_at": "2026-09-16T09:22:32Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Harden shell test selectors against undefined-helper false greens"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3876,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Harden shell test selectors against undefined-helper false greens",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3876",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -15826,53 +15847,6 @@
         "title": "ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3550",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:tooling",
-            "domain:workstations",
-            "domain:security",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- `src/workspace_hub/workstations/resolver.py` is the canonical YAML parser but",
-          "provider_route": "claude",
-          "risks": "**Risk \u2014 dependency drift:** implementation will verify its base descends from the merged #3553 commit before RED tests begin. | **Risk \u2014 old endpoints remain in Git history:** current-tree cleanup will not | **Risk \u2014 registry strictness affects path consumers:** collision validation",
-          "tests": "TDD section present",
-          "title": "feat(ops): registry-driven Linux connection helpers with TDD"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3549,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-07-16-issue-3549-registry-connection-helpers.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(ops): registry-driven Linux connection helpers with TDD",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3549",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -15883,16 +15857,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-16T05:22:35.790402Z",
+  "scorecard_generated_at": "2026-09-16T09:22:27.267593Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-16T05:22:35.216039Z",
+  "utilization_generated_at": "2026-09-16T09:22:26.905211Z",
   "warning_summary": {
-    "approved_no_marker": 11,
+    "approved_no_marker": 10,
     "approved_no_plan": 7,
     "legacy_review_no_sha": 4,
     "major_review": 3,
     "marker_without_open_approved_issue": 184,
-    "missing_review": 34,
+    "missing_review": 33,
     "unavailable_review": 2
   }
 }

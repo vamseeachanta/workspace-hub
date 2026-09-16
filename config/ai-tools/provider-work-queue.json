@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-16T05:22:38.130782Z",
+  "generated_at": "2026-09-16T09:22:29.558774Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-16T05:22:35.790402Z",
+  "scorecard_generated_at": "2026-09-16T09:22:27.267593Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -11,37 +11,9 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 10,
+      "execution_ready_count": 9,
       "total_candidates": 177,
       "top_issues": [
-        {
-          "number": 3549,
-          "title": "feat(ops): registry-driven Linux connection helpers with TDD",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3549",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:tooling",
-            "domain:workstations",
-            "domain:security",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:13:53Z",
-          "execution_ready": true,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
         {
           "number": 3816,
           "title": "feat(repo): generate authoritative work-surface inventory and adapter coverage report",
@@ -223,27 +195,22 @@
             "implementation",
             "strategy"
           ]
-        }
-      ],
-      "full_candidates": [
+        },
         {
-          "number": 3549,
-          "title": "feat(ops): registry-driven Linux connection helpers with TDD",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3549",
+          "number": 3592,
+          "title": "equality matrix: reclassify harness/scheduler/memory rows \u2014 uniform vote mis-grades per-role differences + Windows placeholder data poisons majority",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3592",
           "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:tooling",
+            "cat:harness",
             "domain:workstations",
-            "domain:security",
             "machine:dev-primary",
             "status:plan-approved",
             "gate:completeness",
             "lane:claude"
           ],
-          "updatedAt": "2026-08-01T06:13:53Z",
+          "updatedAt": "2026-08-01T06:14:03Z",
           "execution_ready": true,
-          "priority_rank": 1,
+          "priority_rank": 4,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -253,7 +220,9 @@
             "implementation",
             "strategy"
           ]
-        },
+        }
+      ],
+      "full_candidates": [
         {
           "number": 3816,
           "title": "feat(repo): generate authoritative work-surface inventory and adapter coverage report",
@@ -914,7 +883,7 @@
             "domain:harness",
             "initiative"
           ],
-          "updatedAt": "2026-09-16T05:22:10Z",
+          "updatedAt": "2026-09-16T06:35:42Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -4245,6 +4214,24 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3874",
           "labels": [],
           "updatedAt": "2026-09-16T03:36:05Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3876,
+          "title": "Harden shell test selectors against undefined-helper false greens",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3876",
+          "labels": [],
+          "updatedAt": "2026-09-16T06:06:19Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",

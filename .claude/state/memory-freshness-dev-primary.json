@@ -1,6 +1,6 @@
 {
   "machine": "dev-primary",
-  "audited_at": "2026-09-16T05:47:04+00:00",
+  "audited_at": "2026-09-16T11:47:03+00:00",
   "surfaces": {
     "bridge_heartbeat": {
       "present": false,
@@ -10,8 +10,8 @@
     },
     "hermes_memories": {
       "present": true,
-      "refreshed_at": "2026-09-14T09:25:05+00:00",
-      "age_hours": 44.366,
+      "refreshed_at": "2026-09-16T09:25:05+00:00",
+      "age_hours": 2.366,
       "signal": "file-mtime"
     },
     "context_md": {
@@ -27,20 +27,20 @@
       "signal": "presence"
     },
     "codex_runtime": {
-      "present": false,
+      "present": true,
       "refreshed_at": null,
       "age_hours": null,
       "signal": "presence"
     },
     "gemini_runtime": {
-      "present": false,
+      "present": true,
       "refreshed_at": null,
       "age_hours": null,
       "signal": "presence"
     }
   },
-  "newest_refresh": "2026-09-14T09:25:05+00:00",
-  "worst_age_hours": 44.366,
-  "freshness": "MISSING-EVIDENCE",
+  "newest_refresh": "2026-09-16T09:25:05+00:00",
+  "worst_age_hours": 2.366,
+  "freshness": "MEMORY-FRESH",
   "schema_version": 2
 }

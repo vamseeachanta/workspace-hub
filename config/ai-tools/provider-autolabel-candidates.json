@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-16T05:22:38.378112Z",
+  "generated_at": "2026-09-16T09:22:29.819472Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 8,
+  "eligible_count": 7,
   "applied": [],
   "candidates": [
     {
@@ -68,43 +68,6 @@
         "priority-labeled",
         "strong-codex-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3549,
-      "title": "feat(ops): registry-driven Linux connection helpers with TDD",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3549",
-      "labels": [
-        "enhancement",
-        "priority:high",
-        "cat:tooling",
-        "domain:workstations",
-        "domain:security",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-08-01T06:13:53Z",
-      "execution_ready": true,
-      "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
       ],
       "eligible": true
     },
@@ -434,6 +397,39 @@
       "provider_priority": "high",
       "provider_status": "underused",
       "work_type": [
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3592,
+      "title": "equality matrix: reclassify harness/scheduler/memory rows \u2014 uniform vote mis-grades per-role differences + Windows placeholder data poisons majority",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3592",
+      "labels": [
+        "cat:harness",
+        "domain:workstations",
+        "machine:dev-primary",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-08-01T06:14:03Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
         "implementation",
         "strategy"
       ],
