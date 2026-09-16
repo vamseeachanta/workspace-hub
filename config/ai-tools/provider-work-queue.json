@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-15T17:21:43.450284Z",
+  "generated_at": "2026-09-15T21:21:41.032810Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-15T17:21:40.217542Z",
+  "scorecard_generated_at": "2026-09-15T21:21:39.062800Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -914,7 +914,7 @@
             "domain:harness",
             "initiative"
           ],
-          "updatedAt": "2026-09-15T11:44:02Z",
+          "updatedAt": "2026-09-15T19:08:58Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",

@@ -1,13 +1,13 @@
 {
   "machine": "dev-primary",
-  "last_curated_at": "2026-09-15T17:47:03+00:00",
+  "last_curated_at": "2026-09-15T23:47:02+00:00",
   "providers": {
     "claude": 3611,
     "codex": 4422,
     "gemini": 2177,
     "hermes": 0
   },
-  "sessions_24h": 8,
+  "sessions_24h": 10,
   "providers_active": [
     "claude",
     "codex",
