@@ -90,7 +90,7 @@ jget() { # jget <json> <key> -> integer/string value (naive but sufficient for t
   printf '%s' "$1" | grep -o "\"$2\": *[^,}]*" | head -1 | sed 's/.*: *//; s/^"//; s/"$//'
 }
 
-if [[ "${NATIVE_ADMISSION_ONLY:-0}" != 1 ]]; then
+if [[ "${NATIVE_ADMISSION_ONLY:-0}" != 1 && "${CODEX_ONLY_ONLY:-0}" != 1 ]]; then
 # ── T1: classify HEALTHY ────────────────────────────────────────────────────
 hub="$(new_sandbox meta)" || exit 1
 r="$(add_repo "$hub" repo-healthy nested)"; link_healthy "$hub" "$r" meta
@@ -247,9 +247,23 @@ sm="$hub/a-submodule"; mkdir -p "$sm/.claude/skills"
 printf 'gitdir: ../.git/modules/a-submodule\n' > "$sm/.git"                  # submodule ⇒ KEPT
 json="$(run_report "$hub")"
 assert_eq "test_worktree_excluded_submodule_kept" "$(jget "$json" repos_total)" "2"
-
 fi
-# Native admission cases exercise the actual copied propagator, without live roots.
+snapshot_adapter() {
+  local path="$1"
+  if command -v cygpath >/dev/null 2>&1; then path="$(cygpath -m "$path")" || return 1; fi
+  uv run --no-project --quiet python -B - "$path" <<'PY'
+import json, os, stat, sys
+try:
+    info = os.lstat(sys.argv[1])
+except FileNotFoundError:
+    print('{"state":"absent"}')
+else:
+    attributes = getattr(info, "st_file_attributes", 0)
+    target = os.readlink(sys.argv[1]) if stat.S_ISLNK(info.st_mode) or attributes & 0x400 else None
+    print(json.dumps([info.st_dev, info.st_ino, info.st_mode, attributes, target]))
+PY
+}
+if [[ "${CODEX_ONLY_ONLY:-0}" != 1 ]]; then
 for variant in absent existing; do
   hub="$(new_sandbox meta)" || exit 1
   cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"
@@ -270,7 +284,6 @@ for variant in absent existing; do
     assert_eq native_existing "$(cat "$r/.codex/skills")" "legacy pointer"
   fi
 done
-
 for reply in 'native:3' 'absent:2' 'garbage:0' 'missing:0' 'runner:127' 'file:2'; do
   hub="$(new_sandbox meta)" || exit 1
   cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"
@@ -288,13 +301,15 @@ for reply in 'native:3' 'absent:2' 'garbage:0' 'missing:0' 'runner:127' 'file:2'
   else
     printf "print('%s')\nraise SystemExit(%s)\n" "${reply%:*}" "${reply#*:}" > "$hub/scripts/skills/native_skill_root.py"
   fi
-  out="$(PATH="$hub/bins:$PATH" bash "$hub/scripts/propagate-ecosystem.sh" --skills-only --only blocked-owner 2>&1)"; result=$?
-  assert_contains "blocked_${reply}_disposition" "$out" "Codex classification blocked"
-  [[ "$result" != 0 ]] && pass "blocked_${reply}_exit" || fail "blocked_${reply}_exit"
+  for mode in default codex_only; do
+    args=(--skills-only --only blocked-owner)
+    [[ "$mode" == codex_only ]] && args=(--codex-only --only blocked-owner)
+    out="$(PATH="$hub/bins:$PATH" bash "$hub/scripts/propagate-ecosystem.sh" "${args[@]}" 2>&1)"; result=$?
+    assert_contains "blocked_${reply}_${mode}_disposition" "$out" "Codex classification blocked"
+    [[ "$result" != 0 ]] && pass "blocked_${reply}_${mode}_exit" || fail "blocked_${reply}_${mode}_exit"
+  done
   assert_eq "blocked_${reply}_preserved" "$(cat "$r/.codex/skills")" "preserve"
 done
-
-# The existing resync route must reach the copied propagator and retain admission.
 hub="$(new_sandbox meta)" || exit 1
 cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"
 r="$(add_repo "$hub" indirect-owner nested)"
@@ -302,26 +317,80 @@ mkdir -p "$r/.agents/skills"
 out="$(WORKSPACE_HUB="$hub" EQ_MACHINE=test-box EQ_SKILL_LINK_ALLOWLIST="" bash "$RESYNC" --apply 2>&1)"
 assert_contains indirect_native_disposition "$out" "native skills preserved"
 [[ ! -e "$r/.codex/skills" && ! -L "$r/.codex/skills" ]] && pass indirect_native_absent || fail indirect_native_absent
-snapshot_adapter() {
-  local path="$1"
-  if command -v cygpath >/dev/null 2>&1; then path="$(cygpath -m "$path")" || return 1; fi
-  uv run --no-project --quiet python -B - "$path" <<'PY'
-import json, os, stat, sys
-try:
-    info = os.lstat(sys.argv[1])
-except FileNotFoundError:
-    print('{"state":"absent"}')
-else:
-    attributes = getattr(info, "st_file_attributes", 0)
-    target = os.readlink(sys.argv[1]) if stat.S_ISLNK(info.st_mode) or attributes & 0x400 else None
-    print(json.dumps([info.st_dev, info.st_ino, info.st_mode, attributes, target]))
-PY
-}
 gemini_before="$(snapshot_adapter "$r/.gemini/skills")" || { fail dry_run_gemini_snapshot_before; exit 1; }
 out="$(bash "$hub/scripts/propagate-ecosystem.sh" --skills-only --dry-run 2>&1)"
 assert_contains dry_run_native_disposition "$out" "native skills preserved"
 gemini_after="$(snapshot_adapter "$r/.gemini/skills")" || { fail dry_run_gemini_snapshot_after; exit 1; }
 assert_eq dry_run_gemini_identity_type_target_unchanged "$gemini_after" "$gemini_before"
+fi
+snapshot_fixture() {
+  local root="$1" entry
+  ( cd "$root" || exit 1
+    declare -F snapshot_adapter >/dev/null || { echo 'snapshot_adapter undefined' >&2; exit 1; }
+    while IFS= read -r -d '' entry; do
+      if [[ -L "$entry" ]]; then printf 'L %s %s\n' "$entry" "$(readlink "$entry")"
+      elif [[ -f "$entry" ]]; then printf 'F %s ' "$entry"; sha256sum "$entry" | cut -d' ' -f1
+      else printf 'D %s\n' "$entry"; fi
+    done < <(find . -path ./.git -prune -o -print0 | sort -z)
+    local adapter; adapter="$(snapshot_adapter "$root/.gemini/skills")" || exit 1
+    printf 'A .gemini/skills %s\n' "$adapter"
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git status --porcelain=v1 --untracked-files=all; fi
+  )
+}
+make_stale_gemini_link() {
+  local root="$1" target link
+  target="$root/.gemini/stale-target"; link="$root/.gemini/skills"
+  mkdir -p "$target"
+  if command -v cygpath >/dev/null 2>&1; then
+    MSYS2_ARG_CONV_EXCL='*' cmd.exe /c mklink /J \
+      "$(cygpath -w "$link")" "$(cygpath -w "$target")" >/dev/null
+  else ln -s stale-target "$link"; fi
+}
+declare -F snapshot_adapter >/dev/null && pass codex_only_snapshot_helper_defined \
+  || { fail codex_only_snapshot_helper_defined; exit 1; }
+for dry in ordinary dry_run; do
+  original="$(new_sandbox meta)" || exit 1; moved="$TEST_PARENT/codex only $dry"
+  hub="$original"
+  cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"; rm -rf "$hub/.claude/skills/_internal"
+  r="$(add_repo "$hub" selected-owner nested)"; other="$(add_repo "$hub" other-owner nested)"
+  mkdir -p "$r/.agents/skills" "$r/.codex" "$r/.gemini" "$other/.agents/skills"
+  for n in one two three four five six; do printf '%s' "$n" > "$r/.agents/skills/$n"; done
+  printf parked > "$r/.codex/skills"; make_stale_gemini_link "$r"
+  printf '{"preserve":true}\n' > "$r/.claude/settings.json"; printf sibling > "$other/.agents/skills/sentinel"
+  mv "$(dirname "$original")" "$moved"; hub="$moved/wshub"
+  r="$hub/selected-owner"; other="$hub/other-owner"
+  git -C "$r" init -q; git -C "$r" add .
+  before="$(snapshot_fixture "$r")" || { fail "codex_only_${dry}_selected_before"; exit 1; }
+  other_before="$(snapshot_fixture "$other")" || { fail "codex_only_${dry}_sibling_before"; exit 1; }
+  args=(--codex-only --verbose --only selected-owner); [[ "$dry" == dry_run ]] && args+=(--dry-run)
+  out="$(cd "$TEST_PARENT" && bash "$hub/scripts/propagate-ecosystem.sh" "${args[@]}" 2>&1)"; result=$?
+  assert_eq "codex_only_${dry}_rc" "$result" 0
+  assert_eq "codex_only_${dry}_single_event" "$(grep -c 'selected-owner native skills preserved; Codex adapter untouched' <<< "$out")" 1
+  selected_after="$(snapshot_fixture "$r")" || { fail "codex_only_${dry}_selected_after"; exit 1; }
+  sibling_after="$(snapshot_fixture "$other")" || { fail "codex_only_${dry}_sibling_after"; exit 1; }
+  assert_eq "codex_only_${dry}_selected_unchanged" "$selected_after" "$before"
+  assert_eq "codex_only_${dry}_sibling_unchanged" "$sibling_after" "$other_before"
+done
+
+expect_codex_only_failure() {
+  local name="$1" hub="$2"; shift 2
+  local before after out result; before="$(snapshot_fixture "$hub")" || { fail "codex_only_${name}_snapshot_before"; return; }
+  out="$(bash "$hub/scripts/propagate-ecosystem.sh" "$@" 2>&1)"; result=$?
+  [[ "$result" != 0 ]] && pass "codex_only_${name}_rc" || fail "codex_only_${name}_rc"
+  after="$(snapshot_fixture "$hub")" || { fail "codex_only_${name}_snapshot_after"; return; }
+  assert_eq "codex_only_${name}_unchanged" "$after" "$before"
+}
+hub="$(new_sandbox meta)" || exit 1; cp "$PROPAGATE_SRC" "$hub/scripts/propagate-ecosystem.sh"; add_repo "$hub" target nested >/dev/null
+expect_codex_only_failure missing "$hub" --codex-only
+expect_codex_only_failure empty "$hub" --codex-only --only
+expect_codex_only_failure option_value "$hub" --codex-only --only --dry-run
+expect_codex_only_failure path_value "$hub" --codex-only --only ../target
+expect_codex_only_failure repeated "$hub" --codex-only --only target --only target
+expect_codex_only_failure hooks_first "$hub" --hooks-only --codex-only --only target
+expect_codex_only_failure hooks_last "$hub" --codex-only --only target --hooks-only
+expect_codex_only_failure unmatched "$hub" --codex-only --only absent
+add_repo "$hub" duplicate flat >/dev/null; add_repo "$hub" duplicate nested >/dev/null
+expect_codex_only_failure duplicate "$hub" --codex-only --only duplicate
 
 # ── Summary ─────────────────────────────────────────────────────────────────
 echo ""
