@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-16T01:22:13.256662Z",
+  "generated_at": "2026-09-16T05:22:38.130782Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-16T01:22:10.726526Z",
+  "scorecard_generated_at": "2026-09-16T05:22:35.790402Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -914,7 +914,7 @@
             "domain:harness",
             "initiative"
           ],
-          "updatedAt": "2026-09-16T00:30:14Z",
+          "updatedAt": "2026-09-16T05:22:10Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1383,33 +1383,6 @@
           "updatedAt": "2026-09-03T18:01:22Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3547,
-          "title": "feat(ops): secure remote Linux access architecture and staged rollout",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3547",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "domain:workstations",
-            "domain:security",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:13:52Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4127,7 +4100,7 @@
           "title": "Align residence-policy routing with reusable solver-result ownership",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3862",
           "labels": [],
-          "updatedAt": "2026-09-16T01:00:33Z",
+          "updatedAt": "2026-09-16T03:08:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4219,7 +4192,7 @@
           "title": "fix(operations): bind CLEAN-only merges to the reviewed head",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3869",
           "labels": [],
-          "updatedAt": "2026-09-15T11:44:04Z",
+          "updatedAt": "2026-09-16T03:08:16Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4262,6 +4235,24 @@
           "provider_priority": "high",
           "provider_status": "underused",
           "work_type": [
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3874,
+          "title": "Fail closed on incomplete capture snapshots and repository-path validation order",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3874",
+          "labels": [],
+          "updatedAt": "2026-09-16T03:36:05Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
             "implementation",
             "strategy"
           ]

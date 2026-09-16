@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-16T01:22:15Z
+Generated: 2026-09-16T05:22:40Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3874 | Fail closed on incomplete capture snapshots and repository-path validation order | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3872 | fix(review): prevent duplicate Claude reviews across PR events | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3871 | fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3869 | fix(operations): bind CLEAN-only merges to the reviewed head | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3551 | ops(dev-primary): roll out and verify Tailscale plus hardened OpenSSH | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3550 | ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3549 | feat(ops): registry-driven Linux connection helpers with TDD | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #3547 | feat(ops): secure remote Linux access architecture and staged rollout | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 
