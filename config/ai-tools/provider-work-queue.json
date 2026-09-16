@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-16T09:22:29.558774Z",
+  "generated_at": "2026-09-16T13:21:42.755027Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-16T09:22:27.267593Z",
+  "scorecard_generated_at": "2026-09-16T13:21:40.411401Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -666,7 +666,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-09-15T11:45:07Z",
+          "updatedAt": "2026-09-16T11:45:08Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -883,7 +883,7 @@
             "domain:harness",
             "initiative"
           ],
-          "updatedAt": "2026-09-16T06:35:42Z",
+          "updatedAt": "2026-09-16T13:04:55Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1128,9 +1128,10 @@
           "labels": [
             "priority:high",
             "cat:operations",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-08-02T03:10:10Z",
+          "updatedAt": "2026-09-16T13:10:54Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1352,33 +1353,6 @@
           "updatedAt": "2026-09-03T18:01:22Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3550,
-          "title": "ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3550",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "domain:workstations",
-            "domain:security",
-            "machine:dev-secondary",
-            "status:needs-plan",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-15T11:35:23Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3772,9 +3746,10 @@
             "bug",
             "cat:harness",
             "cat:tooling",
-            "wrk-item"
+            "wrk-item",
+            "status:plan-review"
           ],
-          "updatedAt": "2026-09-10T21:57:43Z",
+          "updatedAt": "2026-09-16T13:10:56Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4231,7 +4206,25 @@
           "title": "Harden shell test selectors against undefined-helper false greens",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3876",
           "labels": [],
-          "updatedAt": "2026-09-16T06:06:19Z",
+          "updatedAt": "2026-09-16T12:39:29Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3877,
+          "title": "test: verify physical and Git modes in cross-platform fixtures",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3877",
+          "labels": [],
+          "updatedAt": "2026-09-16T12:39:28Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",

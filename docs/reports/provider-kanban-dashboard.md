@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-16T09:22:32Z
+Generated: 2026-09-16T13:21:45Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3877 | test: verify physical and Git modes in cross-platform fixtures | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3876 | Harden shell test selectors against undefined-helper false greens | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3874 | Fail closed on incomplete capture snapshots and repository-path validation order | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3872 | fix(review): prevent duplicate Claude reviews across PR events | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -76,7 +77,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3838 | fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3837 | docs(review): verify Python test-runner entrypoint imports independently of pytest module invocation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3835 | [WRK] R3/R5 recognise a criterion only when it follows the claim, so a preceding clause reads as a violation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3834 | [WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3834 | [WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3833 | [WRK] Soul deployment-drift gate checks two provider paths the installer refuses to create | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3831 | feat(orcaflex): unify local and ecosystem submission to the licensed Windows executor | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3830 | Compliance alert: W37 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -107,7 +108,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3772 | bug(dispatch): lease refs are written to one namespace and synced from another — every host wins every lease | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3770 | security(kanban): PUBLIC repo mirrors ~595 issue cards from 10 PRIVATE repos, republished every 20 minutes | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3768 | security(control-surface): ~9,000 raw issue titles + 1,531 body excerpts committed to the public repo across 9 writers | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3762 | fix(harness): both context guards are name-based and miss the 20KB file that actually auto-loads | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3762 | fix(harness): both context guards are name-based and miss the 20KB file that actually auto-loads | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: major_review,missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3755 | PII: client identifiers persist repo-wide after epic #3095 closed (≥83 files) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3751 | Onboard the remaining RDS host to config/workstations/registry.yaml so it can be scheduled | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3750 | Windows Task Scheduler parity for harness-install-doctor — ace-win-1/-2 never self-heal harness install state | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3554 | bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: major_review,missing_review,unavailable_review |
 | #3552 | security: make Gitleaks configuration fail closed with default rules and positive control | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3551 | ops(dev-primary): roll out and verify Tailscale plus hardened OpenSSH | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3550 | ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

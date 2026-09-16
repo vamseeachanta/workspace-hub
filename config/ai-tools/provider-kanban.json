@@ -42,6 +42,40 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
+        "title": "test: verify physical and Git modes in cross-platform fixtures"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3877,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "test: verify physical and Git modes in cross-platform fixtures",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3877",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
         "title": "Harden shell test selectors against undefined-helper false greens"
       },
       "lane": "planning_feedstock",
@@ -1215,9 +1249,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -1227,7 +1260,8 @@
           "bug",
           "cat:harness",
           "cat:tooling",
-          "wrk-item"
+          "wrk-item",
+          "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -1250,7 +1284,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "[WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3834",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -2433,9 +2469,8 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: major_review,missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -2444,7 +2479,8 @@
         "labels": [
           "priority:high",
           "cat:operations",
-          "machine:dev-primary"
+          "machine:dev-primary",
+          "status:plan-review"
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -2467,7 +2503,11 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "fix(harness): both context guards are name-based and miss the 20KB file that actually auto-loads",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3762",
-      "warnings": []
+      "warnings": [
+        "legacy_review_no_sha",
+        "major_review",
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -7889,57 +7929,48 @@
       "title": "ops(dev-primary): roll out and verify Tailscale plus hardened OpenSSH",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3551",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:medium",
-          "cat:operations",
-          "domain:workstations",
-          "domain:security",
-          "machine:dev-secondary",
-          "status:needs-plan",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3550,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3550",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-09-16T09:22:32Z",
+  "generated_at": "2026-09-16T13:21:45Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "test: verify physical and Git modes in cross-platform fixtures"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3877,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "test: verify physical and Git modes in cross-platform fixtures",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3877",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -9130,9 +9161,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9142,7 +9172,8 @@
             "bug",
             "cat:harness",
             "cat:tooling",
-            "wrk-item"
+            "wrk-item",
+            "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -9165,7 +9196,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "[WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3834",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -10348,9 +10381,8 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: major_review,missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -10359,7 +10391,8 @@
           "labels": [
             "priority:high",
             "cat:operations",
-            "machine:dev-primary"
+            "machine:dev-primary",
+            "status:plan-review"
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
@@ -10382,7 +10415,11 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "fix(harness): both context guards are name-based and miss the 20KB file that actually auto-loads",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3762",
-        "warnings": []
+        "warnings": [
+          "legacy_review_no_sha",
+          "major_review",
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -15804,49 +15841,6 @@
         "title": "ops(dev-primary): roll out and verify Tailscale plus hardened OpenSSH",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3551",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "domain:workstations",
-            "domain:security",
-            "machine:dev-secondary",
-            "status:needs-plan",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3550,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "ops(dev-secondary): roll out and verify Tailscale plus hardened OpenSSH",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3550",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15857,16 +15851,16 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-16T09:22:27.267593Z",
+  "scorecard_generated_at": "2026-09-16T13:21:40.411401Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-16T09:22:26.905211Z",
+  "utilization_generated_at": "2026-09-16T13:21:39.895784Z",
   "warning_summary": {
     "approved_no_marker": 10,
     "approved_no_plan": 7,
-    "legacy_review_no_sha": 4,
-    "major_review": 3,
+    "legacy_review_no_sha": 5,
+    "major_review": 4,
     "marker_without_open_approved_issue": 184,
-    "missing_review": 33,
+    "missing_review": 35,
     "unavailable_review": 2
   }
 }
