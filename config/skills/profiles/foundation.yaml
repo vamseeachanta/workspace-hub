@@ -23,6 +23,12 @@ activation:
   additional_skills: Require explicit profile revision and scope approval; related links do not activate
     skills.
 adapters:
+  repository_installation:
+    mode: family-preserving-project
+    provider_roots:
+      claude: .claude/skills
+      codex: .agents/skills
+    boundary: Exactly the four activation skills and two references; retain family and reference-relative paths.
   claude:
     fixture_root: claude/.claude/skills
     layout: <skill-name>/SKILL.md; preserve reference-relative paths
@@ -33,8 +39,9 @@ adapters:
       verify the actual discovered shell executable inside the intended read-only sandbox. A shell-type
       argument need not pin its executable. Use version-specific observations; do not change installed
       settings.
-  installation: No installer consumes this declarative profile. Fixture assembly must copy enumerated
-    sources and verify digests; disposable copies are not new authored authorities.
+  installation: Historical isolated fixture assembly uses the fixture roots above. Explicit repository
+    materialization uses scripts/skills/materialize_profile.py and repository_installation only;
+    copied payloads are not new authored authorities. Runtime prerequisites remain separately qualified.
   native_preservation: Retain existing system skills, plugins and unrelated settings; enumerate them separately
     from the four project skills.
 runtime_dependencies:
@@ -113,3 +120,7 @@ revision_contract: The base revision anchors unchanged tools; activation hashes 
   content. Resolve both before reusing evidence.
 
 digest_verification: Hash actual working-file bytes by default. Only an entry declaring sha256_normalization crlf-to-lf permits replacing CRLF with LF before hashing; preserve all other bytes and reject unknown normalization modes. Never substitute HEAD blob hashes for changed working content.
+historical_profile_sha256: 101a9b6b9da84b3599434fc2cef134f536f79310cbad199e49a8ae8e8cda744b
+repository_installation_notes: Historical unresolved_live_prerequisites record the pilot context;
+  the current shared data contract is docs/architecture/agent-data-handling-contract.md.
+  Installation and byte parity do not establish provider execution or engineering data readiness.
