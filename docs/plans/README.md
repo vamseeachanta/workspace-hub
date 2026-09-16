@@ -213,6 +213,7 @@ Historical rows below retain their recorded scope and status; they are not curre
 
 | Issue # | Title / Slug | Plan File | Date | Status | Complexity | Notes |
 |---|---|---|---|---|---|---|
+| [#3615](https://github.com/vamseeachanta/workspace-hub/issues/3615) | Foundation profile materializer | [HTML plan](2026-09-14-issue-3615-foundation-materializer.html) | 2026-09-14 | implementation candidate; native rollout blocked | T2 | Six family-preserving payloads in an isolated branch; native discovery is separate from copying and fleet readiness. |
 | [#3296](https://github.com/vamseeachanta/workspace-hub/issues/3296) / [#3615](https://github.com/vamseeachanta/workspace-hub/issues/3615) | Shared risk workflow | [HTML plan](2026-09-12-issue-3615-shared-risk-workflow.html) | 2026-09-12 | reviewed; implementation approval pending | T3 | Ten-path advisory extension of existing evaluator; live enforcement deferred. |
 | [#3606](https://github.com/vamseeachanta/workspace-hub/issues/3606) | Resource authority | [HTML plan](2026-09-12-issue-3606-resource-authority.html) | 2026-09-12 | implemented; local integration verified | T3 | Six-path authority reconciliation and descriptor schema; no data movement. |
 | [Digitalmodel 2093](https://github.com/vamseeachanta/digitalmodel/issues/2093) | mooring-buoy-native-workflow | [Plan](2026-09-11-digitalmodel-2093-mooring-buoy.html) | 2026-09-11 | adversarial-reviewed | T2 | Full-duration local configuration-to-results proof; explicit physical-qualification gaps; bounded native approval required. |
