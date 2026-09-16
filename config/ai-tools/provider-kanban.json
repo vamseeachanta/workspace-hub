@@ -42,6 +42,40 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
+        "title": "fix(review): prevent duplicate Claude reviews across PR events"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3872,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "fix(review): prevent duplicate Claude reviews across PR events",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3872",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
         "title": "fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions"
       },
       "lane": "planning_feedstock",
@@ -7920,55 +7954,48 @@
       "title": "feat(ops): secure remote Linux access architecture and staged rollout",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3547",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "priority:medium",
-          "cat:harness",
-          "domain:workstations",
-          "machine:dev-primary",
-          "status:needs-plan",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "Plan bounded same-account Claude Remote Control pilot on Windows"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3545,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "Plan bounded same-account Claude Remote Control pilot on Windows",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3545",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-09-15T21:21:43Z",
+  "generated_at": "2026-09-16T01:22:15Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "fix(review): prevent duplicate Claude reviews across PR events"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3872,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "fix(review): prevent duplicate Claude reviews across PR events",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3872",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -15864,47 +15891,6 @@
         "title": "feat(ops): secure remote Linux access architecture and staged rollout",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3547",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "Plan bounded same-account Claude Remote Control pilot on Windows"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3545,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "Plan bounded same-account Claude Remote Control pilot on Windows",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3545",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15915,9 +15901,9 @@
     "codex",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-15T21:21:39.062800Z",
+  "scorecard_generated_at": "2026-09-16T01:22:10.726526Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-15T21:21:38.788750Z",
+  "utilization_generated_at": "2026-09-16T01:22:10.244951Z",
   "warning_summary": {
     "approved_no_marker": 11,
     "approved_no_plan": 7,

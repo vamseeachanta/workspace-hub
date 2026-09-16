@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-15T21:21:41.032810Z",
+  "generated_at": "2026-09-16T01:22:13.256662Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-15T21:21:39.062800Z",
+  "scorecard_generated_at": "2026-09-16T01:22:10.726526Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -914,7 +914,7 @@
             "domain:harness",
             "initiative"
           ],
-          "updatedAt": "2026-09-15T19:08:58Z",
+          "updatedAt": "2026-09-16T00:30:14Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -1383,31 +1383,6 @@
           "updatedAt": "2026-09-03T18:01:22Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3545,
-          "title": "Plan bounded same-account Claude Remote Control pilot on Windows",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3545",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:13:50Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4152,7 +4127,7 @@
           "title": "Align residence-policy routing with reusable solver-result ownership",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3862",
           "labels": [],
-          "updatedAt": "2026-09-15T03:52:12Z",
+          "updatedAt": "2026-09-16T01:00:33Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4270,6 +4245,23 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3872,
+          "title": "fix(review): prevent duplicate Claude reviews across PR events",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3872",
+          "labels": [],
+          "updatedAt": "2026-09-16T00:22:46Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]
