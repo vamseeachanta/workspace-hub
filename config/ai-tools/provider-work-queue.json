@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-16T13:21:42.755027Z",
+  "generated_at": "2026-09-16T17:21:56.259946Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-16T13:21:40.411401Z",
+  "scorecard_generated_at": "2026-09-16T17:21:53.706685Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -1353,33 +1353,6 @@
           "updatedAt": "2026-09-03T18:01:22Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3551,
-          "title": "ops(dev-primary): roll out and verify Tailscale plus hardened OpenSSH",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3551",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:operations",
-            "domain:workstations",
-            "domain:security",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-07-15T11:37:27Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4225,6 +4198,24 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3877",
           "labels": [],
           "updatedAt": "2026-09-16T12:39:28Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3878,
+          "title": "Require phase-specific evidence for repeated transaction timing reserves",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3878",
+          "labels": [],
+          "updatedAt": "2026-09-16T14:34:29Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
