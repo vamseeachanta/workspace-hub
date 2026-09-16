@@ -117,23 +117,23 @@ def preflight_sibling_repo(repo_path: Path) -> dict[str, Any]:
     fs_type = detect_fs_type(repo_path)
     if fs_type == "ntfs3":
         return {"status": "blocked", "reason": "ntfs3_mount", "path": str(repo_path)}
-    if not (repo_path / ".git").exists():
-        # Worktrees have .git file, so allow that too.
-        if not (repo_path / ".git").is_file():
-            return {"status": "blocked", "reason": "not_git_repo", "path": str(repo_path)}
-    for path in (repo_path / ".codex" / "skills", repo_path / ".gemini" / "skills"):
+    if not (repo_path / ".git").exists() and not (repo_path / ".git").is_file():
+        return {"status": "blocked", "reason": "not_git_repo", "path": str(repo_path)}
+    native_state = classify_native_root(repo_path)
+    providers = (".gemini",) if native_state == "native" else (".codex", ".gemini")
+    for provider in providers:
+        path = repo_path / provider / "skills"
         classification = classify_owned_skill_path(path, "__preflight_expected_target_placeholder__")
         if classification["status"] == "blocked":
             return {"status": "blocked", "reason": "unsafe_owned_path", "path": str(path), "kind": classification["kind"]}
     status = git_output(repo_path, ["status", "--porcelain"])
-    if status.returncode != 0:
-        return {"status": "blocked", "reason": "git_status_failed", "stderr": status.stderr.strip()}
+    if status.returncode != 0: return {"status": "blocked", "reason": "git_status_failed", "stderr": status.stderr.strip()}
     if status.stdout.strip():
         full_status = git_output(repo_path, ["status", "--porcelain=v1", "--untracked-files=all"])
         status_lines = full_status.stdout.splitlines() if full_status.returncode == 0 else status.stdout.splitlines()
-        touched = [line for line in status_lines if any(p in line for p in (".codex/skills", ".gemini/skills", "AGENTS.md"))]
-        if touched:
-            return {"status": "blocked", "reason": "dirty_touched_paths", "files": touched}
+        dirty_patterns = (".gemini/skills", "AGENTS.md") if native_state == "native" else (".codex/skills", ".gemini/skills", "AGENTS.md")
+        touched = [line for line in status_lines if any(p in line for p in dirty_patterns)]
+        if touched: return {"status": "blocked", "reason": "dirty_touched_paths", "files": touched}
         # Preserve unrelated user/worktree changes; repair owns only provider skill links and AGENTS.md pointers.
         unrelated = status.stdout.splitlines()
     else:
