@@ -1,0 +1,81 @@
+{
+  "issue": "https://github.com/vamseeachanta/workspace-hub/issues/1249",
+  "artifact": "docs/plans/2026-09-18-issue-1249-native-agents-migration.html",
+  "revision": "r4",
+  "sha256": "79788286bced9a83cf40ada759a06ffac59f5b9fd73ae327e69b3fc6e5940b89",
+  "stage": "plan only; implementation awaiting user approval",
+  "codex": {
+    "verdict": "APPROVE",
+    "blocking_findings": [],
+    "verification": "Root independently recomputed exact SHA; native root/nested startup raw outputs independently verified. No global replacement or fleet deployment established."
+  },
+  "claude": {
+    "verdict": "APPROVE",
+    "blocking_findings": [],
+    "raw_receipt_sha256": "17c5b190dcb1c30af7191990fe79c1146c82f17a4565fb7741fc7f4b3f4c0d65",
+    "observed_models": [
+      "claude-opus-5[1m]"
+    ],
+    "limits": [
+      "Plan read-only review; reviewer did not execute probes or recompute artifact digest.",
+      "Phases C-E examined only for deferral integrity."
+    ],
+    "nonblocking_findings": [
+      {
+        "id": "NB-1",
+        "title": "Reviewed digest not independently recomputed",
+        "section": "Whole artifact",
+        "finding": "This review used file reads only; no hashing tool was exercised, so the caller-supplied SHA256 79788286\u2026 was not recomputed from bytes. The prior review carried the same limit against a different digest and an r3 header; this artifact self-identifies as r4, which is consistent with a superseding revision but does not substitute for byte verification.",
+        "remediation": "Recompute the digest at the point of user approval and record it alongside the r4 marker in the approval trail."
+      },
+      {
+        "id": "NB-2",
+        "title": "Preservation manifest is category-enumerated rather than whole-tree; a write under the user Claude root outside the named categories and transaction paths remains undetected",
+        "section": "Live pilot preservation and recovery receipt; Approval and phase boundaries, row B Exit ('no unrelated mutation'); Acceptance criteria bullet 5",
+        "finding": "The manifest covers user rules, settings, hook configuration, plugin configuration and identities, credentials and transaction paths. This closes the concrete B-13 channel \u2014 the protected surfaces named in acceptance bullet 5 that the pilot could plausibly clobber \u2014 and the 'incomplete manifest fails the pilot' clause supplies a completeness duty. It is narrower than a full pre/post walk of the live user Claude tree, so the row-B exit phrase 'no unrelated mutation' is still stated more broadly than the evidence method establishes. Acceptance bullet 5 also names roles and controls, which lie outside the Phase B mutation surface entirely and outside manifest coverage.",
+        "remediation": "Either capture the manifest over the full user Claude tree (metadata and digests only, credential contents excluded as already specified), or restate the row-B exit as 'no mutation outside the declared expected-diff set across the manifested protected categories', and note that roles and controls are preserved by non-inclusion in the Phase B surface rather than by manifest."
+      },
+      {
+        "id": "NB-3",
+        "title": "Provider side-effect path set is not required to be declared before the first mutation, admitting a post-hoc allowlist",
+        "section": "Live pilot preservation and recovery receipt ('Native transcript/cache/log writes will be separately identified as expected provider side effects with exact paths')",
+        "finding": "The exemption is correctly fenced \u2014 it cannot cover settings, plugins, hooks or credentials, and unexplained differences fail the pilot. The plan does not state when the exact side-effect paths are declared. If enumerated after observing the post-manifest diff, the category becomes an explain-away channel for whatever appeared, which is the weaker of the two readings the text allows.",
+        "remediation": "Require the provider side-effect path set to be declared in the pre-manifest, before the first mutation, and treat any side-effect path not present in that prior declaration as an unexplained difference."
+      },
+      {
+        "id": "NB-4",
+        "title": "Control-flow pseudocode is not updated with the manifest capture and compare steps, while step 3 elevates that pseudocode to governing execution order",
+        "section": "Control flow pseudocode; Proposed implementation sequence step 3 ('The control-flow gate ordering will govern execution'); Live pilot preservation and recovery receipt",
+        "finding": "r4 resolves the r3 ordering conflict by making the pseudocode gate ordering authoritative, which is the correct fix. The pseudocode still shows only inventory, prestate, capability/suppressor gates, install, canary, retire and readback \u2014 no pre/post manifest capture or compare. The prose places the manifests precisely ('immediately around each live trial, negative parking operation, and final readback'), so the intent is unambiguous, but the artifact now has one location declared authoritative for ordering and a second location carrying a gate the authoritative one omits.",
+        "remediation": "Add capture_protected_manifest(pre) before the first mutation, and compare_protected_manifest(post) as a failure branch into compare_and_swap_rollback, to the pseudocode so the governing control flow and the receipt section agree."
+      },
+      {
+        "id": "NB-5",
+        "title": "Denied-read events are made invalidating but are not required to be recorded in the receipt",
+        "section": "Proposed implementation sequence, step 2",
+        "finding": "The r3 remediation asked for both invalidation and receipt recording of denied-read attempts. The plan adopts the stronger control (invalidation of the positive trial) but does not require the denial event, its path and its timestamp to appear in the trial receipt. Without the record, a reviewer of the receipt cannot distinguish a trial in which no denial occurred from one in which a denial occurred and the invalidation rule was applied incorrectly.",
+        "remediation": "Require every tool-layer denial during a lazy-discovery trial to be recorded in that trial's receipt with path and time, alongside the resulting invalidation disposition."
+      }
+    ]
+  },
+  "agy": {
+    "verdict": "UNAVAILABLE",
+    "reason": "Existing submit-to-agy.sh dispatch reported agy CLI not found; no installation or credential change."
+  },
+  "required_implementation_disposition": [
+    "Recompute approved artifact digest before implementation.",
+    "Preservation claims must match manifested protected categories; roles and controls stay outside mutation scope.",
+    "Declare permitted provider side-effect paths before first mutation; unexplained drift blocks.",
+    "Executable implementation must include manifest capture/compare in actual control flow.",
+    "Record denied tool events and invalid trial disposition in lazy-read receipts."
+  ],
+  "approval_scope": [
+    "A: hub lifecycle and generator repair",
+    "B: current Windows host pilot after exact code review and validation"
+  ],
+  "deferred": [
+    "C: sibling migration",
+    "D: private/nested policy migration",
+    "E: fleet migration"
+  ]
+}

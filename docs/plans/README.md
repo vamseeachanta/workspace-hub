@@ -569,3 +569,4 @@ Add one row per plan:
 | [dm#1444](https://github.com/vamseeachanta/digitalmodel/issues/1444) | capabilities IA spec — 7 clusters + recency metadata + citable reference index | [Plan](2026-07-06-issue-dm-1444-capabilities-ia-spec.md) | completed | T2 | 2026-07-06 |
 | [dm#1456](https://github.com/vamseeachanta/digitalmodel/issues/1456) | close the 10 section one-pager PDF gaps + coverage ratchet (#1444 follow-on) | [Plan](2026-07-06-issue-dm-1456-section-onepager-gaps.md) | plan-review | T2 | 2026-07-06 |
 | [#3702](https://github.com/vamseeachanta/workspace-hub/issues/3702) | equality artifacts out of the tracked tree — break the STALE-CHECKOUT ratchet | [Plan](2026-07-30-issue-3702-equality-artifacts-out-of-tree.md) | plan-review | T2 | 2026-07-30 |
+| [#1249](https://github.com/vamseeachanta/workspace-hub/issues/1249) | Native AGENTS.md migration for Claude | [Plan](2026-09-18-issue-1249-native-agents-migration.html) | plan-review | T3 | 2026-09-18 |
