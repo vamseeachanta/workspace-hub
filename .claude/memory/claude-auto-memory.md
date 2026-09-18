@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-09-17
+> Last captured: 2026-09-18
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -11,7 +11,7 @@
 
 ## Active & Recent Projects
 - [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-07 r3 STOPPED at 4479 by the OWNER’S parallel gpu-claw session (cycle-averaged R_T ≈226–227 kN at 13 kn firm; mesh promoted; matrix of 11 conditions building; gpu-claw → condition 2). This thread’s execution role is SUPERSEDED — read `reports/internal-draft/status-neutral-<latest>.md` first; never restart r3. Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
-- [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 65+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
+- [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 66+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
 - [CLAUDE.md harness retired](project_claude_md_harness_retired.md) — 2026-08-01 all three CLAUDE.md surfaces DELETED; **AGENTS.md …
 - [Fleet reachability + solver access](project_fleet_reachability_and_solver_access_2026_07_31.md) — 2026-07-31 fleet **5/5 SSH-reachable**; …
 - [Dispatch surface: label axes made deterministic (EPIC deckhand#584)](project_dispatch_surface_label_axes_2026_07_31.md) — 2026-07-31 ✅ 5 PRs merged; …
@@ -117,7 +117,7 @@
 - [SVG-for-PDF portability](feedback_svg_pdf_portability_no_patterns_clippaths.md) — no `<pattern>`/clipPath/filter/mask in PDF-bound SVG; …
 
 ## Key References
-- [CFD run statusline](reference_cfd_run_statusline.md) — gpu-claw cron `*/15` → `~/cfd/b1552/status/latest.txt` (+ `status.log`); both Claude status bars read it; ace-linux-1 mirror self-refreshes (crontab denied there); combined wrapper keeps the hub line *stale: 2026-09-18*
+- [CFD run statusline](reference_cfd_run_statusline.md) — gpu-claw cron `*/15` → `~/cfd/b1552/status/latest.txt` (+ `status.log`); both Claude status bars read it; ace-linux-1 mirror self-refreshes (crontab denied there); combined wrapper keeps the hub line
 - [gpu-claw disk reclaim rule](reference_gpu_claw_disk_reclaim_rule.md) — keep-last-time-only per case (45 G freed 2026-09-03); NEVER trim dm1528 sloshing series (#1437 open)
 - ⚠ **[WORKING SURFACE = `/mnt/ace/ws`](reference_ecosystem_migrated_to_ext4_mnt_ace_ws.md)** — canonical root on ace-linux-1 since 2026-08-03; `/mnt/local-analysis` is a legacy compatibility symlink — 2026-08-03 symlinked; `git status` 11.6s → **23ms**. Traps: `worktree repair` repairs the WRONG direction after a whole-tree copy; every rsync buys one slow `git status` (index stat cache)
 - [/mnt/ace is a PUBLIC SMB share](reference_mnt_ace_is_public_smb_share.md) — 777 + NFS-rw + `guest ok = yes` + browseable; …
