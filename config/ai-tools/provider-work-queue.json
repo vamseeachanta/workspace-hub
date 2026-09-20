@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-20T13:21:36.360057Z",
+  "generated_at": "2026-09-20T17:21:33.032259Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-20T13:21:34.228162Z",
+  "scorecard_generated_at": "2026-09-20T17:21:30.767089Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -1613,7 +1613,7 @@
             "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-09-14T21:44:45Z",
+          "updatedAt": "2026-09-20T16:31:50Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
