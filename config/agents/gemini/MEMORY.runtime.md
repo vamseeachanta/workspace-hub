@@ -43,4 +43,4 @@
 - **NaN correlations**: Zero std dev (e.g., yaw at head seas) — handle gracefully
 - **AQWA FATAL mesh errors**: Cannot be overridden with `OPTIONS GOON`; fix the mesh
 - **LIS parser**: Normalize whitespace before keyword matching ("ADDED  MASS" has double space)
-_[131 entries omitted: oversize/over-cap]_
+_[130 entries omitted: oversize/over-cap]_
