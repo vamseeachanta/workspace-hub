@@ -11,7 +11,7 @@ import subprocess
 from claude_native_probe import (guard_controls, project_state, protected_admission_state,
                                 protected_state, run_probe, sha, write_json)
 from claude_runtime_state import REQUIRED_CHECKS, provider_environment, provider_version
-from claude_runtime_transaction import Transaction
+from claude_runtime_transaction import Transaction, file_record
 from claude_native_restore import recovery_reference
 
 CANONICAL_TOKEN = "feedback_edit_tool_freshness_window_after_writes"
@@ -210,6 +210,11 @@ def derive_checks(records, rollback, final_readback, lazy, controls):
     return {key: "PASS" if value else "FAIL" for key, value in checks.items()}
 
 
+def lazy_fixture_state(instruction, parked):
+    return {name: {"path": str(path), "record": file_record(path) if os.path.lexists(path) else None}
+            for name, path in (("instruction", instruction), ("parked", parked))}
+
+
 def lazy_trials(cli, cases, output, home, baseline):
     root = output / "fixture"
     nested = root / "nested"
@@ -233,12 +238,18 @@ def lazy_trials(cli, cases, output, home, baseline):
             for _, directory, _ in cases:
                 suppressors(directory, home)
             check_preservation(home, baseline, output, "lazy-" + phase + "-before")
+            fixture_before = lazy_fixture_state(instruction, parked)
+            write_json(output / ("lazy-" + phase + "-before.fixture.json"), fixture_before)
             verdict = run_probe(cli, root, output, "lazy-" + phase, CANONICAL_TOKEN, expected,
                                 global_mode="canonical", project_mode="lazy", read_path=target)
             if verdict.get("status") != "PASS" or verdict.get("tokens") != {
                     "global_token": CANONICAL_TOKEN, "project_token": expected}:
                 raise ValueError("Lazy instruction evidence mismatch")
             check_preservation(home, baseline, output, "lazy-" + phase + "-after")
+            fixture_after = lazy_fixture_state(instruction, parked)
+            write_json(output / ("lazy-" + phase + "-after.fixture.json"), fixture_after)
+            if fixture_after != fixture_before:
+                raise ValueError("Lazy fixture changed during probe")
             for _, directory, _ in cases:
                 suppressors(directory, home)
             results[phase] = "PASS"
@@ -248,6 +259,7 @@ def lazy_trials(cli, cases, output, home, baseline):
             if os.path.lexists(instruction) or (current.st_dev, current.st_ino) != (identity.st_dev, identity.st_ino):
                 raise ValueError("Lazy fixture recovery blocked by drift")
             parked.rename(instruction)
+    write_json(output / "lazy-restored.fixture.json", lazy_fixture_state(instruction, parked))
     write_json(output / "lazy-checks.json", results)
     return results
 

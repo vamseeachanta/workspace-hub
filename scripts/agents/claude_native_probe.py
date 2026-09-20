@@ -39,6 +39,21 @@ def reject_link_chain(path):
                 raise ValueError("Protected path has a linked/reparse ancestor")
 
 
+def marketplace_config_digest(raw):
+    """Bind registry policy, excluding only each entry's validated cache timestamp."""
+    data = json.loads(raw)
+    if not isinstance(data, dict):
+        raise ValueError("Marketplace registry must be an object")
+    normalized = {}
+    for name, entry in data.items():
+        if not isinstance(entry, dict) or not isinstance(entry.get("lastUpdated"), str):
+            raise ValueError("Marketplace cache timestamp missing or invalid")
+        if datetime.fromisoformat(entry["lastUpdated"].replace("Z", "+00:00")).tzinfo is None:
+            raise ValueError("Marketplace cache timestamp requires timezone")
+        normalized[name] = {key: value for key, value in entry.items() if key != "lastUpdated"}
+    return hashlib.sha256(json.dumps(normalized, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
 def protected_state(home, *, admission=False):
     user = Path(home) / ".claude"
     reject_link_chain(user)
@@ -64,12 +79,17 @@ def protected_state(home, *, admission=False):
                   "attributes": getattr(info, "st_file_attributes", 0) if info else None}
         if not admission or name != ".credentials.json":
             record["sha256"] = sha(path) if info else None
+        if admission and info and name == "plugins/known_marketplaces.json":
+            raw = path.read_bytes()
+            if hashlib.sha256(raw).hexdigest() != record["sha256"]:
+                raise ValueError("Marketplace registry changed during read")
+            record.update(sha256=marketplace_config_digest(raw), digest_kind="marketplace-config-v1")
         records.append(record)
     return records
 
 
 def protected_admission_state(home):
-    """Credential rotation is not instruction drift; all policy content remains bound."""
+    """Ignore credential rotation and registry cache clocks; bind all policy content."""
     return protected_state(home, admission=True)
 
 

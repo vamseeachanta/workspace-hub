@@ -199,6 +199,15 @@ def test_lazy_pair_restores_only_fixture_instructions(pilot, tmp_path, monkeypat
     assert json.loads((output / "lazy-checks.json").read_text()) == {"positive": "PASS", "negative": "PASS"}
     assert (output / "fixture/nested/AGENTS.md").exists()
     assert not (output / "parked-lazy-AGENTS.md").exists()
+    positive = json.loads((output / "lazy-positive-before.fixture.json").read_text())
+    negative = json.loads((output / "lazy-negative-before.fixture.json").read_text())
+    assert positive["instruction"]["record"] and positive["parked"]["record"] is None
+    assert negative["instruction"]["record"] is None
+    assert negative["parked"]["record"] == positive["instruction"]["record"]
+    for phase in ("positive", "negative"):
+        assert json.loads((output / ("lazy-" + phase + "-before.fixture.json")).read_text()) == json.loads(
+            (output / ("lazy-" + phase + "-after.fixture.json")).read_text())
+    assert json.loads((output / "lazy-restored.fixture.json").read_text()) == positive
 
 
 def test_authoritative_publication_failure_removes_replica(pilot, tmp_path, monkeypatch):

@@ -94,6 +94,60 @@ def test_bound_receipt_selects_native_fixture(runtime, tmp_path):
     assert module.inspect_runtime(repo, home)["state"] == "NATIVE_VERIFIED"
 
 
+def marketplace_registry(home):
+    path = home / ".claude/plugins/known_marketplaces.json"
+    path.parent.mkdir()
+    data = {"fixture": {"source": {"source": "github", "repo": "example/fixture"},
+                        "installLocation": "fixture", "lastUpdated": "2026-09-20T00:00:00Z"}}
+    path.write_text(json.dumps(data))
+    return path, data
+
+
+def test_marketplace_clock_is_not_policy_but_full_preservation_sees_it(runtime, tmp_path):
+    from claude_native_probe import protected_state
+    module, repo, home, _ = runtime
+    path, data = marketplace_registry(home)
+    native_fixture(runtime, tmp_path)
+    before = protected_state(home)
+    data["fixture"]["lastUpdated"] = "2026-09-20T01:00:00Z"
+    path.write_text(json.dumps(data))
+    assert protected_state(home) != before
+    assert module.inspect_runtime(repo, home)["state"] == "NATIVE_VERIFIED"
+
+
+@pytest.mark.parametrize("change", ["valid", "unchanged", "missing", "tampered", "source", "location", "extra", "bad-clock", "linked", "escaping-link"])
+def test_legacy_marketplace_reference_requires_exact_authenticated_baseline(runtime, tmp_path, change):
+    module, repo, home, _ = runtime
+    path, data = marketplace_registry(home)
+    original = path.read_bytes()
+    state, receipt = native_fixture(runtime, tmp_path)
+    row = next(x for x in receipt["protected"] if x["path"] == "plugins/known_marketplaces.json")
+    row.pop("digest_kind", None)
+    row["sha256"] = hashlib.sha256(original).hexdigest()
+    state.write_text(json.dumps(receipt))
+    evidence = Path(receipt["evidence_root"])
+    (evidence / "verification-receipt.json").write_bytes(state.read_bytes())
+    if change in ("linked", "escaping-link"):
+        target = (evidence if change == "linked" else tmp_path) / "baseline-target.json"
+        target.write_bytes(original)
+        (evidence / "known-marketplaces-baseline.json").symlink_to(target)
+    elif change not in ("missing", "unchanged"):
+        (evidence / "known-marketplaces-baseline.json").write_bytes(original if change != "tampered" else b"{}")
+    if change != "unchanged":
+        data["fixture"]["lastUpdated"] = "2026-09-20T01:00:00Z"
+    if change == "source":
+        data["fixture"]["source"]["repo"] = "example/changed"
+    elif change == "location":
+        data["fixture"]["installLocation"] = "changed"
+    elif change == "extra":
+        data["added"] = data["fixture"].copy()
+    elif change == "bad-clock":
+        data["fixture"]["lastUpdated"] = "invalid"
+    path.write_text(json.dumps(data))
+    expected = "NATIVE_VERIFIED" if change in ("valid", "unchanged") else "BLOCKED"
+    assert module.inspect_runtime(repo, home)["state"] == expected
+
+
 @pytest.mark.parametrize("change", ["source", "evidence", "config", "version", "home", "checks"])
 def test_changed_proof_fails_closed(runtime, tmp_path, change, monkeypatch):
     module, repo, home, source = runtime

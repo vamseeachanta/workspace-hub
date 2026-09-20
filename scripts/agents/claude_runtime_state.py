@@ -73,8 +73,30 @@ def verify_receipt(user_root, source):
     verify_files(receipt, user_root)
 
 
+def protected_matches(receipt, user_root):
+    from claude_native_probe import protected_admission_state, marketplace_config_digest, reject_link_chain
+    expected = [dict(row) for row in receipt["protected"]]
+    actual = protected_admission_state(user_root.parent)
+    for row in expected:
+        if (row.get("path") != "plugins/known_marketplaces.json" or row.get("type") != "regular"
+                or "digest_kind" in row):
+            continue
+        # Legacy receipts bind raw bytes. Never infer the prior registry policy.
+        reference = safe_child(Path(receipt["evidence_root"]), "known-marketplaces-baseline.json")
+        if not reference.exists() and not reference.is_symlink():
+            reference = user_root / "plugins/known_marketplaces.json"
+        reject_link_chain(reference)
+        if not reference.is_file():
+            raise ValueError("Authenticated marketplace baseline unavailable")
+        raw = reference.read_bytes()
+        if hashlib.sha256(raw).hexdigest() != row["sha256"]:
+            raise ValueError("Marketplace baseline does not match the original receipt")
+        row.update(sha256=marketplace_config_digest(raw), digest_kind="marketplace-config-v1")
+    return expected == actual
+
+
 def verify_files(receipt, user_root):
-    from claude_native_probe import project_state, protected_admission_state
+    from claude_native_probe import project_state
     from claude_native_restore import recovery_reference
 
     evidence_root = Path(receipt["evidence_root"])
@@ -87,7 +109,7 @@ def verify_files(receipt, user_root):
     protected = receipt.get("protected", [])
     if not evidence or not protected:
         raise ValueError("Evidence and protected-state bindings required")
-    if protected_admission_state(user_root.parent) != protected:
+    if not protected_matches(receipt, user_root):
         raise ValueError("Protected configuration or discovery set changed")
     project = Path(receipt["project_root"])
     if project.resolve() != Path(receipt["source"]).resolve().parents[3]:
