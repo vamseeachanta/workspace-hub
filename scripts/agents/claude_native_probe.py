@@ -14,6 +14,9 @@ PROTECTED_FILES = ("settings.json", "settings.local.json", ".credentials.json",
                    "plugins/installed_plugins.json", "plugins/known_marketplaces.json",
                    "plugins/config.json", "plugins/settings.json")
 PROTECTED_TREES = ("rules", "hooks")
+PROBE_SCHEMA = {"type": "object", "properties": {
+    "global_token": {"type": "string"}, "project_token": {"type": "string"}},
+    "required": ["global_token", "project_token"], "additionalProperties": False}
 
 
 def sha(path):
@@ -90,39 +93,52 @@ def tool_blocks(events, kind):
             if isinstance(block, dict) and block.get("type") == kind]
 
 
-def validate_read(events, path, denied=False):
-    calls = tool_blocks(events, "tool_use")
+def validate_read(events, path, denied=False, format_tool_id=None):
+    calls = [c for c in tool_blocks(events, "tool_use") if c.get("id") != format_tool_id]
     if len(calls) != 1 or calls[0].get("name") != "Read":
         raise ValueError("Exactly one Read required")
     supplied = calls[0].get("input", {}).get("file_path", "")
     if not Path(supplied).is_absolute() or Path(supplied) != Path(path):
         raise ValueError("Read path outside exact fixture")
-    results = tool_blocks(events, "tool_result")
+    results = [r for r in tool_blocks(events, "tool_result") if r.get("tool_use_id") != format_tool_id]
     if len(results) != 1 or results[0].get("tool_use_id") != calls[0].get("id"):
         raise ValueError("Exact Read result missing")
     if bool(results[0].get("is_error")) != denied:
         raise ValueError("Read result did not match enforcement control")
 
 
+def validate_formatter(events, result, expected):
+    identifiers = [c.get("id") for c in tool_blocks(events, "tool_use")]
+    if any(not isinstance(value, str) or not value for value in identifiers) or len(set(identifiers)) != len(identifiers):
+        raise ValueError("Missing or duplicate tool identity")
+    calls = [c for c in tool_blocks(events, "tool_use") if c.get("name") == "StructuredOutput"]
+    if len(calls) != 1 or not calls[0].get("id") or calls[0].get("input") != expected:
+        raise ValueError("Exact structured formatter call required")
+    identifier = calls[0]["id"]
+    results = [r for r in tool_blocks(events, "tool_result") if r.get("tool_use_id") == identifier]
+    if len(results) != 1 or results[0].get("is_error") or result.get("structured_output") != expected:
+        raise ValueError("Structured output missing, failed or mismatched")
+    return identifier
+
+
 def validate_events(events, global_token, project_token, read_path=None):
     init = next(e for e in events if e.get("type") == "system" and e.get("subtype") == "init")
-    if init.get("tools") != (["Read"] if read_path else []) or init.get("mcp_servers") != []:
-        raise ValueError("Startup probe was not tools/MCP disabled")
+    expected_tools = ["Read", "StructuredOutput"] if read_path else ["StructuredOutput"]
+    if sorted(init.get("tools", [])) != expected_tools or init.get("mcp_servers") != []:
+        raise ValueError("Unexpected tools/MCP in structured probe")
     if not any(p.get("name") == "agents-md" and p.get("source") == "agents-md@builtin"
                for p in init.get("plugins", [])):
         raise ValueError("Native AGENTS plugin not observed")
-    if read_path:
-        validate_read(events, read_path)
-    elif tool_blocks(events, "tool_use"):
-        raise ValueError("Tool attempt invalidated startup probe")
     result = next(e for e in events if e.get("type") == "result")
     if result.get("is_error") or result.get("permission_denials"):
         raise ValueError("Provider result failed or encountered a denial")
-    body = result["result"].strip().removeprefix("```json").removesuffix("```").strip()
     expected = {"global_token": global_token, "project_token": project_token}
-    if json.loads(body) != expected:
-        raise ValueError("Native instruction response mismatch")
-    return {"status": "PASS", "tokens": expected,
+    format_id = validate_formatter(events, result, expected)
+    if read_path:
+        validate_read(events, read_path, format_tool_id=format_id)
+    elif len(tool_blocks(events, "tool_use")) != 1 or len(tool_blocks(events, "tool_result")) != 1:
+        raise ValueError("Operational tool attempt invalidated startup probe")
+    return {"status": "PASS", "tokens": expected, "format_tool_id": format_id,
             "models": list(result.get("modelUsage", {})),
             "limits": "Startup only; lazy nested discovery and other hosts not tested"}
 
@@ -136,10 +152,12 @@ def probe_prompt(global_mode="canary", project_mode="fixture", allow_read=False)
         global_question = "the deployment_probe beginning_token and global_token joined with |"
     if project_mode == "lazy":
         project_question = "the deployment_probe lazy_token discovered after the Read"
-    restriction = " Perform exactly one Read of the supplied path, then no further tools." if allow_read else " Do not use tools."
+    restriction = (" Perform exactly one Read of the supplied path, then submit via StructuredOutput."
+                   if allow_read else " Use only StructuredOutput to submit; no operational tools.")
     return ("Return only JSON with global_token set to " + global_question +
             " and project_token set to " + project_question +
-            ", from loaded instructions. For missing values use NOT_LOADED." + restriction)
+            ", from loaded instructions. Prefer the nearest nested instruction when values overlap."
+            " For missing values use NOT_LOADED." + restriction)
 
 
 def check_prompt(prompt, global_token, project_token):
@@ -147,13 +165,15 @@ def check_prompt(prompt, global_token, project_token):
         raise ValueError("Canary leaked into the request")
 
 
-def native_call(cli, cwd, output, name, prompt, settings=None):
+def native_call(cli, cwd, output, name, prompt, settings=None, schema=None):
     args = [str(cli), "--print", "--tools", "", "--strict-mcp-config", "--mcp-config",
             '{"mcpServers":{}}', "--no-chrome", "--no-session-persistence",
             "--max-budget-usd", "1", "--output-format", "stream-json", "--verbose"]
     if settings is not None:
         args[3] = "Read"
         args += ["--settings", json.dumps(settings), "--permission-mode", "dontAsk"]
+    if schema is not None:
+        args += ["--json-schema", json.dumps(schema)]
     write_json(output / (name + ".request.json"), {"command": args, "cwd": str(cwd),
                "prompt": prompt, "observed_at": datetime.now(timezone.utc).isoformat()})
     try:
@@ -181,9 +201,9 @@ def guard_settings(allowed, audit):
             "timeout": 10}]}]}}
 
 
-def validate_audit(audit, events, requested, decision):
+def validate_audit(audit, events, requested, decision, format_tool_id=None):
     rows = [json.loads(line) for line in audit.read_text(encoding="utf-8").splitlines() if line]
-    calls = tool_blocks(events, "tool_use")
+    calls = [c for c in tool_blocks(events, "tool_use") if c.get("id") != format_tool_id]
     if (len(rows) != 1 or len(calls) != 1 or rows[0].get("decision") != decision
             or rows[0].get("tool_name") != "Read"
             or rows[0].get("tool_use_id") != calls[0].get("id")
@@ -200,10 +220,10 @@ def run_probe(cli, cwd, output, name, global_token, project_token,
         prompt = "First Read exactly " + str(read_path) + ". " + prompt
         settings = guard_settings(read_path, audit)
     check_prompt(prompt, global_token, project_token)
-    events = native_call(cli, cwd, output, name, prompt, settings)
+    events = native_call(cli, cwd, output, name, prompt, settings, schema=PROBE_SCHEMA)
     verdict = validate_events(events, global_token, project_token, read_path)
     if read_path:
-        validate_audit(audit, events, read_path, "allow")
+        validate_audit(audit, events, read_path, "allow", format_tool_id=verdict["format_tool_id"])
     verdict["stdout_sha256"] = sha(output / (name + ".stdout.jsonl"))
     write_json(output / (name + ".verdict.json"), verdict)
     return verdict

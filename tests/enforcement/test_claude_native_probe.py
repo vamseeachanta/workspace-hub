@@ -16,12 +16,17 @@ def probe():
 
 
 def events(**overrides):
-    init = {"type": "system", "subtype": "init", "tools": [], "mcp_servers": [],
+    init = {"type": "system", "subtype": "init", "tools": ["StructuredOutput"], "mcp_servers": [],
             "plugins": [{"name": "agents-md", "source": "agents-md@builtin"}]}
     init.update(overrides)
     result = {"type": "result", "is_error": False,
+              "structured_output": {"global_token": "g", "project_token": "p"},
               "result": json.dumps({"global_token": "g", "project_token": "p"})}
-    return [init, result]
+    return [init, {"type": "assistant", "message": {"content": [
+        {"type": "tool_use", "name": "StructuredOutput", "id": "format",
+         "input": result["structured_output"]}]}},
+        {"type": "user", "message": {"content": [
+        {"type": "tool_result", "tool_use_id": "format", "content": "success"}]}}, result]
 
 
 def test_exact_tokens_and_builtin_required(probe):
@@ -84,7 +89,7 @@ def test_read_prompt_has_no_contradictory_tool_ban(probe):
 
 
 def lazy_events(path):
-    data = events(tools=["Read"])
+    data = events(tools=["Read", "StructuredOutput"])
     data[1:1] = [
         {"type": "assistant", "message": {"content": [{"type": "tool_use", "id": "one",
          "name": "Read", "input": {"file_path": str(path)}}]}},
@@ -118,20 +123,72 @@ def test_hook_audit_binds_exact_tool_call(probe, tmp_path):
     target, audit = tmp_path / "harmless.txt", tmp_path / "audit.jsonl"
     row = {"tool_use_id": "one", "tool_name": "Read", "decision": "allow", "requested_path": str(target)}
     audit.write_text(json.dumps(row) + "\n")
-    probe.validate_audit(audit, lazy_events(target), target, "allow")
+    probe.validate_audit(audit, lazy_events(target), target, "allow", format_tool_id="format")
     row["tool_use_id"] = "unrelated"
     audit.write_text(json.dumps(row) + "\n")
     with pytest.raises(ValueError, match="enforcement"):
-        probe.validate_audit(audit, lazy_events(target), target, "allow")
+        probe.validate_audit(audit, lazy_events(target), target, "allow", format_tool_id="format")
 
 
 def test_denial_control_requires_failed_tool_result(probe, tmp_path):
     target = tmp_path / "denied.txt"
     data = lazy_events(target)
     with pytest.raises(ValueError):
-        probe.validate_read(data, target, denied=True)
+        probe.validate_read(data, target, denied=True, format_tool_id="format")
     data[2]["message"]["content"][0]["is_error"] = True
-    probe.validate_read(data, target, denied=True)
+    probe.validate_read(data, target, denied=True, format_tool_id="format")
+
+
+def test_structured_result_is_required_even_if_text_contains_correct_values(probe):
+    data = events()
+    del data[-1]["structured_output"]
+    with pytest.raises(ValueError):
+        probe.validate_events(data, "g", "p")
+
+
+@pytest.mark.parametrize("mutation", ["extra-key", "wrong-input", "failed-format", "duplicate-format"])
+def test_malformed_structured_protocol_is_rejected(probe, mutation):
+    data = events()
+    if mutation == "extra-key":
+        data[-1]["structured_output"]["extra"] = "not allowed"
+    elif mutation == "wrong-input":
+        data[1]["message"]["content"][0]["input"] = {"global_token": "wrong", "project_token": "p"}
+    elif mutation == "failed-format":
+        data[2]["message"]["content"][0]["is_error"] = True
+    else:
+        data.insert(1, data[1])
+    with pytest.raises(ValueError):
+        probe.validate_events(data, "g", "p")
+
+
+def test_structured_output_is_checked_instead_of_prose(probe):
+    data = events()
+    data[-1]["result"] = '```json\n{}\n```\nExplanatory note'
+    assert probe.validate_events(data, "g", "p")["status"] == "PASS"
+
+
+def test_operational_tool_cannot_reuse_formatter_identity(probe, tmp_path):
+    path = tmp_path / "harmless.txt"
+    data = lazy_events(path)
+    data.insert(1, {"type": "assistant", "message": {"content": [
+        {"type": "tool_use", "name": "Bash", "id": "format", "input": {}}]}})
+    with pytest.raises(ValueError):
+        probe.validate_events(data, "g", "p", read_path=path)
+
+
+def test_native_command_requests_shape_without_expected_tokens(probe, tmp_path, monkeypatch):
+    from types import SimpleNamespace
+    captured = []
+    def run(args, **kwargs):
+        captured.append(args)
+        return SimpleNamespace(returncode=0, stdout=b'{"type":"result"}\n', stderr=b'')
+    monkeypatch.setattr(probe.subprocess, "run", run)
+    probe.native_call("cli", tmp_path, tmp_path, "schema", "question", schema=probe.PROBE_SCHEMA)
+    args = captured[0]
+    schema = json.loads(args[args.index("--json-schema") + 1])
+    assert schema["additionalProperties"] is False
+    assert schema["properties"] == {"global_token": {"type": "string"}, "project_token": {"type": "string"}}
+    assert args[args.index("--tools") + 1] == ""
 
 
 def test_guard_settings_uses_arguments_without_shell(probe, tmp_path):
