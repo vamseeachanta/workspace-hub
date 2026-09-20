@@ -89,8 +89,7 @@ These gates apply to **all meaningful work** on this repo. Provider runtimes inh
 3. **Gate order**: Issue → Plan → Adversarial Review → verify authority appropriate to risk/scope → Implement → Cross-review → Close. Approval labels remain owner-controlled records; they are not a universal prerequisite for routine authorized work.
 4. **Adversarial review at BOTH stages**: plan AND code/artifact. Scale: T1 = 1 provider (simple, single-file), T2 = 2 providers (medium, multi-file or harness), T3 = 3 providers (large, cross-provider or systemic). Never skip; dial depth to scope.
 5. **Cross-review default 3-agent**: Claude + Codex + Agy (Antigravity, Gemini-backed; #3573) per AGENTS.md AI Review Policy (Claude orchestrates).
-6. **Legal/security scan**: code must pass `scripts/legal/legal-sanity-scan.sh`; no client identifiers in code (see [`.claude/docs/legal-scanning.md`](../../.claude/docs/legal-scanning.md) and `.legal-deny-list.yaml`); secrets via environment variables only; never hardcode API keys/tokens.
-7. **Security baseline**: input validation, parameterized queries, no hardcoded secrets.
+6. **Security baseline**: input validation, parameterized queries, no hardcoded secrets; secrets via environment variables only; never hardcode API keys/tokens.
 
 # Must-Fire Rules (per-message reinforcement)
 
@@ -313,15 +312,15 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 - **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
 - **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
 - **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
-- **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
-- **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
 - **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
 - **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
+- **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
+- **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
 - **coordination/** — 60 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
 - **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
-- **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
 - **data/** — 85 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
+- **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
 - **development/** — 72 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
 - **devops/** — 8 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
 - **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
@@ -350,8 +349,8 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 - **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
 - **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
 - **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
-- **workspace-hub-learned/** — 70 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
 - **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
+- **workspace-hub-learned/** — 70 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
 
 ## Universal rules (inlined for Codex)
 > Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.
