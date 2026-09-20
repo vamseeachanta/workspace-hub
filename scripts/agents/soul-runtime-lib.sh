@@ -15,7 +15,7 @@ append_codex_agents_extras() {
         if [[ -d "${skills_root}" ]]; then
             # FAMILY-level index (~50 lines) — NOT one line per nested SKILL.md (1000+),
             # and archive dirs excluded, so the always-loaded artifact stays compact.
-            for fam in "${skills_root}"/*/; do
+            while IFS= read -r -d '' fam; do
                 [[ -d "${fam}" ]] || continue
                 local famname ds cnt
                 famname=$(basename "${fam}")
@@ -28,7 +28,7 @@ append_codex_agents_extras() {
                     cnt=$(find "${fam}" -name SKILL.md -not -path '*_archive*' 2>/dev/null | wc -l | tr -d ' ')
                     echo "- **${famname}/** — ${cnt} skill(s); \`ls .claude/skills/${famname}/*/SKILL.md\` to enumerate"
                 fi
-            done
+            done < <(printf '%s\0' "${skills_root}"/*/ | LC_ALL=C sort -z)
         fi
         echo
         echo "## Universal rules (inlined for Codex)"

@@ -25,7 +25,8 @@ def bash_executable():
 @pytest.fixture
 def installation(tmp_path):
     repo, user_root = tmp_path / "repo", tmp_path / "user"
-    for relative in ["scripts/agents/install-soul-runtime.sh", "scripts/setup/lib/detect-os.sh"]:
+    for relative in ["scripts/agents/install-soul-runtime.sh", "scripts/setup/lib/detect-os.sh",
+                     "scripts/agents/claude_runtime_state.py"]:
         target = repo / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / relative, target)
@@ -35,6 +36,8 @@ def installation(tmp_path):
         target.write_text("Synthetic runtime fixture\n", encoding="utf-8")
     for provider in [".claude", ".codex", ".hermes", ".gemini", ".agy"]:
         (user_root / provider).mkdir(parents=True)
+    (user_root / ".claude/CLAUDE.md").symlink_to(
+        repo / "config/agents/claude/SOUL.runtime.md")
     # Only the installer child receives this fixture HOME.
     env = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR", "TEMP", "TMP", "PATH")
            if key in os.environ}
@@ -83,16 +86,26 @@ def test_fixture_installer_repeat_is_idempotent(installation):
     assert not list(user_root.rglob("*.pre-install-backup.*"))
 
 
-def test_fixture_installer_preserves_regular_file_backup(installation):
+def test_fixture_installer_preserves_unknown_regular_file(installation):
     repo, user_root, _ = installation
     original = user_root / ".claude/CLAUDE.md"
+    original.unlink()
     original.write_bytes(b"Original fixture instructions\n")
     result = install(installation)
-    assert result.returncode == 0, result.stdout + result.stderr
-    assert_supported_links(repo, user_root)
-    backups = list(original.parent.glob("CLAUDE.md.pre-install-backup.*"))
-    assert len(backups) == 1
-    assert backups[0].read_bytes() == b"Original fixture instructions\n"
+    assert result.returncode != 0, result.stdout + result.stderr
+    assert not original.is_symlink()
+    assert original.read_bytes() == b"Original fixture instructions\n"
+    assert not list(original.parent.glob("CLAUDE.md.pre-install-backup.*"))
+
+
+def test_fixture_installer_does_not_recreate_absent_claude_link(installation):
+    _, user_root, _ = installation
+    original = user_root / ".claude/CLAUDE.md"
+    original.unlink()
+    result = install(installation)
+    assert result.returncode != 0, result.stdout + result.stderr
+    assert not original.exists() and not original.is_symlink()
+    assert (user_root / ".codex/AGENTS.md").is_symlink()
 
 
 def test_fixture_installer_self_locates_from_unrelated_directory(installation, tmp_path):
@@ -109,6 +122,7 @@ def test_fixture_installer_self_locates_from_unrelated_directory(installation, t
 
 def test_fixture_installer_does_not_provision_absent_provider_directory(installation):
     _, user_root, _ = installation
+    (user_root / ".claude/CLAUDE.md").unlink()
     (user_root / ".claude").rmdir()
     result = install(installation)
     assert result.returncode == 0, result.stdout + result.stderr
@@ -156,3 +170,21 @@ def test_generation_tools_ignore_foreign_git_bindings(generation, script):
     assert tree_bytes(caller) == before, "Foreign Git files or metadata changed"
     assert tree_bytes(repo) == source_before, "Source fixture changed"
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+@pytest.mark.parametrize("dangling", [False, True])
+def test_fixture_installer_preserves_unmanaged_claude_symlink(installation, dangling):
+    repo, user_root, _ = installation
+    legacy = user_root / ".claude/CLAUDE.md"
+    legacy.unlink()
+    target = user_root / "external-instructions.md"
+    if not dangling:
+        target.write_bytes(b"Unmanaged instructions\n")
+    legacy.symlink_to(target)
+    before = os.readlink(legacy), legacy.lstat().st_mtime_ns
+    result = install(installation)
+    assert result.returncode != 0, result.stdout + result.stderr
+    assert (os.readlink(legacy), legacy.lstat().st_mtime_ns) == before
+    assert not list(user_root.rglob("*.pre-install-backup.*"))
+    if not dangling:
+        assert target.read_bytes() == b"Unmanaged instructions\n"
