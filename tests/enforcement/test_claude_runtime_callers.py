@@ -58,7 +58,7 @@ def test_drift_fails_admission_before_content_check(tmp_path):
     target = tmp_path / "scripts/agents/claude_runtime_state.py"
     target.parent.mkdir(parents=True)
     target.write_text("# Synthetic stub; intercepted by the uv fixture.\n")
-    script = f'"{(ROOT / "scripts/enforcement/check-soul-deployment-drift.sh").as_posix()}" --no-fetch'
+    script = f'"{Path(bash_executable()).as_posix()}" "{(ROOT / "scripts/enforcement/check-soul-deployment-drift.sh").as_posix()}" --no-fetch'
     result = run_shell(script, tmp_path)
     assert result.returncode == 1, result.stdout + result.stderr
     assert "BLOCKED" in result.stdout

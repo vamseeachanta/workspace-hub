@@ -1,11 +1,13 @@
 """Operator restore against disposable homes; no provider or fleet qualification."""
 import hashlib
 import json
+import os
 from pathlib import Path
 
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
+pytestmark = pytest.mark.skipif(os.name != "nt", reason="Restore execution is Windows-only")
 
 
 @pytest.fixture

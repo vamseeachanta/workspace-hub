@@ -203,11 +203,16 @@ def test_lazy_pair_restores_only_fixture_instructions(pilot, tmp_path, monkeypat
     negative = json.loads((output / "lazy-negative-before.fixture.json").read_text())
     assert positive["instruction"]["record"] and positive["parked"]["record"] is None
     assert negative["instruction"]["record"] is None
-    assert negative["parked"]["record"] == positive["instruction"]["record"]
+    # POSIX rename can update ctime; identity/content and mtime remain bound.
+    stable = lambda record: {key: value for key, value in record.items() if key != "ctime_ns"}
+    assert stable(negative["parked"]["record"]) == stable(positive["instruction"]["record"])
     for phase in ("positive", "negative"):
         assert json.loads((output / ("lazy-" + phase + "-before.fixture.json")).read_text()) == json.loads(
             (output / ("lazy-" + phase + "-after.fixture.json")).read_text())
-    assert json.loads((output / "lazy-restored.fixture.json").read_text()) == positive
+    restored = json.loads((output / "lazy-restored.fixture.json").read_text())
+    assert restored["instruction"]["path"] == positive["instruction"]["path"]
+    assert restored["parked"] == positive["parked"]
+    assert stable(restored["instruction"]["record"]) == stable(positive["instruction"]["record"])
 
 
 def test_authoritative_publication_failure_removes_replica(pilot, tmp_path, monkeypatch):
