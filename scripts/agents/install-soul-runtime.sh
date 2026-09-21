@@ -2,13 +2,13 @@
 # install-soul-runtime.sh — Create/retarget runtime symlinks for SOUL artifacts.
 #
 # Idempotent. Safe to re-run on any machine. Operates on:
-#   ~/.claude/CLAUDE.md → config/agents/claude/SOUL.runtime.md
+#   Claude: validate and preserve its existing legacy or verified native link.
 #   ~/.hermes/SOUL.md   → config/agents/hermes/SOUL.runtime.md
 #   ~/.codex/AGENTS.md  → config/agents/codex/AGENTS.runtime.md   (replaces any broken-sed copy)
 #   ~/.codex/SOUL.md    → config/agents/codex/SOUL.runtime.md    (loader-pending; see Phase 5)
 #   ~/.gemini/SOUL.md   → config/agents/gemini/SOUL.runtime.md   (loader-pending; see Phase 5)
 #
-# Pre-existing non-symlink files at these paths are backed up to
+# For non-Claude providers, pre-existing non-symlink files are backed up to
 #   <path>.pre-install-backup.<timestamp>
 # before being replaced — so a broken sed-derived ~/.codex/AGENTS.md
 # is preserved for forensics, not silently overwritten.
@@ -120,18 +120,17 @@ link_if_needed() {
     fi
 }
 
-# Claude (#3743 follow-up, 2026-08-01)
-# The repo CLAUDE.md adapter was retired; it carried the
-# `@config/agents/claude/SOUL.runtime.md` import, so Claude became the only
-# provider whose runtime no longer auto-loaded. Restored here as a SYMLINK to the
-# canonical artifact — the same shape as Hermes/Codex, not a hand-maintained file.
-#
-# This is strictly better coverage than the old wiring: the repo adapter's @import
-# only fired when the session cwd was inside workspace-hub, whereas ~/.claude/CLAUDE.md
-# loads in EVERY cwd. Do not replace this with a regular file — the whole point is
-# that the content lives in exactly one place and is drift-checked there.
+# Claude admission is read-only (#1249). Migration requires a reviewed transaction;
+# an unattended installer must never restore the retired legacy filename.
 if [[ -d "${HOME}/.claude" ]]; then
-    link_if_needed config/agents/claude/SOUL.runtime.md   "${HOME}/.claude/CLAUDE.md"
+    if claude_state="$(uv run --no-project python "${REPO_ROOT}/scripts/agents/claude_runtime_state.py" \
+        --repo "${REPO_ROOT}" --home "${HOME}" --format state)"; then
+        echo "OK     Claude ${claude_state} - existing runtime preserved"
+        unchanged=$((unchanged + 1))
+    else
+        echo "NEEDS-ATTENTION Claude ${claude_state:-BLOCKED} - runtime preserved; reviewed migration required"
+        failed=$((failed + 1))
+    fi
 else
     echo "SKIP   ~/.claude/ not present"
 fi

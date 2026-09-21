@@ -14,7 +14,8 @@
 # right path; the checkout behind it was months old. Nothing reported this,
 # because no check looked past the repository.
 #
-# TRANSPORT-AGNOSTIC BY DESIGN. It compares CONTENT, so a symlink, a copy and a
+# For Claude, admission additionally requires a verified supported symlink.
+# Other providers remain TRANSPORT-AGNOSTIC BY DESIGN. It compares CONTENT, so a symlink, a copy and a
 # hard link are all acceptable and all equally checked. That matters on Windows
 # accounts without symlink privilege, where install-soul-runtime.sh refuses to
 # leave a copy precisely because a copy "would rot invisibly" — with this gate,
@@ -54,7 +55,7 @@ sha256_stdin() {
 
 # provider : runtime path in the repo : destination relative to HOME
 PROVIDERS=(
-    "claude:config/agents/claude/SOUL.runtime.md:.claude/CLAUDE.md"
+    "claude:config/agents/claude/SOUL.runtime.md:dynamic"
     "codex:config/agents/codex/AGENTS.runtime.md:.codex/AGENTS.md"
     "hermes:config/agents/hermes/SOUL.runtime.md:.hermes/SOUL.md"
     "gemini:config/agents/gemini/SOUL.runtime.md:.gemini/GEMINI.md"
@@ -82,6 +83,20 @@ drift=0; absent=0; current=0
 for entry in "${PROVIDERS[@]}"; do
     IFS=: read -r name runtime_rel dest_rel <<< "${entry}"
     dest="${HOME}/${dest_rel}"
+    display_dest="~/${dest_rel}"
+
+    if [[ "$name" == "claude" ]]; then
+        if ! dest="$(uv run --no-project python "${REPO_ROOT}/scripts/agents/claude_runtime_state.py" \
+            --repo "${REPO_ROOT}" --home "${HOME}" --format path)"; then
+            [[ "$QUIET" -eq 0 ]] && printf '%-9s %-11s %-9s %s\n' "$name" "BLOCKED" "-" "runtime admission failed"
+            drift=$((drift + 1))
+            continue
+        fi
+        # Native and legacy loaders share the same generated source authority.
+        # The helper emits a canonical absolute POSIX-form path, including on
+        # Windows. Do not prepend ~/: HOME may use MSYS /c while dest uses C:/.
+        display_dest="${dest}"
+    fi
 
     # The authority is origin/main's blob, never the working tree — a stale or
     # dirty checkout must not be able to declare itself current.
@@ -99,7 +114,7 @@ for entry in "${PROVIDERS[@]}"; do
         if [[ "${got}" == "${want}" ]]; then state=CURRENT; current=$((current + 1))
         else state=STALE; drift=$((drift + 1)); fi
     fi
-    [[ "${QUIET}" -eq 0 ]] && printf '%-9s %-11s %-9s %s\n' "${name}" "${state}" "${transport}" "~/${dest_rel}"
+    [[ "${QUIET}" -eq 0 ]] && printf '%-9s %-11s %-9s %s\n' "${name}" "${state}" "${transport}" "${display_dest}"
 done
 
 if [[ "${QUIET}" -eq 0 ]]; then
@@ -113,11 +128,13 @@ if [[ "${QUIET}" -eq 0 ]]; then
     fi
     if [[ "${drift}" -gt 0 ]]; then
         echo
-        echo "To correct:"
-        echo "  git -C ${REPO_ROOT} checkout origin/main -- config/agents"
-        echo "  scripts/agents/install-soul-runtime.sh"
-        echo "Where symlink creation is unavailable, a copy is acceptable — this"
-        echo "gate checks content, so a copy that is refreshed is as good as a link."
+        echo "Review the reported paths against the intended deployment revision."
+        echo "Local changes or a reviewed baseline pending merge may explain STALE."
+        echo "Preserve local work; reconcile the baseline before any scoped installation."
+        echo "Current config/agents changes (read-only):"
+        git -C "${REPO_ROOT}" status --short -- config/agents
+        echo "For providers other than Claude, a copy is accepted by this"
+        echo "content check. Claude requires verified loader admission and a symlink."
     fi
 fi
 
