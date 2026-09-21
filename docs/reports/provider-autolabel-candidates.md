@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-09-21T09:21:34.307010Z
+Generated: 2026-09-21T13:21:54.232609Z
 Apply mode: False
 Threshold: 0.9
 
@@ -13,7 +13,6 @@ Threshold: 0.9
 | #3843 refactor(orcaflex): consolidate four model generators onto modular_generator | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3566 fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3568 epic(agent-ux): cross-machine input interaction parity | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
-| #3554 bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3571 equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3787 pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
 | #3573 feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
@@ -22,5 +21,6 @@ Threshold: 0.9
 | #3788 bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3821 bug(equality): restore collector idempotency and macOS atomic-publish test portability | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3585 phone-media: EXIF-date organizer + cross-phone dedupe | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
+| #3696 chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote) | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
 | #3819 feat(harness): unified ecosystem doctor with stable probe schema | agent:agy | 0.60 | no | priority-labeled, strong-agy-language-match, provider-highest-priority |
 | #3717 Context budget: harness config is 3.6% of the window — the cost is tool output (17%), not CLAUDE.md | agent:agy | 0.45 | no | strong-agy-language-match, provider-highest-priority |

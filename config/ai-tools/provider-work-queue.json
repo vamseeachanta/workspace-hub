@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-21T09:21:34.033316Z",
+  "generated_at": "2026-09-21T13:21:53.940950Z",
   "current_week": "2026-W39",
-  "scorecard_generated_at": "2026-09-21T09:21:31.697214Z",
+  "scorecard_generated_at": "2026-09-21T13:21:51.398986Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 9,
-      "total_candidates": 177,
+      "total_candidates": 178,
       "top_issues": [
         {
           "number": 3816,
@@ -641,6 +641,27 @@
             "compliance-alert"
           ],
           "updatedAt": "2026-09-20T11:45:07Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3882,
+          "title": "Compliance alert: W39 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3882",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-09-21T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1587,7 +1608,7 @@
             "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-09-20T18:14:07Z",
+          "updatedAt": "2026-09-21T11:35:33Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4225,8 +4246,8 @@
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 5,
-      "total_candidates": 21,
+      "execution_ready_count": 4,
+      "total_candidates": 20,
       "top_issues": [
         {
           "number": 3740,
@@ -4267,31 +4288,6 @@
           "updatedAt": "2026-09-11T20:21:08Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3554,
-          "title": "bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3554",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T11:30:25Z",
-          "execution_ready": true,
-          "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -4416,6 +4412,28 @@
           "work_type": [
             "implementation"
           ]
+        },
+        {
+          "number": 3696,
+          "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
+          "labels": [
+            "priority:medium",
+            "cat:operations",
+            "domain:workstations",
+            "machine:dev-primary"
+          ],
+          "updatedAt": "2026-07-31T08:33:56Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
         }
       ],
       "full_candidates": [
@@ -4458,31 +4476,6 @@
           "updatedAt": "2026-09-11T20:21:08Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3554,
-          "title": "bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3554",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T11:30:25Z",
-          "execution_ready": true,
-          "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",

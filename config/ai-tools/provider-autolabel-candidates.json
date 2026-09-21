@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T09:21:34.307010Z",
+  "generated_at": "2026-09-21T13:21:54.232609Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 7,
@@ -250,39 +250,6 @@
       "eligible": true
     },
     {
-      "number": 3554,
-      "title": "bug(equality): Windows publish-equality misclassifies missing flock as contention and reports success",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3554",
-      "labels": [
-        "bug",
-        "cat:harness",
-        "domain:workstations",
-        "machine:multi",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-08-01T11:30:25Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.8,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
       "number": 3571,
       "title": "equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3571",
@@ -525,6 +492,36 @@
       "provider_priority": "highest",
       "provider_status": "underused",
       "work_type": [
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3696,
+      "title": "chore(machines): 6 unpushed commits stranded in secondary working copies on ace-linux-2 (incl. one clone with no remote)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3696",
+      "labels": [
+        "priority:medium",
+        "cat:operations",
+        "domain:workstations",
+        "machine:dev-primary"
+      ],
+      "updatedAt": "2026-07-31T08:33:56Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
         "implementation"
       ],
       "target_label": "agent:codex",
