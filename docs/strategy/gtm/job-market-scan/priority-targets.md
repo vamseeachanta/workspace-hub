@@ -1,7 +1,7 @@
 # GTM Priority Targets — Ranked Company List
 
-> Auto-generated: 2026-09-14
-> Based on job market scan of 1362 postings
+> Auto-generated: 2026-09-21
+> Based on job market scan of 1570 postings
 
 ## Scoring Method
 
@@ -12,189 +12,209 @@ Score factors: keyword niche level, seniority, priority company flag, location, 
 
 | Rank | Company | Open Roles | Aggregate Score | Top Score | Top Keywords | Action |
 |------|---------|------------|-----------------|-----------|-------------|--------|
-| 1 | **Blue Origin** | 40 | 2790 | 110 | structural analyst aerospace, naval architect Houston, FEA analyst ANSYS | 📧 Email pitch |
-| 2 | **Subsea7** | 18 | 2200 | 150 | naval architect Houston, pipeline engineer offshore, DNV engineer offshore | 📧 Email pitch |
-| 3 | **Panthalassa** | 15 | 1305 | 110 | naval architect Houston, DNV engineer offshore, subsea engineer | 📧 Email pitch |
-| 4 | **ABS** | 13 | 1300 | 100 | career_page_scan | 📧 Email pitch |
-| 5 | **Brunswick Corporation** | 14 | 1235 | 110 | naval architect Houston, DNV engineer offshore, integrity engineer offshore | 📧 Email pitch |
-| 6 | **Seatrium** | 12 | 1225 | 125 | naval architect Houston, pipeline engineer offshore, DNV engineer offshore | 📧 Email pitch |
-| 7 | **Saronic Technologies** | 13 | 1205 | 120 | naval architect Houston, integrity engineer offshore, mooring engineer offshore | 📧 Email pitch |
-| 8 | **GE Vernova** | 12 | 1140 | 115 | career_page_scan, floating wind engineer, ANSYS engineer manufacturing | 📧 Email pitch |
-| 9 | **DNV** | 11 | 1135 | 130 | DNV engineer offshore, floating wind engineer | 📧 Email pitch |
-| 10 | **Anduril Industries** | 15 | 1045 | 95 | structural analyst aerospace, naval architect Houston, DNV engineer offshore | 📧 Email pitch |
-| 11 | **Relativity Space** | 9 | 915 | 110 | integrity engineer offshore, OrcaFlex engineer, OrcaWave analyst | 📧 Email pitch |
-| 12 | **General Dynamics Electric Boat** | 14 | 870 | 75 | DNV engineer offshore, structural engineer offshore, naval architect Houston | 📧 Email pitch |
-| 13 | **Oceaneering** | 8 | 845 | 135 | API 579 fitness for service, DNV engineer offshore, subsea engineer | 📧 Email pitch |
-| 14 | **TechnipFMC** | 7 | 810 | 130 | career_page_scan, subsea engineer, mooring engineer offshore | 📧 Email pitch |
-| 15 | **Vast** | 9 | 740 | 110 | API 579 fitness for service, integrity engineer offshore, corrosion engineer | 📧 Email pitch |
-| 16 | **Kiewit** | 9 | 725 | 95 | API 579 fitness for service, naval architect Houston, integrity engineer offshore | 📧 Email pitch |
-| 17 | **ENTRUST Solutions Group** | 7 | 690 | 110 | cathodic protection engineer, hydrodynamic analyst offshore, floating wind engineer | 📧 Email pitch |
-| 18 | **Quartus Engineering** | 11 | 675 | 110 | structural analyst aerospace, FEA analyst manufacturing, OrcaFlex engineer | 📧 Email pitch |
-| 19 | **Sofar Ocean** | 7 | 670 | 110 | subsea engineer, mooring engineer offshore, floating wind engineer | 📧 Email pitch |
-| 20 | **Geosyntec Consultants** | 7 | 630 | 110 | mooring engineer offshore, structural engineer offshore, naval architect Houston | 📧 Email pitch |
-| 21 | **COWI** | 8 | 630 | 95 | naval architect Houston, integrity engineer offshore, subsea engineer | 📧 Email pitch |
-| 22 | **WSP in the U.S.** | 7 | 620 | 110 | API 579 fitness for service, subsea engineer, structural engineer offshore | 📧 Email pitch |
-| 23 | **Lockheed Martin** | 10 | 610 | 110 | structural analyst aerospace, FEA analyst manufacturing, integrity engineer offshore | 📧 Email pitch |
-| 24 | **Noble Corporation** | 7 | 595 | 110 | DNV engineer offshore, subsea engineer, mooring engineer offshore | 📧 Email pitch |
-| 25 | **Enterprise Products** | 7 | 590 | 100 | cathodic protection engineer, API 579 fitness for service, Python engineer oil gas | 📧 Email pitch |
-| 26 | **Northrop Grumman** | 9 | 575 | 95 | structural analyst aerospace, FEA analyst ANSYS, FEA analyst manufacturing | 📧 Email pitch |
-| 27 | **Allseas** | 4 | 560 | 150 | subsea engineer, mooring engineer offshore, riser engineer offshore | 📧 Email pitch |
-| 28 | **SpaceX** | 8 | 560 | 105 | structural analyst aerospace, finite element analyst, corrosion engineer | 📧 Email pitch |
-| 29 | **Solar Turbines** | 7 | 555 | 110 | FEA analyst manufacturing, OrcaFlex engineer, floating wind engineer | 📧 Email pitch |
-| 30 | **Baker Hughes** | 5 | 545 | 125 | API 579 fitness for service, subsea engineer, riser engineer offshore | 📧 Email pitch |
-| 31 | **McDermott International, Ltd** | 4 | 540 | 150 | subsea engineer, mooring engineer offshore, DNV engineer offshore | 📧 Email pitch |
-| 32 | **Frontera Space** | 8 | 540 | 105 | structural analyst aerospace, FEA analyst manufacturing, OrcaFlex engineer | 📧 Email pitch |
-| 33 | **Marathon Petroleum Corporation** | 6 | 535 | 110 | hydrodynamic analyst offshore, Python engineer oil gas, API 579 fitness for service | 📧 Email pitch |
-| 34 | **Coherent Corp.** | 7 | 525 | 95 | OrcaFlex engineer, corrosion engineer, cathodic protection manufacturing | 📧 Email pitch |
-| 35 | **SOGECLAIR** | 9 | 515 | 95 | structural analyst aerospace, FEA analyst manufacturing, OrcaFlex engineer | 📧 Email pitch |
-| 36 | **Bollinger Shipyards** | 5 | 510 | 120 | Python engineer oil gas, mooring engineer offshore, structural engineer offshore | 📧 Email pitch |
-| 37 | **Diamondback Energy** | 4 | 480 | 145 | DNV engineer offshore, corrosion engineer, riser engineer offshore | 📧 Email pitch |
-| 38 | **Bank of America** | 5 | 475 | 105 | OrcaWave analyst, pipeline engineer offshore | 📧 Email pitch |
-| 39 | **Jacobs** | 6 | 470 | 90 | subsea engineer, structural engineer offshore, naval architect Houston | 📧 Email pitch |
-| 40 | **SLB** | 5 | 465 | 110 | hydrodynamic analyst offshore, subsea engineer, riser engineer offshore | 📧 Email pitch |
-| 41 | **Royal Caribbean Group** | 5 | 460 | 110 | hydrodynamic analyst offshore, subsea engineer, naval architect Houston | 📧 Email pitch |
-| 42 | **HDR** | 5 | 460 | 95 | cathodic protection engineer, hydrodynamic analyst offshore, naval architect Houston | 📧 Email pitch |
-| 43 | **Form Energy** | 5 | 455 | 110 | corrosion engineer, OrcaWave analyst | 📧 Email pitch |
-| 44 | **Newport News Shipbuilding, A Division of HII** | 7 | 445 | 75 | DNV engineer offshore, subsea engineer, structural engineer offshore | 📧 Email pitch |
-| 45 | **Biglift Amstel B.V.** | 5 | 435 | 95 | subsea engineer, mooring engineer offshore, floating wind engineer | 📧 Email pitch |
-| 46 | **Teledyne Technologies Incorporated** | 6 | 430 | 95 | DNV engineer offshore, integrity engineer offshore, structural engineer offshore | 📧 Email pitch |
-| 47 | **Muon Space** | 8 | 420 | 70 | finite element analyst, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 48 | **Leonardo DRS** | 5 | 415 | 110 | naval architect Houston, DNV engineer offshore, structural engineer offshore | 📧 Email pitch |
-| 49 | **Smurfit Westrock** | 5 | 385 | 90 | corrosion engineer, API 579 fitness for service, integrity engineer offshore | 📧 Email pitch |
-| 50 | **L3Harris Technologies** | 6 | 380 | 110 | OrcaFlex engineer, structural analyst aerospace, FEA analyst manufacturing | 📧 Email pitch |
-| 51 | **Bellingham Marine** | 4 | 380 | 110 | mooring engineer offshore, structural engineer offshore, naval architect Houston | 📧 Email pitch |
-| 52 | **Fervo Energy** | 4 | 380 | 95 | hydrodynamic analyst offshore, riser engineer offshore | 📧 Email pitch |
-| 53 | **Naval Nuclear Laboratory (FMP)** | 6 | 380 | 90 | DNV engineer offshore, naval architect Houston | 📧 Email pitch |
-| 54 | **Redwire** | 5 | 370 | 90 | finite element analyst, structural analyst aerospace, structural engineer offshore | 📧 Email pitch |
-| 55 | **EVONA** | 5 | 365 | 90 | naval architect Houston, FEA analyst manufacturing, integrity engineer offshore | 📧 Email pitch |
-| 56 | **The Foth Companies** | 4 | 360 | 110 | mooring engineer offshore, structural engineer offshore, naval architect Houston | 📧 Email pitch |
-| 57 | **Boeing** | 6 | 360 | 90 | finite element analyst, structural analyst aerospace, integrity engineer offshore | 📧 Email pitch |
-| 58 | **Archer** | 6 | 360 | 70 | finite element analyst, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 59 | **Amentum** | 8 | 360 | 55 | finite element analyst, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 60 | **Cubic Corporation** | 5 | 350 | 110 | FEA analyst manufacturing, OrcaFlex engineer, finite element analyst | 📧 Email pitch |
-| 61 | **BlackSky** | 5 | 350 | 110 | structural analyst aerospace, FEA analyst manufacturing, finite element analyst | 📧 Email pitch |
-| 62 | **U.S. Fleet Forces Command** | 4 | 340 | 95 | hydrodynamic analyst offshore, subsea engineer | 📧 Email pitch |
-| 63 | **Westinghouse Electric Company** | 4 | 330 | 90 | cathodic protection engineer, floating wind engineer | 📧 Email pitch |
-| 64 | **Primary Talent Partners** | 6 | 330 | 75 | cathodic protection engineer, corrosion engineer, cathodic protection manufacturing | 📧 Email pitch |
-| 65 | **Kratos Defense and Security Solutions** | 7 | 325 | 75 | structural analyst aerospace, naval architect Houston, FEA analyst manufacturing | 📧 Email pitch |
-| 66 | **Caterpillar Inc.** | 5 | 320 | 105 | pipeline engineer offshore, FEA analyst manufacturing, Python engineer oil gas | 📧 Email pitch |
-| 67 | **Sargent & Lundy** | 4 | 320 | 90 | DNV engineer offshore, structural engineer offshore, integrity engineer offshore | 📧 Email pitch |
-| 68 | **Weatherford** | 3 | 310 | 110 | subsea engineer, riser engineer offshore | 📧 Email pitch |
-| 69 | **Bluecore Energy HQ** | 3 | 310 | 110 | hydrodynamic analyst offshore, riser engineer offshore, integrity engineer offshore | 📧 Email pitch |
-| 70 | **Saur Energy International** | 3 | 310 | 110 | subsea engineer, hydrodynamic analyst offshore, mooring engineer offshore | 📧 Email pitch |
-| 71 | **ExxonMobil** | 3 | 305 | 110 | corrosion engineer, subsea engineer | 📧 Email pitch |
-| 72 | **Leidos** | 6 | 305 | 90 | cathodic protection engineer, structural analyst aerospace, FEA analyst manufacturing | 📧 Email pitch |
-| 73 | **Helix Energy Solutions Group** | 3 | 300 | 110 | mooring engineer offshore, riser engineer offshore | 📧 Email pitch |
-| 74 | **Simpson Gumpertz & Heger (SGH)** | 7 | 300 | 55 | finite element analyst, FEA analyst ANSYS, FEA analyst manufacturing | 📧 Email pitch |
-| 75 | **Precision Drilling** | 3 | 290 | 110 | subsea engineer, floating wind engineer, riser engineer offshore | 📧 Email pitch |
-| 76 | **Upwing Energy** | 3 | 290 | 110 | floating wind engineer, riser engineer offshore | 📧 Email pitch |
-| 77 | **Cowboy Space Corporation** | 3 | 290 | 110 | hydrodynamic analyst offshore, structural engineer offshore, riser engineer offshore | 📧 Email pitch |
-| 78 | **Motion Recruitment** | 4 | 290 | 90 | cathodic protection engineer, API 579 fitness for service, Python engineer oil gas | 📧 Email pitch |
-| 79 | **GM Defense** | 6 | 290 | 55 | finite element analyst, FEA analyst ANSYS, FEA analyst manufacturing | 📧 Email pitch |
-| 80 | **ICE** | 3 | 285 | 95 | OrcaWave analyst | 📧 Email pitch |
-| 81 | **U.S. Pacific Fleet** | 4 | 280 | 75 | cathodic protection engineer, corrosion engineer, subsea engineer | 📧 Email pitch |
-| 82 | **Climactic** | 5 | 280 | 70 | finite element analyst, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 83 | **Nabors Industries** | 3 | 275 | 105 | DNV engineer offshore, hydrodynamic analyst offshore, riser engineer offshore | 📧 Email pitch |
-| 84 | **Intertek** | 3 | 275 | 100 | corrosion engineer, API 579 fitness for service | 📧 Email pitch |
-| 85 | **Opterus Research and Development** | 5 | 275 | 95 | structural analyst aerospace, FEA analyst manufacturing, OrcaFlex engineer | 📧 Email pitch |
-| 86 | **Prometheus Energetics** | 5 | 275 | 95 | structural analyst aerospace, FEA analyst manufacturing, finite element analyst | 📧 Email pitch |
-| 87 | **General Atomics** | 6 | 270 | 55 | finite element analyst, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 88 | **Tallgrass** | 3 | 265 | 95 | OrcaWave analyst, hydrodynamic analyst offshore, floating wind engineer | 📧 Email pitch |
-| 89 | **Zel Technologies LLC** | 3 | 265 | 95 | hydrodynamic analyst offshore, mooring engineer offshore, naval architect Houston | 📧 Email pitch |
-| 90 | **BWXT** | 3 | 260 | 95 | floating wind engineer, naval architect Houston, riser engineer offshore | 📧 Email pitch |
-| 91 | **U.S. Fusion Energy** | 4 | 260 | 75 | corrosion engineer, subsea engineer, pipeline engineer offshore | 📧 Email pitch |
-| 92 | **HII** | 4 | 260 | 75 | structural engineer offshore, naval architect Houston | 📧 Email pitch |
-| 93 | **NOV** | 3 | 250 | 110 | DNV engineer offshore, riser engineer offshore | 📧 Email pitch |
-| 94 | **MER Equipment, Inc.** | 3 | 245 | 95 | subsea engineer, mooring engineer offshore, floating wind engineer | 📧 Email pitch |
-| 95 | **Vitol** | 3 | 245 | 90 | Python engineer oil gas, pipeline engineer offshore | 📧 Email pitch |
-| 96 | **Physics World** | 4 | 240 | 70 | finite element analyst, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 97 | **Strativ Group** | 4 | 240 | 70 | finite element analyst, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 98 | **Rivian** | 4 | 240 | 70 | corrosion engineer, FEA analyst ANSYS, ANSYS engineer manufacturing | 📧 Email pitch |
-| 99 | **Santee Cooper** | 3 | 235 | 90 | cathodic protection engineer, corrosion engineer | 📧 Email pitch |
-| 100 | **ASRC Industrial** | 3 | 235 | 85 | corrosion engineer, API 579 fitness for service, integrity engineer offshore | 📧 Email pitch |
-| 101 | **Freeport-McMoRan** | 3 | 230 | 90 | cathodic protection engineer, corrosion engineer | 📧 Email pitch |
-| 102 | **General Dynamics NASSCO** | 3 | 225 | 95 | DNV engineer offshore, mooring engineer offshore, naval architect Houston | 📧 Email pitch |
-| 103 | **BAE Systems, Inc.** | 4 | 220 | 70 | finite element analyst, ANSYS engineer manufacturing, structural analyst aerospace | 📧 Email pitch |
-| 104 | **PPG** | 5 | 215 | 55 | structural analyst aerospace, FEA analyst manufacturing, finite element analyst | 📧 Email pitch |
-| 105 | **Intuitive Machines** | 5 | 215 | 55 | finite element analyst, structural analyst aerospace, FEA analyst manufacturing | 📧 Email pitch |
-| 106 | **NorthWestern Energy** | 3 | 205 | 75 | cathodic protection engineer, corrosion engineer | 📧 Email pitch |
-| 107 | **UC San Diego** | 3 | 205 | 75 | cathodic protection engineer, corrosion engineer, subsea engineer | 📧 Email pitch |
-| 108 | **Johns Hopkins Applied Physics Laboratory** | 3 | 200 | 90 | subsea engineer, ANSYS engineer manufacturing | 📧 Email pitch |
-| 109 | **Marvell Technology** | 4 | 200 | 50 | ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
-| 110 | **Capgemini** | 4 | 195 | 70 | FEA analyst ANSYS, ANSYS engineer manufacturing, Python engineer oil gas | 📧 Email pitch |
-| 111 | **Stanley Black & Decker, Inc.** | 5 | 195 | 55 | FEA analyst ANSYS, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
-| 112 | **Beyond Gravity** | 3 | 185 | 95 | OrcaFlex engineer, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 113 | **DRW** | 3 | 185 | 75 | Python engineer oil gas, pipeline engineer offshore | 📧 Email pitch |
-| 114 | **X-energy** | 4 | 180 | 55 | finite element analyst, FEA analyst ANSYS, ANSYS engineer manufacturing | 📧 Email pitch |
-| 115 | **Safariland** | 4 | 180 | 55 | finite element analyst, FEA analyst ANSYS, ANSYS engineer manufacturing | 📧 Email pitch |
-| 116 | **Eaton** | 4 | 180 | 55 | finite element analyst, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 117 | **United Launch Alliance (ULA)** | 4 | 180 | 55 | finite element analyst, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 118 | **Xona** | 4 | 180 | 55 | finite element analyst, FEA analyst ANSYS, structural analyst aerospace | 📧 Email pitch |
-| 119 | **Kaleidoscope Innovation** | 3 | 155 | 75 | structural analyst aerospace, ANSYS engineer manufacturing, integrity engineer offshore | 📧 Email pitch |
-| 120 | **Georgia-Pacific LLC** | 3 | 145 | 75 | API 579 fitness for service, cathodic protection manufacturing | 📧 Email pitch |
-| 121 | **CNH** | 3 | 145 | 55 | finite element analyst, FEA analyst ANSYS, FEA analyst manufacturing | 📧 Email pitch |
-| 122 | **Sandvik** | 3 | 145 | 55 | finite element analyst, structural engineer offshore, FEA analyst manufacturing | 📧 Email pitch |
-| 123 | **Gentex Corporation** | 3 | 125 | 55 | FEA analyst ANSYS, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
-| 124 | **Maxxis International** | 3 | 125 | 55 | FEA analyst ANSYS, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
-| 125 | **Karman Space & Defense** | 3 | 125 | 55 | finite element analyst, structural analyst aerospace, FEA analyst manufacturing | 📧 Email pitch |
-| 126 | **The Aerospace Corporation** | 3 | 125 | 55 | finite element analyst, structural analyst aerospace | 📧 Email pitch |
-| 127 | **General Motors** | 3 | 125 | 55 | finite element analyst, cathodic protection manufacturing, ANSYS engineer manufacturing | 📧 Email pitch |
-| 128 | **Parker Hannifin** | 3 | 120 | 50 | cathodic protection manufacturing, FEA analyst manufacturing | 📧 Email pitch |
+| 1 | **Blue Origin** | 40 | 2575 | 110 | structural analyst aerospace, ANSYS engineer manufacturing, hydrodynamic analyst offshore | 📧 Email pitch |
+| 2 | **Subsea7** | 15 | 1865 | 150 | hydrodynamic analyst offshore, mooring engineer offshore, OrcaFlex engineer | 📧 Email pitch |
+| 3 | **American Bureau of Shipping (ABS)** | 16 | 1865 | 135 | pipeline engineer offshore, hydrodynamic analyst offshore, naval architect Houston | 📧 Email pitch |
+| 4 | **Anduril Industries** | 26 | 1775 | 110 | structural analyst aerospace, ANSYS engineer manufacturing, hydrodynamic analyst offshore | 📧 Email pitch |
+| 5 | **General Dynamics Electric Boat** | 23 | 1535 | 110 | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore | 📧 Email pitch |
+| 6 | **Oceaneering** | 14 | 1485 | 150 | hydrodynamic analyst offshore, mooring engineer offshore, DNV engineer offshore | 📧 Email pitch |
+| 7 | **ABS** | 13 | 1300 | 100 | career_page_scan | 📧 Email pitch |
+| 8 | **NOV** | 14 | 1245 | 125 | mooring engineer offshore, Python engineer oil gas, DNV engineer offshore | 📧 Email pitch |
+| 9 | **L3Harris Technologies** | 15 | 1195 | 110 | structural analyst aerospace, ANSYS engineer manufacturing, hydrodynamic analyst offshore | 📧 Email pitch |
+| 10 | **Makai Ocean Engineering, Inc.** | 14 | 1160 | 110 | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore | 📧 Email pitch |
+| 11 | **Panthalassa** | 12 | 1070 | 110 | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore | 📧 Email pitch |
+| 12 | **Woods Hole Oceanographic Institution** | 12 | 1000 | 95 | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore | 📧 Email pitch |
+| 13 | **GE Vernova** | 9 | 980 | 120 | pipeline engineer offshore, career_page_scan, OrcaFlex engineer | 📧 Email pitch |
+| 14 | **Saur Energy International** | 11 | 960 | 110 | naval architect Houston, mooring engineer offshore, DNV engineer offshore | 📧 Email pitch |
+| 15 | **Leidos** | 14 | 935 | 110 | structural analyst aerospace, ANSYS engineer manufacturing, cathodic protection engineer | 📧 Email pitch |
+| 16 | **HII** | 13 | 915 | 95 | hydrodynamic analyst offshore, naval architect Houston, DNV engineer offshore | 📧 Email pitch |
+| 17 | **Black & Veatch** | 10 | 875 | 110 | cathodic protection engineer, mooring engineer offshore, structural engineer offshore | 📧 Email pitch |
+| 18 | **Lockheed Martin** | 11 | 870 | 110 | structural analyst aerospace, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
+| 19 | **Northrop Grumman** | 10 | 865 | 110 | finite element analyst, structural analyst aerospace, subsea engineer | 📧 Email pitch |
+| 20 | **STR** | 9 | 830 | 110 | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore | 📧 Email pitch |
+| 21 | **McDermott International, Ltd** | 6 | 820 | 150 | DNV engineer offshore, riser engineer offshore, mooring engineer offshore | 📧 Email pitch |
+| 22 | **AV** | 7 | 770 | 110 | OrcaWave analyst | 📧 Email pitch |
+| 23 | **Newport News Shipbuilding, A Division of HII** | 12 | 760 | 95 | hydrodynamic analyst offshore, naval architect Houston, DNV engineer offshore | 📧 Email pitch |
+| 24 | **Resolve Marine** | 9 | 735 | 95 | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore | 📧 Email pitch |
+| 25 | **ExxonMobil** | 7 | 730 | 130 | hydrodynamic analyst offshore, corrosion engineer, integrity engineer offshore | 📧 Email pitch |
+| 26 | **Kiewit** | 8 | 720 | 110 | naval architect Houston, mooring engineer offshore, API 579 fitness for service | 📧 Email pitch |
+| 27 | **Constellation** | 7 | 715 | 125 | OrcaWave analyst, cathodic protection engineer | 📧 Email pitch |
+| 28 | **WSP in the U.S.** | 8 | 710 | 95 | pipeline engineer offshore, hydrodynamic analyst offshore, naval architect Houston | 📧 Email pitch |
+| 29 | **Airswift** | 7 | 695 | 120 | API 579 fitness for service, mooring engineer offshore, structural engineer offshore | 📧 Email pitch |
+| 30 | **Siemens Energy** | 7 | 675 | 135 | mooring engineer offshore, corrosion engineer, integrity engineer offshore | 📧 Email pitch |
+| 31 | **Acuren** | 9 | 665 | 105 | cathodic protection engineer, API 579 fitness for service, OrcaFlex engineer | 📧 Email pitch |
+| 32 | **Noble Corporation** | 8 | 640 | 95 | DNV engineer offshore, riser engineer offshore, mooring engineer offshore | 📧 Email pitch |
+| 33 | **Vast** | 8 | 630 | 95 | API 579 fitness for service, structural engineer offshore, riser engineer offshore | 📧 Email pitch |
+| 34 | **Weatherford** | 6 | 615 | 125 | riser engineer offshore, mooring engineer offshore, API 579 fitness for service | 📧 Email pitch |
+| 35 | **Rand Worldwide** | 9 | 615 | 115 | FEA analyst ANSYS, ANSYS engineer manufacturing, OrcaFlex engineer | 📧 Email pitch |
+| 36 | **HDR** | 7 | 605 | 105 | hydrodynamic analyst offshore, subsea engineer, cathodic protection engineer | 📧 Email pitch |
+| 37 | **Baker Hughes** | 6 | 595 | 105 | pipeline engineer offshore, subsea engineer, riser engineer offshore | 📧 Email pitch |
+| 38 | **Evlo AI** | 6 | 580 | 105 | OrcaWave analyst | 📧 Email pitch |
+| 39 | **Everllence** | 6 | 575 | 110 | pipeline engineer offshore, naval architect Houston, mooring engineer offshore | 📧 Email pitch |
+| 40 | **Redeployment** | 7 | 565 | 95 | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore | 📧 Email pitch |
+| 41 | **Marathon Petroleum Corporation** | 7 | 535 | 95 | API 579 fitness for service, mooring engineer offshore, Python engineer oil gas | 📧 Email pitch |
+| 42 | **Toyon Research Corporation** | 10 | 535 | 70 | structural analyst aerospace, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
+| 43 | **Acteon Group** | 5 | 525 | 125 | naval architect Houston, mooring engineer offshore, DNV engineer offshore | 📧 Email pitch |
+| 44 | **Let's Work LLC** | 7 | 525 | 95 | naval architect Houston, mooring engineer offshore, DNV engineer offshore | 📧 Email pitch |
+| 45 | **Karman Space & Defense** | 9 | 510 | 110 | structural analyst aerospace, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
+| 46 | **Trendsetter Engineering, Inc.** | 5 | 510 | 110 | pipeline engineer offshore, riser engineer offshore, mooring engineer offshore | 📧 Email pitch |
+| 47 | **BlackSea Technologies** | 6 | 510 | 110 | naval architect Houston, mooring engineer offshore, structural engineer offshore | 📧 Email pitch |
+| 48 | **Redwire** | 8 | 500 | 90 | structural analyst aerospace, FEA analyst manufacturing, FEA analyst ANSYS | 📧 Email pitch |
+| 49 | **Boeing** | 9 | 485 | 80 | structural analyst aerospace, FEA analyst manufacturing, structural engineer offshore | 📧 Email pitch |
+| 50 | **SpaceX** | 8 | 470 | 80 | structural analyst aerospace, Python engineer oil gas, structural engineer offshore | 📧 Email pitch |
+| 51 | **Brunswick Corporation** | 6 | 465 | 90 | pipeline engineer offshore, naval architect Houston, integrity engineer offshore | 📧 Email pitch |
+| 52 | **Amphenol Communications Solutions** | 8 | 460 | 95 | FEA analyst manufacturing, ANSYS engineer manufacturing, OrcaFlex engineer | 📧 Email pitch |
+| 53 | **ONEOK** | 6 | 460 | 95 | hydrodynamic analyst offshore, corrosion engineer, integrity engineer offshore | 📧 Email pitch |
+| 54 | **Danos, LLC** | 5 | 455 | 95 | hydrodynamic analyst offshore, pipeline engineer offshore | 📧 Email pitch |
+| 55 | **Shield AI** | 9 | 445 | 70 | FEA analyst ANSYS, structural analyst aerospace, finite element analyst | 📧 Email pitch |
+| 56 | **SLB** | 5 | 435 | 110 | riser engineer offshore, corrosion engineer, integrity engineer offshore | 📧 Email pitch |
+| 57 | **Clearwater Analytics** | 5 | 435 | 95 | OrcaWave analyst, Python engineer oil gas | 📧 Email pitch |
+| 58 | **Saragossa** | 5 | 435 | 95 | pipeline engineer offshore, hydrodynamic analyst offshore, naval architect Houston | 📧 Email pitch |
+| 59 | **Ford Motor Company** | 7 | 405 | 95 | pipeline engineer offshore, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
+| 60 | **Quartus Engineering** | 6 | 400 | 110 | structural analyst aerospace, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
+| 61 | **University of New Hampshire** | 5 | 395 | 95 | hydrodynamic analyst offshore, mooring engineer offshore, DNV engineer offshore | 📧 Email pitch |
+| 62 | **Performance Personnel Services, LLC** | 5 | 375 | 95 | naval architect Houston, mooring engineer offshore, DNV engineer offshore | 📧 Email pitch |
+| 63 | **General Atomics** | 8 | 375 | 55 | FEA analyst ANSYS, structural analyst aerospace, finite element analyst | 📧 Email pitch |
+| 64 | **Saronic Technologies** | 4 | 370 | 100 | naval architect Houston, integrity engineer offshore | 📧 Email pitch |
+| 65 | **KCI** | 5 | 370 | 90 | naval architect Houston, cathodic protection engineer, structural engineer offshore | 📧 Email pitch |
+| 66 | **Amentum** | 7 | 365 | 75 | structural analyst aerospace, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
+| 67 | **Re:Build Manufacturing** | 7 | 360 | 95 | structural analyst aerospace, FEA analyst manufacturing, OrcaFlex engineer | 📧 Email pitch |
+| 68 | **CTS Complete Technical Services** | 3 | 355 | 125 | riser engineer offshore, mooring engineer offshore, subsea engineer | 📧 Email pitch |
+| 69 | **SAIC** | 4 | 355 | 110 | hydrodynamic analyst offshore, naval architect Houston, subsea engineer | 📧 Email pitch |
+| 70 | **Terran Orbital Corporation** | 5 | 350 | 110 | structural analyst aerospace, FEA analyst manufacturing, OrcaFlex engineer | 📧 Email pitch |
+| 71 | **InnoForge** | 5 | 350 | 110 | structural analyst aerospace, FEA analyst manufacturing, OrcaFlex engineer | 📧 Email pitch |
+| 72 | **Vestas** | 4 | 345 | 120 | hydrodynamic analyst offshore, riser engineer offshore, structural engineer offshore | 📧 Email pitch |
+| 73 | **Aries Marine Corporation** | 4 | 340 | 95 | DNV engineer offshore, riser engineer offshore, mooring engineer offshore | 📧 Email pitch |
+| 74 | **Weeks Marine** | 4 | 340 | 95 | DNV engineer offshore, riser engineer offshore, mooring engineer offshore | 📧 Email pitch |
+| 75 | **KBR** | 4 | 340 | 90 | pipeline engineer offshore, corrosion engineer, naval architect Houston | 📧 Email pitch |
+| 76 | **Kimley-Horn** | 5 | 335 | 75 | naval architect Houston, structural engineer offshore, floating wind engineer | 📧 Email pitch |
+| 77 | **Raytheon** | 7 | 330 | 70 | finite element analyst, structural analyst aerospace, ANSYS engineer manufacturing | 📧 Email pitch |
+| 78 | **Head Energy AS** | 4 | 320 | 95 | DNV engineer offshore, riser engineer offshore, mooring engineer offshore | 📧 Email pitch |
+| 79 | **COWI** | 4 | 320 | 90 | naval architect Houston, structural engineer offshore | 📧 Email pitch |
+| 80 | **Mott MacDonald** | 6 | 320 | 80 | mooring engineer offshore, Python engineer oil gas, DNV engineer offshore | 📧 Email pitch |
+| 81 | **Hatch** | 4 | 315 | 95 | pipeline engineer offshore, mooring engineer offshore, structural engineer offshore | 📧 Email pitch |
+| 82 | **Bowman Consulting** | 4 | 315 | 95 | structural engineer offshore, mooring engineer offshore, integrity engineer offshore | 📧 Email pitch |
+| 83 | **ALOIS Solutions** | 3 | 310 | 110 | riser engineer offshore, mooring engineer offshore, subsea engineer | 📧 Email pitch |
+| 84 | **Forum Energy Technologies** | 3 | 300 | 120 | DNV engineer offshore, riser engineer offshore, integrity engineer offshore | 📧 Email pitch |
+| 85 | **INVINCIBLE BOAT COMPANY LLC** | 4 | 300 | 95 | DNV engineer offshore, riser engineer offshore, mooring engineer offshore | 📧 Email pitch |
+| 86 | **Audubon Companies** | 3 | 295 | 105 | DNV engineer offshore, pipeline engineer offshore, integrity engineer offshore | 📧 Email pitch |
+| 87 | **General Matter** | 5 | 295 | 95 | ANSYS engineer manufacturing, FEA analyst manufacturing, FEA analyst ANSYS | 📧 Email pitch |
+| 88 | **Westinghouse Electric Company** | 4 | 295 | 90 | corrosion engineer, cathodic protection engineer, floating wind engineer | 📧 Email pitch |
+| 89 | **Upwing Energy** | 3 | 290 | 110 | riser engineer offshore, floating wind engineer | 📧 Email pitch |
+| 90 | **Targa Resources** | 3 | 290 | 105 | API 579 fitness for service, integrity engineer offshore | 📧 Email pitch |
+| 91 | **Williams** | 3 | 285 | 125 | hydrodynamic analyst offshore, corrosion engineer, cathodic protection engineer | 📧 Email pitch |
+| 92 | **Coherent Corp.** | 4 | 285 | 110 | cathodic protection manufacturing, OrcaFlex engineer | 📧 Email pitch |
+| 93 | **Bartech Staffing** | 3 | 285 | 95 | OrcaWave analyst | 📧 Email pitch |
+| 94 | **Bank of America** | 3 | 285 | 95 | OrcaWave analyst | 📧 Email pitch |
+| 95 | **Radiant** | 3 | 280 | 110 | riser engineer offshore, floating wind engineer | 📧 Email pitch |
+| 96 | **Energy Transfer** | 3 | 280 | 110 | corrosion engineer, Python engineer oil gas | 📧 Email pitch |
+| 97 | **Firefly Aerospace** | 5 | 280 | 65 | FEA analyst ANSYS, structural analyst aerospace, finite element analyst | 📧 Email pitch |
+| 98 | **Mainspring Energy** | 3 | 275 | 110 | riser engineer offshore, floating wind engineer | 📧 Email pitch |
+| 99 | **Bulwark Dynamics** | 3 | 275 | 110 | naval architect Houston, mooring engineer offshore | 📧 Email pitch |
+| 100 | **Pacific Fusion** | 3 | 270 | 110 | riser engineer offshore, structural engineer offshore, floating wind engineer | 📧 Email pitch |
+| 101 | **Canrig Drilling Technology Ltd.** | 3 | 270 | 110 | DNV engineer offshore, riser engineer offshore, subsea engineer | 📧 Email pitch |
+| 102 | **Enterprise Products** | 3 | 270 | 100 | API 579 fitness for service, Python engineer oil gas | 📧 Email pitch |
+| 103 | **Nabors Industries** | 3 | 265 | 105 | DNV engineer offshore, subsea engineer, integrity engineer offshore | 📧 Email pitch |
+| 104 | **Kaleris** | 3 | 265 | 95 | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore | 📧 Email pitch |
+| 105 | **Integer Technologies** | 3 | 265 | 95 | hydrodynamic analyst offshore, floating wind engineer | 📧 Email pitch |
+| 106 | **Mastercraft Boat Company LLC** | 3 | 245 | 95 | DNV engineer offshore, riser engineer offshore | 📧 Email pitch |
+| 107 | **Yamaha Motor Corporation, USA** | 3 | 245 | 95 | hydrodynamic analyst offshore, naval architect Houston, floating wind engineer | 📧 Email pitch |
+| 108 | **BAE Systems, Inc.** | 4 | 245 | 75 | structural analyst aerospace, pipeline engineer offshore, ANSYS engineer manufacturing | 📧 Email pitch |
+| 109 | **BairesDev** | 3 | 240 | 90 | pipeline engineer offshore, Python engineer oil gas | 📧 Email pitch |
+| 110 | **NorthStar Energy Services** | 3 | 240 | 90 | pipeline engineer offshore, structural engineer offshore | 📧 Email pitch |
+| 111 | **Expand Energy** | 3 | 240 | 90 | pipeline engineer offshore, Python engineer oil gas | 📧 Email pitch |
+| 112 | **Divergent** | 4 | 240 | 70 | FEA analyst ANSYS, structural analyst aerospace, finite element analyst | 📧 Email pitch |
+| 113 | **Komatsu** | 5 | 240 | 70 | FEA analyst ANSYS, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
+| 114 | **FourQuest Energy** | 4 | 240 | 65 | corrosion engineer, Python engineer oil gas | 📧 Email pitch |
+| 115 | **Relativity Space** | 3 | 235 | 110 | ANSYS engineer manufacturing, integrity engineer offshore, OrcaFlex engineer | 📧 Email pitch |
+| 116 | **United Launch Alliance (ULA)** | 5 | 235 | 55 | FEA analyst ANSYS, structural analyst aerospace, finite element analyst | 📧 Email pitch |
+| 117 | **nLIGHT, Inc.** | 3 | 230 | 110 | FEA analyst ANSYS, ANSYS engineer manufacturing, OrcaFlex engineer | 📧 Email pitch |
+| 118 | **Joby Aviation** | 3 | 230 | 90 | corrosion engineer, integrity engineer offshore | 📧 Email pitch |
+| 119 | **Chaparral Boats Inc** | 3 | 225 | 95 | naval architect Houston, structural engineer offshore, OrcaFlex engineer | 📧 Email pitch |
+| 120 | **Boom Supersonic** | 4 | 220 | 95 | finite element analyst, structural analyst aerospace, riser engineer offshore | 📧 Email pitch |
+| 121 | **Motion Recruitment** | 3 | 220 | 90 | corrosion engineer, cathodic protection engineer, API 579 fitness for service | 📧 Email pitch |
+| 122 | **Cummins Inc.** | 4 | 220 | 70 | FEA analyst ANSYS, cathodic protection manufacturing, ANSYS engineer manufacturing | 📧 Email pitch |
+| 123 | **Booz Allen Hamilton** | 3 | 215 | 95 | corrosion engineer, OrcaFlex engineer | 📧 Email pitch |
+| 124 | **Form Energy** | 4 | 210 | 70 | FEA analyst manufacturing, ANSYS engineer manufacturing, Python engineer oil gas | 📧 Email pitch |
+| 125 | **Observable Space** | 3 | 205 | 95 | FEA analyst ANSYS, finite element analyst, OrcaFlex engineer | 📧 Email pitch |
+| 126 | **Matrix PDM Engineering** | 3 | 205 | 95 | riser engineer offshore, structural engineer offshore | 📧 Email pitch |
+| 127 | **Mercury Marine** | 3 | 205 | 75 | DNV engineer offshore, integrity engineer offshore, subsea engineer | 📧 Email pitch |
+| 128 | **Heven AeroTech** | 3 | 195 | 95 | hydrodynamic analyst offshore, cathodic protection manufacturing | 📧 Email pitch |
+| 129 | **Jobot** | 3 | 195 | 85 | cathodic protection manufacturing, corrosion engineer, integrity engineer offshore | 📧 Email pitch |
+| 130 | **Rivian** | 3 | 190 | 90 | FEA analyst manufacturing, ANSYS engineer manufacturing, floating wind engineer | 📧 Email pitch |
+| 131 | **Cirrus** | 3 | 185 | 95 | finite element analyst, structural analyst aerospace, OrcaFlex engineer | 📧 Email pitch |
+| 132 | **Kratos Defense and Security Solutions** | 3 | 185 | 95 | finite element analyst, structural analyst aerospace, OrcaFlex engineer | 📧 Email pitch |
+| 133 | **Antares** | 4 | 180 | 55 | FEA analyst ANSYS, structural analyst aerospace, finite element analyst | 📧 Email pitch |
+| 134 | **Tiberius Aerospace** | 4 | 180 | 55 | FEA analyst ANSYS, structural analyst aerospace, finite element analyst | 📧 Email pitch |
+| 135 | **Sierra Space** | 4 | 180 | 55 | finite element analyst, structural analyst aerospace | 📧 Email pitch |
+| 136 | **Zipline** | 3 | 170 | 70 | finite element analyst, structural analyst aerospace, FEA analyst manufacturing | 📧 Email pitch |
+| 137 | **Millennium Space Systems** | 4 | 160 | 80 | finite element analyst, structural analyst aerospace, riser engineer offshore | 📧 Email pitch |
+| 138 | **Honeywell Aerospace** | 4 | 160 | 55 | finite element analyst, ANSYS engineer manufacturing, FEA analyst manufacturing | 📧 Email pitch |
+| 139 | **Leonardo DRS** | 3 | 155 | 55 | DNV engineer offshore, ANSYS engineer manufacturing | 📧 Email pitch |
+| 140 | **Simpson Gumpertz & Heger (SGH)** | 3 | 150 | 55 | FEA analyst ANSYS, finite element analyst | 📧 Email pitch |
+| 141 | **Los Alamos National Laboratory** | 3 | 145 | 55 | FEA analyst ANSYS, finite element analyst, FEA analyst manufacturing | 📧 Email pitch |
+| 142 | **Sandvik** | 3 | 145 | 55 | finite element analyst, structural engineer offshore, FEA analyst manufacturing | 📧 Email pitch |
+| 143 | **Belcan** | 3 | 140 | 80 | finite element analyst, OrcaFlex engineer, FEA analyst manufacturing | 📧 Email pitch |
+| 144 | **Virgin Galactic** | 3 | 140 | 55 | finite element analyst, structural analyst aerospace | 📧 Email pitch |
+| 145 | **Acuren Inspection, Inc.** | 3 | 140 | 55 | cathodic protection manufacturing, corrosion engineer | 📧 Email pitch |
+| 146 | **Jadex** | 4 | 140 | 35 | cathodic protection manufacturing | 📧 Email pitch |
+| 147 | **Bombardier** | 3 | 135 | 55 | finite element analyst, structural analyst aerospace | 📧 Email pitch |
+| 148 | **Parker Hannifin** | 3 | 125 | 55 | finite element analyst, structural analyst aerospace, FEA analyst manufacturing | 📧 Email pitch |
 
 ## All Ranked Companies
 
 | Rank | Company | Roles | Score | Priority? | Keywords |
 |------|---------|-------|-------|-----------|----------|
-| 1 | Blue Origin | 40 | 2790 |  | structural analyst aerospace, naval architect Houston, FEA analyst ANSYS |
-| 2 | Subsea7 | 18 | 2200 | ✅ | naval architect Houston, pipeline engineer offshore, DNV engineer offshore |
-| 3 | Panthalassa | 15 | 1305 |  | naval architect Houston, DNV engineer offshore, subsea engineer |
-| 4 | ABS | 13 | 1300 | ✅ | career_page_scan |
-| 5 | Brunswick Corporation | 14 | 1235 |  | naval architect Houston, DNV engineer offshore, integrity engineer offshore |
-| 6 | Seatrium | 12 | 1225 |  | naval architect Houston, pipeline engineer offshore, DNV engineer offshore |
-| 7 | Saronic Technologies | 13 | 1205 |  | naval architect Houston, integrity engineer offshore, mooring engineer offshore |
-| 8 | GE Vernova | 12 | 1140 | ✅ | career_page_scan, floating wind engineer, ANSYS engineer manufacturing |
-| 9 | DNV | 11 | 1135 | ✅ | DNV engineer offshore, floating wind engineer |
-| 10 | Anduril Industries | 15 | 1045 |  | structural analyst aerospace, naval architect Houston, DNV engineer offshore |
-| 11 | Relativity Space | 9 | 915 |  | integrity engineer offshore, OrcaFlex engineer, OrcaWave analyst |
-| 12 | General Dynamics Electric Boat | 14 | 870 |  | DNV engineer offshore, structural engineer offshore, naval architect Houston |
-| 13 | Oceaneering | 8 | 845 | ✅ | API 579 fitness for service, DNV engineer offshore, subsea engineer |
-| 14 | TechnipFMC | 7 | 810 | ✅ | career_page_scan, subsea engineer, mooring engineer offshore |
-| 15 | Vast | 9 | 740 |  | API 579 fitness for service, integrity engineer offshore, corrosion engineer |
-| 16 | Kiewit | 9 | 725 |  | API 579 fitness for service, naval architect Houston, integrity engineer offshore |
-| 17 | ENTRUST Solutions Group | 7 | 690 |  | cathodic protection engineer, hydrodynamic analyst offshore, floating wind engineer |
-| 18 | Quartus Engineering | 11 | 675 |  | structural analyst aerospace, FEA analyst manufacturing, OrcaFlex engineer |
-| 19 | Sofar Ocean | 7 | 670 |  | subsea engineer, mooring engineer offshore, floating wind engineer |
-| 20 | Geosyntec Consultants | 7 | 630 |  | mooring engineer offshore, structural engineer offshore, naval architect Houston |
-| 21 | COWI | 8 | 630 |  | naval architect Houston, integrity engineer offshore, subsea engineer |
-| 22 | WSP in the U.S. | 7 | 620 |  | API 579 fitness for service, subsea engineer, structural engineer offshore |
-| 23 | Lockheed Martin | 10 | 610 |  | structural analyst aerospace, FEA analyst manufacturing, integrity engineer offshore |
-| 24 | Noble Corporation | 7 | 595 |  | DNV engineer offshore, subsea engineer, mooring engineer offshore |
-| 25 | Enterprise Products | 7 | 590 |  | cathodic protection engineer, API 579 fitness for service, Python engineer oil gas |
-| 26 | Northrop Grumman | 9 | 575 |  | structural analyst aerospace, FEA analyst ANSYS, FEA analyst manufacturing |
-| 27 | Allseas | 4 | 560 | ✅ | subsea engineer, mooring engineer offshore, riser engineer offshore |
-| 28 | SpaceX | 8 | 560 |  | structural analyst aerospace, finite element analyst, corrosion engineer |
-| 29 | Solar Turbines | 7 | 555 |  | FEA analyst manufacturing, OrcaFlex engineer, floating wind engineer |
-| 30 | Baker Hughes | 5 | 545 |  | API 579 fitness for service, subsea engineer, riser engineer offshore |
-| 31 | McDermott International, Ltd | 4 | 540 | ✅ | subsea engineer, mooring engineer offshore, DNV engineer offshore |
-| 32 | Frontera Space | 8 | 540 |  | structural analyst aerospace, FEA analyst manufacturing, OrcaFlex engineer |
-| 33 | Marathon Petroleum Corporation | 6 | 535 |  | hydrodynamic analyst offshore, Python engineer oil gas, API 579 fitness for service |
-| 34 | Coherent Corp. | 7 | 525 |  | OrcaFlex engineer, corrosion engineer, cathodic protection manufacturing |
-| 35 | SOGECLAIR | 9 | 515 |  | structural analyst aerospace, FEA analyst manufacturing, OrcaFlex engineer |
-| 36 | Bollinger Shipyards | 5 | 510 | ✅ | Python engineer oil gas, mooring engineer offshore, structural engineer offshore |
-| 37 | Diamondback Energy | 4 | 480 | ✅ | DNV engineer offshore, corrosion engineer, riser engineer offshore |
-| 38 | Bank of America | 5 | 475 |  | OrcaWave analyst, pipeline engineer offshore |
-| 39 | Jacobs | 6 | 470 |  | subsea engineer, structural engineer offshore, naval architect Houston |
-| 40 | SLB | 5 | 465 |  | hydrodynamic analyst offshore, subsea engineer, riser engineer offshore |
-| 41 | Royal Caribbean Group | 5 | 460 |  | hydrodynamic analyst offshore, subsea engineer, naval architect Houston |
-| 42 | HDR | 5 | 460 |  | cathodic protection engineer, hydrodynamic analyst offshore, naval architect Houston |
-| 43 | Form Energy | 5 | 455 |  | corrosion engineer, OrcaWave analyst |
-| 44 | Newport News Shipbuilding, A Division of HII | 7 | 445 |  | DNV engineer offshore, subsea engineer, structural engineer offshore |
-| 45 | Biglift Amstel B.V. | 5 | 435 |  | subsea engineer, mooring engineer offshore, floating wind engineer |
-| 46 | Teledyne Technologies Incorporated | 6 | 430 |  | DNV engineer offshore, integrity engineer offshore, structural engineer offshore |
-| 47 | Muon Space | 8 | 420 |  | finite element analyst, FEA analyst ANSYS, structural analyst aerospace |
-| 48 | Leonardo DRS | 5 | 415 |  | naval architect Houston, DNV engineer offshore, structural engineer offshore |
-| 49 | Smurfit Westrock | 5 | 385 |  | corrosion engineer, API 579 fitness for service, integrity engineer offshore |
-| 50 | L3Harris Technologies | 6 | 380 |  | OrcaFlex engineer, structural analyst aerospace, FEA analyst manufacturing |
+| 1 | Blue Origin | 40 | 2575 |  | structural analyst aerospace, ANSYS engineer manufacturing, hydrodynamic analyst offshore |
+| 2 | Subsea7 | 15 | 1865 | ✅ | hydrodynamic analyst offshore, mooring engineer offshore, OrcaFlex engineer |
+| 3 | American Bureau of Shipping (ABS) | 16 | 1865 | ✅ | pipeline engineer offshore, hydrodynamic analyst offshore, naval architect Houston |
+| 4 | Anduril Industries | 26 | 1775 |  | structural analyst aerospace, ANSYS engineer manufacturing, hydrodynamic analyst offshore |
+| 5 | General Dynamics Electric Boat | 23 | 1535 |  | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore |
+| 6 | Oceaneering | 14 | 1485 | ✅ | hydrodynamic analyst offshore, mooring engineer offshore, DNV engineer offshore |
+| 7 | ABS | 13 | 1300 | ✅ | career_page_scan |
+| 8 | NOV | 14 | 1245 |  | mooring engineer offshore, Python engineer oil gas, DNV engineer offshore |
+| 9 | L3Harris Technologies | 15 | 1195 |  | structural analyst aerospace, ANSYS engineer manufacturing, hydrodynamic analyst offshore |
+| 10 | Makai Ocean Engineering, Inc. | 14 | 1160 |  | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore |
+| 11 | Panthalassa | 12 | 1070 |  | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore |
+| 12 | Woods Hole Oceanographic Institution | 12 | 1000 |  | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore |
+| 13 | GE Vernova | 9 | 980 | ✅ | pipeline engineer offshore, career_page_scan, OrcaFlex engineer |
+| 14 | Saur Energy International | 11 | 960 |  | naval architect Houston, mooring engineer offshore, DNV engineer offshore |
+| 15 | Leidos | 14 | 935 |  | structural analyst aerospace, ANSYS engineer manufacturing, cathodic protection engineer |
+| 16 | HII | 13 | 915 |  | hydrodynamic analyst offshore, naval architect Houston, DNV engineer offshore |
+| 17 | Black & Veatch | 10 | 875 |  | cathodic protection engineer, mooring engineer offshore, structural engineer offshore |
+| 18 | Lockheed Martin | 11 | 870 |  | structural analyst aerospace, ANSYS engineer manufacturing, FEA analyst manufacturing |
+| 19 | Northrop Grumman | 10 | 865 |  | finite element analyst, structural analyst aerospace, subsea engineer |
+| 20 | STR | 9 | 830 |  | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore |
+| 21 | McDermott International, Ltd | 6 | 820 | ✅ | DNV engineer offshore, riser engineer offshore, mooring engineer offshore |
+| 22 | AV | 7 | 770 |  | OrcaWave analyst |
+| 23 | Newport News Shipbuilding, A Division of HII | 12 | 760 |  | hydrodynamic analyst offshore, naval architect Houston, DNV engineer offshore |
+| 24 | Resolve Marine | 9 | 735 |  | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore |
+| 25 | ExxonMobil | 7 | 730 | ✅ | hydrodynamic analyst offshore, corrosion engineer, integrity engineer offshore |
+| 26 | Kiewit | 8 | 720 |  | naval architect Houston, mooring engineer offshore, API 579 fitness for service |
+| 27 | Constellation | 7 | 715 |  | OrcaWave analyst, cathodic protection engineer |
+| 28 | WSP in the U.S. | 8 | 710 |  | pipeline engineer offshore, hydrodynamic analyst offshore, naval architect Houston |
+| 29 | Airswift | 7 | 695 |  | API 579 fitness for service, mooring engineer offshore, structural engineer offshore |
+| 30 | Siemens Energy | 7 | 675 | ✅ | mooring engineer offshore, corrosion engineer, integrity engineer offshore |
+| 31 | Acuren | 9 | 665 |  | cathodic protection engineer, API 579 fitness for service, OrcaFlex engineer |
+| 32 | Noble Corporation | 8 | 640 |  | DNV engineer offshore, riser engineer offshore, mooring engineer offshore |
+| 33 | Vast | 8 | 630 |  | API 579 fitness for service, structural engineer offshore, riser engineer offshore |
+| 34 | Weatherford | 6 | 615 |  | riser engineer offshore, mooring engineer offshore, API 579 fitness for service |
+| 35 | Rand Worldwide | 9 | 615 |  | FEA analyst ANSYS, ANSYS engineer manufacturing, OrcaFlex engineer |
+| 36 | HDR | 7 | 605 |  | hydrodynamic analyst offshore, subsea engineer, cathodic protection engineer |
+| 37 | Baker Hughes | 6 | 595 |  | pipeline engineer offshore, subsea engineer, riser engineer offshore |
+| 38 | Evlo AI | 6 | 580 |  | OrcaWave analyst |
+| 39 | Everllence | 6 | 575 |  | pipeline engineer offshore, naval architect Houston, mooring engineer offshore |
+| 40 | Redeployment | 7 | 565 |  | hydrodynamic analyst offshore, naval architect Houston, mooring engineer offshore |
+| 41 | Marathon Petroleum Corporation | 7 | 535 |  | API 579 fitness for service, mooring engineer offshore, Python engineer oil gas |
+| 42 | Toyon Research Corporation | 10 | 535 |  | structural analyst aerospace, ANSYS engineer manufacturing, FEA analyst manufacturing |
+| 43 | Acteon Group | 5 | 525 |  | naval architect Houston, mooring engineer offshore, DNV engineer offshore |
+| 44 | Let's Work LLC | 7 | 525 |  | naval architect Houston, mooring engineer offshore, DNV engineer offshore |
+| 45 | Karman Space & Defense | 9 | 510 |  | structural analyst aerospace, ANSYS engineer manufacturing, FEA analyst manufacturing |
+| 46 | Trendsetter Engineering, Inc. | 5 | 510 |  | pipeline engineer offshore, riser engineer offshore, mooring engineer offshore |
+| 47 | BlackSea Technologies | 6 | 510 |  | naval architect Houston, mooring engineer offshore, structural engineer offshore |
+| 48 | Redwire | 8 | 500 |  | structural analyst aerospace, FEA analyst manufacturing, FEA analyst ANSYS |
+| 49 | Boeing | 9 | 485 |  | structural analyst aerospace, FEA analyst manufacturing, structural engineer offshore |
+| 50 | SpaceX | 8 | 470 |  | structural analyst aerospace, Python engineer oil gas, structural engineer offshore |
 
 ## Next Steps
 
