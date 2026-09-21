@@ -18,7 +18,7 @@
 ## Workspace Layout (Linux)
 
 - `/mnt/local-analysis/workspace-hub/` — the real git repo mount (harness / control-plane)
-- `~/workspace-hub` — **sparse overlay** on ace-linux-1; writes may fail silently
+- `~/workspace-hub` — **sparse overlay** on ace-linux-1; writes may fail silently *stale: 2026-09-21*
   - If a write via tool fails: write to `/tmp/` first, then `mv` via terminal to the real mount
 - **Tier-1 repos live as SIBLINGS at `/mnt/local-analysis/<repo>` — NOT nested under workspace-hub.**
   `workspace-hub` is the harness/control-plane, not a parent for tier-1 checkouts. Each is a
@@ -40,7 +40,7 @@
 Memory travels with the repo via git. No Hermes needed on Windows.
 
 1. **Hermes (ace-linux-1)**: Writes authoritative facts to `~/.hermes/memories/`
-2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory
+2. **Bridge script** (`scripts/memory/bridge-hermes-claude.sh`): Reads Hermes memory *verified: 2026-09-21*
    (if present), injects it into `agents.md` via template, regenerates `context.md`,
    snapshots Claude auto-memory, mirrors topic files, commits and pushes.
    Runs on both Linux (cron) and Windows (Task Scheduler).
