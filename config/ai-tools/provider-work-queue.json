@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-20T17:21:33.032259Z",
+  "generated_at": "2026-09-20T21:21:37.240566Z",
   "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-20T17:21:30.767089Z",
+  "scorecard_generated_at": "2026-09-20T21:21:35.191891Z",
   "recommended_provider_order": [
     "agy",
     "codex",
@@ -446,32 +446,6 @@
           "updatedAt": "2026-07-30T02:10:45Z",
           "execution_ready": true,
           "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3552,
-          "title": "security: make Gitleaks configuration fail closed with default rules and positive control",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3552",
-          "labels": [
-            "bug",
-            "cat:tooling",
-            "priority:critical",
-            "domain:security",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:13:55Z",
-          "execution_ready": false,
-          "priority_rank": 0,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1613,7 +1587,7 @@
             "machine:multi",
             "epic"
           ],
-          "updatedAt": "2026-09-20T16:31:50Z",
+          "updatedAt": "2026-09-20T18:14:07Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4216,6 +4190,24 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3878",
           "labels": [],
           "updatedAt": "2026-09-16T14:34:29Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3880,
+          "title": "Standardize repo layout + tooling across machines",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3880",
+          "labels": [],
+          "updatedAt": "2026-09-20T19:10:50Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
