@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-20T21:21:37.240566Z",
-  "current_week": "2026-W38",
-  "scorecard_generated_at": "2026-09-20T21:21:35.191891Z",
+  "generated_at": "2026-09-21T01:21:30.743586Z",
+  "current_week": "2026-W39",
+  "scorecard_generated_at": "2026-09-21T01:21:28.700446Z",
   "recommended_provider_order": [
-    "agy",
     "codex",
+    "agy",
     "claude"
   ],
   "provider_queues": {
