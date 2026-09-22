@@ -1,16 +1,16 @@
 {
   "machine": "dev-primary",
-  "audited_at": "2026-08-03T23:47:03+00:00",
+  "audited_at": "2026-09-22T17:47:07+00:00",
   "platform": "unix",
-  "repos_total": 15,
+  "repos_total": 17,
   "healthy": 45,
-  "missing": 0,
+  "missing": 6,
   "dangling": 0,
   "flattened": 0,
   "modified_real_dir": 0,
   "template_absent": 0,
-  "repairable": 0,
-  "unexpected_missing_repos": [],
-  "worst_state": "HEALTHY",
+  "repairable": 6,
+  "unexpected_missing_repos": ["workspace-hub-cxc-fix-3804-legal-scan-fail-open", "workspace-hub-cxc-fix-broken-script-references"],
+  "worst_state": "MISSING",
   "schema_version": 1
 }

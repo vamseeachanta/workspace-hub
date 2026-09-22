@@ -1,19 +1,19 @@
-generated_at: "2026-08-03T18:47:03"
+generated_at: "2026-09-22T12:47:07"
 schema_version: 4
 machine: "dev-primary"
 host: "ace-linux-1"
 os: linux
 status: active
 provenance:
-  checkout_sha: "d158eca92"
+  checkout_sha: "b0275bfe0"
   dirty: false
-  behind_main: 0
-  ahead_main: 0
-  origin_ref_age_h: 2
+  behind_main: 126
+  ahead_main: 325
+  origin_ref_age_h: 11
 dimensions:
   compute:
     static: {cores: 32, ram_total_mib: 32037, gpu_model: "none"}
-    headroom: {ram_avail_mib: 28261, disk_avail_gb: 2023}
+    headroom: {ram_avail_mib: 18844, disk_avail_gb: 2643}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -30,11 +30,11 @@ dimensions:
     python_cmd: uv-run
     readiness_ref: harness-readiness-ace-linux-1.yaml
     readiness_overall: fail
-  skills: {repo_skill_count: 423}
+  skills: {repo_skill_count: 424}
   kanban: {dispatch_queues: "_leader-state,cfd-dedicated,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
-    context_md_mtime: "2026-08-03T04:25:01"
+    context_md_mtime: "2026-09-22T04:25:01"
   provider_harness:
     schema_version: 1
     providers:
@@ -70,12 +70,12 @@ dimensions:
     has_parity_review: true
     job_count: 63
   session_curation:
-    last_curated_at: "2026-08-03T23:47:01+00:00"
-    sessions_24h: 78
-    providers_active: "claude,codex,gemini,hermes"
+    last_curated_at: "2026-09-22T17:47:02+00:00"
+    sessions_24h: 0
+    providers_active: "codex,gemini,hermes"
     memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-08-03T23:47:02+00:00"
+    audited_at: "2026-09-22T17:47:05+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,15 +84,15 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-08-03T23:47:02+00:00"
-    worst_age_hours: 14.363
+    audited_at: "2026-09-22T17:47:05+00:00"
+    worst_age_hours: 8.367
     freshness: "MEMORY-FRESH"
   skill_link_health:
-    audited_at: "2026-08-03T23:47:03+00:00"
-    repos_total: 15
+    audited_at: "2026-09-22T17:47:07+00:00"
+    repos_total: 17
     healthy: 45
-    repairable: 0
-    worst_state: "HEALTHY"
+    repairable: 6
+    worst_state: "MISSING"
   harness_checkup:
     audited_at: null
     cc_version: null
