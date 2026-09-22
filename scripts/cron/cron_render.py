@@ -89,7 +89,7 @@ def workspace_hub_path(
     if not override:
         return REPO_ROOT
     text = str(override)
-    if text.startswith("/"):
+    if os.name == "nt" and text.startswith("/"):
         return PurePosixPath(text)
     return Path(override).expanduser().resolve()
 
@@ -104,7 +104,8 @@ def build_context(
     entry = resolved["machine"]
     hub = workspace_hub_path(workspace_hub)
     schedule_variant = entry.get("schedule_variant", "contribute")
-    log = hub / FULL_VARIANT_LOG if schedule_variant == "full" else Path(CONTRIBUTE_LOG)
+    hub_text = str(hub).rstrip("/\\")
+    log = f"{hub_text}/{FULL_VARIANT_LOG}" if schedule_variant == "full" else CONTRIBUTE_LOG
 
     hostname = _norm(entry.get("hostname") or resolved["input_token"])
     aliases = [_norm(alias) for alias in entry.get("hostname_aliases", []) or []]
