@@ -1,6 +1,6 @@
 # Provider routing scorecard
 
-Generated: 2026-09-21T21:23:13.297038Z
+Generated: 2026-09-22T01:23:08.193868Z
 Current week: 2026-W39
 Recommended provider order: codex, agy, claude
 
@@ -42,7 +42,7 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Current-week reported utilization: 0.0%
 - Quota basis: quota (history.jsonl-estimate)
 - Current-week sessions / post records: 0 / 0
-- Audit post records: 207675
+- Audit post records: 207705
 - Missing repo reads: 1705
 - Python3 per 1k records: 13.62
 - Migration debt per 1k records: 0.05

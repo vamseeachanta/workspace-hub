@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-09-21T21:23:13.297038Z",
+  "generated_at": "2026-09-22T01:23:08.193868Z",
   "current_week": "2026-W39",
   "inputs": {
     "utilization_path": "/mnt/ace/ws/workspace-hub/config/ai-tools/provider-utilization-weekly.json",
     "audit_path": "/mnt/ace/ws/workspace-hub/analysis/provider-session-ecosystem-audit.json",
-    "utilization_generated_at": "2026-09-21T21:23:12.750590Z",
-    "audit_generated_at": "2026-09-07T09:15:05Z"
+    "utilization_generated_at": "2026-09-22T01:23:07.431617Z",
+    "audit_generated_at": "2026-09-14T09:15:04Z"
   },
   "recommended_provider_order": [
     "codex",
@@ -88,7 +88,7 @@
       "quota_source": "history.jsonl-estimate",
       "sessions_current_week": 0,
       "post_records_current_week": 0,
-      "audit_post_records": 207675,
+      "audit_post_records": 207705,
       "missing_repo_reads": 1705,
       "python3_per_1k_records": 13.62,
       "migration_debt_per_1k_records": 0.05,
@@ -108,11 +108,11 @@
         },
         {
           "tool": "wait_agent",
-          "count": 7005
+          "count": 7014
         },
         {
           "tool": "send_message",
-          "count": 2359
+          "count": 2364
         },
         {
           "tool": "Grep",
@@ -120,7 +120,7 @@
         },
         {
           "tool": "spawn_agent",
-          "count": 1644
+          "count": 1656
         },
         {
           "tool": "update_plan",
