@@ -986,7 +986,9 @@ tasks:
     schedule: "0 */4 * * *"
     # 2026-09-22: ace-linux-1 publishes workspace-hub generated state to
     # machine/ace-linux-1, never main (main-line divergence incident). The hub
-    # is skipped here; workspace-hub-machine-sync handles it.
+    # checkout is diverged and must not be touched, so this runs from the
+    # machine-branch checkout (tracks origin/main). The hub is skipped
+    # here; workspace-hub-machine-sync handles it.
     machines: [ace-linux-1]
     roles: [control-plane]
     requires: [bash, git, uv, python3]
@@ -997,8 +999,8 @@ tasks:
       filesystem_wait_wchans: [request_wait_answer]
     command: >-
       PATH=$HOME/.local/bin:$PATH;
-      SYNC_SKIP_REPOS=workspace-hub;
-      cd $WORKSPACE_HUB &&
+      SYNC_SKIP_REPOS=workspace-hub,workspace-hub-machine;
+      cd $WORKSPACE_HUB/../workspace-hub-machine &&
       bash scripts/cron-repository-sync.sh
     log: logs/repository-sync-*.log
     is_claude_task: false
