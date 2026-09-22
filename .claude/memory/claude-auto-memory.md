@@ -1,7 +1,7 @@
 # Claude Code Auto-Memory Snapshot
 
 > Git-tracked snapshot of Claude Code's auto-generated MEMORY.md index.
-> Last captured: 2026-09-21
+> Last captured: 2026-09-22
 > Source: /home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md
 
 # Workspace Hub Memory
@@ -150,4 +150,4 @@
 - [Cross-provider dream feed activity (2026-07)](reference_crossprovider_feed_activity_2026_07.md) — only Claude+Codex feed the dream; …
 - ⚠ **[ace-win-1 RETIRED → use acma-hou-rds02](reference_ace_win_1_retired_use_acma_hou_rds02.md)** — owner 2026-08-04; tailnet 100.93.182.24 but **SSH not provisioned** (publickey denied, no config/known_hosts); blocks dm#1633 closeout run
 - [ace-win-1 equality evidence stale](reference_ace_win_1_equality_evidence_stale.md) — acma-ansys05: no scheduler + no gh auth; fix ON-BOX …
-- [Dynacard module map (digitalmodel)](reference_dynacard_module_map_digitalmodel.md) — `marine_ops/artificial_lift/dynacard/`; 18 modes; … *stale: 2026-09-22*
+- [Dynacard module map (digitalmodel)](reference_dynacard_module_map_digitalmodel.md) — `marine_ops/artificial_lift/dynacard/`; 18 modes; …

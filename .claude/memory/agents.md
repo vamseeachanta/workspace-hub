@@ -6,7 +6,7 @@
 
 <!-- BRIDGE:START — do not edit below this line, managed by bridge script -->
 
-## Synced from Hermes Memory (2026-09-21)
+## Synced from Hermes Memory (2026-09-22)
 
 ### Environment Facts
 
