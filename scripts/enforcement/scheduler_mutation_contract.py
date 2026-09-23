@@ -155,10 +155,6 @@ def digest_record_union(
         b"tests/enforcement/test_scheduler_mutation_delivery.py",
         b".github/workflows/enforcement-gate.yml",
         b".github/workflows/scheduler-mutation-main.yml",
-        # #3527: captured-tree snapshot helper and lockfiles affect the digest.
-        b"scripts/lib/git_index_snapshot.py",
-        b"pyproject.toml",
-        b"uv.lock",
     }
     for row in registry["surfaces"]:
         paths.add(row["path"].encode())

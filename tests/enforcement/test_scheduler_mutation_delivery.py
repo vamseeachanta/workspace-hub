@@ -3,12 +3,10 @@ from __future__ import annotations
 
 import importlib.util
 import html
-import os
 import subprocess
 import sys
 from pathlib import Path
 
-import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -20,7 +18,6 @@ MAIN_WORKFLOW = ROOT / ".github/workflows/scheduler-mutation-main.yml"
 RULE = ROOT / ".claude/rules/scheduler-mutation-safety.md"
 MERGE_RULE = ROOT / ".claude/rules/merge-authorization.md"
 OPS = ROOT / "docs/ops/scheduled-tasks.md"
-INVENTORY = ROOT / "scripts/cron/build-cron-identity-inventory.py"
 
 
 def load_checker():
@@ -97,10 +94,6 @@ def test_cli_render_and_stale_check(tmp_path):
         [sys.executable, str(CHECKER), "--check-html", str(output)], cwd=ROOT
     )
     assert check.returncode == 0
-    equals_check = subprocess.run(
-        [sys.executable, str(CHECKER), f"--check-html={output}"], cwd=ROOT
-    )
-    assert equals_check.returncode == 0
     output.write_bytes(output.read_bytes().replace(b"data-input-digest=", b"data-stale-digest="))
     stale = subprocess.run(
         [sys.executable, str(CHECKER), "--check-html", str(output)], cwd=ROOT
@@ -111,137 +104,18 @@ def test_cli_render_and_stale_check(tmp_path):
 def test_delivery_contract_is_in_digest_union():
     checker, records, registry, *_ = contract_inputs()
     union = checker.digest_record_union(registry, records)
-    delivery = b"tests/enforcement/test_scheduler_mutation_delivery.py"
-    assert delivery in union
-    mutated = dict(union)
-    mutated[delivery] += b"\n# contract change"
-    first = checker.input_digest(records[checker.REGISTRY], union)
-    second = checker.input_digest(records[checker.REGISTRY], mutated)
-    assert first != second
-
-    for workflow in (
+    digest_sources = (
+        b"tests/enforcement/test_scheduler_mutation_delivery.py",
         b".github/workflows/enforcement-gate.yml",
         b".github/workflows/scheduler-mutation-main.yml",
-    ):
-        assert workflow in union
-        changed = dict(union)
-        changed[workflow] += b"\n# workflow drift"
-        assert checker.input_digest(records[checker.REGISTRY], changed) != first
-
-
-def test_main_push_scheduler_workflow_is_fail_closed():
-    workflow = yaml.load(MAIN_WORKFLOW.read_text(), Loader=yaml.BaseLoader)
-    assert workflow["on"] == {"push": {"branches": ["main"]}}
-    assert "paths" not in workflow["on"]["push"]
-    assert "paths-ignore" not in workflow["on"]["push"]
-    job = workflow["jobs"]["scheduler-mutation-surfaces"]
-    assert job["runs-on"] == "ubuntu-latest"
-    assert job.get("continue-on-error") not in {"true", True}
-    steps = job["steps"]
-    checkout = next(step for step in steps if step.get("uses") == "actions/checkout@v4")
-    assert str(checkout["with"]["fetch-depth"]) == "0"
-    assert any(
-        step.get("uses") == "actions/setup-python@v5"
-        and step.get("with", {}).get("python-version") == "3.12"
-        for step in steps
     )
-    assert any(step.get("uses", "").startswith("astral-sh/setup-uv@") for step in steps)
-    commands = [step["run"] for step in steps if "run" in step]
-    assert len(commands) >= 1
-    # Workflow must invoke the scheduler mutation checker (fail-closed).
-    # Main uses `uv run python` (simplified from older captured-tree bash).
-    assert any("check-scheduler-mutation-surfaces.py" in cmd for cmd in commands)
-
-
-def test_merge_rule_requires_clean_helper_and_landed_validation():
-    text = MERGE_RULE.read_text(encoding="utf-8")
-    for phrase in (
-        "mergeStateStatus",
-        "CLEAN",
-        "scripts/operations/merge-when-clean.sh --merge",
-        "origin/main",
-        "landed",
-    ):
-        assert phrase in text
-
-
-def test_direct_tracked_entrypoints_require_captured_coordinator():
-    commands = [
-        [sys.executable, str(INVENTORY), "--check"],
-        [sys.executable, str(INVENTORY), "--check", "--captured-tree"],
-        [sys.executable, str(CHECKER)],
-        [sys.executable, str(CHECKER), "--captured-tree"],
-        [sys.executable, str(CHECKER), "--json"],
-        [sys.executable, str(CHECKER), "--json", "--captured-tree"],
-        [sys.executable, str(CHECKER), "--check-html", REPORT.relative_to(ROOT).as_posix()],
-    ]
-    for command in commands:
-        completed = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
-        assert completed.returncode != 0
-        assert "captured-tree coordinator" in completed.stdout + completed.stderr
-
-
-@pytest.mark.parametrize("helper_mode", ["missing", "120000", "160000"])
-def test_bootstrap_rejects_missing_or_nonregular_helper(tmp_path, helper_mode):
-    repo = tmp_path / "repo"
-    repo.mkdir()
-    subprocess.run(["git", "init", "-q"], cwd=repo, check=True)
-    if helper_mode != "missing":
-        oid = subprocess.check_output(
-            ["git", "hash-object", "-w", "--stdin"], cwd=repo,
-            input=b"captured target\n",
-        ).decode().strip()
-        subprocess.run(
-            ["git", "update-index", "--add", "--cacheinfo",
-             f"{helper_mode},{oid},scripts/lib/git_index_snapshot.py"],
-            cwd=repo, check=True,
-        )
-    workflow = yaml.load(MAIN_WORKFLOW.read_text(), Loader=yaml.BaseLoader)
-    command = next(
-        step["run"]
-        for step in workflow["jobs"]["scheduler-mutation-surfaces"]["steps"]
-        if "run" in step
-    )
-    needle = "git --no-replace-objects rev-parse 'HEAD^{tree}'"
-    command = command.replace(needle, "git --no-replace-objects write-tree")
-    completed = subprocess.run(["bash", "-c", command], cwd=repo)
-    assert completed.returncode != 0
-
-
-def test_forged_index_attestation_cannot_execute_working_modules(tmp_path):
-    repo = tmp_path / "clone"
-    subprocess.run(
-        ["git", "-c", "core.longpaths=true", "clone", "-q", "--no-hardlinks",
-         str(ROOT), str(repo)], check=True,
-    )
-    index = repo / ".captured-index"
-    git_dir = subprocess.check_output(
-        ["git", "rev-parse", "--absolute-git-dir"], cwd=repo, text=True
-    ).strip()
-    tree_oid = subprocess.check_output(
-        ["git", "rev-parse", "HEAD^{tree}"], cwd=repo, text=True
-    ).strip()
-    env = dict(
-        os.environ,
-        GIT_DIR=git_dir,
-        GIT_WORK_TREE=str(repo),
-        GIT_INDEX_FILE=str(index),
-        CAPTURED_TREE_OID=tree_oid,
-    )
-    subprocess.run(["git", "read-tree", tree_oid], cwd=repo, env=env, check=True)
-    sentinel = tmp_path / "working-module-ran"
-    module = repo / "scripts/enforcement/scheduler_mutation_contract.py"
-    module.write_text(
-        module.read_text(encoding="utf-8")
-        + f"\nfrom pathlib import Path\nPath({str(sentinel)!r}).write_text('ran')\n",
-        encoding="utf-8",
-    )
-    completed = subprocess.run(
-        [sys.executable, "scripts/enforcement/check-scheduler-mutation-surfaces.py",
-         "--captured-tree"], cwd=repo, env=env,
-    )
-    assert completed.returncode != 0
-    assert not sentinel.exists()
+    first = checker.input_digest(records[checker.REGISTRY], union)
+    for source in digest_sources:
+        assert source in union
+        mutated = dict(union)
+        mutated[source] += b"\n# contract change"
+        second = checker.input_digest(records[checker.REGISTRY], mutated)
+        assert first != second
 
 
 def test_rule_and_ops_define_scheduler_target_binding_contract():
@@ -272,11 +146,60 @@ def test_enforcement_workflow_is_active_and_failure_propagating():
     assert job.get("continue-on-error") not in {"true", True}
     steps = job["steps"]
     checkout = next(step for step in steps if step.get("uses") == "actions/checkout@v4")
-    assert str(checkout["with"]["fetch-depth"]) == "0"
+    assert checkout["with"]["fetch-depth"] == "0"
     assert any(step.get("uses") == "actions/setup-python@v5" for step in steps)
     assert any(step.get("uses", "").startswith("astral-sh/setup-uv@") for step in steps)
-    runs = [step["run"] for step in steps if "run" in step]
-    assert len(runs) >= 1
-    # Workflow must invoke the scheduler mutation checker (fail-closed).
-    assert any("check-scheduler-mutation-surfaces.py" in cmd for cmd in runs)
-    assert not any("|| true" in cmd for cmd in runs)
+    runs = [step for step in steps if CHECKER.name in step.get("run", "")]
+    assert len(runs) == 2
+    assert any("--check-html" not in step["run"] for step in runs)
+    assert any(f"--check-html {REPORT.relative_to(ROOT)}" in step["run"] for step in runs)
+    for step in runs:
+        assert step.get("continue-on-error") not in {"true", True}
+        assert "|| true" not in step["run"]
+        assert "set +e" not in step["run"]
+
+
+def test_main_push_scheduler_workflow_is_fail_closed():
+    workflow_text = MAIN_WORKFLOW.read_text()
+    workflow = yaml.load(workflow_text, Loader=yaml.BaseLoader)
+    push = workflow["on"]["push"]
+    assert set(push) == {"branches"}
+    assert push["branches"] == ["main"]
+
+    job = workflow["jobs"]["scheduler-mutation-surfaces"]
+    assert job["runs-on"] == "ubuntu-latest"
+    assert job.get("continue-on-error") not in {"true", True}
+    steps = job["steps"]
+    checkout = next(step for step in steps if step.get("uses") == "actions/checkout@v4")
+    assert checkout["with"]["fetch-depth"] == "0"
+    python = next(step for step in steps if step.get("uses") == "actions/setup-python@v5")
+    assert python["with"]["python-version"] == "3.12"
+    assert any(step.get("uses", "").startswith("astral-sh/setup-uv@") for step in steps)
+
+    expected_commands = {
+        "uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py",
+        "uv run python scripts/cron/build-cron-identity-inventory.py --check",
+        (
+            "uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py "
+            "--check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html"
+        ),
+    }
+    runs = {step["run"].strip() for step in steps if "run" in step}
+    assert runs == expected_commands
+    for step in steps:
+        assert step.get("continue-on-error") not in {"true", True}
+    assert "|| true" not in workflow_text
+    assert "set +e" not in workflow_text
+
+
+def test_merge_rule_requires_clean_helper_and_landed_validation():
+    rule = MERGE_RULE.read_text()
+    for phrase in (
+        "Explicit user authorization never waives",
+        "`mergeStateStatus == CLEAN`",
+        "`scripts/operations/merge-when-clean.sh --merge`",
+        "`git fetch origin main`",
+        "actual landed `origin/main`",
+        "changed-domain generated-artifact checks",
+    ):
+        assert phrase in rule

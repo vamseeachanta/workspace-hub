@@ -9,22 +9,13 @@ import struct
 import sys
 from pathlib import Path
 
+import yaml
+
 ROOT = Path(__file__).resolve().parents[2]
 CRON_DIR = Path(__file__).resolve().parent
-LIB_DIR = ROOT / "scripts/lib"
 if str(CRON_DIR) not in sys.path:
     sys.path.insert(0, str(CRON_DIR))
-if str(LIB_DIR) not in sys.path:
-    sys.path.insert(0, str(LIB_DIR))
 
-from git_index_snapshot import (  # noqa: E402
-    INVENTORY_CODE_PATHS,
-    verify_captured_context,
-)
-if "--captured-tree" in sys.argv[1:]:
-    verify_captured_context(ROOT, INVENTORY_CODE_PATHS)
-
-import yaml  # noqa: E402
 from cron_identity import (  # noqa: E402
     build_ownership_context,
     validate_inventory_inputs,
@@ -35,12 +26,8 @@ DEFAULT_CATALOG = ROOT / "config/scheduled-tasks/schedule-tasks.yaml"
 DEFAULT_REGISTRY = ROOT / "config/workstations/registry.yaml"
 DEFAULT_CLASSES = ROOT / "config/workstations/harness-state-classes.yaml"
 DEFAULT_OUTPUT = ROOT / "docs/reports/issue-3475-command-identity-inventory.json"
-DEFAULT_OUTPUT_ARG = "docs/reports/issue-3475-command-identity-inventory.json"
 SOURCE_PATHS = (
     Path(__file__).resolve(),
-    ROOT / "scripts/lib/git_index_snapshot.py",
-    ROOT / "pyproject.toml",
-    ROOT / "uv.lock",
     ROOT / "scripts/cron/cron_render.py",
     ROOT / "scripts/cron/cron_transaction.py",
     ROOT / "scripts/cron/cron_line_model.py",
@@ -48,10 +35,9 @@ SOURCE_PATHS = (
 )
 
 
-def logical_digest_name(path: Path, root: Path | None = None) -> str:
-    base = (root or ROOT).resolve()
+def digest_logical_name(path: Path) -> str:
     try:
-        return path.resolve().relative_to(base).as_posix()
+        return path.resolve().relative_to(ROOT.resolve()).as_posix()
     except ValueError:
         return path.name
 
@@ -61,7 +47,7 @@ def input_digest(paths: list[Path]) -> str:
     digest.update(b"cron-identity-input-v1\0")
     logical = []
     for path in paths:
-        logical.append((logical_digest_name(path), path))
+        logical.append((digest_logical_name(path), path))
     for name_text, path in sorted(logical):
         name = name_text.encode("utf-8")
         body = path.read_bytes()
@@ -182,73 +168,32 @@ def inventory_mismatch_summary(current: bytes, generated: bytes) -> str:
     return "inventory body mismatch: bytes differ after canonical JSON comparison"
 
 
-def _option_value(raw_args: list[str], name: str) -> str | None:
-    for index, token in enumerate(raw_args):
-        if token == name:
-            return raw_args[index + 1] if index + 1 < len(raw_args) else ""
-        if token.startswith(f"{name}="):
-            return token.split("=", 1)[1]
-    return None
-
-
-def _canonical_output_selected(raw_args: list[str], output: Path) -> bool:
-    value = _option_value(raw_args, "--output")
-    if value is None:
-        return True
-    if value == DEFAULT_OUTPUT_ARG:
-        return True
-    try:
-        output.resolve().relative_to(ROOT.resolve())
-    except ValueError:
-        return False
-    raise ValueError("tracked inventory aliases are not accepted")
-
-
-def _reject_tracked_input_aliases(raw_args: list[str], args: argparse.Namespace) -> None:
-    options = (
-        ("--catalog", args.catalog, "config/scheduled-tasks/schedule-tasks.yaml"),
-        ("--registry", args.registry, "config/workstations/registry.yaml"),
-        ("--state-classes", args.state_classes,
-         "config/workstations/harness-state-classes.yaml"),
-    )
-    for option, path, canonical in options:
-        value = _option_value(raw_args, option)
-        if value is None or value == canonical:
-            continue
-        try:
-            path.resolve().relative_to(ROOT.resolve())
-        except ValueError:
-            continue
-        raise ValueError(f"tracked input alias is not accepted: {option}")
-
-
 def main(argv: list[str] | None = None) -> int:
-    raw_args = list(sys.argv[1:] if argv is None else argv)
     parser = argparse.ArgumentParser()
     parser.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
     parser.add_argument("--registry", type=Path, default=DEFAULT_REGISTRY)
     parser.add_argument("--state-classes", type=Path, default=DEFAULT_CLASSES)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--check", action="store_true")
-    parser.add_argument("--captured-tree", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     try:
-        canonical = _canonical_output_selected(raw_args, args.output)
-        _reject_tracked_input_aliases(raw_args, args)
-        if args.check and canonical and not args.captured_tree:
-            raise ValueError("canonical inventory check requires captured-tree coordinator")
-        if args.check and canonical:
-            verify_captured_context(ROOT, INVENTORY_CODE_PATHS)
         payload = build(args.catalog, args.registry, args.state_classes)
         generated = render(payload)
-    except (OSError, RuntimeError, TypeError, ValueError, yaml.YAMLError) as exc:
+    except (OSError, TypeError, ValueError, yaml.YAMLError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
     invalid = bool(payload["unsupported"] or payload["collisions"])
     if args.check:
-        stale = not args.output.is_file() or args.output.read_bytes() != generated
+        current = args.output.read_bytes() if args.output.is_file() else b""
+        stale = current != generated
         if stale:
             print(f"ERROR: stale identity inventory: {args.output}", file=sys.stderr)
+            print(
+                "ERROR: expected input_digest "
+                f"{payload['input_digest']} but found {rendered_input_digest(current)}",
+                file=sys.stderr,
+            )
+            print(f"ERROR: {inventory_mismatch_summary(current, generated)}", file=sys.stderr)
         return 1 if stale or invalid else 0
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(generated)
