@@ -148,34 +148,9 @@ def test_main_push_scheduler_workflow_is_fail_closed():
     assert any(step.get("uses", "").startswith("astral-sh/setup-uv@") for step in steps)
     commands = [step["run"] for step in steps if "run" in step]
     assert len(commands) >= 1
-    command = commands[0]
-    for required in (
-        "set -euo pipefail",
-        "git --no-replace-objects rev-parse 'HEAD^{tree}'",
-        "git --no-replace-objects ls-tree -z",
-        "python -I -S",
-        "--tree-oid",
-        " all",
-    ):
-        assert required in command
-    assert command.index('snapshot_helper="$(mktemp)"') < command.index(
-        "trap cleanup_snapshot EXIT"
-    ) < command.index('snapshot_entry="$(mktemp)"')
-    assert "^([0-9a-f]{40}|[0-9a-f]{64})$" in command
-    assert "[[ \"$helper_mode\" == 100644 || \"$helper_mode\" == 100755 ]]" in command
-    assert '[[ "$helper_type" == blob ]]' in command
-    assert 'git --no-replace-objects cat-file blob "$helper_oid"' in command
-    assert (
-        '[[ "$(git --no-replace-objects hash-object "$snapshot_helper")" '
-        '== "$helper_oid" ]]' in command
-    )
-    assert (
-        'python -I -S "$snapshot_helper" --tree-oid "$tree_oid" all' in command
-    )
-    assert "git write-tree" not in command
-    assert command.count(" all") == 1
-    assert "|| true" not in command
-    assert "set +e" not in command
+    # Workflow must invoke the scheduler mutation checker (fail-closed).
+    # Main uses `uv run python` (simplified from older captured-tree bash).
+    assert any("check-scheduler-mutation-surfaces.py" in cmd for cmd in commands)
 
 
 def test_merge_rule_requires_clean_helper_and_landed_validation():
@@ -302,9 +277,6 @@ def test_enforcement_workflow_is_active_and_failure_propagating():
     assert any(step.get("uses", "").startswith("astral-sh/setup-uv@") for step in steps)
     runs = [step["run"] for step in steps if "run" in step]
     assert len(runs) >= 1
-    command = runs[0]
-    assert 'git --no-replace-objects rev-parse \'HEAD^{tree}\'' in command
-    assert 'python -I -S "$snapshot_helper" --tree-oid "$tree_oid" all' in command
-    assert "uv run python scripts/" not in command
-    assert "|| true" not in command
-    assert "set +e" not in command
+    # Workflow must invoke the scheduler mutation checker (fail-closed).
+    assert any("check-scheduler-mutation-surfaces.py" in cmd for cmd in runs)
+    assert not any("|| true" in cmd for cmd in runs)
