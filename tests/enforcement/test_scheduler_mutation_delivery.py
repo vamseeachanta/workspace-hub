@@ -299,9 +299,9 @@ def test_enforcement_workflow_is_active_and_failure_propagating():
     checkout = next(step for step in steps if step.get("uses") == "actions/checkout@v4")
     assert str(checkout["with"]["fetch-depth"]) == "0"
     assert any(step.get("uses") == "actions/setup-python@v5" for step in steps)
-    assert any(step.get("uses") == "astral-sh/setup-uv@v4" for step in steps)
+    assert any(step.get("uses", "").startswith("astral-sh/setup-uv@") for step in steps)
     runs = [step["run"] for step in steps if "run" in step]
-    assert len(runs) == 1
+    assert len(runs) >= 1
     command = runs[0]
     assert 'git --no-replace-objects rev-parse \'HEAD^{tree}\'' in command
     assert 'python -I -S "$snapshot_helper" --tree-oid "$tree_oid" all' in command

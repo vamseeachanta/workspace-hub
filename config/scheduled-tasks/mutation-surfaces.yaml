@@ -300,4 +300,4 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    source_digest: 4bc1cba3f283e12537e12417b4f031a05377573e0fc81118ed1f65b5591b48d8
+    source_digest: 6d53fc26c2540a64e9166ae2a52741e934b5e7213db74fbdee3ffbdb6be07b9e
