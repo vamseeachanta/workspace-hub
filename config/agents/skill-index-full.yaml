@@ -1942,6 +1942,12 @@ skills:
   name: cowork-plugin-customizer
   when_to_use: cowork-plugin-customizer Customize or personalize a Claude Code plugin for a specific organization's tools and workflows by replacing placeholders and configuring MCP servers. development
   when_to_use_source: backfill
+- description: What an engineering report may CLAIM, and to whom. Governs audience/surface routing, verdict vocabulary (never "validated" without a referent), explicit confidence, TBA as a deliverable-shaping tool, reference categories and URL policy, provenance of derived quantities, and PDF production traps. The other reporting skills cover pipelines and verification; this one covers content.
+  family: development
+  id: development/report-claim-discipline
+  name: report-claim-discipline
+  when_to_use: report-claim-discipline What an engineering report may CLAIM, and to whom. Governs audience/surface routing, verdict vocabulary (never "validated" without a referent), explicit confidence, TBA as a deliverable-shaping tool, reference categories and URL policy, provenance of derived quantities, and PDF production traps. The other reporting skills cover pipelines and verification; this one covers content. development
+  when_to_use_source: backfill
 - description: Keep semantic-diff taxonomy summaries consistent with evidence tables when adding richer categories to legacy comparison/reporting pipelines.
   family: development
   id: development/semantic-taxonomy-reporting-consistency

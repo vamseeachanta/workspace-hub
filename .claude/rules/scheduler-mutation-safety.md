@@ -10,4 +10,4 @@
   the physical truth of registry source bytes; registry-root semantics remain the job of cheap structural
   guards plus code review.
 - `migration-required` rows must retain their exact non-self disposition coordinate until the governed source changes and the checker derives compliance.
-- Run `uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py` and `--check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html` before merging scheduler-related changes.
+- Before merging scheduler-related changes, stage the intended tree and run the complete captured `all` bootstrap from `.github/workflows/scheduler-mutation-main.yml`, substituting only `git --no-replace-objects write-tree` for the landed-commit `rev-parse` command. Direct canonical checker commands intentionally fail closed because they cannot attest one immutable index snapshot.
