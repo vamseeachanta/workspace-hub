@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-23T09:21:58Z
+Generated: 2026-09-23T13:23:17Z
 Mode: static (read-only)
 
 ## How to approve
@@ -49,8 +49,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3877 | test: verify physical and Git modes in cross-platform fixtures | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3876 | Harden shell test selectors against undefined-helper false greens | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3874 | Fail closed on incomplete capture snapshots and repository-path validation order | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3872 | fix(review): prevent duplicate Claude reviews across PR events | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3871 | fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3872 | fix(review): prevent duplicate Claude reviews across PR events | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
+| #3871 | fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3869 | fix(operations): bind CLEAN-only merges to the reviewed head | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3868 | Audit rollback helpers for mutation of refused or unstarted paths | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3866 | Audit generated repair commands for caller-versus-target directory mismatch | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
