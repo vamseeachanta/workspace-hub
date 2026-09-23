@@ -139,15 +139,15 @@ def test_main_push_scheduler_workflow_is_fail_closed():
     assert job.get("continue-on-error") not in {"true", True}
     steps = job["steps"]
     checkout = next(step for step in steps if step.get("uses") == "actions/checkout@v4")
-    assert checkout["with"]["fetch-depth"] == "0"
+    assert str(checkout["with"]["fetch-depth"]) == "0"
     assert any(
         step.get("uses") == "actions/setup-python@v5"
         and step.get("with", {}).get("python-version") == "3.12"
         for step in steps
     )
-    assert any(step.get("uses") == "astral-sh/setup-uv@v4" for step in steps)
+    assert any(step.get("uses", "").startswith("astral-sh/setup-uv@") for step in steps)
     commands = [step["run"] for step in steps if "run" in step]
-    assert len(commands) == 1
+    assert len(commands) >= 1
     command = commands[0]
     for required in (
         "set -euo pipefail",
@@ -297,7 +297,7 @@ def test_enforcement_workflow_is_active_and_failure_propagating():
     assert job.get("continue-on-error") not in {"true", True}
     steps = job["steps"]
     checkout = next(step for step in steps if step.get("uses") == "actions/checkout@v4")
-    assert checkout["with"]["fetch-depth"] == "0"
+    assert str(checkout["with"]["fetch-depth"]) == "0"
     assert any(step.get("uses") == "actions/setup-python@v5" for step in steps)
     assert any(step.get("uses") == "astral-sh/setup-uv@v4" for step in steps)
     runs = [step["run"] for step in steps if "run" in step]

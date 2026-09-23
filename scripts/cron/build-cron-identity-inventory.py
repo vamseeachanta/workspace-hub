@@ -166,7 +166,20 @@ def inventory_mismatch_summary(current: bytes, generated: bytes) -> str:
     for key in ("schema_version", "input_digest", "machines", "unsupported", "collisions"):
         if current_payload.get(key) != generated_payload.get(key):
             return f"inventory body mismatch at {key}"
-    return "inventory body mismatch in identities"
+    current_rows = current_payload.get("identities", [])
+    generated_rows = generated_payload.get("identities", [])
+    if len(current_rows) != len(generated_rows):
+        return (
+            "inventory body mismatch: identity row count "
+            f"{len(current_rows)} != {len(generated_rows)}"
+        )
+    for index, (current_row, generated_row) in enumerate(zip(current_rows, generated_rows)):
+        if current_row != generated_row:
+            return (
+                f"inventory body mismatch at identities[{index}]: "
+                f"expected {generated_row!r} but found {current_row!r}"
+            )
+    return "inventory body mismatch: bytes differ after canonical JSON comparison"
 
 
 def _option_value(raw_args: list[str], name: str) -> str | None:
