@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# ABOUTME: Generate provider adapter files from canonical AGENTS.md
-# ABOUTME: Writes deterministic CLAUDE.md adapters and AGENTS.md pointers in managed repos
+# ABOUTME: Create missing AGENTS.md pointers from the canonical contract
+# ABOUTME: Preserves existing AGENTS.md content and every CLAUDE.md baseline
 
 set -euo pipefail
 
@@ -16,7 +16,7 @@ usage() {
 Usage: $(basename "$0") [--workspace-only] [--repos repo1,repo2]
 
 Options:
-  --workspace-only     Only update workspace-hub root CLAUDE.md
+  --workspace-only     Validate the workspace-hub root only
   --repos <csv>        Update selected repositories only
   -h, --help           Show this help
 USAGE
@@ -56,47 +56,6 @@ fi
 
 CONTRACT_VERSION="$(awk -F': ' '/^Contract-Version:/{print $2}' "$CANONICAL_FILE" | head -n1)"
 CONTRACT_VERSION="${CONTRACT_VERSION:-unknown}"
-DATE_UTC="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-
-write_claude_adapter() {
-  local repo_path="$1"
-  local repo_name
-  repo_name="$(basename "$repo_path")"
-  cat > "$repo_path/CLAUDE.md" << ADAPTER
-# ${repo_name^} Agent Adapter
-
-> Generated from workspace-hub/AGENTS.md
-> Contract-Version: $CONTRACT_VERSION
-> Generated-At: $DATE_UTC
-
-## Adapter Role
-
-This file is a provider-specific adapter for Claude-compatible tooling.
-The canonical contract is in workspace-hub/AGENTS.md.
-
-## Required Gates
-
-1. Every non-trivial task must map to a WRK-* item in .claude/work-queue/.
-2. Planning + explicit approval are required before implementation.
-3. Route B/C work requires cross-review before completion.
-
-## Plan and Spec Locality
-
-1. Route A/B plan details can live in WRK body sections.
-2. Route C execution specs: specs/wrk/WRK-<id>/.
-3. Repository/domain specs: specs/repos/<repo>/.
-4. Templates: specs/templates/.
-
-## Compatibility
-
-Legacy docs may exist during migration, but AGENTS.md is canonical.
-
-## Repo Overrides
-
-Add repo-specific details below this section without weakening required gates.
-ADAPTER
-}
-
 write_repo_agents_pointer() {
   local repo_path="$1"
   local repo_name
@@ -107,15 +66,18 @@ write_repo_agents_pointer() {
     return
   fi
 
+  if [[ -e "$repo_path/AGENTS.md" || -L "$repo_path/AGENTS.md" ]]; then
+    echo "preserve: $repo_name AGENTS.md already exists"
+    return
+  fi
+
   cat > "$repo_path/AGENTS.md" << POINTER
-# ${repo_name^} Agent Contract Pointer
+# $repo_name Agent Contract Pointer
 
 This repository inherits the canonical contract from:
 ../AGENTS.md
 
 - Contract-Version: $CONTRACT_VERSION
-- Generated-At: $DATE_UTC
-
 Do not hand-edit policy here. Update workspace-hub/AGENTS.md and regenerate adapters.
 POINTER
 }
@@ -127,7 +89,11 @@ update_repo() {
     return
   fi
 
-  write_claude_adapter "$repo_path"
+  local repo_name
+  repo_name="$(basename "$repo_path")"
+  if [[ -e "$repo_path/CLAUDE.md" || -L "$repo_path/CLAUDE.md" ]]; then
+    echo "preserve: $repo_name CLAUDE.md baseline unchanged"
+  fi
   write_repo_agents_pointer "$repo_path"
   echo "updated: $repo_path"
 }
@@ -143,6 +109,10 @@ if [[ "$TARGET_MODE" == "repos" ]]; then
   for repo in "${repos[@]}"; do
     repo="${repo// /}"
     [[ -z "$repo" ]] && continue
+    if [[ ! "$repo" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+      echo "unsafe repository name: $repo" >&2
+      exit 1
+    fi
     update_repo "$WORKSPACE_ROOT/$repo"
   done
   exit 0

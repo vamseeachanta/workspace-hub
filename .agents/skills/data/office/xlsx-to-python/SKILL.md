@@ -103,7 +103,7 @@ git push
 
 ### Step 3b: Quality Validation After Conversion
 
-After each batch is converted on Windows (ws014), validate before accepting:
+After each batch is converted on Windows (ace-win-2), validate before accepting:
 
 1. **Pull the converted code** from `client-c` repo back to Linux
 2. **Run the full test suite** — all tests must pass (zero failures)
@@ -121,12 +121,12 @@ Maintain two docs in `docs/document-intelligence/`:
 
 ### Step 5: Transfer to Windows Machine
 
-The **execution machine is ws014** (Windows). Transfer via:
+The **execution machine is ace-win-2** (Windows). Transfer via:
 ```bash
-git clone git@github.com:vamseeachanta/client-c.git  # on ws014
+git clone git@github.com:vamseeachanta/client-c.git  # on ace-win-2
 ```
 
-**The conversion prompt runs in Codex on ws014** — NOT the Copilot in Excel add-in and NOT Cowork. Copilot in Excel can only read cell values and explain formulas; it cannot write Python files, create tests, or organize code into repos. Codex has full filesystem access and can use openpyxl to read Excel files, extract formula logic, write Python modules, and create PRs.
+**The conversion prompt runs in Codex on ace-win-2** — NOT the Copilot in Excel add-in and NOT Cowork. Copilot in Excel can only read cell values and explain formulas; it cannot write Python files, create tests, or organize code into repos. Codex has full filesystem access and can use openpyxl to read Excel files, extract formula logic, write Python modules, and create PRs.
 
 ### Step 5b: Large File Bypass (if needed)
 
@@ -173,7 +173,7 @@ Established quality bar from first conversion (Ballymore Jumper, 7 sheets, 2.3MB
 | Code quality | More bugs (5-16 of 81 tests fail before fixes) | Cleaner on first run |
 | Usability | Code may be trapped in Excel cells, needs extraction | Immediately runnable .py files |
 
-**Recommendation**: Run conversion on ws014 (Windows) using Codex Desktop cowork.
+**Recommendation**: Run conversion on ace-win-2 (Windows) using Codex Desktop cowork.
 The quality advantage (24 vs 7 functions, 81 vs 53 tests, COG, full OrcaFlex breakdown)
 outweighs the 10-20% failure rate which is fixable with the known bug list below.
 Linux gives clean but less complete code.
@@ -276,7 +276,7 @@ For multi-workbook conversion campaigns, create a parent feature issue + child i
 
 ```bash
 # Parent feature: overall scope, budget, checklist
-gh issue create --title "FEATURE: Excel-to-Code Conversion Pipeline — N workbooks via ws014" \
+gh issue create --title "FEATURE: Excel-to-Code Conversion Pipeline — N workbooks via ace-win-2" \
   --label "cat:engineering" --label "cat:data-pipeline"
 
 # Child issues: one per domain (e.g. Ballymore, FDAS, Talos Venice)

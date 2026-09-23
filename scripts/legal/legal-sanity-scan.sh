@@ -7,9 +7,29 @@
 # Usage:
 #   legal-sanity-scan.sh [--repo=<name>] [--all] [--diff-only] [--json]
 #
+# Environment:
+#   LEGAL_SCAN_REPO_ROOTS    Semicolon- or newline-separated list of root
+#                            directories to resolve repo names against.
+#                            (Semicolons, not colons — ':' collides with
+#                            Windows drive letters under git-bash.)
+#                            When set it WINS: names resolve ONLY against the
+#                            listed roots; no fallback to the defaults.
+#   LEGAL_SCAN_RESOLVE_ONLY  When "1", print the resolved repo path(s) and
+#                            exit 0 before any scanning happens. Minimal
+#                            dry-run hook used by tests/legal/ to assert the
+#                            resolution contract without needing deny-lists.
+#
 # Exit codes:
 #   0  All clear (no block-severity violations)
 #   1  Block-severity violations found
+#   2  Usage / resolution error (unknown argument, repository not found,
+#      --all with nothing to scan)
+#
+# Environment:
+#   LEGAL_SCAN_REPO_ROOTS  Semicolon- or newline-separated list of repo root
+#                          paths (semicolons/newlines survive Windows drive
+#                          letters under git-bash). When set, it WINS over the
+#                          default nested -> sibling -> walk-up resolution.
 # =============================================================================
 set -euo pipefail
 
@@ -90,19 +110,112 @@ for arg in "$@"; do
       echo "Usage: legal-sanity-scan.sh [--repo=<name>] [--all] [--diff-only] [--json]"
       echo ""
       echo "Options:"
-      echo "  --repo=<name>   Scan a specific submodule"
-      echo "  --all           Scan all submodules"
+      echo "  --repo=<name>   Scan a specific repo (nested submodule, sibling"
+      echo "                  checkout, or LEGAL_SCAN_REPO_ROOTS entry)"
+      echo "  --all           Scan all submodules (else all LEGAL_SCAN_REPO_ROOTS"
+      echo "                  entries; refuses when both are empty)"
       echo "  --diff-only     Only scan files changed in git diff (HEAD)"
       echo "  --json          Output results as JSON"
+      echo ""
+      echo "Environment:"
+      echo "  LEGAL_SCAN_REPO_ROOTS  Semicolon- or newline-separated repo root"
+      echo "                         paths; wins over default resolution when set"
       echo ""
       echo "Exit codes:"
       echo "  0  Pass (no block-severity violations)"
       echo "  1  Block violations found"
+      echo "  2  Usage / resolution error (repo not found, --all with nothing to scan)"
       exit 0
       ;;
     *) echo "Unknown argument: $arg" >&2; exit 2 ;;
   esac
 done
+
+# --------------------------------------------------------------------------
+# Candidate resolver — shared by --repo and --all
+#
+# WORKSPACE_ROOT stays anchored to workspace-hub (the global
+# .legal-deny-list.yaml load must not move); only repo *lookup* is flexible:
+#   1. LEGAL_SCAN_REPO_ROOTS (semicolon- or newline-separated repo root
+#      paths) WINS when set. An entry matches <name> when its basename equals
+#      <name>, otherwise <entry>/<name> is tried; entries in listed order.
+#   2. Defaults: nested $WORKSPACE_ROOT/<name> wins, then sibling
+#      $(dirname WORKSPACE_ROOT)/<name>, then a bounded walk-up from the
+#      sibling level (cap 8 levels).
+# On no-match: error to stderr listing every candidate tried, return 2.
+# --------------------------------------------------------------------------
+REGISTERED_ROOTS=()
+
+load_registered_roots() {
+  REGISTERED_ROOTS=()
+  [[ -z "${LEGAL_SCAN_REPO_ROOTS:-}" ]] && return 0
+  local entry
+  while IFS= read -r entry; do
+    entry="${entry%$'\r'}"
+    # Normalize backslashes so git-bash tools (basename, -d) handle
+    # Windows-style entries.
+    entry="${entry//\\//}"
+    # Trim surrounding whitespace
+    entry="${entry#"${entry%%[![:space:]]*}"}"
+    entry="${entry%"${entry##*[![:space:]]}"}"
+    [[ -n "$entry" ]] && REGISTERED_ROOTS+=("$entry")
+  done < <(printf '%s\n' "$LEGAL_SCAN_REPO_ROOTS" | tr ';' '\n')
+  return 0
+}
+
+# resolve_repo_path <name>
+# Prints the resolved repo path on stdout; returns 2 on no-match.
+resolve_repo_path() {
+  local name="$1"
+  local candidates=()
+  local c
+
+  if [[ ${#REGISTERED_ROOTS[@]} -gt 0 ]]; then
+    # Explicit registration wins outright when set.
+    local root
+    for root in "${REGISTERED_ROOTS[@]}"; do
+      if [[ "$(basename "$root")" == "$name" ]]; then
+        candidates+=("$root")
+      else
+        candidates+=("$root/$name")
+      fi
+    done
+  else
+    # Nested checkout wins, then sibling, then bounded walk-up (cap 8).
+    candidates+=("$WORKSPACE_ROOT/$name")
+    local parent walk next level
+    parent="$(dirname "$WORKSPACE_ROOT")"
+    candidates+=("${parent%/}/$name")
+    walk="$parent"
+    level=0
+    while [[ $level -lt 8 ]]; do
+      next="$(dirname "$walk")"
+      [[ "$next" == "$walk" ]] && break
+      walk="$next"
+      candidates+=("${walk%/}/$name")
+      level=$((level + 1))
+    done
+  fi
+
+  for c in "${candidates[@]}"; do
+    if [[ -d "$c" ]]; then
+      printf '%s\n' "$c"
+      return 0
+    fi
+  done
+
+  {
+    echo "ERROR: Repository not found: $name"
+    echo "Candidates tried:"
+    for c in "${candidates[@]}"; do
+      echo "  - $c"
+    done
+    if [[ ${#REGISTERED_ROOTS[@]} -gt 0 ]]; then
+      echo "(resolution used LEGAL_SCAN_REPO_ROOTS; unset it to use nested/sibling/walk-up defaults)"
+    fi
+  } >&2
+  return 2
+}
 
 # --------------------------------------------------------------------------
 # Parse deny-list YAML (lightweight, no yq dependency)
@@ -114,20 +227,51 @@ parse_deny_list() {
   local file="$1"
   [[ -f "$file" ]] || return 0
 
+  # Emits: pattern|case_flag|severity
+  #
+  # Entries are BUFFERED and flushed at END, for two reasons:
+  #
+  #   1. `default_severity:` sits at the BOTTOM of the deny list, after every
+  #      pattern it governs. A streaming flush would apply an unset default to
+  #      each entry as it went past.
+  #   2. The previous version printed from the `case_sensitive:` rule, so an
+  #      entry WITHOUT that key was never emitted and therefore never scanned —
+  #      a silent drop, invisible because a pattern that is never searched
+  #      simply reports nothing. Keying the flush to the entry rather than to
+  #      one optional field removes that whole class of bug.
+  #
+  # An entry with no `case_sensitive:` defaults to case-INSENSITIVE: for a
+  # legal gate the broader match is the safe direction.
   awk '
-    /^[[:space:]]*- pattern:/ {
-      gsub(/.*pattern:[[:space:]]*"?/, "");
-      gsub(/"[[:space:]]*$/, "");
-      pattern = $0;
+    /^[[:space:]]*default_severity:/ {
+      s = $0; sub(/.*default_severity:[[:space:]]*/, "", s);
+      gsub(/"/, "", s); gsub(/[[:space:]]+$/, "", s);
+      if (s != "") default_sev = s;
+      next;
     }
-    /^[[:space:]]*case_sensitive:/ {
-      gsub(/.*case_sensitive:[[:space:]]*/, "");
-      gsub(/[[:space:]]*$/, "");
-      if ($0 == "false") {
-        print pattern "|i";
-      } else {
-        print pattern "|s";
-      }
+    /^[[:space:]]*-[[:space:]]*pattern:/ {
+      n++;
+      p = $0; sub(/.*pattern:[[:space:]]*/, "", p);
+      sub(/^"/, "", p); sub(/"[[:space:]]*$/, "", p);
+      P[n] = p; C[n] = "i"; S[n] = "";
+      next;
+    }
+    n > 0 && /^[[:space:]]*case_sensitive:/ {
+      v = $0; sub(/.*case_sensitive:[[:space:]]*/, "", v);
+      gsub(/[[:space:]]+$/, "", v);
+      C[n] = (v == "false") ? "i" : "s";
+      next;
+    }
+    n > 0 && /^[[:space:]]*severity:/ {
+      v = $0; sub(/.*severity:[[:space:]]*/, "", v);
+      gsub(/"/, "", v); gsub(/[[:space:]]+$/, "", v);
+      S[n] = v;
+      next;
+    }
+    END {
+      if (default_sev == "") default_sev = "block";
+      for (i = 1; i <= n; i++)
+        printf "%s|%s|%s\n", P[i], C[i], (S[i] != "" ? S[i] : default_sev);
     }
   ' "$file"
 }
@@ -150,6 +294,82 @@ parse_exclusions() {
       next;
     }
   ' "$file"
+}
+
+# --------------------------------------------------------------------------
+# split_repo_roots: print LEGAL_SCAN_REPO_ROOTS one root per line.
+# Separators: semicolons or newlines (':' would collide with Windows drive
+# letters under git-bash).
+# --------------------------------------------------------------------------
+split_repo_roots() {
+  printf '%s\n' "${LEGAL_SCAN_REPO_ROOTS:-}" | tr ';' '\n'
+}
+
+# --------------------------------------------------------------------------
+# resolve_repo_path: resolve a repository name to a directory.
+# Shared by --repo and --all.
+#
+# Order:
+#   1. LEGAL_SCAN_REPO_ROOTS wins when set: resolve against each listed root
+#      in order; if none match, FAIL (no fallthrough to defaults — the env
+#      being set means the caller took explicit control).
+#   2. Defaults, in order:
+#        nested   $WORKSPACE_ROOT/<name>          (preserves original behavior)
+#        sibling  $(dirname "$WORKSPACE_ROOT")/<name>
+#        walk-up  <ancestor>/<name> from WORKSPACE_ROOT, max 8 levels
+#
+# On success: sets RESOLVED_REPO_PATH, returns 0.
+# On failure: returns 1 with RESOLVE_CANDIDATES holding every path tried.
+# --------------------------------------------------------------------------
+resolve_repo_path() {
+  local name="$1"
+  RESOLVED_REPO_PATH=""
+  RESOLVE_CANDIDATES=()
+
+  if [[ -n "${LEGAL_SCAN_REPO_ROOTS:-}" ]]; then
+    local root
+    while IFS= read -r root; do
+      [[ -z "$root" ]] && continue
+      RESOLVE_CANDIDATES+=("$root/$name")
+      if [[ -d "$root/$name" ]]; then
+        RESOLVED_REPO_PATH="$root/$name"
+        return 0
+      fi
+    done < <(split_repo_roots)
+    return 1
+  fi
+
+  # Default 1: nested under the workspace root (original behavior)
+  RESOLVE_CANDIDATES+=("$WORKSPACE_ROOT/$name")
+  if [[ -d "$WORKSPACE_ROOT/$name" ]]; then
+    RESOLVED_REPO_PATH="$WORKSPACE_ROOT/$name"
+    return 0
+  fi
+
+  # Default 2: sibling of the workspace root
+  local parent
+  parent="$(dirname "$WORKSPACE_ROOT")"
+  RESOLVE_CANDIDATES+=("$parent/$name")
+  if [[ -d "$parent/$name" ]]; then
+    RESOLVED_REPO_PATH="$parent/$name"
+    return 0
+  fi
+
+  # Default 3: bounded walk-up from the workspace root (max 8 levels)
+  local ancestor="$parent"
+  local depth=0
+  while [[ $depth -lt 8 ]]; do
+    [[ "$ancestor" == "$(dirname "$ancestor")" ]] && break
+    ancestor="$(dirname "$ancestor")"
+    RESOLVE_CANDIDATES+=("$ancestor/$name")
+    if [[ -d "$ancestor/$name" ]]; then
+      RESOLVED_REPO_PATH="$ancestor/$name"
+      return 0
+    fi
+    depth=$((depth + 1))
+  done
+
+  return 1
 }
 
 # --------------------------------------------------------------------------
@@ -216,8 +436,11 @@ scan_directory() {
   fi
 
   # Scan each pattern
-  while IFS='|' read -r pattern case_flag; do
+  while IFS='|' read -r pattern case_flag severity; do
     [[ -z "$pattern" ]] && continue
+    # An unrecognised severity fails CLOSED. A typo ("blcok", "Warn") must not
+    # silently downgrade a pattern to advisory.
+    [[ "$severity" == "warn" ]] || severity="block"
 
     local matches=""
     if [[ "$DIFF_ONLY" == "true" && ${#file_args[@]} -gt 0 ]]; then
@@ -229,19 +452,25 @@ scan_directory() {
     if [[ -n "$matches" ]]; then
       local count
       count="$(echo "$matches" | wc -l)"
-      VIOLATIONS=$((VIOLATIONS + count))
-      local_violations=$((local_violations + count))
+      # Only block-severity matches drive the exit code. Warn matches are
+      # reported in full — the tier changes what FAILS, never what is SEEN.
+      if [[ "$severity" == "block" ]]; then
+        VIOLATIONS=$((VIOLATIONS + count))
+        local_violations=$((local_violations + count))
+      else
+        WARNINGS=$((WARNINGS + count))
+      fi
 
       if [[ "$JSON_OUTPUT" == "true" ]]; then
         echo "$matches" | while IFS= read -r line; do
           local file_path line_num
           file_path="$(echo "$line" | cut -d: -f1)"
           line_num="$(echo "$line" | cut -d: -f2)"
-          printf '{"repo":"%s","pattern":"%s","file":"%s","line":%s,"severity":"block"}\n' \
-            "$label" "$pattern" "$file_path" "$line_num"
+          printf '{"repo":"%s","pattern":"%s","file":"%s","line":%s,"severity":"%s"}\n' \
+            "$label" "$pattern" "$file_path" "$line_num" "$severity"
         done
       else
-        echo "  BLOCK  pattern=\"$pattern\"  matches=$count"
+        echo "  ${severity^^}  pattern=\"$pattern\"  matches=$count"
         echo "$matches" | sed 's/^/         /'
       fi
     fi
@@ -260,24 +489,44 @@ if [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]]; then
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 fi
 
+load_registered_roots
+
 if [[ -n "$TARGET_REPO" ]]; then
-  # Scan specific repo
-  repo_path="$WORKSPACE_ROOT/$TARGET_REPO"
-  if [[ ! -d "$repo_path" ]]; then
-    echo "ERROR: Repository not found: $repo_path" >&2
-    exit 2
-  fi
-  [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $TARGET_REPO"
+  # Scan specific repo (shared candidate resolver)
+  repo_path="$(resolve_repo_path "$TARGET_REPO")" || exit 2
+  [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $TARGET_REPO ($repo_path)"
   scan_directory "$repo_path" "$TARGET_REPO" || true
 
 elif [[ "$SCAN_ALL" == "true" ]]; then
-  # Scan all submodules
+  # Enumerate initialized submodules first; else fall back to env-registered
+  # roots. An empty enumeration is a hard refusal — a legal gate must never
+  # pass by scanning nothing.
+  submodules=()
   while IFS= read -r sub; do
-    [[ -z "$sub" ]] && continue
-    sub_path="$WORKSPACE_ROOT/$sub"
-    [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $sub"
-    scan_directory "$sub_path" "$sub" || true
-  done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach 'echo $sm_path' 2>/dev/null)
+    [[ -n "$sub" ]] && submodules+=("$sub")
+  done < <(git -C "$WORKSPACE_ROOT" submodule --quiet foreach 'echo $sm_path' 2>/dev/null || true)
+
+  if [[ ${#submodules[@]} -gt 0 ]]; then
+    for sub in "${submodules[@]}"; do
+      sub_path="$(resolve_repo_path "$sub")" || exit 2
+      [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $sub ($sub_path)"
+      scan_directory "$sub_path" "$sub" || true
+    done
+  elif [[ ${#REGISTERED_ROOTS[@]} -gt 0 ]]; then
+    for root in "${REGISTERED_ROOTS[@]}"; do
+      if [[ ! -d "$root" ]]; then
+        echo "ERROR: Registered repo root not found: $root (from LEGAL_SCAN_REPO_ROOTS)" >&2
+        exit 2
+      fi
+      root_label="$(basename "$root")"
+      [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]] && echo "Scanning: $root_label ($root)"
+      scan_directory "$root" "$root_label" || true
+    done
+  else
+    echo "ERROR: --all found nothing to scan (no initialized submodules and LEGAL_SCAN_REPO_ROOTS is not set)." >&2
+    echo "       A legal gate must never pass by scanning nothing. Initialize submodules or set LEGAL_SCAN_REPO_ROOTS." >&2
+    exit 2
+  fi
 
 else
   # Scan workspace root (non-submodule files)
@@ -291,7 +540,12 @@ if [[ "$JSON_OUTPUT" != "true" && "$QUIET" != "true" ]]; then
   if [[ $VIOLATIONS -gt 0 ]]; then
     echo "  RESULT: FAIL — $VIOLATIONS block violation(s) found"
   else
-    echo "  RESULT: PASS — no violations found"
+    echo "  RESULT: PASS — no block violations found"
+  fi
+  # Always printed, PASS included. A pass that silently swallows its warnings
+  # is how a downgraded pattern stops being looked at ever again.
+  if [[ $WARNINGS -gt 0 ]]; then
+    echo "  WARNINGS: $WARNINGS advisory match(es) — reported, not blocking"
   fi
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 fi

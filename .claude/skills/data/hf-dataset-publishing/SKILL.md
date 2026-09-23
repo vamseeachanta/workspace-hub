@@ -146,8 +146,13 @@ assume failure.** Once `/is-valid` reports valid and `/rows` returns data, the v
   - Public-domain **federal** data (BSEE / NOAA / USGS) → **public**, `license: cc-by-4.0`.
   - **Vendor-licensed / private / client** data → must **NOT** be published to a public HF
     dataset. A **private** repo is OK only with **explicit owner** sign-off.
-  - **Synthetic / own-analysis** output → publisher's choice.
+  - **Synthetic / own-analysis** output → publisher's choice. Calculations *derived from*
+    codes and standards are own analysis, not republished standard text — publishable.
   - If unsure of the source's provenance, default to **private** and ask the owner.
+  - **Visibility is enforced on every publish, not just at creation** (workspace-hub#3483).
+    Re-publishing with `--public` now flips an existing private dataset, and the tool reads
+    the visibility back off the remote and exits non-zero if it disagrees with what you
+    asked for. The manual `update_repo_settings(...)` workaround is no longer needed.
 
 ## DATA-QUALITY GATE (load-bearing — do not skip)
 

@@ -615,7 +615,9 @@ def test_wiring_single_source_schedule():
         (REPO_ROOT / "config" / "scheduled-tasks" / "schedule-tasks.yaml").read_text())["tasks"]
     eq = next(t for t in tasks if t["id"] == "equality-report")
     assert eq["schedule"].split()[-1] == "1"            # weekly, Monday
-    assert "equality-matrix-cron.sh" in eq["command"]
+    assert "equality-preflight.sh" in eq["command"]
+    preflight = (REPO_ROOT / "scripts" / "readiness" / "equality-preflight.sh").read_text()
+    assert "equality-matrix-cron.sh" in preflight
     wrapper = (REPO_ROOT / "scripts" / "readiness" / "equality-matrix-cron.sh").read_text()
     assert "collect-equality.sh" in wrapper
     assert "build-equality-matrix.py" in wrapper
@@ -625,7 +627,7 @@ def test_wiring_single_source_schedule():
     assert (REPO_ROOT / "scripts" / "windows" / "equality-report.ps1").exists()
     # The daily dead-man's-switch rebuild routes through the SAME wrapper.
     refresh = next(t for t in tasks if t["id"] == "equality-matrix-refresh")
-    assert "equality-matrix-cron.sh" in refresh["command"]
+    assert "equality-preflight.sh" in refresh["command"]
 
 
 def test_verdict_behavior_is_uniform_not_expected_diff():
@@ -850,3 +852,77 @@ def test_kanban_membership_difference_still_diverges():
     reports["b"]["dimensions"]["kanban"] = {"dispatch_queues": "dev-primary,multi"}
     reports["c"]["dimensions"]["kanban"] = {"dispatch_queues": "dev-primary,multi,rogue"}
     assert bem.verdict_for("kanban", "a", reports, {}, roster, TIER1) == "DIVERGES"
+
+
+# ── harness-checkup verdict (#3408) ──────────────────────────────────────────
+_HC_CLEAN = {
+    "audited_at": "2026-07-09T12:00:00+00:00", "settings_parse_ok": True,
+    "install_method": "npm-global", "duplicate_installs": 0, "broken_agents": 0,
+    "version_current": True, "auto_mode_default": True, "unused_skills": 3, "unused_plugins": 0,
+}
+
+
+def _hc(**over):
+    d = dict(_HC_CLEAN)
+    d.update(over)
+    return _report("m", harness_checkup=d)
+
+
+def test_hc_clean_ok():
+    assert bem.harness_checkup_verdict(_hc()) == "CHECKUP-OK"
+
+
+def test_hc_absent_dim_is_missing_evidence():
+    assert bem.harness_checkup_verdict(_report("m")) == "MISSING-EVIDENCE"
+
+
+def test_hc_no_audited_at_missing_evidence():
+    d = dict(_HC_CLEAN)
+    d.pop("audited_at")
+    assert bem.harness_checkup_verdict(_report("m", harness_checkup=d)) == "MISSING-EVIDENCE"
+
+
+def test_hc_null_core_evidence_missing():
+    assert bem.harness_checkup_verdict(_hc(settings_parse_ok=None)) == "MISSING-EVIDENCE"
+    assert bem.harness_checkup_verdict(_hc(install_method=None)) == "MISSING-EVIDENCE"
+
+
+def test_hc_garbled_settings_evidence_fails_closed():
+    assert bem.harness_checkup_verdict(_hc(settings_parse_ok="false")) == "MISSING-EVIDENCE"
+
+
+def test_hc_broken_settings_duplicate_agents():
+    assert bem.harness_checkup_verdict(_hc(settings_parse_ok=False)) == "CHECKUP-BROKEN"
+    assert bem.harness_checkup_verdict(_hc(duplicate_installs=1)) == "CHECKUP-BROKEN"
+    assert bem.harness_checkup_verdict(_hc(broken_agents=2)) == "CHECKUP-BROKEN"
+
+
+def test_hc_soft_drift():
+    assert bem.harness_checkup_verdict(_hc(version_current=False)) == "CHECKUP-DRIFTED"
+    assert bem.harness_checkup_verdict(_hc(auto_mode_default=False)) == "CHECKUP-DRIFTED"
+    assert bem.harness_checkup_verdict(_hc(unused_skills=16)) == "CHECKUP-DRIFTED"
+    assert bem.harness_checkup_verdict(_hc(unused_plugins=1)) == "CHECKUP-DRIFTED"
+
+
+def test_hc_clutter_boundary_and_unknown_currency_are_ok():
+    assert bem.harness_checkup_verdict(_hc(unused_skills=15)) == "CHECKUP-OK"
+    assert bem.harness_checkup_verdict(_hc(version_current=None)) == "CHECKUP-OK"
+
+
+def test_hc_broken_beats_drift():
+    assert bem.harness_checkup_verdict(_hc(settings_parse_ok=False, version_current=False)) == "CHECKUP-BROKEN"
+
+
+def test_hc_registered_in_display_group_severity():
+    assert "harness_checkup" in bem.BASE_DISPLAY_DIMS
+    assert any("harness_checkup" in dims for _, _, dims in bem.GROUPS)
+    assert "CHECKUP-OK" in bem.OK_VERDICTS
+    assert bem.ROLLUP_SEVERITY["CHECKUP-BROKEN"] == 6
+    assert bem.ROLLUP_SEVERITY["CHECKUP-DRIFTED"] == 5
+    assert bem.ROLLUP_SEVERITY["CHECKUP-OK"] == 0
+
+
+def test_hc_verdict_via_dispatch():
+    roster = {"m": {"status": "active"}}
+    reports = {"m": _hc(unused_skills=16)}
+    assert bem.verdict_for("harness_checkup", "m", reports, {}, roster, TIER1) == "CHECKUP-DRIFTED"

@@ -68,20 +68,42 @@ def test_ai_label_wins_over_lane(route):
     assert explicit is True
 
 
-# 3. LIVE rule: needs:cross-review -> codex outranks lane:claude. Loads the
-#    real .claude/memory/kanban/routing-rules.yaml (not a copy) so removing,
-#    reordering, or changing that rule breaks this test (codex code-review
-#    finding, #3029). Existing routing intent must never be inverted by lane.
-def test_cross_review_rule_wins_over_lane(route):
+# 3. A rule-chosen provider still outranks lane:. This is the #3029 protection —
+#    "existing routing intent must never be inverted by lane" — and it is
+#    UNCHANGED. It is now asserted against a synthetic rule rather than a live
+#    one, because precedence is a property of the resolver, not of whichever
+#    rules happen to ship today. Pinning it to live config made the test fail
+#    when the config legitimately changed, which is what happened below.
+def test_rule_chosen_provider_still_wins_over_lane(route):
+    labels = ["lane:claude"]
+    assign = {"provider": "codex"}          # as if some rule had chosen codex
+    provider, explicit = _resolve(route, labels, assign)
+    assert provider == "codex", "a rule's provider must outrank lane:"
+    assert explicit is True  # rule-chosen provider stays explicit (unchanged)
+
+
+# 3b. …but `needs:cross-review` is NOT such a rule, and must never become one.
+#
+#     It previously WAS: `{gh_label: needs:cross-review} -> {provider: codex}`.
+#     The label did not exist in any repo, so the rule had never fired. Creating
+#     the label on 2026-07-30 would have ARMED it and silently rerouted 21 issues
+#     to codex over their author's explicit `lane:` choice.
+#
+#     `needs:` states a REQUIREMENT on the work ("must get a second-provider
+#     review before close"), not a choice of who performs it. The review workflow
+#     consumes the label; the router must not. See
+#     tests/dispatch/test_cross_review_is_a_phase.py, which generalises this to
+#     the whole `needs:` namespace.
+def test_cross_review_label_does_not_route(route):
     labels = ["needs:cross-review", "lane:claude"]
     live_rules = route.load_rules().get("rules", [])
     assign = route.match_rule(live_rules, repo="vamseeachanta/workspace-hub",
-                              domain=None, gh_labels=labels).get("assign")
-    assert assign.get("provider") == "codex", (
-        "live needs:cross-review -> codex rule missing/changed in routing-rules.yaml")
+                              domain=None, gh_labels=labels).get("assign", {})
+    assert not assign.get("provider"), (
+        "needs:cross-review must not choose a provider — it is a phase marker")
     provider, explicit = _resolve(route, labels, assign)
-    assert provider == "codex"
-    assert explicit is True  # rule-chosen provider stays explicit (unchanged)
+    assert provider == "claude", "the author's lane: must survive a phase label"
+    assert explicit is False
 
 
 # 4. No ai:/lane: labels — existing behavior bit-identical.

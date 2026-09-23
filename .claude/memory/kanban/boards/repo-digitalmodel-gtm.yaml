@@ -81,6 +81,7 @@ cards:
     gh_state: open
     gh_labels:
       - enhancement
+      - cat:engineering
       - status:plan-approved
       - domain:gtm
       - lane:codex

@@ -177,8 +177,18 @@ class TestScoringLogic:
         assert "dev-secondary" not in selected_names
 
     def test_no_ssh_excludes_non_local(self, registry: dict) -> None:
-        """Machines with ssh=null are excluded unless they are the local machine."""
-        # ace-win-1 has no SSH; running from a non-local host should exclude it
+        """Machines with ssh=null are excluded unless they are the local machine.
+
+        Derives the no-SSH machine FROM the registry rather than naming one.
+        This previously hardcoded `ace-win-1`, which was true when written and
+        became false on 2026-07-31 when inbound SSH was provisioned there — so a
+        correct registry update failed the test, while a wrong one that left the
+        name in place would have passed it. The property is about the `ssh`
+        field, not about which box happens to lack it.
+        """
+        no_ssh = [n for n, m in registry.items() if not m.get("ssh")]
+        assert no_ssh, "registry declares no ssh-less machine — this test would pass vacuously"
+
         candidates = select_machine(
             registry,
             required={"bash"},
@@ -186,18 +196,26 @@ class TestScoringLogic:
             prefer="",
         )
         selected_names = {c[1] for c in candidates}
-        assert "ace-win-1" not in selected_names
-        assert "ace-win-2" not in selected_names
+        for name in no_ssh:
+            assert name not in selected_names, (
+                f"{name} has ssh=null but was offered for remote dispatch")
 
-        # But if we ARE on ace-win-1, it should be included
-        candidates_local = select_machine(
-            registry,
-            required={"bash"},
-            this_host="ace-win-1",
-            prefer="",
-        )
-        selected_names_local = {c[1] for c in candidates_local}
-        assert "ace-win-1" in selected_names_local
+        # ...and the "unless local" half of the rule really fires for at least
+        # one of them. Asserting it for EVERY ssh-less machine overreaches —
+        # some are filtered on other grounds entirely (os, capabilities), so
+        # that version failed on a machine the original test never claimed
+        # anything about. One positive case proves the clause is live without
+        # asserting a rule the selector does not actually have.
+        locally_included = [
+            name for name in no_ssh
+            if name in {
+                c[1] for c in select_machine(
+                    registry, required={"bash"}, this_host=name, prefer="")
+            }
+        ]
+        assert locally_included, (
+            "no ssh-less machine became available when it was the local host — "
+            "the 'unless they are the local machine' clause is not firing at all")
 
     def test_claude_gemini_requires_selects_dev_primary(self, registry: dict) -> None:
         """Requiring [claude, gemini] should only match dev-primary among
@@ -235,11 +253,26 @@ class TestScoringLogic:
         assert result == "dev-secondary"
 
     def test_no_match_returns_empty(self, registry: dict) -> None:
-        """Requiring [orcaflex] from SSH-reachable machines returns no candidates
-        (Windows machines have orcaflex but no SSH)."""
+        """An unsatisfiable requirement yields no candidates.
+
+        This used to require `orcaflex` on the premise that "Windows machines
+        have orcaflex but no SSH". That premise died on 2026-07-31 when inbound
+        SSH was provisioned on the licensed Windows host — orcaflex became
+        genuinely remotely dispatchable, so the test failed on a CORRECT registry
+        update while a wrong one would have kept it green.
+
+        The property under test is the empty result, not which capability
+        happens to be unreachable this month, so it now uses a capability no
+        machine declares.
+        """
+        assert not any(
+            "definitely-not-a-real-capability" in get_caps(m)
+            for m in registry.values()
+        ), "the sentinel capability is no longer unsatisfiable; pick another"
+
         candidates = select_machine(
             registry,
-            required={"orcaflex"},
+            required={"definitely-not-a-real-capability"},
             this_host="nonexistent-host",
             prefer="",
         )

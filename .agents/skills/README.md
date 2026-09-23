@@ -10,8 +10,8 @@ Relationship to the other skill trees:
 | Tree | Consumer | Notes |
 |---|---|---|
 | `.claude/skills/` | Claude Code (canonical, freshest) | wins on conflicts per SOUL.delta |
-| `.codex/skills` | Codex CLI | symlink → `.claude/skills` (no duplication) |
-| `.agents/skills/` | Gemini CLI (+ any AGENTS-convention runtime) | full copy with provider-adapted deltas; drifts |
+| `.codex/skills` | Historical Codex adapter pointer | The inspected Windows checkout contains a 17-byte regular path file, not a working filesystem link; no repair is performed by this materializer. |
+| `.agents/skills/` | Codex native project discovery; historical Gemini consumer | Shared copy surface with provider-adapted deltas; drifts. Codex CLI 0.154.0 discovery was observed on 2026-09-14; current Gemini execution is unverified. |
 | `.gemini/skills/` | Gemini CLI (overridden by `.agents/skills` on conflict) | legacy location |
 
 Known hazards:
@@ -22,4 +22,15 @@ Known hazards:
   re-copy that skill family from `.claude/skills/`.
 
 Disposition decision (workspace-hub #3039, 2026-06-11): KEEP + document (this file).
-A sync script is deliberately deferred until drift causes a real incident.
+Full-tree synchronization remains deferred. The bounded Foundation materializer,
+`scripts/skills/materialize_profile.py`, consumes the existing profile's separate
+`adapters.repository_installation` mapping. It owns exactly four skill files and
+two reference files beneath the existing `data`, `research`, and `coordination`
+families. It does not synchronize this full tree, repair `.codex/skills`, change
+Gemini ownership, or alter plugins, hooks or user settings. Source ownership stays
+with `.claude/skills`; historical flat pilot fixture layouts remain separate.
+
+Default report/dry-run writes JSON to stdout only. Explicit apply requires the
+exact source/target roots, source revision and actual profile/payload digests, plus
+an external same-volume transaction directory and root-orchestrated coordination.
+An installed copy is not proof of native runtime behavior or provider parity.

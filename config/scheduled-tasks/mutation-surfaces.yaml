@@ -236,6 +236,34 @@ surfaces:
         - {id: scheduled-sync, mutation_mode: destructive, args: [setup-cron], target: physical-local, exit: swallow-3479, source_attestation: harness-default-v1}
         - {id: dry-run-sync, mutation_mode: non-mutating, args: [setup-cron, --dry-run], target: physical-local, exit: swallow-3479, source_attestation: harness-dry-run-v1}
 
+
+  - path: scripts/install/setup-tmux-autosave-timer.sh
+    kind: direct-owner
+    disposition_group: tmux-session-persistence
+    operations:
+      - id: install:systemd-unit-write
+        primitive: systemd-user-unit-write
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-tmux-autosave
+        execution_host_binding: physical-local
+        selection_condition: systemd-available
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: config/tmux/tmux-autosave.timer, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-unit-name-v1]
+      - id: install:systemd-enable
+        primitive: systemd-user-enable-disable
+        target_kind: systemd-user
+        scheduler_identity: local-user-systemd-tmux-autosave
+        execution_host_binding: physical-local
+        selection_condition: systemd-available
+        destructive: true
+        authority_branches:
+          - {id: fixed-unit, mechanism: exact-sentinel, config_source: config/tmux/tmux-autosave.timer, destructive: true, strength: exact}
+        transaction: *missing_transaction
+        attestations: [systemd-user-enable-disable-v1]
+
 disposition_groups:
   - group_id: legacy-crontab-writers
     issue: {repository: vamseeachanta/workspace-hub, number: 3476}
@@ -254,9 +282,22 @@ disposition_groups:
     members: [scripts/cron/harness-update.sh]
     defect_class: transitive-mutation-error-swallowing
 
+  # The member DOES implement durable backup, post-write exact-state verify and
+  # rollback-to-backup, verified by tests/tmux/test_setup_tmux_autosave_timer.py.
+  # It still declares missing_transaction because no attestation exists that can
+  # check those properties on a SHELL installer writing systemd units — the
+  # reference transaction's python-*-v1 attestations analyse a Python crontab
+  # implementation. So every systemd-user surface is pinned to the weakest
+  # declaration regardless of what it actually does. #3792 tracks closing that
+  # gap; this group retires when its member can declare accurately.
+  - group_id: tmux-session-persistence
+    issue: {repository: vamseeachanta/workspace-hub, number: 3792}
+    members: [scripts/install/setup-tmux-autosave-timer.sh]
+    defect_class: systemd-user-transaction-unattestable
+
 resolved_dispositions:
   - issue: 3475
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    source_digest: deb5e1bc73d7db175fc2e69fe425dba889d4602810cf74f14c334bc76a5a1ff9
+    source_digest: 4bc1cba3f283e12537e12417b4f031a05377573e0fc81118ed1f65b5591b48d8

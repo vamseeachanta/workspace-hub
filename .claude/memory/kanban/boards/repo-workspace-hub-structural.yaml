@@ -40,6 +40,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
+      - cat:business
       - domain:structural
       - machine:dev-primary
       - dispatch:ready
@@ -455,7 +456,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:engineering-calculations
+      - cat:engineering
       - domain:structural
       - wrk-item
       - machine:dev-primary
@@ -478,7 +479,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:engineering-calculations
+      - cat:engineering
       - domain:structural
       - wrk-item
       - machine:dev-primary
@@ -501,7 +502,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:high
-      - cat:engineering-calculations
+      - cat:engineering
       - domain:structural
       - wrk-item
       - machine:dev-primary
@@ -524,7 +525,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:engineering-calculations
+      - cat:engineering
       - domain:structural
       - wrk-item
       - machine:dev-primary
@@ -547,7 +548,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:engineering-calculations
+      - cat:engineering
       - domain:structural
       - wrk-item
       - machine:dev-primary
@@ -570,7 +571,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:engineering-calculations
+      - cat:engineering
       - domain:structural
       - wrk-item
       - machine:dev-primary
@@ -593,7 +594,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:engineering-calculations
+      - cat:engineering
       - domain:structural
       - wrk-item
       - machine:dev-primary
@@ -659,6 +660,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - domain:structural
       - machine:dev-primary
       - dispatch:ready
@@ -679,6 +681,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:medium
+      - cat:engineering
       - domain:structural
       - machine:dev-primary
       - dispatch:ready
@@ -699,6 +702,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
+      - cat:engineering
       - domain:structural
       - machine:dev-primary
       - dispatch:ready
@@ -817,7 +821,7 @@ cards:
     gh_labels:
       - enhancement
       - priority:medium
-      - cat:engineering-calculations
+      - cat:engineering
       - domain:structural
       - discrepancy
       - discrepancy:dims
@@ -835,3 +839,25 @@ cards:
       **Status:** Stage 8: Claim (in_progress) | **Priority:** medium | **Category:** engineering-calculations | **Subcategory:** structural-dynamics
 
       **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
+  - idempotency_key: gh:vamseeachanta/workspace-hub#1701
+    title: 'ANSYS package: Calculation examples — pressure vessel, flange, nozzle worked examples'
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/workspace-hub/issues/1701
+    gh_state: open
+    gh_labels:
+      - enhancement
+      - priority:medium
+      - cat:engineering
+      - domain:structural
+      - machine:dev-primary
+      - dispatch:ready
+      - gate:completeness
+      - lane:codex
+    gh_assignees: []
+    initial_status: triage
+    priority: 0
+    body_excerpt: '## Context
+
+      After #1676, the ansys package has complete ASME VIII pressure vessel analysis capability (thickness calcs, MAWP, nozzle reinforcement, hydrotest, APDL generation, batch management, results extraction). These should be documented as worked calculation examples.
+
+      ## Scope'

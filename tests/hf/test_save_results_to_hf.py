@@ -112,3 +112,170 @@ def test_trigger_deploy_hook_never_raises_on_failure(monkeypatch):
     monkeypatch.setattr(srhf.urllib.request, "urlopen", boom)
     # a failed rebuild trigger must NEVER fail an otherwise-successful publish
     assert srhf.trigger_deploy_hook() is None
+
+
+# --- visibility enforcement (workspace-hub#3483) -------------------------------------
+# create_repo(private=..., exist_ok=True) only applies private= at CREATION, so an
+# existing dataset kept its old visibility while the tool printed the requested one.
+
+
+class _FakeApi:
+    """Duck-typed stand-in for HfApi — no huggingface_hub import needed."""
+
+    def __init__(self, private=True):
+        self._private = private
+        self.calls = []
+
+    def update_repo_settings(self, repo_id, repo_type, private):
+        self.calls.append(("settings", repo_id, repo_type, private))
+        self._private = private
+
+    def dataset_info(self, repo_id):
+        return type("Info", (), {"private": self._private})()
+
+
+class _LegacyApi:
+    """Older hub (< 0.25): exposes update_repo_visibility and NOT update_repo_settings.
+
+    Deliberately does not inherit _FakeApi — inheriting would leave update_repo_settings
+    resolvable via the MRO, so hasattr() would still find it and the fallback branch
+    would never be exercised.
+    """
+
+    def __init__(self, private=True):
+        self._private = private
+        self.calls = []
+
+    def update_repo_visibility(self, repo_id, repo_type, private):
+        self.calls.append(("visibility", repo_id, repo_type, private))
+        self._private = private
+
+    def dataset_info(self, repo_id):
+        return type("Info", (), {"private": self._private})()
+
+
+def test_ensure_visibility_flips_existing_private_repo_to_public():
+    api = _FakeApi(private=True)  # dataset already exists, and is private
+    srhf.ensure_visibility(api, "aceengineer/x", public=True)
+    assert api.calls == [("settings", "aceengineer/x", "dataset", False)]
+
+
+def test_ensure_visibility_enforces_private_rather_than_relying_on_default():
+    api = _FakeApi(private=False)  # already public; --public NOT passed
+    srhf.ensure_visibility(api, "aceengineer/x", public=False)
+    # private-by-default is a fail-safe only if it is actually asserted on the remote
+    assert api.calls == [("settings", "aceengineer/x", "dataset", True)]
+
+
+def test_ensure_visibility_falls_back_to_update_repo_visibility_on_older_hub():
+    api = _LegacyApi(private=True)
+    assert not hasattr(api, "update_repo_settings")
+    srhf.ensure_visibility(api, "aceengineer/x", public=True)
+    assert api.calls == [("visibility", "aceengineer/x", "dataset", False)]
+
+
+def test_ensure_visibility_exits_when_no_visibility_api_exists():
+    class _Ancient:
+        pass
+    with pytest.raises(SystemExit) as e:
+        srhf.ensure_visibility(_Ancient(), "aceengineer/x", public=True)
+    assert "VISIBILITY" in str(e.value)
+
+
+def test_verify_visibility_returns_actual_when_it_matches():
+    api = _FakeApi(private=False)
+    assert srhf.verify_visibility(api, "aceengineer/x", public=True) is False
+
+
+def test_verify_visibility_exits_when_remote_disagrees():
+    # the #3483 failure mode: asked for public, remote is still private
+    api = _FakeApi(private=True)
+    with pytest.raises(SystemExit) as e:
+        srhf.verify_visibility(api, "aceengineer/x", public=True)
+    msg = str(e.value)
+    assert "VISIBILITY FAILED" in msg and "PRIVATE" in msg
+
+
+def test_ensure_then_verify_is_the_fixed_path():
+    # end to end on the duck-typed api: the flip makes the readback agree
+    api = _FakeApi(private=True)
+    srhf.ensure_visibility(api, "aceengineer/x", public=True)
+    assert srhf.verify_visibility(api, "aceengineer/x", public=True) is False
+
+
+# --- section maps vs row sets (workspace-hub#3699) ------------------------------------
+# A dict whose values are all dicts is only a table if it holds no nested tables.
+
+
+def test_section_map_with_nested_series_is_not_one_table():
+    # the real shape from digitalmodel/docs/api/structural/wall-thickness-explorer.json
+    doc = {
+        "meta": {"od_mm": 273.0, "grade": "X65"},
+        "min_wall_pass": {"DNV-ST-F101": 19.5, "DNV-ST-F201": 8.0},
+        "series": {
+            "DNV-ST-F101": [{"w": 8.0, "u": 8.7}, {"w": 8.5, "u": 7.9}],
+            "DNV-ST-F201": [{"w": 8.0, "u": 0.59}],
+        },
+    }
+    t = srhf.discover_tables(doc)
+    # must NOT collapse the file into a single records table
+    assert "records" not in t
+    # each series is its own table, found by recursing past the section map
+    assert t["series.DNV-ST-F101"] == [{"w": 8.0, "u": 8.7}, {"w": 8.5, "u": 7.9}]
+    assert len(t["series.DNV-ST-F201"]) == 1
+
+
+def test_section_map_does_not_mix_scalar_and_list_into_one_column():
+    # the exact parquet failure: DNV-ST-F101 held a float in one row and a
+    # JSON-stringified list in another, giving an unconvertible object column
+    doc = {"min_wall_pass": {"A": 19.5}, "series": {"A": [{"w": 1.0}]}}
+    t = srhf.discover_tables(doc)
+    for rows in t.values():
+        for row in rows:
+            for col, val in row.items():
+                assert not isinstance(val, dict), f"{col} still nested"
+
+
+def test_plain_dict_of_dicts_is_still_one_table():
+    # regression guard: the documented behaviour must not change
+    t = srhf.discover_tables({"w1": {"depth": 10}, "w2": {"depth": 20}})
+    assert "records" in t and {r["_id"] for r in t["records"]} == {"w1", "w2"}
+
+
+def test_contains_nested_table_detects_both_shapes():
+    assert srhf._contains_nested_table({"s": [{"a": 1}]})            # list-of-dicts
+    assert srhf._contains_nested_table({"s": {"k": [{"a": 1}]}})     # dict-of-lists-of-dicts
+    assert not srhf._contains_nested_table({"s": {"a": 1}})          # plain scalars
+
+
+def test_deeply_nested_section_map_is_not_one_table():
+    # cathodic-protection-explorer.json: rows are FOUR levels down.
+    doc = {
+        "meta": {"structures": ["4-leg jacket"], "climates": ["temperate"]},
+        "series": {
+            "4-leg jacket": {
+                "temperate": {
+                    "bare": [{"l": 10.0, "mass": 12692.3}, {"l": 15.0, "mass": 19038.4}],
+                    "good-coating": [{"l": 10.0, "mass": 11103.8}],
+                },
+            },
+        },
+    }
+    t = srhf.discover_tables(doc)
+    assert "records" not in t, "the file collapsed into one row-per-section table again"
+    assert t["series.4-leg jacket.temperate.bare"] == [
+        {"l": 10.0, "mass": 12692.3}, {"l": 15.0, "mass": 19038.4}]
+    assert len(t["series.4-leg jacket.temperate.good-coating"]) == 1
+
+
+def test_contains_nested_table_is_recursive():
+    assert srhf._contains_nested_table({"a": {"b": {"c": [{"x": 1}]}}})
+    assert not srhf._contains_nested_table({"a": {"b": {"c": {"x": 1}}}})
+
+
+def test_contains_nested_table_bounded_on_pathological_depth():
+    # a very deep scalar-only nest must terminate and report False, not recurse forever
+    node = {"leaf": 1}
+    for _ in range(40):
+        node = {"d": node}
+    assert srhf._contains_nested_table(node) is False

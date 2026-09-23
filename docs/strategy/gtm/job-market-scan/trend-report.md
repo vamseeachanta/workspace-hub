@@ -1,22 +1,22 @@
 # GTM Trend Report — Week-over-Week Hiring Momentum
 
-> Generated: 2026-07-13
-> Total scans to date: 13
+> Generated: 2026-09-21
+> Total scans to date: 23
 
 ## Scan History
 
 | Date | Total Jobs | New | Returning | Companies |
 |------|-----------|-----|-----------|-----------|
-| 2026-04-20 | 587 | 492 | 95 | 314 |
-| 2026-05-04 | 664 | 622 | 42 | 333 |
-| 2026-05-11 | 638 | 594 | 44 | 347 |
-| 2026-05-18 | 826 | 754 | 72 | 381 |
-| 2026-05-25 | 1170 | 1138 | 32 | 561 |
-| 2026-06-01 | 1105 | 1077 | 28 | 555 |
-| 2026-06-15 | 1010 | 983 | 27 | 441 |
-| 2026-06-22 | 905 | 880 | 25 | 422 |
-| 2026-07-06 | 1150 | 1123 | 27 | 475 |
-| 2026-07-13 | 973 | 948 | 25 | 512 |
+| 2026-07-20 | 872 | 847 | 25 | 365 |
+| 2026-07-27 | 1048 | 1024 | 24 | 457 |
+| 2026-08-03 | 865 | 841 | 24 | 463 |
+| 2026-08-10 | 1288 | 1265 | 23 | 446 |
+| 2026-08-17 | 1359 | 1334 | 25 | 477 |
+| 2026-08-24 | 1382 | 1358 | 24 | 484 |
+| 2026-08-31 | 1342 | 1319 | 23 | 522 |
+| 2026-09-07 | 1344 | 1321 | 23 | 526 |
+| 2026-09-14 | 1362 | 1339 | 23 | 624 |
+| 2026-09-21 | 1570 | 1547 | 23 | 671 |
 
 ## 📈 Trending UP — Companies Hiring MORE This Week
 
@@ -25,46 +25,46 @@ These companies have MORE open roles than last scan — they are getting busier.
 
 | Company | This Week | Last Week | Change | Priority? |
 |---------|-----------|-----------|--------|-----------|
-| **Seatrium** | 11 | 3 | +8 |  |
-| **Global Connect Technologies** | 10 | 2 | +8 |  |
-| **Rolls-Royce** | 10 | 2 | +8 |  |
-| **Amazon** | 9 | 2 | +7 |  |
-| **Hanwha Ocean** | 7 | 1 | +6 |  |
-| **Deloitte** | 11 | 5 | +6 |  |
-| **Hadron Energy, Inc.** | 8 | 2 | +6 |  |
-| **TIC - The Industrial Company** | 7 | 1 | +6 |  |
-| **Advanced Technology and Research Corporation** | 7 | 1 | +6 |  |
-| **Boeing** | 12 | 7 | +5 |  |
-| **Weeks Marine, Inc.** | 7 | 2 | +5 |  |
-| **GC-Squared Resources, LLC** | 6 | 1 | +5 |  |
-| **Foley & Lardner LLP** | 6 | 1 | +5 |  |
-| **Hanwha Ocean EPU** | 7 | 2 | +5 |  |
-| **TechnipFMC** | 7 | 3 | +4 | ✅ |
-| **SpaceX** | 6 | 2 | +4 |  |
-| **Noble Corporation** | 5 | 1 | +4 |  |
-| **Trane Technologies** | 6 | 2 | +4 |  |
-| **Brunel** | 7 | 3 | +4 |  |
-| **TC Energy** | 8 | 4 | +4 |  |
+| **EY** | 38 | 20 | +18 |  |
+| **Zen Sherpa LLC** | 19 | 2 | +17 |  |
+| **American Bureau of Shipping (ABS)** | 16 | 1 | +15 | ✅ |
+| **Phillips Infrastructure** | 14 | 2 | +12 |  |
+| **Anduril Industries** | 26 | 15 | +11 |  |
+| **NOV** | 14 | 3 | +11 |  |
+| **Woods Hole Oceanographic Institution** | 12 | 2 | +10 |  |
+| **L3Harris Technologies** | 15 | 6 | +9 |  |
+| **HII** | 13 | 4 | +9 |  |
+| **General Dynamics Electric Boat** | 23 | 14 | +9 |  |
+| **Black & Veatch** | 10 | 1 | +9 |  |
+| **Leidos** | 14 | 6 | +8 |  |
+| **DNV** | 11 | 3 | +8 | ✅ |
+| **Shield AI** | 9 | 1 | +8 |  |
+| **Resolve Marine** | 9 | 1 | +8 |  |
+| **ABS Dubai** | 10 | 2 | +8 | ✅ |
+| **Saur Energy International** | 11 | 3 | +8 |  |
+| **Rand Worldwide** | 9 | 1 | +8 |  |
+| **Acuren** | 9 | 2 | +7 |  |
+| **Innovate Consulting** | 8 | 1 | +7 |  |
 
 ## ➡️ Consistently Busy — Stable High Hiring
 
 | Company | Roles (stable) | Priority? |
 |---------|---------------|-----------|
+| Blue Origin | 40 |  |
 | ABS | 13 | ✅ |
-| Tata Consultancy Services | 9 |  |
+| SpaceX | 8 |  |
+| Amphenol Communications Solutions | 8 |  |
+| Kinder Morgan, Inc. | 7 |  |
+| Sofar Ocean | 7 |  |
 | Orsted | 6 | ✅ |
 | Gilead Sciences | 6 |  |
-| Mainspring Energy | 5 |  |
-| NOV | 5 |  |
-| HDR | 4 |  |
-| Siemens Gamesa | 4 |  |
+| SLB | 5 |  |
+| Prometheus Energetics | 5 |  |
+| Westinghouse Electric Company | 4 |  |
+| Sargent & Lundy | 4 |  |
 | Energy Sciences | 4 |  |
-| Re:Build Manufacturing | 4 |  |
+| BAE Systems, Inc. | 4 |  |
 | Altrad Sparrows – Americas | 4 |  |
-| Invenergy | 4 |  |
-| Bechtel Corporation | 3 |  |
-| NTT DATA North America | 3 |  |
-| SEPHORA | 3 |  |
 
 ## 🔥 Persistent Openings — Hard to Fill = Consulting Gold
 
@@ -73,38 +73,38 @@ They are the most likely to accept a consulting alternative.
 
 | Weeks Seen | Title | Company | Score | First Seen |
 |------------|-------|---------|-------|------------|
-| 12 | Engineering | TechnipFMC | 100 | 2026-04-02 |
-| 12 | Subsea Operations | TechnipFMC | 100 | 2026-04-02 |
-| 12 | Analyst Coverage & Consensus | SBM Offshore | 100 | 2026-04-02 |
-| 12 | Engineering Reviews | ABS | 100 | 2026-04-02 |
-| 12 | Engineering Applications | ABS | 100 | 2026-04-02 |
-| 12 | Marine Engineering Applications | ABS | 100 | 2026-04-02 |
-| 12 | Offshore Engineering Applications | ABS | 100 | 2026-04-02 |
-| 12 | Subsea Solutions | ABS | 100 | 2026-04-02 |
-| 12 | Subsea Mining | ABS | 100 | 2026-04-02 |
-| 12 | Rules and Guides for Naval Ships | ABS | 100 | 2026-04-02 |
-| 12 | Subsea Processing Systems | ABS | 100 | 2026-04-02 |
-| 12 | Engineering Software | ABS | 100 | 2026-04-02 |
-| 12 | Analysts coverage | Bureau Veritas | 100 | 2026-04-02 |
-| 12 | Subsea services | DOF Subsea | 100 | 2026-04-02 |
-| 12 | Digital - Engineering Suite | Chart Industries | 100 | 2026-04-02 |
-| 12 | Analyst Coverage | Chart Industries | 100 | 2026-04-02 |
-| 12 | Engineering &
+| 22 | Engineering | TechnipFMC | 100 | 2026-04-02 |
+| 22 | Subsea Operations | TechnipFMC | 100 | 2026-04-02 |
+| 22 | Analyst Coverage & Consensus | SBM Offshore | 100 | 2026-04-02 |
+| 22 | Engineering Reviews | ABS | 100 | 2026-04-02 |
+| 22 | Engineering Applications | ABS | 100 | 2026-04-02 |
+| 22 | Marine Engineering Applications | ABS | 100 | 2026-04-02 |
+| 22 | Offshore Engineering Applications | ABS | 100 | 2026-04-02 |
+| 22 | Subsea Solutions | ABS | 100 | 2026-04-02 |
+| 22 | Subsea Mining | ABS | 100 | 2026-04-02 |
+| 22 | Rules and Guides for Naval Ships | ABS | 100 | 2026-04-02 |
+| 22 | Subsea Processing Systems | ABS | 100 | 2026-04-02 |
+| 22 | Engineering Software | ABS | 100 | 2026-04-02 |
+| 22 | Analysts coverage | Bureau Veritas | 100 | 2026-04-02 |
+| 22 | Subsea services | DOF Subsea | 100 | 2026-04-02 |
+| 22 | Digital - Engineering Suite | Chart Industries | 100 | 2026-04-02 |
+| 22 | Engineering &
                             Technolo | GE Vernova | 100 | 2026-04-02 |
-| 12 | Engineering & Technology | GE Vernova | 100 | 2026-04-02 |
-| 11 | Engineering Reviews | ABS | 100 | 2026-04-13 |
-| 11 | Engineering Applications | ABS | 100 | 2026-04-13 |
-| 11 | Engineering Reviews | ABS | 100 | 2026-04-13 |
-| 11 | Subsea Solutions | ABS | 100 | 2026-04-13 |
-| 10 | Corpus Christi Pipeline | Cheniere Energy | 100 | 2026-04-20 |
-| 10 | Creole Trail Pipeline | Cheniere Energy | 100 | 2026-04-20 |
+| 22 | Engineering & Technology | GE Vernova | 100 | 2026-04-02 |
+| 21 | Engineering Reviews | ABS | 100 | 2026-04-13 |
+| 21 | Engineering Applications | ABS | 100 | 2026-04-13 |
+| 21 | Engineering Reviews | ABS | 100 | 2026-04-13 |
+| 21 | Subsea Solutions | ABS | 100 | 2026-04-13 |
+| 20 | Corpus Christi Pipeline | Cheniere Energy | 100 | 2026-04-20 |
+| 20 | Creole Trail Pipeline | Cheniere Energy | 100 | 2026-04-20 |
+| 12 | Analyst Coverage | Chart Industries | 100 | 2026-04-02 |
 | 3 | CareersEngineering ·  3 min readEngineering succes | Worley | 115 | 2026-04-02 |
 
 ## Cumulative Statistics
 
-- **9990** unique job postings tracked all-time
-- **2609** unique companies seen
-- **13** scans completed
+- **22185** unique job postings tracked all-time
+- **4116** unique companies seen
+- **23** scans completed
 
 ---
 

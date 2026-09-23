@@ -1,7 +1,12 @@
 # Issue Planning Workflow — Onboarding Guide and Plan Index
 
-This document is the single onboarding reference for the mandatory issue planning workflow.
-All agents (Claude, Codex, Gemini, Hermes) must follow this workflow for every GitHub issue.
+This guide applies the shared authority contract in [SHARED_SOUL.md](../../config/agents/SHARED_SOUL.md).
+Every issue needs discovery and a proportionate plan; a fresh approval request is not required for every action.
+Bounded routine reversible work may proceed under independently established standing authorization.
+Substantial scope requires explicit approval of the current reviewed plan; consequential actions require matching explicit approval.
+Do not ask again for verified unchanged scope. Missing or changed scope requires context or renewed approval as appropriate.
+Labels, local markers, receipts and handoffs are references, not authenticated authority; verify provenance and issue/revision binding.
+The implementing agent never self-labels `status:plan-approved`. Plan/code review, TDD, legal/security, engineering and completeness controls remain required.
 
 > **One-page method reference:** [#3237](https://github.com/vamseeachanta/workspace-hub/issues/3237) is the timeless overview of the full issue lifecycle (plan → review → implement → HTML artifact → live link → close), with a live flowchart at <https://vamseeachanta.github.io/workspace-hub/issue-workflow-lifecycle.html>.
 
@@ -22,17 +27,16 @@ Both are required. Neither replaces the other.
 3. DRAFT PLAN       — Copy template, fill all sections, save to docs/plans/
 4. ADVERSARIAL REVIEW — Route to 2+ AI providers; revise if MAJOR verdict
 5. POST TO GITHUB   — Comment plan on issue, label status:plan-review
-6. HARD STOP        — Wait for user approval (never self-approve)
-7. USER APPROVES    — Swap label to status:plan-approved
-8. IMPLEMENT        — TDD: tests first, then code, then full suite
-9. CLOSE            — Commit, push, post summary, close issue
+6. AUTHORITY        — Verify standing authority or required explicit approval; owner records it
+7. IMPLEMENT        — TDD, verification and adversarial code/artifact review
+8. CLOSE            — Commit, push, summary and closure within verified authority
 ```
 
 ### Step 1: Intake
 
 - Read the full issue body — scope, acceptance criteria, references
 - Classify complexity:
-  - **T1** (trivial): config, typo, single-file fix — brief plan, still requires approval
+  - **T1** (trivial): config, typo, single-file fix — brief plan; verify actual risk and existing authorization
   - **T2** (standard): new module, multiple files, tests — full workflow
   - **T3** (complex): multi-module, architecture, standards — full workflow + subagents
 
@@ -109,23 +113,26 @@ Flags:
 
 1. Post the completed plan as a GitHub issue comment
 2. Apply label: `gh issue edit NNN --add-label "status:plan-review"`
-3. **STOP** — do NOT write any implementation code
+3. For substantial unapproved scope, stop for approval of the reviewed plan. For routine scope, verify standing authorization before continuing. Posting does not grant permission.
 
-### Step 6: User Approval
+### Step 6: Verify Authority
 
-The user (never the implementing agent) approves the plan:
-- `gh issue edit NNN --remove-label "status:plan-review" --add-label "status:plan-approved"`
-- Creates marker: `.planning/plan-approved/NNN.md`
+When explicit approval is required, the user approves the current plan and scope.
+The owner controls the `status:plan-approved` label; the implementing agent does not apply it.
+A `.planning/plan-approved/NNN.md` marker may reference that event, but its presence, age or absence cannot establish or revoke authority.
+Verify the approving actor, issue, reviewed revision and scope independently; report mismatches without automatically changing labels or markers.
 
 ### Step 7: Implement (TDD)
 
-Only after `status:plan-approved` label exists:
+After independently establishing authorization for the current risk and scope, and resolving blocking review findings:
 1. Write tests first — confirm they fail
 2. Implement minimum code to pass tests
 3. Run full test suite — confirm no regressions
-4. Self-review against approved plan
+4. Self-review against the current plan and obtain the independent code/artifact review required by SHARED_SOUL.md
 
 ### Step 8: Close
+
+Verify matching authority for consequential actions such as publication; implementation approval alone does not grant it.
 
 - Conventional commit referencing the issue number
 - Push to remote
@@ -151,9 +158,10 @@ Reviewers should note a retrieval verdict: `adequate` or `insufficient` with spe
 ## Batch / Overnight Sessions
 
 When the user is not present:
-- Draft plans and label `status:plan-review` — do NOT implement
-- Only implement issues already labeled `status:plan-approved`
-- User reviews results the next morning
+- Continue only within independently established standing authorization or matching explicit approval.
+- For substantial unapproved scope, prepare the plan and review evidence, then wait; absence of the user creates no exception.
+- Preserve TDD and plan/code review. A fresh MAJOR finding blocks affected work until resolved; it does not itself revoke an approval.
+- Report scope/evidence conflicts rather than mutating remote labels or deleting markers automatically.
 
 ## Status Meanings
 
@@ -183,9 +191,9 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 
 ## Enforcement
 
-- **PreToolUse hook**: `.claude/hooks/plan-approval-gate.sh` blocks writes without approval marker
-- **Pre-commit hook**: `scripts/enforcement/require-plan-approval.sh --strict` blocks commits without approval
-- **Labels**: `status:plan-review` (orange) and `status:plan-approved` (green) exist on the repo
+The legacy `.claude/hooks/plan-approval-gate.sh` and `scripts/enforcement/require-plan-approval.sh` use marker/path heuristics that differ from the shared authority contract. Their existence does not establish installed coverage or authenticate approval. Report a blocking mismatch; do not disable a hook, set bypass flags or manufacture a marker to proceed. Live consumer migration requires its own reviewed scope.
+
+`status:plan-review` and owner-controlled `status:plan-approved` record workflow state. Neither a bare label nor a local marker substitutes for verified authorization. The advisory `scripts/governance/workflow_decision.py` can structure an assessment, but is not a mandatory per-tool gate and cannot grant permission.
 
 ## Key References
 
@@ -201,8 +209,27 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 
 ## Plan Index
 
+Historical rows below retain their recorded scope and status; they are not current authorization evidence. The ten-path shared-workflow entry describes Stage A, not the separate eighteen-path instruction-alignment pilot. Verify the current plan revision and originating user decision.
+
 | Issue # | Title / Slug | Plan File | Date | Status | Complexity | Notes |
 |---|---|---|---|---|---|---|
+| [#3062](https://github.com/vamseeachanta/workspace-hub/issues/3062) / [#3815](https://github.com/vamseeachanta/workspace-hub/issues/3815) | Codex-only native preservation | [HTML plan](2026-09-16-issue-3062-codex-only-preservation.html) | 2026-09-16 | adversarial-reviewed; bounded implementation authorized | T2 | Opt-in one-repository native Codex preservation; shared Claude/Gemini propagation and live rollout remain outside this slice. |
+| [#3615](https://github.com/vamseeachanta/workspace-hub/issues/3615) | Foundation profile materializer | [HTML plan](2026-09-14-issue-3615-foundation-materializer.html) | 2026-09-14 | implementation candidate; native rollout blocked | T2 | Six family-preserving payloads in an isolated branch; native discovery is separate from copying and fleet readiness. |
+| [#3296](https://github.com/vamseeachanta/workspace-hub/issues/3296) / [#3615](https://github.com/vamseeachanta/workspace-hub/issues/3615) | Shared risk workflow | [HTML plan](2026-09-12-issue-3615-shared-risk-workflow.html) | 2026-09-12 | reviewed; implementation approval pending | T3 | Ten-path advisory extension of existing evaluator; live enforcement deferred. |
+| [#3606](https://github.com/vamseeachanta/workspace-hub/issues/3606) | Resource authority | [HTML plan](2026-09-12-issue-3606-resource-authority.html) | 2026-09-12 | implemented; local integration verified | T3 | Six-path authority reconciliation and descriptor schema; no data movement. |
+| [Digitalmodel 2093](https://github.com/vamseeachanta/digitalmodel/issues/2093) | mooring-buoy-native-workflow | [Plan](2026-09-11-digitalmodel-2093-mooring-buoy.html) | 2026-09-11 | adversarial-reviewed | T2 | Full-duration local configuration-to-results proof; explicit physical-qualification gaps; bounded native approval required. |
+| [Digitalmodel 716](https://github.com/vamseeachanta/digitalmodel/issues/716) | orcaflex-validator | `docs/plans/2026-09-11-digitalmodel-716-validator.html` | 2026-09-11 | adversarial-reviewed | T2 | Conditional property/section recognition; preserve generated physics and qualification boundaries. |
+| [Deckhand 591](https://github.com/vamseeachanta/deckhand/issues/591) | licensed-run-cleanup | `docs/plans/2026-09-11-deckhand-591-cleanup.html` | 2026-09-11 | adversarial-reviewed | T2 | Windows containment, verified cleanup and persistent execution guard; deployment excluded. |
+| [#3831](https://github.com/vamseeachanta/workspace-hub/issues/3831) | orcaflex-execution | `docs/plans/2026-09-09-issue-3831-orcaflex-execution.md` | 2026-09-09 | draft | T3 | Reuse upstream fixes; unify local/remote submission, host arbitration, native result validation and measured rollout. |
+| [#3816](https://github.com/vamseeachanta/workspace-hub/issues/3816) | generated-work-surface-inventory | `docs/plans/2026-09-03-issue-3816-generated-work-surface-inventory.md` | 2026-09-03 | plan-review | T2 | Adversarially reviewed to Codex APPROVE (Agy unavailable). Selects `mission-map.yaml` as membership authority, fixes exact profile/sensitivity/MCP metadata, keeps unknown siblings aggregate-only, and produces deterministic evidence-only JSON/Markdown without changing sync or placement. |
+| [#3708](https://github.com/vamseeachanta/workspace-hub/issues/3708) | crontab-reapply-path | `docs/plans/2026-07-30-issue-3708-crontab-reapply-path.md` | 2026-07-30 | adversarial-reviewed | T3 | Plan-only unblocker for #3707. Classifies ace1's 47 uncataloged lines as 44 renderer-owned mkdir-prefix normalization cases, 2 catalog command-content drifts, and 1 unresolved equality-report legacy body; preserves llm-wiki external line, requires command-only notification-purge matching/dedupe, ace2 verification, Windows non-mutation, and scheduler-rule-compliant CAS/rollback cutover. |
+| [#3707](https://github.com/vamseeachanta/workspace-hub/issues/3707) | cron-upkeep-clockwork | `docs/plans/2026-07-30-issue-3707-cron-upkeep-clockwork.md` | 2026-07-30 | plan-review | T3 | Plan-only clockwork cleanup design. Sequences live system-cron deployment behind blocker [#3708](https://github.com/vamseeachanta/workspace-hub/issues/3708); preserves Hermes down, keeps existing health/runtime/reaper/return guards, requires RED fixtures for squash-merged branches, sibling roots, owned worktrees, aged stashes, and cleanup semantic no-op health. |
+| [#3709](https://github.com/vamseeachanta/workspace-hub/issues/3709) | managed-block-classification (v5) | `docs/plans/2026-07-30-issue-3709-managed-block-classification-v5.md` | 2026-07-30 | plan-review | T3 | **Restructure of the control model, not another predicate round.** Independent Codex r2 on v4 returned **MAJOR**: a seventh accepted-and-destructive evasion (`z07_r01_intent_blocking_cleared`) that clears `intent['blocking']` between the intent assignment and the pinned guard — all 19 predicates PASS, the committed behavioural harness reports `DROPS 4/5 LIVE LINES`. Five rounds have now produced **thirteen** distinct evasions of a static AST attestation, and this revision adds a fourteenth, so v5 stops hardening shape predicates and changes what carries the guarantee. **Primary control = a required behavioural TEST** (`tests/cron/test_cutover_preservation.py`) that imports the **committed** module and asserts a multiset preservation invariant over six scenarios (synthetic A-D plus the committed ace1/ace2 fixtures); it detects by **outcome**, so a novel evasion needs no new predicate. **v3's rejection of a behavioural ATTESTATION is preserved and is why the design is shaped this way** — the checker builds `records` from git-index blobs, so executing them would put unreviewed staged code inside the enforcement gate; the test runs under pytest on the committed tree instead, and a new regression guard asserts the checker still never executes an indexed blob. **Secondary control = the AST predicates**, explicitly demoted to a cheap, execution-free early signal. **FIX 1:** no predicate change is proposed for z07 — the primary control catches it in 4 of 4 scenarios, and a sixth predicate round has a thirteen-for-thirteen failure record. **New finding:** a fourteenth evasion (`z10_new_text_dedupes`) was found **in the control being promoted** — it renders `new_text` from a de-duplicated copy of `new_lines`, which all 19 predicates AND v4's membership-based harness score as safe; the invariant is now a multiset comparison and the corpus gains two duplicate-line scenarios drawn from the ace1 fixture's own duplicate pairs. **FIX 2 (governance):** the fail-closed clause is a *necessary* condition and is still satisfied verbatim after demotion; what was never stated is sufficiency, so a rule amendment is **proposed and flagged as an owner-approval item** — not applied. A failed test blocks a **merge**, not an **apply**; apply-time safety stays with the runtime guards. **FIX 3:** the predicate set is right-sized **19 → 13** on measured evidence (identical coverage over 35 shapes; going to 11 costs `e09` and `M12`, both destructive), with two new composed cases (`z08`, `z09`) proving predicate 17 must stay. **FIX 4:** #3518's implementation is **already on `origin/main`** (`1c3d7f683`, PR #3517 merged 2026-07-14; pin equals the staged blob; task-3 suite 89 passed), so the projected collision does not occur — it needs a completeness closeout, not an implementation. **Also surfaced:** the `protect-main` ruleset has **no required status checks at all**, so no CI check on this repo is merge-blocking today. ace1 baseline is **not** green, so acceptance is **no new failures**: `tests/enforcement` 2 failed / 417 passed, `tests/cron` 284 passed, `scripts/cron/tests/test_validate_schedule.py` 1 failed / 53 passed. 17 TDD rows: 15 RED, 2 declared GREEN guards. [#3711](https://github.com/vamseeachanta/workspace-hub/issues/3711) remains a hard blocking prerequisite for commits 2-4. Independent r2 review required; `status:plan-approved` NOT applied. |
+| [#3709](https://github.com/vamseeachanta/workspace-hub/issues/3709) | managed-block-classification (v4) | `docs/plans/2026-07-30-issue-3709-managed-block-classification-v4.md` | 2026-07-30 | superseded by v5 | T3 | Narrow delta on v3 after independent Codex r2 returned **MAJOR** (1 major, 1 minor, 1 process gap). Everything else in v3 was independently verified and carries forward unchanged. **FIX A:** the reviewer built a wrong implementation satisfying all seven v3 predicates — a non-constant early return from `plan_cutover` delegating to an **uninspected helper**, which drops 5/5 live lines while reporting `abort_reason: None`. Twelve new named predicates close it (terminal-return closure, per-path success chain, binding closure, module-binding integrity, `_abort` fail-closed, callee allowlist, exact loop bodies, literal absence records, pinned multiset shape, a runtime totality guard, a literal marker constant, and managed-absence-always-blocks). Measured on a **committed executable prototype**: 19 predicates reject 26 named cases (14 files + 12 textual mutations); **12 of the 14 file cases are accepted by v3's contract** — the reviewer found one, this revision found the other eleven. Six further author evasions were constructed: four closed by predicate, two not closable by shape and therefore forcing implementation changes — the totality guard's expected set must come from a module literal, and a managed-block absence must block even when classified `ignore` (**E13 is #3709's own defect reachable through the classifier; v3's design would have shipped it**). Residue is four enumerated shapes each with one named covering test; a behavioural harness measures all four as **non-destructive**, and v3's residue R2 is closed outright. Budget changed: 641 prototype lines will not fit one 400-line module, so the set ships as two siblings (≈360 + ≈290), still free of `PRIMITIVE_PATTERNS` matches. **FIX B:** sanitisation rule 4 is amended to permit pre-existing host identifiers in `ignore`-class lines rather than rebaselining — rebaselining would destroy the ace1 fixture's byte-equality with live `crontab -l`, the property the reviewer used to verify it. **FIX C:** the prototype is committed at `scripts/review/prototypes/3709-v4/` so the next review executes the same artifact instead of its own reading of the contract. 26 TDD rows: 24 RED, 2 declared GREEN guards. [#3711](https://github.com/vamseeachanta/workspace-hub/issues/3711) remains a hard blocking prerequisite for commits 2-4. Independent r2 review required; `status:plan-approved` NOT applied. |
+| [#3709](https://github.com/vamseeachanta/workspace-hub/issues/3709) | managed-block-classification (v3) | `docs/plans/2026-07-30-issue-3709-managed-block-classification-v3.md` | 2026-07-30 | superseded by v4 | T3 | Targeted revision of v2 after independent Codex r2 returned **MAJOR** with 2 findings; v2's design was independently reproduced and is carried forward unchanged (signature lock, third-party-first ordering, the `build_classification_context` seam, no behavioural attestation). **FIX 1:** `python-postwrite-preservation-multiset-v1` is re-authored as seven named **value-flow** predicates built on the existing `scheduler_mutation_python_flow._walk_block` reachability engine. Measured: v2's spec returns `True` for the reviewer's wrong-but-conforming implementation; v3 returns `False` on 4 of 7 predicates, and rejects 16/16 named mutations where v2's spec rejected 8/16. Ships as a new 293-line `scheduler_mutation_preservation.py` because folding it into `attestations.py` would break the measured 400-line ceiling. Three residual shapes the attestation still accepts are measured and disclosed, with four named compensating controls — the plan does **not** claim the attestation carries the fail-closed clause alone. **FIX 2:** [#3711](https://github.com/vamseeachanta/workspace-hub/issues/3711) becomes a **hard blocking dependency** for commits 2-4, replacing v2's unenforceable "author on ace1" promise; root cause measured at `cron_render.py:87` (`gpu-claw` resolves to `/System/Volumes/Data/home/...` on macOS). **FIX 3:** sanitised ace1 (73 lines, 0 redactions) and ace2 (40 lines, 3 redactions, proven class-preserving) crontab fixtures are committed, so rows 1, 8, 12 and 14 no longer need `crontab -l` — r2's three NOT-RERUN rows and the 69/71-vs-71/71 parity claim are now reproducible offline. 22 TDD rows: 20 RED, 2 declared GREEN guards. Independent r2 review required; `status:plan-approved` NOT applied. |
+| [#3709](https://github.com/vamseeachanta/workspace-hub/issues/3709) | managed-block-classification (v2) | `docs/plans/2026-07-30-issue-3709-managed-block-classification-v2.md` | 2026-07-30 | superseded by v3 | T3 | **Superseded by `…-v3.md`** after independent Codex r2 returned MAJOR (attestation accepts a wrong implementation; ace1-only inventory constraint unenforceable). Replaces the v1 plan on `plan/3709-managed-block-classification`, which failed independent r2 review as **MAJOR** with 5 major findings. v2 moves the unification seam to `build_classification_context` (the two builders are measurably divergent today — 10 vs 11 preservation fingerprints), orders *third-party* preservation ahead of exact identity (blanket preservation-first was measured to break the `deckhand-api-presence-sync` dedup), closes an audit fail-open on parse errors that already exists on `main`, removes the `cataloged` exemption from the intent report, and re-authors `python-postwrite-preservation-multiset-v1` as a pinned ordered AST predicate set with seven named mutations verified against a prototype. Every one of 16 TDD rows carries a today-status and a proving command executed on `ace-linux-1`: 15 RED, 1 declared GREEN regression guard. Also pins the identity-inventory digest chain and the ace1-only implementation host (#3711), both missed by v1. Independent r2 review required; `status:plan-approved` NOT applied. |
+| [#3702](https://github.com/vamseeachanta/workspace-hub/issues/3702) | equality-artifacts-out-of-tree | `docs/plans/2026-07-30-issue-3702-equality-artifacts-out-of-tree.md` | 2026-07-30 | plan-approved — implementation PR open | T2 | Owner-approved 2026-07-30. Adds an `EQ_STATE_DIR`/`EQ_REPORT_DIR` seam so equality GENERATION lands out of the tracked tree; the published surface on `origin/main` is byte-identical (publish-equality.sh already writes through a sparse worktree). Plan review r1 (Claude) + r2 (Codex) both returned MAJOR with non-overlapping findings; 13 revisions applied. Implemented RED-first: 23 failing cases captured against `main` before any implementation commit. Windows is explicitly PINNED in place in Phase 1 (Codex M1/M2) — a Phase-2 cutover is gated on [#3554](https://github.com/vamseeachanta/workspace-hub/issues/3554). `dev-primary` is NOT expected to reach green from this change (`ahead_main != 0` is an independent `is_stale()` trigger). |
+| [#3592](https://github.com/vamseeachanta/workspace-hub/issues/3592) | equality-dimension-reclassification | `docs/plans/2026-07-22-issue-3592-equality-dimension-reclassification.md` | 2026-07-22 | completed | T2 | User-approved + implemented `612cf423f` (TDD, 28 new/updated tests). Code-stage Codex review caught a MAJOR (provider rows degraded at schema 5) — fixed with 3 regression tests. Issue CLOSED 2026-07-22; box-side follow-ons (gpu-claw cron set, win schema-5 re-collect, win hermes contradiction) tracked in the issue checklist + live red cells. |
 | [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549) | registry-connection-helpers | `docs/plans/2026-07-16-issue-3549-registry-connection-helpers.md` | 2026-07-16 | plan-review — user decision required | T3 | Option 2 registry-policy + POSIX local overlay design. PR #3553 dependency merged. R3 ended Claude MINOR / Codex third MAJOR / Gemini UNAVAILABLE; all concrete r3 findings were corrected inline and the Codex iteration cap requires explicit user disposition rather than an automatic fourth cycle. |
 | [#3522](https://github.com/vamseeachanta/workspace-hub/issues/3522) | private-rule-authority-migration | `docs/plans/2026-07-13-issue-3522-private-rule-authority-migration.md` | 2026-07-13 | plan-review | T3 | R1/r2 MAJORs resolved inline per routing: pinned reusable secret workflow, HMAC ledger/anchor, dual-slot CAS cutover, constant-fail fork promotion, complete private evidence and downloadable-byte coverage. Approval authorizes Phase A only; migration/external state remain separately gated. |
 | [#3527](https://github.com/vamseeachanta/workspace-hub/issues/3527) | postmerge-inventory-race | `docs/plans/2026-07-14-issue-3527-postmerge-inventory-race.md` | 2026-07-14 | plan-review — correction 2026-07-18 | T3 | Code review required an executable rollback contract and a dedicated snapshot test file; renewed user approval is required before implementation resumes. |
@@ -377,6 +404,7 @@ Every plan file must include (see `_template-issue-plan.md` for full format):
 | 2333 | provider-audit-drift-classification-expansion | `docs/plans/2026-04-22-issue-2333-provider-audit-drift-classification-expansion.md` | 2026-04-22 | draft | T2 | Bounded plan to separate true stale-path debt from generated-site, sibling-repo, symbolic, and transient drift families |
 | 2321 | plugin-consolidation | `docs/plans/2026-04-17-issue-2321-plugin-consolidation.md` | 2026-04-17 | superseded | T2 | SPLIT into #2358 (docs + repo-tree overlap) and #2359 (semantic-scholar-mcp fix); central `git mv` mechanism was impossible (targets are plugin-owned, not repo-tracked) |
 | 2322 | rule-promotion | `docs/plans/2026-04-17-issue-2322-rule-promotion.md` | 2026-04-17 | implemented | T2 | Promote two binary-checkable prose rules to Level-2 scripts (no-abs-paths, harness-file-size); third script deferred to follow-up. |
+| [#3869](https://github.com/vamseeachanta/workspace-hub/issues/3869) | Reviewed-head merge guard | [HTML plan](2026-09-15-issue-3869-reviewed-merge-head.html) | 2026-09-15 | draft; exact implementation review pending | T2 | Expected-head binding preserves CLEAN and per-PR authority; no merge performed. |
 
 | 2323 | cross-ai-review-fanout | `docs/plans/2026-04-17-issue-2323-cross-ai-review-fanout.md` | 2026-04-17 | plan-review | T2 | Single-command plan-review fan-out across Claude/Codex/Gemini with disagreement report artifact |
 | 2324 | memory-md-curation | `docs/plans/2026-04-17-issue-2324-memory-md-curation.md` | 2026-04-17 | implemented | T1 | Scope re-resolved to single-machine, non-git-tracked auto-memory; 2 orphans promoted, 1 resolved entry archived; report at `docs/reports/memory-curation-2026-04.md` |
@@ -497,9 +525,9 @@ Add one row per plan:
 
 - All plans go in `docs/plans/` — never in `.hermes/plans/` or `.planning/phases/`
 - Keep this README updated whenever a new plan is created or its status changes
-- Batch execution agents must only act on issues marked `status:plan-approved`
+- Batch execution must stay within independently established authorization for the current risk/scope; an issue label alone is not launch authority.
 - If a plan is revised materially, update the row and mark the older version `superseded`
-- Never self-approve a plan — the user or a designated operator must approve
+- Never self-approve: when explicit approval is required, verify the actual user/owner decision; routine standing authorization does not require a new approval label.
 
 
 
@@ -534,10 +562,12 @@ Add one row per plan:
 | [#3336](https://github.com/vamseeachanta/workspace-hub/issues/3336) | index freshness automation + .ace-knowledge builder provenance (epic #3333) | [Plan](2026-07-02-issue-3336-index-freshness-automation.md) | completed | T2 | 2026-07-02 |
 | [#3337](https://github.com/vamseeachanta/workspace-hub/issues/3337) | canonical-path normalization across index configs (epic #3333) | [Plan](2026-07-02-issue-3337-canonical-path-normalization.md) | completed | T2 | 2026-07-02 |
 | [#3340](https://github.com/vamseeachanta/workspace-hub/issues/3340) | drive-file-search usage playbook + metrics + unified-index decision (epic #3333) | [Plan](2026-07-02-issue-3340-drive-search-usage-playbook.md) | completed | T2 | 2026-07-02 |
-| [#3524](https://github.com/vamseeachanta/workspace-hub/issues/3524) | Restore RDP microphone redirection from WS014 to RDS02 | [Plan](2026-07-14-issue-3524-rdp-microphone-redirection.md) | plan-approved | T2 | 2026-07-14 |
+| [#3524](https://github.com/vamseeachanta/workspace-hub/issues/3524) | Restore RDP microphone redirection from ace-win-2 to ace-win-1 | [Plan](2026-07-14-issue-3524-rdp-microphone-redirection.md) | plan-approved | T2 | 2026-07-14 |
 | [#3566](https://github.com/vamseeachanta/workspace-hub/issues/3566) | Keyboard/context-menu text paste equivalence | [Plan](2026-07-17-issue-3566-paste-equivalence.md) | draft | T2 | 2026-07-17 |
 | [wed#848](https://github.com/vamseeachanta/worldenergydata/issues/848) | phase-norm layer — field vs play vs country on every life-cycle stage (epic wed#754) | [Plan](2026-07-06-issue-wed-848-phase-norm-layer.md) | completed | T2 | 2026-07-06 |
 | [wed#849](https://github.com/vamseeachanta/worldenergydata/issues/849) | per-well economics drill-down — D&C days → cost, production → revenue (epic wed#754) | [Plan](2026-07-06-issue-wed-849-per-well-economics.md) | completed | T2 | 2026-07-06 |
 | [wed#850](https://github.com/vamseeachanta/worldenergydata/issues/850) | navigation spine — breadcrumb + link-graph gate across all page families (epic wed#754) | [Plan](2026-07-06-issue-wed-850-nav-spine.md) | completed | T2 | 2026-07-06 |
 | [dm#1444](https://github.com/vamseeachanta/digitalmodel/issues/1444) | capabilities IA spec — 7 clusters + recency metadata + citable reference index | [Plan](2026-07-06-issue-dm-1444-capabilities-ia-spec.md) | completed | T2 | 2026-07-06 |
 | [dm#1456](https://github.com/vamseeachanta/digitalmodel/issues/1456) | close the 10 section one-pager PDF gaps + coverage ratchet (#1444 follow-on) | [Plan](2026-07-06-issue-dm-1456-section-onepager-gaps.md) | plan-review | T2 | 2026-07-06 |
+| [#3702](https://github.com/vamseeachanta/workspace-hub/issues/3702) | equality artifacts out of the tracked tree — break the STALE-CHECKOUT ratchet | [Plan](2026-07-30-issue-3702-equality-artifacts-out-of-tree.md) | plan-review | T2 | 2026-07-30 |
+| [#1249](https://github.com/vamseeachanta/workspace-hub/issues/1249) | Native AGENTS.md migration for Claude | [Plan](2026-09-18-issue-1249-native-agents-migration.html) | plan-review | T3 | 2026-09-18 |

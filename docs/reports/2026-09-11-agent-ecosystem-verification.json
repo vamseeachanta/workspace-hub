@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-09-11T15:49:46.893071+00:00",
+  "artifact_status": "local uncommitted review draft",
+  "authorization": {
+    "source": "user message in this conversation, 2026-09-11",
+    "quote": "Recommend risk-based gates - continue this way from this moment",
+    "effect": "Routine reversible review work authorized; no pending plan self-approved; consequential migration/publication remains a decision."
+  },
+  "reviews": {
+    "provider": "Codex",
+    "independent_reviewers": 2,
+    "initial_verdicts": [
+      "MINOR",
+      "MINOR"
+    ],
+    "corrections_applied": [
+      "mutable dependencies require expiry/live recheck",
+      "literal-link scan rule recorded",
+      "selected capability tags reconciled",
+      "proposed profile phrased prospectively",
+      "failed Skill invocation disclosed",
+      "direct broken-reference consumer linked"
+    ],
+    "cross_provider_consensus": false
+  },
+  "checks": {
+    "json_readback": "pass",
+    "embedded_inventory_consistency": "pass",
+    "javascript_node_syntax": "pass",
+    "static_local_links_and_anchors": "pass",
+    "browser_render_and_interaction": "unavailable: browser discovery returned empty list",
+    "repository_root_legal_scan": {
+      "command": "bash scripts/legal/legal-sanity-scan.sh",
+      "exit_code": 1,
+      "blocking_matches": 8,
+      "advisory_matches": 158,
+      "disposition": "outside review-artifact changes; repository clearance not claimed"
+    },
+    "targeted_artifact_pattern_check": {
+      "files": 3,
+      "configured_patterns": 23,
+      "matches": 0,
+      "method": "Python regex evaluation of configured deny-list entries, no exclusion applied"
+    },
+    "named_repo_legal_scan": {
+      "command": "bash scripts/legal/legal-sanity-scan.sh --repo=workspace-hub",
+      "exit_code": 0,
+      "observed_target": "empty resolved path",
+      "interpretation": "invalid clearance evidence; root-mode scan used instead"
+    }
+  },
+  "scope_limits": [
+    "One local machine, not fleet-wide",
+    "All canonical skills structurally scanned; selected entries semantically reviewed",
+    "Provider caches are not proof of activation",
+    "No browser validation",
+    "No dataset or licensed-solver execution",
+    "No skills, workflows, permissions or model settings changed"
+  ],
+  "artifacts": [
+    {
+      "path": "docs/reports/2026-09-11-agent-ecosystem-review.html",
+      "bytes": 928469,
+      "sha256": "51f957d6529d5feb980f0fda6199812296fcb61546e6a07b6a77110b5fed93b4"
+    },
+    {
+      "path": "docs/reports/2026-09-11-agent-ecosystem-inventory.json",
+      "bytes": 2703045,
+      "sha256": "953a736effc224d976fe9141d55dc955ccdea0d748af7a21ce58887c27cd3c0d"
+    },
+    {
+      "path": "docs/reports/2026-09-11-claude-codex-skill-eval.json",
+      "bytes": 26425,
+      "sha256": "d22a0083e50cef66fbfb75307d7a5efc1bcc62ec3f0da0924873455878ddeaf9"
+    }
+  ],
+  "cleanup": {
+    "clean": "Review claim released; no task-owned scratch files or processes remain.",
+    "expected": "Four local uncommitted review artifacts; nine pre-existing modified state/equality files and one pre-existing autostash preserved.",
+    "unexpected_task_residue": [],
+    "scope": "Touched workspace and known session-owned artifacts; unrelated sibling repositories were not altered."
+  }
+}

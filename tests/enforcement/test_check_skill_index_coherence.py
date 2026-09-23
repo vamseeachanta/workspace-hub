@@ -130,6 +130,30 @@ def test_b_ignores_prose_without_heading(tmp_path, monkeypatch):
     assert mod.check_b_advisory() == []
 
 
+def test_b_ignores_heading_lookalike_inside_fenced_code(tmp_path, monkeypatch):
+    # #3591 item 3: a bash comment inside a ``` fence is NOT a markdown heading —
+    # `# Trigger a workflow manually` false-flagged github/github-repo-management.
+    mod = _load()
+    body = ("---\nname: x\n---\nintro\n"
+            "```bash\n# Trigger a workflow manually (workflow_dispatch)\ngh workflow run x\n```\n")
+    skills, kg, gi, full = _fixture(
+        tmp_path, [], [{"id": "fam/delta", "when_to_use_source": "backfill"}],
+        tree={"fam/delta": body})
+    _wire(mod, skills, kg, gi, full, monkeypatch)
+    assert mod.check_b_advisory() == []
+
+
+def test_b_still_flags_real_heading_outside_fence(tmp_path, monkeypatch):
+    mod = _load()
+    body = ("---\nname: x\n---\n# When you use\nfoo\n"
+            "```bash\necho hi\n```\n")
+    skills, kg, gi, full = _fixture(
+        tmp_path, [], [{"id": "fam/epsilon", "when_to_use_source": "backfill"}],
+        tree={"fam/epsilon": body})
+    _wire(mod, skills, kg, gi, full, monkeypatch)
+    assert "fam/epsilon" in mod.check_b_advisory()
+
+
 # --- integration: real repo is clean ----------------------------------------
 
 def test_real_repo_passes():

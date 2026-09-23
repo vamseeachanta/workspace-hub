@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>#3532 Cross-provider memory budget plan</title>
+<style>body{font:16px/1.55 system-ui,sans-serif;max-width:940px;margin:40px auto;padding:0 24px;color:#15202b}h1,h2{color:#0b3d5c}code{background:#eef4f6;padding:.15rem .35rem;border-radius:4px}.gate{border-left:5px solid #c77d00;background:#fff7e6;padding:1rem}.bars{display:grid;grid-template-columns:15fr 50fr 35fr;color:white;text-align:center}.bars span{padding:1rem}.k{background:#386641}.o{background:#16836b}.c{background:#0b3d5c}</style></head>
+<body><h1>#3532 — Cross-provider memory budget</h1>
+<p class="gate"><strong>Gate:</strong> adversarial review has no unresolved MAJOR finding; implementation still requires user approval.</p>
+<h2>Verified retrieval gap</h2><p>Each current Codex/Gemini runtime contains 36 project entries and zero feedback entries. Two existing merge/generated-state lessons are in tracked Claude memory but absent from both provider runtimes.</p>
+<h2>Planned allocation</h2><div class="bars"><span class="k">15% institutional</span><span class="o">50% feedback</span><span class="c">remainder: active context</span></div>
+<p>Allocation and caps will use UTF-8 bytes. A fail-closed repo-tracked priority manifest will guarantee the two incident lessons at every supported target cap. A one-pass maximum-count marker reserve will guarantee termination and an exact emitted omission count. Unused reservations will spill deterministically; selected entries will emit by global source ordinal. Machine invariance, default inclusion, Claude-only filtering, Hermes production-cap coverage, and Codex/Gemini parity will remain enforced.</p>
+<h2>Files</h2><ul><li><code>scripts/memory/curate_readback_slice.py</code></li><li><code>config/agents/memory-readback-priorities.yaml</code></li><li><code>scripts/memory/tests/test_curate_readback_slice.py</code></li><li>managed Codex and Gemini <code>MEMORY.runtime.md</code> outputs</li></ul>
+<p>Canonical executable plan: <code>docs/plans/2026-07-14-issue-3532-cross-provider-memory-budget.md</code></p></body></html>

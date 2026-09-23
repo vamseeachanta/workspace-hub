@@ -19,8 +19,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
-      - cat:business
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -63,7 +61,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -85,7 +82,6 @@ cards:
       - enhancement
       - priority:high
       - cat:engineering
-      - cat:data
       - machine:dev-primary
       - status:plan-approved
       - dispatch:ready
@@ -108,7 +104,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:business
       - status:plan-review
       - domain:gtm
       - lane:claude
@@ -128,8 +123,6 @@ cards:
       - enhancement
       - cat:engineering
       - priority:medium
-      - cat:data
-      - cat:business
       - status:plan-review
       - domain:gtm
       - lane:claude

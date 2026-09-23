@@ -1,8 +1,8 @@
 # Provider routing scorecard
 
-Generated: 2026-07-18T21:21:28.626027Z
-Current week: 2026-W29
-Recommended provider order: gemini, claude, codex
+Generated: 2026-08-04T01:21:14.870579Z
+Current week: 2026-W32
+Recommended provider order: agy, codex, claude
 
 This scorecard combines provider utilization with session-audit hygiene to decide where the next work packets should go.
 
@@ -10,13 +10,13 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 - Status: underused
 - Priority: high
-- Current-week reported utilization: 1.6%
+- Current-week reported utilization: 0.3%
 - Quota basis: unavailable (unavailable)
-- Current-week sessions / post records: 19 / 647
-- Audit post records: 122229
-- Missing repo reads: 9463
-- Python3 per 1k records: 9.16
-- Migration debt per 1k records: 14.1
+- Current-week sessions / post records: 4 / 142
+- Audit post records: 123411
+- Missing repo reads: 9480
+- Python3 per 1k records: 9.1
+- Migration debt per 1k records: 13.97
 
 ### Preferred work
 - adversarial plan review
@@ -37,14 +37,14 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 
 ## codex
 
-- Status: needs_cleanup
-- Priority: high
-- Current-week reported utilization: 52.0%
+- Status: underused
+- Priority: highest
+- Current-week reported utilization: 0.9%
 - Quota basis: quota (history.jsonl-estimate)
-- Current-week sessions / post records: 234 / 13541
-- Audit post records: 188117
-- Missing repo reads: 1689
-- Python3 per 1k records: 14.99
+- Current-week sessions / post records: 21 / 928
+- Audit post records: 206929
+- Missing repo reads: 1705
+- Python3 per 1k records: 13.67
 - Migration debt per 1k records: 0.05
 
 ### Preferred work
@@ -62,17 +62,17 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Use Codex for repetitive repo-hardening tasks before spending more Claude review cycles.
 - Reduce stale-path drift before increasing provider load; wasted reads are burning credits.
 
-## gemini
+## agy
 
 - Status: underused
 - Priority: highest
 - Current-week reported utilization: 0.0%
-- Quota basis: quota (manual-snapshot)
+- Quota basis: unavailable (unavailable)
 - Current-week sessions / post records: 0 / 0
-- Audit post records: 6210
-- Missing repo reads: 615
-- Python3 per 1k records: 46.86
-- Migration debt per 1k records: 13.85
+- Audit post records: 0
+- Missing repo reads: 0
+- Python3 per 1k records: 0.0
+- Migration debt per 1k records: 0.0
 
 ### Preferred work
 - batched research/recon
@@ -85,6 +85,7 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - tight verification loops
 
 ### Recommended actions
-- Batch 5-6 related research/recon tasks into Gemini sessions.
-- Use Gemini for scouting/risk-analysis packets instead of leaving the lane idle.
+- Batch 5-6 related research/recon tasks into agy sessions.
+- Use agy for scouting/risk-analysis packets instead of leaving the lane idle.
+- Telemetry is weak; treat utilization as directional, not exact weekly headroom.
 

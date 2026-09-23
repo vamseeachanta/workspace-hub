@@ -119,7 +119,7 @@ manifest:
 #   machine:<id>       canonical: dev-primary | dev-secondary | cfd-dedicated |
 #                      licensed-win-1 | licensed-win-2 | home-win |
 #                      macbook-portable | multi
-#                      (acma-ws014, ace-linux-1/2 are aliases — see routing-rules.yaml)
+#                      (ace-win-2, ace-linux-1/2 are aliases — see routing-rules.yaml)
 #   ai:<provider>      OPTIONAL, per-issue: claude | codex | hermes | gemini
 #                      Absent = dispatcher picks per routing-rules.yaml default.
 #   dispatch:<state>   lifecycle: ready | active | done

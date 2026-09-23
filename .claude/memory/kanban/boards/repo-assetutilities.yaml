@@ -18,9 +18,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:docs
       - lane:claude
       - priority:medium
+      - domain:content
+      - cat:documentation
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -37,9 +38,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:ci-packaging
       - lane:claude
       - priority:low
+      - domain:ci-release
+      - cat:tooling
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -53,9 +55,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:library-core
       - lane:claude
       - priority:low
+      - domain:repo
+      - cat:tooling
     gh_assignees:
       - samdansk2
     initial_status: triage
@@ -73,9 +76,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:library-core
       - lane:claude
       - priority:low
+      - domain:repo
+      - cat:tooling
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -89,9 +93,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:agent-tooling
       - lane:claude
       - priority:low
+      - domain:ai
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -105,9 +110,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:library-core
       - lane:claude
       - priority:low
+      - domain:repo
+      - cat:tooling
     gh_assignees:
       - samdansk2
     initial_status: triage
@@ -126,9 +132,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:productivity-ops
       - lane:claude
       - priority:low
+      - domain:governance
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -142,9 +149,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:docs
       - lane:claude
       - priority:low
+      - domain:content
+      - cat:tooling
     gh_assignees:
       - samdansk2
     initial_status: triage
@@ -159,9 +167,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:productivity-ops
       - lane:claude
       - priority:low
+      - domain:governance
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -175,9 +184,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:productivity-ops
       - lane:claude
       - priority:low
+      - domain:governance
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -191,9 +201,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:productivity-ops
       - lane:claude
       - priority:low
+      - domain:governance
+      - cat:documentation
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -208,9 +219,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:productivity-ops
       - lane:claude
       - priority:low
+      - domain:governance
+      - cat:business
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -224,9 +236,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:productivity-ops
       - lane:claude
       - priority:low
+      - domain:governance
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -240,9 +253,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:productivity-ops
       - lane:claude
       - priority:low
+      - domain:governance
+      - cat:operations
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -256,9 +270,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:productivity-ops
       - lane:claude
       - priority:low
+      - domain:governance
+      - cat:data
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -274,9 +289,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:library-core
       - lane:claude
       - priority:low
+      - domain:repo
+      - cat:tooling
     gh_assignees:
       - getsivakumar
     initial_status: triage
@@ -292,9 +308,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:agent-tooling
       - lane:claude
       - priority:low
+      - domain:ai
+      - cat:tooling
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -314,9 +331,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:library-core
       - lane:claude
       - priority:low
+      - domain:repo
+      - cat:tooling
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -331,9 +349,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:library-core
       - lane:claude
       - priority:low
+      - domain:repo
+      - cat:tooling
     gh_assignees: []
     initial_status: triage
     priority: 0
@@ -351,9 +370,10 @@ cards:
       - status:plan-approved
       - dispatch:ready
       - machine:dev-primary
-      - domain:ci-packaging
       - lane:claude
       - priority:low
+      - domain:ci-release
+      - cat:tooling
     gh_assignees:
       - vamseeachanta
     initial_status: triage
@@ -727,9 +747,10 @@ cards:
     gh_state: open
     gh_labels:
       - status:plan-approved
-      - domain:library-core
       - lane:claude
       - priority:high
+      - domain:repo
+      - cat:tooling
     initial_status: triage
     priority: 1
     gh_assignees: []
@@ -742,9 +763,10 @@ cards:
     gh_labels:
       - enhancement
       - ce-trial
-      - domain:agent-tooling
       - lane:claude
       - priority:medium
+      - domain:ai
+      - cat:research
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -756,9 +778,10 @@ cards:
     gh_state: open
     gh_labels:
       - ce-trial
-      - domain:agent-tooling
       - lane:claude
       - priority:medium
+      - domain:ai
+      - cat:research
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -770,9 +793,10 @@ cards:
     gh_state: open
     gh_labels:
       - ce-trial
-      - domain:agent-tooling
       - lane:claude
       - priority:medium
+      - domain:ai
+      - cat:research
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -784,9 +808,10 @@ cards:
     gh_state: open
     gh_labels:
       - ce-trial
-      - domain:agent-tooling
       - lane:claude
       - priority:medium
+      - domain:ai
+      - cat:research
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -798,9 +823,10 @@ cards:
     gh_state: open
     gh_labels:
       - ce-trial
-      - domain:agent-tooling
       - lane:claude
       - priority:medium
+      - domain:ai
+      - cat:research
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -812,9 +838,10 @@ cards:
     gh_state: open
     gh_labels:
       - ce-trial
-      - domain:agent-tooling
       - lane:claude
       - priority:medium
+      - domain:ai
+      - cat:research
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -840,6 +867,8 @@ cards:
       - status:plan-approved
       - lane:codex
       - lane:claude
+      - domain:repo
+      - cat:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -853,6 +882,8 @@ cards:
       - status:plan-approved
       - lane:codex
       - lane:claude
+      - domain:repo
+      - cat:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -865,9 +896,10 @@ cards:
     gh_labels:
       - bug
       - status:plan-approved
-      - domain:ci-packaging
       - lane:claude
       - priority:medium
+      - domain:ci-release
+      - cat:tooling
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -879,8 +911,8 @@ cards:
     gh_state: closed
     gh_labels:
       - bug
-      - domain:library-core
       - priority:medium
+      - domain:repo
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -892,8 +924,8 @@ cards:
     gh_state: closed
     gh_labels:
       - bug
-      - domain:library-core
       - priority:medium
+      - domain:repo
     initial_status: triage
     priority: 0
     gh_assignees: []

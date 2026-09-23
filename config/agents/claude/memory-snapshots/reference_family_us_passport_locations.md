@@ -5,10 +5,13 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: cbae393b-ec54-4eee-9307-5203c71281b2
-  modified: 2026-07-18T07:18:12.217Z
+  modified: 2026-07-18T16:57:55.747Z
 ---
 
-# Family US passports — canonical scan locations (verified 2026-07-18)
+# Family US passports + OCI cards — canonical scan locations (verified 2026-07-18)
+
+**OCI card scans** (needed for India e-Arrival Card, SIM KYC): `va/VA_OCI.pdf`,
+`sd/ID/SD_OCI.pdf`, `da/DA_OCI.pdf` (same PII rule — read scan when a number is needed).
 
 Raw numbers stay in the scans per [[project_family_data_two_repo_curation]] (raw PII → achantas-data only). Read the PDF when a number is needed; verify against the MRZ lines (each field carries a check digit).
 

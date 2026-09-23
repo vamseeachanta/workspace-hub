@@ -1,30 +1,70 @@
 machine: licensed-win-2
 generated_by: dispatch.py
+generated_at: '2026-08-02T03:34:51Z'
+ttl_hours: 24
+title_policy: 'omitted: issue titles are not written to a public tracked file'
 cards:
 - gh: vamseeachanta/workspace-hub#2757
   repo: vamseeachanta/workspace-hub
-  domain: ai-orchestration
+  domain: workstations
   provider: claude
-  title: 'throughput(workstations): activate licensed-win-2 provider/m'
   url: https://github.com/vamseeachanta/workspace-hub/issues/2757
-  dispatch_status: ready
-  wip_eligible: false
-  routed_by: manual
-- gh: vamseeachanta/workspace-hub#1510
-  repo: vamseeachanta/workspace-hub
-  domain: ai-orchestration
-  provider: claude
-  title: 'Verify Claude Desktop install: ACMA-WS014'
-  url: https://github.com/vamseeachanta/workspace-hub/issues/1510
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual
 - gh: vamseeachanta/workspace-hub#2773
   repo: vamseeachanta/workspace-hub
-  domain: ops
+  domain: workstations
   provider: claude
-  title: 'decision(workstations): choose tier-1 repo placement for lic'
   url: https://github.com/vamseeachanta/workspace-hub/issues/2773
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#2926
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  url: https://github.com/vamseeachanta/workspace-hub/issues/2926
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3721
+  repo: vamseeachanta/workspace-hub
+  domain: security
+  provider: claude
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3721
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#1510
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  url: https://github.com/vamseeachanta/workspace-hub/issues/1510
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3047
+  repo: vamseeachanta/workspace-hub
+  domain: ai
+  provider: claude
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3047
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3526
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3526
+  dispatch_status: ready
+  wip_eligible: false
+  routed_by: manual
+- gh: vamseeachanta/workspace-hub#3595
+  repo: vamseeachanta/workspace-hub
+  domain: workstations
+  provider: claude
+  url: https://github.com/vamseeachanta/workspace-hub/issues/3595
   dispatch_status: ready
   wip_eligible: false
   routed_by: manual

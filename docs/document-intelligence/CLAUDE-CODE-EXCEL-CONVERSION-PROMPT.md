@@ -1,4 +1,4 @@
-# CLAUDE CODE PROMPT FOR WS014
+# CLAUDE CODE PROMPT FOR ace-win-2
 # Save this file and paste into Claude Code on Windows
 # Or just use CLAUDE.md in the client-c repo root
 
@@ -81,7 +81,7 @@ After creating all files:
 PROMPT END =================================================
 
 
-## HOW TO USE ON WS014
+## HOW TO USE ON ace-win-2
 
 1. Open Claude Code in the client-c repo directory
 2. Run for each workbook:

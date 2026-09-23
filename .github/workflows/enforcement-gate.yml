@@ -25,47 +25,23 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
-      - name: Validate captured scheduler state
-        shell: bash
-        run: |
-          set -euo pipefail
-          snapshot_helper="$(mktemp)"
-          snapshot_entry=""
-          cleanup_snapshot() {
-            status=$?
-            trap - EXIT
-            rm -f -- "$snapshot_helper" ${snapshot_entry:+"$snapshot_entry"} || {
-              if [[ $status -eq 0 ]]; then status=1; fi
-            }
-            exit "$status"
-          }
-          trap cleanup_snapshot EXIT
-          snapshot_entry="$(mktemp)"
-          tree_oid="$(git --no-replace-objects rev-parse 'HEAD^{tree}')"
-          [[ "$tree_oid" =~ ^([0-9a-f]{40}|[0-9a-f]{64})$ ]]
-          [[ "$(git --no-replace-objects cat-file -t "$tree_oid")" == tree ]]
-          git --no-replace-objects ls-tree -z "$tree_oid" -- scripts/lib/git_index_snapshot.py > "$snapshot_entry"
-          python -I -S - "$snapshot_entry" <<'PY'
-          import pathlib
-          import sys
-
-          body = pathlib.Path(sys.argv[1]).read_bytes()
-          if not body or not body.endswith(b"\0") or len(body[:-1].split(b"\0")) != 1:
-              raise SystemExit("invalid helper ls-tree frame")
-          PY
-          mapfile -d '' snapshot_entries < "$snapshot_entry"
-          [[ ${#snapshot_entries[@]} -eq 1 ]]
-          IFS=$'\t' read -r helper_meta helper_path <<< "${snapshot_entries[0]}"
-          read -r helper_mode helper_type helper_oid <<< "$helper_meta"
-          [[ "$helper_path" == scripts/lib/git_index_snapshot.py ]]
-          [[ "$helper_mode" == 100644 || "$helper_mode" == 100755 ]]
-          [[ "$helper_type" == blob ]]
-          [[ "$helper_oid" =~ ^([0-9a-f]{40}|[0-9a-f]{64})$ ]]
-          git --no-replace-objects cat-file blob "$helper_oid" > "$snapshot_helper"
-          [[ -s "$snapshot_helper" ]]
-          [[ "$(git --no-replace-objects hash-object "$snapshot_helper")" == "$helper_oid" ]]
-          python -I -S "$snapshot_helper" --tree-oid "$tree_oid" all
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Validate scheduler mutation registry
+        run: uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py
+      - name: Validate exact cron identity inventory
+        run: uv run python scripts/cron/build-cron-identity-inventory.py --check
+      - name: Verify scheduler mutation audit report
+        run: uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py --check-html docs/reports/2026-07-11-issue-3470-scheduler-mutation-safety.html
+      # The catalog SCHEMA validator ran in neither CI nor pre-commit until 2026-08-01.
+      # It enforces that every `machines:` value exists in config/workstations/registry.yaml,
+      # that `roles:`/`requires:` resolve, that cron expressions parse, and that ids are
+      # unique — none of which the three checks above look at. They validate the mutation
+      # REGISTRY and the identity digest, not the task definitions themselves. Wiring it in
+      # is non-breaking: it reports "OK: 66 tasks validated" on main today.
+      - name: Validate scheduled-task catalog schema
+        run: uv run python scripts/cron/validate-schedule.py
 
   stage-prompt-drift:
     name: Stage Prompt Drift Guard
@@ -84,7 +60,9 @@ jobs:
           python-version: '3.12'
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
 
       # PYTHONPATH=src is REQUIRED for `from workspace_hub...` imports because:
       #   1. src/workspace_hub/ has NO __init__.py — it's an intentional PEP 420
@@ -97,7 +75,7 @@ jobs:
         env:
           PYTHONPATH: src
         run: |
-          uv sync --group dev
+          uv sync --frozen --group dev
           uv run python -m pytest tests/ci_smoke/test_workspace_hub_importable.py -v --tb=short
 
       - name: Check newly introduced stage prompt drift
@@ -142,7 +120,9 @@ jobs:
           fetch-depth: 0  # full history for commit range analysis
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
 
       - name: Check review evidence for PR commits
         env:
@@ -312,7 +292,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install uv
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
       - name: Check skill-index coherence
         run: |
           set -o pipefail

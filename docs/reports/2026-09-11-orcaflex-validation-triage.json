@@ -1,0 +1,196 @@
+{
+  "source_revision": "a7fe3775717db3f67ff1e4d4e8733c5a9f285357",
+  "issue": "https://github.com/vamseeachanta/digitalmodel/issues/716",
+  "audit_basename": "orcaflex-library-audit-5dkzwphd",
+  "scope": {
+    "spec_paths_visited": 94,
+    "generated_cases": 93,
+    "model_yaml_files_validated": 441,
+    "strict_clean_cases": 71,
+    "warning_cases": 16,
+    "error_cases": 6,
+    "error_findings": 6,
+    "warning_findings": 19,
+    "native_load_or_solve_performed": false
+  },
+  "conclusion": "Observed strict diagnostics reflect stale validator rules/allowlist, not evidence that the flagged fields should be deleted. Native acceptance and engineering equivalence remain unverified. Original strict results remain unchanged.",
+  "errors": {
+    "classification": "validator_false_positive_for_active_variable_timestep",
+    "cases": [
+      {
+        "case_id": "case-008",
+        "property": "ImplicitVariableMaxTimeStep",
+        "file": "includes/20_generic_objects.yml"
+      },
+      {
+        "case_id": "case-037",
+        "property": "ImplicitVariableMaxTimeStep",
+        "file": "includes/20_generic_objects.yml"
+      },
+      {
+        "case_id": "case-073",
+        "property": "ImplicitVariableMaxTimeStep",
+        "file": "includes/20_generic_objects.yml"
+      },
+      {
+        "case_id": "case-077",
+        "property": "ImplicitVariableMaxTimeStep",
+        "file": "includes/20_generic_objects.yml"
+      },
+      {
+        "case_id": "case-087",
+        "property": "ImplicitVariableMaxTimeStep",
+        "file": "includes/20_generic_objects.yml"
+      },
+      {
+        "case_id": "case-088",
+        "property": "ImplicitVariableMaxTimeStep",
+        "file": "includes/20_generic_objects.yml"
+      }
+    ],
+    "provenance": [
+      "Source spec generic.general_properties contains ImplicitUseVariableTimeStep=true and ImplicitVariableMaxTimeStep in all six cases.",
+      "Extractor._extract_general_properties preserves General keys outside _SIMULATION_KEYS.",
+      "GenericModelBuilder excludes max-step from its skip set when variable mode is exactly True and orders mode before max-step.",
+      "All six generated max values equal their raw spec values; generated mode is True and precedes max.",
+      "yaml_validator.INVALID_PROPERTIES unconditionally rejects the property as nonexistent."
+    ],
+    "source_refs": [
+      "src/digitalmodel/solvers/orcaflex/yaml_validator.py:103",
+      "src/digitalmodel/solvers/orcaflex/modular_generator/extractor.py:568",
+      "src/digitalmodel/solvers/orcaflex/modular_generator/builders/generic_builder.py:146",
+      "src/digitalmodel/solvers/orcaflex/modular_generator/builders/generic_builder.py:252",
+      "tests/solvers/orcaflex/modular_generator/test_generic_builder.py:443"
+    ],
+    "primary_source": "https://www.orcina.com/webhelp/OrcaFlex/Content/html/Generaldata%2CImplicitintegration.htm",
+    "physics_risk": "Dropping an active maximum time step may restore a different solver default and change accuracy/dynamics. Documentation confirms the maximum-step concept; exact current-runtime YAML loading was not tested.",
+    "normalization_boundary": "Omission of a dormant setting may be acceptable only when effective variable-step mode is proven disabled. Missing local mode in an include is not proof of disabled mode; validation must consider prior includes and defaults."
+  },
+  "warnings": [
+    {
+      "section": "ExpansionTables",
+      "count": 2,
+      "cases": [
+        "case-020",
+        "case-035"
+      ],
+      "classification": "validator_allowlist_gap_for_documented_feature",
+      "primary_source": "https://www.orcina.com/webhelp/OrcaFlex/Content/html/Linetypes%2CGeometry%2Cmassexpansiondata.htm",
+      "physics_risk": "Thermal/pressure expansion; removing tables changes strain and forces. Requires complete temperature-pressure grid and avoidance of pressure expansion double counting.",
+      "native_validity": "Feature documented; exact generated spelling, payload, references and installed-version load acceptance still require verification."
+    },
+    {
+      "section": "LineContactData",
+      "count": 7,
+      "cases": [
+        "case-003",
+        "case-005",
+        "case-015",
+        "case-017",
+        "case-021",
+        "case-040",
+        "case-051"
+      ],
+      "classification": "validator_allowlist_gap_for_documented_feature",
+      "primary_source": "https://www.orcina.com/webhelp/OrcaFlex/Content/html/Linecontact%2CData.htm",
+      "physics_risk": "Contact reaction and friction relationships; removing enabled relationships changes loads.",
+      "native_validity": "Feature documented; exact generated spelling, payload, references and installed-version load acceptance still require verification."
+    },
+    {
+      "section": "MultibodyGroups",
+      "count": 3,
+      "cases": [
+        "case-050",
+        "case-065",
+        "case-069"
+      ],
+      "classification": "validator_allowlist_gap_for_documented_feature",
+      "primary_source": "https://www.orcina.com/webhelp/OrcaFlex/Content/html/Vesseltypes%2CMultibodydata.htm",
+      "physics_risk": "Hydrodynamic coupling between vessels; group geometry must agree with diffraction inputs.",
+      "native_validity": "Feature documented; exact generated spelling, payload, references and installed-version load acceptance still require verification."
+    },
+    {
+      "section": "PyModels",
+      "count": 1,
+      "cases": [
+        "case-046"
+      ],
+      "classification": "validator_allowlist_gap_for_documented_feature",
+      "primary_source": "https://www.orcina.com/webhelp/OrcaFlex/Content/html/P-ymodels%2CData.htm",
+      "physics_risk": "P-y soil resistance models, not Python scripts; removing these changes lateral soil reactions.",
+      "native_validity": "Feature documented; exact generated spelling, payload, references and installed-version load acceptance still require verification."
+    },
+    {
+      "section": "RayleighDampingCoefficients",
+      "count": 3,
+      "cases": [
+        "case-050",
+        "case-065",
+        "case-071"
+      ],
+      "classification": "validator_allowlist_gap_for_documented_feature",
+      "primary_source": "https://www.orcina.com/webhelp/OrcaFlex/Content/html/Rayleighdamping.htm",
+      "physics_risk": "Named structural damping data; changing/removing coefficients changes frequency-dependent response.",
+      "native_validity": "Feature documented; exact generated spelling, payload, references and installed-version load acceptance still require verification."
+    },
+    {
+      "section": "StiffenerTypes",
+      "count": 3,
+      "cases": [
+        "case-017",
+        "case-059",
+        "case-074"
+      ],
+      "classification": "validator_allowlist_gap_for_documented_feature",
+      "primary_source": "https://www.orcina.com/webhelp/OrcaFlex/Content/html/Modellingbendrestrictors.htm",
+      "physics_risk": "Bend-stiffener geometry/material/attachment response; removing referenced types changes bending response or breaks references.",
+      "native_validity": "Feature documented; exact generated spelling, payload, references and installed-version load acceptance still require verification."
+    }
+  ],
+  "warning_source_refs": [
+    "src/digitalmodel/solvers/orcaflex/yaml_validator.py:69",
+    "src/digitalmodel/solvers/orcaflex/modular_generator/schema/generic.py:315",
+    "src/digitalmodel/solvers/orcaflex/modular_generator/schema/generic.py:330",
+    "src/digitalmodel/solvers/orcaflex/modular_generator/builders/generic_builder.py:49"
+  ],
+  "exact_yaml_primary_example": {
+    "section": "LineContactData",
+    "url": "https://www.orcina.com/webhelp/OrcaFlex/Content/html/Textdatafiles%2CExamplesofsettingdata.htm"
+  },
+  "pretension": {
+    "prior_finding": "https://github.com/vamseeachanta/digitalmodel/issues/716#issuecomment-5011402449",
+    "current_source": [
+      "src/digitalmodel/solvers/orcaflex/modular_generator/routers/mooring_router.py:277",
+      "src/digitalmodel/solvers/orcaflex/modular_generator/routers/mooring_router.py:322",
+      "tests/solvers/orcaflex/modular_generator/routers/test_mooring_router.py:277"
+    ],
+    "verified": "Current source avoids line EndBConnection pointing to winch and emits two winch connection entries. Existing tests assert this structure; tests were read, not rerun in this task.",
+    "residual": "Line End B remains constrained to vessel fairlead while the winch spans that same fairlead and line End B. Coincident constrained endpoints do not establish an adjustable mooring pretension load path. List-form connection tests do not prove the requested mooring end tension is achieved. Winch property spelling/control fields also require native load/readback verification.",
+    "classification": "potential_physics_defect_and_native_acceptance_gap_not_closed_by_strict_validator",
+    "primary_sources": [
+      "https://www.orcina.com/webhelp/OrcaFlex/Content/html/Objectconnections.htm",
+      "https://www.orcina.com/SoftwareProducts/OrcaFlex/Documentation/Help/Content/html/Winchtheory.htm"
+    ]
+  },
+  "proposed_minimal_repair_tests": [
+    "Add validator regression for active ImplicitUseVariableTimeStep with nondefault max; preserve value and mode-before-property order through generation.",
+    "Add false/absent-mode and cross-include mode cases; distinguish dormant normalization from active or unresolved mode rather than unconditional deletion.",
+    "Extend known-section recognition with focused fixtures for all six documented sections; retain warnings for truly unknown keys and test malformed content/references separately.",
+    "Rerun all 94 routing records and validate every master/include of all 93 generated models, preserving the original diagnostic baseline and file hashes.",
+    "Qualify representative native load/save/readback cases under an explicitly bounded licensed run; verify property values and references survive, not just successful load.",
+    "Add mooring pretension acceptance using a known mechanical load path and at least two target tensions; verify achieved line end tension, equilibrium/reactions and an adjustable degree of freedom or calibrated line length. Do not infer success from winch Tension input or YAML structure.",
+    "Keep engineering qualification separate: timestep/mesh sensitivity, contact and soil/damping/coupling response comparisons are required where those physics are active."
+  ],
+  "reproduction": {
+    "input_records": "<audit-dir>/case-NNN/result.json",
+    "property_comparison": "For each of case-008,037,073,077,087,088, load the input path from result.json beneath the pinned repo root with yaml.safe_load; compare generic.general_properties with generated/includes/20_generic_objects.yml General. Assert both mode flags are True, max values are equal, and generated mode key precedes max key. No OrcFxAPI import is needed.",
+    "strict_diagnostic_grouping": "Aggregate strict_yaml.errors/warnings from all case result.json records without overwriting them; group unknown-section warning messages by section key.",
+    "tools": "Existing Python with PyYAML, read-only source/JSON/YAML inspection, Orcina primary documentation browsing. No generator rerun or native call in this triage."
+  },
+  "limits": [
+    "Recognizing a top-level section does not validate its nested data or physical use.",
+    "Documentation is current web help; installed-version compatibility must be checked, including expansion tables introduced in OrcaFlex 11.3.",
+    "No audit case status has been promoted to native-qualified or engineering-qualified.",
+    "No source changes or repair tests executed in this task."
+  ]
+}

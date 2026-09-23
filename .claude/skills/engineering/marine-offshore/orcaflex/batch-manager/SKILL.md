@@ -35,6 +35,19 @@ scripts_exempt: true
 
 # Orcaflex Batch Manager
 
+## Operational entry point
+
+Use the [execution runbook](../../../../../../docs/solver/orcaflex-execution-runbook.html)
+before local or remote batches. It routes to the existing execution owner and
+separates proposed controls from verified deployment. Start with a bounded case
+under the approved host budget; licence availability and CPU count do not authorize
+additional workers or project use.
+
+The Python fragments below are historical examples, not a runnable dispatch
+contract. Their `max_workers=20` is not an approved capacity setting. Check imports
+against the selected digitalmodel revision and obtain exact operational commands
+from the pinned lane release; do not start a parallel queue from these examples.
+
 ## Wiki Context (query before execution)
 
 Before starting a batch simulation campaign, query the wiki for relevant domain knowledge:
@@ -60,7 +73,7 @@ Log consulted wiki pages in your output per the retrieval contract (#2208).
 ### Basic Batch Processing
 
 ```python
-from digitalmodel.orcaflex.universal.batch_processor import BatchProcessor
+from digitalmodel.solvers.orcaflex.universal.batch_processor import BatchProcessor
 from pathlib import Path
 
 def run_batch(input_dir: str, output_dir: str, max_workers: int = 20):
@@ -74,7 +87,7 @@ def run_batch(input_dir: str, output_dir: str, max_workers: int = 20):
 ### Adaptive Parallel Processing
 
 ```python
-from digitalmodel.orcaflex.universal.batch_processor import BatchProcessor
+from digitalmodel.solvers.orcaflex.universal.batch_processor import BatchProcessor
 from pathlib import Path
 import psutil
 
@@ -88,7 +101,7 @@ class AdaptiveBatchProcessor(BatchProcessor):
 ### Chunk-Based Processing
 
 ```python
-from digitalmodel.orcaflex.universal.batch_processor import BatchProcessor
+from digitalmodel.solvers.orcaflex.universal.batch_processor import BatchProcessor
 from pathlib import Path
 import time
 
@@ -102,7 +115,7 @@ def process_in_chunks(
 ### Progress Tracking and Checkpoints
 
 ```python
-from digitalmodel.orcaflex.universal.batch_processor import BatchProcessor
+from digitalmodel.solvers.orcaflex.universal.batch_processor import BatchProcessor
 from pathlib import Path
 import json
 import time
@@ -154,7 +167,7 @@ class BatchMetrics:
 - Python concurrent.futures documentation
 - psutil system monitoring
 - Source: `src/digitalmodel/modules/orcaflex/universal/batch_processor.py`
-- Source: `src/digitalmodel/modules/orcaflex/orcaflex_parallel_analysis.py`
+- Source: `src/digitalmodel/solvers/orcaflex/orcaflex_parallel_analysis.py`
 
 ## Sub-Skills
 

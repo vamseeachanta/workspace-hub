@@ -26,9 +26,9 @@ Four durable memory files written/enhanced (auto-memory) and mirrored to git-tra
 - Rebuilt topics `INDEX.md` (both new refs indexed).
 - Committed to origin/main via a **local-disk sparse clone** (FUSE `.git` was saturated by concurrent multi-session work; local clone sidesteps it and rebuilt INDEX from origin's current 216-file corpus, no regression). Legal-sanity-scan passed.
 
-## Key finding for follow-up — ace-win-1 (acma-ansys05)
+## Key finding for follow-up — ace-win-1
 Stalest snapshot on the matrix (06-28). It is a **Claude-only** heavy ANSYS/AQWA/OrcaFlex compute node with **no gh auth** and **no Windows scheduler** (`job_count: 0`), so its evidence goes stale between manual runs. It self-publishes under Git Bash — **not fixable from Linux.**
-**On-box remediation (acma-ansys05, Git Bash):** `gh auth login` → `collect-equality.sh && publish-equality.sh --rebuild` → install a Windows Task Scheduler job (#2815). Full detail: memory `reference_ace_win_1_equality_evidence_stale`.
+**On-box remediation (ace-win-1, Git Bash):** `gh auth login` → `collect-equality.sh && publish-equality.sh --rebuild` → install a Windows Task Scheduler job (#2815). Full detail: memory `reference_ace_win_1_equality_evidence_stale`.
 
 ## Repo / state at exit
 - **origin/main tip:** `c89413b` (this session's memory commit) on top of `834548f4e` (equality).

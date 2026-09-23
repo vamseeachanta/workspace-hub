@@ -1,0 +1,654 @@
+{
+  "captured_at": "2026-09-11T16:01:07.407244+00:00",
+  "scope": "Foundation pilot planning; no implementation or remote writes",
+  "decisions": {
+    "risk_based_gates": "authorized by user 2026-09-11",
+    "shared_source_architecture": "Approved by user: shared source, thin adapters, task profiles",
+    "foundation_first_sequence": "Approved by user: repair shared foundation first"
+  },
+  "missing_targets": {
+    "agent_data_handling_contract": {
+      "hub_worktrees_checked": 9,
+      "local_history": "no path commits returned",
+      "origin_main": "absent",
+      "github_default_branch_contents_api": "404"
+    },
+    "dataset_allocation_ledger": {
+      "digitalmodel_worktrees_checked": 6,
+      "local_history": "no path commits returned"
+    },
+    "chain_inventory_manifest": {
+      "scope": "current digitalmodel checkout",
+      "result": "absent"
+    }
+  },
+  "runtime_versions": {
+    "codex_cli": "0.154.0",
+    "claude_code": "2.1.268"
+  },
+  "probes": {
+    "wiki_explicit_missing_override": {
+      "fallback_returned": true,
+      "fallback_exists": false,
+      "filesystem_created": false,
+      "interpretation": "Current deliberate, tested fallback behavior; unsuitable as proof of read-side resource availability."
+    },
+    "drive_search": {
+      "query": "agent workflow data ownership",
+      "command": "uv run --no-project --with pyyaml python -B scripts/data/drive-index-search/search.py \"agent workflow data ownership\" --json --limit 3 --timeout-per-index 2 --caller plan-resource-intel",
+      "exit_code": 0,
+      "results": 0,
+      "indexes_queried": 6,
+      "coverage_gaps": 5,
+      "metrics_disabled": true,
+      "interpretation": "No matching results in partial coverage; not proof that relevant drive files do not exist.",
+      "environment": {
+        "DRIVE_SEARCH_NO_METRICS": "1",
+        "PYTHONDONTWRITEBYTECODE": "1"
+      }
+    }
+  },
+  "issue_states": {
+    "3606": "open initiative",
+    "3186": "open",
+    "3615": "open epic",
+    "3062": "open, status:plan-review",
+    "2141": "open; tests already exist and require scope reconciliation",
+    "2123": "open",
+    "3333": "closed; reuse implemented drive-search workflow"
+  },
+  "compatibility_findings": [
+    "resolve_wiki_dir is consumed by ingestion and indexed search, not the shell wiki-context helper.",
+    "wiki-query-context.sh hardcodes knowledge/wikis and does not consume the resolver.",
+    "Existing resolver tests require fallback even when the path does not exist; changing default semantics would be a behavior migration.",
+    "WorkstationPathResolver rewrites registered workspace paths; it is not a general wiki repository locator.",
+    "scripts/coordination/git/resolve_repos.sh performs pushes/merges/branch cleanup; it is not a read-only lookup API.",
+    "Codex stale loader claim appears in both SOUL.delta.md and soul-runtime-lib.sh generator.",
+    "test_build_soul_runtime_codex.sh rewrites generated runtime artifacts and requires isolation."
+  ],
+  "baseline_tests": {
+    "command": "uv run --no-project --with pytest --with pyyaml python -B -m pytest -c <temporary-empty-pytest-config> --confcutdir=scripts/data/llm-wiki/tests scripts/data/llm-wiki/tests/test_resolve_wiki_path.py -q -p no:cacheprovider --basetemp <temporary-test-root>",
+    "exit_code": 0,
+    "summary": "12 passed in 0.19s",
+    "meaning": "Current intentional resolver behavior only; not evidence that proposed lookup behavior is implemented.",
+    "temporary_files": "created within a checked TemporaryDirectory and removed by context cleanup"
+  },
+  "review": {
+    "provider": "Codex",
+    "verdict": "MINOR for decision draft; not execution-ready",
+    "corrections": [
+      "separate architecture, substantial implementation and installed migration approvals",
+      "enumerate effective provider roots before fixture execution",
+      "freeze required dependency manifest; no unbounded closure",
+      "separate normative data contract work from synthetic lookup pilot",
+      "record metrics override and scope of worktree evidence"
+    ],
+    "bounded_nine_path_verdict": "APPROVE by one independent Codex reviewer, subject to user implementation approval; not cross-provider consensus",
+    "final_clarifications": [
+      "Unavailable provider trial leaves parity unverified.",
+      "Fixture reference-relative paths preserved; repository-relative commands anchored explicitly."
+    ]
+  },
+  "worktree_probe": {
+    "captured_at": "2026-09-11T16:03:28.673013+00:00",
+    "enumeration": "git -C <repo> worktree list --porcelain; test each enumerated worktree/target path",
+    "scope": "Registered worktrees only; path identities hashed to avoid persisting local machine paths. No remote or unregistered-worktree coverage asserted.",
+    "records": [
+      {
+        "repo": "workspace-hub",
+        "worktree_path_id_sha256": "3679fb1ad62c4d76a937ff8c872427f5891b913918d0454ccb6d3161600b0c64",
+        "revision": "b90c388747a0a44a91d870f4d89d4b5103da4e16",
+        "target": "docs/architecture/agent-data-handling-contract.md",
+        "exists": false
+      },
+      {
+        "repo": "workspace-hub",
+        "worktree_path_id_sha256": "dd07491218862a9a6b0a2efe9930e64e1cbb7c4329ccb6b488c8d0ea4de6bda4",
+        "revision": "d204f2e362a88596cf3431f77e99295b3a5c66ad",
+        "target": "docs/architecture/agent-data-handling-contract.md",
+        "exists": false
+      },
+      {
+        "repo": "workspace-hub",
+        "worktree_path_id_sha256": "9ec3bd963b19fda24e8cd822af70c56f407b1a330122c45997939967e37c0bd8",
+        "revision": "b43f80982cfecfc2893c8f8f77af9cbf12c9f796",
+        "target": "docs/architecture/agent-data-handling-contract.md",
+        "exists": false
+      },
+      {
+        "repo": "workspace-hub",
+        "worktree_path_id_sha256": "4e81401961acbc7fcbba9de5a7a6a0e7e9f60850e4417e02cfd34ffea0faac1d",
+        "revision": "05679fafdedd7f6772dffe3f26474e4b6b256a1e",
+        "target": "docs/architecture/agent-data-handling-contract.md",
+        "exists": false
+      },
+      {
+        "repo": "workspace-hub",
+        "worktree_path_id_sha256": "4db1cea4998798e29398fca979877df687ee6963d214ad73626b4fc89049c9e3",
+        "revision": "0c85e0f9160ae791a27deb58ee1d3eb9cf31337d",
+        "target": "docs/architecture/agent-data-handling-contract.md",
+        "exists": false
+      },
+      {
+        "repo": "workspace-hub",
+        "worktree_path_id_sha256": "202a036d69e3f8bb76ab24456fa1950b409dca92336e06c7104700de74e4a895",
+        "revision": "96b0b738976208f53601860d222723ac36199947",
+        "target": "docs/architecture/agent-data-handling-contract.md",
+        "exists": false
+      },
+      {
+        "repo": "workspace-hub",
+        "worktree_path_id_sha256": "9b0e973bd99276ca87867e1b100d6babdb497a2badbe8fb7a5814ea424498522",
+        "revision": "c6aa96d36a692040a0cc6bc54b1027d7ecc41e75",
+        "target": "docs/architecture/agent-data-handling-contract.md",
+        "exists": false
+      },
+      {
+        "repo": "workspace-hub",
+        "worktree_path_id_sha256": "d5815ce736147661e2befbe43a6b62d621518aa70e9eb0a767cb224e48641c58",
+        "revision": "114f104d7ecc728f5a3acbb4ea088df4616d20a9",
+        "target": "docs/architecture/agent-data-handling-contract.md",
+        "exists": false
+      },
+      {
+        "repo": "workspace-hub",
+        "worktree_path_id_sha256": "88bc32e3ed2a4d8c6f927a15cb2e88b9a01ba26d90a5cc1fcd4e18e725bc3702",
+        "revision": "6cdac5d987f9ec2d78092065031ef74ca28f7cbe",
+        "target": "docs/architecture/agent-data-handling-contract.md",
+        "exists": false
+      },
+      {
+        "repo": "digitalmodel",
+        "worktree_path_id_sha256": "e187f5406a48b6ff2930a3cb0204a040766903bb83fec2e911d1a263a4cf9b01",
+        "revision": "41f874f0b6a49e9a46d689397c4a543389e56d04",
+        "target": "data/dataset-allocation-ledger.json",
+        "exists": false
+      },
+      {
+        "repo": "digitalmodel",
+        "worktree_path_id_sha256": "3eb6cf43c1b24876b3eaebfc1f8420d46cd586e00b61429e6bb63d03b9d162c3",
+        "revision": "e0a368ce0ac1843b1b87d1ce8d2be0e8989113c6",
+        "target": "data/dataset-allocation-ledger.json",
+        "exists": false
+      },
+      {
+        "repo": "digitalmodel",
+        "worktree_path_id_sha256": "060176a36ae068b4b3dc95287c7ad32bb06383d4a25259be23dbba3893c3de17",
+        "revision": "9ea54a3eff1bfb78660c96f3a2788b0c4a134d8f",
+        "target": "data/dataset-allocation-ledger.json",
+        "exists": false
+      },
+      {
+        "repo": "digitalmodel",
+        "worktree_path_id_sha256": "f0e5d24a7911f2b75fe86ef0aa9c0927da4b701ba59503b28f7d748f9a15586f",
+        "revision": "b6d5ac02e57c125ab55e2abaaf044f0a5178c0d0",
+        "target": "data/dataset-allocation-ledger.json",
+        "exists": false
+      },
+      {
+        "repo": "digitalmodel",
+        "worktree_path_id_sha256": "f479e9bd29f572ca06f0634671c8054a5f038eb7ca98dba51e5727d6049acd6a",
+        "revision": "87d56cac637f971ca3ed57d8ca98c16a845ff0f7",
+        "target": "data/dataset-allocation-ledger.json",
+        "exists": false
+      },
+      {
+        "repo": "digitalmodel",
+        "worktree_path_id_sha256": "571be1b96e9d28aa6d35e6c6520fcfbf354cd0ffc8b585f2af8a24816be96890",
+        "revision": "e6610663651808bca5b163bda59349733f8c8ea9",
+        "target": "data/dataset-allocation-ledger.json",
+        "exists": false
+      }
+    ]
+  },
+  "validation": {
+    "static_local_links": 7,
+    "all_local_links_resolve": true,
+    "targeted_deny_patterns": 23,
+    "targeted_matches": 0,
+    "plan_sha256": "b2af487780197e30295eea47e778bff705c55bd62f6dc21c7299c2adc1524f88",
+    "visual_review": "not run; browser backend unavailable in this session",
+    "repository_wide_legal_status": "Isolated root scan: 6 blocking, 108 advisory; nine-path targeted scan clean. Not repository clearance.",
+    "profile_manifest_sha256": "37c8e714643e9f593b54a9e81a0a50162deb139d556c7e4852dfef90d42aa36e"
+  },
+  "decision_recorded_at": "2026-09-11T20:19:12.327201+00:00",
+  "implementation_authorization": "Nine-path isolated implementation and verification approved; integration and publication excluded.",
+  "profile_manifest": "docs/reports/2026-09-11-agent-foundation-profile-manifest.json",
+  "implementation_slice": {
+    "permitted_path_count": 9,
+    "location": "isolated worktree only",
+    "scope": "three skill guidance edits, one declarative profile, two authored generator sources, one regression test, two generated Codex outputs",
+    "excludes": [
+      "live hooks",
+      "user roots",
+      "data contract reconstruction",
+      "data allocation registry changes",
+      "ingestion resolver changes",
+      "canonical checkout integration",
+      "publication"
+    ]
+  },
+  "cli_help_verified": {
+    "claude": [
+      "--setting-sources",
+      "--settings",
+      "--plugin-dir",
+      "--no-session-persistence"
+    ],
+    "codex_exec": [
+      "--ignore-user-config",
+      "--ephemeral",
+      "--cd"
+    ],
+    "limitation": "Flags verified in local help; effective isolation and native loading not yet tested."
+  },
+  "implementation_approval": "Approved by user: Approve the isolated pilot",
+  "pilot": {
+    "started_at": "2026-09-11T20:30:32.593990+00:00",
+    "worktree": "D:/ws/_worktrees/3606-foundation-pilot",
+    "baseline_revision": "bf3f02580",
+    "execution_mode": "parallel-readonly review with disjoint implementation paths in isolated worktree",
+    "generator_red": {
+      "failed_assertions": 6,
+      "old_assertions_passed": true,
+      "baseline_drift": "Only Codex skill-index family ordering differs on this host; no other provider output changed."
+    },
+    "native_baseline_count": 698,
+    "status": "LOCALLY_INTEGRATED_AND_VERIFIED",
+    "recorded_at": "2026-09-11T20:40:16.829066+00:00",
+    "changed_paths": [
+      {
+        "path": ".claude/skills/data/drive-file-search/SKILL.md",
+        "sha256": "61e7b8957a8bc65930fcff27f4c68fd87ef23da3ba14cfc287d821395ad53234"
+      },
+      {
+        "path": ".claude/skills/data/ecosystem-data-sources/SKILL.md",
+        "sha256": "d892ef80c81e47d4eb15c175574c2bcb1dd78952ed3160f68404859a9856c5cb"
+      },
+      {
+        "path": ".claude/skills/research/wiki-context/SKILL.md",
+        "sha256": "7fe41e3de461ceaeca231e8d4fa476ee1ec4456422eddd0821d4d21ed0a71ad1"
+      },
+      {
+        "path": "config/agents/codex/AGENTS.runtime.md",
+        "sha256": "ff9f921fe26e2ec6614557fff2b61351d396053f23b6e7b5a685137ca98744b1"
+      },
+      {
+        "path": "config/agents/codex/SOUL.delta.md",
+        "sha256": "3941562636e91dccb47129d555332fa78b63ab5d0275545fd46a3511f0bef015"
+      },
+      {
+        "path": "config/agents/codex/SOUL.runtime.md",
+        "sha256": "03a1bb0f286a3eca0ed6bd79b859fc0ff51f952283e58e69fd9ac2f3f8648c0f"
+      },
+      {
+        "path": "scripts/agents/soul-runtime-lib.sh",
+        "sha256": "5086f249f4173daebf696b96683e42e3876d10c7c210fe50ffa47e6f404f6bca"
+      },
+      {
+        "path": "scripts/agents/tests/test_build_soul_runtime_codex.sh",
+        "sha256": "9b6721bd9dc063ff3d3f83561050e7acc670d2dc9c7d37010496989b0433258a"
+      },
+      {
+        "path": "config/skills/profiles/foundation.yaml",
+        "sha256": "934823c78d61dad3a0a3bb79407139285c9d61719dbae28ab5da20985af1b428"
+      }
+    ],
+    "generator_green": {
+      "checks_passed": 18,
+      "result": "ALL PASS",
+      "idempotence": "portable byte comparison of both Codex outputs; snapshots and generation fail closed"
+    },
+    "profile_validation": {
+      "skills": 4,
+      "references": 2,
+      "runtime_dependencies": 4,
+      "matching_digests": 10,
+      "fixture_files_verified": 12
+    },
+    "drive_smoke": [
+      {
+        "query": "riser",
+        "exit": 0,
+        "result_count": 4,
+        "coverage_gaps": 2,
+        "index_status_present": true
+      },
+      {
+        "query": "fixture-no-match-3606",
+        "exit": 0,
+        "result_count": 0,
+        "coverage_gaps": 2,
+        "index_status_present": true
+      }
+    ],
+    "skill_tests": {
+      "direct_main_verification": "11 passed, 1 deselected; existing fixture_registry smoke has baseline relative-path failure",
+      "agent_combined_verification": "18 passed, 1 unchanged failure before and after edits",
+      "normalized_fixture_behavior": "Existing CLI returns four matches/two gaps and zero matches/two gaps using temporary absolute fixture paths. No live drives."
+    },
+    "provider_trials": {
+      "schema_version": 1,
+      "classification": "synthetic fixture evidence; not engineering input",
+      "scope": "Four flat project skills plus native provider baseline; global Codex instructions retained",
+      "claude": {
+        "fixture_reasoning": "PASS scoped missing-root,partialzero,rights,reuse,report-only boundaries; real integrations not executed",
+        "cost_usd": 0.3589395,
+        "model": "claude-opus-5[1m]",
+        "observed_skill_invocations": [
+          "wiki-context",
+          "ecosystem-data-sources",
+          "drive-file-search",
+          "pre-completion-cleanup-audit"
+        ],
+        "version": "2.1.269",
+        "native_discovery": "PASS:4 project+18 bundled",
+        "elapsed_seconds": 38.2328082
+      },
+      "codex": {
+        "input_tokens": 79983,
+        "cached_input_tokens": 58624,
+        "version": "0.154.0",
+        "body_loading": "PASS in corrected invocation with explicit Windows backend and process-local shell selection; prior rejection receipts preserved",
+        "independent_evidence": "codex-stderr.txt",
+        "semantic_parity": "PASS for bounded synthetic cases with focused follow-up only",
+        "elapsed_seconds": 37.2633738,
+        "output_tokens": 1012,
+        "native_discovery": "PASS:4 project+15 native in debug prompt-input",
+        "model": "gpt-6-astra"
+      },
+      "invalid_initial_trials": {
+        "codex": "No-shell restriction prevented body reads; superseded by corrected flat authorized-read run",
+        "claude": "Family-nested packaging omitted project skills from native catalog; superseded by corrected flat run"
+      },
+      "limits": [
+        "No live drive/catalog/raw-data execution",
+        "Global baseline retained; not four-only total context",
+        "No more provider retries",
+        "Native preservation comparison owned by main session",
+        "Initial and corrected receipts retained for traceability"
+      ]
+    },
+    "native_preservation": {
+      "baseline_files": 698,
+      "changed": [],
+      "added": [],
+      "removed": [],
+      "verified_at": "2026-09-12T01:40:18.657640+00:00",
+      "scope": "Skill bodies, global instructions, selected settings and plugin manifest; excludes credentials/logs/cache state."
+    },
+    "legal": {
+      "root_scan": {
+        "exit_code": 1,
+        "summary": [
+          "  RESULT: FAIL \u2014 6 block violation(s) found",
+          "  WARNINGS: 108 advisory match(es) \u2014 reported, not blocking"
+        ],
+        "stderr_length": 0
+      },
+      "targeted_paths": 9,
+      "targeted_patterns": 23,
+      "targeted_matches": 0
+    },
+    "review": {
+      "claude_initial": "MAJOR; inline diff review without tools, locally adjudicated below",
+      "codex_final": "No blocking defect in final scoped additions; bounded synthetic parity supported",
+      "consensus": "Claude/Codex observed synthetic decision agreement; no production rollout claim",
+      "original_claude_receipt": {
+        "path": "D:/ws/_pilot-fixtures/3606/claude-review.txt",
+        "sha256": "9764cfbefb80c41a43dc757508ac2c3a4bb9ac52cffad4ae5d4b7c71d6c02b69"
+      }
+    },
+    "review_dispositions": [
+      {
+        "finding": "MAJOR-1 generator overwrite",
+        "disposition": "Refuted: scripts/data-sources/gen_domain_pointers.py writes domain-map JSON, not skill sections; old note overstated coverage."
+      },
+      {
+        "finding": "MAJOR-2 lost retrieval keywords",
+        "disposition": "Narrowed to unverified implicit selection. Descriptions preserve task intent and body/custom triggers retain examples; explicit discovery/invocation does not establish domain-only selection quality. Recorded as limitation, not restored stale counts."
+      },
+      {
+        "finding": "MAJOR-3 unsupported native capability and broad text ban",
+        "disposition": "Capability supported by official docs and observed Codex four-skill catalog. Negative test scoped to skill guidance; semantic runtime parity remains unverified."
+      },
+      {
+        "finding": "MAJOR-4 lifecycle names removed",
+        "disposition": "Refuted: config/agents/SHARED_SOUL.md Hard Gates and Must-Fire Rules name planning/cleanup. Profile explicitly preserves shared lifecycle and intentionally omits planning from discovery fixture."
+      },
+      {
+        "finding": "MAJOR-5 removed tier/provider authority",
+        "disposition": "No established regression: discovery-only scope preserves explicit rights/private raw/licensed restrictions. Approved shared architecture removes provider-name authority; no publication authorized."
+      },
+      {
+        "finding": "MINOR checksum portability and false pass",
+        "disposition": "Fixed with checked temporary snapshots and portable cmp. Exact discovery assertion replaces vacuous root substring."
+      },
+      {
+        "finding": "MINOR index_status and playbook conflict",
+        "disposition": "Refuted: search.py emits index_status; playbook makes runtime status authoritative."
+      },
+      {
+        "finding": "MINOR profile executable/pin/enforcement",
+        "disposition": "Fixed: external query script/boundary and base revision recorded; no installer or CI digest-enforcement claim."
+      },
+      {
+        "finding": "MINOR wiki lookup bridge",
+        "disposition": "Verified llms.txt -> domain llms.txt -> wiki/index.md -> selected page; registered metadata retrieval remains separate from authorized page reads."
+      }
+    ],
+    "next_checkpoint": {
+      "recommended": "Continue the separately scoped shared-workflow/data-authority reconciliation using existing evidence; missing contract/ledger and live enforcement remain unresolved.",
+      "boundary": "Profile remains declarative and uninstalled. No hook/settings changes, commits or publication authorized by this transaction."
+    },
+    "runtime_diagnostic": {
+      "codex_user_config_selected_values": {
+        "approval_policy": "never",
+        "sandbox_mode": "danger-full-access",
+        "windows.sandbox": "unelevated"
+      },
+      "trial": "--ignore-user-config --ignore-rules --sandbox read-only; authorized Get-Content rejected blocked by policy",
+      "zero_model_sandbox_probe": "CLI requires explicit permission profile; selected read-only name has no configured permissions table. No read executed; no config changed.",
+      "root_cause": "Not established; no permission escalation or bypass attempted."
+    },
+    "cleanup": {
+      "classification": "EXPECTED",
+      "preserved": [
+        "Nine approved canonical file changes, uncommitted",
+        "Eight verified rollback originals plus transaction receipts",
+        "Isolated pilot worktree and bounded trial evidence",
+        "Pre-existing unrelated dirty state and autostash"
+      ],
+      "unexpected_task_residue": [],
+      "claim": "released at transaction closeout"
+    },
+    "external_actions": {
+      "commits": false,
+      "pushes": false,
+      "github_comments": false,
+      "installation": false,
+      "publication": false
+    },
+    "continuation_diagnostic": {
+      "recorded_at": "2026-09-12T01:34:02.574698+00:00",
+      "policy_cause": "Source-supported: --ignore-user-config omitted the Windows sandbox backend. Explicit unelevated backend changed rejection from policy-denied to process access-denied.",
+      "second_cause": "Restricted-token process creation fails for selected WindowsApps pwsh.exe with error 5; identical fixture read succeeds through System32 WindowsPowerShell.",
+      "shell_selection": "Codex0.154 model shell argument selects type then discovers executable; it does not honor the supplied absolute PowerShell executable as a pin.",
+      "process_local_repair": "Retain --sandbox read-only, set windows.sandbox=unelevated and approval_policy=never; child-only PATH excludes WindowsApps/PowerShell entries and prepends System32 WindowsPowerShell. No saved configuration change.",
+      "zero_model_probes": [
+        {
+          "command": "codex sandbox with permissions.pilot.extends=:read-only and network.enabled=false; System32 powershell reads wiki-context header",
+          "exit_code": 0
+        },
+        {
+          "command": "same sandbox with WindowsApps pwsh",
+          "exit_code": 1,
+          "result": "CreateProcessAsUserW error5 Access is denied"
+        },
+        {
+          "command": "where.exe using child-only PATH",
+          "result": "pwsh absent; powershell resolves System32WindowsPowerShell"
+        }
+      ],
+      "sources": [
+        "https://github.com/openai/codex/blob/rust-v0.154.0/codex-rs/core/src/exec_policy.rs#L785",
+        "https://github.com/openai/codex/blob/rust-v0.154.0/codex-rs/shell-command/src/shell_detect.rs#L267",
+        "https://github.com/openai/codex/blob/rust-v0.154.0/codex-rs/shell-command/src/shell_detect.rs#L329",
+        "https://learn.chatgpt.com/docs/config-file/config-reference"
+      ],
+      "generalizable_findings": [
+        "Isolated launch must retain an explicitly selected OS sandbox backend; ignoring user configuration can remove required enforcement support.",
+        "Preflight the actual discovered executable inside the intended sandbox before model inference; tool shell-type selection may not pin its executable.",
+        "Record installed version and host-specific workarounds in runtime evidence, not universal no-shell claims."
+      ],
+      "corrected_trial": "PASS: four skill bodies and two references read; read-only sandbox retained. Six successful file reads observed."
+    },
+    "context_measurement": {
+      "debug_text_characters": 47833,
+      "global_instruction_block_characters": 32367,
+      "usage_caveat": "input_tokens totals are cumulative across requests; not initial context size."
+    },
+    "integration_preview": {
+      "status": "Approved by user and applied; locally verified",
+      "plan_anchor": "canonical-integration",
+      "target_drift_at_preparation": false,
+      "payload_paths": 9
+    },
+    "final_acceptance": {
+      "recorded_at": "2026-09-12T01:39:34.264792+00:00",
+      "scope": "Explicit four-skill loading and bounded synthetic decision parity only",
+      "result": "PASS",
+      "cases": [
+        "Missing and malformed explicit wiki location: unavailable without silent fallback or creation",
+        "Zero matches plus inaccessible indexes: partial coverage, not absence",
+        "Functional owner classes and private/licensed source rights",
+        "Reuse only while version, digest, access, freshness and intended-use criteria remain applicable",
+        "Runtime freshness overrides example/registry dates",
+        "Routine reversible work versus consequential approval boundaries; fixture remains read-only",
+        "Report-only cleanup preserves supplied existing state and forbids live probes outside whitelist",
+        "Optional missing worked example does not activate extra skills or invented data"
+      ],
+      "followup_prompt_note": "Focused follow-up clarified current fixture authorization and required both references. It supplements prior A-D cases; it is not a claim that the original Claude cleanup answer passed.",
+      "review": "Independent Codex review found no blocking defect in final scoped additions; bounded synthetic parity supported.",
+      "limits": [
+        "No live retrieval/provider production parity",
+        "No implicit selection quality claim",
+        "Missing data contract/ledger still unresolved",
+        "No policy-hook migration or installed profile consumer",
+        "Global context remains present; usage totals are cumulative across calls"
+      ],
+      "receipts": [
+        {
+          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\codex-selected-shell-stdout.jsonl",
+          "sha256": "073ec1620312f6e9a6708ab9d9f18f4ed5206c894a3c6cee3c42d0cc1832503d"
+        },
+        {
+          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\codex-selected-shell-final.txt",
+          "sha256": "f2c3f5f722d50d31f8adcc5072b187e820c824403057c7f09f2f143693950fda"
+        },
+        {
+          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\codex-selected-shell-run.json",
+          "sha256": "4b38d98d83adad971fa7a32ba926c860013a5080db6dd3266abfbb5d7f18bee9"
+        },
+        {
+          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\followup-claude-final.txt",
+          "sha256": "d8c9b5622d58f2c0976a700b5685c2645f761a6819e0ba5101fa822d2152607a"
+        },
+        {
+          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\followup-claude-tool-calls.json",
+          "sha256": "1533dec34b304e41e147fc86d4d7c8498b2bc689c5bffb7be6137184d9ea366d"
+        },
+        {
+          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\followup-codex-final.txt",
+          "sha256": "6fe12776c16f90e8750f0c4e9e20674787dae74703a0bbea78970aee75c9a312"
+        },
+        {
+          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\followup-codex-tool-calls.json",
+          "sha256": "331f0127e97e7c8dbdd245e171b5fe61316a5ea2da59d8f93e6e1ad39a056926"
+        }
+      ]
+    },
+    "integration": {
+      "authorization": "User: Approve local nine-file integration",
+      "state": "integrated-and-verified",
+      "rollback_manifest": "D:\\ws\\_pilot-fixtures\\3606\\integration-20260912\\manifest.json",
+      "files": [
+        {
+          "path": ".claude/skills/data/drive-file-search/SKILL.md",
+          "before_sha256": "7c16e00f33d07c28d6388d40eb57c0fffe321aa78c119755299bd6b5b640398b",
+          "after_sha256": "61e7b8957a8bc65930fcff27f4c68fd87ef23da3ba14cfc287d821395ad53234"
+        },
+        {
+          "path": ".claude/skills/data/ecosystem-data-sources/SKILL.md",
+          "before_sha256": "ff7fe0052eb90c1a8044f12cfa98ff10beb23d07bcdc5d8829969a1b3782876c",
+          "after_sha256": "d892ef80c81e47d4eb15c175574c2bcb1dd78952ed3160f68404859a9856c5cb"
+        },
+        {
+          "path": ".claude/skills/research/wiki-context/SKILL.md",
+          "before_sha256": "9649fc6cfe9199910b4a974168397f581e3bfe7319004ea6b0c3624d733d5f1e",
+          "after_sha256": "7fe41e3de461ceaeca231e8d4fa476ee1ec4456422eddd0821d4d21ed0a71ad1"
+        },
+        {
+          "path": "config/agents/codex/AGENTS.runtime.md",
+          "before_sha256": "43d6ea2b0887eed1e5e28d2959ace7c63ea30fcc9985c9b0b737a0ddd0bdc88c",
+          "after_sha256": "ff9f921fe26e2ec6614557fff2b61351d396053f23b6e7b5a685137ca98744b1"
+        },
+        {
+          "path": "config/agents/codex/SOUL.delta.md",
+          "before_sha256": "0c8a0bd16f1230e015e9db13226d0a482c7ac8670fb627e7f6a8b5992b62b97c",
+          "after_sha256": "3941562636e91dccb47129d555332fa78b63ab5d0275545fd46a3511f0bef015"
+        },
+        {
+          "path": "config/agents/codex/SOUL.runtime.md",
+          "before_sha256": "dc4bf988327ebf40ec03407d297c775881f3ab93a703766e2ba2805dea910d52",
+          "after_sha256": "03a1bb0f286a3eca0ed6bd79b859fc0ff51f952283e58e69fd9ac2f3f8648c0f"
+        },
+        {
+          "path": "scripts/agents/soul-runtime-lib.sh",
+          "before_sha256": "b31a427234b1db60c5a0a79291ac17cd79feb55e9465eab7f34d7e00ba7bf00f",
+          "after_sha256": "5086f249f4173daebf696b96683e42e3876d10c7c210fe50ffa47e6f404f6bca"
+        },
+        {
+          "path": "scripts/agents/tests/test_build_soul_runtime_codex.sh",
+          "before_sha256": "18379dbe5caabe1bfdbaf55b626a597147455e4f411b861770e60e0ec30fa312",
+          "after_sha256": "9b6721bd9dc063ff3d3f83561050e7acc670d2dc9c7d37010496989b0433258a"
+        },
+        {
+          "path": "config/skills/profiles/foundation.yaml",
+          "before_sha256": null,
+          "after_sha256": "934823c78d61dad3a0a3bb79407139285c9d61719dbae28ab5da20985af1b428"
+        }
+      ],
+      "canonical_head": "48464eef05c47cb63f856b7b9be2221c16ba62ca",
+      "verified_at": "2026-09-12T11:10:26.176872+00:00",
+      "verification": {
+        "payload_hashes": 9,
+        "profile_dependency_hashes": 10,
+        "native_files_checked": 698,
+        "expected_native_changes": [
+          "~/.codex/AGENTS.md"
+        ],
+        "unexpected_native_changes": 0,
+        "new_status_paths": 9,
+        "preexisting_status_preserved": true,
+        "targeted_legal_patterns": 23,
+        "targeted_legal_matches": 0
+      },
+      "runtime_drift_check": {
+        "command": "bash scripts/enforcement/check-soul-runtime-drift.sh --quiet",
+        "exit_code": 0,
+        "mutates_runtime": false
+      },
+      "independent_review": "No defects found; nine payloads, eight rollback originals and user Codex symlink verified independently.",
+      "commits": false,
+      "publication": false
+    }
+  },
+  "publication_boundary": {
+    "prepared_at": "2026-09-12T19:27:02.399356+00:00",
+    "authorization": "User requested commit and push to origin main",
+    "historical_states": "No-publication and uncommitted statements describe the recorded checkpoint, not current Git status",
+    "local_only_evidence": "Absolute worktree, _pilot-fixtures, user-runtime and rollback paths are local_only/not_published; hashes are preserved but fresh clones cannot retrieve those receipts",
+    "portable_artifacts": "Repository-relative committed files only; private sibling catalogs require a separately authorized checkout"
+  }
+}

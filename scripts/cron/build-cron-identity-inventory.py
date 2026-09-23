@@ -149,6 +149,26 @@ def render(payload: dict) -> bytes:
             + "\n").encode("utf-8")
 
 
+def rendered_input_digest(raw: bytes) -> str:
+    try:
+        payload = json.loads(raw)
+    except json.JSONDecodeError:
+        return "<invalid-json>"
+    return str(payload.get("input_digest", "<missing>"))
+
+
+def inventory_mismatch_summary(current: bytes, generated: bytes) -> str:
+    try:
+        current_payload = json.loads(current)
+        generated_payload = json.loads(generated)
+    except json.JSONDecodeError:
+        return "inventory body mismatch: current file is not valid JSON"
+    for key in ("schema_version", "input_digest", "machines", "unsupported", "collisions"):
+        if current_payload.get(key) != generated_payload.get(key):
+            return f"inventory body mismatch at {key}"
+    return "inventory body mismatch in identities"
+
+
 def _option_value(raw_args: list[str], name: str) -> str | None:
     for index, token in enumerate(raw_args):
         if token == name:

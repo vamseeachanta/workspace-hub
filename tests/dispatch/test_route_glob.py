@@ -153,22 +153,69 @@ def test_domain_family_none_domain_does_not_match(route):
                                     "solver", "solver-orcaflex"])
 def test_live_rules_route_digitalmodel_splits_to_licensed(route, domain):
     """Pin the shipped routing-rules.yaml: the licensed digitalmodel domains and
-    their subdomain splits must resolve to licensed-win-1, not the dev-primary
-    catch-all. Guards the #2878 reorg from silently dropping licensed routing."""
+    their subdomain splits must resolve to a machine that can ACTUALLY RUN the
+    work, not to the dev-primary catch-all. Guards the #2878 reorg from silently
+    dropping licensed routing.
+
+    deckhand#579: this test used to assert the literal `licensed-win-1`, and so
+    it **protected the defect** — the destination host provably could not obtain
+    an OrcaFlex licence (DLLError 25, no Sentinel LDK runtime), yet the suite
+    stayed green because the test pinned the NAME rather than the CAPABILITY.
+
+    Asserting the property instead of the identity also means the eventual #579
+    migration needs no edit here: when a different host earns a dated
+    `licence_verified` attestation and the rules move to it, this still passes —
+    and if the rules ever move to a host WITHOUT one, this fails, which is the
+    whole point.
+    """
     cfg = route.load_rules()
     rules = cfg.get("rules", [])
     got = route.match_rule(rules, repo="vamseeachanta/digitalmodel",
                            domain=domain, gh_labels=[])
-    assert got.get("assign", {}).get("machine") == "licensed-win-1", (
-        f"domain {domain!r} must route to licensed-win-1, got {got}")
+    target = got.get("assign", {}).get("machine")
+    assert target and target != "dev-primary", (
+        f"domain {domain!r} fell through to the catch-all, got {got}")
+
+    spec = cfg.get("machines", {}).get(target, {})
+
+    # Capability is LICENCE **and** CAPACITY. This test asserted only the first
+    # until 2026-07-31, so it was satisfied by repointing batch work to a
+    # workstation — trading a licence failure for a capacity failure. Owner:
+    # "that host is not powerful enough."
+    assert spec.get("capacity") == "heavy", (
+        f"domain {domain!r} routes to {target!r} with capacity="
+        f"{spec.get('capacity')!r}; these are batch-scale workloads and need the "
+        f"heavy node. See tests/dispatch/test_route_capacity.py."
+    )
+
+    # The licence must be attested OR the block must be openly named. Routing to
+    # a host with a pending prerequisite is legitimate; hiding that it is pending
+    # is not.
+    attested = isinstance(spec.get("licence_verified"), dict)
+    assert attested or spec.get("blocked_on"), (
+        f"domain {domain!r} routes to {target!r}, whose licence is neither "
+        f"attested nor openly blocked — licence_verified="
+        f"{spec.get('licence_verified')!r}, blocked_on absent (deckhand#579)."
+    )
 
 
 @pytest.mark.parametrize("domain", ["hydrocarbon", "hydrostatic", "solverless", "subsea"])
 def test_live_rules_do_not_overmatch_prefix(route, domain):
-    """The shipped rules must NOT pin unrelated hydro*/solver* prefixes to the
-    licensed box (the domain_family fix for the adversarial-review over-match)."""
+    """The shipped rules must NOT pin unrelated hydro*/solver* prefixes to ANY
+    licensed box (the domain_family fix for the adversarial-review over-match).
+
+    Also name-independent (deckhand#579): checking against the set of licensed
+    machines rather than one literal means a second licensed host cannot be
+    added later and quietly become a legal over-match target.
+    """
     cfg = route.load_rules()
+    licensed = {
+        name for name, spec in cfg.get("machines", {}).items()
+        if set(spec.get("capabilities") or []) & {"orcaflex", "orcawave", "aqwa"}
+    }
+    assert licensed, "no licensed machines in the roster — this check would be vacuous"
+
     got = route.match_rule(cfg.get("rules", []), repo="vamseeachanta/digitalmodel",
                            domain=domain, gh_labels=[])
-    assert got.get("assign", {}).get("machine") != "licensed-win-1", (
-        f"domain {domain!r} must NOT route to licensed-win-1, got {got}")
+    assert got.get("assign", {}).get("machine") not in licensed, (
+        f"domain {domain!r} must NOT route to a licensed box, got {got}")

@@ -1,0 +1,46 @@
+{
+  "date_utc": "2026-09-11",
+  "source_commit": "a7fe3775717db3f67ff1e4d4e8733c5a9f285357",
+  "scope": "docs/domains/orcaflex/library",
+  "audit_command": "python -B scripts/audit_spec_library.py --root docs/domains/orcaflex/library --output <private-audit.yaml>",
+  "spec_paths_visited": 73,
+  "schema_valid": 73,
+  "schema_invalid": 0,
+  "heuristic_categories": {
+    "drilling": 2,
+    "heavy_lift": 3,
+    "installation": 16,
+    "jumper": 1,
+    "mooring": 10,
+    "other": 5,
+    "pipeline": 3,
+    "riser": 23,
+    "seismic": 1,
+    "subsea": 1,
+    "vessel": 6,
+    "wind_turbine": 2
+  },
+  "test_command": "python -B -m pytest tests/solvers/orcaflex/modular_generator/test_generator_from_spec.py tests/solvers/orcaflex/modular_generator/test_semantic_roundtrip.py -q -p no:cacheprovider --basetemp <private-pytest>",
+  "test_result": {
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0,
+    "elapsed_seconds": 4.34
+  },
+  "private_evidence_directory_basename": "orcaflex-family-audit-6d8b1f34b53946288106fc06806f4d09",
+  "warnings": "Several current profiles extend beyond declared water depth; warning disposition remains required.",
+  "native_solver_called": false,
+  "limits": [
+    "Schema acceptance does not detect all discarded unknown fields.",
+    "Audit quality score is not engineering acceptance.",
+    "The 16 tests are existing generation/round-trip checks, not 73 native simulation tests.",
+    "Category counts are heuristic classifications of spec paths, not independent qualified models."
+  ],
+  "passing_ship_schema_tests": {
+    "failed": 0,
+    "passed": 45,
+    "command": "python -B -m pytest tests/hydrodynamics/passing_ship/test_input_schemas.py -q -p no:cacheprovider --basetemp <private-passing-schema-tests>",
+    "elapsed_seconds": 1.07,
+    "skipped": 0
+  }
+}

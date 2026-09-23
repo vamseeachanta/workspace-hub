@@ -19,6 +19,20 @@ This directory (`.claude`) contains project-specific memory, guidelines, and con
 - **commands/** - Custom slash commands
 - **helpers/** - Helper utilities and scripts
 
+## Quirk Logging
+
+Use `.claude/agents/quirk-logger.md` whenever a session loses time to an undocumented tool, library, host, lane, or repository behavior. The quirk logger owns the GitHub issue lifecycle with no human approval loop: search for an existing `quirk` issue, comment if one exists, create one if it does not, and close it after the fix is merged and documented.
+
+The helper is:
+
+```bash
+scripts/ai/gh_quirk.sh log --repo <owner/repo> --area <area> --symptom "<text>" --cause "<text>" --fix "<text>" --doc "<path-or-url>" --session "<id>"
+scripts/ai/gh_quirk.sh list --repo <owner/repo>
+scripts/ai/gh_quirk.sh close --repo <owner/repo> --number N --fixed-by <commit> --doc <path-or-url>
+```
+
+Routing rule: digitalmodel code/tool quirks go to `vamseeachanta/digitalmodel`; generic third-party software and documentation quirks go to `vamseeachanta/llm-wiki`; private host/lane/client infrastructure quirks go to `vamseeachanta/llm-wiki-acma`; public-safe workspace-hub infrastructure quirks go to `vamseeachanta/workspace-hub`. For OrcaFlex, AQWA, OpenFOAM, and similar program workflows, route the quirk to the repo that owns the fix or durable documentation, and sanitize public repo entries with `lane-A/B/C/D` and `<campaign>` instead of private identifiers.
+
 ## How It Works
 
 ### Automatic Loading

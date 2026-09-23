@@ -47,7 +47,7 @@ def _authority_fixture(tmp_path, pattern=b"forbidden-private"):
     manifest = authority.build_manifest(registry, policy, private_map, key)
     tool = "f" * 40
     anchor = authority.make_anchor(manifest, tool)
-    ledger = authority.new_ledger("synthetic", manifest, key)
+    ledger = authority.new_ledger("phase-a-12345678-1234-4234-9234-123456789abc", manifest, key)
     directory = tmp_path / "authority"
     directory.mkdir(mode=0o700)
     for name, value in (
@@ -57,7 +57,9 @@ def _authority_fixture(tmp_path, pattern=b"forbidden-private"):
         ("ledger.json", ledger),
     ):
         (directory / name).write_bytes(codec.canonical_bytes(value))
-    (directory / "key.b64").write_bytes(base64.b64encode(key) + b"\n")
+    key_path = directory / "key.b64"
+    key_path.write_bytes(base64.b64encode(key) + b"\n")
+    key_path.chmod(0o600)
     return directory, tool
 
 

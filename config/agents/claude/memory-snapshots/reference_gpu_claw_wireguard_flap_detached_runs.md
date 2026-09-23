@@ -5,9 +5,14 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: f9868b71-5856-4aaf-a608-198faeca149c
+  modified: 2026-07-22T18:41:53.328Z
 ---
 
-The only route ace-linux-1 → gpu-claw (192.168.184.142, user `undi`) is the
+**UPDATE 2026-07-22: no longer the only route** — gpu-claw joined the tailnet
+(100.101.237.123, Tailscale SSH on; see [[project_external_ssh_tailscale_fleet]]).
+WG remains until deckhand#557 retire test passes.
+
+The legacy route ace-linux-1 → gpu-claw (192.168.184.142, user `undi`) is the
 NetworkManager WireGuard connection **"Undi"** (local 10.200.253.11/32). It
 flaps: handshakes go unanswered for 30+ min stretches while gpu-claw itself
 stays healthy (verify via `deckhand-licensed-runs-queue` heartbeat/poll

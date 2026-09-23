@@ -7,8 +7,8 @@
 # never hardcode model IDs in shell scripts or workflow configs.
 # See: behavior-contract.yaml > model_versioning
 
-version: 2.2.0
-last_updated: "2026-06-11"
+version: 2.3.0
+last_updated: "2026-07-22"
 
 ewma:
   alpha: 0.3          # Recent ratings weighted 30%
@@ -23,11 +23,11 @@ latest_models:
   claude_strong: "claude-opus-4-8"           # 200K Opus lane (fast mode available on 4.6+)
   claude_balanced: "claude-sonnet-4-6"
   claude_fast: "claude-haiku-4-5"
-  codex_primary: "codex-cli"          # Codex CLI; runs gpt-5.5 under the hood (~/.codex/config.toml)
+  codex_primary: "codex-cli"          # Codex CLI; runs gpt-5.6-sol under the hood (~/.codex/config.toml)
   gemini_primary: "gemini-2.5-pro"           # LEGACY (gemini CLI retired from routing #3573); still the underlying Gemini model id for the agy lane
   gemini_fast: "gemini-2.5-flash"
   agy_primary: "gemini-3.1-pro"              # agy (Antigravity) default = "Gemini 3.1 Pro (High)" label (#3086); own quota pool — 3.1 does NOT 429 here
-  openai_primary: "gpt-5.5"
+  openai_primary: "gpt-5.6-sol"       # tracks live ~/.codex/config.toml (R-MODEL-DRIFT #3038; flipped 2026-07-18 by codex update)
   openai_fast: "gpt-5.4-mini"
 
 # Context windows (K tokens) — single source for session tooling (#3038).
@@ -39,6 +39,7 @@ context_windows_k:
   claude-opus-4-8: 200
   claude-sonnet-4-6: 200
   claude-haiku-4-5: 200
+  gpt-5.6-sol: 128            # assumed same family window as gpt-5.5; verify against openai.com/pricing
   gpt-5.5: 128
   gpt-5.4: 128
   gpt-5.4-mini: 128
@@ -169,8 +170,14 @@ providers:
         capability_tier: SIMPLE
         default_priority: 70
   openai:
-    default_model: gpt-5.5
+    default_model: gpt-5.6-sol
     models:
+      gpt-5.6-sol:
+        display_name: "GPT-5.6 Sol"
+        model_id: "gpt-5.6-sol"
+        cost_tier: balanced
+        capability_tier: COMPLEX
+        default_priority: 90
       gpt-5.5:
         display_name: "GPT-5.5"
         model_id: "gpt-5.5"

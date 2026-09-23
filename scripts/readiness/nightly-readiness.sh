@@ -68,26 +68,32 @@ check_r1() {
 # ─────────────────────────────────────────────────────────────────────────────
 check_r5() {
   local total=0
+  local missing=()
+  # CLAUDE.md removed 2026-08-01 (harness surface retired; AGENTS.md is canonical).
   local candidates=(
-    "${WORKSPACE_HUB}/CLAUDE.md"
+    "${WORKSPACE_HUB}/AGENTS.md"
     "${WORKSPACE_HUB}/.claude/rules/coding-style.md"
-    "${WORKSPACE_HUB}/.claude/rules/git-workflow.md"
-    "${WORKSPACE_HUB}/.claude/rules/legal-compliance.md"
     "${WORKSPACE_HUB}/.claude/rules/patterns.md"
-    "${WORKSPACE_HUB}/.claude/rules/security.md"
-    "${WORKSPACE_HUB}/.claude/rules/testing.md"
   )
   for f in "${candidates[@]}"; do
-    [[ -f "$f" ]] || continue
+    # A missing candidate must FAIL, never be skipped: silently summing fewer files
+    # makes a deleted file score GREENER than a large one. Four rules files were
+    # deleted in 2fb3bdc7c and R5 kept reporting PASS while summing 3 of 7 (#3744).
+    if [[ ! -f "$f" ]]; then
+      missing+=("${f#"${WORKSPACE_HUB}/"}")
+      continue
+    fi
     local sz
     sz=$(wc -c < "$f" 2>/dev/null || echo 0)
     total=$((total + sz))
   done
   local kb=$(( total / 1024 ))
-  if [[ "$total" -le 16384 ]]; then
-    log_pass "R5: context budget ${kb}KB / 16KB"
+  if (( ${#missing[@]} > 0 )); then
+    log_fail "R5: ${#missing[@]} budgeted context file(s) missing: ${missing[*]} — update the candidate list or restore them"
+  elif [[ "$total" -le 16384 ]]; then
+    log_pass "R5: context budget ${kb}KB / 16KB (${#candidates[@]} files)"
   else
-    log_fail "R5: context budget ${kb}KB exceeds 16KB — trim rules or CLAUDE.md"
+    log_fail "R5: context budget ${kb}KB exceeds 16KB — trim rules or AGENTS.md"
   fi
 } ; check_r5 || true
 
@@ -268,16 +274,20 @@ check_r_skills() {
     issues_local+=("session-signals/ directory absent")
   fi
 
-  # Check skills committed in last 7 days
+  # Skills committed in last 7 days — FLEET authoring cadence, identical on every
+  # box (git log on main), so it must never fail a single machine's readiness
+  # (#3591 item 4). Demoted to an advisory note on the OK line; the per-box
+  # session-signals freshness above remains the failing condition.
+  local cadence_note=""
   if command -v git &>/dev/null && [[ -d "$skills_dir" ]]; then
     local skills_commit
     skills_commit=$(git -C "$WORKSPACE_HUB" log --oneline --since="7 days ago" \
       -- ".claude/skills/" 2>/dev/null | head -1 || echo "")
-    [[ -z "$skills_commit" ]] && issues_local+=("no skills committed in 7 days")
+    [[ -z "$skills_commit" ]] && cadence_note=" (advisory: no skills committed fleet-wide in 7 days)"
   fi
 
   if [[ ${#issues_local[@]} -eq 0 ]]; then
-    log_pass "R-SKILLS: session-signals fresh, skills committed recently"
+    log_pass "R-SKILLS: session-signals fresh${cadence_note}"
   else
     log_fail "R-SKILLS: ${issues_local[*]}"
   fi

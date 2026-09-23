@@ -19,8 +19,6 @@ cards:
       - enhancement
       - priority:low
       - cat:engineering
-      - cat:research
-      - cat:career
       - machine:dev-primary
       - domain:semiconductor
       - dispatch:ready
@@ -42,8 +40,8 @@ cards:
     gh_labels:
       - priority:high
       - cat:engineering
+      - cat:business
       - cat:research
-      - cat:career
       - status:plan-approved
       - domain:semiconductor
       - domain:chip-design
@@ -59,8 +57,6 @@ cards:
     gh_labels:
       - priority:low
       - cat:engineering
-      - cat:tooling
-      - cat:research
       - machine:dev-primary
       - domain:semiconductor
       - dispatch:ready
@@ -82,7 +78,6 @@ cards:
     gh_labels:
       - priority:medium
       - cat:engineering
-      - cat:tooling
       - machine:dev-primary
       - status:plan-approved
       - domain:semiconductor
@@ -105,7 +100,6 @@ cards:
     gh_labels:
       - priority:high
       - cat:engineering
-      - cat:engineering-calculations
       - status:done
       - domain:semiconductor
       - domain:chip-design
@@ -120,8 +114,7 @@ cards:
     gh_state: open
     gh_labels:
       - priority:low
-      - cat:documentation
-      - cat:career
+      - cat:business
       - machine:dev-primary
       - domain:semiconductor
       - dispatch:ready

@@ -21,9 +21,11 @@ EXCLUDE_DIRS=(".claude" "scripts" "specs" "docs" "node_modules" ".git"
 LINK_MARKER=".link-marker"
 
 OPT_HOOKS=true; OPT_SKILLS=true; OPT_DRY_RUN=false; OPT_VERBOSE=false; OPT_ONLY=""
+OPT_CODEX_ONLY=false; OPT_CODEX_REQUESTED=false; OPT_HOOKS_ONLY_SEEN=false; OPT_ONLY_SEEN=false
 HOOKS_ADDED=0; HOOKS_SKIPPED=0; HOOKS_FAILED=0
 PERMS_ADDED=0; PERMS_SKIPPED=0; PERMS_FAILED=0
 SKILLS_LINKED=0; SKILLS_SKIPPED_MODIFIED=0; SKILLS_ALREADY_LINKED=0; SKILLS_CREATED=0
+CODEX_BLOCKED=0
 
 # Colors (disabled in pipes)
 if [[ -t 1 ]]; then
@@ -355,19 +357,46 @@ propagate_skills() {
     untrack_shared_dirs "$repo_dir"
 }
 
+codex_native_state() {
+    local repo_dir="$1" state native_rc probe_root="$1"
+    local probe="$SCRIPT_DIR/skills/native_skill_root.py"
+    if [[ "$PLATFORM" == windows ]]; then
+        probe_root="$(cygpath -m "$repo_dir")" || return 1
+        probe="$(cygpath -m "$probe")" || return 1
+    fi
+    state="$(uv run --no-project --quiet python -B "$probe" "$probe_root" 2>/dev/null)"
+    native_rc=$?
+    [[ "$native_rc:$state" == 0:native ]] && return 0
+    [[ "$native_rc:$state" == 0:absent ]] && return 2
+    return 1
+}
+
 # --- parse_arguments ---
 parse_arguments() {
+    local arg
+    for arg in "$@"; do [[ "$arg" == --codex-only ]] && OPT_CODEX_REQUESTED=true; done
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            --hooks-only)  OPT_HOOKS=true;  OPT_SKILLS=false;;
+            --hooks-only)  OPT_HOOKS=true;  OPT_SKILLS=false; OPT_HOOKS_ONLY_SEEN=true;;
             --skills-only) OPT_HOOKS=false; OPT_SKILLS=true;;
+            --codex-only)  OPT_CODEX_ONLY=true; OPT_HOOKS=false; OPT_SKILLS=true;;
             --dry-run)     OPT_DRY_RUN=true;;
-            --only)        OPT_ONLY="${2:-}"; shift;;
+            --only)
+                if [[ "$OPT_CODEX_REQUESTED" == true ]]; then
+                    [[ "$OPT_ONLY_SEEN" == false ]] || { echo "ERROR: --only may be specified once with --codex-only" >&2; exit 1; }
+                    [[ $# -ge 2 && -n "$2" && "$2" != -* ]] || { echo "ERROR: --codex-only requires --only <repository-basename>" >&2; exit 1; }
+                    [[ "$2" != */* && "$2" != *\\* && "$2" != . && "$2" != .. ]] || { echo "ERROR: --only must be a repository basename" >&2; exit 1; }
+                fi
+                OPT_ONLY_SEEN=true; OPT_ONLY="${2:-}"; shift;;
             --verbose)     OPT_VERBOSE=true;;
             --help|-h)     usage; exit 0;;
             *) echo "Unknown option: $1" >&2; usage; exit 1;;
         esac; shift
     done
+    if [[ "$OPT_CODEX_ONLY" == true ]]; then
+        [[ "$OPT_HOOKS_ONLY_SEEN" == false ]] || { echo "ERROR: --codex-only is incompatible with --hooks-only" >&2; exit 1; }
+        [[ "$OPT_ONLY_SEEN" == true ]] || { echo "ERROR: --codex-only requires --only <repository-basename>" >&2; exit 1; }
+    fi
 }
 
 usage() {
@@ -380,6 +409,7 @@ Discovers repos in both nested (workspace-hub/<repo>) and flat-sibling layouts.
 Options:
   --hooks-only    Only propagate hooks (skip skill linking)
   --skills-only   Only propagate skill links (skip hooks)
+  --codex-only    Preserve one repository's recognized native Codex root only
   --dry-run       Preview changes without modifying anything
   --only <repo>   Limit to a single ecosystem repo (by directory name)
   --verbose       Show detailed output
@@ -392,7 +422,8 @@ preflight_checks() {
         echo "ERROR: workspace-hub root not found at $WS_HUB" >&2; exit 1; fi
     [[ "$OPT_HOOKS" == "true" ]] && ! command -v jq &>/dev/null && \
         echo "WARNING: jq not found — hook propagation will skip repos needing edits" >&2
-    if [[ "$OPT_SKILLS" == "true" && ! -d "$WS_HUB/.claude/skills/_internal" ]]; then
+    if [[ "$OPT_SKILLS" == "true" && "$OPT_CODEX_ONLY" != "true" \
+          && ! -d "$WS_HUB/.claude/skills/_internal" ]]; then
         echo "ERROR: _internal/ not found at $WS_HUB/.claude/skills/_internal/" >&2
         [[ "$OPT_HOOKS" == "false" ]] && exit 1
         OPT_SKILLS=false; echo "WARNING: Disabling skill propagation" >&2
@@ -412,8 +443,21 @@ main() {
         submodules=("${filtered[@]}")
         [[ ${#submodules[@]} -eq 0 ]] && { echo "No ecosystem repo named '$OPT_ONLY' with .claude/skills/ found."; exit 1; }
     fi
+    if [[ "$OPT_CODEX_ONLY" == true && ${#submodules[@]} -ne 1 ]]; then
+        echo "ERROR: --codex-only requires exactly one discovered repository named '$OPT_ONLY'" >&2; exit 1
+    fi
     local count=${#submodules[@]}
     [[ $count -eq 0 ]] && { echo "No submodules with .claude/skills/ found."; exit 0; }
+
+    if [[ "$OPT_CODEX_ONLY" == true ]]; then
+        local repo_name; repo_name="$(basename "${submodules[0]}")"
+        if codex_native_state "${submodules[0]}"; then
+            log_skip "$repo_name native skills preserved; Codex adapter untouched"
+        else
+            CODEX_BLOCKED=1; log_fail "$repo_name Codex classification blocked; adapter untouched"
+        fi
+        return
+    fi
 
     printf "${C_BOLD}Propagating ecosystem to %d submodules...${C_RESET}\n" "$count"
     [[ "$PLATFORM" == "windows" ]] \
@@ -444,6 +488,12 @@ main() {
                 local repo_name; repo_name="$(basename "$repo_dir")"
                 local adapter_dir="$repo_dir/.$provider"
                 local link="$adapter_dir/skills"
+                if [[ "$provider" == codex ]]; then
+                    local native_rc
+                    codex_native_state "$repo_dir"; native_rc=$?
+                    [[ $native_rc -eq 0 ]] && { log_skip "$repo_name native skills preserved; Codex adapter untouched"; continue; }
+                    [[ $native_rc -eq 1 ]] && { CODEX_BLOCKED=1; log_fail "$repo_name Codex classification blocked; adapter untouched"; continue; }
+                fi
                 # Valid link that still resolves to the hub skills tree — keep it.
                 if is_link "$link" && { [[ "$PLATFORM" == "windows" ]] || { [[ -d "$link" ]] \
                      && [[ "$(realpath "$link" 2>/dev/null)" == "$(realpath "$hub_skills" 2>/dev/null)" ]]; }; }; then
@@ -485,4 +535,4 @@ main() {
 }
 
 main "$@"
-exit 0
+exit "$CODEX_BLOCKED"

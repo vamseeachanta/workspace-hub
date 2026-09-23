@@ -72,7 +72,7 @@ if [[ $PUSH -eq 1 ]]; then
   if git diff --cached --quiet; then
     echo "No generated changes to commit."
   else
-    git commit -m "chore(equality): refresh ${MACHINE} evidence" -- .claude/state docs/status
+    git commit -m "chore(equality): refresh ${MACHINE} evidence" -- "${existing[@]}"
     git push
   fi
 fi

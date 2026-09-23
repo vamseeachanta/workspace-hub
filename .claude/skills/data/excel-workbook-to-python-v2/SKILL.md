@@ -22,9 +22,9 @@ context: 7/12/10
 
 ## Execution Machine
 
-- **ws014** (licensed-win-2): Claude Desktop with cowork mode + MCP
+- **ace-win-2** (licensed-win-2): Claude Desktop with cowork mode + MCP
 - Excel installed, openpyxl and pytest available in Python environment
-- `client-c` repo cloned to ws014
+- `client-c` repo cloned to ace-win-2
 
 ## Step-by-Step Workflow
 

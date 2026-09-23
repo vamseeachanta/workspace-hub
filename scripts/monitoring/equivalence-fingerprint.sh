@@ -10,11 +10,19 @@
 # Degrades gracefully: any field it cannot read is emitted as null, never an error.
 set -uo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/python-resolver.sh" || exit 1
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$PWD")"
 cd "$REPO_ROOT" || exit 1
 
 OUT=""
-[ "${1:-}" = "--out" ] && OUT="${2:-}"
+if [ "${1:-}" = "--out" ]; then
+  [ -n "${2:-}" ] || { echo "error: --out requires a path" >&2; exit 1; }
+  OUT="$2"
+elif [ "$#" -gt 0 ]; then
+  echo "error: usage: equivalence-fingerprint.sh [--out <file>]" >&2
+  exit 1
+fi
 
 host="$(hostname 2>/dev/null || echo unknown)"
 
@@ -24,8 +32,8 @@ host="$(hostname 2>/dev/null || echo unknown)"
 role="${EQUIV_ROLE:-}"
 machine="${EQUIV_MACHINE:-}"
 if [ -z "$role" ] || [ -z "$machine" ]; then
-  ident="$(python3 "$REPO_ROOT/scripts/monitoring/equivalence_state.py" resolve-identity \
-    --registry "$REPO_ROOT/config/workstations/registry.yaml" --hostname "$host" 2>/dev/null || true)"
+  ident="$("${PYTHON_CMD[@]}" "$SCRIPT_DIR/equivalence_state.py" resolve-identity \
+    --registry "$REPO_ROOT/config/workstations/registry.yaml" --hostname "$host" 2>/dev/null)" || exit 1
   [ -z "$machine" ] && machine="${ident%% *}"
   [ -z "$role" ] && role="${ident##* }"
 fi
@@ -61,7 +69,7 @@ cron_age() {
   local pat="$1" newest
   newest="$(find logs .claude/state/learning-reports -type f -name "*${pat}*" -printf '%T@\n' 2>/dev/null | sort -rn | head -1)"
   [ -z "$newest" ] && { echo null; return; }
-  python3 -c "import time,sys; print(round((time.time()-float(sys.argv[1]))/3600,1))" "$newest" 2>/dev/null || echo null
+  "${PYTHON_CMD[@]}" -c "import time,sys; print(round((time.time()-float(sys.argv[1]))/3600,1))" "$newest" 2>/dev/null || echo null
 }
 age_learning="$(cron_age comprehensive-learning)"
 age_session="$(cron_age session-analysis)"
@@ -74,11 +82,19 @@ on_main=false; [ "$cur_branch" = "main" ] && on_main=true
 lock="$REPO_ROOT/.git/index.lock"
 lock_stale=null
 if [ -e "$lock" ] && ! pgrep -x git >/dev/null 2>&1; then
-  lock_stale="$(python3 -c 'import os,sys,time; print(round((time.time()-os.path.getmtime(sys.argv[1]))/60,1))' "$lock" 2>/dev/null || echo null)"
+  lock_stale="$("${PYTHON_CMD[@]}" -c 'import os,sys,time; print(round((time.time()-os.path.getmtime(sys.argv[1]))/60,1))' "$lock" 2>/dev/null || echo null)"
 fi
 
-# Emit JSON via python for safe quoting.
-python3 - "$role" "$host" "$machine" "$clone_head" "$behind" "$ahead" "$hv" "$hinstall" "$reg_sha" "$age_learning" "$age_session" "$on_main" "$lock_stale" <<'PY' > "${OUT:-/dev/stdout}"
+# Emit to a same-directory temporary file, validate, then replace atomically.
+if [ -n "$OUT" ]; then
+  mkdir -p "$(dirname "$OUT")" || exit 1
+  tmp="$(mktemp "${OUT}.tmp.XXXXXX")" || exit 1
+else
+  tmp="$(mktemp)" || exit 1
+fi
+trap 'rm -f "${tmp:-}"' EXIT
+
+"${PYTHON_CMD[@]}" - "$role" "$host" "$machine" "$clone_head" "$behind" "$ahead" "$hv" "$hinstall" "$reg_sha" "$age_learning" "$age_session" "$on_main" "$lock_stale" <<'PY' > "$tmp" || exit 1
 import json, sys, hashlib, os
 from datetime import datetime, timezone
 role, host, machine, head, behind, ahead, hv, hinstall, reg, al, as_, on_main_s, lock_stale_s = sys.argv[1:14]
@@ -120,7 +136,15 @@ fp = {
     "provider_soul_hashes": provider_soul,
     "on_main": (on_main_s == "true"),
     "index_lock_stale_min": num(lock_stale_s),
+    "last_publish_duration_s": None,
 }
 print(json.dumps(fp, indent=1))
 PY
-[ -n "$OUT" ] && echo "wrote fingerprint -> $OUT" >&2
+"${PYTHON_CMD[@]}" "$SCRIPT_DIR/equivalence_state.py" validate --file "$tmp" >/dev/null || exit 1
+if [ -n "$OUT" ]; then
+  mv -f "$tmp" "$OUT" || exit 1
+  tmp=""
+  echo "wrote fingerprint -> $OUT" >&2
+else
+  cat "$tmp"
+fi

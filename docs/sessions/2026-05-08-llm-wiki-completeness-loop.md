@@ -40,7 +40,7 @@ Eight wiki domains exist; four are scaffold-stage. The ecosystem has ~25 registr
 | 4 | `2H/` | 42 MB | 32 | marine-engineering | Tiny but every dir is a deepwater riser/wellhead client report |
 | 5 | `client-c/energy_*` + numbered dirs | (subset of 250 GB) | many | marine + lng-projects + engineering | High-value cherrypick (drilling-riser, metocean, mrv, pipeline-installation, subseafirst) |
 | 6 | `client-a/` | 6.5 GB | 6,281 | marine-engineering | Deepwater client archive with structured Engineering/, REFERENCES/ |
-| 7 | `lng-a/{61850_zama, 61863_lakach, orcaflex, models, calculations}` | (subset of 38 GB) | many | lng-projects + marine-engineering | Finishes the 3-bucket Elements ingest |
+| 7 | `lng-a/{<project-dirs>, orcaflex, models, calculations}` (project numbers withheld) | (subset of 38 GB) | many | lng-projects + marine-engineering | Finishes the 3-bucket Elements ingest |
 | 8 | Hydro/CFD tool cluster (capytaine, gmsh, HAMS, MoorDyn, MoorPy, openfast, WEC-Sim, opm-common) | <1 GB each | each ~100s-1000s | engineering + marine-engineering | Bundle as one open-source-solvers rollup page |
 
 **Surprises:** `client-c/` and `docs/` reuse project numbers (dedup needed); `_inventory.db` for O&G-Standards is a free-money win; `Production/` (29 GB) is mostly mp3/mov training media (out of scope without transcription).

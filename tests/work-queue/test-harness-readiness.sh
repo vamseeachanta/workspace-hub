@@ -491,21 +491,21 @@ T13() {
 }
 T13
 
-# ── T14: Stale acma-ansys05 report (>25h) → DEGRADED ────────────────────────
+# ── T14: Stale ace-win-1 report (>25h) → DEGRADED ───────────────────────────
 T14() {
   if [[ ! -f "${COMPARE_SCRIPT}" ]]; then
     echo "  SKIP  T14: compare-harness-state.sh not yet implemented"
     return
   fi
   ws=$(mk_ws)
-  local stale_report="${ws}/.claude/state/harness-readiness-acma-ansys05.yaml"
+  local stale_report="${ws}/.claude/state/harness-readiness-ace-win-1.yaml"
   # Write a report timestamped 30 hours ago
   local stale_ts
   stale_ts=$(date -u -d "30 hours ago" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || \
     date -u -v-30H +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo "2026-03-07T00:00:00Z")
   cat > "${stale_report}" << EOF
 schema_version: 1
-host: acma-ansys05
+host: ace-win-1
 generated_at: "${stale_ts}"
 overall: pass
 pass_count: 5
@@ -516,7 +516,7 @@ EOF
   output=$(WORKSPACE_HUB="${ws}" HARNESS_CONFIG="${HARNESS_CONFIG}" \
     bash "${COMPARE_SCRIPT}" 2>&1 || true)
   if echo "$output" | grep -qi "degraded\|stale"; then
-    ok "T14: compare-harness-state.sh flags stale acma-ansys05 report as DEGRADED"
+    ok "T14: compare-harness-state.sh flags stale ace-win-1 report as DEGRADED"
   else
     fail "T14: expected DEGRADED for stale report — got: $(echo "$output" | head -3)"
   fi

@@ -16,13 +16,13 @@
     after a checksummed snapshot, or restore such a snapshot.
 
 .EXAMPLE
-    .\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02
+    .\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1
 
 .EXAMPLE
-    .\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource C:\Users\me\Desktop\RDS02.rdp -RdpFile C:\Users\me\Desktop\RDS02.rdp -Repair
+    .\rdp-microphone.ps1 -Role Client -ClientType Mstsc -ConfigurationSource C:\Users\me\Desktop\ace-win-1.rdp -RdpFile C:\Users\me\Desktop\ace-win-1.rdp -Repair
 
 .EXAMPLE
-    .\rdp-microphone.ps1 -Role Client -TargetHost ACMA-HOU-RDS02 -Repair -ResetConsent -StateDirectory C:\Temp\RdpMicState
+    .\rdp-microphone.ps1 -Role Client -TargetHost ace-win-1 -Repair -ResetConsent -StateDirectory C:\Temp\RdpMicState
 
 .EXAMPLE
     .\rdp-microphone.ps1 -Role Server -OutputFormat Human
@@ -34,7 +34,10 @@ param(
     [ValidateSet('Client', 'Server')]
     [string]$Role,
 
-    [string]$TargetHost = 'ACMA-HOU-RDS02',
+    # Role alias, not necessarily a resolvable name. -TargetHost is also the saved-target
+    # consent registry VALUE NAME, which mstsc keys by whatever string was actually connected
+    # to. Pass -TargetHost explicitly when that differs from the alias.
+    [string]$TargetHost = 'ace-win-1',
     [string]$RdpFile,
     [ValidateSet('Auto', 'Mstsc', 'MSRDC', 'WindowsApp', 'Unknown')]
     [string]$ClientType = 'Auto',

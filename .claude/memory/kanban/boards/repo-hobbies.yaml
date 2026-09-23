@@ -12,9 +12,10 @@ cards:
     source_url: https://github.com/vamseeachanta/hobbies/issues/2
     gh_state: open
     gh_labels:
-      - domain:code-quality
       - lane:claude
       - priority:low
+      - domain:repo
+      - cat:engineering
     initial_status: triage
     priority: 0
     gh_assignees: []
@@ -23,6 +24,16 @@ cards:
     title: 'Pages demo: family knowledge-base hub (gardening guides, 50 golden rules, team assets)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/hobbies/issues/3
+    gh_state: closed
+    gh_labels: []
+    initial_status: triage
+    priority: 0
+    gh_assignees: []
+    body_excerpt: ''
+  - idempotency_key: gh:vamseeachanta/hobbies#6
+    title: TEST-CHILD (transfer probe, safe to delete)
+    source: github_issue
+    source_url: https://github.com/vamseeachanta/hobbies/issues/6
     gh_state: closed
     gh_labels: []
     initial_status: triage
