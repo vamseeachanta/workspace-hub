@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-08-04T05:22:38Z",
+  "requests_used": 0,
+  "requests_limit": 3000,
+  "requests_percent": 0,
+  "tokens_used": 0,
+  "tokens_limit": 500000,
+  "tokens_percent": 0,
+  "cost_today": 0.00,
+  "daily_budget": 100.00,
+  "session_started": "2026-08-04T05:22:38Z"
+}

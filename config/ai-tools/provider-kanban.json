@@ -234,15 +234,16 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "status:plan-review"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -264,19 +265,22 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "fix(review): prevent duplicate Claude reviews across PR events",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3872",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "status:plan-review"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -298,7 +302,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3871",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -7903,7 +7909,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-09-22T13:21:25Z",
+  "generated_at": "2026-09-24T17:21:54Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8118,15 +8124,16 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "status:plan-review"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -8148,19 +8155,22 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "fix(review): prevent duplicate Claude reviews across PR events",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3872",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "status:plan-review"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -8182,7 +8192,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3871",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -15795,16 +15807,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-22T13:21:21.123851Z",
+  "scorecard_generated_at": "2026-09-24T17:21:47.906165Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-22T13:21:21.025691Z",
+  "utilization_generated_at": "2026-09-24T17:21:47.210334Z",
   "warning_summary": {
     "approved_no_marker": 10,
     "approved_no_plan": 7,
     "legacy_review_no_sha": 4,
     "major_review": 3,
     "marker_without_open_approved_issue": 185,
-    "missing_review": 34,
+    "missing_review": 36,
     "unavailable_review": 1
   }
 }

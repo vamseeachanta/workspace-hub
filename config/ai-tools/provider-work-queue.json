@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-22T13:21:23.340066Z",
+  "generated_at": "2026-09-24T17:21:51.234434Z",
   "current_week": "2026-W39",
-  "scorecard_generated_at": "2026-09-22T13:21:21.123851Z",
+  "scorecard_generated_at": "2026-09-24T17:21:47.906165Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -661,7 +661,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-09-22T11:45:07Z",
+          "updatedAt": "2026-09-24T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -4120,8 +4120,10 @@
           "number": 3871,
           "title": "fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3871",
-          "labels": [],
-          "updatedAt": "2026-09-15T14:08:42Z",
+          "labels": [
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-09-23T13:08:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4138,8 +4140,10 @@
           "number": 3872,
           "title": "fix(review): prevent duplicate Claude reviews across PR events",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3872",
-          "labels": [],
-          "updatedAt": "2026-09-16T00:22:46Z",
+          "labels": [
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-09-23T13:08:17Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
