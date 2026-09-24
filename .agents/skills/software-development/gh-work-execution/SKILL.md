@@ -1,6 +1,6 @@
 ---
 name: gh-work-execution
-description: Canonical GitHub issue execution route after plan approval — strengthened resource intelligence, TDD-first implementation, targeted validation, adversarial review, delegation controls for Codex agent teams, GitHub progress posting, future-issue capture, and commit/push with closeout discipline.
+description: Canonical GitHub issue execution route after plan approval — strengthened resource intelligence, TDD-first implementation, targeted validation, adversarial review, delegation controls for Claude agent teams, GitHub progress posting, future-issue capture, and commit/push with closeout discipline.
 version: 1.4.0
 author: Hermes Agent
 category: software-development
@@ -42,9 +42,9 @@ Keep updates concise and cumulative. Prefer fewer structured updates over noisy 
 During execution, if you discover additional work that should not be silently absorbed into the current issue, capture it as a future GitHub issue.
 Create it now when the split is clear, or mark it as a candidate when the orchestrator must decide timing or batching.
 
-## Codex agent-team prompt packaging rule
+## Claude agent-team prompt packaging rule
 
-When execution is best handled by multiple agents, multiple terminals, or licensed/external machines, use Codex to package the work into a self-contained prompt pack for agent team(s).
+When execution is best handled by multiple agents, multiple terminals, or licensed/external machines, use Claude to package the work into a self-contained prompt pack for agent team(s).
 Use this when:
 - work splits cleanly into non-overlapping streams
 - separate agents need explicit write boundaries
@@ -229,7 +229,7 @@ In workspace-hub-style repos, a GitHub `status:plan-approved` label may still be
 Before launching implementation in the current checkout (main checkout or fresh worktree), verify all of the following in that same checkout:
 - `.planning/plan-approved/<issue>.md` exists locally
 - the marker text uses neutral/operator approval wording (not `Worker session`, `auto-approved`, or `self-approved`)
-- the marker is committed in that checkout before write-capable Codex/Codex execution begins
+- the marker is committed in that checkout before write-capable Claude/Codex execution begins
 
 Safe sequence for approved issue execution:
 1. ensure you are in the exact checkout that will perform the writes
@@ -241,7 +241,7 @@ Worktree example:
 1. create the worktree from `main`
 2. write `.planning/plan-approved/<issue>.md` inside the worktree
 3. commit the marker locally in that worktree
-4. only then launch Codex/Codex for implementation
+4. only then launch Claude/Codex for implementation
 
 Main-checkout example:
 - even if the issue is already `status:plan-approved` on GitHub and the user explicitly says to continue, create/commit the local `.planning/plan-approved/<issue>.md` in the active checkout before implementation if it is missing there
@@ -250,7 +250,7 @@ Why this matters:
 - the plan-approval hook evaluates the local checkout state, not just GitHub labels
 - a marker created only in another checkout, or created but not committed yet, may still be treated as missing or self-approved
 - committing the marker first avoids the implementation session getting blocked mid-run by the local plan gate
-- committing the marker first avoids Codex getting blocked mid-run by the local plan gate
+- committing the marker first avoids Claude getting blocked mid-run by the local plan gate
 
 Practical pre-commit check before your first implementation commit:
 1. confirm `.planning/plan-approved/<issue>.md` exists
@@ -552,7 +552,7 @@ Do not combine unrelated issues just to reduce commit count.
 For broader waves:
 1. finish the active issue cleanly
 2. use read-only recon for next candidates if needed
-3. decide whether to implement centrally or package as Codex prompts for agent team(s)
+3. decide whether to implement centrally or package as Claude prompts for agent team(s)
 4. if packaged to agent teams, enforce zero git contention with explicit owned/read-only/forbidden path boundaries
 5. close false positives directly when evidence supports it
 6. create future issues instead of letting discoveries disappear between waves

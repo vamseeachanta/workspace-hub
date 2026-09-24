@@ -10,7 +10,7 @@ tags: [overnight, github, worktrees, backlog-reduction, blocker-conversion, work
 Use this when a repo has many open `status:plan-approved` issues, but live state may be stale and only some lanes are truly ready for implementation.
 
 ## When to use
-- Overnight batch with multiple Codex terminals/worktrees
+- Overnight batch with multiple Claude terminals/worktrees
 - Backlog contains several `status:plan-approved` issues
 - You suspect queue drift: some issues may already be implemented, others may really be blocked by shared CI/governance infrastructure
 - You want maximum morning impact, not maximum overnight token burn

@@ -47,7 +47,7 @@ Keep the orchestrator responsible for:
 Move heavy tool use into isolated execution:
 
 - Hermes: prefer `delegate_task` for reasoning-heavy isolated work, or `execute_code`/scripts for deterministic loops.
-- Codex: use runtime-supported skill/agent forking if available in that environment.
+- Claude Code: use runtime-supported skill/agent forking if available in that environment.
 - Codex/Gemini: use separate CLI invocations or file-based prompts when isolation is needed.
 
 Subworkers should return compact status, not raw logs. For detailed evidence, they should write an artifact path and report that path.
@@ -57,7 +57,7 @@ Subworkers should return compact status, not raw logs. For detailed evidence, th
 Create a run-scoped artifact directory, for example:
 
 ```text
-.Codex/tmp/skill-runs/<skill-name>/<YYYYMMDD-HHMMSS>-<short-id>/
+.claude/tmp/skill-runs/<skill-name>/<YYYYMMDD-HHMMSS>-<short-id>/
   00-input.json
   10-profile.json
   20-company.md
@@ -73,7 +73,7 @@ Rules:
 - Prefer JSON for structured state and Markdown for human review artifacts.
 - Include provenance fields: source path/URL, timestamp, command/script used, and confidence where applicable.
 - Redact secrets and avoid writing sensitive raw payloads unless the skill explicitly requires it.
-- Add cleanup guidance for high-volume temp directories; do not let `.Codex/tmp` grow indefinitely.
+- Add cleanup guidance for high-volume temp directories; do not let `.claude/tmp` grow indefinitely.
 
 ### 3. Feed forward only required context
 
@@ -127,7 +127,7 @@ If the runtime supports parse-time command substitution such as ``!`cat artifact
 
 ## Runtime Compatibility Notes
 
-- The YouTube pattern references Codex features such as skill forking and command substitution. Do not assume identical syntax works in Hermes, Codex, or Gemini.
+- The YouTube pattern references Claude Code features such as skill forking and command substitution. Do not assume identical syntax works in Hermes, Codex, or Gemini.
 - In Hermes, `delegate_task` already provides isolated child contexts, but only the final summary returns. If detailed work matters, instruct the subagent to write a named artifact in the repo/workdir and return the path.
 - For deterministic extraction, prefer `execute_code` or checked-in scripts over LLM reasoning.
 - For unattended cron jobs, prompts must be self-contained and cannot ask clarifying questions; use file contracts and explicit failure artifacts.
@@ -139,7 +139,7 @@ A quick filesystem-only first pass:
 ```bash
 python - <<'PY'
 from pathlib import Path
-root = Path('.Codex/skills')
+root = Path('.claude/skills')
 rows = []
 for p in root.rglob('SKILL.md'):
     if '_archive' in p.parts:

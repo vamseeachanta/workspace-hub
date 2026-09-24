@@ -2,7 +2,7 @@
 name: hermes-model-switching
 description: Quick provider/model switching for Hermes CLI — aliases, fallbacks, task routing matrix, and utilization audit pattern.
 version: 2.0.0
-tags: [hermes, model-switching, multi-provider, gemini, openai, Codex, routing]
+tags: [hermes, model-switching, multi-provider, gemini, openai, claude, routing]
 related_skills: [agent-usage-optimizer, overnight-parallel-agent-prompts, multi-machine-ai-readiness-and-issue-triage]
 ---
 
@@ -27,8 +27,8 @@ h-gpt          # same as h-codex
 h-mini         # gpt-5.4-mini via openai-codex
 h-batch        # gpt-5.2 via openai-codex
 
-h-opus         # Codex-opus-4-6 via Anthropic (explicit use)
-h-sonnet       # Codex-sonnet-4-6 via Anthropic (explicit use)
+h-opus         # claude-opus-4-6 via Anthropic (explicit use)
+h-sonnet       # claude-sonnet-4-6 via Anthropic (explicit use)
 
 h-gemini       # gemini-2.5-pro via Google AI Studio direct (explicit use)
 h-gemini-flash # gemini-2.5-flash via Google AI Studio direct (explicit use)
@@ -38,7 +38,7 @@ h-router       # qwen/qwen3.6-plus:free via OpenRouter (explicit use)
 h-qwen         # same as h-router
 h-nemotron     # nvidia/nemotron-3-super-120b-a12b:free via OpenRouter
 
-h-copilot      # Codex-sonnet-4.6 via Copilot (explicit use)
+h-copilot      # claude-sonnet-4.6 via Copilot (explicit use)
 h-copilot-gemini # gemini-2.5-pro via Copilot (explicit use)
 h-copilot-gpt  # gpt-5.4 via Copilot (explicit use)
 
@@ -96,19 +96,19 @@ Gemini is now a valid Hermes CLI provider (`hermes chat --provider gemini ...`).
 
 | Task Type | Primary | Fallback | Rationale |
 |-----------|---------|----------|-----------|
-| Code implementation | Codex (h-opus) | Codex gpt-5.4 (h-gpt) | Deepest context, best code quality |
-| Code review (adversarial) | Codex + Gemini | Codex | Independent eyes, cheaper |
-| Research & literature | Gemini (h-gemini) | Codex | 1M+ context window, web grounding |
-| Large document analysis | Gemini (h-gemini) | Codex | Long-context advantage |
-| Data analysis / viz | Gemini (h-gemini) | Codex | Good at structured data |
+| Code implementation | Claude (h-opus) | Codex gpt-5.4 (h-gpt) | Deepest context, best code quality |
+| Code review (adversarial) | Codex + Gemini | Claude | Independent eyes, cheaper |
+| Research & literature | Gemini (h-gemini) | Claude | 1M+ context window, web grounding |
+| Large document analysis | Gemini (h-gemini) | Claude | Long-context advantage |
+| Data analysis / viz | Gemini (h-gemini) | Claude | Good at structured data |
 | Plan review (adversarial) | All three | — | Policy already mandates this |
-| Quick lookups / triage | Gemini Flash (h-gemini-flash) | Codex | Preserve Codex quota |
+| Quick lookups / triage | Gemini Flash (h-gemini-flash) | Codex | Preserve Claude quota |
 | Overnight batch prompts | Split evenly | — | Distribute load across all 3 |
 
 ## Reality Check (cross-agent audit 2026-04-02)
 
 Config claims vs actual usage — routing must be actively enforced:
-- Codex: 95.5% of all work (must actively push tasks to other providers)
+- Claude: 95.5% of all work (must actively push tasks to other providers)
 - Codex: 99.8% review only, 0% implementation despite config claims
 - Gemini: 100% review only, 0% research despite 1M context advantage
 - Hermes: 2nd most active agent but absent from routing-config.yaml
@@ -119,8 +119,8 @@ When asked about utilization, check these sources in order:
 
 | Source | Path | Freshness Pattern |
 |--------|------|-------------------|
-| cost-tracking.jsonl | .Codex/state/session-signals/ | Usually fresh (246K records, Codex-only) |
-| weekly-trends.jsonl | .Codex/state/trends/ | Usually fresh (5 weeks) but tracks violations, not credits |
+| cost-tracking.jsonl | .claude/state/session-signals/ | Usually fresh (246K records, Claude-only) |
+| weekly-trends.jsonl | .claude/state/trends/ | Usually fresh (5 weeks) but tracks violations, not credits |
 | agent-quota.json | ~/.cache/ | Often stale (no cron refreshes it) |
 | config/*_usage.json | config/ | Usually DEAD placeholders (all zeros, 2025 dates) |
 | Codex history.jsonl | config/agents/codex/state-snapshots/ | Active raw session logs |
@@ -181,7 +181,7 @@ Important runtime nuance:
 - `run_agent.py` restores the original primary runtime at the start of each new turn in long-lived sessions
 - if logs show `Primary runtime restored for new turn: gemini...`, restart the long-lived Hermes process/session; config alone is not enough
 
-To use Codex explicitly: h-opus, h-sonnet, h-copilot
+To use Claude explicitly: h-opus, h-sonnet, h-copilot
 To use Gemini explicitly: h-copilot-gemini, h-gemini, h-router-gemini
 
 ### Credential Pool (as of 2026-04-04)
@@ -197,29 +197,29 @@ Add more Codex accounts: `hermes auth add openai-codex` → OAuth device flow.
 View pool: `hermes auth list`. Reset exhaustion: `hermes auth reset <provider>`.
 
 ### Config Pitfall: Provider-Model Mismatch
-If default provider is `openai-codex` but delegation.model is `Codex-sonnet-4-6`, subagents try Codex on Codex endpoint → fails. **Always set delegation.provider explicitly.**
+If default provider is `openai-codex` but delegation.model is `claude-sonnet-4-6`, subagents try Claude on Codex endpoint → fails. **Always set delegation.provider explicitly.**
 
 Similarly, if default is `openai-codex` and you run `hermes chat --provider nous`, it sends the default model name `gpt-5.4` to Nous — which Nous routes through their paid gateway, burning Nous credits instead of using a free model. **Always specify BOTH `--provider` AND `-m` when switching.**
 
 ### Config Mismatch Warning
-If default provider is openai-codex but delegation.model is Codex-sonnet-4-6, subagents will try to run a Codex model on the Codex endpoint — which fails. Always set delegation.provider explicitly when it differs from the default.
+If default provider is openai-codex but delegation.model is claude-sonnet-4-6, subagents will try to run a Claude model on the Codex endpoint — which fails. Always set delegation.provider explicitly when it differs from the default.
 
 ## Subscription Economics (Critical Context)
 
 ALL providers use subscription billing — NOT pay-per-token API:
-- Codex Max: $200/mo (CLI OAuth via ~/.Codex/.credentials.json)
+- Claude Max: $200/mo (CLI OAuth via ~/.claude/.credentials.json)
 - OpenAI x2: $40/mo ($20 each, subscription)
 - Gemini Pro: $20/mo (Google login)
 - GitHub Copilot: $9/mo ($107/yr annual)
 - **Total: ~$269/mo FIXED** — cost doesn't change with usage volume
 
-Hermes authenticates to Codex via `read_claude_code_credentials()` which reads the Codex OAuth token. No separate API key needed — the ANTHROPIC_API_KEY in ~/.hermes/.env is empty/unused. *(scanner-allow:hermes_env_access — doc reference, not an instruction to read secrets)*
+Hermes authenticates to Claude via `read_claude_code_credentials()` which reads the Claude Code OAuth token. No separate API key needed — the ANTHROPIC_API_KEY in ~/.hermes/.env is empty/unused. *(scanner-allow:hermes_env_access — doc reference, not an instruction to read secrets)*
 
 **Optimization is about maximizing VALUE from fixed spend, not reducing cost per token.** Every unused Gemini query slot is capacity already paid for but wasted.
 
 ## Gemini as Advance Scout Pattern
 
-Gemini should run FIRST to prepare context for Codex/Codex coding:
+Gemini should run FIRST to prepare context for Claude/Codex coding:
 
 1. **Research before coding** — APIs, standards, libraries → write to notes/prep/
 2. **Large document ingestion** — 1M context for specs/PDFs → structured extracts
@@ -230,7 +230,7 @@ Gemini should run FIRST to prepare context for Codex/Codex coding:
 
 Simple dispatch pattern:
 ```bash
-# Gemini preps, Codex implements:
+# Gemini preps, Claude implements:
 h-gemini "Research [topic]. Write findings to /tmp/prep-notes.md"
 h-opus "Read /tmp/prep-notes.md. Implement [feature] based on the research."
 ```
@@ -240,7 +240,7 @@ h-opus "Read /tmp/prep-notes.md. Implement [feature] based on the research."
 In `~/.hermes/config.yaml`, set delegation model to Sonnet (applied 2026-04-04):
 ```yaml
 delegation:
-  model: 'Codex-sonnet-4-6'   # was empty (inherited Opus)
+  model: 'claude-sonnet-4-6'   # was empty (inherited Opus)
   provider: ''                  # inherits parent provider
 ```
 This stops subagents from burning Opus quota on research/triage work.
@@ -248,14 +248,14 @@ This stops subagents from burning Opus quota on research/triage work.
 **Stronger option**: Route delegation through Copilot to fully bypass Anthropic OAuth:
 ```yaml
 delegation:
-  model: 'Codex-sonnet-4.6'
+  model: 'claude-sonnet-4.6'
   provider: 'copilot'
 ```
-This routes ALL subagent work through $9/mo Copilot sub instead of $200/mo Codex OAuth. Use if Anthropic starts billing Hermes as "extra usage."
+This routes ALL subagent work through $9/mo Copilot sub instead of $200/mo Claude OAuth. Use if Anthropic starts billing Hermes as "extra usage."
 
 Within a single session, route subagent work to cheapest capable model:
 - **Research/triage subagents** → Sonnet via delegation (NOT Opus)
-- **Implementation subagents** → Codex Opus (only when needed)
+- **Implementation subagents** → Claude Opus (only when needed)
 - **Review subagents** → Codex
 
 **Gemini limitation**: Google/Gemini is NOT a native Hermes provider. Cannot route subagents to Gemini. Use separate terminal sessions (`h-gemini`) or OpenRouter.
@@ -263,11 +263,11 @@ Within a single session, route subagent work to cheapest capable model:
 ## Evidence-Based Routing (Phase-E Audit, 168K calls over 31 days)
 
 Quantified shift opportunity from cross-agent audit:
-- ~8,000 Codex read-calls/month → Gemini (research, doc ingestion, standards mapping)
-- ~4,000 Codex write-calls/month → Codex (test writing, bounded implementation)
+- ~8,000 Claude read-calls/month → Gemini (research, doc ingestion, standards mapping)
+- ~4,000 Claude write-calls/month → Codex (test writing, bounded implementation)
 - ~800 Hermes doc-calls/month → Gemini (documentation, literature)
 - Gemini reviews (81% approve) → repurpose to research (Codex is the hard gate at 38%)
-- Net: Codex drops from 95% → ~65-70% of work
+- Net: Claude drops from 95% → ~65-70% of work
 
 **Decision**: Don't over-engineer routing automation now. The priority order is:
 1. Establish workflows (rolling queue, overnight batch, hard-stops)
@@ -279,25 +279,25 @@ The current routing matrix is a hypothesis. Let the work prove it. See #1857.
 
 Every agent should always have 5+ tasks queued. File: `notes/agent-work-queue.md`
 - Updated every Sunday night
-- Overnight pattern: Gemini=Terminal1 (prep), Codex=T2+T5 (impl), Codex=T3+T4 (tests+review)
-- Gemini prep tasks explicitly linked to downstream Codex/Codex implementation tasks
+- Overnight pattern: Gemini=Terminal1 (prep), Claude=T2+T5 (impl), Codex=T3+T4 (tests+review)
+- Gemini prep tasks explicitly linked to downstream Claude/Codex implementation tasks
 
 ## Anthropic Third-Party Harness Policy (CRITICAL — Apr 4, 2026)
 
-Anthropic announced that starting Apr 4, 2026, third-party harnesses using Codex subscription OAuth will draw from "extra usage" (costs extra) instead of subscription quota.
+Anthropic announced that starting Apr 4, 2026, third-party harnesses using Claude subscription OAuth will draw from "extra usage" (costs extra) instead of subscription quota.
 
-**Hermes IS affected.** It spoofs Codex identity:
-- Reads OAuth tokens from `~/.Codex/.credentials.json`
-- Sends `Codex-20250219` beta headers
-- Spoofs Codex user-agent version
+**Hermes IS affected.** It spoofs Claude Code identity:
+- Reads OAuth tokens from `~/.claude/.credentials.json`
+- Sends `claude-code-20250219` beta headers
+- Spoofs Claude Code user-agent version
 - Same pattern as OpenClaw (348K stars, users canceling Anthropic subs over this)
 
 **Mitigations:**
 1. ~~Claim the free one-time credit (= $200, must redeem by Apr 17, good 90 days)~~ ✅ CLAIMED Apr 4, 2026 — valid 90 days (~Jul 3)
 2. Pre-purchase extra usage bundles at up to 30% off
-3. Use `--provider copilot` as alternative Codex access path (GitHub auth, not Anthropic OAuth)
-4. Route subagents to free OSS models instead of Codex
-5. Use Codex CLI directly for heavy work (not affected — it's Anthropic's own tool)
+3. Use `--provider copilot` as alternative Claude access path (GitHub auth, not Anthropic OAuth)
+4. Route subagents to free OSS models instead of Claude
+5. Use Claude Code CLI directly for heavy work (not affected — it's Anthropic's own tool)
 
 **Monitor**: Check `~/.hermes/logs/errors.log` for new error types: `extra_usage_required`, billing-related 402/403. Check https://console.anthropic.com/settings/billing.
 
@@ -365,13 +365,13 @@ Hermes supports 18 providers. Several offer FREE open-source models:
 | Nous Portal | `--provider nous` | `qwen/qwen3.6-plus:free`, `nvidia/nemotron-3-super-120b:free` | Free account |
 | DeepSeek | `--provider deepseek` | `deepseek-chat`, `deepseek-reasoner` | Free tier API key |
 | HuggingFace | `--provider huggingface` | Qwen3.5-397B, DeepSeek-V3.2, Kimi-K2.5 | Free HF token |
-| GitHub Copilot | `--provider copilot` | Codex, Gemini, GPT, Grok — all models! | $9/mo (already paid) |
+| GitHub Copilot | `--provider copilot` | Claude, Gemini, GPT, Grok — all models! | $9/mo (already paid) |
 
-**Copilot is the hidden gem**: Your $9/mo annual sub gives Hermes access to Codex Opus/Sonnet + Gemini 2.5 Pro + GPT-5.4 through GitHub's auth (separate from Anthropic OAuth).
+**Copilot is the hidden gem**: Your $9/mo annual sub gives Hermes access to Claude Opus/Sonnet + Gemini 2.5 Pro + GPT-5.4 through GitHub's auth (separate from Anthropic OAuth).
 
 Copilot aliases (READY — GH_TOKEN configured Apr 4, 2026):
 ```bash
-h-copilot='hermes chat --provider copilot -m Codex-sonnet-4.6'
+h-copilot='hermes chat --provider copilot -m claude-sonnet-4.6'
 h-copilot-gemini='hermes chat --provider copilot -m gemini-2.5-pro'
 h-copilot-gpt='hermes chat --provider copilot -m gpt-5.4'
 ```
@@ -388,7 +388,7 @@ h-deepseek-reason='hermes chat --provider deepseek -m deepseek-reasoner'
 
 **Local inference NOT viable**: dev-primary has GTX 750 Ti (2GB VRAM). Use cloud-hosted OSS instead.
 
-**Copilot is the best multi-model hedge**: $9/mo sub gives Codex+Gemini+GPT via GitHub auth, independent of Anthropic OAuth billing. GH_TOKEN auto-generated from `gh auth token`.
+**Copilot is the best multi-model hedge**: $9/mo sub gives Claude+Gemini+GPT via GitHub auth, independent of Anthropic OAuth billing. GH_TOKEN auto-generated from `gh auth token`.
 
 ## Launch Verification Pattern for Codex GPT-5.4
 
@@ -432,7 +432,7 @@ Known error patterns:
 - After fixing `.env`, also inspect `~/.hermes/auth.json` credential_pool entries for stale provider `base_url` residue. We observed Gemini still carrying `base_url: h-which` in auth metadata even after `.env` was corrected.
 - If reviewing quota-hardening work, do not mistake the presence of `hermes_cli/codex_quota.py` for a complete solution. The critical check is whether `update_codex_credential_usage(...)` is actually called from live runtime paths. If it is not wired, `/quota` and startup warnings are mostly structural/stale.
 - When reviewing provider health summaries, verify they reuse the real provider credential resolution paths. A simple env-var check can miss live configs (example observed: Copilot health checking only `GITHUB_TOKEN` while the actual machine used `GH_TOKEN`).
-- OpenRouter key needs credits loaded to run paid models (Gemini, GPT, Codex via OR). Free-tier models like qwen/qwen3.6-plus:free work with zero balance.
+- OpenRouter key needs credits loaded to run paid models (Gemini, GPT, Claude via OR). Free-tier models like qwen/qwen3.6-plus:free work with zero balance.
 - h-gemini uses Google AI Studio endpoint directly (not OpenRouter credits) — explicit use only under the Gemini subscription.
 - smart_model_routing should remain disabled on this setup. Re-enabling it with Gemini/Copilot cheap routes reintroduces the exact quota/fallback failure mode that was cleaned up.
 - Don't forget `source ~/.bash_aliases` in new terminals for aliases to take effect
@@ -442,11 +442,11 @@ Known error patterns:
 - Running `--provider nous` without `-m` sends the default model (e.g. gpt-5.4) to Nous gateway, burning Nous credits — always specify both provider AND model
 - `hermes --h-deepseek` does NOT work — aliases are shell commands, type `h-deepseek` directly (no `hermes` prefix)
 - The routing-config.yaml is a specification, not a live router — no script dispatches tasks from it
-- cost-tracking.jsonl is the richest data source but Codex-only; you have zero visibility into Codex/Gemini spend
+- cost-tracking.jsonl is the richest data source but Claude-only; you have zero visibility into Codex/Gemini spend
 - agent-usage-optimizer sub-skills are all archived — the skill is effectively documentation-only
 - Anthropic may start billing Hermes as "extra usage" — monitor errors.log for new error types
 - OpenAI Codex provider only supports the gpt-5.x line: gpt-5.5 (live default as of 2026-06), gpt-5.4, gpt-5.4-mini, gpt-5.3-codex, gpt-5.2 — older models (gpt-4.1, o4-mini, gpt-4o) are no longer available via ChatGPT account
-- GitHub Copilot provider accesses Codex/Gemini/GPT through GitHub auth — different auth path from direct Anthropic OAuth, useful as a hedge
+- GitHub Copilot provider accesses Claude/Gemini/GPT through GitHub auth — different auth path from direct Anthropic OAuth, useful as a hedge
 - Nous Portal login has aggressive bot detection — cannot sign up or get API keys via headless browser; must use regular browser at https://portal.nousresearch.com/
 - **Stale Codex exhaustion state** persists across three layers after weekly reset: `auth.json` error fields, `~/.cache/agent-quota.json` synthetic entries, and `codex_quota.py` state. As of 2026-04-10, `codex_quota.py` was patched with: (1) `last_error_reset_at` recovery check, (2) `last_error_message`-based detection, (3) 12h staleness expiry for `exhausted_*` cache entries. If false warnings recur, clear all three layers — see #2107.
 - To manually clear stale Codex exhaustion: `python3 -c "import json,time; [code to clear auth.json and agent-quota.json]"` — or use `hermes auth reset openai-codex` followed by `query-quota.sh --refresh`.

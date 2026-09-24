@@ -20,14 +20,14 @@ Pre-flight checklist for every new session. Run these checks before beginning wo
 - Check `MEMORY.md` for active project state and recent feedback
 
 ### 2. Check prior session state
-- Read today's session signals: `.Codex/state/session-signals/YYYY-MM-DD.jsonl`
+- Read today's session signals: `.claude/state/session-signals/YYYY-MM-DD.jsonl`
 - Look for sessions that ended mid-task (incomplete commits, unreleased `wip:` labels)
 - Check `git status` for uncommitted work from prior sessions
 
 ### 3. Check for in-flight work
 - Scan for wip labels on GitHub issues (gh issue list filtered by wip label)
-- Check other terminals: `ps aux | grep Codex | grep -v grep`
-- Check `/tmp/.Codex-wip-*` markers if present
+- Check other terminals: `ps aux | grep claude | grep -v grep`
+- Check `/tmp/.claude-wip-*` markers if present
 
 ### 4. Validate environment
 - Verify tools: `uv --version`, `gh auth status`, `git status`
@@ -35,7 +35,7 @@ Pre-flight checklist for every new session. Run these checks before beginning wo
 - Verify governance hooks are registered in settings
 
 ### 5. Check governance limits
-- Review tool-call counter: `.Codex/state/session-governor/tool-call-count`
+- Review tool-call counter: `.claude/state/session-governor/tool-call-count`
 - Confirm counter is below 200 ceiling (or reset if new day)
 
 ## When to use

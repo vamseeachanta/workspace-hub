@@ -1,6 +1,6 @@
 ---
 name: git-worktree-workflow
-description: Use git worktrees for parallel Codex workflows. Run multiple Codex
+description: Use git worktrees for parallel Claude Code workflows. Run multiple Claude
   instances on different features simultaneously without merge conflicts. Use for
   parallel development, multi-branch testing, and subagent workflows.
 type: reference
@@ -19,7 +19,7 @@ tags: []
 
 ## Overview
 
-Git worktrees allow you to have multiple working directories from a single repository, enabling parallel development workflows with Codex. This is essential for running multiple Codex instances on different tasks simultaneously.
+Git worktrees allow you to have multiple working directories from a single repository, enabling parallel development workflows with Claude Code. This is essential for running multiple Claude instances on different tasks simultaneously.
 
 ## Quick Start
 
@@ -27,8 +27,8 @@ Git worktrees allow you to have multiple working directories from a single repos
 # 1. Create worktree for new feature branch
 git worktree add -b feature-api ../project-api main
 
-# 2. Run Codex in worktree
-cd ../project-api && Codex "Implement the feature"
+# 2. Run Claude in worktree
+cd ../project-api && claude "Implement the feature"
 
 # 3. After completion, merge and cleanup
 cd ../project
@@ -39,7 +39,7 @@ git branch -d feature-api
 
 ## When to Use
 
-- Running multiple Codex agents on different features
+- Running multiple Claude agents on different features
 - Testing changes while continuing development
 - Code review with live comparison
 - Parallel bug fixes across branches
@@ -58,7 +58,7 @@ git branch -d feature-api
 ## Version History
 
 - **1.1.0** (2026-01-02): Added Quick Start, Error Handling table, Metrics, Execution Checklist, Best Practices Do/Don't, updated frontmatter with version/category/related_skills
-- **1.0.0** (2025-12-30): Initial release based on Codex best practices
+- **1.0.0** (2025-12-30): Initial release based on Claude Code best practices
 
 ## Sub-Skills
 

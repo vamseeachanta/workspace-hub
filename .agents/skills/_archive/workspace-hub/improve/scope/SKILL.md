@@ -16,6 +16,6 @@ scripts_exempt: true
 |---|---|---|
 | Skill + command files | Yes | All users get the skill |
 | AGENTS.md, rules, docs | Yes | Shared improvements |
-| `.Codex/memory/` | Yes | Shared institutional knowledge |
-| `.Codex/skills/**/*.md` | Yes | Skill improvements shared |
-| `.Codex/state/` | No (gitignored) | Per-machine audit trail |
+| `.claude/memory/` | Yes | Shared institutional knowledge |
+| `.claude/skills/**/*.md` | Yes | Skill improvements shared |
+| `.claude/state/` | No (gitignored) | Per-machine audit trail |

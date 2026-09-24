@@ -6,7 +6,7 @@ description: Create new Codex skills with proper structure, documentation, and
 version: 2.2.0
 category: _internal
 last_updated: 2026-03-05
-official_plugin: skill-creator@Codex-plugin-directory
+official_plugin: skill-creator@claude-plugin-directory
 related_skills:
 - mcp-builder
 - improve
@@ -54,17 +54,17 @@ This skill guides the creation of new Codex skills. Skills are specialized instr
 ## Quick Start
 
 1. **Define scope** - Answer: What problem? Who uses it? What outputs?
-2. **Create structure** - `.Codex/skills/skill-name/SKILL.md`
+2. **Create structure** - `.claude/skills/skill-name/SKILL.md`
 3. **Write frontmatter** - Name, description, version, category
 4. **Add content** - Overview, Instructions, Examples, Best Practices
 5. **Test** - Verify skill triggers correctly
 
 ```bash
 # Create skill directory
-mkdir -p .Codex/skills/my-new-skill
+mkdir -p .claude/skills/my-new-skill
 
 # Create SKILL.md with template
-cat > .Codex/skills/my-new-skill/SKILL.md << 'EOF'
+cat > .claude/skills/my-new-skill/SKILL.md << 'EOF'
 ---
 name: my-new-skill
 description: Action-oriented description. Use for X, Y, and Z.
@@ -117,7 +117,7 @@ replacement: new-skill-name
 
 Skills are classified into quality tiers (A/B/C/D) based on enforcement level:
 - **Tier A** — Script-wired: frontmatter `scripts:` list with >=1 entry
-- **Tier B** — Exec-pattern: body contains `bash scripts/`, `uv run`, or `bash .Codex/skills/`
+- **Tier B** — Exec-pattern: body contains `bash scripts/`, `uv run`, or `bash .claude/skills/`
 - **Tier D** — Decomposition candidate: >500 words with no script refs (split recommended)
 - **Tier C** — Focused prose: everything else
 

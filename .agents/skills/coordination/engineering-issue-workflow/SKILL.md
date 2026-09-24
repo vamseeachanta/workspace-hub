@@ -15,7 +15,7 @@ version: 1.2.0
 
 > **Planning Steps delegated to `issue-planning-mode` skill.**
 > Steps 1-5 of this workflow (Triage → Resource Intelligence → Plan → Adversarial Review → User Approval)
-> are now fully defined in `.Codex/skills/coordination/issue-planning-mode/SKILL.md`.
+> are now fully defined in `.claude/skills/coordination/issue-planning-mode/SKILL.md`.
 > Load that skill for all planning work. This skill picks up at STEP 6 (Implement).
 
 ## Scope
@@ -231,7 +231,7 @@ When planning or executing engineering-calculation issues, especially in `digita
 
 ### Hermes Does Not Have SessionStart Hooks
 
-**What happened:** Codex has `.Codex/settings.json` hooks that can enforce behavior at session start. Hermes has no equivalent — it relies on AGENTS.md (always loaded) and skills (loaded on demand).
+**What happened:** Claude Code has `.claude/settings.json` hooks that can enforce behavior at session start. Hermes has no equivalent — it relies on AGENTS.md (always loaded) and skills (loaded on demand).
 
 **How to handle:** This skill MUST be referenced when working on engineering issues. For Hermes sessions, the agent may need to load it manually: "I should use the engineering-issue-workflow skill for this issue."
 
@@ -254,7 +254,7 @@ When planning or executing engineering-calculation issues, especially in `digita
 This skill is Option 1 of a 3-phase enforcement approach:
 
 **Option 1: Skill-based (CURRENT — implementing now)**
-- Works across all agents (Codex, Codex, Gemini, Hermes)
+- Works across all agents (Claude, Codex, Gemini, Hermes)
 - Instructions, not enforcement — agent can ignore it
 - Deployed as `engineering-issue-workflow` skill
 

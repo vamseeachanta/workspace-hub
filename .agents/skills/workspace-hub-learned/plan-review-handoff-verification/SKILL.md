@@ -51,7 +51,7 @@ state = terminal(f"gh issue view {issue} --json state,labels,title,url", timeout
 marker_exists = os.path.exists(f".planning/plan-approved/{issue}.md")
 readme = search_files(str(issue), target="content", path="docs/plans/README.md", output_mode="content")
 
-for provider in ["Codex", "codex", "gemini"]:
+for provider in ["claude", "codex", "gemini"]:
     path = f"scripts/review/results/2026-04-23-plan-{issue}-{provider}.md"
     # read_file(path) and extract Verdict: APPROVE|MINOR|MAJOR
 ```

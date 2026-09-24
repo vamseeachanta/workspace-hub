@@ -24,7 +24,7 @@ Use when an agent claims work is complete and you need to verify exact files, co
 
 When a task generates client-facing or public GTM/report assets, treat metadata files as part of the artifact surface. Search generated manifests/sidecars and representative rendered files for `/mnt/`, `/tmp/`, workspace names, confidential repo buckets, and client/project identifiers that are not intended for publication. If an adversarial review flags local path leakage, fix the generator so future outputs emit repo-relative or artifact-relative paths rather than post-processing one file by hand. See `references/public-chart-artifact-hygiene.md` for the #2555 chart-pack example.
 
-When the official scanner reports failures from unrelated uncommitted state (for example `.Codex/state/**` session logs), preserve truthfulness by separating:
+When the official scanner reports failures from unrelated uncommitted state (for example `.claude/state/**` session logs), preserve truthfulness by separating:
 - **official scan result:** failed/blocked and why
 - **scoped staged-file evidence:** exact files scanned and pass/fail result
 - **decision:** whether the scoped pass is sufficient for a docs-only/handoff commit, or whether the unrelated blocker must be cleaned before publication/release

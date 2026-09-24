@@ -1,7 +1,7 @@
 ---
 name: parallel-plan-drafting-worktrees
 description: Draft multiple follow-up GitHub issue plans in parallel using isolated
-  git worktrees plus background Codex print-mode runs, while keeping governance-safe
+  git worktrees plus background Claude Code print-mode runs, while keeping governance-safe
   boundaries and avoiding shared-file contention.
 version: 1.0.0
 author: Hermes Agent
@@ -29,7 +29,7 @@ Typical trigger:
 A safe parallel planning wave needs four things together:
 1. isolated worktrees per issue
 2. explicit planning-only prompts
-3. backgroundable Codex runs with durable logs
+3. backgroundable Claude runs with durable logs
 4. centralized handoff/progress tracking
 
 Running all planning in one checkout risks collisions. Using `delegate_task` risks sandbox write loss. This pattern avoids both.
@@ -48,7 +48,7 @@ git worktree add -b nightly/2451-plan /mnt/local-analysis/worktrees/ws-2451-plan
 Rules:
 - one issue per worktree
 - branch names should encode the issue number and purpose
-- verify each worktree is clean before launching Codex
+- verify each worktree is clean before launching Claude
 
 ### 2. Post a planning-start comment to each GitHub issue
 
@@ -64,7 +64,7 @@ I’m drafting the follow-up plan in an isolated worktree so this can proceed in
 
 ### 3. Write a prompt file per issue
 
-Do not inline long Codex prompts into the shell. Save each prompt to a file, then have the launcher read it.
+Do not inline long Claude prompts into the shell. Save each prompt to a file, then have the launcher read it.
 
 Prompt requirements:
 - identify repo/worktree path explicitly
@@ -83,18 +83,18 @@ Pattern:
 #!/usr/bin/env bash
 set -euo pipefail
 cd /mnt/local-analysis/worktrees/ws-2448-plan
-mkdir -p tmp/Codex-logs
-Codex -p "$(cat /tmp/plan-2448-prompt.md)" \
+mkdir -p tmp/claude-logs
+claude -p "$(cat /tmp/plan-2448-prompt.md)" \
   --permission-mode auto \
   --allowedTools 'Read,Edit,Write,Bash' \
   --max-turns 30 \
-  2>&1 | tee tmp/Codex-logs/2448-plan.log
+  2>&1 | tee tmp/claude-logs/2448-plan.log
 ```
 
 Why this works well:
 - prompt remains auditable on disk
 - launcher is rerunnable
-- output is captured even if Codex returns minimal text
+- output is captured even if Claude returns minimal text
 - logs live inside the worktree for later inspection
 
 ### 5. Start both launchers as Hermes background processes
@@ -148,7 +148,7 @@ Then verify the artifact exists:
 test -f /mnt/local-analysis/worktrees/ws-2448-plan/docs/plans/2026-04-22-issue-2448-...md
 ```
 
-Do not trust Codex stdout alone; verify file and git state directly.
+Do not trust Claude stdout alone; verify file and git state directly.
 
 ## After completion
 
@@ -234,7 +234,7 @@ For each revised plan, explicitly check and update:
 ## Common pitfalls
 
 ### Pitfall: using delegate_task for plan drafting
-Subagent sandboxing can lose writes. Use real worktrees plus Codex or direct tools instead.
+Subagent sandboxing can lose writes. Use real worktrees plus Claude Code or direct tools instead.
 
 ### Pitfall: inline `gh issue create/edit/comment --body`
 Markdown backticks and code spans can trigger shell substitution or mangling. Always use `--body-file`.
@@ -242,8 +242,8 @@ Markdown backticks and code spans can trigger shell substitution or mangling. Al
 ### Pitfall: letting multiple planning lanes edit `docs/plans/README.md`
 This creates avoidable merge contention. Defer README/index reconciliation to a central cleanup step.
 
-### Pitfall: assuming a quiet Codex run failed
-Codex `-p` may produce sparse stdout. Verify via git status, log file, and file existence instead.
+### Pitfall: assuming a quiet Claude run failed
+Claude `-p` may produce sparse stdout. Verify via git status, log file, and file existence instead.
 
 ## Minimal checklist
 
@@ -251,7 +251,7 @@ Codex `-p` may produce sparse stdout. Verify via git status, log file, and file 
 - [ ] planning-start GitHub comments posted with `--body-file`
 - [ ] prompt file written per issue
 - [ ] launcher script written per issue
-- [ ] Codex runs started as Hermes background processes
+- [ ] Claude runs started as Hermes background processes
 - [ ] handoff file written with session IDs and log paths
 - [ ] shared planning files excluded from parallel editing
 - [ ] post-run verification uses git/file checks, not stdout alone

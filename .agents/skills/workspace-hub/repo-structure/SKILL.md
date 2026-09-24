@@ -8,7 +8,7 @@ description: Canonical source layout, test mirroring, root cleanliness, gitignor
 type: reference
 invocation: /repo-structure
 applies-to:
-- Codex
+- claude
 - codex
 - gemini
 capabilities: []

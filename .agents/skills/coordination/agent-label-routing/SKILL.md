@@ -25,7 +25,7 @@ Deterministic agent task assignment using GitHub `agent:` labels. Labels ARE the
 | Label | Color | Role |
 |-------|-------|------|
 | `agent:gemini` | F5A623 | Research, prep, large-doc ingestion, standards mapping |
-| `agent:Codex` | DA552F | Heavy coding, architecture, orchestration, complex TDD |
+| `agent:claude` | DA552F | Heavy coding, architecture, orchestration, complex TDD |
 | `agent:codex` | 3182CE | Bounded implementation, test writing, review, refactoring |
 | `agent:any` | 8E54E9 | No strong preference — whichever agent has capacity |
 
@@ -34,7 +34,7 @@ Deterministic agent task assignment using GitHub `agent:` labels. Labels ARE the
 ### Step 1: Create Labels (if missing)
 ```bash
 gh label create "agent:gemini" --color "F5A623" --description "Research, prep, large-doc ingestion"
-gh label create "agent:Codex" --color "DA552F" --description "Heavy coding, architecture, orchestration"
+gh label create "agent:claude" --color "DA552F" --description "Heavy coding, architecture, orchestration"
 gh label create "agent:codex" --color "3182CE" --description "Bounded implementation, tests, review"
 gh label create "agent:any" --color "8E54E9" --description "No strong preference"
 ```
@@ -49,7 +49,7 @@ keywords: literature, review, research, catalog, triage, summarize,
   scrape, dedup, job market
 category boost: cat:document-intelligence (+3), cat:data-pipeline + dark-intelligence (+2)
 
-# Codex signals (+2 each)
+# CLAUDE signals (+2 each)
 keywords: architecture, orchestration, governance, credit utilization,
   work queue, model switching, dispatch, integration, concept selection,
   capex/opex, facility sizing, production profile, floating platform,
@@ -83,7 +83,7 @@ Same approach — background all `gh issue edit` calls for one agent, `wait`, th
 ```bash
 # Query live from GitHub — never manually maintain
 gh issue list -L 100 --label "agent:gemini,priority:high" --json number,title
-gh issue list -L 100 --label "agent:Codex,priority:high" --json number,title
+gh issue list -L 100 --label "agent:claude,priority:high" --json number,title
 gh issue list -L 100 --label "agent:codex,priority:high" --json number,title
 ```
 
@@ -136,4 +136,4 @@ TASK 2-5: same pattern...
 - `scripts/refresh-agent-work-queue.sh` (cron-ready refresh script)
 
 ## Session Record (2026-04-04 to 2026-04-05)
-6 live Gemini sessions + 4 cron batches = 30+ research documents, 14 issues closed, ~12 min total compute, ~$0 from $20/mo Gemini Pro subscription. Sprint issues created for Codex (#1897 field dev, #1898 naval arch, #1899 governance) and Codex (#1908 test coverage).
+6 live Gemini sessions + 4 cron batches = 30+ research documents, 14 issues closed, ~12 min total compute, ~$0 from $20/mo Gemini Pro subscription. Sprint issues created for Claude (#1897 field dev, #1898 naval arch, #1899 governance) and Codex (#1908 test coverage).

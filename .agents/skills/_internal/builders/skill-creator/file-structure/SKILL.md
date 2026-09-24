@@ -13,7 +13,7 @@ scripts_exempt: true
 
 
 ```
-.Codex/skills/
+.claude/skills/
 └── skill-name/            # kebab-case only (no underscores, spaces, capitals)
     ├── SKILL.md           # Required: exactly "SKILL.md" (case-sensitive)
     ├── scripts/           # Optional: executable code (Python, Bash, etc.)
@@ -26,7 +26,7 @@ scripts_exempt: true
 - NO `README.md` inside the skill folder — all docs go in SKILL.md or references/
 - Folder name must be kebab-case only (no underscores, no capitals, no spaces)
 - Keep SKILL.md under 5,000 words — move detailed docs to references/ and link to them
-- Do NOT use "Codex" or "anthropic" in skill name (reserved)
+- Do NOT use "claude" or "anthropic" in skill name (reserved)
 
 ## SKILL.md Structure
 

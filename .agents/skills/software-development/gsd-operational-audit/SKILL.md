@@ -18,7 +18,7 @@ Use when a repo claims to use GSD/get-shit-done and you need to determine what i
 
 ## Critical: Resolve the real repo path FIRST
 
-On ace-linux-1, `~/workspace-hub` is a **sparse overlay** with almost nothing in it (only `.Codex/state/corrections/`). The real git repo is at `/mnt/local-analysis/workspace-hub`. Subagents given `~/workspace-hub` will report everything as missing.
+On ace-linux-1, `~/workspace-hub` is a **sparse overlay** with almost nothing in it (only `.claude/state/corrections/`). The real git repo is at `/mnt/local-analysis/workspace-hub`. Subagents given `~/workspace-hub` will report everything as missing.
 
 **Discovery pattern** (run before any audit work):
 ```bash
@@ -81,7 +81,7 @@ Important interpretation:
 
 For `gsd-researcher-nightly.sh`, the highest-value fixes were:
 - increase timeout budget for WebSearch-heavy runs
-- retry once on primary Codex failure/timeout with **reduced context**
+- retry once on primary Claude failure/timeout with **reduced context**
 - make output validation **domain-aware** (`synthesis` must not be validated like daily domain reports)
 - trim conversational preamble before the canonical markdown heading
 
@@ -101,7 +101,7 @@ Real example: hardening commit landed at 4pm, cron runs at 6:35am — the next d
 Prefer a behavioral shell test under `scripts/cron/tests/` that:
 - creates a temp workspace with the same relative layout
 - copies the real script under test
-- stubs `date`, `hostname`, `flock`, `git`, `Codex`, and `notify.sh` via `PATH`
+- stubs `date`, `hostname`, `flock`, `git`, `claude`, and `notify.sh` via `PATH`
 - asserts artifact creation, retry behavior, and skip behavior
 
 This worked better than grep-only/static tests for validating retry/fallback behavior.
@@ -113,10 +113,10 @@ See "Crontab drift from YAML source of truth" section below for the full detecti
 ## Step 3: Check GSD state/dashboard drift
 
 Run the live tools:
-- `node .Codex/get-shit-done/bin/gsd-tools.cjs state-snapshot`
-- `node .Codex/get-shit-done/bin/gsd-tools.cjs roadmap analyze`
-- `node .Codex/get-shit-done/bin/gsd-tools.cjs phase-plan-index <phase>`
-- `node .Codex/get-shit-done/bin/gsd-tools.cjs init manager`
+- `node .claude/get-shit-done/bin/gsd-tools.cjs state-snapshot`
+- `node .claude/get-shit-done/bin/gsd-tools.cjs roadmap analyze`
+- `node .claude/get-shit-done/bin/gsd-tools.cjs phase-plan-index <phase>`
+- `node .claude/get-shit-done/bin/gsd-tools.cjs init manager`
 
 Then compare against:
 - `.planning/STATE.md`
@@ -151,7 +151,7 @@ Interpret carefully:
 
 Pay special attention to contradictions like:
 - `AGENTS.md` says "GitHub issues only; no local work-queue"
-- other docs still describe `.Codex/work-queue/` as canonical
+- other docs still describe `.claude/work-queue/` as canonical
 
 That is a policy conflict, not just stale wording.
 
@@ -193,12 +193,12 @@ When the repo has `config/scheduled-tasks/schedule-tasks.yaml`, a health-check s
 2. For each task: resolve log path (handle globs with `shopt -s nullglob` + stat newest), check mtime staleness, grep for error patterns
 3. Status categories: OK, STALE (log older than expected interval), MISSING (no log file), ERROR (error patterns found)
 4. Skip Windows-scheduler tasks and `log: null` entries
-5. Write JSON report to `.Codex/state/cron-health/YYYY-MM-DD.json`
+5. Write JSON report to `.claude/state/cron-health/YYYY-MM-DD.json`
 
 ### Pitfalls discovered during implementation
 - **Arg parsing:** `for i in "$@"` with `shift` inside the loop doesn't work — `shift` doesn't affect the already-expanded list. Use `while [[ $# -gt 0 ]]` instead.
 - **UTC vs local date:** If the script uses `date -u +%Y-%m-%d`, tests must also use `date -u`. A timezone offset can cause the test to look for `2026-04-01.json` while the script wrote `2026-04-02.json`.
-- **`.Codex/state/` is gitignored** in this repo — reports written there are local-only unless force-added or synced another way.
+- **`.claude/state/` is gitignored** in this repo — reports written there are local-only unless force-added or synced another way.
 - **Glob log patterns** (e.g., `logs/research/*.log`): use `shopt -s nullglob` to avoid literal glob strings when no files match, then `stat -c %Y` to find the newest file.
 
 ### Crontab drift from YAML source of truth
@@ -210,7 +210,7 @@ When the repo has `config/scheduled-tasks/schedule-tasks.yaml`, a health-check s
 Common drift patterns found in practice:
 - **Stale log paths:** YAML updated (e.g., split shared cron.log into per-task files) but crontab still points to old paths
 - **Missing tasks:** New tasks added to YAML but never installed (setup-cron.sh is additive-only by default)
-- **Orphan tasks:** Tasks removed from YAML but still in crontab (e.g., `Codex-plugin-audit`)
+- **Orphan tasks:** Tasks removed from YAML but still in crontab (e.g., `claude-plugin-audit`)
 - **/tmp/ log paths:** Jobs logging to `/tmp/` — lost on reboot, invisible to repo-level health checks
 
 **Fix workflow:**
@@ -225,7 +225,7 @@ The `--replace` flag (added in this workflow) generates the entire crontab from 
 
 ### Shared-log anti-pattern
 
-Multiple cron tasks MUST NOT share a single log file (e.g., `.Codex/state/learning-reports/cron.log`). Problems:
+Multiple cron tasks MUST NOT share a single log file (e.g., `.claude/state/learning-reports/cron.log`). Problems:
 - Error patterns from one task cascade as false positives to all tasks sharing the log
 - Impossible to determine per-task health from a combined log
 - Health monitoring that scans for error patterns will flag every task that shares the log
@@ -235,7 +235,7 @@ Also avoid `/tmp/` log paths — they're lost on reboot and invisible to repo-le
 
 ## Step 6: Mine session signals for failure patterns
 
-Session telemetry lives at `.Codex/state/session-signals/*.jsonl` (gitignored, local-only).
+Session telemetry lives at `.claude/state/session-signals/*.jsonl` (gitignored, local-only).
 Records are newline-delimited JSON. Key event types:
 
 | Event | What it tells you |
@@ -251,7 +251,7 @@ Records are newline-delimited JSON. Key event types:
 Sessions with 100+ tool calls are suspicious. To find the worst offenders:
 
 ```bash
-cat .Codex/state/session-signals/*.jsonl | uv run python3 -c "
+cat .claude/state/session-signals/*.jsonl | uv run python3 -c "
 import sys, json, collections
 wrk_stats = collections.defaultdict(lambda: {'sessions': 0, 'total_calls': 0, 'max_calls': 0})
 for line in sys.stdin:
@@ -276,7 +276,7 @@ for wrk, s in by_effort[:10]:
 Look for repos with consecutive-day failures (persistent breakage vs. one-off):
 
 ```bash
-cat .Codex/state/session-signals/*.jsonl | uv run python3 -c "
+cat .claude/state/session-signals/*.jsonl | uv run python3 -c "
 import sys, json
 for line in sys.stdin:
     line = line.strip()
@@ -299,10 +299,10 @@ fail_statuses = {"fail", "timeout", "error"}
 
 **IMPORTANT:** Corrections are captured in TWO separate locations:
 
-1. `.Codex/state/session-signals/*.jsonl` — has `correction_events` and `skill_invocations` arrays in `session_end` records, but these are **always empty** (detection not wired into the session emitter).
-2. `.Codex/state/corrections/session_YYYYMMDD.jsonl` — **this is the active store**. The `capture-corrections.sh` PostToolUse hook writes here. As of 2026-04, 8,965+ corrections across 3,127 files have been captured.
+1. `.claude/state/session-signals/*.jsonl` — has `correction_events` and `skill_invocations` arrays in `session_end` records, but these are **always empty** (detection not wired into the session emitter).
+2. `.claude/state/corrections/session_YYYYMMDD.jsonl` — **this is the active store**. The `capture-corrections.sh` PostToolUse hook writes here. As of 2026-04, 8,965+ corrections across 3,127 files have been captured.
 
-**Audit pitfall:** Do NOT conclude "no corrections captured" based only on session-signals data. Always check `.Codex/state/corrections/` too. The initial #1426 audit made this exact mistake.
+**Audit pitfall:** Do NOT conclude "no corrections captured" based only on session-signals data. Always check `.claude/state/corrections/` too. The initial #1426 audit made this exact mistake.
 
 To analyze correction data for skill promotion candidates:
 ```bash
@@ -315,7 +315,7 @@ This finds files with 10+ corrections (strong skill candidates) and existing ski
 
 - **Volume:** Signal files can contain 200K+ records (390 files, 73MB observed). Always stream with Python, never try to load all into memory at once or use `jq` on the full set.
 - **execute_code quoting trap:** Do NOT embed multi-line Python with nested quotes inside `terminal()` f-strings in `execute_code` — it will cause SyntaxErrors. Instead, write a standalone `.py` script to `/tmp/audit-signals.py` via `write_file`, then run it with `terminal("uv run --no-project python3 /tmp/audit-signals.py")`.
-- **`.Codex/state/` is gitignored.** Reports written there stay local-only. Commit reports to `docs/reports/` instead.
+- **`.claude/state/` is gitignored.** Reports written there stay local-only. Commit reports to `docs/reports/` instead.
 - **Many "none" events:** The majority of records may be placeholder/test data with `event: none`. Filter by event type first. In the 2026-04 audit: 225K "none" events vs 7.3K session_tool_summary.
 
 ## Enforcement gradient promotion pattern
@@ -328,9 +328,9 @@ When a repo has a policy at Level 0 (Prose) that needs to be promoted through en
 | Level 0 — Prose | .md doc exists | `test -f docs/standards/POLICY.md` |
 | Level 1 — Micro-skill | Auto-loaded reminder | Skill file references the policy |
 | Level 2 — Script | Binary check script | `scripts/enforcement/require-*.sh` or `scripts/ai/*.py` with tests |
-| Level 3 — Hook | PreToolUse/Stop hook | Registered in `.Codex/settings.json`, fires automatically |
+| Level 3 — Hook | PreToolUse/Stop hook | Registered in `.claude/settings.json`, fires automatically |
 
-### Codex hook protocol (for Level 3)
+### Claude hook protocol (for Level 3)
 Hooks read JSON from stdin: `{"tool_name": "Bash", "tool_input": {"command": "gh pr create ..."}}`
 - Extract via: `jq -r '.tool_name // empty'` and `jq -r '.tool_input.command // empty'`
 - To BLOCK: output `{"decision": "block", "reason": "..."}` to stdout
@@ -363,7 +363,7 @@ When auditing, check for these enforcement scripts and hooks:
 | Plan review | `scripts/enforcement/require-plan-review.sh` | `cross-review-gate.sh` Gate 3 | Execution without reviewed plan |
 | Artifact verify | `scripts/enforcement/require-verify-artifacts.sh` | `cross-review-gate.sh` Gate 2 | Ship without verification |
 | TDD pairing | `scripts/enforcement/require-tdd-pairing.sh` | `cross-review-gate.sh` Gate 4 | Commits without test files |
-| Tool-call ceiling | `.Codex/hooks/tool-call-ceiling.sh` | PostToolUse | Runaway sessions (500 call limit) |
+| Tool-call ceiling | `.claude/hooks/tool-call-ceiling.sh` | PostToolUse | Runaway sessions (500 call limit) |
 | Smoke escalation | `scripts/enforcement/smoke-test-escalation.sh` | Manual/cron | Persistent test failures |
 | Skill candidates | `scripts/enforcement/correction-to-skill-candidates.sh` | Manual/cron | Correction patterns not promoted |
 
@@ -403,7 +403,7 @@ When multiple cron scripts do git pull/commit/push on the same repo, they WILL r
 Key functions: `git_safe_pull`, `git_safe_commit`, `git_safe_push`, `git_safe_sync`
 
 Design decisions that worked:
-- **fd-based flock** (`exec 9>"$lockfile"; flock 9`) instead of `flock /path cmd` — avoids `bash -c` which is blocked by Codex deny rules and is fragile with quoting
+- **fd-based flock** (`exec 9>"$lockfile"; flock 9`) instead of `flock /path cmd` — avoids `bash -c` which is blocked by Claude deny rules and is fragile with quoting
 - **Single lockfile** for all scripts: `/tmp/workspace-hub-git.lock`
 - **Index heal** before every pull and commit: `rm -f index.lock; git read-tree HEAD`
 - **Auto-stash** dirty tree before rebase, auto-pop after
@@ -428,12 +428,12 @@ git_safe_push || true        # non-fatal push
 
 ### Testing pitfall
 
-Push tests (`git push`) are blocked by Codex's deny rules in `.Codex/settings.json`. Guard push tests behind an env var: `GIT_SAFE_TEST_PUSH=1`. Always document this in test output so it's not confused with real failures.
+Push tests (`git push`) are blocked by Claude's deny rules in `.claude/settings.json`. Guard push tests behind an env var: `GIT_SAFE_TEST_PUSH=1`. Always document this in test output so it's not confused with real failures.
 
 ### What NOT to do
 
 - Don't use `rm -f .git/index.lock` as a standalone fix — it races with the actual lock holder
-- Don't use `flock /path/lock bash -c '...'` — fragile quoting + blocked in Codex sessions
+- Don't use `flock /path/lock bash -c '...'` — fragile quoting + blocked in Claude sessions
 - Don't implement locking per-script — only works if ALL scripts use the same lockfile
 - Don't assume `git pull --rebase` will succeed with dirty working tree — always stash first
 

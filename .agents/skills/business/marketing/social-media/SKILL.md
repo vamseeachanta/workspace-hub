@@ -2,12 +2,12 @@
 name: social-media
 description: Social media marketing with campaign analysis, platform strategies, and
   engagement metrics. Use for social presence building, campaign tracking, and ROI
-  analysis. Based on alirezarezvani/Codex-skills.
+  analysis. Based on alirezarezvani/claude-skills.
 type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-01-19
-source: https://github.com/alirezarezvani/Codex-skills
+source: https://github.com/alirezarezvani/claude-skills
 related_skills:
 - content-strategy
 - lead-generation
@@ -50,7 +50,7 @@ This skill provides comprehensive social media marketing capabilities including 
 
 ## Version History
 
-- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/Codex-skills
+- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/claude-skills
 
 ## Sub-Skills
 

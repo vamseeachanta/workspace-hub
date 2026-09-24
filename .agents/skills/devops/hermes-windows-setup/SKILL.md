@@ -13,7 +13,7 @@ Repo-centric Hermes agent installation and configuration for Windows machines. T
 ## ⚠️ Rules for This Skill
 
 - This skill is **Windows-only**. On Linux, use the standard workspace-hub pattern.
-- The workspace repo (`.Codex/`) is the **source of truth** — not any global agent config.
+- The workspace repo (`.claude/`) is the **source of truth** — not any global agent config.
 - All skills and memory files **MUST be git-tracked**.
 - Never commit `.env` files or API keys.
 - Use `python` not `python3` on Windows.
@@ -141,17 +141,17 @@ In `config.yaml`, set external skill directories:
 ```yaml
 skills:
   external_dirs:
-    - C:\workspace-hub\.Codex\skills
+    - C:\workspace-hub\.claude\skills
 ```
 
-### Option B — Codex
+### Option B — Claude Code
 
 ```powershell
-npm install -g @anthropic-ai/Codex
-Codex --help
+npm install -g @anthropic-ai/claude-code
+claude --help
 ```
 
-Codex reads `.Codex/AGENTS.md` and `.Codex/skills/` automatically from the workspace directory.
+Claude Code reads `.claude/CLAUDE.md` and `.claude/skills/` automatically from the workspace directory.
 
 ## Phase 5: Skills System (Repo-Centric)
 
@@ -160,13 +160,13 @@ The skills system is the core of repo-centric agent memory. Skills live in the r
 ### 5.1 — Create Structure
 
 ```powershell
-mkdir -p C:\workspace-hub\.Codex\skills
-mkdir -p C:\workspace-hub\.Codex\memory
+mkdir -p C:\workspace-hub\.claude\skills
+mkdir -p C:\workspace-hub\.claude\memory
 ```
 
 ### 5.2 — Key Skill Files to Ensure Exist
 
-Copy or create these in `.Codex/skills/`:
+Copy or create these in `.claude/skills/`:
 - `workspace-cli/` — CLI conventions
 - `repo-structure/` — source layout conventions
 - `clean-code/` — coding standards
@@ -177,7 +177,7 @@ If cloning from an existing workspace-hub repo, these are already present.
 
 ### 5.3 — How External Skills Work
 
-Hermes indexes `.Codex/skills/` as an external skill directory:
+Hermes indexes `.claude/skills/` as an external skill directory:
 - **Read-only** — Hermes reads but never writes to external skills
 - **Full integration** — appear in system prompt, skills_list, and slash commands
 - **Local precedence** — local `~/.hermes/skills/` overrides external if same name
@@ -188,8 +188,8 @@ The memory bridge syncs agent memory into git-tracked files:
 
 ```powershell
 # Create memory files
-New-Item -Path "C:\workspace-hub\.Codex\memory\user.md" -ItemType File -Force
-New-Item -Path "C:\workspace-hub\.Codex\memory\project.md" -ItemType File -Force
+New-Item -Path "C:\workspace-hub\.claude\memory\user.md" -ItemType File -Force
+New-Item -Path "C:\workspace-hub\.claude\memory\project.md" -ItemType File -Force
 ```
 
 These files are git-tracked and serve as persistent memory accessible to ALL agents working in this workspace.
@@ -240,7 +240,7 @@ uv run python -c "import sys; print(sys.version)"
 gh auth status
 
 # 4. Agent test — simple task
-hermes chat -q "List all .md files in .Codex/skills/"
+hermes chat -q "List all .md files in .claude/skills/"
 ```
 
 Expected:
@@ -258,13 +258,13 @@ cd C:\workspace-hub
 hermes
 ```
 
-Test prompt: "Read .Codex/AGENTS.md and confirm you understand the workspace conventions."
+Test prompt: "Read .claude/AGENTS.md and confirm you understand the workspace conventions."
 
 ## Multi-Agent Coordination on Windows
 
 ### Running Multiple Agents
 
-All agents (Hermes, Codex, Codex) point at the same `C:\workspace-hub` directory and read from the same `.Codex/skills/` and `.Codex/memory/`.
+All agents (Hermes, Claude Code, Codex) point at the same `C:\workspace-hub` directory and read from the same `.claude/skills/` and `.claude/memory/`.
 
 ### Git Contention Prevention
 
@@ -304,12 +304,12 @@ hermes chat -q "Long running task"  # Fire-and-forget mode
 
 ## Workspace-Hub Parity Audit Findings (2026-04-11)
 
-When using Codex directly on a Windows machine inside the workspace-hub ecosystem, the repo preserves most Hermes advantages via git-tracked `.Codex/skills/`, `.Codex/memory/`, `.Codex/state/`, and exported orchestrator logs. However, full parity is **not automatic** yet. Apply these checks before calling the setup complete:
+When using Claude Code directly on a Windows machine inside the workspace-hub ecosystem, the repo preserves most Hermes advantages via git-tracked `.claude/skills/`, `.claude/memory/`, `.claude/state/`, and exported orchestrator logs. However, full parity is **not automatic** yet. Apply these checks before calling the setup complete:
 
 ### Required for high-confidence parity
 
-1. **Git Bash is required** — current Codex project hooks invoke `bash` commands extensively.
-2. **Node.js + Codex auth must be working** — verify with `Codex --version` and `Codex auth status --text`.
+1. **Git Bash is required** — current Claude project hooks invoke `bash` commands extensively.
+2. **Node.js + Claude Code auth must be working** — verify with `claude --version` and `claude auth status --text`.
 3. **Install `uv` on Windows Git Bash unless you have patched the hooks** — several tracked hooks still call `uv run ...`.
 4. **Provide a `python3` shim/alias or patch hooks to use `python`** — some hooks still call `python3` even though Windows conventions say `python`.
 5. **`jq` should be installed in Git Bash** — readiness and hook scripts expect it.
@@ -317,19 +317,19 @@ When using Codex directly on a Windows machine inside the workspace-hub ecosyste
 ### Repo-side caveats to check
 
 - `scripts/readiness/harness-config.yaml` may still have `licensed-win-1.ws_hub_path: null`. Set the actual Windows workspace path (for example `D:\\workspace-hub`) when hardening a real machine.
-- A tracked readiness proof file should exist after setup: `.Codex/state/harness-readiness-licensed-win-1.yaml`.
+- A tracked readiness proof file should exist after setup: `.claude/state/harness-readiness-ace-win-1.yaml`.
 - Windows write-back parity is still incomplete if issue `#1918` (Windows auto-memory sync back to repo) is still open. Windows can consume shared context now, but may not automatically publish all new learnings back into the ecosystem.
-- Treat Windows as **repo-parity first**: Codex reads `.Codex/` directly, so you retain most Hermes advantages even without installing Hermes locally.
+- Treat Windows as **repo-parity first**: Claude Code reads `.claude/` directly, so you retain most Hermes advantages even without installing Hermes locally.
 
 ### Practical interpretation
 
 If the machine can:
 - `git pull`
-- run Codex from repo root
-- execute `.Codex/settings.json` hooks successfully under Git Bash
-- see shared `.Codex/skills/`, `.Codex/memory/`, `.Codex/state/`
+- run Claude Code from repo root
+- execute `.claude/settings.json` hooks successfully under Git Bash
+- see shared `.claude/skills/`, `.claude/memory/`, `.claude/state/`
 
-then it is good enough for productive Codex-on-Windows work, even if full Hermes runtime parity is not yet complete.
+then it is good enough for productive Claude-on-Windows work, even if full Hermes runtime parity is not yet complete.
 
 ## Common Windows Pitfalls
 
@@ -390,10 +390,10 @@ Keep workspace files on Windows filesystem (`/mnt/c/workspace-hub`) for cross-to
 
 ### Skills not loading
 - Check `hermes config edit` → `skills.external_dirs` points to correct path
-- Verify `.Codex/skills/` exists and has `SKILL.md` files
+- Verify `.claude/skills/` exists and has `SKILL.md` files
 - Restart Hermes session with `/new` to reload skills
 
 ### Memory not persisting
-- Check `.Codex/memory/` files exist and are not empty
+- Check `.claude/memory/` files exist and are not empty
 - Verify config has `memory.memory_enabled: true`
 - Check the memory bridge script runs on session start

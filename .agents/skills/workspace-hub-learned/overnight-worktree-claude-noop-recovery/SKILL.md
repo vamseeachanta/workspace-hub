@@ -1,25 +1,25 @@
 ---
-name: overnight-worktree-Codex-noop-recovery
-description: Recover overnight Codex worktree batches that appear to succeed but produce no artifacts; harden rerun prompts and launch commands.
+name: overnight-worktree-claude-noop-recovery
+description: Recover overnight Claude worktree batches that appear to succeed but produce no artifacts; harden rerun prompts and launch commands.
 version: 1.0.0
 author: Hermes Agent
 license: MIT
 ---
 
-# Overnight worktree Codex no-op recovery
+# Overnight worktree Claude no-op recovery
 
-Use this when an unattended multi-worktree Codex batch is launched correctly, exits with code 0, but expected planning/report artifacts are missing.
+Use this when an unattended multi-worktree Claude batch is launched correctly, exits with code 0, but expected planning/report artifacts are missing.
 
 ## Trigger pattern
 
-- Background `Codex -p` jobs in separate worktrees
+- Background `claude -p` jobs in separate worktrees
 - `process poll` shows `exit_code: 0`
 - stdout/log output is empty or unhelpful
 - expected result files under `docs/reports/` / `docs/plans/` / `scripts/review/results/` were not created
 
 ## What happened in the learned case
 
-A 3-worktree overnight planning wave was launched safely from isolated worktrees. All three Codex runs exited successfully, but two produced no expected outputs and one only preserved pre-existing artifacts. The initial prompts were too easy for Codex to effectively no-op while still returning success. A first rerun also failed because the launcher used relative prompt-file paths that the shell did not resolve as expected.
+A 3-worktree overnight planning wave was launched safely from isolated worktrees. All three Claude runs exited successfully, but two produced no expected outputs and one only preserved pre-existing artifacts. The initial prompts were too easy for Claude to effectively no-op while still returning success. A first rerun also failed because the launcher used relative prompt-file paths that the shell did not resolve as expected.
 
 ## Recovery workflow
 
@@ -29,7 +29,7 @@ A 3-worktree overnight planning wave was launched safely from isolated worktrees
   - required summary/report file
   - target `docs/plans/*issue*` files
   - target `scripts/review/results/*issue*` files
-- If none exist, treat the run as failed even if Codex exited 0.
+- If none exist, treat the run as failed even if Claude exited 0.
 
 2. Keep the worktree isolation
 - Do NOT rerun in the dirty main checkout.
@@ -57,7 +57,7 @@ Example requirement block:
 - This removes cwd/path ambiguity in copied worktree setups.
 
 5. Relaunch as background jobs
-- Same `Codex -p --permission-mode acceptEdits --no-session-persistence ...`
+- Same `claude -p --permission-mode acceptEdits --no-session-persistence ...`
 - Keep one process per worktree.
 - Poll after launch to ensure the shell found the prompt file.
 
@@ -74,12 +74,12 @@ prompt=$wt/docs/plans/overnight-prompts/2026-04-22-tier1-knowledge-beef-up/rerun
 cd "$wt"
 mkdir -p logs
 PROMPT=$(< "$prompt")
-Codex -p \
+claude -p \
   --permission-mode acceptEdits \
   --no-session-persistence \
   --output-format text \
   --max-budget-usd 20 \
-  "$PROMPT" </dev/null > logs/Codex-tier1-terminal-2-rerun.log 2>&1
+  "$PROMPT" </dev/null > logs/claude-tier1-terminal-2-rerun.log 2>&1
 ```
 
 ## Checks to run after a suspicious success
@@ -99,4 +99,4 @@ PY
 
 ## Key lesson
 
-For unattended Codex planning batches, prompt design must force an observable artifact very early. Process exit codes and silent logs are not reliable proof of work completion.
+For unattended Claude planning batches, prompt design must force an observable artifact very early. Process exit codes and silent logs are not reliable proof of work completion.

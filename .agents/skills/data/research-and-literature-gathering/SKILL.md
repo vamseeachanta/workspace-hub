@@ -201,7 +201,7 @@ uv run --no-project python scripts/data/research-literature/research-domain.py \
 set -uo pipefail
 
 DEST="/mnt/ace-data/digitalmodel/docs/domains/${DOMAIN}/literature"
-LOG_DIR="$(git rev-parse --show-toplevel)/.Codex/work-queue/assets"
+LOG_DIR="$(git rev-parse --show-toplevel)/.claude/work-queue/assets"
 LOG_FILE="${LOG_DIR}/download-${DOMAIN}.log"
 DRY_RUN=false
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN=true
@@ -324,7 +324,7 @@ uv run --no-project python scripts/data/document-index/phase-a-index.py
 
 # If full pipeline takes >5 min, queue it instead:
 echo "uv run --no-project python scripts/data/document-index/phase-a-index.py" \
-  > .Codex/work-queue/assets/${WRK_ID}/index-regen-queued.txt
+  > .claude/work-queue/assets/${WRK_ID}/index-regen-queued.txt
 ```
 
 The pipeline phases that follow:

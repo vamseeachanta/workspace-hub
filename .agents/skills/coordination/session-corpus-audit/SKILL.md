@@ -15,7 +15,7 @@ Analyze session signals to identify quality trends and waste patterns.
 
 ## Data source
 
-Session signals live at `.Codex/state/session-signals/YYYY-MM-DD.jsonl`.
+Session signals live at `.claude/state/session-signals/YYYY-MM-DD.jsonl`.
 Each line is a JSON object with: session_id, transcript_path, cwd, permission_mode, hook_event_name, stop_hook_active, last_assistant_message.
 
 ## Audit procedure
@@ -23,7 +23,7 @@ Each line is a JSON object with: session_id, transcript_path, cwd, permission_mo
 ### 1. Collect recent signals
 ```bash
 # Last 7 days of session signals
-for f in $(ls -t .Codex/state/session-signals/*.jsonl | head -7); do
+for f in $(ls -t .claude/state/session-signals/*.jsonl | head -7); do
   echo "=== $(basename $f) ==="
   wc -l "$f"
   cat "$f"
@@ -36,7 +36,7 @@ done
 - Sessions ending with permission denials
 
 ### 3. Estimate tool-call volume
-- Check `.Codex/state/session-governor/tool-call-count` for daily totals
+- Check `.claude/state/session-governor/tool-call-count` for daily totals
 - Flag any day exceeding 500 tool calls (potential runaway session)
 
 ### 4. Detect recurring patterns

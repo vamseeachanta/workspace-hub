@@ -34,7 +34,7 @@ prs = Presentation()
 # Add title slide
 title_slide = prs.slides.add_slide(prs.slide_layouts[0])
 title_slide.shapes.title.text = "My Presentation"
-title_slide.placeholders[1].text = "By Codex"
+title_slide.placeholders[1].text = "By Claude"
 
 prs.save("presentation.pptx")
 ```

@@ -14,10 +14,10 @@ scripts_exempt: true
 
 ```
 AGENTS.md Limits:
-- Global (~/.Codex/AGENTS.md): 2KB max
+- Global (~/.claude/CLAUDE.md): 2KB max
 - Workspace AGENTS.md: 4KB max
 - Project AGENTS.md: 8KB max
-- Codex.local.md: 2KB max
+- CLAUDE.local.md: 2KB max
 - Total Active: 16KB (~4K tokens)
 
 Runtime Context:

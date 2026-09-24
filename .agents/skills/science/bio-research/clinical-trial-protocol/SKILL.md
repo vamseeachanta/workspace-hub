@@ -30,8 +30,8 @@ This skill generates clinical trial protocols for **medical devices or drugs** u
 ### 1. clinical trials MCP Server (Required)
 
 **Installation:**
-- Install via drag-and-drop `.mcpb` file into Codex Desktop
-- Or configure manually in Codex Desktop settings
+- Install via drag-and-drop `.mcpb` file into Claude Desktop
+- Or configure manually in Claude Desktop settings
 
 **Available Tools:**
 `search_clinical_trials` - Search by:

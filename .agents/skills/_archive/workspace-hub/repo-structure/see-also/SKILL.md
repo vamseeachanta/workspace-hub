@@ -16,4 +16,4 @@ scripts_exempt: true
 - `/infrastructure-layout` — canonical 5-domain layout for the infrastructure/ package (config, persistence, validation, utils, solvers)
 - `scripts/operations/validate-file-placement.sh` — automated enforcement checks
 - `.Codex/docs/workspace-structure.md` — full ecosystem canonical layout
-- `.Codex/rules/coding-style.md` — naming conventions (snake_case, kebab-case)
+- `.claude/rules/coding-style.md` — naming conventions (snake_case, kebab-case)

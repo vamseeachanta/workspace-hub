@@ -2,12 +2,12 @@
 name: code-reviewer
 description: Comprehensive code review toolkit for evaluating quality across multiple
   languages. Use for PR analysis, quality checking, and generating review reports.
-  Based on alirezarezvani/Codex-skills.
+  Based on alirezarezvani/claude-skills.
 type: reference
 version: 1.0.0
 category: development
 last_updated: 2026-01-19
-source: https://github.com/alirezarezvani/Codex-skills
+source: https://github.com/alirezarezvani/claude-skills
 related_skills:
 - tdd-obra
 - systematic-debugging
@@ -57,7 +57,7 @@ This skill provides comprehensive code review capabilities across multiple progr
 
 ## Version History
 
-- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/Codex-skills
+- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/claude-skills
 
 ## Sub-Skills
 

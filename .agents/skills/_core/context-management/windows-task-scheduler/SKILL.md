@@ -15,7 +15,7 @@ scripts_exempt: true
 Task: `ContextManagementDaily`
 Schedule: Daily at 6:00 AM
 Action: `scripts/context/daily_context_check.sh`
-Output: `.Codex/reports/context-health-YYYY-MM-DD.md`
+Output: `.claude/reports/context-health-YYYY-MM-DD.md`
 
 ## Daily Check Includes
 

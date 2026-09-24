@@ -1,17 +1,17 @@
 ---
-name: verify-Codex-run-commit-vs-working-tree-before-closing
-description: After a Codex implementation run, verify the claimed file set against the actual commit and working tree before treating the issue as fully complete.
+name: verify-claude-run-commit-vs-working-tree-before-closing
+description: After a Claude implementation run, verify the claimed file set against the actual commit and working tree before treating the issue as fully complete.
 version: 1.0.0
 author: Hermes Agent
 category: workspace-hub
-tags: [Codex, verification, git, issue-closeout, workspace-hub, learned]
+tags: [claude-code, verification, git, issue-closeout, workspace-hub, learned]
 ---
 
-# Verify Codex run commit vs working tree before closing
+# Verify Claude run commit vs working tree before closing
 
 ## When to use
 
-Use this after a Codex implementation run that claims:
+Use this after a Claude Code implementation run that claims:
 - files were changed and committed
 - a GitHub issue was commented/closed
 - verification passed
@@ -19,16 +19,16 @@ Use this after a Codex implementation run that claims:
 Especially important when:
 - the repo has many unrelated dirty files
 - pre-commit or repo-specific hooks may reject some paths
-- Codex reports that some changes were applied but not committed
+- Claude reports that some changes were applied but not committed
 - the issue was closed automatically by the worker
 
 ## Why this skill exists
 
-A Codex implementation run can successfully commit and close an issue while still leaving intended edits in the working tree.
+A Claude implementation run can successfully commit and close an issue while still leaving intended edits in the working tree.
 Observed failure mode:
-- Codex edited the target files
+- Claude edited the target files
 - some files were blocked from commit by repo rules / hooks / file policies
-- Codex still posted a success comment and closed the issue
+- Claude still posted a success comment and closed the issue
 - the uncommitted delta remained in the working tree
 
 This means "issue closed" is not sufficient evidence that all intended changes landed.
@@ -37,7 +37,7 @@ This means "issue closed" is not sufficient evidence that all intended changes l
 
 After the run finishes, do all of these before declaring success:
 
-1. Inspect the commit Codex claims landed
+1. Inspect the commit Claude claims landed
 ```bash
 git show --stat --name-only <commit>
 ```
@@ -48,11 +48,11 @@ git rev-parse --show-toplevel
 git branch --show-current
 git branch --contains <commit>
 ```
-- if you launched Codex from an isolated worktree, confirm the commit is actually on that worktree branch
+- if you launched Claude from an isolated worktree, confirm the commit is actually on that worktree branch
 - do not assume `workdir=` or prompt text was sufficient protection
 - if the commit landed on another local branch / checkout (for example dirty `main`) treat the worker result as only partially integrated
 
-3. Compare that file list against the files Codex claimed to have changed in its final summary
+3. Compare that file list against the files Claude claimed to have changed in its final summary
 - look for any claimed files missing from the commit stat
 
 4. Inspect current working tree for owned-path leftovers
@@ -77,8 +77,8 @@ git status --short
 ## Recovery pattern when commit lands in the wrong checkout
 
 Observed failure mode:
-- Codex was launched from an isolated worktree
-- Codex reported success and produced a valid commit
+- Claude was launched from an isolated worktree
+- Claude reported success and produced a valid commit
 - the commit actually landed on local `main` instead of the intended issue worktree branch
 - the intended worktree remained unchanged
 
@@ -119,7 +119,7 @@ Action:
 
 ## Recommended workflow
 
-1. Capture Codex’s reported outputs:
+1. Capture Claude’s reported outputs:
 - commit hash
 - changed file list
 - GitHub comment URL
@@ -133,7 +133,7 @@ gh issue view <issue> --json state,comments
 ```
 
 3. Compare three surfaces:
-- Codex summary
+- Claude summary
 - actual commit contents
 - residual working tree state
 
@@ -145,7 +145,7 @@ In workspace-hub, this matters when:
 - docs or generated files violate local repo conventions
 - some wiki/domain files are already oversized or shaped in ways that trip repo expectations
 - the run stages only a subset of the owned-path edits
-- a Codex run launched from an isolated worktree may still create the commit on an unexpected local branch / checkout, even when the orchestrator passed the intended worktree as cwd
+- a Claude run launched from an isolated worktree may still create the commit on an unexpected local branch / checkout, even when the orchestrator passed the intended worktree as cwd
 
 Concrete example pattern A:
 - worker committed 10 files
@@ -155,8 +155,8 @@ Concrete example pattern A:
 - correct response was to treat the issue as substantially complete but with a small residual follow-up
 
 Concrete example pattern B:
-- orchestrator launched `Codex -p` from a clean issue worktree
-- Codex reported success and a commit hash
+- orchestrator launched `claude -p` from a clean issue worktree
+- Claude reported success and a commit hash
 - the intended issue worktree branch did **not** move
 - the reported commit actually landed on the dirty local `main` checkout instead
 - correct response was:
@@ -177,7 +177,7 @@ If the commit landed on the wrong local branch but the diff/tests are valid, pre
 ## Separate remote landing from parent-checkout state
 
 Another live-use failure mode:
-- Codex runs in a clean issue worktree
+- Claude runs in a clean issue worktree
 - the commit is pushed successfully to `origin/main`
 - GitHub issues auto-close correctly
 - but the user's current parent checkout (`/mnt/local-analysis/workspace-hub`) is still dirty and remains one commit behind remote main
@@ -234,4 +234,4 @@ git status --short
 gh issue view <issue> --json state,comments
 ```
 
-Use this every time a Codex run claims success on a dirty repo.
+Use this every time a Claude run claims success on a dirty repo.

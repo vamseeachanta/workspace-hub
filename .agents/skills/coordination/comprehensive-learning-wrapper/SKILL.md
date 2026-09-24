@@ -44,10 +44,10 @@ wrapper makes it accessible via `/learn-extended` or similar commands.
 ## Canonical Pipeline
 
 The full pipeline lives at:
-- **Skill definition**: `.Codex/skills/workspace-hub/comprehensive-learning/`
+- **Skill definition**: `.claude/skills/workspace-hub/comprehensive-learning/`
 - **Cron wrapper**: `scripts/cron/comprehensive-learning-nightly.sh`
 - **Pipeline script**: `scripts/learning/comprehensive-learning.sh`
-- **Phase specs**: `.Codex/skills/workspace-hub/comprehensive-learning/references/pipeline-detail.md`
+- **Phase specs**: `.claude/skills/workspace-hub/comprehensive-learning/references/pipeline-detail.md`
 
 ## On-Demand Commands
 
@@ -55,7 +55,7 @@ The full pipeline lives at:
 
 ```bash
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-REPORT_DIR="$REPO_ROOT/.Codex/state/learning-reports"
+REPORT_DIR="$REPO_ROOT/.claude/state/learning-reports"
 CRON_LOG="$REPORT_DIR/cron.log"
 
 echo "=== Pipeline health ==="
@@ -81,7 +81,7 @@ fi
 
 ```bash
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-REPORT_DIR="$REPO_ROOT/.Codex/state/learning-reports"
+REPORT_DIR="$REPO_ROOT/.claude/state/learning-reports"
 LATEST=$(ls -t "$REPORT_DIR"/*.md 2>/dev/null | head -1)
 if [[ -n "$LATEST" ]]; then
   head -80 "$LATEST"
@@ -94,7 +94,7 @@ fi
 
 ```bash
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-CANDIDATES_DIR="$REPO_ROOT/.Codex/state/candidates"
+CANDIDATES_DIR="$REPO_ROOT/.claude/state/candidates"
 
 echo "=== Recent learning candidates ==="
 if [[ -d "$CANDIDATES_DIR" ]]; then
@@ -117,14 +117,14 @@ echo "Pipeline phases:"
 head -30 "$REPO_ROOT/scripts/learning/comprehensive-learning.sh" 2>/dev/null || echo "Script not found"
 echo ""
 echo "WARNING: Running the pipeline mid-session violates the Iron Law."
-echo "Use nightly cron instead. See: .Codex/skills/workspace-hub/comprehensive-learning/"
+echo "Use nightly cron instead. See: .claude/skills/workspace-hub/comprehensive-learning/"
 ```
 
 ## Scheduling Reference
 
 The cron entry on dev-primary:
 ```
-0 22 * * * cd /path/to/workspace-hub && bash scripts/cron/comprehensive-learning-nightly.sh >> .Codex/state/learning-reports/cron.log 2>&1
+0 22 * * * cd /path/to/workspace-hub && bash scripts/cron/comprehensive-learning-nightly.sh >> .claude/state/learning-reports/cron.log 2>&1
 ```
 
 ## Iron Law Reminder
@@ -137,7 +137,7 @@ actual pipeline execution is reserved for cron.
 
 ## Related
 
-- Primary skill: `.Codex/skills/workspace-hub/comprehensive-learning/`
-- Extract to issues: `.Codex/skills/extract-learnings-to-issues/`
-- Session corpus audit: `.Codex/skills/coordination/session-corpus-audit/`
+- Primary skill: `.claude/skills/workspace-hub/comprehensive-learning/`
+- Extract to issues: `.claude/skills/extract-learnings-to-issues/`
+- Session corpus audit: `.claude/skills/coordination/session-corpus-audit/`
 - Cron scripts: `scripts/cron/comprehensive-learning-nightly.sh`

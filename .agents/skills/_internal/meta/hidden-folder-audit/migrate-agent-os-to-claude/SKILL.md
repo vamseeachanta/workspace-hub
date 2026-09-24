@@ -1,15 +1,15 @@
 ---
-name: hidden-folder-audit-migrate-agent-os-to-Codex
-description: 'Sub-skill of hidden-folder-audit: Migrate .agent-os to .Codex (+4).'
+name: hidden-folder-audit-migrate-agent-os-to-claude
+description: 'Sub-skill of hidden-folder-audit: Migrate .agent-os to .claude (+4).'
 version: 1.2.0
 category: _internal
 type: reference
 scripts_exempt: true
 ---
 
-# Migrate .agent-os to .Codex (+4)
+# Migrate .agent-os to .claude (+4)
 
-## Migrate .agent-os to .Codex
+## Migrate .agent-os to .claude
 
 
 ```bash
@@ -17,15 +17,15 @@ scripts_exempt: true
 cp -r .agent-os .agent-os.backup
 
 # Migrate agents
-mkdir -p .Codex/agents
-cp -r .agent-os/agents/* .Codex/agents/ 2>/dev/null
+mkdir -p .claude/agents
+cp -r .agent-os/agents/* .claude/agents/ 2>/dev/null
 
 # Migrate standards (if applicable)
-mkdir -p .Codex/standards
+mkdir -p .claude/standards
 
 *See sub-skills for full details.*
 
-## Migrate .ai to .Codex
+## Migrate .ai to .claude
 
 
 ```bash
@@ -33,11 +33,11 @@ mkdir -p .Codex/standards
 cp -r .ai .ai.backup
 
 # Migrate prompts to skills
-mkdir -p .Codex/skills/prompts
-cp -r .ai/prompts/* .Codex/skills/prompts/ 2>/dev/null
+mkdir -p .claude/skills/prompts
+cp -r .ai/prompts/* .claude/skills/prompts/ 2>/dev/null
 
 # Migrate config
-cp .ai/config.* .Codex/ 2>/dev/null
+cp .ai/config.* .claude/ 2>/dev/null
 
 # Cleanup
 git rm -r --cached .ai/ 2>/dev/null

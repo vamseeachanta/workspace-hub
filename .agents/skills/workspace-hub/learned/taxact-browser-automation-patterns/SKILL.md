@@ -11,7 +11,7 @@ metadata:
 # TaxAct Business Browser Automation Patterns
 
 ## When to Use
-Automating data entry in TaxAct Business online (www.taxact.com/online/) using Codex-in-Chrome MCP tools.
+Automating data entry in TaxAct Business online (www.taxact.com/online/) using Claude-in-Chrome MCP tools.
 
 ## Key Architecture
 TaxAct is an **Ionic SPA** — single-page app with shadow DOM components. Standard DOM queries often miss elements rendered inside web components.

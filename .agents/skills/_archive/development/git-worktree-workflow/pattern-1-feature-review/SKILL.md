@@ -17,11 +17,11 @@ Run development and review in parallel:
 ```bash
 # Terminal 1: Development Codex
 cd /project-feature
-Codex "Implement the new authentication module"
+codex "Implement the new authentication module"
 
 # Terminal 2: Review Codex
 cd /project
-Codex "Review the authentication changes in feature-auth branch"
+codex "Review the authentication changes in feature-auth branch"
 ```
 
 ## Pattern 2: Multi-Feature Development
@@ -36,9 +36,9 @@ git worktree add -b feature-ui ../project-ui main
 git worktree add -b feature-tests ../project-tests main
 
 # Run Codex in each (separate terminals)
-cd ../project-api && Codex "Build REST API endpoints"
-cd ../project-ui && Codex "Create React components"
-cd ../project-tests && Codex "Write integration tests"
+cd ../project-api && codex "Build REST API endpoints"
+cd ../project-ui && codex "Create React components"
+cd ../project-tests && codex "Write integration tests"
 ```
 
 ## Pattern 3: Subagent Verification

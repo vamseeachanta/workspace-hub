@@ -1,16 +1,16 @@
 ---
 name: single-terminal-gh-issue-prompts
-description: Generate live issue-specific Codex prompts for a single terminal, with repo-aware path contracts and plan-gate safety checks.
+description: Generate live issue-specific Claude prompts for a single terminal, with repo-aware path contracts and plan-gate safety checks.
 version: 1.0.0
 author: Hermes Agent
 category: software-development
 license: MIT
-tags: [github, prompts, Codex, single-terminal, issue-execution, planning-gate]
+tags: [github, prompts, claude, single-terminal, issue-execution, planning-gate]
 ---
 
 # Single-Terminal GH Issue Prompts
 
-Use when a user asks for issue-specific Codex prompts to execute GitHub issues in a single terminal.
+Use when a user asks for issue-specific Claude prompts to execute GitHub issues in a single terminal.
 
 ## Why this skill exists
 
@@ -21,8 +21,8 @@ Static prompt templates are not enough for plan-gated repos. Before drafting iss
 Use this skill when the user asks for any of:
 - "issue-specific prompts"
 - "10 gh issue prompts"
-- "Codex prompts for these issues"
-- "single terminal Codex agent-team prompts"
+- "Claude prompts for these issues"
+- "single terminal Claude agent-team prompts"
 - "prompts for actual repo issues"
 
 ## Workflow
@@ -89,7 +89,7 @@ If the repo is plan-gated and the selected issues are not plan-approved:
   - verification-first
   - assessment-first
   - operator-ready execution dossiers
-- instruct Codex not to implement blindly if approval is missing
+- instruct Claude not to implement blindly if approval is missing
 
 Recommended wording:
 - "First verify whether this issue is directly executable now. If plan approval is missing or scope is blocked, do not implement blindly; instead produce an operator-ready execution dossier."
@@ -113,15 +113,15 @@ When delivering the prompts to the user:
 - include a short live status note first
 - mention real repo path and owner/repo if helpful
 - clearly state whether prompts are execution-ready or assessment-first
-- keep each prompt ready to paste into Codex
-- when useful, also save the prompt pack into the repo under `docs/plans/<date>-single-terminal-Codex-agent-team-prompts-<issue-range>.md`
+- keep each prompt ready to paste into Claude
+- when useful, also save the prompt pack into the repo under `docs/plans/<date>-single-terminal-claude-agent-team-prompts-<issue-range>.md`
 - if you also perform read-only triage, save a second handoff doc such as `docs/plans/<date>-top3-issue-assessment-dossiers.md`
 
 ## Sequential execution loop for approved issue chains
 
-When you are running a series of related issues one after another in fresh Codex terminals, use this loop:
+When you are running a series of related issues one after another in fresh Claude terminals, use this loop:
 
-1. Review the just-finished issue from live artifacts, not only the Codex terminal summary.
+1. Review the just-finished issue from live artifacts, not only the Claude terminal summary.
    - Read the created docs/review artifacts.
    - Read the live GitHub issue comment/label state.
    - Check repo dirtiness before preparing the next prompt.
@@ -133,10 +133,10 @@ When you are running a series of related issues one after another in fresh Codex
    - explicit forbidden paths
    - live sibling/parent references
    - dirtiness warning if the repo has unrelated changes
-4. Launch Codex with a file-based prompt and closed stdin.
+4. Launch Claude with a file-based prompt and closed stdin.
    - Recommended pattern:
      `PROMPT=$(< docs/plans/<prompt-file>.md)`
-     `Codex -p --permission-mode acceptEdits --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<run>.log`
+     `claude -p --permission-mode acceptEdits --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<run>.log`
    - Use `--permission-mode plan` for safety-first read-only planning passes.
 5. Monitor the subprocess with watch patterns or polling rather than assuming immediate stdout.
    - Good watch patterns: `APPROVED`, `MAJOR`, `status:plan-review`, `What changed`, `Final review verdict`
@@ -146,12 +146,12 @@ This pattern is especially useful for architecture/program issues where each com
 
 ## Delegated adversarial QA pattern
 
-When the user says "continue" or asks you to take the next step after the prompt pack is drafted, use Codex subagents in read-only mode to adversarially review the prompts before finalizing execution advice.
+When the user says "continue" or asks you to take the next step after the prompt pack is drafted, use Claude subagents in read-only mode to adversarially review the prompts before finalizing execution advice.
 
 Recommended pattern:
 1. Split the issue range into at most 2-3 batches
    - e.g. `#2150-#2154` and `#2155-#2159`
-2. Delegate each batch to a Codex subagent with instructions to:
+2. Delegate each batch to a Claude subagent with instructions to:
    - inspect the live issue bodies
    - inspect neighboring repo structure
    - identify likely owned/read-only/forbidden paths
@@ -167,11 +167,11 @@ Use this when:
 
 ## Top-3 assessment-dossier follow-up
 
-After writing a full prompt pack, a strong next step is to delegate read-only Codex assessments for the top 3 most promising issues and save the results as a short operator dossier.
+After writing a full prompt pack, a strong next step is to delegate read-only Claude assessments for the top 3 most promising issues and save the results as a short operator dossier.
 
 Recommended order in plan-gated repos:
 1. choose the 2-3 best foundational issues
-2. delegate one issue per Codex subagent
+2. delegate one issue per Claude subagent
 3. ask each subagent to return:
    - current approval status
    - likely owned paths
@@ -191,7 +191,7 @@ This is especially useful when live `status:plan-approved` count is zero: it tur
 
 ## Umbrella-issue execution wave pattern
 
-When the user asks for a single Codex prompt to execute the "remaining work" under an umbrella issue, do not treat the umbrella approval as blanket authorization for every child issue.
+When the user asks for a single Claude prompt to execute the "remaining work" under an umbrella issue, do not treat the umbrella approval as blanket authorization for every child issue.
 
 Use this pattern:
 1. Identify the umbrella issue and list all relevant child/follow-on issues from live GitHub state.
@@ -200,8 +200,8 @@ Use this pattern:
    - still open and explicitly approved
    - still open but not explicitly approved
 3. Build the prompt around the live dependency state, not the original plan alone.
-4. In the prompt, require Codex to verify child approval labels/markers before any write.
-5. If a child issue is not approved, instruct Codex to stop short of implementation for that child and instead produce a concise execution dossier / blocker note.
+4. In the prompt, require Claude to verify child approval labels/markers before any write.
+5. If a child issue is not approved, instruct Claude to stop short of implementation for that child and instead produce a concise execution dossier / blocker note.
 6. Explicitly distinguish:
    - landed artifacts that should be consumed as authoritative inputs
    - stale docs/claims that now need reality-refresh
@@ -221,7 +221,7 @@ Do not generate a prompt that acts as if the work is isolated to one directory w
 
 ## Approval-pack / GH-story follow-up pattern
 
-When the user asks for both a Codex prompt and GH stories for review/approval:
+When the user asks for both a Claude prompt and GH stories for review/approval:
 - provide a bounded approval pack that separates:
   - approve-now work on existing issues
   - explicitly deferred scope discovered during reconnaissance
@@ -229,18 +229,18 @@ When the user asks for both a Codex prompt and GH stories for review/approval:
 - make the deferred scope concrete (exact issue/story title and why it should stay separate)
 - call out any newly discovered assets that should NOT be silently absorbed into the current execution wave
 
-## Live interactive Codex drift-recovery pattern
+## Live interactive Claude drift-recovery pattern
 
-When you launch an interactive Codex execution run in tmux for a gated repo, actively monitor git status during the run instead of trusting the agent's own cleanup claims.
+When you launch an interactive Claude Code execution run in tmux for a gated repo, actively monitor git status during the run instead of trusting the agent's own cleanup claims.
 
 Use this pattern:
 1. Before launch, record the initial dirty/untracked state so you know what was pre-existing.
 2. During execution, periodically check BOTH:
    - tmux pane output
    - external `git status --short`
-3. If Codex drifts into forbidden paths or unrelated files:
+3. If Claude drifts into forbidden paths or unrelated files:
    - interrupt the session immediately
-   - tell Codex exactly which paths are forbidden and require cleanup
+   - tell Claude exactly which paths are forbidden and require cleanup
    - independently verify cleanup from outside the session using `git diff --name-only`
 4. If forbidden drift reappears after a cleanup claim:
    - hard-stop the session
@@ -251,7 +251,7 @@ Use this pattern:
    - create the missing prerequisite issue
    - comment back on the blocked issue and umbrella issue with the exact unblock sequence
 
-This pattern is especially important when using `Codex --dangerously-skip-permissions` in tmux: the run may continue productively on the target file while also creating unrelated scripts, tests, config edits, or learned-skill artifacts. Treat external git state as authoritative.
+This pattern is especially important when using `claude --dangerously-skip-permissions` in tmux: the run may continue productively on the target file while also creating unrelated scripts, tests, config edits, or learned-skill artifacts. Treat external git state as authoritative.
 
 ## Pitfalls
 
@@ -262,7 +262,7 @@ This pattern is especially important when using `Codex --dangerously-skip-permis
 - Do not claim "direct execution" when live eligibility says otherwise
 - Do not give generic prompts when the user asked for actual repo/issues
 - Do not silently absorb newly discovered adjacent scope into a saved execution prompt
-- Do not trust an interactive Codex session's statement that cleanup is complete without verifying from outside the session
+- Do not trust an interactive Claude session's statement that cleanup is complete without verifying from outside the session
 
 ## Companion skills
 

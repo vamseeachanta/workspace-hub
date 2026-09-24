@@ -24,8 +24,8 @@ Use when:
    - branch `nightly/<issue>-planwave10`
 4. Inside each worktree, write one self-contained prompt at:
    - `docs/plans/overnight-prompts/<wave-id>/worker.md`
-5. Launch one Codex process per worktree with:
-   - `Codex -p --permission-mode acceptEdits --no-session-persistence --output-format text --max-budget-usd 20 "$PROMPT" </dev/null | tee logs/overnight-plan-wave/worker.log`
+5. Launch one Claude process per worktree with:
+   - `claude -p --permission-mode acceptEdits --no-session-persistence --output-format text --max-budget-usd 20 "$PROMPT" </dev/null | tee logs/overnight-plan-wave/worker.log`
 6. Each worker must do planning only:
    - inspect GH + local evidence
    - draft canonical plan under `docs/plans/`

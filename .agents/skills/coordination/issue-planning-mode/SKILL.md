@@ -11,7 +11,7 @@ related_skills:
 
 # Issue Planning Mode — Mandatory for ALL Issues
 
-**ALL agents** (Codex, Codex, Gemini, Hermes) MUST follow this workflow for every GitHub issue.
+**ALL agents** (Claude, Codex, Gemini, Hermes) MUST follow this workflow for every GitHub issue.
 Load this skill before drafting or executing any plan.
 
 Full onboarding guide with step-by-step details: `docs/plans/README.md`
@@ -45,7 +45,7 @@ Required sections: Resource Intelligence Summary, Artifact Map, Deliverable, Pse
 Update the index table in `docs/plans/README.md` with a new row.
 
 Execution discipline for delegated agents:
-- If using Codex/Codex/Gemini in parallel worktrees, explicitly anchor the repo/worktree path in the prompt/context and verify the plan file was written in the intended checkout. Do not assume the child agent stayed in the requested worktree.
+- If using Claude/Codex/Gemini in parallel worktrees, explicitly anchor the repo/worktree path in the prompt/context and verify the plan file was written in the intended checkout. Do not assume the child agent stayed in the requested worktree.
 - After drafting, verify all expected artifacts exist where intended:
   - the plan file path
   - the `docs/plans/README.md` index row
@@ -170,7 +170,7 @@ Operational rules:
   1. Draft the canonical local plan under `docs/plans/` and add the `docs/plans/README.md` row with local status `draft`.
   2. Post a short governance comment on the issue explaining that the item was mislabeled as `status:plan-review` without a canonical plan artifact.
   3. If the issue truly had no local plan and no provider review artifacts yet, remove the stale live `status:plan-review` label while the plan is still only a local draft.
-  4. Run the real adversarial review wave (Codex/Codex/Gemini as available).
+  4. Run the real adversarial review wave (Claude/Codex/Gemini as available).
   5. Only after provider artifacts exist, update the plan + README to `plan-review` and restore/apply the live `status:plan-review` label.
 - This keeps live issue state aligned with actual plan maturity and avoids pretending a draft-only item is already in cross-provider review.
 - When only the Codex review artifact is missing, a concise file-path-based `Codex -p` review prompt is often more reliable than embedding the full plan text inline. If a long inline Codex review prompt hangs or hits a turn cap, retry immediately with a shorter prompt that names the plan file path and explicitly requests the required review headings.
@@ -182,7 +182,7 @@ Operational rules:
   6. once review artifacts exist, update local status to `plan-review`, restore/add the live `status:plan-review` label, and post the review-state update
 - When only the Codex review artifact is missing, a concise file-path-based `Codex -p` review prompt is often more reliable than embedding the full plan text inline. If a long inline Codex review prompt hangs or hits a turn cap, retry immediately with a shorter prompt that names the plan file path and explicitly requests the required review headings.
 - For new or recovered plan drafts, keep the local plan file status conservative as `draft` until actual provider artifacts exist. After the first real review wave lands, update the plan file/README row to `plan-review` and summarize the live blocker state in `## Adversarial Review Summary` rather than leaving placeholder `PENDING` language.
-- If you launch a long-running background Codex review and then recover with a shorter fallback prompt, do not assume the first run is dead forever. Poll or inspect the original background process/log later. If it eventually completes with a fuller or sharper review, refresh the canonical repo artifact with the stronger findings and post a short GitHub follow-up comment noting that the completed long-form review supersedes or sharpens the earlier summary.
+- If you launch a long-running background Claude review and then recover with a shorter fallback prompt, do not assume the first run is dead forever. Poll or inspect the original background process/log later. If it eventually completes with a fuller or sharper review, refresh the canonical repo artifact with the stronger findings and post a short GitHub follow-up comment noting that the completed long-form review supersedes or sharpens the earlier summary.
 - Practical artifact rule: the repo artifact under `scripts/review/results/` should represent the best available current-review content, not merely the first usable fallback. Late-arriving stronger findings should replace the weaker stopgap artifact rather than being ignored in terminal/process logs.
 
 This prevents falsely telling the user there are no pending plan reviews just because the live `status:plan-review` label set is empty, and it avoids misclassifying missing-plan issues as pending provider-review work.
@@ -321,4 +321,4 @@ All bypasses are logged.
 - Full guide: `docs/plans/README.md`
 - Template: `docs/plans/_template-issue-plan.md`
 - Hard-stop policy: `docs/standards/HARD-STOP-POLICY.md`
-- Engineering workflow: `.Codex/skills/coordination/engineering-issue-workflow/SKILL.md`
+- Engineering workflow: `.claude/skills/coordination/engineering-issue-workflow/SKILL.md`

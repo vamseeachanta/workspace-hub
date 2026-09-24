@@ -137,6 +137,6 @@ For overnight batch runs with multiple terminals:
 ## References
 
 - Orchestrator-worker methodology: `docs/methodology/orchestrator-worker.md`
-- Plan approval gate: `.Codex/hooks/plan-approval-gate.sh`
-- Cross-review policy: `.Codex/skills/coordination/cross-review-policy/SKILL.md`
+- Plan approval gate: `.claude/hooks/plan-approval-gate.sh`
+- Cross-review policy: `.claude/skills/coordination/cross-review-policy/SKILL.md`
 - Session governance: `docs/governance/SESSION-GOVERNANCE.md`

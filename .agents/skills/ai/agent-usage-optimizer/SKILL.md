@@ -2,7 +2,7 @@
 name: agent-usage-optimizer
 version: 1.0.0
 category: ai
-description: Reads quota state and recommends optimal Codex/Codex/Gemini allocation
+description: Reads quota state and recommends optimal Claude/Codex/Gemini allocation
   per task
 type: reference
 capabilities:
@@ -15,7 +15,7 @@ tags:
 - quota-management
 - multi-provider
 - routing
-- Codex
+- claude
 - codex
 - gemini
 - gemini-batching
@@ -31,20 +31,20 @@ Deterministic agent routing using `agent:` labels on GitHub issues — no separa
 ```bash
 # Route tasks to agents via labels
 gh issue edit <issue-number> --add-label "agent:gemini"
-gh issue edit <issue-number> --add-label "agent:Codex"  
+gh issue edit <issue-number> --add-label "agent:claude"
 gh issue edit <issue-number> --add-label "agent:codex"
 ```
 
 View agent queues:
 ```bash
 gh issue list --label "agent:gemini,priority:high"
-gh issue list --label "agent:Codex,priority:high"
+gh issue list --label "agent:claude,priority:high"
 gh issue list --label "agent:codex,priority:high"
 ```
 
 Reassign tasks:
 ```bash
-gh issue edit <issue-number> --remove-label "agent:gemini" --add-label "agent:Codex"
+gh issue edit <issue-number> --remove-label "agent:gemini" --add-label "agent:claude"
 ```
 
 ## Gemini Batched Session Pattern (Maximize $20/mo Quota)
@@ -96,12 +96,12 @@ Key parameters:
 - One session per batch, ~2 min per session
 - Gemini handles web_search, file reads, file writes, git commits natively
 
-## Codex/Codex Implementation Pattern
+## Claude/Codex Implementation Pattern
 
 For heavy coding tasks, use:
 ```bash
-# Complex implementation (Codex Opus)
-hermes chat --provider anthropic -m Codex-opus-4-6 -q "<task>"
+# Complex implementation (Claude Opus)
+hermes chat --provider anthropic -m claude-opus-4-6 -q "<task>"
 
 # Bounded tests + review (Codex via OpenAI)
 hermes chat --provider openai-codex -q "<task>"
@@ -110,7 +110,7 @@ hermes chat --provider openai-codex -q "<task>"
 ## When to Use
 
 - Before starting a work session with 3+ queued WRK items
-- When Codex quota is approaching a constraint (< 50% remaining)
+- When Claude quota is approaching a constraint (< 50% remaining)
 - When routing a task and unsure which provider fits best
 - After `/session-start` to set provider allocation for the session
 
@@ -125,7 +125,7 @@ Do not assume session logs alone are enough to optimize quota burn. First verify
    ```
    - Inspect `config/ai-tools/agent-quota-latest.json`
    - Treat these states as insufficient for hard utilization targets:
-     - Codex `source: unavailable`
+     - Claude `source: unavailable`
      - Gemini `source: estimated`
      - missing/null `week_pct`, `pct_remaining`, `hours_to_reset`
 
@@ -151,7 +151,7 @@ Do not assume session logs alone are enough to optimize quota burn. First verify
   - You do NOT have enough data to guarantee near-100% weekly credit utilization.
 - If Codex shows real quota data and low migration debt, push more bounded implementation/test/refactor work to Codex.
 - If Gemini recent session volume is tiny and quota is only estimated, treat Gemini as underused research capacity and batch reconnaissance/risk-analysis work there.
-- If Codex quota is unavailable, avoid promising precise Codex weekly pacing; use Codex primarily for high-value long-context planning/review until telemetry is fixed.
+- If Claude quota is unavailable, avoid promising precise Claude weekly pacing; use Claude primarily for high-value long-context planning/review until telemetry is fixed.
 
 ## Scheduling Gap Check
 
@@ -226,14 +226,14 @@ Confidence threshold lessons from live use:
 
 - Codex: best lane for bounded implementation, tests, repair, cleanup, refactors. If underused and quota is visible, push more execution here first.
 - Gemini: best lane for batched research/recon/risk-analysis packets. Do not auto-label aggressively until Gemini confidence logic is stronger than simple keyword matching.
-- Codex: keep for adversarial review, planning, long-context synthesis, architecture, and governance-heavy work. Avoid burning Codex on mechanical loops Codex can absorb.
+- Claude: keep for adversarial review, planning, long-context synthesis, architecture, and governance-heavy work. Avoid burning Claude on mechanical loops Codex can absorb.
 
 ## Follow-on improvement areas
 
 If the control plane is working but still imperfect, the next high-value upgrades are:
 - add explanatory GitHub comments when high-confidence auto-labels are applied
 - strengthen Gemini-specific routing confidence using research-readiness signals, not just broad research keywords
-- improve Codex/Gemini quota observability so utilization can be exact rather than heuristic
+- improve Claude/Gemini quota observability so utilization can be exact rather than heuristic
 
 ## Sub-Skills
 
@@ -291,7 +291,7 @@ High-confidence pattern observed in practice:
 - execution-ready issue
 - strong language match
   - Codex: implementation/test/fix
-  - Codex: strategy/workflow/architecture
+  - Claude: strategy/workflow/architecture
   - Gemini: research/triage/audit
 - provider currently underused according to the scorecard
 - no pre-existing agent label
@@ -303,7 +303,7 @@ Do NOT auto-label broad or ambiguous items just because the provider is underuse
 For current workspace-hub-style ecosystems, these rules proved reusable:
 - Refresh AI provider usage/capacity about every 6 hours and use that telemetry to plan the next work wave; avoid hard-and-fast provider exclusion rules when reliable capacity exists.
 - Codex: push bounded implementation, tests, refactors, and crisp execution-ready issues first when quota is visible.
-- Codex: use for frontier execution, adversarial review, governance, orchestration, long-context strategy, and control-plane synthesis.
+- Claude: use for frontier execution, adversarial review, governance, orchestration, long-context strategy, and control-plane synthesis.
 - Gemini: because the account is lower-budget, default it to cross-reviews, adversarial reviews, batched research/recon, and risk-analysis packets rather than main work; if fresh telemetry shows reliable capacity, delegate suitable bounded review/recon work instead of rigidly excluding it. Do not rely on Gemini telemetry as exact weekly headroom if the quota source is only estimated.
 
 ## Sub-Skills
@@ -335,7 +335,7 @@ When the repo already has provider session exports and a provider audit, do not 
      - preferred work types
      - avoid-work types
      - recommended actions
-   - Use this to produce a ranked provider order (for example: `gemini, codex, Codex`)
+   - Use this to produce a ranked provider order (for example: `gemini, codex, claude`)
 
 3. Live issue-queue layer
    - Read open GitHub issues with `gh issue list --state open --limit 200 --json ...`
@@ -350,10 +350,10 @@ When the repo already has provider session exports and a provider audit, do not 
 
 ## Recommended heuristics for provider-specific work routing
 
-- Codex
+- Claude
   - best for: adversarial plan review, adversarial implementation review, long-context synthesis, repo strategy, architecture, workflow/governance-heavy work
   - avoid: bounded test-fix loops, mechanical refactors, commodity grep/read sweeps
-  - if stale-path drift / migration debt is high, reduce wasted reads before increasing Codex load
+  - if stale-path drift / migration debt is high, reduce wasted reads before increasing Claude load
 
 - Codex
   - best for: bounded implementation, test writing/repair, mechanical cleanup/refactors, crisp issue execution
@@ -440,7 +440,7 @@ Canonical outputs:
 Use the routing scorecard to decide where the next work packets go:
 - `codex` underused + quota visible + low migration debt -> route bounded implementation, tests, cleanup, crisp issue execution there first
 - `gemini` underused + weak/estimated telemetry -> route batched research/recon/risk-analysis packets there, but treat capacity as directional rather than exact
-- `Codex` underused + high stale-read debt -> reserve for adversarial review, plan review, and long-context synthesis; reduce stale-path drift before trying to scale load there
+- `claude` underused + high stale-read debt -> reserve for adversarial review, plan review, and long-context synthesis; reduce stale-path drift before trying to scale load there
 
 Recommended practical ordering in workspace-hub is not purely "lowest utilization first". Combine:
 - underutilization
@@ -448,7 +448,7 @@ Recommended practical ordering in workspace-hub is not purely "lowest utilizatio
 - migration debt / stale-read density
 - work-type fit
 
-That is why Gemini and Codex may both rank ahead of Codex even when Codex appears idle.
+That is why Gemini and Codex may both rank ahead of Claude even when Claude appears idle.
 
 ## Recurring Automation Pattern
 

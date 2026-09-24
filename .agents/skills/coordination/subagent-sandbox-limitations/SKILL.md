@@ -25,32 +25,32 @@ This was discovered during overnight batch execution on 2026-04-06 when multiple
 - Synthesis tasks (combining information from multiple sources)
 - Non-interactive brainstorm or planning
 - Tasks that produce output for the main agent to consume
-- Codex-backed read-only repo audits where you want concrete patch guidance but will apply changes in the main session
+- Claude-backed read-only repo audits where you want concrete patch guidance but will apply changes in the main session
 
-### Strong pattern: delegate Codex for analysis, patch locally
+### Strong pattern: delegate Claude for analysis, patch locally
 
 A reliable pattern is:
-1. Use `delegate_task(..., acp_command='Codex', acp_args=['--acp','--stdio'])` for read-only analysis
-2. Ask the Codex subagent for exact replacement text, prioritization, and caveats
+1. Use `delegate_task(..., acp_command='claude', acp_args=['--acp','--stdio'])` for read-only analysis
+2. Ask the Claude subagent for exact replacement text, prioritization, and caveats
 3. Apply file edits yourself in the main session with `patch`/`write_file`
 4. Verify locally with shell/tests
 
 This worked well for session-log ecosystem audits and policy-drift cleanup because:
-- Codex was good at scanning many files and returning implementation-ready findings
+- Claude was good at scanning many files and returning implementation-ready findings
 - sandbox persistence limitations did not matter for read-only work
 - the main agent kept control of actual repo modifications and verification
 
-### Strong pattern: delegate Codex for issue-tree expansion, create issues locally
+### Strong pattern: delegate Claude for issue-tree expansion, create issues locally
 
 Another reliable use case is expanding an umbrella initiative into focused future GitHub issues.
 
 Pattern:
 1. Keep the main session responsible for the actual `gh issue create` calls and documentation edits.
-2. Split the analysis into 2-3 lanes with `delegate_task(..., acp_command='Codex', acp_args=['--acp','--stdio'])` — e.g. machine-readiness gaps, intelligence-accessibility gaps, reporting/governance gaps.
-3. Ask each Codex subagent for only: proposed issue titles, rationale, and deliverables. Do **not** ask it to edit files or create issues.
+2. Split the analysis into 2-3 lanes with `delegate_task(..., acp_command='claude', acp_args=['--acp','--stdio'])` — e.g. machine-readiness gaps, intelligence-accessibility gaps, reporting/governance gaps.
+3. Ask each Claude subagent for only: proposed issue titles, rationale, and deliverables. Do **not** ask it to edit files or create issues.
 4. In the main session, convert the returned proposals into concrete issue bodies, create the GitHub issues, and update the parent doc/umbrella issue yourself.
 5. Comment on the parent issue with the new child-issue map so the decomposition is visible in GitHub history.
-6. If the initiative is still too broad, repeat the process in waves: delegate another 2-3 Codex lanes focused on the newly created branches (for example Windows readiness, publication hardening, registry coherence), then create the next layer of child issues locally.
+6. If the initiative is still too broad, repeat the process in waves: delegate another 2-3 Claude lanes focused on the newly created branches (for example Windows readiness, publication hardening, registry coherence), then create the next layer of child issues locally.
 7. Keep one canonical doc or issue-map file updated after each wave so the hierarchy remains navigable as the issue tree deepens.
 
 Why this works:
@@ -137,9 +137,9 @@ delegate_task IS useful for adversarial review because the output is reasoning/a
 - Use it to GET the review verdict back in the main agent's context, then write the review file yourself
 - Don't expect the subagent to persist any files
 
-### Codex auth self-service
+### Claude Code auth self-service
 
-If `Codex auth status` shows logged out, use browser tools to complete `Codex auth login` OAuth flow. NEVER use `ANTHROPIC_API_KEY` without explicit user permission — subscription mode only.
+If `claude auth status` shows logged out, use browser tools to complete `claude auth login` OAuth flow. NEVER use `ANTHROPIC_API_KEY` without explicit user permission — subscription mode only.
 
 ## Gemini via CLI — 2026-04-06 Update
 

@@ -124,7 +124,7 @@ Crontab entry (dev-primary, 22:00 nightly):
 ```bash
 0 22 * * * cd /mnt/local-analysis/workspace-hub && \
   bash scripts/cron/comprehensive-learning-nightly.sh \
-  >> .Codex/state/learning-reports/cron.log 2>&1
+  >> .claude/state/learning-reports/cron.log 2>&1
 ```
 Script: `scripts/cron/comprehensive-learning-nightly.sh`
 — `git pull` is a hard gate; each `rsync` is independently `|| true`.

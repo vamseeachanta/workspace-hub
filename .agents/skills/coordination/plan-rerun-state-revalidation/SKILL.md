@@ -78,7 +78,7 @@ When resuming after a compressed handoff, treat the summary as evidence to verif
 
 If all surfaces already agree, stop at verification and final reporting. Avoid duplicate GitHub comments, duplicate label churn, and unnecessary review reruns.
 
-If a local-only session-state file (for example `.Codex/state/session-signals/*.jsonl`) remains dirty after stash restoration and is unrelated to the issue gate, classify it as session churn rather than plan work; restore or stash it separately before finalizing so the planning gate stays clean.
+If a local-only session-state file (for example `.claude/state/session-signals/*.jsonl`) remains dirty after stash restoration and is unrelated to the issue gate, classify it as session churn rather than plan work; restore or stash it separately before finalizing so the planning gate stays clean.
 
 ## Next-step triage after a dirty handoff
 

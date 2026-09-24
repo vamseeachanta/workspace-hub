@@ -12,7 +12,7 @@ tags:
   - parallel-agents
 applies-to:
   - hermes
-  - Codex
+  - claude
   - codex
 trigger: manual
 auto_execute: false

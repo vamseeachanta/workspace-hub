@@ -46,7 +46,7 @@ They are superseded by the latest patch in this draft and should not be read as 
 
 | Provider | Verdict | Key findings |
 |---|---|---|
-| Codex | MAJOR | ... |
+| Claude | MAJOR | ... |
 | Codex | MINOR | ... |
 | Gemini | APPROVE | ... |
 

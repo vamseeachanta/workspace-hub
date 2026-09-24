@@ -31,7 +31,7 @@ Analyze the repository for discipline-based, module-based refactoring:
    - specs/ - specifications
    - data/ - data files
    - logs/ - log files
-   - .Codex/skills/ - skill organization
+   - .claude/skills/ - skill organization
 
 3. Identify disciplines from existing code:
    - What domain modules exist?

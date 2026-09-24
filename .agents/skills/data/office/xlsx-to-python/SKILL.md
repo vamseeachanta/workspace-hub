@@ -56,7 +56,7 @@ scripts_exempt: true
 
 ## Pre-Conversion Assembly: Multi-Source Workbook Transfer
 
-Before converting, you need all target workbooks collected into a single git repo (typically `client-c`) that can be transferred to the Windows machine running Codex Desktop.
+Before converting, you need all target workbooks collected into a single git repo (typically `client-c`) that can be transferred to the Windows machine running Claude Desktop.
 
 ### Step 0: Inventory and Rank
 
@@ -107,7 +107,7 @@ After each batch is converted on Windows (ace-win-2), validate before accepting:
 
 1. **Pull the converted code** from `client-c` repo back to Linux
 2. **Run the full test suite** — all tests must pass (zero failures)
-3. **Fix bugs before accepting** — Codex-in-Excel often produces code with:
+3. **Fix bugs before accepting** — Claude-in-Excel often produces code with:
    - Missing `return` statements in factory functions (common pattern: `if props is None: props = ClassName()` without `return props`)
    - Wrong `sys.path` entries in test files
    - Import paths that assume Windows directory structure
@@ -126,7 +126,7 @@ The **execution machine is ace-win-2** (Windows). Transfer via:
 git clone git@github.com:vamseeachanta/client-c.git  # on ace-win-2
 ```
 
-**The conversion prompt runs in Codex on ace-win-2** — NOT the Copilot in Excel add-in and NOT Cowork. Copilot in Excel can only read cell values and explain formulas; it cannot write Python files, create tests, or organize code into repos. Codex has full filesystem access and can use openpyxl to read Excel files, extract formula logic, write Python modules, and create PRs.
+**The conversion prompt runs in Claude Code on ace-win-2** — NOT the Copilot in Excel add-in and NOT Cowork. Copilot in Excel can only read cell values and explain formulas; it cannot write Python files, create tests, or organize code into repos. Claude Code has full filesystem access and can use openpyxl to read Excel files, extract formula logic, write Python modules, and create PRs.
 
 ### Step 5b: Large File Bypass (if needed)
 
@@ -151,7 +151,7 @@ Established quality bar from first conversion (Ballymore Jumper, 7 sheets, 2.3MB
 
 ### Minimum Bar (must achieve per workbook)
 
-- **Tests**: All must pass with zero failures. Codex-in-Excel commonly produces buggy code that needs fixing.
+- **Tests**: All must pass with zero failures. Claude-in-Excel commonly produces buggy code that needs fixing.
 - **Common bugs to check**:
   - Missing `return props` in factory functions (the pattern `if props is None: props = ClassName()` without returning is the most common bug)
   - Wrong `sys.path` in test files (pointing to `/tmp` or hardcoded Windows paths)
@@ -161,9 +161,9 @@ Established quality bar from first conversion (Ballymore Jumper, 7 sheets, 2.3MB
 - **Type hints**: All function signatures must have types
 - **Constants**: Every magic number must be a named constant with comment
 
-### Codex-in-Excel vs Native CLI Comparison
+### Claude-in-Excel vs Native CLI Comparison
 
-| Aspect | Windows Codex | Linux openpyxl |
+| Aspect | Windows Claude Code | Linux openpyxl |
 |--------|-------------------|----------------|
 | Completeness | Typically more thorough (24 functions vs 7 for Ballymore) | Adequate but may miss edge cases |
 | Test coverage | Higher test count (81 vs 53 for Ballymore) | Solid but less comprehensive |
@@ -173,7 +173,7 @@ Established quality bar from first conversion (Ballymore Jumper, 7 sheets, 2.3MB
 | Code quality | More bugs (5-16 of 81 tests fail before fixes) | Cleaner on first run |
 | Usability | Code may be trapped in Excel cells, needs extraction | Immediately runnable .py files |
 
-**Recommendation**: Run conversion on ace-win-2 (Windows) using Codex Desktop cowork.
+**Recommendation**: Run conversion on ace-win-2 (Windows) using Claude Desktop cowork.
 The quality advantage (24 vs 7 functions, 81 vs 53 tests, COG, full OrcaFlex breakdown)
 outweighs the 10-20% failure rate which is fixable with the known bug list below.
 Linux gives clean but less complete code.

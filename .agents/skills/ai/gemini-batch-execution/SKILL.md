@@ -174,7 +174,7 @@ A nightly cron job auto-processes `agent:gemini` issues. No manual batching need
 - Capped at 10 issues per run (safety)
 
 ### Reports
-- JSON batch reports written to `.Codex/state/gemini-batch/batch-YYYY-MM-DD.json`
+- JSON batch reports written to `.claude/state/gemini-batch/batch-YYYY-MM-DD.json`
 - Reports are gitignored (ephemeral state), but auto-committed by the bash wrapper if not ignored
 
 ### Stale tracking issues

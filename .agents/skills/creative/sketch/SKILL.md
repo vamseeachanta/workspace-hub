@@ -7,7 +7,7 @@ license: MIT
 metadata:
   hermes:
     tags: [sketch, mockup, design, ui, prototype, html, variants, exploration, wireframe, comparison]
-    related_skills: [spike, Codex-design, popular-web-designs, excalidraw]
+    related_skills: [spike, claude-design, popular-web-designs, excalidraw]
 ---
 
 # Sketch
@@ -18,8 +18,8 @@ Load this when the user says things like "sketch this screen", "show me what X c
 
 ## When NOT to use this
 
-- User wants a production component — use `Codex-design` or build it properly
-- User wants a polished one-off HTML artifact (landing page, deck) — `Codex-design`
+- User wants a production component — use `claude-design` or build it properly
+- User wants a polished one-off HTML artifact (landing page, deck) — `claude-design`
 - User wants a diagram — `excalidraw`, `architecture-diagram`
 - The design is already locked — just build it
 

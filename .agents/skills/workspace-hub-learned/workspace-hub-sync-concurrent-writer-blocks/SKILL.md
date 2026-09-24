@@ -1,6 +1,6 @@
 ---
 name: workspace-hub-sync-concurrent-writer-blocks
-description: Handle repository_sync cleanup when workspace-hub root is being mutated by concurrent Codex/Codex/Gemini sessions.
+description: Handle repository_sync cleanup when workspace-hub root is being mutated by concurrent Claude/Codex/Gemini sessions.
 version: 1.0.0
 source: session-learned
 ---

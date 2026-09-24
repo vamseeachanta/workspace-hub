@@ -134,7 +134,7 @@ If the ecosystem is unstable, prioritize issues about:
 
 ## Agent Config Parity via Repo Templates
 
-When the ecosystem uses multiple AI agents (Codex, Codex, Gemini, Hermes, etc.), manage configs centrally:
+When the ecosystem uses multiple AI agents (Claude, Codex, Gemini, Hermes, etc.), manage configs centrally:
 
 ### Pattern: config/agents/{provider}/ → sync script → ~/.{agent}/
 - Store non-secret config templates in `config/agents/{provider}/` in the hub repo
@@ -150,7 +150,7 @@ When the ecosystem uses multiple AI agents (Codex, Codex, Gemini, Hermes, etc.),
 - Plugin/extension lists
 
 ### What IS transferable via git snapshots (nightly cron → commit):
-- Agent memories (Hermes MEMORY.md/USER.md, Codex project memory feedback_/project_ files)
+- Agent memories (Hermes MEMORY.md/USER.md, Claude project memory feedback_/project_ files)
 - Learning artifacts (corrections/, patterns/, learned-patterns.json, cc-insights/)
 - Cross-agent state (hermes-insights.yaml, cross-agent-memory.yaml)
 - Codex learned rules (default.rules), history, session index
@@ -162,7 +162,7 @@ commit nightly via `scripts/cron/commit-learning-artifacts.sh`, restore on new m
 `sync-agent-configs.sh` (copy snapshot → home dir if local files absent).
 
 CRITICAL: .gitignore exceptions are useless without `git add` in the pipeline. Audit that
-every `!.Codex/state/foo/` exception actually has files committed — discovered 5/10 exceptions
+every `!.claude/state/foo/` exception actually has files committed — discovered 5/10 exceptions
 had zero files in git index despite allowing tracking.
 
 ### What is NOT transferable (machine-local, manual setup):
@@ -226,7 +226,7 @@ After updating a tool, **always verify it works**. `--version` is the minimum. R
 Updates are applied blindly — no `npm audit`, no changelog review, no major-version-bump guard. A malicious or breaking npm update propagates to all machines within 24 hours.
 
 ### Gap: harness-update.sh coverage is incomplete
-As of 2026-04, it covers 4 tools (GStack, Hermes, Superpowers, GSD) but **misses the 3 primary AI CLIs** (Codex, Codex, Gemini CLI) which are npm globals.
+As of 2026-04, it covers 4 tools (GStack, Hermes, Superpowers, GSD) but **misses the 3 primary AI CLIs** (Claude Code, Codex, Gemini CLI) which are npm globals.
 
 ### Machine-specific vs. portable changes in git-based tools
 Some files MUST differ per machine (e.g., Hermes `hermes` launcher with venv shebang). Others are portable (e.g., `package-lock.json`). When checking for drift:
@@ -250,26 +250,26 @@ hermes:
 1. Post-update: `tool --version` smoke test; mark BROKEN + rollback on failure
 2. Pre-update: block major version bumps; flag npm audit critical/high
 3. Post-update: `git status --porcelain` on git-based tools; log dirty files
-4. Coverage: add Codex, Codex, Gemini CLI update functions
+4. Coverage: add Claude Code, Codex, Gemini CLI update functions
 5. Rollback: `npm install -g pkg@previous` for npm; `git stash` for git tools
 
 ## Agent Learnings Portability Audit
 
 When assessing whether learnings survive machine loss, run a 3-parallel-subagent audit:
 
-1. **Subagent A: Home directory inventory** — scan `~/.Codex/`, `~/.hermes/`, `~/.codex/`, `~/.gemini/` for all state files. For each: size, git-tracked?, export pipeline?, risk if lost. Focus on files <1MB that contain unique learnings (corrections, rules, patterns, memories) vs large regenerable caches.
+1. **Subagent A: Home directory inventory** — scan `~/.claude/`, `~/.hermes/`, `~/.codex/`, `~/.gemini/` for all state files. For each: size, git-tracked?, export pipeline?, risk if lost. Focus on files <1MB that contain unique learnings (corrections, rules, patterns, memories) vs large regenerable caches.
 
-2. **Subagent B: Project memory audit** — scan `~/.Codex/projects/*/memory/` for all per-project memory files. These are the highest-value-per-byte files (user corrections in feedback_*.md). Check if backup/rsync covers them vs git tracking.
+2. **Subagent B: Project memory audit** — scan `~/.claude/projects/*/memory/` for all per-project memory files. These are the highest-value-per-byte files (user corrections in feedback_*.md). Check if backup/rsync covers them vs git tracking.
 
 3. **Subagent C: Nightly pipeline artifact audit** — trace every script in `scripts/cron/` that produces output. For each output file: where written, gitignore status, actually committed?, survives clone? The most common failure: `.gitignore` has `!` exception but pipeline never runs `git add`.
 
 ### The gitignore-exception gap pattern
 This is the #1 discovery from the audit. `.gitignore` allows:
 ```
-!.Codex/state/corrections/
-!.Codex/state/patterns/
+!.claude/state/corrections/
+!.claude/state/patterns/
 ```
-But if the nightly pipeline never runs `git add .Codex/state/corrections/`, those files accumulate locally and are NEVER committed. The exception is dead code. Always verify exceptions have matching files in `git ls-files`.
+But if the nightly pipeline never runs `git add .claude/state/corrections/`, those files accumulate locally and are NEVER committed. The exception is dead code. Always verify exceptions have matching files in `git ls-files`.
 
 ### Three-tier portability model
 - **Tier 1 (git-committed)**: Small files <10MB. Memories, patterns, corrections, rules, insights. Survives `git clone`.

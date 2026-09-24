@@ -464,8 +464,8 @@ When asked to create or modify database migrations:
 | `#` | Quick add to CLAUDE.md memory (e.g., `# Use 2-space indentation`) |
 | `/` | Slash commands |
 
-### Pro Tip: "ultrathink"
-Use the keyword "ultrathink" in your prompt for maximum reasoning effort on a specific turn. This triggers the deepest thinking mode regardless of the current `/effort` setting.
+### Reasoning depth
+Set reasoning depth with `/effort` (or `CLAUDE_CODE_EFFORT_LEVEL`), not with prompt keywords. On Claude Opus 5.5 thinking is always on and effort is the only control; its default is `medium`, so raise it for a hard turn and lower it for routine work.
 
 ## PR Review Pattern
 
@@ -698,7 +698,7 @@ Use `/context` in interactive mode to see a colored grid of context usage. Key t
 |----------|--------|
 | `ANTHROPIC_API_KEY` | API key for authentication (alternative to OAuth) |
 | `CLAUDE_CODE_EFFORT_LEVEL` | Default effort: `low`, `medium`, `high`, `max`, or `auto` |
-| `MAX_THINKING_TOKENS` | Cap thinking tokens (set to `0` to disable thinking entirely) |
+| `MAX_THINKING_TOKENS` | Cap thinking tokens on models that take a thinking budget. It does not disable thinking on Claude Opus 5.5, where thinking is always on — use the effort level instead |
 | `MAX_MCP_OUTPUT_TOKENS` | Cap output from MCP servers (default varies; set e.g., `50000`) |
 | `CLAUDE_CODE_NO_FLICKER=1` | Enable alt-screen rendering to eliminate terminal flicker |
 | `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB` | Strip credentials from sub-processes for security |

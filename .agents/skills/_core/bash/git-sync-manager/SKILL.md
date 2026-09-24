@@ -41,9 +41,9 @@ see_also:
 
 ## Large-Repo / Concurrent-Agent Safety Rules
 
-When syncing very large repos or repos actively handled by Codex/Codex/Gemini workers:
+When syncing very large repos or repos actively handled by Claude/Codex/Gemini workers:
 
-1. **Preflight active writers first**: inspect `ps`/`/proc/<pid>/cwd` for active `Codex`, `codex`, `git checkout`, `git status`, `git commit`, `git merge`, `git rebase`, `git pull`, or `git push` processes. If a worker is operating inside the target repo, do not interrupt it or mutate that repo.
+1. **Preflight active writers first**: inspect `ps`/`/proc/<pid>/cwd` for active `claude`, `codex`, `git checkout`, `git status`, `git commit`, `git merge`, `git rebase`, `git pull`, or `git push` processes. If a worker is operating inside the target repo, do not interrupt it or mutate that repo.
 2. **Use no-untracked status by default**: prefer `git -c status.showUntrackedFiles=no status --short --branch --untracked-files=no`; never use `git status -uall` on huge repos unless explicitly justified.
 3. **Respect locks**: treat `.git/index.lock`, `.git/HEAD.lock`, `MERGE_HEAD`, `rebase-merge/`, and `rebase-apply/` as stop signs. Do not delete locks automatically during scheduled sync.
 4. **Backup before staging**: for dirty tracked changes, write `git diff --binary HEAD` and no-untracked status output under `.git/recovery-backups/` before `git add -u`.

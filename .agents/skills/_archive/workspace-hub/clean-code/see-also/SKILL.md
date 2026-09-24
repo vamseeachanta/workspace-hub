@@ -15,5 +15,5 @@ scripts_exempt: true
 - `/repo-structure` — file locations, tests/ layout, .gitignore
 - `/file-taxonomy` — where to put reports, results, data (including `config/` vs `configs/` naming)
 - `/infrastructure-layout` — canonical 5-domain layout for the infrastructure/ package
-- `.Codex/rules/coding-style.md` — naming conventions (canonical source)
+- `.claude/rules/coding-style.md` — naming conventions (canonical source)
 - `scripts/operations/validate-file-placement.sh` — automated structural checks

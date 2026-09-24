@@ -29,7 +29,7 @@ version: 1.0.0
 
 - [fatigue-analysis](../fatigue-analysis/SKILL.md) - Mooring line fatigue
 - [structural-analysis](../structural-analysis/SKILL.md) - Buoy structure
-- [engineering-report-generator](../../.Codex/skills/development/engineering-report-generator/SKILL.md) - Analysis reports
+- [engineering-report-generator](../../.claude/skills/development/engineering-report-generator/SKILL.md) - Analysis reports
 
 ## Sub-Skills
 

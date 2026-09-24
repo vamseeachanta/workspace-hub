@@ -1,13 +1,13 @@
 ---
 name: memory-bridge-commit-fallbacks
-description: Fallback procedures when the Hermes ↔ Codex memory bridge writes .Codex/memory outputs but the internal git commit/push path fails because of dirty, stale, or broken submodule state.
+description: Fallback procedures when the Hermes ↔ Claude memory bridge writes .claude/memory outputs but the internal git commit/push path fails because of dirty, stale, or broken submodule state.
 ---
 
 # Memory Bridge Commit Fallbacks
 
 ## When to use
 
-Use when running `scripts/memory/pre-bridge-quality.sh --fix` or `scripts/memory/bridge-hermes-Codex.sh --commit` in workspace-hub and the bridge successfully updates `.Codex/memory/` files, but its internal commit/push phase fails due to unrelated dirty repo state, stale/broken submodule status, or errors such as:
+Use when running `scripts/memory/pre-bridge-quality.sh --fix` or `scripts/memory/bridge-hermes-claude.sh --commit` in workspace-hub and the bridge successfully updates `.claude/memory/` files, but its internal commit/push phase fails due to unrelated dirty repo state, stale/broken submodule status, or errors such as:
 
 - `fatal: 'git status --porcelain=2' failed in submodule ...`
 - `error: status died of signal 15`
@@ -19,7 +19,7 @@ This is a fallback for landing the bridge outputs only; do not use it to commit 
 
 1. Confirm the quality gate passed and was not a degenerate-memory abort.
    - If score `< 50`, do **not** bridge.
-   - If score `>= 50`, continue only if `.Codex/memory/` outputs were written.
+   - If score `>= 50`, continue only if `.claude/memory/` outputs were written.
 
 2. Verify remote relationship before creating a manual commit:
 
@@ -34,14 +34,14 @@ Expected safe case: `0 0` or only local bridge work pending. If behind, avoid br
 3. Inspect only memory outputs, not repo-wide churn:
 
 ```bash
-git diff --cached --name-only -- .Codex/memory
-git status --short --ignore-submodules=all -- .Codex/memory
+git diff --cached --name-only -- .claude/memory
+git status --short --ignore-submodules=all -- .claude/memory
 ```
 
 4. Commit with an explicit pathspec so unrelated staged/dirty files are excluded:
 
 ```bash
-git commit -m "chore(memory): auto-refresh memory bridge ($(date +%F))" -- .Codex/memory
+git commit -m "chore(memory): auto-refresh memory bridge ($(date +%F))" -- .claude/memory
 ```
 
 5. Push and verify remote HEAD:
@@ -63,13 +63,13 @@ Expected result: `In sync — no drift detected` and exit code `0`.
 7. Report honestly:
    - quality score
    - drift count from the initial drift check
-   - `.Codex/memory/` files updated with line counts
+   - `.claude/memory/` files updated with line counts
    - that the internal script commit failed and the path-limited fallback commit/push was used
    - final commit SHA and drift recheck result
 
 ## Pitfalls
 
 - Do not run broad `git stash`, `git add .`, or repo-wide `git commit` in workspace-hub when unrelated agent/session churn is present.
-- Do not trust repo-wide `git status` if submodules are broken; use `--ignore-submodules=all` and path-limited checks for `.Codex/memory/`.
+- Do not trust repo-wide `git status` if submodules are broken; use `--ignore-submodules=all` and path-limited checks for `.claude/memory/`.
 - Do not rerun the bridge repeatedly after outputs were written; repeated runs can change timestamps and expand the diff.
 - This skill overlaps with `memory-bridge-operation`; prefer updating that canonical skill when it is editable.

@@ -1,16 +1,16 @@
 ---
 name: overnight-plan-artifact-placement-drift-reconciliation
-description: Reconcile overnight planning waves where Codex workers advance GitHub issue state but the expected plan/review artifacts are missing from the designated external worktree because the worker wrote from a sandbox/in-repo worktree and pushed directly to the branch.
+description: Reconcile overnight planning waves where Claude workers advance GitHub issue state but the expected plan/review artifacts are missing from the designated external worktree because the worker wrote from a sandbox/in-repo worktree and pushed directly to the branch.
 version: 1.0.0
 author: Hermes Agent
 category: workspace-hub-learned
-tags: [overnight, planning, Codex, worktree, github, artifact-drift]
+tags: [overnight, planning, claude, worktree, github, artifact-drift]
 ---
 
 # Overnight plan artifact placement drift reconciliation
 
 Use when:
-- overnight Codex planning workers were launched from an external worktree
+- overnight Claude planning workers were launched from an external worktree
 - the worker claims success and GitHub labels/comments advanced
 - expected `docs/plans/...` or `scripts/review/results/...` files are missing from the original worktree
 - you suspect the worker used a sandbox worktree or pushed directly to the remote branch
@@ -26,7 +26,7 @@ Typical signals:
 
 ## What happened
 
-Codex may execute from an in-sandbox checkout (for example under `.Codex/worktrees/...`) rather than the external `/mnt/local-analysis/worktrees/...` path you launched from. It can still push a valid commit to the intended branch and update GitHub issue labels/comments, leaving the original external worktree stale.
+Claude may execute from an in-sandbox checkout (for example under `.claude/worktrees/...`) rather than the external `/mnt/local-analysis/worktrees/...` path you launched from. It can still push a valid commit to the intended branch and update GitHub issue labels/comments, leaving the original external worktree stale.
 
 This is not necessarily worker failure. It is artifact-placement drift.
 

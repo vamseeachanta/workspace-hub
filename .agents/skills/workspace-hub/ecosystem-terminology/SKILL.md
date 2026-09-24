@@ -3,7 +3,7 @@ name: ecosystem-terminology
 version: 1.0.0
 category: workspace-hub
 applies-to:
-- Codex
+- claude
 - codex
 - gemini
 invocation: /ecosystem-terminology
@@ -89,12 +89,12 @@ type: reference
 | **tier-1 repo** | A submodule with a `pyproject.toml`, `uv.lock`, and full test suite; currently: assetutilities, digitalmodel, worldenergydata, assethold, OGManufacturing |
 | **adapter file** | `AGENTS.md`, `CODEX.md`, `GEMINI.md` — thin per-agent configuration files (≤20 lines); never put logic here, use skills instead |
 | **harness** | The tooling layer inside hub: skills, work-queue, scripts, config, rules |
-| **WRK** | A work item tracked in `.Codex/work-queue/` with a `WRK-NNN` identifier |
+| **WRK** | A work item tracked in `.claude/work-queue/` with a `WRK-NNN` identifier |
 | **stage** | One numbered step in the 20-stage WRK lifecycle (1=Capture … 20=Archive) |
 | **phase** | A grouping of related stages (e.g., "planning phase" = stages 2-7) |
 | **checkpoint** | `checkpoint.yaml` snapshot written after each stage to enable safe resume |
 | **gate** | A hard stop requiring human confirmation or verifiable script output before proceeding |
-| **cross-review** | Multi-provider AI review (Codex + Codex + Gemini) — Codex is a hard gate |
+| **cross-review** | Multi-provider AI review (Claude + Codex + Gemini) — Codex is a hard gate |
 | **AC** | Acceptance Criteria — the testable conditions that define WRK completion |
 | **evidence** | Files in `assets/WRK-NNN/evidence/` that record gate passage |
 | **skill** | A `SKILL.md` file loaded on demand to guide agent behaviour for a specific task type |
@@ -114,7 +114,7 @@ type: reference
 | Stage exit artifact | `stage-evidence.yaml` | `stage_evidence.yaml`, `stageEvidence.yaml` |
 | GitHub issue (review surface) | GitHub issue URL | `WRK-NNN-lifecycle.html` (deprecated) |
 | Config files | `kebab-case.yaml` | `snake_case.yaml` |
-| Commands dir | `.Codex/commands/` | `.Codex/command/`, `.Codex/cmds/` |
+| Commands dir | `.claude/commands/` | `.claude/command/`, `.claude/cmds/` |
 
 ## 4 — Acronyms & Abbreviations
 
@@ -140,7 +140,7 @@ type: reference
 | CD | Continuous Deployment | devops |
 | RI | Resource Intelligence (Stage 2 artefact) | harness |
 | HTML | (deprecated) formerly Lifecycle review document; now GitHub issue is the review surface | harness |
-| MCP | Model Context Protocol (Codex tool server standard) | ai |
+| MCP | Model Context Protocol (Claude tool server standard) | ai |
 | QA | Quality Assurance | engineering |
 | CLI | Command-Line Interface | tools |
 | YAML | YAML Ain't Markup Language (config file format) | infra |

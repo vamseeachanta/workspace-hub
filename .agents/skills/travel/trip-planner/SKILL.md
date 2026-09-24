@@ -61,7 +61,7 @@ Every trip issue body MUST include these in this order. Sections marked **load-b
 
 ## When to refer to the templates
 
-The canonical structures live in `.Codex/skills/travel/templates/`:
+The canonical structures live in `.claude/skills/travel/templates/`:
 
 - `trip-issue-body.md` — for parent trips (#19, #41–#45, #68)
 - `destination-issue-body.md` — for individual destinations (#46–#66)

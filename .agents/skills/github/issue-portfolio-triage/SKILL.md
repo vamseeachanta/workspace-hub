@@ -26,7 +26,7 @@ Split it into 3 layers:
 
 ## Inputs to collect
 1. Provider mix and reset timing
-   - Example: Codex weekly reset time and percent remaining
+   - Example: Claude weekly reset time and percent remaining
    - Number of Codex/OpenAI seats
    - Gemini availability
 2. Machine topology
@@ -66,7 +66,7 @@ Score each issue 0-3 on:
 - Frequency — how often the problem appears
 - Leverage — whether one fix improves many future tasks
 - Readiness alignment — whether it improves sync, auth, cron, harness, machine parity
-- Provider-efficiency alignment — whether it helps use Codex/Codex/Gemini better
+- Provider-efficiency alignment — whether it helps use Claude/Codex/Gemini better
 - Effort — subtract this (0 tiny, 3 large)
 
 Suggested formula:
@@ -88,14 +88,14 @@ Prefer issues in this order:
 5. umbrella/meta issues
 
 ## Multi-provider guidance
-When the user has Codex + 2 Codex seats + Gemini:
-- Codex = orchestrator, planning, sequencing, synthesis
+When the user has Claude + 2 Codex seats + Gemini:
+- Claude = orchestrator, planning, sequencing, synthesis
 - Codex seat A = implementation lane
 - Codex seat B = adversarial review / overflow lane
 - Gemini = selective architecture/research/third-opinion lane
 
 Use this to shape the weekly plan:
-- Spend Codex on high-context triage and coordination
+- Spend Claude on high-context triage and coordination
 - Push bounded implementation and review work to Codex
 - Use Gemini sparingly for ambiguity or architecture-heavy work
 
@@ -113,7 +113,7 @@ Recommended WIP cap:
 
 ## Tie-breakers
 If issues are close, prefer the one that:
-1. reduces future Codex usage
+1. reduces future Claude usage
 2. enables Codex parallelism
 3. improves machine readiness
 4. improves issue intake quality

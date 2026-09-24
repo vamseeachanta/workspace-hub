@@ -1,16 +1,16 @@
 ---
 name: overnight-plan-wave-artifact-drift-reconciliation
-description: Reconcile overnight planning waves when Codex workers move GitHub issues to status:plan-review but local artifacts are missing, split across sandbox worktrees, or only present on a pushed remote branch.
+description: Reconcile overnight planning waves when Claude workers move GitHub issues to status:plan-review but local artifacts are missing, split across sandbox worktrees, or only present on a pushed remote branch.
 version: 1.0.0
 author: Hermes Agent
 category: workspace-hub-learned
-tags: [overnight, planning, github, worktree, artifact-drift, Codex]
+tags: [overnight, planning, github, worktree, artifact-drift, claude]
 ---
 
 # Overnight plan-wave artifact drift reconciliation
 
 Use when:
-- running parallel overnight planning-only Codex workers
+- running parallel overnight planning-only Claude workers
 - workers are supposed to produce `docs/plans/...` files and `scripts/review/results/...` artifacts
 - a worker claims success and/or advances the GitHub issue to `status:plan-review`
 - but the orchestrator cannot find the claimed files in the active worktree
