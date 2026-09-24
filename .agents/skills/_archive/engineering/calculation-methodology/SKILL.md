@@ -160,7 +160,7 @@ guidance:
 # 3. At phase 6, hand off to calculation-report for rendering
 #
 # For section-specific guidance, read the relevant file:
-#   .Codex/skills/engineering/calculation-methodology/sections/01-metadata.md
+#   .claude/skills/engineering/calculation-methodology/sections/01-metadata.md
 ```
 
 ## Research Sources

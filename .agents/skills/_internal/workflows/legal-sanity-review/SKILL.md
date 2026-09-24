@@ -19,7 +19,7 @@ Ensures no client project names, proprietary tool references, or legally sensiti
 ## Review Flow
 
 ```
-Codex/Gemini performs task
+Claude/Gemini performs task
          ↓
     Commit changes
          ↓
@@ -82,7 +82,7 @@ Deny lists control what patterns are scanned:
 - **Global**: `.legal-deny-list.yaml` (workspace root)
 - **Per-project**: `<submodule>/.legal-deny-list.yaml`
 
-See `.Codex/rules/legal-compliance.md` for the full policy.
+See `.claude/rules/legal-compliance.md` for the full policy.
 
 ---
 

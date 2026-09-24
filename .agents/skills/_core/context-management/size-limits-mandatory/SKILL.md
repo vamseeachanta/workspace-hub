@@ -14,10 +14,10 @@ scripts_exempt: true
 
 | File | Max Size | Max Lines | Purpose |
 |------|----------|-----------|---------|
-| `~/.Codex/AGENTS.md` | 2KB | 50 | Global preferences |
+| `~/.claude/CLAUDE.md` | 2KB | 50 | Global preferences |
 | Workspace `AGENTS.md` | 4KB | 100 | Delegation patterns |
 | Project `AGENTS.md` | 8KB | 200 | Project rules |
-| `Codex.local.md` | 2KB | 50 | User overrides |
+| `CLAUDE.local.md` | 2KB | 50 | User overrides |
 
 ## Validation Command
 
@@ -40,7 +40,7 @@ scripts_exempt: true
 - File organization rules
 - Key delegation patterns
 
-**MUST be in .Codex/docs/ (reference):**
+**MUST be in .claude/docs/ (reference):**
 - Agent lists and descriptions
 - MCP tool reference tables
 - Execution workflow diagrams

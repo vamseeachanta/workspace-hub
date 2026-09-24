@@ -57,7 +57,7 @@ Review current paid memberships from `docs/AI_development_tools.md`:
 
 | Service | Plan | Monthly Cost | Annual Cost |
 |---------|------|--------------|-------------|
-| Codex (Anthropic) | Max Plan | $106.60 | $1,279.20 |
+| Claude (Anthropic) | Max Plan | $106.60 | $1,279.20 |
 | OpenAI | ChatGPT Plus | $21.28 | $255.36 |
 | Google AI | Pro | $19.99 | $239.88 |
 | GitHub Copilot | Pro | $8.88/mo | $106.60 |
@@ -67,13 +67,13 @@ Review current paid memberships from `docs/AI_development_tools.md`:
 Assess each tool category:
 
 **Primary AI Assistants:**
-- Codex Max: Code generation, complex reasoning, long-context tasks
+- Claude Max: Code generation, complex reasoning, long-context tasks
 - OpenAI Plus: Alternative perspective, GPT-4.1 access, DALL-E
 - Google AI Pro: Gemini access, Google ecosystem integration
 
 **Development Tools:**
 - GitHub Copilot: Inline code completion, IDE integration
-- Codex-flow: Multi-agent orchestration
+- Claude-flow: Multi-agent orchestration
 - Factory.ai: Automated droids for CI/CD
 - Google Antigravity: Agent-first IDE (in evaluation)
 ### 3. Generate Assessment Report
@@ -163,7 +163,7 @@ Before generating report, ask:
 
 ## Tool Comparison Matrix
 
-| Capability | Codex | OpenAI | Google | Copilot |
+| Capability | Claude | OpenAI | Google | Copilot |
 |------------|--------|--------|--------|---------|
 | Code Generation | ★★★★★ | ★★★★☆ | ★★★☆☆ | ★★★★☆ |
 | Long Context | ★★★★★ | ★★★☆☆ | ★★★★☆ | N/A |

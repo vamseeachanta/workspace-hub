@@ -27,14 +27,14 @@ scripts_exempt: true
 mv .agent-os/README.md .agent-os/README-legacy.md
 
 # Create legacy subdirectory for scripts
-mkdir -p .Codex/commands/legacy-scripts
-git mv .agent-os/commands/* .Codex/commands/legacy-scripts/
+mkdir -p .claude/commands/legacy-scripts
+git mv .agent-os/commands/* .claude/commands/legacy-scripts/
 
 # Preserve unique historical content
-git mv .agent-os/implementation-history/ .Codex/docs/implementation-history/
+git mv .agent-os/implementation-history/ .claude/docs/implementation-history/
 
 # Find and remove exact duplicates (verify first)
-md5sum .Codex/agents/*.md .agent-os/agents/*.md | sort | uniq -w32 -d
+md5sum .claude/agents/*.md .agent-os/agents/*.md | sort | uniq -w32 -d
 ```
 
 ## Pre-Merge Checklist

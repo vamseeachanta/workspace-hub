@@ -1,6 +1,6 @@
 ---
 name: plan-gated-issue-execution-wave
-description: Execute a multi-issue architecture/planning wave in a plan-gated repo, then safely transition approved issues into implementation with file-based Codex prompts, local approval markers, subprocess monitoring, and cleanup handling for sandbox/hook edge cases.
+description: Execute a multi-issue architecture/planning wave in a plan-gated repo, then safely transition approved issues into implementation with file-based Claude prompts, local approval markers, subprocess monitoring, and cleanup handling for sandbox/hook edge cases.
 version: 1.0.0
 author: Hermes Agent
 ---
@@ -10,14 +10,14 @@ author: Hermes Agent
 Use when:
 - working in `workspace-hub` or a similar repo with strict plan gates
 - a parent architecture issue must be decomposed into child issues
-- the user wants Codex prompt files + subprocess launches instead of manual step-by-step orchestration
+- the user wants Claude prompt files + subprocess launches instead of manual step-by-step orchestration
 - some issues are planning-only while others later become implementation-ready
 
 ## Core pattern
 
 1. Create/confirm the parent issue and child issue tree first.
 2. For each not-yet-approved issue, generate a self-contained planning prompt file under `docs/plans/`.
-3. Launch Codex in a background subprocess using the prompt file and monitor it via process polling/watch patterns.
+3. Launch Claude in a background subprocess using the prompt file and monitor it via process polling/watch patterns.
 4. When plan-review artifacts land, move issues to `status:plan-review` only.
 5. After explicit user approval, convert the issue to `status:plan-approved`, create `.planning/plan-approved/<issue>.md`, and commit that marker before any implementation run.
 6. Generate a separate implementation prompt with strict owned paths and forbidden paths.
@@ -29,13 +29,13 @@ Use when:
 ```bash
 cd /mnt/local-analysis/workspace-hub
 PROMPT=$(< docs/plans/<prompt-file>.md)
-Codex -p --permission-mode acceptEdits --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<run>.log
+claude -p --permission-mode acceptEdits --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<run>.log
 ```
 
 For read-only planning dry runs:
 
 ```bash
-Codex -p --permission-mode plan --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<run>-plan.log
+claude -p --permission-mode plan --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<run>-plan.log
 ```
 
 ## Planning wave workflow
@@ -43,7 +43,7 @@ Codex -p --permission-mode plan --no-session-persistence --output-format text "$
 For each issue in the architecture chain:
 - read the approved parent/sibling artifacts first
 - keep the prompt planning-only unless the issue is already approved for execution
-- tell Codex to produce:
+- tell Claude to produce:
   - plan file in `docs/plans/`
   - review artifacts in `scripts/review/results/`
   - GitHub summary comment
@@ -65,7 +65,7 @@ When the user wants to execute an approved plan:
 1. switch GitHub label from `status:plan-review` to `status:plan-approved`
 2. create `.planning/plan-approved/<issue>.md`
 3. commit the marker by itself with a small commit message
-4. only then launch implementation Codex prompt
+4. only then launch implementation Claude prompt
 
 Example commit:
 
@@ -110,7 +110,7 @@ Use subprocess monitoring with watch patterns like:
 
 After launching a multi-session wave, immediately produce an operator-facing launch report before ending the turn. Include: batch root, README/summary path, one row per lane with issue number, Hermes process session ID, OS PID, worktree/workdir, prompt path, log path, and max turns/budget if applicable, plus the result/artifact directory and copy/paste monitoring commands. Verify current status with `process poll` or `ps -p ...`; do not rely only on a successful launch command.
 
-Remember that unattended `Codex -p` logs may remain 0 bytes until output flush/completion. Treat PID liveness and expected artifact creation as primary health signals, and include that caveat in the report so zero-byte logs are not mistaken for failed launches. If a context compaction/handoff happens after launch, poll the preserved Hermes process IDs first and complete the report rather than relaunching duplicate sessions.
+Remember that unattended `claude -p` logs may remain 0 bytes until output flush/completion. Treat PID liveness and expected artifact creation as primary health signals, and include that caveat in the report so zero-byte logs are not mistaken for failed launches. If a context compaction/handoff happens after launch, poll the preserved Hermes process IDs first and complete the report rather than relaunching duplicate sessions.
 
 After a watch hit, still wait for the process to exit and then inspect:
 - final process output
@@ -120,7 +120,7 @@ After a watch hit, still wait for the process to exit and then inspect:
 
 ## Host-vs-sandbox execution lesson
 
-If the implementation depends on mounted paths outside the repo (for example `/mnt/ace/...`) Codex sandbox may be unable to access them even when the host can.
+If the implementation depends on mounted paths outside the repo (for example `/mnt/ace/...`) Claude sandbox may be unable to access them even when the host can.
 
 Use this rule:
 - planning can still proceed if the limitation is documented
@@ -137,8 +137,8 @@ Good example:
 Workspace hooks may incorrectly treat all `AGENTS.md` files as harness adapter files.
 
 Observed false positive:
-- `.Codex/hooks/check-Codex-md-limits.sh` enforced a 20-line limit on `knowledge/wikis/*/AGENTS.md`
-- wiki Codex files are generated schema/config docs, not harness adapters
+- `.claude/hooks/check-claude-md-limits.sh` enforced a 20-line limit on `knowledge/wikis/*/AGENTS.md`
+- wiki CLAUDE files are generated schema/config docs, not harness adapters
 
 Minimal fix used:
 
@@ -153,7 +153,7 @@ Apply this only if the user approves a hook fix.
 After implementation completes:
 - inspect `git show --stat <commit>` to verify only intended files landed
 - inspect `gh issue view <n>` to confirm comment + close state
-- check for residual working-tree edits that Codex reported but did not commit
+- check for residual working-tree edits that Claude reported but did not commit
 - if a residual is tiny and well-bounded, use a cleanup prompt instead of reopening broad implementation
 
 ## Pitfalls

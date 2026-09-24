@@ -7,7 +7,7 @@ version: 1.0.0
 category: workspace-hub-learned
 applies-to:
 - hermes
-- Codex
+- claude
 - codex
 - gemini
 trigger: manual
@@ -214,17 +214,17 @@ If Playwright is available via `npx` but not in the default Python interpreter, 
 - `media/README.md`
 - optional generator: `media/generate_comparison_matrix_gif.py`
 
-## Interactive Codex execution pattern for scoped media work
-When the user explicitly wants implementation via interactive Codex, use tmux and pass the full issue context in the prompt rather than assuming Codex can read the parent repo issue from a nested repo.
+## Interactive Claude Code execution pattern for scoped media work
+When the user explicitly wants implementation via interactive Claude Code, use tmux and pass the full issue context in the prompt rather than assuming Claude can read the parent repo issue from a nested repo.
 
 ### Why
 In the nested `digitalmodel/` repo, `gh issue view 1809` may fail or resolve against the wrong repository context. Passing the exact issue requirements in the prompt avoids this ambiguity.
 
 ### Verified launch pattern
 ```bash
-tmux new-session -d -s Codex-1809 -x 160 -y 48
+tmux new-session -d -s claude-1809 -x 160 -y 48
 cd /mnt/local-analysis/workspace-hub/digitalmodel && \
-Codex --setting-sources user --dangerously-skip-permissions "$(cat /tmp/claude_1809_prompt.txt)"
+claude --setting-sources user --dangerously-skip-permissions "$(cat /tmp/claude_1809_prompt.txt)"
 ```
 
 Then handle dialogs in order:
@@ -232,12 +232,12 @@ Then handle dialogs in order:
 2. Bypass-permissions warning: `Down`, then `Enter`
 
 ### Monitoring pattern
-Use repeated pane captures while Codex works:
+Use repeated pane captures while Claude works:
 ```bash
-tmux capture-pane -t Codex-1809 -p -S -200
+tmux capture-pane -t claude-1809 -p -S -200
 ```
 
-This worked well for a scoped media-only task where Codex:
+This worked well for a scoped media-only task where Claude:
 - copied/renamed the preview GIFs
 - wrote `generate_comparison_matrix_gif.py`
 - adapted to the local Python/Playwright mismatch

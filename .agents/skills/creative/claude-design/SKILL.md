@@ -1,5 +1,5 @@
 ---
-name: Codex-design
+name: claude-design
 description: Design one-off HTML artifacts (landing, deck, prototype).
 version: 1.0.0
 author: BadTechBandit
@@ -10,11 +10,11 @@ metadata:
     related_skills: [design-md, popular-web-designs, excalidraw, architecture-diagram]
 ---
 
-# Codex Design for CLI/API Agents
+# Claude Design for CLI/API Agents
 
-Use this skill when the user asks for design work that would normally fit Codex Design, but the agent is running in a CLI/API environment instead of the hosted Codex Design web UI.
+Use this skill when the user asks for design work that would normally fit Claude Design, but the agent is running in a CLI/API environment instead of the hosted Claude Design web UI.
 
-The goal is to preserve Codex Design's useful design behavior and taste while removing hosted-tool plumbing that does not exist in normal agent environments.
+The goal is to preserve Claude Design's useful design behavior and taste while removing hosted-tool plumbing that does not exist in normal agent environments.
 
 **Before starting, check for other web-design skills like `popular-web-designs` (ready-to-paste design systems for Stripe, Linear, Vercel, Notion, etc.) and `design-md` (Google's DESIGN.md token spec format).** If the user wants a known brand's look, load `popular-web-designs` alongside this one and let it supply the visual vocabulary. If the deliverable is a token spec file rather than a rendered artifact, use `design-md` instead. Full decision table below.
 
@@ -24,42 +24,23 @@ Hermes has three design-related skills under `skills/creative/`. They do differe
 
 | Skill | What it gives you | Use when the user wants... |
 |---|---|---|
-| **Codex-design** (this one) | Design *process and taste* — how to scope a brief, gather context, produce variants, verify a local HTML artifact, avoid AI-design slop | a from-scratch designed artifact (landing page, prototype, deck, component lab, motion study) with no specific brand or token system dictated |
+| **claude-design** (this one) | Design *process and taste* — how to scope a brief, gather context, produce variants, verify a local HTML artifact, avoid AI-design slop | a from-scratch designed artifact (landing page, prototype, deck, component lab, motion study) with no specific brand or token system dictated |
 | **popular-web-designs** | 54 ready-to-paste design systems — exact colors, typography, components, CSS values for sites like Stripe, Linear, Vercel, Notion, Airbnb | "make it look like Stripe / Linear / Vercel", a page styled after a known brand, or a visual starting point pulled from a real product |
 | **design-md** | Google's DESIGN.md spec format — author/validate/diff/export design-token files, WCAG contrast checking, Tailwind/DTCG export | a formal, persistent, machine-readable design-system *spec file* (tokens + rationale) that lives in a repo and gets consumed by agents over time |
 
 Rule of thumb:
 
-- **Process + taste, one-off artifact** → Codex-design
-- **Match a known brand's look** → popular-web-designs (and let Codex-design drive the process)
+- **Process + taste, one-off artifact** → claude-design
+- **Match a known brand's look** → popular-web-designs (and let claude-design drive the process)
 - **Author the tokens spec itself** → design-md
 
-These compose: use `popular-web-designs` for the visual vocabulary, `Codex-design` for how to turn a brief into a thoughtful local HTML file, and `design-md` when the output is the token file rather than a rendered artifact.
+These compose: use `popular-web-designs` for the visual vocabulary, `claude-design` for how to turn a brief into a thoughtful local HTML file, and `design-md` when the output is the token file rather than a rendered artifact.
 
 ## Runtime Mode
 
-You are running in **CLI/API mode**, not the Codex Design hosted web UI.
+You are running in **CLI/API mode**, not the Claude Design hosted web UI.
 
-Ignore references from source Codex Design prompts to hosted-only tools, project panes, preview panes, special toolbar protocols, or platform callbacks that are not available in the current environment.
-
-Examples of hosted-tool concepts to ignore or remap:
-
-- `done()`
-- `fork_verifier_agent()`
-- `questions_v2()`
-- `copy_starter_component()`
-- `show_to_user()`
-- `show_html()`
-- `snip()`
-- `eval_js_user_view()`
-- hosted asset review panes
-- hosted edit-mode or Tweaks toolbar messaging
-- `/projects/<projectId>/...` cross-project paths
-- built-in `window.Codex.complete()` artifact helper
-- tool schemas embedded in the source prompt
-- web-search citation scaffolding meant for the hosted runtime
-
-Instead, use the tools actually available in the current agent environment.
+Use the tools available in the current agent environment; hosted-UI tools, panes, and callbacks from the source prompt do not exist here.
 
 Default deliverable:
 
@@ -345,7 +326,7 @@ When the user picks a direction, consolidate. Do not leave the project as a pile
 
 ## Tweakable Designs in CLI/API Mode
 
-The hosted Codex Design edit-mode toolbar does not exist here.
+The hosted Claude Design edit-mode toolbar does not exist here.
 
 Still preserve the idea: when useful, add in-page controls called `Tweaks`.
 
@@ -573,10 +554,10 @@ Next: pick the strongest direction and I’ll tighten copy + motion.
 
 ## Portable Opening Prompt Pattern
 
-When adapting a Codex Design style request into CLI/API mode, use this mental translation:
+When adapting a Claude Design style request into CLI/API mode, use this mental translation:
 
 ```text
-You are running in CLI/API mode, not hosted Codex Design. Ignore references to hosted-only tools or preview panes. Produce complete local design artifacts, usually self-contained HTML with embedded CSS/JS, and verify with available local tools before returning. Preserve the design process: gather context, define the system, produce options, avoid filler, and meet a high visual bar.
+You are running in CLI/API mode, not hosted Claude Design. Ignore references to hosted-only tools or preview panes. Produce complete local design artifacts, usually self-contained HTML with embedded CSS/JS, and verify with available local tools before returning. Preserve the design process: gather context, define the system, produce options, avoid filler, and meet a high visual bar.
 ```
 
 ## Pitfalls

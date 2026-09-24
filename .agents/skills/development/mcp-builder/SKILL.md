@@ -2,7 +2,7 @@
 name: mcp-builder
 description: Guide for building high-quality Model Context Protocol (MCP) servers
   that allow LLMs to interact with external services. Use when creating new MCP integrations,
-  tools, or servers for Codex or other AI systems.
+  tools, or servers for Claude or other AI systems.
 type: reference
 version: 1.2.0
 category: development
@@ -53,9 +53,9 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 
 ## When to Use
 
-- Creating integrations for Codex with external APIs
+- Creating integrations for Claude Code with external APIs
 - Building custom tooling for AI-assisted workflows
-- Extending Codex's capabilities with domain-specific tools
+- Extending Claude's capabilities with domain-specific tools
 - Automating interactions with third-party services
 - Building reusable MCP servers for team sharing
 
@@ -96,6 +96,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 - [Phase 1: Deep Research and Planning (+3)](phase-1-deep-research-and-planning/SKILL.md)
 - [Language Choice (+4)](language-choice/SKILL.md)
 - [Pagination (+2)](pagination/SKILL.md)
-- [Integration with Codex](integration-with-Codex/SKILL.md)
+- [Integration with Claude Code](integration-with-claude-code/SKILL.md)
 - [.mcp.json for Team Sharing (+2)](mcpjson-for-team-sharing/SKILL.md)
 - [Security Best Practices](security-best-practices/SKILL.md)

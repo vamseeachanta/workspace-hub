@@ -47,7 +47,7 @@ tags: []
 ```bash
 # Invoke SPARC Architecture phase
 
-# Or directly in Codex
+# Or directly in Claude Code
 # "Use SPARC architecture to design the system components for auth service"
 ```
 

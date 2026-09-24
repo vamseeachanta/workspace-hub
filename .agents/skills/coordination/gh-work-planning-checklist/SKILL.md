@@ -51,9 +51,9 @@ Do not use this as a substitute for the full planning route.
 - Write the canonical plan artifact under `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md`.
 - Include deliverable, file map, tests, acceptance criteria, risks, scope boundaries, and follow-up issues.
 - Separate required now vs later work.
-- Delegation gate: explicitly decide yes/no on Codex agent-team packaging.
+- Delegation gate: explicitly decide yes/no on Claude agent-team packaging.
 
-4. Codex prompt-pack delegation check
+4. Claude prompt-pack delegation check
 - Delegate only if work splits cleanly into non-overlapping streams.
 - Assign explicit owned paths, forbidden paths, dependencies, validation, and GitHub authority limits per stream.
 - Enforce zero git contention: no shared files, branches, or worktrees across streams.
@@ -64,7 +64,7 @@ Do not use this as a substitute for the full planning route.
 - If boundaries are fuzzy, do not delegate yet.
 
 5. Adversarial review
-- Run independent plan review via Codex + Codex + Gemini.
+- Run independent plan review via Claude + Codex + Gemini.
 - Compare verdicts, synthesize findings, revise plan, and re-review if changes are material.
 - Review gate: no silent downgrade of major concerns.
 - Mark residual risk and whether plan is ready for approval.

@@ -21,7 +21,7 @@ Design or operate a central AI workflow control plane that combines provider quo
 
 ## When to use
 
-- User asks Hermes to orchestrate Codex/Codex/Gemini or other providers across multiple machines.
+- User asks Hermes to orchestrate Claude/Codex/Gemini or other providers across multiple machines.
 - User wants one workstation to control most of the workflow while other workstations execute overflow work.
 - Provider quota is expiring or underused and the user wants to burn it down safely.
 - Work needs to be routed by `agent:*`, `machine:*`, `status:*`, `priority:*`, `cat:*`, or `domain:*` labels.
@@ -32,7 +32,7 @@ Design or operate a central AI workflow control plane that combines provider quo
 - `ace-linux-1` is the primary Hermes/operator control-plane workstation for almost all AI workflow orchestration: provider usage decisions, queue review, prompt generation, dispatch ledger updates, GitHub state changes, and cross-workstation reconciliation.
 - `ace-linux-1` is also the **continuous user-facing control surface**: this is where approvals, plan decisions, work approvals, and morning reconciliation happen even when background lanes continue elsewhere.
 - `ace-linux-2` is the first overflow/execution worker node, not an equal peer control plane unless failover is explicitly chosen.
-- Codex is best preserved for orchestration, planning, synthesis, and adversarial review.
+- Claude is best preserved for orchestration, planning, synthesis, and adversarial review.
 - Codex is best for bounded implementation, tests, fixes, cleanup, and mechanical execution, especially when credits are expiring.
 - Gemini is best for batched research, recon, risk enumeration, and architecture review where telemetry may be directional rather than exact.
 - Continuous GTM objective: keep converting signals, approved repo work, and engineering outputs into client-ready material without crossing the engineering-evidence boundary.
@@ -124,7 +124,7 @@ Use this overlay when the goal is not just throughput, but steady movement towar
    - If the engineering evidence does not exist yet, create or update the plan/issue instead of marketing beyond the evidence.
 3. **Route the work by lane type**
    - `ace-linux-1` control surface: approvals, queue selection, dispatch ledger, morning synthesis, outreach packaging decisions.
-   - `ace-linux-1` local lanes: Codex/Gemini/Codex planning, synthesis, bounded implementation, or packaging work with repo-owned prompts.
+   - `ace-linux-1` local lanes: Codex/Gemini/Claude planning, synthesis, bounded implementation, or packaging work with repo-owned prompts.
    - `ace-linux-2` overflow lanes: isolated implementation/review worktrees only after readiness checks.
 4. **Produce client-ready outputs with boundaries**
    - Preferred outputs: `docs/gtm/*.md`, demo reports, website drafts, outreach templates, issue comments, and evidence summaries.
@@ -179,7 +179,7 @@ Minimum checks:
    ```
    Do not route expiring provider-credit work to a worker unless the relevant CLI/auth path exists in the launch environment and is known to consume the intended account/credit. If only the login shell exposes the tools, dispatch with `ssh <host> 'bash -lc "<command>"'` or explicitly source the user's environment.
 
-   For Codex specifically, CLI presence and `~/.codex/` files are only a weak signal. Before assigning real Codex burn work to a remote/overflow machine, run a tiny real `codex exec` smoke through the exact login-shell/tmux path you will use for the lane and confirm it does not fail with `401 Unauthorized` or `Failed to refresh token: refresh token was already used`. If that smoke fails, mark the host Codex-blocked and use it only for Codex fallback/validation until `codex login` is refreshed.
+   For Codex specifically, CLI presence and `~/.codex/` files are only a weak signal. Before assigning real Codex burn work to a remote/overflow machine, run a tiny real `codex exec` smoke through the exact login-shell/tmux path you will use for the lane and confirm it does not fail with `401 Unauthorized` or `Failed to refresh token: refresh token was already used`. If that smoke fails, mark the host Codex-blocked and use it only for Claude fallback/validation until `codex login` is refreshed.
 
 6. **Engineering software readiness**
    Check both package/command presence and a task-appropriate smoke test. Presence alone is not enough.
@@ -233,7 +233,7 @@ When the user asks to execute work on another workstation (not just prepare a pr
      SESSION=ace2-overflow-$(date +%Y%m%d); \
      tmux kill-session -t \$SESSION 2>/dev/null || true; \
      tmux new-session -d -s \$SESSION -c /mnt/local-analysis/workspace-hub \
-       \"bash -lc \\\"Codex --print --dangerously-skip-permissions < /tmp/worker-prompt.md 2>&1 | tee /mnt/local-analysis/ace2-worker-logs/\$SESSION.log\\\"\"; \
+       \"bash -lc \\\"claude --print --dangerously-skip-permissions < /tmp/worker-prompt.md 2>&1 | tee /mnt/local-analysis/ace2-worker-logs/\$SESSION.log\\\"\"; \
      tmux list-sessions | grep \$SESSION'
    ```
 3. Monitor with:
@@ -246,7 +246,7 @@ Do **not** use shell-level `nohup ... &` wrappers through Hermes foreground `ter
 
 ## Post-reboot / interrupted-run recovery playbook
 
-Use this when a control-plane workstation reboots or a context handoff indicates in-flight Hermes/Codex/Codex/tmux work may have survived, stalled, or been partially landed. Work in this order:
+Use this when a control-plane workstation reboots or a context handoff indicates in-flight Hermes/Claude/Codex/tmux work may have survived, stalled, or been partially landed. Work in this order:
 
 1. **Salvage current work first**
    - Reconstruct active state from the handoff, `todo`, process tables, tmux sessions, logs, and GitHub issue labels/state.
@@ -258,7 +258,7 @@ Use this when a control-plane workstation reboots or a context handoff indicates
 2. **Research/restart ongoing work second**
    - Poll local tmux panes/logs and remote worker panes/logs before relaunching.
    - For `ace-linux-2`, rerun readiness (`scripts/operations/agent-execution/ace2-readiness.sh` when available) and keep it report-only if `gh auth status` is invalid.
-   - Do not duplicate Codex/Codex lanes until OS process state, worktree git state, and expected report artifacts have been checked.
+   - Do not duplicate Codex/Claude lanes until OS process state, worktree git state, and expected report artifacts have been checked.
    - If a worker must be restarted, use repo-owned prompt/script artifacts rather than `/tmp` prompts whenever they exist.
 
 3. **Set off future work last**
@@ -327,7 +327,7 @@ Use `cronjob(action='update')` to retarget an existing burn/controller job when 
 - Routing by provider only and ignoring workstation readiness or git contention.
 - Assuming a clean child repo means the workspace-hub root is clean enough for root-level work.
 - Assuming installed engineering software is usable without a headless/tool-specific smoke test.
-- Routing Codex/Codex/Gemini work to a workstation where the provider CLI is missing or unauthenticated.
+- Routing Codex/Claude/Gemini work to a workstation where the provider CLI is missing or unauthenticated.
 - Mass-applying labels from heuristics without manual inspection.
 - Losing reconciliation evidence because no dispatch ledger was written.
 

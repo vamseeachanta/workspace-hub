@@ -65,11 +65,11 @@ Use this routine:
    - what dependency or sequencing relationship exists
 6. Record the created issue numbers in the session handoff / results summary so the next execution wave does not silently absorb the deferred work.
 
-This is especially useful after overnight Codex planning runs, where multiple plans may each leave one or two explicit "Open" decisions. Converting the strongest ones into real GitHub issues preserves scope discipline and gives tomorrow's execution wave a cleaner boundary.
+This is especially useful after overnight Claude planning runs, where multiple plans may each leave one or two explicit "Open" decisions. Converting the strongest ones into real GitHub issues preserves scope discipline and gives tomorrow's execution wave a cleaner boundary.
 
-## Codex agent-team prompt packaging rule
+## Claude agent-team prompt packaging rule
 
-When the work is large enough to benefit from multiple agents or multiple terminals, use Codex to package the work into self-contained prompts for agent team(s).
+When the work is large enough to benefit from multiple agents or multiple terminals, use Claude to package the work into self-contained prompts for agent team(s).
 Use this especially when:
 - the plan naturally splits into non-overlapping workstreams
 - agent teams need explicit file ownership and zero git contention
@@ -89,7 +89,7 @@ Preferred supporting skills for this packaging:
 
 ## Agent-team decision gate
 
-Before splitting work across Codex agent teams, explicitly decide yes/no on delegation.
+Before splitting work across Claude agent teams, explicitly decide yes/no on delegation.
 
 Delegate only when all are true:
 - work naturally splits into non-overlapping streams
@@ -153,7 +153,7 @@ When creating a future issue:
 STEP 1: Issue Intake          — read, classify, announce
 STEP 2: Resource Intelligence — search all knowledge sources, map artifact locations, identify gaps and follow-ups
 STEP 3: Draft the Plan        — pseudocode, file map, tests, acceptance criteria, follow-up issues
-STEP 4: Adversarial Review    — Codex + Codex + Gemini review the plan
+STEP 4: Adversarial Review    — Claude + Codex + Gemini review the plan
 STEP 5: Hard Stop             — post to GitHub, label, wait for user approval
 ```
 
@@ -343,7 +343,7 @@ Post a concise GitHub update using this structure:
 Decision checkpoint after Step 2:
 - continue drafting
 - create future issue(s)
-- package work as Codex prompts for agent team(s)
+- package work as Claude prompts for agent team(s)
 - stop for blocker/user decision
 
 If agent-team delegation is being considered, decide it here before writing execution handoff materials.
@@ -399,7 +399,7 @@ If any field is vague, the split is not ready.
 
 ## Delegated prompt pack structure
 
-When producing Codex agent-team materials, create a prompt pack with:
+When producing Claude agent-team materials, create a prompt pack with:
 - `master-plan.md` — orchestrator view of the full plan, stream map, dependency order, GitHub authority split, and integration notes
 - `stream-<id>.md` per stream — self-contained execution prompt bound to that stream's contract
 - `execution-readme.md` — operator instructions for launching teams, branch/worktree mapping, validation order, and return protocol
@@ -640,90 +640,15 @@ Typical signs the split is overdue:
 - reviewers accept the high-level direction but block on one or two attached subsystems (for example runner semantics, issue creation policy, or entrypoint normalization)
 - each rewrite fixes wording but not the structural objection
 
-### Decomposition trigger after repeated MAJOR reviews
+### Decomposition trigger
 
-Use this pattern when the review waves keep converging on the same structural complaint, for example:
-- "scope too broad for one T2/T3 plan"
-- "this includes multiple risky subsystems"
-- "runner/schema/policy/inventory should be separate issues"
-- "parent umbrella should stay steering-only"
-
-Required response:
-1. stop trying to force the whole scope through one approval gate
-2. identify the independent workstreams causing the blocking findings
-3. create child issues for those workstreams immediately
-4. keep the original issue as a parent/umbrella unless the whole issue should be replaced
-5. comment on the parent issue with:
-   - why the decomposition happened
-   - the child issue links
-   - recommended execution / approval order
-6. narrow the parent issue's role to steering, sequencing, or final synthesis if appropriate
-
-Practical rule:
-- if repeated MAJOR findings are mostly about decomposition, boundaries, or "too much in one issue," do not spend another full revision cycle polishing prose inside the monolith. Split it.
-- once split, seek approval on the narrowest child issue first, especially the one that establishes the canonical contract or evidence base for the others.
-
-
-### Monolith-to-child-issue decomposition pattern
-
-Use this when repeated adversarial review converges on the same meta-problem: the issue is too broad, mixes multiple subsystems, or keeps failing because approval is being sought for one large plan instead of several narrower ones.
-
-Trigger signals:
-- 2+ review rounds still return `MAJOR`
-- multiple providers independently call out scope bloat, packaging sprawl, or unresolved architectural decomposition
-- one issue is trying to define policy + fixtures + runner semantics + inventory + automation behavior all at once
-- revisions improve wording but do not eliminate the same structural blocker
-
-Required response:
-1. Stop trying to force the original issue through approval as one monolith.
-2. Identify the natural child workstreams and write them as separate GitHub issues with bounded deliverables.
-3. Recast the original issue as a parent/umbrella that links the child issues and owns only steering/synthesis.
-4. Comment on the parent issue explaining why decomposition was necessary and in what order the child issues should be reviewed.
-5. Prefer approving the narrowest contract/evidence issues first, then the dependent execution/policy issues.
-
-Practical rule:
-- If the repeated blocker is decomposition itself, further prose-only tightening of the same parent plan is usually wasteful. Split the work instead of polishing the monolith.
-
-### Monolithic-parent decomposition trigger
-
-If cross-provider review repeatedly says the issue is too broad, mixes multiple subsystems, or bundles governance + inventory + automation + execution-policy concerns into one approval gate, stop rewriting the same parent plan.
+When 2+ review rounds still return `MAJOR` and the findings converge on structure rather than wording — "too broad for one T2/T3 plan", "mixes multiple risky subsystems", "runner/schema/policy/inventory should be separate issues", an ecosystem claim broader than the evidence base — stop revising the monolith. Another prose pass fixes wording, not a decomposition problem.
 
 Instead:
-1. keep the parent issue as umbrella/steering only
-2. split the blocked scope into 3-5 narrower child issues, each with one clear approval surface
-3. create the child issues immediately so the decomposition is concrete, not just suggested
-4. comment on the parent with the decomposition, rationale, and recommended review/approval order
-5. move planning/review effort to the narrowest child issue first
-
-Typical split axes:
-- contract/policy
-- evidence inventory / reconnaissance
-- fixture corpus / test assets
-- runner/schema/interface design
-- follow-up issue creation / governance automation
-
-Use this when the blocker is structural decomposition, not missing wording. Repeatedly polishing a monolithic umbrella usually wastes review cycles and still returns `MAJOR`.
-
-### Monolith-plan split trigger (learned from repeated #2399-style review failures)
-
-If fresh Codex/Gemini/Codex reviews keep converging on findings like:
-- "issue is too large for a single T2 governance/planning issue"
-- "too many artifacts / documentation sprawl"
-- "runner contract / automation / issue-creation logic is scope creep"
-- "ecosystem claim is broader than the actual evidence base"
-- "this should be split into smaller child issues or rescope to workspace-hub-only"
-
-then stop trying to polish the monolith.
-
-Do this instead:
-1. classify the blocker as **decomposition failure**, not wording failure
-2. rewrite the parent as a narrower umbrella / steering issue
-3. create concrete child issues for the major concern clusters
-4. if ecosystem-wide evidence is too thin, rescope the parent to the smaller proven domain (for example workspace-hub-only) and move broader claims into follow-up inventory issues
-5. only resume plan-review on the narrower parent/children after the split is reflected in the issue structure
-
-Heuristic:
-- if the latest review wave is still `MAJOR` after multiple rewrites and the blocker list keeps naming *scope, packaging, automation, or missing ecosystem evidence* rather than a few specific missing sections, the correct fix is almost always to split/rescope, not to keep editing the same plan.
+1. Split the blocked scope into 3-5 child issues, each with one clear approval surface, and create them immediately so the split is concrete. Typical axes: contract/policy; evidence inventory / reconnaissance; fixture corpus / test assets; runner/schema/interface design; follow-up issue creation / governance automation.
+2. Recast the original issue as a parent/umbrella that owns only steering, sequencing, and final synthesis; if the evidence is too thin for the ecosystem-wide claim, rescope the parent to the proven domain (for example workspace-hub-only) and move broader claims into follow-up inventory issues.
+3. Comment on the parent with why the split happened, the child issue links, and the recommended review/approval order.
+4. Seek approval on the narrowest child first — usually the one that establishes the canonical contract or evidence base — and resume plan-review only after the split is reflected in the issue structure.
 
 ## No silent downgrade rule
 
@@ -928,7 +853,7 @@ When approval is granted, the handoff into execution should be explicit and incl
 - residual risk level and residual risks to watch
 - future issue links
 - execution handoff notes from Step 4 synthesis
-- Codex-packaged prompt files for agent team(s), when execution is delegated or parallelized
+- Claude-packaged prompt files for agent team(s), when execution is delegated or parallelized
 
 When execution is delegated, the handoff must also include:
 - prompt pack paths: `master-plan.md`, stream prompt files, and `execution-readme.md`
@@ -938,7 +863,7 @@ When execution is delegated, the handoff must also include:
 - GitHub authority split for orchestrator vs delegated teams
 - explicit confirmation that zero git contention is enforced
 
-If execution will be performed by agent teams, package the work into self-contained Codex-readable prompts before handoff.
+If execution will be performed by agent teams, package the work into self-contained Claude-readable prompts before handoff.
 Each prompt should define:
 - owned issue(s)
 - owned paths and forbidden paths

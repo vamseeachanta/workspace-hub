@@ -12,7 +12,7 @@ tags: [skills, audit, housekeeping, taxonomy, scheduled-tasks, github-issues, td
 
 Use this when creating, maintaining, or reviewing a recurring audit for the skill ecosystem, especially when the task is to identify improvement areas in skill content, grouping/category structure, duplicate names, alias drift, oversized skills, missing required sections, or stale/low-quality skill metadata.
 
-This skill complements `coordination/cross-agent-skill-audit`: that skill checks whether skills are visible across Hermes/Codex/Codex/Gemini; this one checks whether the skills themselves are healthy and whether the audit can run safely as housekeeping.
+This skill complements `coordination/cross-agent-skill-audit`: that skill checks whether skills are visible across Hermes/Claude/Codex/Gemini; this one checks whether the skills themselves are healthy and whether the audit can run safely as housekeeping.
 
 ## Core Pattern
 
@@ -57,7 +57,7 @@ For a v2 housekeeping audit, include tests for:
 - Stable optional JSON sections even when there are no findings.
 - Policy-driven grouping/content/size signals.
 - Local-only GitHub payload generation.
-- No writeful `.Codex/state/skill-usage-report` or equivalent usage telemetry side effects.
+- No writeful `.claude/state/skill-usage-report` or equivalent usage telemetry side effects.
 - V2 findings are baseline-aware and can be carried forward.
 - V2 findings can be waived and appear in `suppressed_findings`.
 - Markdown report includes v2 summary counts and actionable v2 sections.
@@ -94,7 +94,7 @@ Ask reviewers to specifically look for:
 - Markdown output omitting new finding families.
 - Version upgrades breaking carry-forward semantics.
 - Alias/grouping detectors mixing slash-family aliases with unrelated top-level categories.
-- The audit script accidentally becoming writeful against GitHub or `.Codex/state`.
+- The audit script accidentally becoming writeful against GitHub or `.claude/state`.
 
 ## Commit Hygiene Pitfall
 

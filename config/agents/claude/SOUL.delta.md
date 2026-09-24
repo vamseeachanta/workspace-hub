@@ -51,7 +51,6 @@ Claude Code supports output-style adapters (`/output-style` switches voice). Cur
 
 ## Known Hazards
 
-- **Edit tool freshness window**: after a `Write`, the harness may not immediately reflect the new file via `Read` if cached. Verify with `ls` if uncertain. (`feedback_edit_tool_freshness_window_after_writes`)
 - **Read tool requirement before Edit**: harness enforces a Read-before-Edit gate. Pre-load files via `Read` even if you've seen them via Bash/grep earlier in the session.
 - **Tool call narration**: do NOT use colons before tool calls in user-visible text (gates rendering of tool blocks).
 

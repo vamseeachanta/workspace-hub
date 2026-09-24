@@ -43,7 +43,7 @@ gh pr review 123 --comment --body "MINOR: a few follow-ups below."
 - Review a local diff before opening a PR
 - Leave inline GitHub comments on specific files/lines
 - Perform adversarial review for security, performance, architecture, and test quality
-- Run a multi-agent review where Codex/Codex/Gemini each provide a distinct perspective
+- Run a multi-agent review where Claude/Codex/Gemini each provide a distinct perspective
 
 ## Review Workflow
 
@@ -121,7 +121,7 @@ A reusable review output template is preserved at:
 ## Multi-Agent Review Mode
 
 Use this when you want more than one reviewer:
-- Codex: orchestration, architecture, synthesis
+- Claude: orchestration, architecture, synthesis
 - Codex: adversarial code review, implementation-focused criticism
 - Gemini: third-lane synthesis, alternate perspective, large-context review
 

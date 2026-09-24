@@ -1,6 +1,6 @@
 ---
 name: parallel-approved-issue-worktrees
-description: Launch approved GitHub issue implementation in parallel using isolated git worktrees, committed execution-pack prompts, local plan-approved markers, and direct background Codex runs when delegate_task workers are unreliable for real repo writes.
+description: Launch approved GitHub issue implementation in parallel using isolated git worktrees, committed execution-pack prompts, local plan-approved markers, and direct background Claude runs when delegate_task workers are unreliable for real repo writes.
 version: 1.0.0
 author: Hermes Agent
 category: software-development
@@ -21,7 +21,7 @@ Use this when:
 
 ## Why this exists
 
-In live use, a well-designed approved execution wave still failed when launched through `delegate_task` subagents: both workers timed out before returning usable summaries. The reliable fallback was to run Codex directly in isolated git worktrees with committed prompt artifacts and local plan-approval markers.
+In live use, a well-designed approved execution wave still failed when launched through `delegate_task` subagents: both workers timed out before returning usable summaries. The reliable fallback was to run Claude directly in isolated git worktrees with committed prompt artifacts and local plan-approval markers.
 
 This pattern gives:
 - real repo writes in the intended checkout
@@ -95,20 +95,20 @@ For each stream, post a concise comment describing:
 - zero-overlap guarantee
 - whether another stream is running in parallel
 
-### 5. Launch Codex directly in each worktree
-### 5. Launch Codex directly in each worktree
+### 5. Launch Claude directly in each worktree
+### 5. Launch Claude directly in each worktree
 Use the committed stream prompt file as the positional prompt argument, not stdin.
 
 Example:
 ```bash
 PROMPT=$(< /path/to/repo/docs/plans/execution-packs/<wave>/stream-335.md)
 cd /path/to/.worktrees/repo-335
-Codex -p \
+claude -p \
   --permission-mode acceptEdits \
   --no-session-persistence \
   --output-format text \
   --max-turns 80 \
-  "$PROMPT" </dev/null | tee .Codex-stream-335.log
+  "$PROMPT" </dev/null | tee .claude-stream-335.log
 ```
 
 Critical launch guardrail learned in live overnight runs:
@@ -121,7 +121,7 @@ Safer pattern:
 ```bash
 PROMPT=$(< /absolute/path/to/worktree/.planning/quick/stream.md)
 mkdir -p /absolute/path/to/worktree/logs
-Codex -p \
+claude -p \
   --permission-mode acceptEdits \
   --no-session-persistence \
   --output-format text \
@@ -130,12 +130,12 @@ Codex -p \
 ```
 
 Important launch hardening learned in live use:
-- Prefer absolute paths for both the prompt file and the log file when launching unattended background Codex runs from worktrees.
+- Prefer absolute paths for both the prompt file and the log file when launching unattended background Claude runs from worktrees.
 - A relative prompt read like `.planning/quick/foo.md` can fail with `No such file or directory` even when the file exists in the worktree, especially when the launcher shell/session context is not exactly what you expect.
 - Safer pattern:
 ```bash
 PROMPT=$(< /absolute/path/to/worktree/.planning/quick/stream-335.md)
-Codex -p ... "$PROMPT" </dev/null | tee /absolute/path/to/worktree/logs/stream-335.log
+claude -p ... "$PROMPT" </dev/null | tee /absolute/path/to/worktree/logs/stream-335.log
 ```
 - After launch, immediately poll the tracked process once. If it exits instantly with a missing-prompt error, relaunch with absolute paths rather than debugging the worktree contents first.
 
@@ -145,14 +145,14 @@ Critical launch detail learned in live overnight use:
 - Recommended pattern:
 ```bash
 PROMPT=$(< /absolute/path/to/worktree/.planning/quick/issue-335-prompt.md)
-Codex -p --permission-mode acceptEdits --no-session-persistence --output-format text --max-turns 80 "$PROMPT" </dev/null | tee /absolute/path/to/worktree/logs/issue-335.log
+claude -p --permission-mode acceptEdits --no-session-persistence --output-format text --max-turns 80 "$PROMPT" </dev/null | tee /absolute/path/to/worktree/logs/issue-335.log
 ```
 - After launch, poll the process once. If it exits quickly with a missing-prompt error, retry immediately with absolute prompt and log paths before assuming the worktree or prompt generation failed.
 
 Worktree-local prompt pattern:
 ```bash
 PROMPT=$(< /absolute/path/to/.planning/quick/issue-335-overnight-prompt.md)
-Codex -p --permission-mode acceptEdits --no-session-persistence \
+claude -p --permission-mode acceptEdits --no-session-persistence \
   --output-format text --max-turns 80 "$PROMPT" </dev/null | tee logs/issue-335.log
 ```
 
@@ -175,18 +175,18 @@ Typical pattern:
 - Wave 2: run stream C only after A finishes because A and C both own `src/.../__init__.py`
 
 ### 6.5 Log-path guard for nested repos and deep worktrees
-When launching unattended Codex runs with `tee`, create the exact target log directory using an absolute path before the run starts.
+When launching unattended Claude runs with `tee`, create the exact target log directory using an absolute path before the run starts.
 
 Observed failure mode:
 - the worker command used `mkdir -p logs && ... | tee /abs/path/to/logs/run.log`
 - in a nested repo/deep worktree, the absolute `.../logs/` directory did not already exist even though relative `logs/` did
-- `tee` failed with `No such file or directory`, the overall process exited non-zero, but the Codex run itself still completed substantial work
+- `tee` failed with `No such file or directory`, the overall process exited non-zero, but the Claude run itself still completed substantial work
 
 Safe launch pattern:
 ```bash
 mkdir -p /abs/path/to/worktree/logs
 PROMPT=$(< /abs/path/to/prompt.md)
-Codex -p \
+claude -p \
   --permission-mode acceptEdits \
   --no-session-persistence \
   --output-format text \
@@ -218,7 +218,7 @@ For each running worker:
 - check process liveness
 - check target worktree `git status --short`
 - check whether expected test files/source files appear
-- treat empty logs cautiously; Codex logs can stay buffered for a while
+- treat empty logs cautiously; Claude logs can stay buffered for a while
 - if a worker times out or stalls, inspect the worktree before killing it
 
 ## Pre-dispatch live-state filter (important)
@@ -241,7 +241,7 @@ Practical lesson from live use:
 
 ### Dispatcher/executor drift and sandbox-scope check
 
-A background Codex lane can exit 0 without touching the intended isolated clone when the spawned session is sandboxed to a different root. The worker may correctly detect a concurrent completion and refuse duplicate work, but the dispatcher must still verify where the real commit landed.
+A background Claude lane can exit 0 without touching the intended isolated clone when the spawned session is sandboxed to a different root. The worker may correctly detect a concurrent completion and refuse duplicate work, but the dispatcher must still verify where the real commit landed.
 
 Before treating a lane as landed:
 - read the worker log for `duplicate-parallel-completion`, sandbox denial, or "no files changed" language
@@ -251,10 +251,10 @@ Before treating a lane as landed:
 - if it landed on an integration branch rather than `main`, cherry-pick the validated commit(s) into a clean main-line clone/worktree, re-run targeted tests there, then push `HEAD:main`
 - if the contract was missing an exact decision needed by children, make a tiny follow-up commit that locks the decision and updates the test to assert it before starting child work
 
-For future isolated-clone dispatches, ensure the worker's allowed/sandbox directories include the intended clone path (for Codex, use the equivalent of `--add-dir` when available) or launch directly from a scope-compatible checkout. Otherwise the prompt may name a path the worker cannot write.
-## Post-run recovery when Codex exits on max-turns
+For future isolated-clone dispatches, ensure the worker's allowed/sandbox directories include the intended clone path (for Claude Code, use the equivalent of `--add-dir` when available) or launch directly from a scope-compatible checkout. Otherwise the prompt may name a path the worker cannot write.
+## Post-run recovery when Claude exits on max-turns
 
-If a background Codex worker exits with `Error: Reached max turns (...)`, do not treat the run as a total failure.
+If a background Claude worker exits with `Error: Reached max turns (...)`, do not treat the run as a total failure.
 
 Recovery sequence:
 1. inspect the worktree immediately:
@@ -275,7 +275,7 @@ Practical lesson from live use:
 
 ## Local allowlist / permission fallback
 
-In some repos, Codex can edit files but cannot run the exact validation or GitHub commands you asked for because repo-local settings block commands like:
+In some repos, Claude can edit files but cannot run the exact validation or GitHub commands you asked for because repo-local settings block commands like:
 - `pytest`
 - `uv run`
 - `python -m pytest`

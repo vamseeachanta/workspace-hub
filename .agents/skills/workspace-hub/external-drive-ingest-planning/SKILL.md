@@ -204,7 +204,7 @@ Do not mount/copy/rsync as implementation until the approved plan gate is satisf
 - Using non-existent labels instead of inspecting repo label taxonomy first.
 - Assuming a folder name is a repo bucket; verify repo existence and local `/mnt/ace` layout.
 - Treating Windows metadata folders like `$RECYCLE.BIN` and `System Volume Information` as project data; include them in top-level inventory but normally classify as skip/metadata unless the user asks otherwise.
-- Pasting long Codex prompts directly into a TUI/terminal can inject escape garbage. Prefer writing prompt files with `cat > /tmp/prompt.txt <<'EOF' ... EOF` or `nano`, then running `Codex -p "$(cat /tmp/prompt.txt)"`.
+- Pasting long Claude prompts directly into a TUI/terminal can inject escape garbage. Prefer writing prompt files with `cat > /tmp/prompt.txt <<'EOF' ... EOF` or `nano`, then running `claude -p "$(cat /tmp/prompt.txt)"`.
 
 ## Verification checklist
 

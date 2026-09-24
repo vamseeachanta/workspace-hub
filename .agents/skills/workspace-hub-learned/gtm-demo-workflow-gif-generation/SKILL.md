@@ -102,9 +102,9 @@ page.wait_for_timeout(5000)
 
 Use a timed wait after `domcontentloaded` to let Plotly render.
 
-### Pitfall 3: External verification matters more than Codex's claim
-When using interactive Codex in tmux:
-- let Codex implement
+### Pitfall 3: External verification matters more than Claude's claim
+When using interactive Claude Code in tmux:
+- let Claude implement
 - then independently verify with:
 ```bash
 git status --short --branch
@@ -114,16 +114,16 @@ ls -lh examples/demos/gtm/media/*
 
 Do not trust completion claims without checking the actual files and commit.
 
-## Recommended workflow with interactive Codex
+## Recommended workflow with interactive Claude Code
 
-When the user explicitly wants Codex:
+When the user explicitly wants Claude Code:
 1. write a tight prompt to `/tmp/...txt`
-2. launch tmux + Codex with:
+2. launch tmux + Claude with:
 ```bash
-Codex --setting-sources user --dangerously-skip-permissions "$(cat /tmp/prompt.txt)"
+claude --setting-sources user --dangerously-skip-permissions "$(cat /tmp/prompt.txt)"
 ```
 3. monitor with `tmux capture-pane`
-4. if Codex gets stuck, interrupt and send a narrower corrective prompt
+4. if Claude gets stuck, interrupt and send a narrower corrective prompt
 5. after completion, verify externally and update GitHub yourself if needed
 
 ## Good outputs to leave behind
@@ -135,7 +135,7 @@ Codex --setting-sources user --dangerously-skip-permissions "$(cat /tmp/prompt.t
 After the first true workflow exemplar works, upgrade the remaining demos one-by-one instead of trying to regenerate all five in a single fragile run.
 
 Recommended pattern:
-1. one tmux/Codex session per demo
+1. one tmux/Claude session per demo
 2. one generator script per demo, e.g.:
    - `generate_demo_01_workflow_gif.py`
    - `generate_demo_03_workflow_gif.py`
@@ -144,7 +144,7 @@ Recommended pattern:
 3. update `media/README.md` after each successful asset
 4. verify file size and visual output externally before closing the issue
 
-This isolates failures and makes it easy to salvage finished files even if one interactive Codex session later hits an upstream API error.
+This isolates failures and makes it easy to salvage finished files even if one interactive Claude session later hits an upstream API error.
 
 ## Size-control finding for workflow GIFs
 A workflow GIF can easily exceed a practical sharing limit if you keep too many colors or frames.

@@ -1,23 +1,23 @@
 ---
 name: provider-utilization-scorecard
-description: Refresh provider quota snapshots and generate a weekly Codex/Codex/Gemini utilization scorecard grounded in quota data when available and session-activity fallback when not.
+description: Refresh provider quota snapshots and generate a weekly Claude/Codex/Gemini utilization scorecard grounded in quota data when available and session-activity fallback when not.
 version: 1.0.0
 category: ai
 type: workflow
 triggers:
-  - When asked to maximize weekly use of Codex, OpenAI/Codex, and Gemini credits
+  - When asked to maximize weekly use of Claude, OpenAI/Codex, and Gemini credits
   - When reviewing whether quota/usage telemetry is sufficient for routing work
   - When maintaining provider utilization scorecards or quota refresh automation
 ---
 
 # Provider Utilization Scorecard
 
-Use this when the goal is to operationalize weekly credit utilization across Codex, Codex, and Gemini instead of just giving static advice.
+Use this when the goal is to operationalize weekly credit utilization across Claude, Codex, and Gemini instead of just giving static advice.
 
 ## Canonical inputs
 - Quota latest snapshot: `config/ai-tools/agent-quota-latest.json`
 - Quota history log: `~/.agent-usage/weekly-log.jsonl`
-- Provider activity logs: `logs/orchestrator/{Codex,codex,hermes,gemini}/session_*.jsonl`
+- Provider activity logs: `logs/orchestrator/{claude,codex,hermes,gemini}/session_*.jsonl`
 - Provider session audit: `analysis/provider-session-ecosystem-audit.json`
 - Human-readable report: `docs/reports/provider-utilization-weekly.md`
 - Machine-refresh wrapper log: `logs/quality/provider-utilization-refresh-*.log`
@@ -57,13 +57,13 @@ uv run --no-project python scripts/cron/validate-schedule.py
 - `utilization_basis=quota` is strongest; use it for routing decisions.
 - `utilization_basis=activity_vs_recent_peak` is directional only; use it to spot likely underuse, not exact headroom.
 - Hermes is an orchestrator signal, not a paid-provider utilization target.
-- Current underutilization alerts should focus on Codex/Codex/Gemini, not Hermes.
+- Current underutilization alerts should focus on Claude/Codex/Gemini, not Hermes.
 
 ## Known provider realities
-### Codex
+### Claude
 - Real weekly quota may be unavailable in `agent-quota-latest.json` depending on the local source.
 - Do not compute fake usage from `pct_remaining` if the snapshot is essentially unavailable.
-- If Codex quota is unavailable, report activity fallback explicitly.
+- If Claude quota is unavailable, report activity fallback explicitly.
 
 ### Codex
 - `week_messages` and `weekly_limit` from `history.jsonl` are strong enough for real quota-based utilization.
@@ -92,11 +92,11 @@ Do not treat missing numeric quota fields as zero during snapshot merging. If `w
 After the scorecard exists, the next high-value layer is routing automation:
 - if Codex utilization is low, surface bounded implementation/test/refactor work
 - if Gemini utilization is low, surface research/recon/risk-scan batches
-- if Codex utilization is low and quota is trustworthy, route adversarial review and long-context synthesis there
+- if Claude utilization is low and quota is trustworthy, route adversarial review and long-context synthesis there
 
 ## Weekly credit-burn operating model
 
-When the user asks to maximize provider credits across Codex/Codex/Gemini, convert the scorecard into an executable package pipeline, not just a narrative report.
+When the user asks to maximize provider credits across Claude/Codex/Gemini, convert the scorecard into an executable package pipeline, not just a narrative report.
 
 Target burn curve for providers with real weekly quotas:
 - Day 1: 18% cumulative
@@ -134,11 +134,11 @@ To keep feature/issue work continuously executable as long as AI credits remain,
 
 For the recurring ACE/workspace-hub pipeline, route work by value-chain stage:
 
-- raw data -> llm-wiki: Gemini for source discovery and gap scans; Codex for contracts/review; Codex for promotion pipeline/checkers/tests
-- llm-wiki -> calculation code: Codex for semantic contracts and plan review; Codex for TDD implementation; Gemini for standards/source cross-checks
-- calculation code -> parametric outputs: Codex for generators, reports, dashboards, and tests; Codex for acceptance review; Gemini for benchmark/reference scans
-- parametric outputs -> website/GTM: Gemini for prospect/company research; Codex for page/data/CTA implementation; Codex for narrative synthesis and final GTM review
-- control-plane enablers: Codex for review-runner/harness fixes, Codex for governance/review, Gemini for audit/recon only
+- raw data -> llm-wiki: Gemini for source discovery and gap scans; Claude for contracts/review; Codex for promotion pipeline/checkers/tests
+- llm-wiki -> calculation code: Claude for semantic contracts and plan review; Codex for TDD implementation; Gemini for standards/source cross-checks
+- calculation code -> parametric outputs: Codex for generators, reports, dashboards, and tests; Claude for acceptance review; Gemini for benchmark/reference scans
+- parametric outputs -> website/GTM: Gemini for prospect/company research; Codex for page/data/CTA implementation; Claude for narrative synthesis and final GTM review
+- control-plane enablers: Codex for review-runner/harness fixes, Claude for governance/review, Gemini for audit/recon only
 
 ## Package lifecycle gate
 
@@ -152,6 +152,6 @@ Never dispatch implementation from status:plan-review. A package is execution-re
 Use this loop after refreshing the scorecard:
 - If Codex is below the burn line, dispatch the next status:plan-approved implementation/test/refactor package.
 - If Gemini daily use is below target, dispatch the next 5-6 task recon/research batch.
-- If Codex has review backlog, dispatch plan or implementation review packages.
-- If no approved implementation work exists, pause coding and spend Codex/Gemini on refilling the plan-review and approval pipeline.
+- If Claude has review backlog, dispatch plan or implementation review packages.
+- If no approved implementation work exists, pause coding and spend Claude/Gemini on refilling the plan-review and approval pipeline.
 - If a provider is ahead of target, reserve it for reviews, failures, and closeout.

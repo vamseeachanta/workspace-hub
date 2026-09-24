@@ -1,11 +1,11 @@
 ---
 name: excel-workbook-to-python-cowork
-description: Convert engineering Excel workbooks to Python code using Codex Desktop cowork on Windows. Benchmarked superior output with 24 vs 7 functions and 81 vs 53 tests for Ballymore jumper.
+description: Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Benchmarked superior output with 24 vs 7 functions and 81 vs 53 tests for Ballymore jumper.
 trigger: User asks to convert an Excel workbook to Python code, or references workbook conversion tasks
 effort: medium
 ---
 
-# Excel Workbook to Python - Codex Cowork on Windows
+# Excel Workbook to Python - Claude Cowork on Windows
 
 ## Why Windows Cowork Outperforms Linux Headless
 
@@ -18,13 +18,13 @@ Windows also produced: COG calculations (both insulated and uninsulated variants
 
 ## Execution Machine
 
-- ace-win-2 (licensed-win-2) with Codex Desktop cowork mode and MCP
+- ace-win-2 (licensed-win-2) with Claude Desktop cowork mode and MCP
 - Excel and openpyxl installed, pytest for testing
 - client-c repo cloned
 
 ## Prompt Template for Cowork
 
-Paste this prompt into Codex Desktop cowork after opening workbook:
+Paste this prompt into Claude Desktop cowork after opening workbook:
 
 ```
 Convert this workbook to Python code:
@@ -77,10 +77,10 @@ After cowork produces code:
 
 ## Pitfalls Learned
 
-1. Missing return statements - Codex frequently forgets to return results. Always verify every function has a return statement.
-2. unittest vs pytest confusion - Codex may generate unittest despite explicit pytest instruction. Convert class methods and assertions if needed.
+1. Missing return statements - Claude frequently forgets to return results. Always verify every function has a return statement.
+2. unittest vs pytest confusion - Claude may generate unittest despite explicit pytest instruction. Convert class methods and assertions if needed.
 3. sys.path hardcoded - Test files may have sys.path insert zero slash tmp which breaks imports. Fix to use os.path.dirname of file.
-4. Code trapped in Excel cells - If Codex puts code as Excel cell text in column A, extract with openpyxl on Linux by reading all cells in sheet and writing to py file.
+4. Code trapped in Excel cells - If Claude puts code as Excel cell text in column A, extract with openpyxl on Linux by reading all cells in sheet and writing to py file.
 5. Multiple jumper variants - Parameterize with JumperConfig dataclass and KNOWN_CONFIGS dict to support multiple jumper models with same pipe but different segment lengths.
 
 ## Test Standard

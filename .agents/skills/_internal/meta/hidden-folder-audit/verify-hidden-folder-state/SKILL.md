@@ -18,7 +18,7 @@ echo "=== Remaining Hidden Folders ==="
 find . -maxdepth 1 -type d -name ".*" ! -name ".git" | sort
 
 # Expected remaining folders:
-# .Codex/       - AI configuration (authoritative)
+# .claude/       - AI configuration (authoritative)
 # .github/       - GitHub workflows
 # .githooks/     - Git hooks
 # .vscode/       - VS Code settings (if tracked)
@@ -29,15 +29,15 @@ find . -maxdepth 1 -type d -name ".*" ! -name ".git" | sort
 
 
 ```bash
-# Verify .Codex/ structure
-echo "=== .Codex/ Structure ==="
-ls -la .Codex/
+# Verify .claude/ structure
+echo "=== .claude/ Structure ==="
+ls -la .claude/
 
 # Verify scripts/git/ exists if .git-commands was consolidated
 echo "=== scripts/git/ ==="
 ls -la scripts/git/ 2>/dev/null || echo "scripts/git/ does not exist"
 
-# Verify .Codex/docs/commands/ if .slash-commands was consolidated
+# Verify .claude/docs/commands/ if .slash-commands was consolidated
 
 *See sub-skills for full details.*
 
@@ -52,9 +52,9 @@ git status --porcelain | grep "^??" | grep "^\./\." || echo "None found"
 # Verify .gitignore includes runtime folders
 echo "=== .gitignore Hidden Folder Entries ==="
 
-# Count tracked files in .Codex/
-echo "=== .Codex/ Tracked Files ==="
-git ls-files .Codex/ | wc -l
+# Count tracked files in .claude/
+echo "=== .claude/ Tracked Files ==="
+git ls-files .claude/ | wc -l
 ```
 
 ## Final State Checklist

@@ -14,7 +14,7 @@ scripts_exempt: true
 
 - [ ] Update directory tree to show new structure
 - [ ] Remove references to deleted folders
-- [ ] Add `.Codex/` folder description
+- [ ] Add `.claude/` folder description
 - [ ] Document `scripts/git/` consolidation
 - [ ] Note module-based architecture in src/
 

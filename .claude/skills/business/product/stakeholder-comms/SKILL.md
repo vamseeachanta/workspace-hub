@@ -48,7 +48,7 @@ Next milestones:
 
 **Tips for executive updates**:
 - Lead with the conclusion, not the journey
-- Keep it under 200 words
+- Keep it scannable: status and asks first, and only the detail the reader will act on
 - Status color should reflect YOUR genuine assessment
 - Only include risks you want help with
 - Asks must be specific: "Decision on X by Friday" not "support needed"

@@ -49,8 +49,8 @@ git log --since='24 hours ago' --date=iso --pretty=format:'%h%x09%ad%x09%an%x09%
 ```
 
 Also inspect:
-- `.Codex/state/session-signals/YYYY-MM-DD.jsonl`
-- `logs/orchestrator/Codex/session_*.jsonl`
+- `.claude/state/session-signals/YYYY-MM-DD.jsonl`
+- `logs/orchestrator/claude/session_*.jsonl`
 - recent GitHub issues:
 ```bash
 gh issue list --state all --limit 30 --json number,title,state,createdAt,updatedAt,labels,author,url

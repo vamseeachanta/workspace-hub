@@ -201,12 +201,12 @@ Before moving an issue to `status:plan-review`, verify:
 - each provider artifact is bound to the current plan revision when possible, preferably with a `Plan-SHA256: <sha256sum-of-canonical-plan>` header
 - the disagreement/synthesis artifact references those provider results and the same `Plan-SHA256`
 
-Failure mode seen in live use: `scripts/review/plan-review-fanout.sh` returned success and wrote only `YYYY-MM-DD-plan-NNN-disagreement.md`, with an empty provider table and no Codex/Codex/Gemini artifacts. Treat that as `INVALID / INCOMPLETE REVIEW RUN`, preserve that fact in the artifact, and rerun through a side-effect-safe path before applying `status:plan-review`.
+Failure mode seen in live use: `scripts/review/plan-review-fanout.sh` returned success and wrote only `YYYY-MM-DD-plan-NNN-disagreement.md`, with an empty provider table and no Claude/Codex/Gemini artifacts. Treat that as `INVALID / INCOMPLETE REVIEW RUN`, preserve that fact in the artifact, and rerun through a side-effect-safe path before applying `status:plan-review`.
 
 When the fanout path is unreliable, use a manual side-effect-safe rerun pattern:
 1. Compute the canonical plan SHA: `sha256sum docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md`.
 2. Build a fresh reviewer prompt from the current on-disk plan; do not reuse an old prompt.
-3. Run Codex/Codex/Gemini in read-only or side-effect-safe review mode and save provider-specific artifacts.
+3. Run Claude/Codex/Gemini in read-only or side-effect-safe review mode and save provider-specific artifacts.
 4. Add `Plan-SHA256: <sha>` and an explicit `## Verdict` block to every provider artifact.
 5. Write a disagreement/synthesis artifact with the same plan SHA and final gate decision.
 6. Re-check all provider artifacts are non-empty, current-SHA tagged, and have verdicts of `APPROVE` or `MINOR` before posting the issue update or applying `status:plan-review`.

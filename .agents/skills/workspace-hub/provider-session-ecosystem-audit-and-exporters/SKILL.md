@@ -1,14 +1,14 @@
 ---
 name: provider-session-ecosystem-audit-and-exporters
-description: Build and maintain cross-provider session-log audits for Codex, Codex, Hermes, and Gemini, including exporter design, normalization, and behavioral verification.
+description: Build and maintain cross-provider session-log audits for Claude, Codex, Hermes, and Gemini, including exporter design, normalization, and behavioral verification.
 version: 1.1.0
 category: workspace-hub
-tags: [session-audit, exporters, Codex, codex, hermes, gemini, observability]
+tags: [session-audit, exporters, claude, codex, hermes, gemini, observability]
 ---
 
 # Provider Session Ecosystem Audit and Exporters
 
-Use when you need to audit AI-provider activity across the workspace-hub repo, improve session-log observability, or add/fix exporter pipelines for Codex/Codex/Hermes/Gemini.
+Use when you need to audit AI-provider activity across the workspace-hub repo, improve session-log observability, or add/fix exporter pipelines for Claude/Codex/Hermes/Gemini.
 
 ## When to use
 - Cross-provider session quality / drift analysis
@@ -27,15 +27,15 @@ Use when you need to audit AI-provider activity across the workspace-hub repo, i
 
 ## Key implementation rules
 
-### 1. Codex
-- Raw Codex orchestrator logs live at `logs/orchestrator/Codex/session_*.jsonl`.
-- If raw logs exist, audit them directly; only fall back to saved Codex audit JSON when raw logs are absent.
-- Historical Codex raw logs may not persist `session_id`, so `unique_runtime_sessions` can be unavailable on old corpus slices; report that limitation explicitly instead of inventing heuristics.
-- The minimal safe producer-side fix is in `.Codex/hooks/session-logger.sh`:
+### 1. Claude
+- Raw Claude orchestrator logs live at `logs/orchestrator/claude/session_*.jsonl`.
+- If raw logs exist, audit them directly; only fall back to saved Claude audit JSON when raw logs are absent.
+- Historical Claude raw logs may not persist `session_id`, so `unique_runtime_sessions` can be unavailable on old corpus slices; report that limitation explicitly instead of inventing heuristics.
+- The minimal safe producer-side fix is in `.claude/hooks/session-logger.sh`:
   - parse `.session_id // ""` from hook stdin JSON
   - append optional top-level `session_id` to the emitted ENTRY object
   - keep existing fields and both write paths unchanged
-- Once this patch is active, new Codex raw logs can support real `unique_runtime_sessions`; old logs remain legacy/no-session-id.
+- Once this patch is active, new Claude raw logs can support real `unique_runtime_sessions`; old logs remain legacy/no-session-id.
 
 ### 2. Codex
 - Codex log commands are often stored in a spaced-character encoding.
@@ -406,10 +406,10 @@ For shell exporters, prefer subprocess tests over string-only tests.
    - state file exists
    - mapped fields are correct
    - rerun dedup/skip behavior works where applicable
-6. Also add one hook-level behavioral test for Codex logger changes:
-   - run `.Codex/hooks/session-logger.sh` directly in a temp repo
+6. Also add one hook-level behavioral test for Claude logger changes:
+   - run `.claude/hooks/session-logger.sh` directly in a temp repo
    - pass stdin JSON containing `session_id`, `tool_name`, and `tool_input`
-   - verify both `.Codex/state/sessions/session_YYYYMMDD.jsonl` and `logs/orchestrator/Codex/session_YYYYMMDD.jsonl` receive the new field without breaking existing fields
+   - verify both `.claude/state/sessions/session_YYYYMMDD.jsonl` and `logs/orchestrator/claude/session_YYYYMMDD.jsonl` receive the new field without breaking existing fields
 
 ## Operator closeout workflow for audit-refresh tasks
 When the user asks to review provider work / strengthen the repository ecosystem, the reusable closeout pattern is:
@@ -422,7 +422,7 @@ When the user asks to review provider work / strengthen the repository ecosystem
    - current provider priority metrics
    - exact verification commands and pass/fail results
    - recommendation to reconcile issue mapping before opening more tickets
-5. Commit only durable regenerated artifacts such as `analysis/provider-session-ecosystem-audit.json` and `docs/reports/provider-session-ecosystem-audit.md`. Leave transient `.Codex/state/*` session/correction churn uncommitted unless the task explicitly asks to preserve it.
+5. Commit only durable regenerated artifacts such as `analysis/provider-session-ecosystem-audit.json` and `docs/reports/provider-session-ecosystem-audit.md`. Leave transient `.claude/state/*` session/correction churn uncommitted unless the task explicitly asks to preserve it.
 6. If `git add` or `git commit` fails on `.git/index.lock`, first check for live git/gh processes with `ps`; if none are active, remove the stale lock and retry.
 7. Verify `origin/main` matches `HEAD` after push, then report commit SHA, tests, issue comments, and any intentionally uncommitted transient state.
 
@@ -451,13 +451,13 @@ After any exporter/audit change:
    - trend annotations render and compare against the previous tracked audit
    - watchlist and change-alert outputs are present and consistent with prior-audit deltas
    - empty `change_alerts` on a stable run is acceptable and should not be treated as a failure
-   - Codex limitation remains explicit if session ids are still absent
+   - Claude limitation remains explicit if session ids are still absent
 
 ## Pitfalls
 - Do not count symbolic skill/tool names as missing files.
 - Do not append `--all` exports on top of existing JSONL files.
 - Do not rely on only the repo-name Gemini directory; hashed project directories also matter.
-- Do not estimate Codex runtime sessions from time gaps; report unavailability unless logger schema changes.
+- Do not estimate Claude runtime sessions from time gaps; report unavailability unless logger schema changes.
 - Do not flatten Codex commands by removing all whitespace.
 - Do not confuse event-time recent activity with corpus backfill/rebuild churn.
 - Do not prioritize providers from raw counts alone once urgency scores/tiers exist; use the interpretation summary.

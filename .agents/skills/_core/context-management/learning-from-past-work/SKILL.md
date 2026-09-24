@@ -15,11 +15,11 @@ scripts_exempt: true
 The skill tracks patterns across sessions:
 
 ```yaml
-# .Codex/state/context-patterns.yaml
+# .claude/state/context-patterns.yaml
 patterns:
   frequently_referenced:
-    - ".Codex/docs/agents.md"  # 45 loads
-    - ".Codex/docs/execution-patterns.md"  # 32 loads
+    - ".claude/docs/agents.md"  # 45 loads
+    - ".claude/docs/execution-patterns.md"  # 32 loads
   rarely_used:
     - "verbose section X"  # 0 references in 30 days
 

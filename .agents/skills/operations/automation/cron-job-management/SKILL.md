@@ -246,10 +246,10 @@ Important operational lesson:
 - do NOT use the default additive install mode for drift repair
 
 ### Converting an LLM-driven cron wrapper to a deterministic script
-When a weekly/daily task used to shell out to Codex/Codex/Gemini and you replace it with a deterministic script, update the scheduler metadata and test contract at the same time — not just the script body.
+When a weekly/daily task used to shell out to Claude/Codex/Gemini and you replace it with a deterministic script, update the scheduler metadata and test contract at the same time — not just the script body.
 
 Required checks:
-- update `requires:` in `config/scheduled-tasks/schedule-tasks.yaml` so it matches the new runtime (`python3`/`uv`/`bash` instead of `Codex`, etc.)
+- update `requires:` in `config/scheduled-tasks/schedule-tasks.yaml` so it matches the new runtime (`python3`/`uv`/`bash` instead of `claude`, etc.)
 - update `is_claude_task:` (or equivalent task metadata) so the scheduler no longer advertises the job as provider-driven when it is now deterministic
 - update the task `description:` to remove mutating/agent-only behavior that is no longer true
 - preserve the canonical task `id` when the cadence/path should stay stable; replace the implementation behind it instead of creating a second overlapping task
@@ -257,7 +257,7 @@ Required checks:
 - support redirectable output roots (CLI flag or env var) so tests and manual runs can write to temp directories instead of dirtying the repo
 
 Common failure mode:
-- the script becomes deterministic, but YAML still says `requires: [Codex, ...]` and `is_claude_task: true`, while tests/log paths still assume the old wrapper behavior. This creates governance drift and confusing operator docs even if the new script itself works.
+- the script becomes deterministic, but YAML still says `requires: [claude, ...]` and `is_claude_task: true`, while tests/log paths still assume the old wrapper behavior. This creates governance drift and confusing operator docs even if the new script itself works.
 
 Recommended safe sequence:
 ```bash

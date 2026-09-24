@@ -99,12 +99,12 @@ The `references/` directory contains archived narrow skills absorbed during the 
 - Former skill demoted to `references/tier1-indexing-scorecard-and-freshness-audit.md`.
 - Preserved insight: Audit tier-1 repos for code-placement/retrieval readiness, write a scorecard report, create follow-up GitHub issues, and add a daily freshness cron while avoiding legacy product-doc reference patterns.
 
-### `exclude-wiki-Codex-md-from-harness-line-limit-hook`
+### `exclude-wiki-claude-md-from-harness-line-limit-hook`
 
-- Former skill demoted to `references/exclude-wiki-Codex-md-from-harness-line-limit-hook.md`.
+- Former skill demoted to `references/exclude-wiki-claude-md-from-harness-line-limit-hook.md`.
 - Preserved insight: Fix false-positive pre-commit failures where workspace-hub's AGENTS.md line-limit hook blocks edits to auto-generated wiki schema files under knowledge/wikis/.
 
 ### `memory-bridge-commit-fallbacks`
 
 - Former skill demoted to `references/memory-bridge-commit-fallbacks.md`.
-- Preserved insight: Fallback procedures when the Hermes ↔ Codex memory bridge writes .Codex/memory outputs but the internal git commit/push path fails because of dirty, stale, or broken submodule state.
+- Preserved insight: Fallback procedures when the Hermes ↔ Claude memory bridge writes .claude/memory outputs but the internal git commit/push path fails because of dirty, stale, or broken submodule state.

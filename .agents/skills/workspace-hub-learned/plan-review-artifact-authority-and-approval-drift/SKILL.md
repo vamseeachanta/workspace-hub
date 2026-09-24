@@ -9,7 +9,7 @@ tags: [planning, review, governance, drift, github]
 # Plan Review Artifact Authority and Approval Drift
 
 Use when a local plan has gone through multiple adversarial review waves and any of these are true:
-- a self-review artifact exists and later external Codex/Codex/Gemini reruns also exist
+- a self-review artifact exists and later external Claude/Codex/Gemini reruns also exist
 - the issue still carries `status:plan-approved` or `.planning/plan-approved/<issue>.md` from an older revision
 - `docs/plans/README.md` status lags the current effective review state
 
@@ -58,5 +58,5 @@ Use when a local plan has gone through multiple adversarial review waves and any
 ## Example wording
 
 - "Live GitHub `status:plan-approved` and local `.planning/plan-approved/2460.md` reflect older approval-state drift, not approval of this current draft revision."
-- "Historical Codex self-review (non-authoritative compared with external reruns)."
+- "Historical Claude self-review (non-authoritative compared with external reruns)."
 - "Verify/update `docs/plans/README.md` without re-adding the row; if stale approval drift is present, explicitly sync the row to the effective non-approved state."

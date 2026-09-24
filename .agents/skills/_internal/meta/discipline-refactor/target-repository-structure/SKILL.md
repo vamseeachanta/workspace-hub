@@ -52,7 +52,7 @@ scripts_exempt: true
 │       ├── <discipline-1>/
 │       └── <discipline-2>/
 │
-├── .Codex/
+├── .claude/
 │   ├── skills/
 │   │   ├── _core/
 │   │   ├── <discipline-1>/

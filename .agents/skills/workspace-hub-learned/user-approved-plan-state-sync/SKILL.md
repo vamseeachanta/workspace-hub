@@ -54,7 +54,7 @@ Do approval-state synchronization, not rollback. Bring GitHub labels, the local 
 5. Post a short GitHub comment noting approval-state sync.
    Include that local approval evidence was reconciled to match live GitHub approval state.
    Include the approval-sync commit hash after it is pushed.
-   If the issue is now execution-ready, include the next concrete TDD execution package in the same comment: target test file(s), implementation script/module, config/artifact outputs, and required validation/review gates. This turns the approval-sync comment into a handoff that Codex/Codex can immediately execute without re-discovery.
+   If the issue is now execution-ready, include the next concrete TDD execution package in the same comment: target test file(s), implementation script/module, config/artifact outputs, and required validation/review gates. This turns the approval-sync comment into a handoff that Codex/Claude can immediately execute without re-discovery.
 
 6. Re-verify all four surfaces plus the remote hash.
    - GitHub labels

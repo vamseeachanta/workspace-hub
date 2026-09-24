@@ -14,13 +14,13 @@ scripts_exempt: true
 
 ```bash
 # Count tracked files in each hidden folder
-for dir in .Codex .agent-os .ai; do
+for dir in .claude .agent-os .ai; do
   count=$(git ls-files "$dir" 2>/dev/null | wc -l)
   echo "$dir: $count files"
 done
 
 # Count all files (tracked + untracked)
-for dir in .Codex .agent-os .ai .common .specify; do
+for dir in .claude .agent-os .ai .common .specify; do
   if [ -d "$dir" ]; then
 
 *See sub-skills for full details.*
@@ -31,9 +31,9 @@ for dir in .Codex .agent-os .ai .common .specify; do
 ```bash
 # Verify no files were lost
 expected_count=150  # Set to sum of source folders
-actual_count=$(git ls-files .Codex | wc -l)
+actual_count=$(git ls-files .claude | wc -l)
 echo "Expected: $expected_count, Actual: $actual_count"
 
 # List any untracked files that might have been missed
-git status --porcelain | grep "^??" | grep -E "^\?\? \.(Codex|agent-os|ai)/"
+git status --porcelain | grep "^??" | grep -E "^\?\? \.(claude|agent-os|ai)/"
 ```

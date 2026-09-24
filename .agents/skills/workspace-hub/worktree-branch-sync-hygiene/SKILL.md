@@ -29,7 +29,7 @@ Use when promoting work from dirty main/worktrees, cleaning blocked branches, re
 15. When asked why stale files/branches/unmerged commits/worktrees accumulated, perform an evidence-based closeout-debt RCA from reflog, worktree list, branch containment, stash list, provider/orchestrator logs, and GitHub issue/PR events. Separate remote landed state from local checkout state, and treat any active foreign rebase/merge as a blocker requiring explicit user approval before abort/continue/conflict resolution. See `references/concurrent-closeout-and-rebase-drift.md`.
 16. For shared-root rebase recovery, use a read-only subagent to audit ownership/reflog/PR merge state before taking any destructive action. If the PR is already landed and the root is merely stale/behind, fast-forward under the closeout lock; write the recovery log from a clean isolated worktree; push the docs-only closeout commit; remove the temporary branch/worktree; then produce clean proof. See `references/subagent-assisted-rebase-recovery-closeout.md`.
 17. If PRs are merged and branches are zero-unique/contained but local Git operations hang (`git status`, `git diff`, `git worktree list`, or per-worktree clean checks), stop deletion and preserve evidence outside the repo rather than adding more ledger commits. Treat remote landed state and local cleanup state separately; zero-unique containment is not enough to remove a worktree whose dirt/index cannot be inspected. See `references/git-hang-closeout-preservation.md`.
-18. When stale files/branches/unmerged commits/worktrees exist after issue closure, treat it as a process failure requiring evidence-based RCA and durable correction. Do not just clean; document why closure and cleanup diverged, preserve or remove each worktree in the same window as push/merge evidence, and do not stash/delete root dirt while active Codex/Hermes/Codex sessions have CWD in the repo unless explicitly approved. See `references/transactional-closeout-race-and-active-root-sessions.md`.
+18. When stale files/branches/unmerged commits/worktrees exist after issue closure, treat it as a process failure requiring evidence-based RCA and durable correction. Do not just clean; document why closure and cleanup diverged, preserve or remove each worktree in the same window as push/merge evidence, and do not stash/delete root dirt while active Claude/Hermes/Codex sessions have CWD in the repo unless explicitly approved. See `references/transactional-closeout-race-and-active-root-sessions.md`.
 19. When broad Git commands hang during closeout and active root sessions exist, switch to bounded non-mutating probes, remove only independently proven safe zero-unique clean worktrees under the closeout lock, and report `remote landed/synced` separately from `local checkout clean`. A synced remote plus dirty live-owned root is an incomplete closeout blocker, not clean completion. See `references/active-root-closeout-blocker-bounded-probes.md`.
 20. Do not use `ACTIVE_ROOT_CWD_COUNT == 0` as the only safety condition on a live Hermes control-plane checkout; passive shells/TUIs/viewers can keep CWD under root indefinitely. Classify active root processes into Git writers, artifact writers/owners, passive control sessions, and unknown owners. If `HEAD` and `origin/main` diverge while root is dirty, inspect local-only and remote-only commits and do not auto-merge/rebase/stash from the live root. See `references/root-session-wait-and-divergence-gate.md`.
 
@@ -71,7 +71,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `git-hang-closeout-preservation`
 
 - Session reference: `references/git-hang-closeout-preservation.md`.
-- Preserved insight: When PRs are merged and branch heads are contained but local Git status/diff/worktree checks hang due concurrent Codex/Codex processes, preserve closeout evidence outside the repo and keep final ledger/cleanup pending; do not delete worktrees or claim clean sync from containment proof alone.
+- Preserved insight: When PRs are merged and branch heads are contained but local Git status/diff/worktree checks hang due concurrent Claude/Codex processes, preserve closeout evidence outside the repo and keep final ledger/cleanup pending; do not delete worktrees or claim clean sync from containment proof alone.
 
 ### `transactional-closeout-race-and-active-root-sessions`
 
@@ -131,7 +131,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `workspace-hub-sync-concurrent-writer-blocks`
 
 - Former skill demoted to `references/workspace-hub-sync-concurrent-writer-blocks.md`.
-- Preserved insight: Handle repository_sync cleanup when workspace-hub root is being mutated by concurrent Codex/Codex/Gemini sessions.
+- Preserved insight: Handle repository_sync cleanup when workspace-hub root is being mutated by concurrent Claude/Codex/Gemini sessions.
 
 ### `workspace-hub-sync-root-churn-catchup`
 
@@ -146,7 +146,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `interactive-issue-execution-worktree-guardrails`
 
 - Former skill demoted to `references/interactive-issue-execution-worktree-guardrails.md`.
-- Preserved insight: Execute approved GitHub issues in isolated worktrees with interactive Codex/Codex runs, while containing agent drift and salvaging progress when provider/runtime problems occur.
+- Preserved insight: Execute approved GitHub issues in isolated worktrees with interactive Claude Code/Codex runs, while containing agent drift and salvaging progress when provider/runtime problems occur.
 
 ### `session-start-dirty-state-triage-with-background-agents`
 

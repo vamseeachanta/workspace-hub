@@ -4,7 +4,7 @@ description: Run a planning-only multi-terminal wave to harden blocked `status:p
 version: 1.0.0
 author: Hermes Agent
 category: software-development
-tags: [planning, github, review, overnight, Codex, prompts, contention-avoidance]
+tags: [planning, github, review, overnight, claude, prompts, contention-avoidance]
 ---
 
 # Plan Resubmit Wave Prompts
@@ -16,7 +16,7 @@ Use when multiple GitHub issues are in `status:plan-review` but are not actually
 Choose this pattern when:
 - there are no true `status:plan-approved` implementation candidates
 - several plans are close and need blocker-specific revision
-- the user wants parallel Codex terminals or prompt packs
+- the user wants parallel Claude terminals or prompt packs
 - the repo is plan-gated and implementation would be unsafe or premature
 
 Do NOT use this pattern for code execution. This is planning-only.
@@ -28,7 +28,7 @@ Each terminal owns one plan file. If `docs/plans/README.md` must be synchronized
 
 A highly effective variant is:
 - main session directly executes the top/fastest-fix plan lane
-- other lanes are emitted as self-contained prompt files for Codex terminals
+- other lanes are emitted as self-contained prompt files for Claude terminals
 
 ## Recommended 3-lane structure
 

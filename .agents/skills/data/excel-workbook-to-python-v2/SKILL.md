@@ -1,13 +1,13 @@
 ---
 name: excel-workbook-to-python-v2
-description: Convert engineering Excel workbooks to Python code using Codex Desktop cowork on Windows. Proven superior quality vs Linux openpyxl extraction (24 vs 7 functions, 81 vs 53 tests). Validated on Ballymore jumper installation analysis.
+description: Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Proven superior quality vs Linux openpyxl extraction (24 vs 7 functions, 81 vs 53 tests). Validated on Ballymore jumper installation analysis.
 trigger: User asks to convert an Excel workbook to Python code, or references workbook conversion (#1934, #471)
 effort: medium
 model: any
 context: 7/12/10
 ---
 
-# Excel Workbook to Python — Codex Cowork on Windows (v2)
+# Excel Workbook to Python — Claude Cowork on Windows (v2)
 
 ## Benchmark Results
 
@@ -22,7 +22,7 @@ context: 7/12/10
 
 ## Execution Machine
 
-- **ace-win-2** (licensed-win-2): Codex Desktop with cowork mode + MCP
+- **ace-win-2** (licensed-win-2): Claude Desktop with cowork mode + MCP
 - Excel installed, openpyxl and pytest available in Python environment
 - `client-c` repo cloned to ace-win-2
 
@@ -30,14 +30,14 @@ context: 7/12/10
 
 ### Step 1: Open Excel workbook on Windows
 
-Open the workbook in Excel. Launch Codex Desktop cowork session.
+Open the workbook in Excel. Launch Claude Desktop cowork session.
 
 ### Step 2: Copy workbook path
 
 Locate workbook path in `client-c/engineering_workbooks/`.
 Copy full Windows path (e.g., `C:\path\to\client-c\engineering_workbooks\ballymore\...`).
 
-### Step 3: Prompt in Codex Desktop cowork
+### Step 3: Prompt in Claude Desktop cowork
 
 ```
 Convert this workbook to Python:
@@ -128,7 +128,7 @@ from existing `docs/domains/orcaflex/pipeline/installation/` specs.
 ## Critical Pitfalls
 
 ### 1. Missing return statements
-Codex sometimes omits `return` in functions that use `__post_init__`:
+Claude sometimes omits `return` in functions that use `__post_init__`:
 ```python
 def compute_buoyancy(props=None):
     if props is None:

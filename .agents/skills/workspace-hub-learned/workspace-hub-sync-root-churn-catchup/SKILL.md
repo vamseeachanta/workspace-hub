@@ -11,7 +11,7 @@ Use this when `./scripts/repository_sync status all` shows subrepos are clean bu
 
 ## When this applies
 - `repository_sync status all` reports repos clean/up to date
-- but root `git status` still shows new `.planning/quick/*`, `scripts/review/results/*`, plan docs, audit outputs, or `.Codex/state/*`
+- but root `git status` still shows new `.planning/quick/*`, `scripts/review/results/*`, plan docs, audit outputs, or `.claude/state/*`
 - and there are active long-running review/agent processes such as `codex exec` or `gemini exec`
 
 ## Key insight
@@ -42,7 +42,7 @@ This is not necessarily a repo-sync failure. It is often a root-only churn probl
 - `scripts/review/results/*`
 - plan markdown files under `docs/plans/`
 - generated audit outputs
-- `.Codex/state/*`
+- `.claude/state/*`
 
 ## Reporting guidance
 Report these separately:

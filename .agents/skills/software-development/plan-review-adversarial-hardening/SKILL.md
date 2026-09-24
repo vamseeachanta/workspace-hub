@@ -9,7 +9,7 @@ tags: [plan-review, adversarial-review, github, workflow]
 # Plan Review Adversarial Hardening
 
 ## When to Use
-Use when a GitHub plan, implementation plan, or review artifact must survive adversarial review across Codex/Gemini/Codex/Hermes; when reviewer prompts become stale; when artifacts must be inlined because tools cannot read paths; or when plan approval/governance state drifts.
+Use when a GitHub plan, implementation plan, or review artifact must survive adversarial review across Codex/Gemini/Claude/Hermes; when reviewer prompts become stale; when artifacts must be inlined because tools cannot read paths; or when plan approval/governance state drifts.
 
 ## Class-Level Workflow
 1. Re-sync live issue/repo state before generating prompts or review artifacts.
@@ -187,7 +187,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `stage-prompt-drift-guard`
 
 - Former skill demoted to `references/stage-prompt-drift-guard.md`.
-- Preserved insight: Audit historical stage-prompt artifact drift from Codex logs, generate a package index, and enforce only newly introduced drift in CI and local pre-push hooks.
+- Preserved insight: Audit historical stage-prompt artifact drift from Claude logs, generate a package index, and enforce only newly introduced drift in CI and local pre-push hooks.
 
 ### `ten-agent-pre-plan-review-wave`
 

@@ -11,7 +11,7 @@ tags: [overnight, planning, github, status-plan-review, worktree, artifact-drift
 
 Use when:
 - the goal is to move open issues from pre-`status:plan-review` into `status:plan-review`
-- you want 4 parallel Codex planning workers overnight
+- you want 4 parallel Claude planning workers overnight
 - the main checkout is dirty or already carrying unrelated state
 - you need planning only, not implementation
 
@@ -25,9 +25,9 @@ Use when:
    - `scripts/review/results/*plan-NNN-*`
    - optional `.planning/quick/*NNN*`
 5. Explicitly forbid `docs/plans/README.md`, source files, and tests in the worker prompt.
-6. Launch Codex with:
+6. Launch Claude with:
    `PROMPT=$(< worker.md)`
-   `Codex -p --permission-mode acceptEdits --no-session-persistence --output-format text --max-budget-usd 20 "$PROMPT" </dev/null | tee logs/<worker>.log`
+   `claude -p --permission-mode acceptEdits --no-session-persistence --output-format text --max-budget-usd 20 "$PROMPT" </dev/null | tee logs/<worker>.log`
 7. Each worker should:
    - inspect GH + local evidence
    - draft the canonical plan

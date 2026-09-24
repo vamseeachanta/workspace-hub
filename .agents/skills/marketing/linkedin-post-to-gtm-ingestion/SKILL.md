@@ -6,7 +6,7 @@ version: 1.0.0
 category: marketing
 applies-to:
 - hermes
-- Codex
+- claude
 - codex
 - gemini
 trigger: manual

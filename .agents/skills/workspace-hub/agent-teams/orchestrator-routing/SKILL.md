@@ -27,7 +27,7 @@ see_also: []
 
 # Orchestrator Routing — Main Session as Lightweight Router
 
-The main Codex session should stay responsive to the user. When a task is
+The main Claude session should stay responsive to the user. When a task is
 large or parallelisable, delegate to subagents rather than consuming the main
 context window. This skill documents the routing pattern.
 
@@ -81,9 +81,9 @@ result = Task(
     description="Run ecosystem health checks",
     prompt="""
     Run the ecosystem health check suite per the /ecosystem-health skill:
-    1. Check git config core.hooksPath == .Codex/hooks
+    1. Check git config core.hooksPath == .claude/hooks
     2. Check uv is available
-    3. Run .Codex/hooks/check-encoding.sh
+    3. Run .claude/hooks/check-encoding.sh
     4. Check work queue index generates
     Report results as a markdown table.
     """,
@@ -148,7 +148,7 @@ When user asks about pending work:
 ```
 User: "What's pending? Pick the next thing to work on."
 Orchestrator:
-  1. Read .Codex/work-queue/pending/ (fast, keep in main session)
+  1. Read .claude/work-queue/pending/ (fast, keep in main session)
   2. Identify Route A items (user-approved, no cross-review needed)
   3. If item needs research → spawn Explore agent, stay available
   4. If item is small skill authoring → do in main session

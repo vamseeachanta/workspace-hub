@@ -85,4 +85,4 @@ Include all of these explicitly:
 - review artifacts exist
 
 ## Operational note
-If the first review wave returns mixed results like Codex/Codex MAJOR and Gemini APPROVE, do not surface the plan as approval-ready. Patch the plan immediately, update the `## Adversarial Review Summary`, and rerun cross-review.
+If the first review wave returns mixed results like Claude/Codex MAJOR and Gemini APPROVE, do not surface the plan as approval-ready. Patch the plan immediately, update the `## Adversarial Review Summary`, and rerun cross-review.

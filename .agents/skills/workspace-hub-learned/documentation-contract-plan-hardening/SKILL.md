@@ -135,7 +135,7 @@ Better:
 
 ## When to use this skill
 
-Use before sending any documentation/contract plan to Codex/Gemini/Codex for adversarial review, especially when:
+Use before sending any documentation/contract plan to Codex/Gemini/Claude for adversarial review, especially when:
 - the issue is in `cat:documentation` or `cat:harness`
 - the deliverable is a contract, policy, checklist, or governance doc
 - the issue body has a bulleted scope that can be converted into testable requirements

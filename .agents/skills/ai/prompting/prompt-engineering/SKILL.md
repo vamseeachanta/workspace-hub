@@ -104,7 +104,7 @@ pip install pytest promptfoo
 ## Resources
 
 - **OpenAI Prompt Engineering Guide**: https://platform.openai.com/docs/guides/prompt-engineering
-- **Anthropic Prompt Engineering**: https://docs.anthropic.com/Codex/docs/prompt-engineering
+- **Anthropic Prompt Engineering**: https://docs.anthropic.com/claude/docs/prompt-engineering
 - **Prompt Engineering Guide**: https://www.promptingguide.ai/
 - **Learn Prompting**: https://learnprompting.org/
 

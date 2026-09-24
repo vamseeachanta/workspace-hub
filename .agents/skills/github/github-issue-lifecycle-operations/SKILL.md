@@ -41,7 +41,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `gh-work-planning`
 
 - Former skill demoted to `references/gh-work-planning.md`.
-- Preserved insight: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, and execution-ready delegation packaging for Codex agent teams.
+- Preserved insight: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, and execution-ready delegation packaging for Claude agent teams.
 
 ### `gh-work-planning-checklist`
 
@@ -121,7 +121,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `single-terminal-gh-issue-prompts`
 
 - Former skill demoted to `references/single-terminal-gh-issue-prompts.md`.
-- Preserved insight: Generate live issue-specific Codex prompts for a single terminal, with repo-aware path contracts and plan-gate safety checks.
+- Preserved insight: Generate live issue-specific Claude prompts for a single terminal, with repo-aware path contracts and plan-gate safety checks.
 
 ### `plan-resubmit-wave-prompts`
 
@@ -131,17 +131,17 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `parallel-plan-drafting-worktrees`
 
 - Former skill demoted to `references/parallel-plan-drafting-worktrees.md`.
-- Preserved insight: Draft multiple follow-up GitHub issue plans in parallel using isolated git worktrees plus background Codex print-mode runs, while keeping governance-safe boundaries and avoiding shared-file contention.
+- Preserved insight: Draft multiple follow-up GitHub issue plans in parallel using isolated git worktrees plus background Claude Code print-mode runs, while keeping governance-safe boundaries and avoiding shared-file contention.
 
 ### `parallel-approved-issue-worktrees`
 
 - Former skill demoted to `references/parallel-approved-issue-worktrees.md`.
-- Preserved insight: Launch approved GitHub issue implementation in parallel using isolated git worktrees, committed execution-pack prompts, local plan-approved markers, and direct background Codex runs when delegate_task workers are unreliable for real repo writes.
+- Preserved insight: Launch approved GitHub issue implementation in parallel using isolated git worktrees, committed execution-pack prompts, local plan-approved markers, and direct background Claude runs when delegate_task workers are unreliable for real repo writes.
 
 ### `plan-gated-issue-execution-wave`
 
 - Former skill demoted to `references/plan-gated-issue-execution-wave.md`.
-- Preserved insight: Execute a multi-issue architecture/planning wave in a plan-gated repo, then safely transition approved issues into implementation with file-based Codex prompts, local approval markers, subprocess monitoring, and cleanup handling for sandbox/hook edge cases.
+- Preserved insight: Execute a multi-issue architecture/planning wave in a plan-gated repo, then safely transition approved issues into implementation with file-based Claude prompts, local approval markers, subprocess monitoring, and cleanup handling for sandbox/hook edge cases.
 
 ### `continuous-planning-pipeline`
 

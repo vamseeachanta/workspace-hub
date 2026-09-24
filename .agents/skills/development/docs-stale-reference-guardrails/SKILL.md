@@ -7,7 +7,7 @@ tags: [docs, regression-tests, stale-paths, workflow-migration, guardrails]
 
 # Docs Stale-Reference Guardrails
 
-Use when a repo has migrated away from old workflow paths (for example `scripts/work-queue/*`, `scripts/agents/*`, `specs/wrk/*`, `.Codex/work-queue/*`) and you need to stop live docs from reintroducing those paths.
+Use when a repo has migrated away from old workflow paths (for example `scripts/work-queue/*`, `scripts/agents/*`, `specs/wrk/*`, `.claude/work-queue/*`) and you need to stop live docs from reintroducing those paths.
 
 ## When to use
 - Historical session logs show repeated reads of deleted paths
@@ -55,7 +55,7 @@ Core banned families to encode:
   - `whats-next.sh`
   - `archive-item.sh`
   - `claim-item.sh`
-- `.Codex/work-queue/`
+- `.claude/work-queue/`
 - deleted work-queue skill paths
 
 Keep test-specific extra patterns local to the test that needs them.
@@ -117,7 +117,7 @@ This preserves guidance while satisfying strict stale-path bans.
 
 ## Recommended exception docs
 In a migrated workflow repo, the allowlist should usually be tiny. Example steady state:
-- `docs/ops/legacy-Codex-reference-map.md`
+- `docs/ops/legacy-claude-reference-map.md`
 - `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md`
 
 If more files are allowlisted, treat that as debt to reduce.

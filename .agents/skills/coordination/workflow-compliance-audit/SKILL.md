@@ -97,8 +97,8 @@ Compliance rate: ~0.2%
 
 ## Pitfalls
 
-- **Session signals directory**: `.Codex/state/session-signals/` may have stale data. The `check_claude_usage.sh` script may never have run, so generated log files don't exist.
-- **Hermes sessions**: Not tracked in the same way as Codex sessions. Check `~/.hermes/sessions/` for Hermes-specific data.
+- **Session signals directory**: `.claude/state/session-signals/` may have stale data. The `check_claude_usage.sh` script may never have run, so generated log files don't exist.
+- **Hermes sessions**: Not tracked in the same way as Claude sessions. Check `~/.hermes/sessions/` for Hermes-specific data.
 - **Auto-sync noise**: `chore(sync): auto-sync` commits inflate total commit counts. Filter these out.
 - **Review artifacts vs review execution**: Having review files in `scripts/review/results/` doesn't mean the review was performed — check file sizes and content. Some artifacts are empty or contain only error messages.
 - **Document index vs registry**: The index.jsonl is NOT the same as the online-resource-registry.yaml or standards-transfer-ledger.yaml. The index tracks all documents (647K+), while registries track specific collections.

@@ -2,7 +2,7 @@
 name: aceengineer-website-copy-alignment
 description: Verify proposed copy changes to vamseeachanta/aceengineer-website against canonical sources in workspace-hub (llm-wiki, live site, strategy repo) before shipping. Produces a GitHub issue on the site repo documenting the check with a Match / Drift / Gap verdict.
 version: 1.0.0
-author: Codex
+author: Claude Code
 license: MIT
 metadata:
   tags: [aceengineer, website, copy-review, canonical-check, design-system, cross-repo]
@@ -39,11 +39,11 @@ Resolution order: `$LLM_WIKI_DATA_DIR` → `config/llm-wiki.yaml:data_dir` → `
 
 ### No embedded llm-wiki in tier-1 repos
 
-Per the 2026-04-23 decision (GH #2398 CLOSED — _llm-wiki stays embedded in hub_), none of `assetutilities / digitalmodel / worldenergydata / assethold / OGManufacturing / aceengineer-website` contain an `llm-wiki/` subtree. If you find one, that is news and the decision may have been reversed — re-read `.Codex/memory/project_llm_wiki_stays_embedded.md` before proceeding.
+Per the 2026-04-23 decision (GH #2398 CLOSED — _llm-wiki stays embedded in hub_), none of `assetutilities / digitalmodel / worldenergydata / assethold / OGManufacturing / aceengineer-website` contain an `llm-wiki/` subtree. If you find one, that is news and the decision may have been reversed — re-read `.claude/memory/project_llm_wiki_stays_embedded.md` before proceeding.
 
 ## Privacy Wall
 
-The `aceengineer-strategy` repo's agent-config enforces a privacy wall (see that repo's `.Codex/` directory for the authoritative policy):
+The `aceengineer-strategy` repo's agent-config enforces a privacy wall (see that repo's `.claude/` directory for the authoritative policy):
 - No cross-references to public engineering repos
 - No PII in commits (contact details, deal terms, pricing specifics)
 
@@ -62,7 +62,7 @@ When filing the **public** issue on `vamseeachanta/aceengineer-website`:
 ## Steps
 
 1. **Load context.**
-   - Read `.Codex/memory/MEMORY.md` for recent aceengineer-related entries.
+   - Read `.claude/memory/MEMORY.md` for recent aceengineer-related entries.
    - Read the handoff / design-review notes the user pasted (the proposed copy + surrounding context).
    - `cd /mnt/local-analysis/workspace-hub && git status` — verify clean state.
 
@@ -171,7 +171,7 @@ _Verification trail: <file:line citations to public sources only>._
 
 ## Example execution (2026-04-24)
 
-- Trigger: design-system `about.html` lede review, handoff from separate Codex.ai project.
+- Trigger: design-system `about.html` lede review, handoff from separate Claude.ai project.
 - Proposed lede introduced "consulting practice" framing.
 - Live `about.html` already rejected that framing ("We deliver automated workflows, not consulting hours"; "AceEngineer is the firm ... not a contractor with a laptop").
 - Verdict: **B+C** (DRIFT against live site + GAP in llm-wiki).

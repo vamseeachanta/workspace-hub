@@ -36,7 +36,7 @@ Execute in order:
    mkdir -p docs/modules/<discipline>
    mkdir -p specs/modules/<discipline>
    mkdir -p data/modules/<discipline>  # if data/ exists
-   mkdir -p .Codex/skills/<discipline>
+   mkdir -p .claude/skills/<discipline>
 
 3. MOVE CODE:
    # Move source files to appropriate modules

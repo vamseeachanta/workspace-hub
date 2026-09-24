@@ -2,7 +2,7 @@
 name: provider-session-quota-operations
 version: 1.0.0
 category: ai
-description: Class-level provider/session operations for Codex, Codex, Gemini, Hermes, quotas, audit exporters, readiness dispatch, and utilization scorecards.
+description: Class-level provider/session operations for Claude, Codex, Gemini, Hermes, quotas, audit exporters, readiness dispatch, and utilization scorecards.
 tags: [providers, sessions, quota, audit]
 ---
 
@@ -15,7 +15,7 @@ Use when auditing provider session logs, routing work based on readiness/quota, 
 1. Bootstrap paths/exporters and classify provider artifacts before deriving metrics.
 2. Distinguish quota/readiness dispatch from session-corpus learning transfer.
 3. Keep utilization scorecards computable and evidence-backed.
-4. Use provider-specific recovery notes for Gemini/Codex/Codex only as subcases under this broader workflow.
+4. Use provider-specific recovery notes for Gemini/Codex/Claude only as subcases under this broader workflow.
 
 ## Consolidated Session Learnings
 
@@ -25,12 +25,12 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `inventory-readiness-provider-dispatch`
 
 - Former skill demoted to `references/inventory-readiness-provider-dispatch.md`.
-- Preserved insight: Build and operate a computable readiness matrix that connects raw-data-to-GTM package stages with Codex/Codex/Gemini dispatch lanes and weekly credit pacing.
+- Preserved insight: Build and operate a computable readiness matrix that connects raw-data-to-GTM package stages with Claude/Codex/Gemini dispatch lanes and weekly credit pacing.
 
 ### `provider-utilization-scorecard`
 
 - Former skill demoted to `references/provider-utilization-scorecard.md`.
-- Preserved insight: Refresh provider quota snapshots and generate a weekly Codex/Codex/Gemini utilization scorecard grounded in quota data when available and session-activity fallback when not.
+- Preserved insight: Refresh provider quota snapshots and generate a weekly Claude/Codex/Gemini utilization scorecard grounded in quota data when available and session-activity fallback when not.
 
 ### `provider-audit-bootstrap-and-path-classification`
 
@@ -40,12 +40,12 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `provider-session-ecosystem-audit`
 
 - Former skill demoted to `references/provider-session-ecosystem-audit.md`.
-- Preserved insight: Audit Codex/Codex/Hermes/Gemini session logs, normalize provider-specific quirks, and wire recurring exports/reporting for ongoing ecosystem health checks.
+- Preserved insight: Audit Claude/Codex/Hermes/Gemini session logs, normalize provider-specific quirks, and wire recurring exports/reporting for ongoing ecosystem health checks.
 
 ### `provider-session-ecosystem-audit-and-exporters`
 
 - Former skill demoted to `references/provider-session-ecosystem-audit-and-exporters.md`.
-- Preserved insight: Build and maintain cross-provider session-log audits for Codex, Codex, Hermes, and Gemini, including exporter design, normalization, and behavioral verification.
+- Preserved insight: Build and maintain cross-provider session-log audits for Claude, Codex, Hermes, and Gemini, including exporter design, normalization, and behavioral verification.
 
 ### `provider-session-learning-transfer`
 

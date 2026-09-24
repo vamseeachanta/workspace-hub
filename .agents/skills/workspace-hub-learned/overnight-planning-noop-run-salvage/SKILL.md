@@ -1,7 +1,7 @@
 ---
 name: overnight-planning-noop-run-salvage
 version: 1.0.0
-description: Recover when unattended overnight Codex planning runs exit 0 but produce no required artifacts; salvage the wave by auditing existing plan state, generating missing summary artifacts manually, and preserving morning monitoring surfaces.
+description: Recover when unattended overnight Claude planning runs exit 0 but produce no required artifacts; salvage the wave by auditing existing plan state, generating missing summary artifacts manually, and preserving morning monitoring surfaces.
 ---
 
 # Overnight Planning No-Op Run Salvage
@@ -11,16 +11,16 @@ description: Recover when unattended overnight Codex planning runs exit 0 but pr
 Use this when an unattended overnight planning or review wave appears to have run successfully but did not actually produce the expected artifacts.
 
 Typical signals:
-- Codex background process exits with code 0
+- Claude background process exits with code 0
 - stdout/stderr logs are empty or missing
 - expected `docs/reports/...summary.md` or `scripts/review/results/...` files do not exist
 - no plan files or issue comments were materially updated
 
-This showed up in the 2026-04-22 workspace-hub tier-1 knowledge beef-up wave across 6 separate unattended Codex launches.
+This showed up in the 2026-04-22 workspace-hub tier-1 knowledge beef-up wave across 6 separate unattended Claude launches.
 
 ## Core lesson
 
-`exit_code == 0` is not sufficient proof that unattended Codex accomplished the task.
+`exit_code == 0` is not sufficient proof that unattended Claude accomplished the task.
 
 For planning-only overnight waves, the real success condition is artifact creation.
 If the required artifact is missing, treat the run as failed/no-op even if the process exited cleanly.
@@ -79,7 +79,7 @@ If (1) is false but (2)/(3) are true, the lane likely needs salvage summaries, n
 
 - planning-only overnight waves
 - repo-governance / routing / documentation waves
-- multi-worktree Codex batches where each lane is expected to emit one result artifact
+- multi-worktree Claude batches where each lane is expected to emit one result artifact
 - morning runbooks that depend on deterministic summary files
 
 ## Pitfalls

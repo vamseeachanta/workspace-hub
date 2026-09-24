@@ -14,7 +14,7 @@ Convert Markdown documents with YAML frontmatter into styled, print-ready PDFs u
 ## Quick Start
 
 ```bash
-python3 .Codex/skills/data/documents/md-to-pdf/md_to_pdf.py document.md -o output.pdf
+python3 .claude/skills/data/documents/md-to-pdf/md_to_pdf.py document.md -o output.pdf
 ```
 
 ## When to Use
@@ -149,7 +149,7 @@ Existing HTML report generators (wall thickness, dynacard) can reuse `components
 
 ```python
 from pathlib import Path
-css = (Path(__file__).parent / "../../.Codex/skills/data/documents/md-to-pdf/templates/components.css").read_text()
+css = (Path(__file__).parent / "../../.claude/skills/data/documents/md-to-pdf/templates/components.css").read_text()
 ```
 
 ## Browser QA Step

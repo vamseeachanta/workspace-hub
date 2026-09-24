@@ -1,6 +1,6 @@
 ---
 name: perf-tuning
-description: Diagnose local machine slowness and apply CPU/IO/governor tuning. Use when work feels slow on ace-linux-1 / ace-linux-2 — Hermes lagging, git operations taking minutes, builds dragging, Codex feeling sluggish. Runs perf-bench.sh, identifies the dominant bottleneck (CPU governor, filesystem driver, NUMA, memory pressure, I/O contention), and applies fixes from the perf-tuning runbook.
+description: Diagnose local machine slowness and apply CPU/IO/governor tuning. Use when work feels slow on ace-linux-1 / ace-linux-2 — Hermes lagging, git operations taking minutes, builds dragging, Claude Code feeling sluggish. Runs perf-bench.sh, identifies the dominant bottleneck (CPU governor, filesystem driver, NUMA, memory pressure, I/O contention), and applies fixes from the perf-tuning runbook.
 ---
 
 # Performance Tuning

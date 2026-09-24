@@ -17,4 +17,4 @@ Extracted data should align with existing module structures:
 | Module | Path | Relevant data |
 |--------|------|---------------|
 | Riser stack-up | `digitalmodel/src/digitalmodel/infrastructure/base_solvers/marine/typical_riser_stack_up_calculations.py` | Joint dimensions, weights, stack-up sequence |
-| VIV analysis skill | `.Codex/skills/engineering/marine-offshore/viv-analysis/SKILL.md` | Strouhal number, reduced velocity, mode shapes |
+| VIV analysis skill | `.claude/skills/engineering/marine-offshore/viv-analysis/SKILL.md` | Strouhal number, reduced velocity, mode shapes |

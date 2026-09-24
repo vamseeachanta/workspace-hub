@@ -1,6 +1,6 @@
 ---
 name: licensed-machine-prompt-orchestration
-description: Design self-contained prompts for licensed machines (Windows, no Hermes) that Codex / Codex / Gemini CLIs can execute autonomously. Covers fixture generation, solver validation, and cross-machine data bridging.
+description: Design self-contained prompts for licensed machines (Windows, no Hermes) that Claude Code / Codex / Gemini CLIs can execute autonomously. Covers fixture generation, solver validation, and cross-machine data bridging.
 version: 1.0.0
 author: Hermes Agent
 license: MIT
@@ -12,7 +12,7 @@ metadata:
 
 # Licensed-Machine Prompt Orchestration
 
-Use this skill when you need to prepare work for a machine that has commercial solver licenses (OrcFxAPI, ANSYS, etc.) but does NOT have Hermes installed. The machine typically has Codex CLI, Codex CLI, and/or Gemini CLI available.
+Use this skill when you need to prepare work for a machine that has commercial solver licenses (OrcFxAPI, ANSYS, etc.) but does NOT have Hermes installed. The machine typically has Claude Code CLI, Codex CLI, and/or Gemini CLI available.
 
 ## When to use
 
@@ -102,7 +102,7 @@ Place prompts at: `docs/plans/licensed-win-1-session-N-prompts.md`
 Standard sections:
 1. **Prerequisites** — git pull, pip install checks, OrcFxAPI version verify
 2. **PROMPT N** blocks — each with Priority, Time estimate, Issue reference, STEP-by-STEP instructions
-3. **Execution Plan** — Terminal 1 (sequential Codex -p commands), Terminal 2 (verification)
+3. **Execution Plan** — Terminal 1 (sequential claude -p commands), Terminal 2 (verification)
 4. **Git Contention Map** — table showing which prompt writes where
 5. **Key Reminders** — python not uv run, git pull/push, digitalmodel is separate repo
 
@@ -113,8 +113,8 @@ cd D:\workspace-hub
 git pull origin main
 cd digitalmodel && git pull origin main && cd ..
 
-Codex -p "Read docs/plans/licensed-win-1-session-N-prompts.md, execute PROMPT 1. Use python (not uv run). Commit and push results."
-Codex -p "Read docs/plans/licensed-win-1-session-N-prompts.md, execute PROMPT 2. Use python (not uv run). Commit and push results."
+claude -p "Read docs/plans/licensed-win-1-session-N-prompts.md, execute PROMPT 1. Use python (not uv run). Commit and push results."
+claude -p "Read docs/plans/licensed-win-1-session-N-prompts.md, execute PROMPT 2. Use python (not uv run). Commit and push results."
 ```
 
 ## Cross-machine data bridge pattern

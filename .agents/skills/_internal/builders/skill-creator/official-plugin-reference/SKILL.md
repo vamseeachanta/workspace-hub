@@ -13,8 +13,8 @@ scripts_exempt: true
 
 
 This custom skill **extends** the official Anthropic `skill-creator` plugin:
-- Install: `/plugin install skill-creator@Codex-plugin-directory`
-- Repo: `anthropics/Codex-plugins-official/plugins/skill-creator`
+- Install: `/plugin install skill-creator@claude-plugin-directory`
+- Repo: `anthropics/claude-plugins-official/plugins/skill-creator`
 - Capabilities: create skills, improve existing skills, run evals, benchmark performance with variance analysis
 
 **Composition pattern**: invoke the official plugin for core skill creation mechanics.

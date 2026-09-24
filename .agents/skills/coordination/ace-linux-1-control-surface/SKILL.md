@@ -22,7 +22,7 @@ Use this when Hermes should treat `ace-linux-1` as the durable operator console 
 - Long-running work should leave durable evidence in three places:
   1. prompt packs under `docs/plans/overnight-prompts/`
   2. local logs such as `logs/night-runs/`
-  3. repo-backed memory / GTM docs under `.Codex/memory/` and `docs/gtm/`
+  3. repo-backed memory / GTM docs under `.claude/memory/` and `docs/gtm/`
 - GTM objective: continuously convert signals, repo work, and approved engineering outputs into client-ready material while keeping the engineering-evidence boundary explicit.
 
 ## Trigger checklist
@@ -100,8 +100,8 @@ When the user is operating from Telegram or another lightweight chat surface, ke
    - only after readiness checks and zero-contention path ownership
    - avoid GitHub mutation there unless auth/readiness is freshly proven safe
 4. **Route by evidence type**
-   - planning/research => Codex/Gemini
-   - bounded implementation/repair => Codex or Codex worker
+   - planning/research => Claude/Gemini
+   - bounded implementation/repair => Codex or Claude worker
    - outreach packaging => ace-linux-1 synthesis lane using repo-backed GTM docs
 
 ## Approval gates
@@ -138,7 +138,7 @@ Use this loop to keep material moving toward outreach:
    - targeted outreach email
    - follow-up research issue
 5. **Persist memory**
-   - update `.Codex/memory/` when the operating model changes
+   - update `.claude/memory/` when the operating model changes
    - keep facts concise and durable; never store credentials
 
 ## Verification checklist

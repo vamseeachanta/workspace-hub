@@ -19,7 +19,7 @@ tags:
 - dnv
 - api
 created: 2026-02-17
-author: Codex
+author: Claude
 type: skill
 trigger: manual
 auto_execute: false

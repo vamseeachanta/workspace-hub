@@ -230,7 +230,7 @@ Rules:
 - if the current draft already incorporates a fix, remove future-tense bullets like "will reconcile in next revision"
 
 Typical failure signals:
-- Codex/Codex return MAJOR because the plan cites two different review-artifact timestamps
+- Claude/Codex return MAJOR because the plan cites two different review-artifact timestamps
 - the plan body says a reconciliation is still pending even though the summary table already shows it as done
 - acceptance criteria mention stale artifact files after a newer rerun is already on disk
 
@@ -655,7 +655,7 @@ Rule:
 - record retrieval failures as environment/review-infrastructure limitations, not as design facts
 - keep the issue `draft` / not `status:plan-review` until required provider artifacts exist and are committed/retrievable
 - if the plan cites live repo facts, either include self-contained attested evidence for those facts or move them to explicit prechecks/manual verification steps
-- missing Codex/Gemini/Codex artifacts are gate blockers for promotion, but not necessarily content blockers during a targeted single-provider hardening loop
+- missing Claude/Gemini/Codex artifacts are gate blockers for promotion, but not necessarily content blockers during a targeted single-provider hardening loop
 
 This prevents churn where the plan is repeatedly rewritten for non-content findings while still preserving the hard gate that no issue advances without clean, retrievable review evidence.
 

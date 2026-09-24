@@ -45,7 +45,7 @@ tags: []
 ```bash
 # Invoke SPARC Specification phase
 
-# Or directly in Codex
+# Or directly in Claude Code
 # "Use SPARC specification to define requirements for user authentication"
 ```
 

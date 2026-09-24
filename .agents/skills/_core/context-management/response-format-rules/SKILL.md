@@ -16,7 +16,7 @@ scripts_exempt: true
 - **Tables**: Maximum 10 rows, summarize remainder
 - **Code blocks**: Maximum 50 lines, split larger into files
 - **Lists**: Maximum 15 items, aggregate beyond
-- **Large outputs**: Write to `.Codex/outputs/`, return path only
+- **Large outputs**: Write to `.claude/outputs/`, return path only
 
 #### Mandatory Response Ending
 ```
@@ -47,7 +47,7 @@ STATUS: [complete|in_progress|blocked] | NEXT: [action] | KEY: [metrics]
 
 When context exceeds threshold:
 1. Create checkpoint with current state
-2. Write to `.Codex/outputs/session-state.json`
+2. Write to `.claude/outputs/session-state.json`
 3. Clear verbose history
 4. Continue with checkpoint reference only
 

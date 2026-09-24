@@ -15,14 +15,14 @@ scripts_exempt: true
 
 Scan these data sources for improvement candidates:
 
-1. `.Codex/state/pending-reviews/memory-updates.jsonl` — memory candidates
-2. `.Codex/state/pending-reviews/insights.jsonl` — insight candidates
-3. `.Codex/state/pending-reviews/errors.jsonl` — error patterns
-4. `.Codex/state/pending-reviews/skill-candidates.jsonl` — skill gaps
-5. `.Codex/state/corrections/.recent_edits` — correction patterns
-6. `.Codex/state/accumulator.json` — aggregated metrics
-7. `.Codex/state/patterns/` — patterns from `/reflect`
-8. `.Codex/state/pending-reviews/ecosystem-review.jsonl` — ecosystem health signals (from stop hook)
+1. `.claude/state/pending-reviews/memory-updates.jsonl` — memory candidates
+2. `.claude/state/pending-reviews/insights.jsonl` — insight candidates
+3. `.claude/state/pending-reviews/errors.jsonl` — error patterns
+4. `.claude/state/pending-reviews/skill-candidates.jsonl` — skill gaps
+5. `.claude/state/corrections/.recent_edits` — correction patterns
+6. `.claude/state/accumulator.json` — aggregated metrics
+7. `.claude/state/patterns/` — patterns from `/reflect`
+8. `.claude/state/pending-reviews/ecosystem-review.jsonl` — ecosystem health signals (from stop hook)
 9. Current session context — what was learned in THIS session
 
 
@@ -31,12 +31,12 @@ Scan these data sources for improvement candidates:
 
 | Signal Type | Target | Example |
 |---|---|---|
-| Institutional knowledge | `.Codex/memory/KNOWLEDGE.md` | "OrcaWave .frequencies returns Hz" |
-| Domain-specific lesson | `.Codex/memory/<topic>.md` | "AQWA needs QPPL DIFF for diffraction" |
-| Repeated correction | `.Codex/rules/*.md` | "Always validate freq order" |
-| Skill gap / new capability | `.Codex/skills/**/ (create)` | "No skill for PDF table extraction" |
-| Skill correction | `.Codex/skills/**/ (enhance)` | "Polars skill missing lazy frame pattern" |
-| Underperforming skill | `.Codex/skills/**/ (deprecate)` | "Skill never used in 90 days, superseded" |
+| Institutional knowledge | `.claude/memory/KNOWLEDGE.md` | "OrcaWave .frequencies returns Hz" |
+| Domain-specific lesson | `.claude/memory/<topic>.md` | "AQWA needs QPPL DIFF for diffraction" |
+| Repeated correction | `.claude/rules/*.md` | "Always validate freq order" |
+| Skill gap / new capability | `.claude/skills/**/ (create)` | "No skill for PDF table extraction" |
+| Skill correction | `.claude/skills/**/ (enhance)` | "Polars skill missing lazy frame pattern" |
+| Underperforming skill | `.claude/skills/**/ (deprecate)` | "Skill never used in 90 days, superseded" |
 | Cross-session pattern | `AGENTS.md` Core Rules | "Batch operations reduce errors" |
 | Resource drift | `AGENTS.md` Resource Index | "New agent in agents/devops/" |
 | Documentation gap | `.Codex/docs/` | "Orchestrator pattern needs update" |
@@ -50,8 +50,8 @@ Scan these data sources for improvement candidates:
 Assess the overall health of ecosystem files and recommend reallocation. This phase is fed by signals from the `ecosystem-health-check.sh` stop hook AND by scanning the filesystem directly.
 
 **Data sources:**
-1. `.Codex/state/pending-reviews/ecosystem-review.jsonl` — automated health check signals
-2. Direct filesystem scan of `.Codex/skills/`, `.Codex/memory/`, `.Codex/rules/`
+1. `.claude/state/pending-reviews/ecosystem-review.jsonl` — automated health check signals
+2. Direct filesystem scan of `.claude/skills/`, `.claude/memory/`, `.claude/rules/`
 
 **Checks performed:**
 
@@ -80,7 +80,7 @@ Assess the overall health of ecosystem files and recommend reallocation. This ph
 - Update `last_used` timestamp in frontmatter for any skill loaded this session
 - Flag skills missing `capabilities:`, `requires:`, or `see_also:` blocks for metadata enrichment
 
-> **Prerequisite**: Graph maintenance only runs when `SKILLS_GRAPH.yaml` exists at `.Codex/skills/`. Skip silently if absent — WRK-205 implements the graph.
+> **Prerequisite**: Graph maintenance only runs when `SKILLS_GRAPH.yaml` exists at `.claude/skills/`. Skip silently if absent — WRK-205 implements the graph.
 
 **Proactive skill discovery** (when `SKILLS_GRAPH.yaml` exists — WRK-205 + WRK-215):
 
@@ -96,12 +96,12 @@ Four checks are run to actively surface gaps — not just react to session signa
 **Broken-ref scan (runs every session):**
 1. For each SKILL.md frontmatter: extract all `see_also:` and `requires:` values
 2. For each value: check that a SKILL.md exists at the referenced path
-3. Any broken reference → emit gap candidate to `.Codex/state/pending-reviews/skill-candidates.jsonl`
+3. Any broken reference → emit gap candidate to `.claude/state/pending-reviews/skill-candidates.jsonl`
 4. Dedup: only emit each gap once per 7 days (keyed by target path + date week)
 
 **Enhancement priority queue (weekly, via `/reflect`):**
 - Rank criteria: `see_also:` reference frequency (most-referenced-by-other-skills) as primary; `last_used` recency as tiebreaker
-- Output: top-5 enhancement candidates appended to `.Codex/state/pending-reviews/skill-candidates.jsonl` with `type: enhancement`
+- Output: top-5 enhancement candidates appended to `.claude/state/pending-reviews/skill-candidates.jsonl` with `type: enhancement`
 
 **Domain saturation heatmap (on-demand: `/improve --scope skills --audit`):**
 - For each skill domain (using WRK-205 category indexes): count skills
@@ -141,7 +141,7 @@ Four checks are run to actively surface gaps — not just react to session signa
 4. **Skill lifecycle gates**:
    - **Create**: Only when no existing skill covers the capability (search first)
    - **Deprecate**: Only when unused for 90+ days AND superseded by another skill
-   - **Archive**: Move deprecated skills to `.Codex/skills/_archive/` (never delete)
+   - **Archive**: Move deprecated skills to `.claude/skills/_archive/` (never delete)
 
 
 ## Phase 5: APPLY — Write Improvements
@@ -149,11 +149,11 @@ Four checks are run to actively surface gaps — not just react to session signa
 
 **AGENTS.md**: Resource Index scan, Core Rules for patterns confirmed 3+ sessions. Use Edit tool.
 
-**Rules files** (`.Codex/rules/*.md`): Add examples from real corrections. Append to sections, never restructure.
+**Rules files** (`.claude/rules/*.md`): Add examples from real corrections. Append to sections, never restructure.
 
-**Repo memory** (`.Codex/memory/`): Add debugging lessons, tool conventions, API quirks. Use env var placeholders for paths. Create new topic file if section exceeds 10 entries.
+**Repo memory** (`.claude/memory/`): Add debugging lessons, tool conventions, API quirks. Use env var placeholders for paths. Create new topic file if section exceeds 10 entries.
 
-**Skills** (`.Codex/skills/**/*.md`) — FULL LIFECYCLE:
+**Skills** (`.claude/skills/**/*.md`) — FULL LIFECYCLE:
 - **Enhance**: Add examples, fix instructions from corrections
 - **Create**: New SKILL.md when repeated pattern has no matching skill
 - **Deprecate**: Add deprecation notice when unused 90+ days
@@ -165,7 +165,7 @@ Four checks are run to actively surface gaps — not just react to session signa
 ## Phase 6: LOG — Record Changes
 
 
-Write to `.Codex/state/improve-changelog.yaml`:
+Write to `.claude/state/improve-changelog.yaml`:
 - Timestamp, changes list with file/action/diff_summary
 - Skills lifecycle metrics: created/enhanced/deprecated/archived counts
 - Ecosystem health metrics: total_skills, memory_lines, consolidation_count, reallocation_count

@@ -14,12 +14,12 @@ Use when a broad initiative or recurring review needs to be turned into a struct
 - User asks to "create future gh issues"
 - There is one umbrella issue but implementation needs multiple focused tracks
 - You want to split work by lanes such as operations, knowledge, automation, reporting
-- You want Codex subagents to help with analysis, but repo writes must stay in the main session
+- You want Claude subagents to help with analysis, but repo writes must stay in the main session
 
 ## Core pattern
 1. Identify the umbrella issue and current related issues.
 2. Add or update a single documentation page that describes the initiative and its current issue map.
-3. Use `delegate_task` with Codex subagents for READ-ONLY gap analysis by lane.
+3. Use `delegate_task` with Claude subagents for READ-ONLY gap analysis by lane.
 4. Ask each subagent for:
    - 2-5 non-duplicate child issue proposals
    - title
@@ -105,7 +105,7 @@ Keep titles specific and implementation-ready. Prefer one concrete artifact or c
 ## Minimal execution recipe
 1. Read umbrella issue and existing related docs.
 2. Create or update a single initiative doc in `docs/`.
-3. Run 3 Codex subagents with lane-specific prompts.
+3. Run 3 Claude subagents with lane-specific prompts.
 4. Pick the best 1-3 proposals per lane.
 5. Write issue bodies to `/tmp/*.md`.
 6. Use parallel tool calls where safe:
