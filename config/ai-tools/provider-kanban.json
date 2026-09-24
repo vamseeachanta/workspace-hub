@@ -234,7 +234,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -246,10 +245,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `.github/workflows/claude-code-review.yml:3\u20135` \u2014 trigger block: `on: pull_request: types: [opened, synchronize, ready_for_review, reopened]`. No `concurrency:` block present in the file.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** `cancel-in-progress: true` will cancel a Claude review mid-run if a new push arrives while review is executing. For long-running reviews, this means a push during review restarts the review from scratch. This is the correct behavior (review must target the current head), but it may increase total review cost on PRs with rapid successive pushes. | **Risk:** If the required status check is",
+        "tests": "5 TDD tests defined",
         "title": "fix(review): prevent duplicate Claude reviews across PR events"
       },
       "lane": "planning_feedstock",
@@ -259,7 +258,7 @@
       "machine_route": null,
       "number": 3872,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-23-issue-3872-fix-review-duplicate-dispatch.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -271,7 +270,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -283,10 +281,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/legal/legal-sanity-scan.sh:166\u2013212` \u2014 first `resolve_repo_path()` definition; comment reads \"Prints the resolved repo path on stdout; returns 2 on no-match\"; function body uses `printf '%s\\n' \"$c\"` to emit the path to stdout and returns 0.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** The first `resolve_repo_path` definition (stdout-printing) may be referenced in documentation, comments, or external scripts not captured by the live checkout; search for callers before removal. | **Risk:** Removing the first definition changes the public bash API for any caller that sources `legal-sanity-scan.sh` and calls `resolve_repo_path` expecting stdout. Verify no such callers exi",
+        "tests": "5 TDD tests defined",
         "title": "fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions"
       },
       "lane": "planning_feedstock",
@@ -296,7 +294,7 @@
       "machine_route": null,
       "number": 3871,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-23-issue-3871-legal-scanner-empty-scan-target.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -1037,7 +1035,6 @@
       "approval_blockers": [
         "missing status:plan-review label",
         "already has status:plan-approved",
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -1054,10 +1051,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "The issue proposes consolidating four generators onto one and retiring three. The first draft of this plan did that. It was rejected by both reviewers and its central premise was disproved by execution. Every deletion-safety claim failed:",
         "provider_route": "claude",
         "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "tests": "TDD section present",
         "title": "refactor(orcaflex): consolidate four model generators onto modular_generator"
       },
       "lane": "planning_feedstock",
@@ -1067,7 +1064,7 @@
       "machine_route": null,
       "number": 3843,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-11-issue-3843-generator-consolidation.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -1075,7 +1072,6 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3843",
       "warnings": [
         "approved_no_marker",
-        "approved_no_plan",
         "missing_review"
       ]
     },
@@ -1197,7 +1193,6 @@
       "approval_blockers": [
         "missing status:plan-review label",
         "already has status:plan-approved",
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -1214,10 +1209,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "The issue as filed proposes consolidating seven counting paths onto one. This plan does **not** do that, and the reason is a sequencing constraint rather than a reduction in ambition: retiring an implementation before a correctness gate exists removes the evidence needed to judge",
         "provider_route": "codex",
         "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "tests": "TDD section present",
         "title": "fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage"
       },
       "lane": "planning_feedstock",
@@ -1227,7 +1222,7 @@
       "machine_route": null,
       "number": 3839,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-11-issue-3839-rainflow-divergence.md",
       "provider_route": "codex",
       "review_clean": false,
       "routing_reason": "implementation/test/fix language",
@@ -1235,7 +1230,6 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3839",
       "warnings": [
         "approved_no_marker",
-        "approved_no_plan",
         "missing_review"
       ]
     },
@@ -1243,7 +1237,6 @@
       "approval_blockers": [
         "missing status:plan-review label",
         "already has status:plan-approved",
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -1260,10 +1253,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/post_validator.py` \u2014 `_check_duplicate_names_from_files()` at line 538 walks generated files and reports duplicate object names within a section. It is the correct host for the new collection-key check.",
         "provider_route": "claude",
         "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "tests": "TDD section present",
         "title": "fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes"
       },
       "lane": "planning_feedstock",
@@ -1273,7 +1266,7 @@
       "machine_route": null,
       "number": 3838,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-11-issue-3838-orcaflex-integrity.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -1281,7 +1274,6 @@
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3838",
       "warnings": [
         "approved_no_marker",
-        "approved_no_plan",
         "missing_review"
       ]
     },
@@ -1360,7 +1352,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -1376,10 +1367,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/enforcement/check-engineering-register.py` \u2014 `CAPTION_ABOVE` regex at line 130: `re.compile(r\"^\\s*(?:Table|Figure)\\s+\\d+[.\\-]\\d+\\s*[-\u2013:].*\\n\\s*\\|\", re.M)`. Regex is correct and will match the fixture when the en-dash is intact.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** Adding `encoding='utf-8'` to `NamedTemporaryFile` in `self_test()` is the one-line fix. However, on Windows, `NamedTemporaryFile(delete=False)` already creates a file that cannot be opened twice while the context manager is open (a known Windows behavior). The existing code opens it in the `with` block then reads it via `check(p)` outside the block \u2014 this pattern is correct. The `encodin",
+        "tests": "6 TDD tests defined",
         "title": "[WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales"
       },
       "lane": "planning_feedstock",
@@ -1389,7 +1380,7 @@
       "machine_route": null,
       "number": 3834,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-16-issue-3834-engineering-register-self-test-encoding.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -1441,8 +1432,7 @@
     {
       "approval_blockers": [
         "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
@@ -1453,10 +1443,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "Issue: [#3831](https://github.com/vamseeachanta/workspace-hub/issues/3831)",
         "provider_route": "claude",
         "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "tests": "TDD section present",
         "title": "feat(orcaflex): unify local and ecosystem submission to the licensed Windows executor"
       },
       "lane": "planning_feedstock",
@@ -1466,13 +1456,15 @@
       "machine_route": null,
       "number": 3831,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-09-issue-3831-orcaflex-execution.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "feat(orcaflex): unify local and ecosystem submission to the licensed Windows executor",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3831",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -1798,11 +1790,11 @@
       "approval_blockers": [
         "missing status:plan-review label",
         "already has status:plan-approved",
-        "no canonical plan file",
-        "reviews not clean: missing_review",
+        "reviews not clean: missing_review,unavailable_review",
+        "issue already has approval marker on disk",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
-      "approval_marker": null,
+      "approval_marker": ".planning/plan-approved/3816.md",
       "approval_ready": false,
       "hover": {
         "labels": [
@@ -1817,10 +1809,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- `config/mission/mission-map.yaml` is the existing portfolio membership and mission authority, but its repo list differs from the 24 Git checkouts on the current Mac.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "Adding currently observed wiki repositories to `mission-map.yaml` is explicitly out of scope. The current 21 entries remain authoritative; unknown observed names remain redacted and `observed-unregistered`. | `mission-map.yaml` is schema version 0.1 and currently mixes business and personal tiers. This issue adds explicit sensitivity metadata for reporting; #3817 owns enforcement and cross-zone ac",
+        "tests": "16 TDD tests defined",
         "title": "feat(repo): generate authoritative work-surface inventory and adapter coverage report"
       },
       "lane": "planning_feedstock",
@@ -1830,16 +1822,16 @@
       "machine_route": null,
       "number": 3816,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-03-issue-3816-generated-work-surface-inventory.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
       "title": "feat(repo): generate authoritative work-surface inventory and adapter coverage report",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3816",
       "warnings": [
-        "approved_no_marker",
-        "approved_no_plan",
-        "missing_review"
+        "legacy_review_no_sha",
+        "missing_review",
+        "unavailable_review"
       ]
     },
     {
@@ -1961,7 +1953,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -1973,10 +1964,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/openfoam-analysis/run-analysis.sh` lines 101\u2013107 \u2014 Python inline code that generates `system/fvSolution` for `simpleFoam`. Confirmed the two defective lines at lines 104\u2013106:",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Wildcard pattern quoting**: `\".*\"` must appear verbatim with quotes in the OpenFOAM dict file. The Python `f.write` must emit the quote characters. Low risk \u2014 straightforward string literal. | **YAML `relaxation` key semantics**: the current code reads `relax.get(\"U\", 0.7)` and `relax.get(\"p\", 0.3)`. After fix, only `relax.get(\"U\", 0.9)` is used (mapped to `\".*\"`). If any analysis YAML explicitl",
+        "tests": "TDD section present",
         "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary"
       },
       "lane": "planning_feedstock",
@@ -1986,7 +1977,7 @@
       "machine_route": null,
       "number": 3811,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-08-26-issue-3811-openfoam-simplec-relaxation-fix.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -1998,7 +1989,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -2010,10 +2000,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "**System A (YAML/script) \u2014 workspace-hub:**",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk \u2014 LaTeX users stranded:** System A uses KaTeX for LaTeX rendering. System B renders equations as numbered variable-definition cards (no MathJax/KaTeX). Clients requiring PDF-grade LaTeX output in non-CSP-restricted environments may need System A to remain available beyond the deprecation notice. Flag at approval: user must confirm that System B's equation-card rendering is acceptable for al",
+        "tests": "TDD section present",
         "title": "Two independent calculation-report systems (YAML/script vs typed-Python) \u2014 pick a canonical one"
       },
       "lane": "planning_feedstock",
@@ -2023,7 +2013,7 @@
       "machine_route": null,
       "number": 3810,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-09-issue-3810-calc-report-canonical-system.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -2109,7 +2099,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -2122,10 +2111,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/legal/legal-sanity-scan.sh:168` \u2014 first definition of `resolve_repo_path()` uses `printf '%s\\n' \"$c\"` (stdout) and `return 2` on not-found. Correct calling convention.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** The second definition at line 324 may have been added to support a feature (e.g., `LEGAL_SCAN_REPO_ROOTS` via `split_repo_roots()`) that the first definition does not handle identically. **Mitigation:** The first definition already uses `REGISTERED_ROOTS` which is populated from `LEGAL_SCAN_REPO_ROOTS` via a registration loop earlier in the script. The semantics are equivalent; the diffe",
+        "tests": "6 TDD tests defined",
         "title": "legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate)"
       },
       "lane": "planning_feedstock",
@@ -2135,7 +2124,7 @@
       "machine_route": null,
       "number": 3804,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-08-19-issue-3804-legal-scan-fail-open.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -2385,7 +2374,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -2400,10 +2388,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `.github/workflows/legal-client-pii-gate.yml` \u2014 `on: pull_request` only; no `push:` or `schedule:` trigger. Confirmed present on `origin/main` as of 2026-08-19.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** The `schedule:` workflow scans all tracked files nightly but posts the result as a job summary \u2014 it does NOT prevent the push that introduced a violation (retrospective, not blocking). This is the correct trade-off: the alternative (blocking bot pushes) requires a PAT and changes the anti-loop behavior the kanban writer explicitly relies on. The fix closes the visibility gap; writer fixe",
+        "tests": "4 TDD tests defined",
         "title": "security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main"
       },
       "lane": "planning_feedstock",
@@ -2413,7 +2401,7 @@
       "machine_route": null,
       "number": 3775,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-08-19-issue-3775-pii-gate-bot-pushes.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -2580,7 +2568,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: major_review,missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -2595,10 +2582,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/readiness/nightly-readiness.sh` lines 69\u201397 \u2014 `check_r5()` function with a hardcoded `candidates` array: `(\"${WORKSPACE_HUB}/AGENTS.md\" \"${WORKSPACE_HUB}/.claude/rules/coding-style.md\" \"${WORKSPACE_HUB}/.claude/rules/patterns.md\")`. No entry for `config/agents/c",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** The symlink `~/.claude/CLAUDE.md \u2192 config/agents/claude/SOUL.runtime.md` resolves at runtime on a specific host. On other machines, the symlink may point elsewhere or not exist. The candidate lookup should use the repo-relative path `${WORKSPACE_HUB}/config/agents/claude/SOUL.runtime.md` directly rather than resolving the symlink \u2014 this is more portable and the symlink is already documen",
+        "tests": "6 TDD tests defined",
         "title": "fix(harness): both context guards are name-based and miss the 20KB file that actually auto-loads"
       },
       "lane": "planning_feedstock",
@@ -2608,7 +2595,7 @@
       "machine_route": null,
       "number": 3762,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-16-issue-3762-harness-context-guards-miss-soul-runtime.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -2938,7 +2925,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -2954,10 +2940,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- `scripts/enforcement/scheduler_mutation_delegation.py:112-123` \u2014 `_validate_inventory_digest()`: hashes git-index bytes of eight source files and compares to `inventory[\"input_digest\"]`. When the digest mismatches, it emits the bare string `\"identity inventory input digest is s",
         "provider_route": "claude",
         "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "tests": "TDD section present",
         "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones"
       },
       "lane": "planning_feedstock",
@@ -2967,7 +2953,7 @@
       "machine_route": null,
       "number": 3728,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-08-05-issue-3728-cron-identity-inventory-regeneration.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -3423,7 +3409,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -3439,10 +3424,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/repository_sync-auto:150-174` \u2014 `_auto_sync_one()` core logic. The function commits locally (line 150-151), then pushes (lines 163-174). Push failure due to branch protection (`GH013`) falls through to `status=\"push-failed\"` (line 172). The commit at line 150 is",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** `git reset --soft HEAD~1` requires a clean index after reset. If the commit included a `git add -u` (line ~147 in `_auto_sync_one`), the files will be staged again after reset. The result file will say `staged=true, committed=false` \u2014 this is the correct state (changes still pending) and should be documented in the result format comment. | **Risk:** The pre-receive hook fixture for herme",
+        "tests": "5 TDD tests defined",
         "title": "bug(sync): repository_sync auto-commits to protected main branches, stranding commits that can never be pushed"
       },
       "lane": "planning_feedstock",
@@ -3452,7 +3437,7 @@
       "machine_route": null,
       "number": 3705,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-08-12-issue-3705-sync-protected-branch.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -3504,7 +3489,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -3520,10 +3504,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/readiness/reconcile-ecosystem.sh:217` \u2014 the uv guard:",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk:** `HOME` may not be set in the execution environment (rare in bash but possible in some CI contexts). `_resolve_uv` should handle `${HOME:-}` gracefully. | **Risk:** The INCOMPLETE output format needs to be legible to all consumers of the plan (human, dispatch, digest). If `add()` is the only mechanism, a new verdict class like `INCOMPLETE` needs adding. An alternative is to exit non-zero ",
+        "tests": "4 TDD tests defined",
         "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH"
       },
       "lane": "planning_feedstock",
@@ -3533,7 +3517,7 @@
       "machine_route": null,
       "number": 3703,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-08-12-issue-3703-reconcile-ecosystem-uv-path.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -3590,7 +3574,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -3604,10 +3587,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/enforcement/check-scheduler-mutation-surfaces.py` \u2014 the gate script that exits with \"identity inventory input digest is stale\". Entry point for Fix 1.",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Fix 1 governance risk**: The issue body explicitly cautions: \"Silently regenerating a digest to make a guard go green is exactly the move that guard exists to catch.\" Before committing the regenerated inventory, the implementer must inspect `build-cron-identity-inventory.py` output to identify *which* of the 8 source files drifted and confirm the drift was intentional (not a rogue change). This ",
+        "tests": "TDD section present",
         "title": "PR gate is baseline-red: two enforcement checks fail on every PR, plus an undeclared test dep"
       },
       "lane": "planning_feedstock",
@@ -3617,7 +3600,7 @@
       "machine_route": null,
       "number": 3698,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-08-26-issue-3698-ci-gate-hygiene-three-fixes.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -7143,7 +7126,6 @@
     },
     {
       "approval_blockers": [
-        "no canonical plan file",
         "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
@@ -7158,10 +7140,10 @@
         ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
+        "plan_summary": "- Found: `scripts/readiness/collect-equality.sh:446` \u2014 writes `providers: {claude: ..., codex: ..., gemini: $(prov gemini), hermes: ...}` where `prov()` checks CLI presence via `have \"$1\"` (line 148). Key `gemini` is the snapshot row name; `$(prov gemini)` checks the `gemini` bin",
         "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
+        "risks": "**Risk \u2014 filesystem path unchanged:** `config/agents/gemini/` path is NOT renamed. `_agy_memory_runtime()` (renamed from `_gemini_memory_runtime()`) still resolves to `config/agents/gemini/MEMORY.runtime.md`. If the config directory is later renamed to `config/agents/agy/`, a follow-on issue must update the helper. Declare this explicitly at implementation time. | **Risk \u2014 fleet re-snapshot timing",
+        "tests": "6 TDD tests defined",
         "title": "chore(readiness): rename equality/parity provider row gemini\u2192agy (cross-machine snapshot schema migration)"
       },
       "lane": "planning_feedstock",
@@ -7171,7 +7153,7 @@
       "machine_route": null,
       "number": 3579,
       "pipeline_lane": "C",
-      "plan": null,
+      "plan": "docs/plans/2026-09-09-issue-3579-equality-gemini-agy-rename.md",
       "provider_route": "claude",
       "review_clean": false,
       "routing_reason": "strategy/workflow/architecture language",
@@ -7909,7 +7891,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-09-24T17:21:54Z",
+  "generated_at": "2026-09-24T21:22:44Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8124,7 +8106,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -8136,10 +8117,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `.github/workflows/claude-code-review.yml:3\u20135` \u2014 trigger block: `on: pull_request: types: [opened, synchronize, ready_for_review, reopened]`. No `concurrency:` block present in the file.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** `cancel-in-progress: true` will cancel a Claude review mid-run if a new push arrives while review is executing. For long-running reviews, this means a push during review restarts the review from scratch. This is the correct behavior (review must target the current head), but it may increase total review cost on PRs with rapid successive pushes. | **Risk:** If the required status check is",
+          "tests": "5 TDD tests defined",
           "title": "fix(review): prevent duplicate Claude reviews across PR events"
         },
         "lane": "planning_feedstock",
@@ -8149,7 +8130,7 @@
         "machine_route": null,
         "number": 3872,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-23-issue-3872-fix-review-duplicate-dispatch.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -8161,7 +8142,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -8173,10 +8153,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/legal/legal-sanity-scan.sh:166\u2013212` \u2014 first `resolve_repo_path()` definition; comment reads \"Prints the resolved repo path on stdout; returns 2 on no-match\"; function body uses `printf '%s\\n' \"$c\"` to emit the path to stdout and returns 0.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** The first `resolve_repo_path` definition (stdout-printing) may be referenced in documentation, comments, or external scripts not captured by the live checkout; search for callers before removal. | **Risk:** Removing the first definition changes the public bash API for any caller that sources `legal-sanity-scan.sh` and calls `resolve_repo_path` expecting stdout. Verify no such callers exi",
+          "tests": "5 TDD tests defined",
           "title": "fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions"
         },
         "lane": "planning_feedstock",
@@ -8186,7 +8166,7 @@
         "machine_route": null,
         "number": 3871,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-23-issue-3871-legal-scanner-empty-scan-target.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -8927,7 +8907,6 @@
         "approval_blockers": [
           "missing status:plan-review label",
           "already has status:plan-approved",
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -8944,10 +8923,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "The issue proposes consolidating four generators onto one and retiring three. The first draft of this plan did that. It was rejected by both reviewers and its central premise was disproved by execution. Every deletion-safety claim failed:",
           "provider_route": "claude",
           "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "tests": "TDD section present",
           "title": "refactor(orcaflex): consolidate four model generators onto modular_generator"
         },
         "lane": "planning_feedstock",
@@ -8957,7 +8936,7 @@
         "machine_route": null,
         "number": 3843,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-11-issue-3843-generator-consolidation.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -8965,7 +8944,6 @@
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3843",
         "warnings": [
           "approved_no_marker",
-          "approved_no_plan",
           "missing_review"
         ]
       },
@@ -9087,7 +9065,6 @@
         "approval_blockers": [
           "missing status:plan-review label",
           "already has status:plan-approved",
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -9104,10 +9081,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "The issue as filed proposes consolidating seven counting paths onto one. This plan does **not** do that, and the reason is a sequencing constraint rather than a reduction in ambition: retiring an implementation before a correctness gate exists removes the evidence needed to judge",
           "provider_route": "codex",
           "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "tests": "TDD section present",
           "title": "fix(digitalmodel/fatigue): two of four rainflow paths understate stress range, understating damage"
         },
         "lane": "planning_feedstock",
@@ -9117,7 +9094,7 @@
         "machine_route": null,
         "number": 3839,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-11-issue-3839-rainflow-divergence.md",
         "provider_route": "codex",
         "review_clean": false,
         "routing_reason": "implementation/test/fix language",
@@ -9125,7 +9102,6 @@
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3839",
         "warnings": [
           "approved_no_marker",
-          "approved_no_plan",
           "missing_review"
         ]
       },
@@ -9133,7 +9109,6 @@
         "approval_blockers": [
           "missing status:plan-review label",
           "already has status:plan-approved",
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -9150,10 +9125,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/post_validator.py` \u2014 `_check_duplicate_names_from_files()` at line 538 walks generated files and reports duplicate object names within a section. It is the correct host for the new collection-key check.",
           "provider_route": "claude",
           "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "tests": "TDD section present",
           "title": "fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes"
         },
         "lane": "planning_feedstock",
@@ -9163,7 +9138,7 @@
         "machine_route": null,
         "number": 3838,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-11-issue-3838-orcaflex-integrity.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -9171,7 +9146,6 @@
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3838",
         "warnings": [
           "approved_no_marker",
-          "approved_no_plan",
           "missing_review"
         ]
       },
@@ -9250,7 +9224,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -9266,10 +9239,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/enforcement/check-engineering-register.py` \u2014 `CAPTION_ABOVE` regex at line 130: `re.compile(r\"^\\s*(?:Table|Figure)\\s+\\d+[.\\-]\\d+\\s*[-\u2013:].*\\n\\s*\\|\", re.M)`. Regex is correct and will match the fixture when the en-dash is intact.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** Adding `encoding='utf-8'` to `NamedTemporaryFile` in `self_test()` is the one-line fix. However, on Windows, `NamedTemporaryFile(delete=False)` already creates a file that cannot be opened twice while the context manager is open (a known Windows behavior). The existing code opens it in the `with` block then reads it via `check(p)` outside the block \u2014 this pattern is correct. The `encodin",
+          "tests": "6 TDD tests defined",
           "title": "[WRK] check-engineering-register.py --self-test harness writes fixtures in the platform encoding, so it fails on non-UTF-8 locales"
         },
         "lane": "planning_feedstock",
@@ -9279,7 +9252,7 @@
         "machine_route": null,
         "number": 3834,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-16-issue-3834-engineering-register-self-test-encoding.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -9331,8 +9304,7 @@
       {
         "approval_blockers": [
           "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
@@ -9343,10 +9315,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "Issue: [#3831](https://github.com/vamseeachanta/workspace-hub/issues/3831)",
           "provider_route": "claude",
           "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "tests": "TDD section present",
           "title": "feat(orcaflex): unify local and ecosystem submission to the licensed Windows executor"
         },
         "lane": "planning_feedstock",
@@ -9356,13 +9328,15 @@
         "machine_route": null,
         "number": 3831,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-09-issue-3831-orcaflex-execution.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "feat(orcaflex): unify local and ecosystem submission to the licensed Windows executor",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3831",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -9688,11 +9662,11 @@
         "approval_blockers": [
           "missing status:plan-review label",
           "already has status:plan-approved",
-          "no canonical plan file",
-          "reviews not clean: missing_review",
+          "reviews not clean: missing_review,unavailable_review",
+          "issue already has approval marker on disk",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
-        "approval_marker": null,
+        "approval_marker": ".planning/plan-approved/3816.md",
         "approval_ready": false,
         "hover": {
           "labels": [
@@ -9707,10 +9681,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- `config/mission/mission-map.yaml` is the existing portfolio membership and mission authority, but its repo list differs from the 24 Git checkouts on the current Mac.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "Adding currently observed wiki repositories to `mission-map.yaml` is explicitly out of scope. The current 21 entries remain authoritative; unknown observed names remain redacted and `observed-unregistered`. | `mission-map.yaml` is schema version 0.1 and currently mixes business and personal tiers. This issue adds explicit sensitivity metadata for reporting; #3817 owns enforcement and cross-zone ac",
+          "tests": "16 TDD tests defined",
           "title": "feat(repo): generate authoritative work-surface inventory and adapter coverage report"
         },
         "lane": "planning_feedstock",
@@ -9720,16 +9694,16 @@
         "machine_route": null,
         "number": 3816,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-03-issue-3816-generated-work-surface-inventory.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
         "title": "feat(repo): generate authoritative work-surface inventory and adapter coverage report",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3816",
         "warnings": [
-          "approved_no_marker",
-          "approved_no_plan",
-          "missing_review"
+          "legacy_review_no_sha",
+          "missing_review",
+          "unavailable_review"
         ]
       },
       {
@@ -9851,7 +9825,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -9863,10 +9836,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/openfoam-analysis/run-analysis.sh` lines 101\u2013107 \u2014 Python inline code that generates `system/fvSolution` for `simpleFoam`. Confirmed the two defective lines at lines 104\u2013106:",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Wildcard pattern quoting**: `\".*\"` must appear verbatim with quotes in the OpenFOAM dict file. The Python `f.write` must emit the quote characters. Low risk \u2014 straightforward string literal. | **YAML `relaxation` key semantics**: the current code reads `relax.get(\"U\", 0.7)` and `relax.get(\"p\", 0.3)`. After fix, only `relax.get(\"U\", 0.9)` is used (mapped to `\".*\"`). If any analysis YAML explicitl",
+          "tests": "TDD section present",
           "title": "openfoam-analysis: SIMPLEC written with plain-SIMPLE relaxation, and p in the wrong sub-dictionary"
         },
         "lane": "planning_feedstock",
@@ -9876,7 +9849,7 @@
         "machine_route": null,
         "number": 3811,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-08-26-issue-3811-openfoam-simplec-relaxation-fix.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -9888,7 +9861,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -9900,10 +9872,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "**System A (YAML/script) \u2014 workspace-hub:**",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk \u2014 LaTeX users stranded:** System A uses KaTeX for LaTeX rendering. System B renders equations as numbered variable-definition cards (no MathJax/KaTeX). Clients requiring PDF-grade LaTeX output in non-CSP-restricted environments may need System A to remain available beyond the deprecation notice. Flag at approval: user must confirm that System B's equation-card rendering is acceptable for al",
+          "tests": "TDD section present",
           "title": "Two independent calculation-report systems (YAML/script vs typed-Python) \u2014 pick a canonical one"
         },
         "lane": "planning_feedstock",
@@ -9913,7 +9885,7 @@
         "machine_route": null,
         "number": 3810,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-09-issue-3810-calc-report-canonical-system.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -9999,7 +9971,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -10012,10 +9983,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/legal/legal-sanity-scan.sh:168` \u2014 first definition of `resolve_repo_path()` uses `printf '%s\\n' \"$c\"` (stdout) and `return 2` on not-found. Correct calling convention.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** The second definition at line 324 may have been added to support a feature (e.g., `LEGAL_SCAN_REPO_ROOTS` via `split_repo_roots()`) that the first definition does not handle identically. **Mitigation:** The first definition already uses `REGISTERED_ROOTS` which is populated from `LEGAL_SCAN_REPO_ROOTS` via a registration loop earlier in the script. The semantics are equivalent; the diffe",
+          "tests": "6 TDD tests defined",
           "title": "legal-sanity-scan.sh --repo=<name> scans NOTHING and exits 0 (fail-open legal gate)"
         },
         "lane": "planning_feedstock",
@@ -10025,7 +9996,7 @@
         "machine_route": null,
         "number": 3804,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-08-19-issue-3804-legal-scan-fail-open.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -10275,7 +10246,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -10290,10 +10260,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `.github/workflows/legal-client-pii-gate.yml` \u2014 `on: pull_request` only; no `push:` or `schedule:` trigger. Confirmed present on `origin/main` as of 2026-08-19.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** The `schedule:` workflow scans all tracked files nightly but posts the result as a job summary \u2014 it does NOT prevent the push that introduced a violation (retrospective, not blocking). This is the correct trade-off: the alternative (blocking bot pushes) requires a PAT and changes the anti-loop behavior the kanban writer explicitly relies on. The fix closes the visibility gap; writer fixe",
+          "tests": "4 TDD tests defined",
           "title": "security(ci): the Client-PII Gate is on: pull_request and cannot see bot pushes to main"
         },
         "lane": "planning_feedstock",
@@ -10303,7 +10273,7 @@
         "machine_route": null,
         "number": 3775,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-08-19-issue-3775-pii-gate-bot-pushes.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -10470,7 +10440,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: major_review,missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -10485,10 +10454,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/readiness/nightly-readiness.sh` lines 69\u201397 \u2014 `check_r5()` function with a hardcoded `candidates` array: `(\"${WORKSPACE_HUB}/AGENTS.md\" \"${WORKSPACE_HUB}/.claude/rules/coding-style.md\" \"${WORKSPACE_HUB}/.claude/rules/patterns.md\")`. No entry for `config/agents/c",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** The symlink `~/.claude/CLAUDE.md \u2192 config/agents/claude/SOUL.runtime.md` resolves at runtime on a specific host. On other machines, the symlink may point elsewhere or not exist. The candidate lookup should use the repo-relative path `${WORKSPACE_HUB}/config/agents/claude/SOUL.runtime.md` directly rather than resolving the symlink \u2014 this is more portable and the symlink is already documen",
+          "tests": "6 TDD tests defined",
           "title": "fix(harness): both context guards are name-based and miss the 20KB file that actually auto-loads"
         },
         "lane": "planning_feedstock",
@@ -10498,7 +10467,7 @@
         "machine_route": null,
         "number": 3762,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-16-issue-3762-harness-context-guards-miss-soul-runtime.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -10828,7 +10797,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -10844,10 +10812,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- `scripts/enforcement/scheduler_mutation_delegation.py:112-123` \u2014 `_validate_inventory_digest()`: hashes git-index bytes of eight source files and compares to `inventory[\"input_digest\"]`. When the digest mismatches, it emits the bare string `\"identity inventory input digest is s",
           "provider_route": "claude",
           "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "tests": "TDD section present",
           "title": "CI: stale command-identity inventory red-lights every PR, including docs-only ones"
         },
         "lane": "planning_feedstock",
@@ -10857,7 +10825,7 @@
         "machine_route": null,
         "number": 3728,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-08-05-issue-3728-cron-identity-inventory-regeneration.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -11313,7 +11281,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -11329,10 +11296,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/repository_sync-auto:150-174` \u2014 `_auto_sync_one()` core logic. The function commits locally (line 150-151), then pushes (lines 163-174). Push failure due to branch protection (`GH013`) falls through to `status=\"push-failed\"` (line 172). The commit at line 150 is",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** `git reset --soft HEAD~1` requires a clean index after reset. If the commit included a `git add -u` (line ~147 in `_auto_sync_one`), the files will be staged again after reset. The result file will say `staged=true, committed=false` \u2014 this is the correct state (changes still pending) and should be documented in the result format comment. | **Risk:** The pre-receive hook fixture for herme",
+          "tests": "5 TDD tests defined",
           "title": "bug(sync): repository_sync auto-commits to protected main branches, stranding commits that can never be pushed"
         },
         "lane": "planning_feedstock",
@@ -11342,7 +11309,7 @@
         "machine_route": null,
         "number": 3705,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-08-12-issue-3705-sync-protected-branch.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -11394,7 +11361,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -11410,10 +11376,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/readiness/reconcile-ecosystem.sh:217` \u2014 the uv guard:",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk:** `HOME` may not be set in the execution environment (rare in bash but possible in some CI contexts). `_resolve_uv` should handle `${HOME:-}` gracefully. | **Risk:** The INCOMPLETE output format needs to be legible to all consumers of the plan (human, dispatch, digest). If `add()` is the only mechanism, a new verdict class like `INCOMPLETE` needs adding. An alternative is to exit non-zero ",
+          "tests": "4 TDD tests defined",
           "title": "bug(equality): reconcile-ecosystem.sh fails open to an empty equality plan when uv is off the non-interactive PATH"
         },
         "lane": "planning_feedstock",
@@ -11423,7 +11389,7 @@
         "machine_route": null,
         "number": 3703,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-08-12-issue-3703-reconcile-ecosystem-uv-path.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -11480,7 +11446,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -11494,10 +11459,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/enforcement/check-scheduler-mutation-surfaces.py` \u2014 the gate script that exits with \"identity inventory input digest is stale\". Entry point for Fix 1.",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Fix 1 governance risk**: The issue body explicitly cautions: \"Silently regenerating a digest to make a guard go green is exactly the move that guard exists to catch.\" Before committing the regenerated inventory, the implementer must inspect `build-cron-identity-inventory.py` output to identify *which* of the 8 source files drifted and confirm the drift was intentional (not a rogue change). This ",
+          "tests": "TDD section present",
           "title": "PR gate is baseline-red: two enforcement checks fail on every PR, plus an undeclared test dep"
         },
         "lane": "planning_feedstock",
@@ -11507,7 +11472,7 @@
         "machine_route": null,
         "number": 3698,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-08-26-issue-3698-ci-gate-hygiene-three-fixes.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -15033,7 +14998,6 @@
       },
       {
         "approval_blockers": [
-          "no canonical plan file",
           "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
@@ -15048,10 +15012,10 @@
           ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
+          "plan_summary": "- Found: `scripts/readiness/collect-equality.sh:446` \u2014 writes `providers: {claude: ..., codex: ..., gemini: $(prov gemini), hermes: ...}` where `prov()` checks CLI presence via `have \"$1\"` (line 148). Key `gemini` is the snapshot row name; `$(prov gemini)` checks the `gemini` bin",
           "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
+          "risks": "**Risk \u2014 filesystem path unchanged:** `config/agents/gemini/` path is NOT renamed. `_agy_memory_runtime()` (renamed from `_gemini_memory_runtime()`) still resolves to `config/agents/gemini/MEMORY.runtime.md`. If the config directory is later renamed to `config/agents/agy/`, a follow-on issue must update the helper. Declare this explicitly at implementation time. | **Risk \u2014 fleet re-snapshot timing",
+          "tests": "6 TDD tests defined",
           "title": "chore(readiness): rename equality/parity provider row gemini\u2192agy (cross-machine snapshot schema migration)"
         },
         "lane": "planning_feedstock",
@@ -15061,7 +15025,7 @@
         "machine_route": null,
         "number": 3579,
         "pipeline_lane": "C",
-        "plan": null,
+        "plan": "docs/plans/2026-09-09-issue-3579-equality-gemini-agy-rename.md",
         "provider_route": "claude",
         "review_clean": false,
         "routing_reason": "strategy/workflow/architecture language",
@@ -15807,16 +15771,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-24T17:21:47.906165Z",
+  "scorecard_generated_at": "2026-09-24T21:22:39.507553Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-24T17:21:47.210334Z",
+  "utilization_generated_at": "2026-09-24T21:22:39.093741Z",
   "warning_summary": {
-    "approved_no_marker": 10,
-    "approved_no_plan": 7,
-    "legacy_review_no_sha": 4,
+    "approved_no_marker": 9,
+    "approved_no_plan": 3,
+    "legacy_review_no_sha": 5,
     "major_review": 3,
     "marker_without_open_approved_issue": 185,
-    "missing_review": 36,
-    "unavailable_review": 1
+    "missing_review": 37,
+    "unavailable_review": 2
   }
 }
