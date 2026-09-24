@@ -312,15 +312,15 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 - **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
 - **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
 - **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
-- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
-- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
 - **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
+- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
+- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **coordination/** — 60 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
 - **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
-- **data/** — 85 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
 - **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
+- **data/** — 85 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
 - **development/** — 71 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
 - **devops/** — 8 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
 - **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
@@ -349,8 +349,8 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 - **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
 - **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
 - **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
-- **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 - **workspace-hub-learned/** — 70 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
+- **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 
 ## Universal rules (inlined for Codex)
 > Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.
@@ -372,7 +372,9 @@ AGENTS.md is the canonical contract. It, MEMORY.md, and GEMINI.md must not excee
 
 CLAUDE.md is retired **as a repo file** (2026-08-01) — do not reintroduce one. The cap still applies to sibling repos that carry one.
 
-Claude's auto-load is a machine-level **symlink**: `~/.claude/CLAUDE.md` → `config/agents/claude/SOUL.runtime.md`, installed by `scripts/agents/install-soul-runtime.sh` (same shape as `~/.hermes/SOUL.md` and `~/.codex/AGENTS.md`). It loads in every cwd, unlike the old repo adapter's `@import`. Never replace that link with a regular file — the content must live in exactly one drift-checked place.
+Claude will use repository `AGENTS.md` through verified native discovery. The shared user contract will load through a real `~/.claude/rules/workspace-soul.md` symlink to `config/agents/claude/SOUL.runtime.md` after an exact reviewed migration and live verification. Provider-specific content stays in its delta/runtime; common AGENTS content remains provider-neutral.
+
+During staged migration, `scripts/agents/claude_runtime_state.py` will distinguish LEGACY, DUAL_VERIFIED, NATIVE_VERIFIED and BLOCKED. Existing managed `~/.claude/CLAUDE.md` links will remain on unverified hosts. Generic installation/bootstrap will neither recreate a missing Claude file nor retire the legacy link. A new path alone is not successful loading: source, provider version, protected configuration and saved evidence must still match. Real symlinks are required; copies or path-text stubs do not qualify. Sibling, private-policy and fleet retirement require their own exact scoped authority.
 
 ### patterns
 # Design Patterns Rules — Universal

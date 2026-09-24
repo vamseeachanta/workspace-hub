@@ -1,19 +1,19 @@
-generated_at: "2026-07-27T11:18:15"
-schema_version: 5
+generated_at: "2026-09-13T00:47:17"
+schema_version: 4
 machine: "ace-win-1"
-host: "ace-win-1"
+host: "acma-hou-rds02"
 os: windows
 status: active
 provenance:
-  checkout_sha: "04b1ce6b7"
+  checkout_sha: "9e13088b3"
   dirty: false
   behind_main: 0
-  ahead_main: 0
+  ahead_main: 1
   origin_ref_age_h: 0
 dimensions:
   compute:
     static: {cores: 64, ram_total_mib: 261848, gpu_model: "ASPEED Graphics Family(WDDM)"}
-    headroom: {ram_avail_mib: 211845, disk_avail_gb: 1355}
+    headroom: {ram_avail_mib: 213834, disk_avail_gb: 1264}
   data_access:
     - {repo: assetutilities, mode: sibling}
     - {repo: digitalmodel, mode: sibling}
@@ -26,12 +26,12 @@ dimensions:
     - {name: ansys, status: present, evidence: env}
   harness:
     providers: {claude: present, codex: present, gemini: absent, hermes: absent}
-    gh_auth: ok
+    gh_auth: logged-out
     python_cmd: python
-    readiness_ref: harness-readiness-ace-win-1.yaml
-    readiness_overall: missing
-  skills: {repo_skill_count: 422}
-  kanban: {dispatch_queues: "_leader-state,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
+    readiness_ref: harness-readiness-acma-hou-rds02.yaml
+    readiness_overall: fail
+  skills: {repo_skill_count: 423}
+  kanban: {dispatch_queues: "_leader-state,cfd-dedicated,dev-primary,dev-secondary,home-win,licensed-win-1,licensed-win-2,macbook-portable,multi"}
   memory:
     hermes_home: present
     context_md_mtime: "2026-06-26T12:20:42"
@@ -43,13 +43,13 @@ dimensions:
         installed: true
         "memory:read": {status: present, reason: claude_memory_context_found}
         "skills:invoke": {status: present, reason: repo_skill_tree_found}
-        "workflow:gates": {status: present, reason: hard_gates_runtime_found}
+        "workflow:gates": {status: absent, reason: hard_gates_runtime_missing}
       codex:
         present: true
         installed: true
         "memory:read": {status: present, reason: codex_memory_runtime_found}
         "skills:invoke": {status: absent, reason: adapter_not_directory_or_symlink}
-        "workflow:gates": {status: present, reason: codex_agents_runtime_active}
+        "workflow:gates": {status: absent, reason: hard_gates_runtime_missing}
       hermes:
         present: true
         installed: true
@@ -61,21 +61,21 @@ dimensions:
         installed: true
         "memory:read": {status: present, reason: gemini_memory_runtime_found}
         "skills:invoke": {status: expected_divergence, reason: gemini_skill_dispatch_unsupported}
-        "workflow:gates": {status: present, reason: gemini_soul_runtime_gates_found}
+        "workflow:gates": {status: absent, reason: hard_gates_runtime_missing}
   behavior:
     enums: {b1: deny, b2: ok, b3: html, b4: pass}
     hashes: {b5: 2a21ba0731d11660}
   scheduler:
-    has_repo_sync: unknown
-    has_parity_review: unknown
-    job_count: unknown
+    has_repo_sync: false
+    has_parity_review: false
+    job_count: 0
   session_curation:
-    last_curated_at: "2026-07-27T16:17:51+00:00"
-    sessions_24h: 5
+    last_curated_at: "2026-09-13T05:47:02+00:00"
+    sessions_24h: 71
     providers_active: "claude,codex"
-    memory_files_changed: 200
+    memory_files_changed: 0
   skill_currency:
-    audited_at: "2026-07-27T16:18:02+00:00"
+    audited_at: "2026-09-13T05:47:05+00:00"
     canonical_count: 44
     gemini_present: true
     gemini_unexpected: 0
@@ -84,15 +84,28 @@ dimensions:
     hermes_present: true
     index_dangling: 0
   memory_freshness:
-    audited_at: "2026-07-27T16:18:03+00:00"
+    audited_at: "2026-09-13T05:47:06+00:00"
     worst_age_hours: null
     freshness: "MISSING-EVIDENCE"
   skill_link_health:
-    audited_at: "2026-07-27T16:18:13+00:00"
+    audited_at: "2026-09-13T05:47:14+00:00"
     repos_total: 11
     healthy: 20
-    repairable: 0
-    worst_state: "MODIFIED-REAL-DIR"
+    repairable: 11
+    worst_state: "FLATTENED"
+  harness_checkup:
+    audited_at: null
+    cc_version: null
+    cc_latest: null
+    version_current: null
+    install_method: null
+    duplicate_installs: null
+    settings_parse_ok: null
+    broken_agents: null
+    unused_skills: null
+    unused_plugins: null
+    default_mode: null
+    auto_mode_default: null
   publish_health:
     last_publish_at: "missing"
     last_publish_duration_s: null

@@ -1,0 +1,20 @@
+[
+  {
+    "source": "D:\\ws\\_worktrees\\digitalmodel-1565",
+    "destination": "D:\\ws\\_cleanup-trash\\solver-consolidation-2026-09-12\\digitalmodel-1565",
+    "head": "e0a368ce0ac1843b1b87d1ce8d2be0e8989113c6",
+    "quarantine_allowed": true,
+    "delete_allowed": false,
+    "reason": "Independent Codex review approves reversible quarantine; process cwd/open handles not established",
+    "state": "quarantined_verified"
+  },
+  {
+    "source": "D:\\ws\\_worktrees\\digitalmodel-1594-base",
+    "destination": "D:\\ws\\_cleanup-trash\\solver-consolidation-2026-09-12\\digitalmodel-1594-base",
+    "head": "9ea54a3eff1bfb78660c96f3a2788b0c4a134d8f",
+    "quarantine_allowed": true,
+    "delete_allowed": false,
+    "reason": "Independent Codex review approves reversible quarantine; process cwd/open handles not established",
+    "state": "quarantined_verified"
+  }
+]

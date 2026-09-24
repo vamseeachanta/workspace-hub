@@ -1,16 +1,16 @@
 {
   "machine": "ace-win-1",
-  "audited_at": "2026-07-27T16:18:13+00:00",
+  "audited_at": "2026-09-24T17:47:16+00:00",
   "platform": "windows",
   "repos_total": 11,
   "healthy": 20,
-  "missing": 0,
+  "missing": 10,
   "dangling": 0,
-  "flattened": 0,
+  "flattened": 1,
   "modified_real_dir": 2,
-  "template_absent": 11,
-  "repairable": 0,
-  "unexpected_missing_repos": [],
-  "worst_state": "MODIFIED-REAL-DIR",
+  "template_absent": 0,
+  "repairable": 11,
+  "unexpected_missing_repos": ["aceengineer-website", "assetutilities", "deckhand", "llm-wiki", "CAD-DEVELOPMENTS", "OGManufacturing", "assethold", "doris", "sd-work", "worldenergydata"],
+  "worst_state": "FLATTENED",
   "schema_version": 1
 }
