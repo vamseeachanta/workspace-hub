@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-24T15:53:36.952123+00:00",
+  "generated_at": "2026-09-24T15:54:15.629676+00:00",
   "generated_by": "muse-vm fleet-daily-collector",
   "date": "2026-09-24",
-  "origin_main": "74cc3ef8d",
+  "origin_main": "961d47121",
   "fleet_size": 8,
   "reporting": 6,
   "report": {
@@ -14,7 +14,7 @@
       "name": "muse-vm",
       "reachable": true,
       "branch": "main",
-      "head": "74cc3ef8d",
+      "head": "961d47121",
       "behind": 0,
       "ahead": 0,
       "dirty": 0
@@ -22,24 +22,36 @@
     {
       "name": "ace-linux-1",
       "reachable": true,
-      "note": "no_repo"
+      "branch": "main",
+      "head": "b0275bfe0",
+      "behind": 186,
+      "ahead": 325,
+      "dirty": 4317
     },
     {
       "name": "ace-linux-2",
       "reachable": true,
-      "note": "no_repo"
+      "branch": "main",
+      "head": "74cc3ef8d",
+      "behind": 1,
+      "ahead": 0,
+      "dirty": 0
     },
     {
       "name": "gpu-claw",
       "reachable": true,
-      "note": "no_repo"
+      "branch": "main",
+      "head": "74cc3ef8d",
+      "behind": 1,
+      "ahead": 0,
+      "dirty": 0
     },
     {
       "name": "acma-ws014",
       "reachable": true,
       "branch": "main",
       "head": "74cc3ef8d",
-      "behind": 0,
+      "behind": 1,
       "ahead": 0,
       "dirty": 0
     },
@@ -48,7 +60,7 @@
       "reachable": true,
       "branch": "main",
       "head": "26341417a",
-      "behind": 80,
+      "behind": 81,
       "ahead": 4,
       "dirty": 43
     },
