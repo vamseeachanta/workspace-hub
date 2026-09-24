@@ -1,5 +1,5 @@
 # Session-curation digest — dev-primary
-_Curated 2026-09-23T17:47:01+00:00 · transferable to sibling machines via `session-curation-state` ref_
+_Curated 2026-09-23T23:47:02+00:00 · transferable to sibling machines via `session-curation-state` ref_
 
 ## Provider session activity (this box)
 | Provider | Present | Sessions | Last 24h | Newest |
