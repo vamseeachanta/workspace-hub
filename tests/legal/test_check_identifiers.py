@@ -160,6 +160,11 @@ class TestPlaceholdersPass:
             "C:" + BS + "Users" + BS + "Public" + BS + "Documents",
             "C:" + BS + "Users" + BS + "<user>" + BS + "AppData",
             "the licensed host ace-win-1 ran the case",
+            # C15: the fleet runbooks head sections with the logical label
+            "# " + "Machine: ace-linux-1",
+            "# " + "Machine: licensed-win-2",
+            "# " + "Machine: home-win",
+            "# " + "Machine: macbook-portable",
             "job <job-code> and document <document-number>",
             "mail " + "user" + "@example.com about it",
             "The mooring line has twelve anchors on a 2000 m spread.",
