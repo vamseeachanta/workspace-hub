@@ -36,9 +36,9 @@ SYNTH = {
             "public.example.org": "archive/docs/email/overridden",
         },
         "mailboxes": {
-            "ace": "ace-owner@synthetic.test",
-            "personal": "personal-owner@synthetic.test",
-            "skestates": "family-owner@synthetic.test",
+            "ace": "ace-owner@example.com",
+            "personal": "personal-owner@example.com",
+            "skestates": "family-owner@example.com",
         },
     },
     "job_market": {
@@ -111,7 +111,7 @@ def test_valid_file_loads(overlay_env):
         "synthetic-client.test"
     ]
     assert private_overlay.get_mapping(overlay, "email.mailboxes")["skestates"] == (
-        "family-owner@synthetic.test"
+        "family-owner@example.com"
     )
 
 
@@ -144,8 +144,8 @@ def test_malformed_file_fails_closed(tmp_path, monkeypatch, payload):
 def test_account_scope_default_mailbox_comes_from_overlay(overlay_env):
     accounts = importlib.reload(importlib.import_module("scripts.email.state.accounts"))
     scope = accounts.AccountScope.default()
-    assert scope.normalize("family-owner@synthetic.test").alias == "skestates"
-    assert scope.cleanup_enabled("family-owner@synthetic.test") is False
+    assert scope.normalize("family-owner@example.com").alias == "skestates"
+    assert scope.cleanup_enabled("family-owner@example.com") is False
 
 
 def test_account_scope_default_without_overlay_carries_no_address(no_overlay_env):
@@ -153,14 +153,14 @@ def test_account_scope_default_without_overlay_carries_no_address(no_overlay_env
     scope = accounts.AccountScope.default()
     assert scope.accounts["skestates"].email is None
     assert scope.normalize("skestates").alias == "skestates"
-    assert scope.normalize("family-owner@synthetic.test").status == "config_missing"
+    assert scope.normalize("family-owner@example.com").status == "config_missing"
 
 
 def test_digest_vip_domains_and_mailboxes_from_overlay(overlay_env, oauth_env):
     digest = _load_script("scripts/email/gmail-digest.py", "gmail_digest_c19")
     assert "synthetic-client.test" in digest.ACE_VIP_DOMAINS
     assert "synthetic-tenant.test" in digest.SKESTATES_VIP_DOMAINS
-    assert digest.ACCOUNTS["skestates"]["email"] == "family-owner@synthetic.test"
+    assert digest.ACCOUNTS["skestates"]["email"] == "family-owner@example.com"
 
 
 def test_digest_without_overlay_keeps_public_defaults(no_overlay_env, oauth_env):
@@ -177,7 +177,7 @@ def test_archive_extract_routing_overlay_wins(overlay_env):
     assert rules["public.example.org"] == "archive/docs/email/overridden"
     # public rules still load
     assert rules["sandsig.com"] == "assethold/data/cre-listings"
-    assert extract.ACCOUNTS["ace"]["email"] == "ace-owner@synthetic.test"
+    assert extract.ACCOUNTS["ace"]["email"] == "ace-owner@example.com"
 
 
 def test_archive_extract_public_routing_has_no_placeholder_rules(no_overlay_env):
@@ -190,7 +190,7 @@ def test_archive_extract_public_routing_has_no_placeholder_rules(no_overlay_env)
 def test_contact_normalizer_client_domains_from_overlay(overlay_env):
     norm = _load_script("scripts/email/contact-normalizer.py", "contact_normalizer_c19")
     assert norm.infer_category_ace("synthetic-client.test") == "client"
-    assert norm.infer_company("someone@synthetic-client.test") == "Synthetic Client Co"
+    assert norm.infer_company("synthetic-client.test") == "Synthetic Client Co"
 
 
 def test_contact_normalizer_without_overlay(no_overlay_env):
