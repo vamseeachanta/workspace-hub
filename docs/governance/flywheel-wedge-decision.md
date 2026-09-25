@@ -1,3 +1,16 @@
+---
+compass:
+  hub: true
+  parent: docs/plans/2026-04-25-aces-2-flywheel-wedge-mooring.md
+  friends:
+    - docs/governance/flywheel-icp-decision.md
+  challengers:
+    - note: docs/plans/2026-04-25-aces-2-flywheel-wedge-mooring.md
+      why: "Approaches A (standards-first) and B (calculators-first) rejected: publisher-tier outcomes, never exercise layers 6-7 where the moat lives"
+  memory:
+    - .claude/memory/topics/working-style.md
+---
+
 # Flywheel Wedge Decision — Approach C + Mooring Vertical
 
 > **Status:** LOCKED
