@@ -173,6 +173,13 @@ data/document-index/*.jsonl.backup-*
 # State sub-directories committed for cross-machine comprehensive-learning analysis
 # Raw transcripts (sessions/, archive/, session-reports/) stay local — too large
 /docs/strategy/gtm/job-market-scan/archive/
+# C19: job-market scanner outputs name employers and contractors; they live in a
+# private repository (overlay key outputs.job_market_dir). Only the policy
+# documents stay here.
+/docs/strategy/gtm/job-market-scan/*
+!/docs/strategy/gtm/job-market-scan/README.md
+!/docs/strategy/gtm/job-market-scan/RETENTION_POLICY.md
+!/docs/strategy/gtm/job-market-scan/TOS_REVIEW.md
 !.claude/state/candidates/
 # #3253: Hermes-pattern last-seen signature is per-machine RUNTIME spam-suppression state — keep it
 # untracked so the bridge's §8 stash/pop never churns it (the candidate *.md IS tracked + committed

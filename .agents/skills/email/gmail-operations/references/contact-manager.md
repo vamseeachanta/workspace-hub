@@ -84,7 +84,7 @@ ril.com, lng-agroup.com, installation-contractor.com, shell.com, kbr.com,
 technip.com, technipfmc.com, subsea7.com, nov.com, aker.com,
 bp.com, awilcodrilling.com, eagle.org, vulcanoffshore.com,
 boptechnologies.com, risersinc.com, sandsig.com,
-engineeredcustomsolutions.com, mecorparada.com.ve
+engineeredcustomsolutions.com
 ```
 
 **Ace colleague domains:**
@@ -162,7 +162,8 @@ Rules:
 Result: 122 moved from personal to ace, 10 kept in personal.
 Zero remaining overlaps.
 
-Report template: `reports/email/contact-dedup-report.md`
+Report: written by `write_dedup_report()` in `scripts/email/contact-normalizer.py` to the PRIVATE
+contact report directory (overlay key `outputs.contact_report_dir`); never to this public repository (C19).
 
 ## Scripts
 

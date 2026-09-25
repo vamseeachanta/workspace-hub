@@ -52,7 +52,8 @@ python scripts/gtm/job-market-scanner.py --keywords "OrcaFlex engineer,mooring e
 - **Schedule:** Every Monday 5AM UTC
 - **Cron task:** `gtm-job-market-scan` in `config/scheduled-tasks/schedule-tasks.yaml`
 - **Wrapper:** `scripts/gtm/weekly-scan-refresh.sh`
-- **Auto-commits** results to main after each scan, **only for sources whose ToS
+- **Auto-commits** results to the private output repository after each scan
+  (never to this public repository; see *Output Files*), **only for sources whose ToS
   review is signed off by owner** in [`TOS_REVIEW.md`](TOS_REVIEW.md). Sources
   whose robots.txt denies us (without override) are silently skipped for that week.
 - **Paused state**: the cron remains paused until all U1-U5 unpause criteria in
@@ -73,13 +74,22 @@ python scripts/gtm/job-market-scanner.py --keywords "OrcaFlex engineer,mooring e
 
 ## Output Files
 
-| File | Purpose | Git-tracked? |
-|------|---------|-------------|
-| `dashboard.md` | Summary dashboard (auto-generated) | ✅ |
-| `priority-targets.md` | Ranked target list (auto-generated) | ✅ |
-| `new-this-week.md` | Delta from last scan — NEW postings only | ✅ |
-| `trend-report.md` | Week-over-week hiring momentum | ✅ |
-| `cumulative-index.json` | All-time job tracking database | ✅ |
-| `raw-results/YYYY-MM-DD.json` | Raw scan data per run | ✅ |
-| `keyword-results/` | Per-keyword aggregated results | ✅ |
-| `company-profiles/` | Hot company deep-dives | ✅ |
+The outputs name employers and contractors, so they are **not** kept in this
+public repository (owner decision C19, 2026-09-25). The scanner writes them to a
+private repository checkout named by the private overlay key
+`outputs.job_market_dir` (`scripts/lib/private_overlay.py`), or by
+`--output-dir`. An unset, relative, missing or in-repository directory fails
+closed before any request is made. The earlier public copies were moved to that
+private repository with a SHA-256 manifest; this directory keeps the policy
+documents only.
+
+| File (in the private output directory) | Purpose |
+|------|---------|
+| `dashboard.md` | Summary dashboard (auto-generated) |
+| `priority-targets.md` | Ranked target list (auto-generated) |
+| `new-this-week.md` | Delta from last scan — NEW postings only |
+| `trend-report.md` | Week-over-week hiring momentum |
+| `cumulative-index.json` | All-time job tracking database |
+| `raw-results/YYYY-MM-DD.json` | Raw scan data per run |
+| `keyword-results/` | Per-keyword aggregated results |
+| `company-profiles/` | Hot company deep-dives |

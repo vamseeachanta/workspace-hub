@@ -248,7 +248,7 @@ EOF
 | personal | aceengineer-admin/admin/contacts/achantav_normalized.csv | 994 |
 | skestates | sabithaandkrishnaestates/admin/contacts/skestates_contacts.csv | 25 |
 
-Cross-file dedup: 132 overlaps resolved (see reports/email/contact-dedup-report.md)
+Cross-file dedup: 132 overlaps resolved (report kept in the private contact report directory, C19)
 
 ## Live Status (as of 2026-04-06)
 
