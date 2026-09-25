@@ -876,3 +876,18 @@ START: What type of FEA assignment?
 ---
 
 *This survey was compiled on 2026-02-21 using publicly available information from official project websites, GitHub repositories, and community forums. Software versions and capabilities are subject to change. Always verify installation instructions against official documentation before proceeding.*
+
+---
+
+## Addendum 2026-09-24: MYSTRAN (Nastran-compatible linear solver)
+
+Not in the original 12-program matrix. MYSTRAN (MIT, Fortran 95, v19.0.0,
+actively maintained) reads Nastran bulk data and writes F06/OP2, covering linear
+static, modal and linear buckling only. Adopted 2026-09 as a complement to
+CalculiX for Nastran-format work and mesh-convergence studies; validated
+hands-on (CBAR cantilever exact to 6 digits, CHEXA8 sweep converging to 0.3%).
+See `docs/research/mystran-eval.md` and `scripts/setup/mystran-build-linux.sh`.
+
+| Program | Active Maintenance | Linux Support | Documentation | Learning Curve | File Format Support | Integration | Assignment Suitability | Python Scripting |
+|---|---|---|---|---|---|---|---|---|
+| **MYSTRAN** | Good (v19.0.0, Jun 2026) | Good (CMake/gfortran source build) | Good (user + theory manuals) | Easy for Nastran users | Good (Nastran BDF in; F06/OP2/NEU out) | Good (pyNastran, gmsh via meshio/BDF) | Good (linear only) | Good (pyNastran BDF/OP2) |

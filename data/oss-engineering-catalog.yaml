@@ -5,8 +5,8 @@
 
 metadata:
   generated: "2026-03-26"
-  last_updated: "2026-03-26"
-  total_libraries: 117
+  last_updated: "2026-09-24"
+  total_libraries: 119
   domains:
     - FEA
     - CFD
@@ -46,6 +46,61 @@ libraries:
     download_size_estimate: "150 MB"
     integration_fit: medium
     integration_notes: "No native Python API; third-party pycalculix wrapper or subprocess. Abaqus-compatible input deck."
+    cloned_at_ace: false
+
+  - name: MYSTRAN
+    repo_url: https://github.com/MYSTRANsolver/MYSTRAN
+    homepage: https://www.mystran.com
+    license: MIT
+    latest_version: "19.0.0"
+    latest_release_date: "2026-06-29"
+    python_api: false
+    python_package: null
+    maturity: mature
+    stars: 115
+    contributors: 10
+    primary_language: Fortran
+    domain: FEA
+    capabilities: >-
+      Nastran-compatible linear FEA solver (SOL 101 static, modal, linear buckling)
+      written in modern Fortran 95. Reads Nastran bulk data decks (GRID, CBAR, CQUAD4,
+      CTETRA, CHEXA, MAT1, PBAR/PSHELL/PSOLID, SPC1, FORCE). Writes F06 text, OP2
+      binary (pyNastran-readable) and NEU. No nonlinear, contact, or transient dynamics.
+    download_size_estimate: "25 MB (Windows exe); source build needs gfortran+cmake+OpenBLAS"
+    integration_fit: high
+    integration_notes: >-
+      MIT license, active (pushed 2026-09). Prebuilt Windows exe on GitHub Releases;
+      Linux is a CMake/gfortran source build (scripts/setup/mystran-build-linux.sh).
+      Integrated in digitalmodel as solvers/mystran (BDF writer, F06 parser, mesh-
+      convergence sweep) mirroring the CalculiX chain. Complements CalculiX for
+      Nastran-format cross-checks of ACMA's ANSYS/APDL models.
+      Eval: docs/research/mystran-eval.md.
+    cloned_at_ace: false
+
+  - name: pyNastran
+    repo_url: https://github.com/SteveDoyle2/pyNastran
+    homepage: https://pynastran-git.readthedocs.io
+    license: BSD-3-Clause
+    latest_version: "1.4.1"
+    latest_release_date: "2024-03-26"
+    python_api: true
+    python_package: pyNastran
+    maturity: mature
+    stars: 460
+    contributors: 30
+    primary_language: Python
+    domain: FEA
+    capabilities: >-
+      Python reader/writer for Nastran file formats: BDF (427 cards, validation),
+      OP2 (vectorised results: displacements, SPC forces, element stresses/strains),
+      F06 subsets, OP4 matrices. Optional Qt GUI for model/results viewing.
+    download_size_estimate: "30 MB"
+    integration_fit: high
+    integration_notes: >-
+      pip/uv installable; Python >=3.9 (1.4.1 tested on 3.11 with MYSTRAN 19.0.0 OP2
+      output: displacements, spc_forces, chexa_stress, cbar_stress all read). Exposed as
+      the optional `nastran` extra of digitalmodel. Last PyPI release March 2024, repo
+      still active — pin 1.4.x. Eval: docs/research/mystran-eval.md.
     cloned_at_ace: false
 
   - name: Code_Aster
