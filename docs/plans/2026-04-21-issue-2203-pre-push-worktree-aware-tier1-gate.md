@@ -1,3 +1,12 @@
+---
+compass:
+  parent: docs/plans/2026-06-12-issue-3041-repo-ecosystem-hygiene-audit.md
+  children:
+    - docs/plans/2026-06-03-issue-2911-prepush-worktree-skip.md
+  friends:
+    - docs/ecosystem/windows-skill-junction-git-trap.md
+---
+
 # Plan for #2203: Make pre-push tier-1 repo checks worktree-aware for integration branches
 
 > **Status:** draft
