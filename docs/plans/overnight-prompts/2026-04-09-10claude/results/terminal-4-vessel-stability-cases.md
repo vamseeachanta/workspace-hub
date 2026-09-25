@@ -40,7 +40,7 @@
 | client-d 7000 | 198.0 | 87.0 | 25.0 | -- (missing) | client-d | -- |
 | client-d FDS | 152.0 | 92.0 | 23.0 | -- (missing) | client-d | -- |
 | client-d FDS2 | 152.0 | 92.0 | 23.0 | -- (missing) | client-d | -- |
-| DLV 2000 | 170.0 | 54.0 | 18.0 | -- (missing) | McDermott | -- |
+| DLV 2000 | 170.0 | 54.0 | 18.0 | -- (missing) | an installation contractor | -- |
 
 ### 1.3 Tests Already Present
 

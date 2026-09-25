@@ -7,7 +7,7 @@
 ## Terminal 1 — #1360: Extract algorithms from riser-eng-job
 
 ```
-GitHub issue #1360. Extract reusable engineering algorithms and methods from riser-eng-job archives at /mnt/ace/digitalmodel/docs/domain/subsea-risers/riser-eng-job/. There are 6,695 code and calculation files: 3,550 .xls, 3,064 .dat, 43 .xlsx, 29 .inp, 8 .m, 1 .vbs spread across 4 project subfolders (2100-blk31-slor-design, 3824-containment-riser, 3836-hp1-riser, 3837-cdp2-fsr).
+GitHub issue #1360. Extract reusable engineering algorithms and methods from riser-eng-job archives at /mnt/ace/digitalmodel/docs/domain/subsea-risers/riser-eng-job/. There are 6,695 code and calculation files: 3,550 .xls, 3,064 .dat, 43 .xlsx, 29 .inp, 8 .m, 1 .vbs spread across 4 project subfolders (2100-wa-block-a-slor-design, 3824-containment-riser, 3836-hp1-riser, 3837-cdp2-fsr).
 
 Do the following:
 1. Sample 20 .dat files across subfolders to categorize them (OrcaFlex sim files, ABAQUS input, raw data, etc.)

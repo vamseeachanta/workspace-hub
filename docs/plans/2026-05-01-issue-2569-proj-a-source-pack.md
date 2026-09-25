@@ -1,4 +1,4 @@
-# Plan for #2569: B1528 proj-a rudder source pack and benchmark extraction
+# Plan for #2569: proj-a rudder source pack and benchmark extraction
 
 > **Status:** plan-review
 > **Complexity:** T2
@@ -11,9 +11,9 @@
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: remote `vamseeachanta/mkt-a/B1528/excel_to_py/rudder_force_yaw_moment.py` — converted workbook logic for rudder-force/yaw-moment hand calculation.
-- Found: remote `vamseeachanta/mkt-a/B1528/excel_to_py/Rudder Force & Yaw Moments.xlsx` — authoritative ref-data workbook for B1528 rudder geometry and yaw moment worksheets.
-- Gap: no durable B1528 source crosswalk or normalized benchmark table exists in `workspace-hub` knowledge/plans.
+- Found: remote `vamseeachanta/mkt-a/proj-a/excel_to_py/rudder_force_yaw_moment.py` — converted workbook logic for rudder-force/yaw-moment hand calculation.
+- Found: remote `vamseeachanta/mkt-a/proj-a/excel_to_py/Rudder Force & Yaw Moments.xlsx` — authoritative ref-data workbook for proj-a rudder geometry and yaw moment worksheets.
+- Gap: no durable proj-a source crosswalk or normalized benchmark table exists in `workspace-hub` knowledge/plans.
 
 ### Standards
 | Standard | Status | Source |
@@ -22,38 +22,38 @@
 | IMO MSC/Circ.1053 | reference only | benchmark terminology only; no compliance claim in this issue |
 
 ### LLM Wiki pages consulted
-- `knowledge/wikis/mkt-a/wiki/entities/b1528-proj-a-breakaway.md` — project/vessel source-intelligence page created before implementation.
-- `knowledge/wikis/mkt-a/wiki/sources/b1528-rudder-force-yaw-moments-workbook.md` — workbook extraction and source limitations.
-- `knowledge/wikis/mkt-a/wiki/sources/b1528-proj-a-breakaway-notes.md` — benchmark notes source page.
-- `knowledge/wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` — calculation inputs, aliases, and boundaries.
+- `knowledge/wikis/mkt-a/wiki/entities/proj-a-breakaway.md` — project/vessel source-intelligence page created before implementation.
+- `knowledge/wikis/mkt-a/wiki/sources/proj-a-rudder-force-yaw-moments-workbook.md` — workbook extraction and source limitations.
+- `knowledge/wikis/mkt-a/wiki/sources/proj-a-breakaway-notes.md` — benchmark notes source page.
+- `knowledge/wikis/mkt-a/wiki/concepts/proj-a-rudder-yaw-moment-inputs.md` — calculation inputs, aliases, and boundaries.
 
 ### Documents consulted
 
-- `B1528/excel_to_py/Rudder Force & Yaw Moments.xlsx` — workbook contains `Rudder Area and Geometry`, `Rudder Force`, `Yaw Moment` sheets. Extracted B1528 proj-a values include LBP `225.5 m`, rudder area `44.9395631937 m²`, rudder center aft of AP `-1.0520261379 m`, legacy yaw lever `0.6 * LBP = 135.3 m`, `β = 600`, and `Cr = 1.065/0.935`.
-- `B1528/excel_to_py/rudder_force_yaw_moment.py` — converted workbook script exposes the legacy calculation family but hardcodes formulas and does not provide a reusable input/report workflow.
-- `B1528/ref/proj-a breakaway notes.docx` — contains narrative heading/speed/time anchors and a turning/track benchmark, but evidence must be normalized before numerical comparison.
-- `knowledge/wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` — newly created pre-work wiki page documenting extracted B1528 inputs and calculation boundaries.
+- `proj-a/excel_to_py/Rudder Force & Yaw Moments.xlsx` — workbook contains `Rudder Area and Geometry`, `Rudder Force`, `Yaw Moment` sheets. Extracted proj-a values include LBP `225.5 m`, rudder area `44.9395631937 m²`, rudder center aft of AP `-1.0520261379 m`, legacy yaw lever `0.6 * LBP = 135.3 m`, `β = 600`, and `Cr = 1.065/0.935`.
+- `proj-a/excel_to_py/rudder_force_yaw_moment.py` — converted workbook script exposes the legacy calculation family but hardcodes formulas and does not provide a reusable input/report workflow.
+- `proj-a/ref/proj-a breakaway notes.docx` — contains narrative heading/speed/time anchors and a turning/track benchmark, but evidence must be normalized before numerical comparison.
+- `knowledge/wikis/mkt-a/wiki/concepts/proj-a-rudder-yaw-moment-inputs.md` — newly created pre-work wiki page documenting extracted proj-a inputs and calculation boundaries.
 - `knowledge/wikis/naval-architecture/wiki/concepts/maneuvering-coordinate-conventions.md` — sign/coordinate convention background from prior yaw-moment work.
 - #2564 — completed reusable yaw-moment sweep workflow for typical-ship/rudder cases.
 - #2568 — approved/planned preliminary turning-circle/tactical-diameter estimator workflow.
 
 
 ### Gaps identified
-- No canonical B1528 source-pack artifact links exact workbook sheets/cells/values to downstream yaw-moment/time-trace input files. The source pack must classify every value as `authoritative`, `derived`, `inferred`, or `gap` and must not force downstream code to re-mine `.xlsx`/`.docx` files at runtime.
+- No canonical proj-a source-pack artifact links exact workbook sheets/cells/values to downstream yaw-moment/time-trace input files. The source pack must classify every value as `authoritative`, `derived`, `inferred`, or `gap` and must not force downstream code to re-mine `.xlsx`/`.docx` files at runtime.
 - No normalized turning/track benchmark table exists for proj-a; the notes are narrative and require extraction with uncertainty/caveat fields. If no quantitative benchmark is recoverable, deliver a source-gap table instead of inventing a curve.
-- Local `mkt-a` checkout is synchronized to origin but sparse; `B1528/` is not materialized locally, so this issue must record remote GitHub source paths and avoid assuming local file presence.
+- Local `mkt-a` checkout is synchronized to origin but sparse; `proj-a/` is not materialized locally, so this issue must record remote GitHub source paths and avoid assuming local file presence.
 
 ### Evidence (embedded verification)
 **Issue statuses** (verified 2026-05-01 via `gh issue view`):
-- `#2569` — OPEN — docs(mkt-a): B1528 proj-a rudder source pack and benchmark extraction
-- `#2570` — OPEN — feat(naval-arch): B1528 proj-a yaw-moment input and interactive static report
-- `#2571` — OPEN — feat(naval-arch): B1528 proj-a time-trace benchmark report with rudder inflow feedback
+- `#2569` — OPEN — docs(mkt-a): proj-a rudder source pack and benchmark extraction
+- `#2570` — OPEN — feat(naval-arch): proj-a yaw-moment input and interactive static report
+- `#2571` — OPEN — feat(naval-arch): proj-a time-trace benchmark report with rudder inflow feedback
 
 **Repo sync evidence**:
 ```text
 ## main...origin/main
 0	0
-B1528-not-materialized-sparse
+proj-a-not-materialized-sparse
 ```
 
 **Extracted workbook evidence**:
@@ -69,24 +69,24 @@ Yaw lever = 0.6 * LBP = 135.3 m (legacy workbook-derived yaw lever; not automati
 ## Artifact Map
 | Artifact | Path |
 |---|---|
-| This plan | docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md |
-| Wiki entity | knowledge/wikis/mkt-a/wiki/entities/b1528-proj-a-breakaway.md |
-| Workbook source page | knowledge/wikis/mkt-a/wiki/sources/b1528-rudder-force-yaw-moments-workbook.md |
-| Notes source page | knowledge/wikis/mkt-a/wiki/sources/b1528-proj-a-breakaway-notes.md |
-| Input concept page | knowledge/wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md |
-| Benchmark/source pack | docs/projects/mkt-a/B1528/proj-a-rudder-source-pack.md |
-| Structured benchmark table | docs/projects/mkt-a/B1528/proj-a-turning-benchmark.yaml |
+| This plan | docs/plans/2026-05-01-issue-2569-proj-a-source-pack.md |
+| Wiki entity | knowledge/wikis/mkt-a/wiki/entities/proj-a-breakaway.md |
+| Workbook source page | knowledge/wikis/mkt-a/wiki/sources/proj-a-rudder-force-yaw-moments-workbook.md |
+| Notes source page | knowledge/wikis/mkt-a/wiki/sources/proj-a-breakaway-notes.md |
+| Input concept page | knowledge/wikis/mkt-a/wiki/concepts/proj-a-rudder-yaw-moment-inputs.md |
+| Benchmark/source pack | docs/projects/mkt-a/proj-a/proj-a-rudder-source-pack.md |
+| Structured benchmark table | docs/projects/mkt-a/proj-a/proj-a-turning-benchmark.yaml |
 
 ---
 
 ## Deliverable
-A durable B1528 proj-a source/benchmark pack that downstream static yaw and time-trace issues can cite without re-mining the workbook and narrative notes.
+A durable proj-a source/benchmark pack that downstream static yaw and time-trace issues can cite without re-mining the workbook and narrative notes.
 
 ---
 
 ## Pseudocode
 ```text
-collect remote source paths from mkt-a/B1528
+collect remote source paths from mkt-a/proj-a
 extract workbook sheet names, relevant cells, formulas, and values
 extract breakaway-note time/heading/speed/track anchors into a table
 classify each datum as authoritative, derived, narrative, or inferred
@@ -99,8 +99,8 @@ validate llm-wiki status/lint and plan/source-pack consistency
 ## Files to Change
 | Action | Path | Reason |
 |---|---|---|
-| Create | docs/projects/mkt-a/B1528/proj-a-rudder-source-pack.md | durable source crosswalk |
-| Create | docs/projects/mkt-a/B1528/proj-a-turning-benchmark.yaml | normalized benchmark evidence |
+| Create | docs/projects/mkt-a/proj-a/proj-a-rudder-source-pack.md | durable source crosswalk |
+| Create | docs/projects/mkt-a/proj-a/proj-a-turning-benchmark.yaml | normalized benchmark evidence |
 | Update | knowledge/wikis/mkt-a/wiki/index.md | index source intelligence |
 | Update | docs/plans/README.md | plan index |
 
@@ -120,7 +120,7 @@ validate llm-wiki status/lint and plan/source-pack consistency
 - [ ] HARD STOP: after this plan reaches `status:done`, wait for explicit user approval / `status:plan-approved` before implementation.
 - [ ] `UV_NO_SYNC=1 uv run scripts/knowledge/llm_wiki.py status --wiki mkt-a` passes.
 - [ ] `UV_NO_SYNC=1 uv run scripts/knowledge/llm_wiki.py lint --wiki mkt-a` passes.
-- [ ] Source crosswalk includes exact B1528 file paths, workbook sheet names/cells or named ranges where recoverable, units, extracted values, and derived-value notes.
+- [ ] Source crosswalk includes exact proj-a file paths, workbook sheet names/cells or named ranges where recoverable, units, extracted values, and derived-value notes.
 - [ ] Benchmark table separates direct notes from inferred/calculated fields and states uncertainty/caveats.
 - [ ] #2570 and #2571 can cite this source pack for inputs and benchmark evidence.
 
@@ -146,7 +146,7 @@ Revisions made based on review:
 
 ## Risks and Open Questions
 - **Risk:** Narrative breakaway notes may not contain enough structured time/position data for quantitative benchmark overlay; if so, deliver an explicit source-gap report.
-- **Risk:** B1528 remains sparse locally; implementation should use GitHub API/raw downloads or materialize only the needed sparse path after sync.
+- **Risk:** proj-a remains sparse locally; implementation should use GitHub API/raw downloads or materialize only the needed sparse path after sync.
 
 ---
 
@@ -160,15 +160,15 @@ Completed 2026-05-01.
 
 Delivered artifacts:
 
-- `docs/projects/mkt-a/B1528/proj-a-rudder-source-pack.md`
-- `docs/projects/mkt-a/B1528/proj-a-turning-benchmark.yaml`
-- `scripts/validation/validate_b1528_source_pack.py`
-- Updated `knowledge/wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md`
+- `docs/projects/mkt-a/proj-a/proj-a-rudder-source-pack.md`
+- `docs/projects/mkt-a/proj-a/proj-a-turning-benchmark.yaml`
+- `scripts/validation/validate_proj_a_source_pack.py`
+- Updated `knowledge/wikis/mkt-a/wiki/concepts/proj-a-rudder-yaw-moment-inputs.md`
 - `scripts/review/results/2026-05-01-implementation-2569-hermes.md`
 
 Validation:
 
-- `UV_NO_SYNC=1 uv run --with pyyaml scripts/validation/validate_b1528_source_pack.py`
+- `UV_NO_SYNC=1 uv run --with pyyaml scripts/validation/validate_proj_a_source_pack.py`
 - `UV_NO_SYNC=1 uv run scripts/knowledge/llm_wiki.py lint --wiki mkt-a`
 
 Adversarial implementation review verdict: `APPROVE`.

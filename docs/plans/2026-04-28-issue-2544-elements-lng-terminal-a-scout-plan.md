@@ -1,4 +1,4 @@
-# Plan for #2544: feat(llm-wiki) — scout Woodfibre LNG corpus for bounded extraction candidates
+# Plan for #2544: feat(llm-wiki) — scout LNG terminal A corpus for bounded extraction candidates
 
 > **Status:** plan-review
 > **Complexity:** T2
@@ -11,12 +11,12 @@
 ## Resource Intelligence Summary
 
 ### Existing repo code
-- Found: `.planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl` — 41,561 records; bucket-filter `mkt-a-31522-woodfibre` returns 5,364 records totaling 1,879,405,139,855 bytes (1.879 TB). Each record carries `absolute_path`, `relative_path`, `extension`, `content_kind`, `bytes`, `mtime_ns`, `parent_exists`, `same_size`, `hardlinked_to_staging`.
-- Found: `.planning/intel/elements-to-llm-wiki/elements-wiki-domain-summary.md` — bucket #8 entry: `mkt-a-31522-woodfibre` → wiki `lng-projects`, `extract_priority: metadata-only`, retention verification clean (`missing=0, size_mismatch=0, not_hardlinked=0`).
-- Found: `.planning/intel/elements-to-llm-wiki/batches/lng-projects.jsonl` — 2 records (Woodfibre + SESA companion bucket).
-- Found: `knowledge/wikis/lng-projects/` — wiki initialized 2026-04-28 19:23 UTC; `wiki/sources/`, `wiki/entities/`, `wiki/concepts/`, `wiki/standards/` directories present and **empty** (no #2535 source page emitted yet for either Woodfibre or SESA).
-- Found: `.planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv` — Woodfibre is **not** in the deep-extraction queue (zero matches), consistent with its `metadata-only` priority.
-- Gap: no Woodfibre source-of-record pointer page in `lng-projects/wiki/sources/`. Gap: no shape/scope intelligence for the corpus exists in the workspace prior to this plan.
+- Found: `.planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl` — 41,561 records; bucket-filter `mkt-a-31522-lng-terminal-a` returns 5,364 records totaling 1,879,405,139,855 bytes (1.879 TB). Each record carries `absolute_path`, `relative_path`, `extension`, `content_kind`, `bytes`, `mtime_ns`, `parent_exists`, `same_size`, `hardlinked_to_staging`.
+- Found: `.planning/intel/elements-to-llm-wiki/elements-wiki-domain-summary.md` — bucket #8 entry: `mkt-a-31522-lng-terminal-a` → wiki `lng-projects`, `extract_priority: metadata-only`, retention verification clean (`missing=0, size_mismatch=0, not_hardlinked=0`).
+- Found: `.planning/intel/elements-to-llm-wiki/batches/lng-projects.jsonl` — 2 records (LNG terminal A + SESA companion bucket).
+- Found: `knowledge/wikis/lng-projects/` — wiki initialized 2026-04-28 19:23 UTC; `wiki/sources/`, `wiki/entities/`, `wiki/concepts/`, `wiki/standards/` directories present and **empty** (no #2535 source page emitted yet for either LNG terminal A or SESA).
+- Found: `.planning/intel/elements-to-llm-wiki/deep-extraction-candidates.tsv` — LNG terminal A is **not** in the deep-extraction queue (zero matches), consistent with its `metadata-only` priority.
+- Gap: no LNG terminal A source-of-record pointer page in `lng-projects/wiki/sources/`. Gap: no shape/scope intelligence for the corpus exists in the workspace prior to this plan.
 
 ### Standards
 | Standard | Status | Source |
@@ -26,19 +26,19 @@
 ### LLM Wiki pages consulted
 - `knowledge/wikis/lng-projects/CLAUDE.md` — wiki conventions: frontmatter schema (`title`, `tags`, `added`, `last_updated`, `sources`, optional `domain`/`cross_links`); Standards-page extra fields (`code_id`, `publisher`, `revision`) — not exercised by this plan.
 - `knowledge/wikis/lng-projects/wiki/index.md`, `wiki/log.md`, `wiki/overview.md` — present but unpopulated (auto-generated stubs from `llm-wiki init`).
-- `knowledge/wikis/lng-projects/wiki/sources/` — empty directory; no contradiction risk for proposed `woodfibre-*` source pages.
+- `knowledge/wikis/lng-projects/wiki/sources/` — empty directory; no contradiction risk for proposed `lng-terminal-a-*` source pages.
 - No companion-bucket pointer page exists for `lng-a-62092-sesa` either; coordination with Terminal-1 plan is captured under "Cross-corpus boundary".
 
 ### Documents consulted
 - `docs/plans/overnight-prompts/2026-04-28-elements-wave/master-plan.md` — overnight wave governance: planning-only, no `/mnt/ace` writes, no raw bulk extraction, no self-approval.
 - `docs/plans/2026-04-28-issue-2543-elements-lng-a-codes-standards-plan.md` — sibling overnight-wave plan; this plan adopts the same artifact-map and approval-boundary conventions.
-- `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` — companion scout produced by this terminal (depth-2 structure, extension histogram, content-kind histogram, document-control register decode, risk assessment, uncertainties).
-- `.planning/intel/elements-overnight-wave/woodfibre-first-tranche.tsv` — 15-row candidate matrix with `priority`, `family`, `content_kind`, `bytes`, `absolute_path`, `rationale`, `extraction_method`, `target_wiki_page`, `confidentiality_risk`.
-- `.claude/rules/calc-citation-contract.md` — confirms `wiki/sources/*` are deny-list for calc citations; this plan does not route any calc citations into Woodfibre source pages.
+- `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md` — companion scout produced by this terminal (depth-2 structure, extension histogram, content-kind histogram, document-control register decode, risk assessment, uncertainties).
+- `.planning/intel/elements-overnight-wave/lng-terminal-a-first-tranche.tsv` — 15-row candidate matrix with `priority`, `family`, `content_kind`, `bytes`, `absolute_path`, `rationale`, `extraction_method`, `target_wiki_page`, `confidentiality_risk`.
+- `.claude/rules/calc-citation-contract.md` — confirms `wiki/sources/*` are deny-list for calc citations; this plan does not route any calc citations into LNG terminal A source pages.
 - Issue body #2544 + parents #2540 (umbrella), #2526 (parent ingest), #2534 (retention), #2535 (metadata indexing), #2536 (first-pass extraction).
 
 ### Gaps identified
-- No Woodfibre source-of-record pointer page in `lng-projects/wiki/sources/` (would be #2535's residue, never emitted for this bucket).
+- No LNG terminal A source-of-record pointer page in `lng-projects/wiki/sources/` (would be #2535's residue, never emitted for this bucket).
 - No structured catalogue of the mkt-a EDMS document register (`DB`, `RA`, `FD`, `SA`, `TN`, `WS`, `XA`, `XD`, `XE`, `XG`, `LA`, `DS`, `CA`, `DEMOLITION`) inside the wiki.
 - No client-confidentiality boundary statement against the lng-projects wiki has been written; this is required before any extracted content can land publicly.
 - No latest-revision policy is documented for mkt-a EDMS revision-letter conventions in either `lng-projects/CLAUDE.md` or any project rule.
@@ -46,7 +46,7 @@
 ### Evidence (embedded verification)
 
 **Issue statuses** (verified 2026-04-28 via `gh issue view`):
-- `#2544` — OPEN — feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates
+- `#2544` — OPEN — feat(llm-wiki): scout LNG terminal A corpus for bounded extraction candidates
 - `#2540` — OPEN — epic(llm-wiki): overnight Elements corpus planning wave after #2536
 - `#2535` — referenced (closed) — completed metadata indexing parent
 - `#2536` — referenced (closed) — completed first-pass extraction parent
@@ -59,10 +59,10 @@
 - EXISTS: `knowledge/wikis/lng-projects/CLAUDE.md`
 - EXISTS: `knowledge/wikis/lng-projects/wiki/{index.md,log.md,overview.md}`
 - EXISTS (empty): `knowledge/wikis/lng-projects/wiki/sources/`
-- EXISTS (this plan creates): `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md`
-- EXISTS (this plan creates): `.planning/intel/elements-overnight-wave/woodfibre-first-tranche.tsv`
-- MISSING (deferred — implementation PR creates): `knowledge/wikis/lng-projects/wiki/sources/woodfibre-corpus-pointer.md`
-- MISSING (deferred — implementation PR creates): `knowledge/wikis/lng-projects/wiki/sources/woodfibre-{15 named pages}.md`
+- EXISTS (this plan creates): `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md`
+- EXISTS (this plan creates): `.planning/intel/elements-overnight-wave/lng-terminal-a-first-tranche.tsv`
+- MISSING (deferred — implementation PR creates): `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-corpus-pointer.md`
+- MISSING (deferred — implementation PR creates): `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-{15 named pages}.md`
 
 **Corpus-shape evidence** (jq-aggregated from JSONL, 2026-04-28):
 
@@ -128,12 +128,12 @@ DEMOLITION (CAPRICORN+TAURUS)            162 files  (record drawings; very large
 
 | Artifact | Path |
 |---|---|
-| This plan | `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` |
-| Corpus scout (intel) | `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` |
-| First-tranche TSV (intel) | `.planning/intel/elements-overnight-wave/woodfibre-first-tranche.tsv` |
-| Terminal-4 result | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md` |
-| Future implementation issue | (not created here) — would spawn `feat(llm-wiki): emit Woodfibre LNG corpus pointer + bounded 15-doc abstract pages (post-mkt-a-clearance)` |
-| Future wiki updates | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-corpus-pointer.md` + 15 abstract pages — emitted only after `status:plan-approved` AND mkt-a / project-owner clearance |
+| This plan | `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` |
+| Corpus scout (intel) | `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md` |
+| First-tranche TSV (intel) | `.planning/intel/elements-overnight-wave/lng-terminal-a-first-tranche.tsv` |
+| Terminal-4 result | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-lng-terminal-a.md` |
+| Future implementation issue | (not created here) — would spawn `feat(llm-wiki): emit LNG terminal A corpus pointer + bounded 15-doc abstract pages (post-mkt-a-clearance)` |
+| Future wiki updates | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-corpus-pointer.md` + 15 abstract pages — emitted only after `status:plan-approved` AND mkt-a / project-owner clearance |
 | Plan review — Claude | `scripts/review/results/2026-04-28-plan-2544-claude.md` (pending) |
 | Plan review — Codex | `scripts/review/results/2026-04-28-plan-2544-codex.md` (pending) |
 | Plan review — Gemini | `scripts/review/results/2026-04-28-plan-2544-gemini.md` (pending) |
@@ -142,7 +142,7 @@ DEMOLITION (CAPRICORN+TAURUS)            162 files  (record drawings; very large
 
 ## Deliverable
 
-A reviewable, metadata-first scout for the Woodfibre LNG (mkt-a project 31522) corpus that, when approved, authorizes a bounded ≤15-document abstract extraction into the `lng-projects` wiki — strictly metadata + 1-page summary per document, no raw bytes copied to git, and conditional on explicit mkt-a / project-owner confidentiality clearance.
+A reviewable, metadata-first scout for the LNG terminal A (mkt-a project 31522) corpus that, when approved, authorizes a bounded ≤15-document abstract extraction into the `lng-projects` wiki — strictly metadata + 1-page summary per document, no raw bytes copied to git, and conditional on explicit mkt-a / project-owner confidentiality clearance.
 
 ---
 
@@ -153,22 +153,22 @@ PLAN-AUTHORIZED IMPLEMENTATION (deferred — runs only after status:plan-approve
                                 mkt-a / project-owner sign-off recorded in implementation issue):
 
 1. Confidentiality clearance gate (HARD BLOCK):
-     human reviewer (project lead) confirms each row of woodfibre-first-tranche.tsv
+     human reviewer (project lead) confirms each row of lng-terminal-a-first-tranche.tsv
      is approved for abstract publication; sign-off filed under:
-       docs/governance/woodfibre-extraction-clearance-2026.md
+       docs/governance/lng-terminal-a-extraction-clearance-2026.md
      If any row is rejected, drop it from the implementation set.
 
-2. Create wiki/sources/woodfibre-corpus-pointer.md:
-     frontmatter (title, tags=[woodfibre, lng, fst, mooring, mkt-a-31522],
+2. Create wiki/sources/lng-terminal-a-corpus-pointer.md:
+     frontmatter (title, tags=[LNG terminal A, lng, fst, mooring, mkt-a-31522],
                   added, last_updated, sources, domain=lng-projects, cross_links)
-     body: corpus pointer to /mnt/ace/mkt-a/31522-woodfibre-lng (no embed)
+     body: corpus pointer to /mnt/ace/mkt-a/31522-lng-terminal-a (no embed)
      body: top-level structure table (from scout)
      body: mkt-a EDMS register decode
      body: explicit no-extraction banner for .sim/.r00X/.sldprt/.wbpz
      body: cross-link to companion bucket sources/sesa-corpus-pointer.md (if Terminal-1
            plan also approved) and to umbrella #2540
 
-3. For each approved row in woodfibre-first-tranche.tsv:
+3. For each approved row in lng-terminal-a-first-tranche.tsv:
      extract via row.extraction_method:
        - docx: python-docx → text → 1-page abstract template
        - pdf:  pdfplumber  → text → 1-page abstract template
@@ -176,7 +176,7 @@ PLAN-AUTHORIZED IMPLEMENTATION (deferred — runs only after status:plan-approve
      emit knowledge/wikis/lng-projects/wiki/sources/<row.target_wiki_page>:
        frontmatter:
          title: <human-readable from filename, mkt-a doc-number suffix preserved>
-         tags: [woodfibre, lng, fst, <family-tag>]
+         tags: [LNG terminal A, lng, fst, <family-tag>]
          added: 2026-XX-XX
          last_updated: 2026-XX-XX
          sources: [<absolute_path>]
@@ -191,15 +191,15 @@ PLAN-AUTHORIZED IMPLEMENTATION (deferred — runs only after status:plan-approve
 4. Update wiki/index.md to list 1 pointer + 15 abstract pages (16 row appends).
 
 5. Append wiki/log.md entry:
-     ## [2026-XX-XX] ingest | Woodfibre LNG (mkt-a 31522) — bounded 15-doc tranche
-     - Corpus pointer: woodfibre-corpus-pointer.md
+     ## [2026-XX-XX] ingest | LNG terminal A (mkt-a 31522) — bounded 15-doc tranche
+     - Corpus pointer: lng-terminal-a-corpus-pointer.md
      - Abstract pages: 15
-     - Clearance ref: docs/governance/woodfibre-extraction-clearance-2026.md
+     - Clearance ref: docs/governance/lng-terminal-a-extraction-clearance-2026.md
 
-6. Update wiki/overview.md to anchor Woodfibre as one of two seeded LNG-project
+6. Update wiki/overview.md to anchor LNG terminal A as one of two seeded LNG-project
    case studies (the other being SESA, Terminal-1).
 
-7. Open follow-up issue: "verify Woodfibre tranche abstracts via project-lead
+7. Open follow-up issue: "verify LNG terminal A tranche abstracts via project-lead
    1-pass review" — closes only after mkt-a confirms each abstract is publishable.
 ```
 
@@ -209,27 +209,27 @@ PLAN-AUTHORIZED IMPLEMENTATION (deferred — runs only after status:plan-approve
 
 | Action | Path | Reason |
 |---|---|---|
-| Create | `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` | this plan |
-| Create | `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` | corpus structure intel |
-| Create | `.planning/intel/elements-overnight-wave/woodfibre-first-tranche.tsv` | candidate tranche matrix |
-| Create | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md` | overnight-wave result summary |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `docs/governance/woodfibre-extraction-clearance-2026.md` | sign-off record |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-corpus-pointer.md` | corpus pointer page |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-fst-naval-architecture-design-brief.md` | abstract for DB rev C1 |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-fst-structural-design-brief.md` | abstract for DB rev C |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-fst-structural-design-basis.md` | abstract for DB basis rev B |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-model-test-correlation-report.md` | abstract for SD-000114 rev B |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-fst1-ise-capricorn-report.md` | abstract for SD-000010 rev B |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-fst2-ise-taurus-report.md` | abstract for SD-000024 rev B |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-fst-report-sd-000171.md` | abstract for RA SD-000171 rev B1 |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-permanent-mooring-interface-loads.md` | abstract for SD-000163 rev C1 |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-stability-and-ballast-requirements.md` | abstract for SD-000158 rev C |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-loading-arm-motions.md` | abstract for SD-000157 rev E |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-operational-maintenance-failure-loadcases.md` | abstract for SD-000172 rev B |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-fst-cp-system-design-philosophy.md` | abstract for FST CP rev B |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-fst-load-monitoring-system-philosophy.md` | abstract for SD-000168 rev B1 |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-design-criteria-sd-000141.md` | abstract for FD SD-000141 rev C |
-| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/woodfibre-orcaflex-no-sim-readme.md` | inline-quote of corpus readme |
+| Create | `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` | this plan |
+| Create | `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md` | corpus structure intel |
+| Create | `.planning/intel/elements-overnight-wave/lng-terminal-a-first-tranche.tsv` | candidate tranche matrix |
+| Create | `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-lng-terminal-a.md` | overnight-wave result summary |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `docs/governance/lng-terminal-a-extraction-clearance-2026.md` | sign-off record |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-corpus-pointer.md` | corpus pointer page |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-fst-naval-architecture-design-brief.md` | abstract for DB rev C1 |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-fst-structural-design-brief.md` | abstract for DB rev C |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-fst-structural-design-basis.md` | abstract for DB basis rev B |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-model-test-correlation-report.md` | abstract for SD-000114 rev B |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-fst1-ise-capricorn-report.md` | abstract for SD-000010 rev B |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-fst2-ise-taurus-report.md` | abstract for SD-000024 rev B |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-fst-report-sd-000171.md` | abstract for RA SD-000171 rev B1 |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-permanent-mooring-interface-loads.md` | abstract for SD-000163 rev C1 |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-stability-and-ballast-requirements.md` | abstract for SD-000158 rev C |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-loading-arm-motions.md` | abstract for SD-000157 rev E |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-operational-maintenance-failure-loadcases.md` | abstract for SD-000172 rev B |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-fst-cp-system-design-philosophy.md` | abstract for FST CP rev B |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-fst-load-monitoring-system-philosophy.md` | abstract for SD-000168 rev B1 |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-design-criteria-sd-000141.md` | abstract for FD SD-000141 rev C |
+| (DEFERRED — only if approved + mkt-a-cleared) Create | `knowledge/wikis/lng-projects/wiki/sources/lng-terminal-a-orcaflex-no-sim-readme.md` | inline-quote of corpus readme |
 | (DEFERRED — only if approved + mkt-a-cleared) Modify | `knowledge/wikis/lng-projects/wiki/index.md` | append 16 new sources/* rows |
 | (DEFERRED — only if approved + mkt-a-cleared) Modify | `knowledge/wikis/lng-projects/wiki/log.md` | append ingest entry |
 | (DEFERRED — only if approved + mkt-a-cleared) Modify | `knowledge/wikis/lng-projects/wiki/overview.md` | seed lng-projects domain narrative |
@@ -244,15 +244,15 @@ The deliverables in this plan are documentation/metadata pages; the relevant ver
 
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| test_no_raw_bytes_under_git | no PDF/DOCX/SIM/SLDPRT/WBPZ copied from `/mnt/ace/mkt-a/31522-woodfibre-lng` is tracked in git | `git ls-files knowledge/wikis/lng-projects/` filtered by binary extensions | empty result |
-| test_no_sim_or_cad_paths_in_pages | no abstract page references a `.sim`, `.r001-3`, `.sldprt`, `.wbpz`, `.scdoc`, `.osav`, `.esav`, `.rst`, `.db`, `.mechdb`, `.dspsymb` file | grep over `wiki/sources/woodfibre-*.md` | zero matches |
+| test_no_raw_bytes_under_git | no PDF/DOCX/SIM/SLDPRT/WBPZ copied from `/mnt/ace/mkt-a/31522-lng-terminal-a` is tracked in git | `git ls-files knowledge/wikis/lng-projects/` filtered by binary extensions | empty result |
+| test_no_sim_or_cad_paths_in_pages | no abstract page references a `.sim`, `.r001-3`, `.sldprt`, `.wbpz`, `.scdoc`, `.osav`, `.esav`, `.rst`, `.db`, `.mechdb`, `.dspsymb` file | grep over `wiki/sources/lng-terminal-a-*.md` | zero matches |
 | test_frontmatter_required_fields | every new wiki page has required frontmatter (`title`, `tags`, `added`, `last_updated`, `domain`, `sources`) | each new `.md` page | YAML parse passes; required keys present |
 | test_mkt-a_doc_number_present | every abstract page references its mkt-a EDMS doc-number in frontmatter sources | each abstract page | substring matching `350106-SC-EN-003` (or equivalent corpus-prefixed identifier) |
 | test_latest_revision_only | only the latest-revision file in any rev family is referenced; older revs are not linked | grep abstract pages for rev letters | each doc-number appears with at most one rev letter |
 | test_index_links_resolve | every link added to `wiki/index.md` resolves to an existing file | parsed index links | each target file exists |
-| test_no_extraction_banner_present | the corpus pointer page contains an explicit no-extraction banner for sim/CAD binaries | `wiki/sources/woodfibre-corpus-pointer.md` body | substring `no-extraction` or `metadata-only` |
-| test_mkt-a_clearance_reference_present | the corpus pointer page references the clearance record | `wiki/sources/woodfibre-corpus-pointer.md` body | substring `docs/governance/woodfibre-extraction-clearance-2026.md` |
-| test_provenance_backlinks_present | each abstract page links to its absolute source path | each new abstract page | substring `/mnt/ace/mkt-a/31522-woodfibre-lng/` present in sources frontmatter |
+| test_no_extraction_banner_present | the corpus pointer page contains an explicit no-extraction banner for sim/CAD binaries | `wiki/sources/lng-terminal-a-corpus-pointer.md` body | substring `no-extraction` or `metadata-only` |
+| test_mkt-a_clearance_reference_present | the corpus pointer page references the clearance record | `wiki/sources/lng-terminal-a-corpus-pointer.md` body | substring `docs/governance/lng-terminal-a-extraction-clearance-2026.md` |
+| test_provenance_backlinks_present | each abstract page links to its absolute source path | each new abstract page | substring `/mnt/ace/mkt-a/31522-lng-terminal-a/` present in sources frontmatter |
 | test_corpus_size_assertion | the pointer page records the 1.879 TB / 5,364-file corpus shape | pointer page body | substrings `1.879` and `5,364` |
 | test_demolition_excluded | DEMOLITION/CAPRICORN/TAURUS PDFs are not in any abstract page | grep wiki for `100[012]\d\d_A` (DEMOLITION doc-number prefix) | zero matches |
 
@@ -262,9 +262,9 @@ For the planning artifacts in this PR, the analogous gate is `test -s` on each o
 
 ## Acceptance Criteria
 
-- [ ] Plan file exists at `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` and is non-empty.
-- [ ] Corpus scout exists at `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` and is non-empty.
-- [ ] First-tranche TSV exists at `.planning/intel/elements-overnight-wave/woodfibre-first-tranche.tsv` with 15 candidate rows + header.
+- [ ] Plan file exists at `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` and is non-empty.
+- [ ] Corpus scout exists at `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md` and is non-empty.
+- [ ] First-tranche TSV exists at `.planning/intel/elements-overnight-wave/lng-terminal-a-first-tranche.tsv` with 15 candidate rows + header.
 - [ ] Plan is metadata-first: zero proposed copy of raw bytes (PDF/DOCX/SIM/CAD) into git/wiki.
 - [ ] Tranche is bounded to ≤15 artifacts; total proposed bytes ≤ ~80 MB; no `.sim` / `.r00X` / `.sldprt` / `.wbpz` / `.scdoc` / `.osav` / `.esav` / `.rst` / `.mechdb` rows.
 - [ ] Plan states `/mnt/ace`-write boundary (none) and #2534 retention boundary.
@@ -294,16 +294,16 @@ Revisions made based on review:
 
 ## Risks and Open Questions
 
-- **Risk:** Project-owner identity and IP terms are inferred from filename tokens (`WoodfibreLNG`, `WSP Interface loads`, `FST-1/FST-2`, `Capricorn/Taurus`). Mitigation: every abstract page is gated on `docs/governance/woodfibre-extraction-clearance-2026.md` sign-off. The implementation PR may proceed only after mkt-a confirms client-IP posture in writing.
+- **Risk:** Project-owner identity and IP terms are inferred from filename tokens (`LNG terminal A`, `WSP Interface loads`, `FST-1/FST-2`, `Capricorn/Taurus`). Mitigation: every abstract page is gated on `docs/governance/lng-terminal-a-extraction-clearance-2026.md` sign-off. The implementation PR may proceed only after mkt-a confirms client-IP posture in writing.
 - **Risk:** mkt-a EDMS revision-letter convention is assumed (B = IFR, C = IFA, sub-numbers = sub-revisions). If the convention differs, the "latest-revision" rule may pick a wrong file. Mitigation: implementation step calls a 2-row sanity check ("does the chosen rev's mtime exceed all sibling revs?") — if not, escalate.
 - **Risk:** OrcaFlex `.sim` files (1.8 TB) are catastrophic if any extraction script lacks an extension allowlist. Mitigation: implementation enforces `--allow-ext .pdf,.docx,.txt,.md,.rtf` and `--max-bytes 25_000_000`. Test `test_no_sim_or_cad_paths_in_pages` is the trip-wire.
 - **Risk:** Demolition record drawings (162 files, 14 MB avg) under `05.Deliverables/DEMOLITION/{CAPRICORN,TAURUS}` may carry separate third-party (prior-vessel-owner) IP. Mitigation: explicit exclusion at TSV level + `test_demolition_excluded`.
 - **Risk:** Document-number `350106-SC-EN-003-SD-000XXX` may be referenced from lng-a or other internal systems; abstracting them in a public wiki could be cross-referenced back to the project. Mitigation: clearance gate; `confidentiality_risk` flag on every row.
 - **Risk:** Past-tense drift (per memory: `feedback_plan_past_tense_artifact_claims.md`) — this plan describes proposed wiki pages as deferred, not committed. The artifact map labels them DEFERRED.
-- **Risk:** Cross-corpus collision in `lng-projects` wiki — Terminal-1 (SESA) is producing companion pointer pages in the same domain. Mitigation: all Woodfibre source pages are `woodfibre-` prefixed; SESA's must be `sesa-` prefixed (coordinate at implementation time).
+- **Risk:** Cross-corpus collision in `lng-projects` wiki — Terminal-1 (SESA) is producing companion pointer pages in the same domain. Mitigation: all LNG terminal A source pages are `lng-terminal-a-` prefixed; SESA's must be `sesa-` prefixed (coordinate at implementation time).
 - **Open:** Should the corpus pointer page be committed independently (lower-risk: structure metadata only, no document abstracts) before the 15-doc abstract tranche, to de-risk the clearance step? (Defer to project-owner reviewer.)
 - **Open:** Should the model test correlation report (#4 in tranche, 13 MB PDF) be split into a numerical-results-omitted abstract vs a methodology-only abstract? (Defer to mkt-a reviewer's confidentiality call.)
-- **Open:** Is there an external Woodfibre LNG public regulator filing (BC OGC / EAO) that has already published comparable summaries? If so, the abstracts can cite the public filing instead of paraphrasing internal docs — eliminates clearance friction for any shared content. (Researcher follow-up.)
+- **Open:** Is there an external LNG terminal A public regulator filing (BC OGC / EAO) that has already published comparable summaries? If so, the abstracts can cite the public filing instead of paraphrasing internal docs — eliminates clearance friction for any shared content. (Researcher follow-up.)
 
 ---
 
@@ -311,7 +311,7 @@ Revisions made based on review:
 
 This plan is left at `status:plan-review`. It does **not** carry `status:plan-approved`. The overnight terminal that produced it does not, and must not, set the approval label. Per `feedback_never_offer_to_self_label_plan_approved.md`, that gate is user-in-loop and load-bearing across session boundaries.
 
-A second gate sits between `status:plan-approved` and any wiki write: mkt-a / project-owner confidentiality clearance, recorded in `docs/governance/woodfibre-extraction-clearance-2026.md`. The implementation issue cannot proceed past pointer-page emission until that record exists.
+A second gate sits between `status:plan-approved` and any wiki write: mkt-a / project-owner confidentiality clearance, recorded in `docs/governance/lng-terminal-a-extraction-clearance-2026.md`. The implementation issue cannot proceed past pointer-page emission until that record exists.
 
 ---
 
@@ -328,7 +328,7 @@ This addendum is authoritative over earlier pseudocode if there is any conflict.
 - No document abstract extraction, technical summary extraction, direct quote extraction, table extraction, or figure extraction may occur under #2544 until a separate extraction plan is written after clearance.
 
 ### Clearance authority and row-level schema
-- `docs/governance/woodfibre-extraction-clearance-2026.md` remains a hard prerequisite for any post-scout extraction.
+- `docs/governance/lng-terminal-a-extraction-clearance-2026.md` remains a hard prerequisite for any post-scout extraction.
 - Accepted approvers must be explicitly named by role: mkt-a project owner, client-authorized reviewer, or legal/IP delegate. A generic "project lead" is insufficient.
 - Row-level clearance must record: source path, document identifier, approver, approval date, allowed extraction level (`metadata-only`, `curated-fields`, `short-quote-approved`, `abstract-approved`), prohibited content, and expiration/review condition.
 

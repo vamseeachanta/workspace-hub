@@ -477,7 +477,7 @@ The Wang calculator outputs forces in the Wang coordinate system. These must be 
 - [ ] Benchmark report: pass/fail per case with deviation metrics
 
 **Candidate Projects** (to be confirmed after archive survey):
-- B1512 (has MathCAD reference data)
+- <job-code> (has MathCAD reference data)
 - Additional projects from `R:\Archive - Drive J\` (if accessible)
 
 **Deliverables**:
@@ -527,7 +527,7 @@ The Wang calculator outputs forces in the Wang coordinate system. These must be 
 | OrcaFlex license unavailable in CI | Medium | Medium | Dry-run mode, mock fixtures, CI gate split (with/without OrcaFlex) |
 | Migration breakage (old import paths) | Low | Medium | Phase 1a: staged migration with compatibility shim, scan all consumers |
 | Archive projects inaccessible (R: drive) | Medium | Medium | Use local cases from `mkt-a/`; reduce benchmark count if needed |
-| Legal compliance violations in benchmark data | Medium | High | Legal scan on every benchmark file; sanitize before commit; verify "B1512" against deny list |
+| Legal compliance violations in benchmark data | Medium | High | Legal scan on every benchmark file; sanitize before commit; verify "<job-code>" against deny list |
 | Numerical instability at small separations | Low | Medium | Phase 1d: edge case tests at η→0; guard with error/warning |
 | Large scope — incomplete delivery | Medium | Medium | Phases are independent; partial delivery is useful |
 
@@ -541,7 +541,7 @@ The Wang calculator outputs forces in the Wang coordinate system. These must be 
 | VBA reference (`modPassingShip.bas`) | Phase 1 | Available |
 | `DiffractionSpec` pattern (for schema design) | Phase 2 | Available |
 | OrcaFlex / OrcFxAPI | Phase 3 | Available (license-gated) |
-| Archive projects for benchmarking | Phase 5 | Partially available (B1512 confirmed) |
+| Archive projects for benchmarking | Phase 5 | Partially available (<job-code> confirmed) |
 | WRK-129/WRK-130 reporting framework | Phase 6 | Pending (can proceed independently) |
 
 ---

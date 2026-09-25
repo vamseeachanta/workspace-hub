@@ -1,7 +1,7 @@
-# Woodfibre LNG corpus scout (issue #2544)
+# LNG terminal A corpus scout (issue #2544)
 
 > Generated: 2026-04-28 (overnight wave Terminal 4)
-> Source of record: `/mnt/ace/mkt-a/31522-woodfibre-lng/`
+> Source of record: `/mnt/ace/mkt-a/31522-lng-terminal-a/`
 > Wiki domain target: `lng-projects`
 > Method: metadata-first read of `.planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl` (5,364 records). No `/mnt/ace` walks; no raw content opened.
 
@@ -100,7 +100,7 @@ mkt-a EDMS naming convention: `350106-SC-EN-003-SD-NNNNNN_<rev>.<ext>`. Folder c
 
 ### Confidentiality / IP risk: **HIGH** for all candidates
 
-This is a live project corpus. EDMS prefix `350106-SC-EN-003-SD-XXXXXX` indicates mkt-a Engineering's project artefact register, executed for what appears to be the **WoodfibreLNG floating storage tank (FST) detailed design** — the file/folder naming references `FST-1`, `FST-2`, `Capricorn`, `Taurus`, `LNGC` (LNG carrier), `FSTs CP System` (cathodic protection), `Loading Arm Motions`, `Permanent Mooring Interface Loads`, `Initial Scantling Evaluation`. Likely third-party stakeholders include Pacific Energy / WoodfibreLNG (owner), WSP (mentioned by folder name), and shipyard partners (Capricorn, Taurus naming).
+This is a live project corpus. EDMS prefix `350106-SC-EN-003-SD-XXXXXX` indicates mkt-a Engineering's project artefact register, executed for what appears to be the **LNG terminal A floating storage tank (FST) detailed design** — the file/folder naming references `FST-1`, `FST-2`, `Capricorn`, `Taurus`, `LNGC` (LNG carrier), `FSTs CP System` (cathodic protection), `Loading Arm Motions`, `Permanent Mooring Interface Loads`, `Initial Scantling Evaluation`. Likely third-party stakeholders include Pacific Energy / LNG terminal A (owner), WSP (mentioned by folder name), and shipyard partners (Capricorn, Taurus naming).
 
 **Implication:**
 - Methodology summaries, scope outlines, code references — typically OK to abstract.
@@ -121,7 +121,7 @@ This is a live project corpus. EDMS prefix `350106-SC-EN-003-SD-XXXXXX` indicate
 ## Recommended extraction strategy
 
 1. **No raw copies.** Wiki pages are *metadata-and-abstract* sources, not file mirrors. Same policy as #2535.
-2. **First tranche = 15 documents max**, total ≤ ~80 MB, all from `05.Deliverables/{DB,RA,FD,SA,TN}` plus the model-test correlation report and two readmes. See `woodfibre-first-tranche.tsv`.
+2. **First tranche = 15 documents max**, total ≤ ~80 MB, all from `05.Deliverables/{DB,RA,FD,SA,TN}` plus the model-test correlation report and two readmes. See `lng-terminal-a-first-tranche.tsv`.
 3. **Extraction method per artifact:**
    - `.pdf` / `.docx` / `.pptx`: pdfplumber/textract → 1-page summary → wiki source page; keep absolute parent path as provenance pointer (link-only, do not copy bytes).
    - `.txt` (readmes): full inline quote permissible (already trivially small, no IP density).
@@ -131,18 +131,18 @@ This is a live project corpus. EDMS prefix `350106-SC-EN-003-SD-XXXXXX` indicate
 
 ## Uncertainties (per prompt: documenting rather than asking)
 
-- **Project sponsor identity** is inferred from filename patterns (`WoodfibreLNG`, `WSP Interface loads`, `FST-1/FST-2`, `Capricorn/Taurus`). Cannot be confirmed without opening a PDF — out of scope here. Plan-stage reviewer should sanity-check before dispatching extraction.
+- **Project sponsor identity** is inferred from filename patterns (`LNG terminal A`, `WSP Interface loads`, `FST-1/FST-2`, `Capricorn/Taurus`). Cannot be confirmed without opening a PDF — out of scope here. Plan-stage reviewer should sanity-check before dispatching extraction.
 - **EDMS doc number meaning of trailing `_<letter>`** assumed to be the IFR/IFA revision letter (B = "Issued for Review", C = "Issued for Approval", per common mkt-a convention). Suffix `1`, `2` (e.g. `_C1`, `_C2`) assumed to be sub-revisions within the lettered review cycle. Latest = highest rev letter, then highest sub-revision.
-- **Sponsorship between mkt-a, WoodfibreLNG, WSP, Pacific Energy:** not derivable from metadata. Must be clarified with the project owner before any extracted content lands publicly.
-- **Whether `_from_elements/` staging exists for this corpus** is implied by the #2535 catalog (staging path is `/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements`) but not verified in this scout because the working directory is sandboxed away from `/mnt/ace`. Treat as a precondition, not a confirmation.
+- **Sponsorship between mkt-a, LNG terminal A, WSP, Pacific Energy:** not derivable from metadata. Must be clarified with the project owner before any extracted content lands publicly.
+- **Whether `_from_elements/` staging exists for this corpus** is implied by the #2535 catalog (staging path is `/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements`) but not verified in this scout because the working directory is sandboxed away from `/mnt/ace`. Treat as a precondition, not a confirmation.
 
 ## Companion bucket cross-reference
 
-`lng-a-62092-sesa` (also `lng-projects` domain, 418 files / 1.47 GB, scouted by Terminal 1) sits in the same wiki. Coordinate Woodfibre source-page naming with SESA's so neither overwrites the other (e.g., prefix `woodfibre-` vs `sesa-` on each `wiki/sources/*.md`).
+`lng-a-62092-sesa` (also `lng-projects` domain, 418 files / 1.47 GB, scouted by Terminal 1) sits in the same wiki. Coordinate LNG terminal A source-page naming with SESA's so neither overwrites the other (e.g., prefix `lng-terminal-a-` vs `sesa-` on each `wiki/sources/*.md`).
 
 ## Files produced by this scout
 
-- This file: `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md`
-- Candidate tranche: `.planning/intel/elements-overnight-wave/woodfibre-first-tranche.tsv`
-- Canonical plan: `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md`
-- Result summary: `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md`
+- This file: `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md`
+- Candidate tranche: `.planning/intel/elements-overnight-wave/lng-terminal-a-first-tranche.tsv`
+- Canonical plan: `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md`
+- Result summary: `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-lng-terminal-a.md`

@@ -2678,26 +2678,26 @@ calc_examples:
   description: >
     Wall thickness, pressure containment, and installation load checks per DNV OS F101.
     Thinwall FEA project (0116) has list-of-pipelines workbooks with SMYS/SMTS, nominal WT,
-    and design pressure. Mecor project (611) has dedicated DNV WT sizing and pipe-check
+    and design pressure. the pipelay client project (611) has dedicated DNV WT sizing and pipe-check
     workbooks explicitly labelled DNV-OS-F101 covering burst, collapse, and propagation.
   files:
-  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-01 List of Pipelines Installed.xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/<document-number>-01 List of Pipelines Installed.xlsx
     description: Pipeline inventory with OD, WT, grade, MAOP — DNV OS F101 Sec 5 wall thickness basis
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/0116-CAL-0001-05 List of Pipelines Installed.xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/<document-number>-05 List of Pipelines Installed.xlsx
     description: Updated pipeline list with revised wall thicknesses after FEA
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0003-01 Mecor Pipeline Installation DNV WT Sizing.xlsm
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 the pipelay client Pipeline Installation DNV WT Sizing.xlsm
     description: DNV OS F101 wall thickness sizing — burst (SC-High) and collapse (SC-Low) checks
     type: xlsm
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0004-01 Mecor Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 the pipelay client Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
     description: Full DNV-OS-F101 pipe checks — combined loading, installation, operational cases
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0005-01 Mecor Pipeline Propagation Checks (Dnv and API).xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 the pipelay client Pipeline Propagation Checks (Dnv and API).xlsx
     description: Propagation buckle check per DNV OS F101 and API RP 1111 — transition water depth
     type: xlsx
     host: dev-primary
@@ -2710,19 +2710,19 @@ calc_examples:
     in GOM. Drilling riser project (0099) has Atwood Condor drilling riser checks with
     von Mises stress envelopes per DNV OS F201 / API RP 16Q criteria.
   files:
-  - path: /mnt/ace/docs/disciplines/misc/projects/0127_paleogene_6000ft/00_inbox/0127 Paleogene 6000ft/CAL/2000 Riser/0127-CAL-0013-07 Riser Analysis (RELEASED).xlsm
+  - path: /mnt/ace/docs/disciplines/misc/projects/0127_paleogene_6000ft/00_inbox/0127 Paleogene 6000ft/CAL/2000 Riser/<document-number>-07 Riser Analysis (RELEASED).xlsm
     description: Released riser analysis workbook — deepwater production riser, combined load envelopes
     type: xlsm
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/misc/projects/0127_paleogene_6000ft/00_inbox/0127 Paleogene 6000ft/CAL/2000 Riser/0127-CAL-0004-01 Production Riser Analysis.xlsx
+  - path: /mnt/ace/docs/disciplines/misc/projects/0127_paleogene_6000ft/00_inbox/0127 Paleogene 6000ft/CAL/2000 Riser/<document-number>-01 Production Riser Analysis.xlsx
     description: Production riser analysis — tensioner stroke, hang-off angle, stress checks
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/0000 Drilling Riser Development/Atwood Condor/0099-CAL-001-01 Drilling Riser Analysis (MP Update10).xlsx
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/0000 Drilling Riser Development/Atwood Condor/<document-number>-01 Drilling Riser Analysis (MP Update10).xlsx
     description: Drilling riser analysis for Atwood Condor — vessel offset, current, combined loading
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/5 - OrcaFlex API Check/31347-CAL-0001-1 Von Mises Stress in Pipe Check.xlsx
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/5 - OrcaFlex API Check/<document-number>-1 Von Mises Stress in Pipe Check.xlsx
     description: Von Mises stress check for riser pipe — OrcaFlex API verification against hand calc
     type: xlsx
     host: dev-primary
@@ -2731,25 +2731,25 @@ calc_examples:
   domain: pipeline
   description: >
     On-bottom stability design inputs per DNV RP F109 — hydrodynamic loads, submerged weight,
-    and environmental data. Mecor project (611) provides metocean data (current/wave) and
+    and environmental data. the pipelay client project (611) provides metocean data (current/wave) and
     pipeline weight matching workbooks. Weight verification and submerged weight data are
     required inputs to F109 generalised stability calculations (Sec 4/5).
     Note: a dedicated F109 stability spreadsheet does not exist in the archive;
     these files provide the input data layer for building one.
   files:
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0007-01 Metaocean information.xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/611-CAL-0007-01 Metaocean information.xlsx
     description: Metocean data workbook — design current profiles, wave heights, and return periods
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Pipeline Weights/Weight Matching.xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Pipeline Weights/Weight Matching.xlsx
     description: Pipeline weight matching — submerged weight per unit length, coating breakdown
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/06_review/611 Mecor Pipeline Installation Analysis/Weight Verification/0611-Cal-0001-01 (Weight Verification).xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/06_review/611 the pipelay client Pipeline Installation Analysis/Weight Verification/<document-number>-01 (Weight Verification).xlsx
     description: Weight verification workbook — cross-check of submerged weight against vendor data
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0003-01 Mecor Pipeline Installation DNV WT Sizing.xlsm
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 the pipelay client Pipeline Installation DNV WT Sizing.xlsm
     description: DNV WT sizing — pipe OD/WT/grade inputs needed for F109 hydrodynamic diameter
     type: xlsm
     host: dev-primary
@@ -2758,22 +2758,22 @@ calc_examples:
   domain: pipeline
   description: >
     Propagation buckle, wall thickness, and installation checks per API RP 1111 (deepwater pipelines).
-    Mecor project (611) has explicitly labelled API-1111 WT sizing workbooks covering S-lay
+    the pipelay client project (611) has explicitly labelled API-1111 WT sizing workbooks covering S-lay
     sagbend, stinger, and propagation buckle transition depth.
   files:
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0002-01 API-1111 Mecor Pipeline Installation API WT Sizing.xlsm
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 API-1111 the pipelay client Pipeline Installation API WT Sizing.xlsm
     description: API RP 1111 wall thickness sizing — explicit API-1111 burst and collapse checks
     type: xlsm
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0005-01 Mecor Pipeline Propagation Checks (Dnv and API).xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 the pipelay client Pipeline Propagation Checks (Dnv and API).xlsx
     description: Propagation buckle checks per API RP 1111 and DNV OS F101 — transition water depth
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0006-03 (Non Linear Stress Strain Curve).xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/611-CAL-0006-03 (Non Linear Stress Strain Curve).xlsx
     description: Non-linear stress-strain curve — material input for buckle propagation analysis
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0007-01 API-1111 Mecor Pipeline Installation ASME b31.4 WT Sizing.xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 API-1111 the pipelay client Pipeline Installation ASME b31.4 WT Sizing.xlsx
     description: ASME B31.4 pipeline WT sizing alongside API-1111 — combined design standard check
     type: xlsx
     host: dev-primary
@@ -2790,19 +2790,19 @@ calc_examples:
     Shell West Boreas wellhead conductor fatigue report is a complete structural
     fatigue assessment following API/DNV methodology.
   files:
-  - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/05_reports/31245 - Shell West Boreas BOP on Tree Assessment/RPT/Released/31245-RPT-0001-02 Shell West Boreas Wellhead Conductor System Fatigue Analysis.pdf
+  - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/05_reports/31245 - Shell West Boreas BOP on Tree Assessment/RPT/Released/<document-number>-02 Shell West Boreas Wellhead Conductor System Fatigue Analysis.pdf
     description: Conductor system fatigue analysis report — full structural calc with S-N curves
     type: pdf
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/0098_mecor_pipeline_installation_analysis/00_inbox/0098 Mecor Pipeline Installation Analysis/Reference/31279-CAL-0008-01 ASME Stress Strain Curve Generation.xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/0098_pipelay_client_pipeline_installation_analysis/00_inbox/0098 the pipelay client Pipeline Installation Analysis/Reference/<document-number>-01 ASME Stress Strain Curve Generation.xlsx
     description: ASME stress-strain curve generation workbook — material non-linearity inputs
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/00_inbox/31245 - Shell West Boreas BOP on Tree Assessment/CAL/31245-CAL-0018-01 SN Curve Definitions for Riser Analysis (BaseMetal- Free Corrosion).xlsx
+  - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/00_inbox/31245 - Shell West Boreas BOP on Tree Assessment/CAL/<document-number>-01 SN Curve Definitions for Riser Analysis (BaseMetal- Free Corrosion).xlsx
     description: S-N curve definitions for riser analysis — base metal in free corrosion environment
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/611-CAL-0006-03 (Non Linear Stress Strain Curve).xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/611-CAL-0006-03 (Non Linear Stress Strain Curve).xlsx
     description: Non-linear stress-strain curve — ASME/API material non-linearity for buckle propagation and structural analysis
     type: xlsx
     host: dev-primary
@@ -2815,7 +2815,7 @@ calc_examples:
     Shell West Boreas and Prelude projects contain wave scatter data and RAO tables
     directly applicable to mooring line fatigue (DNV OS E301 Sec 3).
   files:
-  - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/00_inbox/31245 - Shell West Boreas BOP on Tree Assessment/CAL/31245-CAL-0003-01 Long Term Wave Scatter Diagram.xlsx
+  - path: /mnt/ace/docs/disciplines/completion/projects/31245_shell_west_boreas_bop_on_tree_assessment/00_inbox/31245 - Shell West Boreas BOP on Tree Assessment/CAL/<document-number>-01 Long Term Wave Scatter Diagram.xlsx
     description: Long-term wave scatter diagram — Hs/Tp joint probability for North Sea location
     type: xlsx
     host: dev-primary
@@ -2827,15 +2827,15 @@ calc_examples:
     Shell Prelude RAO tables and BOP wellhead fatigue calcs provide
     reference inputs/outputs for mooring dynamics modules.
   files:
-  - path: /mnt/ace/docs/disciplines/completion/projects/31242_shell_prelude_riserless_completion_analysis/00_inbox/31242 - Shell Prelude Riserless Completion Analysis/CAL/31242-CAL-0007-1 RAO Data For OrcaFlex.xlsx
+  - path: /mnt/ace/docs/disciplines/completion/projects/31242_shell_prelude_riserless_completion_analysis/00_inbox/31242 - Shell Prelude Riserless Completion Analysis/CAL/<document-number>-1 RAO Data For OrcaFlex.xlsx
     description: RAO data for OrcaFlex — heave/pitch/roll transfer functions
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/completion/projects/31242_shell_prelude_riserless_completion_analysis/00_inbox/31242 - Shell Prelude Riserless Completion Analysis/CAL/31242-CAL-0007-2 RAO Data For OrcaFlex.xlsx
+  - path: /mnt/ace/docs/disciplines/completion/projects/31242_shell_prelude_riserless_completion_analysis/00_inbox/31242 - Shell Prelude Riserless Completion Analysis/CAL/<document-number>-2 RAO Data For OrcaFlex.xlsx
     description: RAO data set 2 — alternative heading
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/31290 Shell WellHead Fatigue Assement/BOP on Wellhead/Wave Analysis/Rev2/31290-CAL-001-01 (Fatigue for BOP on Wellhead Configuration).xlsx
+  - path: /mnt/ace/docs/disciplines/drilling/projects/simulation/00_inbox/simulation/OrcaFlex/31290 Shell WellHead Fatigue Assement/BOP on Wellhead/Wave Analysis/Rev2/<document-number>-01 (Fatigue for BOP on Wellhead Configuration).xlsx
     description: Fatigue for BOP on wellhead — wave loading fatigue damage accumulation
     type: xlsx
     host: dev-primary
@@ -2849,14 +2849,14 @@ calc_examples:
   domain: cathodic-protection
   description: >
     Complete sacrificial anode CP design reports following DNV RP B401 methodology.
-    BLK31 SLOR design project contains approved (IFA) CP design reports with
+    West Africa block A SLOR design project contains approved (IFA) CP design reports with
     anode quantities, design current densities, and coating breakdown factors.
   files:
-  - path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/RPT/2100-RPT-4005 SLHR Cathodic Protection with Sacrificial Anodes/Rev 06 (IFA)/2100-RPT-4005-06 Cathodic Protection Design Report _Approved_.pdf
+  - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100 West Africa block A SLOR Design/Documents/RPT/<document-number> SLHR Cathodic Protection with Sacrificial Anodes/Rev 06 (IFA)/<document-number>-06 Cathodic Protection Design Report _Approved_.pdf
     description: CP design report Rev 06 IFA — sacrificial anode design per DNV RP B401; full worked example
     type: pdf
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/RPT/2100-RPT-4005 SLHR Cathodic Protection with Sacrificial Anodes/Rev 05 (CR)/2100-RPT-4005-05 Cathodic Protection Design Report _Approved_.pdf
+  - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100 West Africa block A SLOR Design/Documents/RPT/<document-number> SLHR Cathodic Protection with Sacrificial Anodes/Rev 05 (CR)/<document-number>-05 Cathodic Protection Design Report _Approved_.pdf
     description: CP design report Rev 05 CR — earlier revision for comparison
     type: pdf
     host: dev-primary
@@ -2868,15 +2868,15 @@ calc_examples:
     HENECO corrosion FE project contains 2D corrosion simulation workbooks and
     Tefals equation calculations.
   files:
-  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0002-02 (Analysis Parameters).xlsx
+  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/<document-number>-02 (Analysis Parameters).xlsx
     description: Corrosion FE analysis parameters — inputs for DNV RP F103 current density calcs
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0005-01 (Tefals Equation).xlsx
+  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/<document-number>-01 (Tefals Equation).xlsx
     description: Tefals equation workbook — anode current output calculation
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0007-01 (2D Fe Corrosion V8) Draft1.xlsx
+  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/<document-number>-01 (2D Fe Corrosion V8) Draft1.xlsx
     description: 2D FE corrosion simulation workbook — Zn/Fe anode model
     type: xlsx
     host: dev-primary
@@ -2887,14 +2887,14 @@ calc_examples:
     Cathodic protection for offshore pipelines and structures per ISO 15589-2.
     The HENECO corrosion FE project provides 2D FE corrosion simulation workbooks
     and Tefals equation calculations applicable to offshore pipeline CP design.
-    The BLK31 SLOR buoyancy tank corrosion review provides system-level CP
+    The West Africa block A SLOR buoyancy tank corrosion review provides system-level CP
     design notes for offshore structure components.
   files:
-  - path: /mnt/ace/docs/disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/Documents/MIN/2100-MIN-3042-01 Buoyancy Tank Corrosion Design Review (HMC Issued).pdf
+  - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100 West Africa block A SLOR Design/Documents/MIN/2100-MIN-3042-01 Buoyancy Tank Corrosion Design Review (HMC Issued).pdf
     description: Buoyancy tank corrosion design review — offshore structure CP system notes
     type: pdf
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/0143-CAL-0007-01 (2D Fe Corrosion V8) Draft1.xlsx
+  - path: /mnt/ace/docs/disciplines/integrity_management/projects/0143_heneco_corrosion_fe/00_inbox/0143 HENECO Corrosion FE/HENECO/CAL/<document-number>-01 (2D Fe Corrosion V8) Draft1.xlsx
     description: 2D FE corrosion simulation (V8) — offshore pipeline anode model
     type: xlsx
     host: dev-primary
@@ -3115,7 +3115,7 @@ fea_models:
     expected frequencies from output .out file comments if present.
 
 - type: ansys-scf-local
-  path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/SCF/commandOBJ_SCF_WT1125_2.inp
+  path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/SCF/commandOBJ_SCF_WT1125_2.inp
   description: >
     Local FE Stress Concentration Factor model — pipe fitting at WT=11.25mm.
     Relevant to fatigue S-N + SCF per DNV-RP-C203 and API RP 2A-WSD Section 5.

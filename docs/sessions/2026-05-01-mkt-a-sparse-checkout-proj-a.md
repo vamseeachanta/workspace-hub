@@ -1,13 +1,13 @@
-# 2026-05-01 — mkt-a sparse-checkout B1528 visibility
+# 2026-05-01 — mkt-a sparse-checkout proj-a visibility
 
 ## Trigger
 
-User: "git pull and sync this repo" → "I can not see these files: https://github.com/vamseeachanta/mkt-a/tree/main/B1528" → "ensure this does not happen for any repos and sync happens" → "what is sparse-checked-out?"
+User: "git pull and sync this repo" → "I can not see these files: https://github.com/vamseeachanta/mkt-a/tree/main/proj-a" → "ensure this does not happen for any repos and sync happens" → "what is sparse-checked-out?"
 
 ## Outcome
 
 - ✅ `mkt-a` synced — already up to date with `origin/main` at `f5cc50c5` (no commits behind/ahead)
-- ✅ `B1528/` materialized via `git sparse-checkout add B1528` — both subtrees (`excel_to_py/`, `ref/`) now visible
+- ✅ `proj-a/` materialized via `git sparse-checkout add proj-a` — both subtrees (`excel_to_py/`, `ref/`) now visible
 - ✅ Sibling-repo sparse survey: `mkt-a` is the **only** repo in `/mnt/local-analysis/workspace-hub/` with `core.sparseCheckout=true`. All other ~20 sibling repos are full checkouts.
 - ✅ Memory entry written: `feedback_sparse_checkout_add_not_disable.md` + index pointer in `MEMORY.md`
 
@@ -22,7 +22,7 @@ User: "git pull and sync this repo" → "I can not see these files: https://gith
 
 ## Anti-pattern observed and corrected
 
-`git sparse-checkout disable` hung for 22+ minutes in I/O-wait state holding `.git/index.lock`. Root cause: disable triggers materialization of all ~329K skipped files, which the `/mnt/local-analysis/` filesystem cannot service quickly. SIGINT cleaned up safely (no index corruption, B1528 stayed materialized via the prior `add`).
+`git sparse-checkout disable` hung for 22+ minutes in I/O-wait state holding `.git/index.lock`. Root cause: disable triggers materialization of all ~329K skipped files, which the `/mnt/local-analysis/` filesystem cannot service quickly. SIGINT cleaned up safely (no index corruption, proj-a stayed materialized via the prior `add`).
 
 A parallel Codex session (`CODEX_COMPANION_SESSION_ID=a1995a22-...`) ran the same `disable` concurrently — confirmation that the wrong-tool reflex is cross-provider. Both interrupted.
 
@@ -45,7 +45,7 @@ When a path is visible on GitHub but missing locally:
 
 - `/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_sparse_checkout_add_not_disable.md` (new)
 - `/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md` (added one index line under Feedback section)
-- `/mnt/local-analysis/workspace-hub/mkt-a/.git/info/sparse-checkout` (cone updated to include `B1528`)
+- `/mnt/local-analysis/workspace-hub/mkt-a/.git/info/sparse-checkout` (cone updated to include `proj-a`)
 
 ## Related memory
 

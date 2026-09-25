@@ -15,7 +15,7 @@ Follow-up to #1861 (scaffold commit `aaf90c8e`). The benchmark bridge now loads 
 - [ ] Extract concept_type + water_depth + production_rate correlations from `SubseaProject` records
 - [ ] Build decision tree: given (water_depth, reservoir_size, distance_to_infra) → predicted concept type
 - [ ] Generate concept selection probability matrix by water depth band (e.g. "at 800-1500m: 45% Semi, 30% TLP, 15% Spar, 10% Tieback")
-- [ ] Validate against 6 existing case studies (Solveig, Sverdrup, Mad Dog, Appomattox, Perdido, Whale)
+- [ ] Validate against 6 existing case studies (Solveig, Sverdrup, Mad Dog, Appomattox, GoM spar A, Whale)
 - [ ] Wire into existing `concept_selection.py` as an empirical weighting factor
 
 ## Target Files

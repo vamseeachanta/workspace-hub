@@ -1504,17 +1504,17 @@ skills:
   name: orcaflex-enrichment
   when_to_use: orcaflex-enrichment Convert OrcaFlex .dat binary model files to enriched YAML fixtures using worldenergydata public databases (vessel fleet, riser components, pipe schedules). All stages run on licensed-win-1. Output committed to digitalmodel as test fixtures. data
   when_to_use_source: backfill
-- description: Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Benchmarked superior output with 24 vs 7 functions and 81 vs 53 tests for Ballymore jumper.
+- description: Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Benchmarked superior output with 24 vs 7 functions and 81 vs 53 tests for GoM tieback A jumper.
   family: data
   id: data/excel-workbook-to-python-cowork
   name: excel-workbook-to-python-cowork
-  when_to_use: excel-workbook-to-python-cowork Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Benchmarked superior output with 24 vs 7 functions and 81 vs 53 tests for Ballymore jumper. data
+  when_to_use: excel-workbook-to-python-cowork Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Benchmarked superior output with 24 vs 7 functions and 81 vs 53 tests for GoM tieback A jumper. data
   when_to_use_source: backfill
-- description: Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Proven superior quality vs Linux openpyxl extraction (24 vs 7 functions, 81 vs 53 tests). Validated on Ballymore jumper installation analysis.
+- description: Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Proven superior quality vs Linux openpyxl extraction (24 vs 7 functions, 81 vs 53 tests). Validated on GoM tieback A jumper installation analysis.
   family: data
   id: data/excel-workbook-to-python-v2
   name: excel-workbook-to-python-v2
-  when_to_use: excel-workbook-to-python-v2 Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Proven superior quality vs Linux openpyxl extraction (24 vs 7 functions, 81 vs 53 tests). Validated on Ballymore jumper installation analysis. data
+  when_to_use: excel-workbook-to-python-v2 Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Proven superior quality vs Linux openpyxl extraction (24 vs 7 functions, 81 vs 53 tests). Validated on GoM tieback A jumper installation analysis. data
   when_to_use_source: backfill
 - description: Save/publish analysis or computation results from ANY ecosystem repo to Hugging Face as a queryable, viewer-renderable dataset. Use when the user wants to "save results to hugging face", "publish dataset to HF", "hugging face data saving", "save analysis results", "hf dataset", "make results queryable", or "render via datasets-server API". Reshapes nested results into flat parquet tables, writes a dataset card with a viewer `configs:` block and provenance, applies license/public-vs-private routing, enforces a domain data-quality gate (faithful-to-source != correct), publishes to `aceengineer/<repo>-<projection>`, and verifies via the datasets-server API.
   family: data

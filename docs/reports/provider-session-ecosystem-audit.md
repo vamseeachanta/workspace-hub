@@ -386,7 +386,7 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `CLAUDE.md` — 16
 - `src/digitalmodel/hydrodynamics/diffraction/input_schemas.py` — 15
 - `src/digitalmodel/solvers/orcaflex/modular_generator/__init__.py` — 14
-- `docs/domains/orcaflex/subsea/jumper/installation/ballymore_plet_plem/spec.yml` — 11
+- `docs/domains/orcaflex/subsea/jumper/installation/gom_tieback_a_plet_plem/spec.yml` — 11
 - `src/digitalmodel/hydrodynamics/diffraction/orcawave_backend.py` — 11
 - `knowledge/wikis/engineering/CLAUDE.md` — 10
 - `scripts/review/results/2026-04-25-plan-2488-codex.md` — 10
@@ -451,16 +451,16 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `workspace-hub` — 7829811
 
 ### hermes top reads
-- `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py` — 32886
+- `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/proj_a_vessel_s_current_heading_rudder_report.py` — 32886
 - `docs/plans/README.md` — 24273
 - `/mnt/local-analysis/worktrees/workspace-hub-2720/scripts/readiness/telegram_hermes_readiness.py` — 19575
 - `/mnt/local-analysis/worktrees/workspace-hub-2657/scripts/analysis/provider_session_ecosystem_audit.py` — 17982
 - `scripts/analysis/provider_session_ecosystem_audit.py` — 14310
 - `/mnt/local-analysis/worktrees/workspace-hub-2720/tests/readiness/test_telegram_hermes_readiness.py` — 14067
-- `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py` — 13986
+- `/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_proj_a_vessel_s_current_heading_rudder.py` — 13986
 - `docs/plans/_template-issue-plan.md` — 13932
 - `/mnt/local-analysis/llm-wiki/scripts/generate_public_graph_manifests.py` — 12123
-- `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_current_heading_rudder.yml` — 11178
+- `/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/proj_a_vessel_s_current_heading_rudder.yml` — 11178
 
 ### hermes top symbolic reads
 - `github/github-issues` — 60129
@@ -537,7 +537,7 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - Interpretation: Snapshot post-record change aligns with recent event-time activity.
 
 ### hermes top missing repo reads
-- `docs/plans/2026-05-20-issue-2760-b1528-sirocco-force-review-revision.md` — 6615
+- `docs/plans/2026-05-20-issue-2760-proj-a-vessel-s-force-review-revision.md` — 6615
 - `scripts/review/results/2026-05-20-plan-2766-claude.md` — 2079
 - `scripts/review/results/2026-05-20-plan-2766-codex.md` — 2079
 - `scripts/review/results/2026-05-20-plan-2766-disagreement.md` — 2079

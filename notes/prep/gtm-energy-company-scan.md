@@ -16,7 +16,7 @@ Data sourced from ACE Engineer's automated job market scanner (scripts/gtm/job-m
 - **Subsea7**: Consistent hiring for offshore installation engineers, pipeline specialists, and subsea construction roles
 - **TechnipFMC**: Strong demand for subsea engineers, flexibles specialists, and umbilical design engineers
 - **client-d**: Active recruitment for pipelay engineers, offshore construction managers, and offshore installation leads
-- **McDermott**: Seeking offshore structural engineers, jackup specialists, and decommissioning engineers
+- **an installation contractor**: Seeking offshore structural engineers, jackup specialists, and decommissioning engineers
 - **Allseas**: Heavy lift specialists, pipelay engineers, and offshore installation managers
 - **Heerema**: Crane operators, offshore installation engineers, and heavy lift planning engineers
 - **Boskalis**: Dredging engineers, offshore installation specialists, and marine warranty surveyors
@@ -91,7 +91,7 @@ Data sourced from ACE Engineer's automated job market scanner (scripts/gtm/job-m
   - Buckling and ultimate strength assessment
   - Joint and connector design (K-joints, Y-joints, grouted connections)
   - Python scripting for automation and parametric studies
-- **Hiring Companies**: Stress Engineering, Zentech, Wood Group, Worley, McDermott, DNV, ABS
+- **Hiring Companies**: Stress Engineering, Zentech, Wood Group, Worley, an installation contractor, DNV, ABS
 - **Salary Range**: $85,000 - $130,000 base
 
 #### 3. Cathodic Protection & Corrosion Engineers

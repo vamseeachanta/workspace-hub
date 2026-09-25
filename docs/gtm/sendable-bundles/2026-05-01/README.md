@@ -26,7 +26,7 @@ That single page links the two audience-specific briefs, the 6 demos, and the ca
 - Pipeline wall thickness multi-code (Demo 2) → <https://www.aceengineer.com/demos/wall-thickness.html>
 - Deepwater mudmat installation (Demo 3) → <https://www.aceengineer.com/demos/mudmat.html>
 - Shallow water pipelay (Demo 4) → <https://www.aceengineer.com/demos/pipelay.html>
-- Subsea jumper lift — Ballymore worked example (Demo 5) → <https://www.aceengineer.com/demos/jumper-installation.html>
+- Subsea jumper lift — GoM tieback A worked example (Demo 5) → <https://www.aceengineer.com/demos/jumper-installation.html>
 - Mooring & station-keeping screening template (Demo 6, illustrative until project run) → <https://www.aceengineer.com/demos/mooring.html>
 
 ### One-page summary (PDF, attachable)
@@ -52,7 +52,7 @@ I run AceEngineer, an engineering-led parametric analysis shop for offshore inst
 A 1-screen overview, written for installation contractors, is here: <https://www.aceengineer.com/outreach/vessel-contractor-brochure.html>
 
 If you want to see the kind of deliverable we'd hand back after a 48-hour run on your data, the relevant demos are:
-- Subsea jumper lift (Ballymore manifold-to-PLET, 27 OrcaFlex sections, 81 tests): <https://www.aceengineer.com/demos/jumper-installation.html>
+- Subsea jumper lift (GoM tieback A manifold-to-PLET, 27 OrcaFlex sections, 81 tests): <https://www.aceengineer.com/demos/jumper-installation.html>
 - Deepwater mudmat installation (180 parametric cases, DNV H103 coupled): <https://www.aceengineer.com/demos/mudmat.html>
 - Shallow water pipelay (sag-bend tension sensitivity, sea-state envelope): <https://www.aceengineer.com/demos/pipelay.html>
 
@@ -77,7 +77,7 @@ The mooring-screening demo template (catenary / taut / hybrid concept comparison
 
 For technical-buyer context, the closest installation demos:
 - Mudmat installation (180 parametric cases): <https://www.aceengineer.com/demos/mudmat.html>
-- Subsea jumper lift (Ballymore worked example): <https://www.aceengineer.com/demos/jumper-installation.html>
+- Subsea jumper lift (GoM tieback A worked example): <https://www.aceengineer.com/demos/jumper-installation.html>
 
 Capability summary PDF: <https://www.aceengineer.com/assets/capability-summary-v1.pdf>
 

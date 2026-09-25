@@ -100,7 +100,7 @@ Use `contact-manager` skill for normalization.
 ## Email Account Handling
 
 Each account has different cleanup priorities:
-- **ace**: Extract client emails (lng-a, mcdermott, shell, etc.) → their repos. Extract CRE market data → assethold. Delete spam/newsletters.
+- **ace**: Extract client emails (lng-a, an installation contractor, shell, etc.) → their repos. Extract CRE market data → assethold. Delete spam/newsletters.
 - **personal**: Delete spam aggressively (promote.weebly.com, swimoutlet, wikimedia, etc.). Archive personal docs → achantas-data. School/parent emails → keep.
 - **skestates**: Almost everything is valuable (tenant, insurance, tax). Archive all → sabithaandkrishnaestates docs.
 

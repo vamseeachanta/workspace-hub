@@ -17,7 +17,7 @@
 >   — this file.
 >
 > **Cross-lane discipline.** No edits to other lanes' files. No GitHub
-> mutations. No client-confidential corpora referenced by name (Woodfibre
+> mutations. No client-confidential corpora referenced by name (LNG terminal A
 > #2544 + SESA #2541 are gated by mkt-a / project-owner clearance and were
 > deliberately excluded from the GTM material per the lane's
 > "preserve engineering evidence boundaries" rule).
@@ -157,7 +157,7 @@ Candidate 2).**
 - *Effect.* Unblocks Snippet 3.3 (LNG terminal lead). Without this
   artifact, Snippet 3.3 cannot ship.
 - *Boundary.* Stay strictly in the public-source corpus. Do **not**
-  reference Woodfibre, SESA, or any mkt-a-corpus content.
+  reference LNG terminal A, SESA, or any mkt-a-corpus content.
 - *Issue.* Open new issue with this scope; cross-link
   `lng-berth-operability-framing.md` and the seed YAML.
 
@@ -214,9 +214,9 @@ This lane respected a strict evidence boundary. The following were all
 *intentionally excluded* from the outreach material despite being
 visible in the repo:
 
-1. **Woodfibre LNG (#2544) and SESA (#2541) corpora.** Both are
+1. **LNG terminal A (#2544) and SESA (#2541) corpora.** Both are
    mkt-a-clearance-gated, metadata-only, and explicitly out-of-scope for
-   any GTM material. Per the prior lane's `terminal-4-woodfibre.md`:
+   any GTM material. Per the prior lane's `terminal-4-lng-terminal-a.md`:
    "every confidentiality call is left for mkt-a / project-owner
    review."
 2. **Semiconductor lanes (#2507, #2509, #2510).** Plans only — no proof

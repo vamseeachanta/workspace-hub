@@ -26,16 +26,16 @@ the row UNVERIFIABLE for human follow-up).
 ### Row 1 — Subsea7
 **Old (broken):** `https://www.subsea7.com/en/our-fleet.html` → 404
 **New (verified):** `https://www.subsea7.com/en/our-business/assets.html` → 200 (browser), JS-challenge for bots
-**Verification:** `curl -A "<Chrome UA>"` returns 200. WebFetch returns the Cloudflare-style "Challenge Validation" placeholder (~1.8 KB body) — the entire `subsea7.com` host is JS-challenge-WAFed, so any non-browser probe will see the same thin response. WebSearch on `site:subsea7.com` confirms `/en/our-business/assets.html` is the canonical fleet/assets page and links to Seven Borealis, Seven Arctic, Seven Vega individual datasheets.
+**Verification:** `curl -A "<Chrome UA>"` returns 200. WebFetch returns the Cloudflare-style "Challenge Validation" placeholder (~1.8 KB body) — the entire `subsea7.com` host is JS-challenge-WAFed, so any non-browser probe will see the same thin response. WebSearch on `site:subsea7.com` confirms `/en/our-business/assets.html` is the canonical fleet/assets page and links to Seven Borealis, construction vessel A, Seven Vega individual datasheets.
 **Caveat (WAF):** Vessel datasheet PDFs (e.g. `https://www.subsea7.com/content/dam/subsea7-corporate2018/Datasheets/Vessel/2023-vessel-datasheet-updates/Seven_Borealis-300dpi.pdf.downloadasset.pdf`) **also 403 to WebFetch**, so the deeper-link option is no better. Recommend keeping `assets.html` as primary evidence and noting the WAF in §3.
 
 ---
 
-### Row 4 — McDermott International
-**Old (broken):** `https://www.mcdermott.com/What-We-Do/Subsea-and-Floating-Facilities` → 404 (path was renamed)
-**New (verified):** `https://www.mcdermott.com/solutions/subsea-floating-facilities` → 200 (WebFetch confirms full content), 403 to bot UAs
+### Row 4 — an installation contractor International
+**Old (broken):** `https://www.installation-contractor.com/What-We-Do/Subsea-and-Floating-Facilities` → 404 (path was renamed)
+**New (verified):** `https://www.installation-contractor.com/solutions/subsea-floating-facilities` → 200 (WebFetch confirms full content), 403 to bot UAs
 **Verification:** WebFetch returned the "Subsea & Floating Facilities" page describing pipelay, umbilicals, risers, flowlines, manifolds, FPUs/FPSOs, and citing "2900+ meters deepest pipelay" capability (Top-Tier Vessel Fleet section). Site has a WAF that returns 403 to non-browser User-Agents — this is normal and not a content issue.
-**Note:** Page does not name Amazon or DLV 2000 individually; for a deeper vessel-named link, `https://www.mcdermott.com/What-We-Do/Marine-Construction-Vessel` may also exist (returned by search) but was not separately verified. The solutions/subsea-floating-facilities URL is sufficient as evidence of the segment claim.
+**Note:** Page does not name Amazon or DLV 2000 individually; for a deeper vessel-named link, `https://www.installation-contractor.com/What-We-Do/Marine-Construction-Vessel` may also exist (returned by search) but was not separately verified. The solutions/subsea-floating-facilities URL is sufficient as evidence of the segment claim.
 
 ---
 
@@ -164,7 +164,7 @@ the row UNVERIFIABLE for human follow-up).
 - **Total in scope:** 14 hard-broken rows + 2 oddity rows + 1 status code (Cadeler 455) = 16 rows examined
 - **Total clean repaired (verified 200 + content match):** 12
   - Rows 1, 4, 5, 7, 10, 12, 13, 16, 18, 21, 22, 23, plus 8 (Solstad oddity), 19 (Cadeler oddity)
-  - Counted Subsea7 and McDermott as repaired even though probes return WAF/403 to bot UAs — both work in real browsers and the new URL paths are canonical.
+  - Counted Subsea7 and an installation contractor as repaired even though probes return WAF/403 to bot UAs — both work in real browsers and the new URL paths are canonical.
 - **Partially repaired (URL works in browser, probe-fails):** 2
   - Row 15 (Hornbeck) — TLS chain broken; works with `-k` or Chrome's bundled CAs
   - Row 19 (Cadeler) — UA/IP-filtering returns 451/455 to many probes; works via Anthropic WebFetch and real browsers
@@ -181,14 +181,14 @@ The matrix currently has the following WAF/protection-related URLs (some pre-exi
 | 1 | Subsea7 | Cloudflare-style JS challenge across the entire host | YES — works in real browsers; PDF datasheets also blocked, no clean alternative. Add §3 note. |
 | 2 | TechnipFMC | (Adv-C-flagged WAF, pre-existing) | Confirm in next probe pass; not in this 14-row repair scope |
 | 3 | client-d | (Adv-C-flagged WAF, pre-existing) | Confirm in next probe pass; not in this 14-row repair scope |
-| 4 | McDermott | 403 to bot UAs only | YES — full content via WebFetch / browser; 403 is UA-targeted, not content-gone |
+| 4 | an installation contractor | 403 to bot UAs only | YES — full content via WebFetch / browser; 403 is UA-targeted, not content-gone |
 | 15 | Hornbeck | Broken TLS chain | TENTATIVE — works in browsers, fails strict probes; Helix merger may obviate by Q3 2026 |
 | 19 | Cadeler | Simply.com UA/IP filter, 451/455 to probes | TENTATIVE — works via Anthropic infra and real browsers |
 | 24 | Woodside | (Adv-C-flagged WAF, pre-existing) | Confirm in next probe pass; not in this 14-row repair scope |
 
-**Recommendation for main session:** the 4 pre-existing WAF rows (TechnipFMC, client-d, Woodside, plus newly-confirmed Subsea7, McDermott) are **acceptable as evidence URLs** because human reviewers will click them in a browser and see real content. Add a one-line note to §3:
+**Recommendation for main session:** the 4 pre-existing WAF rows (TechnipFMC, client-d, Woodside, plus newly-confirmed Subsea7, an installation contractor) are **acceptable as evidence URLs** because human reviewers will click them in a browser and see real content. Add a one-line note to §3:
 
-> Several corporate sites (Subsea7, TechnipFMC, client-d, McDermott, Woodside) deploy WAFs that block automated probes (`curl`, headless scrapers) but render correctly in real browsers. These URLs are valid evidence; an HTTP-probe report flagging them as broken is a false positive.
+> Several corporate sites (Subsea7, TechnipFMC, client-d, an installation contractor, Woodside) deploy WAFs that block automated probes (`curl`, headless scrapers) but render correctly in real browsers. These URLs are valid evidence; an HTTP-probe report flagging them as broken is a false positive.
 
 For Hornbeck (15) and Cadeler (19), recommend adding a TLS-chain / host-firewall note to §3 as well — these are real but probe-hostile.
 

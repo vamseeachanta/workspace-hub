@@ -12,7 +12,7 @@ Every staged file was checked for a corresponding parent file with same relative
 | 5 | `lng-a-62092-sesa` | 418 | 0 | 0 | 0 | PASS |
 | 6 | `lng-a-university` | 564 | 0 | 0 | 0 | PASS |
 | 7 | `lng-a-codes-specs` | 35,197 | 0 | 0 | 0 | PASS |
-| 8 | `mkt-a-31522-woodfibre` | 5,364 | 0 | 0 | 0 | PASS |
+| 8 | `mkt-a-31522-lng-terminal-a` | 5,364 | 0 | 0 | 0 | PASS |
 
 ## Artifacts
 

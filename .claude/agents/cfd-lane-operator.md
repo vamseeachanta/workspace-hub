@@ -1,6 +1,6 @@
 ---
 name: cfd-lane-operator
-description: Operates the hull-resistance CFD lanes end to end — advances the B1552 double-body matrix through its gates, arms conditions when a gate passes, stops when one fails, and produces the final report. Use for unattended progression of a CFD campaign across gpu-claw and ace-linux-2.
+description: Operates the hull-resistance CFD lanes end to end — advances the <job-code> double-body matrix through its gates, arms conditions when a gate passes, stops when one fails, and produces the final report. Use for unattended progression of a CFD campaign across gpu-claw and ace-linux-2.
 tools: Bash, Read, Write, Edit, Grep, Glob, TodoWrite
 model: inherit
 ---

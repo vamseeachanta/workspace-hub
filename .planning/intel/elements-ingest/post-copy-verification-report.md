@@ -13,6 +13,6 @@
 | `digitalmodel-qgis` | PASS | 3 | 3 | 0 | 0 | 0 |
 | `digitalmodel-riser-toolbox` | PASS | 8 | 8 | 0 | 0 | 0 |
 | `digitalmodel-suction-pile-sizing` | PASS | 4 | 4 | 0 | 0 | 0 |
-| `mkt-a-31522-woodfibre` | PASS | 5364 | 5364 | 0 | 0 | 0 |
+| `mkt-a-31522-lng-terminal-a` | PASS | 5364 | 5364 | 0 | 0 | 0 |
 
 Details are in `post-copy-verification/*.tsv`.

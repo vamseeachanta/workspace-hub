@@ -269,7 +269,7 @@ Considered. Rejected because: (i) `worldenergydata` is a Python library; mixing 
 ## Out of Scope
 
 - Vendor-licensed standards routing — settled in `.claude/rules/codes-standards-data-routing.md` §1-5 (private llm-wiki).
-- Client-project content (B1528, proj-a, mkt-a) — separate epic under client-engagement issues.
+- Client-project content (proj-a, proj-a, mkt-a) — separate epic under client-engagement issues.
 - Re-scraping data already captured — existing `/mnt/ace/` snapshots remain canonical raw source.
 - Pipeline rate-limit / scraper-reliability work — separate issue class.
 - License-drift detection cron script — flagged as follow-on, not built here.

@@ -36,7 +36,7 @@ Work happens across multiple workstations — everything must be in the repo.
 ### One-Time Migration Task
 
 Merge & deduplicate existing user-local memory into repo memory:
-- Source: `C:\Users\ansystech\.claude\projects\D--workspace-hub\memory\MEMORY.md` + topic files
+- Source: `C:\Users\user\.claude\projects\D--workspace-hub\memory\MEMORY.md` + topic files
 - Target: `.claude/memory/KNOWLEDGE.md` + topic files
 - Convert machine-specific paths to env var placeholders (e.g., `$AQWA_HOME/bin/...`)
 - Deduplicate entries already captured elsewhere (rules, docs)

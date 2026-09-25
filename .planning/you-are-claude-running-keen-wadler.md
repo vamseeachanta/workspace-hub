@@ -14,7 +14,7 @@ A prior capacity-aware artifact (`provider-capacity-aware-20260501-0613/results/
 | Artifact path (repo root) | Apparent verdict / status | Current enough to cite? | Blocking defects observed in *this* lane |
 |---|---|---|---|
 | `docs/plans/2026-04-28-issue-2541-elements-sesa-curated-extraction-plan.md` | Plan body says `Status: plan-review`; carries 2026-04-29 hardening addendum (L238+) authoritative over earlier pseudocode | Yes — addendum lives on `main` per approval pack provenance (commit `bdafe39cd`) | None internal to plan; runtime extraction is hard-blocked on missing clearance record (see §2) |
-| `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` | `Status: plan-review`; carries 2026-04-29 split-approval addendum (L322+) — pointer/scout-only subset is the approval-ready slice | Yes | None internal; document-abstract / quote / table / figure extraction is split out to a separate post-scout plan |
+| `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` | `Status: plan-review`; carries 2026-04-29 split-approval addendum (L322+) — pointer/scout-only subset is the approval-ready slice | Yes | None internal; document-abstract / quote / table / figure extraction is split out to a separate post-scout plan |
 | `scripts/review/results/2026-04-29-plan-2541-2544-codex.md` | Pre-hardening Codex review — both #2541 and #2544 MAJOR | Historical evidence only — superseded by re-review | n/a (kept as audit trail) |
 | `scripts/review/results/2026-04-29-plan-2541-2544-gemini.md` | Pre-hardening Gemini review — #2541 MAJOR, #2544 APPROVE | Historical | n/a |
 | `scripts/review/results/2026-04-29-plan-2541-2544-codex-rereview.md` | Post-hardening Codex re-review — #2541 MINOR, #2544 APPROVE | **Yes, but degraded grounding**: sandbox `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted` blocked direct file reads, verdict based on addendum excerpts pasted into prompt | Treat as weakly grounded co-signer per `feedback_codex_sandbox_fallback_paths.md`; not a second independent grounding |
@@ -43,7 +43,7 @@ A prior capacity-aware artifact (`provider-capacity-aware-20260501-0613/results/
 | Gate | Required artifact | Current state | What it blocks |
 |---|---|---|---|
 | SESA extraction clearance | `docs/governance/sesa-extraction-clearance-2026.md` (or named-owner comment on #2541) | **Does not exist** — verified via `ls docs/governance/` 2026-05-01: directory holds only flywheel/SESSION-GOVERNANCE/TRUST-ARCHITECTURE/standards/policy files, no SESA file | All SESA extraction, source/concept/comparison page emission, quote/snippet emission. Plan-approval is **not** blocked by this. |
-| Woodfibre extraction clearance | `docs/governance/woodfibre-extraction-clearance-2026.md` | **Does not exist** | Document abstract / quote / table / figure extraction. Pointer/scout-metadata-only subset is **not** blocked by this. |
+| LNG terminal A extraction clearance | `docs/governance/lng-terminal-a-extraction-clearance-2026.md` | **Does not exist** | Document abstract / quote / table / figure extraction. Pointer/scout-metadata-only subset is **not** blocked by this. |
 | Approver authority | Named mkt-a project owner / client-authorized reviewer / legal-IP delegate; row-level schema (path, doc-id, approver, allowed extraction level, prohibited content, expiration) | No clearance record exists yet, so no approver named | Hardens the runtime gate; "generic project lead" is explicitly insufficient per #2544 addendum L332 |
 
 These gates fire at **runtime**, not at **plan-approval time**. The user can label `status:plan-approved` for the bounded subsets today; the clearance files only have to exist before the implementation phase emits any wiki content.
@@ -52,7 +52,7 @@ These gates fire at **runtime**, not at **plan-approval time**. The user can lab
 
 - ❌ No `gh issue edit ... --add-label status:plan-approved` (lane is non-mutating; user-in-loop gate per `feedback_never_offer_to_self_label_plan_approved.md`)
 - ❌ No `gh issue close`, `gh issue comment`, `gh issue edit` of any kind from this lane
-- ❌ No drafting of `docs/governance/sesa-extraction-clearance-2026.md` or `docs/governance/woodfibre-extraction-clearance-2026.md` — clearance must come from named human approvers, not from a Claude lane
+- ❌ No drafting of `docs/governance/sesa-extraction-clearance-2026.md` or `docs/governance/lng-terminal-a-extraction-clearance-2026.md` — clearance must come from named human approvers, not from a Claude lane
 - ❌ No source-document text extraction; no `pdftotext`/`pandoc` invocations against `/mnt/ace/...`
 - ❌ No reading or pasting of raw client/source content (PDF/DOCX/PPTX bodies) into chat or repo files
 - ❌ No re-dispatch of provider review — re-review is already complete; another round burns capacity without changing the verdict surface
@@ -70,7 +70,7 @@ These gates fire at **runtime**, not at **plan-approval time**. The user can lab
 If a non-mutating Claude lane *must* run for capacity-burn reasons, the only useful read-only deliverables left are:
 
 - **Drift check** — re-fetch live `gh issue view 2541` and `gh issue view 2544` labels and compare against the 2026-04-29 approval-pack snapshot, to confirm the bounded-subset verdict is still applicable. (Read-only `gh` reads only, no `edit`/`comment`/`close`.)
-- **Clearance-file existence re-verification** — run `ls docs/governance/` on the latest `main` to confirm SESA / Woodfibre clearance files still don't exist before any future runtime extraction gate test.
+- **Clearance-file existence re-verification** — run `ls docs/governance/` on the latest `main` to confirm SESA / LNG terminal A clearance files still don't exist before any future runtime extraction gate test.
 
 Both are true read-only and produce no governance-mutating artifacts.
 
@@ -79,8 +79,8 @@ Both are true read-only and produce no governance-mutating artifacts.
 This lane:
 
 - did not apply `status:plan-approved` (or any label) to any GitHub issue;
-- did not author or stage `docs/governance/sesa-extraction-clearance-2026.md` or `docs/governance/woodfibre-extraction-clearance-2026.md`;
-- did not extract any source content from `/mnt/ace/lng-a/62092_sesa` or `/mnt/ace/mkt-a/31522-woodfibre-lng`;
+- did not author or stage `docs/governance/sesa-extraction-clearance-2026.md` or `docs/governance/lng-terminal-a-extraction-clearance-2026.md`;
+- did not extract any source content from `/mnt/ace/lng-a/62092_sesa` or `/mnt/ace/mkt-a/31522-lng-terminal-a`;
 - did not perform any `gh issue` mutation;
 - does not authorize any downstream lane to perform any of the above based on this report.
 

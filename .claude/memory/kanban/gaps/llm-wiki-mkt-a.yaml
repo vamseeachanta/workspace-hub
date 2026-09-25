@@ -5,7 +5,7 @@ gaps:
     title: Uncommitted proj-a rudder-force report (issue-2760) staged but not committed
     source: detected_gap
     detection_basis: |
-      git status shows 7 staged files under reports/B1528/issue-2760/ (b1528-proj-a-current-rudder-force-report.{md,html,pdf,docx} + citations.json + manifest.json + report-layer-manifest.json). Plus untracked .codex/ and .gemini/ runtime dirs.
+      git status shows 7 staged files under reports/proj-a/issue-2760/ (proj-a-current-rudder-force-report.{md,html,pdf,docx} + citations.json + manifest.json + report-layer-manifest.json). Plus untracked .codex/ and .gemini/ runtime dirs.
     needs_issue: true
     priority: 2
     body_excerpt: |

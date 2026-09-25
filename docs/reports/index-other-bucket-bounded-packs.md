@@ -21,13 +21,13 @@ To keep the issue moving without writing outside the owned paths, this run used 
 | Priority | Pack ID | Action | Proposed Domain | Candidate Count | Selection Boundary |
 |---|---|---|---|---:|---|
 | 1 | `ace-project-pipeline-9427-itt-reclassify` | `reclassify_now` | `pipeline` | 681 | `disciplines/production/projects/9427_2pipeline_engg/05_reports/9427_2pipeline_engg/1. ITT-20230419T095814Z-001` |
-| 2 | `ace-project-drilling-3824-calculation-allowlist` | `reclassify_now` | `drilling` | 266 | `disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/00_inbox/3824 - BP Macondo Containment Riser Analysis/CAL` |
+| 2 | `ace-project-drilling-3824-calculation-allowlist` | `reclassify_now` | `drilling` | 266 | `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL` |
 | 3 | `ace-project-drilling-31057-calculation-allowlist` | `reclassify_now` | `drilling` | 179 | `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL` |
 | 4 | `ace-project-misc-614-sewol-calculation-allowlist` | `reclassify_now` | `naval-architecture` | 274 | `disciplines/misc/projects/614_sewol/00_inbox/614 Sewol/CAL` |
 | 5 | `ace-project-misc-614-sewol-report-allowlist` | `reclassify_now` | `naval-architecture` | 23 | `disciplines/misc/projects/614_sewol/05_reports/614 Sewol/REP` |
-| 6 | `ace-project-misc-2100-package-engineering-calcs` | `reclassify_now` | `installation` | 103 | `disciplines/misc/projects/2100_blk31_slor_design/00_inbox/2100 BLK31 SLOR Design/300 Package Engineering` |
-| 7 | `ace-project-drilling-3824-component-data-summarize-first` | `summarize_first` | `drilling` | 504 | `disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/05_reports/3824 - BP Macondo Containment Riser Analysis/Component Data` |
-| 8 | `ace-project-misc-2100-bp-documents-summarize-first` | `summarize_first` | `installation` | 720 | `disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/BP Documents` |
+| 6 | `ace-project-misc-2100-package-engineering-calcs` | `reclassify_now` | `installation` | 103 | `disciplines/misc/projects/2100_wa_block_a_slor_design/00_inbox/2100 West Africa block A SLOR Design/300 Package Engineering` |
+| 7 | `ace-project-drilling-3824-component-data-summarize-first` | `summarize_first` | `drilling` | 504 | `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/05_reports/3824 - BP GoM well A Containment Riser Analysis/Component Data` |
+| 8 | `ace-project-misc-2100-bp-documents-summarize-first` | `summarize_first` | `installation` | 720 | `disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100 West Africa block A SLOR Design/BP Documents` |
 
 ## Pack Details
 
@@ -49,13 +49,13 @@ To keep the issue moving without writing outside the owned paths, this run used 
 - Action: `reclassify_now`
 - Proposed domain: `drilling`
 - Candidate count: `266`
-- Selection rule: `disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/00_inbox/3824 - BP Macondo Containment Riser Analysis/CAL` with doc classes `calculation, spreadsheet`
+- Selection rule: `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL` with doc classes `calculation, spreadsheet`
 - #2247 writeback target: `#2247`
-- Rationale: Macondo containment riser calculation workbooks are tightly clustered under the CAL subtree and represent a clean drilling-domain allowlist.
+- Rationale: GoM well A containment riser calculation workbooks are tightly clustered under the CAL subtree and represent a clean drilling-domain allowlist.
 - Example records:
-  - `disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/00_inbox/3824 - BP Macondo Containment Riser Analysis/CAL/1000 Mad Dog Riser/3824-CAL-1001-1 (Mad Dog Hang Off Model).xls`
-  - `disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/00_inbox/3824 - BP Macondo Containment Riser Analysis/CAL/1000 Mad Dog Riser/3824-CAL-1002-1 (Current Profiles).xls`
-  - `disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/00_inbox/3824 - BP Macondo Containment Riser Analysis/CAL/1000 Mad Dog Riser/3824-CAL-1002-2 (Return Period Current Profiles).xls`
+  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL/1000 Mad Dog Riser/<document-number>-1 (Mad Dog Hang Off Model).xls`
+  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL/1000 Mad Dog Riser/<document-number>-1 (Current Profiles).xls`
+  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL/1000 Mad Dog Riser/<document-number>-2 (Return Period Current Profiles).xls`
 
 ### `ace-project-drilling-31057-calculation-allowlist`
 
@@ -66,9 +66,9 @@ To keep the issue moving without writing outside the owned paths, this run used 
 - #2247 writeback target: `#2247`
 - Rationale: The ENI riser calculation subtree contains explicit CAL-coded workbooks and is small enough for exact allowlist writeback in #2247.
 - Example records:
-  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/31057-CAL-0001-7 Remaining Fatigue Life Calculation (DRAFT).xlsx`
-  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/31057-CAL-0002-1 Analysis vs. Metocean Data (CHECKED).xlsx`
-  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/31057-CAL-0003-2 NOAA Current Data (CHECKED).xlsb`
+  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/<document-number>-7 Remaining Fatigue Life Calculation (DRAFT).xlsx`
+  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/<document-number>-1 Analysis vs. Metocean Data (CHECKED).xlsx`
+  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/<document-number>-2 NOAA Current Data (CHECKED).xlsb`
 
 ### `ace-project-misc-614-sewol-calculation-allowlist`
 
@@ -101,39 +101,39 @@ To keep the issue moving without writing outside the owned paths, this run used 
 - Action: `reclassify_now`
 - Proposed domain: `installation`
 - Candidate count: `103`
-- Selection rule: `disciplines/misc/projects/2100_blk31_slor_design/00_inbox/2100 BLK31 SLOR Design/300 Package Engineering` with doc classes `calculation, spreadsheet, report`
+- Selection rule: `disciplines/misc/projects/2100_wa_block_a_slor_design/00_inbox/2100 West Africa block A SLOR Design/300 Package Engineering` with doc classes `calculation, spreadsheet, report`
 - #2247 writeback target: `#2247`
 - Rationale: The 2100 package-engineering inbox subtree is a bounded calculation-heavy installation pack rather than a mixed correspondence archive.
 - Example records:
-  - `disciplines/misc/projects/2100_blk31_slor_design/00_inbox/2100 BLK31 SLOR Design/300 Package Engineering/312 Flexible Riser Jumper Pre-installation/ACL Frame and Clamp Designs (Internal).xls`
-  - `disciplines/misc/projects/2100_blk31_slor_design/00_inbox/2100 BLK31 SLOR Design/300 Package Engineering/312 Flexible Riser Jumper Pre-installation/CTR Flexible Pre-Installation rev1 TdB.xls`
-  - `disciplines/misc/projects/2100_blk31_slor_design/00_inbox/2100 BLK31 SLOR Design/300 Package Engineering/312 Flexible Riser Jumper Pre-installation/Calculations/2100-204-CAL-0001-1 Riser Designation (For Report & Drawings).xls`
+  - `disciplines/misc/projects/2100_wa_block_a_slor_design/00_inbox/2100 West Africa block A SLOR Design/300 Package Engineering/312 Flexible Riser Jumper Pre-installation/ACL Frame and Clamp Designs (Internal).xls`
+  - `disciplines/misc/projects/2100_wa_block_a_slor_design/00_inbox/2100 West Africa block A SLOR Design/300 Package Engineering/312 Flexible Riser Jumper Pre-installation/CTR Flexible Pre-Installation rev1 TdB.xls`
+  - `disciplines/misc/projects/2100_wa_block_a_slor_design/00_inbox/2100 West Africa block A SLOR Design/300 Package Engineering/312 Flexible Riser Jumper Pre-installation/Calculations/2100-204-CAL-0001-1 Riser Designation (For Report & Drawings).xls`
 
 ### `ace-project-drilling-3824-component-data-summarize-first`
 
 - Action: `summarize_first`
 - Proposed domain: `drilling`
 - Candidate count: `504`
-- Selection rule: `disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/05_reports/3824 - BP Macondo Containment Riser Analysis/Component Data` with doc classes `pdf-doc, word-doc, presentation, procedure, calculation, specification`
+- Selection rule: `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/05_reports/3824 - BP GoM well A Containment Riser Analysis/Component Data` with doc classes `pdf-doc, word-doc, presentation, procedure, calculation, specification`
 - #2247 writeback target: `#2247`
 - Rationale: Component-data files are engineering-relevant but mixed enough that #2247 should summarize and normalize them before committing authoritative domain/path writeback.
 - Example records:
-  - `disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/05_reports/3824 - BP Macondo Containment Riser Analysis/Component Data/PIP/1 - Flexibles Jumpers/1 - General/Bend Stiffener Adapter/BS Adapter -Updated.doc`
-  - `disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/05_reports/3824 - BP Macondo Containment Riser Analysis/Component Data/PIP/1 - Flexibles Jumpers/1 - General/Bend Stiffener/60D Material Data (Raw) @ 10 & 30 deg C.pdf`
-  - `disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/05_reports/3824 - BP Macondo Containment Riser Analysis/Component Data/PIP/1 - Flexibles Jumpers/1 - General/Bend Stiffener/H70218-DT-001 - Bend Stiffener Design Package -  Document Transmittal.pdf`
+  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/05_reports/3824 - BP GoM well A Containment Riser Analysis/Component Data/PIP/1 - Flexibles Jumpers/1 - General/Bend Stiffener Adapter/BS Adapter -Updated.doc`
+  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/05_reports/3824 - BP GoM well A Containment Riser Analysis/Component Data/PIP/1 - Flexibles Jumpers/1 - General/Bend Stiffener/60D Material Data (Raw) @ 10 & 30 deg C.pdf`
+  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/05_reports/3824 - BP GoM well A Containment Riser Analysis/Component Data/PIP/1 - Flexibles Jumpers/1 - General/Bend Stiffener/H70218-DT-001 - Bend Stiffener Design Package -  Document Transmittal.pdf`
 
 ### `ace-project-misc-2100-bp-documents-summarize-first`
 
 - Action: `summarize_first`
 - Proposed domain: `installation`
 - Candidate count: `720`
-- Selection rule: `disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/BP Documents` with doc classes `pdf-doc, specification, report, word-doc, plan`
+- Selection rule: `disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100 West Africa block A SLOR Design/BP Documents` with doc classes `pdf-doc, specification, report, word-doc, plan`
 - #2247 writeback target: `#2247`
 - Rationale: BP document drops are bounded but mixed vendor/client material. They are good candidates for summary-first normalization before domain writeback.
 - Example records:
-  - `disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/BP Documents/Angola Block 31NE (PSVM) water chemistry modelling_Vs 2 0 (sent by BP embedded in DBA comments).doc`
-  - `disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/BP Documents/BP Reliability/GP 78-03.pdf`
-  - `disciplines/misc/projects/2100_blk31_slor_design/05_reports/2100 BLK31 SLOR Design/BP Documents/BP Reliability/GP 78-04.pdf`
+  - `disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100 West Africa block A SLOR Design/BP Documents/Angola Block 31NE (PSVM) water chemistry modelling_Vs 2 0 (sent by BP embedded in DBA comments).doc`
+  - `disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100 West Africa block A SLOR Design/BP Documents/BP Reliability/GP 78-03.pdf`
+  - `disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100 West Africa block A SLOR Design/BP Documents/BP Reliability/GP 78-04.pdf`
 
 ## Remain Miscellaneous For Now
 

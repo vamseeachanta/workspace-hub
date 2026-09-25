@@ -1,4 +1,4 @@
-# Plan for #2571: B1528 proj-a time-trace benchmark report with rudder inflow feedback
+# Plan for #2571: proj-a time-trace benchmark report with rudder inflow feedback
 
 > **Status:** completed
 > **Complexity:** T3
@@ -12,7 +12,7 @@
 
 ### Existing repo code
 - Found: #2568 approved plan for preliminary first-order Nomoto turning-circle/tactical-diameter estimator.
-- Found: #2570 planned B1528 static yaw-moment input/report that should provide shared B1528 geometry and source references.
+- Found: #2570 planned proj-a static yaw-moment input/report that should provide shared proj-a geometry and source references.
 - Found: `digitalmodel/src/digitalmodel/naval_architecture/yaw_moment.py` and `maneuverability.py` — static rudder force/yaw-moment calculation surfaces.
 - Gap: no time-trace model in `digitalmodel` currently updates rudder-local inflow/attack angle as yaw rate evolves.
 
@@ -23,17 +23,17 @@
 | IMO turning-circle metrics | terminology only | benchmark naming; no compliance/pass-fail claim |
 
 ### LLM Wiki pages consulted
-- `knowledge/wikis/mkt-a/wiki/sources/b1528-proj-a-breakaway-notes.md` — benchmark notes requiring normalization.
-- `knowledge/wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` — B1528 geometry/inputs.
+- `knowledge/wikis/mkt-a/wiki/sources/proj-a-breakaway-notes.md` — benchmark notes requiring normalization.
+- `knowledge/wikis/mkt-a/wiki/concepts/proj-a-rudder-yaw-moment-inputs.md` — proj-a geometry/inputs.
 - `knowledge/wikis/naval-architecture/wiki/concepts/maneuvering-validation-metrics.md` — turning-circle/tactical-diameter context.
 - `knowledge/wikis/naval-architecture/wiki/concepts/maneuvering-coordinate-conventions.md` — coordinate/sign convention basis.
 
 ### Documents consulted
 
-- `B1528/excel_to_py/Rudder Force & Yaw Moments.xlsx` — workbook contains `Rudder Area and Geometry`, `Rudder Force`, `Yaw Moment` sheets. Extracted B1528 proj-a values include LBP `225.5 m`, rudder area `44.9395631937 m²`, rudder center aft of AP `-1.0520261379 m`, legacy yaw lever `0.6 * LBP = 135.3 m`, `β = 600`, and `Cr = 1.065/0.935`.
-- `B1528/excel_to_py/rudder_force_yaw_moment.py` — converted workbook script exposes the legacy calculation family but hardcodes formulas and does not provide a reusable input/report workflow.
-- `B1528/ref/proj-a breakaway notes.docx` — contains narrative heading/speed/time anchors and a turning/track benchmark, but evidence must be normalized before numerical comparison.
-- `knowledge/wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` — newly created pre-work wiki page documenting extracted B1528 inputs and calculation boundaries.
+- `proj-a/excel_to_py/Rudder Force & Yaw Moments.xlsx` — workbook contains `Rudder Area and Geometry`, `Rudder Force`, `Yaw Moment` sheets. Extracted proj-a values include LBP `225.5 m`, rudder area `44.9395631937 m²`, rudder center aft of AP `-1.0520261379 m`, legacy yaw lever `0.6 * LBP = 135.3 m`, `β = 600`, and `Cr = 1.065/0.935`.
+- `proj-a/excel_to_py/rudder_force_yaw_moment.py` — converted workbook script exposes the legacy calculation family but hardcodes formulas and does not provide a reusable input/report workflow.
+- `proj-a/ref/proj-a breakaway notes.docx` — contains narrative heading/speed/time anchors and a turning/track benchmark, but evidence must be normalized before numerical comparison.
+- `knowledge/wikis/mkt-a/wiki/concepts/proj-a-rudder-yaw-moment-inputs.md` — newly created pre-work wiki page documenting extracted proj-a inputs and calculation boundaries.
 - `knowledge/wikis/naval-architecture/wiki/concepts/maneuvering-coordinate-conventions.md` — sign/coordinate convention background from prior yaw-moment work.
 - #2564 — completed reusable yaw-moment sweep workflow for typical-ship/rudder cases.
 - #2568 — approved/planned preliminary turning-circle/tactical-diameter estimator workflow.
@@ -69,23 +69,23 @@ y_dot = U * sin(psi)
 ## Artifact Map
 | Artifact | Path |
 |---|---|
-| This plan | docs/plans/2026-05-01-issue-2571-b1528-proj-a-time-trace-report.md |
-| Tests | digitalmodel/tests/naval_architecture/test_b1528_proj-a_time_trace.py |
-| Input YAML | digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_time_trace.yml |
-| Time-trace module/wrapper | digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_time_trace.py |
-| Report docs | digitalmodel/docs/domains/marine-engineering/b1528-proj-a-time-trace-report.md |
-| Interactive output | digitalmodel/outputs/b1528_proj-a/time_trace_report.html |
+| This plan | docs/plans/2026-05-01-issue-2571-proj-a-time-trace-report.md |
+| Tests | digitalmodel/tests/naval_architecture/test_proj-a_time_trace.py |
+| Input YAML | digitalmodel/src/digitalmodel/naval_architecture/data/proj-a_time_trace.yml |
+| Time-trace module/wrapper | digitalmodel/src/digitalmodel/naval_architecture/proj-a_time_trace.py |
+| Report docs | digitalmodel/docs/domains/marine-engineering/proj-a-time-trace-report.md |
+| Interactive output | digitalmodel/outputs/proj-a/time_trace_report.html |
 
 ---
 
 ## Deliverable
-A B1528 proj-a preliminary time-trace calculation/report with rudder-local inflow feedback, benchmark comparison, and interactive charts.
+A proj-a preliminary time-trace calculation/report with rudder-local inflow feedback, benchmark comparison, and interactive charts.
 
 ---
 
 ## Pseudocode
 ```text
-load B1528 time-trace YAML with U, delta_cmd, x_R, K, T, dt, duration, benchmark refs
+load proj-a time-trace YAML with U, delta_cmd, x_R, K, T, dt, duration, benchmark refs
 validate U > 0, T > 0, dt > 0, abs(delta_cmd) bounded, K units documented
 initialize x=0, y=0, psi=0, r=0
 for each time step:
@@ -106,11 +106,11 @@ render interactive charts and benchmark overlay where data permits
 ## Files to Change
 | Action | Path | Reason |
 |---|---|---|
-| Create | digitalmodel/tests/naval_architecture/test_b1528_proj-a_time_trace.py | TDD for dynamic method/report |
-| Create | digitalmodel/src/digitalmodel/naval_architecture/data/b1528_proj-a_time_trace.yml | B1528 dynamic input file |
-| Create | digitalmodel/src/digitalmodel/naval_architecture/b1528_proj-a_time_trace.py | project wrapper or method extension |
+| Create | digitalmodel/tests/naval_architecture/test_proj-a_time_trace.py | TDD for dynamic method/report |
+| Create | digitalmodel/src/digitalmodel/naval_architecture/data/proj-a_time_trace.yml | proj-a dynamic input file |
+| Create | digitalmodel/src/digitalmodel/naval_architecture/proj-a_time_trace.py | project wrapper or method extension |
 | Update | digitalmodel/src/digitalmodel/naval_architecture/__init__.py | export if reusable public API is added |
-| Create | digitalmodel/docs/domains/marine-engineering/b1528-proj-a-time-trace-report.md | detailed report |
+| Create | digitalmodel/docs/domains/marine-engineering/proj-a-time-trace-report.md | detailed report |
 | Update | docs/plans/README.md | plan index |
 
 ---
@@ -118,7 +118,7 @@ render interactive charts and benchmark overlay where data permits
 ## TDD Test List
 | Test name | What it verifies | Expected input | Expected output |
 |---|---|---|---|
-| test_b1528_time_trace_yaml_loads | packaged dynamic input loads | package resource | fields present with source refs |
+| test_proj_a_time_trace_yaml_loads | packaged dynamic input loads | package resource | fields present with source refs |
 | test_zero_rudder_straight_trace | zero rudder produces near-zero yaw rate | delta=0 | r≈0, y≈0 |
 | test_positive_negative_symmetry | ±1° signs mirror under symmetric assumptions | +1/-1 deg | opposite yaw-rate/heading sign |
 | test_effective_attack_feedback_changes | yaw rate changes local inflow angle | nonzero K/T | alpha_R differs from delta_cmd after transient |
@@ -130,8 +130,8 @@ render interactive charts and benchmark overlay where data permits
 
 ## Acceptance Criteria
 - [ ] HARD STOP: after this plan reaches `status:plan-review`, wait for explicit user approval / `status:plan-approved` before implementation.
-- [ ] #2568 method is available/approved and #2569 source-pack evidence is available before B1528 benchmark claims are made.
-- [ ] Tests are written before implementation and pass with `UV_NO_SYNC=1 uv run pytest tests/naval_architecture/test_b1528_proj-a_time_trace.py -q`.
+- [ ] #2568 method is available/approved and #2569 source-pack evidence is available before proj-a benchmark claims are made.
+- [ ] Tests are written before implementation and pass with `UV_NO_SYNC=1 uv run pytest tests/naval_architecture/test_proj-a_time_trace.py -q`.
 - [ ] The numerical method is explicitly documented, including state variables, units, integrator choice, and timestep-sensitivity check.
 - [ ] Outputs include heading, yaw rate, x/y trajectory, rudder-local inflow angle, effective rudder angle, local rudder speed, force, and yaw moment.
 - [ ] Interactive charts include trajectory, heading vs time, yaw rate vs time, effective rudder angle vs time, yaw moment vs time, and benchmark overlay or source-gap panel.
@@ -159,7 +159,7 @@ Revisions made based on review:
 ---
 
 ## Risks and Open Questions
-- **Risk:** Project-specific Nomoto coefficients may not exist in B1528 sources; default/calibrated assumptions must be explicitly marked as assumptions and not evidence.
+- **Risk:** Project-specific Nomoto coefficients may not exist in proj-a sources; default/calibrated assumptions must be explicitly marked as assumptions and not evidence.
 - **Risk:** Rudder force feedback and Nomoto response can be double-counted if yaw moment is used both as direct torque and via calibrated `K`; plan must keep these model variants separated.
 - **Risk:** Turning benchmark may be narrative rather than numeric; overlay should degrade to a source-gap/caveat panel.
 
@@ -177,12 +177,12 @@ Completed 2026-05-01.
 
 Delivered in `vamseeachanta/digitalmodel`:
 
-- `src/digitalmodel/naval_architecture/b1528_proj-a_time_trace.py`
-- `src/digitalmodel/naval_architecture/data/b1528_proj-a_time_trace.yml`
-- `tests/naval_architecture/test_b1528_proj-a_time_trace.py`
-- `docs/domains/marine-engineering/b1528-proj-a-time-trace-report.md`
-- `outputs/b1528_proj-a/time_trace/b1528_proj-a_time_trace_report.html`
-- CSV/JSON/provenance/manifest outputs under `outputs/b1528_proj-a/time_trace/`
+- `src/digitalmodel/naval_architecture/proj-a_time_trace.py`
+- `src/digitalmodel/naval_architecture/data/proj-a_time_trace.yml`
+- `tests/naval_architecture/test_proj-a_time_trace.py`
+- `docs/domains/marine-engineering/proj-a-time-trace-report.md`
+- `outputs/proj-a/time_trace/proj-a_time_trace_report.html`
+- CSV/JSON/provenance/manifest outputs under `outputs/proj-a/time_trace/`
 - `scripts/review/results/2026-05-01-implementation-2571-hermes.md`
 
 Validation:

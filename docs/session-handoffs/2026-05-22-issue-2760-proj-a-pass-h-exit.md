@@ -2,7 +2,7 @@
 
 **Date:** 2026-05-22
 **Session:** Claude Code main (Opus 4.7, 1M context)
-**Issue:** [vamseeachanta/workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) — `revise(naval-arch): B1528 proj-a force calculation review updates`
+**Issue:** [vamseeachanta/workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) — `revise(naval-arch): proj-a force calculation review updates`
 **Issue state:** OPEN, `status:plan-approved` (per user direction — explicit "leave open for review pass" decision logged earlier)
 **Branch:** `digitalmodel/main` (10 atomic commits ahead from session start); `workspace-hub/main` (unrelated divergence — see §Repo state below)
 
@@ -75,21 +75,21 @@ Started from a partial implementation (commit `32edf91c` had the OCIMF workbook 
 
 ### Tests
 - **42/42 focused suite pass** in ~3.5 min (was 28 at session start, +14 new)
-- `OCIMF_WORKBOOK_PATH="/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx" uv run pytest tests/naval_architecture/test_issue_2760_proj-a_current_rudder_revision.py tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py -q`
+- `OCIMF_WORKBOOK_PATH="/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx" uv run pytest tests/naval_architecture/test_issue_2760_proj-a_current_rudder_revision.py tests/naval_architecture/test_proj-a_current_heading_rudder.py -q`
 
 ## Artifact locations
 
 | Tier | Path | Size |
 |---|---|---|
-| Durable HTML (Git-tracked) | `digitalmodel/docs/domains/marine-engineering/b1528-proj-a-current-rudder-force-report.html` | 5.15 MB (interactive, 2233-row Plotly inline) |
-| Durable MD | `digitalmodel/docs/domains/marine-engineering/b1528-proj-a-current-rudder-force-report.md` | 10.0 KB |
-| Durable manifest | `…b1528-proj-a-current-rudder-force-manifest.json` | 989 B |
-| Durable citations | `…b1528-proj-a-current-rudder-force-citations.json` | 1.7 KB |
-| Runtime CSV | `digitalmodel/outputs/b1528_proj-a/current_rudder_force/…_results.csv` | 1.94 MB |
+| Durable HTML (Git-tracked) | `digitalmodel/docs/domains/marine-engineering/proj-a-current-rudder-force-report.html` | 5.15 MB (interactive, 2233-row Plotly inline) |
+| Durable MD | `digitalmodel/docs/domains/marine-engineering/proj-a-current-rudder-force-report.md` | 10.0 KB |
+| Durable manifest | `…proj-a-current-rudder-force-manifest.json` | 989 B |
+| Durable citations | `…proj-a-current-rudder-force-citations.json` | 1.7 KB |
+| Runtime CSV | `digitalmodel/outputs/proj-a/current_rudder_force/…_results.csv` | 1.94 MB |
 | Runtime JSON | `…_results.json` | 5.9 MB |
 | Runtime DOCX (with 4 embedded schematic pictures) | `…_report.docx` | 179 KB |
 | Runtime PDF | `…_report.pdf` | 229 KB |
-| mkt-a client DOCX | `workspace-hub/mkt-a/B1528/output/b1528_proj-a_current_rudder_force_report.docx` | 179 KB |
+| mkt-a client DOCX | `workspace-hub/mkt-a/proj-a/output/proj-a_current_rudder_force_report.docx` | 179 KB |
 | mkt-a client PDF | `…force_report.pdf` | 229 KB |
 
 mkt-a paths are gitignored at workspace-hub root (runtime stage only, not committed).
@@ -137,25 +137,25 @@ cd /mnt/local-analysis/digitalmodel && git log --oneline -1 && git status --shor
 # Re-run focused suite (~3.5 min)
 OCIMF_WORKBOOK_PATH="/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx" uv run pytest \
   tests/naval_architecture/test_issue_2760_proj-a_current_rudder_revision.py \
-  tests/naval_architecture/test_b1528_proj-a_current_heading_rudder.py -q
+  tests/naval_architecture/test_proj-a_current_heading_rudder.py -q
 
 # Regenerate all artifacts (~10 sec including Playwright screenshots)
 OCIMF_WORKBOOK_PATH="/mnt/ace/mkt-a-codes/OCIMF/OCIMF Coef.xlsx" uv run python -c "
 from pathlib import Path
-from digitalmodel.naval_architecture.b1528_proj-a_current_heading_rudder_report import (
-    run_b1528_current_heading_rudder_report, write_b1528_current_heading_rudder_report,
+from digitalmodel.naval_architecture.proj-a_current_heading_rudder_report import (
+    run_proj_a_current_heading_rudder_report, write_proj_a_current_heading_rudder_report,
 )
-manifest = write_b1528_current_heading_rudder_report(
-    run_b1528_current_heading_rudder_report(),
-    Path('outputs/b1528_proj-a/current_rudder_force'),
+manifest = write_proj_a_current_heading_rudder_report(
+    run_proj_a_current_heading_rudder_report(),
+    Path('outputs/proj-a/current_rudder_force'),
 )
 print(manifest['html_report'])
 "
 
 # Serve HTML for browser review (started at port 8765 in this session — may still be running)
-cd /mnt/local-analysis/digitalmodel/outputs/b1528_proj-a/current_rudder_force \
+cd /mnt/local-analysis/digitalmodel/outputs/proj-a/current_rudder_force \
   && uv run python -m http.server 8765
-# Open: http://localhost:8765/b1528_proj-a_current_rudder_force_report.html
+# Open: http://localhost:8765/proj-a_current_rudder_force_report.html
 ```
 
 ## Next-checkpoint decision tree

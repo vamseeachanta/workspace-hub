@@ -99,7 +99,7 @@ vessels:
 |---------|--------|-----|
 | `drilling_riser_components.csv` | 38 rows (NOV/Cameron/Hydril/bare joints; 18.75"/21"/21.5"/24" OD) | WRK-593 ✓ |
 | `drilling_rigs.csv` | 2,210 offshore rigs (134 drillships, 309 semisubs, 1,009 jack-ups) | WRK-593 ✓ |
-| `construction_vessels.csv` | 17 vessels (Subsea7/McDermott/TechnipFMC) | WRK-593 ✓ |
+| `construction_vessels.csv` | 17 vessels (Subsea7/installation-contractor/TechnipFMC) | WRK-593 ✓ |
 | `api_5l_pipe_schedule.csv` | 43 rows NPS 4"–36" + 21" RISER_BORE entries | WRK-594 ✓ |
 | `PipelineSpecLookup` class | `worldenergydata.bsee.pipeline.PipelineSpecLookup` | WRK-594 ✓ |
 
@@ -109,7 +109,7 @@ vessels:
 |---------|-----------|-----------|------------|
 | `0000 Drilling Riser Dev/Latest` | 31 | DNV-OS-F201 | 21" riser joints |
 | `31290 WellHead Fatigue/BOP on Wellhead` | 240 | API-RP-2A-WSD | BOPs + riser joints |
-| `611 Mecor S Lay/Reference` | 3 | DNV-OS-F101 | pipeline OD match |
+| `611 the pipelay client S Lay/Reference` | 3 | DNV-OS-F101 | pipeline OD match |
 | `5 - OrcaFlex API Check` | 1 | — | minimal fixture |
 
 ## Scripts

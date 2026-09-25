@@ -43,7 +43,7 @@ The lng-a University catalog covers subsea production systems training. Top-leve
 - Any write under `/mnt/ace/**`
 - `knowledge/wikis/**/raw/`
 - Any persisted full-text deck extraction
-- Cross-stream artifact paths (SESA, lng-a Codes, Woodfibre)
+- Cross-stream artifact paths (SESA, lng-a Codes, LNG terminal A)
 
 ## Deliverable
 

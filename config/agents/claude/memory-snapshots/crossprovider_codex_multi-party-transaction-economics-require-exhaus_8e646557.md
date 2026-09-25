@@ -8,6 +8,6 @@ metadata:
   tags: [testing, economics, multi-party, acceptance-criteria]
 ---
 
-Tests that check only one party's deterministic metrics (e.g., Talos final net cash) miss consideration-separation bugs across multiple buyers/scenarios. Each distinct party, scenario, or commercial branch (Shell, Talos, Ridgewood, BP-exercise, etc.) must have explicit numeric test cases with expected values, not just section-presence checks.
+Tests that check only one party's deterministic metrics (e.g., a GoM operator final net cash) miss consideration-separation bugs across multiple buyers/scenarios. Each distinct party, scenario, or commercial branch (Shell, a GoM operator, Ridgewood, BP-exercise, etc.) must have explicit numeric test cases with expected values, not just section-presence checks.
 
 *(Distilled from codex sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

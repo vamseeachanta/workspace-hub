@@ -72,18 +72,18 @@ git add .planning/plan-approved/2541.md
 git commit -m "chore(planning): reconcile #2541 approval marker with bounded scope"
 ```
 
-### A.3 — #2544 (Woodfibre, scout-only) — RECOMMEND OPTION-1 (cement with scout-only wording)
+### A.3 — #2544 (LNG terminal A, scout-only) — RECOMMEND OPTION-1 (cement with scout-only wording)
 
 ```bash
 gh issue comment 2544 --body-file - <<'EOF'
-Approving the **pointer/scout metadata-only subset** described by the 2026-04-29 Adversarial Review Resolution Addendum in `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` (hardening commit `bdafe39cd`).
+Approving the **pointer/scout metadata-only subset** described by the 2026-04-29 Adversarial Review Resolution Addendum in `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` (hardening commit `bdafe39cd`).
 
 Scope of approval:
 - Emit only the corpus pointer page and structured metadata pointers; no document abstract extraction, no technical summary extraction, no direct quote, no table extraction, no figure extraction.
-- The post-scout extraction tranche stays blocked pending (a) a dedicated extraction plan with its own adversarial review and (b) `docs/governance/woodfibre-extraction-clearance-2026.md` with row-level clearance signed by an explicitly named mkt-a project owner / client-authorized reviewer / legal-IP delegate.
+- The post-scout extraction tranche stays blocked pending (a) a dedicated extraction plan with its own adversarial review and (b) `docs/governance/lng-terminal-a-extraction-clearance-2026.md` with row-level clearance signed by an explicitly named mkt-a project owner / client-authorized reviewer / legal-IP delegate.
 - Execute sequentially after #2541 because both touch `knowledge/wikis/lng-projects/wiki/index.md` and `log.md`.
 
-This approval does NOT authorize: any abstract/quote/table/figure extraction, any persisted full-text dump, any OCR, any modification of `/mnt/ace/mkt-a/31522-woodfibre-lng`, or any #2534 cleanup.
+This approval does NOT authorize: any abstract/quote/table/figure extraction, any persisted full-text dump, any OCR, any modification of `/mnt/ace/mkt-a/31522-lng-terminal-a`, or any #2534 cleanup.
 
 Re-review consensus: Gemini APPROVE (grounded), Codex APPROVE (degraded sandbox grounding — addendum-only).
 
@@ -94,13 +94,13 @@ cat > .planning/plan-approved/2544.md <<'EOF'
 # Approval marker — #2544
 
 Approved: 2026-04-29 by vamsee.achanta@aceengineer.com
-Scope: pointer/scout metadata-only subset per Adversarial Review Resolution Addendum at `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` L322+.
+Scope: pointer/scout metadata-only subset per Adversarial Review Resolution Addendum at `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` L322+.
 Hardening commit: `bdafe39cd`
 Re-review synthesis: `scripts/review/results/2026-04-29-plan-2541-2544-rereview-synthesis.md`
 Reviewer verdicts: Gemini APPROVE (grounded); Codex APPROVE (degraded sandbox grounding).
-HARD RUNTIME GATE: post-scout extraction stays blocked pending a separate extraction plan + `docs/governance/woodfibre-extraction-clearance-2026.md` with row-level clearance.
+HARD RUNTIME GATE: post-scout extraction stays blocked pending a separate extraction plan + `docs/governance/lng-terminal-a-extraction-clearance-2026.md` with row-level clearance.
 Sequencing: execute AFTER #2541; both touch `knowledge/wikis/lng-projects/wiki/index.md` and `log.md`.
-Excluded from approval: any abstract/quote/table/figure extraction; full-text dumps; OCR; modifications of `/mnt/ace/mkt-a/31522-woodfibre-lng`; #2534 cleanup.
+Excluded from approval: any abstract/quote/table/figure extraction; full-text dumps; OCR; modifications of `/mnt/ace/mkt-a/31522-lng-terminal-a`; #2534 cleanup.
 EOF
 git add .planning/plan-approved/2544.md
 git commit -m "chore(planning): reconcile #2544 approval marker with scout-only scope"

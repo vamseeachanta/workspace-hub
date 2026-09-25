@@ -8,7 +8,7 @@ Four subsea riser engineering projects, totaling 9,672 PDFs across 93 GB of mixe
 
 | Project | Name | PDFs | PDF Size | Total Files | Total Size |
 |---------|------|-----:|----------|------------:|------------|
-| 2100 | BLK31 SLOR Design | 7,125 | 4.0 GB | 56,154 | 53 GB |
+| 2100 | West Africa block A SLOR Design | 7,125 | 4.0 GB | 56,154 | 53 GB |
 | 3824 | Containment Riser | 2,158 | 1.6 GB | 47,453 | 30 GB |
 | 3836 | HP1 Riser | 88 | 62 MB | 11,898 | 7.4 GB |
 | 3837 | CDP2 Freestanding Riser | 301 | 169 MB | 1,712 | 3.7 GB |
@@ -19,7 +19,7 @@ Four subsea riser engineering projects, totaling 9,672 PDFs across 93 GB of mixe
 Standard pattern: `{project}-{doc_type}-{sequence}-{revision}`
 
 - `2100-DDL-3207-04` = project 2100, detail drawing, sequence 3207, revision 04
-- `3824-RPT-2103-3` = project 3824, report, sequence 2103, revision 3
+- `<document-number>-3` = project 3824, report, sequence 2103, revision 3
 - `3836-RES-1003-02` = project 3836, analysis results, sequence 1003, revision 02
 
 External documents (HMC, Intec) use vendor schemes, e.g. `AA000.W00.C1.TRI300.RP02`.
@@ -54,9 +54,9 @@ Note: index.jsonl has 9,461 records vs 9,672 total PDFs; the 211 difference is `
 
 ## Project Descriptions
 
-**2100 -- BLK31 SLOR Design**: Block 31 (Angola) Steel Lazy-Wave Riser detailed design. Largest project by far. Covers package engineering (flexible jumpers, driven piles, support frames), lifting/seafastening, HMC T&I engineering, and BP documents.
+**2100 -- West Africa block A SLOR Design**: Block 31 (Angola) Steel Lazy-Wave Riser detailed design. Largest project by far. Covers package engineering (flexible jumpers, driven piles, support frames), lifting/seafastening, HMC T&I engineering, and BP documents.
 
-**3824 -- Containment Riser**: MC252 Macondo CDP riser modification. Emergency containment riser with upper/lower assemblies, CVA (Certified Verification Agent) documentation, subsea jumper analysis. Most diverse folder structure (40+ top-level folders).
+**3824 -- Containment Riser**: MC252 GoM well A CDP riser modification. Emergency containment riser with upper/lower assemblies, CVA (Certified Verification Agent) documentation, subsea jumper analysis. Most diverse folder structure (40+ top-level folders).
 
 **3836 -- HP1 Riser**: MC252 CDP1-HP1 flexible riser system analysis. Smaller scope: riser analysis reports, disconnected analysis, MOC2 design assurance, umbilical assessment. Bulk of data is native analysis model files, not PDFs.
 

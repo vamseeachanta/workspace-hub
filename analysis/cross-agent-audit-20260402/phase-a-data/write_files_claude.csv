@@ -5028,7 +5028,7 @@ scripts/data/doc_intelligence/tests/test_archive_to_calc_report.py,1
 .claude/work-queue/assets/WRK-1256/evidence/tdd.yaml,1
 .claude/work-queue/assets/WRK-1256/evidence/legal.yaml,1
 .claude/work-queue/assets/WRK-1256/evidence/agent-logs.yaml,1
-knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/tests/test_parametric_conductor.py,1
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b/tests/test_parametric_conductor.py,1
 .claude/work-queue/assets/WRK-1256/evidence/plan-html-review-final.md,1
 .claude/work-queue/assets/WRK-1256/review-synthesis.md,1
 .claude/work-queue/assets/WRK-1256/test-results.md,1

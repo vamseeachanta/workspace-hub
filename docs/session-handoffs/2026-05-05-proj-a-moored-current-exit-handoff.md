@@ -1,14 +1,14 @@
-# B1528 proj-a moored-current exit handoff — 2026-05-05
+# proj-a moored-current exit handoff — 2026-05-05
 
 ## Executive status
 
-B1528 proj-a/Sorrocco moored-current rudder force-component reporting is
+proj-a/Sorrocco moored-current rudder force-component reporting is
 complete and ready for engineer review on 2026-05-06.
 
 | Repository | Branch | Sync state | HEAD |
 |---|---|---|---|
 | `digitalmodel` | `main` | `origin/main...HEAD = 0 0` | `989e20eb test(#2568): TDD tests for turning-circle and tactical-diameter estimator` |
-| `mkt-a` | `main` | `origin/main...HEAD = 0 0` | `105c9ce8 chore(B1528): add proj-a moored-current PDF report` |
+| `mkt-a` | `main` | `origin/main...HEAD = 0 0` | `105c9ce8 chore(proj-a): add proj-a moored-current PDF report` |
 
 The moored-current calculation package itself was added in `digitalmodel`
 commit:
@@ -22,7 +22,7 @@ that later commit is now also on `origin/main`.
 
 | Issue | State | Result |
 |---|---:|---|
-| [workspace-hub #2642](https://github.com/vamseeachanta/workspace-hub/issues/2642) | Closed, completed | B1528 proj-a moored-current rudder force components at COG for 3.5 kn current and +/-1 to +/-5 deg rudder. |
+| [workspace-hub #2642](https://github.com/vamseeachanta/workspace-hub/issues/2642) | Closed, completed | proj-a moored-current rudder force components at COG for 3.5 kn current and +/-1 to +/-5 deg rudder. |
 
 Completion comments were posted on #2642 with both the `digitalmodel` report
 package and the `mkt-a` PDF links.
@@ -31,18 +31,18 @@ package and the `mkt-a` PDF links.
 
 ### digitalmodel
 
-- Durable report: https://github.com/vamseeachanta/digitalmodel/blob/main/docs/domains/marine-engineering/b1528-proj-a-moored-current-report.md
-- Generated HTML: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_proj-a/moored_current/b1528_proj-a_moored_current_report.html
-- Generated Markdown: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_proj-a/moored_current/b1528_proj-a_moored_current_report.md
-- Results CSV: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_proj-a/moored_current/b1528_proj-a_moored_current_results.csv
-- Results JSON: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/b1528_proj-a/moored_current/b1528_proj-a_moored_current_results.json
+- Durable report: https://github.com/vamseeachanta/digitalmodel/blob/main/docs/domains/marine-engineering/proj-a-moored-current-report.md
+- Generated HTML: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/proj-a/moored_current/proj-a_moored_current_report.html
+- Generated Markdown: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/proj-a/moored_current/proj-a_moored_current_report.md
+- Results CSV: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/proj-a/moored_current/proj-a_moored_current_results.csv
+- Results JSON: https://github.com/vamseeachanta/digitalmodel/blob/main/outputs/proj-a/moored_current/proj-a_moored_current_results.json
 - Master calculation review: https://github.com/vamseeachanta/digitalmodel/blob/main/docs/domains/marine-engineering/rudder-and-ship-force-calculation-review.md
 
 ### mkt-a
 
-- PDF report: https://github.com/vamseeachanta/mkt-a/blob/main/B1528/output/b1528_proj-a_moored_current_report.pdf
+- PDF report: https://github.com/vamseeachanta/mkt-a/blob/main/proj-a/output/proj-a_moored_current_report.pdf
 - PDF commit: https://github.com/vamseeachanta/mkt-a/commit/105c9ce84d0862382f1efaabd60780dce41783a9
-- Local PDF path: `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output/b1528_proj-a_moored_current_report.pdf`
+- Local PDF path: `/mnt/local-analysis/workspace-hub/mkt-a/proj-a/output/proj-a_moored_current_report.pdf`
 
 ## Calculation scope
 
@@ -55,7 +55,7 @@ Scenario implemented:
 - COG components reported: `X`, `Y`, `Z`, `K`, `M`, `N`
 - propeller rotation factor: `Cr=1.0`
 
-The report uses the B1528/Barrass workbook family:
+The report uses the proj-a/Barrass workbook family:
 
 ```text
 V = 3.5 kn * 0.51444
@@ -101,9 +101,9 @@ horizontal resultant force, and the sample verification point.
 
 ```text
 PYTHONPATH=src UV_NO_SYNC=1 uv run python -m pytest \
-  tests/naval_architecture/test_b1528_proj-a_yaw_moment.py \
-  tests/naval_architecture/test_b1528_proj-a_time_trace.py \
-  tests/naval_architecture/test_b1528_proj-a_moored_current.py
+  tests/naval_architecture/test_proj-a_yaw_moment.py \
+  tests/naval_architecture/test_proj-a_time_trace.py \
+  tests/naval_architecture/test_proj-a_moored_current.py
 ```
 
 Result: `18 passed`.
@@ -120,7 +120,7 @@ mkt-a PDF metadata:
 
 - 12 pages
 - A4 landscape
-- generated from `b1528_proj-a_moored_current_report.html`
+- generated from `proj-a_moored_current_report.html`
 
 ## Known caveats
 

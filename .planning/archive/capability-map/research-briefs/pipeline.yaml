@@ -442,13 +442,13 @@ available_documents:
   source: ace_project
   summary: null
   relevance: medium
-- path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/05_reports/611
-    Mecor Pipeline Installation Analysis/Codes/EWI Strain Based Pipeline Design.pdf
+- path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/05_reports/611
+    the pipelay client Pipeline Installation Analysis/Codes/EWI Strain Based Pipeline Design.pdf
   source: ace_project
   summary: null
   relevance: medium
-- path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/05_reports/611
-    Mecor Pipeline Installation Analysis/Client Data/Pipeline Design Calculations
+- path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/05_reports/611
+    the pipelay client Pipeline Installation Analysis/Client Data/Pipeline Design Calculations
     - machine translation.pdf
   source: ace_project
   summary: null
@@ -480,12 +480,12 @@ available_documents:
   source: dde_project
   summary: null
   relevance: medium
-- path: /mnt/remote/dev-secondary/dde/documents/611 Mecor Pipeline Installation Analysis/Client
+- path: /mnt/remote/dev-secondary/dde/documents/611 the pipelay client Pipeline Installation Analysis/Client
     Data/Pipeline Design Calculations - machine translation.pdf
   source: dde_project
   summary: null
   relevance: medium
-- path: /mnt/remote/dev-secondary/dde/documents/611 Mecor Pipeline Installation Analysis/Codes/EWI
+- path: /mnt/remote/dev-secondary/dde/documents/611 the pipelay client Pipeline Installation Analysis/Codes/EWI
     Strain Based Pipeline Design.pdf
   source: dde_project
   summary: null

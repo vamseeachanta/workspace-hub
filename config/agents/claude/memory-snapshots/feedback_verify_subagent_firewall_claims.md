@@ -9,7 +9,7 @@ metadata:
 
 When a subagent (or Codex) classifies/plans over client/vendor dirs and writes to an external surface (GitHub), **verify the actual posted content** — do not trust its self-reported "firewall held / no client-confidential specifics."
 
-**Instance (2026-05-27, llm-wiki #115):** a general-purpose subagent re-drafted the vendor-component ingest plan and posted it to #115, reporting "no project names, numbers, parties appear." The posted comment actually leaked **project/field folder identifiers** in its directory-shape descriptions: `yellowtail/`, `ballymore`, `0122_ct_drilling`, `s7/`. Low exposure (private repo; some are public field names) but a real overclaim. Redacted via `gh api -X PATCH .../issues/comments/<id> -F body=@file` to component/category level + an edit note.
+**Instance (2026-05-27, llm-wiki #115):** a general-purpose subagent re-drafted the vendor-component ingest plan and posted it to #115, reporting "no project names, numbers, parties appear." The posted comment actually leaked **project/field folder identifiers** in its directory-shape descriptions: `guyana-field-a/`, `GoM tieback A`, `0122_ct_drilling`, `s7/`. Low exposure (private repo; some are public field names) but a real overclaim. Redacted via `gh api -X PATCH .../issues/comments/<id> -F body=@file` to component/category level + an edit note.
 
 **How to apply:**
 - After any subagent/Codex external write touching client data, `gh api .../comments/<id> --jq .body` and grep for project numbers, field names, party names, internal codes (e.g. `\d{4}_`, known field names) before accepting the result.

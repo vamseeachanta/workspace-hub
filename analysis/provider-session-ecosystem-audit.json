@@ -528,7 +528,7 @@
           "count": 14
         },
         {
-          "path": "docs/domains/orcaflex/subsea/jumper/installation/ballymore_plet_plem/spec.yml",
+          "path": "docs/domains/orcaflex/subsea/jumper/installation/gom_tieback_a_plet_plem/spec.yml",
           "count": 11
         },
         {
@@ -898,7 +898,7 @@
       ],
       "top_reads": [
         {
-          "path": "/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/b1528_sirocco_current_heading_rudder_report.py",
+          "path": "/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/proj_a_vessel_s_current_heading_rudder_report.py",
           "count": 32886
         },
         {
@@ -922,7 +922,7 @@
           "count": 14067
         },
         {
-          "path": "/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_b1528_sirocco_current_heading_rudder.py",
+          "path": "/mnt/local-analysis/digitalmodel/tests/naval_architecture/test_proj_a_vessel_s_current_heading_rudder.py",
           "count": 13986
         },
         {
@@ -934,13 +934,13 @@
           "count": 12123
         },
         {
-          "path": "/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/b1528_sirocco_current_heading_rudder.yml",
+          "path": "/mnt/local-analysis/digitalmodel/src/digitalmodel/naval_architecture/data/proj_a_vessel_s_current_heading_rudder.yml",
           "count": 11178
         }
       ],
       "top_missing_repo_reads": [
         {
-          "path": "docs/plans/2026-05-20-issue-2760-b1528-sirocco-force-review-revision.md",
+          "path": "docs/plans/2026-05-20-issue-2760-proj-a-vessel-s-force-review-revision.md",
           "count": 6615
         },
         {

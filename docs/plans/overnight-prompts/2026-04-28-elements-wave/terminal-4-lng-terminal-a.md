@@ -4,7 +4,7 @@ You are Terminal 4 for the overnight Elements planning wave.
 
 ## Mission
 
-Plan a metadata-first scout and bounded extraction candidate pass for `workspace-hub#2544`: Woodfibre LNG corpus.
+Plan a metadata-first scout and bounded extraction candidate pass for `workspace-hub#2544`: LNG terminal A corpus.
 
 This is planning-only. Do not implement extraction, do not copy raw files into git/wiki, and do not modify `/mnt/ace`.
 
@@ -15,7 +15,7 @@ Umbrella: https://github.com/vamseeachanta/workspace-hub/issues/2540
 Completed upstream: #2526, #2534, #2535, #2536.
 
 Raw corpus source of record:
-`/mnt/ace/mkt-a/31522-woodfibre-lng`
+`/mnt/ace/mkt-a/31522-lng-terminal-a`
 
 Wiki domain target:
 `lng-projects`
@@ -28,10 +28,10 @@ Relevant existing artifacts:
 ## Allowed writes
 
 Only write these paths:
-- `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md`
-- `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md`
-- `.planning/intel/elements-overnight-wave/woodfibre-first-tranche.tsv`
-- `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md`
+- `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md`
+- `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md`
+- `.planning/intel/elements-overnight-wave/lng-terminal-a-first-tranche.tsv`
+- `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-lng-terminal-a.md`
 
 ## Forbidden writes
 
@@ -47,12 +47,12 @@ Do not write to:
 ## Required work
 
 1. Re-read issue #2544 with `gh issue view 2544`.
-2. Build a read-only structure map for `/mnt/ace/mkt-a/31522-woodfibre-lng` from path/file metadata. Avoid opening huge binaries unless only metadata is read.
+2. Build a read-only structure map for `/mnt/ace/mkt-a/31522-lng-terminal-a` from path/file metadata. Avoid opening huge binaries unless only metadata is read.
 3. Identify project document families and likely high-value small candidates. Explicitly flag client/confidentiality review needs.
-4. Produce `woodfibre-corpus-scout.md` with top-level/second-level structure, file-type/size observations, risks, and recommended extraction strategy.
-5. Produce `woodfibre-first-tranche.tsv` with no more than 15 candidate artifacts. Columns: priority, family, content_kind, bytes, absolute_path, rationale, extraction_method, target_wiki_page, confidentiality_risk.
+4. Produce `lng-terminal-a-corpus-scout.md` with top-level/second-level structure, file-type/size observations, risks, and recommended extraction strategy.
+5. Produce `lng-terminal-a-first-tranche.tsv` with no more than 15 candidate artifacts. Columns: priority, family, content_kind, bytes, absolute_path, rationale, extraction_method, target_wiki_page, confidentiality_risk.
 6. Draft the canonical plan file for #2544 with scope, resource intelligence, artifact map, TDD/validation, acceptance criteria, and approval boundary.
-7. Write final result summary to `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md`.
+7. Write final result summary to `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-lng-terminal-a.md`.
 8. Post one concise GitHub comment on #2544 summarizing result paths and whether it is ready for adversarial review. Do not add `status:plan-approved`.
 
 ## Hard boundaries
@@ -66,9 +66,9 @@ Do not write to:
 ## Verification
 
 Run:
-- `test -s docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md`
-- `test -s .planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md`
-- `test -s .planning/intel/elements-overnight-wave/woodfibre-first-tranche.tsv`
-- `test -s docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md`
+- `test -s docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md`
+- `test -s .planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md`
+- `test -s .planning/intel/elements-overnight-wave/lng-terminal-a-first-tranche.tsv`
+- `test -s docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-lng-terminal-a.md`
 
 Final response should list files written and any blocker.

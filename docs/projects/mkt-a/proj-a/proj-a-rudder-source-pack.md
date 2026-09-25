@@ -1,18 +1,18 @@
-# B1528 proj-a Rudder Source Pack and Benchmark Extraction
+# proj-a Rudder Source Pack and Benchmark Extraction
 
 > Issue: https://github.com/vamseeachanta/workspace-hub/issues/2569  
-> Repo source: https://github.com/vamseeachanta/mkt-a/tree/main/B1528  
+> Repo source: https://github.com/vamseeachanta/mkt-a/tree/main/proj-a  
 > Extraction date: 2026-05-01  
 > Vessel aliases: `proj-a`, `proj-a`, user spelling `Sorrocco`.
 
 ## Purpose
 
-This source pack records the B1528/proj-a rudder geometry, yaw-moment workbook inputs, and available turning/track benchmark evidence before downstream static-yaw and time-trace calculations are implemented.
+This source pack records the proj-a/proj-a rudder geometry, yaw-moment workbook inputs, and available turning/track benchmark evidence before downstream static-yaw and time-trace calculations are implemented.
 
 The pack deliberately separates:
 
-- **authoritative source values** read directly from B1528 files,
-- **derived workbook values** produced by formulas in the B1528 workbook,
+- **authoritative source values** read directly from proj-a files,
+- **derived workbook values** produced by formulas in the proj-a workbook,
 - **narrative benchmark evidence** extracted from notes, and
 - **gaps/limitations** that must not be silently filled in by later calculations.
 
@@ -20,13 +20,13 @@ The pack deliberately separates:
 
 | Source | Repo path | Status | Use |
 |---|---|---|---|
-| Rudder workbook | `B1528/excel_to_py/Rudder Force & Yaw Moments.xlsx` | authoritative workbook source for this pack | geometry, Barrass/PNA sheet formulas, source values |
-| Converted workbook script | `B1528/excel_to_py/rudder_force_yaw_moment.py` | derived/convenience script | formula reconnaissance only; not treated as canonical over workbook |
-| Breakaway notes | `B1528/ref/proj-a breakaway notes.docx` | narrative evidence | VDR/Rosepoint time-heading-speed benchmark extraction |
-| ECDIS context note | `B1528/ref/ECDIS Mar 26 Midnight LT.docx` | context only | riverbank/depth context; not a numeric track dataset |
-| GA plan | `B1528/excel_to_py/27. proj-a-000272-GA Plan.pdf` | referenced drawing | rudder scale/geometry source named by workbook |
+| Rudder workbook | `proj-a/excel_to_py/Rudder Force & Yaw Moments.xlsx` | authoritative workbook source for this pack | geometry, Barrass/PNA sheet formulas, source values |
+| Converted workbook script | `proj-a/excel_to_py/rudder_force_yaw_moment.py` | derived/convenience script | formula reconnaissance only; not treated as canonical over workbook |
+| Breakaway notes | `proj-a/ref/proj-a breakaway notes.docx` | narrative evidence | VDR/Rosepoint time-heading-speed benchmark extraction |
+| ECDIS context note | `proj-a/ref/ECDIS Mar 26 Midnight LT.docx` | context only | riverbank/depth context; not a numeric track dataset |
+| GA plan | `proj-a/excel_to_py/27. proj-a-000272-GA Plan.pdf` | referenced drawing | rudder scale/geometry source named by workbook |
 
-Local `mkt-a` checkout was verified current with origin but sparse; `B1528/` was not materialized locally. Extraction therefore used GitHub API/raw downloads into `/tmp/b1528/`.
+Local `mkt-a` checkout was verified current with origin but sparse; `proj-a/` was not materialized locally. Extraction therefore used GitHub API/raw downloads into `/tmp/proj-a/`.
 
 ## Workbook sheets and key cells
 
@@ -84,7 +84,7 @@ These values are regression targets for #2570 workbook-regression mode. They are
 
 Structured benchmark evidence is stored in:
 
-- `docs/projects/mkt-a/B1528/proj-a-turning-benchmark.yaml`
+- `docs/projects/mkt-a/proj-a/proj-a-turning-benchmark.yaml`
 
 Extracted source families:
 
@@ -103,5 +103,5 @@ The benchmark YAML intentionally marks this as a narrative benchmark, not an ori
 
 ## Downstream issue use
 
-- #2570 should cite this pack for B1528 geometry and workbook-regression targets.
+- #2570 should cite this pack for proj-a geometry and workbook-regression targets.
 - #2571 should cite `proj-a-turning-benchmark.yaml` for benchmark/source-gap behavior and must not invent missing trajectory coordinates or `K/T` coefficients.

@@ -109,7 +109,7 @@ git commit -m "data(orcaflex): enriched fixtures from public vessel/riser databa
 |---------|-----------|-----------|------------------------|
 | `0000 Drilling Riser Dev/Latest` | 31 | DNV-OS-F201 | DrillingRiserLoader (21" joints) |
 | `31290 WellHead Fatigue/BOP on Wellhead` | 240 | API-RP-2A-WSD | DrillingRiserLoader (BOP) |
-| `611 Mecor S Lay/Reference` | 3 | DNV-OS-F101 | PipelineSpecLookup (pipe OD) |
+| `611 the pipelay client S Lay/Reference` | 3 | DNV-OS-F101 | PipelineSpecLookup (pipe OD) |
 | `5 - OrcaFlex API Check` | 1 | — | minimal fixture |
 
 ## worldenergydata Database Status

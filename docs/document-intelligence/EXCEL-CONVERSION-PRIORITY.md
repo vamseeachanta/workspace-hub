@@ -16,8 +16,8 @@
 
 ## RANKED PRIORITY LIST
 
-### 1. Jumper Lift Engineering: Ballymore Manifold-to-PLET
-**Source**: `/mnt/ace/client-b/s7/ballymore/Jumper_Manifold to PLET/Jumper_Input_Ballymore_Manifold-PLET V2.xlsx`
+### 1. Jumper Lift Engineering: GoM tieback A Manifold-to-PLET
+**Source**: `/mnt/ace/client-b/s7/gom-tieback-a/Jumper_Manifold to PLET/Jumper_Input_gom_tieback_a_Manifold-PLET V2.xlsx`
 **Domain**: Deepwater jumper installation (pipe geometry, buoyancy, strake, rigging, crane capacity, weight tally)
 **Sheets**: 7 (GA, Bare pipe, Bouyancy, Strake, Rigging, Crane Configuration, Weight Check)
 **Complexity**: Medium
@@ -28,8 +28,8 @@
 
 ---
 
-### 2. SUT Mudmat Analysis (Ballymore)
-**Source**: `/mnt/ace/client-b/s7/ballymore/sut_mm/` (2 .xlsm + 3 .xlsx = 5 files)
+### 2. SUT Mudmat Analysis (GoM tieback A)
+**Source**: `/mnt/ace/client-b/s7/gom-tieback-a/sut_mm/` (2 .xlsm + 3 .xlsx = 5 files)
 **Domain**: Manifold/structure installation on seabed, resonance checks, mudmat tool
 **Complexity**: High
 **Est tokens**: ~3M
@@ -38,8 +38,8 @@
 
 ---
 
-### 3. Jumper PLET-to-PLEM (Ballymore)
-**Source**: `/mnt/ace/client-b/s7/ballymore/Jumper_PLET to PLEM/` (2 .xlsm files)
+### 3. Jumper PLET-to-PLEM (GoM tieback A)
+**Source**: `/mnt/ace/client-b/s7/gom-tieback-a/Jumper_PLET to PLEM/` (2 .xlsm files)
 **Domain**: SZ/DZ jumper models with AHC offsets
 **Complexity**: Medium
 **Est tokens**: ~1.5M
@@ -138,8 +138,8 @@
 
 ---
 
-### 13. Talos Venice Infield Umbilical Installation
-**Source**: `/mnt/ace/client-b/s7/talos_venice/infield/` (31 workbooks: static steps, initiation, laydown, NL, 2nd end, deck handling, resonance)
+### 13. umbilical project A Infield Umbilical Installation
+**Source**: `/mnt/ace/client-b/s7/umbilical-project-a/infield/` (31 workbooks: static steps, initiation, laydown, NL, 2nd end, deck handling, resonance)
 **Domain**: Complete umbilical installation analysis workflow
 **Complexity**: High
 **Est tokens**: ~4M
@@ -148,8 +148,8 @@
 
 ---
 
-### 14. Shell Perdido South Installation
-**Source**: `/mnt/ace/client-b/s7/shell_perdido_south/` (14 workbooks: manifold AHCoff/SZ/SSRAO, mudmat tool, resonance)
+### 14. Shell GoM spar A South Installation
+**Source**: `/mnt/ace/client-b/s7/shell_gom_spar_a_south/` (14 workbooks: manifold AHCoff/SZ/SSRAO, mudmat tool, resonance)
 **Domain**: Manifold installation analysis
 **Complexity**: Medium
 **Est tokens**: ~2M
@@ -168,7 +168,7 @@
 
 ---
 
-### 16. Vessel Stability Analysis (mkt-a B1512)
+### 16. Vessel Stability Analysis (mkt-a <job-code>)
 **Source**: `mkt-a/B1512/analysis/rev2/03_stability/` (10+ workbooks: Righting Arms, Offsets, Sail, Tanks, Gyradius)
 **Domain**: Vessel intact stability per regulatory standards
 **Complexity**: High
@@ -209,7 +209,7 @@
 ---
 
 ### 20. FDAS Riser Analysis Load/RAO (0127/1000yr)
-**Source**: `/mnt/ace/client-c/0163-FDAS/FDAS/Engineering/ace/LoadRAO/0127/` (0127-CAL-0014-05 Riser Analysis, 0127-CAL-0022-01 RAO's)
+**Source**: `/mnt/ace/client-c/0163-FDAS/FDAS/Engineering/ace/LoadRAO/0127/` (<document-number>-05 Riser Analysis, <document-number>-01 RAO's)
 **Domain**: Riser analysis with load case RAO processing
 **Complexity**: High
 **Est tokens**: ~2.5M
@@ -239,8 +239,8 @@
 
 ---
 
-### 23. Umbilical Reference: ONGC Standard
-**Source**: `/mnt/ace/client-b/s7/analysis_general/_ref/umbilical/ongc/` (9 workbooks: initiation, 1st/2nd end, deck handling, static, inputs)
+### 23. Umbilical Reference: an Indian operator Standard
+**Source**: `/mnt/ace/client-b/s7/analysis_general/_ref/umbilical/india-operator/` (9 workbooks: initiation, 1st/2nd end, deck handling, static, inputs)
 **Domain**: Umbilical installation reference templates
 **Complexity**: Medium
 **Est tokens**: ~2M
@@ -283,9 +283,9 @@
 
 | Rank | Workbook/Domain | Files | Effort | ~M Tokens | GTM Value | Already in CP repo? |
 |------|----------------|-------|--------|-----------|-----------|---------------------|
-| 1 | Ballymore Jumper | 1 | Medium | 1.5 | Demo ready | NO - needs copy |
-| 2 | Ballymore SUT Mudmat | 5 | High | 3.0 | Reusable tool | NO |
-| 3 | Ballymore PLET-LEM Jumper | 2 | Medium | 1.5 | Complements #1 | NO |
+| 1 | GoM tieback A Jumper | 1 | Medium | 1.5 | Demo ready | NO - needs copy |
+| 2 | GoM tieback A SUT Mudmat | 5 | High | 3.0 | Reusable tool | NO |
+| 3 | GoM tieback A PLET-LEM Jumper | 2 | Medium | 1.5 | Complements #1 | NO |
 | 4 | FDAS Riser Stroke-Stretch | 3+ | High | 2.5 | Demo ready | NO (raw) |
 | 5 | FDAS Riser Sizing/TT | 3+ | Medium | 1.5 | Universal | NO (raw) |
 | 6 | FDAS Plate Buckling | 1 | High | 2.5 | Structural demo | YES |
@@ -295,17 +295,17 @@
 | 10 | Intervention Riser Abaqus | 10+ | High | 3.0 | Model gen | YES |
 | 11 | SCR Design (DNV OS F201) | 12+ | High | 4.0 | Major deliverable | NO (raw) |
 | 12 | DNV WTD/Monte Carlo | 6+ | Medium | 1.5 | Fundamental | NO (raw) |
-| 13 | Talos Venice Umbilical | 31 | High | 4.0 | Full workflow | NO (raw) |
-| 14 | Shell Perdido Manifold | 14 | Medium | 2.0 | Installation | NO (raw) |
+| 13 | umbilical project A Umbilical | 31 | High | 4.0 | Full workflow | NO (raw) |
+| 14 | Shell GoM spar A Manifold | 14 | Medium | 2.0 | Installation | NO (raw) |
 | 15 | Passing Ship Forces | 6+ | High | 3.0 | Unique capability | YES (mkt-a) |
-| 16 | Vessel Stability (B1512) | 10+ | High | 2.5 | Naval arch | YES (mkt-a) |
+| 16 | Vessel Stability (<job-code>) | 10+ | High | 2.5 | Naval arch | YES (mkt-a) |
 | 17 | AQWA Damping Setup | 2 | High | 2.0 | AQWA integration | YES (mkt-a) |
 | 18 | Mooring Static Output | 4 | Medium | 1.5 | Mooring domain | YES (mkt-a) |
 | 19 | RAO Processing | 5 | Medium | 1.5 | Hydro base | Mixed |
 | 20 | FDAS Load/RAO Analysis | 2 | High | 2.5 | Riser/RAO | NO (raw) |
 | 21 | Production Eng Library | 48 | Mixed | 6.0 | HUGE domain | YES |
 | 22 | SRP/Dynacard Library | 10+ | Medium | 2.0 | Artificial lift | YES |
-| 23 | ONGC Umbilical Refs | 9 | Medium | 2.0 | Installation ref | NO (raw) |
+| 23 | an Indian operator Umbilical Refs | 9 | Medium | 2.0 | Installation ref | NO (raw) |
 | 24 | Lift/Lowering Refs | 5 | Medium | 1.5 | Installation ref | NO (raw) |
 | 25 | VMCast Operability | 9 | Medium | 2.0 | Metocean duration | NO (raw) |
 | 26 | Pipe Burst/Drilling Calcs | 10+ | Medium | 2.0 | Casing/drilling | NO (raw) |
@@ -314,7 +314,7 @@
 
 | Up to Rank | Cumulative ~M Tokens | Workbooks Included |
 |------------|---------------------|-------------------|
-| 1-5 | 10M | Ballymore jumper set + FDAS riser basics |
+| 1-5 | 10M | GoM tieback A jumper set + FDAS riser basics |
 | 1-10 | 22M | + Structural buckling, padeye, assembly models, Abaqus gen |
 | 1-15 | 31M | + SCR design, umbilical installation, passing ship forces |
 | 1-20 | 42M | + Stability, AQWA, mooring, RAO processing, Load/RAO |
@@ -324,12 +324,12 @@
 
 | Source Location | Files | Destination in client-c | Action |
 |----------------|-------|-------------------------------|--------|
-| `/mnt/ace/client-b/s7/ballymore/` | 10 | `ballymore/` | COPY NEEDED |
-| `/mnt/ace/client-b/s7/talos_venice/` | 31 | `talos_venice/` | COPY NEEDED |
-| `/mnt/ace/client-b/s7/shell_perdido_south/` | 14 | `shell_perdido_south/` | COPY NEEDED |
+| `/mnt/ace/client-b/s7/gom-tieback-a/` | 10 | `gom-tieback-a/` | COPY NEEDED |
+| `/mnt/ace/client-b/s7/umbilical-project-a/` | 31 | `umbilical-project-a/` | COPY NEEDED |
+| `/mnt/ace/client-b/s7/shell_gom_spar_a_south/` | 14 | `shell_gom_spar_a_south/` | COPY NEEDED |
 | `/mnt/ace/client-b/s7/analysis_general/_ref/epic/` | 4 | `engineering_tools/padeye/` | COPY NEEDED |
 | `/mnt/ace/client-b/s7/analysis_general/_ref/installations/` | 5 | `engineering_tools/installation/` | COPY NEEDED |
-| `/mnt/ace/client-b/s7/analysis_general/_ref/umbilical/ongc/` | 9 | `engineering_tools/umbilical_ongc/` | COPY NEEDED |
+| `/mnt/ace/client-b/s7/analysis_general/_ref/umbilical/india-operator/` | 9 | `engineering_tools/umbilical_india_operator/` | COPY NEEDED |
 | `/mnt/ace/client-b/s7/analysis_general/train/SCR/` | 12 | `engineering_training/SCR_design/` | COPY NEEDED |
 | `/mnt/ace/client-b/s7/analysis_general/train/wall_thickness/` | 6 | `engineering_training/wall_thickness/` | COPY NEEDED |
 | `/mnt/ace/client-b/s7/BP_MD2_FJR/` | 9 | `BP_MD2_FJR/` | COPY NEEDED |

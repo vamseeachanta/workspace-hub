@@ -56,7 +56,7 @@ rules:
   # ==== ACE Engineering / Consulting ====
   "aceengineer.com":                "aceengineer-admin/docs/email/internal"
   "lng-agroup.com":                 "lng-a/docs/email"
-  "mcdermott.com":                  "aceengineer-admin/docs/email/client-mcdermott"
+  "installation-contractor.com":                  "aceengineer-admin/docs/email/client-installation-contractor"
   "ril.com":                        "aceengineer-admin/docs/email/client-ril"
   "shell.com":                      "aceengineer-admin/docs/email/client-shell"
   "bp.com":                         "aceengineer-admin/docs/email/client-bp"

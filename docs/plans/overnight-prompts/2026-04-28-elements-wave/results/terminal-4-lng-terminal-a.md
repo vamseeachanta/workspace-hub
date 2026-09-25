@@ -1,4 +1,4 @@
-# Terminal 4 — Woodfibre LNG corpus scout & bounded-extraction plan (issue #2544)
+# Terminal 4 — LNG terminal A corpus scout & bounded-extraction plan (issue #2544)
 
 > **Run:** 2026-04-28 overnight Elements wave, Terminal 4
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/2544
@@ -9,10 +9,10 @@
 
 | Path | Purpose |
 |---|---|
-| `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` | Canonical plan with resource intelligence, artifact map, scope, pseudocode, TDD, acceptance criteria, risks, approval boundary |
-| `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` | Metadata-only structure scout (top-1/top-2 dirs, extension/size histograms, EDMS register decode, risks, uncertainties) |
-| `.planning/intel/elements-overnight-wave/woodfibre-first-tranche.tsv` | 15-row candidate matrix (priority/family/content_kind/bytes/path/rationale/extraction_method/target_wiki_page/confidentiality_risk) |
-| `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md` | This file |
+| `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` | Canonical plan with resource intelligence, artifact map, scope, pseudocode, TDD, acceptance criteria, risks, approval boundary |
+| `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md` | Metadata-only structure scout (top-1/top-2 dirs, extension/size histograms, EDMS register decode, risks, uncertainties) |
+| `.planning/intel/elements-overnight-wave/lng-terminal-a-first-tranche.tsv` | 15-row candidate matrix (priority/family/content_kind/bytes/path/rationale/extraction_method/target_wiki_page/confidentiality_risk) |
+| `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-lng-terminal-a.md` | This file |
 
 ## What was decided
 
@@ -33,18 +33,18 @@
 - **Hard exclusions enforced at TSV level:**
   - `.sim`, `.r001-3`, `.sldprt`, `.wbpz`, `.scdoc`, `.osav`, `.esav`, `.rst`, `.db`, `.mechdb`, `.dspsymb` — all engineering binaries.
   - `05.Deliverables/DEMOLITION/{CAPRICORN,TAURUS}/*` — 162 record drawings averaging 14 MB; likely third-party / prior-vessel-owner IP.
-- **Confidentiality posture (CRITICAL):** every candidate is marked `high` or `medium` risk in the TSV. Implementation is gated on a second checkpoint beyond `status:plan-approved`: a written mkt-a / project-owner clearance recorded in `docs/governance/woodfibre-extraction-clearance-2026.md`. The plan cannot be executed without that record.
+- **Confidentiality posture (CRITICAL):** every candidate is marked `high` or `medium` risk in the TSV. Implementation is gated on a second checkpoint beyond `status:plan-approved`: a written mkt-a / project-owner clearance recorded in `docs/governance/lng-terminal-a-extraction-clearance-2026.md`. The plan cannot be executed without that record.
 - **Wiki output proposed (deferred — only after `status:plan-approved` AND clearance record):**
-  - 1 corpus pointer page: `wiki/sources/woodfibre-corpus-pointer.md` (structure metadata, no document abstracts).
-  - 15 abstract pages, each one a `wiki/sources/woodfibre-<slug>.md` with frontmatter + 1-page methodology-only summary; no specific numerical values without explicit mkt-a approval per row.
+  - 1 corpus pointer page: `wiki/sources/lng-terminal-a-corpus-pointer.md` (structure metadata, no document abstracts).
+  - 15 abstract pages, each one a `wiki/sources/lng-terminal-a-<slug>.md` with frontmatter + 1-page methodology-only summary; no specific numerical values without explicit mkt-a approval per row.
   - `wiki/index.md`, `wiki/log.md`, `wiki/overview.md` updates.
-- **Cross-corpus coordination:** the `lng-projects` wiki also receives Terminal-1's SESA pointer pages. All Woodfibre pages prefixed `woodfibre-`; all SESA pages must use `sesa-` to avoid namespace collision. Coordination is captured in the plan's risk section, not enforced at terminal-4 level.
+- **Cross-corpus coordination:** the `lng-projects` wiki also receives Terminal-1's SESA pointer pages. All LNG terminal A pages prefixed `lng-terminal-a-`; all SESA pages must use `sesa-` to avoid namespace collision. Coordination is captured in the plan's risk section, not enforced at terminal-4 level.
 
 ## What was deliberately NOT done
 
-- No reads or writes to `/mnt/ace/mkt-a/31522-woodfibre-lng/**`. The sandbox correctly blocked direct `ls`/`find` on the mount; all corpus shape was derived from the pre-existing `elements-ingested-files.jsonl` index.
+- No reads or writes to `/mnt/ace/mkt-a/31522-lng-terminal-a/**`. The sandbox correctly blocked direct `ls`/`find` on the mount; all corpus shape was derived from the pre-existing `elements-ingested-files.jsonl` index.
 - No raw bytes (PDF/DOCX/SIM/CAD) copied into git or `knowledge/wikis/lng-projects/`.
-- No `wiki/sources/woodfibre-corpus-pointer.md` emission — that is the deferred implementation step, not a planning artifact.
+- No `wiki/sources/lng-terminal-a-corpus-pointer.md` emission — that is the deferred implementation step, not a planning artifact.
 - No edits to `knowledge/wikis/lng-projects/wiki/` content.
 - No edits to Terminal 1/2/3 paths or to the master overnight-prompt pack.
 - No `status:plan-approved` label applied (user-in-loop gate is intact). No language in any artifact pre-authorizes downstream agents to set the label, per memory: `feedback_never_offer_to_self_label_plan_approved.md`.
@@ -52,9 +52,9 @@
 
 ## Key uncertainties surfaced (kept in plan, not resolved)
 
-1. **Project-owner identity** — inferred from filename tokens (`WoodfibreLNG`, `WSP Interface loads`, `FST-1/FST-2`, `Capricorn`/`Taurus`, `LNGC`). Cannot be confirmed without opening a PDF; deferred to plan-stage reviewer / mkt-a reviewer.
+1. **Project-owner identity** — inferred from filename tokens (`LNG terminal A`, `WSP Interface loads`, `FST-1/FST-2`, `Capricorn`/`Taurus`, `LNGC`). Cannot be confirmed without opening a PDF; deferred to plan-stage reviewer / mkt-a reviewer.
 2. **EDMS revision-letter convention** — assumed `B = IFR`, `C = IFA`, sub-numbers = sub-revisions. If different, the latest-revision rule may pick a wrong file. Mitigation: implementation step calls a 2-row sanity check ("does the chosen rev's mtime exceed all sibling revs?") — if not, escalate.
-3. **Whether `_from_elements/` staging path exists** — implied by #2535 catalog (`staging_root: /mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements`) but not verified directly because of sandbox boundary. Treated as precondition.
+3. **Whether `_from_elements/` staging path exists** — implied by #2535 catalog (`staging_root: /mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements`) but not verified directly because of sandbox boundary. Treated as precondition.
 4. **Public regulator filings** — BC OGC and BC EAO commonly publish summarized project documents for LNG facilities. If applicable summaries exist, abstracts could cite the public filing instead of paraphrasing internal docs, eliminating clearance friction. Not researched in this terminal; flagged in plan's open questions.
 5. **Whether any of the 15 candidates contain WSP, Pacific Energy, or shipyard-partner IP** that mkt-a does not own outright — folder names suggest WSP for the mooring interface document. Deferred to mkt-a review.
 6. **DEMOLITION subdir IP provenance** — record drawings predate the conversion project and likely came from prior owners of CAPRICORN/TAURUS hulls. Excluded from tranche; provenance question left open for future cataloging issue.
@@ -63,7 +63,7 @@
 
 - `gh issue view 2544 --json ...` → OPEN; scope/deliverables/acceptance criteria match plan output.
 - `Read .planning/intel/elements-to-llm-wiki/elements-wiki-domain-summary.md` → confirmed bucket #8 totals (5,364 files / 1.879 TB / `metadata-only` priority).
-- `Grep` over `deep-extraction-candidates.tsv` for `woodfibre` and `mkt-a-31522-woodfibre` → 0 matches (consistent with metadata-only classification).
+- `Grep` over `deep-extraction-candidates.tsv` for `LNG terminal A` and `mkt-a-31522-lng-terminal-a` → 0 matches (consistent with metadata-only classification).
 - jq streaming aggregations on `elements-ingested-files.jsonl`:
   - `reduce inputs as $r ({}; ...)` → top-level dir histogram (6 entries; sum = 5,364 ✓).
   - same pattern → depth-2 histogram (top-12 cited in scout).
@@ -78,12 +78,12 @@
 
 - Issue #2544 stays at **plan-review**.
 - Recommend adversarial review next (Claude + Codex + Gemini against the plan) before user approves. Note: per project memory, Codex CLI 0.124.0 has an open stdin-hang regression (#2479) — fall back to Codex web/Workbench if `codex exec` blocks. Gemini sandbox overlay-blindness is also a known false-positive source for sparse-checkout claims.
-- Two gates separate this plan from any wiki write: (1) `status:plan-approved` set by user; (2) mkt-a / project-owner clearance recorded in `docs/governance/woodfibre-extraction-clearance-2026.md`. Implementation issue cannot proceed past pointer-page emission until that record exists.
+- Two gates separate this plan from any wiki write: (1) `status:plan-approved` set by user; (2) mkt-a / project-owner clearance recorded in `docs/governance/lng-terminal-a-extraction-clearance-2026.md`. Implementation issue cannot proceed past pointer-page emission until that record exists.
 - Implementation phase should be a separate follow-up issue with its own plan; this plan only authorizes the *shape* of that future work and never the extraction itself.
 
 ## Sandbox observations (non-blocking, for the wave coordinator)
 
-- Session correctly scoped to read-only on `/mnt/ace`; `ls /mnt/ace/mkt-a/31522-woodfibre-lng` and `find` over the mount were blocked. All corpus shape was therefore derived from `.planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl` — exactly the substrate #2535 produced for this purpose.
+- Session correctly scoped to read-only on `/mnt/ace`; `ls /mnt/ace/mkt-a/31522-lng-terminal-a` and `find` over the mount were blocked. All corpus shape was therefore derived from `.planning/intel/elements-to-llm-wiki/elements-ingested-files.jsonl` — exactly the substrate #2535 produced for this purpose.
 - Inline `python3 -c` and `Write` to `/tmp/` were sandbox-blocked. `jq` (with streaming `inputs`) is the workable aggregation primitive in this configuration. `awk`-piped stages tripped the multi-operation guard on the second pipe; the workaround is in-jq `reduce ... as $r ({...})` which keeps everything in one tool invocation.
 - The `04.Model Test Correlation` top-level lacked deeper sub-folders for the report itself (the PDF/DOCX sit at the top of that dir, not under a `02. Orcaflex/` sub-tree like the runs do). Latest-revision selection was therefore unambiguous.
 

@@ -134,12 +134,12 @@ repeat a stage whose log exists. That is an accident, not a guarantee.
 
 ## CLIENT-HULL ONBOARDING — blocked, and one decision needed first
 
-**Target:** project B1552 hull model, for resistance analysis.
+**Target:** project <job-code> hull model, for resistance analysis.
 
 **Access established (my stored note was STALE and said otherwise — verify, don't trust):**
 
 ```
-host    ACMA-HOU-RDS02   tailnet 100.93.182.24   domain ACMA-INC.LOCAL
+host    ace-win-1   tailnet 100.93.182.24   domain ACMA-INC.LOCAL
 user    vamseea          (also Administrator)    SSH: WORKS
 drives  C:  D: (Data)  S: (VM storage)           <- NO J:
 ```
@@ -153,7 +153,7 @@ the domain namespace timed out.
 interactive session on that box prints it.
 
 **Layout learned:** projects live at `D:\<code>`. `D:\B1546` exists and holds
-`V-Rigs (AQWA Model Archive).wbpj` — an AQWA Workbench project. B1552 is NOT on local
+`V-Rigs (AQWA Model Archive).wbpj` — an AQWA Workbench project. <job-code> is NOT on local
 disk.
 
 ### The routing decision that must precede the copy

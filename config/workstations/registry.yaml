@@ -281,7 +281,7 @@ machines:
 
   ace-win-2:
     hostname: ace-win-2
-    hostname_aliases: [licensed-win-2, acma-ws014]  # WF0 #3001: renamed from licensed-win-2
+    hostname_aliases: [licensed-win-2, ace-win-2]  # WF0 #3001: renamed from licensed-win-2
     os: windows
     role: simulation-secondary
     workspace_root: 'D:\workspace-hub'

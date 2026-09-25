@@ -14,7 +14,7 @@
 
 ### Existing repo code
 - Found: `digitalmodel/examples/demos/gtm/data/pipelay_vessels.json` — 2 representative S-lay vessel classes (Large PLV, Shallow Water Barge) with tensioner capacity, stinger config, water-depth range, pipe-size range, sea-state limits. Header explicitly states "representative of real vessel classes" — not exact named-vessel specs. Acceptable public/inferred dataset for the chart inputs.
-- Found: `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json` — 2 representative CSV/HLV classes (Large CSV ~Aegir/Borealis, Medium CSV ~Normand Maximus/Seven Arctic) with crane SWL curve, RAO peaks, operational limits. Same representative-class disclaimer.
+- Found: `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json` — 2 representative CSV/HLV classes (Large CSV ~Aegir/Borealis, Medium CSV ~Normand Maximus/construction-vessel-a) with crane SWL curve, RAO peaks, operational limits. Same representative-class disclaimer.
 - Found: `digitalmodel/examples/demos/gtm/results/vessel_comparison_matrix.json` — pre-computed cross-demo go/no-go matrix across 4 vessels for mudmat installation, jumper installation, and shallow pipelay. Includes head-to-head comparison narratives. This is the primary chart-feed.
 - Found: `digitalmodel/examples/demos/gtm/results/structure_comparison_matrix.json` — by-vessel structure comparison with crane utilisation values at fixed depth. Useful for utilisation-margin chart.
 - Found: `digitalmodel/examples/demos/gtm/output/demo_04_shallow_pipelay_report.html` — already renders a Plotly Go/No-Go heatmap (`chart-go_nogo`) for shallow pipelay at line 1086. Demonstrates that chart-rendering scaffolding exists.

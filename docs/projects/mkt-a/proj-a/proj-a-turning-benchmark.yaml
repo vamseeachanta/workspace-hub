@@ -1,11 +1,11 @@
-title: B1528 proj-a turning/track benchmark evidence
+title: proj-a turning/track benchmark evidence
 issue: https://github.com/vamseeachanta/workspace-hub/issues/2569
 source_documents:
-- path: github://vamseeachanta/mkt-a/B1528/ref/proj-a breakaway notes.docx
-  local_extraction: /tmp/b1528/proj-a_breakaway_notes.docx
+- path: github://vamseeachanta/mkt-a/proj-a/ref/proj-a breakaway notes.docx
+  local_extraction: /tmp/proj-a/proj-a_breakaway_notes.docx
   status: narrative_extraction
-- path: github://vamseeachanta/mkt-a/B1528/ref/ECDIS Mar 26 Midnight LT.docx
-  local_extraction: /tmp/b1528/ecdis_mar26.docx
+- path: github://vamseeachanta/mkt-a/proj-a/ref/ECDIS Mar 26 Midnight LT.docx
+  local_extraction: /tmp/proj-a/ecdis_mar26.docx
   status: context_only
 data_quality:
   classification: narrative_benchmark_not_instrumented_validation_dataset
