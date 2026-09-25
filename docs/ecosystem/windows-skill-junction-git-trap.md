@@ -1,3 +1,10 @@
+---
+compass:
+  parent: docs/setup/TROUBLESHOOTING.md
+  friends:
+    - docs/plans/2026-06-03-issue-2911-prepush-worktree-skip.md
+---
+
 # Windows junction-backed skill directories and git
 
 ## What

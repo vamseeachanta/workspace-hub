@@ -1,3 +1,16 @@
+---
+compass:
+  parent: docs/plans/README.md
+  children:
+    - docs/plans/2026-06-03-issue-2911-prepush-worktree-skip.md
+    - docs/plans/2026-06-13-issue-3057-cron-hygiene-hardening.md
+  friends:
+    - docs/ecosystem/windows-skill-junction-git-trap.md
+  challengers:
+    - note: scripts/cron/daily-cleanup.sh
+      why: "rejected as audit base: some probes bypass the run() dry-run wrapper and can still mutate"
+---
+
 # Plan for #3041: daily read-only repo ecosystem hygiene audit
 
 > **Status:** plan-approved

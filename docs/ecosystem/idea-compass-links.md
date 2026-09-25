@@ -1,0 +1,71 @@
+# Idea Compass typed links — pilot convention
+
+> **Status:** pilot (branch `pilot/idea-compass-links`, 2026-09-25)
+> **Purpose:** make notes agent-navigable. A fresh agent dropped onto any note
+> should orient in seconds: why it exists, what details hang off it, what
+> precedent to compare, what was already rejected, and what comes next.
+
+Adapted from the Idea Compass framework (K-Plex / Sketch Your Mind): every link
+has a *direction* and a *meaning*, not just "see also".
+
+## Frontmatter block
+
+Add a YAML frontmatter block at the top of decision/plan/doctrine notes:
+
+```yaml
+---
+compass:
+  parent: docs/plans/README.md        # broader context / WHY this note exists
+  children:                           # deep dives / details / follow-up work
+    - docs/plans/2026-06-03-issue-2911-prepush-worktree-skip.md
+  friends:                            # similar precedent cases — compare before deciding
+    - docs/ecosystem/windows-skill-junction-git-trap.md
+  challengers:                        # rejected alternatives + reason (do NOT re-litigate)
+    - note: docs/plans/2026-04-21-issue-2203-pre-push-worktree-aware-tier1-gate.md
+      why: "MAJORx9 on scope complexity; #2911 is the intentionally narrower cut"
+  prev: docs/governance/flywheel-icp-decision.md   # previous in a sequence (optional)
+  next: TODO:docs/plans/2026-10-xx-followup.md     # next in a sequence (optional)
+---
+```
+
+## Field meanings
+
+| Field | Direction | Meaning | Answers |
+|---|---|---|---|
+| `parent` | up | Broader context, epic, or doctrine this note serves | Why does this exist? |
+| `children` | down | Implementation details, sub-plans, follow-ups | Where are the details? |
+| `friends` | left | Similar cases / prior art worth comparing | Has this been solved before? |
+| `challengers` | right | Alternatives considered and rejected, with `why` | What should I NOT re-propose? |
+| `prev` / `next` | sideways | Position in a time/dependency sequence | What happened before/after? |
+
+## Rules
+
+1. **One idea per note.** If a note needs two parents, it is two notes.
+2. **Repo-relative paths.** All link targets are paths relative to the repo
+   root, so they resolve in any checkout and survive renames via git history.
+3. **Placeholders are first-class.** A link target that does not exist yet is
+   marked with a `TODO:` prefix (e.g. `TODO:docs/plans/2026-10-xx-x.md`).
+   Placeholders are *work orders*: visible gaps, not vague feelings.
+   Every non-placeholder target MUST resolve to an existing file — verify with
+   `git ls-files` or a path check before committing.
+4. **Challengers always carry `why`.** A challenger without a reason is just a
+   link; the reason is what stops the next agent re-litigating the decision.
+5. **Keep it lightweight.** Only decision/plan/doctrine notes get compass
+   blocks — not every README, not generated reports. Aim: the notes an agent
+   needs for catch-up, not an index of everything.
+6. **Inferred links stay out.** Auto-suggested "related notes" are hypotheses;
+   only *deliberately declared* links go in the block. If a script generates
+   suggestions, they live elsewhere, clearly marked as inferred.
+
+## Verifying a retrofit
+
+```bash
+# every non-TODO: target must exist
+git grep -h -A20 '^compass:' -- 'docs/**/*.md' | grep -oP '(?<=: )(TODO:)?docs/\S+\.md' \
+  | grep -v '^TODO:' | while read p; do [ -f "$p" ] || echo "BROKEN: $p"; done
+```
+
+## Pilot scope
+
+10 notes retrofitted on `pilot/idea-compass-links` (see commit). After the
+agent catch-up test, decide: adopt fleet-wide, refine, or drop.

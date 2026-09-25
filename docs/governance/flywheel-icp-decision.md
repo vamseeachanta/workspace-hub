@@ -1,3 +1,12 @@
+---
+compass:
+  parent: docs/plans/2026-04-25-aces-3-flywheel-icp.md
+  children:
+    - TODO:docs/governance/flywheel-anchor-accounts.md
+  friends:
+    - docs/governance/flywheel-wedge-decision.md
+---
+
 # Flywheel ICP Decision — Operators (Primary, v1 Paid Integration Tier)
 
 > **Status:** LOCKED for primary ICP; **PENDING for named anchor accounts** (see §3)

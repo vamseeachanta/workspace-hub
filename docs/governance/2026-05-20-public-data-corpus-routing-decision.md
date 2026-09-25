@@ -1,3 +1,13 @@
+---
+compass:
+  parent: docs/governance/2026-05-14-service-provider-data-routing-and-bsee-ingest-design.md
+  children:
+    - docs/plans/2026-05-20-issue-429-worldenergydata-public-data-routing.md
+  challengers:
+    - note: docs/plans/2026-05-20-issue-429-worldenergydata-public-data-routing.md
+      why: "Option B (private llm-wiki) rejected: breaks GTM citation surface; Option C (hybrid per-artifact) rejected as default: routing-decision tax compounds"
+---
+
 # Public-data corpus routing decision — BSEE / NOAA / USGS / MMS
 
 > **Date:** 2026-05-20
