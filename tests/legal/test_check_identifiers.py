@@ -533,3 +533,30 @@ class TestPrivateListIsCoveredWithoutIt:
             if not (out.returncode == 1 and "denied-name" in out.stdout):
                 escaped.append(f"entry #{i}")
         assert not escaped, "private-list entries CI would miss: " + ", ".join(escaped)
+
+
+# --------------------------------------------------------------------------- #
+# Findings never echo the offending text into a (public) CI log
+# --------------------------------------------------------------------------- #
+
+
+def test_finding_output_does_not_quote_the_line(gate):
+    f = _file(gate, f"model at {_user_path()}\nsecond line mentions {TOKEN}\n")
+    r = gate(f)
+    assert r.returncode == 1
+    out = r.stdout + r.stderr
+    assert "sample.md:1:" in out and "sample.md:2:" in out
+    assert "jdoe123" not in out and TOKEN not in out
+
+
+def test_show_lines_quotes_locally(gate):
+    f = _file(gate, f"model at {_user_path()}\n")
+    r = gate("--show-lines", f)
+    assert r.returncode == 1 and "jdoe123" in r.stdout
+
+
+def test_show_lines_is_refused_in_ci(gate):
+    f = _file(gate, f"model at {_user_path()}\n")
+    r = gate("--show-lines", f, env={"CI": "true"})
+    assert r.returncode not in (0, 1)
+    assert "jdoe123" not in r.stdout + r.stderr
