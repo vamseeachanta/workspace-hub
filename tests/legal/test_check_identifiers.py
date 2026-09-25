@@ -192,6 +192,11 @@ class TestWorkspaceHubEmailShapes:
             "url = " + "git" + "@" + "gitlab.example.org:group/project.git",
             "Co-Authored-By: Claude <" + "noreply" + "@" + "anthropic.com>",
             "From: " + "no-reply" + "@" + "accounts.example.org",
+            # a decorator line in a unified diff is not an address
+            "+" + "@" + "pytest.fixture",
+            # a package@tag file name ends in a file extension, not a domain
+            "git rm memory/some-tool" + "@" + "alpha-data.json",
+            "cache at pkg" + "@" + "1.2.3/index.yaml",
         ],
     )
     def test_service_shapes_pass(self, gate, line):
