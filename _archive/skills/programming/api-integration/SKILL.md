@@ -1192,7 +1192,7 @@ def setup_api_logging(
 
 - **Documentation**: OrcFxAPI Python documentation (in OrcaFlex installation)
 - **Examples**: OrcaFlex → Examples → Python folder
-- **Support**: support@orcina.com
+- **Support**: Orcina technical support (via orcina.com)
 
 ### ANSYS AQWA
 

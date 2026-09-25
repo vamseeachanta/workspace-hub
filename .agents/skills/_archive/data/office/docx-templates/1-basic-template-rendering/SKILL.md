@@ -189,12 +189,12 @@ company = Company(
     contacts=[
         Contact(
             name="Alice Johnson",
-            email="alice@techcorp.com",
+            email="alice@example.com",
             phone="555-0101",
             title="CEO"
         ),
         Contact(
             name="Bob Williams",
-            email="bob@techcorp.com",
+            email="bob@example.com",
 
 *Content truncated — see parent skill for full reference.*

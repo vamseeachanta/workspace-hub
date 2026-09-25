@@ -1390,7 +1390,7 @@ def safe_simulation_run(
 
 - **Orcina Training Courses**: Official OrcaFlex training
 - **User Forum**: https://www.orcina.com/forums/
-- **Technical Support**: support@orcina.com
+- **Technical Support**: Orcina technical support (via orcina.com)
 
 ### Related Standards
 

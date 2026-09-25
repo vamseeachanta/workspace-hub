@@ -55,7 +55,7 @@ Based on 18 months of data showing maintained productivity and your feedback req
 2. Submit your preferred days via WorkDay by February 20
 3. Order equipment through the new home office portal
 
-Questions? Reach out to HR at hybrid@company.com or join our FAQ session on February 10 at 2pm.
+Questions? Reach out to HR at hybrid@example.com or join our FAQ session on February 10 at 2pm.
 
 [Leadership Name]
 ```

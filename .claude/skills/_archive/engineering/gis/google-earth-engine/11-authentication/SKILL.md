@@ -23,7 +23,7 @@ ee.Initialize(project="your-gcp-project-id")
 
 # Service account (CI / headless):
 credentials = ee.ServiceAccountCredentials(
-    email="sa@project.iam.gserviceaccount.com",
+    email="sa@example.iam.gserviceaccount.com",
     key_file="/path/to/key.json"
 )
 ee.Initialize(credentials=credentials, project="your-gcp-project-id")

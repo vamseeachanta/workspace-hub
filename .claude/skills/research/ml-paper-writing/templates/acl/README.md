@@ -38,7 +38,7 @@ START submission ID so that it would be stamped at the top of each
 page of the anonymized version. This is no longer needed, because it
 is now possible to do this stamping automatically within
 START. Currently, the way to do this is for the program chair to email
-support@softconf.com and request it.
+support@example.com and request it.
 
 ## Instructions for making changes to style files
 

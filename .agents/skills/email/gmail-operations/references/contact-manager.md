@@ -36,7 +36,7 @@ Normalize and classify contact databases for multi-account Gmail management.
 ### Step 1: Parse and clean CSV
 
 Known issues in the raw CSVs:
-- Email addresses wrapped in angle brackets: `<email@domain.com>`
+- Email addresses wrapped in angle brackets: `<email@example.com>`
 - Empty name fields with only email
 - Duplicate entries (same person, multiple rows)
 - Craigslist/spam entries mixed in
@@ -229,7 +229,7 @@ Edit the domain sets in `scripts/email/contact-normalizer.py` (ACE_CLIENT_DOMAIN
 ## Pitfalls
 
 1. Outlook CSV export has 64 columns with verbose names ("E-mail Address", "E-mail 2 Address", etc.)
-2. Email addresses often wrapped in angle brackets: `<email@domain.com>`
+2. Email addresses often wrapped in angle brackets: `<email@example.com>`
 3. Some entries have email stored in "First Name" field when name is unknown
 4. Windows BOM (utf-8-sig) — always open with `encoding="utf-8-sig"`
 5. Empty first/last name rows are common (~30-36% of contacts) — use email prefix for name inference

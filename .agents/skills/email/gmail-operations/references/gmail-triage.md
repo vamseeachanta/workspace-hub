@@ -82,24 +82,24 @@ Format:
 ```
 === GMAIL DAILY DIGEST — {date} ===
 
-[ACE] vamsee.achanta@aceengineer.com
+[ACE] owner@example.com
   URGENT (2):
-    - From: client@company.com | Subject: RFP Response Deadline
-    - From: vendor@co.com | Subject: Invoice #1234 Past Due
+    - From: client@example.com | Subject: RFP Response Deadline
+    - From: vendor@example.com | Subject: Invoice #1234 Past Due
   ACTIONABLE (3):
     - ...
   FYI (5): [collapsed]
   NEWSLETTER (12): [collapsed, unsubscribe candidates marked]
 
-[PERSONAL] achantav@gmail.com
+[PERSONAL] owner.personal@example.com
   ...
 
-[SKESTATES] skestatesinc@gmail.com
+[SKESTATES] info@example.org
   ...
 
 === RECOMMENDED ACTIONS ===
-1. Reply to client@company.com RE: RFP (ACE)
-2. Review invoice from vendor@co.com (ACE)
+1. Reply to client@example.com RE: RFP (ACE)
+2. Review invoice from vendor@example.com (ACE)
 3. Unsubscribe from 8 newsletters (PERSONAL)
 4. Add 2 unknown senders to contacts or block
 ```
@@ -117,7 +117,7 @@ Format:
 - NEWSLETTER: aggressive unsubscribe candidates
 
 ### skestates
-- VIP: TX_Rents@familydollar.com, leaseadministration@familydollar.com
+- VIP: tenant-rents@example.net, tenant-leases@example.net
 - URGENT: insurance, tax, legal, tenant maintenance requests
 - NEWSLETTER: real estate marketing (unsubscribe)
 

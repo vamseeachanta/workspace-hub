@@ -40,7 +40,7 @@ cd D:/workspace-hub/.claude/skills/workspace-hub/claude-reflect/scripts
    - Name: "Claude Reflect Daily"
    - Trigger: Daily at 5:00 AM
    - Action: Start a program
-   - Program: `D:\workspace-hub\.claude\skills\workspace-hub\claude-reflect\scripts\run-reflection.bat`
+   - Program: `<workspace-root>\workspace-hub\.claude\skills\workspace-hub\claude-reflect\scripts\run-reflection.bat`
 3. In task properties, enable "Run whether user is logged on or not"
 
 ### Linux/WSL (Cron)

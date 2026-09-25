@@ -56,7 +56,7 @@ Then run `himalaya account configure <account>` to store the password.
 
 ```toml
 [accounts.gmail]
-email = "you@gmail.com"
+email = "you@example.com"
 display-name = "Your Name"
 default = true
 
@@ -64,7 +64,7 @@ backend.type = "imap"
 backend.host = "imap.gmail.com"
 backend.port = 993
 backend.encryption.type = "tls"
-backend.login = "you@gmail.com"
+backend.login = "you@example.com"
 backend.auth.type = "password"
 backend.auth.cmd = "pass show google/app-password"
 
@@ -72,7 +72,7 @@ message.send.backend.type = "smtp"
 message.send.backend.host = "smtp.gmail.com"
 message.send.backend.port = 587
 message.send.backend.encryption.type = "start-tls"
-message.send.backend.login = "you@gmail.com"
+message.send.backend.login = "you@example.com"
 message.send.backend.auth.type = "password"
 message.send.backend.auth.cmd = "pass show google/app-password"
 ```
@@ -83,14 +83,14 @@ message.send.backend.auth.cmd = "pass show google/app-password"
 
 ```toml
 [accounts.icloud]
-email = "you@icloud.com"
+email = "you@example.net"
 display-name = "Your Name"
 
 backend.type = "imap"
 backend.host = "imap.mail.me.com"
 backend.port = 993
 backend.encryption.type = "tls"
-backend.login = "you@icloud.com"
+backend.login = "you@example.net"
 backend.auth.type = "password"
 backend.auth.cmd = "pass show icloud/app-password"
 
@@ -98,7 +98,7 @@ message.send.backend.type = "smtp"
 message.send.backend.host = "smtp.mail.me.com"
 message.send.backend.port = 587
 message.send.backend.encryption.type = "start-tls"
-message.send.backend.login = "you@icloud.com"
+message.send.backend.login = "you@example.net"
 message.send.backend.auth.type = "password"
 message.send.backend.auth.cmd = "pass show icloud/app-password"
 ```
@@ -126,7 +126,7 @@ default = true
 # ... backend config ...
 
 [accounts.work]
-email = "work@company.com"
+email = "work@example.org"
 # ... backend config ...
 ```
 

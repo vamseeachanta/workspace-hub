@@ -26,7 +26,7 @@ Use this skill when you need to prepare work for a machine that has commercial s
 ### 1. Self-contained — no external context assumed
 
 The agent on the licensed machine has NO memory, NO skills, NO Hermes. Every prompt must include:
-- Exact workspace path (e.g., `D:\workspace-hub`)
+- Exact workspace path (e.g., `<workspace-root>\workspace-hub`)
 - Which Python command to use (`python` not `uv run` on Windows)
 - Full inline scripts — do NOT reference functions in packages the agent might not find
 - `git pull` as the first step, `git push` as the last step
@@ -109,7 +109,7 @@ Standard sections:
 ## Execution on the licensed machine
 
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull origin main
 cd digitalmodel && git pull origin main && cd ..
 
