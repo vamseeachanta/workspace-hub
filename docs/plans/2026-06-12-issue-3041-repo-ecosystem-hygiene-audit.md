@@ -10,6 +10,10 @@ compass:
   challengers:
     - note: scripts/cron/daily-cleanup.sh
       why: "rejected as audit base: some probes bypass the run() dry-run wrapper and can still mutate"
+  memory:
+    - .claude/memory/topics/feedback_amend_clobbers_parallel_branch_in_shared_checkout.md
+    - .claude/memory/topics/feedback_autorun_clobbers_subagent_worktree_commits.md
+    - .claude/memory/topics/feedback_check_parallel_work.md
 ---
 
 # Plan for #3041: daily read-only repo ecosystem hygiene audit

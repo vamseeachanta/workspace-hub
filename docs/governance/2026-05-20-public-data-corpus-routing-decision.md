@@ -7,6 +7,9 @@ compass:
   challengers:
     - note: docs/plans/2026-05-20-issue-429-worldenergydata-public-data-routing.md
       why: "Option B (private llm-wiki) rejected: breaks GTM citation surface; Option C (hybrid per-artifact) rejected as default: routing-decision tax compounds"
+  memory:
+    - .claude/memory/topics/feedback_service_provider_data_routing.md
+    - .claude/memory/topics/feedback_llm_wiki_relocation_firewall_gate.md
 ---
 
 # Public-data corpus routing decision — BSEE / NOAA / USGS / MMS

@@ -1,6 +1,6 @@
-# Idea Compass typed links — pilot convention
+# Idea Compass typed links — repo convention
 
-> **Status:** pilot (branch `pilot/idea-compass-links`, 2026-09-25)
+> **Status:** adopted (piloted 2026-09-25 on `pilot/idea-compass-links`, traversal-tested, merged to main)
 > **Purpose:** make notes agent-navigable. A fresh agent dropped onto any note
 > should orient in seconds: why it exists, what details hang off it, what
 > precedent to compare, what was already rejected, and what comes next.
@@ -26,6 +26,8 @@ compass:
       why: "MAJORx9 on scope complexity; #2911 is the intentionally narrower cut"
   prev: docs/governance/flywheel-icp-decision.md   # previous in a sequence (optional)
   next: TODO:docs/plans/2026-10-xx-followup.md     # next in a sequence (optional)
+  memory:                                         # experiential "why" — hub notes MUST link these (rule 7)
+    - .claude/memory/topics/feedback_amend_clobbers_parallel_branch_in_shared_checkout.md
 ---
 ```
 
@@ -39,6 +41,7 @@ compass:
 | `challengers` | right | Alternatives considered and rejected, with `why` | What should I NOT re-propose? |
 | `prev` / `next` | sideways | Position in a time/dependency sequence | What happened before/after? |
 | `hub` | — | Marks this note as the entry point for its topic cluster. A cold agent given only a topic starts at the hub, then follows children/friends/challengers outward. | Where do I start on this topic? |
+| `memory` | out | Experiential memory-topic notes holding the lived "why" behind this note. **Required on hub notes** (rule 7). | What did we learn the hard way here? |
 
 ## Cluster index
 
@@ -71,6 +74,13 @@ starts at the hub note, then traverses `children` / `friends` / `challengers`.
 6. **Inferred links stay out.** Auto-suggested "related notes" are hypotheses;
    only *deliberately declared* links go in the block. If a script generates
    suggestions, they live elsewhere, clearly marked as inferred.
+7. **Hubs link outward to memory.** Every hub note MUST carry a `memory:` list
+   pointing at the relevant `.claude/memory/topics/` entries (find them via
+   `.claude/memory/topics/INDEX.md`). The traversal test showed the richest
+   "why" material lives in experiential memory notes, which the compass trail
+   alone does not surface — without this link, agents get the decisions but
+   miss the hard-won lessons. Omit the field only when no memory topic is
+   genuinely relevant; never force-fit.
 
 ## Verifying a retrofit
 
@@ -80,9 +90,15 @@ git grep -h -A20 '^compass:' -- 'docs/**/*.md' | grep -oP '(?<=: )(TODO:)?docs/\
   | grep -v '^TODO:' | while read p; do [ -f "$p" ] || echo "BROKEN: $p"; done
 ```
 
-## Pilot scope
+## Adoption
 
-10 notes retrofitted on `pilot/idea-compass-links` (see commit). Refinement 2:
-each topic cluster's entry-point note carries `hub: true`, and the cluster
-index above lists the hubs. After the traversal catch-up test, decide:
-adopt fleet-wide, refine, or drop.
+Piloted 2026-09-25 on `pilot/idea-compass-links` (10 notes + 5 hub flags),
+validated by a head-to-head traversal test: a fresh agent given only a topic
+used ~2x fewer tool calls with the convention, self-discovered the links
+unprompted, and lost no accuracy. Refinement from the test: rule 7 (hubs link
+outward to memory topics), because the baseline agent's wider sweep surfaced
+experiential "why" material the compass trail alone missed.
+
+Going forward: every new decision/plan/doctrine note gets a compass block;
+cluster parents get `hub: true` plus `memory:` links. No backfill mandate —
+retrofit opportunistically when a note is touched.
