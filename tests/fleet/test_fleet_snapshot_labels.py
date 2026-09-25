@@ -30,7 +30,7 @@ MAP_TEXT = """\
 PHYS-BOX-A   ace-win-1
 phys-box-b   ace-win-2
 ace-linux-1  ace-linux-1
-collector-x  collector-x
+collector-x  fleet-collector
 """
 
 
@@ -82,8 +82,8 @@ def test_physical_names_become_labels_case_insensitively(env):
     assert r.returncode == 0, r.stderr
     out = json.loads(snap.read_text(encoding="utf-8"))
     assert [x["name"] for x in out["machines"]] == [
-        "collector-x", "ace-linux-1", "ace-win-1", "ace-win-2"]
-    assert out["generated_by"] == "collector-x fleet-daily-collector"
+        "fleet-collector", "ace-linux-1", "ace-win-1", "ace-win-2"]
+    assert out["generated_by"] == "fleet-collector fleet-daily-collector"
 
 
 def test_only_names_change_numbers_and_order_are_preserved(env):
@@ -181,3 +181,139 @@ def test_check_mode_reports_without_writing(env):
     r = run("--map", str(m), "--check", str(snap))
     assert r.returncode == 1
     assert snap.read_bytes() == before
+
+
+# --- Codex r1 (C18): every host value must end as an approved public label ---
+
+def _write(snap: Path, data: dict) -> bytes:
+    snap.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    return snap.read_bytes()
+
+
+@pytest.mark.parametrize("label", [
+    "ace-win-1", "ace-win-2", "ace-linux-1", "ace-linux-2", "gpu-claw",
+    "fleet-collector", "mac-1", "spark-1",
+])
+def test_approved_labels_are_public_labels(label):
+    assert fsl.is_public_label(label)
+
+
+@pytest.mark.parametrize("label", ["collector-x", "box-7", "mac", "spark-abc", ""])
+def test_other_values_are_not_public_labels(label):
+    assert not fsl.is_public_label(label)
+
+
+def test_registry_logical_names_are_public_labels():
+    """Every logical name the workstation registry lists must be accepted."""
+    import yaml
+
+    reg = yaml.safe_load((ROOT / "config" / "workstations" / "registry.yaml")
+                         .read_text(encoding="utf-8"))
+    logical = {k for k in reg["machines"] if fsl.LABEL_RE.match(k)}
+    logical |= {m["hostname"] for m in reg["machines"].values()
+                if isinstance(m.get("hostname"), str) and m["hostname"].startswith("ace-")}
+    assert {"ace-win-1", "ace-win-2", "ace-linux-1", "ace-linux-2", "gpu-claw"} <= (
+        logical | {"gpu-claw"})
+    for name in logical:
+        assert fsl.is_public_label(name), "registry logical name rejected"
+
+
+def test_identity_line_for_non_label_host_fails_closed(env):
+    """A map that keeps a physical name as its own 'label' must not publish it."""
+    m, snap = env
+    m.write_text(MAP_TEXT.replace("collector-x  fleet-collector",
+                                  "collector-x  collector-x"), encoding="utf-8")
+    before = snap.read_bytes()
+    r = run("--map", str(m), str(snap))
+    assert r.returncode == 2
+    assert snap.read_bytes() == before
+    assert "collector-x" not in r.stdout + r.stderr
+
+
+def test_neutral_labels_for_unregistered_hosts(env):
+    m, snap = env
+    m.write_text(MAP_TEXT + "laptop-q  mac-1\ndgx-q9  spark-1\n", encoding="utf-8")
+    data = snapshot()
+    data["machines"] += [{"name": "laptop-q", "reachable": False},
+                         {"name": "DGX-Q9", "reachable": False}]
+    _write(snap, data)
+    assert run("--map", str(m), str(snap)).returncode == 0
+    out = json.loads(snap.read_text(encoding="utf-8"))
+    assert [x["name"] for x in out["machines"]][-2:] == ["mac-1", "spark-1"]
+    assert all(fsl.is_public_label(x["name"]) for x in out["machines"])
+    assert fsl.is_public_label(out["generated_by"].split()[0])
+
+
+def test_hostname_fragment_in_branch_is_rewritten(env):
+    m, snap = env
+    m.write_text(MAP_TEXT + "zeta-hq-node07  ace-win-3\n", encoding="utf-8")
+    data = snapshot()
+    data["machines"][0]["branch"] = "port/node07-parked-items"
+    data["machines"][1]["branch"] = "feat/zeta-hq-node07-sync"
+    _write(snap, data)
+    r = run("--map", str(m), str(snap))
+    assert r.returncode == 0, r.stderr
+    text = snap.read_text(encoding="utf-8")
+    out = json.loads(text)
+    assert out["machines"][0]["branch"] == "port/ace-win-3-parked-items"
+    assert out["machines"][1]["branch"] == "feat/ace-win-3-sync"
+    assert "node07" not in text and "zeta" not in text
+
+
+def test_hostname_fragment_left_elsewhere_fails_closed(env):
+    m, snap = env
+    m.write_text(MAP_TEXT + "zeta-hq-node07  ace-win-3\n", encoding="utf-8")
+    data = snapshot()
+    data["machines"][3]["note"] = "ssh to node07 refused"
+    before = _write(snap, data)
+    r = run("--map", str(m), str(snap))
+    assert r.returncode == 2
+    assert snap.read_bytes() == before
+    assert "node07" not in r.stdout + r.stderr
+
+
+def test_ambiguous_fragment_fails_closed(env):
+    """A fragment shared by two physical names cannot be rewritten safely."""
+    m, snap = env
+    m.write_text(MAP_TEXT + "zeta-hq-node07  ace-win-3\nzeta-hq-node08  ace-win-4\n",
+                 encoding="utf-8")
+    data = snapshot()
+    data["machines"][0]["branch"] = "port/zeta-parked-items"
+    before = _write(snap, data)
+    assert run("--map", str(m), str(snap)).returncode == 2
+    assert snap.read_bytes() == before
+
+
+def test_unmapped_host_value_left_after_labelling_fails_closed(env):
+    """Belt and braces: the written file is re-read and every host value checked."""
+    m, snap = env
+    data = snapshot()
+    data["generated_by"] = "stranger-box fleet-daily-collector"
+    before = _write(snap, data)
+    r = run("--map", str(m), str(snap))
+    assert r.returncode == 2
+    assert snap.read_bytes() == before
+
+
+@pytest.mark.parametrize("name", ["2026-09-24.json", "2026-09-25.json"])
+def test_committed_snapshots_carry_only_public_labels(name):
+    """Codex r1: the committed public snapshots name hosts by label only."""
+    path = ROOT / "docs" / "reports" / "fleet-snapshots" / name
+    data = json.loads(path.read_text(encoding="utf-8"))
+    assert fsl.is_public_label(data["generated_by"].split()[0])
+    for m in data["machines"]:
+        assert fsl.is_public_label(m["name"])
+        branch = m.get("branch", "main")
+        assert branch == "main" or not fsl.HOSTNAME_SHAPE_RE.search(branch)
+    assert fsl.public_host_values_ok(data)
+
+def test_unmapped_hostname_shape_in_branch_fails_closed(env):
+    """A Windows-hostname-shaped fragment the map does not know still blocks."""
+    m, snap = env
+    data = snapshot()
+    data["machines"][0]["branch"] = "port/" + "ws" + "77-parked-items"
+    before = _write(snap, data)
+    r = run("--map", str(m), str(snap))
+    assert r.returncode == 2
+    assert snap.read_bytes() == before
+    assert "77-parked" not in r.stdout + r.stderr
