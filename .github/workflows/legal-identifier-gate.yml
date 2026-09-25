@@ -47,7 +47,7 @@ jobs:
         run: python -m pip install --quiet pyyaml pytest
 
       - name: Test the gate
-        run: python -m pytest -q -p no:cacheprovider tests/legal/test_check_identifiers.py tests/legal/test_check_numeric_text.py
+        run: python -m pytest -q -p no:cacheprovider tests/legal/test_check_identifiers.py tests/legal/test_check_identifiers_r4.py tests/legal/test_check_numeric_text.py
 
       - name: Scan the tracked tree
         run: python scripts/legal/check_identifiers.py --all --baseline .legal-uninspectable-baseline.txt
