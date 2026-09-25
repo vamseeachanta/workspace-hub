@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-24T21:22:41.954178Z",
+  "generated_at": "2026-09-25T01:21:46.950297Z",
   "current_week": "2026-W39",
-  "scorecard_generated_at": "2026-09-24T21:22:39.507553Z",
+  "scorecard_generated_at": "2026-09-25T01:21:44.325559Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 9,
-      "total_candidates": 178,
+      "total_candidates": 177,
       "top_issues": [
         {
           "number": 3816,
@@ -3120,32 +3120,6 @@
           ]
         },
         {
-          "number": 3555,
-          "title": "feat(agent-ux): pilot persistent goals and native Codex statusline across machines",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3555",
-          "labels": [
-            "enhancement",
-            "cat:harness",
-            "machine:multi",
-            "status:needs-plan",
-            "gate:completeness",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-08-03T07:29:51Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3558,
           "title": "fix(memory): prevent shared KNOWLEDGE rules from being omitted by provider slice cap",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3558",
@@ -4251,7 +4225,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 20,
+      "total_candidates": 21,
       "top_issues": [
         {
           "number": 3740,
@@ -4867,6 +4841,23 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3854",
           "labels": [],
           "updatedAt": "2026-09-14T01:25:23Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3886,
+          "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3886",
+          "labels": [],
+          "updatedAt": "2026-09-24T22:00:13Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
