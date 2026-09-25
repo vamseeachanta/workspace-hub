@@ -4192,7 +4192,7 @@ knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessmen
 scripts/data/doc_intelligence/vba_extractor.py,1
 .claude/skills/engineering/marine-offshore/aqwa-reference/SKILL.md,1
 knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/calc-report.yaml,1
-knowledge/dark-intelligence/xlsx-poc/31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b/tests/test_31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b.py,1
+knowledge/dark-intelligence/xlsx-poc/removed-archive-sn-workbook-extraction/tests/test_removed-archive-sn-workbook-extraction.py,1
 scripts/skills/fix-coverage-gaps.py,1
 .claude/skills/_core/context-management/SKILL.md,1
 .claude/skills/ai/optimization/usage-optimization/SKILL.md,1
