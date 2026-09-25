@@ -1,7 +1,7 @@
 # Plan for #3894: Solver-neutral simulation study workflow
 
 > **Issue:** https://github.com/vamseeachanta/workspace-hub/issues/3894
-> **Status:** draft r3, 2026-09-25. r2 revised r1 against the r1 review. r3 applies the r2 review findings (Claude MAJOR, Codex MAJOR) as inline patches, per the cross-review routing rule (no dispatched r3 review). The Agy lane failed both rounds from a local argv-limit defect (#3896), not an outage. The plan awaits owner approval. Nothing in this plan is implemented.
+> **Status:** draft r4, 2026-09-25. r4 folds in an operational-lessons brief from the parallel CFD campaign session (§r3 → r4); it adds requirements to existing stages and changes no architecture. Before that, as r3: r2 revised r1 against the r1 review. r3 applies the r2 review findings (Claude MAJOR, Codex MAJOR) as inline patches, per the cross-review routing rule (no dispatched r3 review). The Agy lane failed both rounds from a local argv-limit defect (#3896), not an outage. The plan awaits owner approval. Nothing in this plan is implemented.
 > **Client:** N/A. No client deliverable is in scope. One private client-wiki record, a CFD campaign review, was consulted, and it is summarised here without identifiers.
 > **Project:** N/A
 > **Lane:** Claude (orchestration and planning). Implementation lanes are assigned per wave after approval.
@@ -54,6 +54,28 @@
 | Claude F16 (freshness) | The evidence script ran `git fetch -q origin` before each comparison; §Evidence now states this. |
 | Claude F17 (Test 14 fixtures) | The fixtures are named per comparator. |
 | Codex F4 (review-pack dependency) | W0a defines the card schema (JSON Schema v1) as the interface. W1 depends on #3892 approval, not on the #3891 rule merge. |
+
+## r3 → r4: lessons from a multi-lane CFD campaign
+
+Source: a brief from the session operating a client hull-resistance campaign (11 conditions × 3 speeds; interFoam with local time stepping; five lanes of 60/20/14/14/8 ranks; two OpenFOAM versions). It is summarised here without identifiers. Each lesson maps to a stage and a test.
+
+| # | Lesson | Plan element | Test |
+|---|---|---|---|
+| L1 | **Stage early, launch late.** Everything that can fail runs before the handoff: checkpoint complete on every rank, stale markers archived (not deleted), controls edited, run config written, guard preflight `--check-only` passed. The unattended step only launches. | S3 preflight gains a `stage()` phase. S4 launch is a separate, trivial step. | 16 |
+| L2 | **Idempotent launch contract:** launch only when the solver count on the lane is 0 AND the predecessor reached its target. Refuse a busy lane, a held lock, or a case that already carries a log. | Deckhand dispatch preconditions (W3) | 17 |
+| L3 | **Measured lane speed drives the critical path.** Lanes differed 6× on the same case type; moving the critical-path job cut the finish by about 2.5 days. | `select_host()` ranks eligible hosts by measured `s_per_step` from prior `run_record`s for the same profile. | 18 |
+| L4 | **Cross-host moves:** static files are pre-staged; only the checkpoint is copied at switchover; SHA-256 manifests are sorted with `LC_ALL=C`; a restart-in-place fallback is always carried. | S6 continuation carries a transfer receipt (source and target `host:/path`, per-rank digests, fallback). | 19 |
+| L5 | **Remote-exec hygiene:** `pgrep -c … \|\| echo 0` prints two lines; `pgrep -f`/`pkill -f` self-match and hang on hosts with D-state processes, so use `pgrep -x` plus `/proc/<pid>/stat`; `set -u` breaks vendor environment scripts; scripts piped from Windows carry CRLF, and a relay hop expands `$`, so send base64 and decode on the target. | One shared remote-exec helper in `digitalmodel.study.hosts`; no ad-hoc shell in adapters. | 20 |
+| L6 | **Receipts name the parent with its host** (`host:/path`). An unprefixed path resolves on the child host and fails silently. | `run_record` checkpoint-chain entries are `host:/path` and validated. | 6 (extended) |
+| L7 | **In-place continuations rewrite the configured start.** The chain start is taken from the force/log history, not the run config. Provenance-tool changes are regression-tested against the ledger's recorded inputs, labelled `archived-run`. | S7 provenance | 6 (extended) |
+| L8 | **Caches need a freshness key.** Cache only finished runs, keyed to the end marker; never cache an empty read. | The reducer's block cache | 4 (extended) |
+| L9 | **Mid-run cells are held at their last published value.** One cell's verdict flipped three times mid-run, and another's mean moved by more than its U_i between the mid-run and final readings. | S11: only finished runs publish; the ledger carries the last published value with its date. | 21 |
+| L10 | **Nothing is deployed to `/tmp`.** Helpers are redeployed with a hash check, and an empty read is an error. | Host helpers live in the job's work root with a digest check | 20 |
+| L11 | **Probe the GPU driver after any reboot before an MPI launch** (background `nvidia-smi`, 10 s). A hung driver froze every MPI start-up, and CPU solvers ran more than 25× slower until reset. | The health gate's GPU probe is specified exactly so. | 10 |
+| L12 | **Read the authoritative record** (result file, stop receipts, every case of a condition across lanes) before declaring a failure. | The reducer assembles the whole verified chain per condition; there is no single-case verdict. | 6 (extended) |
+| L13 | **Convergence classes:** settled (U_i ≤ 5 %), wide (5–15 %), not bounded (amplitude grows every cycle; carry the mean, state no U_i), not assessable (fewer than 3 cycles past an adaptive transient floor with a mean-invariance test). | `result.json` `convergence` values; the thresholds are default study-spec values, overridable per study before the run. | 3 |
+| L14 | **Bounded judgement for conditions a steady method cannot settle, without more compute:** (a) Holtrop–Mennen including its immersed-transom term; (b) form-factor decomposition on the CFD viscous part, which stays steady; (c) interpolation from settled neighbours in speed, trim and draft. A time-accurate pilot on one condition tests whether the defensible value falls inside the bound. | New reducer output `bound` for `not bounded` cases, with each estimator a named comparator. **Caveat:** the source campaign recorded the Holtrop-vs-CFD calibration as invalid while the implied CFD wave coefficient is negative, so estimator (a) applies only when its own validity checks pass, and the bound never replaces a result. The Holtrop–Mennen constants route through the citation contract (W0b). | 22 |
+| L15 | **Documentation discipline:** corrections to issued documents are struck through and dated, never deleted; workbook notes are generated from data, dated to the method change; subagent writes are verified on disk before they are trusted. | S11 `report_pack` conventions; implementation-lane rule | 23 |
 
 ## Resource Intelligence Summary
 
@@ -184,7 +206,7 @@ Get-ScheduledTask on ace-win-1: no SolverQueue task present
 | S5' Guard | stop request written only by the guard. OpenFOAM: `stopAt writeNow` via `foamDictionary`, with `runTimeModifiable true` required at preflight. The stop is confirmed from the solver log showing termination at the next write, not from the file write. OrcaFlex: none. | `digitalmodel.study.guard` |
 | S6 Continue | continuation request carrying `checkpoint_digest` (queue schema 2) | deckhand |
 | S7 Provenance | `run_record.json`: solver, version, argv, host label, ranks, `parallel_mode`, `platform`, code commit, input digests, checkpoint chain to cold origin, `wall_clock_s`, `cells_or_dof`, `steps`, `s_per_step` | `digitalmodel.study.provenance` |
-| S8 Reduce | `result.json`: value, uncertainty, `execution`, `convergence`, `checks[].verdict` | `digitalmodel.study.reduce` |
+| S8 Reduce | `result.json`: value, uncertainty, `execution`, `convergence` (settled / wide / not_bounded / not_assessable), `checks[].verdict`, and for `not_bounded` a `bound` with its estimators (L14) | `digitalmodel.study.reduce` |
 | S9 Render | standard figure set per case | adapter `render()` |
 | S10 Review | review-pack HTML plus reviewer JSON; `acceptance` is set only from reviewer JSON | `scripts/review/review_pack.py` (#3892) |
 | S11 Issue | accepted cases only, into workbook, report or dataset; data to its owner repo with a manifest. Hosted or HF publication is a separate consequential action with its own approval. | `report_pack` (`src/digitalmodel/report_pack/workflow.py`, verified present); hf-dataset-publishing only under separate approval |
@@ -272,7 +294,7 @@ issue(study) -> only acceptance in {accepted, accepted_with_note}
 The paths below are created or changed after approval; nothing is implemented yet.
 
 - **digitalmodel:**
-  - new: `src/digitalmodel/study/{__init__,schema,ledger,monitor,guard,provenance,reduce,run_case}.py`;
+  - new: `src/digitalmodel/study/{__init__,schema,ledger,monitor,guard,provenance,reduce,run_case,hosts,bounds}.py`;
   - existing: `.pre-commit-config.yaml` and `.github/workflows/quality-gates.yml` (vendored `check-study-surface` hook);
   - new: `src/digitalmodel/study/adapters/{__init__,base,openfoam,orcaflex}.py` (W2) and `{diffraction,ansys}.py` (W5);
   - new: `tests/study/**`;
@@ -335,6 +357,14 @@ The paths below are created or changed after approval; nothing is implemented ye
     - catenary on a fully suspended line (±2.0 %);
     - VOF water-volume check on a hydrostatic box of known displacement (Archimedes; within 0.1 % of the box displacement).
 15. **Data read-back.** The pilot manifest SHA-256 values match the stored files on re-read.
+16. **Stage/launch split.** `stage()` runs every fallible step and records a receipt. `launch()` refuses to run without a matching stage receipt and performs no fallible preparation.
+17. **Idempotent launch.** A second launch on a busy lane, a held lock, a case that already has a log, or a predecessor short of its target is refused. A double fire leaves exactly one solver.
+18. **Throughput-ranked host selection.** Given recorded `s_per_step` per host and profile, `select_host` picks the fastest eligible host. A host without a record ranks last and is flagged, never excluded silently.
+19. **Transfer receipt.** A checkpoint move records source and target `host:/path` and per-rank SHA-256 values sorted under `LC_ALL=C`, verified on the target. A digest mismatch holds and falls back to restart-in-place.
+20. **Remote-exec helper.** Fixtures cover: payloads with CRLF, `$` in content sent across a relay (base64 round-trip), a `pgrep -x` count returned as one integer, vendor env sourced without `set -u`, and a helper whose digest mismatches (refused).
+21. **Mid-run hold.** A running case never updates the published value. The ledger returns the last published value with its date until the run ends.
+22. **Bound for not-bounded cases.** Each estimator is reported separately with its comparator class. An estimator whose validity check fails (e.g. a negative implied wave coefficient for the Holtrop calibration) is excluded, with its reason. The bound is labelled as a bound, never as a result or with U_i.
+23. **Corrections.** A regenerated report that changes an issued value renders the old value struck through with the correction date. A hand-edited generated note fails the regeneration check.
 
 ## Acceptance Criteria
 
@@ -398,7 +428,7 @@ The paths below are created or changed after approval; nothing is implemented ye
 | Wave | Content | Depends on |
 |---|---|---|
 | W0a | Schemas: `study.yml`, `case_manifest`, `run_record`, `result`, ledger, vocabularies, review card JSON Schema v1; `parametric_coordinator` disposition; DTC transom Fr_T measurement | — |
-| W0b | ITTC and Maki standards pages, DTC measured-dataset catalog entry, ledger and registry rows | — |
+| W0b | ITTC, Maki and Holtrop–Mennen standards/method pages, DTC measured-dataset catalog entry, ledger and registry rows | — |
 | W1 | Review pack promoted to `scripts/review/` against the card schema | W0a; #3892 approved |
 | W2 | Monitor, guard, reduce, run_case; OpenFOAM and OrcaFlex adapters; surface guard vendored into digitalmodel | W0a, W0b |
 | W3 | Deckhand queue schema 2, continuation, health gate, registry drift | W0a |
