@@ -1,9 +1,9 @@
 {
   "machine": "dev-primary",
-  "audited_at": "2026-09-25T11:47:08+00:00",
+  "audited_at": "2026-09-25T17:47:08+00:00",
   "platform": "unix",
-  "repos_total": 18,
-  "healthy": 45,
+  "repos_total": 17,
+  "healthy": 42,
   "missing": 9,
   "dangling": 0,
   "flattened": 0,
