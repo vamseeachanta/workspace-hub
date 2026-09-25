@@ -1,0 +1,11 @@
+# Uninspectable files accepted by the identifier gate, by content digest.
+# Format: sha256, two spaces, repository-relative path (as sha256sum prints).
+#
+# scripts/legal/check_identifiers.py cannot read these files (binary content,
+# an office archive it cannot parse). A file passes only while its path is
+# listed here with the same digest: a new file, a changed one or an unlisted
+# one fails. Regenerate after reviewing the content, never to silence a failure:
+#
+#   python scripts/legal/check_identifiers.py --all --update-baseline
+#
+# Every line is content nobody has read; review the diff before committing it.

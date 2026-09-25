@@ -449,7 +449,8 @@ class TestWiring:
         text = WORKFLOW.read_text(encoding="utf-8")
         assert "scripts/legal/check_identifiers.py --all" in text
         assert "--baseline .legal-uninspectable-baseline.txt" in text
-        assert "--update-baseline" not in text.replace("# ", "")
+        steps = "\n".join(ln for ln in text.splitlines() if not ln.lstrip().startswith("#"))
+        assert "--update-baseline" not in steps
 
     def test_the_pre_commit_hook_runs_in_staged_mode(self):
         cfg = yaml.safe_load((REPO / ".pre-commit-config.yaml").read_text(encoding="utf-8"))
