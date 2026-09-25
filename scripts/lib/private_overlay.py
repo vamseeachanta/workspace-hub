@@ -30,8 +30,16 @@ Schema (version 1; every section and key is optional)::
       "job_market": {
         "priority_companies": ["lower-case name fragment", ...],
         "career_urls":        {"Company": "https://..."}
+      },
+      "outputs": {
+        "job_market_dir":     "/absolute/path/in/a/private/checkout",
+        "contact_report_dir": "/absolute/path/in/a/private/checkout"
       }
     }
+
+``outputs`` names where generated artefacts that carry names or addresses are
+written. ``require_output_dir`` fails closed when the key is unset, the path is
+relative, the directory does not exist, or it lies inside the public repository.
 
 Standard library only, so stdlib-only scripts can import it.
 """
@@ -58,6 +66,10 @@ _SCHEMA: dict[str, dict[str, str]] = {
     "job_market": {
         "priority_companies": "list",
         "career_urls": "map",
+    },
+    "outputs": {
+        "job_market_dir": "str",
+        "contact_report_dir": "str",
     },
 }
 
@@ -101,7 +113,8 @@ def _validate(payload: Any, path: Path) -> dict:
             if kind is None:
                 raise PrivateOverlayError(f"{path}: unknown key '{section}.{key}'")
             ok = (
-                _is_str_list(value) if kind == "list"
+                isinstance(value, str) if kind == "str"
+                else _is_str_list(value) if kind == "list"
                 else _is_str_map(value) if kind == "map"
                 else isinstance(value, dict) and all(
                     isinstance(k, str) and _is_str_list(v) for k, v in value.items()
@@ -144,3 +157,38 @@ def get_list(overlay: Mapping[str, Any], dotted: str) -> list[str]:
 
 def get_mapping(overlay: Mapping[str, Any], dotted: str) -> dict:
     return dict(_get(overlay, dotted) or {})
+
+
+def check_private_dir(value: str | os.PathLike[str], label: str,
+                      public_root: str | os.PathLike[str]) -> Path:
+    """Return ``value`` resolved, or raise when it is not a usable private directory.
+
+    It must be absolute, exist as a directory and lie outside ``public_root``.
+    Messages name ``label`` only, never the path.
+    """
+    raw = Path(value).expanduser()
+    if not raw.is_absolute():
+        raise PrivateOverlayError(f"{label}: must be an absolute path")
+    target = raw.resolve()
+    if not target.is_dir():
+        raise PrivateOverlayError(f"{label}: directory does not exist")
+    root = Path(public_root).resolve()
+    if target == root or root in target.parents:
+        raise PrivateOverlayError(f"{label}: lies inside the public repository")
+    return target
+
+
+def require_output_dir(overlay: Mapping[str, Any], dotted: str,
+                       public_root: str | os.PathLike[str]) -> Path:
+    """Private output directory named by ``dotted`` (e.g. ``outputs.job_market_dir``).
+
+    Fails closed (``PrivateOverlayError``) when the key is unset or the directory
+    fails ``check_private_dir``. Nothing is created.
+    """
+    value = _get(overlay, dotted)
+    if not value:
+        raise PrivateOverlayError(
+            f"'{dotted}' is not set in the private overlay ({ENV_VAR} or "
+            f"~/{DEFAULT_RELATIVE.as_posix()}); refusing to write outputs"
+        )
+    return check_private_dir(value, f"'{dotted}'", public_root)
