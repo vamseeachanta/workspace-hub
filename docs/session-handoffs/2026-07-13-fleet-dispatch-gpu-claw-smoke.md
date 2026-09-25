@@ -19,7 +19,7 @@ dispatch lane: fleet heartbeat ×5 machines, and the phase-6 dispatch smoke
 | deckhand | #562 | agent runs solver with `cwd = solver_root` (policy/env), fixing Linux `uv` project resolution; installer writes `DECKHAND_LICENSED_RUN_SOLVER_ROOT` |
 | digitalmodel | #1561 | `openfoam-run-batch` workflow (pool 0.9×cores / mpi modes, atomic checkpoints, results contract, mock mode, MPI `resume: latestTime`) — adversarial review pre-merge killed 2 HIGH bugs (unconditional `processor*` prune destroying output under `reconstruct:false`; 12h-kill retry livelock) |
 | digitalmodel | #1563 | missing engine base-config yml + engine-path regression test (the class-fix) |
-| llm-wiki-acma | #238 | mock canary input `cases/openfoam-run-batch/input.yml` |
+| llm-wiki-mkt-a | #238 | mock canary input `cases/openfoam-run-batch/input.yml` |
 | aceengineer-admin | #39, #40 | machine-ecosystem map (admin tier): collector + 5 machine rows (3 live self-reports) + HTML matrix |
 
 ## OPEN / awaiting owner
