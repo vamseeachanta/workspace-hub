@@ -73,7 +73,7 @@ libraries:
       Linux is a CMake/gfortran source build (scripts/setup/mystran-build-linux.sh).
       Integrated in digitalmodel as solvers/mystran (BDF writer, F06 parser, mesh-
       convergence sweep) mirroring the CalculiX chain. Complements CalculiX for
-      Nastran-format cross-checks of ACMA's ANSYS/APDL models.
+      Nastran-format cross-checks of in-house ANSYS/APDL models.
       Eval: docs/research/mystran-eval.md.
     cloned_at_ace: false
 

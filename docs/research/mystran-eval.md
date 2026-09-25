@@ -17,8 +17,8 @@ Fortran 77, "no technical support") is not worth integrating.
 MYSTRAN is linear-only: SOL 101 static, modal, and linear buckling. It complements
 CalculiX (nonlinear, contact, dynamics) rather than replacing it. It is exactly the
 right tool for the mesh-convergence studies the LinkedIn post describes, and it gives
-ACMA a free Nastran-format target for cross-checking ANSYS/APDL models (the
-"Converting ANSYS to Nastran" deck already lives in llm-wiki-acma).
+a free Nastran-format target for cross-checking in-house ANSYS/APDL models (an
+internal "Converting ANSYS to Nastran" deck already exists in the engineering wiki).
 
 Verdict: **adopt MYSTRAN + pyNastran**. Both licenses are compatible with
 digitalmodel's MIT license.
@@ -53,7 +53,7 @@ digitalmodel's MIT license.
 
 ---
 
-## Hands-on Validation (ACMA-WS014, Windows binary)
+## Hands-on Validation (Windows workstation, release binary)
 
 ### CBAR cantilever vs Euler-Bernoulli
 
@@ -137,7 +137,7 @@ Python 3.11 confirmed; pyNastran 1.4.1 declares >=3.9.
 
 Tests: `tests/solvers/mystran/` — 90 tests; 85 run without the solver (4
 integration tests skip unless `mystran` is available, 1 skips without
-pyNastran). All 89 applicable tests pass on ACMA-WS014 with the 19.0.0 binary. The existing gmsh
+pyNastran). All 89 applicable tests pass on the Windows workstation with the 19.0.0 binary. The existing gmsh
 extraction in `solvers/calculix/fem_chain.py` produces the same
 `{"Hexahedron 8": {"connectivity": ...}}` dict, so gmsh geometry drops straight
 into `MystranChain.load_mesh`.
@@ -152,7 +152,7 @@ into `MystranChain.load_mesh`.
 - Follow-ups worth an issue each: CQUAD4 shell validation (plate bending),
   modal analysis (SOL 103) wrapper, gmsh -> MYSTRAN plate-with-hole Kt check
   against the CalculiX result, and an ANSYS APDL -> BDF converter spike for the
-  ACMA macro library.
+  in-house APDL macro library.
 
 Sources: [MYSTRAN](https://github.com/MYSTRANsolver/MYSTRAN),
 [MYSTRAN releases](https://github.com/MYSTRANsolver/MYSTRAN/releases),
