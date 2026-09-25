@@ -1,5 +1,6 @@
 ---
 compass:
+  hub: true
   parent: docs/plans/2026-04-25-aces-2-flywheel-wedge-mooring.md
   friends:
     - docs/governance/flywheel-icp-decision.md

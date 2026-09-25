@@ -1,5 +1,6 @@
 ---
 compass:
+  hub: true
   parent: docs/plans/2026-06-27-issue-3282-resultenvelope-run-workflow.md
 ---
 

@@ -15,6 +15,7 @@ Add a YAML frontmatter block at the top of decision/plan/doctrine notes:
 ```yaml
 ---
 compass:
+  hub: true                        # entry point for a topic cluster (optional)
   parent: docs/plans/README.md        # broader context / WHY this note exists
   children:                           # deep dives / details / follow-up work
     - docs/plans/2026-06-03-issue-2911-prepush-worktree-skip.md
@@ -37,6 +38,20 @@ compass:
 | `friends` | left | Similar cases / prior art worth comparing | Has this been solved before? |
 | `challengers` | right | Alternatives considered and rejected, with `why` | What should I NOT re-propose? |
 | `prev` / `next` | sideways | Position in a time/dependency sequence | What happened before/after? |
+| `hub` | — | Marks this note as the entry point for its topic cluster. A cold agent given only a topic starts at the hub, then follows children/friends/challengers outward. | Where do I start on this topic? |
+
+## Cluster index
+
+One-line entry points per topic cluster (pilot). A cold agent given a topic
+starts at the hub note, then traverses `children` / `friends` / `challengers`.
+
+| Topic | Hub note |
+|---|---|
+| Worktree & pre-push hygiene decisions | `docs/plans/2026-06-12-issue-3041-repo-ecosystem-hygiene-audit.md` |
+| Registry schema reconciliation (v2) | `docs/plans/2026-06-28-issue-3295-registry-schema-v2-reconcile.md` |
+| Per-machine repo placement decisions | `docs/plans/2026-05-20-issue-2770-ace-linux-1-placement-decision.md` |
+| Flywheel strategy (wedge + ICP) | `docs/governance/flywheel-wedge-decision.md` |
+| Public data corpus routing | `docs/governance/2026-05-20-public-data-corpus-routing-decision.md` |
 
 ## Rules
 
@@ -67,5 +82,7 @@ git grep -h -A20 '^compass:' -- 'docs/**/*.md' | grep -oP '(?<=: )(TODO:)?docs/\
 
 ## Pilot scope
 
-10 notes retrofitted on `pilot/idea-compass-links` (see commit). After the
-agent catch-up test, decide: adopt fleet-wide, refine, or drop.
+10 notes retrofitted on `pilot/idea-compass-links` (see commit). Refinement 2:
+each topic cluster's entry-point note carries `hub: true`, and the cluster
+index above lists the hubs. After the traversal catch-up test, decide:
+adopt fleet-wide, refine, or drop.

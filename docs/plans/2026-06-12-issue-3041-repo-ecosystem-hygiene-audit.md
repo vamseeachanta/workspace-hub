@@ -1,5 +1,6 @@
 ---
 compass:
+  hub: true
   parent: docs/plans/README.md
   children:
     - docs/plans/2026-06-03-issue-2911-prepush-worktree-skip.md
