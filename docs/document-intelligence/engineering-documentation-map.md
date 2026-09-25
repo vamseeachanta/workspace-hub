@@ -251,7 +251,7 @@
    251|POC v1 and v2 extractions with Python re-implementations:
    252|1. Surface wellhead SITP calculations (0163-cal-0001)
    253|2. Conductor length assessment (31126-cal-0001)
-   254|3. SN curve definitions for riser analysis (31245-cal-0018)
+   254|3. S-N curve definitions for riser analysis (archive workbook; extraction removed from this repository 2026-09-24)
    255|4. C-K flow rate calculation
    256|5. Flowback calculator (cc-23-6h)
    257|6. Spotfire formulas for calc variables

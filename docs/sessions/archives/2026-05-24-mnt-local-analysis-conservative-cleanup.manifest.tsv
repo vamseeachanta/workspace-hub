@@ -3545,7 +3545,7 @@ d	0	1777316431.8006000000	ace2-codex-work/issue-2464/knowledge/_archive/wikis/en
 d	0	1777316431.8012218000	ace2-codex-work/issue-2464/knowledge/_archive/wikis/engineering/concepts
 d	0	1777316431.8231731000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1
 d	0	1777316432.0563648000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/31126-cal-0001-1-conductor-length-assessment--va-checked
-d	0	1777316432.5044385000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b
+d	0	1777316432.5044385000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-archive-sn-workbook-extraction
 d	0	1777316433.2412733000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/c---k-flow-rate-calculation
 d	0	1777316433.5689332000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/cc-23-6h-flowback-calculator-4
 d	0	1777316433.6398543000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/spotfire-formulas-for-calc-variables
@@ -3554,8 +3554,8 @@ d	0	1777316433.6426348000	ace2-codex-work/issue-2464/knowledge/dark-intelligence
 d	0	1777316433.6429946000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/tests
 d	0	1777316433.6568545000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked
 d	0	1777316433.6601217000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/tests
-d	0	1777316433.6912924000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b
-d	0	1777316433.6933254000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b/tests
+d	0	1777316433.6912924000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-archive-sn-workbook-extraction
+d	0	1777316433.6933254000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-archive-sn-workbook-extraction/tests
 d	0	1777316433.7080905000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/c---k-flow-rate-calculation
 d	0	1777316433.7084014000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/c---k-flow-rate-calculation/tests
 d	0	1777316433.7090943000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4
@@ -4987,7 +4987,7 @@ f	1004	1777316429.1895388000	ace2-codex-work/issue-2464/docs/modules/feedback/au
 f	1004	1777316433.8085127000	ace2-codex-work/issue-2464/knowledge/wikis/engineering/raw/papers/auto-continue-feature-request.md
 f	10042	1777316448.7828942000	ace2-codex-work/issue-2464/scripts/review/results/20260425T125029Z-plan-2488-disagreement.md
 f	10048	1777316446.6331241000	ace2-codex-work/issue-2464/scripts/automation/agent_orchestrator.sh
-f	100501234	1777316433.2274239000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b/test_calculations.py
+f	100501234	1777316433.2274239000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-archive-sn-workbook-extraction/test_calculations.py
 f	10050	1777316427.2332010000	ace2-codex-work/issue-2464/analysis/cross-agent-audit-20260402/phase-c-data/active-skill-dirs.txt
 f	1005	1777316429.5757086000	ace2-codex-work/issue-2464/docs/plans/claude-followup-2026-04-09/terminal-1-issue-2059-execution-pack.md
 f	1005	1777316437.8068776000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/mixing-in-static-mixers-at-high-different-stream-rates-device-optimization.md
@@ -6115,7 +6115,7 @@ f	11906	1777316814.9718286000	ace2-codex-work/issue-2464/.venv/lib/python3.11/si
 f	1191	1777316419.8892802000	ace2-codex-work/issue-2464/.claude/skills/_archive/development/engineering-report-generator/do/SKILL.md
 f	1191	1777316444.2907242000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/spe-international-142064-use-of-salt-tolerant-friction-reducer-for-coiled-tubing.md
 f	1191	1777316448.2472270000	ace2-codex-work/issue-2464/scripts/review/results/20260213T181737Z-commit-318fa23d-implementation-gemini.md
-f	1191181	1777316433.7068473000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b/tests/test_31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b.py
+f	1191181	1777316433.7068473000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-archive-sn-workbook-extraction/tests/test_removed-archive-sn-workbook-extraction.py
 f	11914	1777316422.4988911000	ace2-codex-work/issue-2464/.claude/skills/mlops/models/segment-anything/references/troubleshooting.md
 f	11920	1777316422.4478579000	ace2-codex-work/issue-2464/.claude/skills/mlops/evaluation/lm-evaluation-harness/SKILL.md
 f	1192	1777316446.1358763000	ace2-codex-work/issue-2464/notes/agent-wrk-counts.html
@@ -9483,7 +9483,7 @@ f	230	1777316815.5540737000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site
 f	2303	1777316446.3311462000	ace2-codex-work/issue-2464/queue/completed/wamit-val-ellipsoid-v2/orcaflex/Ellipsoid_damping.csv
 f	23034	1777316430.6240726000	ace2-codex-work/issue-2464/docs/superpowers/plans/2026-04-09-plan2b-worldenergydata-refactor.md
 f	230556	1777316815.7016277000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/sqlalchemy/sql/schema.py
-f	2305617	1777316433.6907134000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b/report.html
+f	2305617	1777316433.6907134000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-archive-sn-workbook-extraction/report.html
 f	23059	1777316427.3367733000	ace2-codex-work/issue-2464/assets/WRK-687/plan-review-draft.html
 f	2306	1777316427.0661424000	ace2-codex-work/issue-2464/_archive/skills/documentation/docusaurus/README.md
 f	2307	1777316433.9188799000	ace2-codex-work/issue-2464/knowledge/wikis/engineering/wiki/concepts/orchestrator-worker-separation.md
@@ -9645,7 +9645,7 @@ f	23731	1777316447.4709742000	ace2-codex-work/issue-2464/scripts/operations/syst
 f	2373	1777316426.3067264000	ace2-codex-work/issue-2464/.planning/quick/260331-rmt-refresh-ecosystem-vision-documents-with-/260331-rmt-SUMMARY.md
 f	23748	1777316429.1133097000	ace2-codex-work/issue-2464/docs/modules/archive/aceengineercode/ACEENGINEERCODE_TO_DIGITALMODEL_MIGRATION_REPORT.md
 f	23748	1777316433.7298638000	ace2-codex-work/issue-2464/knowledge/wikis/engineering/raw/papers/ACEENGINEERCODE_TO_DIGITALMODEL_MIGRATION_REPORT.md
-f	237589	1777316432.2998138000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b/calc-report.html
+f	237589	1777316432.2998138000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-archive-sn-workbook-extraction/calc-report.html
 f	2378	1777316419.0934769000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/finance/variance-analysis/concept/SKILL.md
 f	2379	1777316420.9989004000	ace2-codex-work/issue-2464/.claude/skills/_archive/operations/devtools/cli-productivity/8-shell-aliases-and-functions/SKILL.md
 f	2379	1777316815.8906269000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/sqlalchemy/engine/processors.py
@@ -13063,7 +13063,7 @@ f	4090	1777316419.6536840000	ace2-codex-work/issue-2464/.claude/skills/_archive/
 f	4091	1777316448.7381161000	ace2-codex-work/issue-2464/scripts/review/results/20260424T043048Z-inline-content-plan-codex.md
 f	4092	1777316433.9619837000	ace2-codex-work/issue-2464/knowledge/wikis/engineering/wiki/workflows/solver-debugging-protocol.md
 f	40931	1777316446.1705687000	ace2-codex-work/issue-2464/pylib/charset_normalizer-3.4.7.dist-info/METADATA
-f	409440	1777316432.3068983000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/31245-cal-0018-01-sn-curve-definitions-for-riser-analysis--b/calculations.py
+f	409440	1777316432.3068983000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-archive-sn-workbook-extraction/calculations.py
 f	4097	1777316419.4740464000	ace2-codex-work/issue-2464/.claude/skills/_archive/data/analysis/sweetviz/sweetviz-in-data-pipeline/SKILL.md
 f	4097	1777316816.1128613000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/sqlalchemy/dialects/mssql/pymssql.py
 f	40977	1777316815.9923886000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py
