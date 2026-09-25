@@ -25,6 +25,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+# shellcheck source=../lib/private_path_guard.sh
+source "$REPO_ROOT/scripts/lib/private_path_guard.sh"
 
 echo "=== GTM Weekly Scan Refresh ==="
 echo "Date: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
@@ -69,14 +71,13 @@ OUT_DIR="$($PYTHON "$REPO_ROOT/scripts/gtm/job-market-scanner.py" --print-output
     echo "ERROR: private output directory not configured (outputs.job_market_dir); nothing scanned"
     exit 2
 }
-REPO_REAL="$(cd "$REPO_ROOT" && pwd -P)"
+# Lexical and physical forms, both repository spellings, case-insensitive on
+# Windows, and no link under the repository (scripts/lib/private_path_guard.sh).
+private_path_outside_repo "$OUT_DIR" "$REPO_ROOT" || {
+    echo "ERROR: output directory lies inside this public repository or reaches it through a link; refusing"
+    exit 2
+}
 OUT_REAL="$(cd "$OUT_DIR" && pwd -P)"
-case "$OUT_REAL/" in
-    "$REPO_REAL"/*)
-        echo "ERROR: output directory lies inside this public repository; refusing"
-        exit 2
-        ;;
-esac
 
 echo ""
 echo "Running job market scan..."
@@ -89,12 +90,10 @@ PRIVATE_ROOT="$(git -C "$OUT_REAL" rev-parse --show-toplevel 2>/dev/null)" || {
     echo "ERROR: output directory is not inside a git checkout; results left uncommitted"
     exit 2
 }
-case "$(cd "$PRIVATE_ROOT" && pwd -P)/" in
-    "$REPO_REAL"/*)
-        echo "ERROR: output repository is inside this public repository; refusing"
-        exit 2
-        ;;
-esac
+private_path_outside_repo "$PRIVATE_ROOT" "$REPO_ROOT" || {
+    echo "ERROR: output repository is inside this public repository; refusing"
+    exit 2
+}
 
 git -C "$PRIVATE_ROOT" add -- "$OUT_REAL" 2>/dev/null || true
 

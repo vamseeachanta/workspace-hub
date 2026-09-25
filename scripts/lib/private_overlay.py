@@ -203,22 +203,66 @@ def get_mapping(overlay: Mapping[str, Any], dotted: str) -> dict:
     return dict(_get(overlay, dotted) or {})
 
 
+def _norm(path: str | os.PathLike[str]) -> str:
+    """Lexical absolute form, case-folded where the file system ignores case."""
+    return os.path.normcase(os.path.abspath(os.fspath(path)))
+
+
+def is_within(path: str | os.PathLike[str], root: str | os.PathLike[str]) -> bool:
+    """True when ``path`` is ``root`` or lies below it, compared component-wise
+    on the lexical absolute form (case-insensitively on Windows)."""
+    p, r = _norm(path), _norm(root)
+    if p == r:
+        return True
+    return p.startswith(r if r.endswith(os.sep) else r + os.sep)
+
+
+def _is_link(path: str | os.PathLike[str]) -> bool:
+    """Symlink, junction or any other reparse point."""
+    try:
+        st = os.lstat(path)
+    except OSError:
+        return False
+    if os.path.islink(path) or os.path.isjunction(path):
+        return True
+    return bool(getattr(st, "st_file_attributes", 0) & 0x400)  # REPARSE_POINT
+
+
 def check_private_dir(value: str | os.PathLike[str], label: str,
                       public_root: str | os.PathLike[str]) -> Path:
     """Return ``value`` resolved, or raise when it is not a usable private directory.
 
-    It must be absolute, exist as a directory and lie outside ``public_root``.
+    It must be absolute, carry no '..' component, exist as a directory and lie
+    outside ``public_root``. Containment is checked on the lexical absolute path
+    AND the resolved path, each against the lexical AND the resolved repository
+    root (case-insensitively on Windows); any component of the path that is a
+    symlink or junction under the repository is refused. Checking the resolved
+    path alone would let a link under the repository that points outside pass.
     Messages name ``label`` only, never the path.
     """
     raw = Path(value).expanduser()
     if not raw.is_absolute():
         raise PrivateOverlayError(f"{label}: must be an absolute path")
-    target = raw.resolve()
+    if ".." in raw.parts:
+        raise PrivateOverlayError(f"{label}: must not contain a '..' component")
+    roots = (os.path.abspath(os.fspath(public_root)), str(Path(public_root).resolve()))
+    lexical = os.path.abspath(os.fspath(raw))
+    resolved = str(raw.resolve())
+    for candidate in (lexical, resolved):
+        if any(is_within(candidate, root) for root in roots):
+            raise PrivateOverlayError(f"{label}: lies inside the public repository")
+    prefix = Path(raw.anchor)
+    for part in raw.parts[1:]:
+        prefix = prefix / part
+        if _is_link(prefix) and any(
+            is_within(prefix, root) or is_within(prefix.resolve(), root) for root in roots
+        ):
+            raise PrivateOverlayError(
+                f"{label}: passes through a symlink or junction under the public repository"
+            )
+    target = Path(resolved)
     if not target.is_dir():
         raise PrivateOverlayError(f"{label}: directory does not exist")
-    root = Path(public_root).resolve()
-    if target == root or root in target.parents:
-        raise PrivateOverlayError(f"{label}: lies inside the public repository")
     return target
 
 
