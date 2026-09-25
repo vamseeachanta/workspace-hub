@@ -560,3 +560,11 @@ def test_show_lines_is_refused_in_ci(gate):
     r = gate("--show-lines", f, env={"CI": "true"})
     assert r.returncode not in (0, 1)
     assert "jdoe123" not in r.stdout + r.stderr
+
+
+def test_a_path_finding_does_not_print_the_path(gate):
+    f = _file(gate, "nothing to see\n", name=f"reports/{TOKEN}-summary.md")
+    r = gate(f)
+    assert r.returncode == 1
+    out = r.stdout + r.stderr
+    assert TOKEN not in out and "<path " in out
