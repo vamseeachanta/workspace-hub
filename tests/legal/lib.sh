@@ -65,11 +65,32 @@ run_scan() {
 # assert_contains <haystack> <needle> <message>
 assert_contains() {
   local haystack="$1" needle="$2" message="$3"
+  # Path-only needles retain their directory identity; prose stays literal.
+  if [[ "$needle" =~ ^(/|[A-Za-z]:[/\\]|[A-Za-z0-9_.-]+/) ]]; then
+    assert_path_contains "$haystack" "$needle" "$message"
+    return
+  fi
   if ! printf '%s\n' "$haystack" | grep -F -- "$needle" >/dev/null; then
     fail "$message — expected to find '$needle' in output:
 $haystack"
   fi
   return 0
+}
+
+assert_path_contains() {
+  local haystack="${1//\\//}" needle="${2//\\//}" message="$3"
+  if printf '%s\n' "$haystack" | grep -F -- "$needle" >/dev/null; then
+    return 0
+  fi
+  # Git Bash /tmp maps to Windows TEMP, not a drive-root /tmp directory.
+  if [[ "$needle" == /* && "${OSTYPE:-}" =~ ^(msys|mingw|cygwin) ]]; then
+    command -v cygpath >/dev/null || fail 'cygpath required for absolute path assertion'
+    needle="$(cygpath -m "$needle")" || fail 'cygpath conversion failed'
+  fi
+  if ! printf '%s\n' "$haystack" | grep -F -- "$needle" >/dev/null; then
+    fail "$message — expected path '$needle' in output:
+$haystack"
+  fi
 }
 
 # assert_not_contains <haystack> <needle> <message>

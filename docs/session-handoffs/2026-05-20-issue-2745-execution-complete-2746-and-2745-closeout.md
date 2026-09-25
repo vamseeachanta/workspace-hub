@@ -1,5 +1,7 @@
 # Session Handoff — 2026-05-20 #2746 + #2745 execution complete, user-close pending
 
+> Editorial note (2026-09-14): names in the historical legal-scan discussion are replaced with generic references; other identifying text is outside this edit, and this file is not represented as fully anonymized. Counts and historical dispositions are retained as historical observations, not current scan results or waivers. The original wording remains in Git history at main-history revision `f9676ab896c03f0881d4e2ea64ff46a9e0c22830`; history is not rewritten.
+
 **Date:** 2026-05-20 (evening)
 **Working repo:** `vamseeachanta/workspace-hub` (at `/mnt/local-analysis/workspace-hub`)
 **Cross-repos:** `vamseeachanta/llm-wiki-mkt-a` (PRIVATE; T6 of #2746) + `vamseeachanta/mkt-a` (target of #2745 freeze)
@@ -34,7 +36,7 @@ Continued from prior handoff `2026-05-20-issue-2746-execution-complete-2745-pend
 | Evidence file 404 on workspace-hub:main | BLOCKER | Committed `f6086ccbd` + `1dea82a57`, pushed; 0/0 divergence confirmed |
 | Backup file-count not literally re-run (path-isolation proxy) | BLOCKER | Re-ran find once ext4 contention eased: 10,729 = 10,729 ✓ |
 | Hook tested via direct-exec only | MAJOR | Verified via actual `git add + git commit`: FROZEN message + blocked commit + working tree restored ✓ |
-| Broad legal-sanity-scan substituted | MAJOR | Ran broad scan; surfaced ONLY legacy-log false-positives (Prelude FLNG=128, 2H Offshore=25, Shankar Sundararaman=8+74+6+6 — all in `logs/quality/comprehensive-learning-*.log` + `logs/orchestrator/hermes/session_*.jsonl`). #2745 artifacts contributed ZERO. Follow-up: scanner should exclude `logs/`. |
+| Broad legal-sanity-scan substituted | MAJOR | Ran broad scan; surfaced ONLY legacy-log false-positives (historical project reference=128, historical company reference=25, historical personal-name reference=8+74+6+6 — all in `logs/quality/comprehensive-learning-*.log` + `logs/orchestrator/hermes/session_*.jsonl`). #2745 artifacts contributed ZERO. Follow-up: scanner should exclude `logs/`. |
 
 Claude minor findings (reversal-step gap, cleanup audit) — documented in evidence file + T10 comment.
 

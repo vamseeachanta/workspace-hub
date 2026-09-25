@@ -42,7 +42,9 @@ bash scripts/legal/legal-sanity-scan.sh --json
 
 ## What Gets Scanned
 
-The scanner checks ALL text files against patterns in `.legal-deny-list.yaml`:
+The scanner checks eligible file contents against `.legal-deny-list.yaml`.
+Exclusions, the 1 MB limit, hidden-directory traversal and symlink handling limit
+coverage; see `.claude/docs/legal-scanning.md`. Filenames themselves are not searched.
 
 ### Pattern Categories
 | Category | Examples | Severity |
@@ -95,15 +97,23 @@ Extends (not replaces) the global list. Use for project-specific patterns.
 
 1. Parses global + local `.legal-deny-list.yaml` files
 2. Merges patterns and exclusions
-3. Runs ripgrep (or grep fallback) with --fixed-strings --max-filesize 1M
+3. Requires ripgrep (`rg`) on PATH; runs with --no-config --fixed-strings --max-filesize 1M
 4. Reports violations with file:line detail
-5. Exit code: 0 = PASS, 1 = BLOCK violations, 2 = ERROR
+5. Exit code: 0 = no block findings, 1 = block findings, 2 = usage, resolution,
+   dependency or incomplete-scan error. Reject every nonzero status. Missing rg
+   reports `RIPGREP_REQUIRED`; backend failure reports `LEGAL_SCAN_INCOMPLETE`.
+   Incomplete scans take precedence over partial findings and never qualify as PASS.
 
 ## Integration with Document Intelligence
 
-### Pipeline phases that already gate
+### Pipeline callers requiring separate qualification
 - **Phase D** (phase-d-data-sources.py): calls legal-sanity-scan.sh + sanitize_text()
 - **Phase E** (phase-e-registry.py): calls legal-sanity-scan.sh on registry output
+
+Both callers reject nonzero scanner status, but pass unsupported positional targets
+and allow missing-script bypasses; Phase E also allows timeout/OSError bypasses.
+Their presence does not establish an effective gate. This scanner repair does not
+change those callers or install hooks across machines.
 
 ### Manual gates (run after these)
 - Phase A index building (paths may expose client dirs)
@@ -155,7 +165,7 @@ cleaned = phase_d_data_sources.sanitize_text(raw_text, deny_patterns)
    (added 2026-04-07). These raw JSONL dumps record agent tool-call output
    that legitimately contains client filenames (e.g. in GitHub issue close
    comments). The legal gate for this data is git remote access control,
-   not pattern scanning. If you see Lakach/other client names in learning pipeline
+   not pattern scanning. If client names appear in learning pipeline
    commit failures, this exclusion should resolve it.
 7. **GitHub issue bodies are public** — deny-list patterns contain the actual names
    but issue text must NOT. Alias all identifiable names in issues/PRs with generic
@@ -250,15 +260,17 @@ Then produce a MATLAB→Python naming table:
 - SKIPPED (I/O/setup only) → not needed in calculation library
 
 Cross-check: every branded name must have a `block` pattern in `.legal-deny-list.yaml`.
-Run `bash scripts/legal/legal-sanity-scan.sh --diff-only` and confirm PASS before coding.
+Before using `--diff-only`, verify Git diff succeeds and selects nonexcluded files.
+Git-diff errors, empty selections and empty patterns can still report PASS without
+searching. A PASS alone does not qualify the input; see the scanning reference.
 
 ### Real example (2026-04-03, #1773)
 - Found: MATLAB VIV scripts with third-party copyright + named author
 - Original issue: "Port MATLAB scripts to Python" — WRONG
 - Reframed to: "Implement DNV-RP-F105 VIV module from published standard"
 - Added 3 deny patterns, sanitized issue body, added copyright warning to catalog
-- Pre-port naming scan: 13 MATLAB "TwoHspanviv*" functions → 6 Python "Span*" classes
-  Deny list blocks: "2HSPANVIV", "2H Offshore", author name. All Python uses clean
+- Pre-port naming scan: 13 MATLAB functions with branded names → 6 Python classes with generic names
+  Deny list blocks: the original tool name, company name and author name. Python uses clean
   DNV-standard-derived names. Legal scan PASSES.
 
 ## Related
