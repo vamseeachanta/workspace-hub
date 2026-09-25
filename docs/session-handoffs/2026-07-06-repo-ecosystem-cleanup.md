@@ -9,14 +9,14 @@
 | Repo | Working tree | Sync | Stashes | Branches | Notes |
 |---|---|---|---|---|---|
 | llm-wiki | clean | ✓ | 0 | main | wiped index restored (49,080 files); 73 long-path files recovered |
-| llm-wiki-acma | clean | ✓ | 0 | main | was already clean |
+| llm-wiki-<client> | clean | ✓ | 0 | main | was already clean |
 | assetutilities | clean | ✓ | 0 | main | cleanup merged (PR #108) |
 | worldenergydata | clean | ✓ | 0 | main | cleanup merged (PR #671) |
 | digitalmodel | clean | ✓ | 0 | main | cleanup merged (PR #1160) |
 | workspace-hub | clean | ✓ | 0 | main | nested repos locally excluded |
-| doris (nested) | clean | ✓ | 0 | main | synced clone; kept (see open items) |
+| <client-repo-d> (nested) | clean | ✓ | 0 | main | synced clone; kept (see open items) |
 
-**Removed clones:** `seanation` and `<project-archive>` (both nested under workspace-hub) — fully backed up first (see below).
+**Removed clones:** `<client-repo-s>` and `<project-archive>` (both nested under workspace-hub) — fully backed up first (see below).
 
 ## Root causes fixed
 - **Wiped git index** in llm-wiki (0 tracked vs 49,080 in HEAD) — restored via `read-tree`/checkout.
@@ -45,12 +45,12 @@ Restore any item with `git clone`/`git fetch <bundle>`.
 - No pushes to <project-archive> (archived — left unpushed per user); no writes to any private client repo beyond the above.
 
 ## Open items for the user
-1. **`doris`** nested clone — fully synced to GitHub, kept. Remove like seanation/<project-archive> if desired.
+1. **`<client-repo-d>`** nested clone — fully synced to GitHub, kept. Remove like <client-repo-s>/<project-archive> if desired.
 2. **`worldenergydata/202502`** — its LFS-budget push blocker is now moot (bundled locally); increase the LFS budget only if you want it back on the remote.
 3. **Backups (`<backup-root>\ws-cleanup-2026-06-30`, ~12.3 GB)** — retained as insurance; delete once satisfied nothing is needed.
-4. **<project-archive>** is archived; route future client/project content to `llm-wiki-acma` (per user 2026-06-29).
+4. **<project-archive>** is archived; route future client/project content to `llm-wiki-<client>` (per user 2026-06-29).
 
 ## Memory updated (this box's auto-memory)
 - `reference-ws-git-windows-settings` — required global git settings (longpaths, symlinks-as-text) + scratch-ignore + safe.directory.
-- `project-<project-archive>-archived-route-to-llm-wiki-acma` — archived; clone removed + bundle location.
+- `project-<project-archive>-archived-route-to-llm-wiki-<client>` — archived; clone removed + bundle location.
 - (this box's equality-identity memory) — equality-column identity + sanitize-host-before-push practice.

@@ -20,7 +20,7 @@ Continue the ace-win-2 machine-equivalence/readiness reconciliation, then docume
 - Updated local Claude trust config for the `C:/ws` repo ecosystem after user authorization.
   - Config: `C:/Users/<user>/.claude.json`
   - Backup: `C:/Users/<user>/.claude.json.bak-20260707110409`
-  - Trusted paths verified: `C:/ws`, `aceengineer-admin`, `assetutilities`, `deckhand`, `deckhand-licensed-runs-queue`, `digitalmodel`, `llm-wiki`, `llm-wiki-acma`, `raw-to-knowledge-playbook`, `workspace-hub`, `worldenergydata`, `worldenergydata-wiki`
+  - Trusted paths verified: `C:/ws`, `aceengineer-admin`, `assetutilities`, `deckhand`, `deckhand-licensed-runs-queue`, `digitalmodel`, `llm-wiki`, `llm-wiki-<client>`, `raw-to-knowledge-playbook`, `workspace-hub`, `worldenergydata`, `worldenergydata-wiki`
 - Verified Claude safe mode can run non-interactively:
   - `claude --safe-mode --print 'Return exactly TRUST_OK.'`
   - Result: `TRUST_OK`
@@ -51,7 +51,7 @@ Continue the ace-win-2 machine-equivalence/readiness reconciliation, then docume
 ## Verified repo state before this handoff
 
 - `workspace-hub`: `## main...origin/main`
-- `llm-wiki-acma`: `## main...origin/main`
+- `llm-wiki-<client>`: `## main...origin/main`
 - `raw-to-knowledge-playbook`: `## main...origin/main`
 - `assetutilities`: `## main...origin/main`
 - `worldenergydata`: `## main...origin/main`

@@ -631,7 +631,7 @@ Scope: provider session artifacts rooted at `/mnt/local-analysis/workspace-hub/l
 - `digitalmodel/src` — 9
 - `config` — 8
 - `scripts` — 8
-- `doris` — 8
+- `client-repo-d` — 8
 - `src` — 7
 
 ### gemini top sibling-repo reads

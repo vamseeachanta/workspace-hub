@@ -36,7 +36,7 @@ Surveyed all 38 top-level git repos under `/mnt/local-analysis`. **Nothing was a
 
 **dm-job-code-{coupling,sweep,taps}** — worktrees sharing digitalmodel's `main`; current automatically after the digitalmodel pull (`0 0`).
 
-**~20 repos already `0 0`** on main (aceengineer-*, achantas-data, hobbies, investments, kaggle-rogii-2026, llm-wiki-{acma,baez,doris,family,fdas,hdic,packs,seanation}, raw-to-knowledge-playbook, sabithaandkrishnaestates, teamresumes, worldenergydata-wiki, deckhand-sandbox).
+**~20 repos already `0 0`** on main (aceengineer-*, achantas-data, hobbies, investments, kaggle-rogii-2026, llm-wiki-{family,packs} and six client wikis, raw-to-knowledge-playbook, sabithaandkrishnaestates, teamresumes, worldenergydata-wiki, deckhand-sandbox).
 
 **Deliberately skipped (with reason):**
 | Repo | Reason |

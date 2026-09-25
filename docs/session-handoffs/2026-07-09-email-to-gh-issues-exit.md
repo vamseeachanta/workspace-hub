@@ -46,7 +46,7 @@ Use the memory slice and recent issue state before creating anything new:
   - `deckhand-licensed-runs-queue`
   - `digitalmodel`
   - `llm-wiki`
-  - `llm-wiki-acma`
+  - `llm-wiki-<client>`
   - `raw-to-knowledge-playbook`
   - `workspace-hub`
   - `worldenergydata`

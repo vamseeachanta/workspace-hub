@@ -2126,9 +2126,9 @@
 | `docs/session-handoffs/2026-05-25-ecosystem-consolidation-and-crash-recovery.md` | 40 | 2026-06-15 | git |
 | `docs/session-handoffs/2026-06-01-deckhand-chatbot-board-exit-handoff.md` | 40 | 2026-06-15 | git |
 | `docs/session-handoffs/2026-06-07-gtm-routine-review-and-pat-rotation-prep.md` | 40 | 2026-06-15 | git |
-| `docs/session-handoffs/2026-06-10-hdic-deckhand-onboarding-exit.md` | 40 | 2026-06-15 | git |
+| `docs/session-handoffs/2026-06-10-(client)-deckhand-onboarding-exit.md` | 40 | 2026-06-15 | git |
 | `docs/session-handoffs/2026-06-11-handoff-prometheus-flywheel-hygiene.md` | 40 | 2026-06-15 | git |
-| `docs/session-handoffs/2026-06-11-hdic-race-car-consolidation-exit.md` | 40 | 2026-06-15 | git |
+| `docs/session-handoffs/2026-06-11-(client)-race-car-consolidation-exit.md` | 40 | 2026-06-15 | git |
 | `docs/session-handoffs/2026-06-11-provider-skills-rework.md` | 40 | 2026-06-15 | git |
 | `docs/session-handoffs/2026-06-12-codex-exit-merge-cleanup-ci-fix.md` | 40 | 2026-06-15 | git |
 | `docs/session-handoffs/2026-06-14-agy-gemini-statusline-rollout.md` | 40 | 2026-06-15 | git |

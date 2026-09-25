@@ -26,7 +26,7 @@
 - [Elliott Services Floorhand FFS brochure](project_elliott_floorhand_brochure.md) — ✅ PR #178 MERGED. NEXT (HITL): pick send route + flip draft footer → SEND
 - [Krishna daily schedule (wh#3528)](project_krishna_daily_schedule.md) — morning chain APPROVED. NEXT: evening-chain yes/adjust → calendar #3529
 - [wed #844 cost-basis + costing program](project_wed844_cost_basis_timeseries_dispatch.md) — #1023 CLOSED (80 projects/$509bn); EPIC #1038 (#1040-#1044). OPEN: A1–A4 undecided (blocks #651); cost↔FDAS DISCONNECTED; #831 stale
-- [llm-wiki-acma OCR lane gpu-claw (#267)](project_llm_wiki_acma_ocr_lane_gpu_claw.md) — 2026-07-13 ✅ smoke merged; full-queue #272 blocked on staging path
+- [llm-wiki-<client> OCR lane gpu-claw (#267)](project_llm_wiki_client_ocr_lane_gpu_claw.md) — 2026-07-13 ✅ smoke merged; full-queue #272 blocked on staging path
 - [wed parametric economics sweep + HF](project_wed_parametric_economics_sweep.md) — 2026-07-13 ✅ PR #1004 merged; #978 closable. See [[project_wed_economics_c9_session_handoff]]
 - [Fleet dispatch ecosystem (wh#3497)](project_fleet_dispatch_ecosystem_epic.md) — 2026-07-13 ✅ Phase-6 smoke rc 0. RULE: map detail PRIVATE-only. NEXT: merge #563 → soak → VPN retire
 - [aceengineer.com redesign — Subsea7 theme](project_aceengineer_website_redesign_subsea7.md) — navy/teal, no literal "AI". PR #59 OPEN (stacked). NEW: awsite#76
@@ -42,7 +42,7 @@
 - [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
 
 ## Key Lessons (how to work)
-- [Machine identity — ⚠ #565 SUPERSEDED by deckhand#581](feedback_machine_identity_is_logical_alias_565.md) — 2026-07-30 owner decision: route by **canonical lowercase hostname, PRIVATE tier only**; public workspace-hub keeps **neutral tokens** (`ace-win-1`…), no ACMA hostname in a public label. Field `host_aliases` stays, values change; casefold on join; never rewrite historical queue JSON. Heartbeat-filename freeze + hostname-rejecting tests now INVERT. Still true: tier split, `verified_at`, deckhand = promotable, **scan your own plan artifacts**
+- [Machine identity — ⚠ #565 SUPERSEDED by deckhand#581](feedback_machine_identity_is_logical_alias_565.md) — 2026-07-30 owner decision: route by **canonical lowercase hostname, PRIVATE tier only**; public workspace-hub keeps **neutral tokens** (`ace-win-1`…), no physical hostname in a public label. Field `host_aliases` stays, values change; casefold on join; never rewrite historical queue JSON. Heartbeat-filename freeze + hostname-rejecting tests now INVERT. Still true: tier split, `verified_at`, deckhand = promotable, **scan your own plan artifacts**
 - [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included**
 - [Absence of signal reads as success](feedback_absence_of_signal_reads_as_success.md) — missing check looks GREENER than failing one; verify every suppression's stated reason (comments lie); import scans are blind to `engine=`/entry-point deps
 - [Verify subagent line citations, not just claims](feedback_verify_subagent_line_citations_not_just_claims.md) — a defect existing ≠ it being at that line; cite the SYMBOL when coordinates aren't cheap to confirm

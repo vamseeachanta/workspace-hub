@@ -7,7 +7,7 @@
 > NOTE: the box's current OS hostname collides with a private client codename and is deliberately **kept out of this doc** (and out of all tracked files). Refer to it as `ace-win-1` (prior public name removed).
 
 ## Outcome (state at exit)
-- `main` is **synced with origin/main** (behind 0 / ahead 0), working tree clean except 3 pre-existing untracked nested-repo dirs (`<project-archive>/`, `doris/`, `seanation/`).
+- `main` is **synced with origin/main** (behind 0 / ahead 0), working tree clean except 3 pre-existing untracked nested-repo dirs (`<project-archive>/`, `<client-repo-d>/`, `<client-repo-s>/`).
 - This box's equality column is **live as `ace-win-1`** and **token-clean on origin/main HEAD** (verified `git grep` = 0).
 - No work was discarded. The pre-session dirty tree is preserved as a stash (see Preserved state).
 
@@ -32,14 +32,14 @@
 - `stash@{...} reconcile-prep ace-win 2026-06-26_1051` — the pre-session dirty tree. Restore with `git stash apply` (use the matching ref from `git stash list`); review before dropping.
 - 9 older stashes (pre-existing, not from this session) — still NEEDS-APPROVAL to inspect/drop.
 - `llm-wiki` ~49,110 dirty paths — **untouched**; NEEDS-APPROVAL.
-- Untracked `<project-archive>/ doris/ seanation/` (nested repos) and local branches `chore/wrk-470-windows-merge-fix`, `merge-main` — pre-existing, not mine; left as-is.
+- Untracked `<project-archive>/ <client-repo-d>/ <client-repo-s>/` (nested repos) and local branches `chore/wrk-470-windows-merge-fix`, `merge-main` — pre-existing, not mine; left as-is.
 
 ## Caveat
 - The colliding hostname remains in **git history** (from the original `43871a875` publish). A purge rewrites shared history / force-push — destructive and not worth it for a false-positive infra hostname. Recommend leaving it.
 - Future equality publishes from this box re-leak the hostname (collector writes `host: <COMPUTERNAME>`) until the durable fix lands. This box's equality cron is **not** enabled (`job_count: 0`), so no automation will trip it; don't run a raw publish/`-RefreshMatrix` here until then.
 
 ## Next steps
-1. **Durable PII fix — chosen path: allowlist** (user-owned, off-repo). The redactor map (`scripts/legal/redact-client-pii.py`) has no allowlist primitive — tighten the one rule whose `pattern` matches the hostname (e.g. add a negative lookaround for the `acma-…-rds02` context; note `word_bound` only guards letter-flanking, not hyphen/digit). Update the `LEGAL_CLIENT_MAP_SECRET` CI secret.
+1. **Durable PII fix — chosen path: allowlist** (user-owned, off-repo). The redactor map (`scripts/legal/redact-client-pii.py`) has no allowlist primitive — tighten the one rule whose `pattern` matches the hostname (e.g. add a negative lookaround for the `<org>-…-rds02` context; note `word_bound` only guards letter-flanking, not hyphen/digit). Update the `LEGAL_CLIENT_MAP_SECRET` CI secret.
 2. **Verify before re-landing** — drop the updated map at `config/agents/.client-codename-map.local.yaml` (gitignored) and run, against a scratch file containing the hostname: `uv run --with pyyaml python scripts/legal/redact-client-pii.py --map <map> --dry-run <scratch>` (goal: 0 replacements), then `check-client-pii.py --strict` (PASS) — locally, before any public push.
 3. **Reland host-map natively** once green: re-add the host→`ace-win-1` mapping in the 4 maps, fresh PR, confirm Client-PII gate green, merge. Then native autodetect + publishing work; the `RECONCILE_MACHINE` override can be dropped (harmless to keep).
 4. **Residual reconcile items** (unchanged): `llm-wiki` 49k dirty, 10 stashes, `orcawave` licence probe (PR #2850); MISSING-EVIDENCE provider-capability + audit cells need a provider-harness collection run on this box.

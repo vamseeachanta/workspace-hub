@@ -139,7 +139,7 @@ repeat a stage whose log exists. That is an accident, not a guarantee.
 **Access established (my stored note was STALE and said otherwise — verify, don't trust):**
 
 ```
-host    ace-win-1   tailnet 100.93.182.24   domain ACMA-INC.LOCAL
+host    ace-win-1   tailnet 100.93.182.24   domain <org-domain>
 user    vamseea          (also Administrator)    SSH: WORKS
 drives  C:  D: (Data)  S: (VM storage)           <- NO J:
 ```
@@ -158,7 +158,7 @@ disk.
 
 ### The routing decision that must precede the copy
 
-The owner asked to sync the model into `llm-wiki-acma`. That repo is **PRIVATE**
+The owner asked to sync the model into `llm-wiki-<client>`. That repo is **PRIVATE**
 (verified), which is the correct tier for client content per
 `.claude/rules/wiki-sibling-routing.md` (`visibility: private-client-llm-wiki`,
 `client:` required).
