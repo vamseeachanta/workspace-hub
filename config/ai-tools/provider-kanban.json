@@ -39,6 +39,40 @@
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "feat(engineering): standard human-review pack \u2014 evidence screenshots vs physical expectation before any result is accepted"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3892,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "feat(engineering): standard human-review pack \u2014 evidence screenshots vs physical expectation before any result is accepted",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3892",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
         "provider_route": "codex",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
@@ -7841,54 +7875,48 @@
       "title": "fix(memory): prevent shared KNOWLEDGE rules from being omitted by provider slice cap",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3558",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "cat:harness",
-          "domain:workstations",
-          "machine:multi",
-          "status:needs-plan"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "bug(equality): reconcile marks dirty STALE-CHECKOUT auto-safe but apply cannot clean or make progress"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3557,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "codex",
-      "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
-      "title": "bug(equality): reconcile marks dirty STALE-CHECKOUT auto-safe but apply cannot clean or make progress",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3557",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-09-25T09:21:54Z",
+  "generated_at": "2026-09-25T13:21:59Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "feat(engineering): standard human-review pack \u2014 evidence screenshots vs physical expectation before any result is accepted"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3892,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "feat(engineering): standard human-review pack \u2014 evidence screenshots vs physical expectation before any result is accepted",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3892",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -15705,46 +15733,6 @@
         "title": "fix(memory): prevent shared KNOWLEDGE rules from being omitted by provider slice cap",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3558",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:needs-plan"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "bug(equality): reconcile marks dirty STALE-CHECKOUT auto-safe but apply cannot clean or make progress"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3557,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "codex",
-        "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
-        "title": "bug(equality): reconcile marks dirty STALE-CHECKOUT auto-safe but apply cannot clean or make progress",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3557",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15755,9 +15743,9 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-25T09:21:48.863441Z",
+  "scorecard_generated_at": "2026-09-25T13:21:54.403134Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-25T09:21:48.515832Z",
+  "utilization_generated_at": "2026-09-25T13:21:54.029970Z",
   "warning_summary": {
     "approved_no_marker": 9,
     "approved_no_plan": 3,

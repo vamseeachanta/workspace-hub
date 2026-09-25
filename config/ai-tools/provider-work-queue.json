@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-25T09:21:51.411838Z",
+  "generated_at": "2026-09-25T13:21:56.940092Z",
   "current_week": "2026-W39",
-  "scorecard_generated_at": "2026-09-25T09:21:48.863441Z",
+  "scorecard_generated_at": "2026-09-25T13:21:54.403134Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 9,
-      "total_candidates": 177,
+      "total_candidates": 178,
       "top_issues": [
         {
           "number": 3816,
@@ -661,7 +661,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-09-24T11:45:07Z",
+          "updatedAt": "2026-09-25T11:45:08Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -4218,6 +4218,24 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3892,
+          "title": "feat(engineering): standard human-review pack \u2014 evidence screenshots vs physical expectation before any result is accepted",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3892",
+          "labels": [],
+          "updatedAt": "2026-09-25T11:18:35Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4225,7 +4243,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 21,
+      "total_candidates": 20,
       "top_issues": [
         {
           "number": 3740,
@@ -4665,29 +4683,6 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3557,
-          "title": "bug(equality): reconcile marks dirty STALE-CHECKOUT auto-safe but apply cannot clean or make progress",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3557",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-08-01T11:30:27Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation"
           ]
         },
