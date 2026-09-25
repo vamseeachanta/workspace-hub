@@ -47,7 +47,7 @@ def _valid_demo_05_intake_yaml() -> str:
     return """\
 prospect:
   company: "Acme Marine Contractors"
-  contact: "jane.doe@acme.example"
+  contact: "jane.doe@example.com"
   nda_in_place: true
   target_demo: "demo_05"
   delivery_deadline_utc: "2026-04-21T17:00Z"
@@ -88,7 +88,7 @@ def _demo_01_with_vessel_yaml() -> str:
     return """\
 prospect:
   company: "Acme Marine Contractors"
-  contact: "jane.doe@acme.example"
+  contact: "jane.doe@example.com"
   nda_in_place: true
   target_demo: "demo_01"
   delivery_deadline_utc: "2026-04-21T17:00Z"
@@ -113,7 +113,7 @@ def _demo_03_without_vessel_yaml() -> str:
     return """\
 prospect:
   company: "Acme Marine Contractors"
-  contact: "jane.doe@acme.example"
+  contact: "jane.doe@example.com"
   nda_in_place: true
   target_demo: "demo_03"
   delivery_deadline_utc: "2026-04-21T17:00Z"
@@ -133,7 +133,7 @@ def _valid_demo_03_canonical_csv_hlv_yaml() -> str:
     return """\
 prospect:
   company: "Delta Subsea Construction"
-  contact: "installations@delta.example"
+  contact: "installations@example.org"
   nda_in_place: true
   target_demo: "demo_03"
   delivery_deadline_utc: "2026-04-23T17:00Z"
@@ -171,7 +171,7 @@ def _valid_demo_04_canonical_pipelay_yaml() -> str:
     return """\
 prospect:
   company: "Bluewater Pipelines"
-  contact: "ops@bluewater.example"
+  contact: "ops@example.net"
   nda_in_place: true
   target_demo: "demo_04"
   delivery_deadline_utc: "2026-04-22T17:00Z"
@@ -197,7 +197,7 @@ def _demo_04_with_wrong_canonical_yaml() -> str:
     return """\
 prospect:
   company: "Bluewater Pipelines"
-  contact: "ops@bluewater.example"
+  contact: "ops@example.net"
   nda_in_place: true
   target_demo: "demo_04"
   delivery_deadline_utc: "2026-04-22T17:00Z"
@@ -220,7 +220,7 @@ output:
 
 def _malformed_yaml() -> str:
     """Syntactically broken YAML (unclosed mapping)."""
-    return "prospect:\n  company: \"Acme\n  contact: jane.doe@acme.example\n"
+    return "prospect:\n  company: \"Acme\n  contact: jane.doe@example.com\n"
 
 
 # ---------------------------------------------------------------------------
@@ -239,7 +239,7 @@ def test_load_and_validate_accepts_canonical_seven_borealis_intake(tmp_path: Pat
     assert result.vessel_shape == "csv_hlv"
     assert result.structure_kind == "rigid_jumper"
     assert result.company == "Acme Marine Contractors"
-    assert result.contact == "jane.doe@acme.example"
+    assert result.contact == "jane.doe@example.com"
     assert result.source_path == intake_file
 
 
@@ -269,7 +269,7 @@ def test_load_and_validate_accepts_canonical_pipelay_barge_for_demo_04(
     assert result.vessel_shape == "pipelay"
     assert result.structure_kind == "pipeline"
     assert result.company == "Bluewater Pipelines"
-    assert result.contact == "ops@bluewater.example"
+    assert result.contact == "ops@example.net"
     assert result.source_path == intake_file
 
 

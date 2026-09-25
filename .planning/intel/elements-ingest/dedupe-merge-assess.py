@@ -35,7 +35,7 @@ BUCKETS = [
     Bucket(5, "lng-a-62092-sesa", "62092  SESA FLNG Terminal Project", Path("/mnt/ace/lng-a/62092_sesa"), Path("/mnt/ace/lng-a/62092_sesa/_from_elements"), "likely overlap; review carefully"),
     Bucket(6, "lng-a-university", "lng-a University", Path("/mnt/ace/lng-a/training"), Path("/mnt/ace/lng-a/training/_from_elements"), "training material"),
     Bucket(7, "lng-a-codes-specs", "Codes and Specs", Path("/mnt/ace/lng-a/codes"), Path("/mnt/ace/lng-a/codes/_from_elements/codes-lng-a"), "high file-count overlap risk"),
-    Bucket(8, "mkt-a-31522-woodfibre", "Woodfibre", Path("/mnt/ace/mkt-a/31522-woodfibre-lng"), Path("/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements"), "very large; treat as separate reviewed merge"),
+    Bucket(8, "mkt-a-31522-lng-terminal-a", "LNG terminal A", Path("/mnt/ace/mkt-a/31522-lng-terminal-a"), Path("/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements"), "very large; treat as separate reviewed merge"),
 ]
 
 

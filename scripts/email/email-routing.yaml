@@ -119,7 +119,7 @@ rules:
   "linkedin.com":                   "achantas-data/docs/email/career-networking"
   "parentsquare.com":               "achantas-data/docs/email/school"
   "vercel.com":                     "digitalmodel/docs/email/dev-notifications"
-  "ogj@news.ogj.com":               "achantas-data/docs/email/industry"
+  "news.ogj.com":                   "achantas-data/docs/email/industry"
   "em1.turbotax.intuit.com":        "achantas-data/docs/email/tax"
   "github.com":                     "achantas-data/docs/email/dev-notifications"
   "openrouter.ai":                  "achantas-data/docs/email/ai-platform"

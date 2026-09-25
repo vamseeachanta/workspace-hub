@@ -8,6 +8,6 @@ metadata:
   tags: [cross-platform, windows, sibling-repos, path-handling]
 ---
 
-POSIX string splitting in `tier1_repo_root` fallback fails on Windows paths: `rsplit('/', 1)` applied to `D:\workspace-hub` returns the full path instead of parent `D:\`. Breaks skill discovery on licensed Windows hosts. Fix: explicit `tier1_repo_root` configuration or `PureWindowsPath` handling for cross-platform safety.
+POSIX string splitting in `tier1_repo_root` fallback fails on Windows paths: `rsplit('/', 1)` applied to `<workspace-root>\workspace-hub` returns the full path instead of parent `<workspace-root>\`. Breaks skill discovery on licensed Windows hosts. Fix: explicit `tier1_repo_root` configuration or `PureWindowsPath` handling for cross-platform safety.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

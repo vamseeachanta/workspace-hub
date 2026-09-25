@@ -176,7 +176,7 @@ class TestValidateSourceDocKey:
             validate_source_doc_key,
         )
         with pytest.raises(SourceDocKeyError):
-            validate_source_doc_key(r"D:\workspace-hub\foo.pdf")
+            validate_source_doc_key(r"C:\workspace-hub\foo.pdf")
 
     def test_rejects_self_loop_against_output_hash(self):
         """source_doc_key must not equal sha256:<output-content-hash>."""

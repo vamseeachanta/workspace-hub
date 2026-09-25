@@ -52,7 +52,7 @@ class TestExtractGitDate:
         scanner = _import_scanner()
         # Create a mini git repo
         subprocess.run(["git", "init", str(tmp_path)], check=True, capture_output=True)
-        subprocess.run(["git", "config", "user.email", "t@t.com"], cwd=tmp_path, check=True, capture_output=True)
+        subprocess.run(["git", "config", "user.email", "t@example.com"], cwd=tmp_path, check=True, capture_output=True)
         subprocess.run(["git", "config", "user.name", "T"], cwd=tmp_path, check=True, capture_output=True)
         md = tmp_path / "doc.md"
         md.write_text("# Hello\n")

@@ -28,7 +28,7 @@ def _write_registry(tmp_path: Path) -> Path:
                 "hostname": "licensed-win-1",
                 "hostname_aliases": ["license-box"],
                 "os": "windows",
-                "workspace_root": r"D:\workspace-hub",
+                "workspace_root": r"C:\workspace-hub",
                 "ssh": None,
             },
         }
@@ -56,15 +56,15 @@ def test_rewrite_workspace_path_normalizes_linux_and_windows_hosts(tmp_path: Pat
         == "docs/report.md"
     )
     assert (
-        resolver.rewrite_workspace_path(r"D:\workspace-hub\docs\report.md", current_repo_root=repo_root)
+        resolver.rewrite_workspace_path(r"C:\workspace-hub\docs\report.md", current_repo_root=repo_root)
         == "docs/report.md"
     )
     assert (
-        resolver.rewrite_workspace_path("/d/workspace-hub/docs/report.md", current_repo_root=repo_root)
+        resolver.rewrite_workspace_path("/c/workspace-hub/docs/report.md", current_repo_root=repo_root)
         == "docs/report.md"
     )
     assert (
-        resolver.rewrite_workspace_path("/D/workspace-hub/docs/report.md", current_repo_root=repo_root)
+        resolver.rewrite_workspace_path("/C/workspace-hub/docs/report.md", current_repo_root=repo_root)
         == "docs/report.md"
     )
 

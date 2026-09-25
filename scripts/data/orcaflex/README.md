@@ -18,7 +18,7 @@ Requires OrcaFlex Python API (`pip install OrcFxAPI` with valid license on licen
 
 ```cmd
 python scripts\data\orcaflex\dat-to-yaml.py ^
-    --input "\\dev-secondary\dde\Orcaflex\0000 Drilling Riser Development\Latest" ^
+    --input "\\<server>\<share>\Orcaflex\0000 Drilling Riser Development\Latest" ^
     --output "client-c\data\raw\orcaflex-extracted\drilling-riser-development" ^
     --project drilling-riser-development
 ```

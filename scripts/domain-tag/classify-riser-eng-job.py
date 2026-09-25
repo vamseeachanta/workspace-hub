@@ -101,7 +101,7 @@ DOMAIN_KEYWORDS = {
 
 # Project-level domain assignments (all files in project get these)
 PROJECT_DOMAINS = {
-    "2100-blk31-slor-design": ["risers", "riser_analysis", "structural"],
+    "2100-wa-block-a-slor-design": ["risers", "riser_analysis", "structural"],
     "3824-containment-riser": ["risers", "riser_analysis"],
     "3836-hp1-riser": ["risers", "riser_analysis"],
     "3837-cdp2-fsr": ["risers", "riser_analysis"],

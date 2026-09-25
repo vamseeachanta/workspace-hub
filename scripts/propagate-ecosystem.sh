@@ -50,7 +50,7 @@ detect_platform() {
 }
 PLATFORM="$(detect_platform)"
 
-# --- to_win_path: convert /d/foo to D:\foo for cmd.exe ---
+# --- to_win_path: convert /c/foo to C:\foo for cmd.exe ---
 to_win_path() {
     local p; p="$(echo "$1" | sed 's|/|\\|g')"
     [[ "$p" =~ ^\\([a-zA-Z])\\ ]] && p="${BASH_REMATCH[1]^^}:${p:2}"

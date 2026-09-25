@@ -531,8 +531,8 @@ MEASURED_PATH = ("scripts", "readiness", "harness-config.yaml")  # in the MEASUR
 def _git(ws: Path, *args: str) -> None:
     """Run a git command in the fixture with deterministic identity."""
     env = {**os.environ,
-           "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t.test",
-           "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t.test",
+           "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@example.test",
+           "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@example.test",
            "HOME": str(ws.parent)}
     subprocess.run(["git", "-C", str(ws), *args], env=env, check=True,
                    capture_output=True, timeout=60)

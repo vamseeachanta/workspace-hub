@@ -50,10 +50,10 @@ def test_account_scope_reads_skestates_but_excludes_it_from_cleanup(tmp_path):
 
     assert scope.enabled_aliases() == {"ace", "personal", "skestates"}
     assert scope.cleanup_aliases() == {"ace", "personal"}
-    assert scope.normalize("vamsee.achanta@aceengineer.com").alias == "ace"
-    assert scope.normalize("achantav@gmail.com").alias == "personal"
-    assert scope.normalize("skestatesinc@gmail.com").status == "enabled"
-    assert scope.cleanup_enabled("skestatesinc@gmail.com") is False
+    assert scope.normalize("owner@example.com").alias == "ace"
+    assert scope.normalize("owner.personal@example.com").alias == "personal"
+    assert scope.normalize("skestates@example.com").status == "enabled"
+    assert scope.cleanup_enabled("skestates@example.com") is False
     assert scope.accounts["skestates"].retention_policy == "keep_forever"
     assert scope.accounts["skestates"].attention_method == "starred"
     assert scope.accounts["skestates"].attention_channel == "Telegram: Family - Finance"
@@ -67,13 +67,13 @@ def test_account_scope_keeps_extra_aliases_assist_only(tmp_path):
             [
                 "accounts:",
                 "  ace:",
-                "    email: vamsee.achanta@aceengineer.com",
+                "    email: owner@example.com",
                 "    enabled: true",
                 "  personal:",
-                "    email: achantav@gmail.com",
+                "    email: owner.personal@example.com",
                 "    enabled: true",
                 "  skestates:",
-                "    email: skestatesinc@gmail.com",
+                "    email: skestates@example.com",
                 "    enabled: true",
                 "  other:",
                 "    email: other@example.com",
@@ -90,7 +90,7 @@ def test_account_scope_keeps_extra_aliases_assist_only(tmp_path):
     assert scope.cleanup_aliases() == {"ace", "personal"}
     assert scope.normalize("skestates").status == "enabled"
     assert scope.normalize("other@example.com").status == "enabled"
-    assert scope.cleanup_enabled("skestatesinc@gmail.com") is False
+    assert scope.cleanup_enabled("skestates@example.com") is False
     assert scope.cleanup_enabled("other@example.com") is False
 
 
@@ -126,7 +126,7 @@ def test_pending_work_report_blocks_empty_for_unknown_in_scope_inbox_thread(tmp_
         account_scope=queue_state.load_account_scope(config),
         inbox_snapshot=[
             {
-                "account_id": "achantav@gmail.com",
+                "account_id": "owner.personal@example.com",
                 "thread_id": "new-thread",
                 "message_id": "msg-new",
                 "received_at_utc": "2026-06-14T00:00:00Z",
@@ -150,7 +150,7 @@ def test_pending_work_report_routes_skestates_attention_without_cleanup(tmp_path
         account_scope=queue_state.load_account_scope(config),
         inbox_snapshot=[
             {
-                "account_id": "skestatesinc@gmail.com",
+                "account_id": "skestates@example.com",
                 "thread_id": "disabled-thread",
                 "message_id": "msg-disabled",
             }
@@ -183,7 +183,7 @@ def test_attention_notification_events_are_pii_safe_for_skestates(tmp_path):
         account_scope=queue_state.load_account_scope(config),
         inbox_snapshot=[
             {
-                "account_id": "skestatesinc@gmail.com",
+                "account_id": "skestates@example.com",
                 "thread_id": "family-finance-thread",
                 "message_id": "msg-secret",
                 "subject": "Private finance item",
@@ -210,7 +210,7 @@ def test_attention_notification_events_are_pii_safe_for_skestates(tmp_path):
         }
     ]
     serialized = json.dumps(events)
-    assert "skestatesinc@gmail.com" not in serialized
+    assert "skestates@example.com" not in serialized
     assert "family-finance-thread" not in serialized
     assert "msg-secret" not in serialized
     assert "Private finance item" not in serialized

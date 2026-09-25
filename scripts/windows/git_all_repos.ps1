@@ -1,6 +1,6 @@
 # https://stackoverflow.com/questions/17683368/running-a-command-on-each-directory-in-a-list-using-powershell
 
-$dir = dir C:\Users\vamseea\github | ? { $_.PSISContainer }
+$dir = dir "$env:USERPROFILE\github" | ? { $_.PSISContainer }
 
 foreach ($d in $dir) {
     echo "Running git push pull in folder      ... START"
@@ -16,4 +16,4 @@ foreach ($d in $dir) {
 
 Set-Location -Path $dir
 
-cd C:\Users\vamseea\github
+cd "$env:USERPROFILE\github"

@@ -45,17 +45,17 @@ GMAIL_BASE = "https://gmail.googleapis.com/gmail/v1"
 ACCOUNTS = {
     "ace": {
         "display": "ACE Engineer",
-        "email": "vamsee.achanta@aceengineer.com",
+        "email": "owner@example.com",
         "cred": "~/.gmail-ace/credentials.json",
     },
     "personal": {
         "display": "Personal",
-        "email": "achantav@gmail.com",
+        "email": "owner.personal@example.com",
         "cred": "~/.gmail-personal/credentials.json",
     },
     "skestates": {
         "display": "SKEstates Inc",
-        "email": "skestatesinc@gmail.com",
+        "email": "skestates@example.com",
         "cred": "~/.gmail-skestates/credentials.json",
     },
 }
@@ -74,7 +74,7 @@ CONTACT_FILES = {
 # line; default account is "ace"; '#' comments allowed). Absent file → only the
 # defaults below are treated as VIP.
 ACE_VIP_DOMAINS = {
-    "ril.com", "mcdermott.com", "shell.com",
+    "ril.com", "shell.com",
     "kbr.com", "bp.com", "subsea7.com", "technipfmc.com",
 }
 SKESTATES_VIP_DOMAINS = {

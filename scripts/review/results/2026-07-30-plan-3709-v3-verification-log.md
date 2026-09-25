@@ -177,8 +177,8 @@ Root cause is `cron_render.workspace_hub_path` (`cron_render.py:87`,
 `build-cron-identity-inventory.py:96-100`.
 
 ```
-[ace1] ace-win-1        os=windows  declared=D:\workspace-hub                        faithful=False
-[ace1] ace-win-2        os=windows  declared=D:\workspace-hub                        faithful=False
+[ace1] ace-win-1        os=windows  declared=<workspace-root>\workspace-hub                        faithful=False
+[ace1] ace-win-2        os=windows  declared=<workspace-root>\workspace-hub                        faithful=False
 [ace1] dev-primary      os=linux    declared=/mnt/local-analysis/workspace-hub       faithful=True
 [ace1] dev-secondary    os=linux    declared=/mnt/local-analysis/workspace-hub       faithful=True
 [ace1] gali-linux-compute-1 linux   NO_ROOT

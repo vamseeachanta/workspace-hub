@@ -58,8 +58,8 @@ if exist "%REPO_LIST_FILE%" (
 )
 
 for %%r in (%repos%) do (
-    if exist "C:\Users\vamseea\github\%%r\.git" (
-        if exist "C:\Users\vamseea\github\%%r\CLAUDE.md" (
+    if exist "%USERPROFILE%\github\%%r\.git" (
+        if exist "%USERPROFILE%\github\%%r\CLAUDE.md" (
             echo [OK] %%r - Repository with CLAUDE.md
         ) else (
             echo [WARNING] %%r - Repository missing CLAUDE.md

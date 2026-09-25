@@ -231,7 +231,7 @@ def test_cli_notify_attention_apply_invokes_notify_script(tmp_path):
     }
     assert "family-finance-thread" not in details
     assert "msg-secret" not in details
-    assert "skestatesinc@gmail.com" not in details
+    assert "skestates@example.com" not in details
 
 
 def test_missing_extraction_reactivation_links_state_and_learning_events(tmp_path):

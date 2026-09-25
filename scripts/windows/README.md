@@ -165,6 +165,6 @@ current canonical checkout after merge.
 
 ## Deprecated
 
-- `git_all_repos.ps1` — legacy, hardcodes `C:\Users\vamseea\github` + `daily_routine.bat`;
+- `git_all_repos.ps1` — legacy, hardcodes `%USERPROFILE%\github` + `daily_routine.bat`;
   superseded by `scripts/sync/sync-ecosystem.ps1`. Kept only until any scheduled task referencing
   it is repointed.

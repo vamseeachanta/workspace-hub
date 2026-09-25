@@ -8,6 +8,6 @@ metadata:
   tags: [gmail-auth, token-lifecycle, account-maintenance]
 ---
 
-Personal (achantav@gmail.com) and SKEstates Inc (skestatesinc@gmail.com) show persistent AUTH_FAILED on 2026-04-29 digest run. Refresh tokens are not persisting across runs or session boundaries; reauthentication loop needed or token lifetime assumptions require revision.
+Personal (owner.personal@example.com) and SKEstates Inc (skestates@example.com) show persistent AUTH_FAILED on 2026-04-29 digest run. Refresh tokens are not persisting across runs or session boundaries; reauthentication loop needed or token lifetime assumptions require revision.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

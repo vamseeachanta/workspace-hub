@@ -239,7 +239,7 @@ def test_protected_paths_dominate_benign_docs_labels(path):
     None, "docs/foo.md", {"docs/foo.md": True}, 1, [None], [1], [""],
     ["../README.md"], ["docs/../README.md"], ["./README.md"],
     ["/docs/foo.md"], [r"C:\docs\foo.md"], ["C:docs/foo.md"],
-    [r"\\host\share\foo.md"], ["docs/foo.md\x00"],
+    [r"\\host\share\foo.md"], ["docs/foo.md\x00"],  # identifier-gate: example
     ["docs//foo.md"], ["docs/foo.md/"], ["docs/foo.md:stream"],
     ["docs /foo.md"], ["docs/foo.md."],
     [{"old_path": "docs/a.md"}],

@@ -1,10 +1,10 @@
 # SKEstates — Email Communication Style Profile
-# Account: skestatesinc@gmail.com
+# Account: skestates@example.com
 # Derived from sent email analysis (~30 sent messages)
 # Reference: GitHub #1986
 
 account: skestates
-email: skestatesinc@gmail.com
+email: skestates@example.com
 domain: gmail.com  # shared domain, identity is SKEstates Inc
 
 tone: business-formal-warm

@@ -103,11 +103,11 @@ for i, kw in enumerate(KEYWORDS):
 # Known target companies for priority scoring
 PRIORITY_COMPANIES = {
     # Tier 1 — EPIC / Installation
-    "subsea7", "technipfmc", "client-d", "mcdermott", "allseas", "heerema",
+    "subsea7", "technipfmc", "client-d", "allseas", "heerema",
     "boskalis", "van oord", "deme",
     # Tier 2 — Operators
     "energy transfer", "crescent energy", "shell", "bp", "chevron",
-    "exxonmobil", "talos energy", "murphy oil", "kosmos energy",
+    "exxonmobil", "murphy oil", "kosmos energy",
     "eog resources", "devon energy", "diamondback", "hess",
     # Tier 3 — Consultancies
     "2h offshore", "stress engineering", "zentech", "sofec", "intermoor",
@@ -491,7 +491,6 @@ COMPANY_CAREER_URLS = {
     "Cheniere Energy": "https://www.cheniere.com/careers",
     "SBM Offshore": "https://www.sbmoffshore.com/careers",
     "Heerema": "https://heerema.com/careers",
-    "McDermott": "https://careers.mcdermott.com/",
     "Wood": "https://www.woodplc.com/careers",
     "Worley": "https://www.worley.com/en/careers",
     "ABS": "https://ww2.eagle.org/en/careers.html",
@@ -510,7 +509,6 @@ COMPANY_CAREER_URLS = {
     "Orsted": "https://orsted.com/en/careers",
     "Equinor": "https://www.equinor.com/careers",
     "Vineyard Wind": "https://www.vineyardwind.com/careers",
-    "Talos Energy": "https://www.talosenergy.com/careers",
     "Shell": "https://www.shell.com/careers",
 }
 

@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-24
 **Method:** Same as ace sweep (see `docs/sessions/2026-04-24-gmail-ace-sweep.md`)
-**Account:** skestatesinc@gmail.com
+**Account:** skestates@example.com
 **Status:** Draft — user must confirm decisions below before filter install
 
 ## Hypothesis about inbox composition
@@ -53,7 +53,7 @@ Recommend **single `Operations` label** alongside VIP star. Per-category (Tenant
 2. **VIP action scope** — Star only, OR Star + Mark Important (ace pattern), OR also route to a priority section?
 3. **Noise domains** — any spam/marketing actually reaching this inbox? Confirm AutoNoise seed (tatacapital, cincsystems) or drop if no hits.
 4. **S1 override-filters flip** — apply the ace lesson ("Don't override filters") here too? Recommend YES.
-5. **Subdomains on familydollar/dollartree** — filter on `@familydollar.com` catches all subdomains; confirm functional inboxes (`estoppelfd@`, `LLChangeRequestfd@`, `vendormaintenance@dollartree.com`) match.
+5. **Subdomains on familydollar/dollartree** — filter on `@familydollar.com` catches all subdomains; confirm functional inboxes (`estoppelfd@`, `LLChangeRequestfd@`, `vendormaintenance@` at dollartree.com) match.
 6. **1099 / tax-season flag** — separate filter for `subject:(1099 OR W-9)` from tenant domains (per #1969 reconciliation follow-up)?
 
 ## Gaps where live inbox scan is needed

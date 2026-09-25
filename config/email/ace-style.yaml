@@ -1,10 +1,10 @@
 # ACE — Email Communication Style Profile
-# Account: vamsee.achanta@aceengineer.com
+# Account: owner@example.com
 # Derived from sent email analysis (~30 sent messages)
 # Reference: GitHub #1986
 
 account: ace
-email: vamsee.achanta@aceengineer.com
+email: owner@example.com
 domain: aceengineer.com
 
 tone: professional-technical

@@ -339,7 +339,7 @@ def _init(tmp_path) -> Path:
     repo = tmp_path / "repo"
     repo.mkdir()
     _git(repo, "init", "-b", "main")
-    _git(repo, "config", "user.email", "dispatch@test.invalid")
+    _git(repo, "config", "user.email", "dispatch@example.invalid")
     _git(repo, "config", "user.name", "dispatch test")
     _git(repo, "config", "commit.gpgsign", "false")
     (repo / "seed.txt").write_text("seed\n", encoding="utf-8")

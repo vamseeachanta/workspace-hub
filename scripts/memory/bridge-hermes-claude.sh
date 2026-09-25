@@ -144,7 +144,7 @@ cat > "${MEMORY_DIR}/context.md" << 'CONTEXT_EOF'
 | Machine | OS | Hermes | Python cmd | Workspace root |
 |---------|----|--------|------------|----------------|
 | ace-linux-1 | Linux | YES | `uv run` | `/mnt/local-analysis/workspace-hub` |
-| licensed-win-1 | Windows | NO | `python` | `D:\workspace-hub` |
+| licensed-win-1 | Windows | NO | `python` | `<workspace-root>\workspace-hub` |
 
 ## Python Command Rule
 
@@ -167,7 +167,7 @@ cat > "${MEMORY_DIR}/context.md" << 'CONTEXT_EOF'
 
 ## Windows Path Conventions
 
-- MINGW64 bash: paths use `/d/workspace-hub/` (not `D:\workspace-hub`)
+- MINGW64 bash: paths use `/d/workspace-hub/` (not the drive-letter backslash form)
 - `core.symlinks=false` — git treats junctions as dirs; never commit symlinks cross-platform
 - Shell scripts: `#!/usr/bin/env bash`, LF line endings
 
