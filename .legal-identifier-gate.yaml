@@ -133,11 +133,10 @@ structural:
       Email address. An address identifies a person, and at a client domain
       the engagement too. Use an address at example.com.
 
-  - id: project-archive-path
-    pattern: '\bacma-projects\b'
-    severity: block
-    message: >-
-      Internal project archive name.
+  # The internal project-archive name is matched by the private list, not
+  # here: in this repository the owner's client map treats the organisation
+  # prefix of that name as a client identifier, so a public pattern would
+  # publish it (C15).
 
 # ---------------------------------------------------------------------------
 # Hashed names. Salted SHA-256 of the lowercased token.

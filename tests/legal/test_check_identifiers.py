@@ -123,7 +123,6 @@ class TestEachCategoryIsDetected:
             ("delivered under CTR" + " 07 of the contract", "ctr-number"),
             ("workbook 3" + "1234-CAL-" + "0001-1 checked", "project-document-number"),
             ("report 12" + "34-rpt-" + "5678-02 issued", "project-document-number"),
-            ("stored under acma" + "-projects/archive", "project-archive-path"),
             # person / Windows user
             ("contact person" + "@somecompany.example", "foreign-domain-email"),
             (f"fe_folder: {_user_path()}", "windows-user-path"),
