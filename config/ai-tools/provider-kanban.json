@@ -42,6 +42,77 @@
         "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
+        "title": "bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3896,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3896",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "no canonical plan file",
+        "reviews not clean: missing_review",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [
+          "status:plan-review"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "[Epic] Solver-neutral simulation study workflow: spec \u2192 triage \u2192 dispatch \u2192 monitor \u2192 reduce \u2192 human review \u2192 issue"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3894,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "[Epic] Solver-neutral simulation study workflow: spec \u2192 triage \u2192 dispatch \u2192 monitor \u2192 reduce \u2192 human review \u2192 issue",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3894",
+      "warnings": [
+        "missing_review"
+      ]
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
         "title": "feat(engineering): standard human-review pack \u2014 evidence screenshots vs physical expectation before any result is accepted"
       },
       "lane": "planning_feedstock",
@@ -7792,97 +7863,85 @@
       "title": "fix(review): isolate in-progress provider sinks and fail closed on empty final artifacts",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3560",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "enhancement",
-          "priority:high",
-          "cat:data",
-          "machine:multi",
-          "status:needs-plan",
-          "lane:codex",
-          "epic",
-          "domain:capability"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "feat(field-explorer): immutable Hugging Face field/well HTML drill-down program [C11]"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3559,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "feat(field-explorer): immutable Hugging Face field/well HTML drill-down program [C11]",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3559",
-      "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "bug",
-          "cat:harness",
-          "machine:dev-primary",
-          "status:needs-plan",
-          "domain:ai"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "fix(memory): prevent shared KNOWLEDGE rules from being omitted by provider slice cap"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3558,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "fix(memory): prevent shared KNOWLEDGE rules from being omitted by provider slice cap",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3558",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-09-25T13:21:59Z",
+  "generated_at": "2026-09-25T17:21:46Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3896,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3896",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "no canonical plan file",
+          "reviews not clean: missing_review",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "status:plan-review"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "[Epic] Solver-neutral simulation study workflow: spec \u2192 triage \u2192 dispatch \u2192 monitor \u2192 reduce \u2192 human review \u2192 issue"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3894,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "[Epic] Solver-neutral simulation study workflow: spec \u2192 triage \u2192 dispatch \u2192 monitor \u2192 reduce \u2192 human review \u2192 issue",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3894",
+        "warnings": [
+          "missing_review"
+        ]
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -15650,89 +15709,6 @@
         "title": "fix(review): isolate in-progress provider sinks and fail closed on empty final artifacts",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3560",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "machine:multi",
-            "status:needs-plan",
-            "lane:codex",
-            "epic",
-            "domain:capability"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "feat(field-explorer): immutable Hugging Face field/well HTML drill-down program [C11]"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3559,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "feat(field-explorer): immutable Hugging Face field/well HTML drill-down program [C11]",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3559",
-        "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "bug",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "domain:ai"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "fix(memory): prevent shared KNOWLEDGE rules from being omitted by provider slice cap"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3558,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "fix(memory): prevent shared KNOWLEDGE rules from being omitted by provider slice cap",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3558",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15743,16 +15719,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-25T13:21:54.403134Z",
+  "scorecard_generated_at": "2026-09-25T17:21:41.054982Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-25T13:21:54.029970Z",
+  "utilization_generated_at": "2026-09-25T17:21:40.484980Z",
   "warning_summary": {
     "approved_no_marker": 9,
     "approved_no_plan": 3,
     "legacy_review_no_sha": 5,
     "major_review": 3,
     "marker_without_open_approved_issue": 185,
-    "missing_review": 37,
+    "missing_review": 38,
     "unavailable_review": 2
   }
 }

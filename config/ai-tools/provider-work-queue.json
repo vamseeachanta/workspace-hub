@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-25T13:21:56.940092Z",
+  "generated_at": "2026-09-25T17:21:43.698840Z",
   "current_week": "2026-W39",
-  "scorecard_generated_at": "2026-09-25T13:21:54.403134Z",
+  "scorecard_generated_at": "2026-09-25T17:21:41.054982Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -664,33 +664,6 @@
           "updatedAt": "2026-09-25T11:45:08Z",
           "execution_ready": false,
           "priority_rank": 0,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3559,
-          "title": "feat(field-explorer): immutable Hugging Face field/well HTML drill-down program [C11]",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3559",
-          "labels": [
-            "enhancement",
-            "priority:high",
-            "cat:data",
-            "machine:multi",
-            "status:needs-plan",
-            "lane:codex",
-            "epic",
-            "domain:capability"
-          ],
-          "updatedAt": "2026-08-01T06:17:03Z",
-          "execution_ready": false,
-          "priority_rank": 1,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -3120,30 +3093,6 @@
           ]
         },
         {
-          "number": 3558,
-          "title": "fix(memory): prevent shared KNOWLEDGE rules from being omitted by provider slice cap",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3558",
-          "labels": [
-            "bug",
-            "cat:harness",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-07-31T08:33:25Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3561,
           "title": "Repair and split workspace connection menu dispatch",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3561",
@@ -4224,7 +4173,7 @@
           "title": "feat(engineering): standard human-review pack \u2014 evidence screenshots vs physical expectation before any result is accepted",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3892",
           "labels": [],
-          "updatedAt": "2026-09-25T11:18:35Z",
+          "updatedAt": "2026-09-25T16:24:01Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4233,6 +4182,43 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3894,
+          "title": "[Epic] Solver-neutral simulation study workflow: spec \u2192 triage \u2192 dispatch \u2192 monitor \u2192 reduce \u2192 human review \u2192 issue",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3894",
+          "labels": [
+            "status:plan-review"
+          ],
+          "updatedAt": "2026-09-25T16:49:51Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3896,
+          "title": "bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3896",
+          "labels": [],
+          "updatedAt": "2026-09-25T16:46:09Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]
