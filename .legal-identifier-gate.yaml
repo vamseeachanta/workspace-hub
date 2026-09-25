@@ -103,7 +103,9 @@ structural:
       Solver export header names the Windows account. Write "# User: (removed)".
 
   - id: solver-export-machine
-    pattern: '#\s*Machine:\s*(?![(<]|&lt;)\S'
+    # C15: fleet runbooks here head sections "# Machine: <logical label>";
+    # the sanctioned labels are exempt, a physical name is not.
+    pattern: '#\s*Machine:\s*(?![(<]|&lt;|(?:ace-(?:win|linux)-[0-9]+|licensed-win-[0-9]+|home-win|macbook-portable)\b)\S'
     severity: block
     message: >-
       Solver export header names the machine. Write "# Machine: (removed)".
