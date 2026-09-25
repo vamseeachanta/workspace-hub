@@ -568,3 +568,134 @@ def test_a_path_finding_does_not_print_the_path(gate):
     assert r.returncode == 1
     out = r.stdout + r.stderr
     assert TOKEN not in out and "<path " in out
+
+
+# --------------------------------------------------------------------------- #
+# digitalmodel#2167 review r3: diagnostics for uninspectable files, and a
+# disclosure policy that persisted across in-process calls
+# --------------------------------------------------------------------------- #
+
+
+def _bin(gate, name: str) -> Path:
+    p = gate.root / name
+    p.write_bytes(b"\x00\x01binary\x00payload")
+    return p
+
+
+def _docx(gate, members: dict, name: str = "report.docx") -> Path:
+    import io
+    import zipfile
+
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_STORED) as z:
+        for n, data in members.items():
+            z.writestr(n, data)
+    p = gate.root / name
+    p.write_bytes(buf.getvalue())
+    return p
+
+
+class TestUninspectableDiagnosticsAreRedacted:
+    def test_an_unlisted_binary_named_with_a_denied_name(self, gate):
+        r = gate(str(_bin(gate, f"{TOKEN}-results.bin")))
+        out = r.stdout + r.stderr
+        assert r.returncode != 0 and "not in the baseline" in out
+        assert TOKEN not in out and "<path " in out, out
+
+    def test_a_binary_named_with_a_denied_name_changed_since_the_baseline(self, gate):
+        name = f"{TOKEN}-results.bin"
+        p = _bin(gate, name)
+        baseline = gate.root / "baseline.txt"
+        baseline.write_text(f"{'0' * 64}  {name}\n", encoding="utf-8")
+        r = gate("--baseline", str(baseline), str(p))
+        out = r.stdout + r.stderr
+        assert r.returncode != 0 and "changed since the baseline" in out
+        assert TOKEN not in out, out
+
+    def test_a_clean_binary_name_is_still_shown(self, gate):
+        r = gate(str(_bin(gate, "plain-results.bin")))
+        assert r.returncode != 0 and "plain-results.bin" in r.stdout
+
+    def test_an_office_member_name_that_cannot_be_inspected(self, gate):
+        p = _docx(
+            gate,
+            {
+                "word/document.xml": b"<w><t>plain text</t></w>",
+                f"word/embeddings/{TOKEN}.bin": b"\x00\x01\x02opaque",
+            },
+        )
+        r = gate(str(p))
+        out = r.stdout + r.stderr
+        assert r.returncode != 0 and "report.docx" in out
+        assert TOKEN not in out, out
+
+    def test_an_office_member_that_is_malformed_xml(self, gate):
+        r = gate(str(_docx(gate, {f"word/{TOKEN}.xml": b"<w><t>broken</w>"})))
+        assert r.returncode != 0
+        assert TOKEN not in r.stdout + r.stderr
+
+    def test_an_office_archive_whose_error_names_a_member(self, gate):
+        p = _docx(gate, {f"word/{TOKEN}.xml": b"<w><t>abcdefgh</t></w>"})
+        raw = bytearray(p.read_bytes())
+        raw[raw.index(b"abcdefgh")] ^= 0x01  # the CRC error names the member
+        p.write_bytes(bytes(raw))
+        r = gate(str(p))
+        assert r.returncode != 0
+        assert TOKEN not in r.stdout + r.stderr
+
+    def test_a_missing_private_list_path_is_not_printed(self, gate):
+        missing = gate.home / f"{TOKEN}-list.txt"
+        r = gate(_file(gate, "nothing\n"), env={ENV: str(missing)})
+        assert r.returncode != 0
+        assert TOKEN not in r.stdout + r.stderr
+
+
+def _module_from(gate, name="_wh_ci_r3_under_test"):
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        name, gate.root / "scripts" / "legal" / "check_identifiers.py"
+    )
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+class TestShowLinesDoesNotPersist:
+    @pytest.fixture()
+    def mod(self, gate, monkeypatch):
+        for k in (ENV, "CI", "GITHUB_ACTIONS"):
+            monkeypatch.delenv(k, raising=False)
+        monkeypatch.setenv("HOME", str(gate.home))
+        monkeypatch.setenv("USERPROFILE", str(gate.home))
+        return _module_from(gate)
+
+    def _main(self, mod, monkeypatch, capsys, *args):
+        monkeypatch.setattr(sys, "argv", ["check_identifiers.py", *args])
+        rc = mod.main()
+        cap = capsys.readouterr()
+        return rc, cap.out + cap.err
+
+    def test_a_second_call_without_the_flag_does_not_quote(self, gate, mod, monkeypatch, capsys):
+        f = _file(gate, f"model at {_user_path()}\n")
+        rc1, out1 = self._main(mod, monkeypatch, capsys, "--show-lines", f)
+        assert rc1 == 1 and "jdoe123" in out1
+        rc2, out2 = self._main(mod, monkeypatch, capsys, f)
+        assert rc2 == 1 and "jdoe123" not in out2
+        assert not getattr(mod, "SHOW_LINES", False)
+
+    def test_a_second_call_in_ci_does_not_quote(self, gate, mod, monkeypatch, capsys):
+        f = _file(gate, f"model at {_user_path()}\n")
+        self._main(mod, monkeypatch, capsys, "--show-lines", f)
+        monkeypatch.setenv("CI", "true")
+        rc, out = self._main(mod, monkeypatch, capsys, f)
+        assert rc == 1 and "jdoe123" not in out
+        rc, out = self._main(mod, monkeypatch, capsys, "--show-lines", f)
+        assert rc == 3 and "jdoe123" not in out
+
+    def test_a_second_call_does_not_show_a_path(self, gate, mod, monkeypatch, capsys):
+        p = str(_bin(gate, f"{TOKEN}-results.bin"))
+        self._main(mod, monkeypatch, capsys, "--show-lines", p)
+        _, out = self._main(mod, monkeypatch, capsys, p)
+        assert TOKEN not in out, out
