@@ -42,8 +42,33 @@ if DENY_PATH is None:
 # ============================================================
 # CONFIG
 # ============================================================
+def _private_overlay():
+    """Owner-private lists (C19): scripts/lib/private_overlay.py.
+
+    Absent file -> {} (public rules and placeholder addresses only); malformed
+    file -> PrivateOverlayError.
+    """
+    repo_root = str(SCRIPTS_DIR.parents[1])
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+    from scripts.lib import private_overlay
+    return private_overlay
+
+
 def load_routing():
-    """Simple YAML parser — no external deps needed."""
+    """Simple YAML parser — no external deps needed.
+
+    Public rules come from email-routing.yaml; owner-private rules (client
+    domains, which reveal an engagement) come from the private overlay's
+    email.routing_rules and take precedence.
+    """
+    rules = _load_public_routing()
+    po = _private_overlay()
+    rules.update(po.get_mapping(po.load(), "email.routing_rules"))
+    return rules
+
+
+def _load_public_routing():
     rules = {}
     if not ROUTING_FILE.exists():
         return rules
@@ -73,6 +98,12 @@ ACCOUNTS = {
     "personal":  {"email": "owner.personal@example.com",       "token": "~/.gmail-personal/credentials.json"},
     "skestates": {"email": "skestates@example.com",            "token": "~/.gmail-skestates/credentials.json"},
 }
+# Real mailbox addresses are private (C15/C19); the placeholders above are
+# display-only and are replaced from the overlay's email.mailboxes when present.
+for _alias, _address in _private_overlay().get_mapping(
+        _private_overlay().load(), "email.mailboxes").items():
+    if _alias in ACCOUNTS:
+        ACCOUNTS[_alias]["email"] = _address
 
 # ============================================================
 # AUTH

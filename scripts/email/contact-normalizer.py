@@ -91,6 +91,31 @@ DOMAIN_COMPANY = {
     "indianeagle.com": "Indian Eagle",
 }
 
+
+
+def _apply_private_overlay():
+    """Merge owner-private client domains and company names (C19).
+
+    A client's corporate domain reveals the engagement, so it is not listed in
+    this public file. Source: scripts/lib/private_overlay.py
+    (~/.config/workspace-hub/private-lists.json). Absent file -> public lists
+    only; malformed file -> PrivateOverlayError.
+    """
+    import sys
+    repo_root = str(Path(__file__).resolve().parents[2])
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+    from scripts.lib import private_overlay
+
+    overlay = private_overlay.load()
+    ACE_CLIENT_DOMAINS.update(
+        d.strip().lower() for d in private_overlay.get_list(overlay, "email.client_domains")
+    )
+    DOMAIN_COMPANY.update(private_overlay.get_mapping(overlay, "email.domain_company"))
+
+
+_apply_private_overlay()
+
 TOUCHBASE_CADENCE = {
     "client": "quarterly", "colleague": "quarterly", "prospect": "monthly",
     "recruiter": "none", "newsletter": "none", "spam": "none",

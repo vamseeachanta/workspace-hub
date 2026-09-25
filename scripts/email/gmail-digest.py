@@ -71,8 +71,9 @@ CONTACT_FILES = {
 # email domain is PII (it reveals the engagement) so client VIP domains are NOT
 # hardcoded in this public repo (#3095/#3098). Provision them per host in the
 # gitignored config/.vip-domains.local (one "domain" or "account:domain" per
-# line; default account is "ace"; '#' comments allowed). Absent file → only the
-# defaults below are treated as VIP.
+# line; default account is "ace"; '#' comments allowed), or in the private
+# run-time overlay (email.vip_domains; scripts/lib/private_overlay.py). Absent
+# both → only the defaults below are treated as VIP.
 ACE_VIP_DOMAINS = {
     "ril.com", "shell.com",
     "kbr.com", "bp.com", "subsea7.com", "technipfmc.com",
@@ -99,6 +100,35 @@ def _load_local_vip_domains() -> None:
 
 
 _load_local_vip_domains()
+
+
+def _apply_private_overlay() -> None:
+    """Merge owner-private VIP domains and mailbox addresses (C19).
+
+    Source: scripts/lib/private_overlay.py (~/.config/workspace-hub/
+    private-lists.json). Absent file -> public defaults only; malformed file ->
+    PrivateOverlayError (a partial private list is never used silently).
+    """
+    repo_root = str(Path(__file__).resolve().parents[2])
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+    from scripts.lib import private_overlay
+
+    overlay = private_overlay.load()
+    sets = {"ace": ACE_VIP_DOMAINS, "skestates": SKESTATES_VIP_DOMAINS}
+    for account, domains in private_overlay.get_mapping(overlay, "email.vip_domains").items():
+        target = sets.get(account)
+        if target is None:
+            raise private_overlay.PrivateOverlayError(
+                f"email.vip_domains: unknown account '{account}' (expected one of {sorted(sets)})"
+            )
+        target.update(d.strip().lower() for d in domains)
+    for account, address in private_overlay.get_mapping(overlay, "email.mailboxes").items():
+        if account in ACCOUNTS:
+            ACCOUNTS[account]["email"] = address
+
+
+_apply_private_overlay()
 
 # ============================================================
 # CONTACT LOADING

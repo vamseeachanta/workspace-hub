@@ -513,6 +513,29 @@ COMPANY_CAREER_URLS = {
 }
 
 
+def _apply_private_overlay() -> None:
+    """Merge owner-private priority companies and career pages (C19).
+
+    Names of companies with an engagement relationship are not listed in this
+    public file. Source: scripts/lib/private_overlay.py
+    (~/.config/workspace-hub/private-lists.json). Absent file -> public lists
+    only; malformed file -> PrivateOverlayError.
+    """
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    from scripts.lib import private_overlay
+
+    overlay = private_overlay.load()
+    PRIORITY_COMPANIES.update(
+        name.strip().lower()
+        for name in private_overlay.get_list(overlay, "job_market.priority_companies")
+    )
+    COMPANY_CAREER_URLS.update(private_overlay.get_mapping(overlay, "job_market.career_urls"))
+
+
+_apply_private_overlay()
+
+
 def scan_career_page(company: str, url: str, search_terms: list[str] | None = None) -> list[dict]:
     """Scan a company career page for relevant job postings."""
     jobs = []
