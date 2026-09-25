@@ -114,6 +114,9 @@ def _apply_private_overlay() -> None:
         sys.path.insert(0, repo_root)
     from scripts.lib import private_overlay
 
+    # Absent overlay: VIP priority degrades to the public defaults, with one
+    # warning line on stderr. The digest is read-only, so it may still run.
+    private_overlay.warn_if_absent("VIP priority")
     overlay = private_overlay.load()
     sets = {"ace": ACE_VIP_DOMAINS, "skestates": SKESTATES_VIP_DOMAINS}
     for account, domains in private_overlay.get_mapping(overlay, "email.vip_domains").items():

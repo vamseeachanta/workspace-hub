@@ -10,6 +10,7 @@ in aceengineer-admin/admin/contacts/. Re-run after updating domain mappings.
 
 import csv
 import re
+import sys
 from pathlib import Path
 from collections import Counter
 
@@ -115,6 +116,18 @@ def _apply_private_overlay():
 
 
 _apply_private_overlay()
+
+
+def require_overlay_for_write():
+    """Fail closed when the private overlay is absent (C19).
+
+    The normalised files classify contacts into repository-held lists; without
+    the private client domains, client contacts would be written as 'unknown'.
+    Raises PrivateOverlayAbsent; the message names no path and no value.
+    """
+    from scripts.lib import private_overlay
+
+    private_overlay.require_present("write classified contact files")
 
 TOUCHBASE_CADENCE = {
     "client": "quarterly", "colleague": "quarterly", "prospect": "monthly",
@@ -315,6 +328,14 @@ def process_account(account, input_path, output_path):
 
 
 if __name__ == "__main__":
+    from scripts.lib.private_overlay import PrivateOverlayAbsent
+
+    try:
+        require_overlay_for_write()
+    except PrivateOverlayAbsent as exc:
+        print(f"contact-normalizer: {exc}", file=sys.stderr)
+        sys.exit(2)
+
     # Determine base path
     script_dir = Path(__file__).resolve().parent.parent
     base = script_dir.parent
