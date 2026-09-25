@@ -110,7 +110,8 @@ else
 
     git -C "$PRIVATE_ROOT" commit -m "chore(gtm): weekly job market scan refresh $DATE_STR
 
-Scan: $TOTAL jobs across $COMPANIES companies" -- "$OUT_REAL"
+Scan: $TOTAL jobs across $COMPANIES companies
+Related: workspace-hub#1671" -- "$OUT_REAL"
 
     git -C "$PRIVATE_ROOT" push origin HEAD
     echo "✓ Pushed to the private output repository"
