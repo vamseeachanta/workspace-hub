@@ -235,6 +235,146 @@ Every match is classified. Paths known at planning time:
 
 The audit is complete when every match in the committed inventory carries a verdict. A path recorded as intentionally ungated **must name the caller that performs the gating instead**; "intentional" without a named gating caller is not an acceptable verdict.
 
+### Committed inventory (raw)
+
+Produced 2026-09-11 against `digitalmodel` at `90bcff85` — the tree the audit was
+performed on, before any change from this plan. `main` advanced to `41f874f0`
+during implementation; the inventory is byte-identical at both commits
+(`git grep ... 90bcff85` vs `... 41f874f0`, `Compare-Object` empty), so the
+classification below applies unchanged. Paths are relative to
+`digitalmodel/src/digitalmodel/`. 38 matches.
+
+```
+solvers/orcaflex/OrcaFlexAnalysis.py:63:#     model.CalculateStatics()
+solvers/orcaflex/OrcaFlexAnalysis.py:64:#     model.RunSimulation()
+solvers/orcaflex/core/model_interface.py:382:                self._model.CalculateStatics()
+solvers/orcaflex/core/model_interface.py:474:                self._model.RunSimulation()
+solvers/orcaflex/core/model_interface.py:662:    def RunSimulation(self) -> None:
+solvers/orcaflex/modular_input_validation/level_2_orcaflex.py:244:            model.CalculateStatics()
+solvers/orcaflex/mooring_tension_iteration/orcaflex_interface.py:335:        self.model.CalculateStatics()
+solvers/orcaflex/opp_visualization.py:80:                model.CalculateStatics()
+solvers/orcaflex/opp_visualization.py:85:            #     combined_model.CalculateStatics()
+solvers/orcaflex/opp_visualization.py:209:            model.CalculateStatics()
+solvers/orcaflex/orcaflex_analysis_components.py:74:                    model.RunSimulation()
+solvers/orcaflex/orcaflex_analysis_components.py:76:                    model.CalculateStatics()
+solvers/orcaflex/orcaflex_custom_analysis.py:167:                model.RunSimulation()
+solvers/orcaflex/orcaflex_custom_analysis.py:216:            model.CalculateStatics()
+solvers/orcaflex/orcaflex_custom_analysis.py:229:            model.CalculateStatics()
+solvers/orcaflex/orcaflex_custom_analysis.py:257:        model.CalculateStatics()
+solvers/orcaflex/orcaflex_custom_analysis.py:296:            model.CalculateStatics()
+solvers/orcaflex/orcaflex_iterative_runs.py:162:            model.RunSimulation()
+solvers/orcaflex/orcaflex_modal_analysis.py:80:        model.CalculateStatics()
+solvers/orcaflex/orcaflex_optimized_parallel.py:146:                    model.CalculateStatics()
+solvers/orcaflex/orcaflex_optimized_parallel.py:151:                    model.RunSimulation()
+solvers/orcaflex/orcaflex_optimized_parallel_v2.py:96:                model.CalculateStatics()
+solvers/orcaflex/orcaflex_optimized_parallel_v2.py:101:                model.RunSimulation()
+solvers/orcaflex/orcaflex_parallel_analysis.py:108:                model.CalculateStatics()
+solvers/orcaflex/orcaflex_parallel_analysis.py:114:                model.RunSimulation()
+solvers/orcaflex/orcaflex_utilities.py:125:        model.RunSimulation()
+solvers/orcaflex/pipeline_schematic.py:1559:            self._model.CalculateStatics()
+solvers/orcaflex/run_to_sim.py:121:                model.CalculateStatics()
+solvers/orcaflex/schematic_capture.py:97:        If True, call ``CalculateStatics()`` before capturing views.
+solvers/orcaflex/schematic_capture.py:117:        model.CalculateStatics()
+solvers/orcaflex/template_generator.py:552:                    model.CalculateStatics()
+solvers/orcaflex/time_trace_processor.py:144:            model.RunSimulation()
+solvers/orcaflex/universal/README.md:41:# Note: Dynamic analysis runs the full OrcaFlex simulation using model.RunSimulation()
+solvers/orcaflex/universal/batch_processor.py:296:                model.CalculateStatics()
+solvers/orcaflex/universal/universal_runner.py:435:                    model.CalculateStatics()
+solvers/orcaflex/universal/universal_runner.py:440:                    model.RunSimulation()
+solvers/smoke/probes.py:118:        model.CalculateStatics()
+solvers/smoke/probes.py:127:        model.RunSimulation()
+```
+
+### Classification
+
+Every one of the 38 matches carries a verdict. `Verdict at 90bcff85` is the state
+found; `Disposition` is what this plan's implementation does about it. The gate is
+`digitalmodel.solvers.orcaflex.run_state.check_statics` / `check_simulation`.
+
+| Match | Kind | Verdict at `90bcff85` | Disposition |
+|---|---|---|---|
+| `OrcaFlexAnalysis.py:63,64` | commented-out example | not a call site | NOT APPLICABLE |
+| `core/model_interface.py:382` | statics | UNGATED — comment asserted "OrcaFlex throws if not converged" and set `converged = True` unconditionally | GATED — `check_statics` |
+| `core/model_interface.py:474` | dynamics | UNGATED | GATED — `check_simulation` |
+| `core/model_interface.py:662` | `def RunSimulation` on `MockOrcaFlexModel` | a definition on the mock, not a call | NOT APPLICABLE |
+| `modular_input_validation/level_2_orcaflex.py:244` | statics | UNGATED | REPORTED — this function's contract is to return warnings, not to raise, so a non-static end state is appended as a warning |
+| `mooring_tension_iteration/orcaflex_interface.py:335` | statics | UNGATED | GATED — `check_statics` |
+| `opp_visualization.py:80` | statics | UNGATED | GATED — `check_statics` |
+| `opp_visualization.py:85` | commented-out | not a call site | NOT APPLICABLE |
+| `opp_visualization.py:209` | statics | UNGATED | GATED — `check_statics` |
+| `orcaflex_analysis_components.py:74` | dynamics | UNGATED — logged "Run simulation successful" unconditionally | GATED — `check_simulation` |
+| `orcaflex_analysis_components.py:76` | statics | UNGATED | GATED — `check_statics` |
+| `orcaflex_custom_analysis.py:167` | dynamics | UNGATED | GATED — `check_simulation` |
+| `orcaflex_custom_analysis.py:216` | statics | UNGATED (inside `try`/bare `except` that sets the FAIL flag) | GATED — `check_statics`; the existing except turns it into the FAIL branch |
+| `orcaflex_custom_analysis.py:229` | statics | UNGATED | GATED — `check_statics` |
+| `orcaflex_custom_analysis.py:257` | statics (iteration seed) | UNGATED | GATED — `check_statics` |
+| `orcaflex_custom_analysis.py:296` | statics (per iteration) | UNGATED | GATED — `check_statics` |
+| `orcaflex_iterative_runs.py:162` | dynamics | UNGATED | GATED — `check_simulation` |
+| `orcaflex_modal_analysis.py:80` | statics | UNGATED | GATED — `check_statics` |
+| `orcaflex_optimized_parallel.py:146` | statics | UNGATED | GATED — `check_statics` |
+| `orcaflex_optimized_parallel.py:151` | dynamics | UNGATED | GATED — `check_simulation` |
+| `orcaflex_optimized_parallel_v2.py:96` | statics | UNGATED | GATED — `check_statics` |
+| `orcaflex_optimized_parallel_v2.py:101` | dynamics | UNGATED | GATED — `check_simulation` |
+| `orcaflex_parallel_analysis.py:108` | statics | UNGATED — set `result['static_complete'] = True` on return | GATED — `check_statics` |
+| `orcaflex_parallel_analysis.py:114` | dynamics | UNGATED — set `result['dynamic_complete'] = True` on return | GATED — `check_simulation` |
+| `orcaflex_utilities.py:125` | dynamics | UNGATED — returned `status_flag = True` on return | GATED — `check_simulation` |
+| `pipeline_schematic.py:1559` | statics | UNGATED | GATED — `check_statics` |
+| `run_to_sim.py:121` | statics | UNGATED — logged "Successfully created" on return | GATED — `check_statics` |
+| `schematic_capture.py:97` | docstring | not a call site | NOT APPLICABLE |
+| `schematic_capture.py:117` | statics | UNGATED | GATED — `check_statics` |
+| `template_generator.py:552` | statics | PARTIAL — `statics_converged` was set from the absence of an exception | GATED — `check_statics` inside the same `try`, so the state now decides `statics_converged` |
+| `time_trace_processor.py:144` | dynamics | UNGATED | GATED — `check_simulation` |
+| `universal/README.md:41` | documentation | not a call site | NOT APPLICABLE |
+| `universal/batch_processor.py:296` | statics | UNGATED | GATED — `check_statics` |
+| `universal/universal_runner.py:435` | statics | UNGATED | GATED — `check_statics` |
+| `universal/universal_runner.py:440` | dynamics | UNGATED | GATED — `check_simulation` |
+| `solvers/smoke/probes.py:118` | statics | INTENTIONALLY UNGATED at the call | UNCHANGED — gated by the caller `_solve_orcaflex`, which calls `_completed(model, api, detail)` at `probes.py:129`; `_completed` (`probes.py:86-91`) requires `simulationComplete` and `state == SimulationStopped` for the probe as a whole |
+| `solvers/smoke/probes.py:127` | dynamics | ALREADY GATED | UNCHANGED — `_completed` at `probes.py:129`, raising at `probes.py:90-91` |
+
+### Two gaps the inventory does not surface
+
+The inventory greps *run* calls. Two paths read a run state without running one,
+and both were named in the Resource Intelligence section:
+
+- `orcaflex_analysis_components.py:354` — the whitelist this plan cited as "correct
+  where applied" is in fact **dead twice over**, and neither fault is visible from
+  the line alone:
+  1. It compared `str(model.state)` against member *names*. `OrcFxAPI.ModelState`
+     is an `IntEnum`, and from Python 3.11 `str()` of an `IntEnum` member is its
+     integer value — `str(ModelState.SimulationStopped)` is `'4'`. The comparison
+     matched nothing, so every loaded simulation was discarded.
+  2. It sat after `from common.data import PandasChainedAssignent` inside a
+     `try:` whose `except Exception: pass` swallowed everything. `common` does not
+     resolve in this environment, so control never reached the whitelist at all
+     and the loaded model was returned ungated.
+  FIXED: the state is resolved by member name through `run_state.state_name`, the
+  gate runs first, and the bookkeeping import is in its own narrowed `try`.
+- `orcaflex_utilities.py:600-601` — state recorded, no gate. FIXED: a model whose
+  state is not a completed-solve state is no longer returned for post-processing.
+  The same edit fixes a latent `UnboundLocalError`: `simulation_complete`,
+  `run_status`, `start_time`, `stop_time` and `current_time` were assigned only
+  inside the `try`, so any load failure raised while building the return dict.
+
+### Deferred
+
+- Nothing in the inventory falls outside the OrcaFlex solver package except
+  `solvers/smoke/probes.py`, which was already gated and is unchanged.
+- Acceptance criterion 2's second clause — *no direct module-scope
+  `import OrcFxAPI` under `solvers/orcaflex`* — is **partially met**. The
+  operative property is enforced: nothing reachable from
+  `import digitalmodel.solvers.orcaflex` imports the binding, so `configure()` can
+  still select a library. Nine modules were converted to the facade
+  (`orcaflex_objects`, `opp_range_graph`, `opp_time_series`, `opp_visualization`,
+  `orcaflex_utilities`, `run_to_sim`, `pipeline_schematic`, `schematic_capture`,
+  `core/model_interface`). Nineteen remain, none of them on that import path; they
+  are held by a ratchet test that lets the set shrink but not grow
+  (`KNOWN_MODULE_SCOPE_IMPORTERS` in
+  `tests/solvers/orcaflex/test_solver_version_record.py`). The seven
+  `reporting/extractors/*` modules are the bulk of the remainder and carry an
+  `if ofx is None: raise ImportError` availability contract with its own test
+  surface in `tests/solvers/orcaflex/reporting/test_extractors.py`; converting
+  them is a separate, separately-tested change.
+
 ---
 
 ## Acceptance Criteria
