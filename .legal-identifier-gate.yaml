@@ -123,8 +123,11 @@ structural:
     # C15 adds two shapes that name no person: an SSH remote (git@host:path)
     # and a noreply / no-reply sender, which is the co-author trailer on agent
     # commits. The match starts at the beginning of the local part, so a
-    # longer local part ending in "noreply" is still an address.
-    pattern: '(?<![A-Za-z0-9._%+-])(?!no-?reply@)(?!git@[A-Za-z0-9.-]+\.[A-Za-z]{2,}:)[A-Za-z0-9._%+-]+@(?!example\.|localhost)[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+    # longer local part ending in "noreply" is still an address. The local
+    # part starts with a letter or digit ("+@pytest.fixture" in a diff is a
+    # decorator), and a final label that is a file extension rather than a
+    # top-level domain ("tool@alpha-data.json") is a file name.
+    pattern: '(?<![A-Za-z0-9._%+-])(?!no-?reply@)(?!git@[A-Za-z0-9.-]+\.[A-Za-z]{2,}:)[A-Za-z0-9][A-Za-z0-9._%+-]*@(?!example\.|localhost)[A-Za-z0-9.-]+\.(?!(?:json|ya?ml|txt|csv|html?|js|ts|toml|lock|xml|log)\b)[A-Za-z]{2,}'
     severity: block
     message: >-
       Email address. An address identifies a person, and at a client domain
