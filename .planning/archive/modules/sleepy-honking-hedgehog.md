@@ -8,7 +8,7 @@ Offshore **fixed platforms** — jacket structures, gravity-based structures, to
 no implementation despite being the highest-value A&CE market use case.
 
 DNV-RP-B401-2021 is the applicable standard and is available locally at
-`mkt-a/B1522/ctr-2/cal/DNV-RP-B401-2021.pdf`. WRK-269 confirmed GO status for this
+`mkt-a/job-code/ctr-2/cal/DNV-RP-B401-2021.pdf`. WRK-269 confirmed GO status for this
 route. F103 defects G-1→G-5 were already fixed in a prior session (WRK-279 CP-stream).
 
 F103-2016 standalone PDF is not available; the 2019 amended 2021 edition is present in
@@ -25,7 +25,7 @@ F103-2016 standalone PDF is not available; the 2019 amended 2021 edition is pres
 | Comprehensive DNV tests (927 lines) | `digitalmodel/tests/marine_ops/marine_engineering/test_cathodic_protection_dnv.py` |
 | ABS tests | `digitalmodel/tests/specialized/cathodic_protection/test_abs_cathodic_protection_calcs.py` |
 | SKILL.md | `.claude/skills/engineering/marine-offshore/cathodic-protection/SKILL.md` |
-| B401-2021 standard | `mkt-a/B1522/ctr-2/cal/DNV-RP-B401-2021.pdf` |
+| B401-2021 standard | `mkt-a/job-code/ctr-2/cal/DNV-RP-B401-2021.pdf` |
 | Standards inventory | `digitalmodel/docs/domains/cathodic_protection/standards-inventory.md` |
 
 ---

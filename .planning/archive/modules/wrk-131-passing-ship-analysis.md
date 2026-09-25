@@ -73,7 +73,7 @@ links:
   docs:
     - "mkt-a/_engineering/passing_ship/Nick Version/modPassingShip.bas"
     - "mkt-a/_engineering/passing_ship/Nick Version/PassingShipForces.pdf"
-    - "mkt-a/B1512/data/passing_ship/passing_ship.md"
+    - "mkt-a/job-code/data/passing_ship/passing_ship.md"
 
 history:
   - date: "2026-02-15"
@@ -478,7 +478,7 @@ The Wang calculator outputs forces in the Wang coordinate system. These must be 
 
 **Candidate Projects** (to be confirmed after archive survey):
 - <job-code> (has MathCAD reference data)
-- Additional projects from `R:\Archive - Drive J\` (if accessible)
+- Additional projects from `<private-data>\Archive - Drive J\` (if accessible)
 
 **Deliverables**:
 - 5-7 sanitized `spec.yml` benchmark cases
@@ -617,8 +617,8 @@ The Wang calculator outputs forces in the Wang coordinate system. These must be 
 | Wang formulations (VBA) | `mkt-a/_engineering/passing_ship/Nick Version/modPassingShip.bas` |
 | Quadrature engine (VBA) | `mkt-a/_engineering/passing_ship/Nick Version/modQuadrature.bas` |
 | PassingShipForces.pdf | `mkt-a/_engineering/passing_ship/Nick Version/PassingShipForces.pdf` |
-| MathCAD: Deep water | `mkt-a/B1512/data/passing_ship/PassShip FandM Deep.xmcd` |
-| MathCAD: Wang calcs | `mkt-a/B1512/data/passing_ship/Calculation of forces and moments from Wang.xmcd` |
+| MathCAD: Deep water | `mkt-a/job-code/data/passing_ship/PassShip FandM Deep.xmcd` |
+| MathCAD: Wang calcs | `mkt-a/job-code/data/passing_ship/Calculation of forces and moments from Wang.xmcd` |
 | AQWA tutorial | `mkt-a/_aqwa/passing_ship_tutorial.pdf` |
 | DiffractionSpec pattern | `digitalmodel/src/digitalmodel/hydrodynamics/diffraction/input_schemas.py` |
 

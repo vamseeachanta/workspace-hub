@@ -12,7 +12,7 @@ The `specify-cli` tool from GitHub's Spec Kit has been successfully installed. T
 - ✅ Visual Studio Code (available)
 
 ## Repositories to Initialize
-The following repositories in `D:\github` are ready for Specify initialization:
+The following repositories in `<workspace-root>\github` are ready for Specify initialization:
 
 1. **mkt-a** - Git repository
 2. **assethold** - Git repository
@@ -32,7 +32,7 @@ Due to the interactive nature of the `specify init` command, you'll need to init
 export PYTHONIOENCODING=utf-8
 
 # Navigate to repository
-cd D:\github\<repository-name>
+cd <workspace-root>\github\<repository-name>
 
 # Initialize Specify in the current directory
 specify init --here

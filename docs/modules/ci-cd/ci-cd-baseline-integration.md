@@ -103,7 +103,7 @@ BASELINE_THRESHOLD=85
 SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...
 DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
 SMTP_HOST=smtp.gmail.com
-SMTP_USER=your-email@gmail.com
+SMTP_USER=your-email@example.com
 SMTP_PASS=your-app-password
 
 # Optional - CI/CD

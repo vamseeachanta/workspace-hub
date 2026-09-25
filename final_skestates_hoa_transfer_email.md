@@ -1,7 +1,7 @@
 Subject: Request to Update Account Ownership / Contact for 15645 Westpark Dr, Houston, TX 77082 (Ticket 5242265)
 
-To: Account.Services@fscommercial.com
-From: skestatesinc@gmail.com
+To: [email removed]
+From: owner.realestate@example.com
 
 Dear FS Commercial Account Services,
 
@@ -18,7 +18,7 @@ Sincerely,
 Vamsee Achanta
 [Title / Authorized Representative]
 SKEstates Inc
-Email: skestatesinc@gmail.com
+Email: owner.realestate@example.com
 Phone: [Phone Number]
 
 Suggested attachments, if needed:

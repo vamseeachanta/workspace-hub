@@ -103,8 +103,8 @@ Six red/no-CI ecosystem repos reduced to 6 discrete handoff issues. Investigatio
 - Evidence of one receiving session already started: commit `a00ce40b5` "docs(plans): #2433 + #2437 plans — adversarial-reviewed, pending user approval" (another session)
 
 ### User-hands-only (Gmail UI / phone)
-- 2FA setup on `skestatesinc@gmail.com`
-- Discard Gmail draft `r7458647453519350632` to `bill@rephers.com` in ACE drafts
+- 2FA setup on `owner.realestate@example.com`
+- Discard Gmail draft `r7458647453519350632` to `[email removed]` in ACE drafts
 - Block sender `info.tatacapital.co.in` in Gmail UI
 
 ### #2017 downstream

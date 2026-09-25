@@ -34,7 +34,7 @@ Surveyed all 38 top-level git repos under `/mnt/local-analysis`. **Nothing was a
 
 **Local `main` ref fast-forwarded without switching the checked-out feature branch** (`git fetch origin main:main`): `assethold`, `assetutilities`, `llm-wiki`, `wed-batch5`, `wed-phase2-batch3`, `wed-phase2-batch4`, `wed-phase2-carve`, `worldenergydata` → all `0 0`.
 
-**dm-b1546-{coupling,sweep,taps}** — worktrees sharing digitalmodel's `main`; current automatically after the digitalmodel pull (`0 0`).
+**dm-job-code-{coupling,sweep,taps}** — worktrees sharing digitalmodel's `main`; current automatically after the digitalmodel pull (`0 0`).
 
 **~20 repos already `0 0`** on main (aceengineer-*, achantas-data, hobbies, investments, kaggle-rogii-2026, llm-wiki-{acma,baez,doris,family,fdas,hdic,packs,seanation}, raw-to-knowledge-playbook, sabithaandkrishnaestates, teamresumes, worldenergydata-wiki, deckhand-sandbox).
 
@@ -68,7 +68,7 @@ Every wh `pull`/`checkout` triggers the `post-merge` hook → `scripts/memory/ka
 
 ## 7. Work-preservation pass — "don't lose any work" (parallel agents)
 
-Audited **every local branch in every repo** (not just checked-out ones) for committed work not on any origin ref. Nothing this session's actions could have lost (all ops were pull/ff/publish — no reset/force/delete). The 3 checked-out `wed-*` branches proved to be **stale pre-rewrite scratch** — their packaging work is fully merged on `origin/main` as PRs #562/#565/#566; their only unique content is BSEE data origin deliberately purged (pushing would reintroduce it — not done). `deckhand-live` / `dm-b1546-taps` detached HEADs sit on already-merged commits.
+Audited **every local branch in every repo** (not just checked-out ones) for committed work not on any origin ref. Nothing this session's actions could have lost (all ops were pull/ff/publish — no reset/force/delete). The 3 checked-out `wed-*` branches proved to be **stale pre-rewrite scratch** — their packaging work is fully merged on `origin/main` as PRs #562/#565/#566; their only unique content is BSEE data origin deliberately purged (pushing would reintroduce it — not done). `deckhand-live` / `dm-job-code-taps` detached HEADs sit on already-merged commits.
 
 Genuine local-only WIP was preserved via 5 parallel agents (each new branch, no force, `main` untouched, verified origin==local):
 

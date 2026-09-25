@@ -28,7 +28,7 @@ EOF
 cat > .planning/plan-approved/2540.md <<'EOF'
 # Approval marker — #2540 (epic)
 
-Approved: 2026-04-29 by vamsee.achanta@aceengineer.com (manual reconciliation)
+Approved: 2026-04-29 by owner@example.com (manual reconciliation)
 Scope: epic-only coordination; no implementation plan of its own; child issues #2541 and #2544 carry the executable scope.
 Reviewer evidence: n/a (epic, not subject to plan-review).
 Marker rationale: reconciles label set on GitHub without prior marker artifact.
@@ -60,7 +60,7 @@ EOF
 cat > .planning/plan-approved/2541.md <<'EOF'
 # Approval marker — #2541
 
-Approved: 2026-04-29 by vamsee.achanta@aceengineer.com
+Approved: 2026-04-29 by owner@example.com
 Scope: bounded SESA-curated-extraction subset per Adversarial Review Resolution Addendum at `docs/plans/2026-04-28-issue-2541-elements-sesa-curated-extraction-plan.md` L238+.
 Hardening commit: `bdafe39cd`
 Re-review synthesis: `scripts/review/results/2026-04-29-plan-2541-2544-rereview-synthesis.md`
@@ -93,7 +93,7 @@ EOF
 cat > .planning/plan-approved/2544.md <<'EOF'
 # Approval marker — #2544
 
-Approved: 2026-04-29 by vamsee.achanta@aceengineer.com
+Approved: 2026-04-29 by owner@example.com
 Scope: pointer/scout metadata-only subset per Adversarial Review Resolution Addendum at `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` L322+.
 Hardening commit: `bdafe39cd`
 Re-review synthesis: `scripts/review/results/2026-04-29-plan-2541-2544-rereview-synthesis.md`
@@ -118,7 +118,7 @@ EOF
 cat > .planning/plan-approved/2490.md <<'EOF'
 # Approval marker — #2490
 
-Approved: 2026-04-29 by vamsee.achanta@aceengineer.com (T1 deferred-review path)
+Approved: 2026-04-29 by owner@example.com (T1 deferred-review path)
 Scope: digitalmodel Quality Gates coverage gate blocker fix per `docs/plans/2026-04-27-issue-2490-coverage-gate-fix.md`.
 Reviewer evidence: none by design (T1 path; user-accepted convention).
 Surface: internal CI only.
@@ -171,7 +171,7 @@ Approving plan per `docs/plans/2026-04-28-issue-2378-plan-draft.md`. Internal wi
 EOF
 cat > .planning/plan-approved/2378.md <<'EOF'
 # Approval marker — #2378
-Approved: 2026-04-29 by vamsee.achanta@aceengineer.com
+Approved: 2026-04-29 by owner@example.com
 Scope: chunk and paginate the canonical marine-engineering wiki index.
 Plan: docs/plans/2026-04-28-issue-2378-plan-draft.md
 Reviewer evidence: scripts/review/results/2026-04-29-plan-2378-{codex,gemini}-feed6.md
@@ -212,7 +212,7 @@ Approving plan per `docs/plans/2026-04-29-issue-2370-closed-issue-promotion-ledg
 EOF
 cat > .planning/plan-approved/2370.md <<'EOF'
 # Approval marker — #2370
-Approved: 2026-04-29 by vamsee.achanta@aceengineer.com
+Approved: 2026-04-29 by owner@example.com
 Scope: closed-issue promotion ledger for engineering wiki ingest.
 Plan: docs/plans/2026-04-29-issue-2370-closed-issue-promotion-ledger.md
 Reviewer evidence: <fill in based on Step-2 path>
@@ -245,7 +245,7 @@ EOF
 gh issue edit 2375 --remove-label status:plan-review --add-label status:plan-approved
 cat > .planning/plan-approved/2375.md <<'EOF'
 # Approval marker — #2375
-Approved: 2026-04-29 by vamsee.achanta@aceengineer.com
+Approved: 2026-04-29 by owner@example.com
 Scope: normalize WRK completions into structured seeds and wiki-candidate corpus.
 Plan: docs/plans/2026-04-29-issue-2375-wrk-completions-normalize.md
 Reviewer evidence: scripts/review/results/2026-04-29-plan-2375-{codex,gemini}-feed15.md
@@ -266,7 +266,7 @@ Approving T1 deferred-review path per `docs/plans/2026-04-29-issue-2552-external
 EOF
 cat > .planning/plan-approved/2552.md <<'EOF'
 # Approval marker — #2552
-Approved: 2026-04-29 by vamsee.achanta@aceengineer.com (T1 deferred-review path)
+Approved: 2026-04-29 by owner@example.com (T1 deferred-review path)
 Scope: external contributor and unsolicited paid-help response runbook.
 Plan: docs/plans/2026-04-29-issue-2552-external-contributor-runbook.md
 Surface: internal docs only.
@@ -298,7 +298,7 @@ Approving T2 plan per `docs/plans/2026-04-29-issue-2550-interaction-limit-renewa
 EOF
 cat > .planning/plan-approved/2550.md <<'EOF'
 # Approval marker — #2550
-Approved: 2026-04-29 by vamsee.achanta@aceengineer.com
+Approved: 2026-04-29 by owner@example.com
 Scope: codify public-repo interaction-limit renewal in canonical scheduled-task registry.
 Plan: docs/plans/2026-04-29-issue-2550-interaction-limit-renewal-scheduled-task.md
 Reviewer evidence: scripts/review/results/2026-04-29-plan-2550-{codex,gemini}.md

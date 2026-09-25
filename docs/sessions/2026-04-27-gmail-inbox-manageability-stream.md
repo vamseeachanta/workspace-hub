@@ -1,7 +1,7 @@
 # Session: Gmail Inbox Manageability Stream — 2026-04-27
 
 > **Machine:** ace-linux-2
-> **User:** vamsee.achanta@aceengineer.com
+> **User:** owner@example.com
 > **Duration:** ~2 hours
 > **Outcome:** Inbox manageability moved from open question to measurable system with graduation criterion.
 

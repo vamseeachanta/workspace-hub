@@ -36,7 +36,7 @@ Run this before clicking send on any of the matrix rows. Failing any item = do N
 - [ ] Capability-summary PDF attaches at full size (~315 KB; verify hash against `assets/capability-summary-v1.pdf.sha256`).
 - [ ] Email body re-read once for the prospect's industry — every claim supported by the linked page (no done-tense overclaim against worked-example pages, especially FOWT).
 - [ ] Subject line doesn't claim a number (e.g., "Six demos") that's wrong as of today.
-- [ ] Sender footer carries `support@aceengineer.com` (not `info@`) — matches site-wide canonical.
+- [ ] Sender footer carries `support@example.com` (not `info@`) — matches site-wide canonical.
 
 ## Template rows (illustrative; remove or replace as outreach begins)
 

@@ -137,7 +137,7 @@ The architecture will treat shared repo paths and user-local runtime state as se
 The validator and docs will cover:
 
 - Linux absolute paths (`/mnt/local-analysis/...`, `/home/<user>/...`).
-- Windows/Git Bash paths (`D:\workspace-hub`, `/d/workspace-hub`) without assuming POSIX symlink behavior.
+- Windows/Git Bash paths (`<workspace-root>\workspace-hub`, `/d/workspace-hub`) without assuming POSIX symlink behavior.
 - SSH-reachable machines and local-only machines.
 - Case sensitivity differences and path normalization.
 - Missing checked-out repos as valid when `desired_state: absent` or `decision-pending`.
@@ -222,7 +222,7 @@ exit non-zero on FAIL findings in enforcement mode
 | `test_generated_runtime_direct_edit_requires_source_change` | Direct edits to generated artifacts are blocked. | Git fixture with changed `SOUL.runtime.md` and unchanged sources. | Validator returns FAIL. |
 | `test_generated_runtime_change_with_source_and_rebuild_passes` | Regenerated artifacts are permitted. | Git fixture with changed source and matching generated outputs. | Validator returns PASS. |
 | `test_local_runtime_symlink_target_matches_machine_root` | Symlink drift is detected. | Fixture `~/.codex/AGENTS.md` pointing at stale workspace root. | Validator returns FAIL with stale target. |
-| `test_windows_path_normalization_does_not_require_posix_symlink` | Windows compatibility is explicit. | Fixture with `D:\workspace-hub` and Git Bash-style path. | Validator normalizes without requiring symlink. |
+| `test_windows_path_normalization_does_not_require_posix_symlink` | Windows compatibility is explicit. | Fixture with `<workspace-root>\workspace-hub` and Git Bash-style path. | Validator normalizes without requiring symlink. |
 | `test_decision_pending_repo_can_be_missing` | Placement planning does not force clones. | Registry marks `llm-wiki` as `decision-pending`; path missing. | Validator returns WARN or PASS per mode, not FAIL. |
 | `test_forbidden_repo_presence_fails` | Policy can prevent unintended sensitive checkouts. | Registry marks repo `forbidden`; path exists. | Validator returns FAIL. |
 | `test_multi_user_home_runtime_is_not_cross_linked` | User-local runtime state stays user-scoped. | Fixture symlink from one user home into another. | Validator returns FAIL. |

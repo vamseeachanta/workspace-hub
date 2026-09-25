@@ -169,7 +169,7 @@
 ---
 
 ### 16. Vessel Stability Analysis (mkt-a <job-code>)
-**Source**: `mkt-a/B1512/analysis/rev2/03_stability/` (10+ workbooks: Righting Arms, Offsets, Sail, Tanks, Gyradius)
+**Source**: `mkt-a/job-code/analysis/rev2/03_stability/` (10+ workbooks: Righting Arms, Offsets, Sail, Tanks, Gyradius)
 **Domain**: Vessel intact stability per regulatory standards
 **Complexity**: High
 **Est tokens**: ~2.5M
@@ -189,7 +189,7 @@
 ---
 
 ### 18. Mooring Static Analysis Output Collation
-**Source**: `mkt-a/B1512/analysis/rev2/05_mooring/output/` (4 workbooks: static 0dof, 3dof, template_general)
+**Source**: `mkt-a/job-code/analysis/rev2/05_mooring/output/` (4 workbooks: static 0dof, 3dof, template_general)
 **Domain**: Mooring static results processing
 **Complexity**: Medium
 **Est tokens**: ~1.5M
@@ -335,7 +335,7 @@
 | `/mnt/ace/client-b/s7/BP_MD2_FJR/` | 9 | `BP_MD2_FJR/` | COPY NEEDED |
 | `/mnt/ace/client-c/0163-FDAS/` | 182 | `0163-FDAS/` (already in repo) | ALREADY TRACKED |
 | `mkt-a/_engineering/passing_ship/` | 7 | `_engineering/passing_ship/` | NEEDS TRANSFER |
-| `mkt-a/B1512/stability/` | 10+ | `B1512/stability/` | NEEDS TRANSFER |
+| `mkt-a/job-code/stability/` | 10+ | `job-code/stability/` | NEEDS TRANSFER |
 | `mkt-a/_aqwa/` | 2 | `_aqwa/` | NEEDS TRANSFER |
 
 Already in client-c repo (133 xlsx): Production eng library (#21), dynacard (#22), plate buckling (#6,7), intervention riser (#10), ECS RAO curves, corrosion guides.

@@ -26,7 +26,7 @@ agy persists **no** quota to disk — `/usage` is TUI-only (no subcommand/JSON; 
 | local workstation | yes | ✅ done (model pinned, snapshot captured, `G:100%·6.6d` verified) |
 | ace-linux-2 | (user-run) | ✅ done manually by user 2026-06-14 |
 | ace-linux-1 | ? | ⏳ pending — run runbook below |
-| Windows (`D:\workspace-hub`) | ? | ⏳ pending — run runbook below (use `python`, Git Bash) |
+| Windows (`<workspace-root>\workspace-hub`) | ? | ⏳ pending — run runbook below (use `python`, Git Bash) |
 
 ## Runbook (run on each remaining machine)
 

@@ -168,7 +168,7 @@ TDD coverage: `test_delivery_email_first_then_url`, `test_delivery_email_fail_ab
 # Top-level shape — all fields required unless noted "optional"
 prospect:
   company: "Acme Marine Contractors"        # required, string
-  contact: "jane.doe@acme.example"          # required, for report cover
+  contact: "jane.doe@example.com"          # required, for report cover
   nda_in_place: true                        # required bool — gates report distribution
   target_demo: "demo_05"                    # required enum: demo_01..demo_05
   delivery_deadline_utc: "2026-04-21T17:00Z"  # required ISO8601

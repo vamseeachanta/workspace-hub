@@ -58,7 +58,7 @@ grep -c "check-no-conflict-markers" .git/hooks/pre-commit
 # 4. Smoke-test the live hook (read-only)
 mkdir -p /tmp/smoketest-$$ && cd /tmp/smoketest-$$ && \
   git init -q -b main && \
-  git config user.email t@e.com && git config user.name T && \
+  git config user.email t@example.com && git config user.name T && \
   git config commit.gpgsign false && \
   echo init > README.md && git add README.md && \
   git commit -q -m init --no-verify && \

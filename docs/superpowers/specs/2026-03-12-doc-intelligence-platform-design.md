@@ -108,7 +108,7 @@ doc_type: report               # report|standard|calculation|guideline|web
 domain: cathodic-protection
 ledger_id: "XXX"               # ← links to standards-transfer-ledger entry
 source: local                  # local|web|standard
-source_path: mkt-a/B1522/ctr-2/ref/proj/...
+source_path: mkt-a/job-code/ctr-2/ref/proj/...
 source_available: true         # false if path absent on current machine
 extractor: claude-sonnet-4-6
 extraction_date: "2026-03-12"
@@ -281,7 +281,7 @@ doc_intelligence_brief:
   equations_implemented: 14
   procedures_available: 8
   gaps: [impressed_current_sizing, coating_breakdown_sweep]
-  key_sources: [<document-number>, 3824-TNE-0008-2, DNV-RP-B401]
+  key_sources: [<document-number>, <document-number>, DNV-RP-B401]
 ```
 
 ---

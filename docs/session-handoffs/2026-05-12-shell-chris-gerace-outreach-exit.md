@@ -34,7 +34,7 @@ I would value 20 minutes to understand where your team has real bottlenecks and 
 Best regards,
 Vamsee
 +1 713-306-9029
-vamsee.achanta@aceengineer.com
+owner@example.com
 
 ## External-action status
 
@@ -44,7 +44,7 @@ vamsee.achanta@aceengineer.com
 
 ## Restart steps
 
-1. If user approves sending, send the short follow-up email to `chris.gerace@shell.com`.
+1. If user approves sending, send the short follow-up email to `[email removed]`.
 2. If Chris replies with interest, do **not** send a broad portfolio. Ask which problem area matters most, then send one narrow matched sample artifact.
 3. If Chris redirects, send a short thank-you and one-sentence forwardable context.
 

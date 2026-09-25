@@ -31,7 +31,7 @@
 - **Stale branches:** backed up to their origins then deleted locally (`docs/openai-prompting-guide`, `master`, `feat/implement-ss-naming-in-code`, `chore/wrk-470-windows-merge-fix`, `merge-main`). `worldenergydata/202502` could not be pushed (repo over Git LFS budget) — bundled locally (incl. its LFS blobs) then deleted.
 
 ## Backups (safety net — outside the workspace)
-`D:\backups\ws-cleanup-2026-06-30\` — **~12.3 GB total**, every deletion verified against a bundle first (`git bundle verify`) before removal:
+`<backup-root>\ws-cleanup-2026-06-30\` — **~12.3 GB total**, every deletion verified against a bundle first (`git bundle verify`) before removal:
 - `<project-archive>-full.bundle` (~1.97 GB) — full `--all`, includes the 2 unpushed commits (HEAD `d06c20b0`: P19XX brief + AI-session gitignore).
 - `worldenergydata-202502.bundle` (~1.55 GB) + `worldenergydata-git-lfs\` (~4.92 GB LFS blobs).
 - `digitalmodel-stash-backup-0.bundle` (~2.4 GB) — preserves unique `sync_all_clean.py`.
@@ -47,10 +47,10 @@ Restore any item with `git clone`/`git fetch <bundle>`.
 ## Open items for the user
 1. **`doris`** nested clone — fully synced to GitHub, kept. Remove like seanation/<project-archive> if desired.
 2. **`worldenergydata/202502`** — its LFS-budget push blocker is now moot (bundled locally); increase the LFS budget only if you want it back on the remote.
-3. **Backups (`D:\backups\ws-cleanup-2026-06-30`, ~12.3 GB)** — retained as insurance; delete once satisfied nothing is needed.
+3. **Backups (`<backup-root>\ws-cleanup-2026-06-30`, ~12.3 GB)** — retained as insurance; delete once satisfied nothing is needed.
 4. **<project-archive>** is archived; route future client/project content to `llm-wiki-acma` (per user 2026-06-29).
 
 ## Memory updated (this box's auto-memory)
 - `reference-ws-git-windows-settings` — required global git settings (longpaths, symlinks-as-text) + scratch-ignore + safe.directory.
-- `project-acma-projects-archived-route-to-llm-wiki-acma` — archived; clone removed + bundle location.
+- `project-<project-archive>-archived-route-to-llm-wiki-acma` — archived; clone removed + bundle location.
 - (this box's equality-identity memory) — equality-column identity + sanitize-host-before-push practice.

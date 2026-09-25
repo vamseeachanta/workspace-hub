@@ -4,7 +4,7 @@ Request to Update Account Ownership / Contact for 15645 Westpark Dr, Houston TX 
 
 # Draft Email
 
-To: Account.Services@fscommercial.com  
+To: [email removed]  
 Cc: [optional internal recipients]  
 Subject: Request to Update Account Ownership / Contact for 15645 Westpark Dr, Houston TX 77082 (Ticket 5242265)
 
@@ -39,4 +39,4 @@ SKEstates Inc
 
 # Notes
 
-Known routing note from latest live Gmail thread: “The correct email address for concerns with the account for 15645 Westpark Drive should be sent to Account.Services@fscommercial.com.”
+Known routing note from latest live Gmail thread: “The correct email address for concerns with the account for 15645 Westpark Drive should be sent to [email removed].”

@@ -131,7 +131,7 @@ A fixture may post multiple classifications **only** if level 2 passes (`pass-lo
 
 The licensed-machine workflow is documented in `docs/plans/licensed-win-1-semantic-proof-load-run-prompt.md`. In summary:
 
-1. Operator (human or Claude/Codex CLI) starts on licensed-win-1, in `D:\workspace-hub`.
+1. Operator (human or Claude/Codex CLI) starts on licensed-win-1, in `<workspace-root>\workspace-hub`.
 2. `git pull origin main` for both workspace-hub and digitalmodel.
 3. Verify OrcFxAPI / pyyaml / openpyxl / numpy import (install if missing per the prompt).
 4. For each fixture in §4, attempt level 2.

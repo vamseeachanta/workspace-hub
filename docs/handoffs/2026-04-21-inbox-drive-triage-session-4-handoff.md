@@ -85,8 +85,8 @@ All 6 handoff issues use workflow-compliant session-entry prompts (Resource Inte
 
 Same three Gmail actions carried over from session 3 (Gmail MCP is read+compose only per `reference_gmail_mcp_scope.md`):
 
-- **2FA setup** on `skestatesinc@gmail.com` Google account
-- **Discard Gmail draft** `r7458647453519350632` to `bill@rephers.com` (ACE drafts folder)
+- **2FA setup** on `owner.realestate@example.com` Google account
+- **Discard Gmail draft** `r7458647453519350632` to `[email removed]` (ACE drafts folder)
 - **Block sender** `info.tatacapital.co.in` in Gmail UI (belt-and-suspenders with routing-config DELETE)
 
 ## #2017 — where v9 stands (approved)

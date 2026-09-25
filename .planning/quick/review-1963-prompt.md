@@ -37,9 +37,9 @@ Enable unified multi-account Gmail management from the CLI/agent layer. Three ac
 
 | Account | Purpose | Contacts Repo | Domain |
 |---|---|---|---|
-| `vamsee.achanta@aceengineer.com` | Engineering consulting, GTM, client comms | `aceengineer-admin` (1,306 contacts) | Business/Professional |
-| `achantav@gmail.com` | Personal, career networking, subscriptions | `aceengineer-admin` (1,157 contacts) | Personal |
-| `skestatesinc@gmail.com` | Real estate LLC, tenant/vendor comms | `sabithaandkrishnaestates` | Business/RE |
+| `owner@example.com` | Engineering consulting, GTM, client comms | `aceengineer-admin` (1,306 contacts) | Business/Professional |
+| `owner.personal@example.com` | Personal, career networking, subscriptions | `aceengineer-admin` (1,157 contacts) | Personal |
+| `owner.realestate@example.com` | Real estate LLC, tenant/vendor comms | `sabithaandkrishnaestates` | Business/RE |
 
 ## Architecture
 
@@ -88,19 +88,19 @@ Enable unified multi-account Gmail management from the CLI/agent layer. Three ac
 
 ## Account-Specific Rules
 
-### vamsee.achanta@aceengineer.com
+### owner@example.com
 - Priority: client emails, RFPs, invoice responses
 - Auto-label: GTM prospects, active clients, vendors
 - Touchbase: engineering contacts, potential clients from GTM pipeline
 - Link to: `aceengineer-strategy/` prospect data
 
-### achantav@gmail.com  
+### owner.personal@example.com  
 - Priority: personal finance, family, career
 - Aggressive unsubscribe: marketing, social media notifications
 - Touchbase: close professional network, alumni
 - Filter: separate personal from professional spillover
 
-### skestatesinc@gmail.com
+### owner.realestate@example.com
 - Priority: tenant communications (Family Dollar), tax/legal
 - Auto-label: tenant, insurance, tax, maintenance
 - Touchbase: property management contacts, tax advisors

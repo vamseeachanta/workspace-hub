@@ -1,6 +1,6 @@
 # Licensed-Win-1 Semantic-Proof Load/Run Prompt
 
-> **Machine:** licensed-win-1 (Windows, `D:\workspace-hub`).
+> **Machine:** licensed-win-1 (Windows, `<workspace-root>\workspace-hub`).
 > **Purpose:** execute the load-only and (where bounded) run proofs defined by `docs/solver/orcawave-orcaflex-native-load-run-proof-protocol.md` for the first-wave semantic-proof fixtures.
 > **Issue:** [#2475](https://github.com/vamseeachanta/workspace-hub/issues/2475). Companion fixtures: [#2455](https://github.com/vamseeachanta/workspace-hub/issues/2455), [#2456](https://github.com/vamseeachanta/workspace-hub/issues/2456), [#2457](https://github.com/vamseeachanta/workspace-hub/issues/2457).
 > **Available on this machine:** Claude Code CLI, Codex CLI, Gemini CLI, Python, Git Bash, OrcFxAPI. **Not available:** Hermes, `uv`. Use `python` (not `uv run`) everywhere.
@@ -12,14 +12,14 @@ This prompt is self-contained — an operator (human or agent) can paste the age
 Use it when both of these are true:
 
 1. The dev-primary deterministic semantic-proof tests for the target fixture have shipped and are CLOSED (issues #2455 / #2456 / #2457 in the first wave).
-2. The licensed machine is reachable, OrcFxAPI imports successfully, and the local `D:\workspace-hub` clone is up to date.
+2. The licensed machine is reachable, OrcFxAPI imports successfully, and the local `<workspace-root>\workspace-hub` clone is up to date.
 
 If either is false, comment on #2475 explaining the gap and stop — do not attempt level 2 against an unverified level 1.
 
 ## Prerequisites (run once per session)
 
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull origin main
 
 cd digitalmodel
@@ -44,7 +44,7 @@ If the OrcFxAPI import fails, classify the run as `missing license/API`, write t
 
 ```
 You are an engineering automation agent on licensed-win-1 (Windows).
-Workspace: D:\workspace-hub (this repo) and D:\workspace-hub\digitalmodel (sibling repo).
+Workspace: <workspace-root>\workspace-hub (this repo) and <workspace-root>\workspace-hub\digitalmodel (sibling repo).
 Use python (not uv run). OrcFxAPI is available. Hermes is NOT available.
 
 Operating contract: docs/solver/orcawave-orcaflex-native-load-run-proof-protocol.md

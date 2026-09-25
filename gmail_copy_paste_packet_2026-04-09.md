@@ -9,8 +9,8 @@ Use each block below as a plain-text, copy-paste-ready outbound email for manual
 ## 1) 1099 Review / Correction Email
 
 Subject: Request to Review/Correct 2025 Form 1099-MISC for Family Dollar Store #30150
-To: iharris@dollartree.com, ValerieD@dollartree.com
-Cc: TX_Rents@familydollar.com
+To: [email removed], [email removed]
+Cc: [email removed]
 
 Body:
 Dear Ingrid and Valerie,
@@ -36,7 +36,7 @@ Best regards,
 Vamsee Achanta
 VP of Operations
 SKEstates Inc
-skestatesinc@gmail.com
+owner.realestate@example.com
 +1 713-306-9029
 
 ---
@@ -44,7 +44,7 @@ skestatesinc@gmail.com
 ## 2) Pest / Exteriors Follow-Up Email
 
 Subject: RE: FD30150 | Pest/Exteriors
-To: KEVIN STRAIGHT <KSTRAIGHT@dollartree.com>
+To: KEVIN STRAIGHT <[email removed]>
 Cc:
 
 Body:
@@ -78,15 +78,15 @@ Thank you,
 Vamsee Achanta
 VP of Operations
 +1 713-306-9029
-skestatesinc@gmail.com
+owner.realestate@example.com
 
 ---
 
 ## 3) HOA Account Setup / Statement Information Email
 
 Subject: Clayton Park POA Account Setup and Statement Information for 15645 Westpark Dr, Houston, TX 77082
-To: Account.Services@fscommercial.com
-Cc: accountsreceivable.tx@fsresidential.com
+To: [email removed]
+Cc: [email removed]
 
 Body:
 Dear FS Commercial Account Services,
@@ -109,5 +109,5 @@ Sincerely,
 Vamsee Achanta
 VP of Operations
 Sabitha & Krishna Estates Incorporated
-skestatesinc@gmail.com
+owner.realestate@example.com
 +1 713-306-9029

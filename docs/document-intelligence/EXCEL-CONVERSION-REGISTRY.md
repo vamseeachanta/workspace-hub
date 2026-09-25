@@ -71,9 +71,9 @@
 | # | Source Path | File | Domain | Complexity | Status | Target Module |
 |---|-------------|------|--------|------------|--------|---------------|
 | 31 | `mkt-a/_engineering/passing_ship/` | Multiple passing ship analysis workbooks (6 files .xlsm) | Passing ship forces | High | INVENTORY | `digitalmodel/hydro/passing_ship.py` |
-| 32 | `mkt-a/B1512/analysis/rev2/03_stability/` | Stability analysis workbooks (Righting Arms, Offsets, Tanks, etc.) | Vessel stability analysis | High | INVENTORY | `digitalmodel/hydro/stability.py` |
-| 33 | `mkt-a/B1512/analysis/rev2/04_diffraction/orcawave/output/` | OrcaWave output workbooks | Diffraction analysis results | Medium | INVENTORY | `digitalmodel/hydro/diffraction_results.py` |
-| 34 | `mkt-a/B1512/analysis/rev2/05_mooring/output/collate/` | Mooring static results workbooks | Mooring static analysis | Medium | INVENTORY | `digitalmodel/mooring/static.py` |
+| 32 | `mkt-a/job-code/analysis/rev2/03_stability/` | Stability analysis workbooks (Righting Arms, Offsets, Tanks, etc.) | Vessel stability analysis | High | INVENTORY | `digitalmodel/hydro/stability.py` |
+| 33 | `mkt-a/job-code/analysis/rev2/04_diffraction/orcawave/output/` | OrcaWave output workbooks | Diffraction analysis results | Medium | INVENTORY | `digitalmodel/hydro/diffraction_results.py` |
+| 34 | `mkt-a/job-code/analysis/rev2/05_mooring/output/collate/` | Mooring static results workbooks | Mooring static analysis | Medium | INVENTORY | `digitalmodel/mooring/static.py` |
 | 35 | `mkt-a/calculations/raos/` | RAO data QA workbooks | RAO data processing | Medium | INVENTORY | `digitalmodel/hydro/rao_processing.py` |
 | 36 | `mkt-a/_aqwa/` | `Damping_Analysis.xlsm`, `FST1 AQWA Setup R0 -VA.xlsm` | AQWA damping/analysis setup | High | INVENTORY | `digitalmodel/hydro/aqwa_damping.py` |
 | 37 | `client-c/ecs/proj/9645/` | `SHI RAO curves VIK-0001-55464_-_003.XLS` (+ checks variant) | RAO curve data from ECS | Low | INVENTORY | `digitalmodel/hydro/rao_curves.py` |

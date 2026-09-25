@@ -12,7 +12,7 @@
 
 ### Existing repo code
 
-- Found: `config/workstations/registry.yaml` — `licensed-win-1` is registered as Windows, `workspace_root: D:\workspace-hub`, `ssh: null`, `telegram_mode: desktop-status-only`, `dispatch_enabled: false`, current repo list `OGManufacturing`.
+- Found: `config/workstations/registry.yaml` — `licensed-win-1` is registered as Windows, `workspace_root: <workspace-root>\workspace-hub`, `ssh: null`, `telegram_mode: desktop-status-only`, `dispatch_enabled: false`, current repo list `OGManufacturing`.
 - Found: issue #2772 comments — registry-based memo plus user placement decision are posted; live GUI verification is still needed because hostname/SSH probe from ace-linux-1 cannot access the host.
 - Found: `docs/plans/2026-05-20-issue-2756-licensed-win-1-solver-status-lane-baseline.md` — existing draft baseline for licensed-win-1; its required set needs alignment with newer #2772 decision that makes `assetutilities` required.
 - Gap: no GUI-captured evidence artifact currently proves actual Windows checkout paths, Git Bash/Hermes/provider auth, solver executable/license state, or Task Scheduler readiness.
@@ -59,7 +59,7 @@ access: registry-based / needs GUI verification
 ```yaml
 licensed-win-1:
   os: windows
-  workspace_root: 'D:\workspace-hub'
+  workspace_root: '<workspace-root>\workspace-hub'
   ssh: null
   telegram_hermes:
     dispatch_enabled: false
@@ -110,9 +110,9 @@ Trivial — decision issue. Implementation belongs in a future approved Windows 
 
 Capture manually on `licensed-win-1` before any dispatch or setup claims:
 
-1. Confirm `D:\workspace-hub` exists and is a git checkout of `vamseeachanta/workspace-hub`.
-2. Confirm whether `D:\digitalmodel` or approved equivalent exists; record remote, branch, dirty/ahead/behind.
-3. Confirm whether `D:\assetutilities` or approved equivalent exists; record remote, branch, dirty/ahead/behind.
+1. Confirm `<workspace-root>\workspace-hub` exists and is a git checkout of `vamseeachanta/workspace-hub`.
+2. Confirm whether `<workspace-root>\digitalmodel` or approved equivalent exists; record remote, branch, dirty/ahead/behind.
+3. Confirm whether `<workspace-root>\assetutilities` or approved equivalent exists; record remote, branch, dirty/ahead/behind.
 4. Record whether `worldenergydata` and `llm-wiki` are absent, reference-only, or present on-demand.
 5. Record existing `OGManufacturing` path and classify as non-tier-1 unless separately approved.
 6. Confirm Git Bash command availability: `git`, `gh`, `uv` if present, `hermes` if present, provider CLIs if present.

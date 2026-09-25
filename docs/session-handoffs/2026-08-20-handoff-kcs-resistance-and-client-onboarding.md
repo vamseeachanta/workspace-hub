@@ -149,10 +149,10 @@ interactive logon and do not carry into SSH; `net use` is empty, `HKCU\Network` 
 persistent mapping, and GPO drive-map preferences returned nothing. `net view` against
 the domain namespace timed out.
 
-**What to ask the owner for:** the `\\server\share` behind `J:` — one `net use` in an
+**What to ask the owner for:** the `\\<server>\<share>` behind `J:` — one `net use` in an
 interactive session on that box prints it.
 
-**Layout learned:** projects live at `D:\<code>`. `D:\B1546` exists and holds
+**Layout learned:** projects live at `D:\<code>`. `D:\<job-code>` exists and holds
 `V-Rigs (AQWA Model Archive).wbpj` — an AQWA Workbench project. <job-code> is NOT on local
 disk.
 
@@ -180,7 +180,7 @@ client material entered a public repo without a handling decision.
 1. **Public-leak disclosure route** (oldest, most consequential). Needs (a) disclosure
    route, (b) remediate-first or file-first. Deliberately unfiled — a public issue
    signposts it.
-2. **J: UNC path**, to unblock B1552.
+2. **J: UNC path**, to unblock <job-code>.
 3. **Client-data handling** for CFD case files, meshes and reports — the wiki rule
    covers documents, not solver cases.
 4. **Holtrop & Mennen primary papers** — #2020 is `status:plan-approved` but cannot

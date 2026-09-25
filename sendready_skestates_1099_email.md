@@ -1,7 +1,7 @@
 Subject: Request to Review/Correct 2025 Form 1099-MISC for Family Dollar Store #30150
 
-To: iharris@dollartree.com, ValerieD@dollartree.com
-Cc: TX_Rents@familydollar.com
+To: [email removed], [email removed]
+Cc: [email removed]
 
 Dear Ingrid and Valerie,
 
@@ -26,5 +26,5 @@ Best regards,
 Vamsee Achanta
 VP of Operations
 SKEstates Inc
-skestatesinc@gmail.com
+owner.realestate@example.com
 +1 713-306-9029

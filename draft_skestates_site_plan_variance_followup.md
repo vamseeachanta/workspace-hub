@@ -1,15 +1,15 @@
 # DRAFT — FD30150 site-plan ack + variance ETA (NOT SENT — ON HOLD)
 
-> **Status 2026-06-10:** Staged as a reply-all draft in skestatesinc@gmail.com Drafts
+> **Status 2026-06-10:** Staged as a reply-all draft in owner.realestate@example.com Drafts
 > (thread "FD30150 | Pest/Exteriors"; recipients Rhonda Brown, Kevin Straight, PHEXT).
 > Owner decision: **HOLD — wait till things settle** (PHFM variance in motion after the
 > Jun-8 site-plan correction). Do not send without owner confirmation. If PHFM goes
 > quiet, revisit ~mid-June.
 
 **Thread:** RE: FD30150 | Pest/Exteriors
-**To:** Rhonda Brown <rhonda.brown@phfmservices.com>
-**Cc:** KEVIN STRAIGHT <KSTRAIGHT@dollartree.com>; PHEXT Dollar Tree <phextdollartree@phfmservices.com>
-**From:** skestatesinc@gmail.com
+**To:** Rhonda Brown <[email removed]>
+**Cc:** KEVIN STRAIGHT <[email removed]>; PHEXT Dollar Tree <[email removed]>
+**From:** owner.realestate@example.com
 **Purpose:** lock the Jun-8 scope agreement into the record from the owner's side and put a date on the variance commitment. Send any time; no dependency.
 
 ---
