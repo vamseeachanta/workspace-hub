@@ -1,35 +1,29 @@
 <!-- MANAGED by curate_readback_slice.py — do not hand-edit; regenerate via bridge-hermes-claude.sh -->
 
-- [B1552 NETSCo hull resistance](project_b1552_netsco_hull_resistance.md) — 2026-09-07 r3 STOPPED at 4479 by the OWNER’S parallel gpu-claw session (cycle-averaged R_T ≈226–227 kN at 13 kn firm; mesh promoted; matrix of 11 conditions building; gpu-claw → condition 2). This thread’s execution role is SUPERSEDED — read `reports/internal-draft/status-neutral-<latest>.md` first; never restart r3. Handoff `docs/session-handoffs/2026-09-04-b1552-wave-making-stage4-r3-launched-exit.md`
-- [wed #720 CNH watch STALE — disable it](project_mx720_cnh_watch_stale_disable_recommended.md) — source recovered 07-13, 66+ unactioned disable asks, routine can't self-disable (no systemctl perm, even read-only)
-- [CLAUDE.md harness retired](project_claude_md_harness_retired.md) — 2026-08-01 all three CLAUDE.md surfaces DELETED; **AGENTS.md …
-- [Fleet reachability + solver access](project_fleet_reachability_and_solver_access_2026_07_31.md) — 2026-07-31 fleet **5/5 SSH-reachable**; …
-- [Dispatch surface: label axes made deterministic (EPIC deckhand#584)](project_dispatch_surface_label_axes_2026_07_31.md) — 2026-07-31 ✅ 5 PRs merged; …
-- [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" …
-- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). …
-- [Model-generation reopen slate](project_model_generation_reopen_slate_2026_07_25.md) — wh#3106/#3056/#1019 + llm-wiki#638 REOPENED; …
-- [Model-registry generation drift blind spot](project_model_generation_drift_registry_blindspot.md) — nightly guard checks ONLY …
-- [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; …
-- [Equality matrix reclassification (wh#3592)](project_equality_matrix_reclassification_3592.md) — ✅✅ CLOSED; 5/5 CONFORMS on Linux. …
-- [India family trip Jul 21–Aug 19](reference_us_india_travel_apps.md) — 2026-07-19 ✅✅ family departed. NEXT: ~Aug 18 return check-in; …
-- [iPhone media extraction pipeline](project_iphone_media_taildrop_pipeline.md) — ✅✅ two phones archived 3-2-1. NEXT: #3586 gates next …
-- [Fidelity returns analysis + dashboard](project_fidelity_returns_analysis.md) — ✅ COMPLETE (PR #152). No open work
-- [LTS pseudo-time ≠ transient time](feedback_lts_pseudo_time_is_not_transient_time.md) — a transient-tank Courant finding does NOT set `maxCo/maxAlphaCo` under `localEuler`; take caps from a converged LTS reference (5/2 DTCHull lineage) and budget iterations in hull-lengths of pseudo-convection. Also: Euler-stable source ≠ LTS-stable; `fieldMinMax(V)` reads patch faces; box z-edges vs dz → 86° faces (dm#2047)
-- [Never edit a running shell script](feedback_never_edit_a_running_shell_script.md) — bash executes the NEW bytes at the old offset; a blocked ssh launcher + on-disk edit re-ran a mesh chain and destroyed the finished mesh (1.3 h gpu-claw lost). Wrap in `main(){…}; main "$@"`; launchers return immediately; chains refuse to start over a DONE marker
-- [Mechanism before publication](feedback_mechanism_before_publication.md) — read the tool's SOURCE for the path you blame and grep existing output for the quantity that settles it; a plausible mechanism ends the investigation and produces the wrong fix (published the wrong cause while the confirming number sat in every log)
-- [Track fleet lanes from the control surface](feedback_track_fleet_lanes_from_control_surface.md) — disk registry + `scripts/fleet/lane-sweep.sh`, NOT memory. **Never poll a remote lane by process name** — `pgrep -f "X"` matches the ssh carrying it (one waiter ran 13.5 h past its job); poll a marker file, kill by PID *verified: 2026-09-23*
-- [Scheduler audit digest covers the CI workflows](feedback_scheduler_audit_digest_covers_ci_workflows.md) — editing enforcement-gate.yml …
-- [Delegate sync cycles; keep main on work](feedback_delegate_sync_cycles_keep_main_on_work.md) — merge babysitting, check polling, agent …
-- [Infrastructure work must not crowd out delivery](feedback_infrastructure_work_must_not_crowd_out_delivery.md) — tooling findings are self-justifying and chain endlessly; FILE them with the measurement, fix inline only when they block the actual task. Watch the ratio and say so
-- [Untracked = transient; commit plans immediately](feedback_untracked_is_transient_commit_plans_immediately.md) — auto-sync DELETES untracked files; a reviewed+approved plan and its `.planning/plan-approved/` marker vanished. Gate evidence must be tracked
-- [Verify the BRANCH, not your commits](feedback_verify_the_branch_not_your_commits.md) — auto-sync commits the dirty tree onto whatever …
-- [Client-PII Gate scans commit MESSAGES too](feedback_client_pii_gate_scans_commit_messages.md) — redacting the file doesn't clear it; …
-- [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled …
-- [Check the dimension you were NOT burned by](feedback_check_the_dimension_you_were_not_burned_by.md) — fixed a licence failure, shipped a …
-- [Tests that pin a NAME, not a property](feedback_tests_that_pin_a_name_not_a_property.md) — 4 in one day; if the assertion still passes …
-- [Strict-up-to-date ruleset blocks green-PR merge](feedback_strict_uptodate_ruleset_no_admin_bypass.md) — `--admin` doesn't bypass rulesets; …
-- [Avoid "A&CE" branding](feedback_avoid_ace_branding.md) — use "AceEngineer"
-- [Verify generated/state files against origin/main](feedback_verify_generated_state_against_origin_not_working_copy.md) — `git show origin/main:<path>` …
+- [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" definitions, 0/56 wells agree (6.6× gap); reference basis = BSEE WAR `WELL_ACTIVITY_CD`. EPIC #1063 + #1064–#1081. NEXT: #1064 basis decision w/ Roy (HARD BLOCKER)
+- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). ✅✅✅ **#1634 ARMED 2026-07-29** (`Domain test aggregate` + `Run Quality Gates`, strict=false) — the 60.3%-red-merge root cause is closed. 8 PRs merged; deps 122→55; dashboard app deleted (−34.5k LOC), 9 modules extracted to `solvers/orcaflex/results_analysis/`. ⚠ audit said "3 root causes"; really **2**. OPEN: #1923 (139 hidden tests), #1900, #1907, #1919, #1881. See [[feedback_absence_of_signal_reads_as_success]]
+- [Model-generation reopen slate](project_model_generation_reopen_slate_2026_07_25.md) — wh#3106/#3056/#1019 + llm-wiki#638 REOPENED; #3043 retargeted. NEXT: wh#3051 registry flip (blocks the rest)
+- [Model-registry generation drift blind spot](project_model_generation_drift_registry_blindspot.md) — nightly guard checks ONLY `openai_primary`; Claude lane has zero drift coverage. ✅ wh#3600 FILED. NEXT: #3600 needs-plan
+- [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; hub PR #1058 armed. ⚠ DRILLING_DAYS mixes two bases → batch-drilled undercount. NEXT: owner sends v2 email
+- [Equality matrix reclassification (wh#3592)](project_equality_matrix_reclassification_3592.md) — ✅✅ CLOSED; 5/5 CONFORMS on Linux. On-box left: ace-win-1 #2815, ace-win-2 #3595; ⚠ owner: `systemctl --user disable --now claude-routine-mx-720-cnh-source-watch.timer`
+- [India family trip Jul 21–Aug 19](reference_us_india_travel_apps.md) — 2026-07-19 ✅✅ family departed. NEXT: ~Aug 18 return check-in; Sep 18 DS-11 reminder
+- [iPhone media extraction pipeline](project_iphone_media_taildrop_pipeline.md) — ✅✅ two phones archived 3-2-1. NEXT: #3586 gates next phone
+- [External SSH via Tailscale for fleet](project_external_ssh_tailscale_fleet.md) — ✅ mosh+tmux persistence LIVE on ace-linux-1 (PR #3597). ⚠ two tailscaled daemons; Taildrop node OFFLINE. NEXT: 24h BatchMode re-test gpu-claw
+- [Machine identity — ⚠ #565 SUPERSEDED by deckhand#581](feedback_machine_identity_is_logical_alias_565.md) — 2026-07-30 owner decision: route by **canonical lowercase hostname, PRIVATE tier only**; public workspace-hub keeps **neutral tokens** (`ace-win-1`…), no ACMA hostname in a public label. Field `host_aliases` stays, values change; casefold on join; never rewrite historical queue JSON. Heartbeat-filename freeze + hostname-rejecting tests now INVERT. Still true: tier split, `verified_at`, deckhand = promotable, **scan your own plan artifacts**
+- [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validation blog (`content-sync.yaml` `extract_blog` from wed `docs/` ALREADY WIRED); definitions get ONE home the code imports; **every unknown/assumed gets a footnote on EVERY surface, blog included**
+- [Absence of signal reads as success](feedback_absence_of_signal_reads_as_success.md) — missing check looks GREENER than failing one; verify every suppression's stated reason (comments lie); import scans are blind to `engine=`/entry-point deps
+- [Verify subagent line citations, not just claims](feedback_verify_subagent_line_citations_not_just_claims.md) — a defect existing ≠ it being at that line; cite the SYMBOL when coordinates aren't cheap to confirm
+- [Report-hub design system (owner-approved)](feedback_report_hub_design_system.md) — hub grammar = THE design for ALL field-data surfaces; data → HF `aceengineer/*`; ref impl wed PR #1058
+- [Rig-selector capability depth](feedback_rig_selector_capability_depth.md) — onshore/offshore = FIRST filter; equipment fields over more hull numbers (wed #1006)
+- [One result everywhere](feedback_one_result_everywhere.md) — SINGLE result on website/HF/client surfaces; versioning internal only; new results auto-pop live
+- [Public by default; client-custom is private](feedback_public_by_default_client_custom_private.md) — analysis/results PUBLIC; only client-commissioned work private; `withheld_columns` = temporary guardrail
+- [Non-required checks hide regressions](feedback_non_required_checks_hide_regressions.md) — silent red on main; verify whole-suite + `gh pr checks` (no `--required`)
+- [Dispatch = deterministic scripts only](feedback_dispatch_deterministic_scripts_only.md) — licensed-host lane = pinned-input scripts; LLM work is ad-hoc, lands as committed code
+- [AceEngineer standard HTML calc-report format](feedback_ace_standard_html_calc_report.md) — template `/mnt/local-analysis/ace_calc_report_TEMPLATE.html`; provenance=color
+- [Placeholder links to filing issue](feedback_placeholder_links_to_filing_issue.md) — thin UI data → VISIBLE placeholder linking a `cat:data` issue
+- [Equality wedge ≠ drift recovery](feedback_equality_wedge_vs_drift_recovery.md) — main ahead AND behind → prove regenerable → backup tag → `reset --hard` (destructive, get OK)
+- [Strict-up-to-date ruleset blocks green-PR merge](feedback_strict_uptodate_ruleset_no_admin_bypass.md) — `--admin` doesn't bypass rulesets; merge-when-CLEAN loop
+- [Verify generated/state files against origin/main](feedback_verify_generated_state_against_origin_not_working_copy.md) — `git show origin/main:<path>` before "stale" claims *stale: 2026-09-25*
 - Windows (MINGW64): paths use `/d/workspace-hub/` in bash (not `D:\`)
 - All development must be compatible with Linux, Windows, and macOS
 - Windows `core.symlinks=false` — git treats junctions as dirs, not symlinks
@@ -43,4 +37,5 @@
 - **NaN correlations**: Zero std dev (e.g., yaw at head seas) — handle gracefully
 - **AQWA FATAL mesh errors**: Cannot be overridden with `OPTIONS GOON`; fix the mesh
 - **LIS parser**: Normalize whitespace before keyword matching ("ADDED  MASS" has double space)
-_[130 entries omitted: oversize/over-cap]_
+- Stats with EWMA: `route.sh --stats`
+_[110 entries omitted: oversize/over-cap]_

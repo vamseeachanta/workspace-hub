@@ -241,7 +241,7 @@ Problem-class grouped index of `.claude/memory/topics/`. Query with `scripts/mem
 
 - [ai-orchestration-models-agents-and-cross-review](ai-orchestration.md) — "Model routing, provider constraints, quota management, cross-AI review patterns, and Hermes config.yaml mapping"
 - [network-machines](network_machines.md) — LAN machines — IPs, SSH access, credentials, and data sync status for ace-linux-1/2, home-win, macbook-portable, licensed-win-1
-- [reference_ace_win_1_equality_evidence_stale](reference_ace_win_1_equality_evidence_stale.md) — ace-win-1 (acma-ansys05) equality evidence is stale — last collected 2026-06-28; it self-publishes under Git Bash so a Linux box cannot refresh it. Records its last-known capabilities + the exact remediation.
+- [reference_ace_win_1_equality_evidence_stale](reference_ace_win_1_equality_evidence_stale.md) — ace-win-1 equality evidence is stale — last collected 2026-06-28; it self-publishes under Git Bash so a Linux box cannot refresh it. Records its last-known capabilities + the exact remediation.
 - [reference_crossprovider_feed_activity_2026_07](reference_crossprovider_feed_activity_2026_07.md) — "As of 2026-07-11 only Claude+Codex actively feed the cross-provider dream; Gemini dormant since 07-07, Hermes daemon-alive but no new conversation sessions since 06-10 — so distiller learnings=0 for those two is expected, not a bug"
 
 ## User — profile & preferences (1)
