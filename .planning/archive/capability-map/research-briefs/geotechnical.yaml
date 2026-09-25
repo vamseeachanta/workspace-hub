@@ -13,40 +13,40 @@ available_documents:
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
-    West Africa block A SLOR Design/300 Package Engineering/313 Driven Pile Design & Spec/Calculations/<document-number>-2
+    West Africa block A SLOR Design/300 Package Engineering/313 Driven Pile Design & Spec/Calculations/<document-number>
     - Riser Base Tensions for Foundation Design.pdf
   source: ace_project
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
-    West Africa block A SLOR Design/300 Package Engineering/313 Driven Pile Design & Spec/Calculations/Superseded/<document-number>-1
+    West Africa block A SLOR Design/300 Package Engineering/313 Driven Pile Design & Spec/Calculations/Superseded/<document-number>
     - Riser Base Tensions for Foundation Design.pdf
   source: ace_project
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
     West Africa block A SLOR Design/Documents/RPT/<document-number> SLHR Base Foundation Design and
-    Analysis Philosophy/Rev 03 (CC)/<document-number>-03 SLHR Base Foundation Design and
+    Analysis Philosophy/Rev 03 (CC)/<document-number> SLHR Base Foundation Design and
     Analysis Philosophy.pdf
   source: ace_project
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
     West Africa block A SLOR Design/Documents/RPT/<document-number> SLHR Base Foundation Design and
-    Analysis Philosophy/Rev 03 (CC)/CC Comments/<document-number>-02 - <document-number>-03.pdf
+    Analysis Philosophy/Rev 03 (CC)/CC Comments/<document-number> - <document-number>.pdf
   source: ace_project
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
     West Africa block A SLOR Design/Documents/RPT/<document-number> SLHR Base Foundation Design and
-    Analysis Philosophy/Rev 03 (CC)/CC Comments/<document-number>-03 SLHR Base Foundation
+    Analysis Philosophy/Rev 03 (CC)/CC Comments/<document-number> SLHR Base Foundation
     Design and Analysis Philosophy.pdf
   source: ace_project
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
     West Africa block A SLOR Design/Documents/RPT/<document-number> SLHR Base Foundation Design and
-    Analysis Philosophy/Rev 03 (CC)/CC Comments/<document-number>-01 - <document-number>-03.pdf
+    Analysis Philosophy/Rev 03 (CC)/CC Comments/<document-number> - <document-number>.pdf
   source: ace_project
   summary: null
   relevance: medium
@@ -59,21 +59,21 @@ available_documents:
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
     West Africa block A SLOR Design/Documents/RPT/<document-number> SLHR Base Foundation Design and
-    Analysis Philosophy/Rev 04 (IFI)/<document-number>-04 SLHR Base Foundation Design
+    Analysis Philosophy/Rev 04 (IFI)/<document-number> SLHR Base Foundation Design
     and Analysis Philosophy.pdf
   source: ace_project
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
     West Africa block A SLOR Design/Documents/RPT/<document-number> SLHR Base Foundation Design and
-    Analysis Philosophy/Rev 02 (IDC)/<document-number>-02 SLHR Base Foundation Design
+    Analysis Philosophy/Rev 02 (IDC)/<document-number> SLHR Base Foundation Design
     and Analysis Philosophy.pdf
   source: ace_project
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
     West Africa block A SLOR Design/Documents/RPT/<document-number> SLHR Base Foundation Design and
-    Analysis Philosophy/Rev 02 (IDC)/IDC Comments/<document-number> - <document-number>-02.pdf
+    Analysis Philosophy/Rev 02 (IDC)/IDC Comments/<document-number> - <document-number>.pdf
   source: ace_project
   summary: null
   relevance: medium
@@ -97,25 +97,25 @@ available_documents:
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
-    West Africa block A SLOR Design/Documents/SharePoint/Uploaded/Documents Uploaded - 30-01-08/<document-number>-02
+    West Africa block A SLOR Design/Documents/SharePoint/Uploaded/Documents Uploaded - 30-01-08/<document-number>
     SLHR Base Foundation Design and Analysis Philosophy  (IDC).pdf
   source: ace_project
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
-    West Africa block A SLOR Design/Documents/SharePoint/Uploaded/Documents Uploaded - 30-01-08/<document-number>-01
+    West Africa block A SLOR Design/Documents/SharePoint/Uploaded/Documents Uploaded - 30-01-08/<document-number>
     SLHR Base Foundation Design and Analysis Philosophy (DC).pdf
   source: ace_project
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
-    West Africa block A SLOR Design/Documents/SharePoint/Uploaded/Documents Uploaded - 30-01-08/<document-number>-03
+    West Africa block A SLOR Design/Documents/SharePoint/Uploaded/Documents Uploaded - 30-01-08/<document-number>
     SLHR Base Foundation Design and Analysis Philosophy  (CC).pdf
   source: ace_project
   summary: null
   relevance: medium
 - path: /mnt/ace/docs/disciplines/misc/projects/2100_wa_block_a_slor_design/05_reports/2100
-    West Africa block A SLOR Design/Documents/SharePoint/Uploaded/Documents Uploaded - 30-01-08/<document-number>-01
+    West Africa block A SLOR Design/Documents/SharePoint/Uploaded/Documents Uploaded - 30-01-08/<document-number>
     SLHR Base Foundation Design and Analysis Philosophy (Started).pdf
   source: ace_project
   summary: null

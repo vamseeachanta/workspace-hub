@@ -19,7 +19,7 @@ Four subsea riser engineering projects, totaling 9,672 PDFs across 93 GB of mixe
 Standard pattern: `{project}-{doc_type}-{sequence}-{revision}`
 
 - `2100-DDL-3207-04` = project 2100, detail drawing, sequence 3207, revision 04
-- `<document-number>-3` = project 3824, report, sequence 2103, revision 3
+- `<document-number>` = project 3824, report, sequence 2103, revision 3
 - `3836-RES-1003-02` = project 3836, analysis results, sequence 1003, revision 02
 
 External documents (HMC, Intec) use vendor schemes, e.g. `AA000.W00.C1.TRI300.RP02`.

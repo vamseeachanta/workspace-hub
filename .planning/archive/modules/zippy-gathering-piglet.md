@@ -36,7 +36,7 @@ final cleanup agent for WRK-567 after the parallel wave completes.
 1. WRK-561: Add structural calc_examples — fatigue reports, S-N curve workbooks,
    stress-strain calcs (API-RP-2A-WSD-22nd section). 3 files from 31245/31279/611 projects.
 2. WRK-562: Add marine calc_examples — wave scatter diagram (<document-number>),
-   RAO data (<document-number>-1/2), BOP fatigue (<document-number>-01), buoy calcs.
+   RAO data (<document-number>/2), BOP fatigue (<document-number>), buoy calcs.
    Augment DNV-OS-E301 and API-RP-2P entries.
 3. WRK-563: Add CP calc_examples — 2100 West Africa block A SLOR CP design reports (DNV-RP-B401),
    corrosion FE workbooks (<document-number>/0005/0007), S-N with free corrosion.

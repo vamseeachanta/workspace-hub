@@ -30,16 +30,16 @@ No ABAQUS, ANSYS, or OrcaFlex found. The archive uses:
 
 ### Tier 1 — Standards Implementations (reusability: high)
 
-1. **API RP 2A Structural Code Check** (`<document-number>-01`)
+1. **API RP 2A Structural Code Check** (`<document-number>`)
    - Complete code check: tension, bending, shear, hydrostatic, compression, combined loading, buckling
    - Standards: API-RP-2A (8 subsections), API-5L
    - Promotion: `digitalmodel/src/subsea-risers/structural-checks/`
 
-2. **Drilling Riser Stackup Calculator** (`<document-number>-1`)
+2. **Drilling Riser Stackup Calculator** (`<document-number>`)
    - API-RP-16Q implementation: tensioner sizing, tension vs mud weight
    - Promotion: `digitalmodel/src/subsea-risers/drilling-riser/`
 
-3. **SCR Flexcom Model Creator** (`<document-number>-01`, tool ID: 2H-CAL-0060)
+3. **SCR Flexcom Model Creator** (`<document-number>`, tool ID: 2H-CAL-0060)
    - Parameterized 14-sheet tool with VBA, generates complete Flexcom FE models
    - Promotion: `digitalmodel/src/subsea-risers/flexcom-tools/`
 
@@ -50,9 +50,9 @@ No ABAQUS, ANSYS, or OrcaFlex found. The archive uses:
 
 ### Tier 2 — Verified Formula Spreadsheets (reusability: high)
 
-5. **Subsea Jumper Model Builder** (`<document-number>-1.xlsx`) — 403 formulas
-6. **Subsea Jumper Properties** (`<document-number>-01.xlsx`) — 38 formulas
-7. **Catenary Jumper Configuration** (`<document-number>-01.xlsx`) — 59 formulas
+5. **Subsea Jumper Model Builder** (`<document-number>.xlsx`) — 403 formulas
+6. **Subsea Jumper Properties** (`<document-number>.xlsx`) — 38 formulas
+7. **Catenary Jumper Configuration** (`<document-number>.xlsx`) — 59 formulas
 
 ### Tier 3 — Domain Calculations (reusability: medium)
 

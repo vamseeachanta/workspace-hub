@@ -53,9 +53,9 @@ To keep the issue moving without writing outside the owned paths, this run used 
 - #2247 writeback target: `#2247`
 - Rationale: GoM well A containment riser calculation workbooks are tightly clustered under the CAL subtree and represent a clean drilling-domain allowlist.
 - Example records:
-  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL/1000 Mad Dog Riser/<document-number>-1 (Mad Dog Hang Off Model).xls`
-  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL/1000 Mad Dog Riser/<document-number>-1 (Current Profiles).xls`
-  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL/1000 Mad Dog Riser/<document-number>-2 (Return Period Current Profiles).xls`
+  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL/1000 Mad Dog Riser/<document-number> (Mad Dog Hang Off Model).xls`
+  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL/1000 Mad Dog Riser/<document-number> (Current Profiles).xls`
+  - `disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL/1000 Mad Dog Riser/<document-number> (Return Period Current Profiles).xls`
 
 ### `ace-project-drilling-31057-calculation-allowlist`
 
@@ -66,9 +66,9 @@ To keep the issue moving without writing outside the owned paths, this run used 
 - #2247 writeback target: `#2247`
 - Rationale: The ENI riser calculation subtree contains explicit CAL-coded workbooks and is small enough for exact allowlist writeback in #2247.
 - Example records:
-  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/<document-number>-7 Remaining Fatigue Life Calculation (DRAFT).xlsx`
-  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/<document-number>-1 Analysis vs. Metocean Data (CHECKED).xlsx`
-  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/<document-number>-2 NOAA Current Data (CHECKED).xlsb`
+  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/<document-number> Remaining Fatigue Life Calculation (DRAFT).xlsx`
+  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/<document-number> Analysis vs. Metocean Data (CHECKED).xlsx`
+  - `disciplines/drilling/projects/31057_eni_riser_and_subsea_structures_analysis/00_inbox/31057 - ENI Riser and Subsea Structures Analysis/CAL/0000 - Phase 1/<document-number> NOAA Current Data (CHECKED).xlsb`
 
 ### `ace-project-misc-614-sewol-calculation-allowlist`
 

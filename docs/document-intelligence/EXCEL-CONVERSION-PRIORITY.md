@@ -209,7 +209,7 @@
 ---
 
 ### 20. FDAS Riser Analysis Load/RAO (0127/1000yr)
-**Source**: `/mnt/ace/client-c/0163-FDAS/FDAS/Engineering/ace/LoadRAO/0127/` (<document-number>-05 Riser Analysis, <document-number>-01 RAO's)
+**Source**: `/mnt/ace/client-c/0163-FDAS/FDAS/Engineering/ace/LoadRAO/0127/` (<document-number> Riser Analysis, <document-number> RAO's)
 **Domain**: Riser analysis with load case RAO processing
 **Complexity**: High
 **Est tokens**: ~2.5M

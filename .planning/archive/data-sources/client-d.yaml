@@ -583,15 +583,15 @@ calc_examples:
     detailed engineering calculations for drilling riser tensioner design per
     ISO 13624-1 and API RP 16Q requirements.
   files:
-  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/<document-number>-01 (Engineering).xlsx
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/<document-number> (Engineering).xlsx
     description: FDAS tensioner cart engineering calculations — structural load and fatigue analysis
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/<document-number>-01 SEMI Key Dimensions.xlsx
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/<document-number> SEMI Key Dimensions.xlsx
     description: SEMI key dimensions — tensioner cart geometry and interface dimensions
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/<document-number>-01 FDAS Work Scopes.xlsx
+  - path: /mnt/ace/docs/disciplines/drilling/projects/0145_fdas_tensioner_cart_design_fe/01_scope/0145 FDAS Tensioner Cart Design FE/CAL/<document-number> FDAS Work Scopes.xlsx
     description: FDAS work scopes — tensioner cart design phases and analysis scope definition
     type: xlsx
     host: dev-primary

@@ -102,7 +102,7 @@ looked up again — all content lives in the codebase as queryable, reusable art
 **Gitignored:** yes — entire `data/doc-intelligence/` directory
 
 ```yaml
-doc_ref: "<document-number>-06"
+doc_ref: "<document-number>"
 doc_title: "Cathodic Protection Design Report"
 doc_type: report               # report|standard|calculation|guideline|web
 domain: cathodic-protection
@@ -126,7 +126,7 @@ document_map:                  # structural scan output (Layer 1 of skill)
   equations: ["Eq 4.1 Current Demand", "Eq 4.2 Anode Mass", ...]
 
 constants:
-  - id: "<document-number>-06-const-001"
+  - id: "<document-number>-const-001"
     name: current_density_bare_steel_seawater
     value: 0.025
     unit: A/m²
@@ -137,7 +137,7 @@ constants:
     promoted_to: null          # filled by promote-to-code.py: "module.py#L14"
 
 tables:
-  - id: "<document-number>-06-table-001"
+  - id: "<document-number>-table-001"
     name: current_density_by_environment
     section: "Table 4.1"
     columns: [environment, j_initial_a_m2, j_mean_a_m2, j_final_a_m2]
@@ -148,7 +148,7 @@ tables:
     promoted_to: null
 
 equations:
-  - id: "<document-number>-06-eq-001"
+  - id: "<document-number>-eq-001"
     name: current_demand
     section: "§4.3"
     formula: "I = A * j * (1 - cf)"
@@ -162,8 +162,8 @@ equations:
     promoted_to: null
 
 worked_examples:
-  - id: "<document-number>-06-ex-001"
-    equation_ref: "<document-number>-06-eq-001"
+  - id: "<document-number>-ex-001"
+    equation_ref: "<document-number>-eq-001"
     section: "§4.4 Example 1"
     inputs: {area_m2: 150.0, current_density: 0.025, coating_factor: 0.05}
     expected: {value: 0.1875, unit: A, note: "doc states 0.19 A rounded"}
@@ -172,7 +172,7 @@ worked_examples:
     promoted_to: null
 
 curves:
-  - id: "<document-number>-06-curve-001"
+  - id: "<document-number>-curve-001"
     name: current_density_vs_depth
     section: "Fig 4.1"
     x_label: depth_m
@@ -183,7 +183,7 @@ curves:
     promoted_to: null
 
 procedures:
-  - id: "<document-number>-06-proc-001"
+  - id: "<document-number>-proc-001"
     name: cp_design_procedure
     section: "§3.0"
     steps:
@@ -196,7 +196,7 @@ procedures:
     promoted_to: null
 
 requirements:
-  - id: "<document-number>-06-req-001"
+  - id: "<document-number>-req-001"
     section: "§5.1"
     text: "Anode spacing shall not exceed 300 mm in splash zone"
     normative: true
@@ -205,7 +205,7 @@ requirements:
     promoted_to: null
 
 definitions:
-  - id: "<document-number>-06-def-001"
+  - id: "<document-number>-def-001"
     term: coating breakdown factor
     symbol: cf
     section: "§2.1"
@@ -281,7 +281,7 @@ doc_intelligence_brief:
   equations_implemented: 14
   procedures_available: 8
   gaps: [impressed_current_sizing, coating_breakdown_sweep]
-  key_sources: [<document-number>-06, 3824-TNE-0008-2, DNV-RP-B401]
+  key_sources: [<document-number>, 3824-TNE-0008-2, DNV-RP-B401]
 ```
 
 ---
@@ -341,7 +341,7 @@ doc_intelligence_brief:
 
 ```yaml
 queue:
-  - doc_ref: "<document-number>-06"
+  - doc_ref: "<document-number>"
     priority: high
     domain: cathodic-protection
     # status: queued|extracting|draft|legal_blocked|source_unavailable|
@@ -408,7 +408,7 @@ Code artifacts carry a `# source: <doc-ref> <version> §ref` comment.
 in the index. The higher-confidence / newer-edition value wins in the promoted Python
 constant. The losing value is preserved as a commented-out line:
 ```python
-CURRENT_DENSITY_BARE_STEEL = 0.025  # A/m² — <document-number>-06 Rev6 §4.2
+CURRENT_DENSITY_BARE_STEEL = 0.025  # A/m² — <document-number> Rev6 §4.2
 # superseded: DNV-RP-B401-2011 §6.2 gave 0.020 A/m² (older edition)
 ```
 

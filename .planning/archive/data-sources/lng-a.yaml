@@ -1312,15 +1312,15 @@ calc_examples:
     Wall thickness, burst/collapse, and installation load checks per DNV OS F101.
     Multiple project workbooks provide reference pressure containment calculations.
   files:
-  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/<document-number>-01 List of Pipelines Installed.xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/<document-number> List of Pipelines Installed.xlsx
     description: Pipeline inventory — OD, WT, grade, MAOP for DNV OS F101 Sec 5 wall thickness basis
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 the pipelay client Pipeline Installation DNV WT Sizing.xlsm
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number> the pipelay client Pipeline Installation DNV WT Sizing.xlsm
     description: DNV OS F101 wall thickness sizing — burst (SC-High) and collapse (SC-Low) checks
     type: xlsm
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 the pipelay client Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number> the pipelay client Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
     description: Full DNV-OS-F101 pipe checks — combined loading, installation and operational cases
     type: xlsx
     host: dev-primary
@@ -1331,11 +1331,11 @@ calc_examples:
   description: >
     Propagation buckle initiation and arrest checks per API RP 1111 for deepwater pipelines.
   files:
-  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 the pipelay client Pipeline Propagation Checks (Dnv and API).xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number> the pipelay client Pipeline Propagation Checks (Dnv and API).xlsx
     description: Propagation buckle check per API RP 1111 and DNV OS F101 — transition water depth
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number>-01 API-1111 the pipelay client Pipeline Installation API WT Sizing.xlsm
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number> API-1111 the pipelay client Pipeline Installation API WT Sizing.xlsm
     description: API RP 1111 wall thickness sizing — explicit API-1111 burst and collapse checks
     type: xlsm
     host: dev-primary
@@ -1355,7 +1355,7 @@ calc_examples:
     description: Pipeline weight matching — submerged weight per unit length, coating breakdown
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/06_review/611 the pipelay client Pipeline Installation Analysis/Weight Verification/<document-number>-01 (Weight Verification).xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/06_review/611 the pipelay client Pipeline Installation Analysis/Weight Verification/<document-number> (Weight Verification).xlsx
     description: Weight verification — cross-check of submerged weight against vendor data
     type: xlsx
     host: dev-primary
@@ -1383,7 +1383,7 @@ calc_examples:
     description: Released TJG pipelay analysis — clean copy with final results for installation design basis
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/<document-number>-05 List of Pipelines Installed.xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/0116_thinwall_pipe_fea/00_inbox/0116 Thinwall Pipe FEA/CAL/<document-number> List of Pipelines Installed.xlsx
     description: Updated pipeline inventory — revised wall thicknesses after FEA validation
     type: xlsx
     host: dev-primary
