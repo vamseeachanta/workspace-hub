@@ -8,9 +8,17 @@ machines read them at run time from a private JSON file that never enters git:
     ~/.config/workspace-hub/private-lists.json   (default)
 
 Behaviour
-- File absent: ``load()`` returns ``{}``. Every consumer then runs on its public
-  defaults only. This is the documented safe default: no private entry is added,
-  and account resolution by address fails closed (``config_missing``).
+- File absent: ``load()`` returns ``{}``. Public defaults are a fallback for
+  read-only, non-destructive behaviour only:
+  * a destructive or routing-to-repository action (``gmail-archive-extract.py``
+    without ``--dry-run`` or with ``--delete``; ``contact-normalizer.py`` writing
+    classified contact files) calls ``require_present()`` and fails closed with
+    ``PrivateOverlayAbsent``, because public routing would file a private
+    client's mail or contacts in the wrong place;
+  * degraded ranking (VIP priority, job-market priority) calls
+    ``warn_if_absent()``, which prints one line to stderr;
+  * account resolution by address fails closed (``config_missing``).
+  Messages name no path and no value.
 - File present but unreadable, not JSON, of an unknown version, carrying an
   unknown key or a value of the wrong type: ``PrivateOverlayError``. A partial
   private list is never used silently. The message names the path and the
@@ -30,8 +38,15 @@ Schema (version 1; every section and key is optional)::
       "job_market": {
         "priority_companies": ["lower-case name fragment", ...],
         "career_urls":        {"Company": "https://..."}
+      },
+      "outputs": {
+        "job_market_dir":     "/absolute/path/in/a/private/checkout",
+        "contact_report_dir": "/absolute/path/in/a/private/checkout"
       }
     }
+
+``outputs`` is written by #3899 consumers. It is a known section here so that a
+configuration written for #3899 loads in every consumer of this loader.
 
 Standard library only, so stdlib-only scripts can import it.
 """
@@ -59,11 +74,20 @@ _SCHEMA: dict[str, dict[str, str]] = {
         "priority_companies": "list",
         "career_urls": "map",
     },
+    "outputs": {
+        "job_market_dir": "str",
+        "contact_report_dir": "str",
+    },
 }
+KNOWN_SECTIONS = frozenset(_SCHEMA)
 
 
 class PrivateOverlayError(ValueError):
     """The private overlay exists but cannot be used safely."""
+
+
+class PrivateOverlayAbsent(PrivateOverlayError):
+    """The private overlay is absent and the action needs it."""
 
 
 def resolve_path(env: Mapping[str, str] | None = None) -> Path:
@@ -101,7 +125,8 @@ def _validate(payload: Any, path: Path) -> dict:
             if kind is None:
                 raise PrivateOverlayError(f"{path}: unknown key '{section}.{key}'")
             ok = (
-                _is_str_list(value) if kind == "list"
+                isinstance(value, str) if kind == "str"
+                else _is_str_list(value) if kind == "list"
                 else _is_str_map(value) if kind == "map"
                 else isinstance(value, dict) and all(
                     isinstance(k, str) and _is_str_list(v) for k, v in value.items()
@@ -131,6 +156,37 @@ def load(path: str | os.PathLike[str] | None = None,
             f"{target}: not valid JSON (line {exc.lineno}, column {exc.colno})"
         ) from None
     return _validate(payload, target)
+
+
+def is_present(env: Mapping[str, str] | None = None) -> bool:
+    """True when the overlay file exists at the resolved path."""
+    return resolve_path(env).is_file()
+
+
+_WHERE = f"{ENV_VAR} or ~/{DEFAULT_RELATIVE.as_posix()}"
+
+
+def require_present(action: str, env: Mapping[str, str] | None = None) -> None:
+    """Fail closed (``PrivateOverlayAbsent``) when the overlay is absent.
+
+    For destructive or routing-to-repository actions. The message names the
+    action and where the overlay is looked for, never a path or a value.
+    """
+    if not is_present(env):
+        raise PrivateOverlayAbsent(
+            f"private overlay absent ({_WHERE}); refusing to {action}"
+        )
+
+
+def warn_if_absent(feature: str, env: Mapping[str, str] | None = None) -> bool:
+    """Print one warning line to stderr when the overlay is absent; return True then."""
+    if is_present(env):
+        return False
+    import sys
+
+    print(f"warning: private overlay absent ({_WHERE}); {feature} uses public defaults only",
+          file=sys.stderr)
+    return True
 
 
 def _get(overlay: Mapping[str, Any], dotted: str) -> Any:

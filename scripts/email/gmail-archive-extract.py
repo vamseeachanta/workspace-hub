@@ -273,6 +273,27 @@ def git_commit(repo_path, msg):
 # ============================================================
 # MAIN
 # ============================================================
+def overlay_gate(args):
+    """Fail closed when the private overlay is absent (C19).
+
+    Without the overlay, a private client's sender falls through to the public
+    default route, so archiving would file the message in the wrong repository
+    and --delete would then remove it from Gmail. Only a --dry-run without
+    --delete (read-only) may proceed, with a one-line warning. Exits 2 otherwise;
+    the message names no path and no value.
+    """
+    po = _private_overlay()
+    if args.dry_run and not args.delete:
+        po.warn_if_absent("routing (dry run)")
+        return
+    try:
+        po.require_present("archive mail to a repository or delete it from Gmail"
+                           " (a --dry-run without --delete may run)")
+    except po.PrivateOverlayAbsent as exc:
+        print(f"gmail-archive-extract: {exc}", file=sys.stderr)
+        raise SystemExit(2)
+
+
 def main():
     import yaml
     
@@ -285,7 +306,8 @@ def main():
     parser.add_argument("--no-sheets", action="store_true", help="Skip spreadsheet parsing")
     parser.add_argument("--force", action="store_true", help="Proceed through legal violations")
     args = parser.parse_args()
-    
+    overlay_gate(args)
+
     # Load config
     routing = load_routing()
     token = refresh_token(args.account)
@@ -353,12 +375,13 @@ def main():
                 target_repo = parts[0]
                 target_path = ACE_BASE / target_repo / "/".join(parts[1:])
             
-            # Create target directories
-            target_path.mkdir(parents=True, exist_ok=True)
+            # Create target directories (a dry run writes nothing)
             att_dir = target_path.parent / "attachments" if target_path.name != "attachments" else target_path
             sheet_dir = target_path.parent / "spreadsheets" if target_path.name != "spreadsheets" else target_path
-            att_dir.mkdir(exist_ok=True)
-            sheet_dir.mkdir(exist_ok=True)
+            if not args.dry_run:
+                target_path.mkdir(parents=True, exist_ok=True)
+                att_dir.mkdir(exist_ok=True)
+                sheet_dir.mkdir(exist_ok=True)
             
             # Extract body
             body = extract_text_body(detail.get("payload", {}))
@@ -371,7 +394,8 @@ def main():
             # Download attachments
             if atts:
                 att_subdir = att_dir / clean_name(subject[:60])
-                att_subdir.mkdir(exist_ok=True)
+                if not args.dry_run:
+                    att_subdir.mkdir(exist_ok=True)
                 for att in atts:
                     try:
                         att_data = gmail_get_attachment(token, msg_stub["id"], att["attachmentId"])
@@ -475,7 +499,7 @@ def main():
     print(f"\n{'='*70}")
     print(f"  COMMITTING TO REPOS")
     print(f"{'='*70}")
-    for repo_path, info in pending_commits.items():
+    for repo_path, info in (pending_commits.items() if not args.dry_run else ()):
         repo_dir = Path(repo_path)
         msg = f"extract: {args.account} email — {info['count']} messages from {args.query[:50]}"
         result = git_commit(repo_dir, msg)

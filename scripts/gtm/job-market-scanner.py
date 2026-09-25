@@ -525,6 +525,9 @@ def _apply_private_overlay() -> None:
         sys.path.insert(0, str(REPO_ROOT))
     from scripts.lib import private_overlay
 
+    # Absent overlay: priority ranking degrades to the public list, with one
+    # warning line on stderr.
+    private_overlay.warn_if_absent("job-market priority")
     overlay = private_overlay.load()
     PRIORITY_COMPANIES.update(
         name.strip().lower()
