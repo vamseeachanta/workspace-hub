@@ -29,7 +29,7 @@ accounts:
     provider: claude
     holder: colleague        # professional seat shared on the company workstations
     access: limited          # fewer authorisations (OAuth grants, org settings)
-    fingerprint: null
+    fingerprint: c0c130b8018b   # confirmed 2026-09-26 from ace-win-2 probe
   codex-owner:
     provider: codex
     holder: owner
@@ -39,7 +39,7 @@ accounts:
     provider: codex
     holder: colleague
     access: limited
-    fingerprint: null
+    fingerprint: c0c130b8018b   # confirmed 2026-09-26 from ace-win-2 probe
 
 # Hosts to probe. `hub_path` is where the workspace-hub checkout lives on that
 # host (only used for logging; the probe is piped over stdin). `local: true`
