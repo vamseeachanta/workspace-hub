@@ -19,6 +19,14 @@
 # config/workstations/registry.yaml, so the job is installed here directly, as
 # the existing fleet-daily-collector is, until the registry entry and the
 # scheduler attestation (#3475) are added. Marker: workspace-hub:account-usage
+#
+# DURABILITY NOTE (2026-09-26): a system-crontab line does NOT survive a VM
+# restart here — /var (including /var/spool/cron) is ephemeral, and the entry
+# installed this way was wiped the same day it was created. On this VM the
+# durable scheduler is the runtime scheduler: entry `ai-account-usage-hourly`
+# (hourly, ~:13 past the hour), whose body recreates the /root/.ssh/config
+# symlink if a restart wiped it. Prefer registering/updating that runtime
+# entry over re-running this installer for the crontab line.
 set -euo pipefail
 
 MODE="install"
