@@ -43,8 +43,10 @@ if [[ ${#missing[@]} -gt 0 ]]; then
     log "install with: sudo apt install -y gfortran cmake ninja-build libopenblas-dev git"
     exit 1
 fi
-if ! ldconfig -p 2>/dev/null | grep -q openblas; then
-    log "WARN: libopenblas not found by ldconfig; build may fall back to reference BLAS"
+# ldconfig lives in /sbin, which non-login ssh shells often omit from PATH
+LDCONFIG="$(command -v ldconfig || echo /sbin/ldconfig)"
+if ! "$LDCONFIG" -p 2>/dev/null | grep -q openblas && ! ls /usr/lib/*/libopenblas.so* >/dev/null 2>&1; then
+    log "WARN: libopenblas not found; build may fall back to reference BLAS"
 fi
 
 # ---------------------------------------------------------------------------
@@ -59,8 +61,8 @@ else
 fi
 git -C "$SRC_DIR" checkout -q "$REF"
 
-log "configuring (Release, Ninja)"
-cmake -S "$SRC_DIR" -B "$SRC_DIR/build" -G Ninja -DCMAKE_BUILD_TYPE=Release >/dev/null
+log "configuring (Ninja; no CMAKE_BUILD_TYPE — Release adds -DNDEBUG, which clobbers MYSTRAN's NDEBUG parameter)"
+cmake -S "$SRC_DIR" -B "$SRC_DIR/build" -G Ninja >/dev/null
 log "building with $(nproc) cores"
 cmake --build "$SRC_DIR/build" --parallel "$(nproc)" | tail -3
 
