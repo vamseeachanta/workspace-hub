@@ -146,3 +146,11 @@ def fleet_fp(email: str) -> str:
 @pytest.mark.parametrize("path", [FLEET, PROBE])
 def test_scripts_compile(path):
     subprocess.run([sys.executable, "-m", "py_compile", str(path)], check=True)
+
+
+def test_remote_launcher_probes_interpreter_execution_not_presence():
+    # Windows Git Bash: the Microsoft Store python3 redirector stub passes
+    # `command -v python3` but exits 49 "Python was not found". The launcher
+    # must verify the interpreter actually executes, not that it is on PATH.
+    assert 'python3 -c' in fleet.REMOTE_CMD
+    assert 'command -v python3' not in fleet.REMOTE_CMD
