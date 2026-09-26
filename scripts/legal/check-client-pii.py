@@ -28,7 +28,8 @@ USAGE
   uv run python scripts/legal/check-client-pii.py --staged
   # CI (PR diff):
   uv run python scripts/legal/check-client-pii.py --base-ref origin/main --strict
-  # explicit files / all tracked:
+  # explicit files or directories (a directory expands to its tracked files;
+  # a missing path or a directory with no tracked files exits 2) / all tracked:
   uv run python scripts/legal/check-client-pii.py path1 path2
   uv run python scripts/legal/check-client-pii.py --all
 
@@ -66,9 +67,43 @@ def _git(args: list[str]) -> list[str]:
     return [ln for ln in out.stdout.splitlines() if ln.strip()]
 
 
+def _git_z(args: list[str]) -> list[str] | None:
+    """NUL-separated git listing (no path quoting). None when git fails."""
+    out = subprocess.run(["git", *args], capture_output=True)
+    if out.returncode != 0:
+        return None
+    return [p for p in out.stdout.decode("utf-8", "surrogateescape").split("\0") if p]
+
+
+def expand_explicit(paths: list[str]) -> tuple[list[str], list[str]]:
+    """Resolve explicit path arguments to files, failing closed.
+
+    A directory expands to the git-tracked files beneath it (recursive, tracked
+    only, so a gitignored private map inside it is never read). A directory with
+    no tracked files, or a path that does not exist, is an error: it must never
+    read as a clean scan. Returns (files, errors).
+    """
+    files: list[str] = []
+    errors: list[str] = []
+    for raw in paths:
+        p = Path(raw)
+        if p.is_dir():
+            tracked = _git_z(["ls-files", "-z", "--", raw])
+            if tracked is None:
+                errors.append(f"{raw}: directory, and git could not list its tracked files")
+                continue
+            tracked = [t for t in tracked if Path(t).is_file()]
+            if not tracked:
+                errors.append(f"{raw}: directory contains no tracked files")
+            files.extend(tracked)
+        elif p.is_file():
+            files.append(raw)
+        else:
+            errors.append(f"{raw}: no such file")
+    return files, errors
+
+
 def collect_targets(args) -> list[str]:
-    if args.paths:
-        return args.paths
     if args.all:
         return _git(["ls-files"])
     if args.base_ref:
@@ -122,7 +157,7 @@ def main() -> int:
     ap.add_argument("--source", default=None,
                     help="label for the scanned text in messages (e.g. 'commit <sha>', 'PR metadata'); the matched value is never printed")
     ap.add_argument("--strict", action="store_true", help="fail (exit 2) if the private map is missing")
-    ap.add_argument("paths", nargs="*", help="explicit files to scan")
+    ap.add_argument("paths", nargs="*", help="explicit files or directories to scan")
     args = ap.parse_args()
 
     if os.environ.get("LEGAL_PII_ALLOW") == "1":
@@ -154,15 +189,21 @@ def main() -> int:
             label = args.source or "stdin"
         return scan_text(text, rules, label)
 
-    targets = collect_targets(args)
+    target_errors: list[str] = []
+    if args.paths:
+        targets, target_errors = expand_explicit(args.paths)
+    else:
+        targets = collect_targets(args)
 
     bad: list[tuple[str, list[int]]] = []
+    scanned = 0
     for rel in targets:
         if rel in SELF_EXCLUDE:
             continue
         fp = Path(rel)
         if not fp.is_file():
             continue
+        scanned += 1
         lines = violations_in(fp, rules)
         if lines:
             bad.append((rel, lines))
@@ -177,7 +218,14 @@ def main() -> int:
         print("Bypass (discouraged): LEGAL_PII_ALLOW=1", file=sys.stderr)
         return 1
 
-    print(f"✓ legal-client-pii: {len(targets)} changed file(s) clean.")
+    if target_errors:
+        print("✖ legal-client-pii: explicit target(s) could not be scanned — failing closed "
+              "(a scan that read nothing is not a pass).", file=sys.stderr)
+        for err in target_errors:
+            print(f"  {err}", file=sys.stderr)
+        return 2
+
+    print(f"✓ legal-client-pii: {scanned} file(s) scanned, clean.")
     return 0
 
 
