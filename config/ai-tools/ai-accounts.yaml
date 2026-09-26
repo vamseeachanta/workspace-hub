@@ -1,0 +1,89 @@
+# ai-accounts.yaml — which AI-provider ACCOUNT is logged in on which fleet host.
+#
+# Read by scripts/fleet/collect_account_usage_fleet.py (runs on the fleet
+# collector VM) to fan out scripts/ai/assessment/collect-account-usage.py over
+# ssh, and to group the per-host samples into per-ACCOUNT usage. Usage limits
+# belong to the account, not the machine: two hosts logged in as the same
+# account see the same five-hour and weekly windows.
+#
+# PUBLIC repository: hosts carry logical fleet labels only (see
+# scripts/fleet/fleet_snapshot_labels.py); accounts carry a label, a holder
+# ROLE and a fingerprint (first 12 hex of SHA-256 of the lowercased login
+# email, as the probe prints it) -- never an address, a name or a plan seat id.
+# The ssh alias of each host is the label itself; the collector's
+# ~/.ssh/config maps labels to physical hosts (private, like
+# ~/.config/workspace-hub/fleet-label-map.txt).
+#
+# `fingerprint: null` means "not yet confirmed": the first collection run
+# prints each host's fingerprints in the report; paste them here so the
+# aggregate can flag a host that was re-logged-in as a different account.
+schema_version: 1
+
+accounts:
+  claude-owner:
+    provider: claude
+    holder: owner            # personal subscription; broader authorisations
+    access: full
+    fingerprint: null
+  claude-professional:
+    provider: claude
+    holder: colleague        # professional seat shared on the company workstations
+    access: limited          # fewer authorisations (OAuth grants, org settings)
+    fingerprint: null
+  codex-owner:
+    provider: codex
+    holder: owner
+    access: full
+    fingerprint: null
+  codex-professional:
+    provider: codex
+    holder: colleague
+    access: limited
+    fingerprint: null
+
+# Hosts to probe. `hub_path` is where the workspace-hub checkout lives on that
+# host (only used for logging; the probe is piped over stdin). `local: true`
+# marks the collector itself (no ssh). Omit a provider key when that CLI is not
+# logged in on the host.
+hosts:
+  ace-linux-1:
+    os: linux
+    hub_path: /mnt/local-analysis/workspace-hub
+    claude: claude-owner
+    codex: codex-owner
+  ace-linux-2:
+    os: linux
+    hub_path: ~/ws/workspace-hub
+    claude: claude-owner
+    codex: codex-owner
+  gpu-claw:
+    os: linux
+    hub_path: ~/ws/workspace-hub
+    claude: claude-owner
+  ace-win-2:
+    os: windows
+    hub_path: C:/ws/workspace-hub
+    claude: claude-professional
+    codex: codex-professional
+  ace-win-1:
+    os: windows
+    hub_path: C:/ws/workspace-hub
+    claude: claude-professional
+    codex: codex-professional
+  fleet-collector:
+    os: linux
+    local: true
+    hub_path: ~/ws/workspace-hub
+    # add `claude: claude-owner` / `codex: codex-owner` once the VM is logged in
+
+# Routing thresholds used by the recommendation block of the aggregate.
+policy:
+  # Below this weekly headroom an account is "tight": stop starting marathons
+  # on it and dispatch to the other account's hosts (matches the lane:codex
+  # <10% gate in scripts/dispatch/route.py).
+  tight_headroom_pct: 10
+  # Prefer switching accounts only when the other one has at least this much
+  # more weekly headroom; avoids ping-pong between near-equal accounts.
+  switch_margin_pct: 15
+  # Samples older than this are ignored when picking the freshest per account.
+  max_sample_age_hours: 12
