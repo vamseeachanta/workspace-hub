@@ -131,28 +131,45 @@ def gh_issue_edit_add_label(issue_number: int, label: str) -> None:
     )
 
 
+def apply_labels(payload: dict[str, Any], limit: int) -> list[dict[str, Any]]:
+    """Label the first ``limit`` eligible candidates; return what was applied.
+
+    Reads the payload's original (unredacted) numbers and labels.
+    """
+    applied: list[dict[str, Any]] = []
+    for item in [c for c in payload["candidates"] if c["eligible"]][:limit]:
+        gh_issue_edit_add_label(item["number"], item["target_label"])
+        applied.append({
+            "number": item["number"],
+            "target_label": item["target_label"],
+            "confidence": item["confidence"],
+        })
+    return applied
+
+
 def build_payload(work_queue: dict[str, Any], apply_mode: bool, limit: int) -> dict[str, Any]:
     candidates = collect_candidates(work_queue)
     eligible = [item for item in candidates if item["eligible"]]
-    applied: list[dict[str, Any]] = []
-
-    if apply_mode:
-        for item in eligible[:limit]:
-            gh_issue_edit_add_label(item["number"], item["target_label"])
-            applied.append({
-                "number": item["number"],
-                "target_label": item["target_label"],
-                "confidence": item["confidence"],
-            })
-
-    return {
+    payload = {
         "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "apply_mode": apply_mode,
         "threshold": CONFIDENCE_THRESHOLD,
         "eligible_count": len(eligible),
-        "applied": applied,
+        "applied": [],
         "candidates": candidates,
     }
+    if apply_mode:
+        payload["applied"] = apply_labels(payload, limit)
+    return payload
+
+
+def _public_documents(payload: dict[str, Any], redaction, redactor) -> tuple[str, str]:
+    """The JSON and Markdown text to write, redacted. Raises if redaction fails."""
+    public = redaction.redact_tree(payload, redactor)
+    return (
+        json.dumps(public, indent=2) + "\n",
+        redactor.redact(render_markdown(public)) + "\n",
+    )
 
 
 def main() -> None:
@@ -166,8 +183,8 @@ def main() -> None:
     args = parser.parse_args()
 
     # C20: the outputs are PUBLIC files built from GitHub issue text. Load the
-    # identifier gate's Redactor before anything else -- before --apply edits a
-    # label -- and stop without writing or labelling if it cannot load.
+    # identifier gate's Redactor before anything else and stop without writing
+    # or labelling if it cannot load.
     redaction = _public_redaction()
     try:
         redactor = redaction.load_redactor()
@@ -175,27 +192,32 @@ def main() -> None:
         raise SystemExit(f"provider-autolabel: {exc}; nothing written, no label applied") from None
 
     work_queue = load_json(Path(args.work_queue))
-    # Scoring and labelling read the original text; only what is written is redacted.
-    payload = redaction.redact_tree(
-        build_payload(work_queue, apply_mode=args.apply, limit=args.limit), redactor
-    )
+    # Score without labelling, and redact the public documents first: a
+    # redaction failure must stop the run before --apply edits any label.
+    payload = build_payload(work_queue, apply_mode=False, limit=args.limit)
+    json_text, md_text = _public_documents(payload, redaction, redactor)
+    if args.apply:
+        # Labelling reads the original numbers; the public documents are
+        # re-rendered only to record what was applied (numbers and labels).
+        payload["apply_mode"] = True
+        payload["applied"] = apply_labels(payload, args.limit)
+        json_text, md_text = _public_documents(payload, redaction, redactor)
 
     json_out = Path(args.output_json)
     json_out.parent.mkdir(parents=True, exist_ok=True)
-    json_out.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    json_out.write_text(json_text, encoding="utf-8")
     print(f"JSON → {json_out}")
 
     if not args.json_only:
         md_out = Path(args.output_md)
         md_out.parent.mkdir(parents=True, exist_ok=True)
-        md_out.write_text(redactor.redact(render_markdown(payload)) + "\n", encoding="utf-8")
+        md_out.write_text(md_text, encoding="utf-8")
         print(f"Markdown → {md_out}")
 
     if payload["applied"]:
         print("Applied labels:")
         for item in payload["applied"]:
             print(f"- #{item['number']} -> {item['target_label']} ({item['confidence']})")
-
 
 if __name__ == "__main__":
     main()

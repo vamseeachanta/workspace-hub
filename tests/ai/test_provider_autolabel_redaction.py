@@ -109,3 +109,38 @@ def test_autolabel_apply_labels_the_original_issue_number(tmp_path, monkeypatch)
     mod.main()
     assert calls == [(4242, "agent:codex")]
     assert SYNTH not in (tmp_path / "a.json").read_text(encoding="utf-8").lower()
+
+
+def test_autolabel_redaction_failure_after_load_applies_no_label(tmp_path, monkeypatch):
+    """A redactor that loads but then fails must stop --apply before any label edit."""
+    mod = _load("pal_c20e")
+    real = mod._public_redaction()
+
+    class Broken:
+        RedactorUnavailable = real.RedactorUnavailable
+        load_redactor = staticmethod(real.load_redactor)
+
+        @staticmethod
+        def redact_tree(obj, redactor):
+            raise RuntimeError("redaction failed")
+
+    calls: list[tuple[int, str]] = []
+    monkeypatch.setattr(mod, "_public_redaction", lambda: Broken)
+    monkeypatch.setattr(mod, "gh_issue_edit_add_label", lambda n, label: calls.append((n, label)))
+    monkeypatch.setattr(sys, "argv", _argv(tmp_path, "--apply"))
+    with pytest.raises(RuntimeError):
+        mod.main()
+    assert calls == []
+    assert not (tmp_path / "a.json").exists() and not (tmp_path / "a.md").exists()
+
+
+@pytest.mark.parametrize("extra", [(), ("--apply",)])
+def test_autolabel_console_output_carries_no_identifier(tmp_path, monkeypatch, capsys, extra):
+    mod = _load("pal_c20f" + "".join(extra).replace("-", "_"))
+    monkeypatch.setattr(mod, "gh_issue_edit_add_label", lambda n, label: None)
+    monkeypatch.setattr(sys, "argv", _argv(tmp_path, *extra))
+    mod.main()
+    out = capsys.readouterr()
+    assert SYNTH not in (out.out + out.err).lower()
+    if extra:
+        assert "Applied labels:" in out.out and "#4242 -> agent:codex" in out.out
