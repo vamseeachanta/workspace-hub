@@ -182,6 +182,16 @@ def test_moved_file_is_untracked_and_ignored(rel):
 
 
 def test_name_bearing_memory_snapshots_are_gone():
-    listed = _git("ls-files", "config/agents/claude/memory-snapshots").stdout.splitlines()
-    assert not [p for p in listed if Path(p).name.startswith("crossprovider_hermes_")
-                and ("data-lifecycle-uses-promotion" in p or "have-divergent-output-form" in p)]
+    """No tracked snapshot file NAME carries an identifier. The names are known
+    only to the private list, so this runs where one is available."""
+    spec = importlib.util.spec_from_file_location(
+        "_c20_pr", ROOT / "scripts" / "legal" / "public_redaction.py")
+    pr = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(pr)
+    try:
+        red = pr.load_redactor()
+    except pr.RedactorUnavailable:
+        pytest.skip("no private deny list available")
+    listed = _git("ls-files", "config/agents").stdout.splitlines()
+    bearing = [p for p in listed if red.redact(Path(p).name) != Path(p).name]
+    assert bearing == [], f"{len(bearing)} tracked file name(s) carry an identifier"
