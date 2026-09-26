@@ -43,7 +43,7 @@ On the collector VM, from its `workspace-hub` checkout (currently on `pilot/idea
 ```bash
 git switch main && git pull --ff-only
 bash scripts/fleet/install-fleet-collector-cron.sh --check   # prerequisites + reachability
-bash scripts/fleet/install-fleet-collector-cron.sh --run     # install crontab line, run once
+bash scripts/fleet/install-fleet-collector-cron.sh --run     # print the scheduler entry to register, run once
 cat docs/reports/ai-account-usage.md                          # fingerprints per host
 ```
 
