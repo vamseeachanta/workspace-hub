@@ -38,8 +38,10 @@ DEFAULT_OUT = REPO_ROOT / "config/ai-tools/account-usage-latest.json"
 DEFAULT_MD = REPO_ROOT / "docs/reports/ai-account-usage.md"
 PROVIDERS = ("claude", "codex")
 
-# Remote launcher: python3 where it exists (Linux/macOS), python on Windows Git Bash.
-REMOTE_CMD = ("sh -c 'if command -v python3 >/dev/null 2>&1; then exec python3 - \"$@\"; "
+# Remote launcher: python3 where it actually RUNS (Linux/macOS), else python
+# (Windows Git Bash: python3 is the Microsoft Store redirector stub — it passes
+# `command -v` but exits 49 "Python was not found" — so verify execution, not presence).
+REMOTE_CMD = ("sh -c 'if python3 -c \"import sys\" >/dev/null 2>&1; then exec python3 - \"$@\"; "
               "else exec python - \"$@\"; fi' _ --json --host {label}")
 
 
