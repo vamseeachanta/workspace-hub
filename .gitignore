@@ -620,3 +620,12 @@ docs/reports/sessions/payloads/
 # local-only (session ids + query hashes); committed counts-only weekly
 # aggregates live in data/drive-index-search/metrics/weekly/ (NOT ignored)
 data/drive-index-search/metrics/*.jsonl
+
+# C20 (2026-09-26): archive-drive indexes carry client names. They live in the private data
+# directory (WORKSPACE_HUB_PRIVATE_DATA_DIR); their builders refuse to write them here.
+/data/content_index.json
+/docs/CONTENT_INDEX.md
+/data/document-index/conference-index-batch.jsonl
+/data/document-index/conference-index.jsonl
+/data/document-index/conference-phase-a-results.jsonl
+/data/document-index/cross-drive-dedup-report.json

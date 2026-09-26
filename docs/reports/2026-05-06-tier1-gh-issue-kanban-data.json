@@ -21492,7 +21492,7 @@
       "priority_bucket": "Unranked",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "Batch 6: Shell Perdido + VMCast + Production Eng Library \u2014 71 workbooks",
+      "title": "Batch 6: Shell [redacted] + VMCast + Production Eng Library \u2014 71 workbooks",
       "updatedAt": "2026-04-05T20:12:24Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/1940"
     },
@@ -21520,7 +21520,7 @@
       "priority_bucket": "Unranked",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "Batch 5: Talos Venice Umbilical Installation \u2014 31 workbooks",
+      "title": "Batch 5: [redacted] Umbilical Installation \u2014 31 workbooks",
       "updatedAt": "2026-04-05T20:12:23Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/1939"
     },
@@ -21632,7 +21632,7 @@
       "priority_bucket": "Unranked",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "Batch 1: Ballymore Jumper Lift + Mudmat Analysis \u2014 10 workbooks",
+      "title": "Batch 1: [redacted] Jumper Lift + Mudmat Analysis \u2014 10 workbooks",
       "updatedAt": "2026-04-05T20:12:19Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/1935"
     },
@@ -36277,7 +36277,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md"
+          "[redacted]"
         ]
       },
       "assignees": [],
@@ -42648,7 +42648,7 @@
           "docs/plans/2026-04-16-issue-2070-state-size-guard.md",
           "docs/plans/2026-04-16-issue-2270-blender-headless-baseline-workflow-and-smoke-render-validation.md",
           "docs/plans/2026-04-29-issue-2370-closed-issue-promotion-ledger.md",
-          "docs/plans/2026-05-01-issue-2570-b1528-proj-a-yaw-moment-report.md"
+          "[redacted]"
         ]
       },
       "assignees": [],
@@ -42710,7 +42710,7 @@
         "plan_paths": [
           "docs/plans/2026-04-15-issue-2269-openfoam-v2312-baseline-workflow-and-validation.md",
           "docs/plans/2026-04-23-issue-2369-batch-pack-2-conference-summary-promotion.md",
-          "docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md"
+          "[redacted]"
         ]
       },
       "assignees": [],
@@ -43300,8 +43300,8 @@
           "docs/plans/2026-04-21-issue-2357-sitemap-www-backfill.md",
           "docs/plans/2026-04-23-issue-2457-orcawave-l03-ship-roundtrip-proof.md",
           "docs/plans/2026-04-29-issue-2557-weekly-productivity-flow-hacks.md",
-          "docs/plans/2026-05-01-issue-2570-b1528-proj-a-yaw-moment-report.md",
-          "docs/plans/2026-05-01-issue-2571-b1528-proj-a-time-trace-report.md"
+          "[redacted]",
+          "[redacted]"
         ]
       },
       "assignees": [],
@@ -43493,7 +43493,7 @@
           "docs/plans/2026-04-29-issue-2552-external-contributor-runbook.md",
           "docs/plans/2026-05-03-issue-2626-narrow-2552-runbook-fixes.md",
           "docs/plans/2026-04-21-issue-1525-workspace-hub-mission-control-plane-contract.md",
-          "docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md"
+          "[redacted]"
         ]
       },
       "assignees": [],
@@ -43923,7 +43923,7 @@
           "docs/plans/2026-04-19-issue-2344-capability-summary-pdf.md",
           "docs/plans/2026-04-21-issue-2444-aceengineer-admin-ci.md",
           "docs/plans/2026-04-22-rerun-review-dispatch-pack-2443-2444-2289.md",
-          "docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md",
+          "docs/plans/[redacted].md",
           "docs/plans/2026-05-04-issue-2644-llm-wiki-offshore-raw-source-family-backfill.md"
         ]
       },
@@ -45612,7 +45612,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "feat(naval-arch): B1528 proj-a moored-current rudder force component report",
+      "title": "feat(naval-arch): [redacted] proj-a moored-current rudder force component report",
       "updatedAt": "2026-05-05T10:09:49Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2642"
     },
@@ -46561,7 +46561,7 @@
       "priority_bucket": "LOW",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "fix(digitalmodel): loosen test_packaged_b1528_yaml_declared_as_package_data substring assertion",
+      "title": "fix(digitalmodel): loosen [redacted] substring assertion",
       "updatedAt": "2026-05-03T20:27:00Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2604"
     },
@@ -48010,7 +48010,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-05-01-issue-2571-b1528-proj-a-time-trace-report.md"
+          "[redacted]"
         ]
       },
       "assignees": [],
@@ -48079,7 +48079,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "feat(naval-arch): B1528 proj-a time-trace benchmark report with rudder inflow feedback",
+      "title": "feat(naval-arch): [redacted] proj-a time-trace benchmark report with rudder inflow feedback",
       "updatedAt": "2026-05-01T09:47:22Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2571"
     },
@@ -48093,7 +48093,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-05-01-issue-2570-b1528-proj-a-yaw-moment-report.md"
+          "[redacted]"
         ]
       },
       "assignees": [],
@@ -48162,7 +48162,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "feat(naval-arch): B1528 proj-a yaw-moment input and interactive static report",
+      "title": "feat(naval-arch): [redacted] proj-a yaw-moment input and interactive static report",
       "updatedAt": "2026-05-01T08:55:42Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2570"
     },
@@ -48176,7 +48176,7 @@
         "local_repo_exists": true,
         "plan_exists": true,
         "plan_paths": [
-          "docs/plans/2026-05-01-issue-2569-b1528-proj-a-source-pack.md"
+          "[redacted]"
         ]
       },
       "assignees": [],
@@ -48252,7 +48252,7 @@
       "priority_bucket": "HIGH",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "docs(mkt-a): B1528 proj-a rudder source pack and benchmark extraction",
+      "title": "docs(mkt-a): [redacted] proj-a rudder source pack and benchmark extraction",
       "updatedAt": "2026-05-01T03:09:51Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2569"
     },
@@ -51531,7 +51531,7 @@
       "priority_bucket": "Unranked",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "BUG: Verify PLET-PLEM jumper segment lengths from SZ_Ballymore_Jumper_MF.xlsm",
+      "title": "BUG: Verify PLET-PLEM jumper segment lengths from SZ_[redacted]_Jumper_MF.xlsm",
       "updatedAt": "2026-05-06T18:39:06Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/480"
     },
@@ -64338,7 +64338,7 @@
       "priority_bucket": "Unranked",
       "repo": "digitalmodel",
       "state": "CLOSED",
-      "title": "BUG: Verify PLET-PLEM jumper segment lengths from SZ_Ballymore_Jumper_MF.xlsm",
+      "title": "BUG: Verify PLET-PLEM jumper segment lengths from SZ_[redacted]_Jumper_MF.xlsm",
       "updatedAt": "2026-04-06T12:23:58Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/474"
     },

@@ -5,7 +5,23 @@ from pathlib import Path
 
 # Default paths relative to workspace root
 WORKSPACE_ROOT = Path(__file__).resolve().parents[3]
-BATCH_FILE = WORKSPACE_ROOT / "data" / "document-index" / "conference-index-batch.jsonl"
+# C20: the batch carries archive-drive paths that name clients; it is read from
+# the private data directory (WORKSPACE_HUB_PRIVATE_DATA_DIR). The statistics
+# written below hold counts per conference only.
+BATCH_REL = "data/document-index/" + "conference-index-batch.jsonl"
+
+
+def _private_data():
+    """scripts/lib/private_data.py, loaded by path (C20)."""
+    import importlib.util
+
+    path = WORKSPACE_ROOT / "scripts" / "lib" / "private_data.py"
+    spec = importlib.util.spec_from_file_location("_cs_private_data", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 CATALOG_FILE = WORKSPACE_ROOT / "data" / "document-index" / "conference-paper-catalog.yaml"
 OUTPUT_FILE = WORKSPACE_ROOT / "data" / "document-index" / "conference-index-stats.yaml"
 
@@ -17,7 +33,12 @@ def create_stats():
     total_count = 0
     total_size = 0
 
-    with open(BATCH_FILE, 'r') as f:
+    pd = _private_data()
+    try:
+        batch_file = pd.private_data_path(BATCH_REL)
+    except pd.PrivateDataUnavailable as exc:
+        raise SystemExit(f"conference-stats: {exc}; nothing written")
+    with open(batch_file, 'r') as f:
         for line in f:
             entry = json.loads(line)
             conf_name = entry.get('conference')

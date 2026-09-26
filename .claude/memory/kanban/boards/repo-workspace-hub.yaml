@@ -178,7 +178,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#34
-    title: 'WRK-1043: tidy-agent-teams: wire Stop hook on ace-linux-2 and acma-ansys05'
+    title: 'WRK-1043: tidy-agent-teams: wire Stop hook on ace-linux-2 and [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/34
     gh_state: closed
@@ -2676,7 +2676,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#372
-    title: 'WRK-329: Formalise doris calculation workflow — migrate ad-hoc calcs to Python modules'
+    title: 'WRK-329: Formalise [redacted] calculation workflow — migrate ad-hoc calcs to Python modules'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/372
     gh_state: closed
@@ -3081,7 +3081,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#416
-    title: 'WRK-329: Formalise doris calculation workflow — migrate ad-hoc calcs to Python modules'
+    title: 'WRK-329: Formalise [redacted] calculation workflow — migrate ad-hoc calcs to Python modules'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/416
     gh_state: closed
@@ -4976,7 +4976,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#612
-    title: 'WRK-564: docs(doris): add calc_examples mapping — pipeline design calcs'
+    title: 'WRK-564: docs([redacted]): add calc_examples mapping — pipeline design calcs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/612
     gh_state: closed
@@ -5300,7 +5300,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#637
-    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05'
+    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/637
     gh_state: closed
@@ -5471,7 +5471,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#653
-    title: 'WRK-564: docs(doris): add calc_examples mapping — pipeline design calcs'
+    title: 'WRK-564: docs([redacted]): add calc_examples mapping — pipeline design calcs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/653
     gh_state: closed
@@ -5639,7 +5639,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#677
-    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05'
+    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/677
     gh_state: closed
@@ -5804,7 +5804,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#718
-    title: 'WRK-007: Upload videos from Doris computer to YouTube'
+    title: 'WRK-007: Upload videos from [redacted] computer to YouTube'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/718
     gh_state: closed
@@ -5961,7 +5961,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#731
-    title: 'WRK-007: Upload videos from Doris computer to YouTube'
+    title: 'WRK-007: Upload videos from [redacted] computer to YouTube'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/731
     gh_state: closed
@@ -6844,7 +6844,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#848
-    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, acma-ansys05'
+    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/848
     gh_state: closed
@@ -6980,7 +6980,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#860
-    title: 'WRK-1077: acma-ansys05 workstation readiness setup'
+    title: 'WRK-1077: [redacted] workstation readiness setup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/860
     gh_state: closed
@@ -8040,7 +8040,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#998
-    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, acma-ansys05'
+    title: 'WRK-1066: chore(harness): environment parity audit — tool versions across ace-linux-1, ace-linux-2, [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/998
     gh_state: closed
@@ -8168,7 +8168,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#1009
-    title: 'WRK-1077: acma-ansys05 workstation readiness setup'
+    title: 'WRK-1077: [redacted] workstation readiness setup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1009
     gh_state: closed
@@ -15308,7 +15308,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#1965
-    title: 'data: Normalize aceengineer contacts — vamsee.achanta@aceengineer.com'
+    title: 'data: Normalize aceengineer contacts — [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1965
     gh_state: closed
@@ -15321,7 +15321,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#1966
-    title: 'data: Normalize achantav contacts — achantav@gmail.com'
+    title: 'data: Normalize achantav contacts — [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1966
     gh_state: closed
@@ -15334,7 +15334,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#1967
-    title: 'data: Build skestates contact database — skestatesinc@gmail.com'
+    title: 'data: Build skestates contact database — [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1967
     gh_state: closed
@@ -15347,7 +15347,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#1968
-    title: 'feat: Email triage workflow — achantav@gmail.com'
+    title: 'feat: Email triage workflow — [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1968
     gh_state: closed
@@ -15360,7 +15360,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#1969
-    title: 'feat: Email triage workflow — skestatesinc@gmail.com'
+    title: 'feat: Email triage workflow — [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1969
     gh_state: closed
@@ -15386,7 +15386,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#1971
-    title: 'feat: Email triage workflow — vamsee.achanta@aceengineer.com'
+    title: 'feat: Email triage workflow — [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1971
     gh_state: closed
@@ -16016,7 +16016,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2216
-    title: 'feat(naval-architecture): integrate /mnt/ace/acma-codes into llm-wiki and repo intelligence ecosystem'
+    title: 'feat(naval-architecture): integrate [redacted] into llm-wiki and repo intelligence ecosystem'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2216
     gh_state: closed
@@ -16031,7 +16031,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2225
-    title: 'feat(acma-codes): register /mnt/ace/acma-codes as mounted source and run initial indexing/dedup'
+    title: 'feat([redacted]): register [redacted] as mounted source and run initial indexing/dedup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2225
     gh_state: closed
@@ -16046,7 +16046,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2226
-    title: 'feat(acma-codes): backfill OCIMF/CSA ledger entries and provenance aliases from indexed source'
+    title: 'feat([redacted]): backfill OCIMF/CSA ledger entries and provenance aliases from indexed source'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2226
     gh_state: closed
@@ -16061,7 +16061,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2227
-    title: 'feat(acma-codes): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis'
+    title: 'feat([redacted]): promote OCIMF Tandem Mooring and CSA Z276 coverage into LLM-wikis'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2227
     gh_state: closed
@@ -16076,7 +16076,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2228
-    title: 'chore(acma-codes): update accessibility and entry-point surfaces after source integration'
+    title: 'chore([redacted]): update accessibility and entry-point surfaces after source integration'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2228
     gh_state: closed
@@ -16165,7 +16165,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2244
-    title: 'feat(acma-codes): triage newly discovered CSA/API breadth beyond current wiki-promotion scope'
+    title: 'feat([redacted]): triage newly discovered CSA/API breadth beyond current wiki-promotion scope'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2244
     gh_state: closed
@@ -16178,7 +16178,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2245
-    title: 'feat(doc-intel): prepare summary/classification artifacts to unblock bounded ACMA wiki promotion'
+    title: 'feat(doc-intel): prepare summary/classification artifacts to unblock bounded [redacted] wiki promotion'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2245
     gh_state: closed
@@ -17294,7 +17294,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2559
-    title: 'feat(acma-codes): promote OCIMF Tandem preview into LLM-wiki source summary'
+    title: 'feat([redacted]): promote OCIMF Tandem preview into LLM-wiki source summary'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2559
     gh_state: closed
@@ -17376,7 +17376,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2604
-    title: 'fix(digitalmodel): loosen test_packaged_b1528_yaml_declared_as_package_data substring assertion'
+    title: 'fix(digitalmodel): loosen [redacted] substring assertion'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2604
     gh_state: closed
@@ -17665,7 +17665,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2745
-    title: 'feat(acma): freeze acma-projects and move to local-only archive posture'
+    title: 'feat([redacted]): freeze [redacted] and move to local-only archive posture'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2745
     gh_state: closed
@@ -17709,7 +17709,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2769
-    title: 'chore(data-disposition): plan disposition of /mnt/ace/acma-projects.preexisting-* 1.8 TB pre-move backup'
+    title: 'chore(data-disposition): plan disposition of [redacted] 1.8 TB pre-move backup'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2769
     gh_state: closed
@@ -18954,7 +18954,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2926
-    title: 'feat(workstations): acma-WS014 licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]'
+    title: 'feat(workstations): [redacted] licensed-solver machine missing OrcaWave/AQWA/ANSYS (only OrcaFlex) [#2887 matrix finding]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2926
     gh_state: open
@@ -20905,7 +20905,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3505
-    title: 'ops(ace-win-1): equivalence fingerprint ABSENT — sentinel not publishing from acma-ansys05 (flagged by #3502 monitoring)'
+    title: 'ops(ace-win-1): equivalence fingerprint ABSENT — sentinel not publishing from [redacted] (flagged by #3502 monitoring)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3505
     gh_state: open
@@ -20920,7 +20920,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3506
-    title: 'ops(ace-win-2): equivalence fingerprint ABSENT — sentinel not publishing from acma-ws014 (flagged by #3502 monitoring)'
+    title: 'ops(ace-win-2): equivalence fingerprint ABSENT — sentinel not publishing from [redacted] (flagged by #3502 monitoring)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3506
     gh_state: open
@@ -21042,7 +21042,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3524
-    title: '[WRK] bug(workstations): RDP microphone input not negotiated from ACMA-WS014 to ACMA-HOU-RDS02'
+    title: '[WRK] bug(workstations): RDP microphone input not negotiated from [redacted] to [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3524
     gh_state: open
@@ -21060,7 +21060,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3525
-    title: '[WRK] Investigate safe remote Claude job dispatch to ACMA-WS014'
+    title: '[WRK] Investigate safe remote Claude job dispatch to [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3525
     gh_state: open
@@ -22082,7 +22082,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#37
-    title: 'WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)'
+    title: 'WRK-1051: chore(harness): verify Codex config on [redacted] (WRK-1024 follow-up)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/37
     gh_state: open
@@ -22099,11 +22099,11 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## WRK-1051: chore(harness): verify Codex config on acma-ansys05 (WRK-1024 follow-up)
+    body_excerpt: '## WRK-1051: chore(harness): verify Codex config on [redacted] (WRK-1024 follow-up)
 
       **Status:** pending | **Priority:** medium | **Category:** harness/ai-config
 
-      **Repo:** workspace-hub | **Complexity:** simple | **Machine:** acma-ansys05'
+      **Repo:** workspace-hub | **Complexity:** simple | **Machine:** [redacted]'
   - idempotency_key: gh:vamseeachanta/workspace-hub#42
     title: "WRK-1103: learn(harness): complete Anthropic's official Claude Code in Action course + capture learnings"
     source: github_issue
@@ -22240,7 +22240,7 @@ cards:
 
       **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/workspace-hub#52
-    title: 'WRK-1133: Add acma-ws014 to workstations documentation and routing'
+    title: 'WRK-1133: Add [redacted] to workstations documentation and routing'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/52
     gh_state: open
@@ -24656,7 +24656,7 @@ cards:
 
       **Repo:** [''workspace-hub''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/workspace-hub#614
-    title: 'WRK-565: docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field)'
+    title: 'WRK-565: docs: add calc_examples mapping — installation/umbilical calcs ([redacted] + [redacted])'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/614
     gh_state: closed
@@ -24684,7 +24684,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#655
-    title: 'WRK-565: docs: add calc_examples mapping — installation/umbilical calcs (saipem + rock-oil-field)'
+    title: 'WRK-565: docs: add calc_examples mapping — installation/umbilical calcs ([redacted] + [redacted])'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/655
     gh_state: closed
@@ -27908,7 +27908,7 @@ cards:
 
       ### Install Method'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1510
-    title: 'Verify Claude Desktop install: ACMA-WS014'
+    title: 'Verify Claude Desktop install: [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1510
     gh_state: open
@@ -27916,7 +27916,7 @@ cards:
       - priority:low
       - cat:operations
       - domain:workstations
-      - machine:acma-ws014
+      - '[redacted]'
       - dispatch:ready
       - gate:completeness
       - lane:claude
@@ -27925,7 +27925,7 @@ cards:
     priority: 0
     body_excerpt: 'Parent: #1504
 
-      ## Machine: ACMA-WS014 (Windows workstation)
+      [redacted] (Windows workstation)
 
       ### Install Method'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1514
@@ -30983,8 +30983,8 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## Task\nConfigure Telegram bot integration for the Hermes gateway running as a systemd service on ace-linux-1.\n\n## Current State\n- Hermes gateway installed and running as system service (v0.7.0)\n- `GATEWAY_ALLOW_ALL_USERS=true` already set in `~/.hermes/.env`\n- Systemd service properly loads `EnvironmentFile=/home/vamsee/.hermes/.env`\n- No messaging platforms configured yet — gateway logs: "No messaging platforms enabled"\n\n## Required Config (add to `~/.hermes/.env`)\n```\nTELEGRAM_BOT_TOKEN=<bot-token-from-botfather>\nTELEGRAM_ALLOWED_USERS=<user-chat-id>\n```\n\n## Steps\n1. Create bot via @BotFather on Telegram → get token\n2. Start a chat with the bot, send any message\n3. Get chat ID via `curl https://api.telegram.org/bot<TOKEN>/getUpdates`\n4. Add both vars to `~/.hermes/.env`\n5. `hermes gateway restart --system`\n6. Verify gateway logs show Telegram polling started\n7. Send test message to verify end-to-end\n\n## Acceptance\n- Gateway logs show Telegram
-      bot connected\n- Bot responds to a test command (e.g., /status)\n- Message delivery to origin works'
+    body_excerpt: '## Task\nConfigure Telegram bot integration for the Hermes gateway running as a systemd service on ace-linux-1.\n\n## Current State\n- Hermes gateway installed and running as system service (v0.7.0)\n- `GATEWAY_ALLOW_ALL_USERS=true` already set in `~/.hermes/.env`\n- Systemd service properly loads `[redacted]`\n- No messaging platforms configured yet — gateway logs: "No messaging platforms enabled"\n\n## Required Config (add to `~/.hermes/.env`)\n```\nTELEGRAM_BOT_TOKEN=<bot-token-from-botfather>\nTELEGRAM_ALLOWED_USERS=<user-chat-id>\n```\n\n## Steps\n1. Create bot via @BotFather on Telegram → get token\n2. Start a chat with the bot, send any message\n3. Get chat ID via `curl https://api.telegram.org/bot<TOKEN>/getUpdates`\n4. Add both vars to `~/.hermes/.env`\n5. `hermes gateway restart --system`\n6. Verify gateway logs show Telegram polling started\n7. Send test message to verify end-to-end\n\n## Acceptance\n- Gateway logs show Telegram bot connected\n- Bot responds
+      to a test command (e.g., /status)\n- Message delivery to origin works'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1887
     title: 'data: Phase A conference indexing — ISOPE, SPE, and remaining 27 conferences (24,346 papers)'
     source: github_issue
@@ -31441,7 +31441,7 @@ cards:
 
       > **Round Trip**: Workbooks here -> analyze in Claude-in-Excel -> convert to Python -> PR back to digitalmodel/assetutilities repos'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1935
-    title: 'Batch 1: Ballymore Jumper Lift + Mudmat Analysis — 10 workbooks'
+    title: 'Batch 1: [redacted] Jumper Lift + Mudmat Analysis — 10 workbooks'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1935
     gh_state: open
@@ -31456,9 +31456,9 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '# Batch 1: Ballymore Jumper Lift + Mudmat Analysis
+    body_excerpt: '# Batch 1: [redacted] Jumper Lift + Mudmat Analysis
 
-      **Source**: `engineering_workbooks/ballymore/` (10 workbooks)
+      **Source**: `engineering_workbooks/[redacted]/` (10 workbooks)
 
       **Machine**: ws014 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1936
@@ -31525,7 +31525,7 @@ cards:
 
       **Machine**: ws014 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1939
-    title: 'Batch 5: Talos Venice Umbilical Installation — 31 workbooks'
+    title: 'Batch 5: [redacted] Umbilical Installation — 31 workbooks'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1939
     gh_state: open
@@ -31540,13 +31540,13 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '# Batch 5: Talos Venice Umbilical Installation
+    body_excerpt: '# Batch 5: [redacted] Umbilical Installation
 
-      **Source**: `engineering_workbooks/talos_venice/` (31 workbooks)
+      **Source**: `engineering_workbooks/[redacted]_venice/` (31 workbooks)
 
       **Machine**: ws014 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1940
-    title: 'Batch 6: Shell Perdido + VMCast + Production Eng Library — 71 workbooks'
+    title: 'Batch 6: Shell [redacted] + VMCast + Production Eng Library — 71 workbooks'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1940
     gh_state: open
@@ -31561,9 +31561,9 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '# Batch 6: Shell Perdido Manifold + VMCast + Production Engineering
+    body_excerpt: '# Batch 6: Shell [redacted] Manifold + VMCast + Production Engineering
 
-      **Source**: `engineering_workbooks/shell_perdido_south/`, `engineering_workbooks/BP_MD2_FJR_vmcast/`, `client-c/energy_engineering/`
+      **Source**: `engineering_workbooks/shell_[redacted]_south/`, `engineering_workbooks/BP_MD2_FJR_vmcast/`, `client-c/energy_engineering/`
 
       **Machine**: ws014 (Windows)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1953
@@ -31582,7 +31582,7 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## Machine: ws014 (Windows - Claude cowork)
+    body_excerpt: '[redacted] (Windows - Claude cowork)
 
       ## Scope
 
@@ -31788,7 +31788,7 @@ cards:
     priority: 1
     body_excerpt: '## Source: Detected in personal Gmail inbox scan
 
-      From: support@gitguardian.com
+      From: [redacted]
 
       Subject: vamseeachanta/workspace-hub - 1 internal incident detected'
   - idempotency_key: gh:vamseeachanta/workspace-hub#1992
@@ -35949,7 +35949,7 @@ cards:
 
       - analysis/code/model/reporting artifacts -> `assethold`'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2539
-    title: 'chore(rock-oil-field): sanity-check and migrate useful code/data/analysis to Tier-1 repos'
+    title: 'chore([redacted]): sanity-check and migrate useful code/data/analysis to Tier-1 repos'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2539
     gh_state: open
@@ -35971,7 +35971,7 @@ cards:
 
       ## Scope'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2545
-    title: 'chore(saipem): extract useful installation-project information and archive or retire repo'
+    title: 'chore([redacted]): extract useful installation-project information and archive or retire repo'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2545
     gh_state: open
@@ -35993,7 +35993,7 @@ cards:
 
       ## Scope'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2547
-    title: 'chore(seanation): extract useful client information and archive repo'
+    title: 'chore([redacted]): extract useful client information and archive repo'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2547
     gh_state: open
@@ -36824,7 +36824,7 @@ cards:
 
       ## Scope'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2690
-    title: 'R3 — Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, Subsea7/Allseas/Saipem, OrcaFlex/SAGE Profile)'
+    title: 'R3 — Subsea Pipelines: Industry practice (OMAE/ISOPE/OPT, [redacted], OrcaFlex/SAGE Profile)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2690
     gh_state: open
@@ -37801,7 +37801,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2784
-    title: Confirm and delete acma-projects-freeze-work snapshot
+    title: Confirm and delete [redacted] snapshot
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2784
     gh_state: open
@@ -39459,7 +39459,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#3605
-    title: 'INITIATIVE: ACMA & client delivery'
+    title: 'INITIATIVE: [redacted] & client delivery'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/3605
     gh_state: open
