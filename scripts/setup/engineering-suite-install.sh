@@ -6,6 +6,7 @@
 # History:
 #   2026-02-21  Initial creation from WRK-290 (dev-secondary setup)
 #   2026-02-24  WRK-291: added --fea section (CalculiX, Elmer, FEniCSx)
+#   2026-09-24  MYSTRAN (MIT Nastran-compatible solver) added to --fea via mystran-build-linux.sh
 #
 # Tested on:
 #   dev-secondary  Ubuntu 24.04  2026-02-21  OpenFOAM OK, FreeCAD OK (PPA)
@@ -148,7 +149,7 @@ install_bemrosetta() {
 }
 
 # ---------------------------------------------------------------------------
-# FEA programs (from WRK-289 research — top 3 recommendations)
+# FEA programs (from WRK-289 research — top 3 recommendations, + MYSTRAN 2026-09)
 # ---------------------------------------------------------------------------
 install_fea() {
     log "=== Installing FEA programs ==="
@@ -171,6 +172,21 @@ install_fea() {
         log "WARN: fenicsx PPA failed, try conda instead:"
         log "  conda create -n fenicsx-env python=3.12 fenics-dolfinx -c conda-forge"
     }
+
+    # MYSTRAN (Nastran-compatible linear static/modal/buckling — MIT license)
+    # Source build into the invoking user's ~/.local/bin; see
+    # docs/research/mystran-eval.md and scripts/setup/mystran-build-linux.sh
+    log "Installing MYSTRAN build prerequisites..."
+    apt install -y gfortran cmake ninja-build libopenblas-dev git 2>&1 | tail -1 | tee -a "$LOGFILE"
+    local MYSTRAN_BUILD
+    MYSTRAN_BUILD="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/mystran-build-linux.sh"
+    if [[ -f "$MYSTRAN_BUILD" ]]; then
+        log "Building MYSTRAN as ${SUDO_USER:-$USER}..."
+        su - "${SUDO_USER:-$USER}" -c "bash '$MYSTRAN_BUILD'" 2>&1 | tee -a "$LOGFILE" || \
+            log "WARN: MYSTRAN build failed — rerun scripts/setup/mystran-build-linux.sh manually"
+    else
+        log "WARN: $MYSTRAN_BUILD not found; skipping MYSTRAN"
+    fi
 }
 
 # ---------------------------------------------------------------------------
@@ -217,6 +233,7 @@ verify() {
     check "CalculiX"        "which ccx || which ccx_2.23 || ~/.local/bin/ccx --version"
     check "Elmer"           "which ElmerSolver || ~/.local/bin/ElmerSolver --version"
     check "FEniCSx"         "python3 -c 'import dolfinx' || ~/.local/bin/fenicsx-python -c 'import dolfinx'"
+    check "MYSTRAN"         "which mystran || test -x ~/.local/bin/mystran"
     check "Gmsh (Python)"   "python3 -c 'import gmsh'"
     check "ccx2paraview"    "python3 -m ccx2paraview --help"
     check "meshio"          "python3 -c 'import meshio'"
