@@ -31,7 +31,7 @@ def cfg() -> dict:
         },
         "hosts": {
             "ace-linux-1": {"claude": "claude-owner", "codex": "codex-owner"},
-            "ace-linux-2": {"claude": "claude-owner"},
+            "ace-linux-2": {"claude": "claude-owner", "codex": "codex-owner"},
             "ace-win-2": {"claude": "claude-professional", "codex": "codex-professional"},
             "ace-win-1": {"claude": "claude-professional", "codex": "codex-professional"},
         },
@@ -154,3 +154,50 @@ def test_remote_launcher_probes_interpreter_execution_not_presence():
     # must verify the interpreter actually executes, not that it is on PATH.
     assert 'python3 -c' in fleet.REMOTE_CMD
     assert 'command -v python3' not in fleet.REMOTE_CMD
+
+
+def test_expired_weekly_window_is_dropped_and_live_source_outranks_session_log():
+    # Seen 2026-09-26: ace-linux-2's codex session log carried "1% used, resets
+    # 2026-08-21" (five weeks stale) and was chosen over ace-linux-1's live answer
+    # because the probe's captured_at was newer. Live must win, and a window whose
+    # reset is in the past is not a sample.
+    records = [
+        rec("ace-linux-1", "2026-09-26T11:00:00+00:00",
+            codex={"source": "app-server-live", "week_pct": 40,
+                   "week_resets_at": "2026-10-01T16:57:33+00:00", "fingerprint": "222222222222"}),
+        rec("ace-linux-2", "2026-09-26T11:30:00+00:00",  # captured later, but stale content
+            codex={"source": "local-session-rate-limits", "week_pct": 1, "sampled_at": "2026-08-20T09:00:00+00:00",
+                   "week_resets_at": "2026-08-21T11:50:27+00:00", "fingerprint": "222222222222"}),
+    ]
+    agg = fleet.aggregate(cfg(), records, AT)
+    owner = agg["accounts"]["codex-owner"]
+    assert owner["sampled_on"] == "ace-linux-1"
+    assert owner["week_pct"] == 40 and owner["source"] == "app-server-live"
+    assert any("ace-linux-2: codex sample's weekly window reset" in w for w in agg["warnings"])
+
+
+def test_live_source_outranks_newer_session_log_even_when_both_windows_are_current():
+    records = [
+        rec("ace-linux-1", "2026-09-26T11:00:00+00:00",
+            codex={"source": "app-server-live", "week_pct": 40, "week_resets_at": "2026-10-01T00:00:00+00:00"}),
+        rec("ace-linux-2", "2026-09-26T11:30:00+00:00",
+            codex={"source": "local-session-rate-limits", "week_pct": 35, "sampled_at": "2026-09-26T11:20:00+00:00",
+                   "week_resets_at": "2026-10-01T00:00:00+00:00"}),
+    ]
+    agg = fleet.aggregate(cfg(), records, AT)
+    assert agg["accounts"]["codex-owner"]["sampled_on"] == "ace-linux-1"
+    assert not agg["warnings"]
+
+
+def test_two_session_log_samples_rank_by_their_own_sampled_at_not_probe_time():
+    records = [
+        rec("ace-linux-1", "2026-09-26T11:00:00+00:00",  # probed earlier, sampled later
+            codex={"source": "local-session-rate-limits", "week_pct": 30, "sampled_at": "2026-09-26T10:50:00+00:00",
+                   "week_resets_at": "2026-10-01T00:00:00+00:00"}),
+        rec("ace-linux-2", "2026-09-26T11:30:00+00:00",  # probed later, sampled earlier
+            codex={"source": "local-session-rate-limits", "week_pct": 20, "sampled_at": "2026-09-25T10:00:00+00:00",
+                   "week_resets_at": "2026-10-01T00:00:00+00:00"}),
+    ]
+    agg = fleet.aggregate(cfg(), records, AT)
+    assert agg["accounts"]["codex-owner"]["sampled_on"] == "ace-linux-1"
+    assert agg["accounts"]["codex-owner"]["week_pct"] == 30
