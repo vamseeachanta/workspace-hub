@@ -49,6 +49,8 @@ cat docs/reports/ai-account-usage.md                          # fingerprints per
 
 Catalogue note: `config/scheduled-tasks/schedule-tasks.yaml` is the single source of truth and requires the host to be in `config/workstations/registry.yaml`; both files sit under the scheduler mutation attestation (#3475). The collector VM is not registered yet, so this job is installed directly, exactly as the existing daily `fleet-daily-collector` is. Registering `fleet-collector` and moving both jobs into the catalogue is item D1 below.
 
+**2026-09-26 update:** the crontab line this section installs did not survive the day — a VM restart wiped `/var/spool/cron`, so the scheduled run never fired and the first manual run's files sat staged but uncommitted. The job is now installed in the VM's runtime scheduler as `ai-account-usage-hourly` (hourly, ~:13 past the hour); the job body recreates the `/root/.ssh/config` symlink before probing, since restarts wipe `/root` too. Do not reinstall a system crontab line on this VM. The same durability caveat applies to the daily `fleet-daily-collector` job; both are folded into the registry/catalogue step (D1) when it happens.
+
 ## 3. Decision register: further cron jobs for the collector VM
 
 Source: full read of `schedule-tasks.yaml` (67 tasks), the Windows scheduler installer, the registry, the control-surface skill and open fleet issues. The collector VM has ssh to the whole fleet, a checkout, `gh`; it has no licensed solver, no GPU, no Windows, no Outlook, and no session logs of its own.
