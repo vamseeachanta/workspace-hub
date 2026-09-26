@@ -62,9 +62,15 @@ SELF_EXCLUDE = {
 }
 
 
+class GitListingError(RuntimeError):
+    """git could not produce the target list; the scan must not read as clean."""
+
+
 def _git(args: list[str]) -> list[str]:
-    out = subprocess.run(["git", *args], capture_output=True, text=True)
-    return [ln for ln in out.stdout.splitlines() if ln.strip()]
+    out = _git_z([*args[:1], "-z", *args[1:]])
+    if out is None:
+        raise GitListingError(f"git {' '.join(args)} failed")
+    return out
 
 
 def _git_z(args: list[str]) -> list[str] | None:
@@ -92,11 +98,11 @@ def expand_explicit(paths: list[str]) -> tuple[list[str], list[str]]:
             if tracked is None:
                 errors.append(f"{raw}: directory, and git could not list its tracked files")
                 continue
-            tracked = [t for t in tracked if Path(t).is_file()]
+            tracked = [t for t in tracked if _scannable(Path(t))]
             if not tracked:
                 errors.append(f"{raw}: directory contains no tracked files")
             files.extend(tracked)
-        elif p.is_file():
+        elif _scannable(p):
             files.append(raw)
         else:
             errors.append(f"{raw}: no such file")
@@ -112,10 +118,22 @@ def collect_targets(args) -> list[str]:
     return _git(["diff", "--cached", "--name-only", "--diff-filter=ACM"])
 
 
+def _scannable(path: Path) -> bool:
+    """A regular file, or a symlink (scanned as its link text, like git stores it)."""
+    return path.is_symlink() or path.is_file()
+
+
 def violations_in(path: Path, rules) -> list[int]:
-    """Return 1-based line numbers that contain a client identifier (no values)."""
+    """Return 1-based line numbers that contain a client identifier (no values).
+
+    A symlink is scanned as its target text, which is the content git tracks;
+    following it would scan an unrelated file, or nothing when it dangles.
+    """
     try:
-        text = path.read_text(encoding="utf-8")
+        if path.is_symlink():
+            text = os.readlink(path)
+        else:
+            text = path.read_text(encoding="utf-8")
     except (UnicodeDecodeError, OSError):
         return []
     hits: list[int] = []
@@ -193,7 +211,12 @@ def main() -> int:
     if args.paths:
         targets, target_errors = expand_explicit(args.paths)
     else:
-        targets = collect_targets(args)
+        try:
+            targets = collect_targets(args)
+        except GitListingError as exc:
+            print(f"✖ legal-client-pii: {exc} — failing closed (no target list, nothing scanned).",
+                  file=sys.stderr)
+            return 2
 
     bad: list[tuple[str, list[int]]] = []
     scanned = 0
@@ -201,7 +224,7 @@ def main() -> int:
         if rel in SELF_EXCLUDE:
             continue
         fp = Path(rel)
-        if not fp.is_file():
+        if not _scannable(fp):
             continue
         scanned += 1
         lines = violations_in(fp, rules)
@@ -216,7 +239,6 @@ def main() -> int:
             print(f"  {rel}: line(s) {shown}", file=sys.stderr)
         print("\nFix: uv run python scripts/legal/redact-client-pii.py --map <private-map> <file>", file=sys.stderr)
         print("Bypass (discouraged): LEGAL_PII_ALLOW=1", file=sys.stderr)
-        return 1
 
     if target_errors:
         print("✖ legal-client-pii: explicit target(s) could not be scanned — failing closed "
@@ -224,6 +246,9 @@ def main() -> int:
         for err in target_errors:
             print(f"  {err}", file=sys.stderr)
         return 2
+
+    if bad:
+        return 1
 
     print(f"✓ legal-client-pii: {scanned} file(s) scanned, clean.")
     return 0

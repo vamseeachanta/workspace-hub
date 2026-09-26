@@ -159,3 +159,54 @@ def test_directory_hit_withholds_the_matched_value(repo, synth_map):
     blob = r.stdout + r.stderr
     assert SENTINEL not in blob
     assert CODENAME not in blob
+
+
+# ── review findings (Codex r1): git failures, symlinks, precedence ────────────
+
+
+def test_all_outside_a_git_repo_is_not_a_pass(tmp_path, synth_map):
+    bare = tmp_path / "not-a-repo"
+    bare.mkdir()
+    (bare / "doc.md").write_text(f"{SENTINEL}\n", encoding="utf-8")
+    env = _env()
+    env["GIT_CEILING_DIRECTORIES"] = str(tmp_path)
+    r = subprocess.run(
+        [sys.executable, str(SCRIPT), "--map", str(synth_map), "--all"],
+        cwd=bare, capture_output=True, text=True, env=env,
+    )
+    assert r.returncode == 2, f"{r.returncode}: {r.stdout}{r.stderr}"
+    assert "clean" not in (r.stdout + r.stderr).lower()
+
+
+def test_invalid_base_ref_is_not_a_pass(repo, synth_map):
+    r = run_guard(repo, synth_map, "--base-ref", "no-such-ref")
+    assert r.returncode == 2, f"{r.returncode}: {r.stdout}{r.stderr}"
+
+
+def test_missing_path_dominates_a_dirty_file(repo, synth_map):
+    track(repo, "bad.md", f"{SENTINEL}\n")
+    r = run_guard(repo, synth_map, "bad.md", "missing.md")
+    assert r.returncode == 2
+    assert "bad.md" in r.stderr, "the violation must still be reported"
+
+
+def _can_symlink(tmp_path: Path) -> bool:
+    try:
+        (tmp_path / "probe-link").symlink_to("probe-target")
+    except (OSError, NotImplementedError):
+        return False
+    return True
+
+
+def test_tracked_symlink_target_text_is_scanned(repo, synth_map, tmp_path):
+    if not _can_symlink(tmp_path):
+        pytest.skip("symlink creation not permitted on this host")
+    _git(repo, "config", "core.symlinks", "true")
+    (repo / "d").mkdir()
+    (repo / "d" / "link").symlink_to(f"../{SENTINEL}/nowhere")  # dangling
+    _git(repo, "add", "--", "d/link")
+    _git(repo, "commit", "-qm", "add link")
+    r = run_guard(repo, synth_map, "d")
+    assert r.returncode == 1, f"{r.returncode}: {r.stdout}{r.stderr}"
+    r_all = run_guard(repo, synth_map, "--all")
+    assert r_all.returncode == 1, f"{r_all.returncode}: {r_all.stdout}{r_all.stderr}"
