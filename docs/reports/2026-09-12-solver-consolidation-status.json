@@ -1,0 +1,72 @@
+{
+  "observed_at": "2026-09-12T17:47:21.3837447Z",
+  "initiative": "https://github.com/vamseeachanta/workspace-hub/issues/3601",
+  "fleet": [
+    {
+      "roots": [
+        "D:/ws"
+      ],
+      "host": "ace-win-1",
+      "access": "local",
+      "coverage": "repo/worktree inventory"
+    },
+    {
+      "roots": [
+        "/mnt/local-analysis",
+        "/mnt/ace/ws"
+      ],
+      "host": "ace-linux-1",
+      "access": "ssh verified",
+      "coverage": "first-level entries and digitalmodel/workspace-hub worktrees"
+    },
+    {
+      "roots": [
+        "/mnt/local-analysis"
+      ],
+      "host": "ace-linux-2",
+      "access": "ssh verified",
+      "coverage": "first-level entries and digitalmodel worktrees"
+    },
+    {
+      "roots": [
+        "/home/undi/ws"
+      ],
+      "host": "gpu-claw",
+      "access": "ssh verified",
+      "coverage": "first-level entries and workspace-hub worktrees"
+    },
+    {
+      "host": "ace-win-2",
+      "access": "authentication rejected",
+      "coverage": "historical records only"
+    },
+    {
+      "host": "macbook",
+      "access": "registered DNS name unresolved",
+      "coverage": "none"
+    },
+    {
+      "host": "shoerack",
+      "access": "registered DNS name unresolved",
+      "coverage": "none"
+    }
+  ],
+  "verification": {
+    "focused_tests": "70 original focused tests passed; RED 10dcd813 15 failed/2 passed; GREEN cf9ddc66 81 passed; independent Codex review reran 17 regressions, bounded APPROVE",
+    "ansys_branch": "0484af002f059f9819d2d3212e467fb661f88737; 5 commits beyond current origin/main",
+    "navcad": "No NavCad-named paths or source/test text hits in local digitalmodel; one documentation mention",
+    "pr2106": "Correction tip f5f1bb20 pushed and remote branch verified; original b6d5ac02 had 30 SUCCESS; axisymmetric P2 plus final CI/cross-provider gates remain",
+    "data_contract": "Referenced agent-data-handling-contract.md absent locally, on origin/main and queried GitHub path; existing data-layer contracts consulted; no engineering datasets transformed",
+    "ghs": "PR2102 draft; native recovery and qualification pending",
+    "pr2099": "MERGED f7faaa969b678846a277e51cb755d6567fc26982",
+    "nested_policy_gap": "AbscissaConfig accepts custom NaN/inf gap thresholds; reproduced and filed https://github.com/vamseeachanta/digitalmodel/issues/2111 (needs-plan)"
+  },
+  "changes": {
+    "access": "First-seen SSH host keys recorded using accept-new; no credential changes",
+    "deleted_directories": 0,
+    "merges": 0,
+    "native_runs": 0,
+    "quarantined_worktrees": 2,
+    "pushed_correction_tip": "f5f1bb20f6a5c9bba47b0b15e216a54b2e33c5bc"
+  }
+}
