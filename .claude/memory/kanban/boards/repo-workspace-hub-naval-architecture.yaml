@@ -490,7 +490,7 @@ cards:
 
       ## Plan Reference'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2260
-    title: 'feat(acma-codes): staged metadata-only wiki sweep for ACMA standards collection'
+    title: 'feat([redacted]): staged metadata-only wiki sweep for [redacted] standards collection'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2260
     gh_state: closed
@@ -506,7 +506,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2261
-    title: 'feat(acma-codes): Wave 1 metadata-only wiki sweep — OCIMF (MEG 4), OCIMF, CSA'
+    title: 'feat([redacted]): Wave 1 metadata-only wiki sweep — OCIMF (MEG 4), OCIMF, CSA'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2261
     gh_state: closed
@@ -522,7 +522,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2262
-    title: "feat(acma-codes): Wave 2 metadata-only wiki sweep — API, Lloyd's Register, SIGTTO, Noble Denton"
+    title: "feat([redacted]): Wave 2 metadata-only wiki sweep — API, Lloyd's Register, SIGTTO, Noble Denton"
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2262
     gh_state: closed
@@ -538,7 +538,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2263
-    title: 'feat(acma-codes): Wave 3 metadata-only wiki sweep — ISO, ASTM, IACS'
+    title: 'feat([redacted]): Wave 3 metadata-only wiki sweep — ISO, ASTM, IACS'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2263
     gh_state: closed
@@ -554,7 +554,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2264
-    title: 'feat(acma-codes): Wave 4 metadata-only wiki sweep — DNV Rules, ABS Rules, IMO, USCG'
+    title: 'feat([redacted]): Wave 4 metadata-only wiki sweep — DNV Rules, ABS Rules, IMO, USCG'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2264
     gh_state: closed
@@ -570,7 +570,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2278
-    title: 'chore(acma-codes): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave'
+    title: 'chore([redacted]): reconcile OCIMF MEG fragments misfiled under Noble Denton metadata wave'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2278
     gh_state: open
@@ -592,7 +592,7 @@ cards:
 
       ## Why'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2279
-    title: 'chore(acma-codes): codify support-artifact defer/reject policy for metadata-only sweep waves'
+    title: 'chore([redacted]): codify support-artifact defer/reject policy for metadata-only sweep waves'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2279
     gh_state: open
@@ -629,7 +629,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2760
-    title: 'revise(naval-arch): B1528 SIROCCO force calculation review updates'
+    title: 'revise(naval-arch): [redacted] [redacted] force calculation review updates'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2760
     gh_state: open
@@ -648,7 +648,7 @@ cards:
     priority: 1
     body_excerpt: '## Purpose
 
-      Capture and execute revisions to the B1528 proj-a moored-current ship/rudder force calculation package through an interactive, force-by-force engineering review.
+      Capture and execute revisions to the [redacted] proj-a moored-current ship/rudder force calculation package through an interactive, force-by-force engineering review.
 
       ## Parent / source issue'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2564
@@ -732,7 +732,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2569
-    title: 'docs(acma): B1528 SIROCCO rudder source pack and benchmark extraction'
+    title: 'docs([redacted]): [redacted] [redacted] rudder source pack and benchmark extraction'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2569
     gh_state: closed
@@ -749,7 +749,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2570
-    title: 'feat(naval-arch): B1528 SIROCCO yaw-moment input and interactive static report'
+    title: 'feat(naval-arch): [redacted] [redacted] yaw-moment input and interactive static report'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2570
     gh_state: closed
@@ -766,7 +766,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2571
-    title: 'feat(naval-arch): B1528 SIROCCO time-trace benchmark report with rudder inflow feedback'
+    title: 'feat(naval-arch): [redacted] [redacted] time-trace benchmark report with rudder inflow feedback'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2571
     gh_state: closed
@@ -783,7 +783,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2642
-    title: 'feat(naval-arch): B1528 SIROCCO moored-current rudder force component report'
+    title: 'feat(naval-arch): [redacted] [redacted] moored-current rudder force component report'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2642
     gh_state: closed

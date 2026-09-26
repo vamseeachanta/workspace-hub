@@ -27,8 +27,23 @@ except ImportError:
 
 # --- Configuration ---
 WORKSPACE_ROOT = Path(__file__).resolve().parents[3]
-BATCH_FILE = WORKSPACE_ROOT / "data" / "document-index" / "conference-index-batch.jsonl"
-DEFAULT_OUTPUT = WORKSPACE_ROOT / "data" / "document-index" / "conference-phase-a-results.jsonl"
+# C20: the batch and the results carry archive-drive paths and titles that name
+# clients. Both live in the private data directory (WORKSPACE_HUB_PRIVATE_DATA_DIR).
+BATCH_REL = "data/document-index/" + "conference-index-batch.jsonl"
+RESULTS_REL = "data/document-index/" + "conference-phase-a-results.jsonl"
+
+
+def _private_data():
+    """scripts/lib/private_data.py, loaded by path (C20)."""
+    import importlib.util
+
+    path = WORKSPACE_ROOT / "scripts" / "lib" / "private_data.py"
+    spec = importlib.util.spec_from_file_location("_bcpa_private_data", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 CHECKPOINT_FILE = WORKSPACE_ROOT / ".cache" / "conference-phase-a-checkpoint.json"
 
 # --- Helper Functions ---
@@ -150,8 +165,8 @@ def main():
     parser.add_argument(
         '--output',
         type=Path,
-        default=DEFAULT_OUTPUT,
-        help=f"Output JSONL file (default: {DEFAULT_OUTPUT})"
+        default=None,
+        help="Output JSONL file (default: <private data dir>/" + RESULTS_REL + ")"
     )
     parser.add_argument(
         '--force-rerun',
@@ -160,10 +175,17 @@ def main():
     )
 
     args = parser.parse_args()
-    
+    pd = _private_data()
+    try:
+        batch_file = pd.private_data_path(BATCH_REL)
+        args.output = pd.resolve_output(args.output, RESULTS_REL)
+    except pd.PrivateDataUnavailable as exc:
+        print(f"ERROR: {exc}; nothing read or written", file=sys.stderr)
+        return 3
+
     # --- File Loading ---
     print("Loading batch file...")
-    with open(BATCH_FILE, 'r') as f:
+    with open(batch_file, 'r') as f:
         all_entries = [json.loads(line) for line in f]
     
     # --- Filtering ---
@@ -226,4 +248,4 @@ def main():
         CHECKPOINT_FILE.unlink(missing_ok=True)
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

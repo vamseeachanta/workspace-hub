@@ -10,7 +10,12 @@
 #      Generalizable classes (feedback_/reference_/user_/MEMORY) still snapshot.
 #   2. Defense-in-depth: skip any file matching a .legal-deny-list.yaml client pattern.
 #   3. Self-heal: remove any project_*.md already present in the public snapshot dir.
-# Prints a one-line summary. Always returns 0 (a snapshot must never break the cron).
+#   4. C20: when the caller defines pii_snapshot_copy SRC DEST, every copy goes
+#      through it (commit-learning-artifacts.sh passes the identifier gate's
+#      redactor, which also skips a file whose NAME carries an identifier).
+# Prints a one-line summary. Returns 0, except when a caller-defined
+# pii_snapshot_copy fails: then it stops and returns 1 so the caller can fail
+# closed instead of committing an unredacted snapshot.
 
 pii_safe_snapshot() {
   local src="$1" dest="$2" denylist="${3:-}"
@@ -42,7 +47,16 @@ pii_safe_snapshot() {
     if [ -n "$denyfile" ] && [ -s "$denyfile" ] && grep -qiFf "$denyfile" "$f"; then
       skipped=$((skipped + 1)); continue
     fi
-    cp "$f" "$dest/" && copied=$((copied + 1))
+    if declare -F pii_snapshot_copy >/dev/null 2>&1; then
+      if ! pii_snapshot_copy "$f" "$dest/$base"; then
+        [ -n "$denyfile" ] && rm -f "$denyfile"
+        echo "[pii-snapshot] redacting copy failed; snapshot stopped"
+        return 1
+      fi
+      if [ -e "$dest/$base" ]; then copied=$((copied + 1)); else skipped=$((skipped + 1)); fi
+    else
+      cp "$f" "$dest/" && copied=$((copied + 1))
+    fi
   done
   [ -n "$denyfile" ] && rm -f "$denyfile"
 
