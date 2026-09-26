@@ -46,6 +46,10 @@ DISPOSITION_CONTRACT = {
             "scripts/coordination/context/setup_cron.sh",
             "scripts/operations/maintenance/setup_maintenance_cron.sh",
             "scripts/setup/setup-engineering-update-cron.sh",
+            # Added by #3906 (hourly account-usage job on the fleet collector
+            # VM): the same marker-filtered `crontab -l | ... | crontab -`
+            # replacement as the members above.
+            "scripts/fleet/install-fleet-collector-cron.sh",
         },
     ),
     "kanban-dual-backend": (
