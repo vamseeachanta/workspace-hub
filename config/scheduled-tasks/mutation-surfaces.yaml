@@ -80,6 +80,19 @@ surfaces:
         transaction: *missing_transaction
         attestations: [crontab-root-target-v1]
 
+  # Added by #3906: installs the hourly account-usage job on the fleet collector
+  # VM by filtering its marker out of `crontab -l` and piping the result back to
+  # `crontab -` -- the same untransactional whole-crontab replacement as the
+  # other legacy writers, so it joins their migration group rather than being
+  # declared compliant.
+  - path: scripts/fleet/install-fleet-collector-cron.sh
+    kind: direct-owner
+    disposition_group: legacy-crontab-writers
+    operations:
+      - <<: *legacy_current_user_operation
+        authority_branches:
+          - {id: marker-filter, mechanism: command-substring, config_source: scripts/fleet/install-fleet-collector-cron.sh, destructive: true, strength: substring}
+
   - path: scripts/install/setup-kanban-loader-timer.sh
     kind: direct-owner
     disposition_group: kanban-dual-backend
@@ -267,7 +280,7 @@ surfaces:
 disposition_groups:
   - group_id: legacy-crontab-writers
     issue: {repository: vamseeachanta/workspace-hub, number: 3476}
-    members: [scripts/coordination/context/setup_cron.sh, scripts/operations/maintenance/setup_maintenance_cron.sh, scripts/setup/setup-engineering-update-cron.sh]
+    members: [scripts/coordination/context/setup_cron.sh, scripts/operations/maintenance/setup_maintenance_cron.sh, scripts/setup/setup-engineering-update-cron.sh, scripts/fleet/install-fleet-collector-cron.sh]
     defect_class: untransactional-whole-crontab-replacement
   - group_id: kanban-dual-backend
     issue: {repository: vamseeachanta/workspace-hub, number: 3477}

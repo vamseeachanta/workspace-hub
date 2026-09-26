@@ -27,6 +27,8 @@ DIRECT = {
     "scripts/windows/setup-scheduler-tasks.ps1",
     "scripts/coordination/context/setup_scheduled_task.ps1",
     "scripts/solver/setup-scheduler.ps1",
+    "scripts/install/setup-tmux-autosave-timer.sh",
+    "scripts/fleet/install-fleet-collector-cron.sh",
 }
 TRANSITIVE = {
     "scripts/cron/setup-cron.sh",
@@ -319,5 +321,5 @@ def test_dedicated_disposition_coordinates_are_exact():
     groups = {g["group_id"]: g["issue"]["number"] for g in registry["disposition_groups"]}
     assert groups == {
             "legacy-crontab-writers": 3476, "kanban-dual-backend": 3477, "windows-task-writers": 3478,
-        "harness-update": 3479,
+        "harness-update": 3479, "tmux-session-persistence": 3792,
     }
