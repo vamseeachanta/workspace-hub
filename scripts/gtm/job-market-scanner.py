@@ -16,13 +16,20 @@ Usage:
     python scripts/gtm/job-market-scanner.py [--keywords KEY1,KEY2] [--limit N]
     python scripts/gtm/job-market-scanner.py --refresh   # weekly refresh mode
 
-Output:
-    docs/strategy/gtm/job-market-scan/raw-results/YYYY-MM-DD.json
-    docs/strategy/gtm/job-market-scan/cumulative-index.json    (all-time seen jobs)
-    docs/strategy/gtm/job-market-scan/new-this-week.md         (delta from last scan)
-    docs/strategy/gtm/job-market-scan/dashboard.md
-    docs/strategy/gtm/job-market-scan/priority-targets.md
-    docs/strategy/gtm/job-market-scan/trend-report.md          (week-over-week trends)
+    python scripts/gtm/job-market-scanner.py --print-output-dir   # resolve only
+
+Output (C19): the results name employers and contractors, so they are written to
+a PRIVATE repository, never to this public one. The directory is read from the
+private overlay key ``outputs.job_market_dir`` (scripts/lib/private_overlay.py)
+or given with ``--output-dir``. An unset, relative, missing or in-repository
+directory fails closed before any request is made.
+
+    <private dir>/raw-results/YYYY-MM-DD.json
+    <private dir>/cumulative-index.json    (all-time seen jobs)
+    <private dir>/new-this-week.md         (delta from last scan)
+    <private dir>/dashboard.md
+    <private dir>/priority-targets.md
+    <private dir>/trend-report.md          (week-over-week trends)
 
 Related: GitHub issues #1669, #1670, #1671
 """
@@ -50,11 +57,14 @@ from bs4 import BeautifulSoup
 # ---------------------------------------------------------------------------
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-OUTPUT_DIR = REPO_ROOT / "docs" / "strategy" / "gtm" / "job-market-scan"
-RAW_DIR = OUTPUT_DIR / "raw-results"
-ARCHIVE_DIR = OUTPUT_DIR / "archive"
-KEYWORD_DIR = OUTPUT_DIR / "keyword-results"
-PROFILE_DIR = OUTPUT_DIR / "company-profiles"
+# Output locations are unset until configure_output_dir() runs with a private
+# directory (C19). Nothing is written into the public tree.
+OUTPUT_DIR: "Path | None" = None
+RAW_DIR: "Path | None" = None
+ARCHIVE_DIR: "Path | None" = None
+KEYWORD_DIR: "Path | None" = None
+PROFILE_DIR: "Path | None" = None
+CUMULATIVE_PATH: "Path | None" = None
 RAW_RETENTION_WEEKS = 12
 HISTORY_RETENTION_MONTHS = 6
 
@@ -539,6 +549,30 @@ def _apply_private_overlay() -> None:
 _apply_private_overlay()
 
 
+def resolve_output_dir(explicit: "str | None") -> Path:
+    """Private output directory: ``--output-dir`` if given, else the overlay's
+    ``outputs.job_market_dir``. Fails closed (PrivateOverlayError) when unset,
+    relative, missing or inside this public repository (C19)."""
+    from scripts.lib import private_overlay
+
+    if explicit:
+        return private_overlay.check_private_dir(explicit, "--output-dir", REPO_ROOT)
+    return private_overlay.require_output_dir(
+        private_overlay.load(), "outputs.job_market_dir", REPO_ROOT
+    )
+
+
+def configure_output_dir(output_dir: Path) -> None:
+    """Point every output location at ``output_dir``."""
+    global OUTPUT_DIR, RAW_DIR, ARCHIVE_DIR, KEYWORD_DIR, PROFILE_DIR, CUMULATIVE_PATH
+    OUTPUT_DIR = Path(output_dir)
+    RAW_DIR = OUTPUT_DIR / "raw-results"
+    ARCHIVE_DIR = OUTPUT_DIR / "archive"
+    KEYWORD_DIR = OUTPUT_DIR / "keyword-results"
+    PROFILE_DIR = OUTPUT_DIR / "company-profiles"
+    CUMULATIVE_PATH = OUTPUT_DIR / "cumulative-index.json"
+
+
 def scan_career_page(company: str, url: str, search_terms: list[str] | None = None) -> list[dict]:
     """Scan a company career page for relevant job postings."""
     jobs = []
@@ -930,7 +964,7 @@ def generate_priority_targets(result: dict, date_str: str):
 # History Tracking & Cumulative Index
 # ---------------------------------------------------------------------------
 
-CUMULATIVE_PATH = OUTPUT_DIR / "cumulative-index.json"
+# CUMULATIVE_PATH is set by configure_output_dir() (see Configuration).
 
 
 def enforce_retention_policy(date_str: str) -> dict:
@@ -1276,7 +1310,10 @@ def main():
     parser.add_argument("--skip-career-pages", action="store_true",
                        help="Skip company career page scanning")
     parser.add_argument("--output-dir", type=str, default=None,
-                       help="Override output directory")
+                       help="Private output directory (absolute, existing, outside this "
+                            "repository); default: overlay key outputs.job_market_dir")
+    parser.add_argument("--print-output-dir", action="store_true",
+                       help="Resolve the private output directory, print it and exit")
     parser.add_argument("--refresh", action="store_true",
                        help="Weekly refresh mode — runs full scan with history tracking")
 
@@ -1286,13 +1323,17 @@ def main():
     if args.keywords:
         keywords = [k.strip() for k in args.keywords.split(",")]
 
-    if args.output_dir:
-        global OUTPUT_DIR, RAW_DIR, KEYWORD_DIR, PROFILE_DIR, CUMULATIVE_PATH
-        OUTPUT_DIR = Path(args.output_dir)
-        RAW_DIR = OUTPUT_DIR / "raw-results"
-        KEYWORD_DIR = OUTPUT_DIR / "keyword-results"
-        PROFILE_DIR = OUTPUT_DIR / "company-profiles"
-        CUMULATIVE_PATH = OUTPUT_DIR / "cumulative-index.json"
+    from scripts.lib.private_overlay import PrivateOverlayError
+
+    try:
+        output_dir = resolve_output_dir(args.output_dir)
+    except PrivateOverlayError as exc:
+        print(f"job-market-scanner: {exc}", file=sys.stderr)
+        return 2
+    if args.print_output_dir:
+        print(output_dir)
+        return 0
+    configure_output_dir(output_dir)
 
     result = run_scan(
         keywords=keywords,

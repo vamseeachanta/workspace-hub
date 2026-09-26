@@ -26,7 +26,7 @@
 Not applicable (harness/infrastructure issue).
 
 ### LLM Wiki pages consulted
-No relevant wiki pages (harness/infrastructure issue). External source of truth consulted instead: the private client machine registry (`llm-wiki-acma/docs/operations/machine-equality-hosts.yml`, commit `d12da52` there, validated by that repo's issue-285 privacy checker) — binds each equality column to its physical hostname. Owner decision 2026-07-17 (issue comment): direct hostnames live ONLY in private client repositories; public workspace-hub surfaces carry logical labels.
+No relevant wiki pages (harness/infrastructure issue). External source of truth consulted instead: the private client machine registry (`llm-wiki-mkt-a/docs/operations/machine-equality-hosts.yml`, commit `d12da52` there, validated by that repo's issue-285 privacy checker) — binds each equality column to its physical hostname. Owner decision 2026-07-17 (issue comment): direct hostnames live ONLY in private client repositories; public workspace-hub surfaces carry logical labels.
 
 ### Prior art / constraints
 - PR #3279 (closed): adding this box's hostname to the public map was rejected — the token collides with a private client codename; `legal-client-pii-gate` is authoritative. **This plan must not introduce any physical hostname into workspace-hub.**

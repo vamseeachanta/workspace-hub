@@ -34,7 +34,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#268
-    title: 'WRK-628: feat(frontierdeepwater): client AI roadshow — phased engineering AI adoption programme'
+    title: 'WRK-628: feat([redacted]): client AI roadshow — phased engineering AI adoption programme'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/268
     gh_state: open
@@ -56,7 +56,7 @@ cards:
 
       **Repo:** [''client-a'', ''aceengineer-website''] | **Complexity:** complex | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#267
-    title: 'WRK-625: feat(frontierdeepwater): engineering AI demo — system prompts + knowledge base (Day 1)'
+    title: 'WRK-625: feat([redacted]): engineering AI demo — system prompts + knowledge base (Day 1)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/267
     gh_state: open
@@ -100,7 +100,7 @@ cards:
 
       **Repo:** [''workspace-hub''] | **Complexity:** complex | **Machine:** [''dev-primary'', ''dev-secondary'']'
   - idempotency_key: gh:vamseeachanta/digitalmodel#271
-    title: 'WRK-631: feat(frontierdeepwater): Microsoft Teams chatbot integration — Phase 2 deployment for both clients'
+    title: 'WRK-631: feat([redacted]): Microsoft Teams chatbot integration — Phase 2 deployment for both clients'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/271
     gh_state: open
@@ -445,7 +445,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/pipeline
 
-      **Complexity:** complex | **Machine:** acma-ansys05'
+      **Complexity:** complex | **Machine:** [redacted]'
   - idempotency_key: gh:vamseeachanta/digitalmodel#137
     title: 'WRK-045: OrcaFlex rigid jumper analysis - stress and VIV for various configurations'
     source: github_issue
@@ -467,7 +467,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/pipeline
 
-      **Complexity:** complex | **Machine:** acma-ansys05'
+      **Complexity:** complex | **Machine:** [redacted]'
   - idempotency_key: gh:vamseeachanta/digitalmodel#138
     title: 'WRK-046: OrcaFlex drilling and completion riser parametric analysis'
     source: github_issue
@@ -489,7 +489,7 @@ cards:
 
       **Status:** pending | **Priority:** medium | **Category:** engineering/marine
 
-      **Complexity:** complex | **Machine:** acma-ansys05'
+      **Complexity:** complex | **Machine:** [redacted]'
   - idempotency_key: gh:vamseeachanta/digitalmodel#140
     title: 'WRK-075: OFFPIPE Integration Module \u2014 pipelay cross-validation against OrcaFlex'
     source: github_issue
@@ -511,7 +511,7 @@ cards:
 
       **Status:** pending | **Priority:** low | **Category:** engineering/marine
 
-      **Complexity:** complex | **Machine:** acma-ansys05'
+      **Complexity:** complex | **Machine:** [redacted]'
   - idempotency_key: gh:vamseeachanta/digitalmodel#176
     title: 'WRK-478: feat(subsea): create Cathodic Protection module (DNV-RP-B401)'
     source: github_issue
@@ -689,7 +689,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#190
-    title: 'WRK-498: feat(doris/pipeline): Implement API RP 1111 — API RP 1111'
+    title: 'WRK-498: feat([redacted]): Implement API RP 1111 — API RP 1111'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/190
     gh_state: open
@@ -733,7 +733,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#193
-    title: 'WRK-500: feat(doris/pipeline): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci'
+    title: 'WRK-500: feat([redacted]): Implement API RP 1109 — API RP 1109 Marking Liquid Petroleum Pipeline Faci'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/193
     gh_state: open
@@ -777,7 +777,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#196
-    title: 'WRK-502: feat(doris/pipeline): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se'
+    title: 'WRK-502: feat([redacted]): Implement ISO 16708 — ISO 16708 1st Ed (2006) Pipeline transportation se'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/196
     gh_state: open
@@ -821,7 +821,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#198
-    title: 'WRK-504: feat(doris/pipeline): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri'
+    title: 'WRK-504: feat([redacted]): Implement ISO 13628 — ISO 13628 Pt 7 DRAFT (2003) Completion workover ri'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/198
     gh_state: open
@@ -997,7 +997,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** complex | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#210
-    title: 'WRK-506: feat(doris/pipeline): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers'
+    title: 'WRK-506: feat([redacted]): Implement ISO 13624-1 — DIN EN ISO 13624-1 (2007-11) Risers'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/210
     gh_state: open
@@ -1041,7 +1041,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#215
-    title: 'WRK-508: feat(doris/pipeline): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers'
+    title: 'WRK-508: feat([redacted]): Implement ISO 13628-7 — ISO 13628-7 2005 Completion Workover Risers'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/215
     gh_state: open
@@ -1085,7 +1085,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#217
-    title: 'WRK-510: feat(doris/pipeline): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ'
+    title: 'WRK-510: feat([redacted]): Implement ISO 16389 — ISO 16389 (2003) Dynamic Risers for Floating Produ'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/217
     gh_state: open
@@ -1129,7 +1129,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#219
-    title: 'WRK-512: feat(doris/pipeline): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float'
+    title: 'WRK-512: feat([redacted]): Implement API STD 2RD — API STD 2RD 2nd Ed (2013) Dynamic Risers for Float'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/219
     gh_state: open
@@ -1173,7 +1173,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#221
-    title: 'WRK-514: feat(doris/pipeline): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems'
+    title: 'WRK-514: feat([redacted]): Implement DNV F101 — DNV OS F101 (2010) Submarine Pipeline Systems'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/221
     gh_state: open
@@ -1217,7 +1217,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** high | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#223
-    title: 'WRK-516: feat(doris/pipeline): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C'
+    title: 'WRK-516: feat([redacted]): Implement API RP 17G — API RP 17G 2nd Ed (2006) Design and Operation of C'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/223
     gh_state: open
@@ -1261,7 +1261,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#225
-    title: 'WRK-518: feat(doris/pipeline): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy'
+    title: 'WRK-518: feat([redacted]): Implement DNV OSS 006 — DNV OSS 006 (1981) Rules for Submarine Pipeline Sy'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/225
     gh_state: open
@@ -1305,7 +1305,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#227
-    title: 'WRK-520: feat(doris/pipeline): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers'
+    title: 'WRK-520: feat([redacted]): Implement DNV F201 — DNV OS F201 (2010) Dynamic Risers'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/227
     gh_state: open
@@ -1349,7 +1349,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#229
-    title: 'WRK-522: feat(doris/pipeline): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi'
+    title: 'WRK-522: feat([redacted]): Implement DNV F110 — DNV RP F110 (2007) Global buckling of submarine pi'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/229
     gh_state: open
@@ -1393,7 +1393,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#231
-    title: 'WRK-524: feat(doris/pipeline): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr'
+    title: 'WRK-524: feat([redacted]): Implement DNV F108 — DNV RP F108 with update 2009 (2006) Fracture Contr'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/231
     gh_state: open
@@ -1437,7 +1437,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#233
-    title: 'WRK-526: feat(doris/pipeline): Implement DNV F203 — DNV RP F203 (2009) Riser interference'
+    title: 'WRK-526: feat([redacted]): Implement DNV F203 — DNV RP F203 (2009) Riser interference'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/233
     gh_state: open
@@ -1481,7 +1481,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#235
-    title: 'WRK-528: feat(doris/pipeline): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines'
+    title: 'WRK-528: feat([redacted]): Implement DNV F105 — DNV RP F105 (2006) Free Spanning Pipelines'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/235
     gh_state: open
@@ -1525,7 +1525,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#237
-    title: 'WRK-530: feat(doris/pipeline): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an'
+    title: 'WRK-530: feat([redacted]): Implement DNV F102 — DNV RP F102 (2011) Pipeline Field Joint Coating an'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/237
     gh_state: open
@@ -1569,7 +1569,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#239
-    title: 'WRK-532: feat(doris/pipeline): Implement DNV F202 — DNV RP F202 (2010) Composite Risers'
+    title: 'WRK-532: feat([redacted]): Implement DNV F202 — DNV RP F202 (2010) Composite Risers'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/239
     gh_state: open
@@ -1613,7 +1613,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#241
-    title: 'WRK-534: feat(doris/pipeline): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management'
+    title: 'WRK-534: feat([redacted]): Implement DNV F206 — DNV RP F206 (2008) Riser Integrity Management'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/241
     gh_state: open
@@ -1657,7 +1657,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#243
-    title: 'WRK-536: feat(doris/pipeline): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s'
+    title: 'WRK-536: feat([redacted]): Implement DNV F109 — DNV RP F109 (2007) On-bottom stability design of s'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/243
     gh_state: open
@@ -1701,7 +1701,7 @@ cards:
 
       **Repo:** [''digitalmodel''] | **Complexity:** medium | **Machine:** dev-primary'
   - idempotency_key: gh:vamseeachanta/digitalmodel#245
-    title: 'WRK-538: feat(doris/pipeline): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari'
+    title: 'WRK-538: feat([redacted]): Implement DNV F116 — DNV RP F116 (2009) Integrity Management of Submari'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/245
     gh_state: open
@@ -1951,7 +1951,7 @@ cards:
 
       Generate professional engineering reports from jumper analysis results.'
   - idempotency_key: gh:vamseeachanta/digitalmodel#480
-    title: 'BUG: Verify PLET-PLEM jumper segment lengths from SZ_Ballymore_Jumper_MF.xlsm'
+    title: 'BUG: Verify PLET-PLEM jumper segment lengths from SZ_[redacted]_Jumper_MF.xlsm'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/480
     gh_state: open
@@ -1966,11 +1966,11 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## Machine: ws014 (Windows - Claude cowork)
+    body_excerpt: '[redacted] (Windows - Claude cowork)
 
       ## Problem
 
-      KNOWN_JUMPER_CONFIGS["ballymore_plet_plem"] uses placeholder segment lengths identical to MF-PLET. PLET-PLEM is a different jumper with different geometry.'
+      KNOWN_JUMPER_CONFIGS["[redacted]_plet_plem"] uses placeholder segment lengths identical to MF-PLET. PLET-PLEM is a different jumper with different geometry.'
   - idempotency_key: gh:vamseeachanta/digitalmodel#481
     title: Convert PLET-PLEM workbook via Windows cowork
     source: github_issue
@@ -1987,11 +1987,11 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## Machine: ws014 (Windows - Claude cowork)
+    body_excerpt: '[redacted] (Windows - Claude cowork)
 
       ## Task
 
-      Convert SZ_Ballymore_Jumper_MF.xlsm (PLET-PLEM jumper) using Claude cowork workflow.'
+      Convert SZ_[redacted]_Jumper_MF.xlsm (PLET-PLEM jumper) using Claude cowork workflow.'
   - idempotency_key: gh:vamseeachanta/digitalmodel#484
     title: Implement subsea tree modeling module (API 17D)
     source: github_issue
@@ -2270,7 +2270,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/digitalmodel#644
-    title: 'Doris GTM: cathodic protection analysis/requirements for structures — add demo_06 worked example + promote tier'
+    title: '[redacted] GTM: cathodic protection analysis/requirements for structures — add demo_06 worked example + promote tier'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/644
     gh_state: open
@@ -3048,7 +3048,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/digitalmodel#1643
-    title: Extract API RP 2A structural code check from 3824-CAL-2118 to Python
+    title: Extract API RP 2A structural code check from [redacted] to Python
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/1643
     gh_state: open

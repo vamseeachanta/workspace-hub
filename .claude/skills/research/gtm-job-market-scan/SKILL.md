@@ -66,10 +66,11 @@ Use `gh issue create --repo REPO --title "..." --label "..." --body '...'` with 
 
 ### 4. Review and Prioritize Results
 
-Auto-generated outputs:
-- `docs/strategy/gtm/job-market-scan/dashboard.md` — summary stats
-- `docs/strategy/gtm/job-market-scan/priority-targets.md` — ranked companies
-- `docs/strategy/gtm/job-market-scan/raw-results/YYYY-MM-DD.json` — full data
+Auto-generated outputs, in the PRIVATE output directory (overlay key
+`outputs.job_market_dir`; never in the public workspace-hub tree, C19):
+- `dashboard.md` — summary stats
+- `priority-targets.md` — ranked companies
+- `raw-results/YYYY-MM-DD.json` — full data
 
 Focus on "Hot Targets" = companies with 3+ matching open roles.
 
@@ -103,7 +104,8 @@ Focus on "Hot Targets" = companies with 3+ matching open roles.
 - Check which branch you're on before committing (`git branch --show-current`)
 - If on a feature branch, cherry-pick to main after committing — we hit this exact issue (committed to `feat/1668-harness-update-lifecycle` by accident, had to cherry-pick to main)
 - Push to origin main explicitly
-- The `weekly-scan-refresh.sh` wrapper handles this automatically (checks out main first)
+- The `weekly-scan-refresh.sh` wrapper commits scan results in the private output
+  repository only; scan results are never committed to workspace-hub (C19)
 
 ### Test Runs Overwrite Raw Results
 - Running `--limit 2 --skip-career-pages` to test overwrites `raw-results/YYYY-MM-DD.json` with partial data
@@ -117,7 +119,8 @@ The scanner is designed for repeated weekly runs with history tracking.
 #### Cron Infrastructure
 - **Cron task**: `gtm-job-market-scan` in `config/scheduled-tasks/schedule-tasks.yaml`
 - **Schedule**: Monday 5AM UTC (`0 5 * * 1`)
-- **Wrapper script**: `scripts/gtm/weekly-scan-refresh.sh` — pulls main, runs scanner, commits & pushes
+- **Wrapper script**: `scripts/gtm/weekly-scan-refresh.sh` — pulls main, resolves the private output
+  directory (fails closed), runs scanner, commits & pushes in the private output repository
 - The wrapper auto-finds Python (miniforge → local → system fallback)
 
 #### History Tracking (cumulative-index.json)
@@ -144,9 +147,14 @@ Each run compares results against `cumulative-index.json`:
 ## Output Structure
 
 ```
-docs/strategy/gtm/
+docs/strategy/gtm/                (public: policy documents only)
 ├── job-market-scan/
 │   ├── README.md
+│   ├── RETENTION_POLICY.md
+│   └── TOS_REVIEW.md
+└── vessel-installation-contractors/  (vertical-specific)
+
+<private output directory>/      (outputs.job_market_dir, C19)
 │   ├── dashboard.md            (auto-generated)
 │   ├── priority-targets.md     (auto-generated)
 │   ├── new-this-week.md        (auto-generated, weekly delta)
@@ -156,7 +164,6 @@ docs/strategy/gtm/
 │   │   └── YYYY-MM-DD.json
 │   ├── keyword-results/
 │   └── company-profiles/
-└── vessel-installation-contractors/  (vertical-specific)
 
 scripts/gtm/
 ├── job-market-scanner.py
@@ -176,7 +183,7 @@ The scanner is a DATA SOURCE — results must flow into the aceengineer-strategy
 
 ### Email Templates (created, ready for personalization)
 - `docs/strategy/gtm/vessel-installation-contractors/email-templates.md` — 3-step sequence (Day 0/3/7)
-- `docs/strategy/gtm/job-market-scan/email-templates-by-vertical.md` — 5 vertical variants with {{PLACEHOLDERS}}
+- `email-templates-by-vertical.md` in the private output directory — 5 vertical variants with {{PLACEHOLDERS}}
 
 Verticals: installation, cathodic protection, FEA/manufacturing, offshore wind, classification societies.
 

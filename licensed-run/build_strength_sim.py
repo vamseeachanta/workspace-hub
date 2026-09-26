@@ -1,4 +1,4 @@
-"""Produce a real licensed strength_loadcase.sim for the acma strength-post run.
+"""Produce a real licensed strength_loadcase.sim for the licensed-run scope's strength-post run.
 
 Loads an Orcina example riser model (a Line with bending stiffness), runs a real
 OrcaFlex statics + short dynamic solve, and saves the .sim straight to the scope
@@ -6,6 +6,9 @@ path the workflow reads. Then reloads and reports a sanity sample.
 
 Usage:
   uv run python build_strength_sim.py [source.dat] [target.sim]
+
+Without target.sim the target is under %LICENSED_RUN_SCOPE_REPO% (the private
+scope checkout); the script stops when that variable is unset.
 """
 import os
 import sys
@@ -13,9 +16,14 @@ import sys
 SRC = sys.argv[1] if len(sys.argv) > 1 else (
     r"C:\ws\digitalmodel\docs\domains\orcaflex\examples\raw\A01\A01 Catenary riser.dat"
 )
-DST = sys.argv[2] if len(sys.argv) > 2 else (
-    r"C:\ws\llm-wiki-acma\cases\orcaflex-strength-post\strength_loadcase.sim"
-)
+if len(sys.argv) > 2:
+    DST = sys.argv[2]
+else:
+    _scope_repo = os.environ.get("LICENSED_RUN_SCOPE_REPO")
+    if not _scope_repo:
+        print("BUILD: FAIL  LICENSED_RUN_SCOPE_REPO is not set and no target.sim was given")
+        raise SystemExit(2)
+    DST = os.path.join(_scope_repo, "cases", "orcaflex-strength-post", "strength_loadcase.sim")
 
 import OrcFxAPI
 print(f"OrcFxAPI {OrcFxAPI.DLLVersion()}  (license seat acquired on import)")

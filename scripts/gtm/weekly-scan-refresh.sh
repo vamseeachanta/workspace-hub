@@ -7,7 +7,13 @@
 #   1. Pulls latest main
 #   2. Runs the job market scanner (all 22 keywords + 30 career pages)
 #   3. Generates dashboard, priority targets, new-this-week, trend report
-#   4. Commits and pushes results to main
+#   4. Commits and pushes results to the PRIVATE repository that holds the
+#      output directory (C19). Nothing is committed to this public repository.
+#
+# The output directory comes from the private overlay key
+# outputs.job_market_dir (scripts/lib/private_overlay.py). The scanner resolves
+# it and fails closed when it is unset, relative, missing or inside this
+# repository; this wrapper then stops before scanning.
 #
 # The scanner tracks history across runs:
 #   - cumulative-index.json persists all-time seen jobs
@@ -19,6 +25,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+# shellcheck source=../lib/private_path_guard.sh
+source "$REPO_ROOT/scripts/lib/private_path_guard.sh"
 
 echo "=== GTM Weekly Scan Refresh ==="
 echo "Date: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
@@ -58,42 +66,54 @@ $PYTHON -c "import requests; from bs4 import BeautifulSoup; print('deps ok')" ||
     $PYTHON -m pip install --quiet beautifulsoup4 requests lxml 2>/dev/null || true
 }
 
-# 5. Run the scanner
+# 5. Resolve the private output directory (fails closed), then run the scanner
+OUT_DIR="$($PYTHON "$REPO_ROOT/scripts/gtm/job-market-scanner.py" --print-output-dir)" || {
+    echo "ERROR: private output directory not configured (outputs.job_market_dir); nothing scanned"
+    exit 2
+}
+# Lexical and physical forms, both repository spellings, case-insensitive on
+# Windows, and no link under the repository (scripts/lib/private_path_guard.sh).
+private_path_outside_repo "$OUT_DIR" "$REPO_ROOT" || {
+    echo "ERROR: output directory lies inside this public repository or reaches it through a link; refusing"
+    exit 2
+}
+OUT_REAL="$(cd "$OUT_DIR" && pwd -P)"
+
 echo ""
 echo "Running job market scan..."
-$PYTHON "$REPO_ROOT/scripts/gtm/job-market-scanner.py" --refresh
+$PYTHON "$REPO_ROOT/scripts/gtm/job-market-scanner.py" --refresh --output-dir "$OUT_REAL"
 
-# 6. Commit and push results
+# 6. Commit and push results in the private repository that holds OUT_DIR
 echo ""
-echo "Committing results..."
-cd "$REPO_ROOT"
+echo "Committing results to the private output repository..."
+PRIVATE_ROOT="$(git -C "$OUT_REAL" rev-parse --show-toplevel 2>/dev/null)" || {
+    echo "ERROR: output directory is not inside a git checkout; results left uncommitted"
+    exit 2
+}
+private_path_outside_repo "$PRIVATE_ROOT" "$REPO_ROOT" || {
+    echo "ERROR: output repository is inside this public repository; refusing"
+    exit 2
+}
 
-git add \
-    docs/strategy/gtm/job-market-scan/raw-results/ \
-    docs/strategy/gtm/job-market-scan/dashboard.md \
-    docs/strategy/gtm/job-market-scan/priority-targets.md \
-    docs/strategy/gtm/job-market-scan/new-this-week.md \
-    docs/strategy/gtm/job-market-scan/trend-report.md \
-    docs/strategy/gtm/job-market-scan/cumulative-index.json \
-    2>/dev/null || true
+git -C "$PRIVATE_ROOT" add -- "$OUT_REAL" 2>/dev/null || true
 
-if git diff --staged --quiet; then
+if git -C "$PRIVATE_ROOT" diff --staged --quiet; then
     echo "No changes to commit (identical results to last scan)"
 else
     DATE_STR=$(date -u +'%Y-%m-%d')
     # Extract counts from the dashboard for commit message
     TOTAL=$(grep -oP 'Total job postings found \| \*\*\K[0-9]+' \
-        docs/strategy/gtm/job-market-scan/dashboard.md 2>/dev/null || echo "?")
+        "$OUT_REAL/dashboard.md" 2>/dev/null || echo "?")
     COMPANIES=$(grep -oP 'Unique companies \| \*\*\K[0-9]+' \
-        docs/strategy/gtm/job-market-scan/dashboard.md 2>/dev/null || echo "?")
+        "$OUT_REAL/dashboard.md" 2>/dev/null || echo "?")
 
-    git commit -m "chore(gtm): weekly job market scan refresh $DATE_STR
+    git -C "$PRIVATE_ROOT" commit -m "chore(gtm): weekly job market scan refresh $DATE_STR
 
 Scan: $TOTAL jobs across $COMPANIES companies
-Related: #1671"
+Related: workspace-hub#1671" -- "$OUT_REAL"
 
-    git push origin main
-    echo "✓ Pushed to main"
+    git -C "$PRIVATE_ROOT" push origin HEAD
+    echo "✓ Pushed to the private output repository"
 fi
 
 echo ""

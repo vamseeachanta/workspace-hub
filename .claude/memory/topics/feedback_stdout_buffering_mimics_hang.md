@@ -15,7 +15,7 @@ A script run as `cmd > log 2>&1` (or piped to `tail`) that a `timeout`/SIGKILL t
 not a TTY**, so the buffered output is discarded on SIGKILL and the log looks empty even though the
 process was printing/working normally.
 
-**Why:** On 2026-05-28 (Doris demo, #2859) I ran `digitalmodel/examples/demos/gtm/demo_01...` as
+**Why:** On 2026-05-28 (lng-a demo, #2859) I ran `digitalmodel/examples/demos/gtm/demo_01...` as
 `> /tmp/log; timeout 80` → empty log + exit 124, and wrongly concluded "the GTM demo harness hangs
 locally." It does not — it completes in ~1.8–2.4s and writes a branded HTML report. The empty log
 was pure buffering (compounded by CPU contention from a stray pytest I hadn't fully killed, and a
@@ -28,4 +28,4 @@ capability matrix and an issue comment, then had to self-correct. All 5 gtm demo
 3. Check `python -X importtime` — heavy imports (plotly/pandas/IPython chain) can be ~1.5s and look like a stall.
 4. Run in isolation (no competing CPU load) and with the script's documented `PYTHONPATH`/flags (READMEs often want the script's own dir on the path, e.g. `examples/demos/gtm:src`).
 
-Reinforces the SOUL.md gate "Verify before claiming success" and "correct when wrong." Related: [[feedback_codex_sandbox_uv_cache_readonly]] (uv-run alternative), [[project_doris_demo]].
+Reinforces the SOUL.md gate "Verify before claiming success" and "correct when wrong." Related: [[feedback_codex_sandbox_uv_cache_readonly]] (uv-run alternative), [[project_lng-a_demo]].

@@ -31,7 +31,7 @@ scripts/ai/gh_quirk.sh list --repo <owner/repo>
 scripts/ai/gh_quirk.sh close --repo <owner/repo> --number N --fixed-by <commit> --doc <path-or-url>
 ```
 
-Routing rule: digitalmodel code/tool quirks go to `vamseeachanta/digitalmodel`; generic third-party software and documentation quirks go to `vamseeachanta/llm-wiki`; private host/lane/client infrastructure quirks go to `vamseeachanta/llm-wiki-acma`; public-safe workspace-hub infrastructure quirks go to `vamseeachanta/workspace-hub`. For OrcaFlex, AQWA, OpenFOAM, and similar program workflows, route the quirk to the repo that owns the fix or durable documentation, and sanitize public repo entries with `lane-A/B/C/D` and `<campaign>` instead of private identifiers.
+Routing rule: digitalmodel code/tool quirks go to `vamseeachanta/digitalmodel`; generic third-party software and documentation quirks go to `vamseeachanta/llm-wiki`; private host/lane/client infrastructure quirks go to `vamseeachanta/llm-wiki-mkt-a` (codename; the real repository name is in the private client codename map); public-safe workspace-hub infrastructure quirks go to `vamseeachanta/workspace-hub`. For OrcaFlex, AQWA, OpenFOAM, and similar program workflows, route the quirk to the repo that owns the fix or durable documentation, and sanitize public repo entries with `lane-A/B/C/D` and `<campaign>` instead of private identifiers.
 
 ## How It Works
 

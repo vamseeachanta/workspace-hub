@@ -83,12 +83,34 @@ def scan_repository(repo_path: Path):
                         
     return results
 
+def _private_data():
+    """scripts/lib/private_data.py, loaded by path (C20)."""
+    import importlib.util
+
+    path = Path(__file__).resolve().parents[1] / "lib" / "private_data.py"
+    spec = importlib.util.spec_from_file_location("_bci_private_data", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def main():
     parser = argparse.ArgumentParser(description="Build a searchable content index across repositories.")
     parser.add_argument("--root", default="/mnt/local-analysis/", help="Root directory to scan for repositories")
-    parser.add_argument("--output-json", default="data/content_index.json", help="Output JSON file")
-    parser.add_argument("--output-md", default="docs/CONTENT_INDEX.md", help="Output Markdown file")
+    # C20: the index names client repositories and paths. It is written to the
+    # private data directory (WORKSPACE_HUB_PRIVATE_DATA_DIR), never into this
+    # public checkout.
+    parser.add_argument("--output-json", default=None,
+                        help="Output JSON file (default: <private data dir>/data/content_index.json)")
+    parser.add_argument("--output-md", default=None,
+                        help="Output Markdown file (default: <private data dir>/docs/CONTENT_INDEX.md)")
     args = parser.parse_args()
+    pd = _private_data()
+    try:
+        args.output_json = str(pd.resolve_output(args.output_json, "data/content_index.json"))
+        args.output_md = str(pd.resolve_output(args.output_md, "docs/CONTENT_INDEX.md"))
+    except pd.PrivateDataUnavailable as exc:
+        raise SystemExit(f"build_content_index: {exc}; nothing written")
 
     root_dir = Path(args.root)
     repos = []

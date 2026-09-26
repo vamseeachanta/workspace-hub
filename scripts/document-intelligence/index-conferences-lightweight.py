@@ -33,7 +33,24 @@ from typing import Optional
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CONF_ROOT = Path("/mnt/ace/docs/conferences")
 
-OUTPUT_JSONL = REPO_ROOT / "data" / "document-index" / "conference-index.jsonl"
+# C20: the index lists archive-drive paths that carry client names. It lives in
+# the private data directory (WORKSPACE_HUB_PRIVATE_DATA_DIR), not this checkout.
+INDEX_REL = "data/document-index/" + "conference-index.jsonl"
+#: How the manifest (public) names the index: never the private host path.
+INDEX_LABEL = "<private data dir>/" + INDEX_REL
+
+
+def _private_data():
+    """scripts/lib/private_data.py, loaded by path (C20)."""
+    import importlib.util
+
+    path = REPO_ROOT / "scripts" / "lib" / "private_data.py"
+    spec = importlib.util.spec_from_file_location("_icl_private_data", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 OUTPUT_MANIFEST = REPO_ROOT / "data" / "document-index" / "conference-index-manifest.json"
 CATALOG_PATH = REPO_ROOT / "data" / "document-index" / "conference-paper-catalog.yaml"
 
@@ -235,7 +252,7 @@ def build_manifest(
         "generated": datetime.now(timezone.utc).isoformat(),
         "run_start": run_start.isoformat(),
         "dry_run": dry_run,
-        "jsonl_path": str(OUTPUT_JSONL),
+        "jsonl_path": INDEX_LABEL,
         "conf_root": str(CONF_ROOT),
         "totals": {
             "records_before": total_before,
@@ -286,8 +303,8 @@ def main() -> int:
     parser.add_argument(
         "--output-jsonl",
         type=Path,
-        default=OUTPUT_JSONL,
-        help=f"Path to the JSONL index file (default: {OUTPUT_JSONL})",
+        default=None,
+        help=f"Path to the JSONL index file (default: {INDEX_LABEL})",
     )
     parser.add_argument(
         "--output-manifest",
@@ -297,6 +314,12 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    pd = _private_data()
+    try:
+        args.output_jsonl = pd.resolve_output(args.output_jsonl, INDEX_REL)
+    except pd.PrivateDataUnavailable as exc:
+        print(f"ERROR: {exc}; nothing read or written", file=sys.stderr)
+        return 3
     jsonl_path: Path = args.output_jsonl
     manifest_path: Path = args.output_manifest
 

@@ -1,11 +1,12 @@
 @echo off
-REM OrcaWave lane STEP 1+2: pull digitalmodel (#902) + llm-wiki-acma (#36),
+REM OrcaWave lane STEP 1+2: pull digitalmodel (#902) + the scope repo (#36),
 REM confirm the env still imports, renormalize the new scope files to LF, and
 REM hash input.yml for gate 9. Logs to runtime\ow_pull.log. Does NOT touch the
-REM agent or the .sim. acma core.autocrlf is already false (set earlier).
+REM agent or the .sim. scope core.autocrlf is already false (set earlier).
 setlocal
 set "DM=C:\ws\digitalmodel"
-set "ACMA=C:\ws\llm-wiki-acma"
+if not defined LICENSED_RUN_SCOPE_REPO (echo ERROR: LICENSED_RUN_SCOPE_REPO is not set - see licensed-run\README.md & exit /b 2)
+set "SCOPE_REPO=%LICENSED_RUN_SCOPE_REPO%"
 set "VIRTUAL_ENV=C:\ws\digitalmodel\.venv"
 set "OUT=C:\ws\workspace-hub\licensed-run\runtime\ow_pull.log"
 echo === ow_pull %date% %time% === > "%OUT%"
@@ -13,11 +14,11 @@ echo --- digitalmodel pull (must include PR #902) --- >> "%OUT%"
 git -C "%DM%" pull --rebase --autostash >> "%OUT%" 2>&1
 echo dm HEAD: >> "%OUT%"
 git -C "%DM%" log -1 --oneline >> "%OUT%" 2>&1
-echo --- acma pull (PR #36) --- >> "%OUT%"
-git -C "%ACMA%" pull --rebase --autostash >> "%OUT%" 2>&1
-echo acma HEAD: >> "%OUT%"
-git -C "%ACMA%" log -1 --oneline >> "%OUT%" 2>&1
-cd /d "%ACMA%"
+echo --- scope pull (PR #36) --- >> "%OUT%"
+git -C "%SCOPE_REPO%" pull --rebase --autostash >> "%OUT%" 2>&1
+echo scope HEAD: >> "%OUT%"
+git -C "%SCOPE_REPO%" log -1 --oneline >> "%OUT%" 2>&1
+cd /d "%SCOPE_REPO%"
 echo --- files present in cases\orcawave-diffraction-solve --- >> "%OUT%"
 dir /b cases\orcawave-diffraction-solve >> "%OUT%" 2>&1
 echo --- renormalize new files to LF --- >> "%OUT%"

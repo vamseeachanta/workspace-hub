@@ -60,6 +60,18 @@ def _load_pipeline_module():
     return mod
 
 
+def _public_redaction():
+    """scripts/legal/public_redaction.py, loaded by path (C20). Resolved from
+    this file, not WORKSPACE_HUB, which tests re-point at a fixture tree."""
+    path = Path(__file__).resolve().parents[1] / "legal" / "public_redaction.py"
+    spec = importlib.util.spec_from_file_location("_pk_public_redaction", path)
+    if spec is None or spec.loader is None:
+        raise KanbanError("the public redactor module cannot load")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
@@ -479,6 +491,15 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    # C20: the dashboard files are PUBLIC and built from GitHub issue text and
+    # plan files. Load the identifier gate's Redactor first; write nothing if
+    # it cannot load.
+    try:
+        redaction = _public_redaction()
+        redactor = redaction.load_redactor()
+    except Exception as exc:  # noqa: BLE001
+        print(f"provider-kanban: the redactor cannot load; nothing written ({exc})", file=sys.stderr)
+        return 3
     work_queue = load_json(Path(args.work_queue_json))
     scorecard = load_json(Path(args.scorecard_json))
     utilization = load_json(Path(args.utilization_json)) if Path(args.utilization_json).exists() else {}
@@ -490,6 +511,9 @@ def main(argv: list[str] | None = None) -> int:
         workstations=workstations, issues=issues,
         served_localhost=args.served_localhost,
     )
+    # Every field of every card, then the rendered text (a renderer can add
+    # text of its own, such as a plan excerpt).
+    kanban = redaction.redact_tree(kanban, redactor)
 
     json_out = Path(args.output_json)
     json_out.parent.mkdir(parents=True, exist_ok=True)
@@ -498,12 +522,12 @@ def main(argv: list[str] | None = None) -> int:
 
     md_out = Path(args.output_md)
     md_out.parent.mkdir(parents=True, exist_ok=True)
-    md_out.write_text(render_markdown(kanban), encoding="utf-8")
+    md_out.write_text(redactor.redact(render_markdown(kanban)), encoding="utf-8")
     print(f"Markdown → {md_out}")
 
     html_out = Path(args.output_html)
     html_out.parent.mkdir(parents=True, exist_ok=True)
-    html_out.write_text(render_html(kanban), encoding="utf-8")
+    html_out.write_text(redactor.redact(render_html(kanban)), encoding="utf-8")
     print(f"HTML → {html_out}")
 
     return 0

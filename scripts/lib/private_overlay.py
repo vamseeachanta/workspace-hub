@@ -45,8 +45,9 @@ Schema (version 1; every section and key is optional)::
       }
     }
 
-``outputs`` is written by #3899 consumers. It is a known section here so that a
-configuration written for #3899 loads in every consumer of this loader.
+``outputs`` names where generated artefacts that carry names or addresses are
+written. ``require_output_dir`` fails closed when the key is unset, the path is
+relative, the directory does not exist, or it lies inside the public repository.
 
 Standard library only, so stdlib-only scripts can import it.
 """
@@ -200,3 +201,82 @@ def get_list(overlay: Mapping[str, Any], dotted: str) -> list[str]:
 
 def get_mapping(overlay: Mapping[str, Any], dotted: str) -> dict:
     return dict(_get(overlay, dotted) or {})
+
+
+def _norm(path: str | os.PathLike[str]) -> str:
+    """Lexical absolute form, case-folded where the file system ignores case."""
+    return os.path.normcase(os.path.abspath(os.fspath(path)))
+
+
+def is_within(path: str | os.PathLike[str], root: str | os.PathLike[str]) -> bool:
+    """True when ``path`` is ``root`` or lies below it, compared component-wise
+    on the lexical absolute form (case-insensitively on Windows)."""
+    p, r = _norm(path), _norm(root)
+    if p == r:
+        return True
+    return p.startswith(r if r.endswith(os.sep) else r + os.sep)
+
+
+def _is_link(path: str | os.PathLike[str]) -> bool:
+    """Symlink, junction or any other reparse point."""
+    try:
+        st = os.lstat(path)
+    except OSError:
+        return False
+    if os.path.islink(path) or os.path.isjunction(path):
+        return True
+    return bool(getattr(st, "st_file_attributes", 0) & 0x400)  # REPARSE_POINT
+
+
+def check_private_dir(value: str | os.PathLike[str], label: str,
+                      public_root: str | os.PathLike[str]) -> Path:
+    """Return ``value`` resolved, or raise when it is not a usable private directory.
+
+    It must be absolute, carry no '..' component, exist as a directory and lie
+    outside ``public_root``. Containment is checked on the lexical absolute path
+    AND the resolved path, each against the lexical AND the resolved repository
+    root (case-insensitively on Windows); any component of the path that is a
+    symlink or junction under the repository is refused. Checking the resolved
+    path alone would let a link under the repository that points outside pass.
+    Messages name ``label`` only, never the path.
+    """
+    raw = Path(value).expanduser()
+    if not raw.is_absolute():
+        raise PrivateOverlayError(f"{label}: must be an absolute path")
+    if ".." in raw.parts:
+        raise PrivateOverlayError(f"{label}: must not contain a '..' component")
+    roots = (os.path.abspath(os.fspath(public_root)), str(Path(public_root).resolve()))
+    lexical = os.path.abspath(os.fspath(raw))
+    resolved = str(raw.resolve())
+    for candidate in (lexical, resolved):
+        if any(is_within(candidate, root) for root in roots):
+            raise PrivateOverlayError(f"{label}: lies inside the public repository")
+    prefix = Path(raw.anchor)
+    for part in raw.parts[1:]:
+        prefix = prefix / part
+        if _is_link(prefix) and any(
+            is_within(prefix, root) or is_within(prefix.resolve(), root) for root in roots
+        ):
+            raise PrivateOverlayError(
+                f"{label}: passes through a symlink or junction under the public repository"
+            )
+    target = Path(resolved)
+    if not target.is_dir():
+        raise PrivateOverlayError(f"{label}: directory does not exist")
+    return target
+
+
+def require_output_dir(overlay: Mapping[str, Any], dotted: str,
+                       public_root: str | os.PathLike[str]) -> Path:
+    """Private output directory named by ``dotted`` (e.g. ``outputs.job_market_dir``).
+
+    Fails closed (``PrivateOverlayError``) when the key is unset or the directory
+    fails ``check_private_dir``. Nothing is created.
+    """
+    value = _get(overlay, dotted)
+    if not value:
+        raise PrivateOverlayError(
+            f"'{dotted}' is not set in the private overlay ({ENV_VAR} or "
+            f"~/{DEFAULT_RELATIVE.as_posix()}); refusing to write outputs"
+        )
+    return check_private_dir(value, f"'{dotted}'", public_root)

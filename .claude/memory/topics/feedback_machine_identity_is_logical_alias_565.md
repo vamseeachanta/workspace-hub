@@ -15,7 +15,7 @@ metadata:
 > logical-alias indirection; route by **canonical lowercase short hostname** in the **private tier
 > only** (deckhand policy/queue/heartbeat, admin machine-ecosystem). **workspace-hub is PUBLIC and
 > keeps neutral routing tokens** (`ace-linux-1`, `ace-linux-2`, `ace-win-1`, `ace-win-2`,
-> `gpu-claw`) — no ACMA hostname in a public label. The field name `licensed_run.host_aliases`
+> `gpu-claw`) — no mkt-a hostname in a public label. The field name `licensed_run.host_aliases`
 > **stays**; only its values and validation change, to minimise call-site churn. Casefold on join
 > (`tailscale status` reports Windows nodes uppercase). Historical `queue/requests/lr_*` records are
 > **never rewritten** — a read-path-only compat map covers the 12 affected.

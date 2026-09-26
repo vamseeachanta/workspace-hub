@@ -2840,7 +2840,7 @@ cards:
     priority: 0
     body_excerpt: '## Purpose
 
-      Single-issue thread for the `daily-inbox-manageability` remote routine to post its daily report. Each comment is a single day''s inbox state across `aceengineer.com` and `achantav@gmail.com` (personal). Mute this issue when graduated; close it when the routine is disabled.
+      Single-issue thread for the `daily-inbox-manageability` remote routine to post its daily report. Each comment is a single day''s inbox state across `aceengineer.com` and `[redacted]` (personal). Mute this issue when graduated; close it when the routine is disabled.
 
       ## Graduation criteria (the "under control" definition)'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2563

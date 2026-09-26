@@ -25,7 +25,7 @@
 - The live repository does not define `PLAN_APPROVAL_OWNERS` (the similarly named completeness variable is a different policy surface). The approval allowlist for this issue is therefore frozen in this reviewed plan as the single repository owner `vamseeachanta`, whose GitHub account type was verified live as `User` on 2026-07-09. The bootstrap and companion will still use the canonical actor-type and authorization functions; changing this allowlist requires plan review and user re-approval.
 - `git rev-parse --git-path hooks` resolves to the common workspace-hub hooks directory, and the live directory contains only `*.sample` files; no active commit hook exists. Because the planned `commit-tree` path intentionally bypasses porcelain hooks, implementation will re-verify that precondition immediately before candidate creation and will fail for plan revision if any active `pre-commit`, `prepare-commit-msg`, `commit-msg`, or `post-commit` hook appears.
 - `scripts/ai/build_skill_index.py` currently down-weights description-only skills as auto-derived backfill. A live probe finds 408 skills with richer legacy sections plus descriptions and 434 backfill entries with descriptions; a global precedence/weight flip would be an unsafe 842-entry reroute. The implementation will preserve all legacy precedence and add full-weight `when_to_use_source: description` only for modern minimal skills whose frontmatter keys are exactly `name` and `description` and which have no legacy trigger section. The live tree currently has 11 such production/test candidates; their before/after ranking fixtures will be audited explicitly. All other legacy description-only entries will retain current backfill behavior until separately migrated.
-- The llm-wiki-acma implementation for [#216](https://github.com/vamseeachanta/llm-wiki-acma/issues/216) contains a proven transaction across `scripts/archive_drive_j_notes.py` and `scripts/archive_notes/{inventory,hashing,joins,ledger,validation,workflow,publish,git_verify,git_candidate}.py`. Its CLI description, identifiers, output taxonomy, and joins remain Drive-J-specific, so this issue will promote the procedure rather than claim that implementation is already generic.
+- The llm-wiki-mkt-a implementation for [#216](https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/216) contains a proven transaction across `scripts/archive_drive_j_notes.py` and `scripts/archive_notes/{inventory,hashing,joins,ledger,validation,workflow,publish,git_verify,git_candidate}.py`. Its CLI description, identifiers, output taxonomy, and joins remain Drive-J-specific, so this issue will promote the procedure rather than claim that implementation is already generic.
 
 ### Standards
 
@@ -38,7 +38,7 @@
 ### LLM Wiki pages consulted
 
 - No existing wiki page defines this workflow. This issue will create a durable workspace skill, not domain wiki content.
-- llm-wiki-acma [#216](https://github.com/vamseeachanta/llm-wiki-acma/issues/216) supplies the completed archive-folder-note evidence; [#208](https://github.com/vamseeachanta/llm-wiki-acma/issues/208) remains the parent source-index lane; and [#214](https://github.com/vamseeachanta/llm-wiki-acma/issues/214) remains the distinct CAD/model lane.
+- llm-wiki-mkt-a [#216](https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/216) supplies the completed archive-folder-note evidence; [#208](https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/208) remains the parent source-index lane; and [#214](https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/214) remains the distinct CAD/model lane.
 
 ### Documents consulted
 
@@ -46,9 +46,9 @@
 - `docs/document-intelligence/README.md` routes durable workflow knowledge to the operating-model and boundary contracts.
 - `docs/document-intelligence/durable-vs-transient-knowledge-boundary.md` classifies reusable normative process knowledge as durable L3 and issue plans/reviews as execution-bound L5. The reusable procedure will therefore live in the canonical skill, while this plan and its reviews will remain evidence of the issue lifecycle.
 - `docs/plans/2026-04-17-issue-2320-skill-usage-audit.md` demonstrates T2 skill/harness planning with explicit tests, deterministic generated state, and multi-provider adversarial review.
-- llm-wiki-acma `docs/plans/2026-07-09-issue-216-archive-drive-j-folder-notes.md` defines exact source, note, join, ledger, resume, transaction, Git verification, and recovery contracts that the new reference will distill.
-- llm-wiki-acma `scripts/review/results/2026-07-07-code-209-codex-r1.md` through `...-r4.md` show recurring scanner defects around caller-independent private residency, access-loss semantics, resume completeness, and Windows reparse handling.
-- llm-wiki-acma `scripts/review/results/2026-07-09-plan-216-*` and `scripts/review/results/2026-07-09-code-216-*` show recurring publication defects around canonical typed hashes, immutable ledgers, journal ownership, staged-blob TOCTOU, path containment, branch races, and candidate-tree verification.
+- llm-wiki-mkt-a `docs/plans/2026-07-09-issue-216-archive-drive-j-folder-notes.md` defines exact source, note, join, ledger, resume, transaction, Git verification, and recovery contracts that the new reference will distill.
+- llm-wiki-mkt-a `scripts/review/results/2026-07-07-code-209-codex-r1.md` through `...-r4.md` show recurring scanner defects around caller-independent private residency, access-loss semantics, resume completeness, and Windows reparse handling.
+- llm-wiki-mkt-a `scripts/review/results/2026-07-09-plan-216-*` and `scripts/review/results/2026-07-09-code-216-*` show recurring publication defects around canonical typed hashes, immutable ledgers, journal ownership, staged-blob TOCTOU, path containment, branch races, and candidate-tree verification.
 - A live metadata-only source probe will inform the skill's two forward-test profiles: Drive P exposes 870 top-level directories, while Models exposes 10 top-level directories and 426 immediate child directories. The former will require top-folder-complete notes; the latter will require deterministic adaptive-two-level engineering/model coverage under an explicit inclusion predicate. No source body will be opened by this issue.
 - `scripts/data/drive-index-search/search.py` returns no relevant indexed result for `metadata-only folder notes archive catalog`; a `Models CAD GHS AQWA` query returns one low-score literature-directory hit that does not define this workflow. Five registered indexes are unreachable on this machine, and two registry entries are stale, so the plan will rely on the live metadata probe and repo-local issue evidence rather than treating the drive index as complete.
 
@@ -70,10 +70,10 @@
 - [workspace-hub #3424](https://github.com/vamseeachanta/workspace-hub/issues/3424) — OPEN — `[skills] Add transactional metadata-only folder-note publication workflow`
 - [workspace-hub #1547](https://github.com/vamseeachanta/workspace-hub/issues/1547) — CLOSED — skills ecosystem umbrella; it does not supply this workflow
 - [workspace-hub #1782](https://github.com/vamseeachanta/workspace-hub/issues/1782) — OPEN — zero-loss learning epic; it is broader than this bounded implementation
-- [llm-wiki-acma #208](https://github.com/vamseeachanta/llm-wiki-acma/issues/208) — OPEN — living source/target index parent
-- [llm-wiki-acma #209](https://github.com/vamseeachanta/llm-wiki-acma/issues/209) — CLOSED — read-only source manifest evidence
-- [llm-wiki-acma #214](https://github.com/vamseeachanta/llm-wiki-acma/issues/214) — OPEN — CAD drawing/model inventory lane
-- [llm-wiki-acma #216](https://github.com/vamseeachanta/llm-wiki-acma/issues/216) — CLOSED — Drive J metadata-only folder-note implementation
+- [llm-wiki-mkt-a #208](https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/208) — OPEN — living source/target index parent
+- [llm-wiki-mkt-a #209](https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/209) — CLOSED — read-only source manifest evidence
+- [llm-wiki-mkt-a #214](https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/214) — OPEN — CAD drawing/model inventory lane
+- [llm-wiki-mkt-a #216](https://github.com/vamseeachanta/llm-wiki-mkt-a/issues/216) — CLOSED — Drive J metadata-only folder-note implementation
 
 **File existence** (verified 2026-07-10T03:20:42Z):
 
@@ -82,7 +82,7 @@
 - EXISTS: `.claude/skills/workspace-hub/external-drive-ingest-planning/SKILL.md`
 - EXISTS: `.claude/skills/workspace-hub/workspace-knowledge-doc-contracts/SKILL.md`
 - EXISTS: `.claude/skills/research/llm-wiki/SKILL.md`
-- EXISTS in llm-wiki-acma: `scripts/archive_drive_j_notes.py`, `scripts/archive_notes/git_candidate.py`, and `docs/plans/2026-07-09-issue-216-archive-drive-j-folder-notes.md`
+- EXISTS in llm-wiki-mkt-a: `scripts/archive_drive_j_notes.py`, `scripts/archive_notes/git_candidate.py`, and `docs/plans/2026-07-09-issue-216-archive-drive-j-folder-notes.md`
 - MISSING (this plan will create): `.claude/skills/workspace-hub/transactional-metadata-only-folder-notes/SKILL.md`
 - MISSING (this plan will create): `tests/skills/test_transactional_metadata_only_folder_notes.py`
 
@@ -947,7 +947,7 @@ Revisions made based on review:
 - **Risk — prose-only drift:** Content-contract tests and generated-index checks will make the fragile requirements executable enough to catch omission without treating exact paragraph wording as an API.
 - **Risk — security backdoor by example:** The reference will use logical placeholders and narrow forensic sentinels. It will not embed absolute machine paths, client identifiers, secrets, or blanket file exemptions that would weaken its own scanners.
 - **Risk — fresh-agent false confidence:** Forward-test prompts will require explicit decisions and defect hunting; an unreasoned “looks good” result will not count as evidence.
-- **Downstream sequencing:** Drive P will receive a child issue under llm-wiki-acma #208 only after this skill is finished. Models will revise and continue existing llm-wiki-acma #214 rather than create a duplicate issue.
+- **Downstream sequencing:** Drive P will receive a child issue under llm-wiki-mkt-a #208 only after this skill is finished. Models will revise and continue existing llm-wiki-mkt-a #214 rather than create a duplicate issue.
 
 ---
 
