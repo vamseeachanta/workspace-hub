@@ -231,14 +231,206 @@ def test_reconcile_fails_closed_when_active_repo_fetch_shrinks_existing_cards(tm
     ]
     write_yaml(repo_board, repo_data)
 
+    # #2 still resolves to this repository under its own number, so the fetch
+    # missed a live issue: that is a partial list and must fail closed.
     with pytest.raises(RuntimeError, match="partial issue list"):
         reconcile.reconcile_kanban(
             kanban,
             issue_fetcher=lambda repo: [issue(1, "keep")],
+            issue_resolver=lambda repo, number: (repo, number),
             dry_run=False,
         )
 
     assert repo_board.read_text(encoding="utf-8") == yaml.safe_dump(repo_data, sort_keys=False)
+
+
+WH = "vamseeachanta/workspace-hub"
+
+
+def seed_cards(kanban: Path, numbers: list[int]) -> Path:
+    repo_board = kanban / "boards/repo-workspace-hub.yaml"
+    repo_data = read_yaml(repo_board)
+    repo_data["cards"] = [existing_issue_card(n, f"card {n}") for n in numbers]
+    write_yaml(repo_board, repo_data)
+    return repo_board
+
+
+def board_keys(repo_board: Path) -> list[str]:
+    return [card["idempotency_key"] for card in read_yaml(repo_board)["cards"]]
+
+
+def test_reconcile_drops_cards_of_issues_transferred_or_deleted(tmp_path: Path):
+    # Fewer live issues than cards is legitimate when every missing card's issue
+    # now lives elsewhere: transferred to another repo, transferred back under a
+    # new number, or deleted (resolver None). The run proceeds and drops them.
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = seed_cards(kanban, [1, 2, 3, 4])
+    homes = {2: ("vamseeachanta/digitalmodel", 1648), 3: (WH, 3690), 4: None}
+    asked = []
+
+    def resolver(repo, number):
+        asked.append((repo, number))
+        return homes[number]
+
+    result = reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(1, "card 1")],
+        issue_resolver=resolver,
+        dry_run=False,
+    )
+
+    assert result.changed is True
+    assert board_keys(repo_board) == [f"gh:{WH}#1"]
+    assert sorted(asked) == [(WH, 2), (WH, 3), (WH, 4)]
+
+
+def test_reconcile_fails_closed_when_one_missing_issue_is_still_home(tmp_path: Path):
+    # Transfers account for most of the shrink, but #3 is still in this repo
+    # under #3: the fetch missed it. One unaccounted card fails the whole run.
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = seed_cards(kanban, [1, 2, 3])
+    before = repo_board.read_text(encoding="utf-8")
+    homes = {2: ("vamseeachanta/llm-wiki", 842), 3: (WH, 3)}
+
+    with pytest.raises(RuntimeError, match=r"partial issue list.*#3"):
+        reconcile.reconcile_kanban(
+            kanban,
+            issue_fetcher=lambda repo: [issue(1, "card 1")],
+            issue_resolver=lambda repo, number: homes[number],
+            dry_run=False,
+        )
+
+    assert repo_board.read_text(encoding="utf-8") == before
+
+
+def test_reconcile_checks_missing_cards_even_when_live_count_grew(tmp_path: Path):
+    # The count comparison alone let a missing card vanish silently whenever new
+    # issues outnumbered it. A missing card that is still home must fail even so.
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = seed_cards(kanban, [1, 2])
+    before = repo_board.read_text(encoding="utf-8")
+
+    with pytest.raises(RuntimeError, match=r"partial issue list.*#2"):
+        reconcile.reconcile_kanban(
+            kanban,
+            issue_fetcher=lambda repo: [issue(1, "card 1"), issue(5, "new"), issue(6, "new")],
+            issue_resolver=lambda repo, number: (repo, number),
+            dry_run=False,
+        )
+
+    assert repo_board.read_text(encoding="utf-8") == before
+
+
+def test_reconcile_same_number_check_ignores_repo_name_case(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    seed_cards(kanban, [1, 2])
+
+    with pytest.raises(RuntimeError, match="partial issue list"):
+        reconcile.reconcile_kanban(
+            kanban,
+            issue_fetcher=lambda repo: [issue(1, "card 1")],
+            issue_resolver=lambda repo, number: (repo.upper(), number),
+            dry_run=True,
+        )
+
+
+def test_reconcile_resolver_error_fails_closed(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = seed_cards(kanban, [1, 2])
+    before = repo_board.read_text(encoding="utf-8")
+
+    def resolver(repo, number):
+        raise RuntimeError("gh api failed: HTTP 502")
+
+    with pytest.raises(RuntimeError, match="HTTP 502"):
+        reconcile.reconcile_kanban(
+            kanban,
+            issue_fetcher=lambda repo: [issue(1, "card 1")],
+            issue_resolver=resolver,
+            dry_run=False,
+        )
+
+    assert repo_board.read_text(encoding="utf-8") == before
+
+
+def test_reconcile_allow_shrink_does_not_consult_resolver(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    repo_board = seed_cards(kanban, [1, 2])
+
+    def resolver(repo, number):
+        raise AssertionError("resolver must not run under --allow-shrink")
+
+    reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(1, "card 1")],
+        issue_resolver=resolver,
+        dry_run=False,
+        allow_shrink_repos={WH},
+    )
+
+    assert board_keys(repo_board) == [f"gh:{WH}#1"]
+
+
+def test_reconcile_no_missing_cards_never_consults_resolver(tmp_path: Path):
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    seed_cards(kanban, [1])
+
+    def resolver(repo, number):
+        raise AssertionError("nothing is missing")
+
+    reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(1, "card 1"), issue(2, "new")],
+        issue_resolver=resolver,
+        dry_run=True,
+    )
+
+
+def _completed(cmd, rc, stdout="", stderr=""):
+    return subprocess.CompletedProcess(cmd, rc, stdout=stdout, stderr=stderr)
+
+
+def test_resolve_issue_home_reports_transfer_destination():
+    reconcile = load_reconcile()
+    calls = []
+
+    def runner(cmd, **kwargs):
+        calls.append(cmd)
+        return _completed(cmd, 0, stdout=json.dumps(
+            {"repository_url": "https://api.github.com/repos/vamseeachanta/digitalmodel", "number": 1648}
+        ))
+
+    assert reconcile.resolve_issue_home(WH, 13, runner=runner) == ("vamseeachanta/digitalmodel", 1648)
+    assert calls[0][:3] == ["gh", "api", f"repos/{WH}/issues/13"]
+
+
+def test_resolve_issue_home_returns_none_for_deleted_or_unreadable_issue():
+    reconcile = load_reconcile()
+    for status in ("HTTP 404", "HTTP 410"):
+        runner = lambda cmd, status=status, **kwargs: _completed(  # noqa: E731
+            cmd, 1, stderr=f"gh: Not Found ({status})"
+        )
+        assert reconcile.resolve_issue_home(WH, 7, runner=runner) is None
+
+
+def test_resolve_issue_home_raises_on_other_failures():
+    reconcile = load_reconcile()
+    for result in (
+        dict(rc=1, stderr="gh: Server Error (HTTP 502)"),
+        dict(rc=0, stdout="not json"),
+        dict(rc=0, stdout=json.dumps({"repository_url": "https://example.com/x", "number": 1})),
+        dict(rc=0, stdout=json.dumps({"repository_url": "https://api.github.com/repos/a/b"})),
+    ):
+        runner = lambda cmd, result=result, **kwargs: _completed(cmd, **result)  # noqa: E731
+        with pytest.raises(RuntimeError):
+            reconcile.resolve_issue_home(WH, 7, runner=runner)
 
 
 def test_reconcile_allows_shrink_with_explicit_repo_override(tmp_path: Path):

@@ -446,6 +446,66 @@ def _is_unresolvable_repo_error(exc: Exception) -> bool:
     return "could not resolve to a repository" in str(exc).lower()
 
 
+API_REPO_PREFIX = "https://api.github.com/repos/"
+
+
+def resolve_issue_home(repo: str, number: int, *, runner=None) -> tuple[str, int] | None:
+    """Where issue ``repo#number`` lives now, as ``(owner/name, number)``.
+
+    The REST issues endpoint follows a transfer's redirect, so a transferred
+    issue resolves to its destination -- which may be this same repository
+    under a new number, when an issue was transferred out and back. Returns
+    None when the issue is gone (HTTP 404/410: deleted, or moved somewhere the
+    token cannot read). Any other failure raises: an unknown answer must not
+    be taken as "moved".
+    """
+    runner = runner or subprocess.run
+    cmd = ["gh", "api", f"repos/{repo}/issues/{number}", "--jq", "{repository_url, number}"]
+    out = runner(cmd, capture_output=True, text=True, check=False)
+    if out.returncode != 0:
+        if "HTTP 404" in out.stderr or "HTTP 410" in out.stderr:
+            return None
+        raise RuntimeError(f"gh api failed resolving {repo}#{number}: {out.stderr.strip()}")
+    try:
+        payload = json.loads(out.stdout)
+        url, home_number = payload["repository_url"], int(payload["number"])
+    except (json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
+        raise RuntimeError(f"gh api returned an unreadable issue for {repo}#{number}") from exc
+    if not isinstance(url, str) or not url.startswith(API_REPO_PREFIX):
+        raise RuntimeError(f"gh api returned an unexpected repository_url for {repo}#{number}")
+    return url[len(API_REPO_PREFIX):], home_number
+
+
+def unaccounted_missing_cards(
+    repo: str,
+    issues: list[dict],
+    existing: dict[str, dict],
+    issue_resolver: Callable[[str, int], tuple[str, int] | None],
+) -> list[int]:
+    """Issue numbers that have a card but are absent from the fetch, and still
+    resolve to ``repo`` under the same number -- i.e. the fetch missed a live
+    issue. A transferred (including transferred back under a new number) or
+    deleted issue is accounted for. A card whose key has no number is never
+    accounted for."""
+    live = {int(item["number"]) for item in issues}
+    missing = sorted(
+        key_number(key)
+        for key, card in existing.items()
+        if key_repo(key) == repo
+        and card.get("source") == "github_issue"
+        and key_number(key) not in live
+    )
+    unaccounted = []
+    for number in missing:
+        if number == sys.maxsize:
+            unaccounted.append(number)
+            continue
+        home = issue_resolver(repo, number)
+        if home is not None and home[0].lower() == repo.lower() and int(home[1]) == number:
+            unaccounted.append(number)
+    return unaccounted
+
+
 def build_live_cards(
     repos: list[str],
     issue_fetcher: Callable[[str], list[dict]],
@@ -455,7 +515,9 @@ def build_live_cards(
     existing_counts: dict[str, int],
     allow_empty_repos: set[str],
     allow_shrink_repos: set[str],
+    issue_resolver: Callable[[str, int], tuple[str, int] | None] | None = None,
 ) -> tuple[dict[str, tuple[Path, dict]], list[str]]:
+    issue_resolver = issue_resolver or resolve_issue_home
     live = {}
     skipped: list[str] = []
     for repo in repos:
@@ -476,22 +538,24 @@ def build_live_cards(
                 continue
             raise
         existing_count = existing_counts.get(repo, 0)
-        if len(issues) < existing_count:
-            if not issues and repo in allow_empty_repos:
-                pass
-            elif repo in allow_shrink_repos:
-                pass
-            elif not issues:
+        if not issues and existing_count:
+            if repo not in allow_empty_repos and repo not in allow_shrink_repos:
                 raise RuntimeError(
                     f"empty issue list for {repo} would remove "
                     f"{existing_count} existing github_issue card(s); "
                     "use --allow-empty only after verifying the repo legitimately has zero issues"
                 )
-            else:
+        elif repo not in allow_shrink_repos:
+            # A count comparison cannot tell a partial fetch from issues that were
+            # transferred or deleted, and it let a missing card vanish silently
+            # whenever new issues outnumbered it. Check every missing card instead.
+            unaccounted = unaccounted_missing_cards(repo, issues, existing, issue_resolver)
+            if unaccounted:
+                shown = ", ".join(f"#{n}" for n in unaccounted[:10])
                 raise RuntimeError(
-                    f"partial issue list for {repo} returned {len(issues)} live issue(s) "
-                    f"but {existing_count} existing github_issue card(s) are present; "
-                    "use --allow-shrink only after verifying the reduction is legitimate"
+                    f"partial issue list for {repo}: {len(unaccounted)} card(s) absent from "
+                    f"the fetch still resolve to this repository under the same number "
+                    f"({shown}); use --allow-shrink only after verifying the reduction is legitimate"
                 )
         for issue in issues:
             key = issue_key(repo, issue["number"])
@@ -535,6 +599,7 @@ def reconcile_kanban(
     kanban_root: Path,
     *,
     issue_fetcher: Callable[[str], list[dict]],
+    issue_resolver: Callable[[str, int], tuple[str, int] | None] | None = None,
     dry_run: bool = True,
     write_files: bool = True,
     repo_filter: str | None = None,
@@ -562,6 +627,7 @@ def reconcile_kanban(
         existing_issue_counts_by_repo(existing),
         allow_empty_repos or set(),
         allow_shrink_repos or set(),
+        issue_resolver,
     )
     # A skipped (unresolvable) repo must be EXCLUDED from the active-rebuild set,
     # otherwise rebuild_boards would drop its existing github_issue cards (they are
