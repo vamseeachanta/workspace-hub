@@ -125,3 +125,28 @@ def test_main_exits_non_zero_when_the_redactor_cannot_load(tmp_path, monkeypatch
     assert rc != 0
     out = capsys.readouterr()
     assert SYNTH not in (out.out + out.err).lower()
+
+
+def test_workflow_provides_the_private_lists_and_fails_closed_without_them():
+    """CI has no private list unless the workflow materializes it. Without the
+    deny list the redactor refuses to load; the workflow must say why and stop
+    before reconciling rather than publish names the public hashes miss."""
+    import yaml
+
+    root = Path(__file__).resolve().parents[1]
+    text = (root / ".github/workflows/kanban-reconcile.yml").read_text(encoding="utf-8")
+    wf = yaml.load(text, Loader=yaml.BaseLoader)
+    steps = wf["jobs"]["reconcile"]["steps"]
+    names = [s.get("name", "") for s in steps]
+    idx = next(i for i, n in enumerate(names) if "private" in n.lower() and "list" in n.lower())
+    run_idx = len(steps) - 1
+    assert idx < run_idx
+    step = steps[idx]
+    assert step["env"]["IDENTIFIER_DENY_LIST_SECRET"] == "${{ secrets.IDENTIFIER_DENY_LIST }}"
+    assert step["env"]["LEGAL_CLIENT_MAP_SECRET"] == "${{ secrets.LEGAL_CLIENT_MAP }}"
+    body = step["run"]
+    assert "WORKSPACE_HUB_DENY_LIST=" in body and "GITHUB_ENV" in body
+    assert "LEGAL_CLIENT_MAP=" in body
+    assert "exit 1" in body
+    # the secret values are written to files, never echoed
+    assert "echo \"$IDENTIFIER_DENY_LIST_SECRET" not in body

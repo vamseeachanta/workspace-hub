@@ -419,21 +419,47 @@ def render_html(data: dict) -> str:
     )
 
 
+def _public_redaction():
+    """scripts/legal/public_redaction.py, loaded by path (C20)."""
+    import importlib.util
+
+    path = Path(__file__).resolve().parents[1] / "legal" / "public_redaction.py"
+    spec = importlib.util.spec_from_file_location("_orca_public_redaction", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("the public redactor module cannot load")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def main() -> int:
+    # C20: the outputs are PUBLIC files built from GitHub issue text. Load the
+    # identifier gate's Redactor first; write nothing if it cannot load.
+    try:
+        redaction = _public_redaction()
+        redactor = redaction.load_redactor()
+    except Exception as exc:  # noqa: BLE001
+        print(f"build-orca-kanban: the redactor cannot load; nothing written ({exc})", file=sys.stderr)
+        return 3
+
     print("Collecting issues from gh...", file=sys.stderr)
     issues = collect_issues()
     print(f"  collected {len(issues)} unique issues", file=sys.stderr)
 
     print("Classifying lanes + spot-checking completion...", file=sys.stderr)
-    data = build_data(issues)
+    data = redaction.redact_tree(build_data(issues), redactor)
 
     DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
     HTML_PATH.parent.mkdir(parents=True, exist_ok=True)
-    DATA_PATH.write_text(json.dumps(data, indent=2, sort_keys=True))
-    HTML_PATH.write_text(render_html(data))
+    DATA_PATH.write_text(json.dumps(data, indent=2, sort_keys=True), encoding="utf-8")
+    HTML_PATH.write_text(redactor.redact(render_html(data)), encoding="utf-8")
 
-    print(f"\nWrote: {DATA_PATH.relative_to(WORKSPACE_HUB)}")
-    print(f"Wrote: {HTML_PATH.relative_to(WORKSPACE_HUB)}")
+    for written in (DATA_PATH, HTML_PATH):
+        try:
+            shown = written.relative_to(WORKSPACE_HUB)
+        except ValueError:
+            shown = written.name
+        print(f"Wrote: {shown}")
     print(f"\nOrcaWave: {data['counts']['ow_total']} total ({data['counts']['ow_open']} open)")
     print(f"OrcaFlex: {data['counts']['of_total']} total ({data['counts']['of_open']} open)")
     print(f"\nLane distribution (OW / OF):")
