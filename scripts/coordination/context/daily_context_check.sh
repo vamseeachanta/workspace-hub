@@ -69,7 +69,17 @@ EOF
 
 # Run MCP optimization check
 echo "Checking MCP configuration..."
-"$WORKSPACE_ROOT/scripts/optimize-mcp-context.sh" --dry-run >> "$REPORT_FILE" 2>&1 || true
+MCP_OPTIMIZER="$WORKSPACE_ROOT/scripts/_core/optimize-mcp-context.sh"
+if [ -f "$MCP_OPTIMIZER" ]; then
+    if ! bash "$MCP_OPTIMIZER" --dry-run >> "$REPORT_FILE" 2>&1; then
+        {
+            echo ""
+            echo "WARNING: MCP optimization check failed; see output above."
+        } >> "$REPORT_FILE"
+    fi
+else
+    echo "WARNING: MCP optimization check skipped; missing $MCP_OPTIMIZER" >> "$REPORT_FILE"
+fi
 
 cat >> "$REPORT_FILE" << EOF
 

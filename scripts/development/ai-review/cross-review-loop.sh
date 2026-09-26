@@ -280,8 +280,8 @@ run_codex_review() {
 Codex CLI is not installed. Please review manually.
 
 ## Actions
-- Approve: ./scripts/ai-review/codex-review-manager.sh approve $review_id
-- Reject: ./scripts/ai-review/codex-review-manager.sh reject $review_id
+- Approve: ./scripts/development/ai-review/codex-review-manager.sh approve $review_id
+- Reject: ./scripts/development/ai-review/codex-review-manager.sh reject $review_id
 EOF
     fi
 
