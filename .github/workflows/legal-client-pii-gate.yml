@@ -14,16 +14,32 @@ name: Legal Client-PII Gate
 # If the secret is unset, the job runs in DEGRADE-OPEN mode (warns, does not
 # block) so forks / unconfigured environments don't break — but on the main
 # repo the secret should always be set so the gate is strict.
+#
+# Scheduled run (#3775): board commits from kanban-reconcile are pushed with
+# the default GITHUB_TOKEN, and GitHub creates no workflow run for events that
+# token raises, so a `push` trigger could never see them. A daily scheduled
+# job scans the whole tracked tree of main instead. It is read-only: contents
+# read, no persisted credential, no git or gh write command. A failing
+# scheduled run is the signal; it prints file and line only, never a value.
 
 on:
   pull_request:
     branches: [main]
     # `edited` so a title/body changed AFTER opening is re-scanned (#3169).
     types: [opened, synchronize, reopened, edited]
+  schedule:
+    - cron: "41 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   client-pii-gate:
     name: Client-PII Gate
+    # True for every pull_request event, so this check is never reported as
+    # skipped on a PR; the scheduled and manual runs use the job below.
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -100,3 +116,36 @@ jobs:
             echo "**Metadata/commits:** FAIL (exit $rc) — a PR title/body or commit message contains a client identifier (value withheld; amend or squash-merge to remove it)." >> "$GITHUB_STEP_SUMMARY"
             exit $rc
           fi
+
+  client-pii-tree-scan:
+    name: Client-PII Gate (whole tree, scheduled)
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Materialize private client map from secret
+        env:
+          LEGAL_CLIENT_MAP_SECRET: ${{ secrets.LEGAL_CLIENT_MAP }}
+        run: |
+          if [[ -n "$LEGAL_CLIENT_MAP_SECRET" ]]; then
+            printf '%s' "$LEGAL_CLIENT_MAP_SECRET" > "$RUNNER_TEMP/client-map.yaml"
+            echo "LEGAL_CLIENT_MAP=$RUNNER_TEMP/client-map.yaml" >> "$GITHUB_ENV"
+            echo "STRICT=--strict" >> "$GITHUB_ENV"
+          else
+            echo "::warning::LEGAL_CLIENT_MAP secret not set — whole-tree scan runs degrade-open (nothing verified)."
+            echo "STRICT=" >> "$GITHUB_ENV"
+          fi
+
+      - name: Scan the whole tracked tree
+        run: uv run python scripts/legal/check-client-pii.py --all $STRICT

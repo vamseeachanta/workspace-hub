@@ -19,12 +19,20 @@ name: Legal Identifier Gate
 # the content locally, accept it with
 #   python scripts/legal/check_identifiers.py --all --update-baseline
 # and commit the manifest diff. The update refuses to run in CI.
+#
+# Scheduled run (#3775): commits pushed to main with the default GITHUB_TOKEN
+# (the kanban-reconcile board commit) raise no workflow run, so `push` never
+# sees them. A daily schedule re-scans main. The job is read-only: contents
+# read, no persisted credential, no write command.
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  schedule:
+    - cron: "23 5 * * *"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -37,6 +45,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -47,7 +57,7 @@ jobs:
         run: python -m pip install --quiet pyyaml pytest
 
       - name: Test the gate
-        run: python -m pytest -q -p no:cacheprovider tests/legal/test_check_identifiers.py tests/legal/test_check_identifiers_r4.py tests/legal/test_check_identifiers_r5.py tests/legal/test_check_numeric_text.py
+        run: python -m pytest -q -p no:cacheprovider tests/legal/test_check_identifiers.py tests/legal/test_check_identifiers_r4.py tests/legal/test_check_identifiers_r5.py tests/legal/test_check_numeric_text.py tests/legal/test_legal_gate_schedules.py
 
       - name: Scan the tracked tree
         run: python scripts/legal/check_identifiers.py --all --baseline .legal-uninspectable-baseline.txt
