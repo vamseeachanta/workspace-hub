@@ -24,7 +24,7 @@ accounts:
     provider: claude
     holder: owner            # personal subscription; broader authorisations
     access: full
-    fingerprint: null
+    fingerprint: 78d7e174f2d1   # confirmed 2026-09-26 from ace-linux-1/2, gpu-claw, fleet-collector probes
   claude-professional:
     provider: claude
     holder: colleague        # professional seat shared on the company workstations
@@ -34,7 +34,7 @@ accounts:
     provider: codex
     holder: owner
     access: full
-    fingerprint: null
+    fingerprint: 78d7e174f2d1   # confirmed 2026-09-26 from ace-linux-1/2, gpu-claw, fleet-collector probes
   codex-professional:
     provider: codex
     holder: colleague
@@ -60,6 +60,7 @@ hosts:
     os: linux
     hub_path: ~/ws/workspace-hub
     claude: claude-owner
+    codex: codex-owner
   ace-win-2:
     os: windows
     hub_path: C:/ws/workspace-hub
@@ -74,7 +75,8 @@ hosts:
     os: linux
     local: true
     hub_path: ~/ws/workspace-hub
-    # add `claude: claude-owner` / `codex: codex-owner` once the VM is logged in
+    codex: codex-owner
+    # add `claude: claude-owner` once the VM is logged in (probe: no accessToken)
 
 # Routing thresholds used by the recommendation block of the aggregate.
 policy:
