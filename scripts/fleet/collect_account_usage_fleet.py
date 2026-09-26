@@ -121,6 +121,22 @@ def headroom(sample: dict | None) -> float | None:
         return None
 
 
+LIVE_SOURCES = ("oauth-api", "app-server-live")
+_EPOCH = dt.datetime.min.replace(tzinfo=dt.timezone.utc)
+
+
+def sample_rank(sample: dict) -> tuple:
+    """Order samples of one account: live sources first, then by the sample's own time.
+
+    A live answer (OAuth endpoint, codex app-server) describes the account now.
+    A session-log line describes the account at the moment that session last
+    ran, so its ``sampled_at`` -- not the probe's ``captured_at`` -- is its age.
+    """
+    live = 1 if sample.get("source") in LIVE_SOURCES else 0
+    when = parse_iso(sample.get("sampled_at")) or parse_iso(sample.get("captured_at")) or _EPOCH
+    return (live, when)
+
+
 def aggregate(cfg: dict, records: list[dict], at: dt.datetime | None = None) -> dict:
     """Pure function: group per-host probe records into the per-account aggregate."""
     at = at or now()
@@ -163,6 +179,14 @@ def aggregate(cfg: dict, records: list[dict], at: dt.datetime | None = None) -> 
                 if cap and at - cap > max_age:
                     warnings.append(f"{label}: {prov} sample is older than {max_age}")
                     continue
+                # A session-log fallback can carry a weekly window that rolled over
+                # weeks ago (seen 2026-09-26: ace-linux-2 codex "1% used, resets
+                # 2026-08-21"). A past reset means the figure describes a window
+                # that no longer exists, so it is not a sample at all.
+                reset = parse_iso(probe.get("week_resets_at"))
+                if reset and reset < at:
+                    warnings.append(f"{label}: {prov} sample's weekly window reset at {reset.isoformat()}; ignored")
+                    continue
                 samples[acct].append({**probe, "host": label, "captured_at": rec.get("captured_at")})
         hosts_out[label] = entry
 
@@ -173,8 +197,7 @@ def aggregate(cfg: dict, records: list[dict], at: dt.datetime | None = None) -> 
         fps = sorted({s["fingerprint"] for s in samples[acct] if s.get("fingerprint")})
         if len(fps) > 1:
             warnings.append(f"{acct}: hosts report different fingerprints {fps}; check ai-accounts.yaml")
-        best = max(samples[acct], key=lambda s: parse_iso(s.get("captured_at")) or dt.datetime.min.replace(tzinfo=dt.timezone.utc),
-                   default=None)
+        best = max(samples[acct], key=sample_rank, default=None)
         row = {
             "provider": meta.get("provider"),
             "holder": meta.get("holder"),
