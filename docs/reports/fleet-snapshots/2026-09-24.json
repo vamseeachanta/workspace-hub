@@ -1,6 +1,6 @@
 {
   "generated_at": "2026-09-24T15:54:15.629676+00:00",
-  "generated_by": "muse-vm fleet-daily-collector",
+  "generated_by": "fleet-collector fleet-daily-collector",
   "date": "2026-09-24",
   "origin_main": "961d47121",
   "fleet_size": 8,
@@ -11,7 +11,7 @@
   },
   "machines": [
     {
-      "name": "muse-vm",
+      "name": "fleet-collector",
       "reachable": true,
       "branch": "main",
       "head": "961d47121",
@@ -65,12 +65,12 @@
       "dirty": 43
     },
     {
-      "name": "macbook-air",
+      "name": "mac-1",
       "reachable": false,
       "note": "ssh_unreachable"
     },
     {
-      "name": "spark-a681",
+      "name": "spark-1",
       "reachable": false,
       "note": "ssh_unreachable"
     }
