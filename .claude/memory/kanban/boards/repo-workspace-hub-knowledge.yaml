@@ -515,7 +515,7 @@ cards:
 
       Related broader layer issue: #2726.'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2746
-    title: 'feat(acma): create private llm-wiki repo target llm-wiki-acma'
+    title: 'feat([redacted]): create private llm-wiki repo target [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2746
     gh_state: closed
@@ -852,7 +852,7 @@ cards:
     priority: 0
     body_excerpt: WRK item created via gh-next-id.sh. Details will be updated.
   - idempotency_key: gh:vamseeachanta/workspace-hub#1354
-    title: 'WRK-1354: frontierdeepwater: sync missing files from remote to /mnt/ace/frontierdeepwater'
+    title: 'WRK-1354: [redacted] sync missing files from remote to [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/1354
     gh_state: open
@@ -1641,7 +1641,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2470
-    title: 'feat(acma-codes): produce readable source-grounded summaries for OCIMF/CSA wiki promotion'
+    title: 'feat([redacted]): produce readable source-grounded summaries for OCIMF/CSA wiki promotion'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2470
     gh_state: open
@@ -1865,7 +1865,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2542
-    title: 'feat(llm-wiki): plan Doris University training corpus extraction'
+    title: 'feat(llm-wiki): plan [redacted] University training corpus extraction'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2542
     gh_state: closed
@@ -1880,7 +1880,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2543
-    title: 'feat(llm-wiki): plan DORIS codes/specs standards metadata promotion'
+    title: 'feat(llm-wiki): plan [redacted] codes/specs standards metadata promotion'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2543
     gh_state: closed
@@ -1895,7 +1895,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2544
-    title: 'feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates'
+    title: 'feat(llm-wiki): scout [redacted] LNG corpus for bounded extraction candidates'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2544
     gh_state: closed
@@ -2192,7 +2192,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2615
-    title: 'meta(governance): umbrella sanction — wiki/standards/ routing for engineering-standards / asset-management / lng-projects / acma-projects (W5-D follow-up)'
+    title: 'meta(governance): umbrella sanction — wiki/standards/ routing for engineering-standards / asset-management / lng-projects / [redacted] (W5-D follow-up)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2615
     gh_state: closed
@@ -2489,7 +2489,7 @@ cards:
 
       Design the migration path from existing per-provider memory stores into Hermes canonical memory, without losing existing learnings.'
   - idempotency_key: gh:vamseeachanta/workspace-hub#2747
-    title: 'feat(acma): raw-to-private-wiki promotion ledger with completion confidence scoring'
+    title: 'feat([redacted]): raw-to-private-wiki promotion ledger with completion confidence scoring'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2747
     gh_state: closed
@@ -2506,7 +2506,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/workspace-hub#2748
-    title: 'feat(acma): client output scaffolding for reports chatbots and evidence packs'
+    title: 'feat([redacted]): client output scaffolding for reports chatbots and evidence packs'
     source: github_issue
     source_url: https://github.com/vamseeachanta/workspace-hub/issues/2748
     gh_state: closed

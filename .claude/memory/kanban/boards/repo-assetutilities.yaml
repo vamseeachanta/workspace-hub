@@ -280,7 +280,7 @@ cards:
     priority: 0
     body_excerpt: "- [ ] setup linux machine\n  - [ ] ?"
   - idempotency_key: gh:vamseeachanta/assetutilities#31
-    title: tech debt | ACMA | Source Files | Sync vs. Copy
+    title: tech debt | [redacted] | Source Files | Sync vs. Copy
     source: github_issue
     source_url: https://github.com/vamseeachanta/assetutilities/issues/31
     gh_state: open
