@@ -41,7 +41,7 @@ def test_collect_candidates_marks_only_high_confidence_items_eligible() -> None:
         "provider_queues": {
             "claude": {"top_issues": [{"number": 1, "title": "epic: strategy", "labels": [], "execution_ready": True, "priority_rank": 1, "routing_reason": "strategy/workflow/architecture language", "provider_priority": "high"}]},
             "codex": {"top_issues": [{"number": 2, "title": "fix: implementation", "labels": [], "execution_ready": True, "priority_rank": 1, "routing_reason": "implementation/test/fix language", "provider_priority": "highest"}]},
-            "gemini": {"top_issues": [{"number": 3, "title": "audit: research", "labels": [], "execution_ready": False, "priority_rank": 2, "routing_reason": "research/triage/audit language", "provider_priority": "highest"}]},
+            "agy": {"top_issues": [{"number": 3, "title": "audit: research", "labels": [], "execution_ready": False, "priority_rank": 2, "routing_reason": "research/triage/audit language", "provider_priority": "highest"}]},
         }
     }
     candidates = module.collect_candidates(work_queue)
