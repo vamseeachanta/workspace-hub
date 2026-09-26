@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-26T17:23:24Z
+Generated: 2026-09-26T21:23:27Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3910 | legal: check-client-pii.py reports a directory argument as a clean scan (fail-open) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3909 | registry: add mystran to dev-secondary tools (needs #3475 identity-inventory re-attestation) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3896 | bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3894 | [Epic] Solver-neutral simulation study workflow: spec → triage → dispatch → monitor → reduce → human review → issue | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3892 | feat(engineering): standard human-review pack — evidence screenshots vs physical expectation before any result is accepted | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -241,8 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3565 | feat(agent-ux): align Linux Codex dictation hotkey with Windows Win+H | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3564 | bug(ci): legal rule authority receives empty AUTH_ENVELOPE on PRs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3562 | Audit MSYS conversion of slash-prefixed native-command tokens | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3561 | Repair and split workspace connection menu dispatch | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3560 | fix(review): isolate in-progress provider sinks and fail closed on empty final artifacts | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

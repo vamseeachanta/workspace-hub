@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-26T17:23:20.752194Z",
+  "generated_at": "2026-09-26T21:23:24.154516Z",
   "current_week": "2026-W39",
-  "scorecard_generated_at": "2026-09-26T17:23:17.473113Z",
+  "scorecard_generated_at": "2026-09-26T21:23:20.868781Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 9,
-      "total_candidates": 178,
+      "total_candidates": 177,
       "top_issues": [
         {
           "number": 3816,
@@ -675,31 +675,6 @@
           ]
         },
         {
-          "number": 3560,
-          "title": "fix(review): isolate in-progress provider sinks and fail closed on empty final artifacts",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3560",
-          "labels": [
-            "bug",
-            "priority:high",
-            "cat:tooling",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:codex",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-08-01T06:13:57Z",
-          "execution_ready": false,
-          "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3600,
           "title": "fix(harness): R-MODEL-DRIFT validates only openai_primary \u2014 no claude_* key is checked by any nightly gate",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3600",
@@ -1213,7 +1188,7 @@
             "machine:dev-primary",
             "status:plan-review"
           ],
-          "updatedAt": "2026-08-19T13:15:44Z",
+          "updatedAt": "2026-09-26T17:52:31Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -3093,31 +3068,6 @@
           ]
         },
         {
-          "number": 3561,
-          "title": "Repair and split workspace connection menu dispatch",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3561",
-          "labels": [
-            "enhancement",
-            "cat:tooling",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:13:58Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3564,
           "title": "bug(ci): legal rule authority receives empty AUTH_ENVELOPE on PRs",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3564",
@@ -4222,6 +4172,24 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3909,
+          "title": "registry: add mystran to dev-secondary tools (needs #3475 identity-inventory re-attestation)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3909",
+          "labels": [],
+          "updatedAt": "2026-09-26T17:24:26Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4229,7 +4197,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 20,
+      "total_candidates": 21,
       "top_issues": [
         {
           "number": 3740,
@@ -4839,6 +4807,23 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3886",
           "labels": [],
           "updatedAt": "2026-09-24T22:00:13Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3910,
+          "title": "legal: check-client-pii.py reports a directory argument as a clean scan (fail-open)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3910",
+          "labels": [],
+          "updatedAt": "2026-09-26T17:52:30Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
