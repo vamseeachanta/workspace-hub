@@ -1,35 +1,38 @@
 #!/usr/bin/env bash
-# install-fleet-collector-cron.sh — one-shot setup of the hourly AI account
-# usage job on the fleet collector VM (the host that already publishes
-# docs/reports/fleet-snapshots/). Idempotent: re-running replaces the marked
-# crontab line and re-checks prerequisites.
+# install-fleet-collector-cron.sh — preflight for the hourly AI account usage
+# job on the fleet collector VM (the host that already publishes
+# docs/reports/fleet-snapshots/). Idempotent and NON-MUTATING: it verifies the
+# prerequisites, prints the scheduler entry to register, and can run the job
+# once by hand. It never writes a scheduler itself.
 #
 # Run ON the collector VM, from the workspace-hub checkout:
-#   bash scripts/fleet/install-fleet-collector-cron.sh          # check + install
-#   bash scripts/fleet/install-fleet-collector-cron.sh --check  # report only
-#   bash scripts/fleet/install-fleet-collector-cron.sh --run    # install, then run once now
+#   bash scripts/fleet/install-fleet-collector-cron.sh           # preflight + print the entry
+#   bash scripts/fleet/install-fleet-collector-cron.sh --check   # preflight only (exit 1 on a MISSING item)
+#   bash scripts/fleet/install-fleet-collector-cron.sh --run     # preflight, then run the job once now
 #
 # Prerequisites it verifies: python3 + PyYAML, ssh BatchMode reachability of
 # every host in config/ai-tools/ai-accounts.yaml (aliases = fleet labels, as
 # in ~/.ssh/config), and a push-capable origin. Missing items are printed with
-# the fix; nothing is installed while a required item is missing.
+# the fix.
+#
+# WHY IT DOES NOT WRITE THE SCHEDULER (2026-09-26): a system-crontab line does
+# NOT survive a VM restart here — /var (including /var/spool/cron) is ephemeral,
+# and the line this script used to install was wiped the same day it was
+# created. The durable scheduler on this VM is its runtime scheduler: entry
+# `ai-account-usage-hourly` (hourly, ~:13 past the hour), whose body recreates
+# the /root/.ssh/config symlink if a restart wiped it, then runs
+# scripts/fleet/account-usage-cron.sh. Register or update THAT entry with the
+# command this script prints. Scheduler writes in this repository are governed
+# by config/scheduled-tasks/mutation-surfaces.yaml (scheduler-mutation-safety);
+# a preflight that prints the entry stays outside that surface by design.
 #
 # The catalogue rule (config/scheduled-tasks/schedule-tasks.yaml is the single
 # source of truth) still applies: this VM is not yet in
-# config/workstations/registry.yaml, so the job is installed here directly, as
-# the existing fleet-daily-collector is, until the registry entry and the
-# scheduler attestation (#3475) are added. Marker: workspace-hub:account-usage
-#
-# DURABILITY NOTE (2026-09-26): a system-crontab line does NOT survive a VM
-# restart here — /var (including /var/spool/cron) is ephemeral, and the entry
-# installed this way was wiped the same day it was created. On this VM the
-# durable scheduler is the runtime scheduler: entry `ai-account-usage-hourly`
-# (hourly, ~:13 past the hour), whose body recreates the /root/.ssh/config
-# symlink if a restart wiped it. Prefer registering/updating that runtime
-# entry over re-running this installer for the crontab line.
+# config/workstations/registry.yaml; registering it and declaring the job there
+# is follow-up D1 in docs/plans/2026-09-26-fleet-ai-account-usage-and-collector-cron.md.
 set -euo pipefail
 
-MODE="install"
+MODE="print"
 case "${1:-}" in
     --check) MODE="check" ;;
     --run)   MODE="run" ;;
@@ -39,17 +42,16 @@ esac
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HUB="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-MARKER="# workspace-hub:account-usage"
-SCHEDULE="7 * * * *"
+ENTRY_NAME="ai-account-usage-hourly"
 LOG_DIR="${HUB}/logs/fleet"
-CRON_LINE="${SCHEDULE} cd ${HUB} && bash scripts/fleet/account-usage-cron.sh >> ${LOG_DIR}/account-usage-\$(date +\\%Y\\%m\\%d).log 2>&1 ${MARKER}"
+JOB_CMD="cd ${HUB} && bash scripts/fleet/account-usage-cron.sh >> ${LOG_DIR}/account-usage-\$(date +%Y%m%d).log 2>&1"
 CONFIG="${HUB}/config/ai-tools/ai-accounts.yaml"
 ok=1
 
 say()  { printf '  %-12s %s\n' "$1" "$2"; }
 fail() { say "MISSING" "$1"; ok=0; }
 
-echo "== fleet collector cron: prerequisites =="
+echo "== fleet collector job: prerequisites =="
 if python3 -c 'import yaml' 2>/dev/null; then
     say "OK" "python3 + PyYAML"
 else
@@ -60,12 +62,6 @@ if git -C "${HUB}" ls-remote --exit-code origin main >/dev/null 2>&1; then
     say "OK" "origin main reachable ($(git -C "${HUB}" remote get-url origin))"
 else
     fail "origin main not reachable (gh auth login / ssh key)"
-fi
-
-if command -v crontab >/dev/null 2>&1; then
-    say "OK" "crontab available"
-else
-    fail "crontab missing  ->  sudo apt install -y cron"
 fi
 
 echo "== fleet hosts (ssh BatchMode, alias = label) =="
@@ -85,18 +81,34 @@ for h in "${HOSTS[@]}"; do
     fi
 done
 
+# Scheduler-agnostic liveness: the job writes a dated log on every run, so a
+# fresh log proves the entry exists and fires, whichever scheduler holds it.
+echo "== job liveness (from ${LOG_DIR}) =="
+newest="$(ls -t "${LOG_DIR}"/account-usage-*.log 2>/dev/null | head -1 || true)"
+if [[ -n "${newest}" ]]; then
+    age_min=$(( ( $(date +%s) - $(stat -c %Y "${newest}") ) / 60 ))
+    if (( age_min <= 120 )); then
+        say "OK" "last run ${age_min} min ago ($(basename "${newest}"))"
+    else
+        say "WARN" "last run ${age_min} min ago; the hourly entry may be missing (see below)"
+    fi
+else
+    say "INFO" "no run log yet; register the entry below, or --run once"
+fi
+
 if [[ "${MODE}" == "check" ]]; then
-    (crontab -l 2>/dev/null | grep -qF "${MARKER}") && say "OK" "cron line installed" || say "INFO" "cron line not installed"
     exit $(( ok ? 0 : 1 ))
 fi
-(( ok )) || { echo "not installing: fix the MISSING items above" >&2; exit 1; }
+(( ok )) || { echo "fix the MISSING items above before registering the job" >&2; exit 1; }
 
-echo "== install =="
 mkdir -p "${LOG_DIR}"
-{ crontab -l 2>/dev/null | grep -vF "${MARKER}" || true; echo "${CRON_LINE}"; } | crontab -
-say "OK" "crontab: ${SCHEDULE} account-usage-cron.sh (marker ${MARKER})"
+echo "== scheduler entry to register (runtime scheduler on this VM) =="
+echo "  name:     ${ENTRY_NAME}"
+echo "  schedule: hourly (~:13 past the hour)"
+echo "  command:  ${JOB_CMD}"
+echo "  note:     the entry body should first restore /root/.ssh/config if a restart wiped it"
 
 if [[ "${MODE}" == "run" ]]; then
-    echo "== first run =="
+    echo "== running the job once now =="
     bash "${HUB}/scripts/fleet/account-usage-cron.sh"
 fi
