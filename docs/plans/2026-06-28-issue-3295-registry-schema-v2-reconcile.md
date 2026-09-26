@@ -1,3 +1,9 @@
+---
+compass:
+  hub: true
+  parent: docs/plans/2026-06-27-issue-3282-resultenvelope-run-workflow.md
+---
+
 # Plan for #3295: reconcile registry `schema_version` into a unified v2 superset (unblocks #3282)
 
 > **Status:** draft
