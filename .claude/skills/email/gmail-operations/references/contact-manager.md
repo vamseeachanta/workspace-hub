@@ -84,7 +84,7 @@ ril.com, lng-agroup.com, installation-contractor.com, shell.com, kbr.com,
 technip.com, technipfmc.com, subsea7.com, nov.com, aker.com,
 bp.com, awilcodrilling.com, eagle.org, vulcanoffshore.com,
 boptechnologies.com, risersinc.com, sandsig.com,
-engineeredcustomsolutions.com, mecorparada.com.ve
+engineeredcustomsolutions.com
 ```
 
 **Ace colleague domains:**

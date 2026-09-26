@@ -56,7 +56,8 @@ rules:
   # ==== ACE Engineering / Consulting ====
   "aceengineer.com":                "aceengineer-admin/docs/email/internal"
   "lng-agroup.com":                 "lng-a/docs/email"
-  "installation-contractor.com":                  "aceengineer-admin/docs/email/client-installation-contractor"
+  # Client-domain rules that would reveal an engagement live in the private
+  # overlay (email.routing_rules; scripts/lib/private_overlay.py), not here.
   "ril.com":                        "aceengineer-admin/docs/email/client-ril"
   "shell.com":                      "aceengineer-admin/docs/email/client-shell"
   "bp.com":                         "aceengineer-admin/docs/email/client-bp"
@@ -119,7 +120,6 @@ rules:
   "linkedin.com":                   "achantas-data/docs/email/career-networking"
   "parentsquare.com":               "achantas-data/docs/email/school"
   "vercel.com":                     "digitalmodel/docs/email/dev-notifications"
-  "news.ogj.com":                   "achantas-data/docs/email/industry"
   "em1.turbotax.intuit.com":        "achantas-data/docs/email/tax"
   "github.com":                     "achantas-data/docs/email/dev-notifications"
   "openrouter.ai":                  "achantas-data/docs/email/ai-platform"
