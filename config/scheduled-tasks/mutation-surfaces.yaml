@@ -313,4 +313,8 @@ resolved_dispositions:
     members: [scripts/cron/cron_apply.py, scripts/cron/setup-cron.sh, scripts/setup/new-machine-setup.sh]
     resolved_on: "2026-07-12"
     pull_request: 3492
-    source_digest: 3b1ea09ab38e37dd7d09e0245f12d92126d393a0e02af5e24498195be708e31e
+    # Re-affirmed 2026-09-26 (#3904, owner-authorised): a comment in
+    # schedule-tasks.yaml changed, which moves the governed input digest. No
+    # task, command, schedule or machine binding changed, so the #3475
+    # disposition still holds. Digest computed from git index blobs on Linux.
+    source_digest: fcfd80cb822b96dcf573fea42674daf35786c58fedbe860256e17acabb473dae
