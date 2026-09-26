@@ -7,6 +7,8 @@ from typing import Mapping
 
 import yaml
 
+from scripts.lib import private_overlay
+
 CLEANUP_ALIASES = frozenset({"ace", "personal"})
 SKESTATES_ATTENTION_CHANNEL = "Telegram: Family - Finance"
 
@@ -45,6 +47,10 @@ class AccountScope:
 
     @classmethod
     def default(cls) -> "AccountScope":
+        # Mailbox addresses are private (C15/C19): they come from the run-time
+        # overlay. Without it the default carries no address, so resolution by
+        # address fails closed (config_missing) while the alias still resolves.
+        mailboxes = private_overlay.get_mapping(private_overlay.load(), "email.mailboxes")
         return cls(
             {
                 "ace": Account(
@@ -63,7 +69,7 @@ class AccountScope:
                 ),
                 "skestates": Account(
                     alias="skestates",
-                    email="skestates@example.com",
+                    email=mailboxes.get("skestates"),
                     enabled=True,
                     cleanup_enabled=False,
                     retention_policy="keep_forever",
