@@ -54,6 +54,27 @@ jobs:
           # installation is granted more (the reconciler only reads sibling issues).
           permission-issues: read
 
+      # C20: the boards are committed to this PUBLIC repository from GitHub
+      # issue text. scripts/kanban/reconcile.py redacts them with the identifier
+      # gate's Redactor and refuses to run without the private deny list (the
+      # public hashes do not cover every name). The lists come from secrets,
+      # are written to runner-temp files and are never echoed.
+      - name: Materialize the private redaction lists
+        env:
+          IDENTIFIER_DENY_LIST_SECRET: ${{ secrets.IDENTIFIER_DENY_LIST }}
+          LEGAL_CLIENT_MAP_SECRET: ${{ secrets.LEGAL_CLIENT_MAP }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$IDENTIFIER_DENY_LIST_SECRET" || -z "$LEGAL_CLIENT_MAP_SECRET" ]]; then
+            echo "::error::IDENTIFIER_DENY_LIST and LEGAL_CLIENT_MAP secrets are required. The boards are public; without the private lists the redactor fails closed and no board is written (C20)."
+            exit 1
+          fi
+          umask 077
+          printf '%s\n' "$IDENTIFIER_DENY_LIST_SECRET" > "$RUNNER_TEMP/identifier-deny-list.txt"
+          printf '%s\n' "$LEGAL_CLIENT_MAP_SECRET" > "$RUNNER_TEMP/client-codename-map.yaml"
+          echo "WORKSPACE_HUB_DENY_LIST=$RUNNER_TEMP/identifier-deny-list.txt" >> "$GITHUB_ENV"
+          echo "LEGAL_CLIENT_MAP=$RUNNER_TEMP/client-codename-map.yaml" >> "$GITHUB_ENV"
+
       - name: Reconcile, commit, and push one batched run
         env:
           # App installation token: cross-repo issue reads via `gh api graphql`.

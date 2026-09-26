@@ -32,7 +32,7 @@ cards:
 
       **Status:** blocked | **Priority:** high | **Category:** engineering/marine
 
-      **Complexity:** medium | **Machine:** acma-ansys05'
+      **Complexity:** medium | **Machine:** [redacted]'
   - idempotency_key: gh:vamseeachanta/digitalmodel#139
     title: 'WRK-047: OpenFOAM CFD analysis capability for digitalmodel'
     source: github_issue
@@ -328,7 +328,7 @@ cards:
 
       **Status:** pending | **Priority:** low | **Category:** engineering/structural
 
-      **Complexity:** complex | **Machine:** acma-ansys05'
+      **Complexity:** complex | **Machine:** [redacted]'
   - idempotency_key: gh:vamseeachanta/digitalmodel#156
     title: 'WRK-125: OrcaFlex module roadmap \u2014 evolving coordination and progress tracking'
     source: github_issue
@@ -460,9 +460,9 @@ cards:
 
       **Status:** pending | **Priority:** high | **Category:** engineering/pipeline
 
-      **Complexity:** medium | **Machine:** acma-ansys05'
+      **Complexity:** medium | **Machine:** [redacted]'
   - idempotency_key: gh:vamseeachanta/digitalmodel#255
-    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05'
+    title: 'WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/255
     gh_state: open
@@ -478,11 +478,11 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 1
-    body_excerpt: '## WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on acma-ansys05
+    body_excerpt: '## WRK-595: feat(orcaflex): rewrite enrichment pipeline — worldenergydata-first, all stages on [redacted]
 
       **Status:** pending | **Priority:** high | **Category:** engineering/pipeline
 
-      **Complexity:** medium | **Machine:** acma-ansys05'
+      **Complexity:** medium | **Machine:** [redacted]'
   - idempotency_key: gh:vamseeachanta/digitalmodel#279
     title: 'WRK-129: Standardize analysis reporting for each OrcaFlex structure type'
     source: github_issue
@@ -528,9 +528,9 @@ cards:
 
       **Status:** blocked | **Priority:** medium | **Category:** engineering/marine
 
-      **Complexity:** medium | **Machine:** acma-ansys05'
+      **Complexity:** medium | **Machine:** [redacted]'
   - idempotency_key: gh:vamseeachanta/digitalmodel#281
-    title: 'WRK-121: Extract & Catalog OrcaFlex Models from rock-oil-field/s7'
+    title: 'WRK-121: Extract & Catalog OrcaFlex Models from [redacted]'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/281
     gh_state: open
@@ -748,7 +748,7 @@ cards:
     gh_assignees: []
     initial_status: triage
     priority: 0
-    body_excerpt: '## Machine: ace-linux-1 (or acma-ansys05 for Windows extraction)
+    body_excerpt: '## Machine: ace-linux-1 (or [redacted] for Windows extraction)
 
       ## Context
 
@@ -1057,11 +1057,11 @@ cards:
     priority: 0
     body_excerpt: '## Context
 
-      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
+      Follow-up from the 2026-05-15 review of the [redacted] OrcaFlex `spec.yml` generation path.
 
       The jumper calculation path computes 27 OrcaFlex line sections, but the pipeline does not write them because the result key names do not match:'
   - idempotency_key: gh:vamseeachanta/digitalmodel#602
-    title: 'feat(orcaflex): convert Ballymore jumper specs into generator-ready ProjectInputSpec models'
+    title: 'feat(orcaflex): convert [redacted] jumper specs into generator-ready ProjectInputSpec models'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/602
     gh_state: open
@@ -1076,11 +1076,11 @@ cards:
     priority: 0
     body_excerpt: '## Context
 
-      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
+      Follow-up from the 2026-05-15 review of the [redacted] OrcaFlex `spec.yml` generation path.
 
-      Current Ballymore jumper specs are domain calculation specs, not `ProjectInputSpec` inputs for `ModularModelGenerator`:'
+      Current [redacted] jumper specs are domain calculation specs, not `ProjectInputSpec` inputs for `ModularModelGenerator`:'
   - idempotency_key: gh:vamseeachanta/digitalmodel#603
-    title: 'test(orcaflex): add regression coverage for Ballymore spec-to-modular pipeline'
+    title: 'test(orcaflex): add regression coverage for [redacted] spec-to-modular pipeline'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/603
     gh_state: open
@@ -1095,11 +1095,11 @@ cards:
     priority: 0
     body_excerpt: '## Context
 
-      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
+      Follow-up from the 2026-05-15 review of the [redacted] OrcaFlex `spec.yml` generation path.
 
-      The current test suite has broad `modular_generator` coverage, but no focused regression test proving the two Ballymore jumper specs can travel through the intended path:'
+      The current test suite has broad `modular_generator` coverage, but no focused regression test proving the two [redacted] jumper specs can travel through the intended path:'
   - idempotency_key: gh:vamseeachanta/digitalmodel#604
-    title: 'chore(orcaflex): validate generated Ballymore jumper model on licensed OrcaFlex runner'
+    title: 'chore(orcaflex): validate generated [redacted] jumper model on licensed OrcaFlex runner'
     source: github_issue
     source_url: https://github.com/vamseeachanta/digitalmodel/issues/604
     gh_state: open
@@ -1114,9 +1114,9 @@ cards:
     priority: 0
     body_excerpt: '## Context
 
-      Follow-up from the 2026-05-15 review of the Ballymore OrcaFlex `spec.yml` generation path.
+      Follow-up from the 2026-05-15 review of the [redacted] OrcaFlex `spec.yml` generation path.
 
-      Linux can validate `ProjectInputSpec` and generate OrcaFlex YAML, but final `.dat`/`.sim` load-run proof requires an OrcaFlex license. Workspace-hub has a related operational smoke issue for generic OrcaFlex queue validation, but the Ballymore jumper generated model still needs a domain-specific licensed proof once #602/#603 land.'
+      Linux can validate `ProjectInputSpec` and generate OrcaFlex YAML, but final `.dat`/`.sim` load-run proof requires an OrcaFlex license. Workspace-hub has a related operational smoke issue for generic OrcaFlex queue validation, but the [redacted] jumper generated model still needs a domain-specific licensed proof once #602/#603 land.'
   - idempotency_key: gh:vamseeachanta/digitalmodel#686
     title: Adopt vetted OSS tooling for Excel-to-code and solver-data lanes (raw-to-knowledge-playbook doc 12)
     source: github_issue

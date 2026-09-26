@@ -15,6 +15,16 @@ ROOT = Path(__file__).resolve().parents[1]
 MODULE_PATH = ROOT / "scripts/kanban/reconcile.py"
 
 
+@pytest.fixture(autouse=True)
+def _synthetic_private_list(tmp_path_factory, monkeypatch):
+    """C20: the reconciler refuses to write a public board without a private
+    deny list. These tests use a synthetic one."""
+    p = tmp_path_factory.mktemp("deny") / "deny.txt"
+    p.write_text("zorblaxcorp\n", encoding="utf-8")
+    monkeypatch.setenv("WORKSPACE_HUB_DENY_LIST", str(p))
+    monkeypatch.delenv("LEGAL_CLIENT_MAP", raising=False)
+
+
 def load_reconcile():
     spec = importlib.util.spec_from_file_location("kanban_reconcile", MODULE_PATH)
     module = importlib.util.module_from_spec(spec)
