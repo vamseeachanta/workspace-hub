@@ -34,7 +34,7 @@ This handoff covers everything after Phase 5 execution: hygiene loop closure + m
 
 ### 1. `/mnt/ace/client-b/` is wrong-domain for reservoir-eng / formation-eval
 
-**Most important finding from Wave 2.** The directory is the user's Subsea-7 (S7) marine/subsea offshore engineering working directory — Ballymore, Talos Venice, Shell Perdido South, BP MD2/FJR client project work + Subsea-7 internal training (pipelines, risers, SCRs, umbilicals, OrcaFlex). Keyword scans across 383 PDFs for `log|well|reservoir|formation|porosity|permeability|petrophys|geosteer|wireline|MWD|LWD|core|stratig|sedim|fluid|PVT|recovery|EOR|simul|machine|neural|classif` returned **zero in-scope hits**. The plan body's "top candidate by name" framing was pure-name reasoning; actual content invalidates the assumption.
+**Most important finding from Wave 2.** The directory is the user's Subsea-7 (S7) marine/subsea offshore engineering working directory — GoM tieback A, umbilical project A, Shell GoM spar A South, BP MD2/FJR client project work + Subsea-7 internal training (pipelines, risers, SCRs, umbilicals, OrcaFlex). Keyword scans across 383 PDFs for `log|well|reservoir|formation|porosity|permeability|petrophys|geosteer|wireline|MWD|LWD|core|stratig|sedim|fluid|PVT|recovery|EOR|simul|machine|neural|classif` returned **zero in-scope hits**. The plan body's "top candidate by name" framing was pure-name reasoning; actual content invalidates the assumption.
 
 **Implication**: any future reservoir-engineering / formation-evaluation local-corpus walks should TREAT `/mnt/ace/client-b/` as deny-listed, not as a candidate. Wave 2 Phase B's 14 SKIP rows document the traversal transparently so this isn't re-discovered.
 

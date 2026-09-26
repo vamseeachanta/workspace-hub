@@ -148,7 +148,7 @@ Focal point declaration for each enhanced page area. The focal point is the sing
 | Case study CTA (bottom) | "Get a Similar Analysis for Your Project" |
 | Case study inline CTA | "Try the [Calculator Name] Calculator" |
 | Empty state: no case studies matching filter | "More case studies coming soon. Explore our calculators to see our engineering capabilities in action." |
-| Error state: contact form failure | "Something went wrong. Please try again, or email us directly at support@aceengineer.com." |
+| Error state: contact form failure | "Something went wrong. Please try again, or email us directly at support@example.com." |
 | Success state: contact form | "Thank you! Your message has been sent successfully. We will respond within 24 hours with an initial assessment and clear next steps." |
 | Destructive confirmation | None -- no destructive user actions exist in this phase |
 

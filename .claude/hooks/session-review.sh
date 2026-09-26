@@ -64,7 +64,7 @@ find_latest_transcript() {
     [[ ! -d "$claude_dir" ]] && return 1
 
     # Narrow search to current project dir if possible (much faster than scanning all)
-    # Claude uses format like "D--workspace-hub-digitalmodel" for "D:\workspace-hub\digitalmodel"
+    # Claude uses format like "<drive>--workspace-hub-digitalmodel" for "<drive>:\workspace-hub\digitalmodel"
     # Drive letter is uppercase, path separators become single dash
     local cwd_path
     cwd_path=$(pwd)

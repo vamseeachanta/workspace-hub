@@ -68,7 +68,7 @@ Files added:
 - `digitalmodel/tests/solvers/orcaflex/reporting/test_jumper_fixture_snapshot.py`
 
 Grounded source set used:
-- `digitalmodel/docs/domains/orcaflex/subsea/jumper/installation/ballymore_plet_plem/spec.yml`
+- `digitalmodel/docs/domains/orcaflex/subsea/jumper/installation/gom_tieback_a_plet_plem/spec.yml`
 - supporting reference: `digitalmodel/docs/domains/orcaflex/library/templates/jumper_rigid_subsea/spec.yml`
 
 #### Lazy-wave riser extension (#2456)

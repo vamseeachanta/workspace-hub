@@ -47,7 +47,7 @@ Mid-session, a chained `git add && git commit && git add && git commit && ...` b
 | Branch | `main` |
 | HEAD | `5c94bd4e` (this session's 10th commit) |
 | Ahead/behind origin | **10 ahead / 0 behind** (clean to push) |
-| Staged | `wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` — parallel proj-a session work (#2760), preserved untouched by this session via pathspec-form commits |
+| Staged | `wikis/mkt-a/wiki/concepts/proj-a-rudder-yaw-moment-inputs.md` — parallel proj-a session work (#2760), preserved untouched by this session via pathspec-form commits |
 | Untracked | `.codex/` and `.gemini/` (each contains a single `skills` symlink → `../../workspace-hub/.claude/skills` — intentional cross-agent skill-sharing infrastructure, created 2026-05-22 10:55, not residue) |
 | **Push status** | **NOT PUSHED** (deferred per option-2 "per-page commits for morning review") |
 
@@ -78,7 +78,7 @@ Not modified by this session. No state changes.
 - 10 commits used atomic pathspec form (no sweep-contamination per `feedback_retry_loop_sweep_contamination`).
 
 ### EXPECTED (proceed with named residue)
-- llm-wiki staged b1528 file (parallel proj-a session, #2760).
+- llm-wiki staged proj-a file (parallel proj-a session, #2760).
 - `/tmp/llm-wiki-extract/` (~4.3 MB of 11 extracted PDF text files + ocr_fallback.py helper; safe to `rm -rf` when morning review no longer needs them).
 - llm-wiki 10-ahead-of-origin state (by design per option-2).
 

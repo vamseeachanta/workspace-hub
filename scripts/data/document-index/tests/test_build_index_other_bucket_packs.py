@@ -16,7 +16,7 @@ SPEC.loader.exec_module(MODULE)
 def test_classify_doc_class_prefers_explicit_codes() -> None:
     assert (
         MODULE.classify_doc_class(
-            "disciplines/drilling/projects/x/00_inbox/Project/CAL/31057-CAL-1006-02 motion traces.xlsm"
+            "disciplines/drilling/projects/x/00_inbox/Project/CAL/NNNNN-CAL-NNNN-02 motion traces.xlsm"
         )
         == "calculation"
     )

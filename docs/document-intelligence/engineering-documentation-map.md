@@ -249,11 +249,11 @@
    249|
    250|### 4.5 Dark Intelligence Excel Extractions (6 spreadsheets, 2 generations)
    251|POC v1 and v2 extractions with Python re-implementations:
-   252|1. Surface wellhead SITP calculations (0163-cal-0001)
-   253|2. Conductor length assessment (31126-cal-0001)
+   252|1. Surface wellhead SITP calculations (<document-number>)
+   253|2. Conductor length assessment (<document-number>)
    254|3. S-N curve definitions for riser analysis (archive workbook; extraction removed from this repository 2026-09-24)
    255|4. C-K flow rate calculation
-   256|5. Flowback calculator (cc-23-6h)
+   256|5. Flowback calculator (flowback-calculator workbook)
    257|6. Spotfire formulas for calc variables
    258|
    259|---

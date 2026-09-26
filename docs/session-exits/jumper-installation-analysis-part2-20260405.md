@@ -27,7 +27,7 @@ Plus 7 issues from earlier session: #471, #472, #473, #474, #475 (DONE), #476, #
 
 ## Go/No-Go Decision Results
 
-**Ballymore jumper**: MARGINAL
+**GoM tieback A jumper**: MARGINAL
 - 11/12 criteria PASS, 1 WARN (DAF at exact limit 1.300)
 - 12 DNV-compliant criteria implemented per DNV-RP-H103
 - 21/21 tests passing

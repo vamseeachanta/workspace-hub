@@ -10,9 +10,9 @@ Three accounts:
 
 | Account | Role | Inbox pain point |
 |---|---|---|
-| `vamsee.achanta@aceengineer.com` | Business / engineering consulting | 33% CRE listings (sandsig.com et al); 16 confirmed noise domains |
-| `achantav@gmail.com` | Personal / networking | Marketing newsletters; self-forwards to ace |
-| `skestatesinc@gmail.com` | Real estate LLC | Tenant comms (low volume; leave as-is unless noise surfaces) |
+| `owner@example.com` | Business / engineering consulting | 33% CRE listings (sandsig.com et al); 16 confirmed noise domains |
+| `owner.personal@example.com` | Personal / networking | Marketing newsletters; self-forwards to ace |
+| `owner.realestate@example.com` | Real estate LLC | Tenant comms (low volume; leave as-is unless noise surfaces) |
 
 ## Why manual, not scripted
 
@@ -26,7 +26,7 @@ Three accounts:
 - [ ] Open `config/email-filters/ace-noise-domains.yaml` for reference.
 - [ ] Settings → Filters and Blocked Addresses → have this tab ready in each account.
 
-## Part A — Ace account (`vamsee.achanta@aceengineer.com`)
+## Part A — Ace account (`owner@example.com`)
 
 ### A1. CRE listings filter (the big win — 33% reduction) (5 min)
 
@@ -105,7 +105,7 @@ Run the same noise-domain workflow from A2 adapted to whatever newsletters flood
 Per #1990 history: you often forward from personal → ace. Search:
 
 ```
-from:achantav@gmail.com to:vamsee.achanta@aceengineer.com
+from:owner.personal@example.com to:owner@example.com
 ```
 
 …in the **ace** account (Part A accidentally missed). If these are all "shuttle" forwards, bulk-delete; the content is elsewhere.

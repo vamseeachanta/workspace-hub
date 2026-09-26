@@ -63,7 +63,7 @@ class AccountScope:
                 ),
                 "skestates": Account(
                     alias="skestates",
-                    email="skestatesinc@gmail.com",
+                    email="skestates@example.com",
                     enabled=True,
                     cleanup_enabled=False,
                     retention_policy="keep_forever",

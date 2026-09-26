@@ -4,7 +4,7 @@ description: YouTube account holding all of devaKrishna's progress and activity 
 type: reference
 originSessionId: c48c639e-df40-407d-be19-a3cb6dcab9a5
 ---
-All of devaKrishna's progress and activity videos (reading · typing · tennis · soccer · swimming · other) are stored on YouTube under account **`achantav@gmail.com`**.
+All of devaKrishna's progress and activity videos (reading · typing · tennis · soccer · swimming · other) are stored on YouTube under account **`owner.personal@example.com`**.
 
 **Why this matters:**
 - Canonical evidence base for skill-analysis workstream (`achantas-data#83`-family and the analysis umbrella spawned 2026-05-11)

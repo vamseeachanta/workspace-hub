@@ -1,6 +1,6 @@
 # Session handoff — ace-win-2 reconcile + dirty-work preservation + Windows tooling
 
-- **Machine:** ace-win-2 (ACMA-WS014), Windows
+- **Machine:** ace-win-2 (ace-win-2), Windows
 - **Span:** 2026-06-25 → 2026-06-28
 - **Scope:** `/reconcile-ecosystem` for this box → equality column refresh → preserve all dirty work across siblings → land Windows-native ecosystem tooling. Operational automation (not issue-gated).
 
@@ -10,7 +10,7 @@ Verified against reflogs throughout; the only deletions were two confirmed-merge
 
 ### Equality (this box's column)
 - CIM-backed collect succeeded; `compute` went MISSING-EVIDENCE → CONFORMS.
-- State published **state-only** (Linux cron owns the matrix HTML): `chore: equality report from acma-ws014` — `334c18659` (06-26), `2d0a296f4` (06-27).
+- State published **state-only** (Linux cron owns the matrix HTML): `chore: equality report from ace-win-2` — `334c18659` (06-26), `2d0a296f4` (06-27).
 - Residual reds (harness/kanban/memory/skills/scheduler) are **stale-peer artifacts** — dev-primary/dev-secondary show identical verdicts; clear when the Linux boxes re-collect. `solvers` BELOW-BASELINE is **by design** (licence probe, PR #2850). 5 codex/hermes provider rows: re-judge after peers refresh.
 
 ### Dirty work preserved (per repo)
@@ -22,7 +22,7 @@ Verified against reflogs throughout; the only deletions were two confirmed-merge
 | workspace-hub | matrix HTML UTF-8 fix | in main (peer dup; local `b3c2b4882` deduped) |
 | deckhand | go-live handoff doc | `8e373da` |
 | raw-to-knowledge-playbook | docs + **merge-resolved** GP-50/51 collision → renumbered GP-55/56 (footer GP-57); both sides kept | `345f15d` |
-| llm-wiki-acma (private) | recovery-distribution handoff doc | `662ecc4` (pushed to private origin) |
+| llm-wiki-<client> (private) | recovery-distribution handoff doc | `662ecc4` (pushed to private origin) |
 
 - **digitalmodel** `output_610/` — generated solver output, intentionally left untracked (preserved on disk).
 - **`#2998` branches** deleted (`feat/2998-equality-refresh-wrappers` b54a4c473, `fix/2998-win-equality-collector-gitbash` c2ded1d97) — squash-merged + gone upstream.
@@ -42,14 +42,14 @@ Verified against reflogs throughout; the only deletions were two confirmed-merge
 ## Repo states at exit
 - workspace-hub: clean, 0 ahead/behind, **no stashes**.
 - deckhand / raw-to-knowledge-playbook: clean, pushed.
-- llm-wiki-acma: pushed; **3 stashes parked** for operator review.
+- llm-wiki-<client>: pushed; **3 stashes parked** for operator review.
 - digitalmodel: `output_610/` untracked (intentional).
 
 ## External actions taken
-- Pushes to origin/main on workspace-hub, deckhand, raw-to-knowledge-playbook, and (operator) llm-wiki-acma. No other external/outbound actions.
+- Pushes to origin/main on workspace-hub, deckhand, raw-to-knowledge-playbook, and (operator) llm-wiki-<client>. No other external/outbound actions.
 
 ## Next steps (all optional, operator-discretion)
-1. Review/clear llm-wiki-acma's 3 parked stashes.
+1. Review/clear llm-wiki-<client>'s 3 parked stashes.
 2. Disable the `python3`/`python` App Execution Aliases (Settings → Apps → Advanced → App execution aliases) so `python3` stops shadowing the Store stub.
 3. Re-collect the Linux boxes, then re-judge residual equality divergences (run-order: real config drift only).
 4. Future Windows reconciles: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\windows\reconcile-ecosystem.ps1 [-- --apply]` — no more hand-rolled wrappers.

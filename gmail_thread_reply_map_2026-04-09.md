@@ -9,8 +9,8 @@ Date: 2026-04-09
 - Thread ID: `19b800bd57b645b8`
 - Reply handling: Reply in-thread.
 - To / current recipients:
-  - `Account.Services@fscommercial.com`
-  - `accountsreceivable.tx@fsresidential.com`
+  - `[email removed]`
+  - `[email removed]`
 - Cautions:
   - Keep the response in the existing thread so mailbox history and prior ownership context stay together.
   - Preserve the established subject line rather than starting a fresh variant.
@@ -23,13 +23,13 @@ Date: 2026-04-09
 - Thread ID: `19d5f1b9a0e1f55a`
 - Reply handling: Reply in-thread.
 - To / current recipients:
-  - `iharris@dollartree.com`
-  - `ValerieD@dollartree.com`
+  - `[email removed]`
+  - `[email removed]`
 - CC:
-  - `TX_Rents@familydollar.com`
+  - `[email removed]`
 - Cautions:
   - Use the exact subject above to stay attached to the live tax thread.
-  - Keep `TX_Rents@familydollar.com` on CC if the reply should preserve the current visibility chain.
+  - Keep `[email removed]` on CC if the reply should preserve the current visibility chain.
   - Because this is a tax-document discrepancy thread, verify any amounts, dates, and attachments before replying.
 
 ## 3) Pest / RE: FD30150 | Pest/Exteriors
@@ -39,7 +39,7 @@ Date: 2026-04-09
 - Thread ID: `19b7ae573d66d8cb`
 - Reply handling: Reply in-thread.
 - To / current recipient:
-  - `KSTRAIGHT@dollartree.com`
+  - `[email removed]`
 - Cautions:
   - Reply in the existing thread so work-order and service history remain intact.
   - Keep the subject exactly aligned with the existing thread.

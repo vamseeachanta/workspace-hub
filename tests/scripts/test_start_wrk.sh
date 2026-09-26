@@ -29,7 +29,7 @@ setup_test_repo() {
   local dir="$1"
   mkdir -p "${dir}/.claude/work-queue/working"
   git -C "${dir}" init -q
-  git -C "${dir}" config user.email "test@test.com"
+  git -C "${dir}" config user.email "test@example.com"
   git -C "${dir}" config user.name "Test"
   touch "${dir}/README.md"
   git -C "${dir}" add .

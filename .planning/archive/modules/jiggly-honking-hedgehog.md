@@ -15,7 +15,7 @@ The local-analysis relocation (WRK-1384/1396) surfaced 9 subfolders in `/mnt/ace
 ### Step 2: Sort rearrange-data/ personal/admin → admin/
 Move these subdirs and files from `rearrange-data/` to `docs/admin/`:
 - **Subdirs**: `2018IndiaTravel/`, `7202 San Ramon/`, `EyePrescription/`, `Invoices/`, `KM/`, `VisaExtension/`
-- **Files**: `VA_BlankCheck.JPG`, `BudgetRevenueBalance.xlsx`, `Amazon.com - Online Return Center (Orimeter).pdf`, `2018-07-APIMertonScreenshot.PNG`, `Occidental_Climate Report_2018.pdf`
+- **Files**: `VA_BlankCheck.JPG`, `BudgetRevenueBalance.xlsx`, `Amazon.com - Online Return Center (Orimeter).pdf`, `2018-07-APIMertonScreenshot.PNG`, `ep_operator_Climate Report_2018.pdf`
 
 Merge with existing `admin-refs/` content (rename `admin-refs/` → `admin/`).
 

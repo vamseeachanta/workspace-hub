@@ -9,7 +9,7 @@ this test module enforces:
   ``see_also`` >= 2)
 - per-page presence of >= 1 named standards body
 - noun-phrase reservation for #2541 (SESA / lng-a-62092) and #2544
-  (Woodfibre / mkt-a-31522) — both literal and generalized regex forms
+  (LNG terminal A / mkt-a-31522) — both literal and generalized regex forms
 - positive-list assertion that workspace-hub-internal corpus identifiers
   (mkt-a project codes, lng-a project codes) are NEVER referenced in the
   new concept pages
@@ -55,13 +55,13 @@ NEW_CONCEPT_PATHS: tuple[Path, ...] = tuple(
 # future mkt-a / lng-a project code.
 RESERVED_LITERAL_PHRASES: tuple[str, ...] = (
     "SESA",
-    "Woodfibre",
+    "LNG terminal A",
     "mkt-a-31522",
     "lng-a-62092",
 )
 
 RESERVED_GENERALIZED_PATTERN = re.compile(
-    r"\b(SESA|Woodfibre|mkt-a[- ]?(?:project[- ]?)?\d{4,6}|lng-a[- ]?(?:project[- ]?)?\d{4,6})\b",
+    r"\b(SESA|LNG[- ]terminal[- ]A|mkt-a[- ]?(?:project[- ]?)?\d{4,6}|lng-a[- ]?(?:project[- ]?)?\d{4,6})\b",
     re.IGNORECASE,
 )
 
@@ -222,7 +222,7 @@ def test_word_count_under_400(path: Path):
 
 def test_no_reserved_noun_phrases_literal():
     """BLOCK the four literal noun-phrases per dispatch:
-    SESA, Woodfibre, mkt-a-31522, lng-a-62092 — reserved for other modules/specs.
+    SESA, LNG terminal A, mkt-a-31522, lng-a-62092 — reserved for other modules/specs.
     """
     failures: list[str] = []
     for path in NEW_CONCEPT_PATHS:
@@ -236,7 +236,7 @@ def test_no_reserved_noun_phrases_literal():
 
 
 def test_no_reserved_noun_phrases_generalized():
-    """Generalized regex blocking any mkt-a-NNNN / lng-a-NNNN / SESA / Woodfibre form."""
+    """Generalized regex blocking any mkt-a-NNNN / lng-a-NNNN / SESA / LNG terminal A form."""
     failures: list[str] = []
     for path in NEW_CONCEPT_PATHS:
         text = path.read_text(encoding="utf-8")

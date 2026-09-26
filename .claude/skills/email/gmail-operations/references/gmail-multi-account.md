@@ -27,9 +27,9 @@ Three Gmail accounts managed from CLI via himalaya. Each account has distinct pu
 
 | Alias | Email | Purpose | Contacts Repo |
 |---|---|---|---|
-| `ace` | vamsee.achanta@aceengineer.com | Engineering consulting, GTM, clients | aceengineer-admin |
-| `personal` | achantav@gmail.com | Personal, networking, subscriptions | aceengineer-admin |
-| `skestates` | skestatesinc@gmail.com | Real estate LLC, tenant/vendor | sabithaandkrishnaestates |
+| `ace` | owner@example.com | Engineering consulting, GTM, clients | aceengineer-admin |
+| `personal` | owner.personal@example.com | Personal, networking, subscriptions | aceengineer-admin |
+| `skestates` | info@example.org | Real estate LLC, tenant/vendor | sabithaandkrishnaestates |
 
 ## Architecture Decision (April 2026)
 
@@ -137,56 +137,56 @@ downloads-dir = "~/.config/himalaya/downloads"
 
 [accounts.ace]
 default = true
-email = "vamsee.achanta@aceengineer.com"
+email = "owner@example.com"
 display-name = "Vamsee Achanta"
 backend.type = "imap"
 backend.host = "imap.gmail.com"
 backend.port = 993
 backend.encryption.type = "tls"
-backend.login = "vamsee.achanta@aceengineer.com"
+backend.login = "owner@example.com"
 backend.auth.type = "password"
 backend.auth.cmd = "cat ~/.config/himalaya/.secret_ace"
 message.send.type = "smtp"
 message.send.host = "smtp.gmail.com"
 message.send.port = 587
 message.send.encryption.type = "starttls"
-message.send.login = "vamsee.achanta@aceengineer.com"
+message.send.login = "owner@example.com"
 message.send.auth.type = "password"
 message.send.auth.cmd = "cat ~/.config/himalaya/.secret_ace"
 
 [accounts.personal]
-email = "achantav@gmail.com"
+email = "owner.personal@example.com"
 display-name = "Vamsee Achanta"
 backend.type = "imap"
 backend.host = "imap.gmail.com"
 backend.port = 993
 backend.encryption.type = "tls"
-backend.login = "achantav@gmail.com"
+backend.login = "owner.personal@example.com"
 backend.auth.type = "password"
 backend.auth.cmd = "cat ~/.config/himalaya/.secret_personal"
 message.send.type = "smtp"
 message.send.host = "smtp.gmail.com"
 message.send.port = 587
 message.send.encryption.type = "starttls"
-message.send.login = "achantav@gmail.com"
+message.send.login = "owner.personal@example.com"
 message.send.auth.type = "password"
 message.send.auth.cmd = "cat ~/.config/himalaya/.secret_personal"
 
 [accounts.skestates]
-email = "skestatesinc@gmail.com"
+email = "info@example.org"
 display-name = "SKEstates Inc"
 backend.type = "imap"
 backend.host = "imap.gmail.com"
 backend.port = 993
 backend.encryption.type = "tls"
-backend.login = "skestatesinc@gmail.com"
+backend.login = "info@example.org"
 backend.auth.type = "password"
 backend.auth.cmd = "cat ~/.config/himalaya/.secret_skestates"
 message.send.type = "smtp"
 message.send.host = "smtp.gmail.com"
 message.send.port = 587
 message.send.encryption.type = "starttls"
-message.send.login = "skestatesinc@gmail.com"
+message.send.login = "info@example.org"
 message.send.auth.type = "password"
 message.send.auth.cmd = "cat ~/.config/himalaya/.secret_skestates"
 ```
@@ -217,7 +217,7 @@ himalaya --account ace message read 42
 ### Send (always confirm with user first)
 ```bash
 cat << 'EOF' | himalaya --account ace template send
-From: vamsee.achanta@aceengineer.com
+From: owner@example.com
 To: recipient@example.com
 Subject: Subject Line
 
@@ -227,25 +227,25 @@ EOF
 
 ## Account-Specific Rules
 
-### ace (vamsee.achanta@aceengineer.com)
+### ace (owner@example.com)
 - PRIORITY: client emails, RFPs, invoice responses, GTM prospects
 - TONE: Professional engineering — P.E. credentials, technical precision
 - CONTACTS: aceengineer-admin/admin/contacts/aceengineer_contacts.csv (1,306 entries)
 - LINK TO: aceengineer-strategy/ prospect pipeline
 - TOUCHBASE: engineering contacts, potential clients
 
-### personal (achantav@gmail.com)
+### personal (owner.personal@example.com)
 - PRIORITY: personal finance, family, career networking
 - TONE: Casual/personal, warm
 - CONTACTS: aceengineer-admin/admin/contacts/achantav_contacts.csv (1,157 entries)
 - AGGRESSIVE UNSUBSCRIBE: marketing, social media notifications
 - TOUCHBASE: close professional network, alumni, friends
 
-### skestates (skestatesinc@gmail.com)
+### skestates (info@example.org)
 - PRIORITY: tenant communications (Family Dollar Store #30150), tax/legal, insurance
 - TONE: Business formal, landlord correspondence
 - CONTACTS: sabithaandkrishnaestates/admin/contacts/skestates_contacts.csv
-- KEY CONTACT: TX_Rents@familydollar.com (tenant)
+- KEY CONTACT: tenant-rents@example.net (tenant)
 - LINK TO: sabithaandkrishnaestates/ deal files, tax docs
 
 ## Contact Database Locations (normalized + deduped)
@@ -286,7 +286,7 @@ OAuth consent: External, test users added (all 3 emails)
 4. himalaya message IDs are folder-relative — re-list after folder changes
 5. Never send email without user confirmation — show draft first
 6. Rate limit: don't rapid-fire API calls; batch reads
-7. The skestatesinc email was "skestatesinc.gmail.com" — correct is "skestatesinc@gmail.com"
+7. The skestates email was "info.example.org" — correct is "info@example.org"
 8. **himalaya v1.2.0 config schema changed** — `backend.auth.type = "cmd"` is INVALID (duplicate key error with `backend.auth.type = "password"`). Use only `backend.auth.cmd` under the password type.
 9. gmail-mcp-multiauth setup requires browser — use manual OOB flow on headless servers
 10. External repo contacts must be committed from within their respective repo dirs (not workspace-hub root)

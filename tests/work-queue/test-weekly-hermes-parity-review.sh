@@ -41,7 +41,7 @@ machines:
     hostname_aliases: []
     os: windows
     role: simulation-license-host
-    workspace_root: 'D:\\workspace-hub'
+    workspace_root: 'C:\\workspace-hub'
     schedule_variant: contribute-minimal
     ssh: null
   licensed-win-2:
@@ -49,7 +49,7 @@ machines:
     hostname_aliases: []
     os: windows
     role: simulation-secondary
-    workspace_root: 'D:\\workspace-hub'
+    workspace_root: 'C:\\workspace-hub'
     schedule_variant: contribute-minimal
     ssh: null
 YAML
@@ -62,7 +62,7 @@ workstations:
     ws_hub_path: /mnt/workspace-hub
     ssh_target: ace-linux-2
   licensed-win-1:
-    ws_hub_path: 'D:\\workspace-hub'
+    ws_hub_path: 'C:\\workspace-hub'
     ssh_target: null
     linux_reachable: false
     report_path: .claude/state/harness-readiness-licensed-win-1.yaml

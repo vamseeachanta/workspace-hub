@@ -1,7 +1,7 @@
 # Ace Account — Gmail Filters Baseline
 
 **Captured:** 2026-04-24 via claude-in-chrome session
-**Account:** vamsee.achanta@aceengineer.com
+**Account:** owner@example.com
 **Purpose:** Rollback marker before the 2026-04-24 filter-install sweep
 **Source:** Gmail UI → Settings → Filters and Blocked Addresses (read live, not exported XML)
 
@@ -35,7 +35,7 @@ This is the load-bearing reason why `collide.io` is already filtered yet still a
 
 ## Blocked senders (1)
 
-- `Manikanta Sai <mani@imcsgroup.net>`
+- `[name and email removed]`
 
 ## Pre-existing labels (visible in sidebar)
 

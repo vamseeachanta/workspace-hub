@@ -7,7 +7,7 @@ metadata:
   originSessionId: 644a1a4e-249f-4334-8181-3612f7e0c4e8
 ---
 
-rclone v1.74.3 installed at `~/.local/bin/rclone` (no sudo — static binary). A Google Drive remote `gdrive:` is configured and OAuth-authorized as `vamsee.achanta@aceengineer.com`; token persisted in `~/.config/rclone/rclone.conf`, so re-syncs need no re-login.
+rclone v1.74.3 installed at `~/.local/bin/rclone` (no sudo — static binary). A Google Drive remote `gdrive:` is configured and OAuth-authorized as `owner@example.com`; token persisted in `~/.config/rclone/rclone.conf`, so re-syncs need no re-login.
 
 OAuth was completed via the **Chrome running on this server** (DISPLAY=:1, `/opt/google/chrome/chrome`) — rclone's auto-config callback on `127.0.0.1:53682` is reachable because the browser is local to the box. Same trick works for any future rclone/headless OAuth here.
 

@@ -20,9 +20,9 @@ User wants ace-linux-2 made ready to perform work directly from this computer, i
 3. Verified and pushed the branch earlier with commits:
    - `7d05256a2 chore(license): strip vendor-derivative PDFs to /mnt/ace, gitignore future`
    - `f4e724e0b chore(state): record session signals`
-   - `1ecbe0d39 docs(sessions): add B1528 moored-current handoff`
+   - `1ecbe0d39 docs(sessions): add proj-a moored-current handoff`
 4. Merged `chore/strip-raw-pdfs-to-mnt-ace` into `main` using a clean temporary integration worktree because root checkout had live-generated state churn.
-5. Resolved merge conflicts only in generated/live session-state files by taking `--ours`; durable artifact `docs/session-handoffs/2026-05-05-b1528-moored-current-exit-handoff.md` was already identical on `origin/main`.
+5. Resolved merge conflicts only in generated/live session-state files by taking `--ours`; durable artifact `docs/session-handoffs/2026-05-05-proj-a-moored-current-exit-handoff.md` was already identical on `origin/main`.
 6. Pushed merge commit to `origin/main`:
    - `c031fc0715f2ebe2d6860848ec9a07526b9a465a Merge branch 'chore/strip-raw-pdfs-to-mnt-ace'`
 7. Deleted stale branch:

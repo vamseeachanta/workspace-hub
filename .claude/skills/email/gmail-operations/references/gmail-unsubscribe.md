@@ -71,8 +71,8 @@ DO NOT unsubscribe from:
 For mailto: unsubscribe links:
 ```bash
 cat << 'EOF' | himalaya --account personal template send
-From: achantav@gmail.com
-To: unsubscribe-address@sender.com
+From: owner.personal@example.com
+To: unsubscribe-address@example.com
 Subject: Unsubscribe
 
 Unsubscribe

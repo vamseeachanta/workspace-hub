@@ -109,7 +109,7 @@ None
 
 Two bugs discovered and fixed in `setup-scheduler.ps1` during setup on licensed-win-1:
 
-1. **Path bug**: `Split-Path -Parent` called 3× from `$PSScriptRoot` → resolved to `D:\` instead of `D:\workspace-hub`. Fixed to 2×.
+1. **Path bug**: `Split-Path -Parent` called 3× from `$PSScriptRoot` → resolved to `D:\` instead of `<workspace-root>\workspace-hub`. Fixed to 2×.
 2. **Duration overflow**: `[TimeSpan]::MaxValue` serialises to `P99999999DT23H59M59S`, exceeding Task Scheduler XML limit (HRESULT 0x80041318). Fixed to `New-TimeSpan -Days 3650` (10 years).
 
 **Verification on ace-win-1:**

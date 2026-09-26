@@ -43,13 +43,13 @@ aceengineer-admin, aceengineer-strategy, aceengineer-website, achantas-media, as
 
 **Parallel-session activity in flight (NOT my work, do not trample):**
 
-Active processes at exit-time: another `claude` (PID 2019255) and an active `codex --yolo` session running pytest in digitalmodel against `tests/naval_architecture/test_issue_2760_proj-a_current_rudder_revision.py`. That session is producing coherent multi-repo work for issue [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (b1528 proj-a current-heading rudder force review):
+Active processes at exit-time: another `claude` (PID 2019255) and an active `codex --yolo` session running pytest in digitalmodel against `tests/naval_architecture/test_issue_2760_proj-a_current_rudder_revision.py`. That session is producing coherent multi-repo work for issue [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (proj-a current-heading rudder force review):
 
 | Repo | Dirty count (mine: 0; theirs: shown) | Their work |
 |---|---|---|
 | digitalmodel | 13 | proj-a rudder report code/test/data + report artifacts + cross-review outputs + session handoff |
-| llm-wiki | 1 | `wikis/mkt-a/wiki/concepts/b1528-proj-a-rudder-yaw-moment-inputs.md` concept edit |
-| llm-wiki-mkt-a | 7 | New report artifacts under `reports/B1528/issue-2760/` (citations json, manifest json, report in html/md/docx/pdf) |
+| llm-wiki | 1 | `wikis/mkt-a/wiki/concepts/proj-a-rudder-yaw-moment-inputs.md` concept edit |
+| llm-wiki-mkt-a | 7 | New report artifacts under `reports/proj-a/issue-2760/` (citations json, manifest json, report in html/md/docx/pdf) |
 | workspace-hub | 29 | Provider-routing dashboard regenerations (config/ai-tools, docs/reports), state-correction markers, ai-tools dashboards — auto-orchestration output that runs continuously |
 
 These four sets are the SAME logical work (issue #2760 execution by parallel codex session). They will land via their own commit path; the next session should respect that and not bulk-stage them.

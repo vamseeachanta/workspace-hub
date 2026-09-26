@@ -776,7 +776,7 @@ graph TD
 ### 22. Marine Safety & Integrity Specialist
 **Location:** `skills/sme/marine-safety/SKILL.md`
 **Focus:** Life Extension, Corrosion, Fitness-for-Service.
-**Key Projects:** Marlin TTR Life Extension, Horn Mountain VIV.
+**Key Projects:** Marlin TTR Life Extension, GoM field H VIV.
 
 ---
 

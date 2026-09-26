@@ -124,17 +124,17 @@ The "personal→ace shuttle" pattern was estimated at 2,000-3,000 emails from se
 
 ## Account-Specific Patterns
 
-### ace (vamsee.achanta@aceengineer.com)
+### ace (owner@example.com)
 - Sands IG CRE listings: `from:sandsig.com` → extract, parse property data, then delete
 - Keep: github.com, openrouter.ai, substack.com (review), deeplearning.ai
 - Delete: collide.io, promowebly.com, email.theparkingspot.com, etc.
 
-### personal (achantav@gmail.com)
+### personal (owner.personal@example.com)
 - Keep: parentsquare.com (school), github.com, em1.turbotax.intuit.com (tax)
 - Delete: promote.weebly.com, e.swimoutlet.com, mail.urbanairparks.com, lists.wikimedia.org, etc.
 - Review: rigzonemail.com, info.marineinsight.com, m.learn.coursera.org
 
-### skestates (skestatesinc@gmail.com)
+### skestates (info@example.org)
 - Almost all emails are actionable business correspondence
 - Sands IG CRE listings forwarded: extract, then delete
 - Thread archive critical for tax/legal reference

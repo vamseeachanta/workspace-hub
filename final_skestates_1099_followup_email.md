@@ -1,7 +1,7 @@
 Subject: Follow-Up on 2025 Form 1099-MISC for Family Dollar Store #30150
 
 To: Ingrid Harris and Family Dollar Team [insert email addresses]
-From: skestatesinc@gmail.com
+From: owner.realestate@example.com
 
 Dear Ingrid Harris and Family Dollar Team,
 
@@ -35,5 +35,5 @@ Best regards,
 Vamsee Achanta
 [Title / Authorized Representative]
 SKEstates Inc
-Email: skestatesinc@gmail.com
+Email: owner.realestate@example.com
 Phone: [Phone Number]

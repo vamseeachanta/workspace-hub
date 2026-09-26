@@ -147,7 +147,7 @@ release:
         
   notifications:
     - slack: releases-channel
-    - email: stakeholders@company.com
+    - email: stakeholders@example.com
     - discord: webhook-url
 ```
 

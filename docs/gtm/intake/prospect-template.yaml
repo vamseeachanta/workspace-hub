@@ -13,7 +13,7 @@
 
 prospect:
   company: "Acme Marine Contractors"        # required, string, min length 1
-  contact: "jane.doe@acme.example"          # required, must be valid email
+  contact: "jane.doe@example.com"          # required, must be valid email
   nda_in_place: true                        # required bool — gates report distribution
   target_demo: "demo_05"                    # required enum: demo_01..demo_05
   delivery_deadline_utc: "2026-04-21T17:00Z"  # required ISO8601 UTC

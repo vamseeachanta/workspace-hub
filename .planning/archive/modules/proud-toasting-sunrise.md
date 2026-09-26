@@ -188,7 +188,7 @@ Quick check command:
 ```bash
 python -c "
 import re, pathlib
-base = pathlib.Path(r'D:\workspace-hub\digitalmodel\docs\modules\orcawave\L00_validation_wamit')
+base = pathlib.Path(r'<workspace-root>\workspace-hub\digitalmodel\docs\modules\orcawave\L00_validation_wamit')
 for p in sorted(base.rglob('benchmark_report.html')):
     html = p.read_text(encoding='utf-8')
     m = re.search(r'Headings: (\d+)', html)

@@ -69,7 +69,7 @@ Postings expire quickly. Before investing in application:
 - Check the Apply URL on the actual career site
 - Common patterns:
   - Chevron: careers.chevron.com/job/{job_id}
-  - Occidental: www.oxy.com/careers (Workday-based)
+  - a major E&P operator: www.oxy.com/careers (Workday-based)
   - Cheniere: careers.cheniere.com
   - Shell: careers.shell.com
   - Wood Group: woodplc.com/careers (redirects)

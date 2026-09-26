@@ -88,7 +88,7 @@ region: Optional[str]
 - `digitalmodel/src/digitalmodel/field_development/concept_selection.py` — `HostType` enum, concept selection logic using depth/reservoir/distance/fluid.
 - `digitalmodel/src/digitalmodel/field_development/subsea_bridge.py` — `GoMField` catalog (10 reference fields from `subseaiq-scan-latest.json`), separate from benchmark stats.
 - `digitalmodel/src/digitalmodel/field_development/capex_estimator.py` — `estimate_capex()` uses tieback distance tiers.
-- `data/field-development/subseaiq-scan-latest.json` — 10 GoM reference fields (Perdido, Appomattox, Whale, etc.) used by subsea_bridge, not benchmarks.
+- `data/field-development/subseaiq-scan-latest.json` — 10 GoM reference fields (GoM spar A, Appomattox, Whale, etc.) used by subsea_bridge, not benchmarks.
 
 ---
 

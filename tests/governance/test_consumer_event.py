@@ -60,7 +60,7 @@ def test_normalized_paths_include_both_rename_endpoints(normalizer):
 
 
 @pytest.mark.parametrize("path", ["/tmp/file", "C:/file", "C:file", "../file", "docs/../file",
-                                  "//host/share", "\\\\host\\share", "docs/file. ", "docs//file", ""])
+                                  "//host/share", "\\\\host\\share", "docs/file. ", "docs//file", ""])  # identifier-gate: example
 def test_invalid_paths_remain_unmapped(normalizer, path):
     assert call(normalizer, envelope(payload={"path": path})) == rejected("needs-context", "PATH_BINDING_MISMATCH")
 

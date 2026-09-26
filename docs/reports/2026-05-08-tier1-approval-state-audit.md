@@ -76,7 +76,7 @@ Live GitHub and local evidence audit for the tier-1 repos: workspace-hub, digita
 | digitalmodel | #484 | Implement subsea tree modeling module (API 17D) | plan + approval marker; not working; clean clone | https://github.com/vamseeachanta/digitalmodel/issues/484 |
 | digitalmodel | #483 | sub: curves.py decomposition -- break up 29,666-line monolith | plan + approval marker; not working; clean clone | https://github.com/vamseeachanta/digitalmodel/issues/483 |
 | digitalmodel | #481 | Convert PLET-PLEM workbook via Windows cowork | plan + approval marker; not working; clean clone | https://github.com/vamseeachanta/digitalmodel/issues/481 |
-| digitalmodel | #480 | BUG: Verify PLET-PLEM jumper segment lengths from SZ_Ballymore_Jumper_MF.xlsm | plan + approval marker; not working; clean clone | https://github.com/vamseeachanta/digitalmodel/issues/480 |
+| digitalmodel | #480 | BUG: Verify PLET-PLEM jumper segment lengths from SZ_gom_tieback_a_Jumper_MF.xlsm | plan + approval marker; not working; clean clone | https://github.com/vamseeachanta/digitalmodel/issues/480 |
 | digitalmodel | #479 | HTML/PDF report renderer for jumper installation analysis | plan + approval marker; not working; clean clone | https://github.com/vamseeachanta/digitalmodel/issues/479 |
 | digitalmodel | #478 | OrcaFlex model generator integration - spec.yml to .dat pipeline | plan + approval marker; not working; clean clone | https://github.com/vamseeachanta/digitalmodel/issues/478 |
 | digitalmodel | #475 | Add pytest test suite for jumper_lift.py (81 tests) | plan + approval marker; not working; clean clone | https://github.com/vamseeachanta/digitalmodel/issues/475 |

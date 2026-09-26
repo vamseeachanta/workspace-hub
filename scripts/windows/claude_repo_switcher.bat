@@ -36,21 +36,21 @@ if "%repo%"=="" (
 
 echo.
 echo Opening VS Code in repository: %repo%
-echo Repository path: C:\Users\vamseea\github\%repo%
+echo Repository path: %USERPROFILE%\github\%repo%
 echo.
 
 REM Check if repository exists
-if not exist "C:\Users\vamseea\github\%repo%" (
+if not exist "%USERPROFILE%\github\%repo%" (
     echo Error: Repository %repo% not found!
     pause
     exit /b 1
 )
 
 REM Open VS Code in the repository
-code "C:\Users\vamseea\github\%repo%"
+code "%USERPROFILE%\github\%repo%"
 
 REM Open Git Bash in the repository directory
-start "" "C:\Program Files\Git\git-bash.exe" --cd="C:\Users\vamseea\github\%repo%"
+start "" "C:\Program Files\Git\git-bash.exe" --cd="%USERPROFILE%\github\%repo%"
 
 echo.
 echo To use Claude Code in this repository:

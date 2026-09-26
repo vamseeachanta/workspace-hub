@@ -61,7 +61,7 @@
 **Read first:** `docs/plans/2026-05-30-issues-2816-2815-windows-equality-collector.md` (PART A done/merged; PART B = #2815) + its review-resolution (W1–W6).
 
 ### B1 — Validate the merged #2816 collector (owner-run; could not be Linux-tested)
-On `D:\workspace-hub` checked out at current `main`:
+On `<workspace-root>\workspace-hub` checked out at current `main`:
 1. `git pull` so `scripts/readiness/collect-equality.ps1` is present.
 2. `pwsh -File scripts/readiness/collect-equality.ps1 -Stdout` (or `powershell`). Confirm: emits `schema_version: 3`, `os: windows`, a `provenance` block with **`dirty:false` / `behind_main:0` / `ahead_main:0`** (else the matrix grades STALE-CHECKOUT), and REAL `cores`/`ram_total_mib`/`ram_avail_mib`/`disk_avail_gb`/`gpu_model`.
 3. **Freshness preflight (W3):** if it fails fast with a freshness error, the box is behind `origin/main` — run RepoSync / `git fetch origin main` first. It must REFUSE to write a stale report.

@@ -17,16 +17,16 @@ Use these notes when a user asks for rudder-induced yaw moment sweeps, vessel-sp
    - downstream calculation boundaries.
 4. Create a source-pack/benchmark issue before calculation issues when source evidence is scattered across workbook, converted script, notes, and PDFs.
 
-## B1528/proj-a example facts captured from session
+## proj-a/proj-a example facts captured from session
 
-Source repo: `vamseeachanta/mkt-a`, project path `B1528`.
+Source repo: `vamseeachanta/mkt-a`, project path `proj-a`.
 
 Important source paths:
-- `B1528/excel_to_py/Rudder Force & Yaw Moments.xlsx`
-- `B1528/excel_to_py/rudder_force_yaw_moment.py`
-- `B1528/ref/proj-a breakaway notes.docx`
-- `B1528/ref/ECDIS Mar 26 Midnight LT.docx`
-- `B1528/excel_to_py/27. proj-a-000272-GA Plan.pdf`
+- `proj-a/excel_to_py/Rudder Force & Yaw Moments.xlsx`
+- `proj-a/excel_to_py/rudder_force_yaw_moment.py`
+- `proj-a/ref/proj-a breakaway notes.docx`
+- `proj-a/ref/ECDIS Mar 26 Midnight LT.docx`
+- `proj-a/excel_to_py/27. proj-a-000272-GA Plan.pdf`
 
 Initial extracted values:
 - Vessel/source spelling: `proj-a`; user spelling `Sorrocco` is an alias.

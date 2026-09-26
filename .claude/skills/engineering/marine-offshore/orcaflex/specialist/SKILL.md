@@ -141,7 +141,7 @@ def complete_mooring_analysis_workflow(
 
 - **Orcina Training Courses**: Official OrcaFlex training
 - **User Forum**: https://www.orcina.com/forums/
-- **Technical Support**: support@orcina.com
+- **Technical Support**: Orcina technical support (via orcina.com)
 ### Related Standards
 
 - **DNV-RP-C205**: Environmental Conditions and Environmental Loads

@@ -182,7 +182,7 @@ A shared helpers module `orcina_common.py` plus a new **`ingest_orcina_extended.
 ```
 # ── orcina_common.py (new — extraction of shared helpers) ────────────────
 USER_AGENT_TOKEN   = "workspace-hub-llm-wiki"      # short token — passed to rp.can_fetch()
-USER_AGENT         = f"{USER_AGENT_TOKEN}/1.1 (+https://github.com/vamseeachanta/workspace-hub; contact: vamsee.achanta@aceengineer.com)"
+USER_AGENT         = f"{USER_AGENT_TOKEN}/1.1 (+https://github.com/vamseeachanta/workspace-hub; contact: owner@example.com)"
 HEADERS            = {"User-Agent": USER_AGENT}
 POLITE_DELAY_SECONDS    = 1.0      # min inter-request delay (was 0.3 in ingest-orcina; bumped for the broader crawl)
 REQUEST_TIMEOUT_SECONDS = 30

@@ -50,7 +50,7 @@ Standard Gmail search operators work in the `query` argument.
 is:unread newer_than:1d
 
 # Emails with PDF attachments from a specific sender
-from:accounting@company.com has:attachment filename:pdf
+from:accounting@example.com has:attachment filename:pdf
 
 # Important unread emails (not promotions/social)
 is:unread -category:promotions -category:social

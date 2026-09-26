@@ -52,7 +52,7 @@
 ### workspace-hub upstream cross-links
 
 - `workspace-hub#2768` (OCIMF closeout umbrella, OPEN): 2 cross-link comments posted (spawn note + closure update)
-- `workspace-hub#2760` (B1528 proj-a force review, `status:plan-review`): 2 cross-link comments (capability available + closure update)
+- `workspace-hub#2760` (proj-a force review, `status:plan-review`): 2 cross-link comments (capability available + closure update)
 
 ---
 
@@ -87,7 +87,7 @@ Many parallel-session modifications visible in `git status`. Of those:
 | Item | Owner | NOT touched this session |
 |---|---|---|
 | `M docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md` | Other session (#2746 work) | ✓ |
-| `M docs/plans/2026-05-20-issue-2760-b1528-proj-a-force-review-revision.md` | Other session (#2760 work) | ✓ |
+| `M docs/plans/2026-05-20-issue-2760-proj-a-force-review-revision.md` | Other session (#2760 work) | ✓ |
 | `MM docs/reports/provider-*.md/html` (6 files) | Auto-generated routing dashboard | ✓ |
 | `M scripts/review/results/2026-05-20-plan-2766-*.md` (3 files) | Other session (#2766 review) | ✓ |
 | `?? docs/plans/2026-05-20-issue-2770/2771/2772/2773-*.md` | Other session (placement decisions) | ✓ |

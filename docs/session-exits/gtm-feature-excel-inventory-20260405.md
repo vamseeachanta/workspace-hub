@@ -31,7 +31,7 @@ Demo 3 (Mudmat 180 cases) → Demo 5 (Jumper 60 cases) → Demo 1 (Freespan 680 
 - 3,879 .xls binary detected (xlrd needed for sheet scan)
 - 310 .xls non-binary (CSV/XML)
 - Top domain: riser engineering (3,730 files)
-- Top projects: 2100 BLK31 (2,563), 3824 Containment (959), 3836 HP1 (280)
+- Top projects: 2100 West Africa block A (2,563), 3824 Containment (959), 3836 HP1 (280)
 
 ## GITHUB ISSUES CREATED/UPDATED
 ### New issues:

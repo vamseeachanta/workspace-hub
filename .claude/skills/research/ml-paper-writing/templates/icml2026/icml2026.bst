@@ -13,7 +13,7 @@
 %% Max-Planck-Str. 2
 %% D-37191 Katlenburg-Lindau
 %% Germany
-%% E-mail: daly@mps.mpg.de
+%% E-mail: maintainer@example.com
 %%
 %% This program can be redistributed and/or modified under the terms
 %% of the LaTeX Project Public License Distributed from CTAN

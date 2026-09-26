@@ -57,7 +57,7 @@ Continue #2112 by replacing candidate/proxy values with primary-source values. P
 1. Mad Dog Phase 2 / Argos — strongest current public source set for wells, drill centres, cost, and host separation.
 2. Appomattox — strong source for trees/manifolds; still needs semantically correct tieback metric and cost.
 3. Thunder Horse — strong trees/tieback expansion data; still needs base/project cost and normalized manifold meaning.
-4. Stones / Lucius / Perdido — need OTC/SPE/operator fact-sheet extraction for manifold and tieback definitions.
+4. Stones / Lucius / GoM spar A — need OTC/SPE/operator fact-sheet extraction for manifold and tieback definitions.
 5. Atlantis / Na Kika / Mars — replace placeholder zeroes and proxy field-centre values or drop from the initial 10-record accepted set.
 
 Acceptance target before removing `status:needs-data` from #2055:

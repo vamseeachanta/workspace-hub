@@ -11,7 +11,7 @@ The mkt-a-AceEngineer OrcaFlex agreement (`aceengineer-admin/admin/orcaflex/mkt-
 ## Plan
 
 ### File to modify
-- `D:\workspace-hub\aceengineer-admin\admin\orcaflex\mkt-a-aceengineer-orcaflex.md`
+- `<workspace-root>\workspace-hub\aceengineer-admin\admin\orcaflex\mkt-a-aceengineer-orcaflex.md`
 
 ### Changes (full rewrite of the markdown)
 

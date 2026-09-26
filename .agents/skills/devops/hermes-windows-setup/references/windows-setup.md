@@ -157,7 +157,7 @@ memory:
 ```powershell
 cd C:\workspace-hub
 git config user.name "Your Name"
-git config user.email "your@email.com"
+git config user.email "you@example.com"
 git config core.autocrlf true
 git config core.eol crlf
 Start-Service ssh-agent

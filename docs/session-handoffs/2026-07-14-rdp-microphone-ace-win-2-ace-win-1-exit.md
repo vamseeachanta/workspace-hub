@@ -70,8 +70,8 @@ were not promoted into the repository before issue plan approval:
 
 | Artifact | SHA-256 |
 |---|---|
-| `D:\ws\Repair-RdpMicrophone.ps1` | `D48F23EBD968F68331F75CD2603C36794CE2C3A5310BE84212C5EC34EA5CE561` |
-| `D:\ws\RdpMicAudit-Server-ace-win-1-20260714-050409.json` | `383C54951B0C3F66C31EAC45986533CC37DD1A8446E563263D037B33E38B7A08` |
+| `<workspace-root>\Repair-RdpMicrophone.ps1` | `D48F23EBD968F68331F75CD2603C36794CE2C3A5310BE84212C5EC34EA5CE561` |
+| `<workspace-root>\RdpMicAudit-Server-ace-win-1-20260714-050409.json` | `383C54951B0C3F66C31EAC45986533CC37DD1A8446E563263D037B33E38B7A08` |
 
 `Repair-RdpMicrophone.ps1` is a commented two-ended tool. Audit mode is
 read-only. Repair requires `-Repair`; consent reset additionally requires

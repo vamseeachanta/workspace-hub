@@ -27,7 +27,7 @@ I noticed {{COMPANY}} is hiring a {{JOB_TITLE}} — which tells me your team is 
 
 That hiring process will take 3-6 months and $180K+ loaded annually. There's a faster option.
 
-A&CE is an AI-native offshore engineering firm. We combine 23 years of deepwater experience (BP Macondo, ExxonMobil Yellowtail, WoodFibre LNG) with 704+ production Python modules and AI orchestration to deliver the throughput of a 10-20 person team.
+A&CE is an AI-native offshore engineering firm. We combine 23 years of deepwater experience (BP GoM well A, ExxonMobil Guyana field A, LNG terminal A) with 704+ production Python modules and AI orchestration to deliver the throughput of a 10-20 person team.
 
 Specific to what your role posting describes, we can:
 
@@ -84,7 +84,7 @@ The specifics:
 
 - **What we do:** AI-orchestrated offshore engineering — OrcaFlex/AQWA batch automation, fatigue analysis, mooring/riser design, standards compliance
 - **How we work:** One P.E.-licensed senior engineer + AI orchestration layer. Firm, not freelancer. We deliver production-grade analysis packages.
-- **Proof:** 23 years across BP, ExxonMobil, WoodFibre LNG. API-RP-16Q committee member. 704+ validated Python modules in production.
+- **Proof:** 23 years across BP, ExxonMobil, lng-terminal-a. API-RP-16Q committee member. 704+ validated Python modules in production.
 
 I'd like 30 minutes to walk through how this maps to {{COMPANY}}'s current project load. I can share screen with live demos of our automation pipeline.
 

@@ -18,7 +18,7 @@ BUCKETS=(
   "05|lng-a-62092-sesa|/mnt/ace/lng-a/62092_sesa|/mnt/ace/lng-a/62092_sesa/_from_elements"
   "06|lng-a-university|/mnt/ace/lng-a/training|/mnt/ace/lng-a/training/_from_elements"
   "07|lng-a-codes-specs|/mnt/ace/lng-a/codes|/mnt/ace/lng-a/codes/_from_elements/codes-lng-a"
-  "08|mkt-a-31522-woodfibre|/mnt/ace/mkt-a/31522-woodfibre-lng|/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements"
+  "08|mkt-a-31522-lng-terminal-a|/mnt/ace/mkt-a/31522-lng-terminal-a|/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements"
 )
 
 printf 'timestamp\torder\tbucket\tparent\tstage\tstatus\tlog\n' > "$LOG_SUMMARY"

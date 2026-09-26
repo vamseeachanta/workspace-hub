@@ -36,7 +36,7 @@ a974b4b5c Merge pull request #2579 from vamseeachanta/plan/issue-2380-batch-pack
 bb456e42a chore(sync): auto-sync 2026-05-01
 b41ca788b Merge branch 'main' into plan/issue-2380-batch-pack-3-tier-a
 641d96dac docs(#2567): add steering gear source crosswalk
-8d42297e4 feat(#2544): add woodfibre corpus pointer page
+8d42297e4 feat(#2544): add LNG terminal A corpus pointer page
 0e148288f ci(enforcement): install uv and expose src path
 ```
 
@@ -94,7 +94,7 @@ Registered worktrees observed:
 ```text
 /mnt/local-analysis/workspace-hub                                      main                                  e18c881280
 /mnt/local-analysis/agent-worktrees/workspace-hub-integration-main-2544-2567 integration/main-2544-2567     641d96dac
-/mnt/local-analysis/agent-worktrees/workspace-hub-issue-2544           codex/issue-2544-woodfibre-pointer-v2 ec1a3d728
+/mnt/local-analysis/agent-worktrees/workspace-hub-issue-2544           codex/issue-2544-lng-terminal-a-pointer-v2 ec1a3d728
 /mnt/local-analysis/agent-worktrees/workspace-hub-issue-2567           codex/issue-2567-standards-rudder-v2  781510448
 ```
 
@@ -129,7 +129,7 @@ Stashed paths included generated `.claude/state`, GSD command/plugin files, GSD 
 
 1. **Finish the preserved-branch PR sweep one branch at a time.** Rebuild live inventory first; do not rely on older TSV files if exact state matters.
 2. **Resolve or intentionally discard the preserved stashes.** Inspect `stash@{0}` and `stash@{1}` before applying; do not blindly commit generated GSD/plugin files.
-3. **Handle registered issue/integration worktrees intentionally.** Branches `integration/main-2544-2567`, `codex/issue-2544-woodfibre-pointer-v2`, and `codex/issue-2567-standards-rudder-v2` are clean but still registered.
+3. **Handle registered issue/integration worktrees intentionally.** Branches `integration/main-2544-2567`, `codex/issue-2544-lng-terminal-a-pointer-v2`, and `codex/issue-2567-standards-rudder-v2` are clean but still registered.
 4. **Reconstruct exact evidence for earlier PR sweep branches if needed.** Evidence for PR #2575, PR #2576, and issue-2105 was partly truncated in tool output.
 5. **Keep force-push prohibited.** A previous `git push --force-with-lease` happened during issue-2105 reconciliation; do not repeat.
 

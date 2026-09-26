@@ -166,7 +166,7 @@ Contract notes:
 - Fixture-backed contract test for healthy probe output.
 - Fixture-backed contract test for degraded probe output when one or more AI CLIs or licensed tools are absent.
 - Fixture-backed contract test for partial-permission output where some probes are missing but the collector still emits normalized keys.
-- Field-presence and quoting test for paths with spaces in `D:\workspace-hub`.
+- Field-presence and quoting test for paths with spaces in `<workspace-root>\workspace-hub`.
 - Live PowerShell smoke only on Windows-capable execution hosts:
   - collector exits zero
   - writes JSON
@@ -177,7 +177,7 @@ Contract notes:
 - Dry-run launcher rendering test for default Git installation path.
 - Dry-run launcher rendering test for non-default Git path.
 - Path bridge tests covering:
-  - `D:\workspace-hub`
+  - `<workspace-root>\workspace-hub`
   - `/d/workspace-hub`
   - `/D/workspace-hub`
   - paths with spaces

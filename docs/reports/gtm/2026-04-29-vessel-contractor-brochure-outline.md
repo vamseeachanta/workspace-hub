@@ -37,7 +37,7 @@ Total: 4 pages, ≤ 1,200 words, ≥ 3 charts, ≤ 1 logo (ACE Engineer mark onl
 - One headline (no more than 12 words). Working draft: *"Parametric installation engineering for vessel contractors — overnight scale, P.E.-stamped."*
 - Subhead names the audience explicitly: *"For vessel installation, pipelay, and heavy-lift contractors."*
 - Below: a single proof line lifted verbatim from `capability-summary.md` ("1,292 parametric engineering cases screened overnight…").
-- Cover carries no contact details beyond `info@aceengineer.com` and `aceengineer.com`. No phone number on the cover. Phone numbers live only in the email-template Send footer or the gated-URL HTML, never on the public PDF.
+- Cover carries no contact details beyond `info@example.com` and `aceengineer.com`. No phone number on the cover. Phone numbers live only in the email-template Send footer or the gated-URL HTML, never on the public PDF.
 
 ### 3.2 What we do — capability matrix
 
@@ -99,7 +99,7 @@ One line each from `capability-summary.md`:
 
 ### 3.8 Footer
 
-`info@aceengineer.com | aceengineer.com | Licensed P.E. — Houston, TX`
+`info@example.com | aceengineer.com | Licensed P.E. — Houston, TX`
 
 Match `capability-summary.md` line 43 verbatim. No personal phone number on the public brochure.
 

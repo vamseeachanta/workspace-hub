@@ -14,7 +14,7 @@ Non-mutating scan only. No files were copied, moved, merged, overwritten, or del
 | 5 | `lng-a-62092-sesa` | `62092  SESA FLNG Terminal Project` | `/mnt/ace/lng-a/62092_sesa` | `/mnt/ace/lng-a/62092_sesa/_from_elements` | likely overlap; review carefully |
 | 6 | `lng-a-university` | `lng-a University` | `/mnt/ace/lng-a/training` | `/mnt/ace/lng-a/training/_from_elements` | training material |
 | 7 | `lng-a-codes-specs` | `Codes and Specs` | `/mnt/ace/lng-a/codes` | `/mnt/ace/lng-a/codes/_from_elements/codes-lng-a` | high file-count overlap risk |
-| 8 | `mkt-a-31522-woodfibre` | `Woodfibre` | `/mnt/ace/mkt-a/31522-woodfibre-lng` | `/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements` | very large; treat as separate reviewed merge |
+| 8 | `mkt-a-31522-lng-terminal-a` | `LNG terminal A` | `/mnt/ace/mkt-a/31522-lng-terminal-a` | `/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements` | very large; treat as separate reviewed merge |
 
 ## Assessment summary
 
@@ -27,7 +27,7 @@ Non-mutating scan only. No files were copied, moved, merged, overwritten, or del
 | 5 | `lng-a-62092-sesa` | 53 | 418 | 0 | 0 | 418 | 53 | Dry-run rsync --ignore-existing; all staged files appear new by relative path. |
 | 6 | `lng-a-university` | 1 | 564 | 0 | 0 | 564 | 1 | Dry-run rsync --ignore-existing; all staged files appear new by relative path. |
 | 7 | `lng-a-codes-specs` | 5 | 35,197 | 0 | 0 | 35,197 | 5 | Dry-run rsync --ignore-existing; all staged files appear new by relative path. |
-| 8 | `mkt-a-31522-woodfibre` | 1 | 5,364 | 0 | 0 | 5,364 | 1 | Dry-run rsync --ignore-existing; all staged files appear new by relative path. |
+| 8 | `mkt-a-31522-lng-terminal-a` | 1 | 5,364 | 0 | 0 | 5,364 | 1 | Dry-run rsync --ignore-existing; all staged files appear new by relative path. |
 
 ## Dry-run merge simulation summary
 
@@ -48,7 +48,7 @@ This is a dry run only (`-n`). It did not copy, move, overwrite, or delete files
 | 5 | `lng-a-62092-sesa` | 418 | 1,465,267,463 | `dedupe-merge-assessment/05-lng-a-62092-sesa.rsync-ignore-existing-dry-run.log` |
 | 6 | `lng-a-university` | 564 | 11,060,962,662 | `dedupe-merge-assessment/06-lng-a-university.rsync-ignore-existing-dry-run.log` |
 | 7 | `lng-a-codes-specs` | 35,197 | 26,411,658,490 | `dedupe-merge-assessment/07-lng-a-codes-specs.rsync-ignore-existing-dry-run.log` |
-| 8 | `mkt-a-31522-woodfibre` | 5,364 | 1,879,405,139,855 | `dedupe-merge-assessment/08-mkt-a-31522-woodfibre.rsync-ignore-existing-dry-run.log` |
+| 8 | `mkt-a-31522-lng-terminal-a` | 5,364 | 1,879,405,139,855 | `dedupe-merge-assessment/08-mkt-a-31522-lng-terminal-a.rsync-ignore-existing-dry-run.log` |
 
 ## Detail files
 

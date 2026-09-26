@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-24
 **Method:** Same as ace sweep (see `docs/sessions/2026-04-24-gmail-ace-sweep.md`)
-**Account:** achantav@gmail.com
+**Account:** owner.personal@example.com
 **Status:** Draft — user must confirm decisions below before filter install
 
 ## Hypothesis about inbox composition
@@ -13,7 +13,7 @@ Based on #1966 (994 clean contacts; colleague 68, alumni 39, client 37, financia
 - **School / family ops** — ParentSquare (time-sensitive).
 - **Dev notifications** — GitHub, Vercel, OpenRouter.
 - **Personal finance / tax** — TurboTax; possibly bank/brokerage.
-- **Industry light** — ogj@news.ogj.com.
+- **Industry light** — `@news.ogj.com`.
 - **Marketing noise** — per #1990, ~27k promo/social/spam is the main cleanup target.
 - **Self-shuttle** — #1990: 164 personal→ace, 19 ace→personal. Not bulk; leave.
 
@@ -40,7 +40,7 @@ from:(@collide.io OR @promote.weebly.com OR @e.swimoutlet.com OR @email.myflight
 ### Industry filter
 Minimal. Proposed:
 ```
-from:(ogj@news.ogj.com OR @substack.com)
+from:(@news.ogj.com OR @substack.com)
 ```
 Matches the one clear industry sender in routing-yaml Personal block; substack optional if user subscribes to newsletters on this account.
 

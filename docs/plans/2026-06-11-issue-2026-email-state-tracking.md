@@ -7,7 +7,7 @@
 > **Client:** N/A
 > **Project:** N/A
 > **Lane:** lane:claude
-> **Review artifacts:** completed rounds are preserved at `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/`, `scripts/review/results/2026-06-11-plan-2026-r7/`, `scripts/review/results/2026-06-11-plan-2026-r8/`, `scripts/review/results/2026-06-11-plan-2026-r9/`, `scripts/review/results/2026-06-11-plan-2026-r10/`, `scripts/review/results/2026-06-11-plan-2026-r11/`, `scripts/review/results/2026-06-11-plan-2026-r12/`, `scripts/review/results/2026-06-11-plan-2026-r13/`, `scripts/review/results/2026-06-11-plan-2026-r14/`, and `scripts/review/results/2026-06-13-plan-2026-codex.md`; legacy unsuffixed files under `scripts/review/results/2026-06-11-plan-2026-{claude,codex,gemini,disagreement}.md` are committed R2 duplicates. R14 Claude returned MINOR with no blockers, and the 2026-06-13 Codex review returned MINOR with no blockers, satisfying the T2 plan-review gate. User approval was recorded in `.planning/plan-approved/2026.md`; implementation is constrained to `vamsee.achanta@aceengineer.com` and `achantav@gmail.com`.
+> **Review artifacts:** completed rounds are preserved at `scripts/review/results/2026-06-11-plan-2026-r1-*`, `scripts/review/results/2026-06-11-plan-2026-r2-*`, `scripts/review/results/2026-06-11-plan-2026-r3/`, `scripts/review/results/2026-06-11-plan-2026-r4/`, `scripts/review/results/2026-06-11-plan-2026-r5/`, `scripts/review/results/2026-06-11-plan-2026-r6/`, `scripts/review/results/2026-06-11-plan-2026-r7/`, `scripts/review/results/2026-06-11-plan-2026-r8/`, `scripts/review/results/2026-06-11-plan-2026-r9/`, `scripts/review/results/2026-06-11-plan-2026-r10/`, `scripts/review/results/2026-06-11-plan-2026-r11/`, `scripts/review/results/2026-06-11-plan-2026-r12/`, `scripts/review/results/2026-06-11-plan-2026-r13/`, `scripts/review/results/2026-06-11-plan-2026-r14/`, and `scripts/review/results/2026-06-13-plan-2026-codex.md`; legacy unsuffixed files under `scripts/review/results/2026-06-11-plan-2026-{claude,codex,gemini,disagreement}.md` are committed R2 duplicates. R14 Claude returned MINOR with no blockers, and the 2026-06-13 Codex review returned MINOR with no blockers, satisfying the T2 plan-review gate. User approval was recorded in `.planning/plan-approved/2026.md`; implementation is constrained to `owner@example.com` and `owner.personal@example.com`.
 
 ---
 
@@ -38,7 +38,7 @@ No relevant LLM wiki pages. This is workspace-hub email automation infrastructur
 
 ### Documents consulted
 
-- Issue #2026 body and comments: current implementation target is state tracking; user clarified on 2026-06-11 that this automation pass covers only `vamsee.achanta@aceengineer.com` and `achantav@gmail.com`, and that "mailbox empty" means no pending work.
+- Issue #2026 body and comments: current implementation target is state tracking; user clarified on 2026-06-11 that this automation pass covers only `owner@example.com` and `owner.personal@example.com`, and that "mailbox empty" means no pending work.
 - Issue #2017: closed as done; #2017 design artifacts are the contract source.
 - Issue #2024: open; extraction pipeline depends on #2026 state storage.
 - Issue #2423: open; Gmail-side archive/delete automation is a follow-on and must not be folded into this issue.
@@ -250,8 +250,8 @@ Implementation must update `docs/design/email-as-queue.md` and `docs/design/emai
 
 This pass supports only two account aliases:
 
-- `ace` for `vamsee.achanta@aceengineer.com`
-- `personal` for `achantav@gmail.com`
+- `ace` for `owner@example.com`
+- `personal` for `owner.personal@example.com`
 
 New tests and new runtime files should not add more hardcoded literal email addresses. Existing Gmail helper prior art already contains account/email mappings for credential discovery, so production account email mapping for queue-state normalization should come from local config at `~/.hermes/email-state/accounts.yaml` by default, overrideable via `EMAIL_QUEUE_ACCOUNTS_CONFIG`.
 
@@ -260,19 +260,19 @@ Config schema:
 ```yaml
 accounts:
   ace:
-    email: vamsee.achanta@aceengineer.com
+    email: owner@example.com
     enabled: true
   personal:
-    email: achantav@gmail.com
+    email: owner.personal@example.com
     enabled: true
   skestates:
-    email: skestatesinc@gmail.com
+    email: owner.realestate@example.com
     enabled: false
 ```
 
 If the local config is absent, the default scope enables aliases `ace` and `personal` only; literal email normalization is unavailable until a local config supplies the email mapping. Tests that normalize literal emails must use a temp config file and set `EMAIL_QUEUE_ACCOUNTS_CONFIG`.
 
-The config may include disabled aliases solely so the report can distinguish "known but out of scope" from "literal email cannot be mapped." Active processing remains limited to enabled `ace` and `personal`. The low-level state store may persist any `account_id` string so existing contract tests using `user@example.com` keep working; account-scope enforcement belongs to the report/ingest/label boundary, not the raw `transition()` primitive. The account-scope layer must reject or report disabled `skestates` and `skestatesinc@gmail.com` as out of scope unless a future issue changes the allowlist. Report counts must normalize local snapshot records through the same account scope: enabled records contribute to pending/tracked counts, disabled or unknown local records are reported in separate warning buckets and cannot make `mailbox_empty` false for #2026.
+The config may include disabled aliases solely so the report can distinguish "known but out of scope" from "literal email cannot be mapped." Active processing remains limited to enabled `ace` and `personal`. The low-level state store may persist any `account_id` string so existing contract tests using `user@example.com` keep working; account-scope enforcement belongs to the report/ingest/label boundary, not the raw `transition()` primitive. The account-scope layer must reject or report disabled `skestates` and `owner.realestate@example.com` as out of scope unless a future issue changes the allowlist. Report counts must normalize local snapshot records through the same account scope: enabled records contribute to pending/tracked counts, disabled or unknown local records are reported in separate warning buckets and cannot make `mailbox_empty` false for #2026.
 
 ### D3 - Pending Work Semantics
 

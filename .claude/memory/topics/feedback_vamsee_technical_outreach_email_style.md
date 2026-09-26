@@ -21,7 +21,7 @@ actually sent. The edits are the signal:
    my draft had a fresh subject ("Following up from Collide…"). **BEFORE drafting any follow-up,
    `search_threads` by the recipient's ADDRESS (`to:<email>` + in:sent) to find a live thread, and
    reply into it (`replyToMessageId`).** I missed Reed's thread by searching the topic ("Reed/Collide")
-   instead of `to:Chief@warturkey.com`.
+   instead of `to:recipient@example.com`.
 2. **Cut the claim/validation sentence; keep it humble + forward-looking.** He deleted "the onshore
    screen backs up exactly what you and Martin were seeing" — the one sentence asserting a conclusion.
    Same instinct as the skestates edits (drop assertions, keep constructive next steps).
@@ -33,7 +33,7 @@ actually sent. The edits are the signal:
    drilling/completion analytics ("overnight followed by real-time … help the crew with way forward, risk
    assessments … Just howler and I am here to help") and closed "help in any way possible." My draft was
    more clipped. His voice here is warmer/more colloquial than the formal vendor voice.
-5. **Personalize the greeting** with the recipient's handle/nickname — "Chief Reed," (from Chief@warturkey.com),
+5. **Personalize the greeting** with the recipient's handle/nickname — "Chief Reed," (from recipient@example.com),
    not just "Reed,".
 6. **Frame assets as living** — "(live — I keep adding to it)" over "(browsable, all areas)".
 

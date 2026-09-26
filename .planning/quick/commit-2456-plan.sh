@@ -25,9 +25,9 @@ PARENT=$(git -C "$REPO" rev-parse "$BRANCH")
 echo "parent=$PARENT"
 
 COMMIT=$(GIT_AUTHOR_NAME="Vamsee Achanta" \
-  GIT_AUTHOR_EMAIL="vamsee.achanta@aceengineer.com" \
+  GIT_AUTHOR_EMAIL="owner@example.com" \
   GIT_COMMITTER_NAME="Vamsee Achanta" \
-  GIT_COMMITTER_EMAIL="vamsee.achanta@aceengineer.com" \
+  GIT_COMMITTER_EMAIL="owner@example.com" \
   git -C "$REPO" commit-tree "$NEW_TREE" -p "$PARENT" \
   -m "plan(#2456): add lazy-wave riser semantic proof plan (worker-3)")
 echo "commit=$COMMIT"

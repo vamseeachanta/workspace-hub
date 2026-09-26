@@ -65,12 +65,12 @@
 ## Quarantine Pattern (untracked/gitignored dirs with legal content)
 - If a dir is gitignored but contains client references: `mkdir -p .archived && mv <dir> .archived/<dir>`
 - `.archived/` should be gitignored too; add pattern matching the subdir
-- worldenergydata: `frontierdeepwater/` → `.archived/frontierdeepwater/` (2026-02-18)
+- worldenergydata: `<client-repo>/` → `.archived/<client-repo>/` (2026-02-18)
 
 ## Windows-Path Dirs in Linux Repos
-- Cross-platform CI can create dirs like `D:\workspace-hub\digitalmodel\docs\...` (backslashes in name)
+- Cross-platform CI can create dirs like `<workspace-root>\workspace-hub\digitalmodel\docs\...` (backslashes in name)
 - They appear as single dirs on Linux (backslash is valid in Unix filenames)
-- Delete with: `rm -rf "D:\\workspace-hub\\...path..."` (use quotes, escape backslashes)
+- Delete with: `rm -rf "<workspace-root>\\workspace-hub\\...path..."` (use quotes, escape backslashes)
 - Watch for in digitalmodel particularly (OrcaFlex Windows CI pipeline)
 
 ## Multi-line sudo Commands (copy-paste safe)

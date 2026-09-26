@@ -48,7 +48,7 @@ upstream_status: env_failure_recovered_via_fallback_model
 - **MAJOR, Category 2 & 6:** The `docs/gtm/sendable-bundles/2026-05-01/README.md` under "Live URLs" lists only "Five overnight parametric demos", excluding the "mooring demo" (`demos/mooring.html`) that was shipped as "GTM Demo 6" per issue #2115. This inconsistency means the README does not accurately represent all shipped demos and contradicts the "Audience C" claim of linking "five demos" when six were shipped.
 - **MINOR, Category 3:** The `vessel-contractor-matrix-2026-05-01.md` lists "Gulf Offshore (Bourbon-related historical brand)" for row 14, despite Section §3 "Evidence Quality Notes" stating that the "Gulf Offshore" brand is historical and its status is uncertain. The shipped matrix should reflect the current, verified entity or explicitly state the uncertainty in the main matrix entry, as the existing entry carries a known, unmitigated factual weakness.
 - **NIT, Category 3:** The `vessel-contractor-matrix-2026-05-01.md` for row 12 is titled "Cal Dive / Helix Energy Solutions", but Section §3 "Evidence Quality Notes" recommends to "Reword matrix row title to 'Helix Energy Solutions (Q-class fleet)' before send". While the current entry acknowledges the rebrand, the suggested re-wording indicates a minor, unaddressed stylistic inconsistency within the bundle.
-- **MINOR, Category 4:** The `docs/gtm/triage-2026-05-01.md` lists "jumper-installation flesh-out" as "✅ skipped", citing the page being "table-heavy with substantive Ballymore manifold content". However, the "Reality reconciliation" section of the same document previously noted `jumper-installation.html` as "suspiciously thin (251 words vs. 994–1886 for peers) — likely under-developed". Skipping this task leaves a potentially underdeveloped demo page in the bundle, which could detract from its overall quality.
+- **MINOR, Category 4:** The `docs/gtm/triage-2026-05-01.md` lists "jumper-installation flesh-out" as "✅ skipped", citing the page being "table-heavy with substantive GoM tieback A manifold content". However, the "Reality reconciliation" section of the same document previously noted `jumper-installation.html` as "suspiciously thin (251 words vs. 994–1886 for peers) — likely under-developed". Skipping this task leaves a potentially underdeveloped demo page in the bundle, which could detract from its overall quality.
 
 **Sharpest finding:** The direct contradiction in the claimed number of cases/tests for Demo 5 ("300 cases" in the matrix vs. "81 tests" in the README email template) would most likely confuse a prospect evaluating the depth of ACE's capabilities.
 ```
@@ -91,11 +91,11 @@ Marking F1 as **NOT VALIDATED** — Gemini-side terminology conflation. However,
 
 Local verification:
 - Matrix legend (line 23): `> D5=deepwater rigid-jumper installation (300)`
-- README Audience A email (line 54): `Subsea jumper lift (Ballymore manifold-to-PLET, 27 OrcaFlex sections, 81 tests)`
+- README Audience A email (line 54): `Subsea jumper lift (GoM tieback A manifold-to-PLET, 27 OrcaFlex sections, 81 tests)`
 - Live D5 page `https://www.aceengineer.com/demos/jumper-installation.html` (curl-checked):
-  - `<img alt="...Ballymore manifold-to-PLET, 27 OrcaFlex sections, 81 validated tests"`
+  - `<img alt="...gom-tieback-a manifold-to-PLET, 27 OrcaFlex sections, 81 validated tests"`
   - `Live walkthrough — ... 81/81 tests passing`
-  - `Validated against Jumper_Input_Ballymore_Manifold-PLET V2.xlsx — all 81 tests pass`
+  - `Validated against Jumper_Input_gom_tieback_a_Manifold-PLET V2.xlsx — all 81 tests pass`
   - **The page never mentions "300 cases"**.
 
 The matrix's "300" appears to be either a planning-phase target that wasn't realized, or a different unit (parametric sweep cases vs. validated tests). Either way it is **unsupported by the live demo content** and contradicts the README the same matrix is shipped alongside. A prospect comparing matrix-legend numbers against the demo page itself will see the gap. **This is a real ship defect.**
@@ -132,7 +132,7 @@ Same shape as F4: §3 recommends rewording row 12 to "Helix Energy Solutions (Q-
 
 Local verification:
 - Triage ledger lines 24-26 (reality reconciliation): "`jumper-installation.html` is suspiciously thin (251 words vs. 994–1886 for peers) — likely under-developed"
-- Triage ledger Wave 1 row: "jumper-installation flesh-out | ✅ skipped | – | 251-word count was misleading — page is table-heavy with substantive Ballymore manifold content; uniform GIF + CTA addition was sufficient"
+- Triage ledger Wave 1 row: "jumper-installation flesh-out | ✅ skipped | – | 251-word count was misleading — page is table-heavy with substantive GoM tieback A manifold content; uniform GIF + CTA addition was sufficient"
 
 The two statements aren't strictly contradictory (an early-pass observation can be revised on closer inspection), but the "✅ skipped" justification is a single-author re-judgment without cross-check evidence. Gemini's flag is fair — the document records both views without adjudicating. Useful for tightening future triage ledgers; not blocking for the bundle.
 
@@ -168,7 +168,7 @@ This is a **MAJOR verdict that does not auto-cycle** — single pass, action ite
 
 ## 5. Recommendations (if user chooses to act)
 
-1. **F2 — Reconcile D5 case count**: change matrix legend from "D5=deepwater rigid-jumper installation (300)" to match the live page, e.g., "D5=deepwater rigid-jumper installation (Ballymore, 81 validated tests across 27 OrcaFlex sections)".
+1. **F2 — Reconcile D5 case count**: change matrix legend from "D5=deepwater rigid-jumper installation (300)" to match the live page, e.g., "D5=deepwater rigid-jumper installation (GoM tieback A, 81 validated tests across 27 OrcaFlex sections)".
 2. **F3 — Add Demo 06 to bundle README**: insert the mooring demo into the "Five overnight parametric demos" list (rename to "Six overnight parametric demos"), and add a Demo 06 link to the Audience B (FOWT) email body where it is most demo-relevant.
 3. **F4, F5** — apply the §3 self-recommended rewordings to rows 12 and 14 before the matrix is referenced in any prospect-facing send.
 4. **F6** — future triage ledgers should record an explicit reconciliation when an early observation is later revised, not leave both views in the document.

@@ -10,11 +10,11 @@
 | `digitalmodel/src/.../jumper_lift.py` | 1007 | Committed & pushed |
 | `digitalmodel/src/.../jumper_installation.py` | Pipeline | Committed & pushed |
 | `digitalmodel/tests/.../test_jumper_lift.py` | 600 | 81/81 PASSING |
-| `digitalmodel/.../ballymore_mf_plet/spec.yml` | 130+ | Committed & pushed |
-| `digitalmodel/.../ballymore_plet_plem/spec.yml` | 110+ | Committed & pushed |
+| `digitalmodel/.../gom_tieback_a_mf_plet/spec.yml` | 130+ | Committed & pushed |
+| `digitalmodel/.../gom_tieback_a_plet_plem/spec.yml` | 110+ | Committed & pushed |
 | `aceengineer-website/demos/jumper-installation.html` | GTM demo | Committed & pushed |
 | `aceengineer-website/docs/marketing/PORTFOLIO_CAPABILITIES.md` | Updated | Committed & pushed |
-| `client-c/engineering_workbooks/ballymore/...` | Full workbook comparison | Committed & pushed |
+| `client-c/engineering_workbooks/gom-tieback-a/...` | Full workbook comparison | Committed & pushed |
 
 ### Key Decision: Windows Cowork > Linux Headless
 
@@ -52,13 +52,13 @@ Two jumper models from one code path:
 
 | Status | Count | Details |
 |--------|-------|---------|
-| Converted | 1 workbook | Ballymore MF-PLET (81 tests) |
+| Converted | 1 workbook | GoM tieback A MF-PLET (81 tests) |
 | Ready in repo | 100+ workbooks | client-c/engineering_workbooks/ |
 | Remaining | 99 workbooks | 6 batches (#1935-1940) |
 
 ### Next Session Should
 
-1. Close #474: Open SZ_Ballymore_Jumper_MF.xlsm on ace-win-2, extract PLET-PLEM segment lengths
+1. Close #474: Open SZ_gom_tieback_a_Jumper_MF.xlsm on ace-win-2, extract PLET-PLEM segment lengths
 2. Start #472: Implement Go/No-Go decision logic per DNV-RP-H103
 3. Close #475 (DONE): Tests already passing
 4. Work #476: Connect jumper pipeline to OrcaFlex modular model generator

@@ -33,7 +33,7 @@
    `docs/session-handoffs/2026-05-20-handoff-digitalmodel-616-ocimf-to-llm-wiki.md`
    — self-contained executor prompt to promote OCIMF methodology from
    [digitalmodel#616](https://github.com/vamseeachanta/digitalmodel/issues/616)
-   to public `llm-wiki/wikis/naval-architecture/`. proj-a/B1528 specifics
+   to public `llm-wiki/wikis/naval-architecture/`. proj-a/proj-a specifics
    routed to private surface per the abstraction gate.
 
 ---
@@ -87,7 +87,7 @@ posture; do not delete without consulting the owning session.
 | `.claude/state/corrections/.edit_sequence_counter` + `.recent_edits` | Harness-managed; do not hand-edit |
 | `.claude/state/session-signals/2026-05-20.jsonl` | Harness signals; auto-updated |
 | `config/ai-tools/provider-*.json` (5 files) | Provider routing / kanban / utilization — auto-refreshed by daily scheduled tasks |
-| `docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md`, `docs/plans/2026-05-20-issue-2760-b1528-proj-a-force-review-revision.md` | Active plan drafts from [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) / [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) — NOT mine |
+| `docs/plans/2026-05-20-issue-2746-llm-wiki-mkt-a.md`, `docs/plans/2026-05-20-issue-2760-proj-a-force-review-revision.md` | Active plan drafts from [#2746](https://github.com/vamseeachanta/workspace-hub/issues/2746) / [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) — NOT mine |
 | `docs/reports/provider-*.{md,html}` (6 files) | Auto-generated provider dashboards from scheduled tasks |
 | `logs/orchestrator/hermes/skill-patches.jsonl` + `logs/orchestrator/hermes/session_20260520.jsonl` + `logs/quality/memory-health-20260520.md` | Orchestrator-managed logs |
 | `scripts/review/results/*-plan-{2762,2763,2764,2765,2766}-*.md` + various plan-review artifacts | Concurrent cross-review runs in flight |

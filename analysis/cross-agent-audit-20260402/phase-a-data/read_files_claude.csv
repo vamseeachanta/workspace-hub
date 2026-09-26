@@ -500,7 +500,7 @@ scripts/data/doc_intelligence/manifest_to_archive.py,5
 scripts/work-queue/audit-session-signal-coverage.py,5
 /mnt/workspace-hub/digitalmodel/src/digitalmodel/visualization/design_tools/hull_hydrostatics.py,5
 /mnt/workspace-hub/digitalmodel/src/digitalmodel/visualization/design_tools/freecad_hull.py,5
-knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/formulas.yaml,5
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b/formulas.yaml,5
 /mnt/workspace-hub/digitalmodel/src/digitalmodel/solvers/calculix/fem_chain.py,5
 .claude/work-queue/pending/WRK-1269.md,5
 scripts/data/doc_intelligence/formula_reference_parser.py,5
@@ -701,7 +701,7 @@ knowledge/dark-intelligence/geotechnical/pile_capacity/dark-intelligence-api-rp-
 /mnt/workspace-hub/digitalmodel/src/digitalmodel/naval_architecture/hydrostatics.py,4
 /mnt/workspace-hub/digitalmodel/src/digitalmodel/hydrodynamics/hull_library/parametric_hull.py,4
 sabithaandkrishnaestates/taxes/2025/tax-preparation-worksheet.yaml,4
-knowledge/dark-intelligence/xlsx-poc/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/formulas.yaml,4
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-a/formulas.yaml,4
 .claude/work-queue/assets/WRK-1247/evidence/resource-intelligence-update.yaml,4
 .claude/skills/engineering/marine-offshore/aqwa/SKILL.md,4
 specs/audit/skill-eval-2026-03-16.yaml,4
@@ -925,7 +925,7 @@ digitalmodel/tests/cathodic_protection/test_iso_15589_2.py,3
 .claude/work-queue/pending/WRK-1144.md,3
 .claude/work-queue/wrk-status-index.json,3
 .claude/skills/data/documents/knowledge-base-builder/SKILL.md,3
-mkt-a/B1522/ctr-2/ref/proj/2100-RPT-4005-06 Cathodic Protection Design Report _Approved_.pdf,3
+mkt-a/job-code/ctr-2/ref/proj/<document-number> Cathodic Protection Design Report _Approved_.pdf,3
 .claude/work-queue/pending/WRK-5035.md,3
 .claude/skills/engineering/drilling/SKILL.md,3
 scripts/data/document-index/generate-coverage-report.py,3
@@ -1055,8 +1055,8 @@ data/doc-intelligence/yield-assessment.yaml,3
 data/doc-intelligence/extraction-learnings-phase4.yaml,3
 /mnt/workspace-hub/.claude/settings.json,3
 scripts/data/doc_intelligence/archive_to_calc_report.py,3
-knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/tests/test_31126-cal-0001-1-conductor-length-assessment--va-checked.py,3
-knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/archive.yaml,3
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b/tests/test_removed_workbook_extraction_b.py,3
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b/archive.yaml,3
 /mnt/workspace-hub/digitalmodel/src/digitalmodel/solvers/calculix/result_parser.py,3
 .claude/work-queue/pending/WRK-1263.md,3
 scripts/skills/fix_related_skills.py,3
@@ -1481,7 +1481,7 @@ knowledge/seeds/maritime-law-cases.yaml,2
 .claude/skills/data/energy/metocean-data-fetcher/SKILL.md,2
 specs/wrk/WRK-1113/doc-extracts/_template.yaml,2
 .claude/work-queue/pending/WRK-1152.md,2
-mkt-a/B1522/ctr-2/ref/proj/3824-TNE-0008-2 (Cathodic Protection Design).pdf,2
+mkt-a/job-code/ctr-2/ref/proj/<document-number> (Cathodic Protection Design).pdf,2
 /tmp/tmp.OdgiQXfYN4/review-content.md,2
 digitalmodel/src/digitalmodel/drilling_riser/operability.py,2
 digitalmodel/src/digitalmodel/drilling_riser/tool_passage.py,2
@@ -1768,7 +1768,7 @@ sabithaandkrishnaestates/investments/cre/fd_15645_westpark/acquisition/closing/2
 sabithaandkrishnaestates/docs/tax/2025-family-dollar-1099-reconciliation.md,2
 sabithaandkrishnaestates/admin/formation/formation.md,2
 /mnt/workspace-hub/digitalmodel/tests/visualization/design_tools/test_freecad_hull.py,2
-knowledge/dark-intelligence/xlsx-poc/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/archive.yaml,2
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-a/archive.yaml,2
 .claude/work-queue/assets/WRK-1244/checkpoint.yaml,2
 .claude/work-queue/assets/WRK-1244/evidence/resource-intelligence.yaml,2
 /tmp/tmp.jSpSvhd4yW/review-content.md,2
@@ -1778,7 +1778,7 @@ knowledge/dark-intelligence/xlsx-poc/0163-cal-0001-01-surface-wellhead-sitp-calc
 .claude/work-queue/assets/WRK-1247/evidence/cross-review-claude.md,2
 scripts/data/doc_intelligence/tests/test_formula_to_python.py,2
 .claude/work-queue/assets/WRK-1247/evidence/legal-scan.yaml,2
-knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/calc-report.yaml,2
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b/calc-report.yaml,2
 .claude/skills/_core/bash/complexity-scorer/SKILL.md,2
 .claude/skills/engineering/standards/api/SKILL.md,2
 .claude/skills/business/sales/competitive-intelligence/SKILL.md,2
@@ -3121,7 +3121,7 @@ knowledge/seeds/maritime-liabilities.yaml,1
 /mnt/remote/dev-secondary/dde/Personal/Ace Drilling Riser/API SPEC 16F 1st Ed Addendum 2.pdf,1
 /mnt/remote/dev-secondary/dde/Personal/Ace Drilling Riser/2H-TNE-0050-03 Drilling Riser Analysis Guidelines (Draft - Houston).pdf,1
 /tmp/claude-1000/-mnt-local-analysis-workspace-hub/2e47e96f-ec3c-49ae-b37b-78b492578f2a/tasks/bdy6kv09y.output,1
-mkt-a/B1522/ctr-2/ref/proj/2271-470-01_r1 (Anode Arrangement).pdf,1
+mkt-a/job-code/ctr-2/ref/proj/<document-number> (Anode Arrangement).pdf,1
 /tmp/tmp.Xbd6yShCqk/review-content.md,1
 /tmp/claude-1000/-mnt-local-analysis-workspace-hub/2e47e96f-ec3c-49ae-b37b-78b492578f2a/tasks/b8pfcuc3i.output,1
 /tmp/tmp.Hb52RlNGmp/review-content.md,1
@@ -3875,9 +3875,9 @@ sabithaandkrishnaestates/investments/cre/fd_15645_westpark/finance/actuals/2025/
 sabithaandkrishnaestates/investments/cre/fd_15645_westpark/finance/actuals/2025/taxes/ACTION_ITEMS.md,1
 sabithaandkrishnaestates/investments/cre/fd_15645_westpark/finance/actuals/tax_information.md,1
 sabithaandkrishnaestates/investments/cre/fd_15645_westpark/finance/actuals/hoa.md,1
-knowledge/dark-intelligence/xlsx-poc/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/tests/test_0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1.py,1
-knowledge/dark-intelligence/xlsx-poc/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/calc-report.yaml,1
-knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/tests/test_cc-23-6h-flowback-calculator-4.py,1
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-a/tests/test_removed_workbook_extraction_a.py,1
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-a/calc-report.yaml,1
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-c/tests/test_removed_workbook_extraction_c.py,1
 .claude/work-queue/assets/WRK-1256/evidence/activation.yaml,1
 .claude/work-queue/assets/WRK-1256/evidence/agent-logs.yaml,1
 .claude/work-queue/assets/WRK-1256/evidence/claim-evidence.yaml,1
@@ -3897,11 +3897,11 @@ knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/tests/test_c
 .claude/work-queue/assets/WRK-1256/evidence/stage5-migration-exemption.yaml,1
 /mnt/workspace-hub/digitalmodel/tests/visualization/design_tools/test_design_table.py,1
 .claude/work-queue/pending/WRK-1264.md,1
-knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/tests/test_parametric_conductor.py,1
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b/tests/test_parametric_conductor.py,1
 .claude/work-queue/assets/WRK-1247/review-iteration.yaml,1
 scripts/data/doc_intelligence/vba_extractor.py,1
 .claude/skills/engineering/marine-offshore/aqwa-reference/SKILL.md,1
-knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/calc-report.yaml,1
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-c/calc-report.yaml,1
 knowledge/dark-intelligence/xlsx-poc/removed-archive-sn-workbook-extraction/tests/test_removed-archive-sn-workbook-extraction.py,1
 scripts/skills/fix-coverage-gaps.py,1
 .claude/skills/_core/context-management/SKILL.md,1

@@ -539,31 +539,31 @@
       ],
       "receipts": [
         {
-          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\codex-selected-shell-stdout.jsonl",
+          "path": "<workspace-root>\\_pilot-fixtures\\3606\\provider\\codex-selected-shell-stdout.jsonl",
           "sha256": "073ec1620312f6e9a6708ab9d9f18f4ed5206c894a3c6cee3c42d0cc1832503d"
         },
         {
-          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\codex-selected-shell-final.txt",
+          "path": "<workspace-root>\\_pilot-fixtures\\3606\\provider\\codex-selected-shell-final.txt",
           "sha256": "f2c3f5f722d50d31f8adcc5072b187e820c824403057c7f09f2f143693950fda"
         },
         {
-          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\codex-selected-shell-run.json",
+          "path": "<workspace-root>\\_pilot-fixtures\\3606\\provider\\codex-selected-shell-run.json",
           "sha256": "4b38d98d83adad971fa7a32ba926c860013a5080db6dd3266abfbb5d7f18bee9"
         },
         {
-          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\followup-claude-final.txt",
+          "path": "<workspace-root>\\_pilot-fixtures\\3606\\provider\\followup-claude-final.txt",
           "sha256": "d8c9b5622d58f2c0976a700b5685c2645f761a6819e0ba5101fa822d2152607a"
         },
         {
-          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\followup-claude-tool-calls.json",
+          "path": "<workspace-root>\\_pilot-fixtures\\3606\\provider\\followup-claude-tool-calls.json",
           "sha256": "1533dec34b304e41e147fc86d4d7c8498b2bc689c5bffb7be6137184d9ea366d"
         },
         {
-          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\followup-codex-final.txt",
+          "path": "<workspace-root>\\_pilot-fixtures\\3606\\provider\\followup-codex-final.txt",
           "sha256": "6fe12776c16f90e8750f0c4e9e20674787dae74703a0bbea78970aee75c9a312"
         },
         {
-          "path": "D:\\ws\\_pilot-fixtures\\3606\\provider\\followup-codex-tool-calls.json",
+          "path": "<workspace-root>\\_pilot-fixtures\\3606\\provider\\followup-codex-tool-calls.json",
           "sha256": "331f0127e97e7c8dbdd245e171b5fe61316a5ea2da59d8f93e6e1ad39a056926"
         }
       ]
@@ -571,7 +571,7 @@
     "integration": {
       "authorization": "User: Approve local nine-file integration",
       "state": "integrated-and-verified",
-      "rollback_manifest": "D:\\ws\\_pilot-fixtures\\3606\\integration-20260912\\manifest.json",
+      "rollback_manifest": "<workspace-root>\\_pilot-fixtures\\3606\\integration-20260912\\manifest.json",
       "files": [
         {
           "path": ".claude/skills/data/drive-file-search/SKILL.md",

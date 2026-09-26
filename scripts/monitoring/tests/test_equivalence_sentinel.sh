@@ -23,7 +23,7 @@ make_repo() {
   cp "$SOURCE_ROOT/scripts/lib/python-resolver.sh" "$repo/scripts/lib/"
   git init -q --bare "$origin"
   git -C "$repo" init -q
-  git -C "$repo" config user.email sentinel@test.invalid
+  git -C "$repo" config user.email sentinel@example.invalid
   git -C "$repo" config user.name sentinel-test
   git -C "$repo" add scripts
   git -C "$repo" commit -qm init

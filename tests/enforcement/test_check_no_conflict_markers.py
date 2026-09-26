@@ -308,7 +308,7 @@ def tmp_workspace_with_sibling(tmp_path: Path) -> tuple[Path, Path]:
     for repo in (ws_root, sibling):
         repo.mkdir()
         subprocess.run(["git", "init", "-q", "-b", "main", str(repo)], check=True)
-        subprocess.run(["git", "-C", str(repo), "config", "user.email", "t@e.com"], check=True)
+        subprocess.run(["git", "-C", str(repo), "config", "user.email", "t@example.com"], check=True)
         subprocess.run(["git", "-C", str(repo), "config", "user.name", "T"], check=True)
         subprocess.run(
             ["git", "-C", str(repo), "config", "commit.gpgsign", "false"], check=True
@@ -388,7 +388,7 @@ def test_worktree_install_uses_git_dir(tmp_workspace_with_sibling, tmp_path: Pat
     real_repo = parent.parent / "real-digitalmodel"
     real_repo.mkdir()
     subprocess.run(["git", "init", "-q", "-b", "main", str(real_repo)], check=True)
-    subprocess.run(["git", "-C", str(real_repo), "config", "user.email", "t@e.com"], check=True)
+    subprocess.run(["git", "-C", str(real_repo), "config", "user.email", "t@example.com"], check=True)
     subprocess.run(["git", "-C", str(real_repo), "config", "user.name", "T"], check=True)
     subprocess.run(
         ["git", "-C", str(real_repo), "config", "commit.gpgsign", "false"], check=True

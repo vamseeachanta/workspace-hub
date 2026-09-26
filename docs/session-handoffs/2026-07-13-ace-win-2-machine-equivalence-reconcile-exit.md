@@ -1,7 +1,7 @@
 # Exit handoff — ace-win-2 machine-equivalence reconciliation
 
 Date: 2026-07-13
-Machine: `ace-win-2` (`ACMA-WS014`)
+Machine: `ace-win-2` (`ace-win-2`)
 Repo: `workspace-hub`
 Branch: `main`
 
@@ -97,7 +97,7 @@ Ten gaps remain:
   `a15a6d7b1ad5d6d0303cdf6034d544b26001400c` there (not `pop`), and verify all 11 paths,
   including the upstream-overlapping `.claude/memory/topics/INDEX.md`, before dropping
   the stash.
-- Active issue worktrees named above and the llm-wiki-acma issue worktrees remain
+- Active issue worktrees named above and the llm-wiki-<client> issue worktrees remain
   intentionally preserved.
 - `~/.codex/AGENTS.md.pre-install-backup.20260713T050444Z` is retained for rollback;
   current runtime content hash matched the repo source at install time.

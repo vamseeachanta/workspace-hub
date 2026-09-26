@@ -48,7 +48,7 @@ def test_windows_sibling_machines_have_explicit_tier1_roots():
         machine = data["machines"][name]
         assert machine["repo_layout"] == "sibling"
         assert machine["tier1_repo_root"] == "D:\\"
-        # PROPERTY, not a literal. This asserted == "D:\\workspace-hub" and so
+        # PROPERTY, not a literal. This asserted == "<drive>:\\workspace-hub" and so
         # pinned a value that is demonstrably wrong on the box — the real checkout
         # is one level deeper, and the old path is not a git repository at all.
         # The same fact is stored in registry.yaml, harness-config.yaml and here;

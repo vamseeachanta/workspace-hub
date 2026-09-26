@@ -69,9 +69,9 @@ def load_oauth():
         return json.load(f)
 
 ACCOUNTS = {
-    "ace":       {"email": "vamsee.achanta@aceengineer.com",  "token": "~/.gmail-ace/credentials.json"},
-    "personal":  {"email": "achantav@gmail.com",               "token": "~/.gmail-personal/credentials.json"},
-    "skestates": {"email": "skestatesinc@gmail.com",           "token": "~/.gmail-skestates/credentials.json"},
+    "ace":       {"email": "owner@example.com",               "token": "~/.gmail-ace/credentials.json"},
+    "personal":  {"email": "owner.personal@example.com",       "token": "~/.gmail-personal/credentials.json"},
+    "skestates": {"email": "skestates@example.com",            "token": "~/.gmail-skestates/credentials.json"},
 }
 
 # ============================================================

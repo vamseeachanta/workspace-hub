@@ -34,9 +34,9 @@ Surveyed all 38 top-level git repos under `/mnt/local-analysis`. **Nothing was a
 
 **Local `main` ref fast-forwarded without switching the checked-out feature branch** (`git fetch origin main:main`): `assethold`, `assetutilities`, `llm-wiki`, `wed-batch5`, `wed-phase2-batch3`, `wed-phase2-batch4`, `wed-phase2-carve`, `worldenergydata` → all `0 0`.
 
-**dm-b1546-{coupling,sweep,taps}** — worktrees sharing digitalmodel's `main`; current automatically after the digitalmodel pull (`0 0`).
+**dm-job-code-{coupling,sweep,taps}** — worktrees sharing digitalmodel's `main`; current automatically after the digitalmodel pull (`0 0`).
 
-**~20 repos already `0 0`** on main (aceengineer-*, achantas-data, hobbies, investments, kaggle-rogii-2026, llm-wiki-{acma,baez,doris,family,fdas,hdic,packs,seanation}, raw-to-knowledge-playbook, sabithaandkrishnaestates, teamresumes, worldenergydata-wiki, deckhand-sandbox).
+**~20 repos already `0 0`** on main (aceengineer-*, achantas-data, hobbies, investments, kaggle-rogii-2026, llm-wiki-{family,packs} and six client wikis, raw-to-knowledge-playbook, sabithaandkrishnaestates, teamresumes, worldenergydata-wiki, deckhand-sandbox).
 
 **Deliberately skipped (with reason):**
 | Repo | Reason |
@@ -50,7 +50,7 @@ Surveyed all 38 top-level git repos under `/mnt/local-analysis`. **Nothing was a
 - **workspace-hub** — ~10 tracked `M` files under `.claude/memory/` (`agents.md`, `claude-auto-memory.md`, `topics/*`) + `.claude/state/candidates/hermes-pattern-candidates.md`. Owned by the **bridge / auto-memory process** (`bridge-hermes-claude.sh`), regenerated continuously. Left untouched.
 - **workspace-hub — 2 autostashes, now preserved as durable branches** (`stash@{0}`, `stash@{1}`): autostash residue from pulls that timed out mid-`--autostash` (see §5). Contents are strictly superseded snapshots — equality state (already committed to origin at reconciled values), bridge-owned auto-memory files (current versions in working tree), and older matrix HTMLs (2026-07-09 / 2026-07-06). A drop was attempted and **denied by the permission classifier** (irreversible, not user-requested). Per the later "don't lose work" pass (§7) they were converted to durable local branches `stash-archive/2026-07-10-autostash-0` (`fdabf2e0`) and `-1` (`28e97886`); the stashes themselves are also left intact. Safe to `git stash drop` / delete the archive branches once confirmed unwanted.
 - **workspace-hub** — 5 untracked orphan `docs/reports/sessions/2026-07-0{5,6,7,8}-main.html` + `2026-07-10-main.html`: curate byproducts NOT referenced by the committed `manifest.json`. Harmless, left untracked.
-- **digitalmodel** — 2 untracked viz assets (`docs/api/cfd/viz/effect-of-roll.png`, `forced-roll-resonance.gif`); B1546 CFD work products.
+- **digitalmodel** — 2 untracked viz assets (`docs/api/cfd/viz/effect-of-roll.png`, `forced-roll-resonance.gif`); <job-code> CFD work products.
 - **deckhand / deckhand-ops** — untracked gitignored shared-skill dirs (`.codex/`, `.gemini/`, `.claude/skills/.gitignore`) + `ace-win-2` scratch.
 - **deckhand-sandbox** — untracked `marketing/gif-pipeline/` scratch.
 
@@ -68,7 +68,7 @@ Every wh `pull`/`checkout` triggers the `post-merge` hook → `scripts/memory/ka
 
 ## 7. Work-preservation pass — "don't lose any work" (parallel agents)
 
-Audited **every local branch in every repo** (not just checked-out ones) for committed work not on any origin ref. Nothing this session's actions could have lost (all ops were pull/ff/publish — no reset/force/delete). The 3 checked-out `wed-*` branches proved to be **stale pre-rewrite scratch** — their packaging work is fully merged on `origin/main` as PRs #562/#565/#566; their only unique content is BSEE data origin deliberately purged (pushing would reintroduce it — not done). `deckhand-live` / `dm-b1546-taps` detached HEADs sit on already-merged commits.
+Audited **every local branch in every repo** (not just checked-out ones) for committed work not on any origin ref. Nothing this session's actions could have lost (all ops were pull/ff/publish — no reset/force/delete). The 3 checked-out `wed-*` branches proved to be **stale pre-rewrite scratch** — their packaging work is fully merged on `origin/main` as PRs #562/#565/#566; their only unique content is BSEE data origin deliberately purged (pushing would reintroduce it — not done). `deckhand-live` / `dm-job-code-taps` detached HEADs sit on already-merged commits.
 
 Genuine local-only WIP was preserved via 5 parallel agents (each new branch, no force, `main` untouched, verified origin==local):
 

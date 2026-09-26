@@ -33,7 +33,7 @@ Live `curl -sIL` results (2026-05-01):
 | 1 | Subsea7 | **404** subsea7.com/en/our-fleet.html |
 | 2 | TechnipFMC | 403 (likely WAF, may resolve in browser) |
 | 3 | client-d | 403 (WAF) |
-| 4 | McDermott | **404** mcdermott.com/What-We-Do/Subsea-and-Floating-Facilities |
+| 4 | an installation contractor | **404** installation-contractor.com/What-We-Do/Subsea-and-Floating-Facilities |
 | 5 | Allseas | **404** allseas.com/equipment/ |
 | 6 | Heerema | 200 (verified Sleipnir + Thialf in page meta) |
 | 7 | DOF Group | **404** dof.com/en/our-fleet |
@@ -211,7 +211,7 @@ All 12 URLs in the bundle README's "Live URLs" section return HTTP 200:
 ### Page-content support for email-template claims
 | Email claim | Page reality | Verdict |
 |---|---|---|
-| "Subsea jumper lift (Ballymore manifold-to-PLET, 27 OrcaFlex sections, 81 tests)" | jumper-installation.html: meta-alt confirms Ballymore, KPI shows "27 OrcaFlex sections" + "81/81 tests" | **PASS** |
+| "Subsea jumper lift (GoM tieback A manifold-to-PLET, 27 OrcaFlex sections, 81 tests)" | jumper-installation.html: meta-alt confirms GoM tieback A, KPI shows "27 OrcaFlex sections" + "81/81 tests" | **PASS** |
 | "Deepwater mudmat installation (180 parametric cases, DNV H103 coupled)" | mudmat.html: subtitle "180 parametric cases", body "DNV-RP-H103 (2011)" | **PASS** |
 | "Shallow water pipelay (sag-bend tension sensitivity, sea-state envelope)" | pipelay.html: 1886 body words, includes pipelay sag-bend tables | **PASS** |
 | "we do pre-FEED and early-FEED mooring screening for FOWT" | fowt-mooring-screening.html: explicit "worked example" + "shape" framing, no past-client evidence | **OVERCLAIM** (F6) |

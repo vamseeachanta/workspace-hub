@@ -8,6 +8,6 @@ metadata:
   tags: [windows-setup, shell, path-semantics]
 ---
 
-Windows machines must use Git Bash/MINGW64, not cmd.exe. Specific path assumptions follow (D:\workspace-hub seen as /d/workspace-hub in Git Bash). Script sourcing behavior and $PATH differ between shells; bare python3 or uv paths fail in cmd.exe but work in Bash. Treat as a prerequisite, not a configuration choice.
+Windows machines must use Git Bash/MINGW64, not cmd.exe. Specific path assumptions follow (<workspace-root>\workspace-hub seen as /d/workspace-hub in Git Bash). Script sourcing behavior and $PATH differ between shells; bare python3 or uv paths fail in cmd.exe but work in Bash. Treat as a prerequisite, not a configuration choice.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

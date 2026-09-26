@@ -155,8 +155,8 @@ ace-linux-2: /mnt/remote/ace-linux-1/ace/solver-inbox/drop/
 Windows workspace remains Git-backed:
 
 ```text
-licensed-win-1: D:\workspace-hub\queue\pending\
-licensed-win-2: D:\workspace-hub\queue\pending\
+licensed-win-1: <workspace-root>\workspace-hub\queue\pending\
+licensed-win-2: <workspace-root>\workspace-hub\queue\pending\
 ```
 
 ### Job contract v2

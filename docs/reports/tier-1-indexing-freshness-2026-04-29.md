@@ -29,7 +29,7 @@ Material drift since the 2026-04-28 freshness run:
   - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-1-sesa.pid`
   - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-2-lng-a-university.pid`
   - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-3-lng-a-codes.pid`
-  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-4-woodfibre.pid`
+  - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-4-lng-terminal-a.pid`
   - `scripts/coordination/routing/logs/agent-ratings.jsonl`
   - `scripts/coordination/routing/logs/provider_recommendations.jsonl`
   - `scripts/coordination/routing/logs/routing-decisions.jsonl`
@@ -77,7 +77,7 @@ Trusted-path backup/cache/runtime noise:
 - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-1-sesa.pid`
 - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-2-lng-a-university.pid`
 - `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-3-lng-a-codes.pid`
-- `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-4-woodfibre.pid`
+- `docs/plans/overnight-prompts/2026-04-28-elements-wave/logs/terminal-4-lng-terminal-a.pid`
 - `scripts/coordination/routing/logs/agent-ratings.jsonl`
 - `scripts/coordination/routing/logs/provider_recommendations.jsonl`
 - `scripts/coordination/routing/logs/routing-decisions.jsonl`

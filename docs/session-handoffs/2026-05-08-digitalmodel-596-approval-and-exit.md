@@ -14,7 +14,7 @@ This handoff covers the post-CI-readiness exit state after reconciling the user'
   - `digitalmodel/docs/plans/2026-05-07-issue-596-repo-structure-normalization.md`
 - Posted the GitHub approval reconciliation comment:
   - https://github.com/vamseeachanta/digitalmodel/issues/596#issuecomment-4407551633
-- Preserved the boundary for future implementation: only bounded Phase 1 repo-structure contract/checker/tests/docs/enforcement is approved; no package-source reorg, broad docs migration, notebook-policy changes, or B1528 generated-evidence relocation is authorized.
+- Preserved the boundary for future implementation: only bounded Phase 1 repo-structure contract/checker/tests/docs/enforcement is approved; no package-source reorg, broad docs migration, notebook-policy changes, or proj-a generated-evidence relocation is authorized.
 - Detected `worldenergydata` local commits ahead of protected `main`; direct push to `main` was rejected by branch protection. Pushed the ahead range to a preservation branch and opened PR #396:
   - https://github.com/vamseeachanta/worldenergydata/pull/396
 

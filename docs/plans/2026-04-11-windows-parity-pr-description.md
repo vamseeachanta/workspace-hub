@@ -26,7 +26,7 @@ What changed
 4. Windows readiness proof-path closure
 - Unignored and added tracked Windows readiness artifact path:
   - .claude/state/harness-readiness-licensed-win-1.yaml
-- Set licensed-win-1 workspace root in harness config to D:\workspace-hub
+- Set licensed-win-1 workspace root in harness config to <workspace-root>\workspace-hub
 - Updated compare-harness-state.sh so a fresh non-pass Windows report still degrades status, rather than appearing OK purely because it is recent
 - Clarified in setup-scheduler-tasks.ps1 that NightlyReadiness updates the shared readiness proof
 

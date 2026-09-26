@@ -184,7 +184,7 @@ $ scripts/data/drive-index-search/search.py "dispatch reconcile open only snapsh
 WARNING: index ace_knowledge last refresh FAILED at 2026-08-02T07:45:52.031691+00:00 -- results may be stale
 ...
 "results": [
-  {"canonical_path": "/mnt/ace/digitalmodel/docs/domain/subsea-risers/.../VerdErg Porch Only - 09.02.09 (OPEN)-.SLDPRT", "source_index": "cad_readability"},
+  {"canonical_path": "/mnt/ace/digitalmodel/docs/domain/subsea-risers/.../subsea-component Porch Only - 09.02.09 (OPEN)-.SLDPRT", "source_index": "cad_readability"},
   {"canonical_path": "/mnt/dde/Literature/Engineering/open channel flow", "source_index": "dde_literature_catalog"}
 ]
 ```

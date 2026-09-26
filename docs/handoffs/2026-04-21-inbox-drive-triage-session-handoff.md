@@ -83,8 +83,8 @@ seven user decisions, through six adversarial review rounds on the B-plan.
 
 ## Open / user actions (not blocking)
 
-- **2FA setup** on `skestatesinc@gmail.com` Google account — user mentioned "will progress to 2FA soon." Consider checking trusted devices at [myaccount.google.com/security](https://myaccount.google.com/security) before enabling.
-- **Discard Gmail draft** `r7458647453519350632` to `bill@rephers.com` — sitting in ACE drafts folder (Gmail MCP doesn't have delete_draft verb loaded).
+- **2FA setup** on `owner.realestate@example.com` Google account — user mentioned "will progress to 2FA soon." Consider checking trusted devices at [myaccount.google.com/security](https://myaccount.google.com/security) before enabling.
+- **Discard Gmail draft** `r7458647453519350632` to `[email removed]` — sitting in ACE drafts folder (Gmail MCP doesn't have delete_draft verb loaded).
 - **Block sender** in Gmail UI for `info.tatacapital.co.in` as belt-and-suspenders alongside routing-config DELETE (the routing config only runs when pipeline runs; Gmail-side Block runs immediately).
 
 ## B-plan — where v7 stands

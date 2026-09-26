@@ -117,7 +117,7 @@ Owner approved: 2026-04-20
 Owner: Vamsee Achanta (business owner, ACE Engineer)
 ```
 
-The line must be committed by the user's git identity (`vamsee.achanta@aceengineer.com`). No separate trailer; no counsel path required. Owner may consult counsel at discretion — outside plan acceptance criteria.
+The line must be committed by the user's git identity (`owner@example.com`). No separate trailer; no counsel path required. Owner may consult counsel at discretion — outside plan acceptance criteria.
 
 ---
 

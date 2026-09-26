@@ -134,12 +134,12 @@ repeat a stage whose log exists. That is an accident, not a guarantee.
 
 ## CLIENT-HULL ONBOARDING — blocked, and one decision needed first
 
-**Target:** project B1552 hull model, for resistance analysis.
+**Target:** project <job-code> hull model, for resistance analysis.
 
 **Access established (my stored note was STALE and said otherwise — verify, don't trust):**
 
 ```
-host    ACMA-HOU-RDS02   tailnet 100.93.182.24   domain ACMA-INC.LOCAL
+host    ace-win-1   tailnet 100.93.182.24   domain <org-domain>
 user    vamseea          (also Administrator)    SSH: WORKS
 drives  C:  D: (Data)  S: (VM storage)           <- NO J:
 ```
@@ -149,16 +149,16 @@ interactive logon and do not carry into SSH; `net use` is empty, `HKCU\Network` 
 persistent mapping, and GPO drive-map preferences returned nothing. `net view` against
 the domain namespace timed out.
 
-**What to ask the owner for:** the `\\server\share` behind `J:` — one `net use` in an
+**What to ask the owner for:** the `\\<server>\<share>` behind `J:` — one `net use` in an
 interactive session on that box prints it.
 
-**Layout learned:** projects live at `D:\<code>`. `D:\B1546` exists and holds
-`V-Rigs (AQWA Model Archive).wbpj` — an AQWA Workbench project. B1552 is NOT on local
+**Layout learned:** projects live at `D:\<code>`. `D:\<job-code>` exists and holds
+`V-Rigs (AQWA Model Archive).wbpj` — an AQWA Workbench project. <job-code> is NOT on local
 disk.
 
 ### The routing decision that must precede the copy
 
-The owner asked to sync the model into `llm-wiki-acma`. That repo is **PRIVATE**
+The owner asked to sync the model into `llm-wiki-<client>`. That repo is **PRIVATE**
 (verified), which is the correct tier for client content per
 `.claude/rules/wiki-sibling-routing.md` (`visibility: private-client-llm-wiki`,
 `client:` required).
@@ -180,7 +180,7 @@ client material entered a public repo without a handling decision.
 1. **Public-leak disclosure route** (oldest, most consequential). Needs (a) disclosure
    route, (b) remediate-first or file-first. Deliberately unfiled — a public issue
    signposts it.
-2. **J: UNC path**, to unblock B1552.
+2. **J: UNC path**, to unblock <job-code>.
 3. **Client-data handling** for CFD case files, meshes and reports — the wiki rule
    covers documents, not solver cases.
 4. **Holtrop & Mennen primary papers** — #2020 is `status:plan-approved` but cannot

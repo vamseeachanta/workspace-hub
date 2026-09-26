@@ -17,7 +17,7 @@
 - EXISTS: `docs/ops/2026-05-04-multimachine-baseline-inventory.md` — detailed baseline with repo placement policy, mount matrix, §5 engineering program availability (OrcaFlex/AQWA absent from Linux; licensed Windows hosts are the targets). Confirms licensed-win-1 `ssh: null` — no remote SSH access.
 - EXISTS: `queue/job-schema.yaml` — solver queue schema; `solver: "orcawave | orcaflex"` only; licensed-win-1 polls via `git pull` every 30 minutes. **Gap:** AQWA not supported (tracked by #2641).
 - EXISTS: `scripts/solver/submit-job.sh` — Git-backed dispatch: `submit-job.sh <solver> <input_file> [description]` creates a YAML in `queue/pending/`, commits, pushes. Smoke-test command exists.
-- EXISTS: `queue/failed/wamit-val-hemisphere/result.yaml` — evidence of live OrcaWave dispatch; queue path `D:\workspace-hub\...` confirms licensed-win-1 polls and runs from that Windows path.
+- EXISTS: `queue/failed/wamit-val-hemisphere/result.yaml` — evidence of live OrcaWave dispatch; queue path `<workspace-root>\workspace-hub\...` confirms licensed-win-1 polls and runs from that Windows path.
 - GAP: No per-machine AI-provider auth state documented anywhere. No unified `docs/ops/machine-inventory.md`.
 
 ### Standards

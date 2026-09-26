@@ -103,12 +103,12 @@ Planning-only wave over the tier-1 Kanban boards generated from live GitHub issu
 8. **Repo-structure / engineering hygiene slice**
    - Issues:
      - [#596 normalize digitalmodel folder/file structure](https://github.com/vamseeachanta/digitalmodel/issues/596)
-     - [#597 classify and relocate B1528 generated evidence](https://github.com/vamseeachanta/digitalmodel/issues/597)
+     - [#597 classify and relocate proj-a generated evidence](https://github.com/vamseeachanta/digitalmodel/issues/597)
      - [#509 OrcaFlex YAML strict validation hook](https://github.com/vamseeachanta/digitalmodel/issues/509)
      - [#514 async checkpoint ignore policy](https://github.com/vamseeachanta/digitalmodel/issues/514)
    - Recommended sequence:
      1. define folder/file taxonomy;
-     2. classify B1528 evidence;
+     2. classify proj-a evidence;
      3. align async checkpoint policy;
      4. add YAML strict hook once globs are stable.
 
@@ -126,7 +126,7 @@ Planning-only wave over the tier-1 Kanban boards generated from live GitHub issu
 
 10. **Engineering-models / data domain slice**
     - Issues:
-      - [#597 B1528 generated evidence classification](https://github.com/vamseeachanta/digitalmodel/issues/597)
+      - [#597 proj-a generated evidence classification](https://github.com/vamseeachanta/digitalmodel/issues/597)
       - [#595 client PDF packaging](https://github.com/vamseeachanta/digitalmodel/issues/595)
       - [#596 folder/file normalization](https://github.com/vamseeachanta/digitalmodel/issues/596)
       - [#509 OrcaFlex YAML strict hook](https://github.com/vamseeachanta/digitalmodel/issues/509)

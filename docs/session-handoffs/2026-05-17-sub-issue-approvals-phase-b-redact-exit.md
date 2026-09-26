@@ -39,7 +39,7 @@ Remediation file: [`docs/research/reservoir-engineering-corpus.md`](https://gith
 - Notes + gap analysis + forward references all reframed
 - Original Phase B content remains in git history at [`0413ed87`](https://github.com/vamseeachanta/llm-wiki/commit/0413ed87)
 
-File shrunk 145 → 121 lines (28.8KB → 21.4KB). Zero client/employer leakage in current state (verified via grep for `chevron|shell perdido|talos|ballymore|MD2|FJR|subsea-7|S7|seven arctic|StormGeo|GEDS|document-IDs` → zero matches).
+File shrunk 145 → 121 lines (28.8KB → 21.4KB). Zero client/employer leakage in current state (verified via grep for `chevron|shell GoM spar A|a GoM operator|GoM tieback A|MD2|FJR|subsea-7|S7|construction vessel A|StormGeo|GEDS|document-IDs` → zero matches).
 
 ## Plan acceptance impact
 

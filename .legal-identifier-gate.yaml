@@ -1,0 +1,747 @@
+# =============================================================================
+# Client identifier gate -- workspace-hub (PUBLIC repository)
+# =============================================================================
+# Read by scripts/legal/check_identifiers.py (owner decision C15, 2026-09-25),
+# the checker of digitalmodel#2167 (owner decision C11) adapted to this
+# repository. CI runs it over the whole tracked tree on every push and pull
+# request (.github/workflows/legal-identifier-gate.yml); pre-commit runs it on
+# staged files (hook id client-identifier-gate).
+#
+# WHY THIS IS NOT .legal-deny-list.yaml
+#
+# The legacy list holds client and field names in plain text, and
+# scripts/legal/legal-sanity-scan.sh greps every "- pattern:" line of it as a
+# literal string. A deny list of client names, committed to a public
+# repository, is itself a list of clients; and a structural regular expression
+# placed there would be searched as text. This file is read only by the
+# identifier gate.
+#
+# Two kinds of rule:
+#
+#   structural  Patterns, not names: a job code, a project document number, a
+#               mapped drive, a UNC share, a Windows user profile, an address at
+#               someone else's domain, a physical machine hostname. Publishing
+#               the shape discloses nothing.
+#
+#   hashed      Names, as salted SHA-256 of the lowercased token. The checker
+#               hashes each candidate word and compares. The salt is published:
+#               it stops accidental matches, not a determined reader with a word
+#               list. Anything genuinely secret belongs in the private list.
+#
+# An optional private list extends this one: WORKSPACE_HUB_DENY_LIST names it
+# (missing -> the check FAILS), else ~/.config/workspace-hub/
+# identifier-deny-list.txt is read when present. A line "re:<pattern>" is a
+# private regular expression; findings name the scanned line, never the pattern.
+# CI has no private list and relies on the classes and hashes below.
+#
+# A line that documents a pattern may carry "identifier-gate: example"; the
+# structural rules skip that line and only that line. Names are still checked.
+# =============================================================================
+
+version: "1.0"
+updated: "2026-09-25"
+
+salt: "workspace-hub-identifier-check-v1"
+
+structural:
+  - id: job-code
+    pattern: '(?i)(?<![A-Za-z0-9])B1[0-9]{3}(?![A-Za-z0-9])'
+    severity: block
+    message: >-
+      Internal job code. Use a neutral placeholder such as <job-code>.
+
+  - id: project-document-number
+    # C15: engagement document numbers -- a four- or five-digit job number, a
+    # document type and a serial (calculation, manual, report, comment sheet,
+    # drawing, specification). Workbooks named this way were extracted into the
+    # public tree. Dates and standard numbers do not have the type field.
+    pattern: '(?i)(?<![A-Za-z0-9])[0-9]{4,5}-(?:cal|man|rpt|csh|dwg|spc)-[0-9]{3,4}(?![0-9])'
+    severity: block
+    message: >-
+      Project document number. Use <document-number>.
+
+  - id: ctr-number
+    pattern: '\bCTR\s*[0-9]{1,3}\b'
+    severity: block
+    message: >-
+      Contract/CTR number. Identifies a specific engagement.
+
+  - id: mapped-drive-path
+    pattern: '\b[D-Zd-z]:\\+[A-Za-z0-9_ .\\-]{6,}'
+    severity: block
+    message: >-
+      Path on a mapped or network drive. Replace with <private-data> or a
+      repository-relative path. C: is excluded because vendor install paths
+      live there and disclose nothing.
+
+  - id: unc-share
+    # Two backslashes, a host, one separator and a name, or the escaped form
+    # (four, a host, two). LaTeX, escaped relative paths and registry keys do
+    # not match (digitalmodel#2167).
+    pattern: '(?<![\w\\:.])(?:\\\\[A-Za-z0-9][A-Za-z0-9._-]*\\(?=[\w$.-])|\\\\\\\\[A-Za-z0-9][A-Za-z0-9._-]*\\\\(?=[\w$.-]))'
+    severity: block
+    message: >-
+      UNC share path. Names an internal server.
+
+  - id: windows-user-path
+    pattern: '(?i)\b[A-Z]:(?:\\|/)+Users(?:\\|/)+(?!(?:public|default|all users)(?:[\\/"''\s]|$))(?![<%$])[A-Za-z0-9][A-Za-z0-9._-]*'
+    severity: block
+    message: >-
+      Windows user profile path: names the account. Replace with
+      <private-data>/... or a repository-relative path.
+
+  - id: onedrive-org
+    pattern: 'OneDrive\s+-\s+(?!<)[A-Za-z]'
+    severity: block
+    message: >-
+      Organisation OneDrive folder. Names the employer or client.
+
+  - id: solver-export-user
+    pattern: '#\s*User:\s*(?![(<]|&lt;)\S'
+    severity: block
+    message: >-
+      Solver export header names the Windows account. Write "# User: (removed)".
+
+  - id: solver-export-machine
+    # C15: fleet runbooks here head sections "# Machine: <logical label>";
+    # the sanctioned labels are exempt, a physical name is not.
+    pattern: '#\s*Machine:\s*(?![(<]|&lt;|(?:ace-(?:win|linux)-[0-9]+|licensed-win-[0-9]+|home-win|macbook-portable)\b)\S'
+    severity: block
+    message: >-
+      Solver export header names the machine. Write "# Machine: (removed)".
+
+  - id: windows-hostname
+    # Logical fleet labels (ace-win-1, ace-linux-1, ...) do not match and are
+    # the replacement.
+    pattern: '(?i)\b[a-z]{2,6}-(?:[a-z]{2,4}-)?(?:rds|ansys|ws|host|fs|srv|dc)[0-9]{2,}\b'
+    severity: block
+    message: >-
+      Physical machine hostname. Use the logical fleet label (ace-win-1,
+      ace-win-2, ...) or "a Windows workstation".
+
+  - id: foreign-domain-email
+    # C15 adds two shapes that name no person: an SSH remote (git@host:path)
+    # and a noreply / no-reply sender, which is the co-author trailer on agent
+    # commits. The match starts at the beginning of the local part, so a
+    # longer local part ending in "noreply" is still an address. The local
+    # part starts with a letter or digit ("+@pytest.fixture" in a diff is a
+    # decorator), and a final label that is a file extension rather than a
+    # top-level domain ("tool@alpha-data.json") is a file name.
+    pattern: '(?<![A-Za-z0-9._%+-])(?!no-?reply@)(?!git@[A-Za-z0-9.-]+\.[A-Za-z]{2,}:)[A-Za-z0-9][A-Za-z0-9._%+-]*@(?!example\.|localhost)[A-Za-z0-9.-]+\.(?!(?:json|ya?ml|txt|csv|html?|js|ts|toml|lock|xml|log)\b)[A-Za-z]{2,}'
+    severity: block
+    message: >-
+      Email address. An address identifies a person, and at a client domain
+      the engagement too. Use an address at example.com.
+
+  # The internal project-archive name is matched by the private list, not
+  # here: in this repository the owner's client map treats the organisation
+  # prefix of that name as a client identifier, so a public pattern would
+  # publish it (C15).
+
+# ---------------------------------------------------------------------------
+# Hashed names. Salted SHA-256 of the lowercased token.
+#
+# Deliberately unannotated: a comment naming each hash would publish the list
+# the hashing withholds. To check whether a name is covered:
+#
+#   python scripts/legal/check_identifiers.py --hash "<token>"
+#
+# To add one, append the hash it prints, with no comment saying what it is.
+# ---------------------------------------------------------------------------
+hashed_names:
+  - 070d76339ba322830f69f502eedb7f449407a2daede0d920de018f881c5b40ad
+  - 0acf12450cfefeaf6c4841fd0ce30be0fc7a67b31d655b751a9fd467cf1a316c
+  - 12c60979f89af019ce376a6960f9b0b09b41d2ae7e69820bdbbe62ae6025c9ff
+  - 189c4b55c976c3ac3845537aba600d2a64d5f2ba1f59c0c839861f0457c6e477
+  - 1c1f1d432a45228a989bfcea460a4faf201363802ca16089209c68b894894329
+  - 1f8fa02f073e609562f17e6c965df76776259d5004ac986606df692fbdd338e1
+  - 20926311df09009873fb734da43780b993ed0a41a267bc93b8fc311669739c8e
+  - 2e8a40fc69f882e8c74ffa87846f0fd5ca8dbbe02fd789590ce51568c642d82c
+  - 3452ff782c3040c1a71fd4504324c46a34f60c74ecbd9a77dbc3a17d2ee0ea33
+  - 3c5ef01d78580c889c254961cbd726b18cc0874f2b1dd74a09d27f9a2e87058f
+  - 4213db7b7725b6bb0257601b6db9ed655d1b3c2491e4500d5989072c6ac8aeb6
+  - 4652182281deef335a6288df4231084165d73d7f8ab93ada5966fd7150ac9287
+  - 48d176006c9ca88531997a3da9819ddf924d96fa185551be50c16f381f175e2a
+  - 609d888e658b9c0023ee76aa4d87b2afeda36f0ac841dbe875091af0acbcbd4f
+  - 6339501164a8da2a480f59c24b479a027cc2f4afa17092cd8014ee8d620998e5
+  - 639ad85d8c5fadec393c39494bb4dfe32bdaf1e91c39f7b92aaf49f7dd527f37
+  - 6ac71cbcb0f66acbecdb7a4dad2dc19c22a2363abfd32fd7b3fc8255d2c22b1c
+  - 6fb0f0bda79fe6eb57820ffb61b3e4689363d4c24275220a3d31c8279d39fbab
+  - 8a1ec602a5583b419c746a9cc295f92cfb332fcb4149df6bccb6dd7f421a5642
+  - 8d7cee411ab04ea6c9878744ae6917e7330a294c8490b8e49c5cace3a31463e2
+  - 98078f10057c1242a1adcb4b13db1939c92bbedaafe5c43f96cb642176d9b7d3
+  - a3acd2b5d159fc89861b223bcab3bcfb999e1ccdc0501a18afc1c47d5d4ecf25
+  - ac7fa03028917656796feb3cb04ed67240f0dc7d786f16091f7033181d452ad3
+  - b95291298e54a732b393c6a1ad314033fc7d6a08e817cab5eea4d992512420b4
+  - d346c646d87db5a464e644dfd5249288cfe09fc78f9eb2caec940503292b2ade
+  - de834214eafecf816b7073a7203f26b1bac9c52c07dbbda4e29798a9f23fa6e8
+  - e060b3350a7d57487937eebe7c376eb6f33adc6ab2f8e9759dcac55399ed28b8
+  - e6275d426eeb1d285e02ed6a7cba11353e1dd61f0572fe4effd27a923f728c9e
+  - e89f04fd905b36c6d0c65f9e44910d27afd97713c105044213eb32cbbb70c0fb
+  - f52f9629423cc2a6b466bccc72ca1893307a86518c297a74baa6d270c712af9a
+
+# ---------------------------------------------------------------------------
+# Binary types that carry no inspectable text, exempt only when their leading
+# bytes ARE that type. Any other binary fails unless the baseline lists it.
+# ---------------------------------------------------------------------------
+binary_media_extensions:
+  - .png
+  - .jpg
+  - .jpeg
+  - .gif
+  - .bmp
+  - .ico
+  - .webp
+  - .woff
+  - .woff2
+  - .ttf
+  - .otf
+
+# ---------------------------------------------------------------------------
+# Paths excluded from the check, each with its reason. Keep this list short;
+# an exclusion is how a gate stops being one.
+# ---------------------------------------------------------------------------
+exclusions:
+  - path: .legal-identifier-gate.yaml
+    reason: this file necessarily contains the patterns it matches
+  - path: scripts/legal/check_identifiers.py
+    reason: the checker's messages and documentation quote example shapes
+
+  # ------------------------------------------------------------------------ #
+  # Owner decision C15 (2026-09-25): REPORTED, NOT EDITED. Each file below is
+  # listed in the C15 pull request for an owner decision (delete, move private,
+  # regenerate redacted, or keep). A whole-file exclusion skips every line of
+  # the file, so each "reported" entry is temporary, not an accepted state.
+  # "kept" entries are third-party or owner-exempted public data.
+  # ------------------------------------------------------------------------ #
+  - path: '.claude/agents/cfd-lane-operator.md'
+    reason: >-
+      C15 reported: live agent definition whose remote paths and environment-variable names carry a job code used by digitalmodel; renaming needs an owner or config decision.
+  - path: '.claude/memory/kanban/boards/repo-digitalmodel-hydro.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.claude/memory/kanban/boards/repo-digitalmodel-solver.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.claude/memory/kanban/boards/repo-digitalmodel-subsea.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.claude/memory/kanban/boards/repo-digitalmodel.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.claude/memory/kanban/boards/repo-workspace-hub-harness.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.claude/memory/kanban/boards/repo-workspace-hub-knowledge.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.claude/memory/kanban/boards/repo-workspace-hub-naval-architecture.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.claude/memory/kanban/boards/repo-workspace-hub.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.claude/memory/kanban/boards/repo-worldenergydata-ingest.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.claude/memory/kanban/boards/repo-worldenergydata.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.claude/state/candidates/hermes-pattern-candidates.md'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260131.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260208.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260213.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260220.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260222.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260223.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260224.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260312.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260316.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260317.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260409.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260420.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260424.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260501.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260503.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260509.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260512.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260514.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260518.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260520.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/corrections/session_20260521.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/patterns/corrections_2026-02-22_07-19-29.json'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/patterns/corrections_2026-02-22_07-27-05.json'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/patterns/corrections_2026-02-22_09-29-00.json'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/reflect-history/analysis_2026-02-04_05-00-01.json'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/reflect-history/analysis_2026-02-05_05-00-02.json'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/reflect-history/analysis_2026-02-06_05-00-01.json'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/reflect-history/analysis_2026-02-22_07-19-29.json'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/reflect-history/analysis_2026-02-22_07-27-05.json'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/reflect-history/analysis_2026-02-22_09-29-00.json'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-02-22.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-02-23.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-02-24.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-02-25.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-02-26.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-03-06.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-03-09.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-03-10.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-03-11.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-04-03.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/2026-04-05.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.claude/state/session-signals/test-health.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.legal-deny-list.yaml'
+    reason: >-
+      C15 reported: the legacy legal-sanity-scan.sh rules list names in plain text; moving them private is an owner decision.
+  - path: '.planning/intel/elements-ingest/source-sha256-under-100mb.txt'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: '.planning/quick/review-1963-codex.out'
+    reason: >-
+      C15 reported: raw model review output recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.planning/quick/review-2554-codex.out'
+    reason: >-
+      C15 reported: raw model review output recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.planning/quick/review-2555-codex.out'
+    reason: >-
+      C15 reported: raw model review output recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.planning/quick/review-2760-claude.out'
+    reason: >-
+      C15 reported: raw model review output recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.planning/quick/review-2760-codex.out'
+    reason: >-
+      C15 reported: raw model review output recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.planning/quick/review-2760-focused-source-update-claude.out'
+    reason: >-
+      C15 reported: raw model review output recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.planning/quick/review-2760-focused-source-update-codex.out'
+    reason: >-
+      C15 reported: raw model review output recorded verbatim. Owner decision pending (delete or move private).
+  - path: '.planning/riser-eng-job-dedup-report.txt'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'config/agents/codex/state-snapshots/history.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: 'config/agents/codex/state-snapshots/session_index.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: 'config/scheduled-tasks/schedule-tasks.yaml'
+    reason: >-
+      C15 reported: governed scheduler catalogue; it is an input of the attested cron identity inventory (#3475), so an edit, even to a comment, needs the inventory regenerated and re-attested. Owner decision pending.
+  - path: 'config/workstations/registry.yaml'
+    reason: >-
+      C15 reported: live workstation registry; its workspace-root paths and hostname aliases drive path and host resolution, and it is an input of the attested cron identity inventory (#3475). Owner or config decision pending.
+  - path: 'data/content_index.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/conference-index-batch.jsonl'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/conference-index.jsonl'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/conference-phase-a-results.jsonl'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/cross-drive-dedup-report.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/index-other-bucket-pack-manifest.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/mounted-source-registry.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/online-resource-registry.yaml'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/shards/shard-00.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/shards/shard-01.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/shards/shard-02.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/shards/shard-03.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/shards/shard-04.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/shards/shard-05.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/shards/shard-06.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/shards/shard-07.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/shards/shard-08.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/document-index/shards/shard-09.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/field-development/gom-field-development-unblock-2112.json'
+    reason: >-
+      C15 kept: public field-development corpus (BSEE, SubseaIQ, operator disclosures); owner decision 2026-08-03 exempts it from the client-name scan.
+  - path: 'data/field-development/subseaiq-scan-latest.json'
+    reason: >-
+      C15 kept: public field-development corpus (BSEE, SubseaIQ, operator disclosures); owner decision 2026-08-03 exempts it from the client-name scan.
+  - path: 'data/field-development/subseaiq-scan-latest.md'
+    reason: >-
+      C15 kept: public field-development corpus (BSEE, SubseaIQ, operator disclosures); owner decision 2026-08-03 exempts it from the client-name scan.
+  - path: 'data/inventory/excel-inventory-report.md'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/inventory/excel-inventory-summary.csv'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/inventory/excel-inventory.jsonl'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'data/inventory/excel-sheet-detail.jsonl'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'docs/CONTENT_INDEX.md'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'docs/dashboards/2026-05-09-tier1-gh-issue-kanban.html'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-1-codex.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: 'docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-2-codex.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: 'docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-3-codex.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: 'docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-4-codex.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: 'docs/plans/agent-swarm-audits/2026-05-10/logs/swarm-5-codex.jsonl'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: 'docs/reports/2026-05-06-tier1-gh-issue-kanban-data.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'docs/reports/2026-05-09-tier1-gh-issue-kanban-data.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'docs/reports/2026-05-11-tier1-kanban-board-data.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'docs/strategy/gtm/job-market-scan/cumulative-index.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/dashboard.md'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/email-templates-by-vertical.md'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/new-this-week.md'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/priority-targets.md'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-07-06.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-07-13.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-07-20.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-07-27.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-08-03.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-08-10.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-08-17.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-08-24.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-08-31.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-09-07.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-09-14.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'docs/strategy/gtm/job-market-scan/raw-results/2026-09-21.json'
+    reason: >-
+      C15 reported: scraped public job postings; company names are employers in public listings, not engagements. Owner decision pending.
+  - path: 'pylib/certifi-2026.2.25.dist-info/METADATA'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/charset_normalizer-3.4.7.dist-info/METADATA'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml-0.7.1.dist-info/METADATA'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/ElementTree.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/__init__.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/cElementTree.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/common.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/expatbuilder.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/expatreader.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/lxml.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/minidom.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/pulldom.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/sax.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/defusedxml/xmlrpc.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/idna-3.11.dist-info/METADATA'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/requests-2.33.1.dist-info/METADATA'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/requests/__version__.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/urllib3-2.6.3.dist-info/METADATA'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/urllib3/__init__.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/urllib3/util/url.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/youtube_transcript_api-1.2.4.dist-info/METADATA'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'pylib/youtube_transcript_api/test/test_proxies.py'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'reports/email/contact-dedup-report.md'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'scripts/coordination/context/daily_context_check.bat'
+    reason: >-
+      C15 reported: scheduler or baseline probe path with no behaviour-preserving placeholder. Owner or config decision pending.
+  - path: 'scripts/coordination/context/setup_scheduled_task.ps1'
+    reason: >-
+      C15 reported: scheduler or baseline probe path with no behaviour-preserving placeholder. Owner or config decision pending.
+  - path: 'scripts/curation/audit_skill_currency.py'
+    reason: >-
+      C15 reported: host-detection arm or live path that runtime host resolution depends on; removing it needs the per-box identity file (#3571) and a fallback in the script. Owner decision pending.
+  - path: 'scripts/curation/curate_session_memory.py'
+    reason: >-
+      C15 reported: host-detection arm or live path that runtime host resolution depends on; removing it needs the per-box identity file (#3571) and a fallback in the script. Owner decision pending.
+  - path: 'scripts/operations/agent-execution/collect-machine-baseline.ps1'
+    reason: >-
+      C15 reported: scheduler or baseline probe path with no behaviour-preserving placeholder. Owner or config decision pending.
+  - path: 'scripts/readiness/collect-equality.ps1'
+    reason: >-
+      C15 reported: host-detection arm or live path that runtime host resolution depends on; removing it needs the per-box identity file (#3571) and a fallback in the script. Owner decision pending.
+  - path: 'scripts/readiness/collect-equality.sh'
+    reason: >-
+      C15 reported: host-detection arm or live path that runtime host resolution depends on; removing it needs the per-box identity file (#3571) and a fallback in the script. Owner decision pending.
+  - path: 'scripts/readiness/harness-config.yaml'
+    reason: >-
+      C15 reported: live workspace-root path that path resolution depends on. Owner or config decision pending.
+  - path: 'scripts/readiness/publish-equality.sh'
+    reason: >-
+      C15 reported: host-detection arm or live path that runtime host resolution depends on; removing it needs the per-box identity file (#3571) and a fallback in the script. Owner decision pending.
+  - path: 'scripts/readiness/reconcile-ecosystem.sh'
+    reason: >-
+      C15 reported: host-detection arm or live path that runtime host resolution depends on; removing it needs the per-box identity file (#3571) and a fallback in the script. Owner decision pending.
+  - path: 'scripts/setup/fea-pkgs/ccx-extract/usr/share/doc/calculix-ccx/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/cgx-extract/usr/share/doc/calculix-cgx/README'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/cgx-extract/usr/share/doc/calculix-cgx/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/gmsh-extract/usr/share/doc/gmsh/README.Debian'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/gmsh-extract/usr/share/doc/gmsh/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/libarpack-extract/usr/share/doc/libarpack2t64/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/libevent-extract/usr/share/doc/libevent-core-2.1-7t64/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/libevent-extract/usr/share/doc/libevent-pthreads-2.1-7t64/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/libglut-extract/usr/share/doc/libglut3.12/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/libhwloc-extract/usr/share/doc/libhwloc15/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/libopenmpi-extract/usr/share/doc/libopenmpi3t64/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/libsnl-extract/usr/share/doc/libsnl0t64/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/setup/fea-pkgs/libspooles-extract/usr/share/doc/libspooles2.2t64/copyright'
+    reason: >-
+      C15 kept: vendored third-party package files; upstream author attribution, not engagement data.
+  - path: 'scripts/skills/resync-skill-links.sh'
+    reason: >-
+      C15 reported: host-detection arm or live path that runtime host resolution depends on; removing it needs the per-box identity file (#3571) and a fallback in the script. Owner decision pending.
+  - path: 'scripts/windows/equality-report.ps1'
+    reason: >-
+      C15 reported: host-detection arm or live path that runtime host resolution depends on; removing it needs the per-box identity file (#3571) and a fallback in the script. Owner decision pending.
+  - path: 'scripts/windows/setup-scheduler-tasks.ps1'
+    reason: >-
+      C15 reported: host-detection arm or live path that runtime host resolution depends on; removing it needs the per-box identity file (#3571) and a fallback in the script. Owner decision pending.
+  - path: 'state/reflect-history/2026-05-01.md'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: 'state/reflect-history/2026-05-05.md'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: 'state/reflect-history/2026-05-21.md'
+    reason: >-
+      C15 reported: agent or session log recorded verbatim. Owner decision pending (delete or move private).
+  - path: 'teams-bot-issue2/knowledge-pack-index.jsonl'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'teams-bot-issue2/knowledge-pack-manifest.json'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'teams-bot-issue2/knowledge-pack.html'
+    reason: >-
+      C15 reported: generated index or cache of the private archive drive or of issue data; regenerated by its builder, so a hand edit is overwritten. Owner decision pending (delete, move private or regenerate redacted).
+  - path: 'tests/analysis/test_claude_session_ecosystem_audit.py'
+    reason: >-
+      C15 reported: test pinned to the live workstation registry; it clears when the registry does.
+  - path: 'tests/analysis/test_provider_session_ecosystem_audit.py'
+    reason: >-
+      C15 reported: test pinned to the live workstation registry; it clears when the registry does.

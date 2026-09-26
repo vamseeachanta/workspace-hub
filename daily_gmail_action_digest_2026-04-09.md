@@ -3,7 +3,7 @@
 Priority order with explicit next actions.
 
 1. SKESTATES — HOA/account transfer for 15645 Westpark Dr
-- Action: Send follow-up to Account.Services@fscommercial.com requesting status on HOA/account transfer for 15645 Westpark Dr.
+- Action: Send follow-up to [email removed] requesting status on HOA/account transfer for 15645 Westpark Dr.
 - Reference: Ticket 5242265.
 - Next: Confirm transfer owner/account details, request ETA, and log any reply against the ticket.
 

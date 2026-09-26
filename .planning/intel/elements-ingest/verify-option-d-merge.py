@@ -30,7 +30,7 @@ BUCKETS = [
     Bucket(5, "lng-a-62092-sesa", Path("/mnt/ace/lng-a/62092_sesa"), Path("/mnt/ace/lng-a/62092_sesa/_from_elements")),
     Bucket(6, "lng-a-university", Path("/mnt/ace/lng-a/training"), Path("/mnt/ace/lng-a/training/_from_elements")),
     Bucket(7, "lng-a-codes-specs", Path("/mnt/ace/lng-a/codes"), Path("/mnt/ace/lng-a/codes/_from_elements/codes-lng-a")),
-    Bucket(8, "mkt-a-31522-woodfibre", Path("/mnt/ace/mkt-a/31522-woodfibre-lng"), Path("/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements")),
+    Bucket(8, "mkt-a-31522-lng-terminal-a", Path("/mnt/ace/mkt-a/31522-lng-terminal-a"), Path("/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements")),
 ]
 
 def iter_stage_files(stage: Path):

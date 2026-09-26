@@ -339,7 +339,7 @@ pipeline {
 
                         # Commit changes
                         git config user.name "Jenkins CI"
-                        git config user.email "jenkins@ci.local"
+                        git config user.email "jenkins@example.com"
                         git add tests/baselines/
                         git commit -m "Update baseline files from Jenkins build ${BUILD_NUMBER}"
                         git push origin main

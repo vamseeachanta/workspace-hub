@@ -22,12 +22,12 @@ def _begin(roles):
 # --- parse_crontab ---------------------------------------------------------
 
 def test_parse_zero_markers_valid():
-    text = "MAILTO=ops@x.com\n0 * * * * echo hi\n"
+    text = "MAILTO=ops@example.com\n0 * * * * echo hi\n"
     p = ct.parse_crontab(text)
     assert p["error"] is None
     assert p["managed"] == []
     assert p["after"] == []
-    assert p["before"] == ["MAILTO=ops@x.com", "0 * * * * echo hi"]
+    assert p["before"] == ["MAILTO=ops@example.com", "0 * * * * echo hi"]
     assert p["roles"] is None
 
 
@@ -77,7 +77,7 @@ def test_parse_end_before_begin_is_error():
 
 def test_parse_preserves_env_blank_comment_lines():
     text = "\n".join([
-        "MAILTO=ops@x.com",
+        "MAILTO=ops@example.com",
         "SHELL=/bin/bash",
         "PATH=/usr/bin:/bin",
         "",
@@ -87,7 +87,7 @@ def test_parse_preserves_env_blank_comment_lines():
     p = ct.parse_crontab(text)
     assert p["error"] is None
     assert p["before"] == [
-        "MAILTO=ops@x.com",
+        "MAILTO=ops@example.com",
         "SHELL=/bin/bash",
         "PATH=/usr/bin:/bin",
         "",
@@ -241,7 +241,7 @@ def test_classify_ignore_comment_blank_env():
     assert ct.classify_line("# comment", [], []) == "ignore"
     assert ct.classify_line("", [], []) == "ignore"
     assert ct.classify_line("   ", [], []) == "ignore"
-    assert ct.classify_line("MAILTO=ops@x.com", [], []) == "ignore"
+    assert ct.classify_line("MAILTO=ops@example.com", [], []) == "ignore"
     assert ct.classify_line("PATH=/usr/bin", [], []) == "ignore"
 
 
@@ -383,7 +383,7 @@ def test_plan_cutover_aborts_on_parse_error():
 
 def test_plan_cutover_idempotent():
     current = "\n".join([
-        "MAILTO=ops@x.com",
+        "MAILTO=ops@example.com",
         EXTERNAL_LINE,
     ]) + "\n"
     tasks = [
@@ -406,7 +406,7 @@ def test_plan_cutover_idempotent():
 
 def test_plan_cutover_existing_block_replaced_in_place():
     current = "\n".join([
-        "MAILTO=ops@x.com",
+        "MAILTO=ops@example.com",
         ct.marker_begin(["old"]),
         "0 9 * * * stale-run-a",
         ct.MARKER_END,
@@ -420,7 +420,7 @@ def test_plan_cutover_existing_block_replaced_in_place():
     assert plan["abort_reason"] is None
     p = ct.parse_crontab(plan["new_text"])
     assert p["managed"] == ["0 1 * * * run-a fresh"]
-    assert "MAILTO=ops@x.com" in p["before"]
+    assert "MAILTO=ops@example.com" in p["before"]
     assert EXTERNAL_LINE in p["after"]
     # Stale cataloged line is gone.
     assert "0 9 * * * stale-run-a" not in plan["new_text"]

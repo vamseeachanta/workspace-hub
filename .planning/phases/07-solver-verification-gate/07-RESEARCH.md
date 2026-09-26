@@ -172,13 +172,13 @@ except ImportError:
 **Example dispatch from dev-primary:**
 ```bash
 # One-shot solver verification from dev-primary
-ssh user@licensed-win-1 'cd D:\workspace-hub\digitalmodel && claude -p "Run the OrcFxAPI smoke test: import OrcFxAPI, load test01.owd from L00, calculate, extract one result set. Report pass/fail." --allowedTools "Bash,Read"'
+ssh user@licensed-win-1 'cd <workspace-root>\workspace-hub\digitalmodel && claude -p "Run the OrcFxAPI smoke test: import OrcFxAPI, load test01.owd from L00, calculate, extract one result set. Report pass/fail." --allowedTools "Bash,Read"'
 ```
 
 **Example structured output:**
 ```bash
 # Get structured pass/fail result
-ssh user@licensed-win-1 'cd D:\workspace-hub\digitalmodel && claude -p "Run the solver smoke test script at tests/solver/smoke_test.py and report the result" --allowedTools "Bash,Read" --output-format json' | jq -r '.result'
+ssh user@licensed-win-1 'cd <workspace-root>\workspace-hub\digitalmodel && claude -p "Run the solver smoke test script at tests/solver/smoke_test.py and report the result" --allowedTools "Bash,Read" --output-format json' | jq -r '.result'
 ```
 
 **Key flags:**
@@ -197,7 +197,7 @@ ssh user@licensed-win-1 'cd D:\workspace-hub\digitalmodel && claude -p "Run the 
 **Example flow:**
 ```bash
 # On licensed-win-1 (via remote CC or SSH):
-cd D:\workspace-hub\digitalmodel
+cd <workspace-root>\workspace-hub\digitalmodel
 git add tests/fixtures/solver/L00_test01.owr tests/fixtures/solver/L00_test01.xlsx
 git commit -m "feat(solver): add L00 smoke test reference artifacts"
 git push origin main
@@ -497,7 +497,7 @@ ssh "$REMOTE_HOST" "cd $REMOTE_REPO && claude -p \"$1\" --allowedTools \"Bash,Re
 - Direct codebase inspection: `digitalmodel/src/digitalmodel/hydrodynamics/diffraction/` -- 40+ files analyzed for OrcFxAPI import patterns
 - Direct codebase inspection: `digitalmodel/pyproject.toml` -- dependency list, pytest configuration, markers
 - `.planning/archive/modules/hardware-inventory/licensed-win-1.md` -- machine specs, pending actions, software inventory
-- `.planning/archive/modules/hardware-inventory/manifests/licensed-win-1.yml` -- workspace root D:\workspace-hub, agent CLIs, domain tools
+- `.planning/archive/modules/hardware-inventory/manifests/licensed-win-1.yml` -- workspace root <workspace-root>\workspace-hub, agent CLIs, domain tools
 
 ### Secondary (MEDIUM confidence)
 - `.planning/research/PITFALLS.md` -- Pitfall 4 (solver not verified), Pitfall 6 (cross-platform), documented WRK-031 stall history

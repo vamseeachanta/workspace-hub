@@ -73,7 +73,7 @@ For unpause (Commit 3):
 
 ## Observational drift (non-blocking)
 
-The plan v3 §Legal Authority specified that owner sign-off lines must be committed by the user's git identity `vamsee.achanta@aceengineer.com`. The shipped TOS commit (`2e3a1ffc4`) was instead authored by `Vamsee Achanta <achantav@gmail.com>` (personal Gmail). Same human, in his control, but technically a different identity. Flagging as observational; closure not blocked since the substance of owner approval is present and dated.
+The plan v3 §Legal Authority specified that owner sign-off lines must be committed by the user's git identity `owner@example.com`. The shipped TOS commit (`2e3a1ffc4`) was instead authored by `Vamsee Achanta <owner.personal@example.com>` (personal Gmail). Same human, in his control, but technically a different identity. Flagging as observational; closure not blocked since the substance of owner approval is present and dated.
 
 ## Issue closures (this session)
 
@@ -91,4 +91,4 @@ No edits to scanner / test / doc / cron files (all already complete and on `orig
 - V1 — `TOS_REVIEW.md` grammar micro-spec for robust parsing (reviewer-flagged round-3, non-blocking)
 - V2 — LinkedIn ToS-change re-validation cadence (quarterly cadence already captured in `TOS_REVIEW.md` §Review cadence)
 - V3 — U3/U5 unpause gates partially observational, could be tightened to CI checks
-- (Owner-identity-mismatch observation above) — discretionary; would re-sign with `vamsee.achanta@aceengineer.com` if owner desires authoritative trail
+- (Owner-identity-mismatch observation above) — discretionary; would re-sign with `owner@example.com` if owner desires authoritative trail

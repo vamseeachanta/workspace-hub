@@ -63,7 +63,7 @@ Work read-only against git: update local checkout, settings, and env — do NOT 
 push anything.
 
 1. LOCATE the workspace-hub repo for this OS (Linux: /mnt/local-analysis/workspace-hub
-   or ~/workspace-hub; Windows: D:\workspace-hub; macOS: search common roots). Call it
+   or ~/workspace-hub; Windows: <workspace-root>\workspace-hub; macOS: search common roots). Call it
    HUB. All later steps use HUB.
 
 2. UPDATE: git fetch origin, then get these files at the origin/main version on disk

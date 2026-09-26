@@ -2,7 +2,7 @@
 
 Date: 2026-07-14  
 Machine identity: `ace-win-1`  
-Workspace: `D:\ws\workspace-hub`
+Workspace: `<workspace-root>\workspace-hub`
 
 ## Outcome
 

@@ -19,9 +19,9 @@ Existing `gmail-archive-extract.py` routing behavior is grandfathered production
 
 #2026 separates read/assist scope from cleanup scope. Read/assist scope includes:
 
-- `ace` (`vamsee.achanta@aceengineer.com`)
-- `personal` (`achantav@gmail.com`)
-- `skestates` (`skestatesinc@gmail.com`)
+- `ace` (`owner@example.com`)
+- `personal` (`owner.personal@example.com`)
+- `skestates` (`owner.realestate@example.com`)
 - any other configured alias, unless explicitly disabled
 
 Cleanup scope is narrower: only `ace` and `personal` are eligible for local completed-to-`purged` transitions. `skestates` and other assist-only aliases are read and assisted, but their email is kept forever. Important `skestates` attention is surfaced through the starred method and Telegram `Family - Finance` channel.

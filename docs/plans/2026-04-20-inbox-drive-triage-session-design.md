@@ -9,7 +9,7 @@
 
 The user's request — "create/review existing gh features... review emails via claude-in-chrome... transfer docs to /mnt/ace/<repo>/... clean up mailboxes... identify unsubscribes" — maps almost 1:1 onto an existing backlog of ~15 open email/drive issues (listed above). This session does **not** create new features for work already scoped; it executes a slice of that backlog and proposes consolidation.
 
-Three Gmail accounts in scope: `vamsee.achanta@aceengineer.com`, `achantav@gmail.com`, `skestatesinc@gmail.com`.
+Three Gmail accounts in scope: `owner@example.com`, `owner.personal@example.com`, `owner.realestate@example.com`.
 
 Prior triage artifacts (`ace_gmail_triage_2026-04-09.txt`, `daily_gmail_action_digest_2026-04-09.md`, `skestates_gmail_triage_2026-04-09.md` etc.) establish the ACE/personal/skestates pattern. This session produces comparable artifacts as issue comments, not new repo-root files.
 

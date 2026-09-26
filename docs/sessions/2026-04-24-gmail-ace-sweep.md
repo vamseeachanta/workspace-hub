@@ -2,7 +2,7 @@
 
 **Date:** 2026-04-24
 **Operator:** Claude Code via claude-in-chrome extension
-**Account:** vamsee.achanta@aceengineer.com
+**Account:** owner@example.com
 **Issue:** #2423 (Gmail-side mutation, Option B chosen)
 **Outcome:** SUCCESS — Inbox 121 → 17 unread (87% reduction)
 
@@ -56,7 +56,7 @@ from:(substack.com OR info.marineinsight.com OR rigzonemail.com OR news.ogj.com)
 ### Filter D — VIP (clients + colleagues)
 
 ```
-from:(@mcdermott.com OR @shell.com OR @bp.com OR @ril.com OR @kbr.com OR @technipfmc.com OR @technip.com OR @subsea7.com OR @nov.com OR @aker.com OR @vulcanoffshore.com OR @lng-agroup.com OR @client-a.com OR @2hoffshore.com OR @2hoffshoreinc.com OR @eagle.org OR @engineeredcustomsolutions.com OR @km.kongsberg.com OR @boptechnologies.com OR @awilcodrilling.com OR @aceengineer.com)
+from:(@installation-contractor.com OR @shell.com OR @bp.com OR @ril.com OR @kbr.com OR @technipfmc.com OR @technip.com OR @subsea7.com OR @nov.com OR @aker.com OR @vulcanoffshore.com OR @lng-agroup.com OR @client-a.com OR @2hoffshore.com OR @2hoffshoreinc.com OR @eagle.org OR @engineeredcustomsolutions.com OR @km.kongsberg.com OR @boptechnologies.com OR @awilcodrilling.com OR @aceengineer.com)
 ```
 
 **Action:** Star + Mark as important + Never to Spam + Apply to existing.
@@ -97,8 +97,8 @@ from:(@mcdermott.com OR @shell.com OR @bp.com OR @ril.com OR @kbr.com OR @techni
 
 ## Followups
 
-- [ ] Replay the same sweep on `achantav@gmail.com` (different noise pattern).
-- [ ] Replay on `skestatesinc@gmail.com` (low volume, may be lighter-touch).
+- [ ] Replay the same sweep on `owner.personal@example.com` (different noise pattern).
+- [ ] Replay on `owner.realestate@example.com` (low volume, may be lighter-touch).
 - [ ] Delete the misconfigured `from:(collide.io) → label O&G Industry` filter.
 - [ ] Add `Seth Equities`, `SPARK Newsletter`, `Indian Eagle`, `dependabot[bot]` to appropriate filters.
 - [ ] Schedule weekly archive sweep via `/schedule` once #2423 acceptance criteria are ratified.

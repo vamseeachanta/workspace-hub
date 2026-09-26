@@ -17,12 +17,12 @@ from collections import Counter
 # CONFIG
 # ============================================================
 ACE_CLIENT_DOMAINS = {
-    "ril.com", "lng-agroup.com", "mcdermott.com", "shell.com",
+    "ril.com", "lng-agroup.com", "shell.com",
     "kbr.com", "technip.com", "technipfmc.com", "subsea7.com",
     "nov.com", "aker.com", "bp.com", "awilcodrilling.com",
     "eagle.org", "vulcanoffshore.com", "boptechnologies.com",
     "risersinc.com", "sandsig.com", "engineeredcustomsolutions.com",
-    "mecorparada.com.ve", "applied.com",
+    "applied.com",
 }
 ACE_COLLEAGUE_DOMAINS = {
     "trendsetterengineering.com", "spire-engineers.com",
@@ -58,7 +58,7 @@ SPAM_NAME_PARTS = [
 
 DOMAIN_COMPANY = {
     "ril.com": "Reliance Industries", "lng-agroup.com": "lng-a",
-    "mcdermott.com": "McDermott", "shell.com": "Shell",
+    "shell.com": "Shell",
     "kbr.com": "KBR", "bp.com": "BP",
     "technip.com": "TechnipFMC", "technipfmc.com": "TechnipFMC",
     "subsea7.com": "Subsea7", "nov.com": "NOV",
@@ -88,7 +88,6 @@ DOMAIN_COMPANY = {
     "acematrix.com": "AceMatrix", "aaa-texas.com": "AAA Texas",
     "colehealth.com": "Cole Health", "harkandgroup.com": "Harkand Group",
     "flooranddecor.com": "Floor & Decor",
-    "mecorparada.com.ve": "MECOR Parada C.A.",
     "indianeagle.com": "Indian Eagle",
 }
 

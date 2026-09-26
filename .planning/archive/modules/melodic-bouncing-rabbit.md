@@ -93,9 +93,9 @@ Destination: `/mnt/ace/digitalmodel/docs/domain/subsea-risers/`
 
 | Source | Size | Destination subdir |
 |--------|------|--------------------|
-| `2HDD 2100 BLK31 SLOR Design` | 53G | `2h-projects/2100-blk31-slor/` |
-| `2HDD 3824 - BP Macondo Containment Riser Analysis` | 30G | `2h-projects/3824-macondo-containment/` |
-| `2HDD 3836 - BP Macondo - HP1 Riser Systems Engineering` | 7.4G | `2h-projects/3836-macondo-hp1/` |
+| `2HDD 2100 West Africa block A SLOR Design` | 53G | `2h-projects/2100-wa-block-a-slor/` |
+| `2HDD 3824 - BP GoM well A Containment Riser Analysis` | 30G | `2h-projects/3824-gom-well-a-containment/` |
+| `2HDD 3836 - BP GoM well A - HP1 Riser Systems Engineering` | 7.4G | `2h-projects/3836-gom-well-a-hp1/` |
 | `2HDD 3837 - BP CDP 2 FSR  Engineering` | 3.7G | `2h-projects/3837-bp-cdp2-fsr/` |
 
 #### 2b. LLM-assisted extraction & classification
@@ -194,7 +194,7 @@ Per ORGANIZATION_PLAN.md, create a machine-readable manifest of all content.
       "type": "engineering_archive",
       "source": "va-hdd-2 (WRK-1355 relocation)",
       "domains": ["subsea-risers"],
-      "tags": ["2H-offshore", "riser-analysis", "macondo"]
+      "tags": ["2H-offshore", "riser-analysis", "GoM well A"]
     },
     ...
   ]

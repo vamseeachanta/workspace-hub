@@ -97,20 +97,20 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **outreach_priority.** **High**.
 - **private_route.** omitted-public-artifact.
 
-### Target 4 — McDermott International
+### Target 4 — an installation contractor International
 
-- **company.** McDermott International (Houston)
+- **company.** an installation contractor International (Houston)
 - **tier_seed.** T1
 - **tier_revised.** T1
 - **segment.** Subsea EPIC, lay barge, GoM deepwater
 - **relevant_fleet.** DB101 (lay barge — [#1799](https://github.com/vamseeachanta/workspace-hub/issues/1799) seed), Amazon (HLV), Lay Vessel 108
 - **demo_anchor.** Demo 4 (S-lay shallow + transitional), Demo 5 (rigid jumper), Demo 1 (freespan/VIV)
 - **pain_point_hypothesis.** GoM project economics + post-restructuring schedule pressure → screening artifacts that compress weeks of OrcaFlex pre-checks into hours align with internal cost discipline.
-- **corporate_root_evidence.** https://www.mcdermott.com/ (corporate root)
-- **deep_link_evidence.** https://www.mcdermott.com/mcdermott-difference/vessels — official marine-vessels page; https://www.mcdermott.com/solutions/subsea-floating-facilities — official subsea/floating facilities solution page; https://www.mcdermott.com/projects/campbell-platform-removal-decommissioning — official decommissioning project page.
-- **pain_point_evidence.** McDermott official vessels page says its fleet supports some of the world’s most complex offshore projects; solution pages cite full lifecycle/decommissioning and global reach, supporting offshore execution, vessel-utilization, and decommissioning/subsea delivery-complexity hooks.
+- **corporate_root_evidence.** https://www.installation-contractor.com/ (corporate root)
+- **deep_link_evidence.** https://www.installation-contractor.com/installation-contractor-difference/vessels — official marine-vessels page; https://www.installation-contractor.com/solutions/subsea-floating-facilities — official subsea/floating facilities solution page; https://www.installation-contractor.com/projects/campbell-platform-removal-decommissioning — official decommissioning project page.
+- **pain_point_evidence.** an installation contractor official vessels page says its fleet supports some of the world’s most complex offshore projects; solution pages cite full lifecycle/decommissioning and global reach, supporting offshore execution, vessel-utilization, and decommissioning/subsea delivery-complexity hooks.
 - **can_say_now.** "60-case S-lay screening, including 8″–24″ pipe range, in self-contained HTML — no proprietary toolchain to install for inspection."
-- **cannot_claim_yet.** Vessel-specific dynamics under DB101 RAOs; named-McDermott project work.
+- **cannot_claim_yet.** Vessel-specific dynamics under DB101 RAOs; named-installation-contractor project work.
 - **outreach_priority.** **High** — GoM proximity, named-vessel anchor in [#1799](https://github.com/vamseeachanta/workspace-hub/issues/1799).
 - **private_route.** omitted-public-artifact.
 
@@ -450,7 +450,7 @@ Each target carries the eight-field contract used by `docs/gtm/outreach-candidat
 - **Live countable vessel/operator targets:** 20. This excludes Acteon (partner-shape / non-counted service firm) and excludes deferred/deprecated rows. Owner approved the default to add fully populated GoM vessel/operator targets rather than accepting 19+3 as sufficient.
 - **Live rows (priority High / Medium / Low plus non-counted partner-shape):** 22. Countable vessel/operator targets: 20. Deprecated/deferred: 3 (Solstad, EMAS, Cadeler-deferred).
 - **Countable targets with at least one shipped-demo anchor:** 19 of 20 live countable vessel/operator targets (Demo 3 / 4 / 5 mapping).
-- **Targets in `outreach_priority: High`:** 12 (Subsea7, TechnipFMC, client-d, McDermott, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix, Hornbeck Offshore Services, Edison Chouest Offshore). Each carries a named-vessel/fleet anchor and a demo-mapping.
+- **Targets in `outreach_priority: High`:** 12 (Subsea7, TechnipFMC, client-d, an installation contractor, Allseas, Heerema, Boskalis, DOF Group, Sapura Energy, Helix, Hornbeck Offshore Services, Edison Chouest Offshore). Each carries a named-vessel/fleet anchor and a demo-mapping.
 - **High-priority evidence state:** 12 of 12 now have `corporate_root_evidence`, `deep_link_evidence`, and `pain_point_evidence` populated with official-domain deep links or explicit `no-public-proof-found` boundaries from [#2560](https://github.com/vamseeachanta/workspace-hub/issues/2560). Remaining blocker for #2554 promotion is live re-review / owner approval; #2556 remains blocked until #2554 clears or the owner explicitly waives the dependency and approves send.
 - **Targets in `outreach_priority: Medium`:** 7 (Van Oord, DEME, Bourbon, Seaway7, DeepOcean, Jan De Nul, Acteon). Acteon is explicitly partner-shape / non-counted for the vessel-contractor minimum unless owner later approves it as countable.
 - **Targets in `outreach_priority: Low`:** 2 (Eidesvik, Otto Candies). Otto Candies remains low until GoM-niche expansion evidence is refreshed under [#2562](https://github.com/vamseeachanta/workspace-hub/issues/2562).

@@ -32,7 +32,7 @@ Cross-review (T1, Codex adversarial): **MINOR**, 2 findings, both fixed in `c35f
 | ace-linux-1 | **LIVE** — main at origin (incl. #3021); renders `C:63%·2.9d\|O:61%·1.5d\|G:100%` from non-git cwd, exit 0 | smoke run 2026-06-09 |
 | ace-linux-2 | **LIVE** — ff'd to `7a0ae8142` (contains #3021); renders `C:63%·2.6d\|O:60%·1.2d` from `/tmp`, exit 0; jq+python3 present | ssh run 2026-06-09 |
 | ace-linux-2 gap | `WORKSPACE_HUB` unset — `.bashrc` lacks the a1 hookup (`source HUB/config/shell/bashrc-snippets.sh`, a1 `.bashrc:138`). Sessions launched OUTSIDE any git repo can't resolve the statusline script. Agent-append to remote `~/.bashrc` is classifier-blocked (persistence) — **user action** | denial 2026-06-09 |
-| Windows (D:\workspace-hub) | **PENDING** — run the prompt below | — |
+| Windows (<workspace-root>\workspace-hub) | **PENDING** — run the prompt below | — |
 
 ## Verification invariants (unchanged from #2957, plus one)
 
@@ -55,7 +55,7 @@ Handoff doc: docs/session-handoffs/2026-06-09-statusline-weekly-reset-rollout.md
 Work read-only against git: update the local checkout, settings, and env —
 do NOT commit or push anything.
 
-1. LOCATE the workspace-hub repo (expected D:\workspace-hub). Call it HUB.
+1. LOCATE the workspace-hub repo (expected <workspace-root>\workspace-hub). Call it HUB.
 
 2. UPDATE: cd HUB, git fetch origin, then report behind/ahead vs origin/main
    (git rev-list --count --left-right origin/main...HEAD). If clean and 0 ahead,

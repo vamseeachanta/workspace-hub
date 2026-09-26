@@ -82,7 +82,7 @@ From `ls -lt logs/night-runs/ | head -25`:
 | #2541 | OPEN | `status:plan-approved` (14:31Z) | `docs/plans/2026-04-28-issue-2541-elements-sesa-curated-extraction-plan.md` | Promoted with bounded SESA wording |
 | #2542 | CLOSED | `status:done` | (already executed `b0dac4608`) | DONE |
 | #2543 | CLOSED | `status:done` | (already executed `b0dac4608`) | DONE |
-| #2544 | OPEN | `status:plan-approved` (14:30Z) | `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md` | Promoted with pointer/scout-only wording |
+| #2544 | OPEN | `status:plan-approved` (14:30Z) | `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md` | Promoted with pointer/scout-only wording |
 | #2490 | OPEN | `status:plan-approved` | `docs/plans/2026-04-27-issue-2490-coverage-gate-fix.md` | T1 deferred-review path approved |
 | #2510 | OPEN | `status:plan-approved` | `docs/plans/2026-04-26-issue-2510-python-layout-cad-automation-demo.md` | Approved despite sustained-MAJOR loop |
 | #2538 | OPEN | priority:medium, no `status:plan-review` | (none) | NEEDS_PLAN |

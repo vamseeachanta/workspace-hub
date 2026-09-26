@@ -62,7 +62,7 @@ The handoff gives a bounded worker prompt for filling official-domain deep-link 
 1. Subsea7
 2. TechnipFMC
 3. client-d
-4. McDermott
+4. an installation contractor
 5. Allseas
 6. Heerema
 7. Boskalis

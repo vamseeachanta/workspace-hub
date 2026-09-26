@@ -208,7 +208,7 @@ Machine portability:
 | ace-linux (primary) | `WED_DATA_ROOT=/mnt/ace/worldenergydata/data` in `.env` or shell profile |
 | CI/GitHub Actions | Small test fixtures in `tests/fixtures/` — no bulk data needed |
 | Fresh clone | Run `scripts/setup-data-link.sh /path/to/data` |
-| Windows | `set WED_DATA_ROOT=D:\worldenergydata\data` |
+| Windows | `set WED_DATA_ROOT=<workspace-root>\worldenergydata\data` |
 
 Migration: Replace all 48+ hardcoded `Path("data/...")` references with `data_resolver.get_module_data()` calls.
 

@@ -47,7 +47,7 @@ The lng-a codes drop is dominated by licensed publisher families: API (2.5 GB), 
 - Any standard file content read (PDF page extraction, OCR, grep into PDF text)
 - Any wiki write under `knowledge/wikis/**/raw/`
 - Any vendor-derivative content under `knowledge/wikis/**/sources/` per [#2482](https://github.com/vamseeachanta/workspace-hub/issues/2482)
-- Cross-stream artifact paths (SESA, lng-a University, Woodfibre)
+- Cross-stream artifact paths (SESA, lng-a University, LNG terminal A)
 
 ## Deliverable
 

@@ -88,7 +88,7 @@ PROMPT END =================================================
 
    Claude Code, convert this workbook to Python:
    
-   Workbook: engineering_workbooks/ballymore/jumper_manifold_to_plet/Jumper_Input_Ballymore_Manifold-PLET V2.xlsx
+   Workbook: engineering_workbooks/gom-tieback-a/jumper_manifold_to_plet/Jumper_Input_gom_tieback_a_Manifold-PLET V2.xlsx
    Module name: jumper_lift
    
    {Paste the analysis + code rules from above}
@@ -101,7 +101,7 @@ If you want to convert ALL workbooks in a folder at once:
 
    Claude Code, convert ALL Excel workbooks in this folder to Python:
    
-   Directory: engineering_workbooks/ballymore/
+   Directory: engineering_workbooks/gom-tieback-a/
    
    For EACH .xlsx/.xls/.xlsm file:
    - Create a Python module extracting all calculation logic

@@ -46,7 +46,7 @@ def _registry(tmp_path: Path) -> Path:
                 "hostname": "ace-win-1",
                 "os": "windows",
                 "role": "simulation-license-host",
-                "workspace_root": "D:\\workspace-hub",
+                "workspace_root": "C:\\workspace-hub",
                 "capabilities": {"tools": ["git", "orcaflex"], "agent_clis": ["claude"], "gpu": False},
                 "storage": {"local": "D:\\", "knowledge": None, "remote_mounts": []},
                 "repos": ["OGManufacturing"],
@@ -161,7 +161,7 @@ def test_cross_os_and_not_onboarded_host_readiness(tmp_path: Path, monkeypatch) 
 
     assert report["hosts"]["dev-primary"]["status"] == "pass"
     assert report["hosts"]["ace-win-1"]["status"] == "status-only"
-    assert report["hosts"]["ace-win-1"]["workspace_root"] == "D:\\workspace-hub"
+    assert report["hosts"]["ace-win-1"]["workspace_root"] == "C:\\workspace-hub"
     assert report["hosts"]["macbook-portable"]["dispatchable"] is False
     assert report["hosts"]["gali-linux-compute-1"]["status"] == "not-onboarded"
     assert report["hosts"]["gali-linux-compute-1"]["dispatchable"] is False

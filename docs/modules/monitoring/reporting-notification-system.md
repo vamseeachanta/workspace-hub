@@ -1083,7 +1083,7 @@ class ReportGenerator {
         name: 'Daily Test Summary',
         schedule: '0 9 * * *', // 9 AM daily
         template: 'daily-summary.hbs',
-        recipients: ['team-leads@company.com'],
+        recipients: ['team-leads@example.com'],
         format: 'html'
       },
       {
@@ -1091,7 +1091,7 @@ class ReportGenerator {
         name: 'Weekly Trends Report',
         schedule: '0 9 * * 1', // Monday 9 AM
         template: 'weekly-trends.hbs',
-        recipients: ['management@company.com'],
+        recipients: ['management@example.com'],
         format: 'pdf'
       },
       {
@@ -1099,7 +1099,7 @@ class ReportGenerator {
         name: 'Monthly Quality Report',
         schedule: '0 9 1 * *', // First day of month 9 AM
         template: 'monthly-quality.hbs',
-        recipients: ['executives@company.com'],
+        recipients: ['executives@example.com'],
         format: 'pdf'
       }
     ];
