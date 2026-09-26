@@ -28,7 +28,6 @@ DIRECT = {
     "scripts/coordination/context/setup_scheduled_task.ps1",
     "scripts/solver/setup-scheduler.ps1",
     "scripts/install/setup-tmux-autosave-timer.sh",
-    "scripts/fleet/install-fleet-collector-cron.sh",
 }
 TRANSITIVE = {
     "scripts/cron/setup-cron.sh",
