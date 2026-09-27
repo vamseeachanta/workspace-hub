@@ -1,6 +1,6 @@
 # AI account usage (fleet)
 
-Generated 2026-09-27T18:13:42+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-09-27T19:13:37+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
@@ -11,8 +11,8 @@ Generated 2026-09-27T18:13:42+00:00 by fleet-collector collect_account_usage_fle
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 3% | 6% | 94% | 2026-10-03T14:00:00.312149+00:00 | gpu-claw | oauth-api |
-| claude-professional | claude | colleague | 13% | 62% | 38% | 2026-10-03T07:59:59.530030+00:00 | ace-win-1 | oauth-api |
+| claude-owner | claude | owner | 4% | 6% | 94% | 2026-10-03T13:59:59.673269+00:00 | ace-linux-1 | oauth-api |
+| claude-professional | claude | colleague | 20% | 63% | 37% | 2026-10-03T07:59:59.697077+00:00 | ace-win-1 | oauth-api |
 | codex-owner | codex | owner |  | 2% | 98% | 2026-10-03T17:19:42+00:00 | fleet-collector | app-server-live |
 | codex-professional | codex | colleague |  | 6% | 94% | 2026-10-03T17:17:20+00:00 | ace-win-1 | app-server-live |
 
@@ -22,7 +22,7 @@ Generated 2026-09-27T18:13:42+00:00 by fleet-collector collect_account_usage_fle
 |---|---|---|---|---|
 | ace-linux-1 | yes | claude-owner | codex-owner |  |
 | ace-linux-2 | yes | claude-owner | codex-owner | claude: credentials file has no accessToken |
-| gpu-claw | yes | claude-owner | codex-owner |  |
+| gpu-claw | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | ace-win-2 | yes | claude-professional | codex-professional |  |
 | ace-win-1 | yes | claude-professional | codex-professional |  |
 | fleet-collector | yes |  | codex-owner | claude: credentials file has no accessToken |
