@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-27T09:22:53.336760Z",
+  "generated_at": "2026-09-27T13:23:03.754698Z",
   "current_week": "2026-W39",
-  "scorecard_generated_at": "2026-09-27T09:22:49.948925Z",
+  "scorecard_generated_at": "2026-09-27T13:23:00.741460Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 9,
-      "total_candidates": 177,
+      "total_candidates": 178,
       "top_issues": [
         {
           "number": 3816,
@@ -661,7 +661,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-09-26T11:45:07Z",
+          "updatedAt": "2026-09-27T11:45:08Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -4190,6 +4190,25 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3920,
+          "title": "Ecosystem-wide interactive HTML review: select-to-comment layer for reports and decision boards (Save JSON \u2192 agent pickup)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3920",
+          "labels": [
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-09-27T11:49:45Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4197,7 +4216,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 21,
+      "total_candidates": 20,
       "top_issues": [
         {
           "number": 3740,
@@ -4637,28 +4656,6 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3562,
-          "title": "Audit MSYS conversion of slash-prefixed native-command tokens",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3562",
-          "labels": [
-            "cat:tooling",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-07-31T08:33:27Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation"
           ]
         },
