@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # install-fleet-collector-cron.sh — preflight for the hourly AI account usage
 # job on the fleet collector VM (the host that already publishes
-# docs/reports/fleet-snapshots/). Idempotent and NON-MUTATING: it verifies the
+# docs/reports/fleet-snapshots/latest.json). Idempotent and NON-MUTATING: it verifies the
 # prerequisites, prints the scheduler entry to register, and can run the job
 # once by hand. It never writes a scheduler itself.
 #

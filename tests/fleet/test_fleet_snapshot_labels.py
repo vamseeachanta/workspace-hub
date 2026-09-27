@@ -1,6 +1,6 @@
 """Tests for scripts/fleet/fleet_snapshot_labels.py (owner decision C18).
 
-The fleet-daily-collector publishes docs/reports/fleet-snapshots/<date>.json to
+The fleet-daily-collector publishes docs/reports/fleet-snapshots/latest.json to
 this PUBLIC repository. The labeller rewrites every machine name to its logical
 fleet label from a private map read at run time, and fails closed: a missing or
 malformed map, or a name the map does not know, leaves the file untouched and
@@ -295,11 +295,17 @@ def test_unmapped_host_value_left_after_labelling_fails_closed(env):
     assert snap.read_bytes() == before
 
 
-@pytest.mark.parametrize("name", ["2026-09-24.json", "2026-09-25.json"])
-def test_committed_snapshots_carry_only_public_labels(name):
-    """Codex r1: the committed public snapshots name hosts by label only."""
-    path = ROOT / "docs" / "reports" / "fleet-snapshots" / name
-    data = json.loads(path.read_text(encoding="utf-8"))
+SNAPSHOT_DIR = ROOT / "docs" / "reports" / "fleet-snapshots"
+
+
+def test_only_the_latest_snapshot_is_kept():
+    """Owner decision S01: one file, overwritten daily; git history holds the rest."""
+    assert sorted(p.name for p in SNAPSHOT_DIR.iterdir()) == ["latest.json"]
+
+
+def test_committed_snapshot_carries_only_public_labels():
+    """Codex r1: the committed public snapshot names hosts by label only."""
+    data = json.loads((SNAPSHOT_DIR / "latest.json").read_text(encoding="utf-8"))
     assert fsl.is_public_label(data["generated_by"].split()[0])
     for m in data["machines"]:
         assert fsl.is_public_label(m["name"])
