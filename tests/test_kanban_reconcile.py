@@ -692,6 +692,51 @@ def test_reconcile_builds_a_missing_board_from_its_manifest_entry(tmp_path: Path
     assert [c["title"] for c in ops_board["cards"]] == ["Ops card"]
 
 
+def test_reconcile_writes_a_missing_board_that_gets_no_cards(tmp_path: Path):
+    """A manifest board with no live cards is still created, so the loader sees it."""
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    for board in (kanban / "boards").glob("*.yaml"):
+        board.unlink()
+
+    result = reconcile.reconcile_kanban(
+        kanban, issue_fetcher=lambda repo: [issue(1, "Repo-level card")], dry_run=False)
+
+    ops_path = kanban / "boards/repo-workspace-hub-ops.yaml"
+    assert ops_path.exists()
+    assert ops_path in result.changed_files
+    ops_board = read_yaml(ops_path)
+    assert ops_board["board"]["slug"] == "repo-workspace-hub-ops"
+    assert ops_board["cards"] == []
+
+
+def test_a_missing_board_keeps_the_manifest_metadata(tmp_path: Path):
+    """workspace_path, parent_slug and a display name survive a rebuild from the
+    manifest: the loader uses them for the board workdir and each card's workspace."""
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    manifest = read_yaml(kanban / "manifest.yaml")
+    for entry in manifest["manifest"]["boards"]:
+        entry["workspace_path"] = "/srv/example/workspace-hub"
+    write_yaml(kanban / "manifest.yaml", manifest)
+    for board in (kanban / "boards").glob("*.yaml"):
+        board.unlink()
+
+    reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(2, "Ops card", labels=["domain:ops"])],
+        dry_run=False,
+    )
+
+    repo_board = read_yaml(kanban / "boards/repo-workspace-hub.yaml")["board"]
+    ops_board = read_yaml(kanban / "boards/repo-workspace-hub-ops.yaml")["board"]
+    assert repo_board["workspace_path"] == "/srv/example/workspace-hub"
+    assert ops_board["workspace_path"] == "/srv/example/workspace-hub"
+    assert ops_board["parent_slug"] == "repo-workspace-hub"
+    assert repo_board["display_name"] == "workspace-hub"
+    assert ops_board["display_name"] == "workspace-hub · ops"
+
+
 # --- #3380: an unresolvable repo (renamed/removed) must be skipped, not crash ---
 
 UNRESOLVABLE_MSG = (

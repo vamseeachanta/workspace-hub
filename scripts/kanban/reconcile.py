@@ -64,6 +64,9 @@ class BoardEntry:
     domain: str | None
     file: Path
     card_count: int = 0
+    parent_slug: str | None = None
+    workspace_path: str | None = None
+    display_name: str | None = None
 
 
 def repo_root() -> Path:
@@ -227,6 +230,9 @@ def load_manifest_entries(kanban_root: Path) -> list[BoardEntry]:
                 domain=raw.get("domain"),
                 file=kanban_root / file_name,
                 card_count=_coerce_int(raw.get("card_count")),
+                parent_slug=raw.get("parent_slug"),
+                workspace_path=raw.get("workspace_path"),
+                display_name=raw.get("display_name"),
             )
         )
     return entries
@@ -238,8 +244,23 @@ def active_repos(entries: list[BoardEntry]) -> list[str]:
 
 
 def new_board(entry: BoardEntry) -> dict:
-    """An empty board for a manifest entry whose file does not exist yet."""
-    board = {"slug": entry.slug, "tier": entry.tier, "repo": entry.repo, "domain": entry.domain}
+    """An empty board for a manifest entry whose file does not exist yet. It keeps
+    the manifest metadata the loader uses: workspace_path sets the Hermes board
+    workdir and each card's --workspace; parent_slug links a domain board up."""
+    display_name = entry.display_name
+    if not display_name and entry.repo:
+        display_name = entry.repo.split("/")[-1]
+        if entry.tier == "domain" and entry.domain:
+            display_name = f"{display_name} · {entry.domain}"
+    board = {
+        "slug": entry.slug,
+        "display_name": display_name,
+        "tier": entry.tier,
+        "repo": entry.repo,
+        "domain": entry.domain,
+        "parent_slug": entry.parent_slug,
+        "workspace_path": entry.workspace_path,
+    }
     return {"board": {k: v for k, v in board.items() if v}, "cards": []}
 
 
@@ -584,7 +605,10 @@ def reconcile_kanban(
     rebuilt = rebuild_boards(board_data, files, active_for_rebuild, live)
     after = {}
     for path in files:
-        after[path] = before[path] if rebuilt[path] == board_data[path] else dump_yaml(rebuilt[path])
+        # A board missing on this machine is always written, even with no cards,
+        # so the loader (which reads boards/*.yaml) sees it.
+        unchanged = path.exists() and rebuilt[path] == board_data[path]
+        after[path] = before[path] if unchanged else dump_yaml(rebuilt[path])
     changed_files = [path for path in files if before[path] != after[path]]
     write = write_files and not dry_run
     if write:

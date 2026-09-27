@@ -176,6 +176,8 @@ log="$(INSTALLER="$INSTALLER" SHA_STATE="$SHA_STATE" bash <<TESTEOF 2>&1
             *) return 0 ;;
         esac
     }
+    run_reconcile() { echo "FAKE run_reconcile"; return 0; }
+    boards_fingerprint() { echo "FP"; }
     run_loader() { echo "FAKE run_loader"; return 0; }
     run_periodic_job
 TESTEOF
@@ -183,7 +185,8 @@ TESTEOF
 rm -f "$SHA_STATE"
 _assert_contains "job_runs_loader_when_changed" "FAKE run_loader" "$log"
 
-#   6b: YAML unchanged (pre==post SHA) -> loader does NOT run
+#   6b: YAML unchanged (pre==post SHA) and the local reconcile changes nothing
+#       -> the reconcile runs, the loader does NOT
 log="$(INSTALLER="$INSTALLER" bash <<TESTEOF 2>&1
     set -u
     export KANBAN_TIMER_LIB=1
@@ -195,11 +198,57 @@ log="$(INSTALLER="$INSTALLER" bash <<TESTEOF 2>&1
             *) return 0 ;;
         esac
     }
+    run_reconcile() { echo "FAKE run_reconcile"; return 0; }
+    boards_fingerprint() { echo "FP"; }
     run_loader() { echo "FAKE run_loader"; return 0; }
     run_periodic_job
 TESTEOF
 )"
+_assert_contains "job_runs_local_reconcile_each_cycle" "FAKE run_reconcile" "$log"
 _assert_not_contains "job_skips_loader_when_unchanged" "FAKE run_loader" "$log"
+
+#   6c: S01 — the boards are local, untracked files. HEAD unchanged, but the local
+#       reconcile rewrites a board -> the loader runs.
+FP_STATE="$(mktemp)"; echo "FP_BEFORE" > "$FP_STATE"
+log="$(INSTALLER="$INSTALLER" FP_STATE="$FP_STATE" bash <<TESTEOF 2>&1
+    set -u
+    export KANBAN_TIMER_LIB=1
+    source "$INSTALLER"
+    run_git() {
+        case "\$*" in
+            *"rev-parse HEAD"*) echo "SAME_SHA" ;;
+            *) return 0 ;;
+        esac
+    }
+    run_reconcile() { echo "FP_AFTER" > "\$FP_STATE"; return 0; }
+    boards_fingerprint() { cat "\$FP_STATE"; }
+    run_loader() { echo "FAKE run_loader"; return 0; }
+    run_periodic_job
+TESTEOF
+)"
+rm -f "$FP_STATE"
+_assert_contains "job_runs_loader_after_local_reconcile_change" "FAKE run_loader" "$log"
+
+#   6d: the local reconcile fails -> the cycle reports failure; no loader run
+out="$(INSTALLER="$INSTALLER" bash <<TESTEOF 2>&1
+    set -u
+    export KANBAN_TIMER_LIB=1
+    source "$INSTALLER"
+    run_git() {
+        case "\$*" in
+            *"rev-parse HEAD"*) echo "SAME_SHA" ;;
+            *) return 0 ;;
+        esac
+    }
+    run_reconcile() { return 5; }
+    boards_fingerprint() { echo "FP"; }
+    run_loader() { echo "FAKE run_loader"; return 0; }
+    run_periodic_job
+    echo "JOB_EXIT=\$?"
+TESTEOF
+)"
+_assert_contains "job_reconcile_failure_propagates" "JOB_EXIT=5" "$out"
+_assert_not_contains "job_reconcile_failure_skips_loader" "FAKE run_loader" "$out"
 
 # --- Test 7: failure propagation — loader nonzero -> job reports failure ----
 SHA_STATE2="$(mktemp)"; echo "PRE_SHA" > "$SHA_STATE2"
@@ -215,6 +264,8 @@ out="$(INSTALLER="$INSTALLER" SHA_STATE="$SHA_STATE2" bash <<TESTEOF 2>&1
             *) return 0 ;;
         esac
     }
+    run_reconcile() { return 0; }
+    boards_fingerprint() { echo "FP"; }
     run_loader() { echo "loader exploded" >&2; return 7; }
     run_periodic_job
     echo "JOB_EXIT=\$?"
