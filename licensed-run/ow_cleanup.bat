@@ -5,7 +5,6 @@ REM discard) the README edits so you can review them; leaves the stash intact;
 REM host-local-ignores heavy licensed outputs via .git/info/exclude (never commits
 REM the tracked .gitignore). Re-verifies both input hashes. Logs to runtime\.
 setlocal
-if not defined LICENSED_RUN_SCOPE_REPO (echo ERROR: LICENSED_RUN_SCOPE_REPO is not set - see licensed-run\README.md & exit /b 2)
 set "SCOPE_REPO=%LICENSED_RUN_SCOPE_REPO%"
 set "EXCL=%SCOPE_REPO%\.git\info\exclude"
 set "OUT=C:\ws\workspace-hub\licensed-run\runtime\ow_cleanup.log"

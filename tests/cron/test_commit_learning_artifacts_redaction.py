@@ -105,7 +105,18 @@ def test_run_redacts_host_copies_and_skips_name_bearing_files(tmp_path):
 
 
 @pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
-def test_run_fails_closed_without_the_redactor(tmp_path):
+def test_run_proceeds_on_a_host_without_the_private_list(tmp_path):
+    """Owner decision S01: missing private config does not stop the job; the
+    snapshot is written through the redactor's public rules."""
+    repo, env = _setup(tmp_path, None)
+    r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh", "--dry-run"],
+                       cwd=repo, env=env, capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    assert (repo / "config/agents/codex/state-snapshots/history.jsonl").exists()
+
+
+@pytest.mark.skipif(_bash() is None, reason="no POSIX bash")
+def test_run_fails_closed_when_a_named_private_list_is_missing(tmp_path):
     repo, env = _setup(tmp_path, tmp_path / "missing-deny.txt")
     r = subprocess.run([_bash(), "scripts/cron/commit-learning-artifacts.sh", "--dry-run"],
                        cwd=repo, env=env, capture_output=True, text=True)

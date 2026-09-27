@@ -6,7 +6,6 @@ REM isn't blocked). Logs to runtime\ow_sync.log. Does NOT touch the agent/queue.
 setlocal
 set "DECK=C:\ws\deckhand"
 set "DM=C:\ws\digitalmodel"
-if not defined LICENSED_RUN_SCOPE_REPO (echo ERROR: LICENSED_RUN_SCOPE_REPO is not set - see licensed-run\README.md & exit /b 2)
 set "SCOPE_REPO=%LICENSED_RUN_SCOPE_REPO%"
 set "QUEUE=C:\ws\deckhand-licensed-runs-queue"
 set "OUT=C:\ws\workspace-hub\licensed-run\runtime\ow_sync.log"

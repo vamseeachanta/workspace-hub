@@ -1,8 +1,6 @@
 @echo off
 REM Single test poll of the licensed-run agent (no continuous loop).
 setlocal
-if not defined LICENSED_RUN_SCOPE (echo ERROR: LICENSED_RUN_SCOPE is not set - see licensed-run\README.md & exit /b 2)
-if not defined LICENSED_RUN_SCOPE_REPO (echo ERROR: LICENSED_RUN_SCOPE_REPO is not set - see licensed-run\README.md & exit /b 2)
 set "HUB=C:\ws\workspace-hub\licensed-run"
 set "VIRTUAL_ENV=C:\ws\digitalmodel\.venv"
 set "DECKHAND_LICENSED_RUN_VERIFY_MARKER=%HUB%\runtime\licensed-run.verified.json"

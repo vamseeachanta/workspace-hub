@@ -8,16 +8,17 @@ the identifier gate's single ``Redactor`` (``scripts/legal/check_identifiers.py`
 -- the same rules, the same private list, the same marker -- so a generator
 cannot publish what the gate would fail.
 
-Fail closed. ``load_redactor`` raises ``RedactorUnavailable`` when:
+The private deny list (``WORKSPACE_HUB_DENY_LIST``, or the default private path
+the gate reads) extends the redactor when the host has one. A host without it
+runs with the public rules instead of stopping (owner decision S01, 2026-09-27).
 
-* the gate module or its rules file cannot load;
-* no private deny list is loaded (``WORKSPACE_HUB_DENY_LIST``, or the default
-  private path the gate reads) -- the public hashes alone do not cover the
-  multi-word names on the private list, so a public-only redactor would pass
-  them through;
-* ``LEGAL_CLIENT_MAP`` names a client codename map that is missing or
-  unreadable. When it is set, the map's patterns are added to the Redactor's
-  private patterns.
+``load_redactor`` raises ``RedactorUnavailable`` when:
+
+* the gate module or its rules file cannot load, or the rules carry no names;
+* ``WORKSPACE_HUB_DENY_LIST`` or ``LEGAL_CLIENT_MAP`` names a file that is
+  missing or unreadable (a named file is a configuration, and a typo in it
+  must not pass silently). When ``LEGAL_CLIENT_MAP`` is set, the map's patterns
+  are added to the Redactor's private patterns.
 
 A generator that catches ``RedactorUnavailable`` must stop without writing.
 
@@ -103,10 +104,11 @@ def _map_patterns() -> list[re.Pattern]:
     return out
 
 
-def load_redactor(require_private: bool = True):
-    """The gate's Redactor over its rules, the private list and, when
-    ``LEGAL_CLIENT_MAP`` is set, the client codename map. Raises
-    ``RedactorUnavailable`` rather than return a partial redactor."""
+def load_redactor():
+    """The gate's Redactor over its rules, the private list when this host has
+    one and, when ``LEGAL_CLIENT_MAP`` is set, the client codename map. Raises
+    ``RedactorUnavailable`` when the rules cannot load or a named file is
+    missing; a host without the private list gets the public rules (S01)."""
     ci = _gate()
     try:
         rules = ci.load_rules()
@@ -118,12 +120,6 @@ def load_redactor(require_private: bool = True):
             f"public_redaction: the identifier gate rules cannot load ({type(exc).__name__})"
         ) from None
     private = list(rules.get("_private_names") or []) + list(rules.get("_private_patterns") or [])
-    if require_private and not private:
-        raise RedactorUnavailable(
-            "public_redaction: no private deny list is loaded; set "
-            f"{ci.PRIVATE_ENV} to the private list. The public hashes alone do "
-            "not cover every name, so writing a public file is refused."
-        )
     if not (rules.get("hashed_names") or private):
         raise RedactorUnavailable("public_redaction: the rules carry no names; refusing to continue")
     rules["_private_patterns"] = list(rules.get("_private_patterns") or []) + _map_patterns()

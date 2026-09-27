@@ -3,7 +3,6 @@ REM One-time host setup: regenerate the host-local policy override (execution_en
 REM true) into runtime\, then run verify-first (writes the marker into runtime\ on
 REM 9/9 PASS). Re-run any time prerequisites change. Output -> runtime\verify.log too.
 setlocal
-if not defined LICENSED_RUN_SCOPE_REPO (echo ERROR: LICENSED_RUN_SCOPE_REPO is not set - see licensed-run\README.md & exit /b 2)
 set "HUB=C:\ws\workspace-hub\licensed-run"
 set "VIRTUAL_ENV=C:\ws\digitalmodel\.venv"
 if not exist "%HUB%\runtime" mkdir "%HUB%\runtime"

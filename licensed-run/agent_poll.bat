@@ -4,8 +4,6 @@ REM is one agent --once poll (git-pull queue, run approved requests through the 
 REM commit metadata-only result). Logs every cycle to runtime\agent_poll.log so it can
 REM be watched without copy-paste. Leave this window OPEN. Ctrl+C to stop.
 setlocal
-if not defined LICENSED_RUN_SCOPE (echo ERROR: LICENSED_RUN_SCOPE is not set - see licensed-run\README.md & exit /b 2)
-if not defined LICENSED_RUN_SCOPE_REPO (echo ERROR: LICENSED_RUN_SCOPE_REPO is not set - see licensed-run\README.md & exit /b 2)
 set "HUB=C:\ws\workspace-hub\licensed-run"
 set "VIRTUAL_ENV=C:\ws\digitalmodel\.venv"
 set "DECKHAND_LICENSED_RUN_VERIFY_MARKER=%HUB%\runtime\licensed-run.verified.json"

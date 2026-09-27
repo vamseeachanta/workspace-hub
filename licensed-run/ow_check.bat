@@ -3,7 +3,6 @@ REM OrcaWave lane: worktree-hygiene check + confirm #902 present + STEP 3 licens
 REM gate (orcawave-doctor). Read-only except nothing is changed. Logs to
 REM runtime\ow_check.log. Does NOT touch the agent.
 setlocal
-if not defined LICENSED_RUN_SCOPE_REPO (echo ERROR: LICENSED_RUN_SCOPE_REPO is not set - see licensed-run\README.md & exit /b 2)
 set "SCOPE_REPO=%LICENSED_RUN_SCOPE_REPO%"
 set "DM=C:\ws\digitalmodel"
 set "VIRTUAL_ENV=C:\ws\digitalmodel\.venv"

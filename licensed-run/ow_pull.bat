@@ -5,7 +5,6 @@ REM hash input.yml for gate 9. Logs to runtime\ow_pull.log. Does NOT touch the
 REM agent or the .sim. scope core.autocrlf is already false (set earlier).
 setlocal
 set "DM=C:\ws\digitalmodel"
-if not defined LICENSED_RUN_SCOPE_REPO (echo ERROR: LICENSED_RUN_SCOPE_REPO is not set - see licensed-run\README.md & exit /b 2)
 set "SCOPE_REPO=%LICENSED_RUN_SCOPE_REPO%"
 set "VIRTUAL_ENV=C:\ws\digitalmodel\.venv"
 set "OUT=C:\ws\workspace-hub\licensed-run\runtime\ow_pull.log"

@@ -1,9 +1,11 @@
-"""Tests for scripts/legal/public_redaction.py (owner decision C20).
+"""Tests for scripts/legal/public_redaction.py (owner decisions C20, S01).
 
 Every generator that writes a PUBLIC file of this repository from text it does
 not control -- GitHub issue titles and bodies, host agent state -- applies the
-identifier gate's single ``Redactor`` before writing, and fails closed when the
-redactor cannot load. Names here are synthetic.
+identifier gate's single ``Redactor`` before writing. The private list extends
+the redactor when the host has one; without it the public rules apply (S01).
+A named file that is missing, or rules that cannot load, still stop the job.
+Names here are synthetic.
 """
 from __future__ import annotations
 
@@ -57,27 +59,19 @@ def test_redacts_private_word_and_pattern(deny_list):
     assert "hull" in out
 
 
-def test_redacts_public_classes_without_private_list_when_allowed(monkeypatch, tmp_path):
+def test_loads_without_a_private_list_and_redacts_public_classes(monkeypatch, tmp_path):
+    """Owner decision S01: a host without the private list still runs; the
+    redactor applies the public rules instead of stopping the job."""
     monkeypatch.delenv("WORKSPACE_HUB_DENY_LIST", raising=False)
+    monkeypatch.delenv("LEGAL_CLIENT_MAP", raising=False)
     mod = load()
     ci = mod._gate()
     monkeypatch.setattr(ci, "DEFAULT_PRIVATE", str(tmp_path / "absent.txt"))
-    red = mod.load_redactor(require_private=False)
+    red = mod.load_redactor()
     # Synthetic shapes assembled at run time so this file itself passes the gate.
     job, host = "B1" + "999", "zz-" + "ws" + "099"
     out = red.redact(f"job {job} on host {host}")
     assert job not in out and host not in out
-
-
-def test_fails_closed_by_default_without_a_private_list(monkeypatch, tmp_path):
-    """The public hashes do not cover multi-word private names: a generator
-    must not publish with the public rules alone."""
-    monkeypatch.delenv("WORKSPACE_HUB_DENY_LIST", raising=False)
-    mod = load()
-    ci = mod._gate()
-    monkeypatch.setattr(ci, "DEFAULT_PRIVATE", str(tmp_path / "absent.txt"))
-    with pytest.raises(mod.RedactorUnavailable):
-        mod.load_redactor()
 
 
 def test_codename_map_patterns_are_applied(tmp_path, monkeypatch, deny_list):
