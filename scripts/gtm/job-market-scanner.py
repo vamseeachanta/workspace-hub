@@ -555,17 +555,22 @@ def configure_output_dir(output_dir: Path) -> None:
 configure_output_dir(DEFAULT_OUTPUT_DIR)
 
 
-def redact_outputs(output_dir: Path) -> None:
-    """Redact every JSON and Markdown file under ``output_dir`` in place with the
-    identifier gate's redactor (S01). The private deny list extends it when the
-    host has one."""
+def load_output_redactor():
+    """The identifier gate's redaction module and redactor (S01). The private deny
+    list extends it when the host has one; a named list that is missing raises."""
     import importlib.util
 
     spec = importlib.util.spec_from_file_location(
         "_jms_public_redaction", REPO_ROOT / "scripts" / "legal" / "public_redaction.py")
     redaction = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(redaction)
-    redactor = redaction.load_redactor()
+    return redaction, redaction.load_redactor()
+
+
+def redact_outputs(output_dir: Path, loaded=None) -> None:
+    """Redact every JSON and Markdown file under ``output_dir`` in place with the
+    identifier gate's redactor (S01)."""
+    redaction, redactor = loaded or load_output_redactor()
     for path in sorted(Path(output_dir).rglob("*")):
         if path.suffix not in (".json", ".md") or not path.is_file():
             continue
@@ -1325,19 +1330,25 @@ def main():
     if args.output_dir:
         configure_output_dir(Path(args.output_dir))
 
-    result = run_scan(
-        keywords=keywords,
-        limit=args.limit,
-        skip_career_pages=args.skip_career_pages,
-    )
+    # Load the redactor before anything is written, so a missing named list stops
+    # the run with no output; then redact on every exit path, including a failure
+    # part-way through, so raw outputs never remain in the tracked scan directory.
+    redaction = load_output_redactor()
+    try:
+        result = run_scan(
+            keywords=keywords,
+            limit=args.limit,
+            skip_career_pages=args.skip_career_pages,
+        )
 
-    # Always update cumulative index and generate delta reports
-    date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    history = update_cumulative_index(result, date_str)
-    retention = enforce_retention_policy(date_str)
-    generate_new_this_week(history["new_jobs"], date_str)
-    generate_trend_report(history["cumulative"], date_str)
-    redact_outputs(OUTPUT_DIR)
+        # Always update cumulative index and generate delta reports
+        date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        history = update_cumulative_index(result, date_str)
+        retention = enforce_retention_policy(date_str)
+        generate_new_this_week(history["new_jobs"], date_str)
+        generate_trend_report(history["cumulative"], date_str)
+    finally:
+        redact_outputs(OUTPUT_DIR, redaction)
 
     print(f"  Raw archives moved: {retention['archived_raw_results']}")
 

@@ -225,6 +225,11 @@ reports/*
 !reports/test-summary/
 !reports/test-summary/.gitkeep
 !reports/test-summary/baseline-summary.json
+# S01: the contact de-duplication report is counts and domains only, written
+# redacted; only that file is tracked. Address files never land here.
+!reports/email/
+reports/email/*
+!reports/email/contact-dedup-report.md
 src/workspace_hub/reports/
 test-framework-integrations/
 _organized_non_repo_files/
