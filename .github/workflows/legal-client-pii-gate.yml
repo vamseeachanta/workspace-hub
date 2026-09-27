@@ -37,6 +37,13 @@ jobs:
         with:
           enable-cache: true
 
+      - name: Test the gate
+        # Synthetic maps and throwaway repos only; no secret is read here.
+        run: |
+          uv run --with pytest python -m pytest -q -p no:cacheprovider \
+            scripts/legal/tests/test_check_client_pii.py \
+            tests/legal/test_check_client_pii_targets.py
+
       - name: Materialize private client map from secret
         env:
           LEGAL_CLIENT_MAP_SECRET: ${{ secrets.LEGAL_CLIENT_MAP }}
