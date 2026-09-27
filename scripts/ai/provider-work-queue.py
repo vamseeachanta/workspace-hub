@@ -31,6 +31,19 @@ STRATEGY_TERMS = {
 }
 
 
+def _public_redaction():
+    """scripts/legal/public_redaction.py, loaded by path (C20)."""
+    import importlib.util
+
+    path = WORKSPACE_HUB / "scripts" / "legal" / "public_redaction.py"
+    spec = importlib.util.spec_from_file_location("_pwq_public_redaction", path)
+    if spec is None or spec.loader is None:
+        raise SystemExit("provider-work-queue: the public redactor module cannot load; nothing written")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -219,9 +232,18 @@ def main() -> None:
     parser.add_argument("--json-only", action="store_true")
     args = parser.parse_args()
 
+    # C20: the outputs are PUBLIC files built from GitHub issue text. Load the
+    # identifier gate's Redactor first; stop without writing if it cannot load.
+    redaction = _public_redaction()
+    try:
+        redactor = redaction.load_redactor()
+    except redaction.RedactorUnavailable as exc:
+        raise SystemExit(f"provider-work-queue: {exc}; nothing written") from None
+
     scorecard = load_json(Path(args.scorecard))
     issues = load_json(Path(args.issues_json)) if args.issues_json else gh_issue_list()
-    queue = build_queue(scorecard, issues)
+    # Routing reads the original text; only what is written is redacted.
+    queue = redaction.redact_tree(build_queue(scorecard, issues), redactor)
 
     json_out = Path(args.output_json)
     json_out.parent.mkdir(parents=True, exist_ok=True)
@@ -231,7 +253,7 @@ def main() -> None:
     if not args.json_only:
         md_out = Path(args.output_md)
         md_out.parent.mkdir(parents=True, exist_ok=True)
-        md_out.write_text(render_markdown(queue) + "\n", encoding="utf-8")
+        md_out.write_text(redactor.redact(render_markdown(queue)) + "\n", encoding="utf-8")
         print(f"Markdown → {md_out}")
 
 

@@ -1,15 +1,16 @@
 @echo off
-REM Renormalize the acma run input to LF so its sha256 matches the producer's LF
+REM Renormalize the scope run input to LF so its sha256 matches the producer's LF
 REM hash (licensed-run gate 9). PR #35 pinned *.yml to eol=lf; a plain pull does
 REM not rewrite an already-checked-out file, so re-materialize the working copy.
 REM Only this ONE file changes. Does NOT touch the .sim or the agent.
 REM Result (eol + SHA256) -> runtime\input_sha.log for inspection.
 setlocal
-set "ACMA=C:\ws\llm-wiki-acma"
+if not defined LICENSED_RUN_SCOPE_REPO (echo ERROR: LICENSED_RUN_SCOPE_REPO is not set - see licensed-run\README.md & exit /b 2)
+set "SCOPE_REPO=%LICENSED_RUN_SCOPE_REPO%"
 set "RELWIN=cases\orcaflex-strength-post\input.yml"
 set "RELGIT=cases/orcaflex-strength-post/input.yml"
 set "OUT=C:\ws\workspace-hub\licensed-run\runtime\input_sha.log"
-cd /d "%ACMA%"
+cd /d "%SCOPE_REPO%"
 echo === fix_input_eol %date% %time% === > "%OUT%"
 echo --- git pull --rebase --autostash (lands PR #35 .gitattributes) --- >> "%OUT%"
 git pull --rebase --autostash >> "%OUT%" 2>&1

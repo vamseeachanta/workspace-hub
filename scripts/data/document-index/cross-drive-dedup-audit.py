@@ -39,7 +39,22 @@ DRIVE_PAIRS = [
     },
 ]
 
-REPORT_PATH = Path("data/document-index/cross-drive-dedup-report.json")
+# C20: the report lists archive-drive paths that name clients. It is written to
+# the private data directory (WORKSPACE_HUB_PRIVATE_DATA_DIR), not this checkout.
+REPORT_REL = "data/document-index/" + "cross-drive-dedup-report.json"
+
+
+def _private_data():
+    """scripts/lib/private_data.py, loaded by path (C20)."""
+    import importlib.util
+
+    path = Path(__file__).resolve().parents[2] / "lib" / "private_data.py"
+    spec = importlib.util.spec_from_file_location("_cdd_private_data", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 HASH_BUF_SIZE = 1 << 16  # 64 KiB read buffer for SHA-256
 MAX_UNIQUE_TO_DDE = 500
 
@@ -285,10 +300,15 @@ def main():
     parser.add_argument(
         "--output",
         type=str,
-        default=str(REPORT_PATH),
-        help=f"Output JSON report path (default: {REPORT_PATH})",
+        default=None,
+        help=f"Output JSON report path (default: <private data dir>/{REPORT_REL})",
     )
     args = parser.parse_args()
+    pd = _private_data()
+    try:
+        args.output = str(pd.resolve_output(args.output, REPORT_REL))
+    except pd.PrivateDataUnavailable as exc:
+        raise SystemExit(f"cross-drive-dedup-audit: {exc}; nothing written")
 
     print("Cross-Drive Deduplication Audit (ACE vs DDE)")
     print(f"Mode: {'DRY RUN' if args.dry_run else 'FULL AUDIT'}")

@@ -32,7 +32,20 @@ INDEXABLE_EXTENSIONS = {'.pdf', '.doc', '.docx'}
 # Default paths relative to workspace root
 WORKSPACE_ROOT = Path(__file__).resolve().parents[3]  # scripts/data/document-index -> workspace root
 DEFAULT_CATALOG = WORKSPACE_ROOT / "data" / "document-index" / "conference-paper-catalog.yaml"
-DEFAULT_OUTPUT = WORKSPACE_ROOT / "data" / "document-index" / "conference-index-batch.jsonl"
+# C20: the batch lists archive-drive paths that carry client names. It lives in
+# the private data directory (WORKSPACE_HUB_PRIVATE_DATA_DIR), not this checkout.
+BATCH_REL = "data/document-index/" + "conference-index-batch.jsonl"
+
+
+def _private_data():
+    """scripts/lib/private_data.py, loaded by path (C20)."""
+    import importlib.util
+
+    path = WORKSPACE_ROOT / "scripts" / "lib" / "private_data.py"
+    spec = importlib.util.spec_from_file_location("_pci_private_data", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def load_catalog(catalog_path: Path) -> dict:
@@ -133,8 +146,8 @@ def main():
     parser.add_argument(
         '--output',
         type=Path,
-        default=DEFAULT_OUTPUT,
-        help=f"Output JSONL batch file path (default: {DEFAULT_OUTPUT})"
+        default=None,
+        help="Output JSONL batch file path (default: <private data dir>/" + BATCH_REL + ")"
     )
     parser.add_argument(
         '--priority-only',
@@ -150,6 +163,13 @@ def main():
     )
 
     args = parser.parse_args()
+    if not args.dry_run:
+        pd = _private_data()
+        try:
+            args.output = pd.resolve_output(args.output, BATCH_REL)
+        except pd.PrivateDataUnavailable as exc:
+            print(f"ERROR: {exc}; nothing written", file=sys.stderr)
+            return 3
 
     # Load catalog
     print(f"Loading catalog: {args.catalog}")

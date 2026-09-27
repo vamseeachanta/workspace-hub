@@ -193,6 +193,46 @@ def infer_company(domain):
     return DOMAIN_COMPANY.get(domain, domain)
 
 
+def write_dedup_report(ace_emails, personal_emails, generated=None):
+    """Write the cross-file de-duplication summary to the PRIVATE contact report
+    directory and return its path (C19).
+
+    The directory is the private overlay key ``outputs.contact_report_dir``; an
+    unset, relative, missing or in-repository directory raises
+    PrivateOverlayError and nothing is written. The report carries counts and
+    domains only, never an address.
+    """
+    import datetime as _dt
+    import sys
+
+    repo_root = Path(__file__).resolve().parents[2]
+    if str(repo_root) not in sys.path:
+        sys.path.insert(0, str(repo_root))
+    from scripts.lib import private_overlay
+
+    out_dir = private_overlay.require_output_dir(
+        private_overlay.load(), "outputs.contact_report_dir", repo_root
+    )
+    ace_set, per_set = set(ace_emails), set(personal_emails)
+    overlap = ace_set & per_set
+    by_domain = Counter(e.split("@")[-1].lower() for e in overlap if "@" in e)
+    when = generated or _dt.date.today().isoformat()
+    lines = [
+        "# Contact Deduplication Report",
+        f"**Generated:** {when}",
+        "",
+        f"**Before dedup:** Ace={len(ace_set)}, Personal={len(per_set)}, Overlap={len(overlap)}",
+        "",
+        "## Overlap by Domain",
+        "| Domain | Count |",
+        "|--------|-------|",
+    ]
+    lines += [f"| {d} | {n} |" for d, n in by_domain.most_common()]
+    path = out_dir / "contact-dedup-report.md"
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return path
+
+
 def process_account(account, input_path, output_path):
     with open(input_path, "r", encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
@@ -324,3 +364,5 @@ if __name__ == "__main__":
 
     overlap = ace_set & per_set
     print(f"\nCross-file overlap: {len(overlap)} emails")
+    # C19: the report goes to the private contact report directory only.
+    print(f"Report: {write_dedup_report(ace_set, per_set)}")
