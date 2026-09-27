@@ -68,6 +68,30 @@ def test_physical_name_in_config_argv_is_refused(table):
     assert "phys-box-a" not in str(exc.value)
 
 
+@pytest.mark.parametrize("arg", [
+    "ProxyJump=phys-box-a",          # physical name inside an option value
+    "-oProxyJump=op@phys-box-b",     # glued flag form
+    "-Jop@phys-box-a",               # glued jump flag
+    "op@phys-box-a:22",              # host:port
+])
+def test_physical_name_in_any_argv_shape_is_refused(table, arg):
+    with pytest.raises(fsl.LabelError):
+        fleet.resolve_ssh_argv(["ssh", "-o", arg, "op@ace-win-1"], table)
+
+
+@pytest.mark.parametrize("arg", [
+    "ProxyJump=op@ace-win-2",        # a label the resolver would not rewrite
+    "-Jop@ace-win-2",
+    "op@ace-win-2,op@ace-win-1",     # jump list
+    "op@ace-win-2:22",
+])
+def test_label_in_a_compound_argv_element_is_refused_not_passed_through(table, arg):
+    # A label left unresolved inside a compound element would reach ssh as-is;
+    # only whole `label` / `user@label` elements are supported.
+    with pytest.raises(fsl.LabelError):
+        fleet.resolve_ssh_argv(["ssh", "-o", arg, "op@ace-win-1"], table)
+
+
 def test_label_shared_by_two_physical_names_is_ambiguous(tmp_path):
     m = tmp_path / "map.txt"
     m.write_text("phys-one ace-win-1\nphys-two ace-win-1\n", encoding="utf-8")

@@ -123,7 +123,11 @@ PS_LAUNCHER = (
 )
 
 
-_SSH_TARGET_RE = re.compile(r"^(?:(?P<user>[^@\s]+)@)?(?P<host>[A-Za-z0-9][A-Za-z0-9.-]*)$")
+_SSH_TARGET_RE = re.compile(r"^(?:(?P<user>[A-Za-z0-9_][A-Za-z0-9._-]*)@)?(?P<host>[A-Za-z0-9][A-Za-z0-9.-]*)$")
+# A fleet label anywhere inside an argv element (same set as fsl.LABEL_RE).
+_LABEL_IN_TEXT_RE = re.compile(
+    r"(?i)(?<![A-Za-z0-9])(?:ace-(?:linux|win)-[0-9]+|gpu-claw|fleet-collector|mac-[0-9]+|spark-[0-9]+)"
+    r"(?![A-Za-z0-9])")
 
 
 def _physical_for(label: str, table: dict[str, str]) -> str:
@@ -145,16 +149,25 @@ def resolve_ssh_argv(argv: list, table: dict[str, str]) -> list[str]:
     name the map knows is refused. The returned argv is for exec only; it is
     never printed or written.
     """
+    args = [str(a) for a in argv]
+    # Whatever the element's shape (option value, glued flag, host:port, jump
+    # list), the config must not carry a physical name or a fragment of one.
+    try:
+        fsl.assert_no_physical("\n".join(args), table)
+    except fsl.LabelError:
+        raise fsl.LabelError("an ssh argv names a physical host; use its fleet label") from None
     out: list[str] = []
-    for raw in argv:
-        arg = str(raw)
+    for arg in args:
         m = _SSH_TARGET_RE.match(arg)
         if m and fsl.is_public_label(m.group("host")):
             user = m.group("user")
             phys = _physical_for(m.group("host"), table)
             arg = f"{user}@{phys}" if user else phys
-        elif m and m.group("host").casefold() in table:
-            raise fsl.LabelError("an ssh argv names a physical host; use its fleet label")
+        elif _LABEL_IN_TEXT_RE.search(arg):
+            # Only whole `label` / `user@label` elements are resolved; a label
+            # inside any other shape would reach ssh unresolved.
+            raise fsl.LabelError("a fleet label sits inside an unsupported ssh argv element; "
+                                 "give each host its own `user@label` element")
         out.append(arg)
     return out
 
@@ -205,9 +218,9 @@ def run_probe(label: str, host: dict, ssh_timeout: int, probe_src: bytes,
     text = proc.stdout.decode(errors="replace").strip()
     start = text.find("{")
     if proc.returncode != 0 or start < 0:
-        err = proc.stderr.decode(errors="replace").strip().splitlines()
-        return {"host": label, "reachable": False, "note": f"exit {proc.returncode}",
-                "stderr_tail": err[-2:]}
+        # ssh stderr is not kept: it names the resolved physical host
+        # ("Permanently added '<host>'", "Could not resolve hostname <host>").
+        return {"host": label, "reachable": False, "note": f"exit {proc.returncode}"}
     try:
         rec = json.loads(text[start:])
     except ValueError:
