@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-26T21:23:24.154516Z",
+  "generated_at": "2026-09-27T01:23:13.731301Z",
   "current_week": "2026-W39",
-  "scorecard_generated_at": "2026-09-26T21:23:20.868781Z",
+  "scorecard_generated_at": "2026-09-27T01:23:10.298564Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -780,7 +780,7 @@
             "machine:multi",
             "initiative"
           ],
-          "updatedAt": "2026-07-31T08:35:43Z",
+          "updatedAt": "2026-09-26T21:56:28Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -794,7 +794,7 @@
         },
         {
           "number": 3605,
-          "title": "INITIATIVE: ACMA & client delivery",
+          "title": "INITIATIVE: mkt-a & client delivery",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3605",
           "labels": [
             "priority:high",
@@ -803,7 +803,7 @@
             "domain:business-development",
             "initiative"
           ],
-          "updatedAt": "2026-07-31T08:35:45Z",
+          "updatedAt": "2026-09-26T21:56:30Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -972,7 +972,7 @@
         },
         {
           "number": 3694,
-          "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-acma rename across 62 files (2 scripts + 2 configs are live)",
+          "title": "chore(repo): reconcile llm-wiki-mkt-a \u2192 llm-wiki-mkt-a rename across 62 files (2 scripts + 2 configs are live)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3694",
           "labels": [
             "priority:high",
@@ -981,7 +981,7 @@
             "machine:dev-primary",
             "status:plan-review"
           ],
-          "updatedAt": "2026-09-02T13:17:19Z",
+          "updatedAt": "2026-09-26T22:10:45Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "claude",
@@ -2543,7 +2543,7 @@
             "epic",
             "domain:repo"
           ],
-          "updatedAt": "2026-07-31T08:37:13Z",
+          "updatedAt": "2026-09-26T21:56:32Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2819,7 +2819,7 @@
         },
         {
           "number": 3695,
-          "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-seanation and llm-wiki-hd",
+          "title": "chore(llm-wiki): resolve two empty client-wiki stubs \u2014 llm-wiki-client-f and llm-wiki-hd",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3695",
           "labels": [
             "priority:medium",
@@ -2827,7 +2827,7 @@
             "domain:repo-cleanup",
             "machine:dev-primary"
           ],
-          "updatedAt": "2026-07-31T08:33:54Z",
+          "updatedAt": "2026-09-26T21:56:37Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -2851,7 +2851,7 @@
             "status:needs-plan",
             "machine:licensed-win-2"
           ],
-          "updatedAt": "2026-07-31T07:03:07Z",
+          "updatedAt": "2026-09-26T22:10:48Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4105,7 +4105,7 @@
           "title": "Standardize repo layout + tooling across machines",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3880",
           "labels": [],
-          "updatedAt": "2026-09-20T19:10:50Z",
+          "updatedAt": "2026-09-26T21:56:39Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4178,7 +4178,7 @@
           "title": "registry: add mystran to dev-secondary tools (needs #3475 identity-inventory re-attestation)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3909",
           "labels": [],
-          "updatedAt": "2026-09-26T17:24:26Z",
+          "updatedAt": "2026-09-26T22:00:07Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4305,7 +4305,7 @@
             "status:needs-plan",
             "domain:routing"
           ],
-          "updatedAt": "2026-08-04T04:40:39Z",
+          "updatedAt": "2026-09-26T22:10:49Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4493,7 +4493,7 @@
             "status:needs-plan",
             "domain:routing"
           ],
-          "updatedAt": "2026-08-04T04:40:39Z",
+          "updatedAt": "2026-09-26T22:10:49Z",
           "execution_ready": false,
           "priority_rank": 1,
           "suggested_provider": "codex",
@@ -4789,7 +4789,7 @@
           "title": "Legal scanner named-repo resolver can return a false pass with empty path",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3854",
           "labels": [],
-          "updatedAt": "2026-09-14T01:25:23Z",
+          "updatedAt": "2026-09-26T21:56:38Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T21:23:24.670096Z",
+  "generated_at": "2026-09-27T01:23:14.409011Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 7,
@@ -421,7 +421,7 @@
         "status:needs-plan",
         "domain:routing"
       ],
-      "updatedAt": "2026-08-04T04:40:39Z",
+      "updatedAt": "2026-09-26T22:10:49Z",
       "execution_ready": false,
       "priority_rank": 1,
       "suggested_provider": "codex",
