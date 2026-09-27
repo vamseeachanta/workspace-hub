@@ -24,6 +24,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import base64
 import datetime as dt
 import json
 import shlex
@@ -81,15 +82,43 @@ def parse_iso(value) -> dt.datetime | None:
     return d if d.tzinfo else d.replace(tzinfo=dt.timezone.utc)
 
 
+# PowerShell-native probe launcher for Windows hosts whose OpenSSH default
+# shell (cmd) cannot run the sh-based REMOTE_CMD. Probes python3/python by
+# execution (the Microsoft Store python3 stub passes `where` but fails to
+# run), then runs the winner with the probe script inherited on stdin.
+PS_LAUNCHER = (
+    "$ErrorActionPreference='SilentlyContinue';"
+    "$py='';foreach($c in 'python3','python'){"
+    "& $c -c 'import sys' 2>&1|Out-Null;"
+    "if($LASTEXITCODE -eq 0){$py=$c;break}};"
+    "if($py -eq ''){Write-Error 'no working python found';exit 3};"
+    "& $py - --json --host '{label}'"
+)
+
+
 def run_probe(label: str, host: dict, ssh_timeout: int, probe_src: bytes) -> dict:
     """Return the probe record for one host, or a record with reachable=False."""
     if host.get("local"):
         cmd = [sys.executable, str(PROBE), "--json", "--host", label]
         stdin = None
     else:
-        alias = host.get("ssh") or label
-        cmd = ["ssh", "-o", "BatchMode=yes", "-o", f"ConnectTimeout={ssh_timeout}",
-               "-o", "StrictHostKeyChecking=accept-new", alias, REMOTE_CMD.format(label=shlex.quote(label))]
+        ssh_spec = host.get("ssh") or label
+        if isinstance(ssh_spec, list):
+            # Full argv prefix, e.g. a double-hop through a jump host when the
+            # target does not accept this VM's key on a direct path.
+            base = [str(a) for a in ssh_spec]
+        else:
+            base = ["ssh", "-o", "BatchMode=yes", "-o", f"ConnectTimeout={ssh_timeout}",
+                    "-o", "StrictHostKeyChecking=accept-new", ssh_spec]
+        remote_cmd = REMOTE_CMD.format(label=shlex.quote(label))
+        if host.get("remote_wrap") == "powershell":
+            # Powershell-native launcher (see PS_LAUNCHER): the probe script
+            # on stdin is inherited by the winning python.
+            ps_script = PS_LAUNCHER.replace('{label}', label.replace("'", "''"))
+            encoded = base64.b64encode(ps_script.encode("utf-16-le")).decode("ascii")
+            cmd = base + ["powershell", "-NoProfile", "-EncodedCommand", encoded]
+        else:
+            cmd = base + [remote_cmd]
         stdin = probe_src
     try:
         proc = subprocess.run(cmd, input=stdin, capture_output=True, timeout=ssh_timeout + 40)
