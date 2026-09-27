@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Rewrite fleet snapshot machine names to logical fleet labels (owner decision C18).
 
-The fleet-daily-collector commits docs/reports/fleet-snapshots/<date>.json to
-this PUBLIC repository. Physical machine hostnames must never land there; the
+The fleet-daily-collector overwrites docs/reports/fleet-snapshots/latest.json in
+this PUBLIC repository and commits it (owner decision S01: one file, git history
+carries the earlier days). Physical machine hostnames must never land there; the
 public form is the logical fleet label (ace-win-1, ace-linux-1, ...). The map
 from physical name to label is private and is read at run time:
 
@@ -35,6 +36,7 @@ collector's log may be copied into public surfaces.
 The collector runs this on the snapshot before ``git add`` and skips the commit
 when it exits non-zero:
 
+    SNAPSHOT=docs/reports/fleet-snapshots/latest.json
     python3 scripts/fleet/fleet_snapshot_labels.py "$SNAPSHOT" || exit 1
 
 ``--check`` writes nothing and exits 1 when a rewrite is needed.

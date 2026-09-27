@@ -685,7 +685,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#595
-    title: 'feat(data): ingest other /mnt/ace fleet data (frontierdeepwater heavy-lift CSVs + acma B1535 MSIV vessel DB) (#591 child)'
+    title: 'feat(data): ingest other /mnt/ace fleet data ([redacted] heavy-lift CSVs + [redacted] [redacted] MSIV vessel DB) (#591 child)'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/595
     gh_state: closed
@@ -1617,7 +1617,7 @@ cards:
     gh_assignees: []
     body_excerpt: ''
   - idempotency_key: gh:vamseeachanta/worldenergydata#996
-    title: 'data(vessel_fleet): other floater contractors — Stena, Odfjell, Saipem, COSL, Vantage — #991 child'
+    title: 'data(vessel_fleet): other floater contractors — Stena, Odfjell, [redacted], COSL, Vantage — #991 child'
     source: github_issue
     source_url: https://github.com/vamseeachanta/worldenergydata/issues/996
     gh_state: closed

@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-09-25T11:13:23.209983+00:00",
+  "generated_at": "2026-09-27T11:13:41.025266+00:00",
   "generated_by": "fleet-collector fleet-daily-collector",
-  "date": "2026-09-25",
-  "origin_main": "5328e112e",
+  "date": "2026-09-27",
+  "origin_main": "9864275cc",
   "fleet_size": 8,
   "reporting": 6,
   "report": {
-    "latest_snapshot": "2026-09-25",
-    "stale_days": 0
+    "latest_snapshot": "2026-09-26",
+    "stale_days": 1
   },
   "machines": [
     {
       "name": "fleet-collector",
       "reachable": true,
-      "branch": "port/ace-win-1-parked-items",
-      "head": "52ab954ed",
-      "behind": 0,
-      "ahead": 1,
+      "branch": "main",
+      "head": "b8636f975",
+      "behind": 35,
+      "ahead": 0,
       "dirty": 0
     },
     {
@@ -24,16 +24,16 @@
       "reachable": true,
       "branch": "main",
       "head": "c138d931b",
-      "behind": 1,
+      "behind": 56,
       "ahead": 0,
-      "dirty": 3976
+      "dirty": 3994
     },
     {
       "name": "ace-linux-2",
       "reachable": true,
       "branch": "main",
       "head": "5328e112e",
-      "behind": 0,
+      "behind": 55,
       "ahead": 0,
       "dirty": 0
     },
@@ -42,7 +42,7 @@
       "reachable": true,
       "branch": "main",
       "head": "74cc3ef8d",
-      "behind": 6,
+      "behind": 61,
       "ahead": 0,
       "dirty": 0
     },
@@ -50,19 +50,19 @@
       "name": "ace-win-2",
       "reachable": true,
       "branch": "main",
-      "head": "5328e112e",
-      "behind": 0,
+      "head": "f8b38b006",
+      "behind": 39,
       "ahead": 0,
-      "dirty": 9
+      "dirty": 12
     },
     {
       "name": "ace-win-1",
       "reachable": true,
       "branch": "main",
       "head": "c138d931b",
-      "behind": 1,
+      "behind": 57,
       "ahead": 0,
-      "dirty": 10
+      "dirty": 13
     },
     {
       "name": "mac-1",

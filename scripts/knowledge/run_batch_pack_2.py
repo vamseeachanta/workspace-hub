@@ -478,16 +478,39 @@ def run_batch_pack_2(
     )
 
 
+PHASE_A_REL = "data/document-index/" + "conference-phase-a-results.jsonl"
+
+
+def _private_data():
+    """scripts/lib/private_data.py, loaded by path (C20)."""
+    import importlib.util
+
+    path = Path(__file__).resolve().parents[1] / "lib" / "private_data.py"
+    spec = importlib.util.spec_from_file_location("_bp2_private_data", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--catalog", default="data/document-index/conference-paper-catalog.yaml")
-    parser.add_argument("--phase-a-jsonl", default="data/document-index/conference-phase-a-results.jsonl")
+    # C20: the Phase-A results name clients and live in the private data
+    # directory (WORKSPACE_HUB_PRIVATE_DATA_DIR); an explicit path is read as given.
+    parser.add_argument("--phase-a-jsonl", default=None,
+                        help="Phase-A results JSONL (default: <private data dir>/" + PHASE_A_REL + ")")
     parser.add_argument("--output-report", default="docs/reports/batch-pack-2-conference-summary-stubs.md")
     parser.add_argument("--cross-link-path", default="data/document-index/batch-pack-2-cross-link-candidates.jsonl")
     parser.add_argument("--skipped-path", default="data/document-index/batch-pack-2-skipped.jsonl")
     parser.add_argument("--collections", nargs="+", choices=sorted(ALLOWED_COLLECTIONS))
     parser.add_argument("--now")
     args = parser.parse_args(argv)
+    if args.phase_a_jsonl is None:
+        pd = _private_data()
+        try:
+            args.phase_a_jsonl = str(pd.private_data_path(PHASE_A_REL))
+        except pd.PrivateDataUnavailable as exc:
+            raise SystemExit(f"run_batch_pack_2: {exc}")
     run_batch_pack_2(
         args.catalog,
         args.phase_a_jsonl,

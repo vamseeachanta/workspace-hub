@@ -22,7 +22,8 @@ DEFAULT_TARGETS = (
     "data/document-index/coverage-audit.yaml",
     "data/document-index/llm-wiki-external-source-priority-queue.yaml",
     "data/document-index/summary-extraction-plan.yaml",
-    "data/document-index/cross-drive-dedup-report.json",
+    # C20: the cross-drive de-duplication report moved to the private data
+    # directory; it is no longer a target in this checkout.
 )
 
 RETENTION_WARNING = (

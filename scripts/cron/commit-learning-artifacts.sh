@@ -32,14 +32,47 @@ if [[ -f "${WORKSPACE_HUB}/scripts/cron/lib/git-safe.sh" ]]; then
   git_safe_init "$WORKSPACE_HUB"
 fi
 
+# ── C20: every host copy into this PUBLIC tree goes through the redactor ──
+# The snapshots below copy host agent state (codex history, memories) into a
+# public repository. Each copy is redacted by the identifier gate's Redactor
+# (scripts/legal/public_redaction.py); a file whose name carries an identifier
+# is not copied at all. If the redactor cannot load -- no private deny list
+# (WORKSPACE_HUB_DENY_LIST), a missing rules file, a named map that is absent
+# -- nothing is snapshotted and nothing is committed.
+if [[ -n "${WORKSPACE_HUB_PYTHON:-}" ]]; then
+  PY_RUN=("$WORKSPACE_HUB_PYTHON")
+else
+  PY_RUN=(uv run python)
+fi
+PUBLIC_REDACTION="${WORKSPACE_HUB}/scripts/legal/public_redaction.py"
+# The private client codename map, when this host has one, extends the redactor.
+PII_MAP="${PII_CODENAME_MAP:-${WORKSPACE_HUB}/config/agents/.client-codename-map.local.yaml}"
+if [[ -z "${LEGAL_CLIENT_MAP:-}" && -f "$PII_MAP" ]]; then
+  export LEGAL_CLIENT_MAP="$PII_MAP"
+fi
+if ! "${PY_RUN[@]}" "$PUBLIC_REDACTION" self-check; then
+  log "ERROR: the public redactor cannot load -- nothing snapshotted or committed (C20)"
+  exit 1
+fi
+
+# Copy SRC to DEST through the redactor. Absent SRC is not an error (optional
+# host state); a failed redaction is.
+redact_copy() {
+  local src="$1" dest="$2"
+  [[ -f "$src" ]] || return 0
+  mkdir -p "$(dirname "$dest")"
+  "${PY_RUN[@]}" "$PUBLIC_REDACTION" copy "$src" "$dest"
+}
+pii_snapshot_copy() { redact_copy "$1" "$2"; }
+fail_closed() { log "ERROR: redacting copy failed -- nothing committed (C20)"; exit 1; }
+
 # ── Snapshot agent memories ───────────────────────────────────────────
 log "Snapshotting agent memories..."
 
 # Hermes memories (#1777)
 if [[ -f "${HOME}/.hermes/memories/MEMORY.md" ]]; then
-  mkdir -p config/agents/hermes/memories
-  cp "${HOME}/.hermes/memories/MEMORY.md" config/agents/hermes/memories/MEMORY.md.snapshot
-  cp "${HOME}/.hermes/memories/USER.md" config/agents/hermes/memories/USER.md.snapshot 2>/dev/null || true
+  redact_copy "${HOME}/.hermes/memories/MEMORY.md" config/agents/hermes/memories/MEMORY.md.snapshot || fail_closed
+  redact_copy "${HOME}/.hermes/memories/USER.md" config/agents/hermes/memories/USER.md.snapshot || fail_closed
 fi
 
 # Claude Code project memory (#1779) — PII-filtered snapshot (#3073).
@@ -50,26 +83,25 @@ if [[ -d "$CLAUDE_MEM" ]]; then
   _wh_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
   # shellcheck source=scripts/cron/lib/pii-safe-memory-snapshot.sh
   source "$_wh_root/scripts/cron/lib/pii-safe-memory-snapshot.sh"
-  pii_safe_snapshot "$CLAUDE_MEM" config/agents/claude/memory-snapshots "$_wh_root/.legal-deny-list.yaml"
+  pii_safe_snapshot "$CLAUDE_MEM" config/agents/claude/memory-snapshots "$_wh_root/.legal-deny-list.yaml" || fail_closed
 fi
 CLAUDE_MEM_WED="${HOME}/.claude/projects/-mnt-local-analysis-workspace-hub-worldenergydata/memory"
 if [[ -d "$CLAUDE_MEM_WED" ]]; then
-  cp "$CLAUDE_MEM_WED/MEMORY.md" config/agents/claude/memory-snapshots/worldenergydata-MEMORY.md 2>/dev/null || true
+  redact_copy "$CLAUDE_MEM_WED/MEMORY.md" config/agents/claude/memory-snapshots/worldenergydata-MEMORY.md || fail_closed
 fi
 
-# Codex state (#1781)
+# Codex state (#1781). history.jsonl is raw prompt history: it is published
+# only in redacted form (C20).
 if [[ -d "${HOME}/.codex" ]]; then
-  mkdir -p config/agents/codex/state-snapshots
-  cp "${HOME}/.codex/rules/default.rules" config/agents/codex/state-snapshots/ 2>/dev/null || true
-  cp "${HOME}/.codex/history.jsonl" config/agents/codex/state-snapshots/ 2>/dev/null || true
-  cp "${HOME}/.codex/session_index.jsonl" config/agents/codex/state-snapshots/ 2>/dev/null || true
+  redact_copy "${HOME}/.codex/rules/default.rules" config/agents/codex/state-snapshots/default.rules || fail_closed
+  redact_copy "${HOME}/.codex/history.jsonl" config/agents/codex/state-snapshots/history.jsonl || fail_closed
+  redact_copy "${HOME}/.codex/session_index.jsonl" config/agents/codex/state-snapshots/session_index.jsonl || fail_closed
 fi
 
 # Gemini state (#1781)
 if [[ -d "${HOME}/.gemini" ]]; then
-  mkdir -p config/agents/gemini/state-snapshots
-  cp "${HOME}/.gemini/state.json" config/agents/gemini/state-snapshots/ 2>/dev/null || true
-  cp "${HOME}/.gemini/projects.json" config/agents/gemini/state-snapshots/ 2>/dev/null || true
+  redact_copy "${HOME}/.gemini/state.json" config/agents/gemini/state-snapshots/state.json || fail_closed
+  redact_copy "${HOME}/.gemini/projects.json" config/agents/gemini/state-snapshots/projects.json || fail_closed
 fi
 
 # ── Redact session-signals before staging ─────────────────────────────
@@ -87,7 +119,6 @@ fi
 #   aceengineer-strategy/pii-remediation/3097-2026-06-14/client-codename-map.yaml
 # to $PII_CODENAME_MAP (default below). If absent, warn — the #3099 legal scan
 # is the hard backstop gate.
-PII_MAP="${PII_CODENAME_MAP:-${WORKSPACE_HUB}/config/agents/.client-codename-map.local.yaml}"
 PII_REDACTOR="${WORKSPACE_HUB}/scripts/legal/redact-client-pii.py"
 if [[ -f "$PII_MAP" && -f "$PII_REDACTOR" ]]; then
   log "Codename-redacting client identifiers from learning state..."
@@ -161,6 +192,25 @@ done
 git add .gitignore 2>/dev/null || true
 
 log "Staged $staged artifact sources"
+
+# ── C20: redact everything staged, then gate it ───────────────────────
+# The learning pipeline writes client names into state files too. Redact every
+# staged file with the same Redactor, re-stage, and run the identifier gate on
+# the staged content (names in file PATHS included). Any failure: unstage and
+# stop -- a stale public snapshot is harmless, a published name is not.
+mapfile -d '' STAGED_FILES < <(git diff --cached --name-only --diff-filter=ACMR -z 2>/dev/null || true)
+if (( ${#STAGED_FILES[@]} > 0 )); then
+  if ! "${PY_RUN[@]}" "$PUBLIC_REDACTION" inplace "${STAGED_FILES[@]}"; then
+    git reset -q HEAD -- . >/dev/null 2>&1 || true
+    fail_closed
+  fi
+  git add -- "${STAGED_FILES[@]}" 2>/dev/null || true
+  if ! "${PY_RUN[@]}" "${WORKSPACE_HUB}/scripts/legal/check_identifiers.py"; then
+    log "ERROR: the identifier gate failed on the staged learning artifacts -- nothing committed (C20)"
+    git reset -q HEAD -- . >/dev/null 2>&1 || true
+    exit 1
+  fi
+fi
 
 # ── Check if anything changed ─────────────────────────────────────────
 if git diff --cached --quiet 2>/dev/null; then

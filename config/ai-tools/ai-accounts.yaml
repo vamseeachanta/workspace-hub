@@ -71,12 +71,15 @@ hosts:
     hub_path: C:/ws/workspace-hub
     claude: claude-professional
     codex: codex-professional
-    # RDS02 does not accept this VM's key on a direct path (not even through a
-    # ProxyJump tunnel, where auth is end-to-end), so probe it via the ws014
-    # double-hop; the inner ssh authenticates with ws014's own key. The
-    # powershell wrap runs a PS-native probe launcher because RDS02's
-    # OpenSSH default shell (cmd) cannot run the sh-based launcher.
-    ssh: [/home/hatch/workspace/bin/ts-ssh, vamseea@acma-ws014, ssh, -o, BatchMode=yes, -o, ConnectTimeout=20, -o, StrictHostKeyChecking=no, vamseea@acma-hou-rds02]
+    # ace-win-1 does not accept this VM's key on a direct path (not even
+    # through a ProxyJump tunnel, where auth is end-to-end), so probe it via
+    # the ace-win-2 double-hop; the inner ssh authenticates with ace-win-2's
+    # own key. The powershell wrap runs a PS-native probe launcher because
+    # ace-win-1's OpenSSH default shell (cmd) cannot run the sh-based launcher.
+    # Hosts in this argv are fleet LABELS: the collector resolves each
+    # `user@label` to its physical name from the private label map at run time
+    # (collect_account_usage_fleet.py, owner decision H01).
+    ssh: [/home/hatch/workspace/bin/ts-ssh, vamseea@ace-win-2, ssh, -o, BatchMode=yes, -o, ConnectTimeout=20, -o, StrictHostKeyChecking=no, vamseea@ace-win-1]
     remote_wrap: powershell
   fleet-collector:
     os: linux

@@ -1,6 +1,6 @@
 """Pytest wrapper for the legal-sanity-scan repo-resolution contract tests.
 
-Runs tests/legal/test_repo_resolution.sh under git-bash (llm-wiki-acma#299).
+Runs tests/legal/test_repo_resolution.sh under git-bash (llm-wiki-mkt-a#299).
 Skips with a clear reason when no usable bash is available.
 """
 

@@ -10330,7 +10330,7 @@
       "priority": "priority:unspecified",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "Batch 6: Shell Perdido + VMCast + Production Eng Library \u2014 71 workbooks",
+      "title": "Batch 6: Shell [redacted] + VMCast + Production Eng Library \u2014 71 workbooks",
       "updatedAt": "2026-04-05T20:12:24Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/1940"
     },
@@ -10353,7 +10353,7 @@
       "priority": "priority:unspecified",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "Batch 5: Talos Venice Umbilical Installation \u2014 31 workbooks",
+      "title": "Batch 5: [redacted] Umbilical Installation \u2014 31 workbooks",
       "updatedAt": "2026-04-05T20:12:23Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/1939"
     },
@@ -10445,7 +10445,7 @@
       "priority": "priority:unspecified",
       "repo": "workspace-hub",
       "state": "OPEN",
-      "title": "Batch 1: Ballymore Jumper Lift + Mudmat Analysis \u2014 10 workbooks",
+      "title": "Batch 1: [redacted] Jumper Lift + Mudmat Analysis \u2014 10 workbooks",
       "updatedAt": "2026-04-05T20:12:19Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/1935"
     },
@@ -22944,7 +22944,7 @@
       "priority": "priority:high",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "chore(repo-structure): classify and relocate B1528 generated evidence",
+      "title": "chore(repo-structure): classify and relocate [redacted] generated evidence",
       "updatedAt": "2026-05-07T21:06:33Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/597"
     },
@@ -24645,7 +24645,7 @@
       "priority": "priority:unspecified",
       "repo": "digitalmodel",
       "state": "OPEN",
-      "title": "BUG: Verify PLET-PLEM jumper segment lengths from SZ_Ballymore_Jumper_MF.xlsm",
+      "title": "BUG: Verify PLET-PLEM jumper segment lengths from SZ_[redacted]_Jumper_MF.xlsm",
       "updatedAt": "2026-05-06T18:39:06Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/480"
     },
@@ -35470,7 +35470,7 @@
       "priority": "priority:high",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "feat(naval-arch): B1528 proj-a moored-current rudder force component report",
+      "title": "feat(naval-arch): [redacted] proj-a moored-current rudder force component report",
       "updatedAt": "2026-05-05T10:09:49Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2642"
     },
@@ -35950,7 +35950,7 @@
       "priority": "priority:low",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "fix(digitalmodel): loosen test_packaged_b1528_yaml_declared_as_package_data substring assertion",
+      "title": "fix(digitalmodel): loosen [redacted] substring assertion",
       "updatedAt": "2026-05-03T20:27:00Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2604"
     },
@@ -36687,7 +36687,7 @@
       "priority": "priority:high",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "feat(naval-arch): B1528 proj-a time-trace benchmark report with rudder inflow feedback",
+      "title": "feat(naval-arch): [redacted] proj-a time-trace benchmark report with rudder inflow feedback",
       "updatedAt": "2026-05-01T09:47:22Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2571"
     },
@@ -36721,7 +36721,7 @@
       "priority": "priority:high",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "feat(naval-arch): B1528 proj-a yaw-moment input and interactive static report",
+      "title": "feat(naval-arch): [redacted] proj-a yaw-moment input and interactive static report",
       "updatedAt": "2026-05-01T08:55:42Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2570"
     },
@@ -36757,7 +36757,7 @@
       "priority": "priority:high",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "docs(mkt-a): B1528 proj-a rudder source pack and benchmark extraction",
+      "title": "docs(mkt-a): [redacted] proj-a rudder source pack and benchmark extraction",
       "updatedAt": "2026-05-01T03:09:51Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2569"
     },
@@ -37183,7 +37183,7 @@
       "priority": "priority:medium",
       "repo": "workspace-hub",
       "state": "CLOSED",
-      "title": "feat(llm-wiki): scout Woodfibre LNG corpus for bounded extraction candidates",
+      "title": "feat(llm-wiki): scout [redacted] LNG corpus for bounded extraction candidates",
       "updatedAt": "2026-05-05T01:01:38Z",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/2544"
     },
@@ -43401,7 +43401,7 @@
       "priority": "priority:unspecified",
       "repo": "digitalmodel",
       "state": "CLOSED",
-      "title": "BUG: Verify PLET-PLEM jumper segment lengths from SZ_Ballymore_Jumper_MF.xlsm",
+      "title": "BUG: Verify PLET-PLEM jumper segment lengths from SZ_[redacted]_Jumper_MF.xlsm",
       "updatedAt": "2026-04-06T12:23:58Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/474"
     },
@@ -49382,7 +49382,7 @@
       "priority": "priority:unspecified",
       "repo": "digitalmodel",
       "state": "CLOSED",
-      "title": "aqwa | B1516: Remove slow drift in the analysis",
+      "title": "aqwa | [redacted] Remove slow drift in the analysis",
       "updatedAt": "2026-03-24T12:52:12Z",
       "url": "https://github.com/vamseeachanta/digitalmodel/issues/50"
     },

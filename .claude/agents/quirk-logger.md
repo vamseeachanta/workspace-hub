@@ -24,7 +24,7 @@ Route quirks to the repository that owns the correction surface:
 |---|---|
 | Code, libraries, scripts, or solver tooling owned by digitalmodel | `vamseeachanta/digitalmodel` |
 | Software/documentation quirks about third-party tools, packages, and generic engineering workflow knowledge | `vamseeachanta/llm-wiki` |
-| Lane, host, or infrastructure quirks involving private hosts, client workspaces, or unsanitized operational details | `vamseeachanta/llm-wiki-acma` |
+| Lane, host, or infrastructure quirks involving private hosts, client workspaces, or unsanitized operational details | `vamseeachanta/llm-wiki-mkt-a` (codename; the real repository name is in the private client codename map) |
 | Lane, host, or infrastructure quirks safe for public disclosure and owned by workspace-hub | `vamseeachanta/workspace-hub` |
 
 When unsure between a public repo and a private repo, choose the private repo or sanitize aggressively before using the public repo.
