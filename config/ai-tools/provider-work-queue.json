@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-27T17:22:53.752634Z",
+  "generated_at": "2026-09-27T21:22:50.194752Z",
   "current_week": "2026-W39",
-  "scorecard_generated_at": "2026-09-27T17:22:51.442621Z",
+  "scorecard_generated_at": "2026-09-27T21:22:46.435571Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -4660,6 +4660,28 @@
           ]
         },
         {
+          "number": 3562,
+          "title": "Audit MSYS conversion of slash-prefixed native-command tokens",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3562",
+          "labels": [
+            "cat:tooling",
+            "domain:workstations",
+            "machine:dev-primary",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-07-31T08:33:27Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
           "number": 3577,
           "title": "fix(harness): repo-wide exec-bit audit \u2014 NTFS-FUSE working copy commits scripts as 100644",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3577",
@@ -4804,23 +4826,6 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3886",
           "labels": [],
           "updatedAt": "2026-09-24T22:00:13Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3910,
-          "title": "legal: check-client-pii.py reports a directory argument as a clean scan (fail-open)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3910",
-          "labels": [],
-          "updatedAt": "2026-09-26T17:52:30Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
