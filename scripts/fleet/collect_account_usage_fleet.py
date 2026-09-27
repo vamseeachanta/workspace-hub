@@ -14,12 +14,24 @@ Outputs (paths relative to the repo root unless absolute):
   --out   config/ai-tools/account-usage-latest.json
   --md    docs/reports/ai-account-usage.md
 
+Public names only (owner decision H01). ai-accounts.yaml is PUBLIC and names
+every host by its logical fleet label, including inside an ``ssh`` argv list
+(``user@ace-win-2``). The collector resolves those labels to physical names at
+run time from the private map of scripts/fleet/fleet_snapshot_labels.py
+(--label-map, else $FLEET_LABEL_MAP, else ~/.config/workspace-hub/
+fleet-label-map.txt) and never prints or writes the resolved argv. Before
+writing, the rendered outputs are checked against that map and the hostname
+pattern. Fail closed: a missing map, a config value that is not a label, or an
+output that would carry a physical name writes nothing and exits 2.
+Diagnostics never print a machine name.
+
 Exit 0 when at least one host answered, 1 when none did (nothing published),
-2 on a configuration error.
+2 on a configuration or labelling error (nothing published).
 
 Usage:
   collect_account_usage_fleet.py [--config PATH] [--out PATH] [--md PATH]
                                  [--hosts a,b] [--ssh-timeout S] [--dry-run]
+                                 [--label-map PATH]
 """
 from __future__ import annotations
 
@@ -27,10 +39,14 @@ import argparse
 import base64
 import datetime as dt
 import json
+import re
 import shlex
 import subprocess
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import fleet_snapshot_labels as fsl  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PROBE = REPO_ROOT / "scripts/ai/assessment/collect-account-usage.py"
@@ -52,11 +68,22 @@ def load_config(path: Path) -> dict:
     except ImportError:
         sys.stderr.write("PyYAML missing: apt install python3-yaml (or pip install pyyaml)\n")
         sys.exit(2)
-    with path.open(encoding="utf-8") as fh:
-        cfg = yaml.safe_load(fh) or {}
+    text = path.read_text(encoding="utf-8")
+    if fsl.HOSTNAME_SHAPE_RE.search(text):
+        sys.stderr.write(f"{path.name}: a hostname-shaped value is present; hosts are named by fleet label only\n")
+        sys.exit(2)
+    cfg = yaml.safe_load(text) or {}
     for key in ("accounts", "hosts"):
         if not isinstance(cfg.get(key), dict) or not cfg[key]:
             sys.stderr.write(f"{path}: missing or empty '{key}'\n")
+            sys.exit(2)
+    for label, host in cfg["hosts"].items():
+        if not fsl.is_public_label(label):
+            sys.stderr.write(f"{path.name}: a host key is not an approved fleet label\n")
+            sys.exit(2)
+        ssh = (host or {}).get("ssh")
+        if isinstance(ssh, str) and not fsl.is_public_label(ssh):
+            sys.stderr.write(f"{path.name}: host {label}: ssh alias is not an approved fleet label\n")
             sys.exit(2)
     for label, host in cfg["hosts"].items():
         for prov in PROVIDERS:
@@ -96,7 +123,49 @@ PS_LAUNCHER = (
 )
 
 
-def run_probe(label: str, host: dict, ssh_timeout: int, probe_src: bytes) -> dict:
+_SSH_TARGET_RE = re.compile(r"^(?:(?P<user>[^@\s]+)@)?(?P<host>[A-Za-z0-9][A-Za-z0-9.-]*)$")
+
+
+def _physical_for(label: str, table: dict[str, str]) -> str:
+    """The one physical name the private map gives for a fleet label."""
+    phys = [k for k, v in table.items() if v == label and k != label.casefold()]
+    if len(phys) > 1:
+        raise fsl.LabelError("a fleet label maps to more than one physical name")
+    if phys:
+        return phys[0]
+    if table.get(label.casefold()) == label:
+        return label  # identity entry: the label is itself the reachable name
+    raise fsl.LabelError("a fleet label in an ssh argv is not in the label map")
+
+
+def resolve_ssh_argv(argv: list, table: dict[str, str]) -> list[str]:
+    """Replace every ``label`` / ``user@label`` element with its physical name.
+
+    The config must name hosts by label only: an element that is a physical
+    name the map knows is refused. The returned argv is for exec only; it is
+    never printed or written.
+    """
+    out: list[str] = []
+    for raw in argv:
+        arg = str(raw)
+        m = _SSH_TARGET_RE.match(arg)
+        if m and fsl.is_public_label(m.group("host")):
+            user = m.group("user")
+            phys = _physical_for(m.group("host"), table)
+            arg = f"{user}@{phys}" if user else phys
+        elif m and m.group("host").casefold() in table:
+            raise fsl.LabelError("an ssh argv names a physical host; use its fleet label")
+        out.append(arg)
+    return out
+
+
+def assert_publishable(text: str, table: dict[str, str]) -> None:
+    """Refuse output that carries a mapped physical name, a fragment or a hostname shape."""
+    fsl.assert_no_physical(text, table)
+
+
+def run_probe(label: str, host: dict, ssh_timeout: int, probe_src: bytes,
+              table: dict[str, str] | None = None) -> dict:
     """Return the probe record for one host, or a record with reachable=False."""
     if host.get("local"):
         cmd = [sys.executable, str(PROBE), "--json", "--host", label]
@@ -105,8 +174,15 @@ def run_probe(label: str, host: dict, ssh_timeout: int, probe_src: bytes) -> dic
         ssh_spec = host.get("ssh") or label
         if isinstance(ssh_spec, list):
             # Full argv prefix, e.g. a double-hop through a jump host when the
-            # target does not accept this VM's key on a direct path.
-            base = [str(a) for a in ssh_spec]
+            # target does not accept this VM's key on a direct path. The config
+            # names hosts by label; resolve them from the private map, or do not
+            # probe at all.
+            if table is None:
+                return {"host": label, "reachable": False, "note": "ssh labels unresolved (no label map)"}
+            try:
+                base = resolve_ssh_argv(ssh_spec, table)
+            except fsl.LabelError:
+                return {"host": label, "reachable": False, "note": "ssh labels unresolved"}
         else:
             base = ["ssh", "-o", "BatchMode=yes", "-o", f"ConnectTimeout={ssh_timeout}",
                     "-o", "StrictHostKeyChecking=accept-new", ssh_spec]
@@ -324,32 +400,48 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--hosts", default=None, help="comma list of host labels (default: all)")
     p.add_argument("--ssh-timeout", type=int, default=15)
     p.add_argument("--dry-run", action="store_true", help="print the aggregate, write nothing")
+    p.add_argument("--label-map", default=None,
+                   help=f"private fleet label map (else ${fsl.MAP_ENV}, else {fsl.DEFAULT_MAP})")
     args = p.parse_args(argv)
 
     cfg = load_config(args.config)
+    try:
+        table = fsl.load_map(fsl.map_path(args.label_map))
+        for label, host in cfg["hosts"].items():
+            if isinstance((host or {}).get("ssh"), list):
+                resolve_ssh_argv(host["ssh"], table)
+    except fsl.LabelError as exc:
+        sys.stderr.write(f"collect_account_usage_fleet: {exc}; nothing probed or published\n")
+        return 2
     wanted = set(args.hosts.split(",")) if args.hosts else set(cfg["hosts"])
     probe_src = PROBE.read_bytes()
     records = []
     for label, host in cfg["hosts"].items():
         if label not in wanted:
             continue
-        rec = run_probe(label, host or {}, args.ssh_timeout, probe_src)
+        rec = run_probe(label, host or {}, args.ssh_timeout, probe_src, table)
         records.append(rec)
         sys.stderr.write(f"{label}: {'ok' if rec.get('reachable') else 'unreachable ' + str(rec.get('note'))}\n")
 
     agg = aggregate(cfg, records)
+    out_text = json.dumps(agg, indent=2, sort_keys=True) + "\n"
+    md_text = render_md(agg)
+    try:
+        assert_publishable(out_text + "\n" + md_text, table)
+    except fsl.LabelError as exc:
+        sys.stderr.write(f"collect_account_usage_fleet: {exc}; leaving the published files untouched\n")
+        return 2
     reachable = [r for r in records if r.get("reachable")]
     if args.dry_run:
-        json.dump(agg, sys.stdout, indent=2)
-        sys.stdout.write("\n")
+        sys.stdout.write(out_text)
         return 0 if reachable else 1
     if not reachable:
         sys.stderr.write("no host answered; leaving the published files untouched\n")
         return 1
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(agg, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    args.out.write_text(out_text, encoding="utf-8")
     args.md.parent.mkdir(parents=True, exist_ok=True)
-    args.md.write_text(render_md(agg), encoding="utf-8")
+    args.md.write_text(md_text, encoding="utf-8")
     for prov, rec in agg["recommendation"].items():
         sys.stderr.write(f"recommend {prov}: {rec.get('account')} {rec.get('headroom_pct')}% on {rec.get('hosts')}\n")
     return 0
