@@ -23,8 +23,9 @@ Authoritative runbook: `deckhand/docs/deckhand/licensed-run-go-live-ace-win-2.md
 - `LICENSED_RUN_SCOPE` — the Deckhand scope id the agent serves.
 - `LICENSED_RUN_SCOPE_REPO` — absolute path of that scope's private checkout.
 
-Every script that needs either stops with `exit /b 2` when it is unset
-(`build_strength_sim.py` stops unless a target path is given).
+The scripts no longer check for them up front (owner decision S01); an unset
+variable surfaces as the called tool's own path error. `build_strength_sim.py`
+takes the target path as its second argument instead.
 
 ## Environment the scripts set
 - `VIRTUAL_ENV=C:\ws\digitalmodel\.venv` — the env carrying `digitalmodel` + `assetutilities` + the OrcaFlex 11.6 `OrcFxAPI` binding (added via a `.pth`). `uv run` honours it.

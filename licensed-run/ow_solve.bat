@@ -5,7 +5,6 @@ REM produces a completed solve, the dispatched run will too. Engine fails closed
 REM dry-run fallback, so SOLVE_EXIT=0 means it really solved. Outputs stay LOCAL
 REM under the case dir's results\. Logs to runtime\ow_solve.log. Agent untouched.
 setlocal
-if not defined LICENSED_RUN_SCOPE_REPO (echo ERROR: LICENSED_RUN_SCOPE_REPO is not set - see licensed-run\README.md & exit /b 2)
 set "SCOPE_REPO=%LICENSED_RUN_SCOPE_REPO%"
 set "VIRTUAL_ENV=C:\ws\digitalmodel\.venv"
 set "INPUT=%LICENSED_RUN_SCOPE_REPO%\cases\orcawave-diffraction-solve\input.yml"

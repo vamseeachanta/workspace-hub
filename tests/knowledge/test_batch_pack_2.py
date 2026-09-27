@@ -13,14 +13,11 @@ from scripts.knowledge import run_batch_pack_2 as bp2
 
 
 def _phase_a_results() -> Path:
-    """C20: the Phase-A results carry client names and live in the private data
-    directory (WORKSPACE_HUB_PRIVATE_DATA_DIR). Skip where it is not available."""
-    import os
-
-    base = os.environ.get("WORKSPACE_HUB_PRIVATE_DATA_DIR")
-    path = Path(base) / "data/document-index/conference-phase-a-results.jsonl" if base else None
-    if path is None or not path.is_file():
-        pytest.skip("private Phase-A results not available (WORKSPACE_HUB_PRIVATE_DATA_DIR)")
+    """The Phase-A results carry client names and archive paths; they are a local,
+    git-ignored working file (C20, S01). Skip where this host has not built it."""
+    path = ROOT / "data/document-index/conference-phase-a-results.jsonl"
+    if not path.is_file():
+        pytest.skip("local Phase-A results not built on this host")
     return path
 
 

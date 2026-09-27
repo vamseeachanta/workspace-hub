@@ -306,18 +306,12 @@ def test_archive_extract_delete_cli_exits_before_any_request(tmp_path):
     assert str(tmp_path) not in r.stdout + r.stderr
 
 
-# contact-normalizer writes classified contact files into a repository ---------
-def test_contact_normalizer_write_fails_closed_without_overlay(tmp_path):
-    r = _run_script("scripts/email/contact-normalizer.py",
-                    env_extra={ENV: str(tmp_path / "absent.json")})
-    assert r.returncode == 2, r.stderr
-    assert "private overlay absent" in r.stderr and "refusing" in r.stderr
-    assert str(tmp_path) not in r.stdout + r.stderr
-
-
-def test_contact_normalizer_write_gate_passes_with_overlay(overlay_env):
-    norm = _load_script("scripts/email/contact-normalizer.py", "contact_normalizer_gate")
-    norm.require_overlay_for_write()
+# contact-normalizer runs without the overlay (owner decision S01) -------------
+def test_contact_normalizer_has_no_overlay_write_gate(no_overlay_env):
+    """The classified contact files live in the private admin repository; a
+    host without the overlay classifies client contacts as 'unknown' and runs."""
+    norm = _load_script("scripts/email/contact-normalizer.py", "contact_normalizer_nogate")
+    assert not hasattr(norm, "require_overlay_for_write")
 
 
 # VIP and job-market priority degrade with a one-line warning ------------------

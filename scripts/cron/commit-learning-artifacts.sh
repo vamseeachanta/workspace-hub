@@ -36,9 +36,10 @@ fi
 # The snapshots below copy host agent state (codex history, memories) into a
 # public repository. Each copy is redacted by the identifier gate's Redactor
 # (scripts/legal/public_redaction.py); a file whose name carries an identifier
-# is not copied at all. If the redactor cannot load -- no private deny list
-# (WORKSPACE_HUB_DENY_LIST), a missing rules file, a named map that is absent
-# -- nothing is snapshotted and nothing is committed.
+# is not copied at all. The private deny list (WORKSPACE_HUB_DENY_LIST) extends
+# the redactor when this host has one; without it the public rules apply (S01).
+# If the redactor cannot load -- a missing rules file, a named list or map that
+# is absent -- nothing is snapshotted and nothing is committed.
 if [[ -n "${WORKSPACE_HUB_PYTHON:-}" ]]; then
   PY_RUN=("$WORKSPACE_HUB_PYTHON")
 else
