@@ -65,6 +65,17 @@ run_loader() {
   fi
 }
 
+run_reconcile() {
+  # S01: the boards are local, untracked files; rebuild them from GitHub here.
+  local reconcile="${KANBAN_RECONCILE:-${REPO_ROOT}/scripts/kanban/reconcile.py}"
+  if command -v uv >/dev/null 2>&1; then
+    (cd "$REPO_ROOT" && uv run python "$reconcile")
+  else
+    (cd "$REPO_ROOT" && python3 "$reconcile")
+  fi
+}
+boards_fingerprint() { cat "$REPO_ROOT/$BOARDS_REL"/*.yaml 2>/dev/null | cksum; }
+
 write_unit() {
   # $1 = path, content on stdin. Real install writes the file.
   local path="$1"; mkdir -p "$(dirname "$path")"; cat > "$path"
@@ -85,17 +96,27 @@ run_periodic_job() {
   fi
   post="$(run_git rev-parse HEAD 2>/dev/null || echo NONE)"
 
-  if [ "$pre" = "$post" ]; then
-    log "[kanban-timer] HEAD unchanged ($pre) — board YAML cannot have changed; skipping loader"
-    return 0
+  # S01: the generated boards are local files, so rebuild them on every cycle and
+  # load when either the pull or the local rebuild changed any board.
+  local fp_before fp_after changed=""
+  fp_before="$(boards_fingerprint)"
+  run_reconcile; rc=$?
+  if [ "$rc" -ne 0 ]; then
+    log "[kanban-timer] local reconcile FAILED (exit ${rc}) — cycle reports failure"
+    return "$rc"
   fi
-  # HEAD moved — did the board YAML change between pre and post?
-  if run_git diff --quiet "$pre" "$post" -- "$BOARDS_REL" 2>/dev/null; then
-    log "[kanban-timer] HEAD moved ${pre}->${post} but no board-YAML change; skipping loader"
+  fp_after="$(boards_fingerprint)"
+  [ "$fp_before" != "$fp_after" ] && changed="local reconcile"
+  if [ -z "$changed" ] && [ "$pre" != "$post" ] \
+      && ! run_git diff --quiet "$pre" "$post" -- "$BOARDS_REL" 2>/dev/null; then
+    changed="pull ${pre}->${post}"
+  fi
+  if [ -z "$changed" ]; then
+    log "[kanban-timer] no board change (HEAD ${post}, local reconcile unchanged); skipping loader"
     return 0
   fi
 
-  log "[kanban-timer] board YAML changed ${pre}->${post} — running loader"
+  log "[kanban-timer] board YAML changed (${changed}) — running loader"
   run_loader; rc=$?
   if [ "$rc" -ne 0 ]; then
     log "[kanban-timer] LOADER FAILED (exit ${rc}) — NOT swallowing; cycle reports failure"
