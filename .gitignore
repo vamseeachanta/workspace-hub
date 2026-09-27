@@ -628,3 +628,23 @@ data/drive-index-search/metrics/*.jsonl
 /data/document-index/conference-index.jsonl
 /data/document-index/conference-phase-a-results.jsonl
 /data/document-index/cross-drive-dedup-report.json
+
+# S01 (2026-09-27): generated boards are local only. Their builders
+# (scripts/kanban/reconcile.py, scripts/ai/provider-work-queue.py,
+# scripts/ai/provider-kanban.py, scripts/ai/build-orca-kanban.py) stay runnable
+# and write here; nothing publishes them. ecosystem.yaml is authored, not generated.
+/.claude/memory/kanban/boards/*
+!/.claude/memory/kanban/boards/ecosystem.yaml
+/config/ai-tools/provider-work-queue.json
+/config/ai-tools/provider-kanban.json
+/docs/reports/provider-work-queue.md
+/docs/reports/provider-kanban-dashboard.md
+/docs/reports/provider-kanban-dashboard.html
+/docs/dashboards/*-tier1-gh-issue-kanban.html
+/docs/dashboards/*-orca-kanban.html
+/docs/reports/*-tier1-gh-issue-kanban-*
+/docs/reports/*-tier1-kanban-board-data.json
+/docs/reports/*-tier1-board-index.md
+/docs/reports/*-orca-kanban-data.json
+/docs/reports/kanban/*-kanban.md
+/docs/reports/kanban/*-board-index.md

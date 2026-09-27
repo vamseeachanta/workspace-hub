@@ -4,6 +4,10 @@
 Correctness path: fetch each active manifest repo once, then make the board
 YAMLs match GitHub's issue set. Dry-run mode prints the exact diff and does not
 write board files.
+
+The boards are local files (owner decision S01): they are git-ignored, a board
+missing on this machine is created from its manifest entry, and nothing
+publishes them. Run it locally: ``uv run python scripts/kanban/reconcile.py``.
 """
 from __future__ import annotations
 
@@ -19,23 +23,6 @@ from pathlib import Path
 from typing import Callable
 
 from ruamel.yaml import YAML
-
-
-def _load_public_redaction():
-    """scripts/legal/public_redaction.py, loaded by path (C20)."""
-    import importlib.util
-
-    path = Path(__file__).resolve().parents[1] / "legal" / "public_redaction.py"
-    spec = importlib.util.spec_from_file_location("_kanban_public_redaction", path)
-    if spec is None or spec.loader is None:
-        raise RuntimeError("kanban reconcile: the public redactor module cannot load")
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    return mod
-
-
-class RedactionUnavailableError(RuntimeError):
-    """The public redactor could not load; nothing was written (C20)."""
 
 
 GH_PAGE_SIZE = 100
@@ -248,6 +235,12 @@ def load_manifest_entries(kanban_root: Path) -> list[BoardEntry]:
 def active_repos(entries: list[BoardEntry]) -> list[str]:
     repos = {entry.repo for entry in entries if entry.tier == "repo" and entry.repo}
     return sorted(repos)
+
+
+def new_board(entry: BoardEntry) -> dict:
+    """An empty board for a manifest entry whose file does not exist yet."""
+    board = {"slug": entry.slug, "tier": entry.tier, "repo": entry.repo, "domain": entry.domain}
+    return {"board": {k: v for k, v in board.items() if v}, "cards": []}
 
 
 def board_files(kanban_root: Path, entries: list[BoardEntry]) -> list[Path]:
@@ -559,16 +552,6 @@ def reconcile_kanban(
     allow_shrink_repos: set[str] | None = None,
     size_limit: int = DEFAULT_BOARD_SIZE_LIMIT,
 ) -> ReconcileResult:
-    # C20: the boards are committed to a PUBLIC repository from GitHub issue
-    # text. Load the identifier gate's Redactor first and fail closed -- before
-    # anything is fetched or written -- when it cannot load.
-    try:
-        redaction = _load_public_redaction()
-        redactor = redaction.load_redactor()
-    except Exception as exc:  # noqa: BLE001
-        raise RedactionUnavailableError(
-            f"kanban reconcile: the redactor cannot load; no board written ({exc})"
-        ) from None
     entries = load_manifest_entries(kanban_root)
     validate_unmanifested_boards(kanban_root, entries)
     repos = active_repos(entries)
@@ -577,8 +560,11 @@ def reconcile_kanban(
     repo_boards = repo_board_map(entries)
     domain_boards = domain_board_map(entries)
     files = board_files(kanban_root, entries)
-    board_data = {path: load_yaml(path) for path in files}
-    before = {path: path.read_text(encoding="utf-8") for path in files}
+    # Boards are local files, not tracked (owner decision S01): a missing board
+    # starts from its manifest entry.
+    headers = {entry.file: new_board(entry) for entry in entries}
+    board_data = {path: load_yaml(path) if path.exists() else headers[path] for path in files}
+    before = {path: path.read_text(encoding="utf-8") if path.exists() else "" for path in files}
     existing = existing_cards(board_data, files)
     live, skipped = build_live_cards(
         repos,
@@ -596,13 +582,6 @@ def reconcile_kanban(
     # board verbatim. #3380
     active_for_rebuild = set(repos) - set(skipped)
     rebuilt = rebuild_boards(board_data, files, active_for_rebuild, live)
-    # Redact the whole board -- every card and field, not only the titles just
-    # fetched -- BEFORE the changed/unchanged comparison, so a board whose only
-    # defect is an identifier already on disk is rewritten clean.
-    rebuilt = {
-        path: redaction.redact_tree(copy.deepcopy(data), redactor)
-        for path, data in rebuilt.items()
-    }
     after = {}
     for path in files:
         after[path] = before[path] if rebuilt[path] == board_data[path] else dump_yaml(rebuilt[path])
@@ -610,13 +589,11 @@ def reconcile_kanban(
     write = write_files and not dry_run
     if write:
         for path in changed_files:
+            path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(after[path], encoding="utf-8")
-    # The diff is printed to a public CI log: its '-' lines come from the file
-    # on disk, so they are redacted too.
-    shown_before = {path: redactor.redact(text) for path, text in before.items()}
     return ReconcileResult(
         changed=bool(changed_files),
-        diff=unified_diff(shown_before, after, kanban_root),
+        diff=unified_diff(before, after, kanban_root),
         changed_files=changed_files,
         oversized=board_size_report(rebuilt, limit=size_limit),
         count_drift=card_count_drift(rebuilt, entries),
@@ -670,21 +647,16 @@ def main(argv: list[str] | None = None) -> int:
     def fetch(repo: str) -> list[dict]:
         return fetch_repo_issues(repo, page_size=args.page_size)
 
-    try:
-        result = reconcile_kanban(
-            root,
-            issue_fetcher=fetch,
-            dry_run=args.dry_run,
-            write_files=not args.dry_run,
-            repo_filter=args.repo,
-            allow_empty_repos=set(args.allow_empty),
-            allow_shrink_repos=set(args.allow_shrink),
-            size_limit=args.size_limit,
-        )
-    except RedactionUnavailableError as exc:
-        # Fail closed: no board was written, and the message names no value.
-        print(str(exc), file=sys.stderr)
-        return 3
+    result = reconcile_kanban(
+        root,
+        issue_fetcher=fetch,
+        dry_run=args.dry_run,
+        write_files=not args.dry_run,
+        repo_filter=args.repo,
+        allow_empty_repos=set(args.allow_empty),
+        allow_shrink_repos=set(args.allow_shrink),
+        size_limit=args.size_limit,
+    )
     if result.diff:
         print(result.diff, end="")
     else:
