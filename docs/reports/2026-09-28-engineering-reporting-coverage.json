@@ -62,5 +62,12 @@
       "user_span": "2026-04-02 through2026-07-19"
     },
     "method": "SQLite mode=ro,query_only=ON;structured user-row filtering; no newer reporting convention"
+  },
+  "local_codex_delegation_notice": {
+    "owner_direction": "2026-09-28;local machine only;Claude orchestration and report iteration with token-heavy work delegated to Codex",
+    "queued": 6,
+    "acknowledged": 0,
+    "remote_recipients": 0,
+    "private_receipt_sha256": "3bd474fe767761d2abf714031e9d7e6653badb6fd28684e9db62232dc087c3f7"
   }
 }

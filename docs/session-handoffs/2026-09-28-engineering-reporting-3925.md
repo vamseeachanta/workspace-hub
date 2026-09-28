@@ -16,7 +16,7 @@ The [coverage record](../reports/2026-09-28-engineering-reporting-coverage.json)
 
 The proposal notice was queued to 12 addressable Claude sessions across three machines, with individual message IDs and exact payload checks. No acknowledgement or adoption was established at relay completion. Mac relay authentication and other-provider live transports remain gaps; a published Git reference is not a live-message receipt.
 
-The owner's later direction for the current machine is to keep report interaction and synthesis in Claude while delegating token-heavy research, comparisons, batch verification and substantial machine work to Codex. This is a local operating direction for the report-heavy day, not permission to rewrite fleet-wide routing policy. Its separate delivery receipt will record the actual local peers reached.
+The owner's later direction for the current machine is to keep report interaction and synthesis in Claude while delegating token-heavy research, comparisons, batch verification and substantial machine work to Codex. This is a local operating direction for the report-heavy day, not permission to rewrite fleet-wide routing policy. The separate notice was queued to all six peers in the fresh local Claude roster; exact payloads and message IDs were verified. No acknowledgement was established and no remote session received that machine-specific notice.
 
 Private source locators, detailed relay receipts and source hashes remain in the task's local coordination evidence directory. Raw session transcripts, client names and private host identifiers are not published in this branch.
 
