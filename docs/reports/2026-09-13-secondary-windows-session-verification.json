@@ -1,0 +1,17 @@
+{
+  "scope": "Static plan/report browser and source verification",
+  "artifacts": [
+    {
+      "path": "docs/reports/2026-09-13-secondary-windows-session-intake.html",
+      "sha256": "cc6df38c15ba6630e120573a57209a8da8b2f13b3ecd099f4d65431cdd7b2fd5",
+      "http_status": 200,
+      "headings": 6,
+      "tables": 3,
+      "local_links_verified": true,
+      "console_page_errors": [],
+      "horizontal_overflow": false,
+      "screenshot": "2026-09-13-secondary-windows-session-intake.png"
+    }
+  ],
+  "visual_inspection": "PASS: full-page screenshot reviewed; three tables, captions and limitations legible"
+}
