@@ -31,3 +31,15 @@ Codex and Agy reviewed the plan and artifact; [individual dispositions](../../sc
 Task artifacts and the isolated review branch/worktree are expected retained outputs. The canonical hub's pre-existing state/report changes, existing autostash and historical cleanup-trash directory are preserved; this session did not create or dispose of them. Ordinary provider relay transcripts are expected messaging records.
 
 The next checkpoint is owner feedback on the draft. Preserve the current source and result archives during revisions. Do not adopt the proposed convention or regenerate shared runtime files from this handoff alone.
+
+## P2 follow-up from the finalized CFD review
+
+The owner requested the last CFD comments be incorporated, identified the exact reference HTML, and requested a short prompt for later report-by-report updates. The convention remains a review draft. [P2 evidence](../reports/2026-09-28-engineering-reporting-p2.json) records the selected source digest, changes, review dispositions and distribution; [the reusable prompt](../standards/reformat-engineering-report-prompt.md) preserves engineering meaning and project privacy.
+
+P2 is published at `694c825c9d1b2251386ce4fa75fe2df0595c44ce`, with standard SHA-256 `2487471d2e57ed2e4b23d0ab048d360909a26cef551318bdbcc5d87d6056837b` and Git blob `0d28f017e516879caf43c69f5ada113b18f1d18c`. Matching objects were verified on the same five reachable machines. The private source evidence distinguishes the owner-selected review copy from later direct comments and newer in-flight parallel-session outputs.
+
+The changes add summary bullets, subject-specific introductions, restrained emphasis, concise qualified uncertainty, explicit comparison basis and sensitivity-appendix references. Valid physical case identifiers remain defined in Design Data. The short prompt gives the consolidated convention precedence over older exemplar details and excludes transfer of another project's content or implementation defects.
+
+Claude's focused P2 stdin review completed, superseding the earlier unavailability for this bounded update. Its prompt/privacy/precedence findings and Codex/Agy clarifications were resolved inline; the initial verdicts remain in the review record. The final report source was not edited. Other reports will be updated only when individually requested.
+
+The fresh P2 notice reached 13 addressable peers (seven local, six secondary Windows), queued with no acknowledgement established. Linux1 returned no reachable peers. Six initial Windows encoding-defective notices were superseded by exact UTF-8 copies; both attempts remain in private receipts. The P2 draft and prompt remain the only report-format deliverables of this transaction.
