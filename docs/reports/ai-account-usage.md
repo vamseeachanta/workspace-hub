@@ -1,6 +1,6 @@
 # AI account usage (fleet)
 
-Generated 2026-09-28T13:13:32+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-09-28T14:13:44+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
@@ -11,10 +11,10 @@ Generated 2026-09-28T13:13:32+00:00 by fleet-collector collect_account_usage_fle
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 2% | 8% | 92% | 2026-10-03T13:59:59.928960+00:00 | gpu-claw | oauth-api |
-| claude-professional | claude | colleague | 8% | 99% | 1% | 2026-10-03T07:59:59.866429+00:00 | ace-win-1 | oauth-api |
+| claude-owner | claude | owner | 2% | 8% | 92% | 2026-10-03T14:00:00.152670+00:00 | gpu-claw | oauth-api |
+| claude-professional | claude | colleague | 14% | 100% | 0% | 2026-10-03T08:00:00.502750+00:00 | ace-win-1 | oauth-api |
 | codex-owner | codex | owner |  | 4% | 96% | 2026-10-03T17:19:42+00:00 | fleet-collector | app-server-live |
-| codex-professional | codex | colleague |  | 13% | 87% | 2026-10-03T17:17:20+00:00 | ace-win-1 | app-server-live |
+| codex-professional | codex | colleague |  | 13% | 87% | 2026-10-03T17:17:20+00:00 | ace-win-2 | app-server-live |
 
 ## Hosts
 
