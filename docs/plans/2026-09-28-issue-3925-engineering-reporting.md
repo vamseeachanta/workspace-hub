@@ -2,14 +2,14 @@
 
 - Issue: https://github.com/vamseeachanta/workspace-hub/issues/3925
 - Status: proposed; shared-instruction adoption will require owner approval of this scope.
-- Client: N/A — generic reporting convention; private examples will remain private.
+- Client: N/A â€” generic reporting convention; private examples will remain private.
 - Lane: lane:codex
 - Complexity: T3; execution will use parallel-readonly discovery and serialized integration.
 - Proposed standard: ../standards/engineering-reporting-conventions-proposed.html
 
 ## Resource Intelligence Summary
 
-The consolidation will reconcile the September 27–28 direct owner reporting feedback, September 25–27 human-review feedback, the private house-style/document-structure guides, SHARED_SOUL engineering register, report-audience-and-surface rule and report-claim-discipline skill. Private evidence locators will remain outside public Git. Sources will be classified as direct owner instructions, issued precedents, derived memories or unresolved proposals.
+The consolidation will reconcile the September 27â€“28 direct owner reporting feedback, September 25â€“27 human-review feedback, the private house-style/document-structure guides, SHARED_SOUL engineering register, report-audience-and-surface rule and report-claim-discipline skill. Private evidence locators will remain outside public Git. Sources will be classified as direct owner instructions, issued precedents, derived memories or unresolved proposals.
 
 The plan will preserve the distinctions in open issues [3810](https://github.com/vamseeachanta/workspace-hub/issues/3810), [3431](https://github.com/vamseeachanta/workspace-hub/issues/3431), [3850](https://github.com/vamseeachanta/workspace-hub/issues/3850) and [3892](https://github.com/vamseeachanta/workspace-hub/issues/3892). It will not implement those projects by implication. Drive-file-index availability will be checked and recorded; original issued documents will not be represented as reread solely from a guide citation.
 
@@ -22,6 +22,7 @@ The result will be one authoritative reporting convention, a traceable source-pr
 | Artifact | Proposed path/owner |
 |---|---|
 | Proposed standard | docs/standards/engineering-reporting-conventions-proposed.html |
+| One-report formatting prompt | docs/standards/reformat-engineering-report-prompt.md |
 | Approved standard after adoption | docs/standards/engineering-reporting-conventions.html |
 | Shared pointer | config/agents/SHARED_SOUL.md, engineering-register section |
 | Existing skill reconciliation | .claude/skills/development/report-claim-discipline/SKILL.md; .claude/skills/data/calculation-report/SKILL.md; .claude/skills/development/engineering-report-generator/SKILL.md; .claude/skills/development/workflows/reporting-workflow/SKILL.md |
@@ -73,3 +74,15 @@ Reviews will be recorded against the proposal digest. Blocking findings will be 
 ## Risks and Open Questions
 
 The latest formal report sequence will conflict with older fixed renderer schemas; this change will update conventions without claiming renderer compliance. Remote history may be inaccessible, stale or incomplete. A session roster may change during delivery; observation times will bound the claim. Local bus messaging may not support every provider. Existing active report authors may own the target files; claims and narrow writes will preserve that work. The source's requirement to remove superseded current results will not authorize deletion of archived evidence.
+
+## P2 bounded draft update
+
+The [28 September owner-follow-up scope record](https://github.com/vamseeachanta/workspace-hub/issues/3925#issuecomment-5878276446) will anchor this revision to the originating session request, not grant authority independently. The broader adoption plan will remain deferred, not approved or withdrawn. Focused review will use the existing three-provider routing; availability and each verdict will be recorded separately.
+
+Under the owner's follow-up, the P2 update will incorporate the finalized CFD report's last comments and the exact owner-selected HTML as presentation evidence. It will add executive-summary bullets, substantive introductions, restrained emphasis, concise qualified uncertainty, physical comparison-basis explanations, defined physical geometry/load-case identifiers and sensitivity-appendix references. A short reusable prompt will support later report-by-report updates. The source report and in-flight parallel-session files will remain read-only.
+
+The existing review draft, prompt, validation record, source-precedence evidence and handoff will be updated; the change will not activate shared instructions or regenerate other reports. Applicable source/link/register checks and focused adversarial review will precede publication. The updated proposal will be fetched into the five verified machine repositories and submitted through established session channels with new revision/digest receipts. Existing access gaps will remain explicit. The prior owner decision to keep the convention as a review draft will remain in force.
+
+For this delivery, the P2 section will supersede the earlier implementation/adoption acceptance criteria: acceptance will require the revised draft and prompt, source checks, reviewed dispositions, published revision and verified draft distribution. Shared-pointer edits, runtime generation/installation and other report changes will remain outside this transaction.
+
+The distribution set will be ace-win-1, ace-win-2, ace-linux-1, ace-linux-2 and macos, using the reachable repository roots rechecked during the 28 September follow-up. The receipt will supply exact observation times and Git blob identities; these are storage checks, not installed-policy coverage. The selected HTML digest and direct-comment timestamps will be bound in the private source-evidence-p2.json record and summarized without private locators in the public P2 verification record.
