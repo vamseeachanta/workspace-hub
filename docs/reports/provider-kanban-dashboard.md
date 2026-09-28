@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-28T09:23:23Z
+Generated: 2026-09-28T13:23:00Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,8 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3927 | Compliance alert: W40 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3925 | standard: consolidate engineering reporting conventions and verify ecosystem adoption | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3920 | Ecosystem-wide interactive HTML review: select-to-comment layer for reports and decision boards (Save JSON → agent pickup) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3909 | registry: add mystran to dev-secondary tools (needs #3475 identity-inventory re-attestation) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3896 | bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -241,8 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3567 | feat(machine-equivalence): add interaction-UX evidence and pet-peeve predicates | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3566 | fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review,unavailable_review |
 | #3565 | feat(agent-ux): align Linux Codex dictation hotkey with Windows Win+H | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3564 | bug(ci): legal rule authority receives empty AUTH_ENVELOPE on PRs | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3562 | Audit MSYS conversion of slash-prefixed native-command tokens | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

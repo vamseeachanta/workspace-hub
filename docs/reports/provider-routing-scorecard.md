@@ -1,6 +1,6 @@
 # Provider routing scorecard
 
-Generated: 2026-09-28T09:23:17.262537Z
+Generated: 2026-09-28T13:22:54.023751Z
 Current week: 2026-W40
 Recommended provider order: codex, agy, claude
 
@@ -13,10 +13,10 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Current-week reported utilization: 0.0%
 - Quota basis: unavailable (unavailable)
 - Current-week sessions / post records: 0 / 0
-- Audit post records: 123411
-- Missing repo reads: 9480
-- Python3 per 1k records: 9.1
-- Migration debt per 1k records: 13.97
+- Audit post records: 123526
+- Missing repo reads: 9479
+- Python3 per 1k records: 9.09
+- Migration debt per 1k records: 13.96
 
 ### Preferred work
 - adversarial plan review
@@ -42,9 +42,9 @@ This scorecard combines provider utilization with session-audit hygiene to decid
 - Current-week reported utilization: 0.0%
 - Quota basis: quota (history.jsonl-estimate)
 - Current-week sessions / post records: 0 / 0
-- Audit post records: 206929
-- Missing repo reads: 1705
-- Python3 per 1k records: 13.67
+- Audit post records: 207752
+- Missing repo reads: 1709
+- Python3 per 1k records: 13.61
 - Migration debt per 1k records: 0.05
 
 ### Preferred work

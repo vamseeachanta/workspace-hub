@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-28T09:23:20.105736Z",
+  "generated_at": "2026-09-28T13:22:56.664027Z",
   "current_week": "2026-W40",
-  "scorecard_generated_at": "2026-09-28T09:23:17.262537Z",
+  "scorecard_generated_at": "2026-09-28T13:22:54.023751Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 9,
-      "total_candidates": 178,
+      "total_candidates": 179,
       "top_issues": [
         {
           "number": 3816,
@@ -662,6 +662,27 @@
             "compliance-alert"
           ],
           "updatedAt": "2026-09-27T11:45:08Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3927,
+          "title": "Compliance alert: W40 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3927",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-09-28T11:45:07Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -3068,30 +3089,6 @@
           ]
         },
         {
-          "number": 3564,
-          "title": "bug(ci): legal rule authority receives empty AUTH_ENVELOPE on PRs",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3564",
-          "labels": [
-            "bug",
-            "cat:operations",
-            "machine:dev-primary",
-            "status:needs-plan",
-            "domain:ci-release"
-          ],
-          "updatedAt": "2026-07-31T08:33:29Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
           "number": 3579,
           "title": "chore(readiness): rename equality/parity provider row gemini\u2192agy (cross-machine snapshot schema migration)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3579",
@@ -4209,6 +4206,23 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3925,
+          "title": "standard: consolidate engineering reporting conventions and verify ecosystem adoption",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3925",
+          "labels": [],
+          "updatedAt": "2026-09-28T11:03:42Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4216,7 +4230,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 20,
+      "total_candidates": 19,
       "top_issues": [
         {
           "number": 3740,
@@ -4656,28 +4670,6 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3562,
-          "title": "Audit MSYS conversion of slash-prefixed native-command tokens",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3562",
-          "labels": [
-            "cat:tooling",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-07-31T08:33:27Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation"
           ]
         },
