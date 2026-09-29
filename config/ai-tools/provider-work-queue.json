@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-29T13:21:14.544125Z",
+  "generated_at": "2026-09-29T17:21:24.624740Z",
   "current_week": "2026-W40",
-  "scorecard_generated_at": "2026-09-29T13:21:12.142531Z",
+  "scorecard_generated_at": "2026-09-29T17:21:20.892964Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -4195,7 +4195,7 @@
           "labels": [
             "status:needs-plan"
           ],
-          "updatedAt": "2026-09-27T11:49:45Z",
+          "updatedAt": "2026-09-29T14:02:05Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4212,7 +4212,7 @@
           "title": "standard: consolidate engineering reporting conventions and verify ecosystem adoption",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3925",
           "labels": [],
-          "updatedAt": "2026-09-28T20:55:50Z",
+          "updatedAt": "2026-09-29T15:47:06Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
