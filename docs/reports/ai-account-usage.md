@@ -1,11 +1,11 @@
 # AI account usage (fleet)
 
-Generated 2026-09-29T18:13:33+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-09-29T19:13:40+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
 - **claude**: no live sample for any account
-- **codex**: `codex-owner` (88.0% weekly headroom) on ace-linux-1, ace-linux-2, fleet-collector, gpu-claw -- within 15 pts of codex-professional: stay on whichever host you are on
+- **codex**: `codex-owner` (87.0% weekly headroom) on ace-linux-1, ace-linux-2, fleet-collector, gpu-claw -- within 15 pts of codex-professional: stay on whichever host you are on
 
 ## Accounts
 
@@ -13,8 +13,8 @@ Generated 2026-09-29T18:13:33+00:00 by fleet-collector collect_account_usage_fle
 |---|---|---|---|---|---|---|---|---|
 | claude-owner | claude | owner |  |  |  |  |  | unavailable |
 | claude-professional | claude | colleague |  |  |  |  |  | unavailable |
-| codex-owner | codex | owner |  | 12% | 88% | 2026-10-03T17:19:42+00:00 | gpu-claw | app-server-live |
-| codex-professional | codex | colleague |  | 18% | 82% | 2026-10-03T17:17:20+00:00 | ace-win-1 | app-server-live |
+| codex-owner | codex | owner |  | 13% | 87% | 2026-10-03T17:19:42+00:00 | fleet-collector | app-server-live |
+| codex-professional | codex | colleague |  | 18% | 82% | 2026-10-03T17:17:20+00:00 | ace-win-2 | app-server-live |
 
 ## Hosts
 
@@ -32,4 +32,3 @@ Generated 2026-09-29T18:13:33+00:00 by fleet-collector collect_account_usage_fle
 - ace-linux-2: codex sample's weekly window reset at 2026-08-21T11:50:27+00:00; ignored
 - ace-win-2: claude fingerprint 78d7e174f2d1 differs from claude-professional (c0c130b8018b)
 - ace-win-1: claude fingerprint 78d7e174f2d1 differs from claude-professional (c0c130b8018b)
-- fleet-collector: codex sample's weekly window reset at 2026-09-26T13:42:52+00:00; ignored
