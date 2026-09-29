@@ -8,8 +8,8 @@
           "resets_at": null
         },
         "five_hour": {
-          "pct": 18.0,
-          "resets_at": "2026-09-29T01:40:00.035142+00:00"
+          "pct": 24.0,
+          "resets_at": "2026-09-29T01:40:00.216502+00:00"
         },
         "iguana_necktie": {
           "pct": 0.0,
@@ -20,14 +20,14 @@
           "resets_at": null
         },
         "seven_day": {
-          "pct": 21.0,
-          "resets_at": "2026-10-03T14:00:00.035165+00:00"
+          "pct": 22.0,
+          "resets_at": "2026-10-03T14:00:00.216521+00:00"
         }
       },
-      "captured_at": "2026-09-28T23:13:11+00:00",
+      "captured_at": "2026-09-29T00:13:10+00:00",
       "fingerprint": "78d7e174f2d1",
-      "five_hour_pct": 18.0,
-      "headroom_pct": 79.0,
+      "five_hour_pct": 24.0,
+      "headroom_pct": 78.0,
       "holder": "owner",
       "hosts": [
         "ace-linux-1",
@@ -43,8 +43,8 @@
       "sampled_on": "ace-linux-2",
       "source": "oauth-api",
       "tier": "default_claude_max_20x",
-      "week_pct": 21.0,
-      "week_resets_at": "2026-10-03T14:00:00.035165+00:00"
+      "week_pct": 22.0,
+      "week_resets_at": "2026-10-03T14:00:00.216521+00:00"
     },
     "claude-professional": {
       "access": "limited",
@@ -64,7 +64,7 @@
     "codex-owner": {
       "access": "full",
       "buckets": null,
-      "captured_at": "2026-09-28T23:13:24+00:00",
+      "captured_at": "2026-09-29T00:13:26+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": null,
       "headroom_pct": 96.0,
@@ -91,7 +91,7 @@
     "codex-professional": {
       "access": "limited",
       "buckets": null,
-      "captured_at": "2026-09-28T23:13:23+00:00",
+      "captured_at": "2026-09-29T00:13:25+00:00",
       "fingerprint": "c0c130b8018b",
       "five_hour_pct": null,
       "headroom_pct": 85.0,
@@ -112,7 +112,7 @@
       "week_resets_at": "2026-10-03T17:17:20+00:00"
     }
   },
-  "generated_at": "2026-09-28T23:13:27+00:00",
+  "generated_at": "2026-09-29T00:13:28+00:00",
   "generated_by": "fleet-collector collect_account_usage_fleet",
   "hosts": {
     "ace-linux-1": {
@@ -120,7 +120,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-09-28T23:13:08+00:00",
+      "captured_at": "2026-09-29T00:13:08+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -132,7 +132,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-09-28T23:13:11+00:00",
+      "captured_at": "2026-09-29T00:13:10+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -144,7 +144,7 @@
         "claude": "claude-professional",
         "codex": "codex-professional"
       },
-      "captured_at": "2026-09-28T23:13:23+00:00",
+      "captured_at": "2026-09-29T00:13:25+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "c0c130b8018b"
@@ -156,7 +156,7 @@
         "claude": "claude-professional",
         "codex": "codex-professional"
       },
-      "captured_at": "2026-09-28T23:13:19+00:00",
+      "captured_at": "2026-09-29T00:13:19+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "c0c130b8018b"
@@ -167,7 +167,7 @@
       "accounts": {
         "codex": "codex-owner"
       },
-      "captured_at": "2026-09-28T23:13:24+00:00",
+      "captured_at": "2026-09-29T00:13:26+00:00",
       "fingerprints": {
         "codex": "78d7e174f2d1"
       },
@@ -181,7 +181,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-09-28T23:13:13+00:00",
+      "captured_at": "2026-09-29T00:13:13+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -199,7 +199,7 @@
   "recommendation": {
     "claude": {
       "account": "claude-owner",
-      "headroom_pct": 79.0,
+      "headroom_pct": 78.0,
       "hosts": [
         "ace-linux-1",
         "ace-linux-2",
