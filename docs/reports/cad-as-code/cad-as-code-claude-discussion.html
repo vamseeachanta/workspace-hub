@@ -1,0 +1,161 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CAD as Code — Claude and Codex next steps</title><style>body{font:17px/1.6 system-ui,sans-serif;max-width:980px;margin:48px auto;padding:0 24px;color:#172536;background:#f6f8fb}h1,h2{line-height:1.2}a{color:#135ca7}section{background:white;padding:24px;margin:20px 0;border:1px solid #dbe3ec;border-radius:10px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:14px/1.5 monospace}summary{cursor:pointer;font-weight:600}</style></head><body><h1>CAD as Code: next steps after Claude–Codex discussion</h1><p>28 September 2026 · Advisory recommendations · Implementation not started</p><section><h2>Claude discussion completed</h2><p>Refreshed access succeeded. Two tool-disabled Claude calls reviewed the supplied evidence and challenged the proposed sequence. Codex corrected several technical assumptions; Claude accepted the corrections. This is not formal plan approval or executed engineering validation.</p><p><a href="https://github.com/vamseeachanta/digitalmodel/issues/1786#issuecomment-5874616816">Durable discussion record and next steps</a></p></section><section><h2>First three actions</h2><ol><li><strong>Verify one host and the existing solver chain.</strong> Record actual access, versions, imports, existing STEP/INP tests and a CalculiX solve. Failures and skips will remain explicit. The registry-listed simulation host is a candidate, not proven ready.</li><li><strong>Map fixture coverage.</strong> Separate BRep validity, geometry invariants, round-trip, mesh quality and physical validation. Reuse the existing cantilever fixture first. Add an axial-bar screen only for a demonstrated, authorized gap.</li><li><strong>Prepare the comparison plan.</strong> Hold host, nominal geometry, material, boundary conditions and mesh strategy fixed. Measure setup effort, generation/meshing/solve times, failures and maintenance. Use representative parts for library selection.</li></ol></section><section><h2>Corrections adopted</h2><ul><li>No new benchmark will be presumed necessary before checking existing fixtures.</li><li>A clean meshing log will not prove BRep validity.</li><li>Monotonic convergence and universal numerical tolerances were withdrawn. Criteria will be justified for the actual case.</li><li>The earlier proposed 2%/1% thresholds are not adopted requirements.</li><li>A beam-element fixture will not establish CAD-solid or AQWA surface-panel readiness.</li><li>Hand-written reference scripts will keep tool capability separate from LLM generation quality.</li></ul></section><section><h2>Pilot decision remains open</h2><p>The H-link/AQWA pairing will receive engineering-fit review. Retaining the hardware with a structural solver, or retaining diffraction with a relevant hydrodynamic body, are alternatives for a reviewed amendment. Neither was selected. Changing the committed pilot scope still requires matching approval.</p><p>The 180 LLM trials, additional toolchains, fleet rollout and methodology decision remain deferred pending useful evidence. Closed hull issues will remain closed.</p></section><section><h2>Evidence limits and preserved state</h2><p>Codex verified that tests/solvers/calculix/test_fem_chain.py contains test_cantilever_beam_b31_deflection, including a ccx invocation and an availability skip. The test was not run. No remote host was probed and no dependencies were installed during this discussion.</p><p>No repository code, machine settings, issue labels or issue scope changed. Existing unrelated workspace modifications and stashes were preserved.</p></section><section><h2>Discussion evidence</h2><p>Round 1 is superseded where corrected by round 2 and the synthesis above. Provider output is advisory.</p><details><summary>Claude round 1</summary><pre># Next steps after the CAD as Code review: challenge to Codex&#39;s plan
+
+**Verdict: REVISE.** The direction is sound, but the order is wrong and the first experiment isn&#39;t defined tightly enough.
+
+## Established facts vs. proposal
+
+**Established (from your brief):**
+- digitalmodel `2a52374` already has the Gmsh STEP import, CalculiX INP export, round-trip tests, `fem_chain.py` and design-table sweeps.
+- On the Windows interpreter, pyvista is present. cadquery, OCP, build123d, gmsh and skfem are not, and there is no gmsh or FreeCAD on PATH.
+- The Linux host (FreeCAD/gmsh/CalculiX) is declared in the registry but has not been verified.
+- No book examples were executed.
+- #2190 and #2191 are closed.
+
+**Unverified assumptions in the proposal:**
+- That the existing round-trip tests pass anywhere today.
+- That `mesh_generator.py` can produce an AQWA panel mesh. It produces solid/INP output; diffraction needs a surface panel mesh.
+- That OpenSCAD can export STEP at all. Classic OpenSCAD exports mesh formats, so treat it as unconfirmed rather than just &quot;feasibility unverified&quot;.
+
+## Challenges to the sequence
+
+1. **Step 1 is too vague.** A readiness check needs a named host and must *execute* things. `find_spec` = true does not prove an import works. Readiness should mean: `gmsh -version`, `ccx` solving a one-element model, and the existing `test_gmsh_step_inp.py` passing. Anything less is a registry echo.
+2. **Steps 2 and 3 are in the wrong order.** Step 3 (validate and reuse the existing chain) needs no approval and doesn&#39;t depend on #1785&#39;s scope, so it should run first. Step 2 needs your approval and shouldn&#39;t block anything.
+3. **Step 2 misdiagnoses #1785.** The shackle is a perfectly good *structural* part; the mismatch is pairing it with diffraction. Diffraction on a body that small relative to wave length adds little. There are two less disruptive amendments (see &quot;Overlooked ideas&quot;).
+4. **Step 4 needs a definition of &quot;deterministic&quot;.** It should mean hand-written reference scripts, with no LLM involved. That measures tool capability separately from codegen quality; otherwise #1786&#39;s results mix the two.
+5. **Book usage.** Ch8&#39;s point is that geometric invariants (volume, bounding box, face count) are not the same as BRep validity. Check both. Cite the book as CC BY 4.0 with attribution, and keep MIT notices on any copied code. Don&#39;t describe the examples as working until they&#39;ve run.
+
+## Best first experiment (proposal)
+
+**Cantilever solid beam through STEP → Gmsh → CalculiX on one verified Linux host.**
+
+- **Geometry:** a 10:1 rectangular prism, generated by the existing FreeCAD/STEP path. It doesn&#39;t need CadQuery.
+- **Independent baseline:** the closed-form Timoshenko tip deflection (bending plus shear term), computed from the *nominal* input dimensions. Never measure the dimensions back out of the STEP or the mesh, or the check becomes circular.
+
+**Pass criteria (all required):**
+- STEP re-imports with BRep valid (BRepCheck or the Gmsh healing log shows no fixes), and volume matches L&#183;b&#183;h within 1e-6 relative.
+- The mesh has no inverted or zero-Jacobian elements (report the minimum SICN).
+- Force balance: the sum of reactions equals the applied load within 1e-6 relative.
+- C3D10 tip deflection converges monotonically over 3 refinements and the finest mesh is within 2% of Timoshenko.
+- C3D4 at the same mesh is reported to show the locking gap. This is diagnostic, not pass/fail.
+- A second run is bit-identical or within 1e-9 (tests determinism).
+- Wall time is recorded for each stage.
+
+**Fail or stop:**
+- `ccx` or `gmsh` isn&#39;t runnable within 30 minutes of setup.
+- Convergence is non-monotonic, or the error is still above 5% after 3 refinements. Diagnose element type and boundary conditions; do not loosen the tolerance.
+- The existing round-trip tests fail at `2a52374`. That becomes the first defect to fix, ahead of any new work.
+
+**Deliverables:** a short evidence note of logs and numbers. No new modules.
+
+## Defer
+
+- The 180 LLM runs. Also defer choosing model versions until execution, using whatever is approved in the registry then.
+- #1787 methodology and fleet rollout.
+- ReplicAD (JS runtime, separate toolchain).
+- The OpenSCAD STEP track, until a one-line STEP export is shown to work.
+- Installing CadQuery on more than one host.
+- Anything touching the closed hull issues.
+
+## Machine routing (proposal)
+
+- **Linux dev-secondary:** Gmsh, CalculiX, FreeCAD and the first experiment, after readiness is proven.
+- **Windows:** AQWA (only if a license and host are confirmed) and pyvista post-processing.
+- **CadQuery:** a single host, pinned OCP wheel, with the lock file recorded.
+- No fleet provisioning.
+
+## Approval boundaries
+
+Needs your approval:
+- Changing #1785&#39;s committed scope, including swapping AQWA or the part.
+- Posting further issue comments.
+- Installing packages on shared hosts.
+- Any LLM-trial spend.
+- Reopening #2190 or #2191. Recommendation: don&#39;t.
+
+Needs no approval: read-only readiness runs on a host you&#39;ve already authorized.
+
+## Overlooked ideas
+
+1. **Keep the shackle and swap AQWA for CalculiX.** The curved-beam (Winkler–Bach) or straight-pin bending results give an analytical benchmark on the *committed* part, so #1785&#39;s 4-variant structure and 4-hour cap stay intact.
+2. **If diffraction must stay, swap the part.** Use a floating hemisphere or truncated cylinder. Hulme (1982) added-mass and damping curves give an independent published baseline, and this tests the real gap: STEP → panel mesh → AQWA.
+3. **Separate generation timing from meshing.** #1785&#39;s &quot;regenerate all 4 in under 60 s&quot; doesn&#39;t say whether it includes Gmsh. Time STEP generation and meshing as separate stages, or the criterion is ambiguous.
+
+## Missing information
+
+- Which host is the candidate, and do you have access to it?
+- Is there an AQWA license, and on which machine?
+- Do the existing round-trip tests pass today?
+- Which CalculiX and Gmsh versions are on that host?
+- What budget is allowed for #1786?
+- What decision #1787 will actually make, and what measured &quot;benefit&quot; would justify rollout?
+- Whether #1785&#39;s &quot;from docs alone&quot; means book docs or library docs.
+
+The claude.ai Microsoft 365 connector needs authorization in your claude.ai connector settings before it can be used. It wasn&#39;t needed here.</pre></details><details><summary>Codex follow-up challenges</summary><pre>Continue the owner&#39;s requested brainstorming with Codex about NEXT STEPS. Read-only advisory: no tools or changes. Your previous response (supplied below) said REVISE. Codex challenges:
+1. User has already authorized documentation and discussion; no new permission needed for issue comments. Avoid inventing approval requirements. Changed engineering pilot scope still requires current plan review/approval.
+2. A Gmsh log showing no healing is NOT equivalent to BRepCheck validity. State separate checks; no unsupported proxy.
+3. Monotonic FEM convergence isn&#39;t universal, and a finite 10:1 solid beam/clamped face may not equal a 1D Timoshenko beam to arbitrary tolerance. Reaction 1e-6 and repeated-run1e-9 require specified normalization/outputs/platform. Do not invent universal tolerances.
+4. Prefer existing fixture/analytical test first, then a simple axial bar integration screen IF missing and approved. Bending/curved shackle stresses are later added capability; curved-beam formula may not validate a full3D H-link at contacts.
+5. Your statements about specific published hydrodynamic reference and software capabilities were not live verified; mark proposed references for verification. Do not infer AQWA surface pipeline from INP pipeline.
+6. No host commands or installs have been done during brainstorming. dev-secondary is registry candidate only.
+7. Define incremental benefit: compare new authoring path against existing path on same hardware, nominal geometry, material, solver BC and mesh strategy, recording setup/run times/failure and maintenance. One trivial shape can&#39;t select general CAD tool.
+Please respond &lt;=550 words with final revised recommendation, remaining disagreements, first three actions, gates and what is deferred. Do not include irrelevant connector notices. Distinguish this discussion from formal plan approval.
+
+
+</pre></details><details><summary>Claude round 2</summary><pre># Revised recommendation: next steps after the CAD as Code review
+
+**Verdict: REVISE is withdrawn. I accept all seven challenges. Direction: prove the existing chain works first, then measure what a new authoring path adds.**
+
+This is advisory discussion only, not formal plan approval. Any change to #1785&#39;s pilot scope still has to go through the current plan review and approval. Documentation and issue comments are already authorized.
+
+## Corrections I accept
+
+1. I no longer require approval for issue comments. Changing the pilot scope still requires plan review.
+2. BRep validity (BRepCheck) and Gmsh healing behaviour are separate checks, and each gets its own evidence. Neither stands in for the other.
+3. I&#39;m dropping the universal tolerances: monotonic convergence, 2% against Timoshenko, 1e-6 on reactions and 1e-9 between repeat runs. Tolerances will be set in the plan. Each one names the output, how it&#39;s normalized, and the platform or solver version. A finite 3D solid with a clamped face is not claimed to match a 1D beam.
+4. Existing fixtures and analytical tests come first. A simple axial-bar integration screen is added only if one is missing and it&#39;s approved. Bending and curved-shackle stresses are later capability. A curved-beam formula doesn&#39;t validate a full 3D link at its contact regions.
+5. Hulme (1982) and my claims about software capabilities are unverified proposals. I no longer infer an AQWA surface-panel pipeline from the INP/solid pipeline.
+6. Nothing has been run or installed during brainstorming. dev-secondary is only a candidate listed in the registry.
+7. &quot;Incremental benefit&quot; gets a real definition (see Gate B). One trivial shape cannot select a general CAD tool.
+
+## Remaining disagreements
+
+- **Scope of the readiness check.** I still think readiness should mean running things: tool versions, a minimal `ccx` solve, and the existing round-trip tests passing. Import checks or registry entries alone aren&#39;t enough. Codex may regard some of this as plan-stage work.
+- **Pairing the shackle with diffraction.** I still think this pairing is weak. I&#39;m raising it as a question for plan review, not a recommendation to change scope now.
+- **Deterministic baseline.** I still favour hand-written reference scripts, so that tool capability is measured separately from LLM codegen quality. That can be decided when #1786 is planned.
+
+## First three actions
+
+1. **Host readiness evidence.** On one named host the owner has access to, record OS, Gmsh, CalculiX and Python versions. Run the existing digitalmodel `2a52374` tests (`test_gmsh_step_inp.py` and the round-trip tests) and record pass/fail with logs. No installs unless approved.
+2. **Evidence note on existing fixtures.** List the analytical or fixture tests that already exist in the chain, and what each one actually checks. Report BRep validity, geometric invariants and mesh quality as separate items. Say which gaps exist, if any.
+3. **Draft the comparison protocol for plan review.** Compare a new authoring path (e.g. CadQuery) against the existing FreeCAD/STEP path with the following held fixed:
+   - same host
+   - same nominal geometry and material
+   - same solver boundary conditions
+   - same meshing strategy
+
+   Record setup time, stage-by-stage run times, failures and maintenance burden. Time STEP generation separately from meshing. Use several representative shapes, not one.
+
+## Gates
+
+- **Gate A:** If the existing tests fail at `2a52374`, fixing that is the first task. No new capability work starts before it.
+- **Gate B:** A new tool is adopted only if the comparison shows a measured benefit against thresholds agreed in the plan.
+- **Gate C:** Any change to #1785&#39;s scope (the part, AQWA, or the success criteria) goes through formal plan approval.
+- **Gate D:** Any installs on shared hosts, LLM-trial spend, or AQWA use need an explicit decision on licence, host and budget first.
+
+## Deferred
+
+- The 180 LLM runs and the choice of model versions
+- #1787 methodology and fleet rollout
+- ReplicAD
+- The OpenSCAD STEP track, until STEP export is shown to work
+- Bending and curved-shackle validation
+- An AQWA panel-mesh pipeline and any hydrodynamic references, pending verification
+- Reopening #2190 or #2191 (I recommend against it)
+
+## Open inputs from the owner
+
+- Which host, and whether they have access to it
+- AQWA licence status
+- Budget for #1786
+- What decision #1787 actually needs to make
+- Whether &quot;from docs alone&quot; in #1785 means the book or the library docs</pre></details></section></body></html>
