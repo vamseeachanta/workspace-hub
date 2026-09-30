@@ -32,7 +32,7 @@ The `daily_context_check.sh` script runs:
 
 ```powershell
 # Run as Administrator
-schtasks /create /tn "ContextManagementDaily" /tr "D:\workspace-hub\scripts\context\daily_context_check.sh" /sc daily /st 06:00
+schtasks /create /tn "ContextManagementDaily" /tr "<workspace-root>\workspace-hub\scripts\context\daily_context_check.sh" /sc daily /st 06:00
 ```
 
 ---

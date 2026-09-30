@@ -72,7 +72,7 @@ for key in sorted_keys:
     text = text.replace(key, replacement)
 ```
 
-**Critical: Sort by length descending** — prevents "Seven Arctic" from being partially matched by "Seven".
+**Critical: Sort by length descending** — prevents "construction vessel A" from being partially matched by "Seven".
 
 ### Step 4: Strip OrcaFlex Metadata
 Remove embedded user/machine/file path lines:
@@ -181,10 +181,10 @@ The sanitization script generates `sanitization_audit.json`:
   },
   "transformations": [
     {
-      "source": "s7/ballymore/Jumper_Manifold to PLET/SZ.yml",
+      "source": "s7/gom-tieback-a/Jumper_Manifold to PLET/SZ.yml",
       "target": "docs/modules/orcaflex/jumper/manifold_to_plet/monolithic/SZ.yml",
       "hash": "sha256:abc123...",
-      "replacements": ["Ballymore→deepwater_field_a", "Candies→installation_vessel_01"],
+      "replacements": ["GoM tieback A→deepwater_field_a", "Candies→installation_vessel_01"],
       "size_bytes": 245000
     }
   ]

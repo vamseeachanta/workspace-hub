@@ -2,23 +2,23 @@ ACE Gmail triage for 2026-04-09
 
 Top work items
 1. Call for Presentations: 2026 API Storage Tank Conference
-   From: American Petroleum Institute <registrar@api.org>
+   From: American Petroleum Institute <[email removed]>
    Classification: ACTIONABLE
    Rationale: This is the only message that appears tied to ACE's industry/work domain and could require a decision on whether to submit a presentation, nominate a speaker, or forward internally.
 
 Message-by-message verdict
 - NEW LISTING! Chipotle & America's Best Eyeglasses - Route 4 - Paramus, NJ - NNN Leases
-  From: Cafiero Team <Alan.Cafiero@marcusmillichap.com>
+  From: Cafiero Team <[email removed]>
   Classification: NEWSLETTER
   Why: Commercial listing promotion; no direct work request.
 
 - Iconic Downtown Atlanta Building | 200 Peachtree Street | Strong Existing Income w/ Upside | Steps from Mercedes Benz Stadium, World Congress Center & GSU
-  From: Skyline Seven Real Estate <investmentsales@skylineseven.ccsend.com>
+  From: Skyline Seven Real Estate <[email removed]>
   Classification: NEWSLETTER
   Why: Real-estate blast via Constant Contact; promotional inventory, not a direct task.
 
 - Just Listed | Government Office - Memphis, TN | 9.26% CAP | Recent Extension | 2% Annual Increases
-  From: Sands Investment Group <ethan@sandsig.com>
+  From: Sands Investment Group <[email removed]>
   Classification: NEWSLETTER
   Why: Property listing promo; informational only unless ACE is actively sourcing this asset type.
 
@@ -28,17 +28,17 @@ Message-by-message verdict
   Why: Consumer loyalty offer; unrelated to core work.
 
 - Development Site | Atlanta MSA
-  From: Sands Investment Group <doug@sandsig.com>
+  From: Sands Investment Group <[email removed]>
   Classification: NEWSLETTER
   Why: Another investment listing blast; no explicit work ask.
 
 - Grow your skills with Google for $239/year
-  From: Coursera <Coursera@m.learn.coursera.org>
+  From: Coursera <[email removed]>
   Classification: PROMOTION/NEWSLETTER
   Why: Training subscription upsell; non-urgent and non-operational.
 
 - Call for Presentations: 2026 API Storage Tank Conference
-  From: American Petroleum Institute <registrar@api.org>
+  From: American Petroleum Institute <[email removed]>
   Classification: ACTIONABLE
   Why: Relevant industry event with a likely deadline-driven submission opportunity that may merit internal review.
 

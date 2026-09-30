@@ -1,6 +1,6 @@
 """Pytest wrapper driving the legal-sanity-scan resolver bash tests via git-bash.
 
-TDD group 23 (llm-wiki-acma#299): nested-wins / sibling-fallback /
+TDD group 23 (llm-wiki-mkt-a#299): nested-wins / sibling-fallback /
 env-override-wins / not-found exit 2 listing candidates / --all
 empty-enumeration exit 2 (+ walk-up and --all env-roots coverage).
 

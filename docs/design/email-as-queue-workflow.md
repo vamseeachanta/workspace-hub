@@ -11,7 +11,7 @@
 
 Issue [#2026](https://github.com/vamseeachanta/workspace-hub/issues/2026) implements the local queue-state layer with two scopes:
 
-- Read/assist scope: `ace` (`vamsee.achanta@aceengineer.com`), `personal` (`achantav@gmail.com`), `skestates` (`skestatesinc@gmail.com`), and any other configured alias unless explicitly disabled.
+- Read/assist scope: `ace` (`owner@example.com`), `personal` (`owner.personal@example.com`), `skestates` (`owner.realestate@example.com`), and any other configured alias unless explicitly disabled.
 - Cleanup scope: only `ace` and `personal`.
 
 `skestates` and other assist-only aliases are read and assisted, but their email is kept forever. Important `skestates` attention is surfaced through the starred method and Telegram `Family - Finance` channel.
@@ -82,20 +82,20 @@ The new model treats every email as a transient item in a processing queue. Data
 
 ## 2. Per-Account Rules
 
-### 2.1 ace (vamsee.achanta@aceengineer.com)
+### 2.1 ace (owner@example.com)
 
 | Category | Handling | Extraction Target |
 |---|---|---|
-| Active clients (RIL, lng-a, McDermott, Shell, etc.) | Extract project data, track threads | aceengineer-admin/data/client-{name}/ |
+| Active clients (RIL, lng-a, an installation contractor, Shell, etc.) | Extract project data, track threads | aceengineer-admin/data/client-{name}/ |
 | Recruiters (DISYS, Steps to Progress, etc.) | Extract role/rate/contact | aceengineer-admin/data/recruiting/ |
 | CRE listings (Sands IG, Marcus Millichap, LoopNet) | Extract property/cap-rate/tenant data | assethold/data/cre-listings/ |
 | Software vendors (ANSYS, DNV, ENGYS) | Extract license/support data only if actionable | aceengineer-admin/data/vendor/ |
 | Industry colleagues | Keep for networking touchbase, extract contact if new | aceengineer-admin/data/colleague/ |
 | Marketing/newsletters | Label/no pending extraction; Gmail delete belongs to #2423 | -- |
 
-VIP domains requiring immediate attention: `ril.com`, `lng-agroup.com`, `mcdermott.com`, `shell.com`, `kbr.com`, `bp.com`, `subsea7.com`, `technipfmc.com`
+VIP domains requiring immediate attention: `ril.com`, `lng-agroup.com`, `installation-contractor.com`, `shell.com`, `kbr.com`, `bp.com`, `subsea7.com`, `technipfmc.com`
 
-### 2.2 personal (achantav@gmail.com)
+### 2.2 personal (owner.personal@example.com)
 
 | Category | Handling | Extraction Target |
 |---|---|---|
@@ -106,7 +106,7 @@ VIP domains requiring immediate attention: `ril.com`, `lng-agroup.com`, `mcdermo
 | Social media notifications | Label/no pending extraction; Gmail delete belongs to #2423 | -- |
 | Marketing / promotions | Label/no pending extraction; Gmail delete belongs to #2423 | -- |
 
-### 2.3 skestates (skestatesinc@gmail.com)
+### 2.3 skestates (owner.realestate@example.com)
 
 | Category | Handling | Extraction Target |
 |---|---|---|
@@ -205,7 +205,7 @@ extraction:
   source:
     account: ace
     thread_id: "18f3a2b..."
-    sender: listings@sandsig.com
+    sender: listings@example.com
     date: "2026-04-08"
   data:
     property_name: "Dollar General NNN"
@@ -473,8 +473,8 @@ The daily digest (gmail-digest.py) should include a "Learning Backlog" section:
 ```
 === LEARNING BACKLOG ===
   Unknown domains (no routing rule):
-    - newclient@unknowndomain.com (ace, 3 messages)
-    - vendor@newcompany.io (disabled account, 1 message)
+    - newclient@example.com (ace, 3 messages)
+    - vendor@example.net (disabled account, 1 message)
   Extraction failures:
     - sandsig.com: 2 messages failed CRE template (missing cap_rate)
   Reactivated threads (consider longer grace):

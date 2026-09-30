@@ -612,65 +612,129 @@ def test_fetch_repo_issues_emits_graphql_command_with_pagination():
     assert "cursor=CUR1" in page2
 
 
-def test_workflow_contract_keeps_phase_2_cron_active_and_push_retry_bounded():
-    text = (ROOT / ".github/workflows/kanban-reconcile.yml").read_text(encoding="utf-8")
-    workflow = yaml.load(text, Loader=yaml.BaseLoader)
+# --- Owner decision S01 item 1: generated boards are local only ---------------
 
-    assert workflow["concurrency"] == {
-        "group": "kanban-reconcile",
-        "cancel-in-progress": "false",
-    }
-    assert workflow["permissions"] == {"contents": "write", "issues": "read"}
+GENERATED_SAMPLES = [
+    ".claude/memory/kanban/boards/repo-workspace-hub.yaml",
+    ".claude/memory/kanban/boards/repo-digitalmodel-solver.yaml",
+    "config/ai-tools/provider-work-queue.json",
+    "config/ai-tools/provider-kanban.json",
+    "docs/reports/provider-work-queue.md",
+    "docs/reports/provider-kanban-dashboard.md",
+    "docs/reports/provider-kanban-dashboard.html",
+    "docs/dashboards/2026-05-09-tier1-gh-issue-kanban.html",
+    "docs/dashboards/2026-05-14-orca-kanban.html",
+    "docs/reports/2026-05-09-tier1-gh-issue-kanban-data.json",
+    "docs/reports/2026-05-09-tier1-gh-issue-kanban-board.md",
+    "docs/reports/2026-05-11-tier1-kanban-board-data.json",
+    "docs/reports/2026-05-06-tier1-board-index.md",
+    "docs/reports/2026-05-14-orca-kanban-data.json",
+    "docs/reports/kanban/2026-05-11-repo-workspace-hub-kanban.md",
+    "docs/reports/kanban/2026-05-09-board-index.md",
+]
 
-    # Phase 2 (#2826): the */20 cron is now ACTIVE (uncommented), and the stale
-    # "re-enable the */20 schedule" deferral TODO is gone.
-    assert "# TODO(#2802 phase 2): re-enable the */20 schedule" not in text
-    assert '  # schedule:\n  #   - cron: "*/20 * * * *"' not in text
-    # `on:` is a YAML key; BaseLoader yields the literal string "on" unless it
-    # parses as a bool, so look it up defensively.
-    triggers = workflow.get("on", workflow.get(True))
-    assert "schedule" in triggers
-    assert {"cron": "*/20 * * * *"} in triggers["schedule"]
-    # repository_dispatch lets sibling repos send low-latency nudges.
-    assert "repository_dispatch" in triggers
-    assert "workflow_dispatch" in triggers
-    assert re.search(r"(?m)^  workflow_dispatch:", text)
 
-    steps = workflow["jobs"]["reconcile"]["steps"]
+def _git(*args: str) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True)
 
-    # The App-token-mint step is present, references the App secrets, and uses
-    # actions/create-github-app-token so `gh api graphql` reads sibling repos.
-    mint = next(
-        s for s in steps if "create-github-app-token" in str(s.get("uses", ""))
+
+def test_no_workflow_publishes_kanban_boards():
+    """The */20 reconcile job committed boards to this public repository; it is gone,
+    and with it the IDENTIFIER_DENY_LIST secret it needed."""
+    assert not (ROOT / ".github/workflows/kanban-reconcile.yml").exists()
+    assert not (ROOT / ".github/workflow-templates/kanban-nudge.yml").exists()
+    for wf in (ROOT / ".github/workflows").glob("*.y*ml"):
+        text = wf.read_text(encoding="utf-8")
+        assert "kanban/boards" not in text, wf.name
+        assert "IDENTIFIER_DENY_LIST" not in text, wf.name
+
+
+@pytest.mark.parametrize("rel", GENERATED_SAMPLES)
+def test_generated_board_files_are_ignored_and_untracked(rel):
+    assert _git("check-ignore", "-q", "--no-index", rel).returncode == 0, rel
+    assert _git("ls-files", "--error-unmatch", rel).returncode != 0, rel
+
+
+@pytest.mark.parametrize("rel", [
+    ".claude/memory/kanban/boards/ecosystem.yaml",
+    ".claude/memory/kanban/manifest.yaml",
+    "docs/reports/2026-05-06-tier1-kanban-portfolio-review.md",
+    "docs/reports/kanban/2026-05-10-w0-reconciliation-closeout.md",
+])
+def test_authored_kanban_files_stay_tracked(rel):
+    assert _git("check-ignore", "-q", "--no-index", rel).returncode != 0, rel
+    assert _git("ls-files", "--error-unmatch", rel).returncode == 0, rel
+
+
+def test_reconcile_builds_a_missing_board_from_its_manifest_entry(tmp_path: Path):
+    """A fresh checkout has no board files; the builder writes them locally."""
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    for board in (kanban / "boards").glob("*.yaml"):
+        board.unlink()
+
+    result = reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [
+            issue(1, "Repo-level card"),
+            issue(2, "Ops card", labels=["domain:ops"]),
+        ],
+        dry_run=False,
     )
-    assert "KANBAN_RECONCILE_APP_ID" in mint["with"]["app-id"]
-    assert "KANBAN_RECONCILE_APP_KEY" in mint["with"]["private-key"]
 
-    run_step = steps[-1]
-    # Anti-loop split: the reconcile invocation gets the App token, but the
-    # step-level GH_TOKEN/GITHUB_TOKEN (and therefore the push) stay the default
-    # github.token so the board push does NOT carry the App token / retrigger CI.
-    assert run_step["env"]["GH_TOKEN"] == "${{ github.token }}"
-    assert run_step["env"]["GITHUB_TOKEN"] == "${{ github.token }}"
-    assert run_step["env"]["APP_TOKEN"] == "${{ steps.app-token.outputs.token }}"
+    assert result.changed is True
+    repo_board = read_yaml(kanban / "boards/repo-workspace-hub.yaml")
+    ops_board = read_yaml(kanban / "boards/repo-workspace-hub-ops.yaml")
+    assert repo_board["board"]["slug"] == "repo-workspace-hub"
+    assert repo_board["board"]["repo"] == "vamseeachanta/workspace-hub"
+    assert ops_board["board"]["domain"] == "ops"
+    assert [c["title"] for c in repo_board["cards"]] == ["Repo-level card"]
+    assert [c["title"] for c in ops_board["cards"]] == ["Ops card"]
 
-    run = run_step["run"]
-    # Reconcile uses the App token; the push must NOT.
-    assert 'GH_TOKEN="$APP_TOKEN"' in run
-    assert "uv run python scripts/kanban/reconcile.py" in run
-    assert 'APP_TOKEN' not in run.split("git push")[1]
-    # Anti-loop hardening (Codex #2826.1): the App token must reach ONLY the reconcile
-    # call, never git credentials. Assert no credential-injection sink exists that a
-    # regression could use to wire the App token into the push (which would retrigger CI).
-    for sink in ("git remote set-url", "http.extraheader", "gh auth setup-git", "git config credential"):
-        assert sink not in run, f"anti-loop: unexpected git-credential mechanism '{sink}' in the run step"
 
-    assert run.count('git commit -m "chore: reconcile kanban board"') == 1
-    assert "for attempt in 1 2 3; do" in run
-    assert "push_stderr=" in run
-    assert "non-fast-forward" in run
-    assert "fetch first" in run
-    assert "git pull --rebase" not in run
+def test_reconcile_writes_a_missing_board_that_gets_no_cards(tmp_path: Path):
+    """A manifest board with no live cards is still created, so the loader sees it."""
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    for board in (kanban / "boards").glob("*.yaml"):
+        board.unlink()
+
+    result = reconcile.reconcile_kanban(
+        kanban, issue_fetcher=lambda repo: [issue(1, "Repo-level card")], dry_run=False)
+
+    ops_path = kanban / "boards/repo-workspace-hub-ops.yaml"
+    assert ops_path.exists()
+    assert ops_path in result.changed_files
+    ops_board = read_yaml(ops_path)
+    assert ops_board["board"]["slug"] == "repo-workspace-hub-ops"
+    assert ops_board["cards"] == []
+
+
+def test_a_missing_board_keeps_the_manifest_metadata(tmp_path: Path):
+    """workspace_path, parent_slug and a display name survive a rebuild from the
+    manifest: the loader uses them for the board workdir and each card's workspace."""
+    reconcile = load_reconcile()
+    kanban = seed_kanban(tmp_path)
+    manifest = read_yaml(kanban / "manifest.yaml")
+    for entry in manifest["manifest"]["boards"]:
+        entry["workspace_path"] = "/srv/example/workspace-hub"
+    write_yaml(kanban / "manifest.yaml", manifest)
+    for board in (kanban / "boards").glob("*.yaml"):
+        board.unlink()
+
+    reconcile.reconcile_kanban(
+        kanban,
+        issue_fetcher=lambda repo: [issue(2, "Ops card", labels=["domain:ops"])],
+        dry_run=False,
+    )
+
+    repo_board = read_yaml(kanban / "boards/repo-workspace-hub.yaml")["board"]
+    ops_board = read_yaml(kanban / "boards/repo-workspace-hub-ops.yaml")["board"]
+    assert repo_board["workspace_path"] == "/srv/example/workspace-hub"
+    assert ops_board["workspace_path"] == "/srv/example/workspace-hub"
+    assert ops_board["parent_slug"] == "repo-workspace-hub"
+    assert repo_board["display_name"] == "workspace-hub"
+    assert ops_board["display_name"] == "workspace-hub · ops"
 
 
 # --- #3380: an unresolvable repo (renamed/removed) must be skipped, not crash ---

@@ -65,7 +65,7 @@ def test_runbook_references_triggering_issues():
 
 # 2. Define ingestion vector (decision: email)
 # Write docs/security/external-contributor-ingestion-vector.md:
-#   - Primary: email to security@aceengineer.com
+#   - Primary: email to security@example.com
 #   - Secondary: open a public issue from a designated AceEngineer account
 #     after triage approval
 #   - Lockdown contract: collaborators_only stays in force; ingestion

@@ -15,7 +15,7 @@ Continued from prior handoff `2026-05-20-issue-2746-execution-complete-2745-pend
 | Task | Outcome | Notes |
 |---|---|---|
 | T0 — Parallel-work precondition | Hermes worker active on #2766 (proj-a) — different scope, no conflict | Inline |
-| T0.5 — Backup pre-snapshot | 10,729 files / 1 top-dir (`31522-woodfibre-lng`) captured to `/tmp/mkt-a-backup-pre*.txt` | Inline |
+| T0.5 — Backup pre-snapshot | 10,729 files / 1 top-dir (`31522-lng-terminal-a`) captured to `/tmp/mkt-a-backup-pre*.txt` | Inline |
 | T1 — RED verification | STATUS-FROZEN.md absent ✓; isArchived=false ✓; pushurl unset ✓ | Inline |
 | T2 — Write STATUS-FROZEN.md | 42 lines, 1840 bytes, verbatim spec; spec-reviewer ✅ + code-reviewer ✅ (concerns rejected as temporal-ordering, not content) | Subagent (haiku) |
 | T3 — Commit + push | **DEVIATION**: GH Contents API PUT (ext4 95% disk-pressure D-state hang on local `git commit`). Commit [`a7727671`](https://github.com/vamseeachanta/mkt-a/commit/a772767108ee0d129be2b083ca2ec78ef477d532) on `mkt-a:main`. Local commit `a81d3c7c` (same content, same parent, different SHA) landed later when ext4 eased — contained by T4 pushurl=no_push. | Inline (escalated from subagent) |

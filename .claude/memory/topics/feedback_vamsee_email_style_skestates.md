@@ -10,7 +10,7 @@ metadata:
   originSessionId: 086ee872-c041-432a-9d9a-b09f082a01ca
 ---
 
-When drafting emails for Vamsee to send (esp. skestatesinc@gmail.com vendor/partner threads:
+When drafting emails for Vamsee to send (esp. info@example.org vendor/partner threads:
 Family Dollar/Angela Colon, PHFM/Rhonda Brown, Kevin Straight, FSR HOA), match this style.
 
 **Learned 2026-06-16** by comparing my staged drafts to what he actually sent (FD30150 HOA +

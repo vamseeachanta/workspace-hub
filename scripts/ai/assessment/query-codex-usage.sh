@@ -89,15 +89,23 @@ get_live_rate_limits() {
     [[ -n "$resp" ]] || return 1
 
     # Map camelCase RPC fields onto the session-parser entry shape so main()
-    # is source-agnostic. Reject payloads missing the weekly (secondary) lane.
+    # is source-agnostic. Windows are classified by length, not slot name:
+    # Codex <= 0.13x sent primary = 5h / secondary = weekly, Codex 0.157 sends
+    # the weekly window as primary (windowDurationMins 10080) and secondary
+    # null. A payload with no weekly window is rejected.
     echo "$resp" | jq -ce '
         .result.rateLimits
-        | select(.secondary.usedPercent != null and .secondary.resetsAt != null)
+        | [ (.primary   | select(. != null) | . + {_mins: (.windowDurationMins // 300)}),
+            (.secondary | select(. != null) | . + {_mins: (.windowDurationMins // 10080)}) ]
+        | map(select(.usedPercent != null))
+        | (map(select(._mins >= 1440)) | .[0]) as $w
+        | (map(select(._mins <  1440)) | .[0]) as $f
+        | select($w != null and $w.resetsAt != null)
         | {
-            week_pct: .secondary.usedPercent,
-            resets_at_epoch: .secondary.resetsAt,
-            five_hour_pct: (.primary.usedPercent // 0),
-            five_hour_resets_at_epoch: (.primary.resetsAt // 0)
+            week_pct: $w.usedPercent,
+            resets_at_epoch: $w.resetsAt,
+            five_hour_pct: ($f.usedPercent // 0),
+            five_hour_resets_at_epoch: ($f.resetsAt // 0)
         }' 2>/dev/null || return 1
 }
 

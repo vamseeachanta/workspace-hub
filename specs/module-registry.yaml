@@ -60,7 +60,7 @@ modules:
           benchmarks. Primary driver is water depth; tiebreakers include
           reservoir size, distance to infrastructure, and fluid type.
         gom_analogues:
-          - Perdido (Spar, 2438 m)
+          - GoM spar A (Spar, 2438 m)
           - Mars (TLP, 896 m)
           - Atlantis (Semi, 2150 m)
           - Thunder Horse (Semi, 1844 m)
@@ -101,7 +101,7 @@ modules:
           Subsea tiebacks require tieback_distance_km parameter.
         benchmarks:
           TLP:   "$2-6B (Mars, Ursa)"
-          Spar:  "$3-7B (Perdido, Whale)"
+          Spar:  "$3-7B (GoM spar A, Whale)"
           Semi:  "$4-10B (Appomattox, Thunder Horse)"
           FPSO:  "$5-12B (Brazil pre-salt analogue)"
           Tieback_near: "$200-500M (<10 km)"

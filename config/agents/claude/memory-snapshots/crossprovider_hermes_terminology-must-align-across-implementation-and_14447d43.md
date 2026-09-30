@@ -8,6 +8,6 @@ metadata:
   tags: [terminology-consistency, scoping, documentation]
 ---
 
-Engineering reports use precise terminology; mismatches mislead consumers. B1528: code comment said `psi` is "local downstream axis rotation" but report text said "current heading offset"—different meanings for naval engineers. Define terms once in architecture doc; reference consistently across implementation, tests, and generated output.
+Engineering reports use precise terminology; mismatches mislead consumers. proj-a: code comment said `psi` is "local downstream axis rotation" but report text said "current heading offset"—different meanings for naval engineers. Define terms once in architecture doc; reference consistently across implementation, tests, and generated output.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

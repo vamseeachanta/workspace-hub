@@ -130,7 +130,7 @@ def test_approve_provider_plan_dry_run_reports_exact_transaction(tmp_path, monke
     result = module.execute_transaction(
         9001,
         mode="dry-run",
-        user_identity="vamsee.achanta@aceengineer.com",
+        user_identity="owner@example.com",
         approval_source="cli",
         confirmation_token=None,
         is_tty=True,

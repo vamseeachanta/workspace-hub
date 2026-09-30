@@ -21,7 +21,7 @@ def run_hook(path: Path):
 def test_fixture_redaction_rejects_real_domains(tmp_path):
     fixture = tmp_path / "bad.yaml"
     fixture.write_text(
-        "sender: person@aceengineer.com\nphone: 713-555-0181\n",
+        "sender: person@example.shop\nphone: 713-555-0181\n",
         encoding="utf-8",
     )
 
@@ -34,7 +34,7 @@ def test_fixture_redaction_rejects_real_domains(tmp_path):
 def test_fixture_redaction_allows_placeholder_domains(tmp_path):
     fixture = tmp_path / "good.yaml"
     fixture.write_text(
-        "sender: client@example.com\nreply_to: broker@test.invalid\n",
+        "sender: client@example.com\nreply_to: broker@example.net\n",
         encoding="utf-8",
     )
 

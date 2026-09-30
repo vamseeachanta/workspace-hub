@@ -51,7 +51,7 @@ parallel work, publish verified evidence, and prepare an executable ace-win-1 ha
 - `deckhand`: clean `main`; the earlier issue-529 stash is no longer present. A
   transient edit to `scripts/deckhand/licensed-run-agent/run-agent.cmd` appeared during
   adversarial review and was resolved by its external owner before the final audit.
-- `llm-wiki-acma`: clean `chore/issue-215-it-tooling-plan`; linked worktrees for
+- `llm-wiki-<client>`: clean `chore/issue-215-it-tooling-plan`; linked worktrees for
   issues 214 and 216 are preserved as active parallel work. The issue-214 worktree is
   clean; four plan-review result files observed during adversarial review were
   dispositioned by its external owner before the final audit.
@@ -87,7 +87,7 @@ collection will not clear all of these because several are measurement or policy
    [PR #2850](https://github.com/vamseeachanta/workspace-hub/pull/2850).
 6. The broad full-repo legal scan still finds pre-existing legacy/public engineering
    content. The task-scoped `--diff-only` publication gate passed.
-7. The ace-win-2 evidence uses `acma-ws014`, which is a tracked public alias under
+7. The ace-win-2 evidence uses `ace-win-2`, which is a tracked public alias under
    `config/workstations/registry.yaml`. Unlike ace-win-1, no private-hostname collision
    is documented for this machine. If that policy changes, contain the published
    evidence and route redaction through the legal/issue workflow immediately.
@@ -120,7 +120,7 @@ collection will not clear all of these because several are measurement or policy
 6. **Run the solver licence follow-up** when the licensed application can be opened and
    checked interactively.
 7. **Prune worktrees only after their issues finish.** Recheck ownership/activity for
-   workspace-hub issues 3424/3443 and llm-wiki-acma issues 214/216 before any guarded
+   workspace-hub issues 3424/3443 and llm-wiki-<client> issues 214/216 before any guarded
    removal.
 
 ## Expected residue

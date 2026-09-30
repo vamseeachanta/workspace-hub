@@ -319,9 +319,9 @@ labeled as such.
   - Detailed civil/structural design of jetties, dolphins, breakwaters.
   - QRA, hazardous-area classification, or process-safety final design.
   - Vendor-certified loading-arm / transfer-system design.
-  - Specific named-client terminal projects (Woodfibre and SESA-related
+  - Specific named-client terminal projects (LNG terminal A and SESA-related
     work is corpus-confidential and gated by mkt-a / project-owner
-    clearance — `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-woodfibre.md`,
+    clearance — `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/terminal-4-lng-terminal-a.md`,
     `terminal-1-sesa.md`).
 - **Missing proof.**
   - A public-source-only "Berth Operability Decision Frame" 2-pager built

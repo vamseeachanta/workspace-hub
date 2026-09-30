@@ -1,6 +1,6 @@
 ---
 name: excel-workbook-to-python-v2
-description: Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Proven superior quality vs Linux openpyxl extraction (24 vs 7 functions, 81 vs 53 tests). Validated on Ballymore jumper installation analysis.
+description: Convert engineering Excel workbooks to Python code using Claude Desktop cowork on Windows. Proven superior quality vs Linux openpyxl extraction (24 vs 7 functions, 81 vs 53 tests). Validated on GoM tieback A jumper installation analysis.
 trigger: User asks to convert an Excel workbook to Python code, or references workbook conversion (#1934, #471)
 effort: medium
 model: any
@@ -35,7 +35,7 @@ Open the workbook in Excel. Launch Claude Desktop cowork session.
 ### Step 2: Copy workbook path
 
 Locate workbook path in `client-c/engineering_workbooks/`.
-Copy full Windows path (e.g., `C:\path\to\client-c\engineering_workbooks\ballymore\...`).
+Copy full Windows path (e.g., `C:\path\to\client-c\engineering_workbooks\gom-tieback-a\...`).
 
 ### Step 3: Prompt in Claude Desktop cowork
 

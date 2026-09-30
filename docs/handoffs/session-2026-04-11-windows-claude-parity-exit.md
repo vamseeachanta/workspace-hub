@@ -19,7 +19,7 @@ Repo: workspace-hub
 ### Package 4
 - Closed the repo-side Windows readiness proof-path gap:
   - `.gitignore` unignores `.claude/state/harness-readiness-licensed-win-1.yaml`
-  - `scripts/readiness/harness-config.yaml` now sets `licensed-win-1.ws_hub_path: 'D:\workspace-hub'`
+  - `scripts/readiness/harness-config.yaml` now sets `licensed-win-1.ws_hub_path: '<workspace-root>\workspace-hub'`
   - `scripts/readiness/compare-harness-state.sh` now degrades fresh non-pass Windows reports
   - `scripts/windows/setup-scheduler-tasks.ps1` documents shared readiness proof updates
   - bootstrap artifact created at `.claude/state/harness-readiness-licensed-win-1.yaml`

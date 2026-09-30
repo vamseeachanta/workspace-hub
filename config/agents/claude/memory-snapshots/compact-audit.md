@@ -209,7 +209,7 @@
   [age] line 164: - **Tool**: pyWAsP — Python API for WAsP (DTU Wind Energy / Ørsted)
   [age] line 153: - Both require plan gate + Codex cross-review before implementation
   [age] line 152: - **WRK-277**: ABS GN Offshore 2018 — PDF at `digitalmodel/docs/domains/cathodic_protection/codes/ABS cathodic-protection-offshore-gn-dec18.pdf`
-  [age] line 151: - **WRK-272**: DNV-RP-B401 offshore — jacket structures; B401-2021 PDF at `mkt-a/B1522/ctr-2/cal/DNV-RP-B401-2021.pdf`
+  [age] line 151: - **WRK-272**: DNV-RP-B401 offshore — jacket structures; B401-2021 PDF at `mkt-a/job-code/ctr-2/cal/DNV-RP-B401-2021.pdf`
   [age] line 148: - Note: client-d and mkt-a have NO pre-commit config — manual scan gate only
   [age] line 147:   - Entry: `scripts/legal/legal-sanity-scan.sh --repo=digitalmodel` (NOT `../scripts/...`)
   [age] line 146: - Legal CI gate: `digitalmodel/.pre-commit-config.yaml` has `legal-sanity-scan` hook

@@ -14,7 +14,7 @@
 
 Workspace-hub `src/digitalmodel/` is a near-empty overlay (only `subsea/pipeline/free_span/`). The actual digitalmodel code lives in the sibling submodule repo at `/mnt/local-analysis/workspace-hub/digitalmodel/src/digitalmodel/`. **All implementation lands in the submodule repo, not the overlay.**
 
-- Found: `digitalmodel/src/digitalmodel/marine_ops/installation/jumper_lift.py:1-1200` — installation-time lift-analysis solver (Ballymore manifold-to-PLET V2). Defines `ConnectorProperties` (L213), `PipeSectionLengths`, `BarePipeProperties`, `BuoyancyModuleProperties`, `ClampProperties`, `CraneConfig`, `RiggingProperties`, `StrakeProperties` dataclasses and `compute_orcaflex_sections`. This is load-bearing prior art; new module must coordinate ownership.
+- Found: `digitalmodel/src/digitalmodel/marine_ops/installation/jumper_lift.py:1-1200` — installation-time lift-analysis solver (GoM tieback A manifold-to-PLET V2). Defines `ConnectorProperties` (L213), `PipeSectionLengths`, `BarePipeProperties`, `BuoyancyModuleProperties`, `ClampProperties`, `CraneConfig`, `RiggingProperties`, `StrakeProperties` dataclasses and `compute_orcaflex_sections`. This is load-bearing prior art; new module must coordinate ownership.
 - Found: `digitalmodel/src/digitalmodel/marine_ops/installation/jumper_installation.py:1-346` — higher-level jumper installation workflow (crane tip motion, splash zone, go/no-go). Adjacent to issue #471.
 - Found: `digitalmodel/src/digitalmodel/solvers/orcaflex/reporting/renderers/jumper.py:1-20` — thin reporting renderer.
 - Found: `digitalmodel/src/digitalmodel/solvers/orcaflex/modular_generator/*` — spec→modular OrcaFlex generator (see #2455 plan, in-flight). Natural handoff for "OrcaFlex export" AC.
@@ -106,7 +106,7 @@ Workspace-hub `src/digitalmodel/` is a near-empty overlay (only `subsea/pipeline
 # digitalmodel/src/digitalmodel/marine_ops/installation/jumper_lift.py:~213
 @dataclass
 class ConnectorProperties:
-    # installation-specific: lift/crane loads for Ballymore V2
+    # installation-specific: lift/crane loads for GoM tieback A V2
     ...
 ```
 
@@ -335,7 +335,7 @@ Recommend (B). Phase 3 in this plan delivers the spec emitter; a separate follow
 - **Risk — Cross-repo placement.** Workspace-hub `src/digitalmodel/` is a near-empty overlay; real submission is in the `digitalmodel/` submodule repo. Mitigation: all file paths in this plan are prefixed `digitalmodel/src/digitalmodel/...` to make the repo explicit. Reviewer gate: confirm every `Create` row in Files-to-Change is against submodule, not overlay.
 - **Risk — T3 scope creep.** Full implementation (catalog + connector_design + bending + thermal + fatigue + OrcaFlex export + worked example + tests) is large for a single PR. Mitigation: explicit Phase 1/2/3 breakdown in Artifact Map; phases may be landed as separate PRs under the same issue.
 - **Risk — Fatigue integration API not yet specified.** `fatigue/hotspot_stress.py` API is internal. Mitigation: Phase 3 opens with a brief API-design note appended to this plan as an amendment (or referenced from `fatigue_bridge.py` docstring); no behavior change to `fatigue/` module itself.
-- **Open question:** Should the worked example use the existing `examples/demos/gtm/data/rigid_jumpers.json` fixture or a new Ballymore-derived fixture? Recommend reusing `rigid_jumpers.json` (demo_05 already validates it) to reduce fixture-drift risk.
+- **Open question:** Should the worked example use the existing `examples/demos/gtm/data/rigid_jumpers.json` fixture or a new gom-tieback-a-derived fixture? Recommend reusing `rigid_jumpers.json` (demo_05 already validates it) to reduce fixture-drift risk.
 - **Open question:** Interface stubs for #484 (17D trees) / #485 (17P manifolds) / #488 (17E/17F umbilicals) — add Protocol/ABC stubs now or defer? Recommend defer — add only a docstring note listing expected coupling points; stubs without a consumer risk Protocol churn.
 
 ---

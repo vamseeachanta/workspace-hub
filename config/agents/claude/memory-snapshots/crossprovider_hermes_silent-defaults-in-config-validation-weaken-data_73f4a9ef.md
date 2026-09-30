@@ -8,6 +8,6 @@ metadata:
   tags: [data-contracts, config-validation, silent-defaults]
 ---
 
-Config validation via `.get(key, default)` allows tools to generate results with missing critical inputs, causing semantic drift. B1528: OCIMF current loads depend on vessel beam/draft, but config silently filled missing values, allowing contradictory claims (report used hull-current terms while YAML disclaimed them). Fail-fast on required inputs.
+Config validation via `.get(key, default)` allows tools to generate results with missing critical inputs, causing semantic drift. proj-a: OCIMF current loads depend on vessel beam/draft, but config silently filled missing values, allowing contradictory claims (report used hull-current terms while YAML disclaimed them). Fail-fast on required inputs.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

@@ -30,7 +30,7 @@
   behavior while owner-machine verification exercises native CIM and Windows APIs.
 - Found: `tests/readiness/test_windows_scheduler_single_source.py` demonstrates a
   Windows-only execution test guarded by a platform/PowerShell availability check.
-- Found locally on ace-win-1 but not tracked: `D:\ws\Repair-RdpMicrophone.ps1`, SHA-256
+- Found locally on ace-win-1 but not tracked: `<workspace-root>\Repair-RdpMicrophone.ps1`, SHA-256
   `D48F23EBD968F68331F75CD2603C36794CE2C3A5310BE84212C5EC34EA5CE561`.
   It provides guarded Client and Server audits, optional repair, RDP-file backup,
   consent reset, JSON output, and event-channel classification. Its parser validation,
@@ -184,7 +184,7 @@ Mode: AUDIT (read-only) | Role: Server
 VERDICT: Microphone redirection is absent; the client did not negotiate audio input.
 Run Client repair on ace-win-2, sign out of ace-win-1, reconnect, and rerun Server audit.
 
-Report: C:\Users\vamseea\AppData\Local\Temp\2\RdpMicAudit-Server-ace-win-1-20260714-055953.json
+Report: C:\Users\<user>\AppData\Local\Temp\2\RdpMicAudit-Server-ace-win-1-20260714-055953.json
 WRAPPER_SCRIPT_EXIT_CODE=2
 ```
 

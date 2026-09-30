@@ -1579,7 +1579,7 @@ repository-root/
 **For Questions:**
 - Documentation: docs/modules/standards/TESTING_FRAMEWORK_STANDARDS.md
 - Slack: #devops-testing
-- Email: devops@workspace-hub.local
+- Email: devops@example.com
 
 ---
 

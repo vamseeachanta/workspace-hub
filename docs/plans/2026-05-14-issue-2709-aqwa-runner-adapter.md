@@ -56,7 +56,7 @@ Not applicable — this is a solver adapter/infrastructure issue, not a standard
 - `knowledge/wikis/engineering/raw/papers/SKILLS_SUMMARY.md:1559` — archived skill "no-dedicated-python-package": "The PyAnsys metapackage (33+ packages) does **not** include a dedicated AQWA client" — confirms `subprocess` is the only invocation path.
 - `knowledge/wikis/engineering/raw/papers/SKILLS_SUMMARY.md:1560` — archived skill "python-subprocess-pattern": establishes the `import subprocess` + `subprocess.run()` shape.
 - `knowledge/wikis/engineering/raw/papers/SKILLS_SUMMARY.md:1573` — archived skill "detecting-success-vs-failure": `grep -qi "error\|fatal\|abort" analysis.mes && echo "FAILED"` — defines the `.lis`/`.mes` log-scrape success check.
-- `knowledge/wikis/engineering/raw/papers/SKILLS_SUMMARY.md:1557` — archived skill "license-architecture": `export ANSYSLMD_LICENSE_FILE=1055@license-server.domain.com` — env-var pattern for ANSYS license.
+- `knowledge/wikis/engineering/raw/papers/SKILLS_SUMMARY.md:1557` — archived skill "license-architecture": `export ANSYSLMD_LICENSE_FILE=1055@license-server` — env-var pattern for ANSYS license.
 - `knowledge/wikis/engineering/raw/papers/SKILLS_SUMMARY.md:1558` — archived skill "locating-the-executable": Windows install path is typically `%ANSYS_INSTALL_DIR%\Framework\bin\Win64\` **or sibling**; must probe at runtime, not hardcode. The revised pseudocode probe set explicitly includes `Framework/bin/Win64/ansys*l.exe` per this source (r1 Codex finding #5).
 
 ### Documents consulted

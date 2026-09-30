@@ -29,7 +29,7 @@ BUCKETS = [
     Bucket('digitalmodel-qgis', 'qgis', Path('/mnt/ace/digitalmodel/tools/qgis/_from_elements')),
     Bucket('digitalmodel-riser-toolbox', 'Riser Toolbox', Path('/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements')),
     Bucket('digitalmodel-suction-pile-sizing', 'Suction Pile Sizing', Path('/mnt/ace/digitalmodel/references/suction-pile-sizing/_from_elements')),
-    Bucket('mkt-a-31522-woodfibre', 'Woodfibre', Path('/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements')),
+    Bucket('mkt-a-31522-lng-terminal-a', 'LNG terminal A', Path('/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements')),
 ]
 
 

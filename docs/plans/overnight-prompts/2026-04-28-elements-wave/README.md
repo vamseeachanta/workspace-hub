@@ -26,7 +26,7 @@ Produce safe, bounded, approval-ready planning artifacts for the four remaining 
 | 1 | `sesa-lng` | [#2541](https://github.com/vamseeachanta/workspace-hub/issues/2541) | `/mnt/ace/lng-a/62092_sesa` | 1.7 GB / 889 files |
 | 2 | `lng-a-university` | [#2542](https://github.com/vamseeachanta/workspace-hub/issues/2542) | `/mnt/ace/lng-a/training` | 11 GB / 1,129 files |
 | 3 | `lng-a-codes` | [#2543](https://github.com/vamseeachanta/workspace-hub/issues/2543) | `/mnt/ace/lng-a/codes` | 25 GB / 70,400 files |
-| 4 | `woodfibre-lng` | [#2544](https://github.com/vamseeachanta/workspace-hub/issues/2544) | `/mnt/ace/mkt-a/31522-woodfibre-lng` | 1.8 TB / 10,729 files |
+| 4 | `LNG terminal A` | [#2544](https://github.com/vamseeachanta/workspace-hub/issues/2544) | `/mnt/ace/mkt-a/31522-lng-terminal-a` | 1.8 TB / 10,729 files |
 
 ## Layout
 
@@ -39,24 +39,24 @@ Produce safe, bounded, approval-ready planning artifacts for the four remaining 
 │   ├── sesa-lng.md
 │   ├── lng-a-university.md
 │   ├── lng-a-codes.md
-│   └── woodfibre-lng.md
+│   └── lng-terminal-a.md
 ├── child-issue-drafts/                # markdown stubs (NOT auto-filed)
 │   ├── sesa-lng.md
 │   ├── lng-a-university.md
 │   ├── lng-a-codes.md
-│   └── woodfibre-lng.md
+│   └── lng-terminal-a.md
 ├── results/                           # per-stream wave-result summaries
 │   ├── README.md
 │   ├── terminal-1-sesa.md
 │   ├── terminal-2-lng-a-university.md
 │   ├── terminal-3-lng-a-codes.md
-│   └── terminal-4-woodfibre.md
+│   └── terminal-4-lng-terminal-a.md
 ├── logs/                              # per-stream worker logs (PID + stdout)
 │   └── ...
 ├── terminal-1-sesa.md                 # legacy flat prompt (pre-existing)
 ├── terminal-2-lng-a-university.md
 ├── terminal-3-lng-a-codes.md
-└── terminal-4-woodfibre.md
+└── terminal-4-lng-terminal-a.md
 ```
 
 The `terminal-N-*.md` flat-layout prompts predate this README and reflect the launched workers. The `streams/<slug>.md` files in this canonical layout are the durable reference; both forms point at the same write contract. (The directory was originally proposed as `prompts/` — renamed to `streams/` because `.gitignore:427` excludes `prompts/` globally as transient agent dispatch artifacts.)
@@ -68,7 +68,7 @@ The `terminal-N-*.md` flat-layout prompts predate this README and reflect the la
 | sesa-lng | OPEN — `status:plan-review` | drafted; awaiting clearance gate before extraction |
 | lng-a-university | CLOSED — `status:done` | bounded metadata-only execution landed in commit `b0dac4608` |
 | lng-a-codes | CLOSED — `status:done` | bounded metadata-only execution landed in commit `b0dac4608` |
-| woodfibre-lng | CLOSED — `status:plan-approved` | scout-only artifacts landed; extraction remains a separate gated future plan |
+| LNG terminal A | CLOSED — `status:plan-approved` | scout-only artifacts landed; extraction remains a separate gated future plan |
 
 ## Operational guidance
 
