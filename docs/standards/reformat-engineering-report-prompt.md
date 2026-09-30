@@ -1,7 +1,9 @@
-# Reformat one engineering report
+# Update one engineering report
 
-> Reformat **[report path]** as a new draft using [reporting conventions P2](https://github.com/vamseeachanta/workspace-hub/blob/chore/3925-engineering-reporting-standard/docs/standards/engineering-reporting-conventions-proposed.html), which take precedence over **[CFD reference HTML]**. Match its presentation, not its project content or implementation defects. Preserve the target's engineering basis, results and limitations; apply its audience/privacy requirements. Return a verified local commentable HTML copy and a short change list, flagging engineering decisions.
+> Update **[report path]** to the [engineering reporting standard](https://github.com/vamseeachanta/workspace-hub/blob/main/docs/standards/engineering-reporting-conventions-proposed.html). Apply its ten-section structure, engineering register, linked references, figures/tables and review workflow. Preserve the engineering basis, results and material limitations; flag unresolved decisions and conflicts with approved project requirements. Return a verified local commentable HTML draft and a short change list.
 
-The convention remains a review draft until separately adopted. Apply this prompt only to the named report. Preserve prior issued revisions and source evidence; changes to engineering meaning require an explicit decision rather than a formatting edit.
+The standard remains a review draft; applying it to one requested report does not establish ecosystem adoption.
 
-Project content includes identities, document-control entries, branding, data, criteria, conclusions and figures; these will not be transferred from the reference. Save in the target report's authorized location, read the copy back and record its digest. Itemise removed results/comparisons and their disposition; retain valid comparators and archived evidence. Pin the convention revision/digest in the report's working record before editing rather than treating a moving branch as immutable evidence.
+Record the standard revision and commit used. Apply only to the named report and its authorized save location; preserve issued archives. Verify saved output by reading it back, recording its digest and checking rendering/print where supported. State any unverified checks.
+
+Reference reports supply presentation examples only: do not copy another project's identities, branding, data, criteria, conclusions or figures. Preserve audience/privacy requirements. Identify removed or corrected results in the change record; do not recalculate or select new acceptance criteria as a formatting change.
