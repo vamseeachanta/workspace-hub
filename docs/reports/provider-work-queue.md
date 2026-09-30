@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-09-30T09:21:16.458931Z
+Generated: 2026-09-30T13:21:21.563024Z
 Current week: 2026-W40
 Recommended provider order: codex, agy, claude
 
@@ -10,7 +10,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: high
 - Execution-ready candidates: 9
-- Total routed candidates: 179
+- Total routed candidates: 180
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
@@ -27,7 +27,7 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 
 - Routing priority: highest
 - Execution-ready candidates: 4
-- Total routed candidates: 19
+- Total routed candidates: 18
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|

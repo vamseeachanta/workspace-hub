@@ -273,19 +273,20 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "status:plan-review"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
-        "provider_route": "codex",
+        "provider_route": "claude",
         "risks": "(no risks section captured)",
         "tests": "(no TDD section)",
         "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths"
@@ -298,12 +299,14 @@
       "number": 3886,
       "pipeline_lane": "C",
       "plan": null,
-      "provider_route": "codex",
+      "provider_route": "claude",
       "review_clean": false,
-      "routing_reason": "implementation/test/fix language",
+      "routing_reason": "strategy/workflow/architecture language",
       "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3886",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -446,15 +449,16 @@
     },
     {
       "approval_blockers": [
-        "missing status:plan-review label",
         "no canonical plan file",
-        "review evidence not clean",
+        "reviews not clean: missing_review",
         "static dashboard: real approval requires provider-kanban-server.py"
       ],
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
-        "labels": [],
+        "labels": [
+          "status:plan-review"
+        ],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
         "plan_summary": "(no plan file found)",
@@ -476,7 +480,9 @@
       "routing_reason": "strategy/workflow/architecture language",
       "title": "Harden shell test selectors against undefined-helper false greens",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3876",
-      "warnings": []
+      "warnings": [
+        "missing_review"
+      ]
     },
     {
       "approval_blockers": [
@@ -7844,7 +7850,7 @@
       "warnings": []
     }
   ],
-  "generated_at": "2026-09-30T09:21:19Z",
+  "generated_at": "2026-09-30T13:21:23Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -8098,19 +8104,20 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "status:plan-review"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
-          "provider_route": "codex",
+          "provider_route": "claude",
           "risks": "(no risks section captured)",
           "tests": "(no TDD section)",
           "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths"
@@ -8123,12 +8130,14 @@
         "number": 3886,
         "pipeline_lane": "C",
         "plan": null,
-        "provider_route": "codex",
+        "provider_route": "claude",
         "review_clean": false,
-        "routing_reason": "implementation/test/fix language",
+        "routing_reason": "strategy/workflow/architecture language",
         "title": "og-standards: add a rename/remap mode \u2014 renamed library files leave stale catalog, inventory DB and document-index paths",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3886",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -8271,15 +8280,16 @@
       },
       {
         "approval_blockers": [
-          "missing status:plan-review label",
           "no canonical plan file",
-          "review evidence not clean",
+          "reviews not clean: missing_review",
           "static dashboard: real approval requires provider-kanban-server.py"
         ],
         "approval_marker": null,
         "approval_ready": false,
         "hover": {
-          "labels": [],
+          "labels": [
+            "status:plan-review"
+          ],
           "machine_readiness": "blocked:no_provider_capable_workstation",
           "machine_route": "(none ready)",
           "plan_summary": "(no plan file found)",
@@ -8301,7 +8311,9 @@
         "routing_reason": "strategy/workflow/architecture language",
         "title": "Harden shell test selectors against undefined-helper false greens",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3876",
-        "warnings": []
+        "warnings": [
+          "missing_review"
+        ]
       },
       {
         "approval_blockers": [
@@ -15677,16 +15689,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-09-30T09:21:13.685427Z",
+  "scorecard_generated_at": "2026-09-30T13:21:19.152890Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-09-30T09:21:13.581349Z",
+  "utilization_generated_at": "2026-09-30T13:21:19.054922Z",
   "warning_summary": {
     "approved_no_marker": 9,
     "approved_no_plan": 3,
     "legacy_review_no_sha": 5,
     "major_review": 3,
     "marker_without_open_approved_issue": 185,
-    "missing_review": 38,
+    "missing_review": 40,
     "unavailable_review": 2
   }
 }

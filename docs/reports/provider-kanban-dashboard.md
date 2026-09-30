@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-09-30T09:21:19Z
+Generated: 2026-09-30T13:21:23Z
 Mode: static (read-only)
 
 ## How to approve
@@ -50,12 +50,12 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3896 | bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3894 | [Epic] Solver-neutral simulation study workflow: spec → triage → dispatch → monitor → reduce → human review → issue | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3892 | feat(engineering): standard human-review pack — evidence screenshots vs physical expectation before any result is accepted | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3886 | og-standards: add a rename/remap mode — renamed library files leave stale catalog, inventory DB and document-index paths | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3886 | og-standards: add a rename/remap mode — renamed library files leave stale catalog, inventory DB and document-index paths | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3882 | Compliance alert: W39 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3880 | Standardize repo layout + tooling across machines | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3878 | Require phase-specific evidence for repeated transaction timing reserves | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3877 | test: verify physical and Git modes in cross-platform fixtures | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3876 | Harden shell test selectors against undefined-helper false greens | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3876 | Harden shell test selectors against undefined-helper false greens | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3874 | Fail closed on incomplete capture snapshots and repository-path validation order | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3872 | fix(review): prevent duplicate Claude reviews across PR events | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3871 | fix(legal): reject empty resolved scan targets and reconcile duplicate resolver definitions | claude | — (blocked:no_provider_capable_workstation) | ✗ | reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
