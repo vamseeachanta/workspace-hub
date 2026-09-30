@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-30T17:21:15.939419Z",
+  "generated_at": "2026-09-30T21:21:13.702804Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 7,
+  "eligible_count": 6,
   "applied": [],
   "candidates": [
     {
@@ -156,43 +156,6 @@
       "updatedAt": "2026-09-11T20:33:18Z",
       "execution_ready": true,
       "priority_rank": 1,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3566,
-      "title": "fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3566",
-      "labels": [
-        "bug",
-        "priority:medium",
-        "cat:harness",
-        "machine:multi",
-        "status:plan-approved",
-        "type:follow-up",
-        "gate:completeness",
-        "lane:claude",
-        "domain:ai"
-      ],
-      "updatedAt": "2026-07-27T01:19:11Z",
-      "execution_ready": true,
-      "priority_rank": 2,
       "suggested_provider": "claude",
       "routing_reason": "strategy/workflow/architecture language",
       "provider_priority": "high",
@@ -389,6 +352,40 @@
         "lane:claude"
       ],
       "updatedAt": "2026-08-01T06:14:03Z",
+      "execution_ready": true,
+      "priority_rank": 4,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.75,
+      "confidence_reasons": [
+        "execution-ready",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3702,
+      "title": "bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3702",
+      "labels": [
+        "bug",
+        "cat:harness",
+        "domain:workstations",
+        "machine:multi",
+        "status:plan-approved",
+        "gate:completeness",
+        "lane:claude"
+      ],
+      "updatedAt": "2026-07-30T02:10:45Z",
       "execution_ready": true,
       "priority_rank": 4,
       "suggested_provider": "claude",

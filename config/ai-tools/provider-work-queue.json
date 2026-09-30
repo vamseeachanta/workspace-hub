@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-30T17:21:15.828831Z",
+  "generated_at": "2026-09-30T21:21:13.594221Z",
   "current_week": "2026-W40",
-  "scorecard_generated_at": "2026-09-30T17:21:13.481660Z",
+  "scorecard_generated_at": "2026-09-30T21:21:11.289722Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,8 +11,8 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 9,
-      "total_candidates": 180,
+      "execution_ready_count": 8,
+      "total_candidates": 179,
       "top_issues": [
         {
           "number": 3816,
@@ -81,34 +81,6 @@
           "updatedAt": "2026-09-11T20:33:18Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3566,
-          "title": "fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3566",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:harness",
-            "machine:multi",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-07-27T01:19:11Z",
-          "execution_ready": true,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -220,6 +192,32 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3702,
+          "title": "bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3702",
+          "labels": [
+            "bug",
+            "cat:harness",
+            "domain:workstations",
+            "machine:multi",
+            "status:plan-approved",
+            "gate:completeness",
+            "lane:claude"
+          ],
+          "updatedAt": "2026-07-30T02:10:45Z",
+          "execution_ready": true,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ],
       "full_candidates": [
@@ -290,34 +288,6 @@
           "updatedAt": "2026-09-11T20:33:18Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3566,
-          "title": "fix(agent-ux): make keyboard and context-menu text paste equivalent in Codex CLI",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3566",
-          "labels": [
-            "bug",
-            "priority:medium",
-            "cat:harness",
-            "machine:multi",
-            "status:plan-approved",
-            "type:follow-up",
-            "gate:completeness",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-07-27T01:19:11Z",
-          "execution_ready": true,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -1317,63 +1287,6 @@
           "updatedAt": "2026-09-03T18:01:22Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3565,
-          "title": "feat(agent-ux): align Linux Codex dictation hotkey with Windows Win+H",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3565",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "machine:multi",
-            "type:follow-up",
-            "status:needs-plan",
-            "gate:completeness",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-07-27T01:19:11Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3567,
-          "title": "feat(machine-equivalence): add interaction-UX evidence and pet-peeve predicates",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3567",
-          "labels": [
-            "enhancement",
-            "priority:medium",
-            "cat:harness",
-            "domain:workstations",
-            "machine:multi",
-            "type:follow-up",
-            "status:needs-plan",
-            "gate:completeness",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-07-27T01:19:11Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4216,7 +4129,7 @@
           "labels": [
             "status:needs-plan"
           ],
-          "updatedAt": "2026-09-29T14:02:05Z",
+          "updatedAt": "2026-09-30T20:29:20Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4244,6 +4157,43 @@
             "research",
             "strategy"
           ]
+        },
+        {
+          "number": 3931,
+          "title": "docs: register CableDyn and capture mooring/cable solver assessment",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3931",
+          "labels": [
+            "lane:claude"
+          ],
+          "updatedAt": "2026-09-30T18:47:31Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3932,
+          "title": "fix: wiki frontmatter validation silently skips arbitrarily named worktrees",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3932",
+          "labels": [],
+          "updatedAt": "2026-09-30T18:43:24Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4251,7 +4201,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 4,
-      "total_candidates": 18,
+      "total_candidates": 19,
       "top_issues": [
         {
           "number": 3740,
@@ -4822,6 +4772,23 @@
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3854",
           "labels": [],
           "updatedAt": "2026-09-26T21:56:38Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation"
+          ]
+        },
+        {
+          "number": 3933,
+          "title": "fix: legal scanner duplicate resolver allows empty-path false PASS",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3933",
+          "labels": [],
+          "updatedAt": "2026-09-30T18:45:11Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
