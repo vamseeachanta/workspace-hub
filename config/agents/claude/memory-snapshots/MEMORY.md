@@ -1,119 +1,106 @@
-# Workspace Hub Memory
-
-> Curated live index; full detail lives in each topic file. COMPLETE record is in
-> `MEMORY-archive.md` + `archive/aged-out.md` — grep BOTH if not listed below.
-
-## Active & Recent Projects
-- [Fleet reachability + solver access](project_fleet_reachability_and_solver_access_2026_07_31.md) — 2026-07-31 fleet **5/5 SSH-reachable**; ⚠ ace-win-2 DOWN. **4 FlexNet servers — enumerate ALL** …
-- [Dispatch surface: label axes made deterministic (EPIC deckhand#584)](project_dispatch_surface_label_axes_2026_07_31.md) — 2026-07-31 ✅ 5 PRs merged; ambiguity 146→74 (rest legitimate `domain:`) …
-- [D&C days ROOT CAUSE + fix program (wed#1062, EPIC #1063)](project_dc_days_root_cause_war_codes.md) — three incompatible "drilling days" definitions, 0/56 wells agree (6.6× gap) …
-- [OrcaFlex: dm INITIATIVE #1640](project_orcaflex_ecosystem_review_2026_07_25.md) — **QUOTE dm#1640 FOR ALL OF IT** (spans 7 epics). ✅✅✅ **#1634 ARMED 2026-07-29** (`Domain test aggregate` + `Run Quality Gate …
-- [Model-generation reopen slate](project_model_generation_reopen_slate_2026_07_25.md) — wh#3106/#3056/#1019 + llm-wiki#638 REOPENED; #3043 retargeted. NEXT: wh#3051 registry flip (blocks the rest)
-- [Model-registry generation drift blind spot](project_model_generation_drift_registry_blindspot.md) — nightly guard checks ONLY `openai_primary`; Claude lane has zero drift coverage. ✅ wh#3600 FILED …
-- [WO April validation QA/QC with Roy (wed #846)](project_wo_april_validation_roy_qaqc.md) — 2026-07-25 ✅ #1056/#1057 live; hub PR #1058 armed. ⚠ DRILLING_DAYS mixes two bases → batch-drilled undercount …
-- [Equality matrix reclassification (wh#3592)](project_equality_matrix_reclassification_3592.md) — ✅✅ CLOSED; 5/5 CONFORMS on Linux. On-box left: ace-win-1 #2815, ace-win-2 #3595 …
-- [India family trip Jul 21–Aug 19](reference_us_india_travel_apps.md) — 2026-07-19 ✅✅ family departed. NEXT: ~Aug 18 return check-in; Sep 18 DS-11 reminder
-- [iPhone media extraction pipeline](project_iphone_media_taildrop_pipeline.md) — ✅✅ two phones archived 3-2-1. NEXT: #3586 gates next phone
-- [External SSH via Tailscale for fleet](project_external_ssh_tailscale_fleet.md) — ✅ mosh+tmux persistence LIVE on ace-linux-1 (PR #3597). ⚠ two tailscaled daemons …
-- [agy replaces gemini (wh#3573)](project_agy_replaces_gemini_provider_swap.md) — ✅✅✅ COMPLETE. RULE: cross-review = Claude+Codex+Agy. Follow-ons #3577-#3580
-- [Floorhand multi-metro outreach (12 shops)](project_floorhand_multi_metro_outreach.md) — 2026-07-26 ✅✅ CLOSED, PRs #180–#185 merged. Partner model SETTLED = **flat 50-50 gross …
-- [Sun Manufacturing Floorhand pamphlet](project_sun_manufacturing_floorhand_pamphlet.md) — ✅ emailed; Austin replied POSITIVE. RULE: copy `strategy/floorhand-pamphlet-TEMPLATE.html` …
-- [Fidelity returns analysis + dashboard](project_fidelity_returns_analysis.md) — ✅ COMPLETE (PR #152). No open work
-- [Elliott Services Floorhand FFS brochure](project_elliott_floorhand_brochure.md) — ✅ PR #178 MERGED. NEXT (HITL): pick send route + flip draft footer → SEND
-- [Krishna daily schedule (wh#3528)](project_krishna_daily_schedule.md) — morning chain APPROVED. NEXT: evening-chain yes/adjust → calendar #3529
-- [wed #844 cost-basis + costing program](project_wed844_cost_basis_timeseries_dispatch.md) — #1023 CLOSED (80 projects/$509bn); EPIC #1038 (#1040-#1044). OPEN: A1–A4 undecided (blocks #651) …
-- [llm-wiki-mkt-a OCR lane gpu-claw (#267)](project_llm_wiki_mkt-a_ocr_lane_gpu_claw.md) — 2026-07-13 ✅ smoke merged; full-queue #272 blocked on staging path
-- [wed parametric economics sweep + HF](project_wed_parametric_economics_sweep.md) — 2026-07-13 ✅ PR #1004 merged; #978 closable. See [[project_wed_economics_c9_session_handoff]]
-- [Fleet dispatch ecosystem (wh#3497)](project_fleet_dispatch_ecosystem_epic.md) — 2026-07-13 ✅ Phase-6 smoke rc 0. RULE: map detail PRIVATE-only. NEXT: merge #563 → soak → VPN retire
-- [aceengineer.com redesign — Subsea7 theme](project_aceengineer_website_redesign_subsea7.md) — navy/teal, no literal "AI". PR #59 OPEN (stacked). NEW: awsite#76
-- [ace-win-1 batch mini-runs (dm#1553)](project_ace_win1_batch_operability_program.md) — E/I/A/B/skill MERGED; F awaits HUMAN merge. NEXT: D dm#1557 sweep catalog
-- [dm#1528 sloshing reduced-order](project_dm1528_sloshing_reduced_order.md) — coeff 0.16·Π. Blocked on user hull data: run dm#1562
-- [HF projection + staged promotion (wh#3433)](project_hf_projection_staged_promotion.md) — PR #3465 plan-approved; gated behind DRAFT #3452
-- [World Energy Field Explorer program](project_world_energy_field_explorer_program.md) — feature-complete; open: #962 SVGs, #966 HF viz, #955/#959/#960 ingest
-- [Rama Lakshmi Indian passport Tatkaal re-issue](project_ramalakshmi_indian_passport_tatkal.md) — SETTLED = II-B-2 (`rld.md` "6-Nov-2027" is WRONG); ₹5,000 POPSK Kakinada …
-- [Devakrishna passport renewal (DS-11)](project_devakrishna_passport_renewal.md) — DEFERRED until family returns. On return: DS-11 + appointment
-- [wed field-hub top-down IA](project_wed_field_hub_ia_epic.md) — 2026-07-07: #755/#756/#848-#850 LIVE; remaining #759/#761
-- [International field-dev epic (wed #713)](project_wed_international_field_dev_epic.md) — 6 country chains MERGED; DI-loader UNBUILT; ⚠ mx-720 watcher = LOCAL systemd timer. NEXT: #720 loader; #722
-- [FDAS public tier + HSE finding](project_fdas_public_tier_dashboard_hse.md) — HSE does NOT favor dry-tree — don't pitch HSE. OPEN: dashboard + Roy email
-- [wed economics C9 handoff](project_wed_economics_c9_session_handoff.md) — 2026-07-13: C9 WIP preserved; all merged
-
-## Key Lessons (how to work)
-- [Machine identity — ⚠ #565 SUPERSEDED by deckhand#581](feedback_machine_identity_is_logical_alias_565.md) — 2026-07-30 owner decision: route by **canonical lowercase hostname, PRIVATE tier only** …
-- [Validation chain: BSEE definitions FIRST, then wed interpretation](feedback_validation_chain_bsee_first_then_interpretation.md) — source-published → labelled inference → analysis → published HTML → validati …
-- [Check the dimension you were NOT burned by](feedback_check_the_dimension_you_were_not_burned_by.md) — fixed a licence failure, shipped a capacity failure; the test written that morning passed the wrong answ …
-- [Tests that pin a NAME, not a property](feedback_tests_that_pin_a_name_not_a_property.md) — 4 in one day; if the assertion still passes with the behaviour removed, it tests the text …
-- [Absence of signal reads as success](feedback_absence_of_signal_reads_as_success.md) — missing check looks GREENER than failing one; verify every suppression's stated reason (comments lie) …
-- [Verify subagent line citations, not just claims](feedback_verify_subagent_line_citations_not_just_claims.md) — a defect existing ≠ it being at that line; cite the SYMBOL when coordinates aren't cheap to con …
-- [Report-hub design system (owner-approved)](feedback_report_hub_design_system.md) — hub grammar = THE design for ALL field-data surfaces; data → HF `aceengineer/*`; ref impl wed PR #1058
-- [Rig-selector capability depth](feedback_rig_selector_capability_depth.md) — onshore/offshore = FIRST filter; equipment fields over more hull numbers (wed #1006)
-- [One result everywhere](feedback_one_result_everywhere.md) — SINGLE result on website/HF/client surfaces; versioning internal only; new results auto-pop live
-- [Public by default; client-custom is private](feedback_public_by_default_client_custom_private.md) — analysis/results PUBLIC; only client-commissioned work private; `withheld_columns` = temporary guardrail
-- [Non-required checks hide regressions](feedback_non_required_checks_hide_regressions.md) — silent red on main; verify whole-suite + `gh pr checks` (no `--required`)
-- [Dispatch = deterministic scripts only](feedback_dispatch_deterministic_scripts_only.md) — licensed-host lane = pinned-input scripts; LLM work is ad-hoc, lands as committed code
-- [AceEngineer standard HTML calc-report format](feedback_ace_standard_html_calc_report.md) — template `/mnt/local-analysis/ace_calc_report_TEMPLATE.html`; provenance=color
-- [Placeholder links to filing issue](feedback_placeholder_links_to_filing_issue.md) — thin UI data → VISIBLE placeholder linking a `cat:data` issue
-- [Fable 5 vs Opus 4.8 routing](reference_fable5_vs_opus48_session_comparison.md) — Fable=orchestration/planning, Opus=execution/merge-CI
-- [Equality wedge ≠ drift recovery](feedback_equality_wedge_vs_drift_recovery.md) — main ahead AND behind → prove regenerable → backup tag → `reset --hard` (destructive, get OK)
-- [Vamsee's technical-outreach email style](feedback_vamsee_technical_outreach_email_style.md) — reply into EXISTING thread; humble greeting; LIVE links; one ask. [[feedback_vamsee_email_style_skestates]]
-- [Emails are ~150 words; the PDF carries the detail](feedback_vamsee_email_short_attachment_carries_detail.md) — NO numbers/tables/reasoning in the body; name the attachment, point at a section …
-- [Strict-up-to-date ruleset blocks green-PR merge](feedback_strict_uptodate_ruleset_no_admin_bypass.md) — `--admin` doesn't bypass rulesets; merge-when-CLEAN loop
-- [Required check must never skip](feedback_required_check_must_not_skip.md) — job-level `if:` on required check deadlocks PRs (skipped ≠ success)
-- [Verify against the real CI lint toolchain pre-push](feedback_verify_against_real_ci_lint_toolchain.md) — repo's EXACT black/isort/flake8; absent binary "passes" silently
-- [A merge isn't done until its branch and worktree are gone](feedback_merge_is_not_done_until_branch_and_worktree_gone.md) — `--delete-branch` + local branch + worktree …
-- [Batch-merge PRs: no rebase, trust CLEAN](feedback_dependabot_merge_no_rebase_trust_clean.md) — no `update-branch` (livelock); merge on CLEAN; verify MERGED on remote
-- [Unique live links → traffic + credibility](feedback_unique_live_links_traffic_credibility.md) — every capability gets its OWN indexable page
-- [Always update the equality matrix](feedback_always_update_equality_matrix.md) — end fleet-touching work with `publish-equality.sh --rebuild`
-- [One task at a time](feedback_one_task_at_a_time.md) — end turns with summary + exactly ONE next task
-- [Keep data at fingertips](feedback_keep_data_at_fingertips.md) — delete only regenerable cruft; keep + back up data
-- [Document discovered data sources as GH data issues](feedback_document_discovered_data_sources_as_issues.md) — side-finds → `cat:data` issues
-- [Avoid "A&CE" branding](feedback_avoid_ace_branding.md) — use "AceEngineer"
-- [wed PR titles: conventional types only](feedback_wed_pr_title_conventional_types_only.md) — `data(cost):` FAILS Validate-PR-Title; use `feat/fix/docs(...)`, ≤80 chars
-- [Agent can verify but NOT self-merge its own PR](feedback_agent_can_verify_but_not_self_merge_pr.md) — hand human the merge line (exceptions: digitalmodel, explicit "merge")
-- [Epic wrap-up → open issues + parallel agents](feedback_epic_wrapup_issues_then_parallel_agents.md) — no dangling lists; ~3 lanes; worktrees sequential
-- [Squash-merge breaks stacked PRs](feedback_squash_merge_breaks_stacked_prs.md) — spine squash auto-closes children; shared lanes → ONE integration PR
-- [--delete-branch auto-closes stacked child PR](feedback_delete_branch_closes_stacked_child_pr.md) — merge parent WITHOUT delete → retarget child → merge → delete last
-- [dev-primary equality "green" is self-healing](feedback_dev_primary_equality_green_is_self_healing.md) — fix drift via PR + STOP; cron re-greens
-- [Autorun resets worktree branches → push immediately](feedback_autorun_clobbers_subagent_worktree_commits.md) — `commit && push -u`; verify on REMOTE
-- [Small calcs go into digitalmodel domain modules](feedback_small_calcs_into_digitalmodel_domains.md) — `src/digitalmodel/<domain>/` + tiny test
-- ["Did this branch land?" — ask the forge, not an LLM](feedback_branch_landed_ask_the_forge_not_an_llm.md) — `gh pr list --state merged --head <branch>` is cheaper AND stronger than a Codex diff read (which t …
-- [Delegate token-heavy REVIEW to Codex (not authoring)](feedback_delegate_token_heavy_to_codex.md) — `submit-to-codex.sh` (`env -u CLAUDECODE`); verify output exists
-- [Agent CAN --no-verify push a feature branch (not main)](feedback_prepush_no_verify_allowed_on_feature_branch.md) — auto-deny is default-branch-specific
-- [Check issue state before implementing](feedback_check_issue_state_before_implementing_on_detached_head.md) — branch from origin/main + `gh issue view` + PR search FIRST
-- [Verify generated/state files against origin/main](feedback_verify_generated_state_against_origin_not_working_copy.md) — `git show origin/main:<path>` before "stale" claims
-- [Narrow grep gives false-"dead" before deletion](feedback_narrow_grep_false_dead_before_deletion.md) — whole-repo grep + adversarial "prove it's consumed"
-- [Parallel agents must not share a mutable tool path](feedback_parallel_agents_shared_mutable_tool_path.md) — freeze/per-agent copy; verify each ARTIFACT
-- [--amend clobbers parallel branch in shared checkout](feedback_amend_clobbers_parallel_branch_in_shared_checkout.md) — dedicated worktree when parallel; reflog recovery
-- [Recover stale branch for PR](feedback_recover_stale_branch_for_pr.md) — cherry-pick onto fresh worktree from origin/main, push NEW branch
-- [Agent cannot enable/spread a security-gate bypass](feedback_agent_cannot_enable_security_gate_bypass.md) — fixing a buggy gate OK; bypass routes to HUMAN
-- [Externalize all config to YAML](feedback_externalize_all_config_to_yaml.md) — members/repos/constants/thresholds in reviewable .yml
-- [Force-push denied → leaked-blob remediation](reference_force_push_denied_history_blob_remediation.md) — `reset --soft`+forward-commit; history blob needs USER force-push
-- [Vamsee's email style](feedback_vamsee_email_style_skestates.md) — thanks + shared-benefit before ask; close "Thank you very much," + Vamsee
-- [SVG-for-PDF portability](feedback_svg_pdf_portability_no_patterns_clippaths.md) — no `<pattern>`/clipPath/filter/mask in PDF-bound SVG; verify with `pdftocairo`
-
-## Key References
-- [US↔India travel apps for the family](reference_us_india_travel_apps.md) — e-Arrival Card MANDATORY (72h pre-arrival, OCI too); MPC for US re-entry
-- [Family US passport scan locations](reference_family_us_passport_locations.md) — scans in achantas-data; Sabitha surname = DEEPTHIMAHANTI; numbers stay in scans (PII rule)
-- [gpu-claw WireGuard flap → detached runs](reference_gpu_claw_wireguard_flap_detached_runs.md) — nohup + GitHub-as-progress-channel pattern
-- [Vessel-fleet data locations](reference_vessel_fleet_data_locations.md) — rig-spec DB complete (epic wed #991); NEXT #997 onshore + #1006 equipment fields
-- [ace-linux-1 display: NVIDIA Maxwell dead on kernel 7.0](reference_ace_linux_1_display_nvidia_maxwell_dead.md) — purge nvidia stack → nouveau; never reinstall nvidia-535
-- [ace-linux-1 OOM hang 2026-07-12](reference_ace_linux_1_oom_hang_2026_07_12.md) — earlyoom installed; OPEN: #3504-#3506 fingerprint triage
-- [FUSE mount saturation = process storm](reference_fuse_mount_saturation_process_storm.md) — "filesystem timed out" = runaway jobs; diagnose `ps -eo ppid,stat,etimes,%cpu`
-- [Verify licensed-run hosts headless via heartbeat](reference_ace_win_1_headless_verification_via_heartbeat.md) — queue-repo `heartbeat/<host>.json` = ONLY remote signal
-- [wed local build/run recipe](reference_wed_local_build_run_recipe.md) — namespace-package PYTHONPATH; `--noconftest -o addopts=""`; sparse-clone 0-byte trap
-- [NTFS-FUSE git stalls on /mnt/local-analysis](reference_ntfs_fuse_git_stalls_local_analysis.md) — porcelain git hangs; plumbing commits, local sparse clones
-- [Squash-merge → false "orphaned" PR](reference_squash_merge_reachability_false_orphan.md) — verify merged work by CONTENT, not mergeCommit reachability
-- [Claude Desktop install state (ace-linux-1)](reference_claude_desktop_install_state.md) — official dpkg 1.17377.0 pristine
-- [Deckhand Telegram MTProto creds blocker](reference_deckhand_operator_telegram_creds.md) — sends as USER; needs user-run interactive login
-- [Gmail create_draft attachment limit](reference_gmail_create_draft_attachment_limit.md) — no files >few KB inline; operator drag-drop or public link
-- [Gmail search can't read Contacts/autocomplete](reference_gmail_search_no_contacts_autocomplete.md) — searches MESSAGES only
-- [Emails are ephemeral; strategy repo is SSOT](feedback_emails_are_ephemeral_strategy_repo_is_ssot.md) — durable record → `aceengineer-strategy`
-- [FDAS team roster](reference_fdas_team_members.md) — Shilling (Pres), White (EVP), Achanta (VP Eng), Hyatt (VP D&C), Ivers (chairman)
-- [Headless Chrome HTML→PDF image gotchas](reference_headless_chrome_pdf_image_gotchas.md) — `--print-to-pdf` drops file:// images; use base64 data-URIs
-- [Headless Chrome browsing on ace-linux-1](reference_headless_chrome_browsing_ace_linux_1.md) — no display at all; page loads hang without `--password-store=basic`; Claude extension can't connect headless …
-- [rclone + Google Drive on this box](reference_rclone_gdrive_setup.md) — remote `gdrive:` OAuth-authorized; throttle `--tpslimit`
-- [Claude hooks cannot see token/cost spend](reference_claude_hooks_cannot_see_spend.md) — hooks enforce tool-COUNT ceilings only
-- [digitalmodel python env](reference_digitalmodel_python_env_venv.md) — use `.venv/bin/python` not `uv run`
-- [ace-linux-2 headless VNC](reference_ace_linux_2_headless_vnc.md) — TigerVNC :1/5901; connect via `vnc-ace-linux-2.sh`
-- [Cross-provider dream feed activity (2026-07)](reference_crossprovider_feed_activity_2026_07.md) — only Claude+Codex feed the dream; others `learnings=0` expected
-- [ace-win-1 equality evidence stale](reference_ace_win_1_equality_evidence_stale.md) — no scheduler + no gh auth; fix ON-BOX (#2815)
-- [Dynacard module map (digitalmodel)](reference_dynacard_module_map_digitalmodel.md) — `marine_ops/artificial_lift/dynacard/`; 18 modes; ⚠ 89.4% is synthetic-CV only, real-card benchmark unimplemented
+- [crossprovider_gemini_multi-provider-capability-assessment-strategy_d00b3dad](crossprovider_gemini_multi-provider-capability-assessment-strategy_d00b3dad.md)
+- [crossprovider_gemini_standardized-capability-tracking-schema_c58d802d](crossprovider_gemini_standardized-capability-tracking-schema_c58d802d.md)
+- [crossprovider_gemini_recurring-engineering-ai-capability-monitoring-w_90dc6657](crossprovider_gemini_recurring-engineering-ai-capability-monitoring-w_90dc6657.md)
+- [crossprovider_gemini_intermittent-empty-results-on-research-queries_8cf98e61](crossprovider_gemini_intermittent-empty-results-on-research-queries_8cf98e61.md)
+- [crossprovider_gemini_strategic-domain-and-provider-focus_815ac3a1](crossprovider_gemini_strategic-domain-and-provider-focus_815ac3a1.md) — Strateg…
+- [crossprovider_gemini_daily-engineering-ai-capability-research-workflo_8df883b1](crossprovider_gemini_daily-engineering-ai-capability-research-workflo_8df883b1.md)
+- [crossprovider_gemini_gemini-systematically-fabricates-ai-capability-a_8618ab72](crossprovider_gemini_gemini-systematically-fabricates-ai-capability-a_8618ab72.md)
+- [crossprovider_gemini_emergency-interaction-limit-lockdown-2026-04-29-_8b6ffaca](crossprovider_gemini_emergency-interaction-limit-lockdown-2026-04-29-_8b6ffaca.md)
+- [crossprovider_gemini_scheduled-tasks-registry-schema-and-capability-d_1ce146d2](crossprovider_gemini_scheduled-tasks-registry-schema-and-capability-d_1ce146d2.md)
+- [crossprovider_gemini_shell-script-pattern-for-scripts-security_952ee56a](crossprovider_gemini_shell-script-pattern-for-scripts-security_952ee56a.md)
+- [crossprovider_gemini_scheduled-automation-requires-registration-in-ca_ffc88879](crossprovider_gemini_scheduled-automation-requires-registration-in-ca_ffc88879.md)
+- [crossprovider_gemini_cross-provider-review-routing-by-task-complexity_e3df341b](crossprovider_gemini_cross-provider-review-routing-by-task-complexity_e3df341b.md)
+- [crossprovider_gemini_github-interaction-limit-api-time-bound-expiry-a_6a672f3c](crossprovider_gemini_github-interaction-limit-api-time-bound-expiry-a_6a672f3c.md)
+- [crossprovider_gemini_plan-branch-convention-is-optional-not-mandatory_e39ea05d](crossprovider_gemini_plan-branch-convention-is-optional-not-mandatory_e39ea05d.md)
+- [crossprovider_gemini_github-collaborator-only-interaction-limits-with_712463bc](crossprovider_gemini_github-collaborator-only-interaction-limits-with_712463bc.md)
+- [crossprovider_gemini_test-collection-errors-block-first-ci-run-before_8398b245](crossprovider_gemini_test-collection-errors-block-first-ci-run-before_8398b245.md)
+- [crossprovider_gemini_policy-documents-sustain-review-findings-through_70aa4987](crossprovider_gemini_policy-documents-sustain-review-findings-through_70aa4987.md)
+- [crossprovider_gemini_linter-scope-asymmetry-creates-hidden-gate-surfa_0aaec866](crossprovider_gemini_linter-scope-asymmetry-creates-hidden-gate-surfa_0aaec866.md)
+- [crossprovider_gemini_ci-template-selection-by-infrastructure-stack-ma_11cd36c7](crossprovider_gemini_ci-template-selection-by-infrastructure-stack-ma_11cd36c7.md)
+- [crossprovider_gemini_regression-boundary-ownership-verification-befor_76509e98](crossprovider_gemini_regression-boundary-ownership-verification-befor_76509e98.md)
+- [crossprovider_gemini_ci-gate-asymmetry-tool-specific-path-targets_4eee2431](crossprovider_gemini_ci-gate-asymmetry-tool-specific-path-targets_4eee2431.md)
+- [crossprovider_gemini_branch-rewrite-orphaned-workflow-detection_78eb8af9](crossprovider_gemini_branch-rewrite-orphaned-workflow-detection_78eb8af9.md)
+- [crossprovider_gemini_scorecard-as-evidence-not-canonical-state_3f12294a](crossprovider_gemini_scorecard-as-evidence-not-canonical-state_3f12294a.md)
+- [crossprovider_gemini_first-ci-run-discovers-latent-failures_2fe376f5](crossprovider_gemini_first-ci-run-discovers-latent-failures_2fe376f5.md) — F…
+- [crossprovider_gemini_policy-scenario-truth-tables-are-approval-gates_09ae6e97](crossprovider_gemini_policy-scenario-truth-tables-are-approval-gates_09ae6e97.md)
+- [crossprovider_gemini_timestamp-normalization-for-governance-policies_331cd859](crossprovider_gemini_timestamp-normalization-for-governance-policies_331cd859.md)
+- [crossprovider_gemini_module-rename-propagation-discovery-pattern_f24898fe](crossprovider_gemini_module-rename-propagation-discovery-pattern_f24898fe.md)
+- [crossprovider_gemini_issue-body-verification-before-planning_478f929a](crossprovider_gemini_issue-body-verification-before-planning_478f929a.md)
+- [crossprovider_gemini_repo-purpose-drift-detection-via-file-type-ratio_cbf4a533](crossprovider_gemini_repo-purpose-drift-detection-via-file-type-ratio_cbf4a533.md)
+- [crossprovider_gemini_multi-round-review-artifacts-require-explicit-ve_8a2b61fc](crossprovider_gemini_multi-round-review-artifacts-require-explicit-ve_8a2b61fc.md)
+- [crossprovider_gemini_ecosystem-ci-templates-are-manual-discovered-fir_42e79536](crossprovider_gemini_ecosystem-ci-templates-are-manual-discovered-fir_42e79536.md)
+- [crossprovider_gemini_tranche-based-ci-debt-resolution-keeps-debugging_6d6ea96e](crossprovider_gemini_tranche-based-ci-debt-resolution-keeps-debugging_6d6ea96e.md)
+- [crossprovider_gemini_misaligned-ci-gate-surfaces-flake8-root-mypy-src_1f77d5ce](crossprovider_gemini_misaligned-ci-gate-surfaces-flake8-root-mypy-src_1f77d5ce.md)
+- [crossprovider_gemini_codex-sustained-major-across-multiple-review-rou_b2c4b0ca](crossprovider_gemini_codex-sustained-major-across-multiple-review-rou_b2c4b0ca.md)
+- [crossprovider_gemini_scorecard-evidence-is-local-attestation-not-cano_d2d4761a](crossprovider_gemini_scorecard-evidence-is-local-attestation-not-cano_d2d4761a.md)
+- [crossprovider_gemini_approval-after-revert-has-narrow-validity-window_f8b6a770](crossprovider_gemini_approval-after-revert-has-narrow-validity-window_f8b6a770.md)
+- [crossprovider_gemini_don-t-assume-python-absence-in-document-heavy-re_ff2663fa](crossprovider_gemini_don-t-assume-python-absence-in-document-heavy-re_ff2663fa.md)
+- [crossprovider_gemini_ci-gate-asymmetry-causes-matrix-specific-hard-to_843d5410](crossprovider_gemini_ci-gate-asymmetry-causes-matrix-specific-hard-to_843d5410.md)
+- [crossprovider_gemini_disclosure-layer-only-contracts-avoid-multi-laye_1b117cb3](crossprovider_gemini_disclosure-layer-only-contracts-avoid-multi-laye_1b117cb3.md)
+- [crossprovider_gemini_narrow-scope-to-single-layer-when-redesigning-af_0c4378bc](crossprovider_gemini_narrow-scope-to-single-layer-when-redesigning-af_0c4378bc.md)
+- [crossprovider_gemini_ci-bootstrap-must-pre-audit-codebase-for-import-_4c930aae](crossprovider_gemini_ci-bootstrap-must-pre-audit-codebase-for-import-_4c930aae.md)
+- [crossprovider_gemini_timestamp-normalization-and-tie-break-rules-are-_379374f3](crossprovider_gemini_timestamp-normalization-and-tie-break-rules-are-_379374f3.md)
+- [crossprovider_gemini_three-provider-adversarial-review-finds-orthogon_8d4d906c](crossprovider_gemini_three-provider-adversarial-review-finds-orthogon_8d4d906c.md)
+- [crossprovider_gemini_dependency-ordering-in-issue-decomposition-preve_a3385b32](crossprovider_gemini_dependency-ordering-in-issue-decomposition-preve_a3385b32.md)
+- [crossprovider_gemini_thin-consumer-seams-defer-complex-mapping-contra_041cc53b](crossprovider_gemini_thin-consumer-seams-defer-complex-mapping-contra_041cc53b.md)
+- [crossprovider_gemini_frozen-deterministic-v1-policy-enables-explicit-_8d6e6771](crossprovider_gemini_frozen-deterministic-v1-policy-enables-explicit-_8d6e6771.md)
+- [crossprovider_gemini_additive-layering-preserves-original-fields-thro_fab9a162](crossprovider_gemini_additive-layering-preserves-original-fields-thro_fab9a162.md)
+- [crossprovider_gemini_three-state-result-enums-prevent-silent-fallback_d5cf3669](crossprovider_gemini_three-state-result-enums-prevent-silent-fallback_d5cf3669.md)
+- [crossprovider_gemini_generated-artifacts-require-owning-script-regene_4e5587c6](crossprovider_gemini_generated-artifacts-require-owning-script-regene_4e5587c6.md)
+- [crossprovider_gemini_explicit-exception-categories-prevent-policy-dri_31d51638](crossprovider_gemini_explicit-exception-categories-prevent-policy-dri_31d51638.md)
+- [crossprovider_gemini_explicit-not-comparable-vs-silent-defaults-for-m_c307ab9f](crossprovider_gemini_explicit-not-comparable-vs-silent-defaults-for-m_c307ab9f.md)
+- [crossprovider_gemini_contract-first-ingest-design_1d590f03](crossprovider_gemini_contract-first-ingest-design_1d590f03.md) — Contract-first…
+- [crossprovider_gemini_c-skip-tracked-follow-up-for-stale-apis_5842a6aa](crossprovider_gemini_c-skip-tracked-follow-up-for-stale-apis_5842a6aa.md)
+- [crossprovider_gemini_additive-data-transformation-with-separate-norma_64dcb83a](crossprovider_gemini_additive-data-transformation-with-separate-norma_64dcb83a.md)
+- [crossprovider_gemini_three-valued-outcome-semantics-for-deterministic_3681f0de](crossprovider_gemini_three-valued-outcome-semantics-for-deterministic_3681f0de.md)
+- [crossprovider_gemini_pytest-class-scoped-fixture-scope-gotcha_369fb2a5](crossprovider_gemini_pytest-class-scoped-fixture-scope-gotcha_369fb2a5.md)
+- [crossprovider_gemini_pytest-ignore-collect-hook-pattern-for-test-heal_20eec351](crossprovider_gemini_pytest-ignore-collect-hook-pattern-for-test-heal_20eec351.md)
+- [crossprovider_gemini_try-except-importerror-preserves-pytest-collecti_02e436d7](crossprovider_gemini_try-except-importerror-preserves-pytest-collecti_02e436d7.md)
+- [crossprovider_gemini_environment-reproducibility-validation-for-test-_2c45218e](crossprovider_gemini_environment-reproducibility-validation-for-test-_2c45218e.md)
+- [crossprovider_gemini_package-installation-does-not-guarantee-pytest-f_87c37617](crossprovider_gemini_package-installation-does-not-guarantee-pytest-f_87c37617.md)
+- [crossprovider_gemini_pytest-class-scoped-fixture-scope-isolation_03139bcd](crossprovider_gemini_pytest-class-scoped-fixture-scope-isolation_03139bcd.md)
+- [crossprovider_gemini_workflow-step-ordering-can-hide-functional-test-_a10168a2](crossprovider_gemini_workflow-step-ordering-can-hide-functional-test-_a10168a2.md)
+- [crossprovider_gemini_refactored-modules-require-dual-import-path-alig_2c9ff704](crossprovider_gemini_refactored-modules-require-dual-import-path-alig_2c9ff704.md)
+- [crossprovider_gemini_flake8-scans-broader-scope-than-pytest-test-disc_b0606f56](crossprovider_gemini_flake8-scans-broader-scope-than-pytest-test-disc_b0606f56.md)
+- [crossprovider_gemini_git-stores-pathological-filenames-with-literal-b_19e33af0](crossprovider_gemini_git-stores-pathological-filenames-with-literal-b_19e33af0.md)
+- [crossprovider_gemini_pep-735-dependency-groups-in-pyproject-toml-don-_6f02e8a5](crossprovider_gemini_pep-735-dependency-groups-in-pyproject-toml-don-_6f02e8a5.md)
+- [crossprovider_gemini_class-scoped-pytest-fixtures-do-not-cross-class-_c7e0730d](crossprovider_gemini_class-scoped-pytest-fixtures-do-not-cross-class-_c7e0730d.md)
+- [crossprovider_gemini_extend-existing-audit-infrastructure-rather-than_c51a521d](crossprovider_gemini_extend-existing-audit-infrastructure-rather-than_c51a521d.md)
+- [crossprovider_gemini_ci-workflow-step-ordering-gates-visibility-of-do_dae7675a](crossprovider_gemini_ci-workflow-step-ordering-gates-visibility-of-do_dae7675a.md)
+- [crossprovider_gemini_git-trees-can-contain-pathological-filenames-wit_0dfbf676](crossprovider_gemini_git-trees-can-contain-pathological-filenames-wit_0dfbf676.md)
+- [crossprovider_gemini_class-scoped-pytest-fixtures-do-not-cross-test-c_21ea8c75](crossprovider_gemini_class-scoped-pytest-fixtures-do-not-cross-test-c_21ea8c75.md)
+- [crossprovider_gemini_try-except-importerror-wrapping-masks-test-drift_9e243506](crossprovider_gemini_try-except-importerror-wrapping-masks-test-drift_9e243506.md)
+- [crossprovider_gemini_pep-735-dependency-groups-require-all-groups-fla_1fc2069d](crossprovider_gemini_pep-735-dependency-groups-require-all-groups-fla_1fc2069d.md)
+- [crossprovider_gemini_protected-legacy-fixture-surface-taxonomy-for-st_1c3f65b6](crossprovider_gemini_protected-legacy-fixture-surface-taxonomy-for-st_1c3f65b6.md)
+- [crossprovider_gemini_explicit-allowlist-model-for-exceptions-beats-ar_42e28260](crossprovider_gemini_explicit-allowlist-model-for-exceptions-beats-ar_42e28260.md)
+- [crossprovider_gemini_generator-plus-source-data-as-authoritative-not-_8eccd269](crossprovider_gemini_generator-plus-source-data-as-authoritative-not-_8eccd269.md)
+- [crossprovider_gemini_fixed-classification-buckets-with-test-locked-bo_6c8f3e30](crossprovider_gemini_fixed-classification-buckets-with-test-locked-bo_6c8f3e30.md)
+- [crossprovider_gemini_bounded-seed-datasets-as-schema-validation-forci_db608790](crossprovider_gemini_bounded-seed-datasets-as-schema-validation-forci_db608790.md)
+- [crossprovider_gemini_non-actionable-drift-families-use-hierarchical-t_39556c20](crossprovider_gemini_non-actionable-drift-families-use-hierarchical-t_39556c20.md)
+- [crossprovider_gemini_hidden-instructional-surfaces-need-explicit-regr_4d797cbb](crossprovider_gemini_hidden-instructional-surfaces-need-explicit-regr_4d797cbb.md)
+- [crossprovider_gemini_generated-telemetry-reports-are-script-output-ne_2f3910ef](crossprovider_gemini_generated-telemetry-reports-are-script-output-ne_2f3910ef.md)
+- [crossprovider_gemini_docs-regression-tests-require-fixed-classificati_9049517e](crossprovider_gemini_docs-regression-tests-require-fixed-classificati_9049517e.md)
+- [crossprovider_gemini_provider-audit-corpus-growth-can-mask-recent-beh_bb8b3950](crossprovider_gemini_provider-audit-corpus-growth-can-mask-recent-beh_bb8b3950.md)
+- [crossprovider_gemini_issue-body-accuracy-drifts-verify-file-state-bef_17fc324d](crossprovider_gemini_issue-body-accuracy-drifts-verify-file-state-bef_17fc324d.md)
+- [crossprovider_gemini_stale-reference-confinement-via-allowlist-is-saf_fea54dc8](crossprovider_gemini_stale-reference-confinement-via-allowlist-is-saf_fea54dc8.md)
+- [crossprovider_gemini_missing-python-dependencies-surface-as-pytest-co_88202365](crossprovider_gemini_missing-python-dependencies-surface-as-pytest-co_88202365.md)
+- [crossprovider_gemini_uv-system-vs-frozen-install-modes-have-different_4ad5ed54](crossprovider_gemini_uv-system-vs-frozen-install-modes-have-different_4ad5ed54.md)
+- [crossprovider_gemini_github-actions-path-constraint-for-monorepo-sibl_df7d235f](crossprovider_gemini_github-actions-path-constraint-for-monorepo-sibl_df7d235f.md)
+- [crossprovider_gemini_missing-dependency-smoke-tests-catch-optional-im_bd8def8e](crossprovider_gemini_missing-dependency-smoke-tests-catch-optional-im_bd8def8e.md)
+- [crossprovider_gemini_system-level-package-installs-must-preserve-down_494d7339](crossprovider_gemini_system-level-package-installs-must-preserve-down_494d7339.md)
+- [crossprovider_gemini_import-path-renames-after-package-refactor-must-_8739e610](crossprovider_gemini_import-path-renames-after-package-refactor-must-_8739e610.md)
+- [crossprovider_gemini_bootstrap-path-probing-must-target-the-execution_b5e6546b](crossprovider_gemini_bootstrap-path-probing-must-target-the-execution_b5e6546b.md)
+- [crossprovider_gemini_sibling-repo-dependencies-in-ci-require-explicit_ab47413f](crossprovider_gemini_sibling-repo-dependencies-in-ci-require-explicit_ab47413f.md)
+- [crossprovider_gemini_github-workflow-gate-labels-drift-from-plan-arti_0faad320](crossprovider_gemini_github-workflow-gate-labels-drift-from-plan-arti_0faad320.md)
+- [crossprovider_gemini_yaml-parse-errors-manifest-as-zero-jobs-zero-dur_90e07799](crossprovider_gemini_yaml-parse-errors-manifest-as-zero-jobs-zero-dur_90e07799.md)
+- [crossprovider_gemini_scope-narrowing-escapes-divergent-multi-agent-re_e92a6ef5](crossprovider_gemini_scope-narrowing-escapes-divergent-multi-agent-re_e92a6ef5.md)
+- [crossprovider_gemini_rollback-policy-incomplete-for-bypass-initiated-_3d6c498d](crossprovider_gemini_rollback-policy-incomplete-for-bypass-initiated-_3d6c498d.md)
+- [crossprovider_gemini_bypass-event-logging-exists-asymmetrically-acros_a9a85b75](crossprovider_gemini_bypass-event-logging-exists-asymmetrically-acros_a9a85b75.md)
+- [crossprovider_gemini_partial-technical-fixes-need-tracking-to-surface_6af54683](crossprovider_gemini_partial-technical-fixes-need-tracking-to-surface_6af54683.md)
+- [crossprovider_gemini_normalize-divergent-tool-paths-via-live-verifica_88392fc0](crossprovider_gemini_normalize-divergent-tool-paths-via-live-verifica_88392fc0.md)
+- [crossprovider_gemini_identity-scheme-migration-avoids-false-positive-_7effd1ce](crossprovider_gemini_identity-scheme-migration-avoids-false-positive-_7effd1ce.md)
+- [crossprovider_gemini_pytest-hook-override-precedence-over-config-file_dcf72f58](crossprovider_gemini_pytest-hook-override-precedence-over-config-file_dcf72f58.md)
+- [crossprovider_gemini_post-migration-ci-orphan-hazard_cc2ecec9](crossprovider_gemini_post-migration-ci-orphan-hazard_cc2ecec9.md) — Post-migration…
+- [crossprovider_gemini_bootstrap-environment-path-verification-pattern_652ad2fc](crossprovider_gemini_bootstrap-environment-path-verification-pattern_652ad2fc.md)
+- [crossprovider_gemini_optional-input-handling-contract-for-analysis-to_11b683bb](crossprovider_gemini_optional-input-handling-contract-for-analysis-to_11b683bb.md)
+- [crossprovider_gemini_ecosystem-mission-document-strategy-with-deferre_b88e8d34](crossprovider_gemini_ecosystem-mission-document-strategy-with-deferre_b88e8d34.md)
