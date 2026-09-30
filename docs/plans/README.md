@@ -209,6 +209,8 @@ The legacy `.claude/hooks/plan-approval-gate.sh` and `scripts/enforcement/requir
 
 ## Plan Index
 
+CableDyn intake: [issue 3931](https://github.com/vamseeachanta/workspace-hub/issues/3931) — [reviewed documentation plan](2026-09-30-issue-3931-cabledyn.html), 2026-09-30, T2; bounded catalog/wiki intake.
+
 Historical rows below retain their recorded scope and status; they are not current authorization evidence. The ten-path shared-workflow entry describes Stage A, not the separate eighteen-path instruction-alignment pilot. Verify the current plan revision and originating user decision.
 
 | Issue # | Title / Slug | Plan File | Date | Status | Complexity | Notes |

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>CableDyn ecosystem intake plan</title>
+<style>body{font:17px/1.55 system-ui;max-width:960px;margin:40px auto;padding:0 24px;color:#172b3a}h1,h2{color:#124e66}td,th{padding:8px;border:1px solid #ccc}table{border-collapse:collapse}code{overflow-wrap:anywhere}</style>
+<h1>CableDyn software and notes intake</h1>
+<p><a href="https://github.com/vamseeachanta/workspace-hub/issues/3931">Issue 3931</a> · 2026-09-30 · T2 · Client: generic · Lane: lane:claude · Status: draft</p>
+<h2>Deliverable and authority</h2>
+<p>The work will register CableDyn in the existing software/resource registry and will add an authored source page to the generic marine-engineering wiki. It will follow the user's request to review and add the linked software and notes. This bounded documentation intake will not install or execute third-party software, change solver workflows, or claim engineering qualification. It will preserve the existing wiki Markdown format and will use HTML for this human-facing plan.</p>
+<h2>Resource intelligence</h2>
+<p>The intake will use the following discovery evidence and will preserve its uncertainty:</p>
+<ul>
+<li>The source announcement will be attributed to <a href="https://lnkd.in/p/gjPT7chb">Jae Hoon Seo's LinkedIn post</a>; the public page's structured metadata will serve as announcement evidence.</li>
+<li>The assessment will pin upstream documentation to <a href="https://github.com/SMI-Lab-Inha/CableDyn/tree/42024a23c2758db057f08a66d1f4c2d8a4f98fdd">42024a23c2758db057f08a66d1f4c2d8a4f98fdd</a> and will cite README, LICENSE, CITATION.cff, VALIDATION.md, and integration/openfast/README.md.</li>
+<li>The software entry will extend <code>data/document-index/online-resource-registry.yaml</code>, alongside its existing MoorDyn, MoorPy and OpenFAST records; it will not introduce a competing catalog.</li>
+<li>The notes will follow <code>llm-wiki:wikis/marine-engineering/wiki/sources/moordyn.md</code> and <code>moorpy.md</code>, with the required private visibility field. A marine-engineering index link will make them discoverable.</li>
+<li>The scope will respect <code>docs/architecture/agent-data-handling-contract.md</code>: authored interpretation will reside in the private wiki, while the hub will own discovery metadata. The existing data-source and domain-database catalogs will remain unchanged because no dataset will be collected.</li>
+<li>Targeted CableDyn searches across wiki, digitalmodel code/docs/tests and GitHub issues will provide deduplication evidence. The drive-index search returned no matches, with five unreachable indexes; the plan will treat this as partial discovery, not proof of absence.</li>
+</ul>
+<p>Reproduction proofs: N/A — documentation intake will make no runtime failure claim. Standards-derived constants and engineering calculations will remain out of scope.</p>
+<h2>Artifact map and files to change</h2>
+<table><tr><th>Owner</th><th>Artifact</th><th>Purpose</th></tr>
+<tr><td>workspace-hub</td><td>data/document-index/online-resource-registry.yaml</td><td>One CableDyn entry; derived summary counts will be reconciled against actual entries.</td></tr>
+<tr><td>llm-wiki</td><td>wikis/marine-engineering/wiki/sources/cabledyn.md</td><td>Identity, license, release provenance, capabilities, limitations, acquisition references and proposed validation sequence.</td></tr>
+<tr><td>llm-wiki</td><td>wikis/marine-engineering/wiki/index.md</td><td>One source link; unrelated/generated counts will not be guessed.</td></tr>
+<tr><td>workspace-hub</td><td>This plan; docs/plans/README.md; scripts/review/results/2026-09-30-3931-*.md; docs/session-handoffs/2026-09-30-cabledyn-3931.md</td><td>Planning, review evidence and durable handoff.</td></tr></table>
+<h2>Execution and verification</h2>
+<p>Read-only discovery/review will run in parallel. Integration will use isolated worktrees and a claimed issue lane; commits and pushes will be serialized with explicit paths. Documentation checks will cover YAML parsing, unique software identity, actual summary counts, source-page metadata, link targets, license/version references, and absence of qualification claims. No implementation-mirroring test suite will be added for this reversible documentation change.</p>
+<p>Artifact review will actively seek unsupported capability claims, wrong provenance, private/public routing errors and accidental scope expansion. The legal scanner and whitespace checks will run before commit. Verification will distinguish local files, pushed branches and merged state.</p>
+<h2>Acceptance criteria</h2>
+<ul><li>The registry will contain exactly one CableDyn software entry with a link to the canonical notes.</li>
+<li>The notes will distinguish upstream validation claims from local verification; local solver execution will remain unverified.</li>
+<li>The notes will explain the patched OpenFAST requirement, Python driver dependency, unsupported VIV and restricted feature combinations.</li>
+<li>Release publication time and CITATION.cff's differing release date will remain distinct.</li>
+<li>Reviews, structural checks, legal scan and cleanup disposition will be recorded; existing unrelated changes will be preserved.</li></ul>
+<h2>Risks and proposed next checkpoint</h2>
+<p>The first release's API may change. Paper access will remain a reference, not a claim to have reviewed its full text or a license to redistribute it. Solver acquisition, benchmark execution and integration will require a separately scoped implementation plan. Any later evaluation will compare physical observables with explicit units and convergence evidence.</p>
+<h2>Review corrections and exact verification</h2>
+<p>The wiki page will carry <code>visibility: private-llm-wiki</code>. It will contain original paraphrase and links only, with no copied tables, figures, code or article payload. Apache-2.0 will describe the upstream software license, not the journal article's rights. The page will state that it is an intake source, not an eligible calculation citation. It will record the resolved LinkedIn URL and retrieval date.</p>
+<p>The notes will distinguish documentation snapshot <code>42024a23c2758db057f08a66d1f4c2d8a4f98fdd</code> from release v0.1.0 commit <code>1ae79e64afa16f960da4d4a75055e3545f1e6e94</code>; they will not assert identical content. The hub will label its wiki reference as private/access-required, include the owner-relative locator, and link the pushed wiki commit. The wiki branch will be pushed first and its file will be verified through GitHub before the hub reference is committed. Branch publication will not be described as merge completion.</p>
+<p>The session will verify actual repository visibility with <code>gh repo view --json visibility</code>. It will run Python/PyYAML structural assertions for registry identity, counts and note metadata, <code>git diff --check</code> in each worktree, the available <code>check-wiki-sibling-frontmatter.py</code> check, and <code>scripts/legal/legal-sanity-scan.sh --repo=&lt;worktree&gt; --diff-only</code> with an explicit registered root for each worktree. A content/register check will be used only if the affected page belongs to that check's defined inputs. Exact results will be recorded with the artifact review.</p>
+<p>The plans README will gain one discovery link to this plan. The current user request will authorize bounded reversible documentation edits under the active operating instructions; neither a label nor this plan will authenticate authorization for installation or solver implementation.</p>
+<h2>Adversarial review</h2><p>Review verdicts and corrections will be recorded under <code>scripts/review/results/2026-09-30-3931-*.md</code> before affected edits proceed. Codex's link-order/check-command findings and Claude's access, provenance and rights findings will be addressed as specified above; Gemini will be recorded UNAVAILABLE because authentication is not configured.</p>
+</html>
