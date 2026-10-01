@@ -1,6 +1,6 @@
 # AI account usage (fleet)
 
-Generated 2026-10-01T06:13:27+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-01T07:13:32+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
@@ -11,7 +11,7 @@ Generated 2026-10-01T06:13:27+00:00 by fleet-collector collect_account_usage_fle
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 0% | 85% | 15% | 2026-10-03T14:00:00.507062+00:00 | ace-linux-1 | oauth-api |
+| claude-owner | claude | owner | 0% | 85% | 15% | 2026-10-03T13:59:59.995176+00:00 | ace-linux-2 | oauth-api |
 | claude-professional | claude | colleague |  |  |  |  |  | unavailable |
 | codex-owner | codex | owner |  | 13% | 87% | 2026-10-03T17:19:42+00:00 | fleet-collector | app-server-live |
 | codex-professional | codex | colleague |  | 27% | 73% | 2026-10-03T17:17:20+00:00 | ace-win-1 | app-server-live |
@@ -21,7 +21,7 @@ Generated 2026-10-01T06:13:27+00:00 by fleet-collector collect_account_usage_fle
 | host | reachable | claude | codex | note |
 |---|---|---|---|---|
 | ace-linux-1 | yes | claude-owner | codex-owner |  |
-| ace-linux-2 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
+| ace-linux-2 | yes | claude-owner | codex-owner |  |
 | gpu-claw | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | ace-win-2 | yes | claude-professional | codex-professional |  |
 | ace-win-1 | yes | claude-professional | codex-professional |  |
