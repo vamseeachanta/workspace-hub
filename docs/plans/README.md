@@ -572,3 +572,7 @@ Add one row per plan:
 | [#3702](https://github.com/vamseeachanta/workspace-hub/issues/3702) | equality artifacts out of the tracked tree — break the STALE-CHECKOUT ratchet | [Plan](2026-07-30-issue-3702-equality-artifacts-out-of-tree.md) | plan-review | T2 | 2026-07-30 |
 | [#1249](https://github.com/vamseeachanta/workspace-hub/issues/1249) | Native AGENTS.md migration for Claude | [Plan](2026-09-18-issue-1249-native-agents-migration.html) | plan-review | T3 | 2026-09-18 |
 | [#3894](https://github.com/vamseeachanta/workspace-hub/issues/3894) | Solver-neutral simulation study workflow (spec → triage → dispatch → monitor → reduce → human review → issue) | [Plan](2026-09-25-issue-3894-simulation-study-workflow.md) | plan-review | T3 | 2026-09-25 |
+
+## Reporting convention consolidation
+
+- [Issue 3925: engineering reporting conventions and verified adoption](2026-09-28-issue-3925-engineering-reporting.md) — review draft P3, 2026-09-30; shared-instruction adoption pending.
