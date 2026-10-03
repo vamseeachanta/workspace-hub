@@ -1,6 +1,6 @@
 # AI account usage (fleet)
 
-Generated 2026-10-03T03:13:24+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-03T04:13:23+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
@@ -23,7 +23,7 @@ Generated 2026-10-03T03:13:24+00:00 by fleet-collector collect_account_usage_fle
 | ace-linux-1 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | ace-linux-2 | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
 | gpu-claw | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
-| ace-win-2 | yes | claude-professional | codex-professional | claude: access token expired; a Claude Code session on this host will refresh it |
+| ace-win-2 | yes | claude-professional | codex-professional |  |
 | ace-win-1 | yes | claude-professional | codex-professional | claude: access token expired; a Claude Code session on this host will refresh it |
 | fleet-collector | yes |  | codex-owner | claude: credentials file has no accessToken |
 
