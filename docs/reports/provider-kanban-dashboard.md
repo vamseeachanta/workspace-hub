@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-10-02T21:21:16Z
+Generated: 2026-10-03T01:21:18Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3935 | Legal scanner resolver contract drift can report PASS for an empty scan path | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3933 | fix: legal scanner duplicate resolver allows empty-path false PASS | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3932 | fix: wiki frontmatter validation silently skips arbitrarily named worktrees | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3931 | docs: register CableDyn and capture mooring/cable solver assessment | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3573 | feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 | #3572 | Harden agent workflows for idempotent external mutations and receipt-bound review degradation | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3571 | equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; reviews not clean: missing_review |
-| #3568 | epic(agent-ux): cross-machine input interaction parity | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; already has status:plan-approved; no canonical plan file |
 
 ## Lane: blocked (0)
 

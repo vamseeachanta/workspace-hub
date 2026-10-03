@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-10-02T21:21:14.445734Z
+Generated: 2026-10-03T01:21:16.831181Z
 Current week: 2026-W40
 Recommended provider order: codex, agy, claude
 
@@ -9,25 +9,25 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 8
-- Total routed candidates: 179
+- Execution-ready candidates: 7
+- Total routed candidates: 178
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #3816 feat(repo): generate authoritative work-surface inventory and adapter coverage report | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:tooling, machine:multi, status:plan-approved, gate:completeness |
 | #3838 fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
 | #3843 refactor(orcaflex): consolidate four model generators onto modular_generator | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
-| #3568 epic(agent-ux): cross-machine input interaction parity | yes | strategy/workflow/architecture language | enhancement, priority:medium, cat:harness, domain:workstations, machine:multi, status:plan-approved |
 | #3573 feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide | yes | strategy/workflow/architecture language | enhancement, cat:harness, machine:multi, status:plan-approved, gate:completeness, lane:claude |
 | #3578 fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation | yes | strategy/workflow/architecture language | cat:harness, machine:dev-primary, status:plan-approved, gate:completeness, domain:harness |
 | #3592 equality matrix: reclassify harness/scheduler/memory rows — uniform vote mis-grades per-role differences + Windows placeholder data poisons majority | yes | strategy/workflow/architecture language | cat:harness, domain:workstations, machine:dev-primary, status:plan-approved, gate:completeness, lane:claude |
 | #3702 bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock | yes | strategy/workflow/architecture language | bug, cat:harness, domain:workstations, machine:multi, status:plan-approved, gate:completeness |
+| #3596 Compliance alert: W30 — 18% (critical) | no | strategy/workflow/architecture language | cat:operations, priority:critical, machine:dev-primary, compliance-alert, domain:harness |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 4
-- Total routed candidates: 19
+- Total routed candidates: 20
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|

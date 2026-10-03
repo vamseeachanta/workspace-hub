@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-02T21:21:14.556650Z",
+  "generated_at": "2026-10-03T01:21:16.941051Z",
   "apply_mode": false,
   "threshold": 0.9,
-  "eligible_count": 6,
+  "eligible_count": 5,
   "applied": [],
   "candidates": [
     {
@@ -162,43 +162,6 @@
       "provider_status": "underused",
       "work_type": [
         "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.9,
-      "confidence_reasons": [
-        "execution-ready",
-        "priority-labeled",
-        "strong-claude-language-match",
-        "provider-high-priority"
-      ],
-      "eligible": true
-    },
-    {
-      "number": 3568,
-      "title": "epic(agent-ux): cross-machine input interaction parity",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3568",
-      "labels": [
-        "enhancement",
-        "priority:medium",
-        "cat:harness",
-        "domain:workstations",
-        "machine:multi",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude",
-        "epic",
-        "domain:ai"
-      ],
-      "updatedAt": "2026-07-27T01:19:10Z",
-      "execution_ready": true,
-      "priority_rank": 2,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
         "implementation",
         "strategy"
       ],
@@ -559,6 +522,38 @@
         "priority-labeled",
         "strong-agy-language-match",
         "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3596,
+      "title": "Compliance alert: W30 \u2014 18% (critical)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3596",
+      "labels": [
+        "cat:operations",
+        "priority:critical",
+        "machine:dev-primary",
+        "compliance-alert",
+        "domain:harness"
+      ],
+      "updatedAt": "2026-07-31T08:33:49Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
       ],
       "eligible": false
     },
