@@ -1,10 +1,10 @@
-# Readiness Issues — 2026-10-02T02:01:15
+# Readiness Issues — 2026-10-03T02:00:57
 
 Nightly readiness: 6 failed, 18 passed
 
 ## Warnings
 - R-CODEX: MAX_TEAMMATES mismatch — CODEX.md= settings.json=5
-- R-REGISTRY: model-registry.yaml 71d old — run update-model-ids.sh
+- R-REGISTRY: model-registry.yaml 72d old — run update-model-ids.sh
 - R-XPROV: missing mandates: CODEX.md:legal CODEX.md:TDD
 - R-PLUGINS: claude CLI not found
 - R-PRECOMMIT: assetutilities:legal-sanity-scan.sh entry missing
