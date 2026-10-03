@@ -32,7 +32,7 @@
     "codex-owner": {
       "access": "full",
       "buckets": null,
-      "captured_at": "2026-10-03T17:14:02+00:00",
+      "captured_at": "2026-10-03T18:13:22+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": null,
       "headroom_pct": 98.0,
@@ -69,7 +69,7 @@
       "source": "unavailable"
     }
   },
-  "generated_at": "2026-10-03T17:14:06+00:00",
+  "generated_at": "2026-10-03T18:13:25+00:00",
   "generated_by": "fleet-collector collect_account_usage_fleet",
   "hosts": {
     "ace-linux-1": {
@@ -77,7 +77,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-03T17:13:09+00:00",
+      "captured_at": "2026-10-03T18:13:08+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -92,7 +92,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-03T17:13:11+00:00",
+      "captured_at": "2026-10-03T18:13:11+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -122,7 +122,7 @@
       "accounts": {
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-03T17:14:02+00:00",
+      "captured_at": "2026-10-03T18:13:22+00:00",
       "fingerprints": {
         "codex": "78d7e174f2d1"
       },
@@ -136,7 +136,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-03T17:13:13+00:00",
+      "captured_at": "2026-10-03T18:13:12+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -169,6 +169,7 @@
   },
   "schema_version": 1,
   "warnings": [
+    "ace-linux-1: codex sample's weekly window reset at 2026-10-03T17:19:42+00:00; ignored",
     "ace-linux-2: codex sample's weekly window reset at 2026-08-21T11:50:27+00:00; ignored"
   ]
 }
