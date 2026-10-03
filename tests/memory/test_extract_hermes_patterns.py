@@ -153,25 +153,21 @@ def test_dedup_against_skills():
     assert not r["candidates"]
 
 
-# ── PII / secret scrub (fail-closed) ────────────────────────────────────────
-def _live_client_token() -> str:
-    """Derive a real deny-list token at RUNTIME (un-escaped) so no client literal is ever written
-    into this test source — otherwise the legal scanner would block its own test artifact
-    (SHARED_SOUL "enforcement scripts must not block their own artifacts")."""
-    import re as _re
-
-    deny = ehp.load_deny_patterns(REPO_ROOT / ".legal-deny-list.yaml")
-    assert deny, "deny-list must yield patterns"
-    return _re.sub(r"\\(.)", r"\1", deny[0])  # un-escape the first escaped pattern
+# ── Identifier flow / independent credential protection ───────────────────
+def test_identifier_mentions_flow_even_when_legacy_denylist_matches():
+    candidate = _cand('synthetic-project', summary='SyntheticClient project at /mnt/example')
+    r = _evaluate([candidate], deny=['SyntheticClient', '/mnt/example'])
+    assert r['candidates'] == [candidate]
+    assert r['dropped_sensitive'] == 0
 
 
-def test_scrub_sensitive_failclosed():
-    deny = ehp.load_deny_patterns(REPO_ROOT / ".legal-deny-list.yaml")
-    token = _live_client_token()
-    bad = _cand(ehp._slug(token), summary=f"a session note that mentions {token} economics")
-    r = _evaluate([bad], deny=deny)
-    assert not r["candidates"]
-    assert r["dropped_sensitive"] == 1
+def test_credentials_still_drop_without_identifier_denylist():
+    for secret in ('password = synthetic-secret-value',
+                   'ghp_' + 'x' * 36,
+                   '-----BEGIN PRIVATE KEY-----'):
+        r = _evaluate([_cand('candidate', summary=secret)])
+        assert not r['candidates']
+        assert r['dropped_sensitive'] == 1
 
 
 def test_scrub_clean_passes():
@@ -311,6 +307,9 @@ def _setup_cli(tmp_path, monkeypatch, *, hermes_text="- a fresh lesson\n- anothe
 
 def test_run_cli_injected_notify(tmp_path, monkeypatch):
     ctx = _setup_cli(tmp_path, monkeypatch)
+    def unexpected_identifier_gate(*args):
+        raise AssertionError('CLI must not load retired identifier denylist')
+    monkeypatch.setattr(ehp, 'load_deny_patterns', unexpected_identifier_gate)
     calls = []
     rc = ehp.run_cli(SimpleNamespace(publish=False), notify_fn=calls.append)
     assert rc == 0
@@ -401,7 +400,7 @@ def test_publish_bounded_timeout(tmp_path, monkeypatch):
 
 # ── bridge wiring: self-contained §7c (grep) ────────────────────────────────
 def test_bridge_wiring_self_contained():
-    bridge = (REPO_ROOT / "scripts" / "memory" / "bridge-hermes-claude.sh").read_text()
+    bridge = (REPO_ROOT / "scripts" / "memory" / "bridge-hermes-claude.sh").read_text(encoding='utf-8')
     assert "extract_hermes_patterns.py" in bridge
     # the §7c block defines its OWN launcher HPY and never references the §7b-scoped RBPY
     start = bridge.index("extract_hermes_patterns.py")

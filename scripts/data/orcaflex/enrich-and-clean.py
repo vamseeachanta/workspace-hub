@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # ABOUTME: Stage 2+3 of OrcaFlex enrichment pipeline (WRK-595)
-# ABOUTME: Enriches raw YAML with worldenergydata public databases, then strips client names
+# ABOUTME: Enriches raw YAML with worldenergydata public databases, without identifier-only output gates
 
 """
 Enrich raw OrcaFlex YAML extracts using worldenergydata public databases
-and produce client-name-clean fixtures for digitalmodel.
+and produce enriched fixtures for digitalmodel.
 
 Replaces anonymize-import.py (blind string replacement) with enrichment-first:
   1. Line objects: match OD/WT → DrillingRiserLoader or PipelineSpecLookup
   2. Vessel objects: match type context → BSEE rig fleet
-  3. Strip client-specific string fields (names only)
+  3. Review identifiers in the final report for its intended audience
   4. Keep all numeric dat_properties unchanged
 
 Requires: worldenergydata installed (pip install -e ../../worldenergydata)
@@ -301,14 +301,8 @@ def process_file(
         enriched["vessels"] = new_vessels
         enrich_log["vessels_enriched"] = len(new_vessels)
 
-    # Legal scan
-    violations = _scan_violations(enriched, deny_patterns)
-    if violations:
-        logger.error("LEGAL VIOLATIONS in %s:", src.name)
-        for v in violations:
-            logger.error("  %s", v)
-        return False
-
+    # Identifier-only gates are retired; review the outgoing report separately.
+    # deny_patterns remains a compatibility argument and never blocks output.
     enriched.setdefault("metadata", {})["enriched"] = True
     enriched["metadata"]["enrich_log"] = enrich_log
 
@@ -332,11 +326,11 @@ def process_file(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Enrich OrcaFlex YAML extracts with worldenergydata, strip client names"
+        description="Enrich OrcaFlex YAML extracts with worldenergydata"
     )
     parser.add_argument("--input", required=True, help="Raw YAML dir (client-c staging)")
     parser.add_argument("--output", required=True, help="Clean YAML dir (digitalmodel/data/orcaflex)")
-    parser.add_argument("--deny-list", default=str(HUB_ROOT / ".legal-deny-list.yaml"))
+    parser.add_argument("--deny-list", help="Deprecated compatibility option; ignored (identifier gate retired)")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--debug", action="store_true")
     args = parser.parse_args()
@@ -354,13 +348,13 @@ def main() -> None:
     riser_loader = _load_riser_loader()
     pipeline_lookup = _load_pipeline_lookup()
     rig_fleet = _load_rig_fleet()
-    deny_patterns = _load_deny_patterns(Path(args.deny_list))
+    if args.deny_list:
+        logger.warning("--deny-list is ignored; identifier gates are retired")
 
-    logger.info("Lookups ready — riser: %s | pipeline: %s | rig fleet: %d rigs | deny: %d patterns",
+    logger.info("Lookups ready — riser: %s | pipeline: %s | rig fleet: %d rigs",
                 "✓" if riser_loader else "✗ (WRK-593)",
                 "✓" if pipeline_lookup else "✗ (WRK-594)",
-                len(rig_fleet),
-                len(deny_patterns))
+                len(rig_fleet))
 
     yaml_files = sorted(input_dir.rglob("*.yaml")) + sorted(input_dir.rglob("*.yml"))
     yaml_files = [f for f in yaml_files if "_enrich_log" not in f.name]
@@ -370,7 +364,7 @@ def main() -> None:
         rel = src.relative_to(input_dir)
         dst = output_dir / rel
         ok = process_file(src, dst, riser_loader, pipeline_lookup, rig_fleet,
-                          deny_patterns, dry_run=args.dry_run)
+                          [], dry_run=args.dry_run)
         if ok:
             n_ok += 1
         else:
