@@ -6,7 +6,7 @@
 - Multi-file refactors: edit one file at a time, run tests between files
 
 ## Path Handling
-- In scripts: use relative paths or `$(git rev-parse --show-toplevel)` / `${REPO_ROOT}` — never hardcode absolute paths (enforced: `scripts/enforcement/check-no-abs-paths.sh`)
+- In scripts: use relative paths or `$(git rev-parse --show-toplevel)` / `${REPO_ROOT}` for portability. Identifier/path-name gates are retired; inspect portability during code review.
 - Absolute paths permitted only when a tool call explicitly requires them (e.g., `file_path` parameter)
 
 ## Agent Harness Files

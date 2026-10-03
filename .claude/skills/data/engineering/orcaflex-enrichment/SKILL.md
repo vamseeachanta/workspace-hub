@@ -97,7 +97,7 @@ vessels:
 ## Stage 3 — Clean + Commit
 
 ```cmd
-bash scripts/legal/legal-sanity-scan.sh digitalmodel/data/orcaflex/
+# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
 cd digitalmodel
 git add data/orcaflex/
 git commit -m "data(orcaflex): enriched fixtures from public vessel/riser databases"

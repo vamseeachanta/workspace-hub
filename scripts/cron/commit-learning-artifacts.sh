@@ -7,8 +7,7 @@
 # Usage: bash scripts/cron/commit-learning-artifacts.sh [--dry-run]
 # Cron:  Called by comprehensive-learning-nightly.sh (last step)
 #
-# Safety: runs legal-sanity-scan --diff-only before committing.
-# If legal scan finds violations, skips commit and logs warning.
+# Snapshot redaction and normal commit hooks remain enabled.
 
 set -euo pipefail
 
@@ -118,8 +117,8 @@ fi
 # only in the private aceengineer-strategy archive — never in this public repo).
 # Provision per cron host: copy
 #   aceengineer-strategy/pii-remediation/3097-2026-06-14/client-codename-map.yaml
-# to $PII_CODENAME_MAP (default below). If absent, warn — the #3099 legal scan
-# is the hard backstop gate.
+# to $PII_CODENAME_MAP (default below). If absent, warn and retain the
+# existing public redactor; no identifier gate runs at commit time.
 PII_REDACTOR="${WORKSPACE_HUB}/scripts/legal/redact-client-pii.py"
 if [[ -f "$PII_MAP" && -f "$PII_REDACTOR" ]]; then
   log "Codename-redacting client identifiers from learning state..."
@@ -130,7 +129,7 @@ if [[ -f "$PII_MAP" && -f "$PII_REDACTOR" ]]; then
     config/agents/claude/memory-snapshots config/agents/codex/state-snapshots \
     config/agents/gemini/state-snapshots 2>&1 || log "WARNING: client redaction had errors"
 else
-  log "WARNING: PII codename map not found ($PII_MAP) — skipping client redaction (#3099 legal scan is the backstop)"
+  log "WARNING: PII codename map not found ($PII_MAP) — skipping optional client codename redaction"
 fi
 
 # ── Stage learning artifacts ──────────────────────────────────────────
@@ -194,11 +193,9 @@ git add .gitignore 2>/dev/null || true
 
 log "Staged $staged artifact sources"
 
-# ── C20: redact everything staged, then gate it ───────────────────────
-# The learning pipeline writes client names into state files too. Redact every
-# staged file with the same Redactor, re-stage, and run the identifier gate on
-# the staged content (names in file PATHS included). Any failure: unstage and
-# stop -- a stale public snapshot is harmless, a published name is not.
+# ── Preserve existing staged snapshot redaction ──────────────────────
+# Re-stage redacted output. Redaction failures still stop snapshot publication;
+# the retired identifier/scanner gate is not invoked.
 mapfile -d '' STAGED_FILES < <(git diff --cached --name-only --diff-filter=ACMR -z 2>/dev/null || true)
 if (( ${#STAGED_FILES[@]} > 0 )); then
   if ! "${PY_RUN[@]}" "$PUBLIC_REDACTION" inplace "${STAGED_FILES[@]}"; then
@@ -206,11 +203,6 @@ if (( ${#STAGED_FILES[@]} > 0 )); then
     fail_closed
   fi
   git add -- "${STAGED_FILES[@]}" 2>/dev/null || true
-  if ! "${PY_RUN[@]}" "${WORKSPACE_HUB}/scripts/legal/check_identifiers.py"; then
-    log "ERROR: the identifier gate failed on the staged learning artifacts -- nothing committed (C20)"
-    git reset -q HEAD -- . >/dev/null 2>&1 || true
-    exit 1
-  fi
 fi
 
 # ── Check if anything changed ─────────────────────────────────────────
@@ -228,18 +220,6 @@ if $DRY_RUN; then
   git diff --cached --name-only
   git reset HEAD -- . >/dev/null 2>&1 || true
   exit 0
-fi
-
-# ── Legal scan gate ───────────────────────────────────────────────────
-LEGAL_SCAN="scripts/legal/legal-sanity-scan.sh"
-if [[ -x "$LEGAL_SCAN" ]]; then
-  log "Running legal scan on staged changes..."
-  if ! bash "$LEGAL_SCAN" --diff-only 2>&1; then
-    log "WARNING: Legal scan found violations — skipping commit"
-    log "Run 'bash $LEGAL_SCAN --diff-only' manually to review"
-    git reset HEAD -- . >/dev/null 2>&1 || true
-    exit 1
-  fi
 fi
 
 # ── Commit and push ──────────────────────────────────────────────────

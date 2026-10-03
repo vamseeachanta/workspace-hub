@@ -93,6 +93,8 @@ These gates apply to **all meaningful work** on this repo. Provider runtimes inh
 
 # Must-Fire Rules (per-message reinforcement)
 
+- **Identifier-gate retirement (owner decision 2026-10-03).** `legal-sanity-scan` and repository identifier gates are retired. Permit identifiers in authorized repository workflows; verify the final outgoing report/bundle per `docs/standards/FINAL_REPORT_VERIFICATION.md`. Keep independent secret scanning, access controls, source rights and engineering qualification. Do not restore retired scanner hooks or require their PASS output. Historical instructions demanding these gates are superseded. Track rollout per repo/machine rather than assuming fleet adoption. ([#3936](https://github.com/vamseeachanta/workspace-hub/issues/3936))
+
 These rules fire on every action; violating them produces real incidents documented in memory feedback files.
 
 - **Never self-label `status:plan-approved`.** The user-in-loop approval gate is load-bearing. Never offer to self-apply; never pre-authorize via handoff prompt. (`feedback_never_offer_to_self_label_plan_approved`)
@@ -312,15 +314,15 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 - **ai/** — 15 skill(s); `ls .claude/skills/ai/*/SKILL.md` to enumerate
 - **apple/** — 5 skill(s); `ls .claude/skills/apple/*/SKILL.md` to enumerate
 - **autonomous-ai-agents/** — 9 skill(s); `ls .claude/skills/autonomous-ai-agents/*/SKILL.md` to enumerate
-- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
-- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **business-finance/** — 1 skill(s); `ls .claude/skills/business-finance/*/SKILL.md` to enumerate
 - **business-marketing/** — 2 skill(s); `ls .claude/skills/business-marketing/*/SKILL.md` to enumerate
+- **business/** — 74 skill(s); `ls .claude/skills/business/*/SKILL.md` to enumerate
+- **business_admin/** — 1 skill(s); `ls .claude/skills/business_admin/*/SKILL.md` to enumerate
 - **coordination/** — 60 skill(s); `ls .claude/skills/coordination/*/SKILL.md` to enumerate
 - **corporate-tax-form-fill** — Programmatically fill IRS tax form PDFs (Form 1120, etc.) using pymupdf/fitz. Covers field discovery, mapping, filling, cross-chec
 - **creative/** — 20 skill(s); `ls .claude/skills/creative/*/SKILL.md` to enumerate
-- **data/** — 85 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
 - **data-science/** — 1 skill(s); `ls .claude/skills/data-science/*/SKILL.md` to enumerate
+- **data/** — 85 skill(s); `ls .claude/skills/data/*/SKILL.md` to enumerate
 - **development/** — 72 skill(s); `ls .claude/skills/development/*/SKILL.md` to enumerate
 - **devops/** — 8 skill(s); `ls .claude/skills/devops/*/SKILL.md` to enumerate
 - **devtools/** — 1 skill(s); `ls .claude/skills/devtools/*/SKILL.md` to enumerate
@@ -349,8 +351,8 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 - **software-development/** — 35 skill(s); `ls .claude/skills/software-development/*/SKILL.md` to enumerate
 - **test-dummy-validation/** — 1 skill(s); `ls .claude/skills/test-dummy-validation/*/SKILL.md` to enumerate
 - **travel/** — 8 skill(s); `ls .claude/skills/travel/*/SKILL.md` to enumerate
-- **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 - **workspace-hub-learned/** — 70 skill(s); `ls .claude/skills/workspace-hub-learned/*/SKILL.md` to enumerate
+- **workspace-hub/** — 150 skill(s); `ls .claude/skills/workspace-hub/*/SKILL.md` to enumerate
 
 ## Universal rules (inlined for Codex)
 > Claude reads .claude/rules/ natively; these are inlined here because Codex has no native rules loader. Domain/Claude-only rules (goal-invocation, calc-citation, wiki-routing) stay path-references.
@@ -364,7 +366,7 @@ For a verified mismatch within authorized installation scope, use `scripts/agent
 - Multi-file refactors: edit one file at a time, run tests between files
 
 ## Path Handling
-- In scripts: use relative paths or `$(git rev-parse --show-toplevel)` / `${REPO_ROOT}` — never hardcode absolute paths (enforced: `scripts/enforcement/check-no-abs-paths.sh`)
+- In scripts: use relative paths or `$(git rev-parse --show-toplevel)` / `${REPO_ROOT}` for portability. Identifier/path-name gates are retired; inspect portability during code review.
 - Absolute paths permitted only when a tool call explicitly requires them (e.g., `file_path` parameter)
 
 ## Agent Harness Files

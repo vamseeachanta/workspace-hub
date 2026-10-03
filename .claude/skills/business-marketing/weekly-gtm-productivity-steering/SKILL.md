@@ -61,7 +61,7 @@ Class of task: interactive business/GTM steering notes become durable repo-backe
 5. **Verify and commit context changes**
    - Run legal sanity when public-facing artifacts, raw data, client/prospect lists, or repo docs are touched:
      ```bash
-     bash scripts/legal/legal-sanity-scan.sh --diff-only
+     # Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
      ```
    - Commit only intended context files.
    - Rebase/push if remote moved.

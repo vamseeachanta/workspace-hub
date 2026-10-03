@@ -42,8 +42,8 @@ python scripts\data\orcaflex\enrich-and-clean.py ^
     --input  client-c\data\raw\orcaflex-extracted\ ^
     --output digitalmodel\data\orcaflex\
 
-# Legal scan + commit
-bash scripts/legal/legal-sanity-scan.sh
+# Commit enriched data; review identifiers when preparing the final report
+# See docs/standards/FINAL_REPORT_VERIFICATION.md
 cd digitalmodel && git add data/orcaflex/ && git commit -m "data(orcaflex): enriched fixtures WRK-595"
 ```
 

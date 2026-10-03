@@ -62,9 +62,6 @@ alias wrk='bash "${WORKSPACE_HUB}/scripts/work-queue/queue-status.sh"'
 # Verify this machine's setup health
 alias wh-verify='bash "${WORKSPACE_HUB}/scripts/setup/verify-setup.sh"'
 
-# Run legal scan (diff-only, fast)
-alias wh-legal='bash "${WORKSPACE_HUB}/scripts/legal/legal-sanity-scan.sh" --diff-only'
-
 # Open nightly readiness check
 alias wh-ready='bash "${WORKSPACE_HUB}/scripts/readiness/nightly-readiness.sh"'
 
