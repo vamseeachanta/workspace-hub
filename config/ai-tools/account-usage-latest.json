@@ -17,10 +17,10 @@
         },
         "seven_day": {
           "pct": 100.0,
-          "resets_at": "2026-10-03T13:59:59.949108+00:00"
+          "resets_at": "2026-10-03T14:00:00.428931+00:00"
         }
       },
-      "captured_at": "2026-10-03T07:13:09+00:00",
+      "captured_at": "2026-10-03T08:13:09+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": 0.0,
       "headroom_pct": 0.0,
@@ -33,14 +33,15 @@
       "provider": "claude",
       "reachable_hosts": [
         "ace-linux-1",
-        "ace-linux-2"
+        "ace-linux-2",
+        "gpu-claw"
       ],
       "sampled_on": "ace-linux-2",
       "source": "oauth-api",
       "tier": "default_claude_max_20x",
       "tight": true,
       "week_pct": 100.0,
-      "week_resets_at": "2026-10-03T13:59:59.949108+00:00"
+      "week_resets_at": "2026-10-03T14:00:00.428931+00:00"
     },
     "claude-professional": {
       "access": "limited",
@@ -60,7 +61,7 @@
     "codex-owner": {
       "access": "full",
       "buckets": null,
-      "captured_at": "2026-10-03T07:13:26+00:00",
+      "captured_at": "2026-10-03T08:13:18+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": null,
       "headroom_pct": 100.0,
@@ -75,7 +76,8 @@
       "reachable_hosts": [
         "ace-linux-1",
         "ace-linux-2",
-        "fleet-collector"
+        "fleet-collector",
+        "gpu-claw"
       ],
       "sampled_on": "fleet-collector",
       "source": "app-server-live",
@@ -86,7 +88,7 @@
     "codex-professional": {
       "access": "limited",
       "buckets": null,
-      "captured_at": "2026-10-03T07:13:41+00:00",
+      "captured_at": "2026-10-03T08:13:34+00:00",
       "fingerprint": "c0c130b8018b",
       "five_hour_pct": null,
       "headroom_pct": 99.0,
@@ -107,7 +109,7 @@
       "week_resets_at": "2026-10-09T21:19:09+00:00"
     }
   },
-  "generated_at": "2026-10-03T07:13:29+00:00",
+  "generated_at": "2026-10-03T08:13:21+00:00",
   "generated_by": "fleet-collector collect_account_usage_fleet",
   "hosts": {
     "ace-linux-1": {
@@ -115,7 +117,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-03T07:13:06+00:00",
+      "captured_at": "2026-10-03T08:13:06+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -127,7 +129,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-03T07:13:09+00:00",
+      "captured_at": "2026-10-03T08:13:09+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -139,7 +141,7 @@
         "claude": "claude-professional",
         "codex": "codex-professional"
       },
-      "captured_at": "2026-10-03T07:13:28+00:00",
+      "captured_at": "2026-10-03T08:13:21+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "c0c130b8018b"
@@ -154,7 +156,7 @@
         "claude": "claude-professional",
         "codex": "codex-professional"
       },
-      "captured_at": "2026-10-03T07:13:41+00:00",
+      "captured_at": "2026-10-03T08:13:34+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "c0c130b8018b"
@@ -165,7 +167,7 @@
       "accounts": {
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-03T07:13:26+00:00",
+      "captured_at": "2026-10-03T08:13:18+00:00",
       "fingerprints": {
         "codex": "78d7e174f2d1"
       },
@@ -179,8 +181,15 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "note": "exit 255",
-      "reachable": false
+      "captured_at": "2026-10-03T08:13:10+00:00",
+      "fingerprints": {
+        "claude": "78d7e174f2d1",
+        "codex": "78d7e174f2d1"
+      },
+      "reachable": true,
+      "unavailable": {
+        "claude": "access token expired; a Claude Code session on this host will refresh it"
+      }
     }
   },
   "policy": {
@@ -193,7 +202,8 @@
       "headroom_pct": 0.0,
       "hosts": [
         "ace-linux-1",
-        "ace-linux-2"
+        "ace-linux-2",
+        "gpu-claw"
       ],
       "note": "every claude account is below 10% weekly headroom; defer marathons"
     },
@@ -207,7 +217,8 @@
       "hosts": [
         "ace-linux-1",
         "ace-linux-2",
-        "fleet-collector"
+        "fleet-collector",
+        "gpu-claw"
       ],
       "note": "within 15 pts of codex-professional: stay on whichever host you are on"
     }
