@@ -89,7 +89,7 @@ Key findings:
 
 Run legal compliance before committing:
 ```bash
-bash scripts/legal/legal-sanity-scan.sh  # from workspace-hub root
+# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
 ```
 
 ### Step 3: Commit and Push

@@ -93,6 +93,8 @@ These gates apply to **all meaningful work** on this repo. Provider runtimes inh
 
 # Must-Fire Rules (per-message reinforcement)
 
+- **Identifier-gate retirement (owner decision 2026-10-03).** `legal-sanity-scan` and repository identifier gates are retired. Permit identifiers in authorized repository workflows; verify the final outgoing report/bundle per `docs/standards/FINAL_REPORT_VERIFICATION.md`. Keep independent secret scanning, access controls, source rights and engineering qualification. Do not restore retired scanner hooks or require their PASS output. Historical instructions demanding these gates are superseded. Track rollout per repo/machine rather than assuming fleet adoption. ([#3936](https://github.com/vamseeachanta/workspace-hub/issues/3936))
+
 These rules fire on every action; violating them produces real incidents documented in memory feedback files.
 
 - **Never self-label `status:plan-approved`.** The user-in-loop approval gate is load-bearing. Never offer to self-apply; never pre-authorize via handoff prompt. (`feedback_never_offer_to_self_label_plan_approved`)

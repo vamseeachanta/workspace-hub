@@ -36,6 +36,10 @@ the surface, not the sensitivity of the fact**.
 Full table and the reasoning: `.claude/rules/report-audience-and-surface.md`.
 Do not proceed until you can name the row.
 
+Before final issue/publication, review the actual report bundle and record evidence
+per `docs/standards/FINAL_REPORT_VERIFICATION.md`. Identifier gates are retired;
+independent secret checks, audience/source-rights review and technical claim checks remain.
+
 ## 2. Never write "validated" without a referent
 
 Verification asks *am I solving the equations right* and is answerable from the

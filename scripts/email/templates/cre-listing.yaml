@@ -153,7 +153,6 @@ template:
     required_one_of: [property_name, tenant]
     warn_if_missing: [price, cap_rate, state]
 
-  # Legal scan requirement
-  legal_scan:
-    required: true
-    script: "scripts/legal/legal-sanity-scan.sh"
+  # Manual final-report verification; identifier gates retired (issue 3936).
+  final_report_review:
+    policy: "docs/standards/FINAL_REPORT_VERIFICATION.md"

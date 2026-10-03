@@ -191,7 +191,7 @@ Git IS the sync mechanism.
 ## Legal Compliance
 
 - `.legal-deny-list.yaml` — 15 client name patterns, repo root
-- Run `scripts/legal/legal-sanity-scan.sh` before committing any generated documents
+- Verify the final outgoing report per `docs/standards/FINAL_REPORT_VERIFICATION.md`; retain independent secret checks. Identifier gates are retired.
 - Catalogs (`dde-*`, `conference-*`) are excluded from scanning
 - MANDATORY for all document-intelligence and resource work
 CONTEXT_EOF
