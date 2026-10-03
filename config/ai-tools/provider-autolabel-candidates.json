@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T09:21:12.874025Z",
+  "generated_at": "2026-10-03T13:21:15.597440Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 5,
@@ -174,38 +174,6 @@
         "provider-high-priority"
       ],
       "eligible": true
-    },
-    {
-      "number": 3571,
-      "title": "equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3571",
-      "labels": [
-        "cat:operations",
-        "domain:workstations",
-        "machine:dev-primary",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude"
-      ],
-      "updatedAt": "2026-08-01T06:14:00Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "codex",
-      "routing_reason": "implementation/test/fix language",
-      "provider_priority": "highest",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation"
-      ],
-      "target_label": "agent:codex",
-      "confidence": 0.8,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-codex-language-match",
-        "provider-highest-priority"
-      ],
-      "eligible": false
     },
     {
       "number": 3787,
@@ -482,6 +450,36 @@
       "provider_status": "underused",
       "work_type": [
         "research",
+        "implementation"
+      ],
+      "target_label": "agent:codex",
+      "confidence": 0.6,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-codex-language-match",
+        "provider-highest-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3792,
+      "title": "feat(scheduler): no transaction attestation exists for systemd-user surfaces, so they can only ever declare missing_transaction",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3792",
+      "labels": [
+        "enhancement",
+        "priority:medium",
+        "cat:harness",
+        "domain:workstations",
+        "status:needs-plan"
+      ],
+      "updatedAt": "2026-08-03T08:17:43Z",
+      "execution_ready": false,
+      "priority_rank": 2,
+      "suggested_provider": "codex",
+      "routing_reason": "implementation/test/fix language",
+      "provider_priority": "highest",
+      "provider_status": "underused",
+      "work_type": [
         "implementation"
       ],
       "target_label": "agent:codex",

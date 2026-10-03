@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-03T09:21:12.762846Z",
+  "generated_at": "2026-10-03T13:21:15.490300Z",
   "current_week": "2026-W40",
-  "scorecard_generated_at": "2026-10-03T09:21:10.607883Z",
+  "scorecard_generated_at": "2026-10-03T13:21:13.445525Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 7,
-      "total_candidates": 178,
+      "total_candidates": 179,
       "top_issues": [
         {
           "number": 3816,
@@ -620,7 +620,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-10-02T11:45:08Z",
+          "updatedAt": "2026-10-03T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1255,30 +1255,6 @@
           "updatedAt": "2026-09-03T18:01:22Z",
           "execution_ready": false,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3572,
-          "title": "Harden agent workflows for idempotent external mutations and receipt-bound review degradation",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3572",
-          "labels": [
-            "priority:medium",
-            "cat:harness",
-            "domain:testing",
-            "machine:dev-primary",
-            "status:needs-plan"
-          ],
-          "updatedAt": "2026-07-31T08:33:31Z",
-          "execution_ready": false,
-          "priority_rank": 2,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -4162,14 +4138,50 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3936,
+          "title": "Retire legal-sanity-scan and move identifier verification to final reports",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3936",
+          "labels": [],
+          "updatedAt": "2026-10-03T12:09:09Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3938,
+          "title": "Guard scanner exemptions against rule-category migration",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3938",
+          "labels": [],
+          "updatedAt": "2026-10-03T12:02:36Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
     "codex": {
       "provider": "codex",
       "routing_priority": "highest",
-      "execution_ready_count": 4,
-      "total_candidates": 20,
+      "execution_ready_count": 3,
+      "total_candidates": 19,
       "top_issues": [
         {
           "number": 3740,
@@ -4210,30 +4222,6 @@
           "updatedAt": "2026-09-11T20:21:08Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3571,
-          "title": "equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3571",
-          "labels": [
-            "cat:operations",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:14:00Z",
-          "execution_ready": true,
-          "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
@@ -4356,6 +4344,28 @@
             "research",
             "implementation"
           ]
+        },
+        {
+          "number": 3792,
+          "title": "feat(scheduler): no transaction attestation exists for systemd-user surfaces, so they can only ever declare missing_transaction",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3792",
+          "labels": [
+            "enhancement",
+            "priority:medium",
+            "cat:harness",
+            "domain:workstations",
+            "status:needs-plan"
+          ],
+          "updatedAt": "2026-08-03T08:17:43Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "codex",
+          "routing_reason": "implementation/test/fix language",
+          "provider_priority": "highest",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation"
+          ]
         }
       ],
       "full_candidates": [
@@ -4398,30 +4408,6 @@
           "updatedAt": "2026-09-11T20:21:08Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation"
-          ]
-        },
-        {
-          "number": 3571,
-          "title": "equality/reconcile tooling gaps on ace-win-1: junction-following restore wiped canonical skills; Windows host-identity + flock gaps",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3571",
-          "labels": [
-            "cat:operations",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:14:00Z",
-          "execution_ready": true,
-          "priority_rank": 4,
           "suggested_provider": "codex",
           "routing_reason": "implementation/test/fix language",
           "provider_priority": "highest",
