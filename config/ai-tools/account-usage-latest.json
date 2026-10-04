@@ -12,8 +12,7 @@
       "provider": "claude",
       "reachable_hosts": [
         "ace-linux-1",
-        "ace-linux-2",
-        "gpu-claw"
+        "ace-linux-2"
       ],
       "source": "unavailable"
     },
@@ -32,7 +31,7 @@
     "codex-owner": {
       "access": "full",
       "buckets": null,
-      "captured_at": "2026-10-04T00:13:22+00:00",
+      "captured_at": "2026-10-04T01:13:28+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": null,
       "headroom_pct": 94.0,
@@ -47,8 +46,7 @@
       "reachable_hosts": [
         "ace-linux-1",
         "ace-linux-2",
-        "fleet-collector",
-        "gpu-claw"
+        "fleet-collector"
       ],
       "sampled_on": "fleet-collector",
       "source": "app-server-live",
@@ -69,7 +67,7 @@
       "source": "unavailable"
     }
   },
-  "generated_at": "2026-10-04T00:13:24+00:00",
+  "generated_at": "2026-10-04T01:13:31+00:00",
   "generated_by": "fleet-collector collect_account_usage_fleet",
   "hosts": {
     "ace-linux-1": {
@@ -77,7 +75,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-04T00:13:08+00:00",
+      "captured_at": "2026-10-04T01:13:09+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -92,7 +90,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-04T00:13:11+00:00",
+      "captured_at": "2026-10-04T01:13:11+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -122,7 +120,7 @@
       "accounts": {
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-04T00:13:22+00:00",
+      "captured_at": "2026-10-04T01:13:28+00:00",
       "fingerprints": {
         "codex": "78d7e174f2d1"
       },
@@ -136,15 +134,8 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-04T00:13:12+00:00",
-      "fingerprints": {
-        "claude": "78d7e174f2d1",
-        "codex": "78d7e174f2d1"
-      },
-      "reachable": true,
-      "unavailable": {
-        "claude": "access token expired; a Claude Code session on this host will refresh it"
-      }
+      "note": "exit 255",
+      "reachable": false
     }
   },
   "policy": {
@@ -162,8 +153,7 @@
       "hosts": [
         "ace-linux-1",
         "ace-linux-2",
-        "fleet-collector",
-        "gpu-claw"
+        "fleet-collector"
       ]
     }
   },
