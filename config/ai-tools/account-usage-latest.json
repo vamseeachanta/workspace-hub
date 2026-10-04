@@ -9,7 +9,7 @@
         },
         "five_hour": {
           "pct": 0.0,
-          "resets_at": "2026-10-04T10:00:00.317782+00:00"
+          "resets_at": "2026-10-04T10:00:00.280216+00:00"
         },
         "iguana_necktie": {
           "pct": 0.0,
@@ -17,10 +17,10 @@
         },
         "seven_day": {
           "pct": 1.0,
-          "resets_at": "2026-10-10T14:00:00.317803+00:00"
+          "resets_at": "2026-10-10T14:00:00.280242+00:00"
         }
       },
-      "captured_at": "2026-10-04T07:13:15+00:00",
+      "captured_at": "2026-10-04T08:13:16+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": 0.0,
       "headroom_pct": 99.0,
@@ -39,7 +39,7 @@
       "source": "oauth-api",
       "tier": "default_claude_max_20x",
       "week_pct": 1.0,
-      "week_resets_at": "2026-10-10T14:00:00.317803+00:00"
+      "week_resets_at": "2026-10-10T14:00:00.280242+00:00"
     },
     "claude-professional": {
       "access": "limited",
@@ -56,7 +56,7 @@
     "codex-owner": {
       "access": "full",
       "buckets": null,
-      "captured_at": "2026-10-04T07:13:31+00:00",
+      "captured_at": "2026-10-04T08:13:33+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": null,
       "headroom_pct": 94.0,
@@ -92,7 +92,7 @@
       "source": "unavailable"
     }
   },
-  "generated_at": "2026-10-04T07:13:34+00:00",
+  "generated_at": "2026-10-04T08:13:36+00:00",
   "generated_by": "fleet-collector collect_account_usage_fleet",
   "hosts": {
     "ace-linux-1": {
@@ -100,7 +100,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-04T07:13:08+00:00",
+      "captured_at": "2026-10-04T08:13:10+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -112,7 +112,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-04T07:13:15+00:00",
+      "captured_at": "2026-10-04T08:13:16+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -139,7 +139,7 @@
       "accounts": {
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-04T07:13:31+00:00",
+      "captured_at": "2026-10-04T08:13:33+00:00",
       "fingerprints": {
         "codex": "78d7e174f2d1"
       },
