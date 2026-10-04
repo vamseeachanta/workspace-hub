@@ -7784,7 +7784,7 @@
       ]
     }
   ],
-  "generated_at": "2026-10-04T09:21:14Z",
+  "generated_at": "2026-10-04T13:21:20Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
@@ -15557,9 +15557,9 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-10-04T09:21:10.913972Z",
+  "scorecard_generated_at": "2026-10-04T13:21:15.951064Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-10-04T09:21:10.807672Z",
+  "utilization_generated_at": "2026-10-04T13:21:15.851847Z",
   "warning_summary": {
     "approved_no_marker": 7,
     "approved_no_plan": 2,
