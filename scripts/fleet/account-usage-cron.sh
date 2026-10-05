@@ -45,6 +45,7 @@ elif (( rc != 0 )); then
     echo "collect: refused (exit ${rc}: config or label map); nothing published" >&2
     exit "${rc}"
 fi
+echo "collect: ok"
 
 # 3. Commit only the generated files, only if they changed.
 git add -- "${OUT}" "${MD}"
