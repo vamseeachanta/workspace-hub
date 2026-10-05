@@ -1,7 +1,7 @@
 ---
 name: next-wave-handoff-bundle
 description: Build a docs-only execution handoff bundle after a completed implementation wave — follow-up issue drafts, scoped authorization note, deploy checklist, operator note, copy/paste command bundle, and incremental commit hygiene.
-version: 1.0.0
+version: 1.1.0
 author: Hermes Agent
 category: coordination
 tags: [handoff, planning, operations, github, deployment, docs-only]
@@ -18,7 +18,6 @@ Record goal/approved scope; branch/worktree/base revision; owned and forbidden p
 Before merge review or closeout inspect dirty files, stashes, worktrees and temporary outputs without altering unrelated work. Account for every unique artifact: verified durable destination/revision/integrity, intentionally retained local work, or unresolved disposition. Unverified retention blocks cleanup of that artifact. Cleanup requires its own applicable authorization and cannot remove another lane's work. Local save, commit, backup, receipt and publication are distinct verified states. Release only this session's claims after checking ownership; unavailable coordination blocks affected shared work.
 
 For Spaces, read [Space context and transfer](../../business/product/stakeholder-comms/references/space-context.md).
-
 
 Use when a feature/workstream has completed one stage and the user wants execution artifacts for the next wave, not more generic advice.
 

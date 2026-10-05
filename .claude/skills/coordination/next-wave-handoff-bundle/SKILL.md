@@ -1,7 +1,7 @@
 ---
 name: next-wave-handoff-bundle
 description: Build a docs-only execution handoff bundle after a completed implementation wave — follow-up issue drafts, scoped authorization note, deploy checklist, operator note, copy/paste command bundle, and incremental commit hygiene.
-version: 1.0.0
+version: 1.1.0
 author: Hermes Agent
 category: coordination
 tags: [handoff, planning, operations, github, deployment, docs-only]

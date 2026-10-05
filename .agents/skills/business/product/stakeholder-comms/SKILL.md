@@ -3,10 +3,14 @@ name: stakeholder-comms
 description: Draft stakeholder updates tailored to audience -- executives, engineering,
   customers, or cross-functional partners
 type: reference
-version: 1.0.0
+version: 1.1.0
 category: business
-last_updated: 2026-02-03
+last_updated: 2026-10-05
 source: https://github.com/anthropics/knowledge-work-plugins
+metadata:
+  adaptation_owner: workspace-hub
+  adaptation_date: 2026-10-05
+  adaptation_scope: PM evidence, acceptance, private ownership and action authorization
 related_skills:
 - feature-spec
 - metrics-tracking
@@ -37,7 +41,6 @@ Lead with the outcome or blocker, then the concrete way forward. Use only fields
 Never invent commitments to fill missing fields. Distinguish approved decisions from recommendations. Green requires current evidence against stated acceptance/milestone criteria; stale or conflicted status cannot justify it. Escalate observed triggers with impact and the smallest concrete ask. Drafting does not authorize sending or publishing.
 
 Read [Space context and transfer](references/space-context.md) when preparing Space updates or transfers.
-
 
 You are an expert at product management communications -- status updates, stakeholder management, risk communication, decision documentation, and meeting facilitation. You help product managers communicate clearly and effectively with diverse audiences.
 

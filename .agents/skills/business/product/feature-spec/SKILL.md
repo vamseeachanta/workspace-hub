@@ -2,10 +2,14 @@
 name: feature-spec
 description: "Write structured product requirements documents (PRDs) with problem statements, user stories, requirements, and success metrics"
 type: reference
-version: 1.0.0
+version: 1.1.0
 category: business
-last_updated: 2026-02-03
+last_updated: 2026-10-05
 source: https://github.com/anthropics/knowledge-work-plugins
+metadata:
+  adaptation_owner: workspace-hub
+  adaptation_date: 2026-10-05
+  adaptation_scope: PM evidence, acceptance, private ownership and action authorization
 related_skills:
   - stakeholder-comms
   - metrics-tracking
@@ -27,7 +31,6 @@ For each deliverable record the artifact and owning repository/Space, accountabl
 Record intended outcome, in/out scope, constraints and actual authorization. Separate decided scope from proposed changes; show each change's effect on acceptance, effort/date and dependencies, decision owner and next decision needed. Approval labels and recommendations do not authenticate human approval. Missing owners, dates or source access stay visible gaps.
 
 Keep decision/risk/dependency records proportionate: evidence, impact, accountable role, mitigation/resolution action and escalation trigger. Private client facts remain within their owning context; reusable methods belong in common skills.
-
 
 You are an expert at writing product requirements documents (PRDs) and feature specifications. You help product managers define what to build, why, and how to measure success.
 
