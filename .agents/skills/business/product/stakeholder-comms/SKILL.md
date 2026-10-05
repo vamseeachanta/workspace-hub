@@ -141,7 +141,7 @@ Feedback:
 
 ### When to Change Status
 - Report material risks when evidence first supports them; use Yellow against stated at-risk criteria, or Partial / Last-known when current evidence is insufficient
-- Use Red when evidence establishes that the stated milestone or acceptance criteria are not met; escalate on the documented trigger rather than waiting until all options are exhausted
+- Use Red when evidence establishes that criteria due at the reporting time are not met, or a documented off-track trigger is reached; escalate on the documented trigger rather than waiting until all options are exhausted
 - Move back to Green only when the risk is genuinely resolved
 - Document what changed when you change status
 
