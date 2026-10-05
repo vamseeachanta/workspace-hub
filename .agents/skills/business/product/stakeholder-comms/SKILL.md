@@ -48,7 +48,7 @@ Executives want: strategic context, progress against goals, risks that need thei
 
 **Format**:
 ```
-Status: [Green / Yellow / Red]
+Status: [Green / Yellow / Red against stated criteria, or Partial / Last-known when current evidence is insufficient]
 
 TL;DR: [One sentence -- the most important thing to know]
 
@@ -71,7 +71,7 @@ Next milestones:
 - Lead with the conclusion, not the journey
 - Keep it scannable: status and asks first, and only the detail the reader will act on
 - Status color should reflect current evidence against the stated milestone/acceptance criteria; otherwise report partial or last-known status
-- Only include risks you want help with
+- Include material risks and limitations affecting the reported outcome; make escalation asks explicit where help is needed
 - Asks must be specific: "Decision on X by Friday" not "support needed"
 
 ### Engineering Team Update
@@ -141,7 +141,7 @@ Feedback:
 
 ### When to Change Status
 - Move to Yellow at the FIRST sign of risk, not when you are sure things are bad
-- Move to Red when you have exhausted your own options and need escalation
+- Use Red when evidence establishes that the stated milestone or acceptance criteria are not met; escalate on the documented trigger rather than waiting until all options are exhausted
 - Move back to Green only when the risk is genuinely resolved
 - Document what changed when you change status
 
