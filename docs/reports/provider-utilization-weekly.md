@@ -1,12 +1,21 @@
 # Provider utilization weekly report
 
-Generated: 2026-10-04T21:21:11.662927Z
-Current week: 2026-W40
+Generated: 2026-10-05T01:21:13.272820Z
+Current week: 2026-W41
 Total monthly spend tracked: $260.0/mo
 
 Quota-based utilization is preferred when available; otherwise the report falls back to activity-vs-recent-peak based on exported session logs.
 
-## 2026-W40 (current)
+## 2026-W41 (current)
+
+| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
+|---|---:|---:|---:|---|---:|---|
+| claude | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
+| codex | 0 | 0 | 0.0% | quota | 0.0% | week_messages/weekly_limit from history.jsonl-estimate |
+| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
+
+## 2026-W40
 
 | Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
 |---|---:|---:|---:|---|---:|---|
@@ -66,15 +75,6 @@ Quota-based utilization is preferred when available; otherwise the report falls 
 |---|---:|---:|---:|---|---:|---|
 | claude | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
 | codex | 0 | 0 | 0.0% | quota | 0.0% | week_messages/weekly_limit from history.jsonl-estimate |
-| agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-| hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
-
-## 2026-W33
-
-| Provider | Sessions | Post records | Reported util | Basis | Quota util | Notes |
-|---|---:|---:|---:|---|---:|---|
-| claude | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | quota unavailable from unavailable; using activity fallback |
-| codex | 1 | 52 | 0.9% | quota | 0.9% | week_messages/weekly_limit from history.jsonl-estimate |
 | agy | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 | hermes | 0 | 0 | 0.0% | activity_vs_recent_peak | n/a | no quota snapshot; using activity fallback |
 
