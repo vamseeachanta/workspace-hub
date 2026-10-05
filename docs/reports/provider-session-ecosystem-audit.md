@@ -1,10 +1,10 @@
-# Provider session ecosystem audit — 2026-09-28
+# Provider session ecosystem audit — 2026-10-05
 
 Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orchestrator` with saved provider artifacts used only as fallback when raw logs are unavailable.
 
 ## Executive summary
-- `claude` — source=raw_logs | sessions=105 | post_records=123526 | python3/1k=9.09 | uv-python/1k=50.6
-- `codex` — source=raw_logs | sessions=151 | post_records=207752 | python3/1k=13.61 | uv-python/1k=18.76
+- `claude` — source=raw_logs | sessions=106 | post_records=123527 | python3/1k=9.09 | uv-python/1k=50.6
+- `codex` — source=raw_logs | sessions=153 | post_records=208011 | python3/1k=13.6 | uv-python/1k=18.74
 - `hermes` — source=raw_logs | sessions=50 | post_records=7829811 | python3/1k=9.55 | uv-python/1k=18.72
 - `gemini` — source=raw_logs | sessions=78 | post_records=6210 | python3/1k=46.86 | uv-python/1k=6.28
 
@@ -14,69 +14,71 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - Scope note: Migration-debt figures are based on remediation-mapped entries from each provider's top missing repo reads.
 
 ## Provider interpretation summary
-- Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 80.0, issue: legacy_work_queue_transition), then address gemini (urgency 45.74, issue: legacy_local_work_queue_items).
+- Focus this week: prioritize legacy-path redirect cleanup and prompt/doc updates on claude (urgency 65.1, issue: legacy_work_queue_transition), then address gemini (urgency 45.74, issue: legacy_local_work_queue_items).
 - Recommended actions:
-  - `claude` [urgent_now] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 80.0, issue: legacy_work_queue_transition; health=red; movement: rank unchanged at #1; urgency 80.00 (+0.00 vs previous audit); path drift improved)
-  - `gemini` [next_up] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 45.74, issue: legacy_local_work_queue_items; health=red; movement: rank unchanged at #2; urgency 45.74 (+0.00 vs previous audit); path drift worsened)
-  - `codex` [investigate] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 31.35, issue: llm_wiki_spinout_path_drift; health=yellow; movement: moved up 1 slot to #3; urgency 31.35 (+8.00 vs previous audit); corpus grew faster than event-time activity)
-  - `hermes` [investigate] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 24.23, issue: session_local_worktree_path_drift; health=yellow; movement: moved down 1 slot to #4; urgency 24.23 (+0.00 vs previous audit))
+  - `claude` [next_up] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 65.1, issue: legacy_work_queue_transition; health=red; movement: rank unchanged at #1; urgency 65.10 (-14.90 vs previous audit); recent activity cooled)
+  - `gemini` [next_up] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 45.74, issue: legacy_local_work_queue_items; health=red; movement: rank unchanged at #2; urgency 45.74 (+0.00 vs previous audit))
+  - `hermes` [investigate] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 24.23, issue: session_local_worktree_path_drift; health=yellow; movement: moved up 1 slot to #3; urgency 24.23 (+0.00 vs previous audit); path drift worsened)
+  - `codex` [investigate] — prioritize legacy-path redirect cleanup and prompt/doc updates (urgency 23.35, issue: llm_wiki_spinout_path_drift; health=yellow; movement: moved down 1 slot to #4; urgency 23.35 (-8.00 vs previous audit))
 - Health overview:
-  - `claude` [red] — red: urgent action tier; high migration debt; currently active
-  - `gemini` [red] — red: high migration debt; path drift worsening; python3-heavy command hygiene
-  - `codex` [yellow] — yellow: moderate migration debt; corpus anomaly needs interpretation; 24h burst activity; currently active
-  - `hermes` [yellow] — yellow: moderate migration debt
+  - `claude` [red] — red: high migration debt; 24h burst activity
+  - `gemini` [red] — red: high migration debt; python3-heavy command hygiene
+  - `hermes` [yellow] — yellow: moderate migration debt; path drift worsening
+  - `codex` [yellow] — yellow: moderate migration debt; 7d sustained activity; currently active
 - Watchlist triggers:
-  - `claude` [page] — urgent-now provider with legacy_work_queue_transition | follow-up: Escalate immediately on claude: prioritize legacy-path redirect cleanup and prompt/doc updates
+  - `claude` [act_this_week] — red health due to legacy_work_queue_transition | follow-up: Prioritize this week on claude: prioritize legacy-path redirect cleanup and prompt/doc updates
   - `gemini` [act_this_week] — red health due to legacy_local_work_queue_items | follow-up: Prioritize this week on gemini: prioritize legacy-path redirect cleanup and prompt/doc updates
-  - `codex` [monitor] — yellow: moderate migration debt; corpus anomaly needs interpretation; 24h burst activity; currently active; corpus anomaly present | follow-up: Monitor codex in the next audit cycle
-  - `hermes` [monitor] — yellow: moderate migration debt | follow-up: Monitor hermes in the next audit cycle
+  - `codex` [investigate] — yellow health with sustained 7d activity and llm_wiki_spinout_path_drift | follow-up: Sample current traces on codex and verify whether llm_wiki_spinout_path_drift needs remap or docs cleanup
+  - `hermes` [monitor] — yellow: moderate migration debt; path drift worsening | follow-up: Monitor hermes in the next audit cycle
 - Change alerts:
-  - `codex` [cleared_watchlist] — codex cleared watchlist from monitor | follow-up: Monitor codex in the next audit cycle
+  - `codex` [trigger_escalated] — codex trigger escalated from monitor to investigate | follow-up: Sample current traces on codex and verify whether llm_wiki_spinout_path_drift needs remap or docs cleanup
   - `hermes` [cleared_watchlist] — hermes cleared watchlist from monitor | follow-up: Monitor hermes in the next audit cycle
 - Remediation playbooks:
-  - `claude` [page] — issue=legacy_work_queue_transition | lane=governance-docs | owner=governance-maintainers | owner_surface=docs/governance/SESSION-GOVERNANCE.md | inspect=scripts/work-queue/verify-gate-evidence.py, scripts/work-queue/exit_stage.py, scripts/work-queue/start_stage.py | targets=docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md, scripts/workflow/governance-checkpoints.yaml | steps: Inspect the top matched stale paths for legacy_work_queue_transition and confirm they should redirect rather than be recreated. | Open the canonical targets and migrate prompts/docs/tooling toward: docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md, scripts/workflow/governance-checkpoints.yaml.
+  - `claude` [act_this_week] — issue=legacy_work_queue_transition | lane=governance-docs | owner=governance-maintainers | owner_surface=docs/governance/SESSION-GOVERNANCE.md | inspect=scripts/work-queue/verify-gate-evidence.py, scripts/work-queue/exit_stage.py, scripts/work-queue/start_stage.py | targets=docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md, scripts/workflow/governance-checkpoints.yaml | steps: Inspect the top matched stale paths for legacy_work_queue_transition and confirm they should redirect rather than be recreated. | Open the canonical targets and migrate prompts/docs/tooling toward: docs/governance/SESSION-GOVERNANCE.md, docs/governance/TRUST-ARCHITECTURE.md, scripts/workflow/governance-checkpoints.yaml.
   - `gemini` [act_this_week] — issue=legacy_local_work_queue_items | lane=planning-workflow | owner=planning-ops | owner_surface=notes/agent-work-queue.md | inspect=.claude/work-queue/WRK-149.md, .claude/work-queue/working, .claude/work-queue/working/ | targets=GitHub issues, .planning/, notes/agent-work-queue.md | steps: Inspect the top matched stale paths for legacy_local_work_queue_items and confirm they should redirect rather than be recreated. | Open the canonical targets and migrate prompts/docs/tooling toward: GitHub issues, .planning/, notes/agent-work-queue.md.
-  - `codex` [monitor] — issue=llm_wiki_spinout_path_drift | lane=monitoring | owner=audit-operators | owner_surface=docs/reports/provider-session-ecosystem-audit.md | inspect=knowledge/wikis/engineering/CLAUDE.md | targets=llm-wiki/wikis/, llm-wiki/docs/, docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md | steps: Inspect the top matched stale paths for llm_wiki_spinout_path_drift and confirm they should redirect rather than be recreated. | Open the canonical targets and migrate prompts/docs/tooling toward: llm-wiki/wikis/, llm-wiki/docs/, docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md.
   - `hermes` [monitor] — issue=session_local_worktree_path_drift | lane=monitoring | owner=audit-operators | owner_surface=docs/reports/provider-session-ecosystem-audit.md | inspect=.claude/worktrees/ecosystem-sync/docs/plans/2026-04-20-aceengineer-ecosystem-sync-plan.md | targets=main repo branch/worktree, docs/plans/, .planning/ | steps: Inspect the top matched stale paths for session_local_worktree_path_drift and confirm they should redirect rather than be recreated. | Open the canonical targets and migrate prompts/docs/tooling toward: main repo branch/worktree, docs/plans/, .planning/.
+  - `codex` [investigate] — issue=llm_wiki_spinout_path_drift | lane=monitoring | owner=audit-operators | owner_surface=docs/reports/provider-session-ecosystem-audit.md | inspect=knowledge/wikis/engineering/CLAUDE.md | targets=llm-wiki/wikis/, llm-wiki/docs/, docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md | steps: Inspect the top matched stale paths for llm_wiki_spinout_path_drift and confirm they should redirect rather than be recreated. | Open the canonical targets and migrate prompts/docs/tooling toward: llm-wiki/wikis/, llm-wiki/docs/, docs/session-handoffs/2026-05-05-llm-wiki-spinout-max-completeness-handoff.md.
 - Follow-up issue drafts:
-  - `claude` [critical] — [critical] claude: remediate legacy_work_queue_transition | state=unchanged | owner=governance-maintainers | lane=governance-docs
+  - `claude` [high] — [high] claude: remediate legacy_work_queue_transition | state=changed | owner=governance-maintainers | lane=governance-docs
   - `gemini` [high] — [high] gemini: remediate legacy_local_work_queue_items | state=unchanged | owner=planning-ops | lane=planning-workflow
+  - `codex` [medium] — [medium] codex: remediate llm_wiki_spinout_path_drift | state=new | owner=audit-operators | lane=monitoring
 - Issue posting readiness:
-  - `claude` [ready] — should_open_issue=no | final_should_open=yes | evidence=complete | linked_issue=none | matched_on=none | reason=unchanged draft has no linked issue; safe to open once
+  - `claude` [ready] — should_open_issue=yes | final_should_open=yes | evidence=complete | linked_issue=none | matched_on=none | reason=changed actionable draft with no linked issue found
   - `gemini` [ready] — should_open_issue=no | final_should_open=yes | evidence=complete | linked_issue=none | matched_on=none | reason=unchanged draft has no linked issue; safe to open once
+  - `codex` [ready] — should_open_issue=yes | final_should_open=yes | evidence=complete | linked_issue=none | matched_on=none | reason=new actionable draft with no linked issue found
 - Rank movements since previous audit:
-  - `codex` — moved up 1 slot to #3; urgency 31.35 (+8.00 vs previous audit); corpus grew faster than event-time activity
-  - `hermes` — moved down 1 slot to #4; urgency 24.23 (+0.00 vs previous audit)
-- `claude` — rank=1 (prev=1, move=stable) | health=red | profile=dormant | 24h=0 posts/0 sessions | 7d=0 posts/0 sessions | urgency=80.0 | tier=urgent_now | activity=active (stable) | corpus=aligned | debt=high_debt (stable) | drift=improving | python=uv_preferred (stable) | health summary: red: urgent action tier; high migration debt; currently active | movement: rank unchanged at #1; urgency 80.00 (+0.00 vs previous audit); path drift improved | primary issue: legacy_work_queue_transition | action: prioritize legacy-path redirect cleanup and prompt/doc updates
-- `gemini` — rank=2 (prev=2, move=stable) | health=red | profile=dormant | 24h=0 posts/0 sessions | 7d=0 posts/0 sessions | urgency=45.74 | tier=next_up | activity=idle (stable) | corpus=aligned | debt=high_debt (stable) | drift=worsening | python=python3_heavy (stable) | health summary: red: high migration debt; path drift worsening; python3-heavy command hygiene | movement: rank unchanged at #2; urgency 45.74 (+0.00 vs previous audit); path drift worsened | primary issue: legacy_local_work_queue_items | action: prioritize legacy-path redirect cleanup and prompt/doc updates
-- `codex` — rank=3 (prev=4, move=up) | health=yellow | profile=burst_active | 24h=47 posts/4 sessions | 7d=47 posts/4 sessions | urgency=31.35 | tier=investigate | activity=active (stable) | corpus=positive_corpus_growth_beyond_recent_activity | debt=moderate_debt (stable) | drift=stable | python=mixed (stable) | health summary: yellow: moderate migration debt; corpus anomaly needs interpretation; 24h burst activity; currently active | movement: moved up 1 slot to #3; urgency 31.35 (+8.00 vs previous audit); corpus grew faster than event-time activity | primary issue: llm_wiki_spinout_path_drift | action: prioritize legacy-path redirect cleanup and prompt/doc updates
-- `hermes` — rank=4 (prev=3, move=down) | health=yellow | profile=dormant | 24h=0 posts/0 sessions | 7d=0 posts/0 sessions | urgency=24.23 | tier=investigate | activity=idle (stable) | corpus=aligned | debt=moderate_debt (stable) | drift=stable | python=mixed (stable) | health summary: yellow: moderate migration debt | movement: moved down 1 slot to #4; urgency 24.23 (+0.00 vs previous audit) | primary issue: session_local_worktree_path_drift | action: prioritize legacy-path redirect cleanup and prompt/doc updates
+  - `hermes` — moved up 1 slot to #3; urgency 24.23 (+0.00 vs previous audit); path drift worsened
+  - `codex` — moved down 1 slot to #4; urgency 23.35 (-8.00 vs previous audit)
+- `claude` — rank=1 (prev=1, move=stable) | health=red | profile=burst_active | 24h=1 posts/1 sessions | 7d=1 posts/1 sessions | urgency=65.1 | tier=next_up | activity=quiet (decreasing) | corpus=aligned | debt=high_debt (stable) | drift=stable | python=uv_preferred (stable) | health summary: red: high migration debt; 24h burst activity | movement: rank unchanged at #1; urgency 65.10 (-14.90 vs previous audit); recent activity cooled | primary issue: legacy_work_queue_transition | action: prioritize legacy-path redirect cleanup and prompt/doc updates
+- `gemini` — rank=2 (prev=2, move=stable) | health=red | profile=dormant | 24h=0 posts/0 sessions | 7d=0 posts/0 sessions | urgency=45.74 | tier=next_up | activity=idle (stable) | corpus=aligned | debt=high_debt (stable) | drift=stable | python=python3_heavy (stable) | health summary: red: high migration debt; python3-heavy command hygiene | movement: rank unchanged at #2; urgency 45.74 (+0.00 vs previous audit) | primary issue: legacy_local_work_queue_items | action: prioritize legacy-path redirect cleanup and prompt/doc updates
+- `hermes` — rank=3 (prev=4, move=up) | health=yellow | profile=dormant | 24h=0 posts/0 sessions | 7d=0 posts/0 sessions | urgency=24.23 | tier=investigate | activity=idle (stable) | corpus=aligned | debt=moderate_debt (stable) | drift=worsening | python=mixed (stable) | health summary: yellow: moderate migration debt; path drift worsening | movement: moved up 1 slot to #3; urgency 24.23 (+0.00 vs previous audit); path drift worsened | primary issue: session_local_worktree_path_drift | action: prioritize legacy-path redirect cleanup and prompt/doc updates
+- `codex` — rank=4 (prev=3, move=down) | health=yellow | profile=sustained_background | 24h=0 posts/0 sessions | 7d=259 posts/9 sessions | urgency=23.35 | tier=investigate | activity=active (stable) | corpus=aligned | debt=moderate_debt (stable) | drift=stable | python=mixed (stable) | health summary: yellow: moderate migration debt; 7d sustained activity; currently active | movement: moved down 1 slot to #4; urgency 23.35 (-8.00 vs previous audit) | primary issue: llm_wiki_spinout_path_drift | action: prioritize legacy-path redirect cleanup and prompt/doc updates
 
 ## Recent activity since previous audit
-- Previous audit timestamp: `2026-08-03T09:15:08Z`
-- Recent post-audit activity: `codex` 772 post records / 39 sessions, `claude` 115 post records / 2 sessions.
+- Previous audit timestamp: `2026-09-28T09:15:06Z`
+- Recent post-audit activity: `codex` 259 post records / 9 sessions, `claude` 1 post records / 1 sessions.
 - Scope note: This is event-time activity since the previous audit timestamp, not a census of newly exported historical/backfilled records.
 
 ## Rolling activity windows
-- `last_24h` — `2026-09-27T09:15:06Z` → `2026-09-28T09:15:06Z`
+- `last_24h` — `2026-10-04T09:15:05Z` → `2026-10-05T09:15:05Z`
   - Scope note: Last 24 hours of event-time activity ending at this audit timestamp.
-  - Activity leaders: `codex` 47 post records / 4 sessions.
-- `last_7d` — `2026-09-21T09:15:06Z` → `2026-09-28T09:15:06Z`
+  - Activity leaders: `claude` 1 post records / 1 sessions.
+- `last_7d` — `2026-09-28T09:15:05Z` → `2026-10-05T09:15:05Z`
   - Scope note: Last 7 days of event-time activity ending at this audit timestamp.
-  - Activity leaders: `codex` 47 post records / 4 sessions.
+  - Activity leaders: `codex` 259 post records / 9 sessions, `claude` 1 post records / 1 sessions.
 
 ## Corpus change since previous audit
-- Previous audit timestamp: `2026-08-03T09:15:08Z`
+- Previous audit timestamp: `2026-09-28T09:15:06Z`
 - Scope note: Snapshot-to-snapshot corpus deltas reflect export additions/removals/reclassification and should be interpreted separately from event-time recent activity.
 - Largest negative reconciliation gap: `claude`
-- Largest positive reconciliation gap: `codex`
+- Largest positive reconciliation gap: `claude`
 
 ## claude
 - Source: raw_logs
-- Sessions: 105
-- Post-hook records: 123526
+- Sessions: 106
+- Post-hook records: 123527
 - Correction sessions: 0
-- Unique runtime sessions: 879
+- Unique runtime sessions: 880
 - Prompt-like reads: 292
 - Blank read targets: 0
 - Missing repo reads: 9479
@@ -85,7 +87,7 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 
 ### claude top tools
 - `Bash` — 65656
-- `Read` — 21608
+- `Read` — 21609
 - `unknown` — 9779
 - `Edit` — 9704
 - `Write` — 8497
@@ -94,7 +96,7 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - `ToolSearch` — 681
 
 ### claude top repos
-- `workspace-hub` — 116948
+- `workspace-hub` — 116949
 - `digitalmodel` — 1900
 - `assetutilities` — 535
 - `wt-2893-statusline-plan` — 482
@@ -106,7 +108,7 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 ### claude top reads
 - `scripts/work-queue/verify-gate-evidence.py` — 732
 - `scripts/work-queue/generate-html-review.py` — 249
-- `/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md` — 231
+- `/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md` — 232
 - `docs/plans/README.md` — 198
 - `docs/plans/_template-issue-plan.md` — 173
 - `scripts/work-queue/exit_stage.py` — 137
@@ -144,20 +146,14 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - `echo` — 1994
 
 ### claude recent activity since previous audit
-- Post-hook records since prior audit: 115
-- Runtime sessions since prior audit: 2
+- Post-hook records since prior audit: 1
+- Runtime sessions since prior audit: 1
 
 ### claude recent top tools
-- `Bash` — 65
-- `unknown` — 45
-- `Read` — 5
+- `Read` — 1
 
 ### claude recent top reads
-- `/tmp/claude-1000/-mnt-local-analysis/0feadda7-afd0-4bc9-8608-ea2443305639/scratchpad/wt-1633-plan/docs/plans/2026-08-03-issue-1633-ship-benchmark-verdict.md` — 1
-- `/tmp/claude-1000/-mnt-local-analysis/0feadda7-afd0-4bc9-8608-ea2443305639/scratchpad/wt-1633-plan/docs/domains/orcawave/L01_aqwa_benchmark/benchmark_results/benchmark_report.json` — 1
-- `/tmp/claude-1000/-mnt-local-analysis/0feadda7-afd0-4bc9-8608-ea2443305639/scratchpad/wt-1633-plan/docs/domains/orcawave/L01_aqwa_benchmark/benchmark_results/benchmark_summary.json` — 1
-- `/tmp/claude-1000/-mnt-local-analysis/0feadda7-afd0-4bc9-8608-ea2443305639/scratchpad/wt-1633-plan/src/digitalmodel/hydrodynamics/diffraction/multi_solver_comparator.py` — 1
-- `/tmp/claude-1000/-mnt-ace-ws/d40540de-bdf2-4f0d-a52f-ec7d12a1f029/scratchpad/2026-09-03-issue-2040-free-surface-rebuild-r2.md` — 1
+- `/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md` — 1
 
 ### claude recent top writes
 - none
@@ -166,14 +162,7 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - none
 
 ### claude recent top Bash command families
-- `git` — 45
-- `gh` — 7
-- `ls` — 4
-- `echo` — 4
-- `pwd` — 1
-- `grep` — 1
-- `git show` — 1
-- `sed` — 1
+- none
 
 ### claude recent top missing repo reads
 - none
@@ -185,10 +174,10 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - none
 
 ### claude corpus change since previous audit
-- Post-hook records: current 123526 vs previous 123411 (delta 115)
-- Sessions: current 105 vs previous 104 (delta 1)
-- Missing repo reads: current 9479 vs previous 9480 (delta -1)
-- Event-time post records since prior audit: 115
+- Post-hook records: current 123527 vs previous 123526 (delta 1)
+- Sessions: current 106 vs previous 105 (delta 1)
+- Missing repo reads: current 9479 vs previous 9479 (delta 0)
+- Event-time post records since prior audit: 1
 - Reconciliation gap vs event-time delta: 0
 - Status: aligned
 - Interpretation: Snapshot post-record change aligns with recent event-time activity.
@@ -239,7 +228,6 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
   - Reference: `docs/ops/legacy-claude-reference-map.md`
 
 ### claude top missing external reads
-- `/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md` — 231
 - `/tmp/tmp.4XN7Wckbxl/review-content.md` — 18
 - `/home/vamsee/.claude/projects/-mnt-local-analysis-workspace-hub/memory/feedback_llm_wiki_hyphen_module_path_pattern.md` — 15
 - `/mnt/workspace-hub/.claude/work-queue/assets/WRK-5082/geometry-dimensions-WRK-1360.md` — 13
@@ -249,13 +237,14 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - `/tmp/tmp.4fvalbgSpv/review-content.md` — 10
 - `/mnt/workspace-hub/.claude/skills/engineering/cad/freecad-automation/SKILL.md` — 10
 - `/tmp/tmp.Y7GHawx2jw/review-content.md` — 9
+- `/mnt/workspace-hub/digitalmodel/src/digitalmodel/hydrodynamics/hull_library/profile_schema.py` — 9
 
 ## codex
 - Source: raw_logs
-- Sessions: 151
-- Post-hook records: 207752
+- Sessions: 153
+- Post-hook records: 208011
 - Correction sessions: 0
-- Unique runtime sessions: 3344
+- Unique runtime sessions: 3353
 - Prompt-like reads: 40
 - Blank read targets: 0
 - Missing repo reads: 1709
@@ -266,14 +255,14 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - `Bash` — 169066
 - `wait` — 12283
 - `Read` — 7377
-- `wait_agent` — 7030
-- `send_message` — 2378
+- `wait_agent` — 7122
+- `send_message` — 2456
 - `Grep` — 2036
-- `spawn_agent` — 1659
-- `update_plan` — 1074
+- `spawn_agent` — 1680
+- `followup_task` — 1091
 
 ### codex top repos
-- `workspace-hub` — 207752
+- `workspace-hub` — 208011
 
 ### codex top reads
 - `docs/plans/README.md` — 274
@@ -334,15 +323,15 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - `git` — 6528
 
 ### codex recent activity since previous audit
-- Post-hook records since prior audit: 772
-- Runtime sessions since prior audit: 39
+- Post-hook records since prior audit: 259
+- Runtime sessions since prior audit: 9
 
 ### codex recent top tools
-- `Bash` — 494
-- `wait` — 71
-- `wait_agent` — 64
-- `send_message` — 58
-- `spawn_agent` — 38
+- `wait_agent` — 92
+- `send_message` — 78
+- `followup_task` — 43
+- `list_agents` — 25
+- `spawn_agent` — 21
 
 ### codex recent top reads
 - none
@@ -354,14 +343,7 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - none
 
 ### codex recent top Bash command families
-- `nl` — 62
-- `sed` — 60
-- `find` — 40
-- `rg` — 33
-- `git` — 32
-- `git status` — 30
-- `gh` — 26
-- `export` — 25
+- none
 
 ### codex recent top missing repo reads
 - none
@@ -373,13 +355,13 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - none
 
 ### codex corpus change since previous audit
-- Post-hook records: current 207752 vs previous 206929 (delta 823)
-- Sessions: current 151 vs previous 141 (delta 10)
-- Missing repo reads: current 1709 vs previous 1705 (delta 4)
-- Event-time post records since prior audit: 772
-- Reconciliation gap vs event-time delta: 51
-- Status: positive_corpus_growth_beyond_recent_activity
-- Interpretation: Snapshot grew more than recent event-time activity, suggesting backfill or expanded export coverage.
+- Post-hook records: current 208011 vs previous 207752 (delta 259)
+- Sessions: current 153 vs previous 151 (delta 2)
+- Missing repo reads: current 1709 vs previous 1709 (delta 0)
+- Event-time post records since prior audit: 259
+- Reconciliation gap vs event-time delta: 0
+- Status: aligned
+- Interpretation: Snapshot post-record change aligns with recent event-time activity.
 
 ### codex top missing repo reads
 - `src/digitalmodel/marine_ops/installation/jumper_installation.py` — 21
@@ -434,7 +416,7 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 - Unique runtime sessions: 5935
 - Prompt-like reads: 37125
 - Blank read targets: 10584
-- Missing repo reads: 139374
+- Missing repo reads: 139509
 - Bare python3 bash calls: 74736
 - `uv run ... python` bash calls: 146556
 
@@ -531,7 +513,7 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 ### hermes corpus change since previous audit
 - Post-hook records: current 7829811 vs previous 7829811 (delta 0)
 - Sessions: current 50 vs previous 50 (delta 0)
-- Missing repo reads: current 139374 vs previous 139374 (delta 0)
+- Missing repo reads: current 139509 vs previous 139374 (delta 135)
 - Event-time post records since prior audit: 0
 - Reconciliation gap vs event-time delta: 0
 - Status: aligned
@@ -691,7 +673,7 @@ Scope: provider session artifacts rooted at `/mnt/ace/ws/workspace-hub/logs/orch
 ### gemini corpus change since previous audit
 - Post-hook records: current 6210 vs previous 6210 (delta 0)
 - Sessions: current 78 vs previous 78 (delta 0)
-- Missing repo reads: current 645 vs previous 635 (delta 10)
+- Missing repo reads: current 645 vs previous 645 (delta 0)
 - Event-time post records since prior audit: 0
 - Reconciliation gap vs event-time delta: 0
 - Status: aligned
