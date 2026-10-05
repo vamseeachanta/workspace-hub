@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-05T09:21:19.282904Z",
+  "generated_at": "2026-10-05T13:21:12.830332Z",
   "apply_mode": false,
   "threshold": 0.9,
   "eligible_count": 5,
@@ -202,40 +202,6 @@
         "execution-ready",
         "strong-codex-language-match",
         "provider-highest-priority"
-      ],
-      "eligible": false
-    },
-    {
-      "number": 3573,
-      "title": "feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3573",
-      "labels": [
-        "enhancement",
-        "cat:harness",
-        "machine:multi",
-        "status:plan-approved",
-        "gate:completeness",
-        "lane:claude",
-        "domain:ai"
-      ],
-      "updatedAt": "2026-07-31T02:26:39Z",
-      "execution_ready": true,
-      "priority_rank": 4,
-      "suggested_provider": "claude",
-      "routing_reason": "strategy/workflow/architecture language",
-      "provider_priority": "high",
-      "provider_status": "underused",
-      "work_type": [
-        "research",
-        "implementation",
-        "strategy"
-      ],
-      "target_label": "agent:claude",
-      "confidence": 0.75,
-      "confidence_reasons": [
-        "execution-ready",
-        "strong-claude-language-match",
-        "provider-high-priority"
       ],
       "eligible": false
     },
@@ -535,6 +501,38 @@
         "domain:harness"
       ],
       "updatedAt": "2026-07-31T08:33:49Z",
+      "execution_ready": false,
+      "priority_rank": 0,
+      "suggested_provider": "claude",
+      "routing_reason": "strategy/workflow/architecture language",
+      "provider_priority": "high",
+      "provider_status": "underused",
+      "work_type": [
+        "research",
+        "implementation",
+        "strategy"
+      ],
+      "target_label": "agent:claude",
+      "confidence": 0.55,
+      "confidence_reasons": [
+        "priority-labeled",
+        "strong-claude-language-match",
+        "provider-high-priority"
+      ],
+      "eligible": false
+    },
+    {
+      "number": 3693,
+      "title": "Compliance alert: W31 \u2014 0% (critical)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3693",
+      "labels": [
+        "priority:medium",
+        "priority:critical",
+        "machine:dev-primary",
+        "compliance-alert",
+        "domain:governance"
+      ],
+      "updatedAt": "2026-08-02T11:45:07Z",
       "execution_ready": false,
       "priority_rank": 0,
       "suggested_provider": "claude",

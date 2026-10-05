@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-05T09:21:19.172944Z",
+  "generated_at": "2026-10-05T13:21:12.719562Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-05T09:21:16.779219Z",
+  "scorecard_generated_at": "2026-10-05T13:21:10.447649Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -11,7 +11,7 @@
     "claude": {
       "provider": "claude",
       "routing_priority": "high",
-      "execution_ready_count": 7,
+      "execution_ready_count": 6,
       "total_candidates": 179,
       "top_issues": [
         {
@@ -81,32 +81,6 @@
           "updatedAt": "2026-09-11T20:33:18Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3573,
-          "title": "feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3573",
-          "labels": [
-            "enhancement",
-            "cat:harness",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-07-31T02:26:39Z",
-          "execution_ready": true,
-          "priority_rank": 4,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -214,6 +188,30 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3693,
+          "title": "Compliance alert: W31 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3693",
+          "labels": [
+            "priority:medium",
+            "priority:critical",
+            "machine:dev-primary",
+            "compliance-alert",
+            "domain:governance"
+          ],
+          "updatedAt": "2026-08-02T11:45:07Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
         }
       ],
       "full_candidates": [
@@ -284,32 +282,6 @@
           "updatedAt": "2026-09-11T20:33:18Z",
           "execution_ready": true,
           "priority_rank": 1,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
-            "implementation",
-            "strategy"
-          ]
-        },
-        {
-          "number": 3573,
-          "title": "feat(ai-orchestration): replace gemini with agy as the third worker/reviewer provider ecosystem-wide",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3573",
-          "labels": [
-            "enhancement",
-            "cat:harness",
-            "machine:multi",
-            "status:plan-approved",
-            "gate:completeness",
-            "lane:claude",
-            "domain:ai"
-          ],
-          "updatedAt": "2026-07-31T02:26:39Z",
-          "execution_ready": true,
-          "priority_rank": 4,
           "suggested_provider": "claude",
           "routing_reason": "strategy/workflow/architecture language",
           "provider_priority": "high",
@@ -621,6 +593,27 @@
             "compliance-alert"
           ],
           "updatedAt": "2026-10-04T11:45:06Z",
+          "execution_ready": false,
+          "priority_rank": 0,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3940,
+          "title": "Compliance alert: W41 \u2014 0% (critical)",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3940",
+          "labels": [
+            "priority:critical",
+            "compliance-alert"
+          ],
+          "updatedAt": "2026-10-05T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
