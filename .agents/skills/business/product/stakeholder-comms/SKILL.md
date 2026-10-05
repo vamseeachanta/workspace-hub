@@ -214,3 +214,5 @@ For each: what was it, why was it rejected?
 ### Stakeholder Review / Demo
 - Demo the real product whenever possible. Slides are not demos.
 - Frame feedback collection with specific questions.
+
+A planned or elapsed milestone date is not evidence of completion. Say completion is unverified unless an accessible source records the achieved outcome; missing access proves neither success nor failure.
