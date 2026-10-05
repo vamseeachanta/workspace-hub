@@ -52,7 +52,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `gh-work-planning`
 
 - Former skill demoted to `references/gh-work-planning.md`.
-- Preserved insight: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, and execution-ready delegation packaging for Claude agent teams.
+- Preserved insight: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, task/standing authority for implementation without a separate plan-approval gate; explicit planning-only limits and consequential-action boundaries remain, and execution-ready delegation packaging for Claude agent teams.
 
 ### `gh-work-planning-checklist`
 
@@ -127,7 +127,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `preserved-plan-refile-with-attested-review-wave`
 
 - Former skill demoted to `references/preserved-plan-refile-with-attested-review-wave.md`.
-- Preserved insight: Reopen a previously closed GitHub issue with a preserved local plan, rewrite it into a conservative draft, and drive iterative attested adversarial review waves until it is truly approval-ready.
+- Preserved insight: Reopen a previously closed GitHub issue with a preserved local plan, rewrite it into a conservative draft, and drive iterative attested adversarial review waves until blocking findings are resolved and it is ready for implementation within task/standing authority.
 
 ### `single-terminal-gh-issue-prompts`
 
@@ -152,7 +152,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `plan-gated-issue-execution-wave`
 
 - Former skill demoted to `references/plan-gated-issue-execution-wave.md`.
-- Preserved insight: Execute a multi-issue architecture/planning wave in a plan-gated repo, then safely transition approved issues into implementation with file-based Claude prompts, local approval markers, subprocess monitoring, and cleanup handling for sandbox/hook edge cases.
+- Preserved insight: Execute a multi-issue architecture/planning wave in a plan-gated repo, then safely transition reviewed, authorized issues into implementation with file-based Claude prompts, scope evidence, subprocess monitoring, and cleanup handling for sandbox/hook edge cases.
 
 ### `continuous-planning-pipeline`
 

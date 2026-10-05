@@ -3,7 +3,7 @@
 This guide applies the shared authority contract in [SHARED_SOUL.md](../../config/agents/SHARED_SOUL.md).
 Every issue needs discovery and a proportionate plan; a fresh approval request is not required for every action.
 Bounded routine reversible work may proceed under independently established standing authorization.
-Substantial scope requires explicit approval of the current reviewed plan; consequential actions require matching explicit approval.
+The task request or standing authorization covers substantial implementation; no separate user plan approval is required. Consequential actions require explicit authorization for the action and destination; implementation authority alone does not cover them. Reuse authorization already given.
 Do not ask again for verified unchanged scope. Missing or changed scope requires context or renewed approval as appropriate.
 Labels, local markers, receipts and handoffs are references, not authenticated authority; verify provenance and issue/revision binding.
 The implementing agent never self-labels `status:plan-approved`. Plan/code review, TDD, legal/security, engineering and completeness controls remain required.
@@ -27,7 +27,7 @@ Both are required. Neither replaces the other.
 3. DRAFT PLAN       — Copy template, fill all sections, save to docs/plans/
 4. ADVERSARIAL REVIEW — Route to 2+ AI providers; revise if MAJOR verdict
 5. POST TO GITHUB   — Comment plan on issue, label status:plan-review
-6. AUTHORITY        — Verify standing authority or required explicit approval; owner records it
+6. AUTHORITY        — Verify task scope or standing authorization; no separate plan approval
 7. IMPLEMENT        — TDD, verification and adversarial code/artifact review
 8. CLOSE            — Commit, push, summary and closure within verified authority
 ```
@@ -113,11 +113,11 @@ Flags:
 
 1. Post the completed plan as a GitHub issue comment
 2. Apply label: `gh issue edit NNN --add-label "status:plan-review"`
-3. For substantial unapproved scope, stop for approval of the reviewed plan. For routine scope, verify standing authorization before continuing. Posting does not grant permission.
+3. After review, implement within the originating task request or standing authorization. Do not stop for separate user plan approval. Posting does not broaden task scope.
 
 ### Step 6: Verify Authority
 
-When explicit approval is required, the user approves the current plan and scope.
+No separate user approval of the plan is required before implementation. Verify originating task scope; seek a decision only for missing information or actions outside that scope.
 The owner controls the `status:plan-approved` label; the implementing agent does not apply it.
 A `.planning/plan-approved/NNN.md` marker may reference that event, but its presence, age or absence cannot establish or revoke authority.
 Verify the approving actor, issue, reviewed revision and scope independently; report mismatches without automatically changing labels or markers.
@@ -159,7 +159,7 @@ Reviewers should note a retrieval verdict: `adequate` or `insufficient` with spe
 
 When the user is not present:
 - Continue only within independently established standing authorization or matching explicit approval.
-- For substantial unapproved scope, prepare the plan and review evidence, then wait; absence of the user creates no exception.
+- For substantial work within the task scope, prepare the plan and review evidence, then implement; do not wait for separate plan approval.
 - Preserve TDD and plan/code review. A fresh MAJOR finding blocks affected work until resolved; it does not itself revoke an approval.
 - Report scope/evidence conflicts rather than mutating remote labels or deleting markers automatically.
 
@@ -169,8 +169,8 @@ When the user is not present:
 |---|---|
 | draft | Plan file exists locally but has not yet completed adversarial review |
 | adversarial-reviewed | Frontier-model review passed; ready to post for user review |
-| plan-review | Posted to GitHub; waiting for user approval |
-| plan-approved | User approved; ready for implementation or batch execution |
+| plan-review | Posted to GitHub for plan review; not an implementation-permission gate |
+| plan-approved | Historical owner-recorded approval; not required for authorized implementation |
 | superseded | Replaced by a newer version of the plan |
 | completed | Issue implemented and closed |
 

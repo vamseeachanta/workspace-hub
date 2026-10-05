@@ -32,7 +32,7 @@ Before posting a plan-review update, verify:
 5. Ambiguous report artifacts fail closed to internal evidence until ownership and output residency are recorded.
 6. Report-layer claims bind to source manifest, command manifest, validation result, legal scan, checksum, review verdict, output residency, and promotion decision.
 7. Review evidence cites revision-stamped, non-empty artifacts rather than mutable paths that can be truncated or overwritten in the same run.
-8. README/index status remains conservative (`plan-review` or `plan-review-blocked`) until fresh adversarial review clears MAJOR findings and the user approves.
+8. README/index status remains conservative (`plan-review` or `plan-review-blocked`) until fresh adversarial review clears blocking MAJOR findings and required domain decisions are resolved. The task request or standing authority authorizes implementation; no separate plan approval is required.
 
 ## GitHub update pattern
 
@@ -43,4 +43,4 @@ When patching plan artifacts after review drift, post a concise parent-issue upd
 - unresolved blocker/gate
 - next review action
 
-Do not ask the user to approve while the plan remains blocked by fresh or unresolved MAJOR review findings.
+Resolve fresh or unresolved blocking MAJOR findings before implementation. Honor an explicit planning-only request; seek user input only for decisions or actions outside existing authority.

@@ -29,7 +29,7 @@ Use this checklist when resuming a plan-review issue after a key external/source
 
 ## Boundaries
 
-- Do not self-apply `status:plan-approved`; explicit user approval is still required.
+- The task request or established standing authority authorizes implementation within its scope; no separate plan approval is required. Preserve owner-controlled approval records without self-labeling.
 - Do not treat a known off-repo source path as permission to commit licensed source files or reusable extracted coefficient databases.
 - Do not over-broaden implementation scope while patching provenance; keep the revision narrowly tied to the resolved ambiguity.
 
@@ -38,9 +38,9 @@ Use this checklist when resuming a plan-review issue after a key external/source
 Recommended closeout summary:
 
 ```text
-Current state: <issue>, <labels>, approval blocked/approved
+Current state: <issue>, <labels>, implementation ready/blocked
 Evidence: <commit>, <issue comment>, <plan artifact>, <review artifact>
 What changed: source route, license boundary, fail-closed tests
-Gap/blocker: explicit user approval or named unresolved source decision
-Next action: label transition or TDD implementation checkpoint
+Gap/blocker: named unresolved source decision, scope limitation, or consequential action outside existing authority
+Next action: resolve the named blocker or continue to the TDD implementation checkpoint
 ```

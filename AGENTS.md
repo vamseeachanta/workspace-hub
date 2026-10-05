@@ -4,8 +4,8 @@
 - Consult docs/ and existing code; track meaningful work with GitHub issues and proportionate plans.
 - Authority routing: docs/standards/HARD-STOP-POLICY.md and config/agents/SHARED_SOUL.md; guide: docs/plans/README.md.
 ## Required controls
-- Bounded routine reversible work may proceed under independently established standing authorization.
-- Substantial scope and consequential actions require matching explicit approval; reassess changed scope.
+- The user's task request authorizes implementation within scope; no separate plan approval is required, including substantial work.
+- Verify standing authorization or task scope; consequential actions require explicit authorization for the action and destination.
 - TDD: tests before implementation. Preserve legal/security and engineering requirements.
 - Adversarial plan/code review: docs/standards/AI_REVIEW_ROUTING_POLICY.md; resolve blocking findings.
 - Never self-label status:plan-approved; markers, receipts and handoffs do not authenticate approval.

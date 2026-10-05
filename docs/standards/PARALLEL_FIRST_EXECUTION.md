@@ -32,7 +32,7 @@ This is the canonical default. Do not parallelize blindly; parallelize when it r
 Parallel execution does not bypass existing gates:
 
 - Issue work follows: Issue -> Resource Intel -> proportionate Plan -> Adversarial Review -> verify current authority -> Implement (TDD) -> Cross-review -> authorized Close.
-- Substantial implementation requires explicit approval of its current plan; bounded routine work requires verified standing authorization. A review label establishes neither. Consequential actions require matching action approval. Never self-apply the owner-controlled `status:plan-approved` label.
+- Substantial implementation follows the task request without separate plan approval; bounded routine work may use verified standing authorization. A review label establishes neither. Consequential actions require matching action approval. Never self-apply the owner-controlled `status:plan-approved` label.
 - TDD remains mandatory for code/script changes.
 - Cross-review remains mandatory where policy requires it.
 - The orchestrator owns final integration, GitHub closeout, and commit/push serialization.

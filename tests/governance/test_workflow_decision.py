@@ -55,7 +55,7 @@ def test_protected_paths_override_routine_effect(path):
     value["changed_paths"] = [path]
     result = wd.assess(value)
     assert result["risk_class"] == "substantial"
-    assert result["action_boundary"] == "approval-required"
+    assert result["action_boundary"] == "verify-task-authority"
 
 
 @pytest.mark.parametrize("effect", ["publication", "destruction", "access-change",
@@ -145,14 +145,14 @@ def test_documentation_names_do_not_imply_documentation_content(path):
 def test_plans_and_deployment_configuration_are_protected(path):
     value = request()
     value["changed_paths"] = [path]
-    assert wd.assess(value)["action_boundary"] == "approval-required"
+    assert wd.assess(value)["action_boundary"] == "verify-task-authority"
 
 
 @pytest.mark.parametrize("path", [".github/dependabot.yml", "pyproject.toml", "package.json"])
-def test_build_and_dependency_control_requires_approval(path):
+def test_build_and_dependency_control_requires_task_authority(path):
     value = request()
     value["changed_paths"] = [path]
-    assert wd.assess(value)["action_boundary"] == "approval-required"
+    assert wd.assess(value)["action_boundary"] == "verify-task-authority"
 
 
 def test_successful_metrics_still_do_not_authenticate():
