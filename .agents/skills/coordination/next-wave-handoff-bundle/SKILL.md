@@ -164,7 +164,7 @@ If the user chooses the exit path of "commit/push, document, and prepare to exit
 4. inspect the CI run triggered by the handoff commit
 5. separate scoped-success evidence from unrelated CI failures
 
-If `git push` reports a remote ref-lock/race error such as `cannot lock ref ... is at <new> but expected <old>`, do not assume the handoff failed. Immediately run `git fetch origin <branch>` and compare `git rev-parse HEAD` with `git rev-parse origin/<branch>`. In concurrent/auto-sync environments the remote may already contain the just-created commit despite the non-zero push result; if hashes match, treat the push as effectively complete and avoid duplicate commits or force-pushes.
+If `git push` reports a remote ref-lock/race error such as `cannot lock ref ... is at <new> but expected <old>`, do not assume the handoff failed. When remote reads are within task scope, run `git fetch origin <branch>` and compare `git rev-parse HEAD` with `git rev-parse origin/<branch>`. In concurrent/auto-sync environments the remote may already contain the just-created commit despite the non-zero push result; if hashes match, treat the push as effectively complete and avoid duplicate commits or force-pushes.
 
 A docs-only handoff commit can still trigger repo CI/docs workflows. If CI is red for failures outside the completed stream's scope, do not reopen the completed issue by default. Instead:
 - record the relevant scoped pass/fail evidence in the handoff and/or issue comment
@@ -190,7 +190,7 @@ A solid handoff should usually include:
 - Do not reopen already-completed tasks just because review found future hardening work.
 - Do not mistake a worktree smoke test for production validation.
 - Do not bury the real high-value recommendation (e.g. promote a narrow enforcement fix first).
-- Do not leave issue drafts as prose only; convert them into `gh`-ready packets when possible.
+- Convert issue drafts into `gh`-ready packets when executable packets are requested or needed within task scope.
 - When commits are authorized and useful, preserve the handoff in a narrow commit; otherwise leave the reviewable artifacts and report their exact state. Handoff cleanliness does not expand task permission.
 
 ## Minimal verification loop

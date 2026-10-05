@@ -139,7 +139,7 @@ Feedback:
 **Red** (Off Track): Significantly behind plan. Major blocker or risk without clear mitigation.
 
 ### When to Change Status
-- Move to Yellow at the FIRST sign of risk, not when you are sure things are bad
+- Report material risks when evidence first supports them; use Yellow against stated at-risk criteria, or Partial / Last-known when current evidence is insufficient
 - Use Red when evidence establishes that the stated milestone or acceptance criteria are not met; escalate on the documented trigger rather than waiting until all options are exhausted
 - Move back to Green only when the risk is genuinely resolved
 - Document what changed when you change status
@@ -149,14 +149,14 @@ Feedback:
 ### ROAM Framework for Risk Management
 - **Resolved**: Risk is no longer a concern. Document how it was resolved.
 - **Owned**: Risk is acknowledged and someone is actively managing it.
-- **Accepted**: Risk is known but we are choosing to proceed without mitigation.
+- **Accepted**: Risk is known and the authorized decision owner has recorded acceptance without mitigation.
 - **Mitigated**: Actions have reduced the risk to an acceptable level.
 
 ### Communicating Risks Effectively
 1. **State the risk clearly**: "There is a risk that [thing] happens because [reason]"
 2. **Quantify the impact**: "If this happens, the consequence is [impact]"
 3. **State the likelihood**: "This is [likely/possible/unlikely] because [evidence]"
-4. **Present the mitigation**: "We are managing this by [actions]"
+4. **Present the mitigation**: "The mitigation consists of [actions], owned by [confirmed owner or unassigned]"
 5. **Make the ask**: "We need [specific help] to further reduce this risk"
 
 ## Decision Documentation (ADRs)
