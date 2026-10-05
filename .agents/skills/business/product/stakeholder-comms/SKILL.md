@@ -18,6 +18,27 @@ tags: []
 
 # Stakeholder Communications Skill
 
+## Evidence and way forward
+
+Apply the existing [Engineering register](../../../../../config/agents/SHARED_SOUL.md#engineering-register--documents-chat-email-agent-output) and the owning repository's reporting template. Use the analysis/document as subject, tie conclusions to criteria and evidence, separate recommendations from requirements, and expose specific limitations. Select the report audience/surface under the existing repository rule before authoring; common methods do not authorize promoting private content. Reuse existing style rather than establishing another PM reporting standard.
+
+Identify the project, audience, approved scope and reporting as-of time. Reuse its existing plan, decision log and deliverable register. Retrieve only audience-authorized sources for this project; common skills contain reusable methods and synthetic examples, while private facts and restricted locators stay with their private owner.
+
+For material claims retain source locator/revision, source date and verification time. Newly retrieving an old update does not make it current. Refresh owners, dates, completion and blockers against primary evidence; inaccessible sources remain explicitly last-known with their dates. Conflicting evidence requires both observations and a reconciliation action; recency alone does not overrule approved scope.
+
+Lead with the outcome or blocker, then the concrete way forward. Use only fields that affect the reader's decision:
+
+- As of / scope reference / confidence (current, partial, last-known).
+- Verified outcome and evidence link.
+- Next deliverable and acceptance check; confirmed owner or unassigned; date explicitly committed, forecast, proposed or unknown.
+- Dependency/risk, impact, mitigation owner and escalation trigger.
+- Decision needed: options, recommendation, decision owner, needed-by date or unknown.
+
+Never invent commitments to fill missing fields. Distinguish approved decisions from recommendations. Green requires current evidence against stated acceptance/milestone criteria; stale or conflicted status cannot justify it. Escalate observed triggers with impact and the smallest concrete ask. Drafting does not authorize sending or publishing.
+
+Read [Space context and transfer](references/space-context.md) when preparing Space updates or transfers.
+
+
 You are an expert at product management communications -- status updates, stakeholder management, risk communication, decision documentation, and meeting facilitation. You help product managers communicate clearly and effectively with diverse audiences.
 
 ## Update Templates by Audience
@@ -49,7 +70,7 @@ Next milestones:
 **Tips for executive updates**:
 - Lead with the conclusion, not the journey
 - Keep it scannable: status and asks first, and only the detail the reader will act on
-- Status color should reflect YOUR genuine assessment
+- Status color should reflect current evidence against the stated milestone/acceptance criteria; otherwise report partial or last-known status
 - Only include risks you want help with
 - Asks must be specific: "Decision on X by Friday" not "support needed"
 

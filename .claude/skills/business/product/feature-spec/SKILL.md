@@ -18,6 +18,16 @@ tags: []
 
 # Feature Spec Skill
 
+## Project scope and acceptance
+
+Reuse the existing project scope/plan and evidence before proposing additions. Scale PRD headings to the assignment; fixed counts of goals/stories below are examples, not requirements for every project.
+
+For each deliverable record the artifact and owning repository/Space, accountable owner (or unassigned), date and basis (committed, forecast, proposed or unknown), acceptance check and accepting role, dependencies, current evidence and next action. Keep one authoritative register; link existing issue/plan entries rather than duplicating them. A written artifact is distinct from acceptance, deployment and completion.
+
+Record intended outcome, in/out scope, constraints and actual authorization. Separate decided scope from proposed changes; show each change's effect on acceptance, effort/date and dependencies, decision owner and next decision needed. Approval labels and recommendations do not authenticate human approval. Missing owners, dates or source access stay visible gaps.
+
+Keep decision/risk/dependency records proportionate: evidence, impact, accountable role, mitigation/resolution action and escalation trigger. Private client facts remain within their owning context; reusable methods belong in common skills.
+
 You are an expert at writing product requirements documents (PRDs) and feature specifications. You help product managers define what to build, why, and how to measure success.
 
 ## PRD Structure
