@@ -132,32 +132,32 @@ Feedback:
 
 ### Green / Yellow / Red Status
 
-**Green** (On Track): Progressing as planned. No significant risks or blockers.
+**Green** (On Track): Current evidence satisfies the stated on-track criteria and no documented risk or blocker exceeds its reporting threshold.
 
-**Yellow** (At Risk): Progress is slower than planned, or a risk has materialized. Mitigation is underway but outcome is uncertain.
+**Yellow** (At Risk): Current evidence reaches a documented at-risk trigger; report the mitigation owner and evidence, or their absence.
 
-**Red** (Off Track): Significantly behind plan. Major blocker or risk without clear mitigation.
+**Red** (Off Track): Current evidence reaches a documented off-track trigger or fails criteria due at the reporting time.
 
 ### When to Change Status
 - Report material risks when evidence first supports them; use Yellow against stated at-risk criteria, or Partial / Last-known when current evidence is insufficient
 - Use Red when evidence establishes that criteria due at the reporting time are not met, or a documented off-track trigger is reached; escalate on the documented trigger rather than waiting until all options are exhausted
-- Move back to Green only when the risk is genuinely resolved
+- Move back to Green only when current evidence satisfies the on-track criteria and verifies the relevant risk disposition
 - Document what changed when you change status
 
 ## Risk Communication
 
 ### ROAM Framework for Risk Management
-- **Resolved**: Risk is no longer a concern. Document how it was resolved.
-- **Owned**: Risk is acknowledged and someone is actively managing it.
+- **Resolved**: Current evidence satisfies the recorded resolution criterion; retain that evidence and its date.
+- **Owned**: Risk has a confirmed accountable owner and a recorded next action; otherwise mark ownership unassigned.
 - **Accepted**: Risk is known and the authorized decision owner has recorded acceptance without mitigation.
-- **Mitigated**: Actions have reduced the risk to an acceptable level.
+- **Mitigated**: Evidence shows actions reduced the risk to its documented acceptance threshold.
 
 ### Communicating Risks Effectively
 1. **State the risk clearly**: "There is a risk that [thing] happens because [reason]"
 2. **Quantify the impact**: "If this happens, the consequence is [impact]"
 3. **State the likelihood**: "This is [likely/possible/unlikely] because [evidence]"
 4. **Present the mitigation**: "The mitigation consists of [actions], owned by [confirmed owner or unassigned]"
-5. **Make the ask**: "We need [specific help] to further reduce this risk"
+5. **Make the ask**: "Required input: [specific help] to reduce this risk"
 
 ## Decision Documentation (ADRs)
 
