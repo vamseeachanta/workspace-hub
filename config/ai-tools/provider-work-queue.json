@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-05T13:21:12.719562Z",
+  "generated_at": "2026-10-05T17:21:14.234550Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-05T13:21:10.447649Z",
+  "scorecard_generated_at": "2026-10-05T17:21:11.589951Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -12,7 +12,7 @@
       "provider": "claude",
       "routing_priority": "high",
       "execution_ready_count": 6,
-      "total_candidates": 179,
+      "total_candidates": 180,
       "top_issues": [
         {
           "number": 3816,
@@ -4167,6 +4167,23 @@
             "implementation",
             "strategy"
           ]
+        },
+        {
+          "number": 3942,
+          "title": "Guard publication eligibility across retained inputs and dependency closure",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3942",
+          "labels": [],
+          "updatedAt": "2026-10-05T14:48:32Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "implementation",
+            "strategy"
+          ]
         }
       ]
     },
@@ -4174,7 +4191,7 @@
       "provider": "codex",
       "routing_priority": "highest",
       "execution_ready_count": 3,
-      "total_candidates": 19,
+      "total_candidates": 18,
       "top_issues": [
         {
           "number": 3740,
@@ -4588,27 +4605,6 @@
           "provider_priority": "highest",
           "provider_status": "underused",
           "work_type": [
-            "implementation"
-          ]
-        },
-        {
-          "number": 3577,
-          "title": "fix(harness): repo-wide exec-bit audit \u2014 NTFS-FUSE working copy commits scripts as 100644",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3577",
-          "labels": [
-            "cat:harness",
-            "machine:dev-primary",
-            "domain:harness"
-          ],
-          "updatedAt": "2026-07-31T08:33:33Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "codex",
-          "routing_reason": "implementation/test/fix language",
-          "provider_priority": "highest",
-          "provider_status": "underused",
-          "work_type": [
-            "research",
             "implementation"
           ]
         },
