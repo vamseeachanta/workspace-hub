@@ -100,7 +100,7 @@ Each artifact should restate:
 ### 5. Sequence recommendations by risk reduction
 When a real governance/enforcement bug was found during implementation:
 1. preserve the docs handoff bundle
-2. recommend promotion/cherry-pick of the narrow enforcement fix before more plan-gated implementation work
+2. recommend promotion/cherry-pick of the narrow enforcement fix before further task-authorized implementation work
 3. then draft follow-up issues from remaining review findings; create them only within established action authorization
 4. then identify the deploy-topology Stage 2 readiness and authorization gates before execution
 
@@ -171,7 +171,7 @@ A docs-only handoff commit can still trigger repo CI/docs workflows. If CI is re
 - draft a follow-up issue for the remaining failure family; open it only within established action authorization
 - explicitly state that the completed stream remains complete only if its acceptance gate stayed green
 
-Example: after a lint-restoration stream, a handoff commit triggered CI where `Lint`, `Type Check`, and `Security Scan` passed but Python test-matrix jobs failed. Correct closeout was to preserve the lint handoff, retain its accepted status, and prepare a plan-gated follow-up for the Python test-matrix failures; issue creation required its own applicable authorization.
+Example: after a lint-restoration stream, a handoff commit triggered CI where `Lint`, `Type Check`, and `Security Scan` passed but Python test-matrix jobs failed. Correct closeout was to preserve the lint handoff, retain its accepted status, and prepare a scoped follow-up with proportionate planning and review for the Python test-matrix failures; issue creation required its own applicable authorization.
 
 Report the evidence plainly.
 
@@ -202,4 +202,4 @@ Within the permitted task context, check the following before finishing; report 
 5. report observed push state and its evidence; mark it unverified if the task excludes the necessary checks
 
 ## Why this is reusable
-This pattern works whenever a completed implementation wave needs a safe operational handoff for the next wave, especially in plan-gated repos where docs, issue packets, and deployment sequencing must be preserved without reopening feature code.
+This pattern works whenever a completed implementation wave needs a safe operational handoff for the next wave, especially where repository planning and action checks require docs, issue packets, and deployment sequencing must be preserved without reopening feature code.
