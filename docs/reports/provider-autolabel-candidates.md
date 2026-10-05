@@ -1,6 +1,6 @@
 # Provider autolabel candidates
 
-Generated: 2026-10-05T17:21:14.346927Z
+Generated: 2026-10-05T21:21:13.723849Z
 Apply mode: False
 Threshold: 0.9
 
@@ -12,7 +12,6 @@ Threshold: 0.9
 | #3838 fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3843 refactor(orcaflex): consolidate four model generators onto modular_generator | agent:claude | 0.90 | yes | execution-ready, priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3787 pytest pays a large fixed startup tax before any test runs — 38s git call, 59MB DB query on collect-only, 487 hidden test files | agent:codex | 0.80 | no | execution-ready, strong-codex-language-match, provider-highest-priority |
-| #3578 fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #3592 equality matrix: reclassify harness/scheduler/memory rows — uniform vote mis-grades per-role differences + Windows placeholder data poisons majority | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #3702 bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock | agent:claude | 0.75 | no | execution-ready, strong-claude-language-match, provider-high-priority |
 | #3788 bug(dispatch): reconcile.py reads an open-only label snapshot, so every CLOSED issue reports false LABEL-MISSING | agent:codex | 0.60 | no | priority-labeled, strong-codex-language-match, provider-highest-priority |
@@ -23,4 +22,5 @@ Threshold: 0.9
 | #3819 feat(harness): unified ecosystem doctor with stable probe schema | agent:agy | 0.60 | no | priority-labeled, strong-agy-language-match, provider-highest-priority |
 | #3596 Compliance alert: W30 — 18% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3693 Compliance alert: W31 — 0% (critical) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
+| #3794 Compliance alert: W32 — 66% (medium) | agent:claude | 0.55 | no | priority-labeled, strong-claude-language-match, provider-high-priority |
 | #3717 Context budget: harness config is 3.6% of the window — the cost is tool output (17%), not CLAUDE.md | agent:agy | 0.45 | no | strong-agy-language-match, provider-highest-priority |

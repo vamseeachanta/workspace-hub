@@ -1,6 +1,6 @@
 # Provider work queue
 
-Generated: 2026-10-05T17:21:14.234550Z
+Generated: 2026-10-05T21:21:13.617529Z
 Current week: 2026-W41
 Recommended provider order: codex, agy, claude
 
@@ -9,25 +9,25 @@ Execution-ready means the issue already carries `status:plan-approved`. agent:* 
 ## claude
 
 - Routing priority: high
-- Execution-ready candidates: 6
-- Total routed candidates: 180
+- Execution-ready candidates: 5
+- Total routed candidates: 179
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|
 | #3816 feat(repo): generate authoritative work-surface inventory and adapter coverage report | yes | strategy/workflow/architecture language | enhancement, priority:high, cat:tooling, machine:multi, status:plan-approved, gate:completeness |
 | #3838 fix(digitalmodel/orcaflex): three verified model-building integrity defects with silent failure modes | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
 | #3843 refactor(orcaflex): consolidate four model generators onto modular_generator | yes | strategy/workflow/architecture language | priority:high, cat:engineering, domain:marine, status:plan-approved, gate:completeness, lane:claude |
-| #3578 fix(review): submit-to-codex.sh hangs — codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation | yes | strategy/workflow/architecture language | cat:harness, machine:dev-primary, status:plan-approved, gate:completeness, domain:harness |
 | #3592 equality matrix: reclassify harness/scheduler/memory rows — uniform vote mis-grades per-role differences + Windows placeholder data poisons majority | yes | strategy/workflow/architecture language | cat:harness, domain:workstations, machine:dev-primary, status:plan-approved, gate:completeness, lane:claude |
 | #3702 bug(equality): equality-matrix-cron writes generated artifacts into the tracked tree, creating a self-sustaining STALE-CHECKOUT deadlock | yes | strategy/workflow/architecture language | bug, cat:harness, domain:workstations, machine:multi, status:plan-approved, gate:completeness |
 | #3596 Compliance alert: W30 — 18% (critical) | no | strategy/workflow/architecture language | cat:operations, priority:critical, machine:dev-primary, compliance-alert, domain:harness |
 | #3693 Compliance alert: W31 — 0% (critical) | no | strategy/workflow/architecture language | priority:medium, priority:critical, machine:dev-primary, compliance-alert, domain:governance |
+| #3794 Compliance alert: W32 — 66% (medium) | no | strategy/workflow/architecture language | priority:medium, priority:critical, compliance-alert |
 
 ## codex
 
 - Routing priority: highest
 - Execution-ready candidates: 3
-- Total routed candidates: 18
+- Total routed candidates: 19
 
 | Issue | Ready | Why routed here | Labels |
 |---|---|---|---|

@@ -35,6 +35,76 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [
+          "bug"
+        ],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "codex",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Fleet dated-snapshot writer bypasses the fail-closed hostname labeler (public leak)"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3944,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "codex",
+      "review_clean": false,
+      "routing_reason": "implementation/test/fix language",
+      "title": "Fleet dated-snapshot writer bypasses the fail-closed hostname labeler (public leak)",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3944",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Remove separate plan approval before authorized implementation"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3943,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Remove separate plan approval before authorized implementation",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3943",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [],
         "machine_readiness": "blocked:no_provider_capable_workstation",
         "machine_route": "(none ready)",
@@ -7686,96 +7756,84 @@
       "title": "chore(harness): gemini CLI uninstall decision after agy soak (#3573)",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3580",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:operations",
-          "machine:dev-primary",
-          "status:plan-review",
-          "domain:harness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `scripts/readiness/collect-equality.sh:446` \u2014 writes `providers: {claude: ..., codex: ..., gemini: $(prov gemini), hermes: ...}` where `prov()` checks CLI presence via `have \"$1\"` (line 148). Key `gemini` is the snapshot row name; `$(prov gemini)` checks the `gemini` bin",
-        "provider_route": "claude",
-        "risks": "**Risk \u2014 filesystem path unchanged:** `config/agents/gemini/` path is NOT renamed. `_agy_memory_runtime()` (renamed from `_gemini_memory_runtime()`) still resolves to `config/agents/gemini/MEMORY.runtime.md`. If the config directory is later renamed to `config/agents/agy/`, a follow-on issue must update the helper. Declare this explicitly at implementation time. | **Risk \u2014 fleet re-snapshot timing",
-        "tests": "6 TDD tests defined",
-        "title": "chore(readiness): rename equality/parity provider row gemini\u2192agy (cross-machine snapshot schema migration)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3579,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-09-09-issue-3579-equality-gemini-agy-rename.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "chore(readiness): rename equality/parity provider row gemini\u2192agy (cross-machine snapshot schema migration)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3579",
-      "warnings": [
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "already has status:plan-approved",
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:harness",
-          "machine:dev-primary",
-          "status:plan-approved",
-          "gate:completeness",
-          "domain:harness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- EXISTS: `scripts/review/submit-to-codex.sh` \u2014 contains `run_codex_exec()` helper that adds `</dev/null` via all three dispatch paths (timeout/perl/bare). The compact retry block (lines ~195\u2013210) calls `run_codex_exec \"$COMPACT_PROMPT\"` which inherits the `</dev/null` redirect. ",
-        "provider_route": "claude",
-        "risks": "**Risk:** The actual hang may be a codex v-current regression that requires a ceiling bump in the version guard, not a code fix in submit-to-codex.sh. If so, the plan pivots from \"write test + fix code\" to \"write test + update ceiling\" \u2014 scope is the same size. | **Risk:** Mock-based tests for stdin isolation may pass even if the live codex binary does not honour `</dev/null` correctly on a specif",
-        "tests": "TDD section present",
-        "title": "fix(review): submit-to-codex.sh hangs \u2014 codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3578,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-07-29-issue-3578-codex-retry-stdin-hang.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "fix(review): submit-to-codex.sh hangs \u2014 codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3578",
-      "warnings": [
-        "approved_no_marker",
-        "missing_review"
-      ]
     }
   ],
-  "generated_at": "2026-10-05T17:21:15Z",
+  "generated_at": "2026-10-05T21:21:15Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [
+            "bug"
+          ],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "codex",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Fleet dated-snapshot writer bypasses the fail-closed hostname labeler (public leak)"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3944,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "codex",
+        "review_clean": false,
+        "routing_reason": "implementation/test/fix language",
+        "title": "Fleet dated-snapshot writer bypasses the fail-closed hostname labeler (public leak)",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3944",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Remove separate plan approval before authorized implementation"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3943,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Remove separate plan approval before authorized implementation",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3943",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -15437,88 +15495,6 @@
         "title": "chore(harness): gemini CLI uninstall decision after agy soak (#3573)",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3580",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:operations",
-            "machine:dev-primary",
-            "status:plan-review",
-            "domain:harness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `scripts/readiness/collect-equality.sh:446` \u2014 writes `providers: {claude: ..., codex: ..., gemini: $(prov gemini), hermes: ...}` where `prov()` checks CLI presence via `have \"$1\"` (line 148). Key `gemini` is the snapshot row name; `$(prov gemini)` checks the `gemini` bin",
-          "provider_route": "claude",
-          "risks": "**Risk \u2014 filesystem path unchanged:** `config/agents/gemini/` path is NOT renamed. `_agy_memory_runtime()` (renamed from `_gemini_memory_runtime()`) still resolves to `config/agents/gemini/MEMORY.runtime.md`. If the config directory is later renamed to `config/agents/agy/`, a follow-on issue must update the helper. Declare this explicitly at implementation time. | **Risk \u2014 fleet re-snapshot timing",
-          "tests": "6 TDD tests defined",
-          "title": "chore(readiness): rename equality/parity provider row gemini\u2192agy (cross-machine snapshot schema migration)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3579,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-09-09-issue-3579-equality-gemini-agy-rename.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "chore(readiness): rename equality/parity provider row gemini\u2192agy (cross-machine snapshot schema migration)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3579",
-        "warnings": [
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "already has status:plan-approved",
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:harness",
-            "machine:dev-primary",
-            "status:plan-approved",
-            "gate:completeness",
-            "domain:harness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- EXISTS: `scripts/review/submit-to-codex.sh` \u2014 contains `run_codex_exec()` helper that adds `</dev/null` via all three dispatch paths (timeout/perl/bare). The compact retry block (lines ~195\u2013210) calls `run_codex_exec \"$COMPACT_PROMPT\"` which inherits the `</dev/null` redirect. ",
-          "provider_route": "claude",
-          "risks": "**Risk:** The actual hang may be a codex v-current regression that requires a ceiling bump in the version guard, not a code fix in submit-to-codex.sh. If so, the plan pivots from \"write test + fix code\" to \"write test + update ceiling\" \u2014 scope is the same size. | **Risk:** Mock-based tests for stdin isolation may pass even if the live codex binary does not honour `</dev/null` correctly on a specif",
-          "tests": "TDD section present",
-          "title": "fix(review): submit-to-codex.sh hangs \u2014 codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3578,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-07-29-issue-3578-codex-retry-stdin-hang.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "fix(review): submit-to-codex.sh hangs \u2014 codex exec exit 124 'Reading additional input from stdin' despite #3294 mitigation",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3578",
-        "warnings": [
-          "approved_no_marker",
-          "missing_review"
-        ]
       }
     ],
     "qa_closeout": [],
@@ -15529,16 +15505,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-10-05T17:21:11.589951Z",
+  "scorecard_generated_at": "2026-10-05T21:21:11.103071Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-10-05T17:21:11.491471Z",
+  "utilization_generated_at": "2026-10-05T21:21:11.003233Z",
   "warning_summary": {
-    "approved_no_marker": 6,
+    "approved_no_marker": 5,
     "approved_no_plan": 1,
     "legacy_review_no_sha": 4,
     "major_review": 3,
     "marker_without_open_approved_issue": 186,
-    "missing_review": 36,
+    "missing_review": 34,
     "unavailable_review": 1
   }
 }
