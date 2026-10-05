@@ -1,13 +1,23 @@
 ---
 name: next-wave-handoff-bundle
 description: Build a docs-only execution handoff bundle after a completed implementation wave — follow-up issue drafts, scoped authorization note, deploy checklist, operator note, copy/paste command bundle, and incremental commit hygiene.
-version: 1.0.0
+version: 1.1.0
 author: Hermes Agent
 category: coordination
 tags: [handoff, planning, operations, github, deployment, docs-only]
 ---
 
 # Next-Wave Handoff Bundle
+
+## Zero-loss handoff and closeout
+
+Use the existing repository handoff convention and verified claim backend/root. A handoff transfers context, not permission. Separate established authorization from proposed next work; preserve human merge review. An authorization note documents verified permission and cannot grant it. Preparing a bundle does not authorize issues, external messages, push, merge or deletion.
+
+Record goal/approved scope; branch/worktree/base revision; owned and forbidden paths; deliverables/acceptance evidence; exact checks/outcomes; decisions, risks and dependencies; unresolved owners/dates; next actions/escalation triggers; source revisions/as-of time; and claims held/released. Distinguish complete, unverified and blocked work. Include precise resume steps and the first freshness check.
+
+Before merge review or closeout inspect dirty files, stashes, worktrees and temporary outputs without altering unrelated work. Account for every unique artifact: verified durable destination/revision/integrity, intentionally retained local work, or unresolved disposition. Unverified retention blocks cleanup of that artifact. Cleanup requires its own applicable authorization and cannot remove another lane's work. Local save, commit, backup, receipt and publication are distinct verified states. Release only this session's claims after checking ownership; unavailable coordination blocks affected shared work.
+
+For Spaces, read [Space context and transfer](../../business/product/stakeholder-comms/references/space-context.md).
 
 Use when a feature/workstream has completed one stage and the user wants execution artifacts for the next wave, not more generic advice.
 
@@ -33,13 +43,13 @@ Use this when:
 ## Core pattern
 
 ### 1. Read the governing artifacts first
-Always read:
+Read the available governing artifacts within the task's permitted context; record missing or excluded sources rather than expanding retrieval scope:
 - current plan
 - review/adversarial review
 - handback or implementation summary
 - design/spec if referenced
 
-Also inspect:
+Within the permitted context, also inspect:
 - `git status --short --branch`
 - recent relevant commits (`git log --oneline -N`)
 - remote/upstream state if user wants explicit confirmation that no push happened
@@ -55,12 +65,12 @@ Before writing anything, extract and keep visible:
 Important: distinguish "feature-worktree smoke test" from real deploy-topology validation.
 
 ### 3. Prefer docs/plans artifacts over code changes
-For this pattern, create docs-only coordination artifacts first. Typical bundle:
+Create only the docs-only coordination artifacts needed by the requested handoff and permitted task scope. The following are options:
 
 1. `...follow-up-issues.md`
-   - 3+ GitHub-ready issue drafts from review findings
+   - only the issue drafts justified by actual review findings
 2. `...stage2-authorization.md`
-   - scoped authorization for only the next task range
+   - evidence of existing authorization for the next task range, or an explicitly pending authorization request
 3. `...deploy-readiness-checklist.md`
    - concrete operator gate for the real target topology
 4. `...enforcement-fix-note.md` or similar operator note
@@ -76,12 +86,12 @@ For this pattern, create docs-only coordination artifacts first. Typical bundle:
 9. `...operator-command-bundle.sh`
    - one copy/paste bundle combining promotion, issue creation, and Stage-2 validation
 
-Not every engagement needs all 9, but this is the full bundle pattern.
+Select the relevant artifacts; omit unsupported or unnecessary packets and scripts.
 
 ### 4. Keep scope boundaries explicit in every artifact
 Each artifact should restate:
 - which tasks/stage are already complete
-- which task numbers are authorized next
+- which next tasks have verified authorization and which remain proposals; use identifiers only when supplied
 - that already-completed tasks are not being reopened
 - that production actions belong on the real target checkout/host, not the feature worktree
 - no hook bypass / no push unless explicitly approved
@@ -89,29 +99,29 @@ Each artifact should restate:
 ### 5. Sequence recommendations by risk reduction
 When a real governance/enforcement bug was found during implementation:
 1. preserve the docs handoff bundle
-2. recommend promotion/cherry-pick of the narrow enforcement fix before more plan-gated implementation work
-3. then create follow-up issues from remaining review findings
-4. then move to deploy-topology Stage 2 execution
+2. recommend promotion/cherry-pick of the narrow enforcement fix before further task-authorized implementation work
+3. then draft follow-up issues from remaining review findings; create them only within established action authorization
+4. then identify the deploy-topology Stage 2 readiness and authorization gates before execution
 
 This ordering matters: fix the workflow reliability issue before asking operators to rely on it again.
 
 ### 6. Convert issue drafts into executable packets
-After drafting issue bodies, make them operator-usable by also creating:
+When the user needs executable issue packets and their preparation is in scope, supplement drafted issue bodies with:
 - a packet doc with exact labels, title, body, optional follow-up comment
 - a shell script that writes temp body files and prints exact `gh issue create` commands
 
 Default to explicit `--repo`, explicit labels, and `--body-file`.
 
 ### 7. Build a single operator command bundle last
-Once the docs are stable, create a single shell script that prints:
+When a command bundle is requested or necessary for the authorized handoff, use a script that prints the relevant:
 - promotion/cherry-pick commands
 - issue creation commands
 - Stage 2 doctor / dry-run commands
 
-This becomes the safest final handoff artifact because it compresses all earlier docs into an execution sequence.
+Keep commands tied to their separate action gates; a printed execution sequence does not authorize its execution.
 
-### 8. Commit docs incrementally as low-risk handoff units
-If the user asks to continue with recommendations, a good conservative progression is:
+### 8. Commit within the established task scope
+Commit only when the user's task or verified standing repository authority permits it and applicable review/check gates pass. A request for recommendations or a read-only evaluation does not itself authorize commits. If commits are authorized, group related docs proportionately; possible units are:
 1. commit the main handoff bundle
 2. commit issue packets doc
 3. commit gh-create command script
@@ -125,7 +135,7 @@ Use docs-only commit messages such as:
 - `docs(plans): add enforcement fix promotion procedure`
 
 After each commit, verify:
-- plan gate passed
+- applicable scope, authorization and repository gates passed
 - auto-push did not occur unexpectedly
 - branch status is clean or only contains the next expected artifact
 - the intended handoff file is actually tracked in the expected commit (`git log --oneline -- <file>` and `git show --stat -- <file>`), especially if hooks/tooling return confusing output such as `nothing to commit` after a commit attempt
@@ -153,14 +163,14 @@ If the user chooses the exit path of "commit/push, document, and prepare to exit
 4. inspect the CI run triggered by the handoff commit
 5. separate scoped-success evidence from unrelated CI failures
 
-If `git push` reports a remote ref-lock/race error such as `cannot lock ref ... is at <new> but expected <old>`, do not assume the handoff failed. Immediately run `git fetch origin <branch>` and compare `git rev-parse HEAD` with `git rev-parse origin/<branch>`. In concurrent/auto-sync environments the remote may already contain the just-created commit despite the non-zero push result; if hashes match, treat the push as effectively complete and avoid duplicate commits or force-pushes.
+If `git push` reports a remote ref-lock/race error such as `cannot lock ref ... is at <new> but expected <old>`, do not assume the handoff failed. When remote reads are within task scope, run `git fetch origin <branch>` and compare `git rev-parse HEAD` with `git rev-parse origin/<branch>`. In concurrent/auto-sync environments the remote may already contain the just-created commit despite the non-zero push result; if hashes match, treat the push as effectively complete and avoid duplicate commits or force-pushes.
 
 A docs-only handoff commit can still trigger repo CI/docs workflows. If CI is red for failures outside the completed stream's scope, do not reopen the completed issue by default. Instead:
 - record the relevant scoped pass/fail evidence in the handoff and/or issue comment
-- open or draft a new follow-up issue for the remaining failure family
+- draft a follow-up issue for the remaining failure family; open it only within established action authorization
 - explicitly state that the completed stream remains complete only if its acceptance gate stayed green
 
-Example: after a lint-restoration stream, a handoff commit triggered CI where `Lint`, `Type Check`, and `Security Scan` passed but Python test-matrix jobs failed. Correct closeout was to preserve the lint handoff, keep the lint issue closed, and create a new plan-gated follow-up issue for the Python test-matrix failures.
+Example: after a lint-restoration stream, a handoff commit triggered CI where `Lint`, `Type Check`, and `Security Scan` passed but Python test-matrix jobs failed. Correct closeout was to preserve the lint handoff, retain its accepted status, and prepare a scoped follow-up with proportionate planning and review for the Python test-matrix failures; issue creation required its own applicable authorization.
 
 Report the evidence plainly.
 
@@ -168,27 +178,27 @@ Report the evidence plainly.
 A solid handoff should usually include:
 - summary of current branch state in <=8 lines if requested
 - written follow-up issue drafts
-- written next-stage authorization note
+- next-stage authorization evidence or explicitly pending decision, when relevant
 - written deploy-readiness checklist
 - written operator note on promoting a fix
 - git status checked
-- explicit statement that no push happened
+- observed push/no-push state, or unverified state if evidence is unavailable
 - optionally, exact gh commands and a single operator bundle
 
 ## Pitfalls
 - Do not reopen already-completed tasks just because review found future hardening work.
 - Do not mistake a worktree smoke test for production validation.
 - Do not bury the real high-value recommendation (e.g. promote a narrow enforcement fix first).
-- Do not leave issue drafts as prose only; convert them into `gh`-ready packets when possible.
-- Do not stop after creating docs if a simple docs-only commit would materially improve handoff cleanliness.
+- Convert issue drafts into `gh`-ready packets when executable packets are requested or needed within task scope.
+- When commits are authorized and useful, preserve the handoff in a narrow commit; otherwise leave the reviewable artifacts and report their exact state. Handoff cleanliness does not expand task permission.
 
 ## Minimal verification loop
-Before finishing:
+Within the permitted task context, check the following before finishing; report excluded or unavailable checks:
 1. `git status --short --branch`
 2. `git log --oneline -N`
 3. verify all promised docs exist
 4. verify whether anything remains uncommitted
-5. explicitly state whether a push occurred
+5. report observed push state and its evidence; mark it unverified if the task excludes the necessary checks
 
 ## Why this is reusable
-This pattern works whenever a completed implementation wave needs a safe operational handoff for the next wave, especially in plan-gated repos where docs, issue packets, and deployment sequencing must be preserved without reopening feature code.
+This pattern works whenever a completed implementation wave needs a safe operational handoff for the next wave, especially where repository planning and action checks require docs, issue packets, and deployment sequencing must be preserved without reopening feature code.
