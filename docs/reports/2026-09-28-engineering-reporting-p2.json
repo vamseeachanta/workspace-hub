@@ -1,0 +1,62 @@
+{
+  "revision": "P2",
+  "status": "review draft retained by owner",
+  "source": "owner-selected finalized CFD presentation HTML plus separately identified later direct comments",
+  "source_sha256": "289c95b6c49abb220a60048870cd4083f2d61b422777932c6454f6be52b9a364",
+  "selected_anchor": "s3-2",
+  "standard_sha256": "2487471d2e57ed2e4b23d0ab048d360909a26cef551318bdbcc5d87d6056837b",
+  "prompt_sha256": "a1527370e74dc1a0f20f54ab528dbcf89fd81c28fe035848d19dde68b0c55857",
+  "changes": [
+    "Executive-summary bullets after a project/analysis introduction",
+    "Subject-specific impersonal section openings",
+    "Restrained bold; remove repetitive audit/approval/hash narration without hiding engineering limitations",
+    "Concise quantified sensitivity and explicit residual uncertainty",
+    "Explain physical-input and scale differences before comparisons",
+    "Dedicated sensitivity appendix with cross-referenced affected results",
+    "Defined physical geometry/load-case IDs distinguished from execution identifiers",
+    "Reusable one-report formatting prompt"
+  ],
+  "verification": {
+    "source_readback": "owner-selected HTML digest stable on reread",
+    "structure_and_links": "no broken anchors/local targets;no external assets in convention",
+    "engineering_register": "4files,0violations",
+    "visual_rendering": "not rerun;prior local-file browser policy restriction remains"
+  },
+  "review": {
+    "codex_plan": "MINOR;exactpromptpath and draft-only acceptance clarified",
+    "codex_artifact": "APPROVE content-only",
+    "agy_plan": "MINOR;path/geometry clarifications accepted; removing user-requested draft distribution rejected",
+    "agy_artifact": "MINOR;geometry/appendix/section clarification accepted;longprompt and malformedtransport claims rejected",
+    "claude": "Plan MINOR/artifact MAJOR;stdin review completed;precedence/privacy/prompt safeguards and secondary clarifications resolved inline"
+  },
+  "distribution": {
+    "stored_revision_verified": [
+      "ace-win-1",
+      "ace-win-2",
+      "ace-linux-1",
+      "ace-linux-2",
+      "macos"
+    ],
+    "observation_utc": "2026-09-28T20:51:59Z",
+    "effect": "draft Git object storage;no active checkout/runtime changes",
+    "session_notice": {
+      "unique_peers_queued": 13,
+      "local": 7,
+      "secondary_windows": 6,
+      "linux1_peers_observed": 0,
+      "acknowledged": 0,
+      "total_send_attempts": 19,
+      "superseded_encoding_attempts": 6,
+      "current_payloads_exact": true,
+      "private_receipt_sha256": "4a5e7029545d946ac99fcaaa3ec3154a4e6af8cbb8dcaf80fcb852c48eb8d97d"
+    },
+    "gaps": [
+      "Mac Claude relay authentication unavailable",
+      "GPU host inaccessible",
+      "Other-provider live session transports not established"
+    ]
+  },
+  "verified_at": "2026-09-28T20:51:07.287459+00:00",
+  "commit": "694c825c9d1b2251386ce4fa75fe2df0595c44ce",
+  "git_blob": "0d28f017e516879caf43c69f5ada113b18f1d18c"
+}
