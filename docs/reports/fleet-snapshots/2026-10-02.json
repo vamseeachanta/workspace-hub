@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-29T11:13:26.482910+00:00",
+  "generated_at": "2026-10-02T11:13:32.272673+00:00",
   "generated_by": "muse-vm fleet-daily-collector",
-  "date": "2026-09-29",
-  "origin_main": "99114c06d",
+  "date": "2026-10-02",
+  "origin_main": "b617fc734",
   "fleet_size": 8,
   "reporting": 6,
   "report": {
-    "latest_snapshot": "2026-09-28",
+    "latest_snapshot": "2026-10-01",
     "stale_days": 1
   },
   "machines": [
@@ -14,8 +14,8 @@
       "name": "muse-vm",
       "reachable": true,
       "branch": "main",
-      "head": "5c97bc6d3",
-      "behind": 24,
+      "head": "fd8aa7c9f",
+      "behind": 25,
       "ahead": 0,
       "dirty": 0
     },
@@ -24,16 +24,16 @@
       "reachable": true,
       "branch": "main",
       "head": "000d2c5cb",
-      "behind": 118,
+      "behind": 197,
       "ahead": 1,
-      "dirty": 90
+      "dirty": 120
     },
     {
       "name": "ace-linux-2",
       "reachable": true,
       "branch": "main",
       "head": "5328e112e",
-      "behind": 117,
+      "behind": 196,
       "ahead": 0,
       "dirty": 0
     },
@@ -42,7 +42,7 @@
       "reachable": true,
       "branch": "main",
       "head": "74cc3ef8d",
-      "behind": 123,
+      "behind": 202,
       "ahead": 0,
       "dirty": 3
     },
@@ -51,18 +51,18 @@
       "reachable": true,
       "branch": "main",
       "head": "f8b38b006",
-      "behind": 101,
+      "behind": 180,
       "ahead": 0,
-      "dirty": 14
+      "dirty": 19
     },
     {
       "name": "redacted-hostname",
       "reachable": true,
       "branch": "main",
-      "head": "c138d931b",
-      "behind": 118,
+      "head": "b646cac7a",
+      "behind": 63,
       "ahead": 0,
-      "dirty": 11
+      "dirty": 9
     },
     {
       "name": "macbook-air",

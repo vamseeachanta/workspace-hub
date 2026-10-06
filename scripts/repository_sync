@@ -3,6 +3,22 @@
 # ABOUTME: Repository synchronization CLI tool with interactive multi-level menus
 # ABOUTME: Handles cloning, staging, committing, syncing, and branch management
 
+# Explicit clone profiles dispatch before sync helpers or configuration writers.
+if [[ "${1:-}" == "clone" ]]; then
+    for clone_option in "$@"; do
+        case "$clone_option" in
+            --profile|--profile=*|--destination|--destination=*|--include-dir|--include-dir=*|--dry-run|--branch|--branch=*|--machine|--machine=*|--url-source-checkout|--url-source-checkout=*)
+                clone_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)" || exit 1
+                shift
+                export PYTHONDONTWRITEBYTECODE=1
+                exec "${REPOSITORY_SYNC_PYTHON:-python3}" "$clone_root/scripts/workstations/clone_profile.py" \
+                    --registry "$clone_root/config/workstations/registry.yaml" \
+                    --repos-config "$clone_root/config/repos.conf" "$@"
+                ;;
+        esac
+    done
+fi
+
 set -e
 
 # Colors for output
@@ -59,6 +75,12 @@ ${BOLD}COMMANDS:${NC}
             repository_sync clone all
             repository_sync clone work
             repository_sync clone digitalmodel
+        Opt-in core profiles (one named required repo; new destination only):
+            repository_sync clone digitalmodel --profile lean --destination /new/core/digitalmodel --include-dir src --dry-run
+            repository_sync clone digitalmodel --profile heavy --destination /new/core/digitalmodel --dry-run
+        Lean requires explicit sparse directories; heavy leaves checkout unmaterialized.
+        Both skip LFS/submodules. Failed destinations are retained. No automatic dependency setup.
+        Requires an installed Python with PyYAML; REPOSITORY_SYNC_PYTHON selects its interpreter.
 
     ${CYAN}commit${NC} [all|work|personal] [-m "message"]
         Stage and commit changes in repositories

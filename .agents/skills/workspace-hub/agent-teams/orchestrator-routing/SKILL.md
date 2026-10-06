@@ -1,13 +1,11 @@
 ---
 name: orchestrator-routing
-description: "Main orchestrator as lightweight router \u2014 stay responsive to user\
-  \ messages while subagents do heavy work; route tasks to appropriate agents based\
-  \ on workload"
-version: 1.0.0
+description: Route scoped tasks to accountable agents using existing workflow context, machine/model readiness, durable checkpoints and verified integration.
+version: 1.1.0
 category: workspace-hub
 author: workspace-hub
 type: skill
-last_updated: 2026-02-19
+last_updated: 2026-10-06
 wrk_ref: WRK-212
 related_skills:
 - agent-teams
@@ -25,138 +23,40 @@ requires: []
 see_also: []
 ---
 
-# Orchestrator Routing — Main Session as Lightweight Router
+# Orchestrator Routing
 
-The main Claude session should stay responsive to the user. When a task is
-large or parallelisable, delegate to subagents rather than consuming the main
-context window. This skill documents the routing pattern.
+Keep the main session responsive while carrying the authorized task through verified closure. Delegate when it improves execution; a launch or worker summary is not completion. Use the runtime's available agent/session tools rather than assuming a provider-specific API.
 
-## Core Pattern
+## Retrieve before dispatch
 
-```
-User message → Orchestrator (main session)
-                    ↓ (route)
-            Subagent A  |  Subagent B  |  Subagent C
-                    ↓ (results via TaskOutput / SendMessage)
-              Orchestrator summarises → User
-```
+Apply `docs/architecture/agent-data-handling-contract.md` before retrieval or saving context; task relevance does not grant source access.
 
-The orchestrator:
-1. Classifies the task (size, parallelism, domain)
-2. Selects the right agent type(s)
-3. Spawns with `run_in_background=True` for long tasks
-4. Stays available for next user message
-5. Collects results and presents summary
+Start skill discovery with the existing config/agents/skill-index-full.yaml and the owning repo catalog; load only task-relevant records, not the whole skill tree. The existing docs/document-intelligence/intelligence-accessibility-map.md is a historical inventory aid: verify its linked current entry points, source owner and accessibility before relying on them.
 
-## When to Delegate
+1. Identify the owning repository, intended outcome, acceptance evidence and current authority. Search its instructions, skill catalog, issues/PRs, plans, handoffs and relevant history for the existing task or nearest completed workflow before opening another lane. Verify whether prior work is merged, running, blocked or superseded; reuse/resume it rather than duplicating it.
+2. Retrieve a bounded source packet: authoritative workflow and template, qualified inputs, relevant implementation/tests, last accepted result, latest decision and checkpoint. Record source repo/path or permitted link, revision and as-of time. Historical examples guide mechanics; their dates, hosts, approvals and results are not current evidence. Inaccessible private sources stay with their owner; do not copy cross-client context into common skills or external research prompts.
+3. Follow source links and the established retrieval/index route before asking the user to teach a workflow or supply a path. Distinguish absent, inaccessible and undiscovered context. Resolve technical gaps proactively within scope using existing code, tests and current primary documentation; distinguish researched inference from accepted project inputs. Ask only when a remaining gap changes scope, correctness, authority or a consequential choice. For FEA/report work, read [engineering context](references/engineering-context.md).
 
-Delegate when ANY of these apply:
-- Task will take > 5 minutes of sequential tool calls
-- Task is clearly partitioned into 2-3 independent streams
-- Task requires a read-only research phase that would pollute main context
-- User sends a new message while task is still running (re-route remainder)
+## One accountable owner and an appropriate lane
 
-Keep in main session when:
-- Task is < 5 files, < 10 min
-- Task requires tight back-and-forth with user
-- Task is a single WRK item with no parallelism
+Give each scoped task one accountable owner for acceptance, integration and closure; name separate worker/reviewer responsibilities and dependencies. Reuse the existing issue/plan/handoff record rather than building a second queue. A worker may report results but cannot silently assume another owner's authority.
 
-## Routing Decision by Task Type
+Classify execution using `docs/standards/PARALLEL_FIRST_EXECUTION.md`: single lane, parallel read-only, or disjoint worktrees. Before write dispatch verify the established claim backend/root, current scope, owned/read-only/forbidden paths and isolated branch/worktree. Serialize integration and git operations; preserve other sessions' work. Respect actual runtime and repository concurrency limits.
 
-| User request | Route to | Agent type |
-|-------------|----------|------------|
-| "Search the codebase for X" | Explore agent | `Explore` |
-| "Plan WRK-NNN implementation" | Plan agent | `Plan` |
-| "Run tests / execute scripts" | Bash agent | `Bash` |
-| "Build WRK-205 knowledge graph" | 2-3 agents via team | `general-purpose` + `Bash` |
-| "Write a skill / WRK item" | Main session | — |
-| "Ecosystem health check" | Background Bash agent | `Bash` |
-| "Sync all repos" | Main session (sequential) | — |
+Prefer the primary/secondary Linux roles for sustained generic work; preserve the daily-use Windows workstation for interactive work and use the licensed Windows role when the application requires it. Resolve real machine bindings through the authorized inventory; do not infer SSH aliases, drives, mounts or license availability from old prompts. Read `config/workstations/registry.yaml`, the applicable current readiness evidence and `config/ai-tools/provider-routing-policy.yaml` before choosing machine/provider/model. Capability, tenancy, resource/load, data residency, license and security constraints outrank the preference. Select an available model suited to bounded implementation, context synthesis or independent review; no new installation, login or permission changes are implied. Use an established licensed dispatch route when required, not a generic remote launch.
 
-## Spawning a Background Agent
+The lane packet carries: task/owner, scope and acceptance, authorization limits, source packet, machine/model and readiness basis, paths, checks, deliverable location and return/checkpoint location. Read only relevant references. A new user message steers the active task unless it cancels/replaces it; update its existing owner/packet rather than automatically launching duplicate work.
 
-```python
-result = Task(
-    subagent_type="Bash",
-    description="Run ecosystem health checks",
-    prompt="""
-    Run the ecosystem health check suite per the /ecosystem-health skill:
-    1. Check git config core.hooksPath == .claude/hooks
-    2. Check uv is available
-    3. Run .claude/hooks/check-encoding.sh
-    4. Check work queue index generates
-    Report results as a markdown table.
-    """,
-    run_in_background=True
-)
-# result contains output_file path — check later with Read tool
-```
+## Checkpoint, recover and verify
 
-After spawning, continue handling user messages. Check progress:
-```python
-Read(file_path=result["output_file"])
-# or
-Bash(command=f"tail -20 {result['output_file']}")
-```
+Use the repository's existing handoff/checkpoint convention. Match the checkpoint destination to its audience and authorized access before writing. Exact absolute log/output paths, usernames, private mounts, client identifiers and other restricted recovery locators belong in an authorized private checkpoint. Public issues and common tracked artifacts use sanitized repo-relative or opaque references to that checkpoint with a permitted retrieval route; verify sanitization before publication. Preserve exact private resume context without expanding access, and never save secrets or authentication material in a checkpoint. At a meaningful phase boundary, before interruption/transfer, or when a long-running phase cannot finish in the current session, durably record task/owner, branch/base/HEAD, relevant source revisions, last verified outcome, current process/session/job IDs and logs, artifact paths, failed attempts, claims, blockers and the next bounded action. Checkpoint sooner when interruption would lose unique work; avoid a second ledger or empty progress churn.
 
-## Staying Responsive
+On resume, read the checkpoint, recheck authorization/source/branch/claim freshness and inspect the recorded process and artifacts before restarting. A live process, queued job or prepared model is running/prepared; missing output is unverified. Recover the existing attempt where possible. Bound retries to the known failure and preserve partial/unique output; changed scope or unavailable prerequisites stop only the affected action. Use [agent CLI operations](../../../autonomous-ai-agents/agent-cli-delegation-operations/SKILL.md) for runtime recovery.
 
-When a background agent is running and the user sends a new message:
-- **Do not wait** for the background agent to finish
-- Handle the new message immediately
-- Tell the user: "Background agent is working on X. Here's its progress so far: [summary]"
+Verify worker outputs directly in the owning checkout against acceptance, not just its final message. Follow applicable TDD and `docs/standards/AI_REVIEW_ROUTING_POLICY.md`; resolve material findings. Commit, publish, merge and close only under matching established authority and passing applicable checks; a plan label, handoff, elapsed time or review verdict grants no permission. Recheck current head/base and preserve human review where required. Report exact tested, reviewed, committed, pushed, merged and operationally verified states separately.
 
-```
-User: "While that's running, can you check WRK-205?"
-Orchestrator: "Sure — background agent is still scanning 115 files.
-               Meanwhile, let me check WRK-205..."
-               [reads WRK-205, answers question]
-               [later] "Background agent finished: [results]"
-```
+Use [next-wave handoff](../../../coordination/next-wave-handoff-bundle/SKILL.md) for zero-loss closure: verify durable retention and final repo state, release only owned claims, and record the remaining action/owner. Save reusable sanitized learning in the existing owning wiki/skill/workflow and link it from the existing task/index; verify its saved revision and discoverable link. Private project facts stay in their private owner. Do not create a competing framework or close a task while its promised acceptance or knowledge retention remains unverified.
 
-## Resuming Agents
+## Narrow human decision queue
 
-Agents return an agent ID. Use it to resume rather than spawn fresh:
-
-```python
-# First call — spawns fresh
-result = Task(subagent_type="general-purpose", description="Research X", prompt="...", run_in_background=True)
-agent_id = result["agent_id"]
-
-# Resume later with more context
-Task(subagent_type="general-purpose", description="Continue research", prompt="...", resume=agent_id)
-```
-
-Resume when: agent needs clarification, new information arrived, task was interrupted.
-Spawn fresh when: task is genuinely new, different domain, context is irrelevant.
-
-## Context Window Management
-
-Long tasks consume context. Route to subagents to protect main context:
-- **Research tasks**: Always delegate to Explore agent — search results pollute context
-- **Bulk file operations**: Delegate to Bash agent — verbose output pollutes context
-- **Keep main session for**: User dialogue, synthesis, routing decisions, WRK authoring
-
-When main context is getting long:
-- Delegate any remaining bulk work to background agents
-- Use /reflect or /insights to compress learnings
-- Summarise subagent results rather than including raw output
-
-## WRK Queue Integration
-
-When user asks about pending work:
-```
-User: "What's pending? Pick the next thing to work on."
-Orchestrator:
-  1. Read .claude/work-queue/pending/ (fast, keep in main session)
-  2. Identify Route A items (user-approved, no cross-review needed)
-  3. If item needs research → spawn Explore agent, stay available
-  4. If item is small skill authoring → do in main session
-  5. If item is large (WRK-205 class) → propose team, await user approval
-```
-
-## Related
-
-- `/agent-teams` — full team lifecycle (TeamCreate, TaskCreate, etc.)
-- `/ecosystem-health` — example background agent pattern
-- AGENTS.md — `MAX_TEAMMATES=3` constraint
+Keep genuinely unresolved decisions in the existing task record: specific choice, evidence/options, recommended way forward, impact of waiting, accountable decision owner and needed-by basis (unknown when not established). Examples are conflicting qualified inputs, missing action authority or a material engineering acceptance change. Failed discovery alone is not a reason to ask the user for routine paths. Continue independent authorized work; never invent an owner, commitment or approval to shrink the queue. Stakeholder updates state the last verified outcome, remaining gap and next action concisely.

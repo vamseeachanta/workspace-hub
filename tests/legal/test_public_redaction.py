@@ -225,3 +225,252 @@ def test_cli_self_check(tmp_path, deny_list):
     assert _cli(["self-check"], env).returncode == 0
     env["WORKSPACE_HUB_DENY_LIST"] = str(tmp_path / "missing.txt")
     assert _cli(["self-check"], env).returncode == 3
+
+
+def _strict_json(text):
+    def unique(pairs):
+        out = {}
+        for key, value in pairs:
+            assert key not in out, "redaction must not create duplicate keys"
+            out[key] = value
+        return out
+    return json.loads(text, object_pairs_hook=unique)
+
+
+def _collision_fixture():
+    return {
+        "companies": {SYNTH_WORD: {"count": 2}, SYNTH_PHRASE: {"count": 3}},
+        "jobs": [{"company": SYNTH_WORD, "score": 12.5},
+                 {"company": SYNTH_PHRASE, "score": 18.75}],
+        "repeat": {SYNTH_WORD: 9},
+        "flags": [True, False, None],
+    }
+
+
+def test_colliding_tree_keys_keep_every_entry_and_reference(deny_list):
+    mod = load()
+    red = mod.load_redactor()
+    source = _collision_fixture()
+    out = mod.redact_tree(source, red)
+    keys = list(out["companies"])
+    assert len(keys) == 2 and len(set(keys)) == 2
+    assert list(out["companies"].values()) == [{"count": 2}, {"count": 3}]
+    assert [x["company"] for x in out["jobs"]] == keys
+    assert list(out["repeat"]) == keys[:1]
+    assert [x["score"] for x in out["jobs"]] == [12.5, 18.75]
+    assert out["flags"] == source["flags"]
+    assert mod.redact_tree(out, red) == out
+    assert source == _collision_fixture()
+    assert SYNTH_WORD not in json.dumps(out).lower()
+    assert "quux" not in json.dumps(out).lower()
+
+
+def test_json_collision_preserves_numeric_lexemes_and_relationships(deny_list):
+    mod = load()
+    red = mod.load_redactor()
+    source = json.dumps(_collision_fixture(), ensure_ascii=False)
+    # Preserve the original JSON numeric spelling instead of reserializing floats.
+    source = source.replace('"score": 12.5', '"score": 1.0000000000000001')
+    source = source.replace('"count": 3', '"count": 9007199254740993')
+    result = mod.redact_file_text(source, ".json", red)
+    out = _strict_json(result)
+    assert len(out["companies"]) == 2
+    assert [x["company"] for x in out["jobs"]] == list(out["companies"])
+    assert '"score": 1.0000000000000001' in result
+    assert '"count": 9007199254740993' in result
+    assert mod.redact_file_text(result, ".json", red) == result
+
+
+def test_aliases_do_not_overwrite_existing_or_later_keys_and_values(deny_list):
+    mod = load()
+    red = mod.load_redactor()
+    stem = red.redact(SYNTH_WORD)
+    source = {
+        "companies": {SYNTH_WORD: 2, stem: 8, SYNTH_PHRASE: 3},
+        "later": {stem + " [a]": 11},
+        "literal": stem + " [b]",
+    }
+    out = mod.redact_tree(source, red)
+    assert len(out["companies"]) == 3
+    assert out["companies"][stem] == 8
+    assert list(out["companies"].values()) == [2, 8, 3]
+    assert out["later"] == source["later"] and out["literal"] == source["literal"]
+    aliases = [k for k in out["companies"] if k != stem]
+    assert not set(aliases) & {stem + " [a]", stem + " [b]"}
+    assert mod.redact_tree(out, red) == out
+
+
+def test_colliding_jsonl_records_stay_valid_and_clean_lines_unchanged(deny_list):
+    mod = load()
+    red = mod.load_redactor()
+    clean = '{"a":1,  "b":"plain text"}'
+    dirty = json.dumps(_collision_fixture())
+    result = mod.redact_file_text(clean + "\n" + dirty + "\n", ".jsonl", red)
+    lines = result.splitlines()
+    assert lines[0] == clean
+    out = _strict_json(lines[1])
+    assert len(out["companies"]) == 2
+    assert [v["count"] for v in out["companies"].values()] == [2, 3]
+    assert mod.redact_file_text(result, ".jsonl", red) == result
+
+
+def test_preexisting_duplicate_json_keys_fail_closed_without_exposing_keys(deny_list):
+    mod = load()
+    red = mod.load_redactor()
+    source = '{' + json.dumps(SYNTH_WORD) + ': 2, ' + json.dumps(SYNTH_WORD) + ': 3}'
+    with pytest.raises(mod.RedactorUnavailable) as exc:
+        mod.redact_file_text(source, ".json", red)
+    assert SYNTH_WORD not in str(exc.value).lower()
+
+
+def test_cli_duplicate_json_refuses_copy_and_leaves_original_intact(tmp_path, deny_list):
+    source = '{' + json.dumps(SYNTH_WORD) + ': 2, ' + json.dumps(SYNTH_WORD) + ': 3}'
+    src, dest = tmp_path / "input.json", tmp_path / "output.json"
+    src.write_text(source, encoding="utf-8")
+    result = _cli(["copy", str(src), str(dest)], dict(os.environ))
+    assert result.returncode == 3 and not dest.exists()
+    assert src.read_text(encoding="utf-8") == source
+    assert SYNTH_WORD not in (result.stdout + result.stderr).lower()
+    result = _cli(["inplace", str(src)], dict(os.environ))
+    assert result.returncode == 3 and src.read_text(encoding="utf-8") == source
+
+
+class _SyntheticMask:
+    def redact(self, value):
+        return "[redacted]" if value.startswith("fixture-company-") else value
+
+
+def test_aggregate_collision_preservation_and_idempotence():
+    mod = load()
+    red = _SyntheticMask()
+    source = {"companies": {f"fixture-company-{i}": {"count": i, "value": i + .125}
+                             for i in range(80)}}
+    source["references"] = list(source["companies"])
+    source["nested"] = [{key: value} for key, value in source["companies"].items()]
+    result = mod.redact_file_text(json.dumps(source), ".json", red)
+    out = _strict_json(result)
+    assert len(out["companies"]) == 80 and len(set(out["companies"])) == 80
+    assert list(out["companies"].values()) == list(source["companies"].values())
+    assert out["references"] == list(out["companies"])
+    assert [list(row)[0] for row in out["nested"]] == out["references"]
+    assert mod.redact_file_text(result, ".json", red) == result
+    assert "fixture-company-" not in result
+
+
+def test_unsafe_alias_generation_fails_closed():
+    mod = load()
+    class MaskEverything:
+        def redact(self, value):
+            return "[redacted]"
+    with pytest.raises(mod.RedactorUnavailable):
+        mod.redact_tree({"fixture-first": 2, "fixture-second": 3}, MaskEverything())
+
+
+def test_collision_json_decodes_escaped_keys_and_preserves_unicode(deny_list):
+    mod = load()
+    red = mod.load_redactor()
+    escaped_word = '\\u007a' + SYNTH_WORD[1:]
+    source = ('{"companies":{"' + escaped_word + '":2,' + json.dumps(SYNTH_PHRASE) +
+              ':3},"reference":"' + escaped_word + '","unicode":"\\u03c0"}')
+    result = mod.redact_file_text(source, ".json", red)
+    out = _strict_json(result)
+    assert len(out["companies"]) == 2
+    assert list(out["companies"].values()) == [2, 3]
+    assert out["reference"] == list(out["companies"])[0]
+    assert '"unicode":"\\u03c0"' in result
+    assert mod.redact_file_text(result, ".json", red) == result
+
+
+def test_json_collision_preserves_unbounded_numeric_tokens(deny_list):
+    mod = load()
+    red = mod.load_redactor()
+    huge_integer = "9" * 5001
+    numeric_text = huge_integer + ",1e400,-0.0,1.0,1.00"
+    source = ('{"companies":{' + json.dumps(SYNTH_WORD) + ':2,' +
+              json.dumps(SYNTH_PHRASE) + ':3},"numbers":[' + numeric_text + ']}')
+    result = mod.redact_file_text(source, ".json", red)
+    out = json.loads(result, parse_int=str, parse_float=str)
+    assert len(out["companies"]) == 2
+    assert out["numbers"] == [huge_integer, "1e400", "-0.0", "1.0", "1.00"]
+    assert '"numbers":[' + numeric_text + ']' in result
+    assert mod.redact_file_text(result, ".json", red) == result
+
+
+@pytest.mark.parametrize("token", ["NaN", "Infinity", "-Infinity"])
+def test_nonfinite_json_number_refused(deny_list, token):
+    mod = load()
+    red = mod.load_redactor()
+    with pytest.raises(mod.RedactorUnavailable):
+        mod.redact_file_text('{"number":' + token + '}', ".json", red)
+
+
+def test_jsonl_collision_preserves_bom_crlf_blanks_and_failed_file(tmp_path, deny_list):
+    mod = load()
+    red = mod.load_redactor()
+    clean = '\ufeff{"a":1,  "b":"plain text"}\r\n\r\n'
+    source = clean + json.dumps(_collision_fixture()) + "\r\n"
+    result = mod.redact_file_text(source, ".jsonl", red)
+    assert result.startswith(clean) and result.endswith("\r\n")
+    assert result.count("\r\n") == source.count("\r\n")
+    assert len(_strict_json(result.splitlines()[-1])["companies"]) == 2
+    assert mod.redact_file_text(result, ".jsonl", red) == result
+    ambiguous = '{' + json.dumps(SYNTH_WORD) + ':2,' + json.dumps(SYNTH_WORD) + ':3}'
+    failed_source = json.dumps(_collision_fixture()) + "\n" + ambiguous + "\n"
+    src = tmp_path / "records.jsonl"
+    src.write_text(failed_source, encoding="utf-8")
+    q = _cli(["inplace", str(src)], dict(os.environ))
+    assert q.returncode == 3 and src.read_text(encoding="utf-8") == failed_source
+    assert SYNTH_WORD not in (q.stdout + q.stderr).lower()
+
+
+def test_aliases_independent_of_python_hash_seed(tmp_path, deny_list):
+    source = json.dumps(_collision_fixture())
+    src = tmp_path / "source.json"
+    src.write_text(source, encoding="utf-8")
+    outputs = []
+    for seed in ["1", "37"]:
+        target = tmp_path / ("output-" + seed + ".json")
+        env = dict(os.environ, PYTHONHASHSEED=seed)
+        q = _cli(["copy", str(src), str(target)], env)
+        assert q.returncode == 0, q.stderr
+        outputs.append(target.read_bytes())
+    assert outputs[0] == outputs[1]
+
+
+def test_key_aliases_append_to_partial_redaction_and_redactor_is_pure(deny_list):
+    deny_list.write_text(deny_list.read_text(encoding="utf-8") + "florpco\n", encoding="utf-8")
+    mod = load()
+    red = mod.load_redactor()
+    first = "prefix_" + SYNTH_WORD + "_suffix"
+    second = "prefix_florpco_suffix"
+    stem = red.redact(first)
+    assert stem == red.redact(second)
+    assert red.redact(first) == red.redact(first)
+    assert red.redact(stem) == stem
+    source = {first: {"n": 2}, second: {"n": 3}, "reference": first}
+    out = mod.redact_tree(source, red)
+    assert len(out) == 3
+    assert all(key.startswith(stem + " [") for key in list(out)[:2])
+    assert out["reference"] == list(out)[0]
+    assert mod.redact_tree(out, red) == out
+
+
+def test_alias_reference_matching_does_not_change_substring_redaction(deny_list):
+    mod = load()
+    red = mod.load_redactor()
+    source = _collision_fixture()
+    source["description"] = "see " + SYNTH_WORD + " today"
+    out = mod.redact_tree(source, red)
+    assert out["description"] == red.redact(source["description"])
+    assert out["description"] == "see [redacted] today"
+    assert len(out["companies"]) == 2
+
+
+def test_tree_nonstring_keys_and_tuple_types_keep_existing_behavior(deny_list):
+    mod = load()
+    red = mod.load_redactor()
+    source = {3: (SYNTH_WORD, 7, True, None), ("fixture-key", 2): False}
+    out = mod.redact_tree(source, red)
+    assert list(out) == list(source)
+    assert isinstance(out[3], tuple) and out[3] == (red.redact(SYNTH_WORD), 7, True, None)
+    assert source[3][0] == SYNTH_WORD

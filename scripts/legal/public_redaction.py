@@ -22,6 +22,12 @@ runs with the public rules instead of stopping (owner decision S01, 2026-09-27).
 
 A generator that catches ``RedactorUnavailable`` must stop without writing.
 
+Colliding JSON/tree keys get deterministic alphabetic suffixes on their redacted
+text. Exact string references use the same alias within that document; aliases
+are not cross-document identities. Numeric JSON tokens and text outside string
+literals are preserved exactly. Duplicate JSON keys, non-finite constants or
+an unavailable safe alias raise ``RedactorUnavailable`` rather than lose data.
+
 Command line (exit 0 success, 1 ``check`` found identifiers, 3 unavailable)::
 
     python scripts/legal/public_redaction.py self-check
@@ -32,6 +38,8 @@ Command line (exit 0 success, 1 ``check`` found identifiers, 3 unavailable)::
 ``copy`` writes the redacted content of SRC to DEST, and skips SRC -- writing
 nothing -- when its file name carries an identifier. Nothing this module
 prints quotes the text it redacted or a path it was given.
+An ``inplace`` refusal leaves that file unchanged; earlier files in a multi-file
+invocation may already have been rewritten. Existing file decoding removes a BOM.
 """
 from __future__ import annotations
 
@@ -126,39 +134,116 @@ def load_redactor():
     return ci.Redactor(rules)
 
 
+def _string_replacements(obj: Any, redactor) -> dict[str, str]:
+    """Plan collision-free, document-local aliases using the existing redactor.
+
+    Only keys that would collide need aliases. Reserve all input and redacted
+    strings first, including later keys, and reuse aliases for exact string
+    references to those keys. Alphabetic suffixes introduce no numeric values.
+    """
+    replacements: dict[str, str] = {}
+    needs_alias: dict[str, None] = {}
+
+    def remember(value: str) -> str:
+        if value not in replacements:
+            replacements[value] = redactor.redact(value)
+        return replacements[value]
+
+    def visit(node: Any) -> None:
+        if isinstance(node, str):
+            remember(node)
+        elif isinstance(node, dict):
+            groups: dict[str, list[str]] = {}
+            for key, value in node.items():
+                if isinstance(key, str):
+                    groups.setdefault(remember(key), []).append(key)
+                visit(value)
+            for stem, keys in groups.items():
+                if len(keys) > 1:
+                    for key in keys:
+                        if key != stem:
+                            needs_alias[key] = None
+        elif isinstance(node, (list, tuple)):
+            for value in node:
+                visit(value)
+
+    visit(obj)
+    reserved = set(replacements) | set(replacements.values())
+    next_suffix: dict[str, int] = {}
+
+    def letters(number: int) -> str:
+        out = ""
+        while True:
+            number, digit = divmod(number, 26)
+            out = chr(97 + digit) + out
+            if not number:
+                return out
+            number -= 1
+
+    for key in replacements:
+        if key not in needs_alias:
+            continue
+        stem = replacements[key]
+        for _ in range(len(reserved) + len(needs_alias) + 26):
+            number = next_suffix.get(stem, 0)
+            next_suffix[stem] = number + 1
+            alias = f"{stem} [{letters(number)}]"
+            if alias not in reserved and redactor.redact(alias) == alias:
+                replacements[key] = alias
+                reserved.add(alias)
+                break
+        else:
+            raise RedactorUnavailable(
+                "public_redaction: safe unique key aliases unavailable; refusing lossy redaction"
+            ) from None
+    return replacements
+
+
 def redact_tree(obj: Any, redactor) -> Any:
     """A copy of *obj* with every string -- mapping keys included -- redacted.
     Numbers, booleans and None are returned as they are; *obj* is not
     mutated. Mapping types that support copying (ruamel's round-trip maps)
-    keep their type."""
-    if isinstance(obj, str):
-        out = redactor.redact(obj)
-        if out == obj:
-            return obj
-        try:
-            return type(obj)(out)  # keep a quoted-scalar string type
-        except Exception:  # noqa: BLE001
-            return out
-    if isinstance(obj, dict):
-        new = obj.copy() if hasattr(obj, "copy") else dict(obj)
-        new.clear()
-        for k, v in obj.items():
-            new[redact_tree(k, redactor) if isinstance(k, str) else k] = redact_tree(v, redactor)
-        return new
-    if isinstance(obj, list):
-        new = obj.copy()
-        new[:] = [redact_tree(v, redactor) for v in obj]
-        return new
-    if isinstance(obj, tuple):
-        return tuple(redact_tree(v, redactor) for v in obj)
-    return obj
+    keep their type. Colliding changed keys and exact string references share
+    document-local aliases; other strings use the gate redactor unchanged.
+    Non-string keys retain the existing behavior and are left unchanged.
+    """
+    return _replace_tree(obj, _string_replacements(obj, redactor))
+
+
+def _replace_tree(obj: Any, replacements: dict[str, str]) -> Any:
+    """Apply one document's replacement plan without mutating its input."""
+
+    def replace(node: Any) -> Any:
+        if isinstance(node, str):
+            out = replacements[node]
+            if out == node:
+                return node
+            try:
+                return type(node)(out)  # keep a quoted-scalar string type
+            except Exception:  # noqa: BLE001
+                return out
+        if isinstance(node, dict):
+            new = node.copy() if hasattr(node, "copy") else dict(node)
+            new.clear()
+            for key, value in node.items():
+                new[replace(key) if isinstance(key, str) else key] = replace(value)
+            return new
+        if isinstance(node, list):
+            new = node.copy()
+            new[:] = [replace(value) for value in node]
+            return new
+        if isinstance(node, tuple):
+            return tuple(replace(value) for value in node)
+        return node
+
+    return replace(obj)
 
 
 #: One JSON string literal.
 _JSON_STRING = re.compile(r'"(?:[^"\\\x00-\x1f]|\\.)*"')
 
 
-def _redact_json_strings(text: str, redactor) -> str:
+def _redact_json_strings(text: str, replacements: dict[str, str]) -> str:
     """Redact each JSON string literal (keys included) on its own, decoded,
     and re-encode only the literals that change. The rest of the text --
     layout, key order, escapes -- stays byte-identical, and a redaction can
@@ -170,7 +255,7 @@ def _redact_json_strings(text: str, redactor) -> str:
             value = json.loads(lit)
         except ValueError:
             return lit
-        new = redactor.redact(value)
+        new = replacements[value]
         if new == value:
             return lit
         return json.dumps(new, ensure_ascii=lit.isascii())
@@ -178,17 +263,60 @@ def _redact_json_strings(text: str, redactor) -> str:
     return _JSON_STRING.sub(sub, text)
 
 
+def _unique_json_object(pairs):
+    out = {}
+    for key, value in pairs:
+        if key in out:
+            raise RedactorUnavailable(
+                "public_redaction: duplicate JSON keys; refusing lossy redaction"
+            ) from None
+        out[key] = value
+    return out
+
+
+class _JsonNumber:
+    """Keep JSON number tokens exact during validation, without float/int parsing."""
+
+    def __init__(self, token: str):
+        self.token = token
+
+    def __eq__(self, other):
+        return isinstance(other, _JsonNumber) and self.token == other.token
+
+
+def _reject_json_constant(_):
+    raise RedactorUnavailable(
+        "public_redaction: non-finite JSON number; refusing invalid JSON"
+    ) from None
+
+
+def _parse_json(text: str):
+    return json.loads(
+        text[1:] if text.startswith("\ufeff") else text,
+        object_pairs_hook=_unique_json_object,
+        parse_int=_JsonNumber,
+        parse_float=_JsonNumber,
+        parse_constant=_reject_json_constant,
+    )
+
+
 def _redact_json_document(text: str, redactor) -> str:
     try:
-        json.loads(text)
+        obj = _parse_json(text)
     except ValueError:
         return redactor.redact(text)
-    new = _redact_json_strings(text, redactor)
+    replacements = _string_replacements(obj, redactor)
+    new = _redact_json_strings(text, replacements)
     try:
-        json.loads(new)
-    except ValueError:  # pragma: no cover - defensive: re-serialise instead
-        obj = redact_tree(json.loads(text), redactor)
-        return json.dumps(obj, indent=2, ensure_ascii=False) + ("\n" if text.endswith("\n") else "")
+        output = _parse_json(new)
+    except ValueError:  # pragma: no cover - string substitution must preserve JSON
+        raise RedactorUnavailable(
+            "public_redaction: invalid JSON after redaction; refusing to reserialize values"
+        ) from None
+    if output != _replace_tree(obj, replacements) or _JSON_STRING.sub("", text) != _JSON_STRING.sub("", new):
+        raise RedactorUnavailable(
+            "public_redaction: JSON structure or numeric tokens changed; refusing lossy redaction"
+        ) from None
     return new
 
 
@@ -248,7 +376,12 @@ def main(argv: list[str] | None = None) -> int:
         if red.redact(base) != base:
             _say("public_redaction: skipped one file whose name carries an identifier")
             return 0
-        _write(dest, redact_file_text(_read(src), os.path.splitext(src)[1], red))
+        try:
+            new = redact_file_text(_read(src), os.path.splitext(src)[1], red)
+        except RedactorUnavailable as exc:
+            _say(str(exc), True)
+            return EXIT_UNAVAILABLE
+        _write(dest, new)
         return 0
     found = 0
     for f in args:
@@ -261,7 +394,11 @@ def main(argv: list[str] | None = None) -> int:
             # fails it as uninspectable.
             continue
         text = _read(f)
-        new = redact_file_text(text, os.path.splitext(f)[1], red)
+        try:
+            new = redact_file_text(text, os.path.splitext(f)[1], red)
+        except RedactorUnavailable as exc:
+            _say(str(exc), True)
+            return EXIT_UNAVAILABLE
         if new != text:
             found += 1
             if cmd == "inplace":
