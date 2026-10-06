@@ -247,6 +247,14 @@ tonal handling of commercial exposure remain as separately recorded.
 
 Do NOT generalize a single-session sandbox failure to a permanent constraint. (`feedback_codex_sandbox_no_execution`, `feedback_codex_sandbox_fallback_paths`)
 
+## Windows Terminal Visibility
+
+- Run routine commands through the existing captured shell tool without opening visible console windows. Do not launch `wt.exe`, `cmd /c start`, or visible PowerShell/cmd windows for background work. Open a visible terminal only when the user explicitly requests one.
+- For Windows helpers launched with `Start-Process`, use `-WindowStyle Hidden`, separate `-RedirectStandardOutput` and `-RedirectStandardError` files, and `-Wait -PassThru`. Inspect the exit code and captured output; a missing exit code means completion is unverified, never successful. Do not combine `-WindowStyle` with `-NoNewWindow`. Prefer persistent captured tool sessions for long-running work, and check their final completion status.
+- For programmatic Windows launches, use .NET `CreateNoWindow=true` with `UseShellExecute=false`, Node `windowsHide=true`, or Python `creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)`. Preserve stdout/stderr and exit-code checks; do not introduce an intermediate visible launcher.
+- Include the no-popup constraint explicitly in delegated Windows work. Keep failures visible in captured results; hiding a window must not hide command failures.
+- Treat these as launch instructions, not an OS-level popup blocker. App-internal launchers, existing sessions and other machines require separate observation; saved configuration and generated guidance alone do not establish suppression or fleet-wide loading.
+
 ## Review Artifact Access
 
 Choose artifact transport from the reviewer session's verified capabilities. Use an accessible local file or a bounded inline prompt when supported; local-only artifacts are not inherently invisible to Codex.
