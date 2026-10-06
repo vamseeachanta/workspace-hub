@@ -89,7 +89,7 @@ def test_evidence_class_uses_80_threshold():
 
 # ---- opt-in scoping (rollout fix) ----
 
-def test_gate_applies_only_when_opted_in_and_plan_approved():
+def test_gate_applies_to_legacy_opt_in_with_plan_approval():
     assert gate.gate_applies(["gate:completeness", "status:plan-approved"]) is True
 
 
@@ -98,8 +98,28 @@ def test_gate_does_not_apply_without_opt_in_label():
     assert gate.gate_applies(["status:plan-approved"]) is False
 
 
-def test_gate_does_not_apply_without_plan_approved():
+def test_gate_applies_without_separate_plan_approval():
+    assert gate.gate_applies(["gate:completeness", "gate:completeness-v2"]) is True
+
+
+def test_bulk_labeled_legacy_backlog_remains_out_of_scope():
     assert gate.gate_applies(["gate:completeness"]) is False
+
+
+def test_legacy_parameter_cannot_add_an_approval_requirement():
+    assert gate.gate_applies(["custom:complete", "gate:completeness-v2"], "custom:complete", "legacy:approved") is True
+
+
+def test_autoapply_covers_new_and_resumed_work_without_backlog_sweep():
+    workflow = Path(__file__).resolve().parents[2] / ".github/workflows/autoapply-completeness-label.yml"
+    text = workflow.read_text(encoding="utf-8")
+    assert "types: [opened, labeled]" in text
+    condition = text.split("    if: >-", 1)[1].split("    steps:", 1)[0]
+    assert "github.event.action == 'opened'" in condition
+    for status in ("status:plan-review", "status:in-progress", "status:plan-approved"):
+        assert status in condition
+    assert "issues: write" in text
+    assert "gate:completeness-v2" in text
 
 
 def test_gate_does_not_apply_to_unlabeled_issue():

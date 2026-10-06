@@ -5,6 +5,10 @@ version: 1.0.0
 category: workspace-hub-learned
 tags: [planning, adversarial-review, codex, gemini, governance, git-contention]
 ---
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided. Preserve owner-controlled approval history without self-labeling.
+
 
 # Plan Review Rerun: CLI Drift + Governance Hygiene + Git Contention
 
@@ -22,7 +26,7 @@ Use this when hardening a `status:plan-review` issue through repeated adversaria
 1. Revalidate live state before editing.
    - `gh issue view <issue> --json labels,state,comments,url`
    - Read the plan header, `## Adversarial Review Summary`, and `docs/plans/README.md` row.
-   - Check local approval marker only after live labels: `.planning/plan-approved/<issue>.md`.
+   - Inspect current task/standing authority, plan revision and blocking findings. Existing approval markers are history, not implementation prerequisites; preserve them without fabricating or deleting approval evidence.
 
 2. Treat provider wrapper failure as a tool problem, not review signal.
    - Current Codex CLI may reject `codex exec --no-interactive` with rc=2.
@@ -55,7 +59,7 @@ Use this when hardening a `status:plan-review` issue through repeated adversaria
 
 7. Recover when the terminal/fanout path itself is unstable.
    - If the terminal tool fails before running commands (for example `FileNotFoundError: [Errno 2] No such file or directory: '%s'`), switch to `execute_code` with `subprocess.run(..., cwd='<repo>')` for git, `gh`, and review commands rather than abandoning the gate.
-   - If a combined fanout command times out, rerun providers one at a time (for example `--providers=codex` then `--providers=Codex`) and read the regenerated provider artifacts directly.
+   - If a combined fanout command times out, rerun providers one at a time (for example `--providers=codex` then `--providers=claude`) and read the regenerated provider artifacts directly.
    - If ad-hoc provider CLI reruns stall with empty stdout/logs, do not wait indefinitely: poll once or twice, kill the stuck process, preserve any successful provider output, and record the stalled provider as infrastructure/tooling state rather than substantive review signal.
    - For non-interactive reruns, prefer an explicit prompt file plus the provider's documented stdin mode. Avoid shell patterns that confuse the wrapper into waiting for stdin (for example a positional prompt while stdin is still open, or giant command substitutions that bypass expected file input). If a wrapper prints "Reading additional input from stdin..." or "no stdin data received" and then hangs, relaunch with corrected stdin handling or mark unavailable.
    - Treat review artifacts as stale unless they were generated after the latest plan commit or patch. A MAJOR artifact that predates the final patch is diagnostic input, not current gate evidence.

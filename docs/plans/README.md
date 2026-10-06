@@ -3,7 +3,7 @@
 This guide applies the shared authority contract in [SHARED_SOUL.md](../../config/agents/SHARED_SOUL.md).
 Every issue needs discovery and a proportionate plan; a fresh approval request is not required for every action.
 Bounded routine reversible work may proceed under independently established standing authorization.
-Substantial scope requires explicit approval of the current reviewed plan; consequential actions require matching explicit approval.
+The task request or standing authorization covers substantial implementation; no separate user plan approval is required. Consequential actions require explicit authorization for the action and destination; implementation authority alone does not cover them. Reuse authorization already given.
 Do not ask again for verified unchanged scope. Missing or changed scope requires context or renewed approval as appropriate.
 Labels, local markers, receipts and handoffs are references, not authenticated authority; verify provenance and issue/revision binding.
 The implementing agent never self-labels `status:plan-approved`. Plan/code review, TDD, legal/security, engineering and completeness controls remain required.
@@ -27,7 +27,7 @@ Both are required. Neither replaces the other.
 3. DRAFT PLAN       — Copy template, fill all sections, save to docs/plans/
 4. ADVERSARIAL REVIEW — Route to 2+ AI providers; revise if MAJOR verdict
 5. POST TO GITHUB   — Comment plan on issue, label status:plan-review
-6. AUTHORITY        — Verify standing authority or required explicit approval; owner records it
+6. AUTHORITY        — Verify task scope or standing authorization; no separate plan approval
 7. IMPLEMENT        — TDD, verification and adversarial code/artifact review
 8. CLOSE            — Commit, push, summary and closure within verified authority
 ```
@@ -113,11 +113,11 @@ Flags:
 
 1. Post the completed plan as a GitHub issue comment
 2. Apply label: `gh issue edit NNN --add-label "status:plan-review"`
-3. For substantial unapproved scope, stop for approval of the reviewed plan. For routine scope, verify standing authorization before continuing. Posting does not grant permission.
+3. After review, implement within the originating task request or standing authorization. Do not stop for separate user plan approval. Posting does not broaden task scope.
 
 ### Step 6: Verify Authority
 
-When explicit approval is required, the user approves the current plan and scope.
+No separate user approval of the plan is required before implementation. Verify originating task scope; seek a decision only for missing information or actions outside that scope.
 The owner controls the `status:plan-approved` label; the implementing agent does not apply it.
 A `.planning/plan-approved/NNN.md` marker may reference that event, but its presence, age or absence cannot establish or revoke authority.
 Verify the approving actor, issue, reviewed revision and scope independently; report mismatches without automatically changing labels or markers.
@@ -159,7 +159,7 @@ Reviewers should note a retrieval verdict: `adequate` or `insufficient` with spe
 
 When the user is not present:
 - Continue only within independently established standing authorization or matching explicit approval.
-- For substantial unapproved scope, prepare the plan and review evidence, then wait; absence of the user creates no exception.
+- For substantial work within the task scope, prepare the plan and review evidence, then implement; do not wait for separate plan approval.
 - Preserve TDD and plan/code review. A fresh MAJOR finding blocks affected work until resolved; it does not itself revoke an approval.
 - Report scope/evidence conflicts rather than mutating remote labels or deleting markers automatically.
 
@@ -169,8 +169,8 @@ When the user is not present:
 |---|---|
 | draft | Plan file exists locally but has not yet completed adversarial review |
 | adversarial-reviewed | Frontier-model review passed; ready to post for user review |
-| plan-review | Posted to GitHub; waiting for user approval |
-| plan-approved | User approved; ready for implementation or batch execution |
+| plan-review | Posted to GitHub for plan review; not an implementation-permission gate |
+| plan-approved | Historical owner-recorded approval; not required for authorized implementation |
 | superseded | Replaced by a newer version of the plan |
 | completed | Issue implemented and closed |
 
@@ -232,6 +232,7 @@ Historical rows below retain their recorded scope and status; they are not curre
 | [#3592](https://github.com/vamseeachanta/workspace-hub/issues/3592) | equality-dimension-reclassification | `docs/plans/2026-07-22-issue-3592-equality-dimension-reclassification.md` | 2026-07-22 | completed | T2 | User-approved + implemented `612cf423f` (TDD, 28 new/updated tests). Code-stage Codex review caught a MAJOR (provider rows degraded at schema 5) — fixed with 3 regression tests. Issue CLOSED 2026-07-22; box-side follow-ons (gpu-claw cron set, win schema-5 re-collect, win hermes contradiction) tracked in the issue checklist + live red cells. |
 | [#3549](https://github.com/vamseeachanta/workspace-hub/issues/3549) | registry-connection-helpers | `docs/plans/2026-07-16-issue-3549-registry-connection-helpers.md` | 2026-07-16 | plan-review — user decision required | T3 | Option 2 registry-policy + POSIX local overlay design. PR #3553 dependency merged. R3 ended Claude MINOR / Codex third MAJOR / Gemini UNAVAILABLE; all concrete r3 findings were corrected inline and the Codex iteration cap requires explicit user disposition rather than an automatic fourth cycle. |
 | [#3522](https://github.com/vamseeachanta/workspace-hub/issues/3522) | private-rule-authority-migration | `docs/plans/2026-07-13-issue-3522-private-rule-authority-migration.md` | 2026-07-13 | plan-review | T3 | R1/r2 MAJORs resolved inline per routing: pinned reusable secret workflow, HMAC ledger/anchor, dual-slot CAS cutover, constant-fail fork promotion, complete private evidence and downloadable-byte coverage. Approval authorizes Phase A only; migration/external state remain separately gated. |
+| [#3527](https://github.com/vamseeachanta/workspace-hub/issues/3527) | postmerge-inventory-race | `docs/plans/2026-07-14-issue-3527-postmerge-inventory-race.md` | 2026-07-14 | plan-review — correction 2026-07-18 | T3 | Code review required an executable rollback contract and a dedicated snapshot test file; renewed user approval is required before implementation resumes. |
 | [#3490](https://github.com/vamseeachanta/workspace-hub/issues/3490) | onboarding-cron-preview-failure | `docs/plans/2026-07-12-issue-3490-onboarding-cron-preview-failure.md` | 2026-07-12 | plan-review | T2 | Codex and fallback audit APPROVE exact propagation, fully isolated runtime fixtures, refreshed-pin semantic mutations, and registry/report parity. Claude/Gemini unavailable; user approval pending. |
 | [#3475](https://github.com/vamseeachanta/workspace-hub/issues/3475) | cron-semantic-ownership | `docs/plans/2026-07-11-issue-3475-cron-semantic-ownership.md` | 2026-07-11 | completed | T3 | Completed via PR #3492; completeness artifact PR #3493 and owner/server verification passed. |
 | [#3470](https://github.com/vamseeachanta/workspace-hub/issues/3470) | scheduler-mutation-safety-contract | `docs/plans/2026-07-11-issue-3470-scheduler-mutation-safety-contract.md` | 2026-07-11 | completed | T3 | Completed via PR #3487; registry/enforcement now routes behavior gaps to #3475–#3479. |

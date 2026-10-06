@@ -36,10 +36,13 @@ Your job description says "route, don't execute." The rules that enforce that:
 
 ## The standard specialist roster (convention)
 
-Unless the user's setup has customized profiles, assume these exist. Adjust to whatever the user actually has — ask if you're unsure.
+## Failure Modes
 
-| Profile | Does | Typical workspace |
-|---|---|---|
+| Failure | Prevention |
+|---|---|
+| Subagent planning wave exceeds requested cap after retrying timed-out lanes | Treat the user-requested subagent cap as a total-attempt budget, not only completed results. If a lane times out, report the timeout and ask before replacement attempts unless the user explicitly authorized retries beyond the cap. |
+| `delegate_task` children time out before first LLM request when launched with an empty toolset | Do not pass `toolsets: []` for no-tool planning. Use a minimal toolset such as `['terminal']` and explicitly instruct the child not to call tools, or omit toolsets only when inherited tool access is acceptable. |
+| Codex planning/implementation launched with `-C <worktree>` cannot write logs/artifacts to the orchestrator root because the sandbox is scoped to the worktree | Put prompt files, logs, and expected outputs inside the same worktree or use `/tmp` for transient logs, then copy verified artifacts back deliberately. Do not expect a Codex sandboxed worker to write directly into the parent/orchestrator checkout. |
 | `researcher` | Reads sources, gathers facts, writes findings | `scratch` |
 | `analyst` | Synthesizes, ranks, de-dupes. Consumes multiple `researcher` outputs | `scratch` |
 | `writer` | Drafts prose in the user's voice | `scratch` or `dir:` into their Obsidian vault |
@@ -75,7 +78,7 @@ t1 = kanban_create(
     title="research: Postgres cost vs current",
     assignee="researcher",
     body="Compare estimated infrastructure costs, migration costs, and ongoing ops costs over a 3-year window. Sources: AWS/GCP pricing, team time estimates, current Postgres bills from peers.",
-    tenant=os.environ.get("HERMES_TENANT"), <!-- scanner-allow:python_os_environ -->
+    tenant=os.environ.get("HERMES_TENANT"),
 )["task_id"]
 
 t2 = kanban_create(
@@ -133,6 +136,10 @@ Tell them what you created in plain prose:
 
 ## Common patterns
 
+**GitHub-label-derived portfolio board:** When the work already exists as GitHub issues across multiple repos, do not create a separate manual Kanban queue first. Build a label-derived board/dashboard view, classify by plan-gate labels and local approval evidence, and use it to choose the next small execution/governance/planning batches. For tier-1 repo boards, include per-issue AI provider/reviewer routing, machine routing, explicit decision/user-input lanes, and standing structure/test/CI/cross-review gates. When the user asks how to feed Hermes/AI swarms, add bounded ~5-hour recommendation packets derived from the board and verify every referenced issue live. See `references/github-label-derived-portfolio-board.md` for the proven collection, lane, artifact, recommendation-packet, provider/machine routing, and verification pattern.
+
+**Provider-credit approval control board:** When the goal is to reduce wasted weekly provider quota, treat Kanban as a safe pull system, not as permission for agents to wander. Use lanes for planning feedstock, plan-review/approval candidates, execution-ready, running/leased, and QA/closeout. Approval affordances in an HTML/dashboard view must be backed by an auditable transaction: re-check live GitHub state, canonical `docs/plans/` artifact, review artifacts with no latest `MAJOR`/`FAIL`/`UNAVAILABLE`/pending verdict, verified task/action authority, unresolved blocker state, GitHub comment, and queue refresh. If no reviewed implementation scope within task/standing authority is ready, route credits to planning/recon/review lanes. Labels and approval markers do not determine implementation readiness. Running cards need owner/lease/idempotency metadata so the same issue is not double-dispatched. See `agent-usage-optimizer/references/kanban-approval-control-plane.md` for the detailed weekly anti-waste loop and dashboard-field contract.
+
 **Fan-out + fan-in (research → synthesize):** N `researcher` tasks with no parents, one `analyst` task with all of them as parents.
 
 **Pipeline with gates:** `pm → backend-eng → reviewer`. Each stage's `parents=[previous_task]`. Reviewer blocks or completes; if reviewer blocks, the operator unblocks with feedback and respawns.
@@ -149,4 +156,14 @@ Tell them what you created in plain prose:
 
 **Don't pre-create the whole graph if the shape depends on intermediate findings.** If T3's structure depends on what T1 and T2 find, let T3 exist as a "synthesize findings" task whose own first step is to read parent handoffs and plan the rest. Orchestrators can spawn orchestrators.
 
-**Tenant inheritance.** If `HERMES_TENANT` is set in your env, pass `tenant=os.environ.get("HERMES_TENANT")` on every `kanban_create` call so child tasks stay in the same namespace. <!-- scanner-allow:python_os_environ -->
+**Tenant inheritance.** If `HERMES_TENANT` is set in your env, pass `tenant=os.environ.get("HERMES_TENANT")` on every `kanban_create` call so child tasks stay in the same namespace.
+
+## Recovering stuck workers
+
+When a worker profile keeps crashing, hallucinating, or getting blocked by its own mistakes (usually: wrong model, missing skill, broken credential), the kanban dashboard flags the task with a ⚠ badge and opens a **Recovery** section in the drawer. Three primary actions:
+
+1. **Reclaim** (or `hermes kanban reclaim <task_id>`) — abort the running worker immediately and reset the task to `ready`. The existing claim TTL is ~15 min; this is the fast path out.
+2. **Reassign** (or `hermes kanban reassign <task_id> <new-profile> --reclaim`) — switch the task to a different profile and let the dispatcher pick it up with a fresh worker.
+3. **Change profile model** — the dashboard prints a copy-paste hint for `hermes -p <profile> model` since profile config lives on disk; edit it in a terminal, then Reclaim to retry with the new model.
+
+Hallucination warnings appear on tasks where a worker's `kanban_complete(created_cards=[...])` claim included card ids that don't exist or weren't created by the worker's profile (the gate blocks the completion), or where the free-form summary references `t_<hex>` ids that don't resolve (advisory prose scan, non-blocking). Both produce audit events that persist even after recovery actions — the trail stays for debugging.

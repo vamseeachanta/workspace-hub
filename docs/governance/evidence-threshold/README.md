@@ -48,7 +48,7 @@ verification; booleans such as `approved` are rejected as unknown fields.
 |---|---|
 | `risk_class` | read-only, routine-reversible, substantial, consequential, unknown |
 | `authorization_assessment` | not-required-for-assessment, unverified-reference, missing |
-| `action_boundary` | assessment-only, conditional-routine, approval-required, needs-context |
+| `action_boundary` | assessment-only, conditional-routine, verify-task-authority, approval-required, needs-context |
 | `metric_advice` | not-requested, eligible-shadow, ineligible-shadow, unavailable |
 | `reuse_assessment` | not-requested, invalid, candidate-pending-live-validation, needs-context |
 | `reason_codes` | sorted unique codes from the list below |
@@ -57,7 +57,7 @@ Table 1. Advisory output vocabulary; no field represents verified permission.
 
 Reason codes: `READ_ONLY_ASSESSMENT`, `ROUTINE_CONDITIONAL`, `PROTECTED_CHANGE`,
 `CONSEQUENTIAL_EFFECT`, `UNKNOWN_EFFECT`, `MISSING_CONTEXT`, `UNVERIFIED_AUTHORITY`,
-`APPROVAL_REQUIRED`, `METRIC_INELIGIBLE`, `METRIC_UNAVAILABLE`, `RECEIPT_INVALID`,
+`APPROVAL_REQUIRED` (consequential actions only), `TASK_AUTHORITY_REQUIRED`, `METRIC_INELIGIBLE`, `METRIC_UNAVAILABLE`, `RECEIPT_INVALID`,
 `KEY_CHANGED`, `EVIDENCE_DIGEST_MISMATCH`, `MUTABLE_VALIDATION_REQUIRED`,
 `RESOURCE_UNVERIFIED`, `SCHEMA_UNAVAILABLE`.
 

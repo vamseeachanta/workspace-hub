@@ -35,6 +35,74 @@
       "approval_marker": null,
       "approval_ready": false,
       "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Make configuration propagation writes UTF-8 atomic and recoverable"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3953,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Make configuration propagation writes UTF-8 atomic and recoverable",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3953",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
+        "labels": [],
+        "machine_readiness": "blocked:no_provider_capable_workstation",
+        "machine_route": "(none ready)",
+        "plan_summary": "(no plan file found)",
+        "provider_route": "claude",
+        "risks": "(no risks section captured)",
+        "tests": "(no TDD section)",
+        "title": "Require complete manifest closure before data readback acceptance"
+      },
+      "lane": "planning_feedstock",
+      "machine_blocker": "no_provider_capable_workstation",
+      "machine_ready": false,
+      "machine_role": null,
+      "machine_route": null,
+      "number": 3952,
+      "pipeline_lane": "C",
+      "plan": null,
+      "provider_route": "claude",
+      "review_clean": false,
+      "routing_reason": "strategy/workflow/architecture language",
+      "title": "Require complete manifest closure before data readback acceptance",
+      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3952",
+      "warnings": []
+    },
+    {
+      "approval_blockers": [
+        "missing status:plan-review label",
+        "no canonical plan file",
+        "review evidence not clean",
+        "static dashboard: real approval requires provider-kanban-server.py"
+      ],
+      "approval_marker": null,
+      "approval_ready": false,
+      "hover": {
         "labels": [
           "bug"
         ],
@@ -7678,92 +7746,82 @@
       "title": "phone-media: USB-pull remaining family phones into the archive",
       "url": "https://github.com/vamseeachanta/workspace-hub/issues/3584",
       "warnings": []
-    },
-    {
-      "approval_blockers": [
-        "reviews not clean: missing_review",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:operations",
-          "domain:workstations",
-          "machine:dev-primary",
-          "status:plan-review",
-          "lane:claude"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "- Found: `scripts/readiness/equality-matrix-cron.sh:25` \u2014 collection step is a bare `bash collect-equality.sh`, on every OS.",
-        "provider_route": "claude",
-        "risks": "**PowerShell 5.1 vs 7 differences in the ps1 fallback:** mirror the exact code shape already shipped in `equality-report.ps1` (StrictMode-safe, `Get-Content`-based parsing) rather than new idioms. | **Cron under Task Scheduler vs interactive Git Bash:** `powershell.exe` resolution differs by PATH; the branch uses `command -v powershell.exe` and falls back loudly rather than assuming. | **Wrapper d",
-        "tests": "(no TDD section)",
-        "title": "equality-matrix-cron.sh on Windows collects via bash and publishes degraded compute/provider evidence"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3582,
-      "pipeline_lane": "C",
-      "plan": "docs/plans/2026-07-18-issue-3582-windows-cron-cim-collection.md",
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "equality-matrix-cron.sh on Windows collects via bash and publishes degraded compute/provider evidence",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3582",
-      "warnings": [
-        "missing_review"
-      ]
-    },
-    {
-      "approval_blockers": [
-        "missing status:plan-review label",
-        "no canonical plan file",
-        "review evidence not clean",
-        "static dashboard: real approval requires provider-kanban-server.py"
-      ],
-      "approval_marker": null,
-      "approval_ready": false,
-      "hover": {
-        "labels": [
-          "cat:harness",
-          "machine:dev-primary",
-          "domain:harness"
-        ],
-        "machine_readiness": "blocked:no_provider_capable_workstation",
-        "machine_route": "(none ready)",
-        "plan_summary": "(no plan file found)",
-        "provider_route": "claude",
-        "risks": "(no risks section captured)",
-        "tests": "(no TDD section)",
-        "title": "chore(harness): gemini CLI uninstall decision after agy soak (#3573)"
-      },
-      "lane": "planning_feedstock",
-      "machine_blocker": "no_provider_capable_workstation",
-      "machine_ready": false,
-      "machine_role": null,
-      "machine_route": null,
-      "number": 3580,
-      "pipeline_lane": "C",
-      "plan": null,
-      "provider_route": "claude",
-      "review_clean": false,
-      "routing_reason": "strategy/workflow/architecture language",
-      "title": "chore(harness): gemini CLI uninstall decision after agy soak (#3573)",
-      "url": "https://github.com/vamseeachanta/workspace-hub/issues/3580",
-      "warnings": []
     }
   ],
-  "generated_at": "2026-10-05T21:21:15Z",
+  "generated_at": "2026-10-06T01:21:14Z",
   "lanes": {
     "blocked": [],
     "execution_ready": [],
     "plan_review": [],
     "planning_feedstock": [
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Make configuration propagation writes UTF-8 atomic and recoverable"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3953,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Make configuration propagation writes UTF-8 atomic and recoverable",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3953",
+        "warnings": []
+      },
+      {
+        "approval_blockers": [
+          "missing status:plan-review label",
+          "no canonical plan file",
+          "review evidence not clean",
+          "static dashboard: real approval requires provider-kanban-server.py"
+        ],
+        "approval_marker": null,
+        "approval_ready": false,
+        "hover": {
+          "labels": [],
+          "machine_readiness": "blocked:no_provider_capable_workstation",
+          "machine_route": "(none ready)",
+          "plan_summary": "(no plan file found)",
+          "provider_route": "claude",
+          "risks": "(no risks section captured)",
+          "tests": "(no TDD section)",
+          "title": "Require complete manifest closure before data readback acceptance"
+        },
+        "lane": "planning_feedstock",
+        "machine_blocker": "no_provider_capable_workstation",
+        "machine_ready": false,
+        "machine_role": null,
+        "machine_route": null,
+        "number": 3952,
+        "pipeline_lane": "C",
+        "plan": null,
+        "provider_route": "claude",
+        "review_clean": false,
+        "routing_reason": "strategy/workflow/architecture language",
+        "title": "Require complete manifest closure before data readback acceptance",
+        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3952",
+        "warnings": []
+      },
       {
         "approval_blockers": [
           "missing status:plan-review label",
@@ -15417,84 +15475,6 @@
         "title": "phone-media: USB-pull remaining family phones into the archive",
         "url": "https://github.com/vamseeachanta/workspace-hub/issues/3584",
         "warnings": []
-      },
-      {
-        "approval_blockers": [
-          "reviews not clean: missing_review",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:operations",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:plan-review",
-            "lane:claude"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "- Found: `scripts/readiness/equality-matrix-cron.sh:25` \u2014 collection step is a bare `bash collect-equality.sh`, on every OS.",
-          "provider_route": "claude",
-          "risks": "**PowerShell 5.1 vs 7 differences in the ps1 fallback:** mirror the exact code shape already shipped in `equality-report.ps1` (StrictMode-safe, `Get-Content`-based parsing) rather than new idioms. | **Cron under Task Scheduler vs interactive Git Bash:** `powershell.exe` resolution differs by PATH; the branch uses `command -v powershell.exe` and falls back loudly rather than assuming. | **Wrapper d",
-          "tests": "(no TDD section)",
-          "title": "equality-matrix-cron.sh on Windows collects via bash and publishes degraded compute/provider evidence"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3582,
-        "pipeline_lane": "C",
-        "plan": "docs/plans/2026-07-18-issue-3582-windows-cron-cim-collection.md",
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "equality-matrix-cron.sh on Windows collects via bash and publishes degraded compute/provider evidence",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3582",
-        "warnings": [
-          "missing_review"
-        ]
-      },
-      {
-        "approval_blockers": [
-          "missing status:plan-review label",
-          "no canonical plan file",
-          "review evidence not clean",
-          "static dashboard: real approval requires provider-kanban-server.py"
-        ],
-        "approval_marker": null,
-        "approval_ready": false,
-        "hover": {
-          "labels": [
-            "cat:harness",
-            "machine:dev-primary",
-            "domain:harness"
-          ],
-          "machine_readiness": "blocked:no_provider_capable_workstation",
-          "machine_route": "(none ready)",
-          "plan_summary": "(no plan file found)",
-          "provider_route": "claude",
-          "risks": "(no risks section captured)",
-          "tests": "(no TDD section)",
-          "title": "chore(harness): gemini CLI uninstall decision after agy soak (#3573)"
-        },
-        "lane": "planning_feedstock",
-        "machine_blocker": "no_provider_capable_workstation",
-        "machine_ready": false,
-        "machine_role": null,
-        "machine_route": null,
-        "number": 3580,
-        "pipeline_lane": "C",
-        "plan": null,
-        "provider_route": "claude",
-        "review_clean": false,
-        "routing_reason": "strategy/workflow/architecture language",
-        "title": "chore(harness): gemini CLI uninstall decision after agy soak (#3573)",
-        "url": "https://github.com/vamseeachanta/workspace-hub/issues/3580",
-        "warnings": []
       }
     ],
     "qa_closeout": [],
@@ -15505,16 +15485,16 @@
     "agy",
     "claude"
   ],
-  "scorecard_generated_at": "2026-10-05T21:21:11.103071Z",
+  "scorecard_generated_at": "2026-10-06T01:21:11.186854Z",
   "served_localhost": false,
-  "utilization_generated_at": "2026-10-05T21:21:11.003233Z",
+  "utilization_generated_at": "2026-10-06T01:21:11.088956Z",
   "warning_summary": {
     "approved_no_marker": 5,
     "approved_no_plan": 1,
     "legacy_review_no_sha": 4,
     "major_review": 3,
     "marker_without_open_approved_issue": 186,
-    "missing_review": 34,
+    "missing_review": 33,
     "unavailable_review": 1
   }
 }

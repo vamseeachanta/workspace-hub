@@ -90,7 +90,7 @@ Do not use this instead of the canonical route when scope, delegation, policy, o
 8. Closeout
 - Close only when the issue is landed, or proven already satisfied/invalid with evidence.
 - Link any future issues discovered during execution.
-- For governance/prerequisite child issues that intentionally do not unblock the parent, post parent issue updates before/with child closeout that explicitly state: artifact landed, no raw/private implementation occurred, parent remains blocked, and future implementation still requires a separately approved issue.
+- For governance/prerequisite child issues that intentionally do not unblock the parent, post parent issue updates before/with child closeout that explicitly state: artifact landed, no raw/private implementation occurred, parent remains blocked, and future implementation requires its own reviewed issue scope within task authority, without separate plan approval.
 - Post concise final verification evidence.
 - Leave the issue with a clear done-state, not an implied one.
 

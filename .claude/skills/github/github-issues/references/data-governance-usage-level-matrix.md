@@ -43,7 +43,7 @@ When creating or updating GitHub issues for this class of work, include:
 - Do not route client-private data directly into public `llm-wiki`.
 - Do not store real client/project names in public issue bodies or public docs when redacted path patterns are sufficient.
 - Do not let report generation collapse `llm-wiki-private` and `llm-wiki-public` citations into a single undifferentiated source list.
-- Do not treat a GitHub issue/comment matrix as implementation approval; keep normal plan/adversarial-review/user-approval gates.
+- Do not treat a GitHub issue/comment matrix as implementation approval; retain planning, adversarial review, task-authority verification and source-rights decisions.
 
 ## Verification checklist
 

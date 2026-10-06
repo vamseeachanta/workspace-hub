@@ -84,4 +84,4 @@ Return `MAJOR` during plan review if any of these are true:
 - off-grid default values are not acknowledged;
 - row-count/value-coverage tests are absent;
 - charts only show a hand-picked subset with no full-data artifact;
-- the plan implies implementation before user approval or before TDD tests.
+- the plan implies implementation without task/standing authority, before required domain decisions and blocking reviews are resolved, or before TDD tests; an explicit planning-only request remains a scope limit.

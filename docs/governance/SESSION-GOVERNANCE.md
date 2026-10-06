@@ -1,5 +1,7 @@
 # Session Governance — Hard-Stop Checkpoints
 
+> Current authority: SHARED_SOUL.md. Under [issue 3943](https://github.com/vamseeachanta/workspace-hub/issues/3943), separate user plan approval is retired. Task requests authorize implementation after planning, TDD and review. The plan-approval checkpoint is advisory/retired, and marker/server compatibility entry points no longer block. Phase descriptions below are historical, not current implementation prerequisites.
+
 > Phase 1 implementation of #1839. Provides the checkpoint model and verification utility.
 > Subsequent phases add runtime enforcement via hooks and Hermes orchestration.
 

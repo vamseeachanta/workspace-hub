@@ -8,7 +8,7 @@ Consolidation date: 2026-04-29
 
 ---
 name: gh-work-planning
-description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, explicit approval gate before execution, and execution-ready delegation packaging for Claude agent teams.
+description: Canonical GitHub issue planning route — issue intake, strengthened resource intelligence, repo-tracked plan artifact, adversarial review, GitHub progress posting, future-issue capture, task/standing authority for implementation without a separate plan-approval gate, and execution-ready delegation packaging for Claude agent teams.
 version: 1.3.0
 author: Hermes Agent
 category: coordination
@@ -28,11 +28,11 @@ tags: [planning, github, issue-workflow, hard-stop, adversarial-review, tdd]
 This is the canonical planning route for GitHub issue work.
 
 Use it whenever work starts from a GitHub issue and must follow:
-Issue -> Plan -> User Approval -> Implement.
+Issue -> Plan -> adversarial review -> implement within task/standing authority.
 
 ## Route summary
 
-The output of this route is one artifact: an approved plan that downstream execution can follow without guessing.
+The output of this route is one artifact: a reviewed plan that authorized downstream execution can follow without guessing.
 
 ## GitHub posting rule
 
@@ -162,7 +162,7 @@ STEP 1: Issue Intake          — read, classify, announce
 STEP 2: Resource Intelligence — search all knowledge sources, map artifact locations, identify gaps and follow-ups
 STEP 3: Draft the Plan        — pseudocode, file map, tests, acceptance criteria, follow-up issues
 STEP 4: Adversarial Review    — Claude + Codex + Gemini review the plan
-STEP 5: Hard Stop             — post to GitHub, label, wait for user approval
+STEP 5: Execution checkpoint — post to GitHub, record blockers, continue within task/standing authority
 ```
 
 ## STEP 1 — Issue intake
@@ -475,7 +475,7 @@ Review-state hygiene learned from live reruns:
   - freshest wave status (including provider failures)
   - last valid artifact per provider, if different
   - whether the review gate is still unsatisfied because the newest wave did not produce the required valid artifacts
-- Re-check `.planning/plan-approved/<issue>.md` before claiming approval evidence is absent. If a marker exists with weak/non-auditable provenance (for example `Approval source: current Hermes chat instruction`), treat it as governance drift / likely self-approval evidence, remove it for open draft issues, and note the cleanup explicitly in the plan summary or GitHub status comment.
+- Inspect existing approval evidence without treating markers as authorization or prerequisites. Weak provenance requires clarification in the status report; preserve history and do not remove markers opportunistically.
 - For CI-hardening plans that change workflow gates, include both:
   - isolated red/green commands for the narrow source/test fixes, and
   - at least one workflow-shaped local command that matches the CI gate closely enough to expose the likely next blocker (for example coverage thresholds / markers), so the plan does not overclaim "CI parity" from isolated tests alone.
@@ -669,69 +669,8 @@ Required response:
 
 Practical rule:
 - if repeated MAJOR findings are mostly about decomposition, boundaries, or "too much in one issue," do not spend another full revision cycle polishing prose inside the monolith. Split it.
-- once split, seek approval on the narrowest child issue first, especially the one that establishes the canonical contract or evidence base for the others.
+- once split, review and implement the narrowest authorized child issue first, especially the one that establishes the canonical contract or evidence base for the others.
 
-
-### Monolith-to-child-issue decomposition pattern
-
-Use this when repeated adversarial review converges on the same meta-problem: the issue is too broad, mixes multiple subsystems, or keeps failing because approval is being sought for one large plan instead of several narrower ones.
-
-Trigger signals:
-- 2+ review rounds still return `MAJOR`
-- multiple providers independently call out scope bloat, packaging sprawl, or unresolved architectural decomposition
-- one issue is trying to define policy + fixtures + runner semantics + inventory + automation behavior all at once
-- revisions improve wording but do not eliminate the same structural blocker
-
-Required response:
-1. Stop trying to force the original issue through approval as one monolith.
-2. Identify the natural child workstreams and write them as separate GitHub issues with bounded deliverables.
-3. Recast the original issue as a parent/umbrella that links the child issues and owns only steering/synthesis.
-4. Comment on the parent issue explaining why decomposition was necessary and in what order the child issues should be reviewed.
-5. Prefer approving the narrowest contract/evidence issues first, then the dependent execution/policy issues.
-
-Practical rule:
-- If the repeated blocker is decomposition itself, further prose-only tightening of the same parent plan is usually wasteful. Split the work instead of polishing the monolith.
-
-### Monolithic-parent decomposition trigger
-
-If cross-provider review repeatedly says the issue is too broad, mixes multiple subsystems, or bundles governance + inventory + automation + execution-policy concerns into one approval gate, stop rewriting the same parent plan.
-
-Instead:
-1. keep the parent issue as umbrella/steering only
-2. split the blocked scope into 3-5 narrower child issues, each with one clear approval surface
-3. create the child issues immediately so the decomposition is concrete, not just suggested
-4. comment on the parent with the decomposition, rationale, and recommended review/approval order
-5. move planning/review effort to the narrowest child issue first
-
-Typical split axes:
-- contract/policy
-- evidence inventory / reconnaissance
-- fixture corpus / test assets
-- runner/schema/interface design
-- follow-up issue creation / governance automation
-
-Use this when the blocker is structural decomposition, not missing wording. Repeatedly polishing a monolithic umbrella usually wastes review cycles and still returns `MAJOR`.
-
-### Monolith-plan split trigger (learned from repeated #2399-style review failures)
-
-If fresh Codex/Gemini/Claude reviews keep converging on findings like:
-- "issue is too large for a single T2 governance/planning issue"
-- "too many artifacts / documentation sprawl"
-- "runner contract / automation / issue-creation logic is scope creep"
-- "ecosystem claim is broader than the actual evidence base"
-- "this should be split into smaller child issues or rescope to workspace-hub-only"
-
-then stop trying to polish the monolith.
-
-Do this instead:
-1. classify the blocker as **decomposition failure**, not wording failure
-2. rewrite the parent as a narrower umbrella / steering issue
-3. create concrete child issues for the major concern clusters
-4. if ecosystem-wide evidence is too thin, rescope the parent to the smaller proven domain (for example workspace-hub-only) and move broader claims into follow-up inventory issues
-5. only resume plan-review on the narrower parent/children after the split is reflected in the issue structure
-
-Heuristic:
-- if the latest review wave is still `MAJOR` after multiple rewrites and the blocker list keeps naming *scope, packaging, automation, or missing ecosystem evidence* rather than a few specific missing sections, the correct fix is almost always to split/rescope, not to keep editing the same plan.
 
 ## No silent downgrade rule
 
@@ -777,14 +716,13 @@ Post a concise synthesis-first GitHub update using this structure:
 Do not dump raw full reviewer text into the issue unless necessary.
 Link or reference full review artifacts separately when needed.
 
-## STEP 5 — Hard stop and approval gate
+## STEP 5 — Reviewed execution checkpoint
 
-This is the explicit stop line between planning and execution.
-No implementation begins from this route until approval handling is complete.
+The task request or standing authority authorizes implementation, including substantial work. No separate user plan approval is required. Stop affected work for unresolved domain decisions or blocking findings, honor planning-only requests, and seek matching authorization for consequential actions outside scope.
 
 ## Exact GitHub action order
 
-Before waiting:
+Before the implementation checkpoint:
 1. Save the plan file to `docs/plans/...`
 2. Update the planning index if the repo uses one
 3. Ensure any follow-up issues discovered during planning are either created or explicitly marked as candidates
@@ -792,7 +730,7 @@ Before waiting:
 5. Post or include the Step 4 synthesis summary if not already present in the final plan comment
 6. Add `status:plan-review`
 7. Remove any stale status labels that conflict with plan-review state
-8. Stop and wait for explicit user approval
+8. Continue reviewed implementation within task/standing authority, or report the specific blocker or planning-only scope limit
 
 ## Final GitHub plan comment should include
 
@@ -803,7 +741,7 @@ Before waiting:
 - residual risk level
 - future issue links or candidates
 - ready_for_approval status
-- explicit request for approval / revision / rejection
+- task/standing authority, readiness, unresolved decisions and next execution action
 
 ## Approval response normalization
 
@@ -821,8 +759,8 @@ Expected planning labels:
 - `status:plan-review`
 - `status:plan-approved`
 
-Approval handling:
-- on approve: remove `status:plan-review`, add `status:plan-approved`
+Owner-controlled approval history may be recorded when explicitly requested; never self-label approval. Labels are visibility records, not implementation prerequisites.
+- on an explicit owner approval: preserve its verified scope and provenance
 - on revise: keep or re-apply `status:plan-review`
 - on reject: remove planning-ready labels that imply approval
 - on pause/hold: leave the issue clearly not approved for execution
@@ -835,7 +773,7 @@ If the user requests revision:
 3. re-run Step 4 if the revision is material
 4. re-post the updated final plan
 5. keep the issue in `status:plan-review`
-6. wait again for explicit approval
+6. continue within task/standing authority after review and domain blockers clear; preserve planning-only requests
 
 ## Reject flow
 
@@ -852,7 +790,7 @@ If the user pauses or holds the plan:
 1. post a GitHub note that execution is not authorized yet
 2. preserve the current plan artifact
 3. keep labels consistent with not-approved state
-4. do not start execution until explicit approval arrives later
+4. do not start execution until the user explicitly resumes the paused work
 
 ## Batch-readiness rule
 
@@ -860,10 +798,10 @@ A plan is batch-ready only when:
 - the final plan artifact is saved
 - Step 4 synthesis is complete
 - follow-up issues are captured appropriately
-- `status:plan-approved` is present
-- no unresolved blocker or approval ambiguity remains
+- task/standing authority covers the implementation batch
+- no unresolved domain decision or blocking review finding remains
 
-No issue in `status:plan-review` is eligible for execution.
+`status:plan-review` is a visibility state, not a mandatory human wait or an implementation prohibition.
 
 ## Audit-report to overnight queue pattern
 
@@ -876,7 +814,7 @@ Operational rules:
 4. For capability/data/scheduler readiness issues, explicitly separate documentation/index reconciliation from runtime refresh execution. Do not authorize unbounded downloads, full refreshes, or long-running scheduler jobs unless the approved plan says so and prerequisite runtime readiness is proven.
 5. When one issue owns a shared surface that another issue touches only by reference, state that ownership boundary in both plans so overnight workers do not race on the same file or semantic decision.
 6. Use adversarial review to convert vague cleanup themes into frozen decisions, testable acceptance criteria, and bounded no-download smoke checks before moving issues to `status:plan-review`.
-7. `status:plan-review` means the issue is ready for human approval, not overnight execution. Only move into long-running/overnight implementation batches after explicit user approval and `status:plan-approved`.
+7. `status:plan-review` records review visibility. Long-running/overnight batches may implement within task/standing authority once reviewed scope, bounded runtime activity and prerequisites are established; no separate plan approval or label is required.
 
 ## Approval-candidate audit rule
 
@@ -928,7 +866,7 @@ This prevents stale local planning metadata from masking the real current blocke
 
 ## Execution handoff package
 
-When approval is granted, the handoff into execution should be explicit and include:
+When reviewed work proceeds within task/standing authority, the handoff into execution should be explicit and include:
 - approved plan path
 - final deliverable summary
 - scope boundaries
@@ -958,23 +896,23 @@ The orchestrator remains accountable for the parent issue state even when execut
 
 ## GitHub update template for Step 5
 
-Use a concise approval-gate update structure:
-- Plan status: awaiting approval / approved / revision requested / rejected / on hold
+Use a concise execution-checkpoint update structure:
+- Plan status: ready for review / implementation ready / needs decision / revision requested / rejected / on hold
 - Plan artifact: ...
 - Residual risk: Low/Medium/High
 - Future issues: ...
 - Execution authorized: yes/no
-- Next action: await approval / revise / stop
+- Next action: implement within task scope / resolve decision / revise / stop
 
 Valid approval outcomes:
-- approve -> set `status:plan-approved`, then execution may begin
+- reviewed and within task/standing authority -> execution may begin without an approval label
 - revise -> update plan and re-run review as needed
 - reject -> stop and discuss alternative approach
 - pause -> hold with no execution authorization
 
 ## Required gate
 
-No implementation starts until the issue is explicitly approved and labeled `status:plan-approved`.
+Implementation requires task/standing authority, a proportionate reviewed plan, TDD and resolved blocking findings/domain decisions. It does not require separate plan approval, `status:plan-approved` or a local approval marker.
 
 ## Pre-labeled approved issue recovery rule
 
@@ -989,17 +927,13 @@ When you encounter an already-approved issue with no repo-tracked plan artifact:
 5. next run adversarial plan review and reconcile the issue state with the actual plan artifacts before coding
 
 Approval-state drift checklist learned from live use:
-- verify all three surfaces before treating an issue as execution-ready:
-  - live GitHub `status:*` label(s)
-  - canonical local plan file under `docs/plans/`
-  - local approval marker `.planning/plan-approved/NNN.md`
-- if GitHub says `status:plan-approved` but either the canonical plan file or local approval marker is missing, classify the state as **governance drift**, not true approval
-- repair the local artifacts first, then reconcile labels/comments; do not let the live label short-circuit the planning gate
+- verify current task/standing authority, canonical plan, review evidence and unresolved blockers before execution. Live labels and existing approval markers are history/display evidence, not prerequisites.
+- recover missing planning evidence after checking implementation/history first; do not fabricate an approval marker or infer authority from a label
 - when the user asks for manual review/approval links, provide the exact review surfaces explicitly:
   - GitHub issue URL
   - canonical plan URL/path
   - exact CLI label-flip command
-  - required local approval-marker path
+  - existing approval provenance, if relevant; no new marker is required
 - if the issue body points at a stale implementation path, call out the real repo path in the plan before review so approval is anchored to the actual file surface
 
 This recovery pattern is especially important for harness/operations issues that were approved conversationally before the repo plan discipline was enforced, and for cases where GitHub label state drifted ahead of the repo-tracked approval evidence.

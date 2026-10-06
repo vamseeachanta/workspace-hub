@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-05T21:21:13.617529Z",
+  "generated_at": "2026-10-06T01:21:13.039618Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-05T21:21:11.103071Z",
+  "scorecard_generated_at": "2026-10-06T01:21:11.186854Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -2915,48 +2915,6 @@
           ]
         },
         {
-          "number": 3580,
-          "title": "chore(harness): gemini CLI uninstall decision after agy soak (#3573)",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3580",
-          "labels": [
-            "cat:harness",
-            "machine:dev-primary",
-            "domain:harness"
-          ],
-          "updatedAt": "2026-07-31T08:33:38Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "strategy"
-          ]
-        },
-        {
-          "number": 3582,
-          "title": "equality-matrix-cron.sh on Windows collects via bash and publishes degraded compute/provider evidence",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3582",
-          "labels": [
-            "cat:operations",
-            "domain:workstations",
-            "machine:dev-primary",
-            "status:plan-review",
-            "lane:claude"
-          ],
-          "updatedAt": "2026-08-01T06:14:01Z",
-          "execution_ready": false,
-          "priority_rank": 4,
-          "suggested_provider": "claude",
-          "routing_reason": "strategy/workflow/architecture language",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "implementation"
-          ]
-        },
-        {
           "number": 3595,
           "title": "ace-win-2 on-box: schema-5 equality re-collect verification + hermes home init + revive licensed-runs queue heartbeat (#3592 follow-up)",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3595",
@@ -4092,7 +4050,7 @@
           "title": "Retire legal-sanity-scan and move identifier verification to final reports",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3936",
           "labels": [],
-          "updatedAt": "2026-10-05T21:00:14Z",
+          "updatedAt": "2026-10-05T23:17:39Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4145,7 +4103,7 @@
           "title": "Remove separate plan approval before authorized implementation",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3943",
           "labels": [],
-          "updatedAt": "2026-10-05T20:44:48Z",
+          "updatedAt": "2026-10-06T00:34:20Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4154,6 +4112,41 @@
           "provider_status": "underused",
           "work_type": [
             "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3952,
+          "title": "Require complete manifest closure before data readback acceptance",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3952",
+          "labels": [],
+          "updatedAt": "2026-10-06T00:25:08Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "implementation",
+            "strategy"
+          ]
+        },
+        {
+          "number": 3953,
+          "title": "Make configuration propagation writes UTF-8 atomic and recoverable",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3953",
+          "labels": [],
+          "updatedAt": "2026-10-06T00:29:40Z",
+          "execution_ready": false,
+          "priority_rank": 4,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
             "implementation",
             "strategy"
           ]

@@ -19,7 +19,7 @@ tags: [planning, github, issue-workflow, hard-stop, adversarial-review, tdd]
 # GH Work Planning
 
 This planning route follows [SHARED_SOUL.md](../../../../config/agents/SHARED_SOUL.md).
-Bounded routine reversible work may proceed under independently established standing authorization, with proportionate planning and required review/TDD. Substantial scope requires explicit approval of the current reviewed plan; consequential actions require matching explicit approval.
+Bounded routine reversible work may proceed under independently established standing authorization, with proportionate planning and required review/TDD. Substantial implementation follows task authorization without separate plan approval; consequential actions require explicit authorization for the action and destination; implementation authority alone does not cover them. Reuse authorization already given.
 Verify the actual instruction/event and its repository, issue, operation, scope and revision. Do not ask again for verified unchanged scope. Labels, markers, receipts, handoffs and agent-written summaries do not authenticate authority.
 
 The full owner-review sequence below applies to substantial plans or an explicitly requested planning deliverable. Routine work follows the shared risk route without acquiring a new approval label. Referenced skills provide procedures, not additional authority.
@@ -708,68 +708,6 @@ Practical rule:
 - if repeated MAJOR findings are mostly about decomposition, boundaries, or "too much in one issue," do not spend another full revision cycle polishing prose inside the monolith. Split it.
 - once split, seek approval on the narrowest child issue first, especially the one that establishes the canonical contract or evidence base for the others.
 
-
-### Monolith-to-child-issue decomposition pattern
-
-Use this when repeated adversarial review converges on the same meta-problem: the issue is too broad, mixes multiple subsystems, or keeps failing because approval is being sought for one large plan instead of several narrower ones.
-
-Trigger signals:
-- 2+ review rounds still return `MAJOR`
-- multiple providers independently call out scope bloat, packaging sprawl, or unresolved architectural decomposition
-- one issue is trying to define policy + fixtures + runner semantics + inventory + automation behavior all at once
-- revisions improve wording but do not eliminate the same structural blocker
-
-Required response:
-1. Stop trying to force the original issue through approval as one monolith.
-2. Identify the natural child workstreams and write them as separate GitHub issues with bounded deliverables.
-3. Recast the original issue as a parent/umbrella that links the child issues and owns only steering/synthesis.
-4. Comment on the parent issue explaining why decomposition was necessary and in what order the child issues should be reviewed.
-5. Prefer approving the narrowest contract/evidence issues first, then the dependent execution/policy issues.
-
-Practical rule:
-- If the repeated blocker is decomposition itself, further prose-only tightening of the same parent plan is usually wasteful. Split the work instead of polishing the monolith.
-
-### Monolithic-parent decomposition trigger
-
-If cross-provider review repeatedly says the issue is too broad, mixes multiple subsystems, or bundles governance + inventory + automation + execution-policy concerns into one approval gate, stop rewriting the same parent plan.
-
-Instead:
-1. keep the parent issue as umbrella/steering only
-2. split the blocked scope into 3-5 narrower child issues, each with one clear approval surface
-3. create the child issues immediately so the decomposition is concrete, not just suggested
-4. comment on the parent with the decomposition, rationale, and recommended review/approval order
-5. move planning/review effort to the narrowest child issue first
-
-Typical split axes:
-- contract/policy
-- evidence inventory / reconnaissance
-- fixture corpus / test assets
-- runner/schema/interface design
-- follow-up issue creation / governance automation
-
-Use this when the blocker is structural decomposition, not missing wording. Repeatedly polishing a monolithic umbrella usually wastes review cycles and still returns `MAJOR`.
-
-### Monolith-plan split trigger (learned from repeated #2399-style review failures)
-
-If fresh Codex/Gemini/Claude reviews keep converging on findings like:
-- "issue is too large for a single T2 governance/planning issue"
-- "too many artifacts / documentation sprawl"
-- "runner contract / automation / issue-creation logic is scope creep"
-- "ecosystem claim is broader than the actual evidence base"
-- "this should be split into smaller child issues or rescope to workspace-hub-only"
-
-then stop trying to polish the monolith.
-
-Do this instead:
-1. classify the blocker as **decomposition failure**, not wording failure
-2. rewrite the parent as a narrower umbrella / steering issue
-3. create concrete child issues for the major concern clusters
-4. if ecosystem-wide evidence is too thin, rescope the parent to the smaller proven domain (for example workspace-hub-only) and move broader claims into follow-up inventory issues
-5. only resume plan-review on the narrower parent/children after the split is reflected in the issue structure
-
-Heuristic:
-- if the latest review wave is still `MAJOR` after multiple rewrites and the blocker list keeps naming *scope, packaging, automation, or missing ecosystem evidence* rather than a few specific missing sections, the correct fix is almost always to split/rescope, not to keep editing the same plan.
-
 ## No silent downgrade rule
 
 If any reviewer returns MAJOR, do not silently downgrade that to MINOR without explicit written rationale tied to evidence.
@@ -816,13 +754,13 @@ Link or reference full review artifacts separately when needed.
 
 ## STEP 5 — Required Approval Boundary
 
-For substantial unapproved scope, stop affected implementation until the current reviewed plan has explicit approval. Consequential actions require matching explicit approval. Routine bounded work may continue under verified standing authorization; this route does not impose a fresh approval request on each action.
+For substantial authorized scope, implement after plan review without waiting for separate user plan approval. Consequential actions require matching explicit approval. Routine bounded work may continue under verified standing authorization; this route does not impose a fresh approval request on each action.
 
 Fresh MAJOR findings block affected work pending correction or applicability resolution. They do not themselves revoke approval, authorize label changes, or require repetition of unrelated completed work.
 
 ## Exact GitHub action order
 
-For a substantial plan awaiting approval, perform authorized publication steps before waiting. If publication is outside the current scope, retain the reviewable local plan and report that boundary; do not infer external-action authority from this checklist.
+For a substantial plan, perform authorized publication steps and continue implementation within task scope. If publication is outside the current scope, retain the reviewable local plan and report that boundary; do not infer external-action authority from this checklist.
 1. Save the plan file to `docs/plans/...`
 2. Update the planning index if the repo uses one
 3. Ensure any follow-up issues discovered during planning are either created or explicitly marked as candidates
@@ -890,7 +828,7 @@ If the user pauses or holds the plan:
 1. post a GitHub note that execution is not authorized yet
 2. preserve the current plan artifact
 3. report any stale label state and respect separate authority for remote mutations
-4. do not start execution until explicit approval arrives later
+4. when the user requests planning only, preserve that boundary; a task request including implementation needs no separate plan approval
 
 ## Batch-readiness rule
 
@@ -914,7 +852,7 @@ Operational rules:
 4. For capability/data/scheduler readiness issues, explicitly separate documentation/index reconciliation from runtime refresh execution. Do not authorize unbounded downloads, full refreshes, or long-running scheduler jobs unless the approved plan says so and prerequisite runtime readiness is proven.
 5. When one issue owns a shared surface that another issue touches only by reference, state that ownership boundary in both plans so overnight workers do not race on the same file or semantic decision.
 6. Use adversarial review to convert vague cleanup themes into frozen decisions, testable acceptance criteria, and bounded no-download smoke checks before moving issues to `status:plan-review`.
-7. A bare `status:plan-review` or `status:plan-approved` label is not overnight launch authority. Verify exact issue/scope authority: routine bounded work may use standing authorization; substantial plans and consequential actions require matching explicit approval.
+7. A bare `status:plan-review` or `status:plan-approved` label is not overnight launch authority. Verify exact issue/scope authority: routine bounded work may use standing authorization; substantial implementation follows task scope without separate plan approval; consequential actions require explicit authorization for the action and destination; implementation authority alone does not cover them. Reuse authorization already given.
 
 ## Approval-candidate audit rule
 
@@ -1030,7 +968,7 @@ Valid approval outcomes:
 
 ## Required gate
 
-Implementation requires independently established authority for the current risk/scope and resolution of blocking review findings. A label is neither required proof of routine standing authorization nor sufficient proof of substantial approval. Never manufacture a marker or self-apply `status:plan-approved` to satisfy a legacy consumer.
+Implementation requires independently established authority for the current risk/scope and resolution of blocking review findings. A label is neither required proof of routine standing authorization nor sufficient proof of task authority. Never manufacture a marker or self-apply `status:plan-approved` to satisfy a legacy consumer.
 
 ## Legacy Consumer Boundary
 
@@ -1045,7 +983,7 @@ When an apparently approved issue has no local plan artifact:
 1. Inspect remote/local plans, review evidence, current implementation and the actual approving event before recreating anything.
 2. Verify whether the current scope was already reviewed, authorized and implemented; do not repeat completed work.
 3. Record missing evidence locations and status conflicts. Neither a label nor an absent local file settles authority.
-4. If a substantial current plan or matching approval is genuinely missing, prepare/review the missing scope and seek only the required approval.
+4. If a substantial current plan is missing, prepare/review it and implement within task authority; ask only about genuinely missing scope or action authority.
 5. Update indexes or publish evidence only within the corresponding authorization; do not automatically mutate labels or markers.
 
 Approval-state drift checklist learned from live use:
