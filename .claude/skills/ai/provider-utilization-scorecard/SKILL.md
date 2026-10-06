@@ -9,6 +9,10 @@ triggers:
   - When reviewing whether quota/usage telemetry is sufficient for routing work
   - When maintaining provider utilization scorecards or quota refresh automation
 ---
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided. Preserve owner-controlled approval history without self-labeling.
+
 
 # Provider Utilization Scorecard
 
@@ -121,7 +125,7 @@ To keep feature/issue work continuously executable as long as AI credits remain,
    - target inventory: 10+ issues in or near plan-review
    - focus: feeding the approval pipeline before implementation capacity runs dry
 
-3. Plan-approved Codex implementation packages
+3. Reviewed, authorized Codex implementation packages
    - target inventory: 8-12 approved packages
    - focus: bounded implementation, tests, calculation modules, parametric outputs, CI/harness repair, static-site/GTM slices
    - if Codex utilization is low, this queue is usually the bottleneck, not Codex capacity
@@ -143,14 +147,14 @@ For the recurring ACE/workspace-hub pipeline, route work by value-chain stage:
 ## Package lifecycle gate
 
 Every provider package should follow:
-GitHub issue -> resource intelligence -> canonical plan -> adversarial plan review -> user approval -> status:plan-approved -> implementation -> adversarial implementation review -> closeout.
+GitHub issue -> resource intelligence -> canonical plan -> adversarial plan review -> task/standing authority -> implementation -> adversarial implementation review -> closeout.
 
-Never dispatch implementation from status:plan-review. A package is execution-ready only when it has a GitHub issue, canonical plan under docs/plans, plan review artifacts, explicit approval, status:plan-approved, an agent/provider label, and clear closeout criteria.
+A package is execution-ready when task/standing authority covers the scope, a GitHub issue and proportionate reviewed plan exist, required domain decisions and blocking findings are resolved, and agent/provider routing and closeout criteria are clear. status:plan-review is visibility, not a mandatory human wait; no approval label or marker is required.
 
 ## Dispatch rule
 
 Use this loop after refreshing the scorecard:
-- If Codex is below the burn line, dispatch the next status:plan-approved implementation/test/refactor package.
+- If Codex is below the burn line, dispatch the next reviewed implementation/test/refactor package within task authority.
 - If Gemini daily use is below target, dispatch the next 5-6 task recon/research batch.
 - If Claude has review backlog, dispatch plan or implementation review packages.
 - If no approved implementation work exists, pause coding and spend Claude/Gemini on refilling the plan-review and approval pipeline.
