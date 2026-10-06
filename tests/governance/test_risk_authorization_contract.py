@@ -64,7 +64,7 @@ def test_agent_entry_fits_cap_without_losing_control_references():
 def test_shared_mandatory_controls_remain_explicit():
     text = read(SHARED)
     for invariant in ["TDD mandatory", "Adversarial review at BOTH stages",
-                      "Never self-label", "scripts/legal/legal-sanity-scan.sh",
+                      "Never self-label", "docs/standards/FINAL_REPORT_VERIFICATION.md",
                       "Security baseline", "Pre-completion cleanup audit gate",
                       "vendor-licensed standards and codes are never committed"]:
         assert invariant in text

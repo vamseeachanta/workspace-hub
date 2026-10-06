@@ -126,7 +126,7 @@ Script: `scripts/cron/commit-learning-artifacts.sh`
 Steps:
 1. Snapshot agent memories from home dirs to `config/agents/*/`
 2. `git add` all state directories and snapshot directories
-3. Run `legal-sanity-scan.sh --diff-only` (MANDATORY — corrections and session data can contain client names)
+3. Keep independent secret checks; verify outgoing reports per `docs/standards/FINAL_REPORT_VERIFICATION.md`. Repository identifier gates are retired.
 4. Commit and push if changed
 
 Wire into: `comprehensive-learning-nightly.sh` as final step.

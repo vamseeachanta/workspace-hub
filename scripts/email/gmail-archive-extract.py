@@ -27,18 +27,6 @@ ROUTING_FILE = SCRIPTS_DIR / "email-routing.yaml"
 OAUTH_ENV = os.path.expanduser("~/.gmail-mcp/oauth-env.json")
 ACE_BASE = Path("/mnt/ace")
 
-# Legal deny list — check multiple locations
-DENY_PATH = None
-for p in [
-    Path("/mnt/ace/.ace-knowledge/.legal-deny-list.yaml"),
-    Path("/mnt/local-analysis/workspace-hub/.legal-deny-list.yaml"),
-]:
-    if p.exists():
-        DENY_PATH = p
-        break
-if DENY_PATH is None:
-    DENY_PATH = Path("/dev/null")
-
 # ============================================================
 # CONFIG
 # ============================================================
@@ -236,30 +224,6 @@ def parse_spreadsheet(xlsx_path, sheet_dir):
     return csv_paths
 
 # ============================================================
-# LEGAL SCAN
-# ============================================================
-def legal_scan(text, deny_path):
-    if not DENY_PATH.exists() or str(DENY_PATH) == "/dev/null":
-        return []
-    try:
-        import yaml
-        with open(DENY_PATH) as f:
-            deny = yaml.safe_load(f)
-    except:
-        return []
-    
-    matches = []
-    text_lower = text.lower()
-    for item in deny.get("client_references", []):
-        pattern = item["pattern"]
-        cs = item.get("case_sensitive", False)
-        search = text if cs else text_lower
-        search_pat = pattern if cs else pattern.lower()
-        if search_pat in search:
-            matches.append((pattern, item.get("description", "")))
-    return matches
-
-# ============================================================
 # REPO HELPERS
 # ============================================================
 def git_commit(repo_path, msg):
@@ -295,8 +259,6 @@ def overlay_gate(args):
 
 
 def main():
-    import yaml
-    
     parser = argparse.ArgumentParser(description="Extract Gmail messages to repos")
     parser.add_argument("--account", required=True, choices=list(ACCOUNTS.keys()))
     parser.add_argument("--query", default="in:inbox -in:trash", help="Gmail search query")
@@ -304,8 +266,10 @@ def main():
     parser.add_argument("--delete", action="store_true", help="Delete from Gmail after archive")
     parser.add_argument("--dry-run", action="store_true", help="Show plan without saving")
     parser.add_argument("--no-sheets", action="store_true", help="Skip spreadsheet parsing")
-    parser.add_argument("--force", action="store_true", help="Proceed through legal violations")
+    parser.add_argument("--force", action="store_true", help="Deprecated compatibility flag; ignored (identifier gate retired)")
     args = parser.parse_args()
+    if args.force:
+        print("--force is ignored; identifier gate retired; routing/access checks remain", file=sys.stderr)
     overlay_gate(args)
 
     # Load config
@@ -331,7 +295,6 @@ def main():
         "spreadsheets": 0,
         "csv_files": 0,
         "deleted": 0,
-        "legal_blocked": 0,
         "review_flagged": 0,
         "errors": 0,
         "repo_commits": Counter(),  # repo -> commits
@@ -417,14 +380,6 @@ def main():
                                 stats["csv_files"] += len(parsed)
                     except Exception as e:
                         print(f"    ⚠️ attachment error: {att['filename'][:40]}")
-            
-            # Legal scan
-            full_text = subject + " " + body
-            violations = legal_scan(full_text, DENY_PATH)
-            if violations and not args.force:
-                print(f"  [{i+1}] BLOCKED: {subject[:60]} — {[v[0] for v in violations[:3]]}")
-                stats["legal_blocked"] += 1
-                continue
             
             # Build markdown
             lines = [f"# {subject}", ""]
@@ -515,8 +470,6 @@ def main():
         print(f"  → {repo:30s} {count}")
     if stats["review_flagged"]:
         print(f"  → {'REVIEW flagged':30s} {stats['review_flagged']}")
-    if stats["legal_blocked"]:
-        print(f"  → {'BLOCKED (legal)':30s} {stats['legal_blocked']}")
     print(f"  Attachments:       {stats['attachments']}")
     print(f"  CSV sheets parsed: {stats['csv_files']}")
     print(f"  Deleted:           {stats['deleted']}")

@@ -451,21 +451,13 @@ class TestWiring:
         for h in rules["hashed_names"]:
             assert re.fullmatch(r"[0-9a-f]{64}", str(h)), h
 
-    def test_ci_scans_the_whole_tree_on_push_and_pull_request(self):
-        wf = yaml.safe_load(WORKFLOW.read_text(encoding="utf-8"))
-        on = wf.get("on", wf.get(True))
-        assert "push" in on and "pull_request" in on
-        text = WORKFLOW.read_text(encoding="utf-8")
-        assert "scripts/legal/check_identifiers.py --all" in text
-        assert "--baseline .legal-uninspectable-baseline.txt" in text
-        steps = "\n".join(ln for ln in text.splitlines() if not ln.lstrip().startswith("#"))
-        assert "--update-baseline" not in steps
+    def test_identifier_ci_gate_is_retired(self):
+        assert not WORKFLOW.exists()
 
-    def test_the_pre_commit_hook_runs_in_staged_mode(self):
+    def test_identifier_precommit_gate_is_retired(self):
         cfg = yaml.safe_load((REPO / ".pre-commit-config.yaml").read_text(encoding="utf-8"))
-        hooks = [h for r in cfg["repos"] for h in r.get("hooks", []) if h.get("id") == "client-identifier-gate"]
-        assert len(hooks) == 1
-        assert hooks[0].get("pass_filenames") is False
+        hooks = [h for r in cfg["repos"] for h in r.get("hooks", [])]
+        assert not any(h.get("id") == "client-identifier-gate" for h in hooks)
 
     def test_the_committed_baseline_has_digests_for_every_entry(self):
         assert BASELINE.exists()

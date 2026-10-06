@@ -134,7 +134,7 @@ This pattern:
 
 ### Step 5 — Legal Scan + Commit
 
-1. `bash scripts/legal/legal-sanity-scan.sh --diff-only` → must PASS
+1. Review the final outgoing artifact per `docs/standards/FINAL_REPORT_VERIFICATION.md`; keep independent secret checks.
 2. Double-check: `grep -inE 'PATTERN1|PATTERN2' new_files` → must be empty
 3. Commit tests in workspace-hub, implementation in digitalmodel (nested repo).
 
@@ -245,7 +245,7 @@ When computing wave-induced velocity from sea-state (Hs, Tp, depth):
 uv run python -m pytest tests/subsea/pipeline/test_*.py -v
 
 # Legal scan clean
-bash scripts/legal/legal-sanity-scan.sh --diff-only
+# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
 
 # No deny-list patterns in new files
 grep -inE '2H.?Offshore|2HSPANVIV|TwoH|AUTHOR_NAME' new_files

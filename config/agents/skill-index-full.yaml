@@ -812,11 +812,11 @@ skills:
   name: knowledge-source-recon
   when_to_use: '- Preparing raw source inventories for LLM Wiki implementation - Planning knowledge base consolidation across workspace-hub - Auditing what knowledge exists before building new pipelines - Creating GitHub issues for knowledge infrastructure work - Any task requiring a "what do we know and where is it" answer'
   when_to_use_source: section
-- description: Mandatory legal compliance gate for document intelligence, data catalogs, and code porting — scans for client names, proprietary references, and sensitive paths
+- description: Retired scanner compatibility notice; route legacy requests to manual final-report verification. Do not run or reinstall identifier gates.
   family: coordination
   id: coordination/legal-sanity-scan
   name: legal-sanity-scan
-  when_to_use: legal-sanity-scan Mandatory legal compliance gate for document intelligence, data catalogs, and code porting — scans for client names, proprietary references, and sensitive paths coordination
+  when_to_use: legal-sanity-scan Retired scanner compatibility notice; route legacy requests to manual final-report verification. Do not run or reinstall identifier gates. coordination
   when_to_use_source: backfill
 - description: Design self-contained prompts for licensed machines (Windows, no Hermes) that Claude Code / Codex / Gemini CLIs can execute autonomously. Covers fixture generation, solver validation, and cross-machine data bridging.
   family: coordination
