@@ -4,6 +4,10 @@
 Correctness path: fetch each active manifest repo once, then make the board
 YAMLs match GitHub's issue set. Dry-run mode prints the exact diff and does not
 write board files.
+
+The boards are local files (owner decision S01): they are git-ignored, a board
+missing on this machine is created from its manifest entry, and nothing
+publishes them. Run it locally: ``uv run python scripts/kanban/reconcile.py``.
 """
 from __future__ import annotations
 
@@ -60,6 +64,9 @@ class BoardEntry:
     domain: str | None
     file: Path
     card_count: int = 0
+    parent_slug: str | None = None
+    workspace_path: str | None = None
+    display_name: str | None = None
 
 
 def repo_root() -> Path:
@@ -223,6 +230,9 @@ def load_manifest_entries(kanban_root: Path) -> list[BoardEntry]:
                 domain=raw.get("domain"),
                 file=kanban_root / file_name,
                 card_count=_coerce_int(raw.get("card_count")),
+                parent_slug=raw.get("parent_slug"),
+                workspace_path=raw.get("workspace_path"),
+                display_name=raw.get("display_name"),
             )
         )
     return entries
@@ -231,6 +241,27 @@ def load_manifest_entries(kanban_root: Path) -> list[BoardEntry]:
 def active_repos(entries: list[BoardEntry]) -> list[str]:
     repos = {entry.repo for entry in entries if entry.tier == "repo" and entry.repo}
     return sorted(repos)
+
+
+def new_board(entry: BoardEntry) -> dict:
+    """An empty board for a manifest entry whose file does not exist yet. It keeps
+    the manifest metadata the loader uses: workspace_path sets the Hermes board
+    workdir and each card's --workspace; parent_slug links a domain board up."""
+    display_name = entry.display_name
+    if not display_name and entry.repo:
+        display_name = entry.repo.split("/")[-1]
+        if entry.tier == "domain" and entry.domain:
+            display_name = f"{display_name} · {entry.domain}"
+    board = {
+        "slug": entry.slug,
+        "display_name": display_name,
+        "tier": entry.tier,
+        "repo": entry.repo,
+        "domain": entry.domain,
+        "parent_slug": entry.parent_slug,
+        "workspace_path": entry.workspace_path,
+    }
+    return {"board": {k: v for k, v in board.items() if v}, "cards": []}
 
 
 def board_files(kanban_root: Path, entries: list[BoardEntry]) -> list[Path]:
@@ -550,8 +581,11 @@ def reconcile_kanban(
     repo_boards = repo_board_map(entries)
     domain_boards = domain_board_map(entries)
     files = board_files(kanban_root, entries)
-    board_data = {path: load_yaml(path) for path in files}
-    before = {path: path.read_text(encoding="utf-8") for path in files}
+    # Boards are local files, not tracked (owner decision S01): a missing board
+    # starts from its manifest entry.
+    headers = {entry.file: new_board(entry) for entry in entries}
+    board_data = {path: load_yaml(path) if path.exists() else headers[path] for path in files}
+    before = {path: path.read_text(encoding="utf-8") if path.exists() else "" for path in files}
     existing = existing_cards(board_data, files)
     live, skipped = build_live_cards(
         repos,
@@ -571,11 +605,15 @@ def reconcile_kanban(
     rebuilt = rebuild_boards(board_data, files, active_for_rebuild, live)
     after = {}
     for path in files:
-        after[path] = before[path] if rebuilt[path] == board_data[path] else dump_yaml(rebuilt[path])
+        # A board missing on this machine is always written, even with no cards,
+        # so the loader (which reads boards/*.yaml) sees it.
+        unchanged = path.exists() and rebuilt[path] == board_data[path]
+        after[path] = before[path] if unchanged else dump_yaml(rebuilt[path])
     changed_files = [path for path in files if before[path] != after[path]]
     write = write_files and not dry_run
     if write:
         for path in changed_files:
+            path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(after[path], encoding="utf-8")
     return ReconcileResult(
         changed=bool(changed_files),

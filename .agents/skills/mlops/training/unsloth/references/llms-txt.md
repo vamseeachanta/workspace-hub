@@ -3591,7 +3591,7 @@ bash
    uv pip install -U transformers
    bash
    # Create or edit .wslconfig in your Windows user directory
-   # (typically C:\Users\YourUsername\.wslconfig)
+   # (typically C:\Users\<user>\.wslconfig)
 
 # Add these lines to the file
    [wsl2]

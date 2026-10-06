@@ -194,7 +194,7 @@ resources:
       US BSEE offshore production, well, platform, and pipeline data. Production
       data updated 2025-11-15; OCS multiregional data 2025-09-29. Well API query
       at data.bsee.gov/Well/API/Default.aspx. Bulk CSV/Excel download; contact
-      TDM@bsee.gov for custom requests. No formal REST API but structured
+      [email removed] for custom requests. No formal REST API but structured
       URL-addressable endpoints. Essential for worldenergydata/bsee module.
     discovery_status: known
 

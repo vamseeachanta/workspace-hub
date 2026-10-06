@@ -12,6 +12,15 @@ sys.path.insert(0, str(ROOT))
 from scripts.knowledge import run_batch_pack_2 as bp2
 
 
+def _phase_a_results() -> Path:
+    """The Phase-A results carry client names and archive paths; they are a local,
+    git-ignored working file (C20, S01). Skip where this host has not built it."""
+    path = ROOT / "data/document-index/conference-phase-a-results.jsonl"
+    if not path.is_file():
+        pytest.skip("local Phase-A results not built on this host")
+    return path
+
+
 def test_catalog_phase_a_complete_set_is_dot_omae_otc():
     catalog = yaml.safe_load((ROOT / "data/document-index/conference-paper-catalog.yaml").read_text())
 
@@ -103,7 +112,7 @@ def test_runner_dot_subslice_outputs_report_and_jsonl(tmp_path):
 
     result = bp2.run_batch_pack_2(
         ROOT / "data/document-index/conference-paper-catalog.yaml",
-        ROOT / "data/document-index/conference-phase-a-results.jsonl",
+        _phase_a_results(),
         report,
         cross_link_path=links,
         skipped_path=skipped,
@@ -135,7 +144,7 @@ def test_runner_dot_subslice_is_idempotent_with_fixed_now(tmp_path):
         skipped = tmp_path / f"skipped-{idx}.jsonl"
         bp2.run_batch_pack_2(
             ROOT / "data/document-index/conference-paper-catalog.yaml",
-            ROOT / "data/document-index/conference-phase-a-results.jsonl",
+            _phase_a_results(),
             report,
             cross_link_path=links,
             skipped_path=skipped,

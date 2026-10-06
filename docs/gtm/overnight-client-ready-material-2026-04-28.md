@@ -295,7 +295,7 @@ line below. Failures are *blockers* — bounce back to the lane.
    data, the canonical-vessel disclaimer block must be visible (the
    report template already does this).
 3. **No project-confidential data.** No mention of client-named mkt-a
-   projects (Woodfibre, SESA, etc.). The Elements-wave outputs are
+   projects (LNG terminal A, SESA, etc.). The Elements-wave outputs are
    `metadata-only` and gated by mkt-a / project-owner clearance — see
    `docs/plans/overnight-prompts/2026-04-28-elements-wave/results/`.
 4. **Evidence boundary line present.** Every email ends with a one-line

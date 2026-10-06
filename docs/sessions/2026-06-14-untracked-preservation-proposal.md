@@ -32,7 +32,7 @@ proposal, the manifest itself, and the Tier 0 cleanup artifacts.
 
 Main material entries:
 
-- `workspace-hub/knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/tests/` — 166M, 2 files.
+- `workspace-hub/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-c/tests/` — 166M, 2 files.
 - `worldenergydata/data/modules/marine_safety/database/` — 60M, 1 file.
 - `workspace-hub/data/standards/` — 28M, 10,681 files.
 - `worldenergydata/tests/unit/bsee/analysis/comprehensive-report-system/` — 18M, 13 files.

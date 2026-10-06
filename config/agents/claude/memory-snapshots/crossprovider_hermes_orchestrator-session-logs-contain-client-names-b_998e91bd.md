@@ -8,6 +8,6 @@ metadata:
   tags: [legal-compliance, session-logs, exclusion-policy]
 ---
 
-Session JSONL files log tool calls mentioning client work (e.g., filenames like 'Lakach BoD DRAFT'); these are raw operational logs (like `.claude/state/`), not exported artifacts. Exclude `logs/orchestrator/` from legal scans using directory-prefix patterns.
+Session JSONL files log tool calls mentioning client work (e.g., filenames like 'Mexico gas field A BoD DRAFT'); these are raw operational logs (like `.claude/state/`), not exported artifacts. Exclude `logs/orchestrator/` from legal scans using directory-prefix patterns.
 
 *(Distilled from hermes sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

@@ -22,7 +22,7 @@ scripts_exempt: true
 
 ## Overview
 
-This skill covers the assessment of aging offshore assets, focusing on structural integrity, corrosion management, and life extension. It synthesizes knowledge from legacy projects like "Horn Mountain TTR VIV Analysis" and "Marlin TTR Life Extension".
+This skill covers the assessment of aging offshore assets, focusing on structural integrity, corrosion management, and life extension. It synthesizes knowledge from legacy projects like "GoM field H TTR VIV Analysis" and "Marlin TTR Life Extension".
 
 ## Core Capabilities
 

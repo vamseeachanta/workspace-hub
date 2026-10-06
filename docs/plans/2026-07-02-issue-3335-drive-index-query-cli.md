@@ -98,7 +98,7 @@ $ head -2 data/document-index/index.jsonl   (truncated)
 {"path": "/mnt/ace/O&G-Standards/Unknown/Codes_&_Standards_Database.xls", "host": "ace-linux-1",
  "source": "og_standards", "ext": "xls", "size_mb": 0.792, "mtime": "2013-12-05T14:39:20", ...}
 $ grep -m1 'remote/ace-linux-2/dde' data/document-index/index.jsonl   (truncated)
-{"path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/..."
+{"path": "/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 the pipelay client S Lay Installation/..."
 $ grep -n "dev-secondary\|/mnt/" scripts/data/document-index/config.yaml | head
 35:      - /mnt/remote/dev-secondary/dde/documents
 36:      - /mnt/remote/dev-secondary/dde/0000 O&G
@@ -129,7 +129,7 @@ scan, NOT the Python adapter. A live re-measure of the adapter loop (Python line
 ```
 $ python3 (stdlib sqlite3, mode=ro)  2026-07-02T09:32:17Z
 'mooring'             0.223s  3 rows  top: ('/mnt/ace/docs/disciplines/drilling/projects/3824_bp_
-                                       macondo_.../Mooring Line.SLDPRT', bm25=-12.72)
+                                       gom_well_a_.../Mooring Line.SLDPRT', bm25=-12.72)
 'mooring OR fatigue'  0.055s  3 rows
 _inventory.db 'mooring' MATCH: 0.041s  [(151, -7.62), (26581, -8.66), (26582, -8.66)]
 NOTE: MATCH 'mooring fatigue' (implicit AND) returned [] on assets_fts — title/description are

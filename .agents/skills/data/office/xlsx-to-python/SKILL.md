@@ -76,7 +76,7 @@ The `client-c` repo is the transfer vehicle to Windows. Workbooks are scattered 
 ```bash
 # Use rsync -- preserve directory tree, copy ONLY xlsx/xls/xlsm
 rsync -av --include='*/' --include='*.xlsx' --include='*.xls' --include='*.xlsm' --exclude='*' \
-  /mnt/ace/client-b/s7/ballymore/ client-c/engineering_workbooks/ballymore/
+  /mnt/ace/client-b/s7/gom-tieback-a/ client-c/engineering_workbooks/gom-tieback-a/
 ```
 
 Key findings:
@@ -147,7 +147,7 @@ Once workbooks are converted to Python:
 
 ## Conversion Quality Requirements
 
-Established quality bar from first conversion (Ballymore Jumper, 7 sheets, 2.3MB):
+Established quality bar from first conversion (GoM tieback A Jumper, 7 sheets, 2.3MB):
 
 ### Minimum Bar (must achieve per workbook)
 
@@ -165,8 +165,8 @@ Established quality bar from first conversion (Ballymore Jumper, 7 sheets, 2.3MB
 
 | Aspect | Windows Claude Code | Linux openpyxl |
 |--------|-------------------|----------------|
-| Completeness | Typically more thorough (24 functions vs 7 for Ballymore) | Adequate but may miss edge cases |
-| Test coverage | Higher test count (81 vs 53 for Ballymore) | Solid but less comprehensive |
+| Completeness | Typically more thorough (24 functions vs 7 for GoM tieback A) | Adequate but may miss edge cases |
+| Test coverage | Higher test count (81 vs 53 for GoM tieback A) | Solid but less comprehensive |
 | Documentation | Includes architecture diagrams, data flow graphs | Basic README |
 | OrcaFlex output | Produces full line-type section breakdown | May skip |
 | COG calculations | Both insulated + uninsulated variants | Often skipped |
@@ -180,7 +180,7 @@ Linux gives clean but less complete code.
 
 ### Known Bugs in Windows Cowork Output (fix before accepting)
 
-Buggy pattern #1 — most common (16/81 failures in Ballymore):
+Buggy pattern #1 — most common (16/81 failures in GoM tieback A):
 ```python
 def compute_buoyancy(props=None):
     if props is None:
@@ -279,8 +279,8 @@ For multi-workbook conversion campaigns, create a parent feature issue + child i
 gh issue create --title "FEATURE: Excel-to-Code Conversion Pipeline — N workbooks via ace-win-2" \
   --label "cat:engineering" --label "cat:data-pipeline"
 
-# Child issues: one per domain (e.g. Ballymore, FDAS, Talos Venice)
-gh issue create --title "Batch 1: Ballymore Jumper — 10 workbooks" \
+# Child issues: one per domain (e.g. GoM tieback A, FDAS, umbilical project A)
+gh issue create --title "Batch 1: GoM tieback A Jumper — 10 workbooks" \
   --add-label "cat:engineering,cat:data-pipeline,domain:document-intelligence"
 ```
 

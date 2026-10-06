@@ -291,7 +291,7 @@ grep SENDGRID .env.local
 # Test email sending (replace with your test email)
 curl -X POST http://localhost:3000/api/test-email \
   -H "Content-Type: application/json" \
-  -d '{"to": "your@email.com"}'
+  -d '{"to": "you@example.com"}'
 ```
 
 ---

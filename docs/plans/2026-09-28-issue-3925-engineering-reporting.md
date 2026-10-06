@@ -86,3 +86,9 @@ The existing review draft, prompt, validation record, source-precedence evidence
 For this delivery, the P2 section will supersede the earlier implementation/adoption acceptance criteria: acceptance will require the revised draft and prompt, source checks, reviewed dispositions, published revision and verified draft distribution. Shared-pointer edits, runtime generation/installation and other report changes will remain outside this transaction.
 
 The distribution set will be ace-win-1, ace-win-2, ace-linux-1, ace-linux-2 and macos, using the reachable repository roots rechecked during the 28 September follow-up. The receipt will supply exact observation times and Git blob identities; these are storage checks, not installed-policy coverage. The selected HTML digest and direct-comment timestamps will be bound in the private source-evidence-p2.json record and summarized without private locators in the public P2 verification record.
+
+## P3 bounded publication update
+
+Under the 30 September originating-session request, the update will incorporate generic lessons from the diffraction comment rounds and direct session decisions, enhance the reusable prompt, and commit and publish the reporting documents to main. It will preserve the earlier boundary against runtime installation and automatic report regeneration. The complementary communication-standard PR will remain separate.
+
+The update will distinguish proposed domain thresholds from approved criteria; retain genuine zero evidence while defining any relative-error exclusions; use internal citation anchors without exposing private source paths; and replace both earlier inline-bold mandates. Focused source, privacy, HTML/link and register checks plus adversarial artifact review will precede publication. The actual main tree will be checked after publication. Private source evidence will remain outside the public repository.

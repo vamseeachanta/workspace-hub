@@ -1,6 +1,6 @@
 ---
 name: agent-cli-delegation-operations
-version: 1.0.0
+version: 1.1.0
 category: autonomous-ai-agents
 description: "Class-level Claude/Codex/delegate_task agent operations: background execution, stdin/print stalls, plugin IDs, worker patch loops, and fallback routing."
 tags: [claude, codex, agents, delegation]
@@ -11,8 +11,12 @@ tags: [claude, codex, agents, delegation]
 ## When to Use
 Use when launching or supervising autonomous CLI agents, recovering stalled Claude/Codex runs, handling delegate_task limitations, routing failed Claude lanes to Codex, or maintaining plugin identity scope.
 
+## Task ownership and recovery context
+
+Before launch/resume, use [orchestrator routing](../../workspace-hub/agent-teams/orchestrator-routing/SKILL.md) for the existing task, accountable owner, source packet, machine/model readiness and acceptance. Do not rediscover a project workflow by asking the user for routine paths before following its catalog, accepted artifacts and latest handoff. Apply `docs/architecture/agent-data-handling-contract.md` to checkpoint audience/access. Retain exact absolute logs, output paths and restricted session/job locators in an authorized private checkpoint; public issues/common tracked artifacts use sanitized repo-relative or opaque references with a permitted retrieval route. Verify sanitization before publication and preserve the exact private resume context; never include secrets or authentication material. Record the last verified phase in that existing checkpoint. Inspect the prior attempt before relaunching; a live wrapper, queued job or prepared artifact is not completion. Return acceptance evidence and precise execution/integration state to the owner for verified closure.
+
 ## Class-Level Workflow
-1. Prefer explicit background process tracking and absolute logs over shell-disowned runs.
+1. Prefer explicit background process tracking and private absolute logs over shell-disowned runs.
 2. Close stdin for Codex modes that wait for EOF; salvage Claude print stalls by checking process state and logs.
    - If a Codex background log contains only `Reading additional input from stdin...`, treat it as likely waiting for EOF or prompt delivery rather than useful progress. Re-check current `codex exec --help`, relaunch with a known-good stdin-close/input pattern, and verify output artifacts advance.
 3. Poll by captured session IDs after launch; generic process lists can be empty even while known background sessions are still running. Treat `process list` as advisory, not authoritative, when session IDs are available.

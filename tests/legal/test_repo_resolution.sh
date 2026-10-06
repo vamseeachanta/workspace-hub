@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # Resolution-contract tests for scripts/legal/legal-sanity-scan.sh
-# (llm-wiki-acma#299 — sibling/env/walk-up repo resolution; --all refuses
+# (llm-wiki-mkt-a#299 — sibling/env/walk-up repo resolution; --all refuses
 # empty enumeration).
 #
 # Builds a temp sandbox with fake WORKSPACE_ROOT + nested/sibling layouts and

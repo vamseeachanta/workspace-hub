@@ -89,7 +89,7 @@ Coverage matrix vs. canonical riser-engineering curriculum (API RP 17B + DNV-OS-
 | Steel catenary riser (SCR) global design — touchdown, departure angle, soil trench | partial — VIV-only on `viv-riser-fatigue.md` | **NEW** `concepts/steel-catenary-riser-design.md` |
 | Top-tensioned riser (TTR) — tensioner, stress joint, taper joint, keel joint, stroke envelope | gap | **NEW** `concepts/top-tensioned-riser-design.md` |
 | Flexible riser — bonded vs unbonded, layer architecture, annulus integrity, bend stiffener, end-fitting | gap | **NEW** `concepts/flexible-riser-design.md` |
-| Hybrid riser tower / single-line offset riser (SLOR) / bundled tower | gap (raw `/mnt/ace/2H/2100 BLK31 SLOR Design`) | **NEW** `concepts/hybrid-riser-tower.md` |
+| Hybrid riser tower / single-line offset riser (SLOR) / bundled tower | gap (raw `/mnt/ace/2H/2100 West Africa block A SLOR Design`) | **NEW** `concepts/hybrid-riser-tower.md` |
 | Drilling riser system — slip joint, telescopic joint, LMRP/BOP, air-gap, weak-point disconnect, recoil | gap (`drilling_riser/operability.py` exists) | **NEW** `concepts/drilling-riser-system.md` |
 | Riser global-analysis load-case taxonomy — extreme/strength, fatigue (wave + VIV + slugging + 1st/2nd-order), accidental, installation | gap | **NEW** `concepts/riser-global-analysis-load-cases.md` |
 | Riser-soil interaction — touchdown trench, riser soil stiffness models, P-y-equivalent vertical | gap | **NEW** `concepts/riser-soil-interaction.md` |
@@ -110,7 +110,7 @@ Coverage matrix vs. canonical riser-engineering curriculum (API RP 17B + DNV-OS-
 2. `concepts/steel-catenary-riser-design.md` — SCR boundary against `viv-riser-fatigue.md`.
 3. `concepts/top-tensioned-riser-design.md` — TTR; cross-links to `digitalmodel/drilling_riser/` for shared tensioner physics.
 4. `concepts/flexible-riser-design.md` — unbonded-flexible scope per API RP 17B/17J + ISO 13628-2.
-5. `concepts/hybrid-riser-tower.md` — SLOR / hybrid tower; cross-link to `2H/2100 BLK31 SLOR Design`.
+5. `concepts/hybrid-riser-tower.md` — SLOR / hybrid tower; cross-link to `2H/2100 West Africa block A SLOR Design`.
 6. `concepts/drilling-riser-system.md` — drilling-riser operability + recoil; cross-link to `digitalmodel/drilling_riser/operability.py` + `damping.py`.
 7. `concepts/riser-global-analysis-load-cases.md` — load-case taxonomy crosscutting all riser types.
 8. `concepts/riser-soil-interaction.md` — soil-riser stiffness models for touchdown trench (cross-link to `viv-riser-fatigue.md` TDP discussion + `pile-capacity-alpha-method.md` for soil-shear correlation framing).
@@ -290,7 +290,7 @@ function append_log(log_path):
 | Create | `knowledge/wikis/engineering/wiki/concepts/steel-catenary-riser-design.md` | SCR global design: departure angle envelope, touchdown point migration, soil-trench effect, hang-off interface; **scoped to design-state, not VIV (boundary against viv-riser-fatigue.md)** |
 | Create | `knowledge/wikis/engineering/wiki/concepts/top-tensioned-riser-design.md` | TTR global design: tensioner stroke, taper/stress/keel joint, top-tension envelope, single vs dual casing |
 | Create | `knowledge/wikis/engineering/wiki/concepts/flexible-riser-design.md` | Unbonded-flexible architecture: layer functions (carcass, pressure-armour, tensile-armours, polymer sheaths), end-fittings, bend-stiffener, ancillaries, annulus integrity, mid-water arch; references API RP 17B/17J + ISO 13628-2 |
-| Create | `knowledge/wikis/engineering/wiki/concepts/hybrid-riser-tower.md` | Hybrid riser tower / SLOR / bundled tower: rigid-vertical-+-flexible-jumper architecture, tower foundation, top-tension provision, bundle thermal management; references 2H BLK31 SLOR corpus |
+| Create | `knowledge/wikis/engineering/wiki/concepts/hybrid-riser-tower.md` | Hybrid riser tower / SLOR / bundled tower: rigid-vertical-+-flexible-jumper architecture, tower foundation, top-tension provision, bundle thermal management; references 2H West Africa block A SLOR corpus |
 | Create | `knowledge/wikis/engineering/wiki/concepts/drilling-riser-system.md` | Drilling-riser system: slip/telescopic joint, LMRP/BOP, air-gap, weak-point disconnect, recoil; references API RP 16Q + digitalmodel `drilling_riser/operability.py`, `damping.py` |
 | Create | `knowledge/wikis/engineering/wiki/concepts/riser-global-analysis-load-cases.md` | Load-case taxonomy: extreme/strength (ULS), accidental (ALS), fatigue (FLS — wave + VIV + slugging + 1st/2nd-order), serviceability (SLS), installation; references DNV-OS-F201 + API RP 2RD |
 | Create | `knowledge/wikis/engineering/wiki/concepts/riser-soil-interaction.md` | Touchdown trench, soil stiffness models (linear, non-linear, Aubeny-Biscontin), trench-formation timescale, P-y-equivalent vertical for SCR; cross-links to viv-riser-fatigue.md TDP and pile-capacity-alpha-method.md soil framing |

@@ -114,7 +114,7 @@ This addendum is authoritative over earlier pseudocode if there is any conflict.
 ---
 
 ## Issue #2544
-Path: `docs/plans/2026-04-28-issue-2544-elements-woodfibre-scout-plan.md`
+Path: `docs/plans/2026-04-28-issue-2544-elements-lng-terminal-a-scout-plan.md`
 
 ### Addendum under re-review
 ```markdown
@@ -127,7 +127,7 @@ This addendum is authoritative over earlier pseudocode if there is any conflict.
 - No document abstract extraction, technical summary extraction, direct quote extraction, table extraction, or figure extraction may occur under #2544 until a separate extraction plan is written after clearance.
 
 ### Clearance authority and row-level schema
-- `docs/governance/woodfibre-extraction-clearance-2026.md` remains a hard prerequisite for any post-scout extraction.
+- `docs/governance/lng-terminal-a-extraction-clearance-2026.md` remains a hard prerequisite for any post-scout extraction.
 - Accepted approvers must be explicitly named by role: mkt-a project owner, client-authorized reviewer, or legal/IP delegate. A generic "project lead" is insufficient.
 - Row-level clearance must record: source path, document identifier, approver, approval date, allowed extraction level (`metadata-only`, `curated-fields`, `short-quote-approved`, `abstract-approved`), prohibited content, and expiration/review condition.
 

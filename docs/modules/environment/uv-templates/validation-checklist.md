@@ -354,7 +354,7 @@ Check CI logs for UV-specific errors
 ## 📞 Support and Resources
 
 ### Internal Support
-- 📧 Email: python-modernization@company.com
+- 📧 Email: python-modernization@example.com
 - 💬 Slack: #uv-migration
 - 🎫 Tickets: JIRA UV-Migration project
 

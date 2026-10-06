@@ -262,7 +262,7 @@ These are defects the plan author has already considered and addressed inline so
 - Per-publisher implementation details — deferred to subissue plans (one plan per subissue, gated by `status:plan-approved` independently).
 - Non-marine publishers — those have their own domain epics (civil-structural [llm-wiki #104], drilling-engineering [#107], etc., per [workspace-hub#2774](https://github.com/vamseeachanta/workspace-hub/issues/2774) subissue tree).
 - Raw vendor PDF redistribution — PDFs ALWAYS stay at `/mnt/ace/mkt-a-codes/<publisher>/`.
-- Client-project content — handled separately under client-engagement issues (B1528, proj-a, mkt-a).
+- Client-project content — handled separately under client-engagement issues (proj-a, proj-a, mkt-a).
 - Frontmatter migration of pre-privacy-flip existing wiki pages — out of scope; tracked separately if surfaced during this epic.
 - The single US Navy MSC PDF at `/mnt/ace/mkt-a-codes/MSC/` — folder is mislabeled; routes to maritime-regulatory ([llm-wiki #105](https://github.com/vamseeachanta/llm-wiki/issues/105)) or out-of-scope entirely.
 - Supplemental sourcing of missing MARPOL Annexes from non-`/mnt/ace/` sources — flagged as a gap, not closed in this epic.

@@ -57,7 +57,7 @@ The prior exact-duplicate cleanup already symlinked all significant PDF duplicat
 
 | Attribute | digitalmodel | O&G-Standards |
 |---|---|---|
-| Path | `docs/domain/subsea-risers/riser-eng-job/2100-blk31-slor-design/Drawings/303 URA/SW3D/FLEXABLE SUPPORT FOAM/ARCHIVE - CLOSE ALL BEFORE ACCESSING!!!/NEW PROTOTYPE PARTS/BRIANS TEMPRY FOLDER DELETE/` | `raw/0000 Codes & Standards/AWS/AWS D1.1/` |
+| Path | `docs/domain/subsea-risers/riser-eng-job/2100-wa-block-a-slor-design/Drawings/303 URA/SW3D/FLEXABLE SUPPORT FOAM/ARCHIVE - CLOSE ALL BEFORE ACCESSING!!!/NEW PROTOTYPE PARTS/BRIANS TEMPRY FOLDER DELETE/` | `raw/0000 Codes & Standards/AWS/AWS D1.1/` |
 | Size | 76.1 MB | 72.9 MB |
 | Pages | 529 | 529 |
 | Created | Jun 27 2007 | Jun 27 2007 |

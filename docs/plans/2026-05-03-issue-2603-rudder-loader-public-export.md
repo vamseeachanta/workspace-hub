@@ -107,7 +107,7 @@ No test changes (the test is already in place and failing — that's the whole p
 
 ### Implementation diff (precise)
 
-Insert this import block alphabetically ordered against existing blocks. Anchor: after line 50 (`)` closing the `b1528_proj-a_time_trace` block), before line 51 (`from digitalmodel.naval_architecture.yaw_moment import (`).
+Insert this import block alphabetically ordered against existing blocks. Anchor: after line 50 (`)` closing the `proj-a_time_trace` block), before line 51 (`from digitalmodel.naval_architecture.yaw_moment import (`).
 
 Per r1 P3-1: writer export removed from this plan (strict YAGNI — only test-required names). File `write_rudder_stock_torque_results` parity as a separate follow-up if external consumers need it.
 
@@ -120,7 +120,7 @@ from digitalmodel.naval_architecture.rudder_stock_torque import (
 
 Add two names to `__all__` using **anchor-based positioning** (existing list uses ASCII sort: PascalCase before lowercase):
 - `"load_packaged_rudder_stock_torque_yaml"` — insert immediately after `"load_packaged_typical_ship_yaml"` and before `"load_yaw_moment_input"`
-- `"run_rudder_stock_torque_sweep"` — insert immediately after `"run_b1528_time_trace_report"` and before `"run_yaw_moment_sweep"`
+- `"run_rudder_stock_torque_sweep"` — insert immediately after `"run_proj_a_time_trace_report"` and before `"run_yaw_moment_sweep"`
 
 ---
 

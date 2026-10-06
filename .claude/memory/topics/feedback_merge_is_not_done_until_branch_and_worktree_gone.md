@@ -28,7 +28,7 @@ The cost is not disk. A stale branch is **indistinguishable from an in-flight on
 7. Do not delete a branch that is the base of an open stacked PR — it auto-closes the child. See [[feedback_delete_branch_closes_stacked_child_pr]], [[feedback_squash_merge_breaks_stacked_prs]].
 8. **A branch with no upstream AND `rev-list --count origin/main..<branch>` > 0 exists only on this disk.** Never delete it — `git push -u origin <branch>` to rescue it, then it becomes an ordinary merge decision. The 2026-07-30 fleet sweep found 25 such branches across 8 repos (worst: digitalmodel `chore/1565-external-work-root-step4-tdd`, 40 commits; worldenergydata `backup/stale-main-pre-reorg-20260626`, 206).
 9. **`[gone]` is only meaningful in a full-refspec clone.** In a single-branch clone (`fetch =
-   +refs/heads/main:refs/remotes/origin/main` — gpu-claw's `assetutilities`, `llm-wiki-acma`,
+   +refs/heads/main:refs/remotes/origin/main` — gpu-claw's `assetutilities`, `llm-wiki-mkt-a`,
    `raw-to-knowledge-playbook`) a deleted upstream can never appear as `[gone]`, because non-main
    upstreams were never fetched. It fails toward danger: the branch reads as local-only, which
    triggers a needless rescue push. Check `git config --get-all remote.origin.fetch` first, and in

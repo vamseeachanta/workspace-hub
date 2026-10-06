@@ -96,7 +96,7 @@ Mac siblings: all clean.
 ### Preserved deliberately
 
 - `~/preserved-reconcile-20260729/` on ace1 — 6 keeper files, a 38-file tar of local-only tracked paths, and stash SHAs (recoverable via `git stash apply <sha>`).
-- `~/preserved-acma-20260730/` on ace1 — 11 llm-wiki-acma files.
+- `~/preserved-mkt-a-20260730/` on ace1 — 11 llm-wiki-mkt-a files.
 - Branch `feat/gif-pipeline-assets` on deckhand-sandbox — 35 MB of assets kept out of git history; LFS unavailable (#3706).
 - Skills-link infrastructure (`.codex/`, `.gemini/`, `.worktrees/`) on all boxes — never touched, per the junction-restore incident rule.
 
