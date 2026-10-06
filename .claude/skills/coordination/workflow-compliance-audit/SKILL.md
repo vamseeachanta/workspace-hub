@@ -19,7 +19,7 @@ Audit whether agents are following established workflows (plan review, cross-rev
 | Area | What to Check | Evidence Sources |
 |------|-------------|------------------|
 | **Cross-Review** | Are engineering commits getting reviewed? | `scripts/review/results/`, git log |
-| **Plan Review** | Are plans written and approved before implementation? | Issue comments, `.planning/` files |
+| **Plan Review** | Are proportionate plans reviewed and task authority verified before implementation? | Issue comments, `.planning/` files |
 | **TDD Compliance** | Are tests written before implementation? | Commit order, test file timestamps |
 | **Doc Intelligence** | Is the document index healthy and current? | `data/document-index/index.jsonl`, `standards-transfer-ledger.yaml` |
 | **Resource Intelligence** | Is the resource maturity tracker being updated? | `data/document-index/resource-intelligence-maturity.yaml` |

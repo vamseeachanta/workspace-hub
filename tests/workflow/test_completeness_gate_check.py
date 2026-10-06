@@ -126,6 +126,14 @@ def test_gate_does_not_apply_to_unlabeled_issue():
     assert gate.gate_applies([]) is False
 
 
+def test_closure_guidance_preserves_approval_independent_enrollment():
+    from pathlib import Path
+    text = (Path(__file__).resolve().parents[2] / ".claude/rules/completeness-before-close.md").read_text(encoding="utf-8")
+    assert "gate:completeness-v2" in text
+    assert "historical" in text
+    assert "owner-only `status:completeness-verified`" in text
+
+
 # ---- body-freshness helper (fix #5: anchor on lastEditedAt, not updatedAt) ----
 
 import datetime as _dt  # noqa: E402

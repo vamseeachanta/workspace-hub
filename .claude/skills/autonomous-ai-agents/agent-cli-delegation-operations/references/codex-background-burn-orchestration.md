@@ -46,7 +46,7 @@ Class of task: quota-aware Codex lane orchestration that converts available Code
 
 2. Select useful lanes, not synthetic burn
    - Prefer `provider-work-queue.json -> provider_queues.codex.top_issues`.
-   - Favor open issues with `status:plan-approved` and bounded implementation/test/refactor/documentation scope.
+   - Favor open issues with verified task/standing authority and current reviewed bounded implementation/test/refactor/documentation scope; labels are historical metadata.
    - Respect existing `agent:*` labels and avoid issues already `status:working` unless recovering a known stalled lane.
    - Keep about 3-5 concurrent Codex lanes; top up periodically rather than launching too many at once.
 
@@ -74,7 +74,7 @@ Class of task: quota-aware Codex lane orchestration that converts available Code
    - issue URL and number
    - branch/worktree path
    - approved plan artifact paths
-   - hard gates: verify issue open + `status:plan-approved`, TDD, validation, adversarial self-review
+   - hard gates: verify issue open, task/standing authority, current reviewed scope, resolved blockers, TDD, validation and adversarial review; labels/markers are not prerequisites
    - commit/push/comment requirements
    - explicit forbidden paths and no force-push
    - close only if landed/allowed by policy

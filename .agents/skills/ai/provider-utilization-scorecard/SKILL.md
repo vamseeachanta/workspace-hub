@@ -16,6 +16,9 @@ The task request or standing authority authorizes implementation, including subs
 
 # Provider Utilization Scorecard
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use this when the goal is to operationalize weekly credit utilization across Claude, Codex, and Gemini instead of just giving static advice.
 
 ## Canonical inputs
@@ -157,5 +160,5 @@ Use this loop after refreshing the scorecard:
 - If Codex is below the burn line, dispatch the next reviewed implementation/test/refactor package within task authority.
 - If Gemini daily use is below target, dispatch the next 5-6 task recon/research batch.
 - If Claude has review backlog, dispatch plan or implementation review packages.
-- If no approved implementation work exists, pause coding and spend Claude/Gemini on refilling the plan-review and approval pipeline.
+- If no reviewed implementation within task authority exists, route providers to planning, review and prerequisite resolution.
 - If a provider is ahead of target, reserve it for reviews, failures, and closeout.

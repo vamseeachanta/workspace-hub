@@ -1,6 +1,6 @@
 ---
 name: continuous-planning-pipeline
-description: Maintain a standing day/night GitHub issue pipeline so agents always have planned, reviewed, user-approved work for overnight execution and next-day QA/approval.
+description: Maintain a standing day/night GitHub issue pipeline so agents always have planned, reviewed, scope-authorized work for overnight execution and next-day QA/approval.
 version: 1.0.0
 author: Hermes Agent
 category: coordination
@@ -18,9 +18,14 @@ tags: [github, planning, overnight, afk-agents, issue-pipeline, adversarial-revi
 
 # Continuous Planning Pipeline
 
+## Current task authority
+
+The originating task request or established standing authority authorizes implementation within scope, including substantial work, after proportionate planning, TDD and adversarial review. No separate plan approval, approval label or local marker is required. Honor planning-only requests and unresolved domain decisions. Publication, deployment, access changes, destructive actions and outreach retain their action-specific authority. Preserve historical approval records; do not self-label owner approval.
+
+
 Use this when the user wants agents to keep working continuously rather than running a one-off planning or implementation batch.
 
-The core idea: maintain a standing buffer of GitHub issues in distinct readiness lanes so planning, implementation, review, and user approval can proceed in parallel across day/night cycles without violating plan gates.
+The core idea: maintain a standing buffer of GitHub issues in distinct readiness lanes so planning, implementation and review can proceed in parallel across day/night cycles within task authority.
 
 ## Operating model
 
@@ -52,9 +57,9 @@ The core idea: maintain a standing buffer of GitHub issues in distinct readiness
 
 Maintain these lanes in reports and prompt packs.
 
-### Lane A — approval candidates
+### Lane A — reviewed work and decision candidates
 
-Issues ready for user approval / revision / rejection.
+Reviewed issues, with unresolved scope/domain decisions identified for the owner.
 
 Required evidence:
 - issue is open
@@ -69,13 +74,13 @@ Issues safe for unattended implementation.
 
 Required evidence:
 - issue is open
-- issue has `status:plan-approved`
+- originating task or standing authority covers the implementation scope
 - canonical plan exists
-- local approval marker exists and is committed, for example `.planning/plan-approved/NNN.md`
+- current adversarial plan review has no blocking findings or unresolved required domain decisions
 - worktree / repo state is clean or isolated
 - target files are not owned by another active worker
 
-Do not treat GitHub labels alone as sufficient approval. Verify marker evidence from a checkout that is current with the execution base: after `git fetch`, if the active worktree is behind `origin/main`, inspect `origin/main` directly or create/freshen an isolated worktree before declaring a marker missing. A stale governance worktree can undercount committed `.planning/plan-approved/NNN.md` files and misroute approved work back to approval drift. If a workflow uses revision-bound approval comments/plan branches instead of local numeric markers, treat that as `approval-drift` unless/until the repo hooks and approval scripts have an approved policy recognizing that exact schema. Remote routine state or session transcripts never upgrade an issue into Lane B.
+Labels and markers are historical/display evidence, not prerequisites or grants of authority. Verify the originating task, current plan/review revision, checkout and active claims. Remote routine state alone does not authorize a new task.
 
 ### Lane C — planning feedstock
 
@@ -83,7 +88,7 @@ High-value issues eligible for planning-only workers.
 
 Typical evidence:
 - issue is open
-- no current complete plan/review/approval evidence
+- no current complete plan/review or verified task-authority evidence
 - priority/domain labels indicate value
 - no obvious duplicate or already-completed state
 - safe to assign to planning workers that write unique artifacts
@@ -103,7 +108,7 @@ Implementation output exists but is not done. Sub-states:
 - E1 `open-pr`: branch/PR exists but QA handoff is incomplete
 - E2 `review-ready`: mandatory handoff exists and item is ready for human/provider review
 
-Required Lane E handoff fields: issue, PR/branch, dispatch id, routine id, plan path/SHA, approval marker, changed files, tests/CI results, artifacts/screenshots where relevant, risks, blockers, adversarial implementation-review status, recommended human action, estimated review effort, and priority reason.
+Required Lane E handoff fields: issue, PR/branch, dispatch id, routine id, plan path/SHA, task-authority provenance, changed files, tests/CI results, artifacts/screenshots where relevant, risks, blockers, adversarial implementation-review status, recommended human action, estimated review effort, and priority reason.
 
 ## Target buffers
 
@@ -122,7 +127,7 @@ When the user proposes a new continuous-throughput operating idea:
 1. Check for existing related GitHub issues to avoid duplicates.
 2. If no durable tracker exists, create or update a GitHub issue capturing the operating model.
 3. Include the external reference if provided.
-4. Encode lanes, target buffers, approval-surface checks, and adversarial-review requirements.
+4. Encode lanes, target buffers, task-authority checks, and adversarial-review requirements.
 5. Verify the created/updated issue.
 6. Save a compact durable user preference if it changes future behavior.
 
@@ -137,7 +142,7 @@ A durable pipeline issue should include:
 - Target buffers.
 - Required artifacts for each lane.
 - Acceptance criteria for a queue audit/report.
-- Requirement to verify GitHub labels, canonical plan files, review artifacts, and local approval markers.
+- Requirement to verify GitHub labels, canonical plan files, review artifacts and originating task scope.
 - Requirement for adversarial review at both plan-review and code/artifact-review stages.
 - Links to related issues and workflows.
 
@@ -147,11 +152,11 @@ When the user asks for confidence in the lane model or approval flow, produce a 
 
 Recommended sections:
 - full continuous pipeline from user idea/intake through Lane C planning feedstock, planning pipeline, Lane A approval candidates, Lane B execution-ready work, TDD execution, code/artifact review, morning QA, close/follow-up/refill
-- compact lane view: `Lane C -> Scope/Resource Intel/Repo Intel/Compliance Fit/Plan/TDD/Plan Review -> Lane A -> user approval -> Lane B -> TDD Implementation/Code Review/Morning QA`
+- compact lane view: `Lane C -> Scope/Resource Intel/Repo Intel/Compliance Fit/Plan/TDD/Plan Review -> Lane A -> resolve blocking decisions/verify task scope -> Lane B -> TDD Implementation/Code Review/Morning QA`
 - confidence gates:
   - Can we plan? requires scope + resource intel + repo intel
   - Can user approve? requires plan + TDD path + adversarial plan review
-  - Can agent implement? requires `status:plan-approved` + local marker + clean/isolated worktree
+  - Can agent implement? requires verified task authority + reviewed scope + clean/isolated worktree
   - Can we trust result? requires tests + committed diff + adversarial code/artifact review
   - Can user close/accept? requires morning QA packet + evidence + follow-up capture
 
@@ -162,7 +167,7 @@ This visual artifact helps the user validate the workflow contract before implem
 If the user says the model looks good and asks for the next logical step, start formal planning on the pipeline issue rather than jumping to code. Post a concise planning-intake comment with:
 - complexity classification, typically T3 for workflow/governance + automation/reporting
 - primary deliverable
-- key constraints: hard-stop gates, TDD, adversarial plan/code review, explicit user approval, local approval markers, zero git contention
+- key constraints: hard-stop gates, TDD, adversarial plan/code review, verified task scope, action-specific authority, zero git contention
 - next step: resource intelligence across workflow docs, scripts, hooks, plan artifacts, and related issues
 
 Then proceed through `gh-work-planning` Step 2 resource intelligence and canonical plan drafting.
@@ -234,7 +239,7 @@ Required closeout pattern:
    - `Plan-SHA256: <final-sha-after-summary-sync>`
    - short note that the final SHA differs only due to review-summary synchronization
 5. If the issue currently has `status:plan-approved` but no valid committed `.planning/plan-approved/NNN.md`, and the plan has materially changed, remove `status:plan-approved` and restore `status:plan-review`. This is approval drift, not execution authority.
-6. Post the final GitHub update with explicit decision choices: Approve / Revise / Hold, and state that implementation remains blocked until explicit user approval plus marker creation.
+6. Post the final GitHub update with explicit decision choices: Approve / Revise / Hold, and state the verified task authority and remaining review/domain blockers; do not require a new approval marker.
 7. Commit only the target plan/review files; in dirty repos verify the targeted artifact set with `git status --short -- <files>` and ensure no unrelated churn is staged.
 
 ## Exit handoff / future issue pattern
@@ -256,7 +261,7 @@ When the user asks to “create future issues, document, and prepare to exit” 
    - approval-marker state
    - newly created follow-up issue links
    - next restart sequence
-   - explicit “do not implement until approval marker exists” warning
+   - explicit task-scope/review/domain-blocker statement; no marker prerequisite
 5. Commit and push the handoff as a narrow docs-only commit. In dirty repos, preserve unrelated churn with stashes rather than forcing it into the handoff commit.
 6. Post the handoff summary back to the parent issue using `--body-file`, then immediately re-verify parent labels and marker state. Automation or concurrent agents may re-add `status:plan-approved`; if no valid committed marker exists after a material revision, restore `status:plan-review`.
 7. Final exit verification should report: HEAD/upstream equality, working-tree cleanliness or named stashes preserving unrelated dirt, parent labels, marker presence/absence, and follow-up issue URLs.
@@ -313,8 +318,8 @@ Recommended fallback sequence when the normal path is slow or rate-limited:
 ## Pitfalls
 
 - Treating a continuous pipeline request as a one-off overnight batch.
-- Letting implementation agents pull from unapproved Lane C work.
-- Trusting stale `status:plan-approved` labels without local marker and plan evidence.
+- Letting implementation agents pull work without reviewed scope and task authority.
+- Treating a historical label or marker as task authority, or blocking authorized work because one is absent.
 - Treating an empty disagreement report as a valid adversarial plan-review pass.
 - Applying `status:plan-review` before provider-specific review artifacts exist and contain real verdicts.
 - Failing to leave a focused morning approval/QA pack.

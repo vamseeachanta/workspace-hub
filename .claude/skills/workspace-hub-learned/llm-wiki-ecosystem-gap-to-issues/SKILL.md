@@ -137,7 +137,7 @@ The durable issue family is:
 5. Weekly OSS / concept watchlist.
 6. CLI/MCP query surface over stable manifests/graph.
 
-Sequencing heuristic: freshness → manifests → graph → evals → watchlist → CLI/MCP. Keep each as a separately planned GitHub issue with a linked plan artifact and do not start implementation until plan review plus user approval.
+Sequencing heuristic: freshness → manifests → graph → evals → watchlist → CLI/MCP. Keep each as a separately planned GitHub issue with a linked plan artifact and complete plan review and verify task authority and domain prerequisites before implementation; no separate plan approval is required.
 
 ## Additional proven issue themes from deeper recommendation sweeps
 

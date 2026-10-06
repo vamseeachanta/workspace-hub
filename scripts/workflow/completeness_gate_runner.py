@@ -6,8 +6,8 @@ Gathers issue context via ``gh`` and calls the pure, unit-tested
 (the GitHub Action reopens + comments; the advisory pre-flight just warns).
 
 Hardening:
-- only enforces issues that reached implementation (`status:plan-approved`); un-planned
-  closes are not gated (closes the over-scope MAJOR);
+- enforces explicit completeness-v2 enrollments or the historical two-label enrollment;
+  enrollment neither authenticates task authority nor grants implementation approval;
 - computes ``body_verified_fresh`` = verified-label applied at/after the issue body's
   last edit, so editing the body after verification invalidates the label (Codex#1);
 - binds via ``expected_issue``; threshold comes from server-side config, not the record.
@@ -49,10 +49,10 @@ def main() -> int:
     labels = [l["name"] for l in data.get("labels", [])]
 
     # OPT-IN SCOPE FIRST: the gate only enforces on issues that explicitly opted in
-    # (gate:completeness + status:plan-approved). Checking this BEFORE the owners config
+    # (gate:completeness plus v2 enrollment or the historical label pair). Checking this BEFORE the owners config
     # means an unconfigured gate is inert for everything else — no retroactive disruption.
     if not gate_applies(labels):
-        print(f"[completeness-gate] issue #{issue}: not opted in ({OPT_IN_LABEL}+{PLAN_APPROVED_LABEL}) "
+        print(f"[completeness-gate] issue #{issue}: not enrolled ({OPT_IN_LABEL} plus v2 enrollment or historical label pair) "
               f"— gate not applicable, ALLOW", file=sys.stderr)
         return 0
 

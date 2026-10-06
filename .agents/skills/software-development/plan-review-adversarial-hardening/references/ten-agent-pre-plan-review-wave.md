@@ -17,6 +17,9 @@ tags: [overnight, github, planning, worktrees, parallel, status-plan-review]
 
 # Ten-Agent Pre-Plan-Review Wave
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use when:
 - the user wants a large overnight planning-only batch
 - target issues are still before `status:plan-review`
@@ -91,7 +94,7 @@ After the reconciliation artifact is written, advance issues one at a time in pr
 2. If review findings are concrete, revise the plan and any dependent child issue bodies first; do not label `status:plan-review` while the latest valid finding is `REQUEST_CHANGES`, `REJECT`, or `MAJOR`.
 3. Run a focused re-review against the fully inlined/local latest plan. If a provider wrapper fails or times out, record that explicitly; do not let a failed wrapper overwrite a valid artifact.
 4. If the only remaining finding is stale live GitHub wording (for example the issue body contradicts the updated plan), post a superseding comment using `gh issue comment --body-file` before applying `status:plan-review`. Do not rely on the local plan alone to override the visible GitHub thread.
-5. Only then sync the plan header, README row, review artifacts, GitHub comment, and label. The issue is still not implementation-ready until explicit user approval moves it to `status:plan-approved`.
+5. Only then sync the plan header, README row, review artifacts, GitHub comment, and label. Execution additionally needs verified task authority and resolved domain/review blockers; the approval label is not required.
 6. If fresh review finds new structural blockers (for example an implementation plan misses the real build/deploy source-of-truth), revise the local plan, post a concise planning update, leave the issue in draft, and move to a fresh re-review later.
 
 Example outcomes from planwave10 recovery:
