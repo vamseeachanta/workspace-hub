@@ -47,7 +47,7 @@
       "dirty": 208
     },
     {
-      "name": "acma-ws014",
+      "name": "ace-win-1",
       "reachable": true,
       "branch": "main",
       "head": "13e8c9953",
@@ -56,7 +56,7 @@
       "dirty": 236
     },
     {
-      "name": "acma-hou-rds02",
+      "name": "ace-win-2",
       "reachable": true,
       "branch": "main",
       "head": "b646cac7a",
