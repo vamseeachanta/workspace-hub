@@ -1,6 +1,6 @@
 ---
 name: agent-cli-delegation-operations
-version: 1.0.0
+version: 1.1.0
 category: autonomous-ai-agents
 description: "Class-level Claude/Codex/delegate_task agent operations: background execution, stdin/print stalls, plugin IDs, worker patch loops, and fallback routing."
 tags: [claude, codex, agents, delegation]
@@ -10,6 +10,10 @@ tags: [claude, codex, agents, delegation]
 
 ## When to Use
 Use when launching or supervising autonomous CLI agents, recovering stalled Claude/Codex runs, handling delegate_task limitations, routing failed Claude lanes to Codex, or maintaining plugin identity scope.
+
+## Task ownership and recovery context
+
+Before launch/resume, use [orchestrator routing](../../workspace-hub/agent-teams/orchestrator-routing/SKILL.md) for the existing task, accountable owner, source packet, machine/model readiness and acceptance. Do not rediscover a project workflow by asking the user for routine paths before following its catalog, accepted artifacts and latest handoff. Persist session/job IDs, absolute logs, output paths and last verified phase in the existing checkpoint. Inspect the prior attempt before relaunching; a live wrapper, queued job or prepared artifact is not completion. Return acceptance evidence and precise execution/integration state to the owner for verified closure.
 
 ## Class-Level Workflow
 1. Prefer explicit background process tracking and absolute logs over shell-disowned runs.

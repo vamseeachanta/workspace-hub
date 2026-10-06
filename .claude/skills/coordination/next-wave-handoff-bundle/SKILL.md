@@ -1,7 +1,7 @@
 ---
 name: next-wave-handoff-bundle
 description: Build a docs-only execution handoff bundle after a completed implementation wave — follow-up issue drafts, scoped authorization note, deploy checklist, operator note, copy/paste command bundle, and incremental commit hygiene.
-version: 1.1.0
+version: 1.2.0
 author: Hermes Agent
 category: coordination
 tags: [handoff, planning, operations, github, deployment, docs-only]
@@ -16,6 +16,8 @@ Use the existing repository handoff convention and verified claim backend/root. 
 Record goal/approved scope; branch/worktree/base revision; owned and forbidden paths; deliverables/acceptance evidence; exact checks/outcomes; decisions, risks and dependencies; unresolved owners/dates; next actions/escalation triggers; source revisions/as-of time; and claims held/released. Distinguish complete, unverified and blocked work. Include precise resume steps and the first freshness check.
 
 Before merge review or closeout inspect dirty files, stashes, worktrees and temporary outputs without altering unrelated work. Account for every unique artifact: verified durable destination/revision/integrity, intentionally retained local work, or unresolved disposition. Unverified retention blocks cleanup of that artifact. Cleanup requires its own applicable authorization and cannot remove another lane's work. Local save, commit, backup, receipt and publication are distinct verified states. Release only this session's claims after checking ownership; unavailable coordination blocks affected shared work.
+
+Checkpoint long-running or interrupted work in this same task record, not only after a wave completes: one accountable task owner, current phase and last verified result, session/job/log and artifact locations, source revisions, failed attempts and next bounded resume action. On recovery inspect existing work/processes and refresh branch, claims, authority and source context before restarting. Use [orchestrator routing](../../workspace-hub/agent-teams/orchestrator-routing/SKILL.md) for retrieval and machine/model selection. At closure link sanitized reusable knowledge into the existing owning wiki/skill/workflow and task/index, then verify the saved revision/link. An unresolved human decision records the choice, evidence/options, recommended next action, decision owner and timing basis; continue independent authorized work.
 
 For Spaces, read [Space context and transfer](../../business/product/stakeholder-comms/references/space-context.md).
 
