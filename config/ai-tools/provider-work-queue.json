@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-06T01:21:13.039618Z",
+  "generated_at": "2026-10-06T05:21:12.399616Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-06T01:21:11.186854Z",
+  "scorecard_generated_at": "2026-10-06T05:21:09.758244Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -4121,7 +4121,7 @@
           "title": "Require complete manifest closure before data readback acceptance",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3952",
           "labels": [],
-          "updatedAt": "2026-10-06T00:25:08Z",
+          "updatedAt": "2026-10-06T02:07:46Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
