@@ -1,13 +1,13 @@
 # Review, Report and Communication Standard
 
-**Status:** the owner's decisions are recorded (decision board round 1, 2026-09-29: S01-S08, all as recommended). The text is under final review in this PR.
+**Status:** the owner's decisions are recorded (decision board round 1, 2026-09-29: S01-S08, all as recommended). The complementary standard incorporates the recorded choices; repository publication and shared-runtime adoption remain separate states.
 It is not yet adopted in the shared instructions; adoption follows the phased rollout in Section 6 (phase 1 is this file).
-**Companion:** report format is governed by the reporting standard P2 (#3925); this file governs review workflow and communication style.
+**Companion:** report format is governed by the reporting draft P3 ([issue 3925](https://github.com/vamseeachanta/workspace-hub/issues/3925)); this file governs review workflow and communication style.
 
 # 1. Summary
 
 - This standard consolidates local HTML review and cross-channel communication into one ecosystem standard. The owner decisions are recorded in Section 7; adoption follows the phased rollout in Section 6.
-- [Reporting standard #3925](https://github.com/vamseeachanta/workspace-hub/issues/3925), revision P2 in [draft PR #3926](https://github.com/vamseeachanta/workspace-hub/pull/3926), remains the report-format authority. This standard adds workflow and communication rules without reproducing its formal report structure.
+- [Reporting standard #3925](https://github.com/vamseeachanta/workspace-hub/issues/3925), revision P3 in [PR #3926](https://github.com/vamseeachanta/workspace-hub/pull/3926), remains the report-format authority. This standard adds workflow and communication rules without reproducing its formal report structure.
 - Reports, plans, decision gates and human-review packs use local HTML for owner review. Harness, skill and rule files remain Markdown.
 - The review loop uses selected text, comments and saved JSON. Each round remains beside its report; private content remains in its owning private repository.
 - `tools/html-review/make_review_copy.py` is the proposed canonical review-copy tool. Decision boards retain cards and Save/Load; peer copies operate offline.
@@ -18,17 +18,17 @@ It is not yet adopted in the shared instructions; adoption follows the phased ro
 
 The proposed standard covers human-facing engineering and operational work across the repository ecosystem, including public reusable tooling and private project records. It applies to Claude, Codex, Hermes and other agents operating under the shared instructions. Actual coverage requires inspection; this standard does not establish installation on any repository, machine or session.
 
-The shared instructions retain authority over engineering integrity, authorization, data handling and source rights. Standard B delegates report formatting to P2. Later owner decisions take precedence within their stated scope; presentation changes do not independently authorize engineering changes or publication.
+The shared instructions retain authority over engineering integrity, authorization, data handling and source rights. Standard B delegates report formatting to P3. Later owner decisions take precedence within their stated scope; presentation changes do not independently authorize engineering changes or publication.
 
 | Existing item | Proposed disposition |
 |---|---|
 | [#3925](https://github.com/vamseeachanta/workspace-hub/issues/3925) / [PR #3926](https://github.com/vamseeachanta/workspace-hub/pull/3926) | **Kept** as report-format authority. Accepted report-specific clarifications will be incorporated there. |
 | `session-communication-conventions.md` | **Merged into Standard C**; its former location will become a pointer. |
 | [#3920](https://github.com/vamseeachanta/workspace-hub/issues/3920) / [PR #3928](https://github.com/vamseeachanta/workspace-hub/pull/3928) | **Kept** as the review-tool implementation track; workflow rules will point to this standard. |
-| [#3892](https://github.com/vamseeachanta/workspace-hub/issues/3892) | Human-review requirements **merged into Standard A**, with P2 retaining engineering acceptance rules. Implementation work will remain separately tracked. |
+| [#3892](https://github.com/vamseeachanta/workspace-hub/issues/3892) | Human-review requirements **merged into Standard A**, with P3 retaining engineering acceptance rules. Implementation work will remain separately tracked. |
 | [PR #3891](https://github.com/vamseeachanta/workspace-hub/pull/3891) | Physical-realism requirement **merged into Standard A**; the proposed rule will become a thin pointer after approval. |
 
-Older F-labelled report layouts and live-artifact synchronization instructions are superseded by P2 and local-only review. Existing generators remain usable; this standard does not select a new report renderer.
+Older F-labelled report layouts and live-artifact synchronization instructions are superseded by P3 and local-only review. Existing generators remain usable; this standard does not select a new report renderer.
 
 The owner’s “stick with facts” governs presentation. Requests to simplify process reduce repeated narration, not necessary engineering evidence or existing data obligations.
 
@@ -46,7 +46,7 @@ Harness, skill and rule files stay Markdown. Their human-facing approval package
 
 | Type | Required content and behaviour |
 |---|---|
-| Report | P2 format, document status and revision, engineering evidence and a commentable review copy. |
+| Report | P3 format, document status and revision, engineering evidence and a commentable review copy. |
 | Decision board | Cards containing the question, options, sources, consequences, recommendation and note field. The recommended option has a dashed outline and textual label. Save exports JSON; Load restores it. |
 | Human-review pack | Evidence screenshots beside physical expectations or limits, a check table, missing evidence, review focus, preparer recommendation and reviewer decision. |
 | Peer or client review copy | Stand-alone offline HTML, audience-permitted content, comment layer and a visible how-to banner. |
@@ -103,7 +103,7 @@ Verification covers the actual delivered edition:
 
 - Inspect rendered output using a headless screenshot or DOM probe, with visual checks where layout requires them.
 - Check balanced HTML, readable figures and equations, resolvable links, and absence of broken scripts.
-- Check that report narrative contains no opaque internal markers; essential locators remain in P2’s audience-permitted internal references.
+- Check that report narrative contains no opaque internal markers; essential locators remain in P3’s audience-permitted internal references.
 - Smoke-test selection, comment creation and editing, Save, Load and JSON read-back against the correct revision.
 - Check offline operation, narrow-screen and print behaviour where applicable, and confirm public examples contain no private content.
 
@@ -111,11 +111,11 @@ A skipped browser test is not a pass. The supplied test description establishes 
 
 # 4. Standard B: Report format
 
-P2 governs formal structure, register, captions, precision, references, uncertainty and document control. Only the following clarifications will be proposed for reconciliation into [#3925](https://github.com/vamseeachanta/workspace-hub/issues/3925).
+P3 governs formal structure, register, captions, precision, references, uncertainty and document control. The following clarifications are reconciled with P3; additional changes remain tracked in [#3925](https://github.com/vamseeachanta/workspace-hub/issues/3925).
 
 | Item | Rule | Basis |
 |---|---|---|
-| Emphasis | Bold is optional and restrained; a direct instruction to remove it overrides older bold-headline prescriptions for the affected content. | “remove bold. unwanted attention” |
+| Emphasis | Formal reports use regular-weight body prose, findings and bullet labels under P3. Structural headings and table headers retain hierarchy. Other communication retains the recorded restrained optional bold convention, subject to direct instructions. | “remove bold. unwanted attention” |
 | Introductions | Section openings name their subject and content without process narration. | “The purpose, scope and status of the project are presented in this section.” |
 | Audience traceability | Client prose carries necessary engineering evidence; operational lineage stays in restricted records, with essential references retained. | “too much traceability for client” |
 | Limitations | Use one or two quantified sentences where support exists; identify the missing basis when uncertainty cannot be bounded. | “simplify with 1-2 sentences with quantification which is mentioned to be uncertain” |
@@ -231,8 +231,8 @@ Rollback will restore prior pointers and tool versions while preserving review r
 # 8. Risks and open points
 
 - The supplied evidence describes drafts. Merge state, runtime installation and current tool behaviour are not independently established.
-- Stable comment identifiers and digest binding required by P2 are not fully demonstrated by the README’s listed fields. The pilot will check this gap before adoption.
+- Stable comment identifiers and digest binding required by P3 are not fully demonstrated by the README’s listed fields. The pilot will check this gap before adoption.
 - Folder permissions, stale tabs and first-80-character highlighting can misdirect or obscure comments. Revision checks and JSON read-back remain necessary.
 - Public redaction cannot be reduced to removing names; figures, results and metadata can disclose private work.
-- The canonical filename, pilot scope and reachable adoption targets remain owner decisions or inspection results.
+- The canonical companion filename is `docs/standards/review-and-communication-standard.md`. The pilot scope and reachable adoption targets remain owner decisions or inspection results.
 - Simplification must preserve decision-relevant limitations. Presentation acceptance does not establish engineering acceptance.
