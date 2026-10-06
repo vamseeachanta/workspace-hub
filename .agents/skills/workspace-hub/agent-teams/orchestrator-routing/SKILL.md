@@ -29,6 +29,8 @@ Keep the main session responsive while carrying the authorized task through veri
 
 ## Retrieve before dispatch
 
+Apply `docs/architecture/agent-data-handling-contract.md` before retrieval or saving context; task relevance does not grant source access.
+
 Start skill discovery with the existing config/agents/skill-index-full.yaml and the owning repo catalog; load only task-relevant records, not the whole skill tree. The existing docs/document-intelligence/intelligence-accessibility-map.md is a historical inventory aid: verify its linked current entry points, source owner and accessibility before relying on them.
 
 1. Identify the owning repository, intended outcome, acceptance evidence and current authority. Search its instructions, skill catalog, issues/PRs, plans, handoffs and relevant history for the existing task or nearest completed workflow before opening another lane. Verify whether prior work is merged, running, blocked or superseded; reuse/resume it rather than duplicating it.
@@ -47,7 +49,7 @@ The lane packet carries: task/owner, scope and acceptance, authorization limits,
 
 ## Checkpoint, recover and verify
 
-Use the repository's existing handoff/checkpoint convention. At a meaningful phase boundary, before interruption/transfer, or when a long-running phase cannot finish in the current session, durably record task/owner, branch/base/HEAD, relevant source revisions, last verified outcome, current process/session/job IDs and logs, artifact paths, failed attempts, claims, blockers and the next bounded action. Checkpoint sooner when interruption would lose unique work; avoid a second ledger or empty progress churn.
+Use the repository's existing handoff/checkpoint convention. Match the checkpoint destination to its audience and authorized access before writing. Exact absolute log/output paths, usernames, private mounts, client identifiers and other restricted recovery locators belong in an authorized private checkpoint. Public issues and common tracked artifacts use sanitized repo-relative or opaque references to that checkpoint with a permitted retrieval route; verify sanitization before publication. Preserve exact private resume context without expanding access, and never save secrets or authentication material in a checkpoint. At a meaningful phase boundary, before interruption/transfer, or when a long-running phase cannot finish in the current session, durably record task/owner, branch/base/HEAD, relevant source revisions, last verified outcome, current process/session/job IDs and logs, artifact paths, failed attempts, claims, blockers and the next bounded action. Checkpoint sooner when interruption would lose unique work; avoid a second ledger or empty progress churn.
 
 On resume, read the checkpoint, recheck authorization/source/branch/claim freshness and inspect the recorded process and artifacts before restarting. A live process, queued job or prepared model is running/prepared; missing output is unverified. Recover the existing attempt where possible. Bound retries to the known failure and preserve partial/unique output; changed scope or unavailable prerequisites stop only the affected action. Use [agent CLI operations](../../../autonomous-ai-agents/agent-cli-delegation-operations/SKILL.md) for runtime recovery.
 
