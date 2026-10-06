@@ -4236,11 +4236,11 @@ skills:
   name: agent-teams
   when_to_use: agent-teams Agent team protocols for workspace-hub — when to use teams, decision matrix, team lifecycle, communication patterns, and MAX_TEAMMATES=3 constraint workspace-hub
   when_to_use_source: backfill
-- description: Main orchestrator as lightweight router — stay responsive to user messages while subagents do heavy work; route tasks to appropriate agents based on workload
+- description: Route scoped tasks to accountable agents using existing workflow context, machine/model readiness, durable checkpoints and verified integration.
   family: workspace-hub
   id: workspace-hub/agent-teams/orchestrator-routing
   name: orchestrator-routing
-  when_to_use: orchestrator-routing Main orchestrator as lightweight router — stay responsive to user messages while subagents do heavy work; route tasks to appropriate agents based on workload workspace-hub
+  when_to_use: orchestrator-routing Route scoped tasks to accountable agents using existing workflow context, machine/model readiness, durable checkpoints and verified integration. workspace-hub
   when_to_use_source: backfill
 - description: 'Use when onboarding new Claude Code features, reviewing external best-practice repos, or expanding the daily learning catalog. Covers: gap analysis against native CC capabilities, tips catalog expansion, daily-learning script, native .claude/ structure (agents, commands, settings).'
   family: workspace-hub
