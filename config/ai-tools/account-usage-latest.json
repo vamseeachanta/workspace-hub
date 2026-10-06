@@ -9,7 +9,7 @@
         },
         "five_hour": {
           "pct": 0.0,
-          "resets_at": "2026-10-07T00:00:00.015986+00:00"
+          "resets_at": "2026-10-06T23:59:59.646557+00:00"
         },
         "iguana_necktie": {
           "pct": 0.0,
@@ -17,10 +17,10 @@
         },
         "seven_day": {
           "pct": 6.0,
-          "resets_at": "2026-10-10T14:00:00.016018+00:00"
+          "resets_at": "2026-10-10T13:59:59.646581+00:00"
         }
       },
-      "captured_at": "2026-10-06T20:13:25+00:00",
+      "captured_at": "2026-10-06T21:13:51+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": 0.0,
       "headroom_pct": 94.0,
@@ -40,7 +40,7 @@
       "source": "oauth-api",
       "tier": "default_claude_max_20x",
       "week_pct": 6.0,
-      "week_resets_at": "2026-10-10T14:00:00.016018+00:00"
+      "week_resets_at": "2026-10-10T13:59:59.646581+00:00"
     },
     "claude-professional": {
       "access": "limited",
@@ -60,10 +60,10 @@
     "codex-owner": {
       "access": "full",
       "buckets": null,
-      "captured_at": "2026-10-06T20:13:38+00:00",
+      "captured_at": "2026-10-06T21:14:03+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": null,
-      "headroom_pct": 69.0,
+      "headroom_pct": 65.0,
       "holder": "owner",
       "hosts": [
         "ace-linux-1",
@@ -81,13 +81,13 @@
       "sampled_on": "fleet-collector",
       "source": "app-server-live",
       "tier": "pro",
-      "week_pct": 31,
+      "week_pct": 35,
       "week_resets_at": "2026-10-09T22:10:35+00:00"
     },
     "codex-professional": {
       "access": "limited",
       "buckets": null,
-      "captured_at": "2026-10-06T20:14:11+00:00",
+      "captured_at": "2026-10-06T21:14:36+00:00",
       "fingerprint": "c0c130b8018b",
       "five_hour_pct": null,
       "headroom_pct": 86.0,
@@ -108,7 +108,7 @@
       "week_resets_at": "2026-10-09T21:19:09+00:00"
     }
   },
-  "generated_at": "2026-10-06T20:13:42+00:00",
+  "generated_at": "2026-10-06T21:14:06+00:00",
   "generated_by": "fleet-collector collect_account_usage_fleet",
   "hosts": {
     "ace-linux-1": {
@@ -116,7 +116,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-06T20:13:25+00:00",
+      "captured_at": "2026-10-06T21:13:51+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -128,7 +128,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-06T20:13:28+00:00",
+      "captured_at": "2026-10-06T21:13:54+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -143,7 +143,7 @@
         "claude": "claude-professional",
         "codex": "codex-professional"
       },
-      "captured_at": "2026-10-06T20:14:11+00:00",
+      "captured_at": "2026-10-06T21:14:36+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "c0c130b8018b"
@@ -155,7 +155,7 @@
         "claude": "claude-professional",
         "codex": "codex-professional"
       },
-      "captured_at": "2026-10-06T20:14:06+00:00",
+      "captured_at": "2026-10-06T21:14:32+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -166,7 +166,7 @@
       "accounts": {
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-06T20:13:38+00:00",
+      "captured_at": "2026-10-06T21:14:03+00:00",
       "fingerprints": {
         "codex": "78d7e174f2d1"
       },
@@ -180,7 +180,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-06T20:13:29+00:00",
+      "captured_at": "2026-10-06T21:13:55+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -209,7 +209,7 @@
       "account": "codex-professional",
       "alternative": {
         "account": "codex-owner",
-        "headroom_pct": 69.0
+        "headroom_pct": 65.0
       },
       "headroom_pct": 86.0,
       "hosts": [
