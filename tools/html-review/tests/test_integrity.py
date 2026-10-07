@@ -13,7 +13,7 @@ TOOL = Path(__file__).resolve().parents[1] / "make_review_copy.py"
 
 @unittest.skipUnless(shutil.which("node"), "Node is required")
 class ReviewIntegrityTests(unittest.TestCase):
-    def run_js(self, assertions, stored=None):
+    def run_js(self, assertions, stored=None, extra=None):
         source = TOOL.read_text(encoding="utf-8")
         script = re.search(r'<script id="rv-script">(.*?)</script>', source, re.S)[1]
         script = script.replace("})();", "globalThis.test={mergeFrom,render,payload,get:()=>items,set:v=>items=v};})();")
@@ -28,6 +28,8 @@ global.localStorage={getItem:k=>storage.get(k)||null,setItem(k,v){storage.set(k,
 global.indexedDB={open:()=>{throw Error('unavailable')}};
 """
         initial = "storage.set('__KEY__'," + json.dumps(stored) + ");\n" if stored is not None else ""
+        initial += "".join(f"storage.set({json.dumps(k)},{json.dumps(v)});\n" for k, v in (extra or {}).items())
+        harness = harness.replace("global.localStorage={", "global.localStorage={get length(){return storage.size},key:i=>[...storage.keys()][i]??null,")
         program = harness + initial + script + "\n(async()=>{\n" + assertions + "\n})().catch(e=>{console.error(e);process.exitCode=1});"
         result = subprocess.run(["node", "-e", program], capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -114,6 +116,31 @@ assert.equal(JSON.parse(storage.get('__KEY__|__VERSION__')).comments[0].comment,
 assert.equal(test.get().length,1);
 assert.equal(test.get()[0].comment,'kept');
 """, stored=original)
+
+    def test_other_revision_comments_are_announced(self):
+        older = json.dumps({"page": "__PAGE__", "report_version": "older", "comments": [{"id": "a", "quote": "q", "comment": "c", "at": "t"}, {"id": "b", "quote": "q", "comment": "d", "at": "t"}]})
+        self.run_js("""
+assert.equal(test.get().length,0);
+assert.match(nodes.get('#rv-status').textContent,/2 comments.*older/);
+""", extra={"__KEY__|older": older})
+
+    def test_save_falls_back_to_download_when_folder_holds_other_revision(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
+const wrong={page:'__PAGE__',report_version:'older',comments:[]};
+let written=false;
+const dir={name:'d',queryPermission:async()=>'granted',getFileHandle:async(n,o)=>{if(o&&o.create){written=true;return {createWritable:async()=>({write:async()=>{},close:async()=>{}})}}return {getFile:async()=>({text:async()=>JSON.stringify(wrong)})}}};
+global.window={showDirectoryPicker:async()=>dir};
+global.indexedDB={open:()=>{const r={};setTimeout(()=>{r.result={transaction:()=>{const tx={objectStore:()=>({get:()=>({result:dir}),put:()=>({})})};setTimeout(()=>tx.oncomplete&&tx.oncomplete(),0);return tx}};r.onsuccess&&r.onsuccess()},0);return r}};
+let clicked=false;
+global.URL={createObjectURL:()=>'blob:x'};global.Blob=class{};
+document.createElement=()=>({click(){clicked=true},remove(){}});document.body.append=()=>{};
+await nodes.get('#rv-save').events.click();
+assert.equal(written,false);
+assert.equal(clicked,true);
+assert.match(nodes.get('#rv-status').textContent,/different report revision/i);
+assert.equal(test.get()[0].comment,'keep');
+""")
 
     def test_generator_rejects_source_overwrite(self):
         with tempfile.TemporaryDirectory() as directory:

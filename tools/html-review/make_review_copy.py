@@ -65,7 +65,7 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
   let items=[], deleted=new Set();
   const identity=c=>c.id||("legacy:"+JSON.stringify([c.quote,c.at]));
   function checked(data){
-    if(!data||data.page!==PAGE||data.report_version!==VERSION) throw Error("Comments belong to a different report revision.");
+    if(!data||data.page!==PAGE||data.report_version!==VERSION) throw Object.assign(Error("Comments belong to a different report revision."),{name:"RevisionMismatch"});
     if(!Array.isArray(data.comments)||data.comments.some(c=>!c||typeof c.quote!=="string"||typeof c.comment!=="string"||typeof c.at!=="string"||["id","section","data_src"].some(k=>c[k]!==undefined&&typeof c[k]!=="string"))) throw Error("Invalid comments file.");
     if(data.deleted_ids!==undefined&&(!Array.isArray(data.deleted_ids)||data.deleted_ids.some(id=>typeof id!=="string"))) throw Error("Invalid deletion records.");
     return data.comments.map(c=>({...c,id:identity(c)}));
@@ -82,6 +82,9 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
     return n;
   }
   try{const own=localStorage.getItem(STORE);if(own){merge(JSON.parse(own))}else{const legacy=localStorage.getItem(KEY);if(legacy)merge(JSON.parse(legacy))}}catch(e){$("#rv-status").textContent="Stored comments could not be loaded for this revision. Load a matching exported file."}
+  // Comments kept for other revisions of this page are never shown here; say so, so they are not taken as lost.
+  try{const others=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k!==STORE&&k.startsWith(KEY+"|")){try{others.push([k.slice(KEY.length+1),(JSON.parse(localStorage.getItem(k)).comments||[]).length])}catch(e){}}}
+    const n=others.reduce((s,o)=>s+o[1],0);if(n)$("#rv-status").textContent=`${n} comments are stored for other revisions of this report (${others.map(o=>o[0]).join(", ")}). Open that review copy and Save or Copy them; they are not merged into this revision.`}catch(e){}
   let pending=null;
   const record=()=>({page:PAGE,report_version:VERSION,comments:items,deleted_ids:[...deleted]});
   const persist=()=>{try{localStorage.setItem(STORE,JSON.stringify(record()))}catch(e){$("#rv-status").textContent="Browser storage unavailable — use Save comments before closing."}};
@@ -135,6 +138,7 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
     return dir;
   }
   $("#rv-save").addEventListener("click",async()=>{
+    let mismatch=false;
     if (window.showDirectoryPicker) {
       try {
         const dir=await folder(true);
@@ -142,10 +146,10 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
         const w=await (await dir.getFileHandle(NAME,{create:true})).createWritable(); await w.write(payload()); await w.close();
         $("#rv-status").textContent=`Saved ${items.length} comments to ${dir.name}/${NAME}`+(merged?` (${merged} earlier comments merged in).`:".");
         $("#rv-folder").textContent=`Saving to: ${dir.name}/${NAME}`; return;
-      } catch(e) { if(!["AbortError","SecurityError","NotAllowedError"].includes(e.name)){ $("#rv-status").textContent="Save stopped: "+e.message+" Choose another folder or use Copy.";return; } }
+      } catch(e) { mismatch=e.name==="RevisionMismatch"; if(!mismatch&&!["AbortError","SecurityError","NotAllowedError"].includes(e.name)){ $("#rv-status").textContent="Save stopped: "+e.message+" Choose another folder or use Copy.";return; } }
     }
     const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([payload()],{type:"application/json"})); a.download=NAME; document.body.append(a); a.click(); a.remove();
-    $("#rv-status").textContent=`Download requested for ${NAME} (${items.length} comments). Check the browser download location and confirm the file exists.`;
+    $("#rv-status").textContent=(mismatch?`The folder's ${NAME} belongs to a different report revision and was left unchanged. `:"")+`Download requested for ${NAME} (${items.length} comments). Check the browser download location and confirm the file exists.`;
   });
   $("#rv-change").addEventListener("click",async()=>{ try{ const dir=await window.showDirectoryPicker({id:"rv-report-folder",mode:"readwrite"}); const n=await mergeFrom(dir); await putDir(dir); $("#rv-folder").textContent=`Saving to: ${dir.name}/${NAME}`; $("#rv-status").textContent=n?`Loaded ${n} saved comments from ${dir.name}.`:`Folder set to ${dir.name}.`; }catch(e){$("#rv-status").textContent="Folder change stopped: "+e.message} });
   getDir().then(d=>{ $("#rv-folder").textContent=d?`Saving to: ${d.name}/${NAME}`:`First Save asks for the report folder: ${FOLDER}`; });
