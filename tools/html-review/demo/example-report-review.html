@@ -104,10 +104,11 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
   // it is read once and adopted only when it matches this revision, and it is never written, so nothing is lost.
   const STORE=KEY+"|"+VERSION;
   // An imported deletion record does not remove a comment edited here (edited_at): the local edit is kept and
-  // counted in `kept`, so a deletion made elsewhere never silently discards newer local text.
+  // counted in `kept`, so a deletion made elsewhere never silently discards newer local text. edited_at is honoured
+  // only from this browser's own record (own=true); imported files have it stripped, so a remote edit gains no protection.
   let kept=0;
-  function merge(data){
-    const incoming=checked(data);kept=0;
+  function merge(data,own){
+    const incoming=checked(data).map(c=>{if(own)return c;const{edited_at,...rest}=c;return rest});kept=0;
     (data.deleted_ids||[]).forEach(id=>{const local=items.find(c=>identity(c)===id);if(local&&local.edited_at){kept++;return}deleted.add(id)});
     items=items.filter(c=>!deleted.has(identity(c)));
     const have=new Set(items.map(identity));let n=0;
@@ -115,15 +116,17 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
     return n;
   }
   const keptNote=()=>kept?` ${kept} comment${kept>1?"s":""} edited here ${kept>1?"were":"was"} kept although the file records ${kept>1?"them":"it"} as deleted.`:"";
-  const notes=[];
-  try{const own=localStorage.getItem(STORE);if(own){try{merge(JSON.parse(own))}catch(e){try{localStorage.setItem(STORE+"|unreadable",own)}catch(_){}throw e}}else{const legacy=localStorage.getItem(KEY);if(legacy)merge(JSON.parse(legacy))}}catch(e){notes.push("Stored comments could not be loaded for this revision (a copy is kept in browser storage under the suffix |unreadable). Load a matching exported file.")}
+  const notes=[];let frozen=false;
+  // An unreadable own record is copied to STORE|unreadable before anything may overwrite it. If that copy fails,
+  // storage for this revision is frozen (persist() writes nothing) so the original is never lost.
+  try{const own=localStorage.getItem(STORE);if(own){try{merge(JSON.parse(own),true)}catch(e){try{localStorage.setItem(STORE+"|unreadable",own);notes.push("Stored comments could not be loaded for this revision; a copy is kept in browser storage under the suffix |unreadable. Load a matching exported file.")}catch(_){frozen=true;notes.push("Stored comments could not be loaded for this revision and could not be copied, so browser storage for this revision is left unchanged. Use Save comments or Copy before closing.")}}}else{const legacy=localStorage.getItem(KEY);if(legacy)merge(JSON.parse(legacy))}}catch(e){notes.push("Stored comments could not be loaded for this revision. Load a matching exported file.")}
   // Comments kept for other revisions of this page are never shown here; say so, so they are not taken as lost.
   try{const others=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k!==STORE&&k.startsWith(KEY+"|")&&!k.endsWith("|unreadable")){try{others.push([k.slice(KEY.length+1),(JSON.parse(localStorage.getItem(k)).comments||[]).length])}catch(e){}}}
     const n=others.reduce((s,o)=>s+o[1],0);if(n)notes.push(`${n} comments are stored in this browser for other revisions of this report (${others.map(o=>o[0]).join(", ")}). They are not merged into this revision; a review copy generated from that revision can Save or Copy them.`)}catch(e){}
   if(notes.length)$("#rv-status").textContent=notes.join(" ");
   let pending=null;
   const record=()=>({page:PAGE,report_version:VERSION,comments:items,deleted_ids:[...deleted]});
-  const persist=()=>{try{localStorage.setItem(STORE,JSON.stringify(record()))}catch(e){$("#rv-status").textContent="Browser storage unavailable — use Save comments before closing."}};
+  const persist=()=>{if(frozen){$("#rv-status").textContent="Browser storage for this revision is left unchanged (its unreadable record could not be copied). Use Save comments or Copy before closing.";return}try{localStorage.setItem(STORE,JSON.stringify(record()))}catch(e){$("#rv-status").textContent="Browser storage unavailable — use Save comments before closing."}};
   function sectionOf(node){
     let el=node.nodeType===1?node:node.parentElement;
     while(el&&el!==document.body){
@@ -163,7 +166,7 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
   const getDir=async()=>{try{return await idb("readonly",s=>s.get(KEY))}catch(e){return null}};
   const putDir=async d=>{try{await idb("readwrite",s=>s.put(d,KEY))}catch(e){}};
   async function mergeFrom(dir){
-    let fh;try{fh=await dir.getFileHandle(NAME)}catch(e){if(e.name==="NotFoundError")return 0;throw e}
+    kept=0;let fh;try{fh=await dir.getFileHandle(NAME)}catch(e){if(e.name==="NotFoundError")return 0;throw e}
     const n=merge(JSON.parse(await (await fh.getFile()).text()));
     persist();render();highlight();return n;
   }

@@ -13,7 +13,7 @@ TOOL = Path(__file__).resolve().parents[1] / "make_review_copy.py"
 
 @unittest.skipUnless(shutil.which("node"), "Node is required")
 class ReviewIntegrityTests(unittest.TestCase):
-    def run_js(self, assertions, stored=None, extra=None):
+    def run_js(self, assertions, stored=None, extra=None, pre=""):
         source = TOOL.read_text(encoding="utf-8")
         script = re.search(r'<script id="rv-script">(.*?)</script>', source, re.S)[1]
         script = script.replace("})();", "globalThis.test={mergeFrom,render,payload,get:()=>items,set:v=>items=v};})();")
@@ -29,6 +29,7 @@ global.indexedDB={open:()=>{throw Error('unavailable')}};
 """
         initial = "storage.set('__KEY__'," + json.dumps(stored) + ");\n" if stored is not None else ""
         initial += "".join(f"storage.set({json.dumps(k)},{json.dumps(v)});\n" for k, v in (extra or {}).items())
+        initial += pre + "\n"
         harness = harness.replace("global.localStorage={", "global.localStorage={get length(){return storage.size},key:i=>[...storage.keys()][i]??null,")
         program = harness + initial + script + "\n(async()=>{\n" + assertions + "\n})().catch(e=>{console.error(e);process.exitCode=1});"
         result = subprocess.run(["node", "-e", program], capture_output=True, text=True)
@@ -164,6 +165,46 @@ test.set([{id:'new',quote:'q',comment:'new',at:'b'}]);
 nodes.get('#rv-list').events.input({target:{dataset:{i:'0'},value:'edited'}});
 assert.equal(storage.get('__KEY__|__VERSION__|unreadable'),'{not json');
 """, extra={"__KEY__|__VERSION__": "{not json", "__KEY__|older": older})
+
+    def test_imported_edit_timestamp_does_not_protect_against_deletion(self):
+        self.run_js("""
+const load=data=>{global.FileReader=class{readAsText(){this.result=JSON.stringify(data);this.onload()}};nodes.get('#rv-load').events.change({target:{files:[{}],value:'x'}})};
+load({page:'__PAGE__',report_version:'__VERSION__',comments:[{id:'one',quote:'q',comment:'theirs',at:'a',edited_at:'remote'}]});
+assert.equal(test.get().length,1);
+load({page:'__PAGE__',report_version:'__VERSION__',comments:[],deleted_ids:['one']});
+assert.equal(test.get().length,0);
+assert.deepEqual(JSON.parse(test.payload()).deleted_ids,['one']);
+""")
+
+    def test_local_edit_protection_survives_reload_from_own_store(self):
+        own = json.dumps({"page": "__PAGE__", "report_version": "__VERSION__", "comments": [{"id": "one", "quote": "q", "comment": "mine", "at": "a", "edited_at": "t"}], "deleted_ids": []})
+        self.run_js("""
+global.FileReader=class{readAsText(){this.result=JSON.stringify({page:'__PAGE__',report_version:'__VERSION__',comments:[],deleted_ids:['one']});this.onload()}};
+nodes.get('#rv-load').events.change({target:{files:[{}],value:'x'}});
+assert.equal(test.get().length,1);
+assert.equal(test.get()[0].comment,'mine');
+""", extra={"__KEY__|__VERSION__": own})
+
+    def test_failed_backup_of_unreadable_store_blocks_overwrite(self):
+        self.run_js("""
+assert.match(nodes.get('#rv-status').textContent,/could not be copied/);
+test.set([{id:'new',quote:'q',comment:'new',at:'b'}]);
+nodes.get('#rv-list').events.input({target:{dataset:{i:'0'},value:'edited'}});
+assert.equal(storage.get('__KEY__|__VERSION__'),'{not json');
+assert.match(nodes.get('#rv-status').textContent,/Save comments/);
+""", extra={"__KEY__|__VERSION__": "{not json"},
+            pre="const realSet=global.localStorage.setItem;global.localStorage.setItem=function(k,v){if(k.endsWith('|unreadable'))throw Error('quota');return realSet.call(this,k,v)};")
+
+    def test_kept_count_does_not_leak_into_next_folder_operation(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'old',at:'a'}]);
+nodes.get('#rv-list').events.input({target:{dataset:{i:'0'},value:'edited here'}});
+const del={page:'__PAGE__',report_version:'__VERSION__',comments:[],deleted_ids:['one']};
+await test.mergeFrom({getFileHandle:async()=>({getFile:async()=>({text:async()=>JSON.stringify(del)})})});
+global.window={showDirectoryPicker:async()=>({name:'empty',getFileHandle:async()=>{throw Object.assign(Error('none'),{name:'NotFoundError'})}})};
+await nodes.get('#rv-change').events.click();
+assert.doesNotMatch(nodes.get('#rv-status').textContent,/edited here/);
+""")
 
     def test_save_falls_back_to_download_when_folder_export_is_malformed(self):
         self.run_js("""
