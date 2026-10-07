@@ -5,7 +5,7 @@
 # WHY THIS EXISTS
 # The bundles are the ONLY copy of ~110 GB of data whose sources were deleted on
 # 2026-08-02. They live under /mnt/ace, which Samba exports as [ace_drive] with
-# `guest ok = yes`, `public = yes` AND `force user = vamsee`. Because guests are
+# `guest ok = yes`, `public = yes` AND `force user = <owner>`. Because guests are
 # mapped to the owning user, unix permissions do NOT protect these files — any
 # LAN device can delete or truncate them. Detection is the available control, so
 # this runs on a schedule and shouts when something moves.

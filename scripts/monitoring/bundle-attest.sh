@@ -4,7 +4,7 @@
 #
 # WHY THIS AND NOT PERMISSIONS
 # /mnt/ace is exported by Samba as [ace_drive] with `guest ok = yes`,
-# `public = yes` AND `force user = vamsee` / `force group = vamsee`. Because
+# `public = yes` AND `force user = <owner>` / `force group = <owner>`. Because
 # every SMB guest is mapped to the owning user, unix permissions give NO
 # protection whatsoever on this share — chmod would be theatre. age already
 # authenticates content, so tampering surfaces as a decryption failure. The

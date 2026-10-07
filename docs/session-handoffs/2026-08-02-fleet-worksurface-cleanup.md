@@ -76,7 +76,7 @@ attestations rewritten. Scripts are ready.
 
 ### 2. Bundles sit on an unauthenticated writable SMB share
 `/etc/samba/smb.conf` `[ace_drive]`: `guest ok = yes`, `public = yes`,
-**`force user = vamsee`**. Because guests are mapped to the owner, unix
+**`force user = <owner>`**. Because guests are mapped to the owner, unix
 permissions give **zero** protection — `chmod` here is theatre. Any LAN device
 can delete or truncate the bundles, which are the sole copy of their contents.
 
