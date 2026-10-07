@@ -35,10 +35,10 @@
     "codex-owner": {
       "access": "full",
       "buckets": null,
-      "captured_at": "2026-10-07T03:17:29+00:00",
+      "captured_at": "2026-10-07T04:21:15+00:00",
       "fingerprint": "78d7e174f2d1",
       "five_hour_pct": null,
-      "headroom_pct": 60.0,
+      "headroom_pct": 100.0,
       "holder": "owner",
       "hosts": [
         "ace-linux-1",
@@ -56,16 +56,16 @@
       "sampled_on": "fleet-collector",
       "source": "app-server-live",
       "tier": "pro",
-      "week_pct": 40,
-      "week_resets_at": "2026-10-09T22:10:35+00:00"
+      "week_pct": 0,
+      "week_resets_at": "2026-10-14T04:04:15+00:00"
     },
     "codex-professional": {
       "access": "limited",
       "buckets": null,
-      "captured_at": "2026-10-07T03:18:01+00:00",
+      "captured_at": "2026-10-07T04:21:47+00:00",
       "fingerprint": "c0c130b8018b",
       "five_hour_pct": null,
-      "headroom_pct": 81.0,
+      "headroom_pct": 100.0,
       "holder": "colleague",
       "hosts": [
         "ace-win-1",
@@ -79,11 +79,11 @@
       "sampled_on": "ace-win-1",
       "source": "app-server-live",
       "tier": "pro",
-      "week_pct": 19,
-      "week_resets_at": "2026-10-09T21:19:09+00:00"
+      "week_pct": 0,
+      "week_resets_at": "2026-10-14T04:21:15+00:00"
     }
   },
-  "generated_at": "2026-10-07T03:17:32+00:00",
+  "generated_at": "2026-10-07T04:21:18+00:00",
   "generated_by": "fleet-collector collect_account_usage_fleet",
   "hosts": {
     "ace-linux-1": {
@@ -91,7 +91,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-07T03:17:14+00:00",
+      "captured_at": "2026-10-07T04:20:58+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -106,7 +106,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-07T03:17:17+00:00",
+      "captured_at": "2026-10-07T04:21:01+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -121,7 +121,7 @@
         "claude": "claude-professional",
         "codex": "codex-professional"
       },
-      "captured_at": "2026-10-07T03:18:01+00:00",
+      "captured_at": "2026-10-07T04:21:47+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "c0c130b8018b"
@@ -133,21 +133,18 @@
         "claude": "claude-professional",
         "codex": "codex-professional"
       },
-      "captured_at": "2026-10-07T03:17:56+00:00",
+      "captured_at": "2026-10-07T04:21:40+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
       },
-      "reachable": true,
-      "unavailable": {
-        "claude": "access token expired; a Claude Code session on this host will refresh it"
-      }
+      "reachable": true
     },
     "fleet-collector": {
       "accounts": {
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-07T03:17:29+00:00",
+      "captured_at": "2026-10-07T04:21:15+00:00",
       "fingerprints": {
         "codex": "78d7e174f2d1"
       },
@@ -161,7 +158,7 @@
         "claude": "claude-owner",
         "codex": "codex-owner"
       },
-      "captured_at": "2026-10-07T03:17:18+00:00",
+      "captured_at": "2026-10-07T04:21:02+00:00",
       "fingerprints": {
         "claude": "78d7e174f2d1",
         "codex": "78d7e174f2d1"
@@ -182,16 +179,19 @@
       "reason": "no live sample for any account"
     },
     "codex": {
-      "account": "codex-professional",
+      "account": "codex-owner",
       "alternative": {
-        "account": "codex-owner",
-        "headroom_pct": 60.0
+        "account": "codex-professional",
+        "headroom_pct": 100.0
       },
-      "headroom_pct": 81.0,
+      "headroom_pct": 100.0,
       "hosts": [
-        "ace-win-1",
-        "ace-win-2"
-      ]
+        "ace-linux-1",
+        "ace-linux-2",
+        "fleet-collector",
+        "gpu-claw"
+      ],
+      "note": "within 15 pts of codex-professional: stay on whichever host you are on"
     }
   },
   "schema_version": 1,
