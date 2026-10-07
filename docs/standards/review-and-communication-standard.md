@@ -36,7 +36,7 @@ The owner’s “stick with facts” governs presentation. Requests to simplify 
 
 ## 3.1 When an HTML page is required
 
-Reports submitted for review, substantive plans, decision gates and human-review packs require a local HTML page. A batch of owner decisions belongs on a decision board; chat identifies the page and new cards. A single trivial clarification may remain in chat.
+Reports submitted for review, substantive plans, decision gates and human-review packs require a local HTML page. Every owner decision, single or batched, belongs on a decision board; chat identifies the page and new cards (owner instruction, 2026-10-07; rule `.claude/rules/human-decision-boards.md`). Only a factual question with no options may remain in chat.
 
 Every reviewable engineering result requires human review before acceptance or issue. A review copy is not an issued deliverable, and saving comments is not acceptance.
 
