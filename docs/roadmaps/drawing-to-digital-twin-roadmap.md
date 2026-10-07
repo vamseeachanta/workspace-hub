@@ -2,8 +2,8 @@
 
 **Date:** 2026-09-29 · **Owner intent:** "our vision is also to get to this stage" (owner, 2026-09-29, on a
 ShipReality ShipHULL announcement) · **Tracking epic:** [digitalmodel #2272](https://github.com/vamseeachanta/digitalmodel/issues/2272) · **Related:** `.planning/ROADMAP.md` Phase 999.1 "Ship Plan CAD Pipeline" (WRK-5055),
-digitalmodel #2170 (HullProd screening), #2191 / #2241 (parametric forms), #1004 (CAD inventory),
-#1839 (defendable hydrodynamic coefficients), llm-wiki source page
+[digitalmodel#2170](https://github.com/vamseeachanta/digitalmodel/issues/2170) (HullProd screening), [digitalmodel#2191](https://github.com/vamseeachanta/digitalmodel/issues/2191) / [digitalmodel#2241](https://github.com/vamseeachanta/digitalmodel/issues/2241) (parametric forms), [digitalmodel#1004](https://github.com/vamseeachanta/digitalmodel/issues/1004) (CAD inventory),
+[digitalmodel#1839](https://github.com/vamseeachanta/digitalmodel/issues/1839) (defendable hydrodynamic coefficients), llm-wiki source page
 `naval-architecture/sources/shipreality-2026-shiphull-2d-to-3d-reconstruction.md`.
 
 ## Target state (the benchmark)
