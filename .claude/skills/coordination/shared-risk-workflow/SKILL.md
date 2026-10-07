@@ -20,8 +20,9 @@ Report all six output fields: `risk_class`, `authorization_assessment`,
 `action_boundary`, `metric_advice`, `reuse_assessment`, `reason_codes`.
 Exit 0 means an assessment was produced; it is not permission. Historical metrics
 do not grant or revoke authority. An unverified reference never satisfies an
-approval gate by itself. Substantial unapproved work and consequential actions
-require independently established matching authorization before execution.
+approval gate by itself. Substantial implementation will use originating task authority without separate
+plan approval. Consequential actions require explicit authorization for the action and destination;
+implementation authority alone does not cover them. Reuse authorization already given.
 
 When comparing prior verification, supply complete dependency keys and actual
 evidence content through the documented receipt input. Treat

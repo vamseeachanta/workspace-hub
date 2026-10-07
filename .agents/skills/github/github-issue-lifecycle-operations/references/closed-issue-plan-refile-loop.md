@@ -16,6 +16,9 @@ tags: [planning, github, review, governance, refile]
 
 # Closed-Issue Plan Re-file Loop
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use when a plan issue was previously closed or parked because of review infrastructure limits, governance drift, or other meta blockers, and you need to revive it safely.
 
 ## When this fits
@@ -79,4 +82,4 @@ Good end state after a first re-file pass:
 - governance comment posted
 - no `status:plan-review` label yet if MAJOR findings remain
 
-Only after the fresh review wave is approval-ready should the issue advance back into the normal `status:plan-review` -> user approval flow.
+Only after the fresh review wave is approval-ready should the issue advance back into the reviewed, task-authorized execution flow without a separate plan-approval prerequisite.

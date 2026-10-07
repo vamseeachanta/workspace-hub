@@ -167,7 +167,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `plan-gated-overnight-queue-partition`
 
 - Former skill demoted to `references/plan-gated-overnight-queue-partition.md`.
-- Preserved insight: Partition a plan-gated GitHub queue before launching overnight work so ineligible pre-approval issues are routed to planning/review lanes and only approved issues are used for merge-capable execution.
+- Preserved insight: Partition a plan-gated GitHub queue before launching overnight work so review-blocked or out-of-scope issues are routed to planning and scope-authorized issues proceed to implementation; merging retains action-specific authority.
 
 ### `verify-claude-run-commit-vs-working-tree-before-closing`
 

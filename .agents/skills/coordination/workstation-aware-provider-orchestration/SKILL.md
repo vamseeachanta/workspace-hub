@@ -10,6 +10,10 @@ related_skills:
   - licensed-machine-prompt-orchestration
   - ace-linux-1-control-surface
 ---
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided. Preserve owner-controlled approval history without self-labeling.
+
 
 # Workstation-Aware Provider Orchestration
 
@@ -42,7 +46,7 @@ Design or operate a central AI workflow control plane that combines provider quo
 1. **Open or update a GitHub issue first**
    - Use `gh-work-planning` and `github-issues`.
    - Capture the objective, workstation priority, provider urgency, and hard gates.
-   - Do not launch implementation until `status:plan-approved` is present unless the task is planning/review-only.
+   - Launch reviewed implementation within task/standing authority without an approval label or marker. Honor planning-only requests and unresolved domain decisions.
 
 2. **Refresh provider telemetry**
    ```bash
@@ -106,7 +110,7 @@ When a provider credit expires within about 24 hours:
 
 1. Refresh telemetry and read provider work queue.
 2. Reconcile telemetry with the user's visible account state.
-3. Shortlist plan-approved issues matching that provider.
+3. Shortlist reviewed issues within task/standing authority matching that provider.
 4. For Codex, prefer tests, implementation, repair, cleanup, and crisp execution issues.
 5. Assign first to `ace-linux-1`; use `ace-linux-2` for overflow only if readiness and zero-git-contention are verified.
 6. Generate self-contained prompts/commands per issue/workstation.
@@ -262,7 +266,7 @@ Use this when a control-plane workstation reboots or a context handoff indicates
    - If a worker must be restarted, use repo-owned prompt/script artifacts rather than `/tmp` prompts whenever they exist.
 
 3. **Set off future work last**
-   - Launch only plan-approved implementation lanes, or planning/review-only lanes for unapproved issues.
+   - Launch reviewed implementation lanes within task/standing authority; use planning/review-only lanes where the user limits scope or blocking decisions/findings remain.
    - Keep ace-linux-1 as GitHub mutation/control plane and ace-linux-2 as overflow worker unless auth/readiness proves otherwise.
    - Persist reusable launch prompts and scripts inside the repo ecosystem, preferably under `docs/plans/machine-prompts/<date>/...` and `scripts/operations/agent-execution/`, then validate (`bash -n`, `--help`, dry-run) before committing.
    - Record final reconciliation with issue links, commit SHAs, validation results, remaining sessions, and blockers.
@@ -322,7 +326,7 @@ Use `cronjob(action='update')` to retarget an existing burn/controller job when 
 ## Pitfalls
 
 - Treating a stale quota script as more authoritative than user-visible expiring-credit evidence.
-- Dispatching implementation for issues that are not `status:plan-approved`.
+- Dispatching implementation outside task/standing authority, against planning-only limits, or with unresolved domain decisions/blocking review findings.
 - Letting `ace-linux-2` become an untracked peer control plane instead of a worker/overflow node.
 - Routing by provider only and ignoring workstation readiness or git contention.
 - Assuming a clean child repo means the workspace-hub root is clean enough for root-level work.

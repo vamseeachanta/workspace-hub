@@ -10,4 +10,7 @@ metadata:
 
 # Plan-Gated Issue Implementation
 
-For repos enforcing plan-approval gates, verify the issue has `status:plan-approved` before starting. Execute in parallel: (1) check for existing deliverables on disk, (2) read the issue comment history for prior context, (3) validate artifacts against source surfaces for accuracy and terminology. This prevents duplicate work and ensures implementation aligns with approved plans before creating new artifacts.
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
+For repos enforcing plan-approval gates, verify current task authority and reviewed scope before starting; a separate approval label is not required. Execute in parallel: (1) check for existing deliverables on disk, (2) read the issue comment history for prior context, (3) validate artifacts against source surfaces for accuracy and terminology. This prevents duplicate work and ensures implementation aligns with approved plans before creating new artifacts.

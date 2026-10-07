@@ -20,6 +20,9 @@ triggers:
 
 # Provider Utilization Scorecard
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use this when the goal is to operationalize weekly credit utilization across Claude, Codex, and Gemini instead of just giving static advice.
 
 ## Canonical inputs
@@ -151,9 +154,9 @@ For the recurring ACE/workspace-hub pipeline, route work by value-chain stage:
 ## Package lifecycle gate
 
 Every provider package should follow:
-GitHub issue -> resource intelligence -> canonical plan -> adversarial plan review -> user approval -> status:plan-approved -> implementation -> adversarial implementation review -> closeout.
+GitHub issue -> resource intelligence -> canonical plan -> adversarial plan review -> verify task authority -> implementation -> adversarial implementation review -> closeout.
 
-Never dispatch implementation from status:plan-review. A package is execution-ready only when it has a GitHub issue, canonical plan under docs/plans, plan review artifacts, explicit approval, status:plan-approved, an agent/provider label, and clear closeout criteria.
+A package is execution-ready when task authority covers its scope, with a GitHub issue, canonical plan, valid adversarial review, provider routing and closeout criteria. Review/approval labels and local markers are not prerequisites.
 
 ## Dispatch rule
 
@@ -161,5 +164,5 @@ Use this loop after refreshing the scorecard:
 - If Codex is below the burn line, dispatch the next status:plan-approved implementation/test/refactor package.
 - If Gemini daily use is below target, dispatch the next 5-6 task recon/research batch.
 - If Claude has review backlog, dispatch plan or implementation review packages.
-- If no approved implementation work exists, pause coding and spend Claude/Gemini on refilling the plan-review and approval pipeline.
+- If no reviewed implementation within task authority exists, spend providers on planning/review and resolving genuine scope or domain gaps.
 - If a provider is ahead of target, reserve it for reviews, failures, and closeout.

@@ -6,6 +6,11 @@ description: Critical limitations of delegate_task subagents — sandbox isolati
 
 # Subagent Sandbox Limitations
 
+## Current task authority
+
+The originating task request or established standing authority authorizes implementation within scope, including substantial work, after proportionate planning, TDD and adversarial review. No separate plan approval, approval label or local marker is required. Honor planning-only requests and unresolved domain decisions. Publication, deployment, access changes, destructive actions and outreach retain their action-specific authority. Preserve historical approval records; do not self-label owner approval.
+
+
 ## Critical: Subagents CANNOT write to repos
 
 delegate_task subagents run in **isolated sandboxes**. This means:
@@ -19,7 +24,7 @@ This was discovered during overnight batch execution on 2026-04-06 when multiple
 
 ## Gated issue-batch recon pattern
 
-When the user asks to “tackle all of them with subagents” but implementation is blocked by missing live issues, missing plan approval, or a repo `git`/`gh` scope guard, use subagents for **parallel read-only recon** only. Split by independent issue/domain lanes, ask each subagent for implementation-ready findings and TDD-first test lists, then write one synthesis artifact from the main session. Do not describe this as implementation complete; report the exact remaining gate.
+When the user asks to “tackle all of them with subagents” but implementation is blocked by missing live issues, missing task authority or blocking review/domain decisions, or a repo `git`/`gh` scope guard, use subagents for **parallel read-only recon** only. Split by independent issue/domain lanes, ask each subagent for implementation-ready findings and TDD-first test lists, then write one synthesis artifact from the main session. Do not describe this as implementation complete; report the exact remaining gate.
 
 See `references/gated-issue-batch-parallel-recon.md` for the artifact shape and prompt pattern.
 

@@ -1,5 +1,8 @@
 # Weekly-cadence / code-utility roadmap pattern
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use this reference when a user asks how to keep an LLM wiki continuously up to date and more useful for engineering/code development.
 
 ## Durable recommendation shape
@@ -51,7 +54,7 @@ For each proposed issue:
 - generate a plan artifact under `docs/plans/YYYY-MM-DD-issue-NN-<slug>.md`
 - verify each plan includes: summary, evidence, scope boundaries, implementation phases, file map, tests/validation, public-safety constraints, risks, acceptance criteria, dependencies, and approval gate
 - comment on the issue linking the plan artifact
-- keep implementation blocked until adversarial plan review and explicit user approval
+- complete adversarial plan review, verify task authority and resolve genuine domain blockers before implementation
 
 ## Anti-patterns
 
