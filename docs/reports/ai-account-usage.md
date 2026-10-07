@@ -1,6 +1,6 @@
 # AI account usage (fleet)
 
-Generated 2026-10-07T14:16:27+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-07T15:14:46+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
@@ -11,10 +11,10 @@ Generated 2026-10-07T14:16:27+00:00 by fleet-collector collect_account_usage_fle
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 0% | 9% | 91% | 2026-10-10T14:00:00.465896+00:00 | ace-linux-2 | oauth-api |
+| claude-owner | claude | owner | 4% | 9% | 91% | 2026-10-10T13:59:59.584579+00:00 | ace-linux-2 | oauth-api |
 | claude-professional | claude | colleague |  |  |  |  |  | unavailable |
-| codex-owner | codex | owner |  | 1% | 99% | 2026-10-14T04:04:15+00:00 | fleet-collector | app-server-live |
-| codex-professional | codex | colleague |  | 0% | 100% | 2026-10-14T14:16:24+00:00 | ace-win-1 | app-server-live |
+| codex-owner | codex | owner |  | 2% | 98% | 2026-10-14T04:04:15+00:00 | fleet-collector | app-server-live |
+| codex-professional | codex | colleague |  | 0% | 100% | 2026-10-14T14:37:24+00:00 | ace-win-1 | app-server-live |
 
 ## Hosts
 
@@ -22,7 +22,7 @@ Generated 2026-10-07T14:16:27+00:00 by fleet-collector collect_account_usage_fle
 |---|---|---|---|---|
 | ace-linux-1 | yes | claude-owner | codex-owner |  |
 | ace-linux-2 | yes | claude-owner | codex-owner |  |
-| gpu-claw | yes | claude-owner | codex-owner | claude: access token expired; a Claude Code session on this host will refresh it |
+| gpu-claw | yes | claude-owner | codex-owner | claude: credentials file has no accessToken |
 | ace-win-2 | yes | claude-professional | codex-professional |  |
 | ace-win-1 | yes | claude-professional | codex-professional |  |
 | fleet-collector | yes |  | codex-owner | claude: credentials file has no accessToken |
