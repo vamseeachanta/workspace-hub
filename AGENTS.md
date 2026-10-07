@@ -13,6 +13,7 @@
 - Classify execution per docs/standards/PARALLEL_FIRST_EXECUTION.md; concurrent sessions use ../llm-wiki/scripts/coordination/claim.py and ../llm-wiki/coordination/AGENT_SESSION_PROTOCOL.md from this hub root. Verify the issue repository/backend and shared lock root; held claims or unavailable coordination block affected shared work. Write a handoff before stopping.
 - Isolate disjoint write lanes per docs/standards/SUBAGENT_CONTEXT_ISOLATION.md; verify outputs and serialize integration/commit/push/closeout.
 - Use uv run for Python. Commit/push within authorization; use isolated worktrees for parallel work.
+- Git path to main: branch → PR → merge per .claude/rules/merge-authorization.md. Never push to or rewrite main; --force-with-lease only on your own PR branch; never bypass hooks (--no-verify, core.hooksPath).
 - Readiness: docs/standards/MODEL_RELEASE_READINESS_CONTRACT.md and docs/standards/MODEL_RELEASE_UPGRADE_PLAYBOOK.md.
 ## Data and closeout
 - Follow docs/architecture/agent-data-handling-contract.md before discovering, saving or using data.
