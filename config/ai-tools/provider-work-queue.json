@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-07T17:21:13.122553Z",
+  "generated_at": "2026-10-07T21:21:12.020355Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-07T17:21:11.147496Z",
+  "scorecard_generated_at": "2026-10-07T21:21:09.682357Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -2863,7 +2863,7 @@
             "lane:codex",
             "gate:completeness-v2"
           ],
-          "updatedAt": "2026-10-07T11:54:21Z",
+          "updatedAt": "2026-10-07T21:02:37Z",
           "execution_ready": false,
           "priority_rank": 2,
           "suggested_provider": "claude",
@@ -4061,7 +4061,7 @@
           "title": "Retire legal-sanity-scan and move identifier verification to final reports",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3936",
           "labels": [],
-          "updatedAt": "2026-10-06T23:14:22Z",
+          "updatedAt": "2026-10-07T19:15:02Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
