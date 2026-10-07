@@ -68,7 +68,7 @@ if [ -n "$PULL_FROM" ]; then
 
   echo "=== runtime-reference scan on $PULL_FROM for $SRC ==="
   hits=$($RSH "$PULL_FROM" "
-    { crontab -l 2>/dev/null; cat ~/.config/systemd/user/* 2>/dev/null;
+    { crontab -l 2>/dev/null; sed -n p ~/.config/systemd/user/* 2>/dev/null;
       cat ~/.deckhand/*.env ~/.hermes/*.env 2>/dev/null; } | grep -F -- '$SRC' || true")
   if [ -n "$hits" ]; then
     echo "$hits"; die "$SRC is a live runtime dependency on $PULL_FROM — cut the service over first"
