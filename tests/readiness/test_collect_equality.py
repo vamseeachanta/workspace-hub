@@ -141,6 +141,40 @@ def test_collect_machine_override(tmp_path):
     assert yaml.safe_load(res.stdout)["machine"] == "licensed-win-2"
 
 
+def test_collect_public_host_replaces_private_hostname(tmp_path):
+    # The Windows wrapper exports EQ_PUBLIC_HOST=<fleet label>; tracked evidence must
+    # carry that label, never the private OS hostname.
+    ws = _fixture(tmp_path)
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    hostname = bin_dir / "hostname"
+    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' private-box-07\n")
+    hostname.chmod(0o755)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        env={"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{bin_dir}:{BASH_PATH}",
+             "EQ_PUBLIC_HOST": "dev-primary"},
+        capture_output=True, text=True, timeout=60)
+    assert res.returncode == 0, res.stderr
+    assert "private-box-07" not in res.stdout
+    assert yaml.safe_load(res.stdout)["host"] == "dev-primary"
+
+
+def test_collect_host_defaults_to_os_hostname_without_public_host(tmp_path):
+    ws = _fixture(tmp_path)
+    bin_dir = tmp_path / "bin"
+    bin_dir.mkdir()
+    hostname = bin_dir / "hostname"
+    hostname.write_text("#!/usr/bin/env bash\nprintf '%s\\n' linux-box\n")
+    hostname.chmod(0o755)
+    res = subprocess.run(
+        ["bash", str(SCRIPT), "--stdout", "--machine", "dev-primary"],
+        env={"WORKSPACE_HUB": _bash_path(ws), "PATH": f"{bin_dir}:{BASH_PATH}"},
+        capture_output=True, text=True, timeout=60)
+    assert res.returncode == 0, res.stderr
+    assert yaml.safe_load(res.stdout)["host"] == "linux-box"
+
+
 def test_collect_windows_autodetect_unknown_host_fails_closed(tmp_path):
     ws = _fixture(tmp_path)
     bin_dir = tmp_path / "bin"
