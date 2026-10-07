@@ -2,7 +2,7 @@
 """Record the report comment tutorial using headless Microsoft Edge.
 
 Run:
-    D:\\ws\\digitalmodel\\.venv\\Scripts\\python.exe make_comment_gif.py
+    python make_comment_gif.py
 """
 
 from __future__ import annotations

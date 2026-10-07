@@ -29,7 +29,12 @@ Each saved file records:
 - `page`, `report_version` (source SHA-256 prefix and modification time), `report_folder` and `exported_at`;
 - for every comment: `quote`, `section` (nearest heading), `data_src` (for traced values), `comment` and `at`.
 
-Comments also carry a stable `id`; `deleted_ids` retains deletion records. Save, Load and folder merge all merge rather than replace: current edits win over older versions of the same comment, deletion records are combined (a deletion recorded in an imported file removes the comment even if it was edited here), and deleted comments are not restored. Comments stored for other revisions are announced on open but not merged; open that revision's review copy to Save or Copy them. If the folder's export belongs to another revision, Save leaves it unchanged and downloads instead. They require the same page and report revision. Browser storage is kept per revision (`KEY|revision`); the bare `KEY` entry (a legacy array or another revision's record) is read once, adopted only if it matches this revision, and never overwritten. Legacy exported files with matching revision metadata are accepted. A download request does not establish that the file was saved: confirm its location and existence.
+Comments also carry a stable `id`, and `edited_at` once edited here; `deleted_ids` retains deletion records. Save, Load and folder merge all merge rather than replace:
+- A comment already present here keeps its local text; an incoming copy with the same `id` is ignored. No time comparison is made.
+- Deletion records are combined, and deleted comments are not restored.
+- An imported deletion record does not remove a comment edited here (`edited_at` set). The edit is kept and the status line reports how many were kept; delete it here if the deletion is intended.
+
+Comments stored in this browser for other revisions are announced on open but not merged. A review copy generated from that revision can Save or Copy them. If stored comments for this revision cannot be read, the unreadable record is copied to `KEY|revision|unreadable` before anything overwrites it. If the folder's export belongs to another revision or cannot be read or merged, Save leaves it unchanged and downloads instead. They require the same page and report revision. Browser storage is kept per revision (`KEY|revision`); the bare `KEY` entry (a legacy array or another revision's record) is read once, adopted only if it matches this revision, and never overwritten. Legacy exported files with matching revision metadata are accepted. A download request does not establish that the file was saved: confirm its location and existence.
 
 ## Ideas for comments (shown in the GIFs)
 
@@ -71,7 +76,7 @@ Offline integrity regressions require Python and Node:
 python -m unittest discover -s tools/html-review/tests -p test_integrity.py -v
 ```
 
-These tests cover revision rejection, edit/deletion preservation, imported-text escaping, parameter encoding and source overwrite rejection.
+These tests cover revision rejection, edit/deletion preservation (including an imported deletion of a locally edited comment), unreadable-storage preservation, Save fallback for a mismatched or malformed folder export, imported-text escaping, parameter encoding, source overwrite rejection, and that the committed demo review copy matches the current generator with no absolute folder path.
 
 ```bash
 python -m pytest tools/html-review/tests -q

@@ -43,6 +43,7 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
 #rv-status{font-size:11px;color:#6B7A83;padding:0 10px 8px}
 @media print{#rv-panel,#rv-btn{display:none}}
 </style>
+<noscript><div style="position:fixed;right:12px;bottom:12px;max-width:340px;background:#FBE7A8;color:#16252E;padding:8px 10px;border-radius:6px;font:13px system-ui;z-index:9998">Scripts are blocked in this view, so comments cannot be added. Save the file and open it from disk in Edge or Chrome.</div></noscript>
 <button id="rv-btn" type="button">Comment</button>
 <div id="rv-panel" aria-label="Review comments">
   <header><span>Review comments (<b id="rv-count">0</b>)</span>
@@ -66,25 +67,31 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
   const identity=c=>c.id||("legacy:"+JSON.stringify([c.quote,c.at]));
   function checked(data){
     if(!data||data.page!==PAGE||data.report_version!==VERSION) throw Object.assign(Error("Comments belong to a different report revision."),{name:"RevisionMismatch"});
-    if(!Array.isArray(data.comments)||data.comments.some(c=>!c||typeof c.quote!=="string"||typeof c.comment!=="string"||typeof c.at!=="string"||["id","section","data_src"].some(k=>c[k]!==undefined&&typeof c[k]!=="string"))) throw Error("Invalid comments file.");
+    if(!Array.isArray(data.comments)||data.comments.some(c=>!c||typeof c.quote!=="string"||typeof c.comment!=="string"||typeof c.at!=="string"||["id","section","data_src","edited_at"].some(k=>c[k]!==undefined&&typeof c[k]!=="string"))) throw Error("Invalid comments file.");
     if(data.deleted_ids!==undefined&&(!Array.isArray(data.deleted_ids)||data.deleted_ids.some(id=>typeof id!=="string"))) throw Error("Invalid deletion records.");
     return data.comments.map(c=>({...c,id:identity(c)}));
   }
   // Records are stored per revision (STORE). The bare KEY may hold a legacy array or another revision's record:
   // it is read once and adopted only when it matches this revision, and it is never written, so nothing is lost.
   const STORE=KEY+"|"+VERSION;
+  // An imported deletion record does not remove a comment edited here (edited_at): the local edit is kept and
+  // counted in `kept`, so a deletion made elsewhere never silently discards newer local text.
+  let kept=0;
   function merge(data){
-    const incoming=checked(data);
-    (data.deleted_ids||[]).forEach(id=>deleted.add(id));
+    const incoming=checked(data);kept=0;
+    (data.deleted_ids||[]).forEach(id=>{const local=items.find(c=>identity(c)===id);if(local&&local.edited_at){kept++;return}deleted.add(id)});
     items=items.filter(c=>!deleted.has(identity(c)));
     const have=new Set(items.map(identity));let n=0;
     incoming.forEach(c=>{if(!have.has(c.id)&&!deleted.has(c.id)){items.push(c);have.add(c.id);n++}});
     return n;
   }
-  try{const own=localStorage.getItem(STORE);if(own){merge(JSON.parse(own))}else{const legacy=localStorage.getItem(KEY);if(legacy)merge(JSON.parse(legacy))}}catch(e){$("#rv-status").textContent="Stored comments could not be loaded for this revision. Load a matching exported file."}
+  const keptNote=()=>kept?` ${kept} comment${kept>1?"s":""} edited here ${kept>1?"were":"was"} kept although the file records ${kept>1?"them":"it"} as deleted.`:"";
+  const notes=[];
+  try{const own=localStorage.getItem(STORE);if(own){try{merge(JSON.parse(own))}catch(e){try{localStorage.setItem(STORE+"|unreadable",own)}catch(_){}throw e}}else{const legacy=localStorage.getItem(KEY);if(legacy)merge(JSON.parse(legacy))}}catch(e){notes.push("Stored comments could not be loaded for this revision (a copy is kept in browser storage under the suffix |unreadable). Load a matching exported file.")}
   // Comments kept for other revisions of this page are never shown here; say so, so they are not taken as lost.
-  try{const others=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k!==STORE&&k.startsWith(KEY+"|")){try{others.push([k.slice(KEY.length+1),(JSON.parse(localStorage.getItem(k)).comments||[]).length])}catch(e){}}}
-    const n=others.reduce((s,o)=>s+o[1],0);if(n)$("#rv-status").textContent=`${n} comments are stored for other revisions of this report (${others.map(o=>o[0]).join(", ")}). Open that review copy and Save or Copy them; they are not merged into this revision.`}catch(e){}
+  try{const others=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k!==STORE&&k.startsWith(KEY+"|")&&!k.endsWith("|unreadable")){try{others.push([k.slice(KEY.length+1),(JSON.parse(localStorage.getItem(k)).comments||[]).length])}catch(e){}}}
+    const n=others.reduce((s,o)=>s+o[1],0);if(n)notes.push(`${n} comments are stored in this browser for other revisions of this report (${others.map(o=>o[0]).join(", ")}). They are not merged into this revision; a review copy generated from that revision can Save or Copy them.`)}catch(e){}
+  if(notes.length)$("#rv-status").textContent=notes.join(" ");
   let pending=null;
   const record=()=>({page:PAGE,report_version:VERSION,comments:items,deleted_ids:[...deleted]});
   const persist=()=>{try{localStorage.setItem(STORE,JSON.stringify(record()))}catch(e){$("#rv-status").textContent="Browser storage unavailable — use Save comments before closing."}};
@@ -115,7 +122,7 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
   $("#rv-btn").addEventListener("click",()=>{ if(!pending) return; $("#rv-btn").style.display="none"; $("#rv-quote").textContent="“"+pending.quote.slice(0,200)+"”"; $("#rv-edit").style.display="block"; $("#rv-text").value=""; $("#rv-text").focus(); });
   $("#rv-cancel").addEventListener("click",()=>{ $("#rv-edit").style.display="none"; pending=null; });
   $("#rv-add").addEventListener("click",()=>{ const txt=$("#rv-text").value.trim(); if(!pending||!txt) return; items.push({...pending,id:crypto.randomUUID(),comment:txt,at:new Date().toISOString()}); persist(); render(); highlight(); $("#rv-edit").style.display="none"; pending=null; $("#rv-status").textContent="Comment added. Save comments when done."; });
-  $("#rv-list").addEventListener("input",e=>{ if(e.target.dataset.i!==undefined){ items[+e.target.dataset.i].comment=e.target.value; persist(); } });
+  $("#rv-list").addEventListener("input",e=>{ if(e.target.dataset.i!==undefined){ const c=items[+e.target.dataset.i]; c.comment=e.target.value; c.edited_at=new Date().toISOString(); persist(); } });
   $("#rv-list").addEventListener("click",e=>{ if(e.target.dataset.del!==undefined){ deleted.add(identity(items[+e.target.dataset.del]));items.splice(+e.target.dataset.del,1); persist(); render(); } });
   const NAME="__EXPORT__.json";
   const payload=()=>JSON.stringify({...record(),report_folder:"__FOLDER__",exported_at:new Date().toISOString()},null,2);
@@ -138,27 +145,33 @@ mark.rv-hl{background:#FBE7A8;padding:0 1px}
     return dir;
   }
   $("#rv-save").addEventListener("click",async()=>{
-    let mismatch=false;
+    let note="";
     if (window.showDirectoryPicker) {
       try {
         const dir=await folder(true);
-        const merged=await mergeFrom(dir);
+        let merged;
+        // Any failure to read or merge the folder's existing export (other revision, malformed JSON, invalid records)
+        // leaves that file unchanged and falls back to a download; only permission and write failures stop Save.
+        try{merged=await mergeFrom(dir)}catch(e){if(["AbortError","SecurityError","NotAllowedError"].includes(e.name))throw e;e.fromMerge=true;throw e}
         const w=await (await dir.getFileHandle(NAME,{create:true})).createWritable(); await w.write(payload()); await w.close();
-        $("#rv-status").textContent=`Saved ${items.length} comments to ${dir.name}/${NAME}`+(merged?` (${merged} earlier comments merged in).`:".");
+        $("#rv-status").textContent=`Saved ${items.length} comments to ${dir.name}/${NAME}`+(merged?` (${merged} earlier comments merged in).`:".")+keptNote();
         $("#rv-folder").textContent=`Saving to: ${dir.name}/${NAME}`; return;
-      } catch(e) { mismatch=e.name==="RevisionMismatch"; if(!mismatch&&!["AbortError","SecurityError","NotAllowedError"].includes(e.name)){ $("#rv-status").textContent="Save stopped: "+e.message+" Choose another folder or use Copy.";return; } }
+      } catch(e) {
+        if(e.fromMerge) note=e.name==="RevisionMismatch"?`The folder's ${NAME} belongs to a different report revision and was left unchanged. `:`The folder's ${NAME} could not be merged (${e.message}) and was left unchanged. `;
+        else if(!["AbortError","SecurityError","NotAllowedError"].includes(e.name)){ $("#rv-status").textContent="Save stopped: "+e.message+" Choose another folder or use Copy.";return; }
+      }
     }
     const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([payload()],{type:"application/json"})); a.download=NAME; document.body.append(a); a.click(); a.remove();
-    $("#rv-status").textContent=(mismatch?`The folder's ${NAME} belongs to a different report revision and was left unchanged. `:"")+`Download requested for ${NAME} (${items.length} comments). Check the browser download location and confirm the file exists.`;
+    $("#rv-status").textContent=note+`Download requested for ${NAME} (${items.length} comments). Check the browser download location and confirm the file exists.`;
   });
-  $("#rv-change").addEventListener("click",async()=>{ try{ const dir=await window.showDirectoryPicker({id:"rv-report-folder",mode:"readwrite"}); const n=await mergeFrom(dir); await putDir(dir); $("#rv-folder").textContent=`Saving to: ${dir.name}/${NAME}`; $("#rv-status").textContent=n?`Loaded ${n} saved comments from ${dir.name}.`:`Folder set to ${dir.name}.`; }catch(e){$("#rv-status").textContent="Folder change stopped: "+e.message} });
+  $("#rv-change").addEventListener("click",async()=>{ try{ const dir=await window.showDirectoryPicker({id:"rv-report-folder",mode:"readwrite"}); const n=await mergeFrom(dir); await putDir(dir); $("#rv-folder").textContent=`Saving to: ${dir.name}/${NAME}`; $("#rv-status").textContent=(n?`Loaded ${n} saved comments from ${dir.name}.`:`Folder set to ${dir.name}.`)+keptNote(); }catch(e){$("#rv-status").textContent="Folder change stopped: "+e.message} });
   getDir().then(d=>{ $("#rv-folder").textContent=d?`Saving to: ${d.name}/${NAME}`:`First Save asks for the report folder: ${FOLDER}`; });
   $("#rv-copy").addEventListener("click",async()=>{
     const text=payload();
     try { await navigator.clipboard.writeText(text); $("#rv-status").textContent=`Copied ${items.length} comments; paste them into your reply email.`; }
     catch(e) { const t=document.createElement("textarea"); t.value=text; document.body.append(t); t.select(); try{document.execCommand("copy")}catch(_){} t.remove(); $("#rv-status").textContent="Copied (fallback). If nothing pasted, use Save comments."; }
   });
-  $("#rv-load").addEventListener("change",e=>{ const f=e.target.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ try{ const n=merge(JSON.parse(rd.result));persist(); render(); highlight(); $("#rv-status").textContent=`Loaded ${n} new comments; ${items.length} in total. Current edits and deletions are kept.`; }catch(err){ $("#rv-status").textContent="Load stopped: "+err.message; } }; rd.readAsText(f); e.target.value=""; });
+  $("#rv-load").addEventListener("change",e=>{ const f=e.target.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ try{ const n=merge(JSON.parse(rd.result));persist(); render(); highlight(); $("#rv-status").textContent=`Loaded ${n} new comments; ${items.length} in total. Comments already here keep their current text; deletion records are combined.`+keptNote(); }catch(err){ $("#rv-status").textContent="Load stopped: "+err.message; } }; rd.readAsText(f); e.target.value=""; });
   render(); highlight();
 })();
 </script>

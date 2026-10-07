@@ -2,7 +2,7 @@
 """Record an illustrated Windows voice-typing tutorial for the report.
 
 Run:
-    D:\\ws\\digitalmodel\\.venv\\Scripts\\python.exe make_voice_gif.py
+    python make_voice_gif.py
 
 The voice toolbar is a generic illustration. Dictated words are inserted
 programmatically; no Windows toolbar or microphone is controlled or recorded.

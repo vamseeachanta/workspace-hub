@@ -142,6 +142,62 @@ assert.match(nodes.get('#rv-status').textContent,/different report revision/i);
 assert.equal(test.get()[0].comment,'keep');
 """)
 
+    def test_imported_deletion_keeps_locally_edited_comment(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'old',at:'a'},{id:'two',quote:'q',comment:'plain',at:'b'}]);
+nodes.get('#rv-list').events.input({target:{dataset:{i:'0'},value:'edited here'}});
+global.FileReader=class{readAsText(){this.result=JSON.stringify({page:'__PAGE__',report_version:'__VERSION__',comments:[],deleted_ids:['one','two']});this.onload()}};
+nodes.get('#rv-load').events.change({target:{files:[{}],value:'x'}});
+assert.deepEqual(test.get().map(c=>c.id),['one']);
+assert.equal(test.get()[0].comment,'edited here');
+assert.deepEqual(JSON.parse(test.payload()).deleted_ids,['two']);
+assert.match(nodes.get('#rv-status').textContent,/1 comment edited here was kept/);
+""")
+
+    def test_corrupt_store_warning_survives_other_revision_notice(self):
+        older = json.dumps({"page": "__PAGE__", "report_version": "older", "comments": [{"id": "a", "quote": "q", "comment": "c", "at": "t"}]})
+        self.run_js("""
+const status=nodes.get('#rv-status').textContent;
+assert.match(status,/could not be loaded/);
+assert.match(status,/other revisions/);
+test.set([{id:'new',quote:'q',comment:'new',at:'b'}]);
+nodes.get('#rv-list').events.input({target:{dataset:{i:'0'},value:'edited'}});
+assert.equal(storage.get('__KEY__|__VERSION__|unreadable'),'{not json');
+""", extra={"__KEY__|__VERSION__": "{not json", "__KEY__|older": older})
+
+    def test_save_falls_back_to_download_when_folder_export_is_malformed(self):
+        self.run_js("""
+test.set([{id:'one',quote:'q',comment:'keep',at:'a'}]);
+let written=false;
+const dir={name:'d',queryPermission:async()=>'granted',getFileHandle:async(n,o)=>{if(o&&o.create){written=true;return {createWritable:async()=>({write:async()=>{},close:async()=>{}})}}return {getFile:async()=>({text:async()=>'{not json'})}}};
+global.window={showDirectoryPicker:async()=>dir};
+global.indexedDB={open:()=>{const r={};setTimeout(()=>{r.result={transaction:()=>{const tx={objectStore:()=>({get:()=>({result:dir}),put:()=>({})})};setTimeout(()=>tx.oncomplete&&tx.oncomplete(),0);return tx}};r.onsuccess&&r.onsuccess()},0);return r}};
+let clicked=false;
+global.URL={createObjectURL:()=>'blob:x'};global.Blob=class{};
+document.createElement=()=>({click(){clicked=true},remove(){}});document.body.append=()=>{};
+await nodes.get('#rv-save').events.click();
+assert.equal(written,false);
+assert.equal(clicked,true);
+assert.match(nodes.get('#rv-status').textContent,/could not be merged/i);
+""")
+
+    def test_committed_demo_matches_current_generator(self):
+        source = TOOL.read_text(encoding="utf-8")
+        layer = re.search(r'LAYER = r"""(.*?)"""', source, re.S)[1]
+        pattern = re.sub(r'"__[A-Z]+__(?:\\\.json)?"', '"[^"\\\\n]*"', re.escape(layer))
+        demo = (TOOL.parent / "demo" / "example-report-review.html").read_text(encoding="utf-8")
+        self.assertIsNotNone(re.search(pattern, demo), "demo review copy is stale: regenerate it per README")
+        folder = json.loads(re.search(r'FOLDER=("(?:[^"\\]|\\.)*")', demo)[1])
+        self.assertNotRegex(folder, r'^([A-Za-z]:|[\\/])', "demo embeds an absolute local path")
+
+    def test_generator_emits_noscript_note(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / 'report.html'
+            output = Path(directory) / 'review.html'
+            source.write_text('<body>Original</body>', encoding='utf-8')
+            subprocess.run([sys.executable, str(TOOL), str(source), str(output), 'k', 'comments'], check=True, capture_output=True)
+            self.assertIn('<noscript>', output.read_text(encoding='utf-8'))
+
     def test_generator_rejects_source_overwrite(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / 'report.html'
