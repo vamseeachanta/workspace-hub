@@ -1,6 +1,6 @@
 # Provider-credit Kanban dashboard
 
-Generated: 2026-10-07T09:21:15Z
+Generated: 2026-10-07T13:21:17Z
 Mode: static (read-only)
 
 ## How to approve
@@ -43,6 +43,7 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 
 | # | Title | Provider | Machine | Approval ready | Blockers |
 |---|---|---|---|---|---|
+| #3958 | chore(agents): route every sibling repo to the hub AGENTS.md contract | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3953 | Make configuration propagation writes UTF-8 atomic and recoverable | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3952 | Require complete manifest closure before data readback acceptance | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3944 | Fleet dated-snapshot writer bypasses the fail-closed hostname labeler (public leak) | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
@@ -53,13 +54,13 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3936 | Retire legal-sanity-scan and move identifier verification to final reports | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3935 | Legal scanner resolver contract drift can report PASS for an empty scan path | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3933 | fix: legal scanner duplicate resolver allows empty-path false PASS | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3932 | fix: wiki frontmatter validation silently skips arbitrarily named worktrees | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3932 | fix: wiki frontmatter validation silently skips arbitrarily named worktrees | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3931 | docs: register CableDyn and capture mooring/cable solver assessment | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3927 | Compliance alert: W40 — 0% (critical) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3925 | standard: consolidate engineering reporting conventions and verify ecosystem adoption | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3920 | Ecosystem-wide interactive HTML review: select-to-comment layer for reports and decision boards (Save JSON → agent pickup) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3909 | registry: add mystran to dev-secondary tools (needs #3475 identity-inventory re-attestation) | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3896 | bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
+| #3896 | bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3894 | [Epic] Solver-neutral simulation study workflow: spec → triage → dispatch → monitor → reduce → human review → issue | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
 | #3892 | feat(engineering): standard human-review pack — evidence screenshots vs physical expectation before any result is accepted | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3886 | og-standards: add a rename/remap mode — renamed library files leave stale catalog, inventory DB and document-index paths | claude | — (blocked:no_provider_capable_workstation) | ✗ | no canonical plan file; reviews not clean: missing_review; static dashboard: real approval requires provider-kanban-server.py |
@@ -242,7 +243,6 @@ uv run --no-project python scripts/ai/approve-provider-plan.py \
 | #3587 | phone-media: choose the ongoing incremental sync lane | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3586 | phone-media: off-site backup capacity plan + periodic rclone check cron | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 | #3585 | phone-media: EXIF-date organizer + cross-phone dedupe | codex | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
-| #3584 | phone-media: USB-pull remaining family phones into the archive | claude | — (blocked:no_provider_capable_workstation) | ✗ | missing status:plan-review label; no canonical plan file; review evidence not clean |
 
 ## Lane: blocked (0)
 

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-07T09:21:12.936625Z",
+  "generated_at": "2026-10-07T13:21:15.005375Z",
   "current_week": "2026-W41",
-  "scorecard_generated_at": "2026-10-07T09:21:10.811397Z",
+  "scorecard_generated_at": "2026-10-07T13:21:12.515865Z",
   "recommended_provider_order": [
     "codex",
     "agy",
@@ -589,7 +589,7 @@
             "priority:critical",
             "compliance-alert"
           ],
-          "updatedAt": "2026-10-06T11:45:06Z",
+          "updatedAt": "2026-10-07T11:45:06Z",
           "execution_ready": false,
           "priority_rank": 0,
           "suggested_provider": "claude",
@@ -1232,27 +1232,6 @@
             "research",
             "implementation",
             "strategy"
-          ]
-        },
-        {
-          "number": 3584,
-          "title": "phone-media: USB-pull remaining family phones into the archive",
-          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3584",
-          "labels": [
-            "priority:medium",
-            "cat:data",
-            "machine:dev-primary",
-            "domain:family"
-          ],
-          "updatedAt": "2026-07-31T08:33:40Z",
-          "execution_ready": false,
-          "priority_rank": 2,
-          "suggested_provider": "claude",
-          "routing_reason": "default long-context routing",
-          "provider_priority": "high",
-          "provider_status": "underused",
-          "work_type": [
-            "general"
           ]
         },
         {
@@ -2873,6 +2852,30 @@
           ]
         },
         {
+          "number": 3958,
+          "title": "chore(agents): route every sibling repo to the hub AGENTS.md contract",
+          "url": "https://github.com/vamseeachanta/workspace-hub/issues/3958",
+          "labels": [
+            "priority:medium",
+            "cat:harness",
+            "dispatch:ready",
+            "gate:completeness",
+            "lane:codex",
+            "gate:completeness-v2"
+          ],
+          "updatedAt": "2026-10-07T11:54:21Z",
+          "execution_ready": false,
+          "priority_rank": 2,
+          "suggested_provider": "claude",
+          "routing_reason": "strategy/workflow/architecture language",
+          "provider_priority": "high",
+          "provider_status": "underused",
+          "work_type": [
+            "research",
+            "strategy"
+          ]
+        },
+        {
           "number": 3587,
           "title": "phone-media: choose the ongoing incremental sync lane",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3587",
@@ -3941,8 +3944,12 @@
           "number": 3896,
           "title": "bug(review): agy lane silently drops plans above ~30 KB on Windows (argv limit), recorded as provider outage",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3896",
-          "labels": [],
-          "updatedAt": "2026-09-25T16:46:09Z",
+          "labels": [
+            "status:plan-review",
+            "gate:completeness",
+            "gate:completeness-v2"
+          ],
+          "updatedAt": "2026-10-07T13:06:48Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4031,8 +4038,12 @@
           "number": 3932,
           "title": "fix: wiki frontmatter validation silently skips arbitrarily named worktrees",
           "url": "https://github.com/vamseeachanta/workspace-hub/issues/3932",
-          "labels": [],
-          "updatedAt": "2026-09-30T18:43:24Z",
+          "labels": [
+            "status:plan-review",
+            "gate:completeness",
+            "gate:completeness-v2"
+          ],
+          "updatedAt": "2026-10-07T13:06:56Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "claude",
@@ -4733,7 +4744,7 @@
           "labels": [
             "bug"
           ],
-          "updatedAt": "2026-10-05T21:01:22Z",
+          "updatedAt": "2026-10-07T12:48:44Z",
           "execution_ready": false,
           "priority_rank": 4,
           "suggested_provider": "codex",
