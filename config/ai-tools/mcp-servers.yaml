@@ -36,7 +36,7 @@ servers:
     api_rate_limit: "1000 req/s unauthenticated; API key for higher limits"
     commit_sha: 95d41cfbb1d6c66d7d3ad66f42505cb5bbfe7f13
     license: none               # no LICENSE file in repo — minor concern, documented
-    maintainer: "FUJISHIGE TEMMA <tenma.x0@gmail.com>"
+    maintainer: "FUJISHIGE TEMMA (email removed)"
     last_reviewed: 2026-03-09
     permissions_review: >
       Network: read-only calls to api.semanticscholar.org/graph/v1 only.
@@ -68,7 +68,7 @@ servers:
     auth_required: false
     commit_sha: a97aba19eb218bedd37ae19c27893ee6659f1555
     license: MIT
-    maintainer: "Anthropic, PBC. (Jack Adamson <jadamson@anthropic.com>)"
+    maintainer: "Anthropic, PBC. (Jack Adamson, email removed)"
     last_reviewed: 2026-03-09
     permissions_review: >
       Network: reads any URL provided by the agent. File system: none.

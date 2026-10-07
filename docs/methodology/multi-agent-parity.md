@@ -236,7 +236,7 @@ The system runs across two machines:
 | Machine | OS | Hermes | Python | Workspace |
 |---------|-----|--------|--------|-----------|
 | ace-linux-1 | Linux | Yes | `uv run` | `/mnt/local-analysis/workspace-hub` |
-| licensed-win-1 | Windows | No | `python` | `D:\workspace-hub` |
+| licensed-win-1 | Windows | No | `python` | `<workspace-root>\workspace-hub` |
 
 ### How Windows Gets Parity Without Hermes
 

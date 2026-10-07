@@ -67,7 +67,7 @@ copy_one "lng-a University" "/mnt/ace/lng-a/training/_from_elements" "lng-a-univ
 copy_one "qgis" "/mnt/ace/digitalmodel/tools/qgis/_from_elements" "digitalmodel-qgis"
 copy_one "Riser Toolbox" "/mnt/ace/digitalmodel/references/riser-toolbox/_from_elements" "digitalmodel-riser-toolbox"
 copy_one "Suction Pile Sizing" "/mnt/ace/digitalmodel/references/suction-pile-sizing/_from_elements" "digitalmodel-suction-pile-sizing"
-copy_one "Woodfibre" "/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements" "mkt-a-31522-woodfibre"
+copy_one "LNG terminal A" "/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements" "mkt-a-31522-lng-terminal-a"
 
 # Codes & Regulations is intentionally not copied; verify-only per issue.
 {

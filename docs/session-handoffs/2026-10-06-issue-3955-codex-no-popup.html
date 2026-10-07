@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codex Windows terminal preference — session handoff</title>
+<style>body{max-width:900px;margin:3rem auto;padding:0 1.5rem;font:16px/1.6 system-ui;color:#182536}h1,h2{line-height:1.2}code{background:#eef1f4;padding:.1rem .3rem}a{color:#145aa0}li{margin:.5rem 0}</style>
+<h1>Codex Windows terminal preference</h1>
+<p>Session handoff, 6 October 2026. Scope: <a href="https://github.com/vamseeachanta/workspace-hub/issues/3955">issue 3955</a>. This document records the verified pre-publication state; the issue closeout comment records the final remote commit and cleanup result.</p>
+<h2>Authority and change</h2>
+<p>The originating user requested avoidance of Windows terminal popups across Codex sessions, then explicitly requested merging this session's learnings to origin/main and documenting exit. Publication authority is limited to this learning and its handoff; unrelated changes and PRs are excluded.</p>
+<p>The canonical <a href="../../config/agents/codex/SOUL.delta.md">Codex source delta</a> now specifies captured or hidden command launches, explicit permission for visible terminals, output and exit-code preservation, portable Python flags, and explicit delegation constraints. Both Codex runtime artifacts were regenerated through the existing builder.</p>
+<h2>Verification</h2>
+<ul>
+<li>The baseline runtime drift check passed. After the authored source changed, the same check failed for exactly the two Codex runtime artifacts; regeneration restored a passing result.</li>
+<li>All six builder outputs were enumerated and hashed. Only the two Codex outputs changed. A second build produced identical hashes.</li>
+<li>The primary checkout's six runtime files and the local user-level Codex configuration retained their pre-build hashes. Inherited Git repository bindings were removed from generator child environments, and the worktree root and output paths were validated.</li>
+<li>The local configuration still contains the persistent no-popup developer instruction saved earlier in this session. The user-root AGENTS.md is a real symbolic link to the primary checkout's Codex AGENTS.runtime.md. No configuration contents, credentials or machine-specific identifiers are published.</li>
+</ul>
+<h2>Review and limitations</h2>
+<p>The bounded source-and-generated-artifact change uses the T2 review lane: Codex inline review and Claude review. Plan review requested output/status capture, portable launch flags and explicit root/preservation checks; these are incorporated. The issue was created before implementation. Existing drift checks supply the failing and passing validation without adding a test that mirrors prose. Claude artifact review found a possible missing exit status in the deferred Start-Process path. The source was corrected inline to require waiting for Start-Process completion, to treat a missing status as unverified, and to prefer captured tool sessions for long-running work. Codex inline review accepted that disposition; the build and drift check were repeated. This promotes the general defect class: absence of completion status is not success.</p>
+<p>Saved launch instructions are not an OS-level popup blocker. App-internal launchers, active-session reload and loading on other machines were not verified. The dirty primary checkout was not regenerated or fast-forwarded, so its live linked runtime does not yet contain this repository update; the existing local configuration preference remains available. Runtime reconciliation belongs to the owner of the concurrent checkout changes.</p>
+<h2>Repository state and exit checkpoint</h2>
+<ul>
+<li><strong>CLEAN:</strong> the task uses an isolated worktree; no unrelated files are included in the publication scope.</li>
+<li><strong>EXPECTED:</strong> pre-existing primary-checkout authorization-policy edits, state files, other worktrees and existing stashes are preserved. Their cleanup is outside this task.</li>
+<li><strong>Checkpoint:</strong> the authorized PR will be merged only when GitHub reports CLEAN and its head matches the reviewed commit. The landed origin/main tree will be checked again, then the task worktree, branch, scratch and coordination claim will be removed. The issue comment will record the final result or a specific blocker.</li>
+</ul>
+<p>External actions are limited to this repository's issue, task branch and merge. No deployment, access change or messages to other people are part of this closeout.</p>
+</html>

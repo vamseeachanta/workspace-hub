@@ -9,17 +9,17 @@ Manage the Hermes ↔ repo memory sync system that propagates context across all
 
 ## Architecture
 
-Memory travels with the repository via git. Hermes memory (~/.hermes/memories/) is the source of truth on ace-linux-1. The bridge script reads it, writes into .Codex/memory/ in the workspace-hub repo, commits, and pushes. Every other machine (Windows licensed-win-1, new clones) gets updated context via git pull. Gateway must be running for cron jobs to fire.
+Memory travels with the repository via git. Hermes memory (~/.hermes/memories/) is the source of truth on ace-linux-1. The bridge script reads it, writes into .claude/memory/ in the workspace-hub repo, commits, and pushes. Every other machine (Windows licensed-win-1, new clones) gets updated context via git pull. Gateway must be running for cron jobs to fire.
 
 ## Script Inventory
 
 | Script | Purpose |
 |--------|---------|
-| scripts/memory/bridge-hermes-Codex.sh --commit | Reads Hermes memory, injects into agents.md via BRIDGE markers, commits and pushes |
+| scripts/memory/bridge-hermes-claude.sh --commit | Reads Hermes memory, injects into agents.md via BRIDGE markers, commits and pushes |
 | scripts/memory/pre-bridge-quality.sh --fix | Quality gate (0-100 score) before bridge; auto-compacts if needed |
 | scripts/memory/check-memory-drift.sh | Exits 1 if Hermes memory ahead of repo, 0 if in sync |
-| scripts/memory/bootstrap-machine.sh | Creates ~/.Codex/AGENTS.md on new machine, OS-aware |
-| scripts/upkeep/health-check.sh --save | 16-check report: gateway, cron, memory, disk, repo sync, Codex topics |
+| scripts/memory/bootstrap-machine.sh | Creates ~/.claude/CLAUDE.md on new machine, OS-aware |
+| scripts/upkeep/health-check.sh --save | 16-check report: gateway, cron, memory, disk, repo sync, Claude topics |
 
 ## Cron Jobs
 
@@ -72,10 +72,10 @@ This ticks once and exits — no persistent gateway needed.
 | Symptom | Fix |
 |---------|-----|
 | Gateway down | `systemctl start hermes-gateway.service`; if crashes again, check gateway.log for 402 errors |
-| Bridge didn't commit (dirty submodule) | `git stash && cd /path/to/repo && bash scripts/memory/bridge-hermes-Codex.sh --commit && git push` |
+| Bridge didn't commit (dirty submodule) | `git stash && cd /path/to/repo && bash scripts/memory/bridge-hermes-claude.sh --commit && git push` |
 | Memory at 98%+ | Compact manually (steps above), then pre-bridge-quality.sh --fix |
 | Windows missing context | `bash scripts/memory/bootstrap-machine.sh && git pull` |
-| Drift detected | `bash scripts/memory/bridge-hermes-Codex.sh --commit && git push` |
+| Drift detected | `bash scripts/memory/bridge-hermes-claude.sh --commit && git push` |
 | Cron jobs not firing | Check gateway.log; if 402, pause offending job; if no platforms, gateway still works |
 
 ## Pitfalls

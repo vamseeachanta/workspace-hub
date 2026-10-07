@@ -21,7 +21,7 @@ Use this when the user asks for the location of a generated HTML/report artifact
 ```text
 Repo: vamseeachanta/digitalmodel
 Issue: #598 — feat(naval-architecture): proj-a current-heading/rudder force component chart set
-Artifact: outputs/b1528_proj-a/current_heading_rudder_30deg_limit/b1528_proj-a_current_heading_rudder_30deg_limit_report.html
+Artifact: outputs/proj-a/current_heading_rudder_30deg_limit/proj-a_current_heading_rudder_30deg_limit_report.html
 Raw URL: https://raw.githubusercontent.com/.../report.html
 Verified: size=<bytes>, sha=<sha>
 Local state: /mnt/local-analysis/digitalmodel absent; clone/sync required before edits.

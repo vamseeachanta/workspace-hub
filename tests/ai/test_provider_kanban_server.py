@@ -160,7 +160,7 @@ def test_local_approval_endpoint_valid_real_post_invokes_approve_real(server):
         port, "/approve",
         {
             "issue": "9001", "mode": "real",
-            "user_identity": "vamsee.achanta@aceengineer.com",
+            "user_identity": "owner@example.com",
             "approval_source": "localhost approval server",
             "i_understand": "yes",
         },
@@ -169,7 +169,7 @@ def test_local_approval_endpoint_valid_real_post_invokes_approve_real(server):
     assert status == 200
     assert payload["phase"] == "complete"
     assert stub.calls[0]["mode"] == "real"
-    assert stub.calls[0]["user_identity"] == "vamsee.achanta@aceengineer.com"
+    assert stub.calls[0]["user_identity"] == "owner@example.com"
     # Server passes its own token as the confirmation_token (satisfies non-TTY gate in approve-provider-plan).
     assert stub.calls[0]["confirmation_token"] == "TEST-TOKEN-XYZ"
 

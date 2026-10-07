@@ -47,7 +47,7 @@ tags: []
 ```bash
 # Invoke SPARC Pseudocode phase
 
-# Or directly in Codex
+# Or directly in Claude Code
 # "Use SPARC pseudocode to design the login flow algorithm"
 ```
 

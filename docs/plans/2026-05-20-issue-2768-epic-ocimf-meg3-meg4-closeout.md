@@ -89,7 +89,7 @@
 
 ```
 commit 9796effa707e44ed1d337f70313f1cc9c7a5e3d5
-Author: Vamsee Achanta <achantav@gmail.com>
+Author: Vamsee Achanta <owner.personal@example.com>
 Date:   Wed May 20 14:21:55 2026 -0500
     docs(ocimf): interactive coefficient explorer + cross-project prompt + corpus README
 ```

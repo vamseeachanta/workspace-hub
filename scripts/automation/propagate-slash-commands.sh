@@ -21,7 +21,6 @@ print_action() { echo -e "${CYAN}[→]${NC} $1"; }
 
 # Configuration
 AGENT_OS_HOME="/home/vamsee/.agent-os"
-CLAUDE_MD_HOME="/home/vamsee/.claude/CLAUDE.md"
 
 # Files to propagate
 INSTRUCTION_FILES=(
@@ -110,65 +109,15 @@ propagate_to_repo() {
         fi
     done
     
-    # CLAUDE.md creation retired 2026-08-01.
-    # This block seeded an Agent-OS-era CLAUDE.md (@.agent-os/product/*, /create-spec,
-    # /execute-tasks) — a workflow superseded by AGENTS.md + issue-planning-mode. It also
-    # resurrected the CLAUDE.md surface that was deliberately deleted. Disabled rather
-    # than deleted so the intended content stays visible in history.
-    if false; then
-        print_action "Creating CLAUDE.md with Agent OS references"
-        cat > "$repo/CLAUDE.md" << 'EOF'
-## Agent OS Documentation
-
-### Product Context
-- **Mission & Vision:** @.agent-os/product/mission.md
-- **Technical Architecture:** @.agent-os/product/tech-stack.md
-- **Development Roadmap:** @.agent-os/product/roadmap.md
-- **Decision History:** @.agent-os/product/decisions.md
-
-### Development Standards
-- **Code Style:** @.agent-os/standards/code-style.md
-- **Best Practices:** @.agent-os/standards/best-practices.md
-
-### Project Management
-- **Active Specs:** @.agent-os/specs/
-- **Spec Planning:** Use `@.agent-os/instructions/create-spec.md`
-- **Tasks Execution:** Use `@.agent-os/instructions/execute-tasks.md`
-
-## Workflow Instructions
-
-When asked to work on this codebase:
-
-1. **First**, check @.agent-os/product/roadmap.md for current priorities
-2. **Then**, follow the appropriate instruction file:
-   - For new features: @.agent-os/instructions/create-spec.md
-   - For tasks execution: @.agent-os/instructions/execute-tasks.md
-3. **Always**, adhere to the standards in the files listed above
-
-## Slash Commands
-
-- `/plan-product` - Initialize product planning
-- `/create-spec` - Create a new feature specification
-- `/execute-tasks` - Execute tasks from a spec
-- `/analyze-product` - Analyze existing codebase
-
-## Important Notes
-
-- Product-specific files in `.agent-os/product/` override any global standards
-- Always adhere to established patterns, code style, and best practices documented above.
-EOF
-        ((updated++))
-    fi
-    
     if [ $updated -gt 0 ]; then
         print_status "$updated file(s) updated"
         
         # Optionally commit changes
         if [ "$2" = "--commit" ]; then
             cd "$repo"
-            if [ -n "$(git status --porcelain .agent-os CLAUDE.md 2>/dev/null)" ]; then
+            if [ -n "$(git status --porcelain .agent-os 2>/dev/null)" ]; then
                 print_action "Committing Agent OS updates"
-                git add .agent-os CLAUDE.md 2>/dev/null
+                git add .agent-os 2>/dev/null
                 git commit -m "Update Agent OS configurations and slash commands
 
 - Propagated latest instruction files
@@ -205,12 +154,6 @@ check_global_installation() {
     else
         print_error "Global Agent OS not found at $AGENT_OS_HOME"
         return 1
-    fi
-    
-    if [ -f "$CLAUDE_MD_HOME" ]; then
-        print_status "Global CLAUDE.md found"
-    else
-        print_warning "Global CLAUDE.md not found"
     fi
     
     echo ""

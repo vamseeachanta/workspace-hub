@@ -57,10 +57,23 @@ def _run_hook(
     # state — a scope test reporting a drift failure. Disable enforcement so a
     # gate's verdict cannot masquerade as a scoping bug.
     #
+    # REVIEW_GATE_STRICT must be pinned too, and separately: the review wrapper
+    # does NOT honour DISABLE_ENFORCEMENT, so disabling enforcement covers the
+    # drift gate and leaves the review gate live. Since #3781 sources
+    # enforcement-env (which exports REVIEW_GATE_STRICT=1), the gate BLOCKS
+    # locally and is advisory in CI, where enforcement-env is absent. That made
+    # the result depend on the operator's shell — the suite passed in CI and
+    # failed on a developer machine. Pin it here rather than expecting every
+    # caller to remember (#3796).
+    # Unconditional, NOT setdefault: setdefault defers to the ambient value,
+    # which is the exact thing being neutralised. Callers that genuinely want
+    # strict mode pass it via env_extra, which is applied after this.
+    env["REVIEW_GATE_STRICT"] = "0"
+    #
     # Deliberately NOT applied to the reachability/ordering tests in
     # test_install_hooks_extension_point.py: those assert the gates are wired
     # and must not be able to pass with enforcement switched off.
-    env.setdefault("DISABLE_ENFORCEMENT", "1")
+    env["DISABLE_ENFORCEMENT"] = "1"
     if env_extra:
         env.update(env_extra)
 

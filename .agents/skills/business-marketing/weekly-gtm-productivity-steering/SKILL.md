@@ -55,7 +55,7 @@ Class of task: interactive business/GTM steering notes become durable repo-backe
 
 4. **Update durable context**
    - Patch `docs/BUSINESS_BRAIN.md` for canonical business context.
-   - Patch `.Codex/memory/templates/agents-template.md` when all agents need the fact.
+   - Patch `.claude/memory/templates/agents-template.md` when all agents need the fact.
    - Use Hermes memory only for durable user preferences, not temporary weekly task progress.
 
 5. **Verify and commit context changes**
@@ -85,7 +85,7 @@ When a weekly GTM target is concrete enough to execute, convert it into a small 
 4. Create a repo-owned prompt pack under `docs/plans/overnight-prompts/<date>-weekly-gtm-targets/` with one prompt per child issue and a `results/` directory.
 5. Each prompt must preserve gates: no outreach/contacting people, no private contact details in public repo files, no `status:plan-approved` mutation, and only `status:plan-review` when canonical plan + adversarial review evidence are complete.
 6. Launch bounded planning/research/productivity lanes in named tmux sessions and log to `logs/night-runs/`.
-7. Monitor by tmux/process liveness and expected `results/issue-<N>-summary.md` artifacts; zero-byte Codex logs are inconclusive while processes are alive.
+7. Monitor by tmux/process liveness and expected `results/issue-<N>-summary.md` artifacts; zero-byte Claude logs are inconclusive while processes are alive.
 8. Commit the prompt pack after legal sanity scan, and use a scheduled monitor for long-running lanes.
 
 ## Reverse Prompt Templates
@@ -105,7 +105,7 @@ Constraints:
 - Do not create duplicate issues.
 - Do not bypass plan/review/approval gates.
 - Use existing plan-approved issues where possible.
-- Spend provider capacity deliberately; do not leave useful Codex/Codex/Gemini capacity idle.
+- Spend provider capacity deliberately; do not leave useful Claude/Codex/Gemini capacity idle.
 
 Return a table:
 1. Action
@@ -179,7 +179,7 @@ For a target like: "this week, vessel capability charts sent to all vessel contr
 - Letting productivity reviews become generic advice instead of issue/prompt changes.
 - Relaxing user approval gates before metrics prove agent rigor is safe.
 - Mixing prospect/client-sensitive data into public-facing artifacts without legal/provenance review.
-- Treating `UNAVAILABLE`, empty, wrapper-failed, or retrieval-failed Codex/Gemini artifacts as satisfying a live non-Codex review gate; they are blocker evidence only.
+- Treating `UNAVAILABLE`, empty, wrapper-failed, or retrieval-failed Codex/Gemini artifacts as satisfying a live non-Claude review gate; they are blocker evidence only.
 - Jumping to brochure/outbound execution before upstream target-matrix and capability-chart plan/evidence hygiene has cleared review-readiness.
 - After the owner approves defaults, re-asking instead of executing the approved defaults; apply them repo-first, create implied follow-up issues, reconcile labels, verify, commit/push, and comment.
 - Partially patching long Markdown table/index rows without rereading them; always re-read patched rows and run count/string checks because malformed rows can silently preserve stale prose.

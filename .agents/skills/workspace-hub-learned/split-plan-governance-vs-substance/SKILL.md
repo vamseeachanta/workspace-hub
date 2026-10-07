@@ -13,7 +13,7 @@ tags: [planning, adversarial-review, governance, plan-splitting, workspace-hub]
 Use this when a plan survives multiple adversarial review waves and:
 - the core decision or scope is stable
 - one provider starts treating it as substantively ready
-- repeated Codex/Codex MAJOR findings keep focusing on:
+- repeated Claude/Codex MAJOR findings keep focusing on:
   - validator semantics
   - review-artifact bookkeeping
   - evidence attestation

@@ -69,11 +69,11 @@ Deep extraction is split by readability classification:
 
 ### Phase B — Extract + classify (LLM)
 
-**Non-ASTM orgs** (API, DNV, ISO, etc.) — LLM via Codex CLI:
+**Non-ASTM orgs** (API, DNV, ISO, etc.) — LLM via Claude CLI:
 ```bash
-# From INSIDE Codex (unset Codex to avoid nesting):
-env -u Codex uv run --no-project python \
-    scripts/data/document-index/phase-b-Codex-worker.py \
+# From INSIDE Claude Code (unset CLAUDECODE to avoid nesting):
+env -u CLAUDECODE uv run --no-project python \
+    scripts/data/document-index/phase-b-claude-worker.py \
     --shard 0 --total 1 --source og_standards --org API
 
 # From SEPARATE terminal — parallel shards:
@@ -92,8 +92,8 @@ uv run --no-project python scripts/data/document-index/phase_b_astm_classifier.p
 **Validate ASTM accuracy** (requires prior LLM run on sample):
 ```bash
 # Step 1: LLM-classify 100 ASTM docs in validate mode
-env -u Codex uv run --no-project python \
-    scripts/data/document-index/phase-b-Codex-worker.py \
+env -u CLAUDECODE uv run --no-project python \
+    scripts/data/document-index/phase-b-claude-worker.py \
     --shard 0 --total 1 --source og_standards --org ASTM \
     --include-all --validate --limit 100
 # Step 2: Compare deterministic vs LLM
@@ -180,10 +180,10 @@ uv run --no-project python scripts/data/document-index/cross-drive-dedup-audit.p
 
 ## Key Patterns
 
-### Codex CLI inside Codex
-The `Codex` CLI cannot run nested inside Codex. Two options:
-1. **`env -u Codex`** — unset the guard variable (works for background tasks)
-2. **Separate terminal** — run `launch-batch.sh` from a non-Codex shell
+### Claude CLI inside Claude Code
+The `claude` CLI cannot run nested inside Claude Code. Two options:
+1. **`env -u CLAUDECODE`** — unset the guard variable (works for background tasks)
+2. **Separate terminal** — run `launch-batch.sh` from a non-Claude-Code shell
 
 ### Resume safety
 All Phase B scripts are resume-safe: `needs_llm(sha)` checks if `discipline` already
@@ -225,7 +225,7 @@ print(f'{done}/{len(rows)} classified')
 | phase-b-extract.py | Yes | 313 | Text extraction (no LLM) |
 | phase_b_astm_classifier.py | Yes | 266 | ASTM prefix → discipline |
 | phase_b_checkpoint.py | Yes | 154 | Batch stats report |
-| phase-b-Codex-worker.py | **LLM** | 423 | Codex CLI batch worker |
+| phase-b-claude-worker.py | **LLM** | 423 | Claude CLI batch worker |
 | phase-b-astm-validate.py | Yes | 153 | Compare det vs LLM |
 | launch-batch.sh | Orch | 70 | Parallel shard launcher |
 | phase-c-classify.py | Heuristic | 345 | Domain classification |

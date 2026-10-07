@@ -56,12 +56,12 @@ Use this skill when launching non-interactive Codex CLI execution from Hermes, e
 ## Scope and safety rules
 
 - Use isolated worktrees/clones for each issue lane.
-- Verify the issue is `status:plan-approved` before implementation; otherwise do planning/review only.
+- Verify current task authority and reviewed scope before implementation; honor planning-only requests and genuine blockers without requiring an approval label.
 - Use `--dangerously-bypass-approvals-and-sandbox` only when the user has authorized autonomous execution and the worktree scope is isolated. Record the sandbox failure reason, such as `bwrap: loopback: Failed RTM_NEWADDR`.
 - Do not force-push.
 - Require final output or handoff to include issue number, branch, commit SHA(s), validation commands/results, push status, issue URL, and blockers.
 - On remote/overflow machines, CLI presence and auth files are not enough. Before assigning a Codex burn lane, run a tiny real `codex exec` smoke through the same login shell/launch path. A worker may have `codex --version` and `~/.codex/` present but still fail with `401 Unauthorized` / `Failed to refresh token: refresh token was already used`.
-- If a remote worker falls back to Codex and produces a branch for an issue that another Codex lane also touched, do **not** push blindly. First compare commit/file scope against the already-pushed branch and choose one canonical branch/PR; treat the other as a salvage/reference artifact.
+- If a remote worker falls back to Claude and produces a branch for an issue that another Codex lane also touched, do **not** push blindly. First compare commit/file scope against the already-pushed branch and choose one canonical branch/PR; treat the other as a salvage/reference artifact.
 
 ## Why this exists
 

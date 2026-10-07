@@ -24,6 +24,32 @@ tags: []
 scripts_exempt: true
 ---
 
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.orcawave.converters`
+>   - `digitalmodel.orcawave.converters.STLtoGDFConverter`
+>   - `digitalmodel.orcawave.mesh`
+>   - `digitalmodel.orcawave.mesh.OrcaWaveMeshGenerator`
+>   - `digitalmodel.orcawave.mesh.WaterlineRefiner`
+>   - `digitalmodel.orcawave.mesh_study`
+>   - `digitalmodel.orcawave.mesh_study.MeshConvergenceStudy`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable.
+>
+> **The intended API is now specified in `digitalmodel`**, at
+> `docs/domains/orcawave/intended-api/mesh-generation.md`, where it is a build
+> target rather than something an agent may mistake for working code.
+> Tracked in aceengineer-strategy#267, digitalmodel#2045.
+
+<!-- ace:known-missing: digitalmodel.orcawave.converters, digitalmodel.orcawave.converters.STLtoGDFConverter, digitalmodel.orcawave.mesh, digitalmodel.orcawave.mesh.OrcaWaveMeshGenerator, digitalmodel.orcawave.mesh.WaterlineRefiner, digitalmodel.orcawave.mesh_study, digitalmodel.orcawave.mesh_study.MeshConvergenceStudy -->
+
 # Orcawave Mesh Generation
 
 ## When to Use

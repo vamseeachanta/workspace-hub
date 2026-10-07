@@ -25,14 +25,22 @@ Before finishing, check all four surfaces:
 3. `docs/plans/README.md` row status
 4. Latest valid provider review verdicts in `scripts/review/results/`
 
+When review reruns are in scope, audit both canonical and timestamped review artifacts. Canonical files named in plans/README may still be stale, zero-byte, or MAJOR while newer timestamped reruns exist beside them. List mtime, size, and verdict for both artifact families; treat zero-byte/tiny stubs and quota/capacity outputs as invalid/unavailable evidence, not approval. If canonical and timestamped artifacts disagree, document the drift and block advancement until a next session canonicalizes, discards, or reruns the evidence. See `references/canonical-vs-timestamped-review-artifacts.md`.
+
 ## Required handoff contents
 Document explicitly:
-- current local plan status (`draft`, `plan-review`, etc.)
-- latest valid provider verdicts
+- current local plan status (`draft`, `plan-review`, `plan-approved`, etc.)
+- latest valid provider verdicts when reviews are in scope
 - whether the issue is honestly approval-ready or still revision-required
 - whether GitHub / local marker / README disagree
 - the exact contradiction if drift exists
-- that the next session must reconcile approval-vs-review drift before implementation or further advancement
+- current repo state: branch, `HEAD` vs upstream, dirty/untracked exceptions, and which repos are clean/synced
+- what was and was not externally performed during exit: commits, pushes, GitHub comments, issue labels, closures, emails/messages
+- remaining active task disposition, including which item should resume first and which are pending
+- next-session first checks, especially live issue label revalidation and any approval-marker/test-baseline gaps
+- that the next session will verify task authority and current review/domain blockers; approval-history drift alone will not block authorized implementation
+
+When the user says “document and prepare to exit,” provide a concise exit report that names the durable handoff location, pushed/unpushed state, dirty-state exceptions, no-external-action confirmation unless approved, and the next actions. Do not silently commit/push/close during exit unless the user explicitly asks for that transaction.
 
 ## Recommended wording pattern
 - "Live issue shows `status:plan-approved`, but latest valid review evidence still returns MAJOR findings."

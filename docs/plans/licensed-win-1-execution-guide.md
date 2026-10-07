@@ -1,7 +1,7 @@
 # Licensed-Win-1 Execution Guide
 
 Updated: 2026-04-02
-Machine: licensed-win-1 (Windows, D:\workspace-hub)
+Machine: licensed-win-1 (Windows, <workspace-root>\workspace-hub)
 Available: Claude Code CLI, Codex CLI, Gemini CLI, Python, Git Bash, OrcFxAPI
 NOT available: Hermes (installation restriction)
 
@@ -21,7 +21,7 @@ Claude Code can read the repo, run Python, and commit/push. Use it as the
 primary executor for all 4 licensed-win-1 prompts.
 
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull origin main
 
 claude -p "Read docs/plans/licensed-win-1-orcawave-orcaflex-prompts.md, execute PROMPT 1 (queue validation). Use python (not uv run). Commit and push results when done."
@@ -49,7 +49,7 @@ gemini -p "Review queue/completed/ for recent solver results. Verify result.yaml
 
 ### Terminal 1 (Claude Code) — sequential, file-creating prompts
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull origin main
 
 # Run prompts 1-4 in sequence (each creates files + commits)
@@ -64,7 +64,7 @@ claude -p "Read docs/plans/licensed-win-1-orcawave-orcaflex-prompts.md. Execute 
 
 ### Terminal 2 (Codex) — verification after each prompt completes
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 
 # After Terminal 1 finishes Prompt 1:
 codex -p "git pull origin main. Verify queue/completed/ has new results. Check result.yaml status. List .owr and .xlsx files. Report summary."
@@ -75,7 +75,7 @@ codex -p "git pull origin main. Verify digitalmodel/tests/fixtures/ has .sim and
 
 ### Terminal 3 (Gemini) — adversarial review
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 
 # After all prompts complete:
 gemini -p "Review all changes made today in this repo. Check: (1) are committed fixture files valid and under size limits, (2) are result.yaml files well-formed, (3) are commit messages linked to correct issues, (4) anything left uncommitted. Provide APPROVE or ISSUES FOUND verdict."

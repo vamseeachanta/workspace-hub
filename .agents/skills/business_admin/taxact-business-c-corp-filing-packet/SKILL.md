@@ -149,7 +149,7 @@ Minimum:
 
 Strong optional deliverables:
 - `taxact-session-playbook.md`
-- `Codex-tax-handover-prompt.md`
+- `claude-tax-handover-prompt.md`
 - session exit note
 - post-filing archive checklist
 - state filing checklist

@@ -40,7 +40,7 @@ Document explicitly:
 - whether the issue is honestly approval-ready or still revision-required
 - whether GitHub / local marker / README disagree
 - the exact contradiction if drift exists
-- that the next session must reconcile approval-vs-review drift before implementation or further advancement
+- that the next session will verify task authority and current review/domain blockers; approval-history drift alone will not block authorized implementation
 
 ## Recommended wording pattern
 - "Live issue shows `status:plan-approved`, but latest valid review evidence still returns MAJOR findings."

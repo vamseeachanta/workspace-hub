@@ -52,10 +52,10 @@ Check for duplicate or overlapping content between hidden folders.
 
 ```bash
 # Compare agent configurations
-diff -rq .agent-os/agents/ .Codex/agents/ 2>/dev/null
+diff -rq .agent-os/agents/ .claude/agents/ 2>/dev/null
 
 # Find duplicate files by name
-find .agent-os .ai .Codex -name "*.md" -type f 2>/dev/null | xargs -I {} basename {} | sort | uniq -d
+find .agent-os .ai .claude -name "*.md" -type f 2>/dev/null | xargs -I {} basename {} | sort | uniq -d
 
 # Find duplicate files by content (MD5)
 

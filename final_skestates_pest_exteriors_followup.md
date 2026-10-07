@@ -1,7 +1,7 @@
 Subject: RE: FD30150 | Pest/Exteriors
 
 To: [Kevin Straight / Family Dollar Facilities Contact / Correct Service Queue]
-From: skestatesinc@gmail.com
+From: owner.realestate@example.com
 
 Hello,
 
@@ -27,5 +27,5 @@ Thank you,
 Vamsee Achanta
 [Title / Authorized Representative]
 SKEstates Inc
-Email: skestatesinc@gmail.com
+Email: owner.realestate@example.com
 Phone: [Phone Number]

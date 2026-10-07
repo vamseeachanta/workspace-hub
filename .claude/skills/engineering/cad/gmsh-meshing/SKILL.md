@@ -57,11 +57,11 @@ Use this skill when you need to:
 - **Source repository**: https://gitlab.onelab.info/gmsh/gmsh
 ### Local Installation
 
-- **Executable**: `D:\software\gmsh\gmsh-4.15.0-Windows64\gmsh.exe`
-- **Tutorials (.geo)**: `D:\software\gmsh\gmsh-4.15.0-Windows64\tutorials\t1.geo` through `t21.geo`
-- **Python tutorials**: `D:\software\gmsh\gmsh-4.15.0-Windows64\tutorials\python\`
-- **API examples**: `D:\software\gmsh\gmsh-4.15.0-Windows64\examples\api\`
-- **Boolean examples**: `D:\software\gmsh\gmsh-4.15.0-Windows64\examples\boolean\`
+- **Executable**: `<tools-root>\gmsh\gmsh-4.15.0-Windows64\gmsh.exe`
+- **Tutorials (.geo)**: `<tools-root>\gmsh\gmsh-4.15.0-Windows64\tutorials\t1.geo` through `t21.geo`
+- **Python tutorials**: `<tools-root>\gmsh\gmsh-4.15.0-Windows64\tutorials\python\`
+- **API examples**: `<tools-root>\gmsh\gmsh-4.15.0-Windows64\examples\api\`
+- **Boolean examples**: `<tools-root>\gmsh\gmsh-4.15.0-Windows64\examples\boolean\`
 ### Tutorial Index
 
 See `assets/gmsh-reference.md` for complete tutorial descriptions and CLI options reference.

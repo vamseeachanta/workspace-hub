@@ -1,6 +1,6 @@
 ---
 name: overnight-verify-close-and-blocker-conversion
-description: Use overnight Codex lanes to clear stale-open GitHub issues by verification-first closure, and convert blocked PR-repair attempts into dedicated blocker issues instead of speculative edits.
+description: Use overnight Claude lanes to clear stale-open GitHub issues by verification-first closure, and convert blocked PR-repair attempts into dedicated blocker issues instead of speculative edits.
 triggers:
   - Overnight batch includes several status:plan-approved issues that may already be landed on origin/main
   - Open issues remain stale despite landed commits and prior implementation comments

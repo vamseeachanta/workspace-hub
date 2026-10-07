@@ -13,7 +13,7 @@ type: reference
 |---------|-----|-----|----------|----------|-------|
 | ace-linux-1 (dev-primary) | .100 | Linux | vamsee | — | Primary workstation (us); hostname: ace-linux-1 |
 | ace-linux-2 (dev-secondary) | .103 | Linux | vamsee | key | Tailscale: 10.1.0.2; hostname: ace-linux-2. "dev-secondary" is a legacy alias — does NOT resolve as hostname. Cross-machine scripts use ace-linux-2 (updated 2026-03-25). Config/routing/WRK items still use dev-secondary as a label. |
-| home-win | .148 | Windows | devuser | SMB only (port 22 blocked) | SMB share: `\\10.0.0.3\GitHub` → C:\GitHub; repos: aceengineer-admin, achantas-data |
+| home-win | .148 | Windows | devuser | SMB only (port 22 blocked) | SMB share: `\\<server>\GitHub` → C:\GitHub; repos: aceengineer-admin, achantas-data |
 | macbook-portable | .166 | macOS (ARM64 M1) | krishna | key (passwordless) | Hostname: Vamsees-MacBook-Air.local; `~/workspace-hub/` has aceengineer-admin, achantas-data, sabithaandkrishnaestates; AirPlay ports 5000/7000 also open |
 | licensed-win-1 | — | Windows | — | no SSH | OrcaFlex license machine; not on local LAN |
 | ace-win-2 | .132 | Windows | — | unknown | Windows workstation |

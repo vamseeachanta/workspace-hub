@@ -27,7 +27,7 @@ When the collection is very large or noisy (thousands of files with viewer binar
 
 ## Interactive-agent recovery rule
 
-If an interactive Codex run drifts into forbidden paths during a metadata-only sweep:
+If an interactive Claude run drifts into forbidden paths during a metadata-only sweep:
 - stop it immediately,
 - revert the forbidden path externally,
 - narrow the agent back to report-only outputs,

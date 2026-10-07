@@ -1,0 +1,21 @@
+765864fb09cdc708d122b0443e1facf705506081|2026-08-09 03:45:02 -0500|docs(#1473): weekly plugin audit — 2026-08-09
+28d8f50bc2a81a2bef831b7588445b8983008b03|2026-08-11 05:03:50 -0500|chore(state): auto-generated provider tracking state [routine sync 2026-08-11]
+9e2960189c72d872e62989bde59167fa3e95c907|2026-08-16 03:45:02 -0500|docs(#1473): weekly plugin audit — 2026-08-16
+13dbca1838d379cf54c18c1558e507d2bc7e410f|2026-08-18 20:52:16 -0500|docs(handoff): brief a second session to own the KCS fine-grid CFD lane (dm#1173)
+5f6a7d016d51aedbceb492a727e115cf6de52573|2026-08-19 05:05:56 -0500|chore(state): update provider state snapshots 2026-08-19
+6b28b5348565a3cf9c35e09aabbf140ac5cd56c7|2026-08-19 20:56:16 -0500|docs(handoff): KCS resistance root cause, learnings, and client-hull onboarding
+cc28d58e64bccd3e9d69cacfc37bb73b30b689ce|2026-08-21 07:51:48 -0500|docs(rules): add report-audience-and-surface rule + report-claim-discipline skill
+adf7362fcaf95e21c572aedfc8bbd58df59bb96c|2026-08-23 03:45:02 -0500|docs(#1473): weekly plugin audit — 2026-08-23
+6ed8ff51f333a496db57970c8ddb15a545a2f639|2026-08-26 09:20:00 -0500|feat(agents): cfd-lane-operator for unattended campaign progression
+34f8f077cf1b2bdd3f0f71aaa714e79e02a4ac06|2026-08-30 03:45:02 -0500|docs(#1473): weekly plugin audit — 2026-08-30
+361a07272706ca2bf929a66ccbbb93861d5051f0|2026-09-03 13:07:07 -0500|docs(rules): add mechanism-before-publication rule
+ecd6861a994e83573c8ea842cb1652b74a32be46|2026-09-03 18:20:05 -0500|fix(ci): drop the pip cache baseline-check never populates
+7b320b8c094532e82c94af75ac9ccdeb8de1140c|2026-09-03 18:25:09 -0500|test(ci): scope the pip-cache guard per job and per step (codex r1 MAJOR)
+541df8810b2da252ebb2b23d4081b591d1372f2a|2026-09-03 18:34:50 -0500|fix(memory): resolve Claude auto-memory across workspace moves, and fail loudly
+d12ec1d1b730d663b313f9b316477d5ae4119095|2026-09-03 18:38:54 -0500|fix(memory): make ambiguous auto-memory resolution fatal (codex r1 MAJOR)
+2bfe578bcb7281e5bec434a714bcf65777936f16|2026-09-03 18:42:44 -0500|chore(preserve): commit six untracked files that existed only on this disk
+ae9ce7abbb92f528c574c5b37d2c2987bb44f025|2026-09-03 19:07:50 -0500|fix(maintenance): stop treating untracked authored work as regenerable (#3826)
+d9323082cb786f80f1215da29fc592716254b241|2026-09-03 19:12:36 -0500|fix(maintenance): protect the --prune-ignored path too (codex r1 MAJOR)
+7175bb78fcd0c09359a5146d22d1cf38ec3c47ef|2026-09-06 03:45:05 -0500|docs(#1473): weekly plugin audit — 2026-09-06
+e00946063f8f2b6d40d1c79fcd624fdfb30b5e6d|2026-09-13 03:45:03 -0500|docs(#1473): weekly plugin audit — 2026-09-13
+246902c70474c5fb26095094aeb5210f8d8c36db|2026-09-20 03:45:02 -0500|docs(#1473): weekly plugin audit — 2026-09-20

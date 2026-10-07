@@ -25,10 +25,10 @@ scripts_exempt: true
 
 | Source | Destination | Command |
 |--------|-------------|---------|
-| `.slash-commands/` | `.Codex/docs/commands/` | `git mv .slash-commands/* .Codex/docs/commands/` |
+| `.slash-commands/` | `.claude/docs/commands/` | `git mv .slash-commands/* .claude/docs/commands/` |
 | `.git-commands/` | `scripts/git/` | `git mv .git-commands/* scripts/git/` |
-| `.agent-os/` | `.Codex/` | See module-based-refactor skill |
-| `.ai/` | `.Codex/` | See module-based-refactor skill |
+| `.agent-os/` | `.claude/` | See module-based-refactor skill |
+| `.ai/` | `.claude/` | See module-based-refactor skill |
 
 ## Folders to KEEP
 
@@ -37,7 +37,7 @@ scripts_exempt: true
 |--------|--------|
 | `.githooks/` | Standard location for git hooks |
 | `.github/` | GitHub workflows and templates |
-| `.Codex/` | Authoritative AI configuration |
+| `.claude/` | Authoritative AI configuration |
 | `.vscode/` | Team VS Code settings (if tracked) |
 
 ## Cleanup Commands
@@ -49,8 +49,8 @@ rm -rf .drcode/
 rm -rf .benchmarks/
 
 # Consolidate slash-commands to docs
-mkdir -p .Codex/docs/commands
-git mv .slash-commands/* .Codex/docs/commands/ 2>/dev/null
+mkdir -p .claude/docs/commands
+git mv .slash-commands/* .claude/docs/commands/ 2>/dev/null
 rm -rf .slash-commands/
 
 

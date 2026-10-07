@@ -1,3 +1,14 @@
+---
+compass:
+  parent: docs/plans/2026-06-12-issue-3041-repo-ecosystem-hygiene-audit.md
+  friends:
+    - docs/ecosystem/windows-skill-junction-git-trap.md
+    - .claude/skills/workspace-hub/worktree-branch-sync-hygiene/references/worktree-pre-push-bypass-for-tier1-checks.md
+  challengers:
+    - note: docs/plans/2026-04-21-issue-2203-pre-push-worktree-aware-tier1-gate.md
+      why: "MAJORx9 on scope complexity; #2911 is the intentionally narrower SKIP-on-missing cut"
+---
+
 # Plan for #2911: pre-push config-drift check is worktree-incompatible
 
 > **Status:** draft

@@ -7,7 +7,7 @@ tags: [planning, adversarial-review, evidence, github, governance]
 
 # Avoid Empty Review Artifact Evidence in Plan Redrafts
 
-Use when redrafting a plan after Codex/Gemini/Codex MAJOR findings and preparing a fresh adversarial rerun.
+Use when redrafting a plan after Codex/Gemini/Claude MAJOR findings and preparing a fresh adversarial rerun.
 
 ## Problem
 A common failure mode in plan-redraft loops is updating the plan text to say the latest MAJOR findings were "addressed" and citing same-day review artifact paths before the rerun has actually completed. If those artifact files are empty or placeholders at review time, the next reviewer correctly flags the plan as evidence-weak or internally contradictory.
@@ -57,7 +57,7 @@ Minimum acceptable evidence:
 ## Round-archiving rule for mutable fanout outputs
 
 If the review fanout writes mutable provider paths like `YYYY-MM-DD-plan-<issue>-AGENTS.md`, do not `mv` a valid artifact away and then cite the now-empty/missing mutable path in the plan. Prefer one of these safe patterns:
-1. Copy the populated mutable file to an immutable round path (`...-Codex-r2.md`) after verifying it is non-empty, then update the plan to cite the immutable path; or
+1. Copy the populated mutable file to an immutable round path (`...-claude-r2.md`) after verifying it is non-empty, then update the plan to cite the immutable path; or
 2. Keep citing the mutable path, but do not move it and verify it remains populated after any rerun.
 
 If a rerun fails and leaves `*.md` as 0 bytes with only a `*.err` sidecar, treat that run as provider-infrastructure evidence only. Either rerun successfully or cite an explicit unavailable/waiver artifact; never let the plan's front-matter or Artifact Map point at the 0-byte file.

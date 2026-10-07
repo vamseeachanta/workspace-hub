@@ -1,5 +1,8 @@
 # Closed issue revision thread pattern
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use when the user wants to revise or re-review a completed/closed GitHub issue, especially engineering calculation/report work that needs interactive comments before implementation.
 
 ## Trigger
@@ -24,7 +27,7 @@ Use when the user wants to revise or re-review a completed/closed GitHub issue, 
    - Known scenario/baseline values.
    - Scope boundary separating revision from new physics/new deliverables.
    - Acceptance criteria that include discussion decisions, plan-before-implementation, TDD if implementation follows, regenerated deliverables, and parent link-back.
-   - Gate note: open for discussion/planning; implementation blocked until plan review and user approval.
+   - Gate note: open for discussion/planning; honor discussion/planning-only scope; implementation requires task authority and resolved review/domain blockers.
 5. Comment on the closed parent with the new revision issue link so future readers do not continue the old closed thread.
 6. Verify the new issue is open, labels are correct, and the parent link-back comment exists.
 

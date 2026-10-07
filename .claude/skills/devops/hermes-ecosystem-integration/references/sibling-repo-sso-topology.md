@@ -1,5 +1,8 @@
 # Sibling Repo Single-Source-of-Truth Topology
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 ## Trigger
 
 Use this reference after workspace-hub tier-1 repositories are moved from nested checkouts under `workspace-hub/` to sibling checkouts under a common parent such as `/mnt/local-analysis/<repo>`.
@@ -45,7 +48,7 @@ When the user asks whether sibling repos now share memory, skills, and harness a
 1. Check the live remediation issue/plan state if one exists.
    - `status:needs-plan` means the SSoT flow is not approval-ready.
    - `status:plan-review` means the plan is awaiting user approval, not implemented.
-   - `status:plan-approved` is required before implementation can start.
+   - Reviewed scope and task authority are required before implementation; labels and markers are not prerequisites.
 2. Check local plan/review artifacts for unresolved MAJOR findings.
    - Any MAJOR plan-review result means the answer is “not confirmed yet,” even if the topology has been partially migrated.
 3. Separate three states in the reply:
@@ -64,7 +67,7 @@ When the user asks whether sibling repos now share memory, skills, and harness a
 - `scripts/memory/check-memory-drift.sh` reports no missing sibling-topology memory entries on the relevant machine; remote machines require remote execution or an explicit not-present/fail state.
 - Repo AGENTS pointers resolve to an existing canonical contract and AGENTS remediation skips symlinked/non-regular files.
 - Tools/scripts/commands are explicitly classified. Do not imply they are centralized simply because skills or memory are centralized; inspect `.claude/tools`, `.claude/commands`, `tools/`, and `scripts/` per repo and state whether they are repo-local or harness-shared.
-- Any associated GitHub issue has no unresolved MAJOR plan-review findings before it is moved to `status:plan-review`, and implementation does not start until user-applied `status:plan-approved` is present.
+- Any associated GitHub issue has no unresolved MAJOR plan-review findings before it is moved to `status:plan-review`, and implementation follows task authority after review; actual SSO/access changes require their action-specific authority.
 
 ## Answer Format for User SSoT Questions
 

@@ -84,7 +84,7 @@ The orchestrator reads the worker's discovery log and triages:
 |--------|------|-----|
 | **Create issue** | Bug or security finding outside current scope | `gh issue create` with discovery details |
 | **Update skill** | Convention or pattern that should be codified | Edit relevant SKILL.md or create new one |
-| **Update KNOWLEDGE.md** | Quirk or insight that affects future sessions | Append to `.Codex/memory/KNOWLEDGE.md` |
+| **Update KNOWLEDGE.md** | Quirk or insight that affects future sessions | Append to `.claude/memory/KNOWLEDGE.md` |
 | **Update memory** | Correction to agent behavior or preference | Add to auto-memory via conversation |
 | **Discard** | Already known or one-off observation | No action needed |
 
@@ -93,9 +93,9 @@ The orchestrator reads the worker's discovery log and triages:
 | Discovery type | Primary target | Secondary target |
 |---------------|---------------|-----------------|
 | Bug | GitHub issue | None (tracked in issue) |
-| Convention | Relevant SKILL.md | `.Codex/rules/` if universal |
+| Convention | Relevant SKILL.md | `.claude/rules/` if universal |
 | Dependency | Module docstring or README | KNOWLEDGE.md |
-| Quirk | KNOWLEDGE.md | `.Codex/memory/topics/` |
+| Quirk | KNOWLEDGE.md | `.claude/memory/topics/` |
 | Performance | KNOWLEDGE.md | GitHub issue if actionable |
 | Security | GitHub issue (priority:high) | KNOWLEDGE.md |
 | Pattern | New or existing SKILL.md | `docs/methodology/` |
@@ -119,7 +119,7 @@ picked up during the nightly knowledge harvesting phase.
 Cross-agent propagation uses the existing `agent-memory-bridge` skill. When a
 discovery applies to all agents (not just the discovering worker's provider):
 
-1. Update `.Codex/memory/KNOWLEDGE.md` (Codex picks this up)
+1. Update `.claude/memory/KNOWLEDGE.md` (Claude Code picks this up)
 2. Use `agent-memory-bridge` skill to sync to Hermes, Codex, and Gemini
 
 ### Extract Learnings to Issues
@@ -161,8 +161,8 @@ GitHub issues for actionable findings, preventing duplicate issue creation.
 
 ## References
 
-- Comprehensive learning: `.Codex/skills/coordination/comprehensive-learning-wrapper/SKILL.md`
-- Agent memory bridge: `.Codex/skills/coordination/agent-memory-bridge/SKILL.md`
+- Comprehensive learning: `.claude/skills/coordination/comprehensive-learning-wrapper/SKILL.md`
+- Agent memory bridge: `.claude/skills/coordination/agent-memory-bridge/SKILL.md`
 - Extract learnings: use `/learn-extended` skill
 - Orchestrator-worker methodology: `docs/methodology/orchestrator-worker.md`
 - Session governance: `docs/governance/SESSION-GOVERNANCE.md`

@@ -61,11 +61,11 @@ This was enough to shrink a 5.4 MB workflow GIF to ~3.6 MB without changing the 
 - `examples/demos/gtm/media/README.md`
 
 ## Recovery / orchestration lessons
-- In tmux/interactive Codex sessions, the useful files may already exist even if the session later hits an Anthropic API 500.
+- In tmux/interactive Claude Code sessions, the useful files may already exist even if the session later hits an Anthropic API 500.
 - After any interactive failure, verify externally before retrying:
   - `git status --short --branch`
   - `ls -lh examples/demos/gtm/media/...`
-- If the artifact exists and only commit/push remains, finish that outside the Codex session instead of rerunning the whole generation.
+- If the artifact exists and only commit/push remains, finish that outside the Claude session instead of rerunning the whole generation.
 
 ## Good commit pattern
 - `feat(gtm): add Demo N end-to-end workflow GIF for #2288`

@@ -13,7 +13,8 @@
 #   export REVIEW_GATE_STRICT=0       # revert review gate to advisory
 #   export DISABLE_ENFORCEMENT=1      # disable all enforcement
 
-# Plan-approval gate: 1 = block commits without plan approval, 0 = warn only
+# Legacy plan-approval compatibility flag: retained for old hook environments;
+# the retired approval gate never determines task authority or blocks implementation.
 export FORCE_PLAN_GATE_STRICT="${FORCE_PLAN_GATE_STRICT:-1}"
 
 # Review gate: 1 = block pushes without review, 0 = warn only

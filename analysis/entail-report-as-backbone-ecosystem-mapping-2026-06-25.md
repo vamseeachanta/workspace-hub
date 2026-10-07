@@ -31,7 +31,7 @@ Entail describes software as "the backbone of the marine operations analysis wor
 ## 3. The concrete gap
 
 - The building-block report pattern exists in exactly **one** module — `hydrodynamics/diffraction/` (the `report_builders_*` + `report_data_models` + `report_generator` set).
-- **31 other report generators** across `digitalmodel` are snowflakes — each reimplements section structure, rendering, and provenance handling independently: `ansys/report_generator.py`, `cathodic_protection/cp_reporting.py`, `fatigue/fatigue_reporting.py`, `structural/parametric_report.py`, `marine_ops/installation/suitability_report.py`, `asset_integrity/assessment/ffs_report.py`, `naval_architecture/b1528_sirocco_*_report.py`, …
+- **31 other report generators** across `digitalmodel` are snowflakes — each reimplements section structure, rendering, and provenance handling independently: `ansys/report_generator.py`, `cathodic_protection/cp_reporting.py`, `fatigue/fatigue_reporting.py`, `structural/parametric_report.py`, `marine_ops/installation/suitability_report.py`, `asset_integrity/assessment/ffs_report.py`, `naval_architecture/proj_a_vessel_s_*_report.py`, …
 - The Deckhand deliverable drops are **hand-authored standalone HTML** files, not generated from the same block library — so a fix to a block does not propagate, and provenance is not guaranteed.
 - There is **no shared `digitalmodel.reporting` package**: no `ReportBlock` protocol, no `ReportDataModel` base, no report skeleton/backbone, no shared HTML/PDF renderer, no single declared data contract against the source-of-truth store.
 

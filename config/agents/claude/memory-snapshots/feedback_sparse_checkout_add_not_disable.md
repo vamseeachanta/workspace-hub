@@ -21,4 +21,4 @@ When a path is visible on the GitHub web UI but missing from the local working t
 6. **Avoid `git status -uall`** on this repo — workspace CLAUDE.md flags it explicitly as a memory-pressure hazard.
 7. **Other repos**: 20+ sibling repos in workspace-hub are full (non-sparse) checkouts — the missing-file symptom there has a different root cause; do not reach for sparse-checkout commands.
 
-**Pilot incident**: 2026-04-30 — user reported `B1528/` invisible locally but present on GitHub. `git sparse-checkout add B1528` resolved in seconds; subsequent `disable` attempt hung 22 min, was SIGINT'd, no harm done.
+**Pilot incident**: 2026-04-30 — user reported `proj-a/` invisible locally but present on GitHub. `git sparse-checkout add proj-a` resolved in seconds; subsequent `disable` attempt hung 22 min, was SIGINT'd, no harm done.

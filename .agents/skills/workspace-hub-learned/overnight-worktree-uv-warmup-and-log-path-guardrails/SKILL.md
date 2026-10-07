@@ -1,18 +1,18 @@
 ---
 name: overnight-worktree-uv-warmup-and-log-path-guardrails
-description: Prevent false stalls and missing-log failures in overnight Codex worktree batches by pre-warming uv environments, using exact log-path directory creation, and interpreting buffered logs correctly.
+description: Prevent false stalls and missing-log failures in overnight Claude worktree batches by pre-warming uv environments, using exact log-path directory creation, and interpreting buffered logs correctly.
 version: 1.0.0
 author: Hermes Agent
 license: MIT
-tags: [overnight, Codex, worktrees, uv, logging, batch-execution]
+tags: [overnight, claude, worktrees, uv, logging, batch-execution]
 ---
 
 # Overnight worktree uv warmup and log-path guardrails
 
-Use when launching unattended Codex runs in fresh worktrees, especially for Python repos that rely on `uv` and for nested repos like `digitalmodel`.
+Use when launching unattended Claude runs in fresh worktrees, especially for Python repos that rely on `uv` and for nested repos like `digitalmodel`.
 
 ## Trigger
-- Overnight/background Codex batch in isolated worktrees
+- Overnight/background Claude batch in isolated worktrees
 - Fresh worktree or fresh workspace
 - Commands will run `uv run ...`
 - You want reliable log capture with `tee`
@@ -24,8 +24,8 @@ Use when launching unattended Codex runs in fresh worktrees, especially for Pyth
 - This can make a healthy worker look blocked or dead.
 - We observed this in the `digitalmodel` overnight lane: the real work eventually completed and all tests passed, but the first-use warmup consumed most of the apparent runtime.
 
-2. Buffered Codex logs can stay empty for a long time
-- `Codex -p ... | tee <log>` may produce no visible log growth for a long period even when the process is healthy.
+2. Buffered Claude logs can stay empty for a long time
+- `claude -p ... | tee <log>` may produce no visible log growth for a long period even when the process is healthy.
 - Empty logs are not sufficient evidence of failure.
 
 3. `tee` can fail if you create the wrong log directory
@@ -56,7 +56,7 @@ Safe pattern:
 LOG=/abs/path/to/logs/run.log
 mkdir -p "$(dirname "$LOG")"
 PROMPT=$(< /abs/path/to/prompt.md)
-Codex -p \
+claude -p \
   --permission-mode acceptEdits \
   --no-session-persistence \
   --output-format text \
@@ -85,6 +85,6 @@ For overnight worktree batches:
 - pre-warm `uv`
 - use absolute log paths
 - create the exact parent directory of the log file
-- do not interpret empty Codex logs as immediate failure
+- do not interpret empty Claude logs as immediate failure
 
 These guardrails reduce false hang diagnoses and prevent task-success/logging-failure confusion in unattended runs.

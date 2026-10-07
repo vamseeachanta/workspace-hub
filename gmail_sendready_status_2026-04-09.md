@@ -15,15 +15,15 @@ ACE API Storage Tank Conference CFP note is not yet send-ready because it still 
 - Status: Send-ready
 - Subject: `Request to Review/Correct 2025 Form 1099-MISC for Family Dollar Store #30150`
 - Exact recipients:
-  - To: `iharris@dollartree.com`, `ValerieD@dollartree.com`
-  - Cc: `TX_Rents@familydollar.com`
+  - To: `[email removed]`, `[email removed]`
+  - Cc: `[email removed]`
 
 ### 2) Pest / exterior follow-up for Store #30150
 - File: `/mnt/local-analysis/workspace-hub/sendready_skestates_pest_email.md`
 - Status: Send-ready
 - Subject: `RE: FD30150 | Pest/Exteriors`
 - Exact recipients:
-  - To: `KSTRAIGHT@dollartree.com`
+  - To: `[email removed]`
   - Cc: none
 
 ### 3) Clayton Park POA / HOA account setup and statements follow-up
@@ -31,8 +31,8 @@ ACE API Storage Tank Conference CFP note is not yet send-ready because it still 
 - Status: Send-ready
 - Subject: `Clayton Park POA Account Setup and Statement Information for 15645 Westpark Dr, Houston, TX 77082`
 - Exact recipients:
-  - To: `Account.Services@fscommercial.com`
-  - Cc: `accountsreceivable.tx@fsresidential.com`
+  - To: `[email removed]`
+  - Cc: `[email removed]`
 
 ## Not yet send-ready
 

@@ -1,17 +1,17 @@
 ---
 name: stage-prompt-drift-guard
-description: Audit historical stage-prompt artifact drift from Codex logs, generate a package index, and enforce only newly introduced drift in CI and local pre-push hooks.
+description: Audit historical stage-prompt artifact drift from Claude logs, generate a package index, and enforce only newly introduced drift in CI and local pre-push hooks.
 version: 1.0.0
-tags: [Codex, work-queue, drift, enforcement, ci, pre-push, audit]
+tags: [claude, work-queue, drift, enforcement, ci, pre-push, audit]
 related_skills: [session-corpus-audit, workflow-compliance-audit, overnight-parallel-agent-prompts]
 ---
 
 # Stage Prompt Drift Guard
 
-Use when Codex/work-queue history references `.Codex/work-queue/assets/<work-item>/stage-*-prompt.md` files that no longer exist, and you need to make that drift visible without failing on all historical debt.
+Use when Claude/work-queue history references `.claude/work-queue/assets/<work-item>/stage-*-prompt.md` files that no longer exist, and you need to make that drift visible without failing on all historical debt.
 
 ## When to use
-- Codex session log audit shows many missing `stage-*-prompt.md` reads
+- Claude session log audit shows many missing `stage-*-prompt.md` reads
 - You want an auditable index of prompt packages and surviving evidence files
 - You need a CI/local guard that blocks only newly introduced drift, not legacy repo drift
 
@@ -19,7 +19,7 @@ Use when Codex/work-queue history references `.Codex/work-queue/assets/<work-ite
 
 ### 1. Extend the audit before enforcing
 Build or update an audit script that:
-- parses Codex post-hook log records
+- parses Claude post-hook log records
 - detects prompt-like reads and stage prompt reads
 - groups them by work item (`WRK-123`, `workspace-hub-456`)
 - emits a `stage_prompt_packages` structure with:
@@ -30,7 +30,7 @@ Build or update an audit script that:
 
 Important: scan both
 - historical prompt reads from logs, and
-- current asset directories under `.Codex/work-queue/assets/*`
+- current asset directories under `.claude/work-queue/assets/*`
 so packages with surviving evidence but no prompt files are still represented.
 
 ### 2. Generate a human-auditable report
@@ -49,7 +49,7 @@ A drift issue is:
 - no replacement evidence for that package
 
 Useful replacement evidence:
-- `.Codex/work-queue/assets/<work-item>/evidence/*`
+- `.claude/work-queue/assets/<work-item>/evidence/*`
 - explicit report/index paths if you intentionally replaced prompt artifacts with generated summaries
 
 ### 4. Enforce only newly introduced drift
@@ -126,9 +126,9 @@ Important finding:
 ### 9. Auto-generate non-destructive evidence stubs for blocked work items
 Extend the Python checker with `--write-evidence-stubs` support.
 Useful pattern:
-- detect whether the work item is blocked by checking `.Codex/work-queue/{blocked,pending,working,done}` records
+- detect whether the work item is blocked by checking `.claude/work-queue/{blocked,pending,working,done}` records
 - if blocked and no replacement evidence exists, create:
-  - `.Codex/work-queue/assets/<work-item>/evidence/stage-prompt-drift-summary.stub.md`
+  - `.claude/work-queue/assets/<work-item>/evidence/stage-prompt-drift-summary.stub.md`
 - never overwrite an existing stub
 - if a stub already exists, reuse/report it instead of replacing it
 

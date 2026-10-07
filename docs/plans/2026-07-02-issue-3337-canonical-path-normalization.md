@@ -98,7 +98,7 @@ $ grep -n 'mnt/remote' scripts/data/document-index/cross-drive-dedup-audit.py | 
 **Ground-truth alias probes** (2026-07-02T14:45:58Z–14:48:42Z, against the live 623 MB artifact — all `grep` bounded with `-m`/`-c`, never full reads):
 ```
 $ grep -m3 -o '"/mnt/remote/[^"]*"' /mnt/local-analysis/workspace-hub/data/document-index/index.jsonl
-"/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 Mecor S Lay Installation/..."
+"/mnt/remote/ace-linux-2/dde/documents/simulation/OrcaFlex/611 the pipelay client S Lay Installation/..."
 $ head -1 index.jsonl | cut -c1-200
 {"path": "/mnt/ace/O&G-Standards/Unknown/Codes_&_Standards_Database.xls", "host": "ace-linux-1", ...}
 $ grep -c '/mnt/remote/ace-linux-2/dde' index.jsonl        →  260496   (0.163 s warm)
@@ -297,7 +297,7 @@ post-migration expectation: baseline is EMPTY or near-empty (historical/inert fi
 
 ```
 PRE  (before rewriting anything):
-    uv run python scripts/data/drive-index-search/search.py "mecor s lay" --json > /tmp/pre.json
+    uv run python scripts/data/drive-index-search/search.py "the pipelay client s lay" --json > /tmp/pre.json
     plus 2 more queries hitting known dde rows + 1 hitting /mnt/ace rows
     + 1 query targeting a dde row in a NON-alias path form, if any exist (probe:
       grep -m1 -v '/mnt/remote/' over dde-host rows in index.jsonl) — proves alias-map

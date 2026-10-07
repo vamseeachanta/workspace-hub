@@ -5,4 +5,4 @@
 /mnt/ace/lng-a/62092_sesa/MOVE-LOG.md
 /mnt/ace/lng-a/training/MOVE-LOG.md
 /mnt/ace/lng-a/codes/_from_elements/MOVE-LOG.md
-/mnt/ace/mkt-a/31522-woodfibre-lng/MOVE-LOG.md
+/mnt/ace/mkt-a/31522-lng-terminal-a/MOVE-LOG.md

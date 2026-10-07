@@ -8,6 +8,16 @@ type: domain
 
 Root skill for OrcaFlex marine dynamic analysis workflows.
 
+## Start here for execution and qualification
+
+Read the [execution runbook](../../../../../docs/solver/orcaflex-execution-runbook.html)
+for local/remote runs and the [ecosystem strategy](../../../../../docs/reports/2026-09-09-orcaflex-fea-strategy.html)
+for model-family development. Resolve source/tests through digitalmodel's
+`docs/maps/digitalmodel-operator-map.md`; use repository-qualified issue links.
+Keep schema validity, native load/run proof, numerical validation and engineering
+approval distinct. Follow the linked lane owner and measured status before dispatch;
+documentation of a proposed control is not evidence that it is deployed.
+
 ## References
 
 - `references/current-rudder-resultant-reporting.md` — checklist for OCIMF-style current vs rudder vs total/resultant force and yaw-moment report sections, including static Markdown/PDF requirements.

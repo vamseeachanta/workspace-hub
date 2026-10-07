@@ -23,7 +23,7 @@ Use this reference when the user asks to organize related GitHub issues into a w
 - Do not add `status:plan-approved`; only the user can approve plans.
 - Do not close issues during board preparation unless explicitly asked.
 - Do not mutate lifecycle labels just to make a board look tidy; use GitHub Project fields or a report artifact when the task is planning/coordination.
-- If implementation is requested, confirm each issue is `status:plan-approved` and apply TDD before edits.
+- If implementation is requested, verify task scope, current review and resolved blockers; apply TDD before edits. No approval label or marker is required.
 
 ## Recommended artifact
 

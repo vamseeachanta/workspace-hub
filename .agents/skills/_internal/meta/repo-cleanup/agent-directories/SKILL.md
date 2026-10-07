@@ -12,7 +12,7 @@ scripts_exempt: true
 ## Agent Directories
 
 
-Multiple agent-related directories should consolidate to `.Codex/agents/`.
+Multiple agent-related directories should consolidate to `.claude/agents/`.
 
 **Before:**
 ```

@@ -1,8 +1,8 @@
 ---
 name: cc-best-practice-adoption
-description: 'Use when onboarding new Codex features, reviewing external best-practice
+description: 'Use when onboarding new Claude Code features, reviewing external best-practice
   repos, or expanding the daily learning catalog. Covers: gap analysis against native
-  CC capabilities, tips catalog expansion, daily-learning script, native .Codex/
+  CC capabilities, tips catalog expansion, daily-learning script, native .claude/
   structure (agents, commands, settings).'
 version: 1.0.0
 updated: 2026-04-03
@@ -22,15 +22,15 @@ platforms:
 
 # CC Best Practice Adoption
 
-Workflow for analyzing external Codex best-practice sources, distilling actionable
+Workflow for analyzing external Claude Code best-practice sources, distilling actionable
 gaps in our ecosystem, and wiring daily learning into the session lifecycle.
 
 ## When to Use
 
-- New Codex version ships with features to evaluate
-- Reviewing an external repo (e.g., shanraisshan/Codex-best-practice)
+- New Claude Code version ships with features to evaluate
+- Reviewing an external repo (e.g., shanraisshan/claude-code-best-practice)
 - Expanding the daily learning tip catalog
-- Bootstrapping native .Codex/ structure (agents, commands, skills)
+- Bootstrapping native .claude/ structure (agents, commands, skills)
 
 ## Gotchas
 
@@ -40,12 +40,12 @@ gaps in our ecosystem, and wiring daily learning into the session lifecycle.
 We wasted effort planning to build custom versions before discovering they exist.
 
 **Rule:** Before creating any slash command, run `/help` or check
-[Codex-best-practice/best-practice/Codex-commands.md](https://github.com/shanraisshan/Codex-best-practice/blob/main/best-practice/Codex-commands.md)
+[claude-code-best-practice/best-practice/claude-commands.md](https://github.com/shanraisshan/claude-code-best-practice/blob/main/best-practice/claude-commands.md)
 for the 64 native commands.
 
 ### 2. Hermes Skills vs Native CC Skills
 Our ecosystem has 691 Hermes-style skills but ZERO native CC format. They are different:
-- **Native CC skills**: `.Codex/skills/<name>/SKILL.md` with CC frontmatter (`context: fork`, `paths`, `model`, `effort`, `hooks`)
+- **Native CC skills**: `.claude/skills/<name>/SKILL.md` with CC frontmatter (`context: fork`, `paths`, `model`, `effort`, `hooks`)
 - **Hermes skills**: `~/.hermes/skills/<name>/SKILL.md` with Hermes frontmatter
 - Both can coexist. Native CC skills show in `/skills` menu and support auto-discovery.
 
@@ -66,17 +66,17 @@ cd /tmp && git clone --depth 1 <repo-url>
 ```
 Key files to read first:
 - README.md (feature catalog, tip index)
-- best-practice/Codex-commands.md (native commands list)
-- best-practice/Codex-skills.md (native skills + frontmatter fields)
-- best-practice/Codex-subagents.md (native agent frontmatter fields)
-- best-practice/Codex-settings.md (60+ settings, 170+ env vars)
+- best-practice/claude-commands.md (native commands list)
+- best-practice/claude-skills.md (native skills + frontmatter fields)
+- best-practice/claude-subagents.md (native agent frontmatter fields)
+- best-practice/claude-settings.md (60+ settings, 170+ env vars)
 
 ### Step 2: Gap Analysis
 Compare external catalog against:
 1. `config/workflow-tips/tips-catalog.yaml` — what tips are we missing?
-2. `.Codex/settings.json` — what settings are we not using?
-3. `.Codex/agents/` — do we have native agent definitions?
-4. `.Codex/commands/` — do we have native command definitions?
+2. `.claude/settings.json` — what settings are we not using?
+3. `.claude/agents/` — do we have native agent definitions?
+4. `.claude/commands/` — do we have native command definitions?
 
 Output a structured list: ALREADY DONE / STILL MISSING / NEW TO ADD.
 
@@ -93,17 +93,17 @@ Append new tips to `config/workflow-tips/tips-catalog.yaml` following the format
     added: YYYY-MM-DD
 ```
 
-Prefixes: `cc-` (Codex native), `eco-` (ecosystem), `gsd-` (GSD), `bp-` (best practice).
+Prefixes: `cc-` (Claude Code native), `eco-` (ecosystem), `gsd-` (GSD), `bp-` (best practice).
 
 ### Step 4: Update Daily Learning Script
 If new tip categories are added, update `scripts/productivity/daily-learning.py`:
 - Add category label mapping in `show_daily_tips()`
 - Add practice exercises in `generate_practice()` for high-value tips
 
-### Step 5: Bootstrap Native .Codex/ Structure
+### Step 5: Bootstrap Native .claude/ Structure
 Create files using native CC frontmatter (not Hermes format):
 
-**Agents** (`.Codex/agents/<name>.md`):
+**Agents** (`.claude/agents/<name>.md`):
 ```yaml
 ---
 name: <name>
@@ -119,7 +119,7 @@ skills:                # optional — preloaded into context
 ---
 ```
 
-**Commands** (`.Codex/commands/<name>.md`):
+**Commands** (`.claude/commands/<name>.md`):
 ```yaml
 ---
 name: <name>
@@ -131,7 +131,7 @@ allowed-tools: Read, Bash, Agent(explorer)
 Use !`command` for dynamic shell injection — output injected into prompt.
 ```
 
-**Settings** (`.Codex/settings.json`) — key fields often missed:
+**Settings** (`.claude/settings.json`) — key fields often missed:
 - `outputStyle: "Explanatory"` — insight boxes
 - `effortLevel: "high"` — default reasoning depth
 - `worktree.symlinkDirectories` — fast worktree startup
@@ -143,7 +143,7 @@ Add a SessionStart hook for automatic tip surfacing:
 ```json
 {
   "type": "command",
-  "command": "bash .Codex/hooks/daily-learning-tip.sh 2>/dev/null || true",
+  "command": "bash .claude/hooks/daily-learning-tip.sh 2>/dev/null || true",
   "timeout": 3,
   "statusMessage": "Daily learning tip"
 }
@@ -162,22 +162,22 @@ uv run scripts/productivity/daily-learning.py --categories  # browse all tips
 | `config/workflow-tips/tips-catalog.yaml` | All tips (67+), 4 categories |
 | `config/workflow-tips/tip-history.yaml` | Shown-tip tracking, 30-day window |
 | `scripts/productivity/daily-learning.py` | Daily tip picker + practice exercises |
-| `.Codex/hooks/daily-learning-tip.sh` | SessionStart hook, 1 tip on start |
-| `.Codex/agents/*.md` | Native CC agent definitions |
-| `.Codex/commands/*.md` | Native CC slash commands |
-| `.Codex/settings.json` | CC configuration |
+| `.claude/hooks/daily-learning-tip.sh` | SessionStart hook, 1 tip on start |
+| `.claude/agents/*.md` | Native CC agent definitions |
+| `.claude/commands/*.md` | Native CC slash commands |
+| `.claude/settings.json` | CC configuration |
 
 ## Reference
-- https://github.com/shanraisshan/Codex-best-practice (133k+ stars)
+- https://github.com/shanraisshan/claude-code-best-practice (133k+ stars)
 - 64 native CC commands, 5 official skills, 5 official agents
 - CC frontmatter docs: commands, skills, subagents pages in best-practice repo
 - GitHub issues: #1775 (8-week cadence), #1760 (self-improvement commands)
-- https://github.com/affaan-m/everything-Codex (50K stars, MIT)
+- https://github.com/affaan-m/everything-claude-code (50K stars, MIT)
   - Cherry-pick: security guide, pre:config-protection hook, batch-at-Stop pattern,
     context-budget skill, autonomous-loops (6 patterns), continuous-learning-v2 instincts
-  - Implemented pattern: add a dedicated Codex `PreToolUse` hook entry in `.Codex/settings.json`
+  - Implemented pattern: add a dedicated Claude Code `PreToolUse` hook entry in `.claude/settings.json`
     for `Write|Edit|MultiEdit`, then delegate the decision to a reusable shell checker
-    (example: `.Codex/hooks/config-protection-pretooluse.sh` -> `scripts/enforcement/check-config-protection.sh`).
+    (example: `.claude/hooks/config-protection-pretooluse.sh` -> `scripts/enforcement/check-config-protection.sh`).
     This keeps policy logic testable outside the hook wrapper.
   - Practical allowlist learned in implementation: permit non-tooling metadata edits in `pyproject.toml`
     and other low-risk config touches, but block broad weakening patterns like `ignore`,

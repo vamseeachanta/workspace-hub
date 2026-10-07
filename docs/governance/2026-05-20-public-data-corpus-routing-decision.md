@@ -1,3 +1,17 @@
+---
+compass:
+  hub: true
+  parent: docs/governance/2026-05-14-service-provider-data-routing-and-bsee-ingest-design.md
+  children:
+    - docs/plans/2026-05-20-issue-429-worldenergydata-public-data-routing.md
+  challengers:
+    - note: docs/plans/2026-05-20-issue-429-worldenergydata-public-data-routing.md
+      why: "Option B (private llm-wiki) rejected: breaks GTM citation surface; Option C (hybrid per-artifact) rejected as default: routing-decision tax compounds"
+  memory:
+    - .claude/memory/topics/feedback_service_provider_data_routing.md
+    - .claude/memory/topics/feedback_llm_wiki_relocation_firewall_gate.md
+---
+
 # Public-data corpus routing decision — BSEE / NOAA / USGS / MMS
 
 > **Date:** 2026-05-20
@@ -72,7 +86,7 @@ This decision is revisited if:
 ## Out of scope
 
 - Vendor-licensed standards routing — settled by routing rule §1–§5 (private llm-wiki).
-- Client-project content (B1528, proj-a, mkt-a) — separate epic under client-engagement issues.
+- Client-project content (proj-a, proj-a, mkt-a) — separate epic under client-engagement issues.
 - License-drift detection cron script — follow-on issue, not built here.
 - New public-domain data sources beyond BSEE / NOAA / USGS / MMS (EIA, IEA-public, IRENA, etc.) — applies the same rule once landed; not enumerated.
 

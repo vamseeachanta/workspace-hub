@@ -179,7 +179,7 @@ fetch_remote() {
 # Main logic
 # ---------------------------------------------------------------------------
 
-declare -i total=0 ok=0 missing=0 outdated=0 synced=0 errors=0
+declare -i total=0 ok=0 missing=0 outdated=0 synced=0 errors=0 adapted=0
 
 plugins_to_process=()
 if [[ -n "$FILTER_PLUGIN" ]]; then
@@ -216,6 +216,22 @@ for plugin in "${plugins_to_process[@]}"; do
     local_skill="${SKILL_RENAMES[$rename_key]:-$skill}"
     local_file="${local_dir}/${local_skill}/SKILL.md"
     remote_url="$(remote_skill_url "$plugin" "$skill")"
+
+    # Local adaptations are maintained through review, never replaced wholesale.
+    # Restrict the marker to YAML frontmatter; body examples do not opt out.
+    if [[ -f "$local_file" ]] && awk '
+      { sub(/\r$/, "") }
+      NR == 1 { if ($0 != "---") exit; next }
+      $0 == "---" { exit }
+      /^metadata:[[:space:]]*$/ { metadata=1; next }
+      /^[^[:space:]]/ { metadata=0 }
+      metadata && /^[[:space:]]+adaptation_owner:[[:space:]]*["\047]?workspace-hub["\047]?[[:space:]]*$/ { found=1 }
+      END { exit !found }
+    ' "$local_file"; then
+      printf "  %-40s LOCAL_ADAPTED (preserved; review upstream manually)\n" "$skill"
+      adapted+=1
+      continue
+    fi
 
     # --- Determine status ---
     display_name="$skill"
@@ -314,6 +330,7 @@ echo "================================================================"
 echo " Summary"
 echo "================================================================"
 printf " Total skills:  %d\n" "$total"
+printf " Local adapted: %d (preserved)\n" "$adapted"
 printf " OK:            ${C_GREEN}%d${C_RESET}\n" "$ok"
 printf " Missing:       ${C_RED}%d${C_RESET}\n" "$missing"
 printf " Outdated:      ${C_YELLOW}%d${C_RESET}\n" "$outdated"

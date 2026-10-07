@@ -43,7 +43,7 @@ uv run --no-project python scripts/skills/repo-portfolio-steering/compute-balanc
 
 # With portfolio signals (Layer 2)
 uv run --no-project python scripts/skills/repo-portfolio-steering/compute-balance.py \
-  --signals .Codex/state/portfolio-signals.yaml
+  --signals .claude/state/portfolio-signals.yaml
 ```
 
 ## 5 Output Sections
@@ -67,11 +67,11 @@ Reads `## By Category` summary table from `INDEX.md`.
 - Default threshold: 30% configurable via `HARNESS_THRESHOLD`
 - Output: `HEALTHY` or `OVER-INVESTED` + recommended max harness items before returning to engineering
 
-**Layer 2 — Agentic activity by provider** (from `.Codex/state/portfolio-signals.yaml`):
+**Layer 2 — Agentic activity by provider** (from `.claude/state/portfolio-signals.yaml`):
 
 ```
 Provider | Harness (30d) | Engineering (30d) | Harness%
-Codex   | 4             | 3                 | 57% ⚠ OVER
+claude   | 4             | 3                 | 57% ⚠ OVER
 codex    | 1             | 5                 | 17% ✓
 gemini   | 0             | 2                 | 0%  ✓
 ```
@@ -125,9 +125,9 @@ Spend-rate formula based on current `harness_pct`:
 
 | Input | Path | Purpose |
 |---|---|---|
-| Category View | `.Codex/work-queue/INDEX.md` `## By Category` | Balance snapshot |
+| Category View | `.claude/work-queue/INDEX.md` `## By Category` | Balance snapshot |
 | WRK frontmatter | `pending/*.md` + `working/*.md` | brochure_status, category, priority |
-| Portfolio signals | `.Codex/state/portfolio-signals.yaml` | L2 provider activity + L3 capability |
+| Portfolio signals | `.claude/state/portfolio-signals.yaml` | L2 provider activity + L3 capability |
 
 ## Session-Start Integration
 
@@ -138,7 +138,7 @@ This skill registers a **weekly steering mode** for `/session-start`:
 
 ## Acceptance Criteria
 
-- [x] AC-1: SKILL.md at `.Codex/skills/workspace-hub/repo-portfolio-steering/SKILL.md`
+- [x] AC-1: SKILL.md at `.claude/skills/workspace-hub/repo-portfolio-steering/SKILL.md`
 - [x] AC-2: Balance snapshot reads INDEX.md By Category
 - [x] AC-3: Harness threshold default 30% + configurable
 - [x] AC-4: GTM-readiness ranking by brochure_status + percent_complete

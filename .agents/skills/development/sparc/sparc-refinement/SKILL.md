@@ -52,7 +52,7 @@ tags: []
 ```bash
 # Invoke SPARC Refinement/TDD phase
 
-# Or directly in Codex
+# Or directly in Claude Code
 # "Use SPARC refinement to implement login with TDD approach"
 ```
 

@@ -77,7 +77,7 @@ Why:
 - Windows consumption path exists via repo sync:
   - `scripts/windows/repo-sync-daily.sh`
   - `scripts/windows/setup-scheduler-tasks.ps1`
-  - `config/workstations/registry.yaml` points Windows workstations at `D:\workspace-hub`
+  - `config/workstations/registry.yaml` points Windows workstations at `<workspace-root>\workspace-hub`
 - Remaining caveat:
   - `licensed-win-1` is still marked unreachable in `config/ai_agents/ai-tools-status.yaml`, so live Windows execution remains unverified from this Linux session
 

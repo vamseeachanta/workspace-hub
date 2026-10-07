@@ -1,6 +1,6 @@
 ---
 name: cowork-plugin-customizer
-description: "Customize or personalize a Codex plugin for a specific organization's tools and workflows by replacing placeholders and configuring MCP servers."
+description: "Customize or personalize a Claude Code plugin for a specific organization's tools and workflows by replacing placeholders and configuring MCP servers."
 type: reference
 version: 1.0.0
 category: development

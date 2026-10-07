@@ -107,7 +107,7 @@ MAX_PARALLEL=$(cpu_count)
 ### Safe git add (Skip Missing Paths)
 
 ```bash
-# BAD:  git add .Codex/state/candidates/ .Codex/state/corrections/
+# BAD:  git add .claude/state/candidates/ .claude/state/corrections/
 #       ^ fatal error + silent skip when dirs don't exist
 # GOOD:
 git_add_if_exists() {
@@ -120,9 +120,9 @@ git_add_if_exists() {
     return $(( staged == 0 ? 1 : 0 ))
 }
 if git_add_if_exists \
-    .Codex/state/candidates/ \
-    .Codex/state/corrections/ \
-    .Codex/state/patterns/; then
+    .claude/state/candidates/ \
+    .claude/state/corrections/ \
+    .claude/state/patterns/; then
     git commit -m "chore: session learnings from $(hostname)"
 fi
 ```

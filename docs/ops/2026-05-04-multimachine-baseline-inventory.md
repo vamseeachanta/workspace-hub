@@ -59,11 +59,11 @@
 
 | Storage / data class | ace-linux-1 path | ace-linux-2 path | Windows path | Policy |
 |---|---|---|---|---|
-| Primary workspace | `/mnt/local-analysis/workspace-hub` | `/mnt/local-analysis/workspace-hub` observed; registry still says stale `/mnt/workspace-hub` | `D:\workspace-hub` | Fix registry/cron drift before automation. |
+| Primary workspace | `/mnt/local-analysis/workspace-hub` | `/mnt/local-analysis/workspace-hub` observed; registry still says stale `/mnt/workspace-hub` | `<workspace-root>\workspace-hub` | Fix registry/cron drift before automation. |
 | Knowledge/raw-data center | `/mnt/ace` | `/mnt/remote/ace-linux-1/ace` via NFS | not verified | Canonical rawdata, llm-wikis, standards, project buckets live here. |
 | ace-linux-2 bulk local disk | sshfs remote at `/mnt/remote/ace-linux-2/dde` from ace-linux-1 | `/mnt/dde` | not applicable | Use for ace-linux-2 local heavy preprocessing/cache. |
 | Elements ingest drive | `/mnt/elements` mounted but currently effectively empty in this check | not verified | not applicable | Use only via established ingest conventions. |
-| Windows solver workspace | not mounted from Linux | not mounted from Linux | `D:\workspace-hub` | Git-backed queue is the reliable bridge. |
+| Windows solver workspace | not mounted from Linux | not mounted from Linux | `<workspace-root>\workspace-hub` | Git-backed queue is the reliable bridge. |
 
 Verified capacities:
 

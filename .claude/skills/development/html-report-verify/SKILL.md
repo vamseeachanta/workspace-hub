@@ -80,6 +80,12 @@ When a report visualizes generated sweep data (speed × heading × angle, cases 
 - Include any extra default case policy in the verdict (for example, a chart default speed outside the requested sweep list).
 
 ### Layer 3c — Multi-Artifact Engineering Report Bundle Checks
+Apply `docs/standards/FINAL_REPORT_VERIFICATION.md` to the actual outgoing bundle:
+record audience/destination, artifact revision or digests, appropriate identifiers,
+source rights, independent secret-check evidence, reviewer/date and limitations.
+An unreviewed attachment or changed artifact invalidates the manual verification.
+This is not an automatic repository identifier gate; retired scanners must not run.
+
 When a generator emits an HTML/PDF report plus CSV/JSON/provenance/manifest artifacts, verify the bundle before summarizing success:
 - Parse the manifest and confirm every referenced artifact exists and has non-zero size.
 - Cross-check generated CSV/JSON row counts and key extrema against the command output or generator summary.

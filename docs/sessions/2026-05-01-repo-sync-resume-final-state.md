@@ -13,7 +13,7 @@
 | Disk used (`/dev/sdc1`) | ~225G | 189G | **~36 GB freed** |
 | mkt-a materialized files | 34 / 368,433 | 368,433 / 368,433 | full sync |
 | Branches preserved on origin | — | 6 + 1 preservation tag | new durable refs |
-| Sibling repos clean | 16 of 17 | 17 of 17 | digitalmodel B1528 committed |
+| Sibling repos clean | 16 of 17 | 17 of 17 | digitalmodel proj-a committed |
 
 ## Phase-by-phase execution
 
@@ -22,9 +22,9 @@
 | 0 | Preflight (lock check, HEAD snapshot) | stale `.git/index.lock` cleared, HEAD `1aa2f6f47` (commit not landed) |
 | 1 | Identify HIGH scanner finding + retry commit | found: `comfyui/SKILL.md:321` `<!-- scanner-allow:hardcoded_secret -->` (the marker self-defeat documented in `feedback_scanner_marker_self_defeat.md`); fix already in working tree, just needed re-staging. Commit `92f5ffc5b` landed (563 files); merge `64ea5ae4c` resolved 6 origin docs commits w/ stale unresolved markers in #2570 plan; auto-sync silently pushed merge to origin |
 | 2 | Background jobs (mkt-a rematerialize, encoding, worktree inventory) | launched in parallel; encoding clean (0 findings); inventory found 63 worktrees |
-| 3 | Sibling-repo sweep (4 parallel agents) | 16/17 clean; digitalmodel had B1528/proj-a session work. Naive `password` regex false-positive on `argon2-cffi` comment surfaced agent over-cautiousness — relied on workspace-hub's hardened pre-commit hook instead |
+| 3 | Sibling-repo sweep (4 parallel agents) | 16/17 clean; digitalmodel had proj-a/proj-a session work. Naive `password` regex false-positive on `argon2-cffi` comment surfaced agent over-cautiousness — relied on workspace-hub's hardened pre-commit hook instead |
 | 4 | Worktree batch sweep | 1 sweepable (`nightly-batch-2-plan-review`, 24 plan/review files → commit `0cdf3297d` pushed), 2 mass-deletion-fingerprint dirs preserved for human review (later restored), 14 detached worktrees skipped per protocol |
-| digitalmodel | Manual commit + push | `b6c14e2e feat(naval): B1528 proj-a yaw-moment + time-trace reports + tests + reviews` (14 files) on `issue-504-buoys-builder-refactor` |
+| digitalmodel | Manual commit + push | `b6c14e2e feat(naval): proj-a yaw-moment + time-trace reports + tests + reviews` (14 files) on `issue-504-buoys-builder-refactor` |
 | #5 fix | nightly-batch-2 upstream retarget | branch was tracking `origin/main` (gave misleading `1/12` ahead/behind); fixed to track its own remote ref |
 | filesystem audit | Top-level + nested classification | 97 nested git dirs across 8 parent dirs; categories: 64 SAFE-REMOVE (~28GB), 15 PUSH-THEN-CLEAN, 13 ASK detached, 5 ASK-DIRTY |
 | step 1 | SAFE-REMOVE batch | 64/64 cleaned; `git worktree remove` correctly dispatched to owner repos (workspace-hub / digitalmodel / worldenergydata / assetutilities) |

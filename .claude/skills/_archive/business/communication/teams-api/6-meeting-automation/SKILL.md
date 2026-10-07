@@ -161,10 +161,10 @@ async def schedule_standup():
         subject="Daily Standup",
         start_time=tomorrow,
         end_time=tomorrow + timedelta(minutes=30),
-        organizer_id="organizer@company.com",
+        organizer_id="organizer@example.com",
         attendee_emails=[
-            "team-member1@company.com",
-            "team-member2@company.com"
+            "team-member1@example.com",
+            "team-member2@example.com"
         ],
         body="<h2>Daily Standup</h2><p>Please be prepared to share your updates.</p>"
     )

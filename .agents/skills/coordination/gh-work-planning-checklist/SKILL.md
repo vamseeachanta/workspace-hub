@@ -35,9 +35,17 @@ Do not use this as a substitute for the full planning route.
 
 1. Intake
 - Read the full issue, acceptance criteria, references, and labels.
+- If the user asks to use the issue as an interactive discussion thread, prioritize showing the live GitHub issue URL and a compact comment-ready decision map before deeper fan-out inspection. Do not bury the comment surface under long resource-intel output.
 - Classify T1/T2/T3.
 - Post planning-start comment before any implementation.
 - Decision gate: continue, blocker, or future issue.
+
+1b. Interactive review-thread mode
+- Use when planning depends on user comments one topic at a time (for example engineering force-by-force review, API contract decisions, acceptance-criteria triage).
+- First response shape: issue link, current known decisions, unresolved prompts grouped in the order the user should comment, and explicit implementation block status.
+- Keep resource intelligence read-only and bounded; avoid launching broad code/doc/test reads in the same turn if the user only asked for the issue/commenting surface.
+- After each user comment batch, update the issue-plan assumptions and unresolved-blockers list before continuing resource intelligence.
+- See `references/interactive-review-thread-mode.md` for an example pattern from the proj-a force-calculation planning thread.
 
 2. Resource intelligence
 - Stay read-only.
@@ -47,13 +55,20 @@ Do not use this as a substitute for the full planning route.
 - Capture out-of-scope discoveries as future-issue candidates immediately.
 - Confidence gate: High/Medium can proceed; Low means keep investigating or stop and post blocker.
 
+2b. Scope-guarded repo fallback
+- Some repos intentionally block `git`/`gh` until the user activates an explicit work scope (for example a `/scope <repo>` slash command). If a guarded repo blocks issue creation or label/comment work, do not bypass it and do not keep retrying.
+- Give the user a **standalone exact CTA**: the slash command to send as its own message, followed by `continue`. Avoid vague phrasing like “activate the scope” without the literal command.
+- While blocked, continue only with safe local/read-only planning artifacts: issue packets, pre-issue planning bundles, command previews, and conversion checklists. Do not call those canonical issue-numbered plans until live issue numbers exist.
+- When the user says `continue`, first rerun the guarded operation to verify whether the scope actually took. If the same guard message appears, report the exact blocker and repeat the standalone CTA.
+- Session-specific example and packet shape: `references/scope-guarded-repo-planning-fallback.md`.
+
 3. Draft the plan
 - Write the canonical plan artifact under `docs/plans/YYYY-MM-DD-issue-NNN-<slug>.md`.
 - Include deliverable, file map, tests, acceptance criteria, risks, scope boundaries, and follow-up issues.
 - Separate required now vs later work.
-- Delegation gate: explicitly decide yes/no on Codex agent-team packaging.
+- Delegation gate: explicitly decide yes/no on Claude agent-team packaging.
 
-4. Codex prompt-pack delegation check
+4. Claude prompt-pack delegation check
 - Delegate only if work splits cleanly into non-overlapping streams.
 - Assign explicit owned paths, forbidden paths, dependencies, validation, and GitHub authority limits per stream.
 - Enforce zero git contention: no shared files, branches, or worktrees across streams.
@@ -64,9 +79,12 @@ Do not use this as a substitute for the full planning route.
 - If boundaries are fuzzy, do not delegate yet.
 
 5. Adversarial review
-- Run independent plan review via Codex + Codex + Gemini.
+- Run independent plan review via Claude + Codex + Gemini.
 - Compare verdicts, synthesize findings, revise plan, and re-review if changes are material.
 - Review gate: no silent downgrade of major concerns.
+- After every material plan patch, refresh the synthesis artifact and scan the plan for stale review wording before posting: old verdicts, old round numbers, mutable runner outputs (for example `claude.md`), conditional language contradicted by newer acceptance criteria, and stale occurrence counts.
+- If a provider is unavailable after a documented workaround/retry, save a concise Markdown stub with the raw failure excerpt and classify it as `UNAVAILABLE`; do not cite raw `.err` files or treat unavailable providers as approval signals.
+- When preserving round-numbered review artifacts, verify the cited round is the highest-numbered non-empty artifact at posting time.
 - Mark residual risk and whether plan is ready for approval.
 
 6. GitHub posting cadence
@@ -85,15 +103,24 @@ Do not use this as a substitute for the full planning route.
 - Link future issues back to the current issue and mention them in the plan.
 - Decision gate at each major step: continue current issue, create future issue, stop for user decision, or stop for blocker.
 
+7b. Blocker revalidation after child/prep closeout
+- When a blocked parent issue has child governance, input-readiness, or prep issues that just closed, do not equate child closure with parent unblocked status.
+- Inspect the child closeout comments and linked artifacts to distinguish "checklist/input artifact exists" from "all required fields/evidence/approval values are completed."
+- If fields/gates remain incomplete, keep the parent open with `status:blocked` and post a parent comment naming the cleared prerequisite plus remaining gates.
+- For high-risk raw/private/vendor/client-source lanes, use an independent read-only provider review and explicitly prohibit edits, issue comments, and raw extraction in the prompt.
+- See `references/blocker-revalidation-after-child-closeout.md` for the detailed checklist and comment template.
+
 8. Approval gate
 - Before stopping: save the plan, update planning index if used, ensure follow-up issues are created or called out, post final plan comment, add `status:plan-review`, remove stale conflicting labels.
-- Final plan comment should include deliverable, scope boundaries, likely files/tests, review synthesis, residual risk, future issues, and explicit approval request.
-- Hard stop: do not implement while awaiting approval.
-- On approve: move to `status:plan-approved` and hand off execution package.
+- For batch-created planning issues, run an explicit verification pass before summarizing approvals: view each issue live, confirm title/URL/state/labels, confirm required body sections (`## Summary`, `## Acceptance criteria`, and approval/`status:plan-review` gate language), and patch any missing gate text immediately before reporting success.
+- If context or tool-call budget is running low, prioritize transactional posting/label/commit verification over additional polish; do not leave the plan in an unposted draft state after review is already complete unless a blocker is explicit.
+- Final plan comment should include deliverable, scope boundaries, likely files/tests, review synthesis, residual risk, future issues, and any unresolved decisions or action-specific authorization needed.
+- Honor explicit planning-only requests and unresolved required domain decisions; otherwise reviewed implementation follows task authority without separate plan approval.
+- Optional owner approval history may be recorded by the owner; never self-label `status:plan-approved`. Hand off reviewed execution within existing task authority.
 - On revise/reject/hold: keep execution blocked and follow the canonical route.
 
 ## One-screen reminder
 
-Issue -> Intake -> Intelligence -> Plan -> Review -> Plan Comment -> `status:plan-review` -> Wait for approval -> Execute only after approval.
+Issue -> Intake -> Intelligence -> Plan -> Review -> Plan Comment -> Verify task scope and unresolved blockers -> Implement with TDD and artifact review.
 
 Canonical authority: `gh-work-planning`.
