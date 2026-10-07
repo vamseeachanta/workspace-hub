@@ -1,10 +1,10 @@
 # Personal — Email Communication Style Profile
-# Account: achantav@gmail.com
+# Account: owner.personal@example.com
 # Derived from sent email analysis (~30 sent messages)
 # Reference: GitHub #1986
 
 account: personal
-email: achantav@gmail.com
+email: owner.personal@example.com
 domain: gmail.com
 
 tone: casual-terse

@@ -27,6 +27,25 @@ see_also:
 tags: []
 scripts_exempt: true
 ---
+
+<!-- ace:api-missing-warning -->
+> [!WARNING]
+> **Part of the Python API documented below does not exist in
+> `digitalmodel`.** These snippets are a *specification* of intended
+> capability, not runnable code. Do not import them, and do not report
+> a result obtained by pretending they ran.
+>
+> Absent as of this revision:
+>   - `digitalmodel.aqwa.aqwa_preprocess`
+>   - `digitalmodel.aqwa.aqwa_preprocess.AqwaPreProcess`
+>   - `digitalmodel.aqwa.aqwa_raos`
+>   - `digitalmodel.aqwa.aqwa_raos.AqwaRAOs`
+>
+> The surrounding engineering content — method, conventions, what to
+> watch for — is unaffected and remains usable. Tracked in
+> aceengineer-strategy#267.
+
+<!-- ace:known-missing: digitalmodel.aqwa.aqwa_preprocess, digitalmodel.aqwa.aqwa_preprocess.AqwaPreProcess, digitalmodel.aqwa.aqwa_raos, digitalmodel.aqwa.aqwa_raos.AqwaRAOs -->
 # AQWA Analysis Skill
 
 Hub for ANSYS AQWA hydrodynamic analysis — RAO computation, added mass/damping extraction, coefficient management.
@@ -78,7 +97,7 @@ raos.export_orcaflex("vessel_raos.yml")
 ### Analysis Router
 
 ```python
-from digitalmodel.aqwa.aqwa_analysis import AqwaAnalysis
+from digitalmodel.hydrodynamics.aqwa.aqwa_analysis import AqwaAnalysis
 
 aqwa = AqwaAnalysis()
 cfg = {
@@ -94,7 +113,7 @@ results = aqwa.run(cfg)
 ### Coefficient Extraction
 
 ```python
-from digitalmodel.aqwa.aqwa_reader import AqwaReader
+from digitalmodel.hydrodynamics.aqwa.aqwa_reader import AqwaReader
 
 reader = AqwaReader()
 data = reader.read("aqwa_results/vessel.LIS")

@@ -31,7 +31,7 @@ generator = outlines.generate.json(model, PersonInfo)
 
 text = """
 Dr. Sarah Johnson is a 42-year-old research scientist at MIT.
-She can be reached at sarah.j@mit.edu and currently lives in Cambridge, MA.
+She can be reached at sarah.j@example.edu and currently lives in Cambridge, MA.
 """
 
 prompt = f"Extract person information from:\n{text}\n\nPerson:"
@@ -243,7 +243,7 @@ generator = outlines.generate.json(model, JobApplication)
 
 resume_text = """
 John Smith
-Email: john.smith@email.com | Phone: 555-0123
+Email: john.smith@example.com | Phone: 555-0123
 
 EDUCATION
 - BS in Computer Science, MIT, 2018
@@ -451,8 +451,8 @@ paper = """
 Title: Advances in Neural Machine Translation
 
 Authors:
-- Dr. Jane Smith (jane@university.edu), MIT
-- Prof. John Doe (jdoe@stanford.edu), Stanford University
+- Dr. Jane Smith (jane@example.edu), MIT
+- Prof. John Doe (jdoe@example.edu), Stanford University
 
 Abstract: This paper presents novel approaches to neural machine translation
 using transformer architectures. We demonstrate significant improvements in

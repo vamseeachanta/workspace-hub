@@ -30,7 +30,7 @@ export CLAUDE_SUBAGENT=1
 | `improve.sh` | Runs | **Skipped** | Narrow context produces low-quality output |
 | `query-quota.sh` | Runs | **Skipped** | Quota tracking is main-session only |
 
-The shared `.Codex/state/pending-reviews/` directory is the passive message
+The shared `.claude/state/pending-reviews/` directory is the passive message
 bus. Subagents write signals via the lighter hooks; the main session's Stop
 drains them all via `consume-signals.sh` → `improve.sh` at session end.
 

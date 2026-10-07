@@ -108,7 +108,15 @@ def test_routing_index_contains_issue_type_to_repo_to_path_matrix() -> None:
 
 
 def test_content_index_has_sentinel_banner() -> None:
-    head = "\n".join(_read(CONTENT_INDEX).splitlines()[:12])
+    # C20: the generated index lives in a private repository (it carries client
+    # names); the banner it is written with is checked at the generator.
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("_bci", GENERATOR)
+    mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(mod)
+    head = "\n".join(mod.DEFAULT_RAW_INVENTORY_BANNER.splitlines()[:12])
 
     assert RAW_SENTINEL in head
     assert "machine-generated" in head.lower()

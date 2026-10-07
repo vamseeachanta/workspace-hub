@@ -3,6 +3,10 @@
 
 from __future__ import annotations
 
+import sys
+
+sys.dont_write_bytecode = True  # Read-only observations must not create import caches.
+
 import argparse
 import html
 import json
@@ -396,8 +400,50 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repo-root")
     parser.add_argument("--now")
     parser.add_argument("--format", choices=["json", "markdown", "html"], default="json")
+    parser.add_argument("--footprint-only", action="store_true", help="Read-only local byte receipt; no placement/status probes (JSON only)")
+    parser.add_argument("--footprint-selection", choices=["required", "registered"], default=None,
+                        help="Existing registry tier1_baseline.required (default) or machine.repos; does not define a core profile")
+    parser.add_argument("--budget-bytes", type=int, help="Optional allocated-byte limit for the entire selected local working set")
+    parser.add_argument("--footprint-environment", type=Path, action="append", default=[],
+                        help="Explicit absolute external environment directory to include in footprint (repeatable); unlisted external environments are excluded")
+    parser.add_argument("--core-profile", type=Path,
+                        help="Reviewed complete source contract with registry membership authority; use with --footprint-only")
     args = parser.parse_args(argv)
     data = _load_registry(args.registry)
+    if args.footprint_only:
+        from repo_footprint import measure_machine
+
+        if args.format != "json":
+            parser.error("--footprint-only supports --format json only")
+        try:
+            contract = None
+            if args.core_profile:
+                from core_equivalence import load_profile, observe
+                contract = load_profile(args.core_profile, data)
+                if args.footprint_selection not in {None, "required"} or args.budget_bytes not in {None, contract["budget_bytes"]}:
+                    raise ValueError("core profile requires its complete required selection and allocated budget")
+            membership_machine = contract["membership_machine"] if contract else args.machine
+            report = measure_machine(data, membership_machine,
+                                     repo_root=Path(args.repo_root) if args.repo_root else None,
+                                     selection=args.footprint_selection or "required",
+                                     budget_bytes=contract["budget_bytes"] if contract else args.budget_bytes, now=args.now,
+                                     environment_paths=args.footprint_environment)
+            if contract:
+                report["core_contract"] = observe(data, args.machine, Path(report["repo_root"]), contract)
+                report["membership_machine_id"] = membership_machine
+                report["target_machine_id"] = args.machine
+        except ValueError as exc:
+            parser.error(str(exc))
+        report["registry_path"] = str(Path(args.registry).absolute())
+        print(json.dumps(report, indent=2, sort_keys=True))
+        source_blocked = contract and (report["core_contract"]["source_parity"] != "equivalent" or not report["core_contract"]["identity_matches"])
+        return 1 if source_blocked or report["budget"]["status"] in {"exceeded", "indeterminate"} else 0
+    if args.core_profile:
+        parser.error("--core-profile requires --footprint-only")
+    if args.budget_bytes is not None or args.footprint_selection is not None:
+        parser.error("footprint selection/budget requires --footprint-only")
+    if args.footprint_environment:
+        parser.error("--footprint-environment requires --footprint-only")
     report = check_machine(data, args.machine, repo_root=Path(args.repo_root) if args.repo_root else None, now=args.now)
     if args.format == "html":
         rendered = render_html(report)

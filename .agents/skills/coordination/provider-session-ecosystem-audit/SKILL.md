@@ -1,8 +1,8 @@
 ---
 name: provider-session-ecosystem-audit
-description: Audit Codex/Codex/Hermes/Gemini session logs, normalize provider-specific quirks, and wire recurring exports/reporting for ongoing ecosystem health checks.
+description: Audit Claude/Codex/Hermes/Gemini session logs, normalize provider-specific quirks, and wire recurring exports/reporting for ongoing ecosystem health checks.
 version: 1.0.0
-tags: [sessions, audit, providers, Codex, codex, gemini, hermes, observability]
+tags: [sessions, audit, providers, claude, codex, gemini, hermes, observability]
 ---
 
 # Provider Session Ecosystem Audit
@@ -11,7 +11,7 @@ Use when you need a cross-provider audit of actual AI work done in the repo, or 
 
 ## When to use
 - User asks for session log analysis across providers
-- You need to compare Codex/Codex/Gemini/Hermes work patterns
+- You need to compare Claude/Codex/Gemini/Hermes work patterns
 - You need to explain missing-provider visibility gaps
 - You are wiring recurring provider audit/report generation
 - You need to export Gemini native sessions into repo-local orchestrator JSONL
@@ -84,7 +84,7 @@ If you flatten all whitespace, policy and usage analysis becomes misleading.
 - `~/.hermes/...` and similar should be expanded and classified as external, not repo-local
 - repo aliases like `/mnt/workspace-hub/...` may map to the current repo root and should be normalized
 - Codex command logs may be stored with single-character spacing and must be normalized before policy checks
-- If raw Codex logs exist at `logs/orchestrator/Codex/session_*.jsonl`, use them instead of stale saved Codex audit artifacts
+- If raw Claude logs exist at `logs/orchestrator/claude/session_*.jsonl`, use them instead of stale saved Claude audit artifacts
 
 ### 3. Operationalize the audit
 Add all three together:
@@ -113,11 +113,11 @@ Document:
 - canonical output paths
 - scheduled task id
 - input expectations per provider
-- where stale-path redirects live (`docs/ops/legacy-Codex-reference-map.md`)
+- where stale-path redirects live (`docs/ops/legacy-claude-reference-map.md`)
 - which docs are intentionally allowed to mention legacy paths vs which should stay clean
 
 When the audit reveals stale path drift, also patch the redirect surfaces that teach agents what to do instead. In this repo the highest-value targets were:
-- `docs/ops/legacy-Codex-reference-map.md`
+- `docs/ops/legacy-claude-reference-map.md`
 - `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md`
 - `GEMINI.md`
 - `.planning/templates/route-c-*.md`
@@ -263,7 +263,7 @@ High-value legacy clusters seen in practice:
 - old work-queue lifecycle scripts -> `scripts/refresh-agent-work-queue.*`, `notes/agent-work-queue.md`, `.planning/`, GitHub issues
 - removed work-queue skills -> `AGENTS.md`, GSD command/workflow surfaces
 - removed `scripts/agents/*` wrapper tree -> `AGENTS.md`, current architecture docs, review/planning entrypoints
-- local `.Codex/work-queue/*` item files -> GitHub issues + `.planning/` as canonical source of truth
+- local `.claude/work-queue/*` item files -> GitHub issues + `.planning/` as canonical source of truth
 
 Also add an executive-summary migration-debt ranking using remediation-mapped stale reads:
 - `known_migration_debt_reads`
@@ -316,7 +316,7 @@ Good first strict targets:
 Good allowlisted legacy/reference docs:
 - `GEMINI.md`
 - `docs/work-queue-workflow.md`
-- `docs/ops/legacy-Codex-reference-map.md`
+- `docs/ops/legacy-claude-reference-map.md`
 - `docs/modules/ai/AGENT_EQUIVALENCE_ARCHITECTURE.md`
 
 ### Bash command-family summaries
@@ -347,7 +347,7 @@ Example high-value verification sequence:
 - `bash scripts/cron/provider-session-ecosystem-audit.sh`
 
 ## Pitfalls
-- Docs may claim Codex raw logs are absent when they are actually present in the checkout
+- Docs may claim Claude raw logs are absent when they are actually present in the checkout
 - Hermes symbolic skill names can massively inflate false missing-file counts if treated as paths
 - Codex spaced-command logging can hide `python3` policy violations unless normalized first
 - Gemini cross-review `.log` files are not enough for parity analysis; you need exported native sessions
@@ -365,7 +365,7 @@ Recommended pattern:
 - add an audit test proving remediation hints still cover the highest-value stale families:
   - `scripts/work-queue/*`
   - `scripts/agents/*`
-  - `.Codex/work-queue/*`
+  - `.claude/work-queue/*`
   - old work-queue skill paths
 
 This turns the audit from passive reporting into an active anti-regression system.

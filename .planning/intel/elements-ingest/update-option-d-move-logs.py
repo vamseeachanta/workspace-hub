@@ -11,7 +11,7 @@ entries = [
     ("lng-a-62092-sesa", Path("/mnt/ace/lng-a/62092_sesa/MOVE-LOG.md"), 418, 1465267463, "/mnt/ace/lng-a/62092_sesa", "/mnt/ace/lng-a/62092_sesa/_from_elements", ".planning/intel/elements-ingest/dedupe-merge-assessment/05-lng-a-62092-sesa.option-d-hardlink-merge.log"),
     ("lng-a-university", Path("/mnt/ace/lng-a/training/MOVE-LOG.md"), 564, 11060962662, "/mnt/ace/lng-a/training", "/mnt/ace/lng-a/training/_from_elements", ".planning/intel/elements-ingest/dedupe-merge-assessment/06-lng-a-university.option-d-hardlink-merge.log"),
     ("lng-a-codes-specs", Path("/mnt/ace/lng-a/codes/_from_elements/MOVE-LOG.md"), 35197, 26411658490, "/mnt/ace/lng-a/codes", "/mnt/ace/lng-a/codes/_from_elements/codes-lng-a", ".planning/intel/elements-ingest/dedupe-merge-assessment/07-lng-a-codes-specs.option-d-hardlink-merge.log"),
-    ("mkt-a-31522-woodfibre", Path("/mnt/ace/mkt-a/31522-woodfibre-lng/MOVE-LOG.md"), 5364, 1879405139855, "/mnt/ace/mkt-a/31522-woodfibre-lng", "/mnt/ace/mkt-a/31522-woodfibre-lng/_from_elements", ".planning/intel/elements-ingest/dedupe-merge-assessment/08-mkt-a-31522-woodfibre.option-d-hardlink-merge.log"),
+    ("mkt-a-31522-lng-terminal-a", Path("/mnt/ace/mkt-a/31522-lng-terminal-a/MOVE-LOG.md"), 5364, 1879405139855, "/mnt/ace/mkt-a/31522-lng-terminal-a", "/mnt/ace/mkt-a/31522-lng-terminal-a/_from_elements", ".planning/intel/elements-ingest/dedupe-merge-assessment/08-mkt-a-31522-lng-terminal-a.option-d-hardlink-merge.log"),
 ]
 
 for bucket, path, files, bytes_, parent, stage, log in entries:

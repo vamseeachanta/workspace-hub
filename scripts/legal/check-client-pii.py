@@ -28,7 +28,8 @@ USAGE
   uv run python scripts/legal/check-client-pii.py --staged
   # CI (PR diff):
   uv run python scripts/legal/check-client-pii.py --base-ref origin/main --strict
-  # explicit files / all tracked:
+  # explicit files or directories (a directory expands to its tracked files;
+  # a missing path or a directory with no tracked files exits 2) / all tracked:
   uv run python scripts/legal/check-client-pii.py path1 path2
   uv run python scripts/legal/check-client-pii.py --all
 
@@ -61,14 +62,54 @@ SELF_EXCLUDE = {
 }
 
 
+class GitListingError(RuntimeError):
+    """git could not produce the target list; the scan must not read as clean."""
+
+
 def _git(args: list[str]) -> list[str]:
-    out = subprocess.run(["git", *args], capture_output=True, text=True)
-    return [ln for ln in out.stdout.splitlines() if ln.strip()]
+    out = _git_z([*args[:1], "-z", *args[1:]])
+    if out is None:
+        raise GitListingError(f"git {' '.join(args)} failed")
+    return out
+
+
+def _git_z(args: list[str]) -> list[str] | None:
+    """NUL-separated git listing (no path quoting). None when git fails."""
+    out = subprocess.run(["git", *args], capture_output=True)
+    if out.returncode != 0:
+        return None
+    return [p for p in out.stdout.decode("utf-8", "surrogateescape").split("\0") if p]
+
+
+def expand_explicit(paths: list[str]) -> tuple[list[str], list[str]]:
+    """Resolve explicit path arguments to files, failing closed.
+
+    A directory expands to the git-tracked files beneath it (recursive, tracked
+    only, so a gitignored private map inside it is never read). A directory with
+    no tracked files, or a path that does not exist, is an error: it must never
+    read as a clean scan. Returns (files, errors).
+    """
+    files: list[str] = []
+    errors: list[str] = []
+    for raw in paths:
+        p = Path(raw)
+        if p.is_dir():
+            tracked = _git_z(["ls-files", "-z", "--", raw])
+            if tracked is None:
+                errors.append(f"{raw}: directory, and git could not list its tracked files")
+                continue
+            tracked = [t for t in tracked if _scannable(Path(t))]
+            if not tracked:
+                errors.append(f"{raw}: directory contains no tracked files")
+            files.extend(tracked)
+        elif _scannable(p):
+            files.append(raw)
+        else:
+            errors.append(f"{raw}: no such file")
+    return files, errors
 
 
 def collect_targets(args) -> list[str]:
-    if args.paths:
-        return args.paths
     if args.all:
         return _git(["ls-files"])
     if args.base_ref:
@@ -77,10 +118,22 @@ def collect_targets(args) -> list[str]:
     return _git(["diff", "--cached", "--name-only", "--diff-filter=ACM"])
 
 
+def _scannable(path: Path) -> bool:
+    """A regular file, or a symlink (scanned as its link text, like git stores it)."""
+    return path.is_symlink() or path.is_file()
+
+
 def violations_in(path: Path, rules) -> list[int]:
-    """Return 1-based line numbers that contain a client identifier (no values)."""
+    """Return 1-based line numbers that contain a client identifier (no values).
+
+    A symlink is scanned as its target text, which is the content git tracks;
+    following it would scan an unrelated file, or nothing when it dangles.
+    """
     try:
-        text = path.read_text(encoding="utf-8")
+        if path.is_symlink():
+            text = os.readlink(path)
+        else:
+            text = path.read_text(encoding="utf-8")
     except (UnicodeDecodeError, OSError):
         return []
     hits: list[int] = []
@@ -122,7 +175,7 @@ def main() -> int:
     ap.add_argument("--source", default=None,
                     help="label for the scanned text in messages (e.g. 'commit <sha>', 'PR metadata'); the matched value is never printed")
     ap.add_argument("--strict", action="store_true", help="fail (exit 2) if the private map is missing")
-    ap.add_argument("paths", nargs="*", help="explicit files to scan")
+    ap.add_argument("paths", nargs="*", help="explicit files or directories to scan")
     args = ap.parse_args()
 
     if os.environ.get("LEGAL_PII_ALLOW") == "1":
@@ -154,15 +207,26 @@ def main() -> int:
             label = args.source or "stdin"
         return scan_text(text, rules, label)
 
-    targets = collect_targets(args)
+    target_errors: list[str] = []
+    if args.paths:
+        targets, target_errors = expand_explicit(args.paths)
+    else:
+        try:
+            targets = collect_targets(args)
+        except GitListingError as exc:
+            print(f"✖ legal-client-pii: {exc} — failing closed (no target list, nothing scanned).",
+                  file=sys.stderr)
+            return 2
 
     bad: list[tuple[str, list[int]]] = []
+    scanned = 0
     for rel in targets:
         if rel in SELF_EXCLUDE:
             continue
         fp = Path(rel)
-        if not fp.is_file():
+        if not _scannable(fp):
             continue
+        scanned += 1
         lines = violations_in(fp, rules)
         if lines:
             bad.append((rel, lines))
@@ -175,9 +239,18 @@ def main() -> int:
             print(f"  {rel}: line(s) {shown}", file=sys.stderr)
         print("\nFix: uv run python scripts/legal/redact-client-pii.py --map <private-map> <file>", file=sys.stderr)
         print("Bypass (discouraged): LEGAL_PII_ALLOW=1", file=sys.stderr)
+
+    if target_errors:
+        print("✖ legal-client-pii: explicit target(s) could not be scanned — failing closed "
+              "(a scan that read nothing is not a pass).", file=sys.stderr)
+        for err in target_errors:
+            print(f"  {err}", file=sys.stderr)
+        return 2
+
+    if bad:
         return 1
 
-    print(f"✓ legal-client-pii: {len(targets)} changed file(s) clean.")
+    print(f"✓ legal-client-pii: {scanned} file(s) scanned, clean.")
     return 0
 
 

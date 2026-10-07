@@ -5,7 +5,7 @@
 > **Filed by**: claude main session (vamsee)
 > **Target executor**: any provider (Claude / Codex / Hermes / Gemini) — prompt is self-contained
 > **Source work**: [digitalmodel#616](https://github.com/vamseeachanta/digitalmodel/issues/616) (CLOSED, status:plan-approved)
-> **Downstream consumer**: [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (OPEN, B1528 proj-a review)
+> **Downstream consumer**: [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) (OPEN, proj-a review)
 
 ---
 
@@ -42,7 +42,7 @@ This hand-off is the **methodology and reference-data promotion** only.
 **Reused**: `src/digitalmodel/hydrodynamics/hull_library/profile_schema.py` (`HullProfile`)
 
 **Explicit no-client-identifier constraint** (acceptance criterion #9):
-The module code and tests carry NO B1528 / proj-a / mkt-a references.
+The module code and tests carry NO proj-a / proj-a / mkt-a references.
 Client-side application stays caller-side. Verified by legal-sanity scan.
 
 ---
@@ -55,7 +55,7 @@ Client-side application stays caller-side. Verified by legal-sanity scan.
 | OCIMF coefficient methodology (polar-plot interpretation, sign convention) | **public** `llm-wiki/wikis/naval-architecture/methodology/ocimf-coefficient-interpretation.md` | Generic methodology, no client data |
 | Reusable polar-plot capability (algorithm + parameter shape) | **public** `llm-wiki/wikis/naval-architecture/methodology/polar-force-overlay-visualization.md` | Module is open in digitalmodel; methodology is reusable |
 | Generic vessel-silhouette convention (tanker / gas-carrier / generic-hull, bow-up) | **public** `llm-wiki/wikis/naval-architecture/concepts/vessel-silhouette-convention.md` | No client tie |
-| B1528 proj-a-specific calc results (rudder angle ±5° X/Y/Z/K/M/N envelopes) | **PRIVATE** llm-wiki-proj-a (or whichever private wiki is the proj-a target) | Client + project specific |
+| proj-a-specific calc results (rudder angle ±5° X/Y/Z/K/M/N envelopes) | **PRIVATE** llm-wiki-proj-a (or whichever private wiki is the proj-a target) | Client + project specific |
 | OCIMF coefficient explorer HTML (no client overlay) | **public** as a screenshot reference in the methodology page; do NOT promote the live HTML | Avoid bundling generated artifacts in wiki |
 
 ### Abstraction gate decision
@@ -74,9 +74,9 @@ Per `research/llm-wiki-public-private-routing` skill (Skill D):
   file as candidate per [workspace-hub#2374](https://github.com/vamseeachanta/workspace-hub/issues/2374)
   and defer to user.
 
-- **B1528** is a client project code — abstract by default in public content.
+- **proj-a** is a client project code — abstract by default in public content.
 
-If you encounter a proj-a / B1528 / mkt-a reference in source material
+If you encounter a proj-a / proj-a / mkt-a reference in source material
 during this hand-off, STOP and confirm routing with the user. Do not
 guess.
 
@@ -85,7 +85,7 @@ guess.
 ## Skills to apply (all four on disk in `.claude/skills/research/`)
 
 1. **`llm-wiki-public-private-routing`** (Skill D) — clear the abstraction gate before any public commit.
-   - Walk the decision tree in `references/abstraction-decision-tree.md` for proj-a / B1528 references
+   - Walk the decision tree in `references/abstraction-decision-tree.md` for proj-a / proj-a references
    - For OCIMF / MEG content: gate clears as `not-applicable-public-standard-only`
    - Record verdict in commit message: `abstraction: <verdict>`
 
@@ -265,8 +265,8 @@ Fix any reported issues. Re-run until clean.
 
 ```bash
 cd /mnt/local-analysis/llm-wiki
-# Spot-check: no B1528 / proj-a / mkt-a references in the new public-wiki pages
-grep -riE "b1528|proj-a|mkt-a" wikis/naval-architecture/standards/ocimf-meg.md \
+# Spot-check: no proj-a / proj-a / mkt-a references in the new public-wiki pages
+grep -riE "proj-a|proj-a|mkt-a" wikis/naval-architecture/standards/ocimf-meg.md \
     wikis/naval-architecture/methodology/ocimf-coefficient-interpretation.md \
     wikis/naval-architecture/methodology/polar-force-overlay-visualization.md \
     wikis/naval-architecture/concepts/vessel-silhouette-convention.md
@@ -317,7 +317,7 @@ gh issue comment 616 --repo vamseeachanta/digitalmodel --body "$(cat <<'EOF'
 - [methodology/polar-force-overlay-visualization.md](https://github.com/vamseeachanta/llm-wiki/blob/main/wikis/naval-architecture/methodology/polar-force-overlay-visualization.md)
 - [concepts/vessel-silhouette-convention.md](https://github.com/vamseeachanta/llm-wiki/blob/main/wikis/naval-architecture/concepts/vessel-silhouette-convention.md)
 
-Client/project-specific content (B1528 proj-a) stays in private surface per [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760).
+Client/project-specific content (proj-a) stays in private surface per [workspace-hub#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760).
 
 Skills applied:
 - `research/llm-wiki-page-shape-contract` (Rules 1–8)
@@ -338,7 +338,7 @@ EOF
 - [ ] `wikis/naval-architecture/index.md` lists the four new pages
 - [ ] `wikis/naval-architecture/log/YYYYMMDD.md` has the ingest entry
 - [ ] `llm_wiki.py lint --wiki naval-architecture` passes
-- [ ] No `B1528` / `proj-a` / `mkt-a` substring in any new public-wiki page
+- [ ] No `proj-a` / `proj-a` / `mkt-a` substring in any new public-wiki page
 - [ ] Commit message uses pathspec form (per `feedback_multi_agent_commit_serialization`)
 - [ ] Closeout comment posted on [digitalmodel#616](https://github.com/vamseeachanta/digitalmodel/issues/616)
 
@@ -369,8 +369,8 @@ EOF
 - The companion fix concerning CYw=-3.56 out-of-envelope ([digitalmodel#556](https://github.com/vamseeachanta/digitalmodel/issues/556))
 - OCIMFExcelAdapter ingestion ([digitalmodel#563](https://github.com/vamseeachanta/digitalmodel/issues/563))
 - Resolving `marine_engineering/ocimf.py` vs `marine_analysis/ocimf.py` duplication ([workspace-hub#2768](https://github.com/vamseeachanta/workspace-hub/issues/2768))
-- The B1528 proj-a downstream consumer hook (gated by [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) approval)
-- Per-claim cross-walk of every proj-a/B1528 reference in any source under mkt-a/ — out of scope; only the methodology promotion is covered here
+- The proj-a downstream consumer hook (gated by [#2760](https://github.com/vamseeachanta/workspace-hub/issues/2760) approval)
+- Per-claim cross-walk of every proj-a/proj-a reference in any source under mkt-a/ — out of scope; only the methodology promotion is covered here
 
 ---
 

@@ -39,7 +39,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
+          # No `cache: pip`. Every dependency here is installed by `uv sync`, so
+          # ~/.cache/pip is never written and setup-python's post-job cache step
+          # errors ("Cache folder path is retrieved for pip but doesn't exist on
+          # disk"), failing the job with all its test steps green. uv brings its
+          # own cache below via astral-sh/setup-uv `enable-cache: true`.
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7

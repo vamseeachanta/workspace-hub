@@ -6,9 +6,9 @@ Per-account style profiles that agents use when drafting email replies and outre
 
 | File | Account | Tone |
 |---|---|---|
-| `ace-style.yaml` | vamsee.achanta@aceengineer.com | Professional-technical, concise |
-| `personal-style.yaml` | achantav@gmail.com | Casual-terse, abbreviated |
-| `skestates-style.yaml` | skestatesinc@gmail.com | Business-formal-warm |
+| `ace-style.yaml` | owner@example.com | Professional-technical, concise |
+| `personal-style.yaml` | owner.personal@example.com | Casual-terse, abbreviated |
+| `skestates-style.yaml` | skestates@example.com | Business-formal-warm |
 
 ## How Agents Should Use These Profiles
 

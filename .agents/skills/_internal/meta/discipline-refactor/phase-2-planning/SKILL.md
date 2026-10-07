@@ -49,8 +49,8 @@ Create plan for ALL directories:
    AFTER:  data/modules/<discipline>/
 
 7. Skills structure:
-   BEFORE: .Codex/skills/category/
-   AFTER:  .Codex/skills/<discipline>/
+   BEFORE: .claude/skills/category/
+   AFTER:  .claude/skills/<discipline>/
 
 8. Import updates:
    - from <package>.feature → from <package>.modules.<discipline>

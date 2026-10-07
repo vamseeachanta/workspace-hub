@@ -1,29 +1,29 @@
 ---
-name: interactive-Codex-to-file-based-fallback
-description: Switch from tmux/interactive Codex to file-based Codex -p execution when interactive runs fail with upstream errors or analysis-only stalls, then verify landing from git/GitHub state.
+name: interactive-claude-to-file-based-fallback
+description: Switch from tmux/interactive Claude Code to file-based claude -p execution when interactive runs fail with upstream errors or analysis-only stalls, then verify landing from git/GitHub state.
 version: 1.0.0
 author: Hermes Agent
 license: MIT
-tags: [Codex, workspace-hub, worktree, issue-execution, fallback, verification]
+tags: [claude-code, workspace-hub, worktree, issue-execution, fallback, verification]
 ---
 
-# Interactive Codex to File-Based Fallback
+# Interactive Claude to File-Based Fallback
 
 ## When to use
 
 Use this when:
-- the user prefers tmux + interactive Codex first
+- the user prefers tmux + interactive Claude Code first
 - you are executing a plan-approved GitHub issue in `workspace-hub` or a similar repo
-- interactive Codex repeatedly fails to make write-phase progress
+- interactive Claude repeatedly fails to make write-phase progress
 - the repo or parent checkout may already be dirty, so you need worktree-safe verification after the run
 
 ## Why this exists
 
-A recurring failure mode is that interactive Codex works well for planning and approval-safe prep, but can fail during implementation in two different ways:
+A recurring failure mode is that interactive Claude works well for planning and approval-safe prep, but can fail during implementation in two different ways:
 - immediate upstream errors such as `API Error: 500` / `Internal server error`
 - long context-gathering sessions that never transition into file writes, even after narrower retry prompts
 
-In those cases, continuing to retry interactive mode wastes time. The productive move is to switch to file-based `Codex -p` execution with a self-contained prompt, then verify success from actual git/GitHub state.
+In those cases, continuing to retry interactive mode wastes time. The productive move is to switch to file-based `claude -p` execution with a self-contained prompt, then verify success from actual git/GitHub state.
 
 ## Default decision ladder
 
@@ -56,13 +56,13 @@ Run non-interactively:
 ```bash
 cd /mnt/local-analysis/workspace-hub
 PROMPT=$(< docs/reports/<issue>-execution-prompt.md)
-Codex -p --permission-mode acceptEdits --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<issue>-run.log
+claude -p --permission-mode acceptEdits --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<issue>-run.log
 ```
 
 For approval-safe planning/read-only work:
 
 ```bash
-Codex -p --permission-mode plan --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<issue>-plan.log
+claude -p --permission-mode plan --no-session-persistence --output-format text "$PROMPT" </dev/null | tee /tmp/<issue>-plan.log
 ```
 
 ## Verification checklist after file-based execution
@@ -97,7 +97,7 @@ If the parent checkout is dirty:
 ## Reusable example outcome
 
 Observed successful pattern:
-- user preferred interactive tmux + `Codex --dangerously-skip-permissions`
+- user preferred interactive tmux + `claude --dangerously-skip-permissions`
 - interactive runs repeatedly stalled or failed with upstream errors during implementation
 - switched to file-based execution for the same approved issue
 - verified the landed implementation through targeted tests, scheduler validation, generated sample artifacts, and GitHub issue closure

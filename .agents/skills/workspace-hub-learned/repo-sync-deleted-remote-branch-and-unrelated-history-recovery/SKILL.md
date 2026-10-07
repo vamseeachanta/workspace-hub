@@ -66,7 +66,7 @@ git pull --no-rebase origin <default-branch>
 ```
 
 Notes:
-- In the observed case, `chore/gitignore-Codex-worktrees` had been deleted remotely in multiple repos.
+- In the observed case, `chore/gitignore-claude-worktrees` had been deleted remotely in multiple repos.
 - `main` already existed locally and was the correct recovery target.
 - After `fetch --prune`, the stale remote-tracking branch disappeared and normal pull succeeded.
 

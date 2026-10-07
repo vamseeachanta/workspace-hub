@@ -47,12 +47,13 @@ def gate_applies(labels: list[str], opt_in_label: str = OPT_IN_LABEL,
                  plan_approved_label: str = PLAN_APPROVED_LABEL) -> bool:
     """Whether the completeness gate enforces on this issue at all.
 
-    Opt-in rollout (rollout-fix): the gate enforces ONLY for issues that explicitly
-    carry the ``gate:completeness`` label AND reached ``status:plan-approved``.
-    Everything else is out of scope — so an unconfigured gate and the existing
-    backlog are unaffected (no retroactive disruption).
+    The completeness opt-in is independent of implementation authorization.
+    New enrollments carry gate:completeness-v2. The historical two-label route
+    remains available without retroactively enrolling the bulk-labeled backlog.
+    Neither enrollment authenticates authority or grants implementation approval.
     """
-    return opt_in_label in labels and plan_approved_label in labels
+    return opt_in_label in labels and (
+        "gate:completeness-v2" in labels or plan_approved_label in labels)
 
 
 def evaluate_close(

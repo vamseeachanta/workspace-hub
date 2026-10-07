@@ -1,5 +1,8 @@
 # Weekly-cadence plan-review hardening pattern
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use after creating or drafting an LLM-wiki weekly-cadence / code-utility issue wave and before asking the user to approve implementation.
 
 ## Trigger
@@ -53,7 +56,7 @@ Each issue comment should include:
 - residual risk
 - approval posture
 - short bullet list of binding hardening accepted into the plan
-- explicit gate state: `status:plan-review`; implementation blocked until explicit user approval moves it to `status:plan-approved`
+- explicit gate state: `status:plan-review`; implementation proceeds within task authority after review/domain blockers resolve; a separate approval label is not required
 
 ## Pitfalls
 

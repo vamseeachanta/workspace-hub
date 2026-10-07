@@ -22,7 +22,7 @@ def query_streaming(self, question, top_k=5):
 
     # Anthropic streaming
     with anthropic.Anthropic().messages.stream(
-        model="Codex-sonnet-4-6",
+        model="claude-sonnet-4-6",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     ) as stream:

@@ -61,7 +61,7 @@ EQ_RAM_AVAIL_MIB  = [math]::Floor($os.FreePhysicalMemory / 1KB)       # FreePhys
 EQ_DISK_AVAIL_GB  = [math]::Floor((Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='<WS drive>'").FreeSpace / 1GB)
 EQ_GPU_MODEL      = (Get-CimInstance Win32_VideoController | Select -First 1).Name  # or "none"
 ```
-Emit bare integers (no units/commas) so `coerce_to_mib()` accepts them; `ram_total_mib` in MiB (matrix compares `ram_gib_min * 1024`). **Disk drive letter derived from the resolved `D:\workspace-hub` path, not hardcoded `D:`.**
+Emit bare integers (no units/commas) so `coerce_to_mib()` accepts them; `ram_total_mib` in MiB (matrix compares `ram_gib_min * 1024`). **Disk drive letter derived from the resolved `<workspace-root>\workspace-hub` path, not hardcoded `D:`.**
 
 **RAM floor restoration:** once the `.ps1` yields a trustworthy `ram_total_mib`, add `ram_gib_min` to `licensed-win-1/2` `compute_floor` — at an **owner-confirmed value captured from one real run** (do NOT guess: too-high = permanent BELOW-BASELINE, too-low = no signal). Sequence: land `.ps1` → owner runs once → set floor with confirmed number.
 
@@ -138,11 +138,11 @@ Teach `setup-scheduler-tasks.ps1` to parse `schedule-tasks.yaml` (via `python -c
 
 ## Risks and Open Questions
 - **Dominant risk — cannot live-test from Linux.** The `.ps1`, CIM, Task Scheduler registration, and end-to-end run are owner-driven on licensed-win-1/2. Linux CI proves only the schema/parity *contract* via fixtures + the matrix builder. Mitigation: golden fixtures + contract tests + an explicit owner runbook; gate `Invoke-ScriptAnalyzer` to PowerShell-present machines.
-- **Risk — provenance freshness on Windows (most likely "ran but graded nothing").** If the scheduled run hits a `D:\workspace-hub` behind `origin/main` or with a stale `origin/main` ref (`origin_ref_age_h` out of window), `is_stale()` marks every cell STALE-CHECKOUT. Mitigation: ensure the Windows RepoSync task (23:30) fetches before Mon-04:30 EqualityReport, OR add a `git fetch` step; verify `origin_ref_age_h` in the owner run.
+- **Risk — provenance freshness on Windows (most likely "ran but graded nothing").** If the scheduled run hits a `<workspace-root>\workspace-hub` behind `origin/main` or with a stale `origin/main` ref (`origin_ref_age_h` out of window), `is_stale()` marks every cell STALE-CHECKOUT. Mitigation: ensure the Windows RepoSync task (23:30) fetches before Mon-04:30 EqualityReport, OR add a `git fetch` step; verify `origin_ref_age_h` in the owner run.
 - **Risk — CIM unit errors.** `FreePhysicalMemory` is KB, `TotalPhysicalMemory` is bytes — wrong magnitude → BELOW-BASELINE or absurd CONFORMS. Covered by `test_ps1_ram_total_mib_is_mib_integer` + owner sanity-check.
 - **Expected, not a regression — `solvers` BELOW-BASELINE.** The probe emits at most `present`, never `licensed`, until a Windows license probe lands (#2849 follow-up), while licensed-win-* `solvers_baseline` demands `licensed`. So solver cells show BELOW-BASELINE even after this plan. Stated explicitly so reviewers don't read it as a defect.
 - **Open (USER) — RAM floor value.** Recommend: land `.ps1`, capture one real run, set `ram_gib_min` to the owner-confirmed spec. Do not guess.
-- **Open (USER) — Windows tier-1 layout.** Brief/`context.md` suggest repos are NESTED under `D:\workspace-hub\` (unlike Linux siblings). The `data_access` probe handles both, so this only affects whether `required_data_access` resolves CONFORMS. Confirm the layout.
+- **Open (USER) — Windows tier-1 layout.** Brief/`context.md` suggest repos are NESTED under `<workspace-root>\workspace-hub\` (unlike Linux siblings). The `data_access` probe handles both, so this only affects whether `required_data_access` resolves CONFORMS. Confirm the layout.
 
 ## Adversarial Review Resolution (Codex r2 — 2026-05-30)
 Codex returned MAJOR; both load-bearing claims were verified locally against `origin/main`. These **amend the Design / Files / Acceptance above**; artifact: `scripts/review/results/2026-05-30-plan-2816-2815-codex.md`.

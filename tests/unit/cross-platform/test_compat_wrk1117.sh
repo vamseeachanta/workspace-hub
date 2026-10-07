@@ -29,7 +29,7 @@ test_git_add_skips_missing_dirs() {
     local tmpgit="$TMPDIR_TEST/repo_git_add"
     mkdir -p "$tmpgit"
     git -C "$tmpgit" init -q 2>/dev/null
-    git -C "$tmpgit" config user.email "t@t.com" 2>/dev/null
+    git -C "$tmpgit" config user.email "t@example.com" 2>/dev/null
     git -C "$tmpgit" config user.name "T" 2>/dev/null
     git -C "$tmpgit" commit --allow-empty -m "init" -q 2>/dev/null
 

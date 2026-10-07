@@ -16,7 +16,7 @@ Use when:
 
 1. Commit and push dirty repos first.
 2. Before mass branch cleanup, check for active writer sessions:
-   - `ps -ef | grep Codex`
+   - `ps -ef | grep claude`
    - `ps -ef | grep '[g]it'`
    - repeated `git status --short`
 3. If a repo becomes dirty again between checks, classify it as a live-writer repo.
@@ -62,4 +62,4 @@ Use when:
 
 ## Why this exists
 
-A large multi-repo cleanup run showed that the biggest blocker was not git itself but active background Codex/worktree activity. Treating live-writer repos as a special case avoids false cleanup attempts, repeated dirty-state churn, and unsafe branch operations.
+A large multi-repo cleanup run showed that the biggest blocker was not git itself but active background Claude/worktree activity. Treating live-writer repos as a special case avoids false cleanup attempts, repeated dirty-state churn, and unsafe branch operations.

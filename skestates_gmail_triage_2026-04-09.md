@@ -9,10 +9,10 @@ Latest inbox traffic is concentrated in 3 live business workstreams for the Fami
 ## Ranked next actions
 
 ### 1) HIGH — Close the HOA ownership transfer loop for Clayton Park POA
-- Evidence: FirstService support ticket update says request 5242265 was updated; FS Commercial says all concerns for 15645 Westpark Drive must go to Account.Services@fscommercial.com.
+- Evidence: FirstService support ticket update says request 5242265 was updated; FS Commercial says all concerns for 15645 Westpark Drive must go to [email removed].
 - Real work-to-be-done: get the HOA account for 15645 Westpark Dr fully moved/recognized under Sabitha and Krishna Estates Inc. and routed to the correct servicing team so future assessments, notices, and ownership records are correct.
 - Likely thread state: earlier messages were sent to the wrong FirstService channel; the latest email provides the correct mailbox and implies the ticket is still active but redirected.
-- Next step: reply in-thread or send a fresh ownership-transfer summary to Account.Services@fscommercial.com referencing ticket 5242265, property 15645 Westpark Dr, Clayton Park POA, and attach/mention deed + owner/entity details if not already provided.
+- Next step: reply in-thread or send a fresh ownership-transfer summary to [email removed] referencing ticket 5242265, property 15645 Westpark Dr, Clayton Park POA, and attach/mention deed + owner/entity details if not already provided.
 
 ### 2) HIGH — Decide whether Family Dollar 2025 1099 needs correction
 - Evidence from archived thread: Ebony Ham sent a payment analysis and confirmed September 2025 rent went to Addicks Westpark LLC, not SKEstates; Ingrid Harris then said to work with the Family Dollar team on reconciliations or 1099 forms.
@@ -32,6 +32,6 @@ Latest inbox traffic is concentrated in 3 live business workstreams for the Fami
 - Pest/exteriors appears to be a routing breadcrumb, not yet a business-resolution email.
 
 ## Suggested concise operator sequence
-1. Send/forward ownership-transfer package to Account.Services@fscommercial.com with ticket 5242265.
+1. Send/forward ownership-transfer package to [email removed] with ticket 5242265.
 2. Review Family Dollar payment analysis attachment and decide “valid 1099 vs corrected 1099 needed.”
 3. Repackage pest/exteriors issue as a proper facilities action request with deadlines.

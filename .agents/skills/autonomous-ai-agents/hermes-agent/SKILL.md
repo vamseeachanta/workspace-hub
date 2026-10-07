@@ -13,7 +13,7 @@ metadata:
 
 # Hermes Agent
 
-Hermes Agent is an open-source AI agent framework by Nous Research that runs in your terminal, messaging platforms, and IDEs. It belongs to the same category as Codex (Anthropic), Codex (OpenAI), and OpenClaw — autonomous coding and task-execution agents that use tool calling to interact with your system. Hermes works with any LLM provider (OpenRouter, Anthropic, OpenAI, DeepSeek, local models, and 15+ others) and runs on Linux, macOS, and WSL.
+Hermes Agent is an open-source AI agent framework by Nous Research that runs in your terminal, messaging platforms, and IDEs. It belongs to the same category as Claude Code (Anthropic), Codex (OpenAI), and OpenClaw — autonomous coding and task-execution agents that use tool calling to interact with your system. Hermes works with any LLM provider (OpenRouter, Anthropic, OpenAI, DeepSeek, local models, and 15+ others) and runs on Linux, macOS, and WSL.
 
 What makes Hermes different:
 
@@ -80,7 +80,7 @@ No subcommand defaults to `chat`.
 ```
 hermes chat [flags]
   -q, --query TEXT          Single query, non-interactive
-  -m, --model MODEL         Model (e.g. anthropic/Codex-sonnet-4)
+  -m, --model MODEL         Model (e.g. anthropic/claude-sonnet-4)
   -t, --toolsets LIST       Comma-separated toolsets
   --provider PROVIDER       Force provider (openrouter, anthropic, nous, etc.)
   -v, --verbose             Verbose output
@@ -742,7 +742,7 @@ Types: `fix:`, `feat:`, `refactor:`, `docs:`, `chore:`
 
 ## External Skill Directories (Wiring Repo Ecosystem Skills)
 
-Hermes can scan external skill directories alongside `~/.hermes/skills/`. This is how you connect a repo ecosystem's skill library (e.g. workspace-hub's `.Codex/skills/`) to Hermes.
+Hermes can scan external skill directories alongside `~/.hermes/skills/`. This is how you connect a repo ecosystem's skill library (e.g. workspace-hub's `.claude/skills/`) to Hermes.
 
 ### Configuration
 
@@ -751,7 +751,7 @@ Add `external_dirs` under `skills` in `~/.hermes/config.yaml`:
 ```yaml
 skills:
   external_dirs:
-    - /mnt/local-analysis/workspace-hub/.Codex/skills
+    - /mnt/local-analysis/workspace-hub/.claude/skills
     - ~/.agents/skills          # other shared dirs
     - ${SKILLS_REPO}/skills     # env var expansion supported
 ```

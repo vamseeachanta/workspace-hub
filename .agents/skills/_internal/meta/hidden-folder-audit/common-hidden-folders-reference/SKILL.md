@@ -16,7 +16,7 @@ Based on actual cleanup sessions, this table provides verified recommendations.
 
 | Folder | Purpose | Action | Notes |
 |--------|---------|--------|-------|
-| `.Codex/` | Codex configuration, agents, skills, docs | **KEEP** | Authoritative for AI tools |
+| `.claude/` | Claude Code configuration, agents, skills, docs | **KEEP** | Authoritative for AI tools |
 | `.githooks/` | Git hooks | **KEEP** | Standard location |
 | `.github/` | GitHub workflows, templates | **KEEP** | Required by GitHub |
 | `.git/` | Git repository data | **NEVER TOUCH** | - |
@@ -24,10 +24,10 @@ Based on actual cleanup sessions, this table provides verified recommendations.
 | `.vscode/` | VS Code settings | **KEEP** | Team settings if tracked |
 | `.idea/` | JetBrains IDE settings | **KEEP** | Or add to .gitignore |
 | `.env` | Environment variables | **KEEP** | Must be in .gitignore |
-| `.agent-os/` | Legacy agent OS configuration | **CONSOLIDATE** | Merge into `.Codex/` |
-| `.ai/` | Legacy AI configuration | **CONSOLIDATE** | Merge into `.Codex/` |
+| `.agent-os/` | Legacy agent OS configuration | **CONSOLIDATE** | Merge into `.claude/` |
+| `.ai/` | Legacy AI configuration | **CONSOLIDATE** | Merge into `.claude/` |
 | `.drcode/` | External tool (Dr. Code) config | **DELETE** | Legacy AI config, confirmed deletable |
-| `.slash-commands/` | Command registry | **CONSOLIDATE** | Move to `.Codex/docs/commands/` |
+| `.slash-commands/` | Command registry | **CONSOLIDATE** | Move to `.claude/docs/commands/` |
 | `.git-commands/` | Git helper scripts | **CONSOLIDATE** | Move to `scripts/git/` |
 | `.benchmarks/` | Benchmark data | **DELETE** | Usually empty, delete if so |
 | `benchmarks/` | Benchmark data and reports | **SPLIT** | Move fixtures to tests/fixtures/, gitignore reports/results |

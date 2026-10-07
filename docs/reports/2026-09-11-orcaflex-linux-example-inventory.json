@@ -1,0 +1,56 @@
+{
+  "observed_date_utc": "2026-09-11",
+  "logical_host_role": "linux_producer",
+  "ssh_verified": true,
+  "source_repository": "digitalmodel",
+  "source_commit": "b4a94fa237eee16b47ec4546fe710f5165064776",
+  "method": "Read-only SSH inspection of tracked paths and existing file contents; SHA-256 compares exact bytes.",
+  "inventory_scope": {
+    "roots": ["examples", "templates", "docs/domains/orcaflex", "tests/solvers/orcaflex"],
+    "tracked_paths_enumerated": 5241,
+    "input_extensions": [".yml", ".yaml", ".dat", ".sim"],
+    "categories_overlap": true,
+    "category_selection": "Case-insensitive keyword anywhere in tracked path, followed by input-extension filter."
+  },
+  "categories": {
+    "hull": {"present_files": 6, "distinct_sha256_contents": 6},
+    "mooring": {"present_files": 1333, "distinct_sha256_contents": 1317},
+    "installation": {"present_files": 646, "distinct_sha256_contents": 634},
+    "riser": {"present_files": 576, "distinct_sha256_contents": 357},
+    "pipelay": {"present_files": 6, "distinct_sha256_contents": 6}
+  },
+  "supplementary_category": {
+    "vessel": {"present_files": 341, "distinct_sha256_contents": 315}
+  },
+  "artifact_presence_scan": {
+    "roots": ["docs/domains/orcaflex", "examples/riser_input"],
+    "input_files": 3724,
+    "simulation_files": 0,
+    "git_lfs_pointer_files": 0,
+    "scope_note": "These counts describe this separate bounded scan, not the category union or entire repository."
+  },
+  "generic_examples": [
+    "docs/domains/orcaflex/templates/mooring_systems/",
+    "docs/domains/orcaflex/templates/risers/",
+    "docs/domains/orcaflex/library/templates/",
+    "docs/domains/orcaflex/installation/",
+    "examples/riser_input/riser_scr.yml",
+    "examples/riser_input/riser_drilling.yml",
+    "examples/workflows/fpso-spread-mooring/input.yml",
+    "examples/workflows/jumper-installation/input.yml",
+    "examples/workflows/hull-seakeeping/input.yml"
+  ],
+  "existing_dirty_entries": 4,
+  "existing_dirty_entries_preserved": true,
+  "mutations_performed": false,
+  "native_solver_called": false,
+  "limitations": [
+    "File counts include workflow configurations, fragments and templates; they are not counts of independent runnable models.",
+    "Categories overlap and must not be added to infer a model total.",
+    "Identical hashes establish byte duplicates, not semantic equivalence of differently encoded models.",
+    "The inspected hull-seakeeping example is a naval-architecture screen, not a native OrcaFlex hull simulation.",
+    "The jumper-installation example references separate catalogs; complete dependency closure was not checked.",
+    "No native loadability, licence availability, engineering validity or generated-component-to-report integration was established.",
+    "Coverage is limited to the enumerated checkout and roots; it does not cover every machine, private dataset or untracked file."
+  ]
+}

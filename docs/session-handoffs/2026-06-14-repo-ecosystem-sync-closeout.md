@@ -88,7 +88,7 @@ Representative remaining paths:
 - Generated/reporting/example content: `.benchmarks/`, `modules/reporting/examples/`, `assets/img/case-studies/`, `tests/modules/`
 - Repo-specific unusual paths requiring inspection:
   - `assethold/src\\assethold\\tests\\test_data\\analysis\\Portfolio\\results\\Data/`
-  - `digitalmodel/D:\\workspace-hub\\digitalmodel\\docs\\charts\\phase2\\ocimf/`
+  - `digitalmodel/<workspace-root>\\workspace-hub\\digitalmodel\\docs\\charts\\phase2\\ocimf/`
 
 ## Approval-Gated Next Step
 

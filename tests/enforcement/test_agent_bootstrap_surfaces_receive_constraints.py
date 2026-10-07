@@ -5,7 +5,7 @@ Closes #2446 (Hermes onboarding gate gap) criterion 3 ("test added") and
 criterion 4 (other-adapter spot-check).
 
 Surfaces under test:
-- Repo-root adapter files: CLAUDE.md, GEMINI.md, AGENTS.md, .codex/CODEX.md
+- Repo-root adapter files: GEMINI.md, AGENTS.md, .codex/CODEX.md
 - Built runtime artifacts: config/agents/<provider>/SOUL.runtime.md and
   config/agents/codex/AGENTS.runtime.md
 
@@ -47,7 +47,6 @@ BROKEN_CODEX_PATH = re.compile(r"Read `\.Codex/memory/`")
 
 
 REPO_ROOT_ADAPTERS = {
-    "claude": REPO_ROOT / "CLAUDE.md",
     "gemini": REPO_ROOT / "GEMINI.md",
     "codex": REPO_ROOT / ".codex" / "CODEX.md",
 }
@@ -202,3 +201,10 @@ def test_runtime_artifact_no_broken_codex_path_as_instruction(artifact: str):
         f"{artifact} runtime contains the broken `Read .Codex/memory/` instruction — "
         f"this regressed the Phase 1 bug fix from #2719"
     )
+
+
+def test_claude_uses_canonical_contract_without_repo_adapter():
+    """The retired filename must not return; native loading is verified separately."""
+    assert CANONICAL_CONTRACT.is_file()
+    assert not (REPO_ROOT / "CLAUDE.md").exists()
+    assert not (REPO_ROOT / "CLAUDE.md").is_symlink()

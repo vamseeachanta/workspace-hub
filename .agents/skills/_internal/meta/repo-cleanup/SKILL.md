@@ -68,7 +68,7 @@ see_also:
 - **2.1.0** (2026-01-20): Added Final Cleanup Checklist and README Update Checklist
   - Added Final Cleanup Checklist with verified DELETE/CONSOLIDATE/KEEP tables
   - Confirmed .drcode/ as safe to delete (legacy AI config)
-  - Added .slash-commands/ consolidation to .Codex/docs/commands/
+  - Added .slash-commands/ consolidation to .claude/docs/commands/
   - Added .git-commands/ consolidation to scripts/git/
   - Added .benchmarks/ as safe to delete if empty
   - Added README Update Checklist for structure documentation

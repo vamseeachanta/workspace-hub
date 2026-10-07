@@ -67,7 +67,7 @@ terminal(command="opencode run 'Debug why tests fail in CI' --thinking", workdir
 Force a specific model:
 
 ```
-terminal(command="opencode run 'Refactor auth module' --model openrouter/anthropic/Codex-sonnet-4", workdir="~/project")
+terminal(command="opencode run 'Refactor auth module' --model openrouter/anthropic/claude-sonnet-4", workdir="~/project")
 ```
 
 ## Interactive Sessions (Background)
@@ -182,7 +182,7 @@ Check token usage and costs:
 
 ```
 terminal(command="opencode stats")
-terminal(command="opencode stats --days 7 --models anthropic/Codex-sonnet-4")
+terminal(command="opencode stats --days 7 --models anthropic/claude-sonnet-4")
 ```
 
 ## Pitfalls

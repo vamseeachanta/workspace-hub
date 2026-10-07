@@ -1,6 +1,6 @@
 ---
 name: rag-system-builder
-description: Build Retrieval-Augmented Generation (RAG) Q&A systems with Codex or
+description: Build Retrieval-Augmented Generation (RAG) Q&A systems with Claude or
   OpenAI. Use for creating AI assistants that answer questions from document collections,
   technical libraries, or knowledge bases.
 type: reference
@@ -39,7 +39,7 @@ query_embedding = model.encode(query, normalize_embeddings=True)
 
 # Generate answer
 response = client.messages.create(
-    model="Codex-sonnet-4-6",
+    model="claude-sonnet-4-6",
     max_tokens=1024,
     messages=[{"role": "user", "content": f"Context: {context}\n\nQuestion: {query}"}]
 )

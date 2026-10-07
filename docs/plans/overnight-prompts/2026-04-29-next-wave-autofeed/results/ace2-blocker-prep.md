@@ -12,7 +12,7 @@
 ace-linux-2 may lag ace-linux-1 on this branch. Concrete signals seen:
 
 1. **Workspace-hub on `main`, no behind-count check possible** (no remote refresh run). Untracked files in `docs/plans/overnight-prompts/2026-04-29-credit-burn-approval-readiness/` and `2026-04-29-next-wave-autofeed/` look like overnight-output artifacts that haven't been committed yet — that is an in-flight working tree, not a clean checkpoint.
-2. **NFS Glob timeouts** on `**/*sesa*` and `**/*woodfibre*` (20s timeout). Plan files for **#2541** (SESA) and **#2544** (Woodfibre) could not be located within budget. Live issue labels confirm both are `status:plan-approved`, so plans must exist; the next-lane agent should rediscover their paths via `gh issue view <n> --comments` or `ls docs/plans/2026-04-2*-issue-{2541,2544}-*` from ace-linux-1's filesystem before trusting any guesses below.
+2. **NFS Glob timeouts** on `**/*sesa*` and `**/*LNG terminal A*` (20s timeout). Plan files for **#2541** (SESA) and **#2544** (LNG terminal A) could not be located within budget. Live issue labels confirm both are `status:plan-approved`, so plans must exist; the next-lane agent should rediscover their paths via `gh issue view <n> --comments` or `ls docs/plans/2026-04-2*-issue-{2541,2544}-*` from ace-linux-1's filesystem before trusting any guesses below.
 3. **No `.claude/state/approvals/` directory exists** on this machine. The wave-prompt mentions a "local approval marker" requirement before execution; either the convention lives elsewhere (likely on ace-linux-1 only) or it was never set up. **Do not assume a marker exists** — check ace-1 first, and if no convention is found, escalate to the user before any plan-approved issue is executed.
 4. The prior wave's dossier (`docs/plans/overnight-prompts/2026-04-29-credit-burn-approval-readiness/results/ace2-next5-plan-prep.md`) is a load-bearing dependency for this packet's framing; any divergence between that dossier and current live labels means **live labels win** (already verified for all 7 here).
 
@@ -311,20 +311,20 @@ Acceptance:
 
 ---
 
-### #2544 — scout Woodfibre LNG corpus for bounded extraction candidates
+### #2544 — scout LNG terminal A corpus for bounded extraction candidates
 
 **Live state (verified 2026-04-29T14:30Z):** OPEN · `status:plan-approved` · `priority:medium` · `cat:data-pipeline` · `domain:marine` + `domain:knowledge-management`
 **Classification:** **A — Execution-readiness**
-**Why this is the blocker:** Live label is `status:plan-approved`. Same NFS-Glob-timeout caveat as #2541 — plan path unverified from ace-linux-2. The execution-readiness blockers are sharper than #2541 because Woodfibre is **5,364 files / ~1.879 TB** and the issue explicitly forbids broad text extraction or raw copying. The scout must work from path + metadata only, never opening or duplicating large binaries unless explicitly justified for metadata-only handling. Tranche bound is **≤15 artifacts** (smaller than SESA's 20).
+**Why this is the blocker:** Live label is `status:plan-approved`. Same NFS-Glob-timeout caveat as #2541 — plan path unverified from ace-linux-2. The execution-readiness blockers are sharper than #2541 because LNG terminal A is **5,364 files / ~1.879 TB** and the issue explicitly forbids broad text extraction or raw copying. The scout must work from path + metadata only, never opening or duplicating large binaries unless explicitly justified for metadata-only handling. Tranche bound is **≤15 artifacts** (smaller than SESA's 20).
 **Files to inspect (next-lane must rediscover plan path):**
-- Plan file (path unverified): expected naming `docs/plans/2026-04-2*-issue-2544-elements-woodfibre-scout-plan.md`. Confirm via `gh issue view 2544 --comments`.
-- `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` — scout dossier from the plan's deliverables list.
-- `/mnt/ace/mkt-a/31522-woodfibre-lng` — raw corpus (read-only access required).
+- Plan file (path unverified): expected naming `docs/plans/2026-04-2*-issue-2544-elements-lng-terminal-a-scout-plan.md`. Confirm via `gh issue view 2544 --comments`.
+- `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md` — scout dossier from the plan's deliverables list.
+- `/mnt/ace/mkt-a/31522-lng-terminal-a` — raw corpus (read-only access required).
 - Sibling closed issues: #2535, #2536.
 **Acceptance criteria for next-lane:**
 - [ ] Plan path located.
 - [ ] Local approval marker for #2544 located (or escalation).
-- [ ] Read access to `/mnt/ace/mkt-a/31522-woodfibre-lng` confirmed.
+- [ ] Read access to `/mnt/ace/mkt-a/31522-lng-terminal-a` confirmed.
 - [ ] Scout works from `find -type f -printf` style metadata, NOT from opening/extracting large binaries.
 - [ ] Candidate tranche bounded to ≤15 artifacts.
 - [ ] Tranche includes explicit mkt-a/client confidentiality flag per artifact.
@@ -334,25 +334,25 @@ Acceptance:
 **Next-lane prompt (Category A · execution-readiness, ace-1 only — NFS access + size-sensitivity):**
 
 ```
-You are picking up #2544 (Woodfibre LNG scout), live status:plan-approved. Run on ace-linux-1 only.
+You are picking up #2544 (LNG terminal A scout), live status:plan-approved. Run on ace-linux-1 only.
 
 Pre-execution checklist:
-1. `gh issue view 2544 --comments` — find the plan filename. Also `ls docs/plans/2026-04-2*-issue-2544-*` and `ls docs/plans/2026-04-2*-elements-woodfibre-*`.
+1. `gh issue view 2544 --comments` — find the plan filename. Also `ls docs/plans/2026-04-2*-issue-2544-*` and `ls docs/plans/2026-04-2*-elements-lng-terminal-a-*`.
 2. Read the plan in full.
 3. Confirm local approval marker for #2544. If absent, escalate.
-4. `ls /mnt/ace/mkt-a/31522-woodfibre-lng` — confirm read access. Run `du -sh` once to confirm the ~1.879 TB figure; do NOT recursively `ls` the entire tree.
-5. Read `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` if it exists; if not, you are likely the agent creating it.
+4. `ls /mnt/ace/mkt-a/31522-lng-terminal-a` — confirm read access. Run `du -sh` once to confirm the ~1.879 TB figure; do NOT recursively `ls` the entire tree.
+5. Read `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md` if it exists; if not, you are likely the agent creating it.
 
 Hard guardrails (any violation = stop):
 - Scout MUST work from path + file metadata only. Never `cat` or text-extract a large binary unless the plan explicitly approved that artifact.
 - Tranche bounded to ≤15 artifacts.
 - Each candidate has: path, size, type, rationale, extraction method, expected wiki target, mkt-a/client confidentiality flag.
 - Zero raw files copied into git/wiki/raw folders.
-- `/mnt/ace/mkt-a/31522-woodfibre-lng` is read-only — confirm via mount check.
+- `/mnt/ace/mkt-a/31522-lng-terminal-a` is read-only — confirm via mount check.
 - If the plan flagged "additional mkt-a/client confidentiality review needed before extraction," DO NOT extract; only scout. Surface the gate to the user.
 
 Acceptance:
-- Scout dossier landed at `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md`.
+- Scout dossier landed at `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md`.
 - Candidate tranche table committed with all required columns.
 - Confidentiality gate, if invoked, is surfaced in the issue with a comment for user decision.
 
@@ -371,7 +371,7 @@ Out of scope: extraction itself; that is a follow-up issue created from this sco
 | 2378 | C · triage | either | r0 trio readable | high-blast-radius decisions deferred |
 | 2370 | D · plan draft | either | template available | issue can't move at all |
 | 2541 | A · execution | **ace-1 only** (NFS) | `/mnt/ace/lng-a/62092_sesa` access; plan path located | retention-boundary breach |
-| 2544 | A · execution | **ace-1 only** (NFS, size) | `/mnt/ace/mkt-a/31522-woodfibre-lng` access; plan path located | confidentiality breach |
+| 2544 | A · execution | **ace-1 only** (NFS, size) | `/mnt/ace/mkt-a/31522-lng-terminal-a` access; plan path located | confidentiality breach |
 
 **Net effect** (if all 7 lanes complete): 4 issues advance approved → executed; 1 advances drafted → reviewed; 1 advances reviewed → revised; 1 advances issue body → drafted. Total: 7 issues unblocked, 4 ready for closure, 3 newly review-ready.
 
@@ -385,6 +385,6 @@ Out of scope: extraction itself; that is a follow-up issue created from this sco
 | `scripts/review/results/${TODAY}-plan-2474-{claude,codex,gemini}-r1.md` | r1 review trio for #2474 | next-lane (Category B), ace-1 |
 | `docs/plans/overnight-prompts/2026-04-29-next-wave-autofeed/results/2378-review-triage.md` | Triage table for #2378 r0 trio | next-lane (Category C) |
 | `.planning/intel/elements-overnight-wave/sesa-extracted-tranche-r1.md` | SESA tranche manifest post-extraction | next-lane (Category A · #2541), ace-1 |
-| `.planning/intel/elements-overnight-wave/woodfibre-corpus-scout.md` (if not extant) | Woodfibre scout dossier | next-lane (Category A · #2544), ace-1 |
+| `.planning/intel/elements-overnight-wave/lng-terminal-a-corpus-scout.md` (if not extant) | LNG terminal A scout dossier | next-lane (Category A · #2544), ace-1 |
 
 End of packet.

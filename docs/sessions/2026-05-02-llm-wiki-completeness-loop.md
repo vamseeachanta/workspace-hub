@@ -12,7 +12,7 @@
 - **Per #2540 epic**: raw data stays in `/mnt/ace`; wiki/git receive only summaries + metadata after separate approval per gap
 - **Codex blocked** since 2026-04-23 (CLI 0.124 stdin-hang upstream regression #2479); reviewers = Gemini + Claude-internal
 - **Future tense only** in plan files (memory `feedback_plan_past_tense_artifact_claims.md`)
-- **No overlap** with existing in-flight work: #2540 (Elements epic), #2541 SESA, #2542 lng-a University, #2543 lng-a codes, #2544 Woodfibre LNG, #2559 OCIMF Tandem
+- **No overlap** with existing in-flight work: #2540 (Elements epic), #2541 SESA, #2542 lng-a University, #2543 lng-a codes, #2544 LNG terminal A, #2559 OCIMF Tandem
 
 ## Gap-priority queue (rotating, gap-prioritized)
 

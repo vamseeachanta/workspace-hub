@@ -16,8 +16,8 @@ scripts_exempt: true
 src/             tests/           docs/            config/
 scripts/         data/            specs/           reports/
 pyproject.toml   pytest.ini       README.md        CHANGELOG.md
-AGENTS.md        AGENTS.md        Makefile         LICENSE
-.gitignore       .Codex/         .codex/          .gemini/
+CLAUDE.md        AGENTS.md        Makefile         LICENSE
+.gitignore       .claude/         .codex/          .gemini/
 .github/         .pre-commit-config.yaml
 ```
 
@@ -28,8 +28,8 @@ AGENTS.md        AGENTS.md        Makefile         LICENSE
 | Item | Correct Location |
 |------|-----------------|
 | Loose `.py` scripts | `scripts/` or `src/<pkg>/tools/` |
-| `agents/` directory | `.Codex/agents/` only |
-| `.agent-os/` | DELETE — superseded by `.Codex/skills/` |
+| `agents/` directory | `.claude/agents/` only |
+| `.agent-os/` | DELETE — superseded by `.claude/skills/` |
 | `.hive-mind/`, `.swarm/` | DELETE — gitignored |
 | `business/` docs | `docs/business/` |
 | `modules/` | Move into `src/<package>/modules/` |

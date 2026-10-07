@@ -72,7 +72,7 @@ Reserve one lane for a real approved implementation issue.
 
 Requirements:
 - clean isolated worktree from `origin/main`
-- local `.planning/plan-approved/<issue>.md` marker committed in that worktree before starting
+- verified task/standing authority, current reviewed scope and resolved blockers before starting; approval labels and local markers are not prerequisites
 - explicit owned/read-only/forbidden paths
 - narrow TDD-first scope
 

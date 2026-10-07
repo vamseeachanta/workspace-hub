@@ -22,8 +22,8 @@ scripts_exempt: true
 
 
 ```bash
-export ANSYSLMD_LICENSE_FILE=1055@license-server.domain.com
-export ANSYSLI_SERVERS=2325@license-server.domain.com
+export ANSYSLMD_LICENSE_FILE=1055@license-server
+export ANSYSLI_SERVERS=2325@license-server
 export OMP_NUM_THREADS=8     # Must match NUM_CORES in Deck 0 (or WB setting)
 ulimit -s unlimited          # Required for large models
 ```

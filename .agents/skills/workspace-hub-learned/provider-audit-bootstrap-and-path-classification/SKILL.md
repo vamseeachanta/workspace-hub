@@ -13,8 +13,8 @@ Use when `scripts/analysis/provider_session_ecosystem_audit.py` or its cron wrap
 ## When to use
 - `bash scripts/cron/provider-session-ecosystem-audit.sh` fails with `ModuleNotFoundError: No module named 'workspace_hub'`
 - the audit works in pytest/importlib contexts but fails from the wrapper or shell
-- slash-delimited paths such as `scripts/hooks/post-merge` or `.Codex/work-queue/WRK-149.md` are being counted as symbolic instead of repo paths
-- Codex symbolic-read output looks suspicious while missing-repo counts look artificially low
+- slash-delimited paths such as `scripts/hooks/post-merge` or `.claude/work-queue/WRK-149.md` are being counted as symbolic instead of repo paths
+- Claude symbolic-read output looks suspicious while missing-repo counts look artificially low
 
 ## Symptoms
 - Wrapper log shows:
@@ -75,7 +75,7 @@ if SYMBOLIC_SLASH_NAME_RE.fullmatch(text):
 Effect:
 - `coordination/workspace/repo-capability-map` remains symbolic when the repo has no `coordination/`
 - `scripts/hooks/post-merge` becomes a repo path if `scripts/` exists
-- `.Codex/work-queue/WRK-149.md` becomes a repo path instead of a symbolic read
+- `.claude/work-queue/WRK-149.md` becomes a repo path instead of a symbolic read
 
 ## Regression tests to add
 
@@ -90,7 +90,7 @@ Add a test in `tests/analysis/test_provider_session_ecosystem_audit.py` assertin
 ### Classification tests
 Add tests proving:
 - `scripts/hooks/post-merge` is classified as `repo` when `scripts/` exists
-- `.Codex/work-queue/WRK-149.md` is classified as `repo` when `.Codex/` exists
+- `.claude/work-queue/WRK-149.md` is classified as `repo` when `.claude/` exists
 - true symbolic names like `coordination/workspace/repo-capability-map` remain `symbolic`
 
 ## Verification sequence
@@ -111,11 +111,11 @@ Expected:
 
 ## Operational impact
 - Fixes false wrapper failures in cron/source checkout environments
-- Makes Codex symbolic-read output more trustworthy
+- Makes Claude symbolic-read output more trustworthy
 - Prevents repo-missing-path debt from being hidden behind over-broad symbolic classification
 - Produces a more accurate stale-path remediation report for follow-on issue creation
 
 ## Pitfalls
 - pytest may already pass because `tests/conftest.py` inserts `src/`; do not treat that as proof the wrapper is healthy
 - do not classify all slash-delimited names as symbolic; check whether the repo owns the first path component
-- keep `docs/ops/legacy-Codex-reference-map.md` and historical audit reports separate from current instructional surfaces when acting on stale-path findings
+- keep `docs/ops/legacy-claude-reference-map.md` and historical audit reports separate from current instructional surfaces when acting on stale-path findings

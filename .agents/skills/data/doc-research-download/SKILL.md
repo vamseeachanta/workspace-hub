@@ -33,7 +33,7 @@ and what the catalogue YAML must contain.
    validate each saved file is a real PDF (`file <path>` must report `PDF document`);
    move HTML/WAF responses to `pending_manual:` with `notes: "WAF — saved HTML, not PDF"`
 5. **Regenerate document index** — run `scripts/data/document-index/` pipeline; if the full
-   run takes >5 min, write `.Codex/work-queue/assets/<WRK-ID>/index-regen-queued.txt`
+   run takes >5 min, write `.claude/work-queue/assets/<WRK-ID>/index-regen-queued.txt`
    with the command to run — that file is the verifiable evidence for AC completion
 6. **Record WAF-blocked / borrow-only** — add to `pending_manual:` in the YAML;
    never silently skip — every attempted resource must appear somewhere
@@ -50,7 +50,7 @@ Copy and adapt for each new domain:
 set -euo pipefail
 
 DEST="/mnt/ace/docs/_standards/<DIR>"
-LOG_DIR="$(git rev-parse --show-toplevel)/.Codex/work-queue/assets/<WRK-ID>"
+LOG_DIR="$(git rev-parse --show-toplevel)/.claude/work-queue/assets/<WRK-ID>"
 LOG_FILE="${LOG_DIR}/download.log"
 DRY_RUN=false
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN=true
@@ -133,12 +133,12 @@ These patterns were identified during WRK-1151 (naval architecture).
 Available built-in tools for web content:
 - `WebFetch` — single URL fetch (adequate for known pages)
 - `WebSearch` — web search + results
-- `Codex-in-chrome` — full browser automation for JS-rendered pages
+- `claude-in-chrome` — full browser automation for JS-rendered pages
 
 Assessed and rejected (cost or unnecessary complexity):
 - Firecrawl MCP — paid service, rejected
 - Crawl4AI MCP — free but adds unnecessary dependency layer
-- Playwright MCP — only useful for JS-rendered pages (already covered by Codex-in-chrome)
+- Playwright MCP — only useful for JS-rendered pages (already covered by claude-in-chrome)
 - Fetch MCP (Anthropic) — minimal gain over WebFetch
 
 **For WRK-1202 Tier 3 scripts**, use `httpx` + `beautifulsoup4` + `robotsparser` directly.

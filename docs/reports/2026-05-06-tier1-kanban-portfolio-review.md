@@ -31,7 +31,7 @@ Use this column to audit whether recently closed work was transactionally comple
 | Repo | Issue | Title | Labels | Closed/updated |
 |---|---:|---|---|---:|
 | `digitalmodel` | [#552](https://github.com/vamseeachanta/digitalmodel/issues/552) | fix(aqwa-backend): align CRLF/LF line endings between generate_single and generate_modular | enhancement, priority:low, status:plan-approved | 2026-05-06 |
-| `workspace-hub` | [#2642](https://github.com/vamseeachanta/workspace-hub/issues/2642) | feat(naval-arch): B1528 proj-a moored-current rudder force component report | enhancement, priority:high, cat:engineering-calculations, domain:hydrodynamics, domain:visualization | 2026-05-05 |
+| `workspace-hub` | [#2642](https://github.com/vamseeachanta/workspace-hub/issues/2642) | feat(naval-arch): proj-a moored-current rudder force component report | enhancement, priority:high, cat:engineering-calculations, domain:hydrodynamics, domain:visualization | 2026-05-05 |
 | `worldenergydata` | [#384](https://github.com/vamseeachanta/worldenergydata/issues/384) | fix(bsee): lazy-load module-level singletons in bsee_data.py — unblocks import and GTM demos | bug, priority:high, cat:engineering | 2026-05-05 |
 | `workspace-hub` | [#2627](https://github.com/vamseeachanta/workspace-hub/issues/2627) | wiki(engineering-standards): create DNV-RP-F103 page (unblocks #2609 R3 fix) | cat:engineering, status:plan-approved, llm-wiki, tracker, domain:digitalmodel | 2026-05-04 |
 | `digitalmodel` | [#571](https://github.com/vamseeachanta/digitalmodel/issues/571) | fix(tests/orcaflex): test_cli_commands_from_module assertion drift — separate from S1 PATH cluster | bug, domain:naval-architecture, status:plan-approved | 2026-05-04 |

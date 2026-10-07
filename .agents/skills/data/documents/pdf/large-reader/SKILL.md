@@ -71,7 +71,7 @@ pdf-large-reader info document.pdf
 | **Auto Strategy** | Intelligent chunk sizing based on file size |
 | **Multi-format** | Text, images, tables, metadata extraction |
 | **Progress** | Built-in progress callbacks |
-| **AI Fallback** | Codex integration for complex extraction |
+| **AI Fallback** | Claude integration for complex extraction |
 
 ## Output Formats
 

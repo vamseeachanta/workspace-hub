@@ -17,7 +17,7 @@ We have successfully transformed the static file archives in `/mnt/ace` into act
     *   Index: `digitalmodel/data/standards/index.json` (Filtered for speed)
     *   Usage: `lookup.search("API 2RD")`
 *   **Benchmarks**: Established a framework for legacy project benchmarks.
-    *   **Pilot**: Extracted "611 Mecor" OrcaFlex files to `digitalmodel/benchmarks/legacy_projects/611_mecor`.
+    *   **Pilot**: Extracted "611 the pipelay client" OrcaFlex files to `digitalmodel/benchmarks/legacy_projects/611_pipelay_client`.
 
 ### 2. World Energy Data Enhancement
 *   **Production Data**: Linked 20+ years of production data.
@@ -60,7 +60,7 @@ We have successfully transformed the static file archives in `/mnt/ace` into act
 | `digitalmodel/tools/index_assets.py` | Script to rebuild the full index |
 | `digitalmodel/tools/create_standards_index.py` | Script to update the standards index |
 | `digitalmodel/src/digitalmodel/modules/standards_lookup.py` | Python API for searching standards |
-| `digitalmodel/benchmarks/legacy_projects/611_mecor/*.dat` | Validation datasets for OrcaFlex |
+| `digitalmodel/benchmarks/legacy_projects/611_pipelay_client/*.dat` | Validation datasets for OrcaFlex |
 | `worldenergydata/scripts/inventory_production_data.py` | Production data scanner script |
 | `worldenergydata/data/legacy_production_inventory.json` | Inventory of production files |
 | `skills/sme/production-engineering/SKILL.md` | New Production Engineering skill guide |

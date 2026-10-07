@@ -34,7 +34,7 @@ If this checklist conflicts with the full route, follow `gh-work-planning`.
 
 Use when:
 - work starts from a GitHub issue
-- you need Issue -> Plan -> Approval -> Execution discipline
+- you need Issue -> Plan -> Review -> Authorized execution discipline
 - you want a short runbook while posting progress live
 
 Do not use this as a substitute for the full planning route.
@@ -93,15 +93,15 @@ Do not use this as a substitute for the full planning route.
 - Link future issues back to the current issue and mention them in the plan.
 - Decision gate at each major step: continue current issue, create future issue, stop for user decision, or stop for blocker.
 
-8. Approval gate
+8. Execution checkpoint
 - Before stopping: save the plan, update planning index if used, ensure follow-up issues are created or called out, post final plan comment, add `status:plan-review`, remove stale conflicting labels.
-- Final plan comment should include deliverable, scope boundaries, likely files/tests, review synthesis, residual risk, future issues, and explicit approval request.
-- Hard stop: do not implement while awaiting approval.
-- On approve: move to `status:plan-approved` and hand off execution package.
+- Final plan comment should include deliverable, scope boundaries, likely files/tests, review synthesis, residual risk, future issues, and task/standing authority, unresolved decisions and next action.
+- Continue within task/standing authority without separate plan approval after review and required domain decisions. Honor explicit planning-only requests.
+- Hand off the reviewed execution package with scoped authority; no approval label or local marker is required. Consequential actions outside authority require explicit authorization.
 - On revise/reject/hold: keep execution blocked and follow the canonical route.
 
 ## One-screen reminder
 
-Issue -> Intake -> Intelligence -> Plan -> Review -> Plan Comment -> `status:plan-review` -> Wait for approval -> Execute only after approval.
+Issue -> Intake -> Intelligence -> Plan -> Review -> Plan Comment -> Implement within task/standing authority, or stop for a specific unresolved decision/scope limit.
 
 Canonical authority: `gh-work-planning`.

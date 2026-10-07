@@ -11,8 +11,8 @@
 | `test_jumper_lift.py` | 600 | 81/81 PASSING | Pushed |
 | `go_no_go.py` | 350+ | 21/21 PASSING | Pushed |
 | `test_go_no_go.py` | 180+ | 21/21 PASSING | Pushed |
-| `ballymore_mf_plet/spec.yml` | 130+ | Validated | Pushed |
-| `ballymore_plet_plem/spec.yml` | 110+ | Template ready | Pushed |
+| `gom_tieback_a_mf_plet/spec.yml` | 130+ | Validated | Pushed |
+| `gom_tieback_a_plet_plem/spec.yml` | 110+ | Template ready | Pushed |
 | `jumper-installation.html` (GTM) | 100+ | Demo page | Pushed |
 | PORTFOLIO_CAPABILITIES.md | Updated | Added jumper | Pushed |
 | excel-workbook-to-python-cowork skill | 120+ | Skill guide | Created |

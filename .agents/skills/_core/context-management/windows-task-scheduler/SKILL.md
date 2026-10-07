@@ -15,7 +15,7 @@ scripts_exempt: true
 Task: `ContextManagementDaily`
 Schedule: Daily at 6:00 AM
 Action: `scripts/context/daily_context_check.sh`
-Output: `.Codex/reports/context-health-YYYY-MM-DD.md`
+Output: `.claude/reports/context-health-YYYY-MM-DD.md`
 
 ## Daily Check Includes
 
@@ -32,7 +32,7 @@ The `daily_context_check.sh` script runs:
 
 ```powershell
 # Run as Administrator
-schtasks /create /tn "ContextManagementDaily" /tr "D:\workspace-hub\scripts\context\daily_context_check.sh" /sc daily /st 06:00
+schtasks /create /tn "ContextManagementDaily" /tr "<workspace-root>\workspace-hub\scripts\context\daily_context_check.sh" /sc daily /st 06:00
 ```
 
 ---

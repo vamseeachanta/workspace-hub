@@ -8,7 +8,7 @@ Consolidation date: 2026-04-29
 
 ---
 name: plan-gated-issue-execution-wave
-description: Execute a multi-issue architecture/planning wave in a plan-gated repo, then safely transition approved issues into implementation with file-based Claude prompts, local approval markers, subprocess monitoring, and cleanup handling for sandbox/hook edge cases.
+description: Execute a multi-issue architecture/planning wave in a plan-gated repo, then safely transition reviewed, authorized issues into implementation with file-based Claude prompts, scope evidence, subprocess monitoring, and cleanup handling for sandbox/hook edge cases.
 version: 1.0.0
 author: Hermes Agent
 ---
@@ -24,10 +24,10 @@ Use when:
 ## Core pattern
 
 1. Create/confirm the parent issue and child issue tree first.
-2. For each not-yet-approved issue, generate a self-contained planning prompt file under `docs/plans/`.
+2. For each issue needing planning, generate a self-contained planning prompt file under `docs/plans/`.
 3. Launch Claude in a background subprocess using the prompt file and monitor it via process polling/watch patterns.
-4. When plan-review artifacts land, move issues to `status:plan-review` only.
-5. After explicit user approval, convert the issue to `status:plan-approved`, create `.planning/plan-approved/<issue>.md`, and commit that marker before any implementation run.
+4. When plan-review artifacts land, record review evidence and blockers accurately.
+5. Continue implementation under the task request or standing authority after planning/review and required domain decisions; no separate plan approval, approval label or local marker is required.
 6. Generate a separate implementation prompt with strict owned paths and forbidden paths.
 7. Launch implementation in a subprocess and monitor completion.
 8. Review the output, verify git/GitHub state, and handle residual cleanup or sandbox-blocked follow-ups.
@@ -49,8 +49,8 @@ claude -p --permission-mode plan --no-session-persistence --output-format text "
 ## Planning wave workflow
 
 For each issue in the architecture chain:
-- read the approved parent/sibling artifacts first
-- keep the prompt planning-only unless the issue is already approved for execution
+- read the current reviewed parent/sibling artifacts first
+- keep the prompt planning-only when the user requests planning only; otherwise implement within task/standing authority after planning and review
 - tell Claude to produce:
   - plan file in `docs/plans/`
   - review artifacts in `scripts/review/results/`
@@ -67,36 +67,32 @@ Recommended architecture order used successfully:
 7. retrieval contract
 8. conformance checks
 
-## Approval transition pattern
+## Implementation transition pattern
 
-When the user wants to execute an approved plan:
-1. switch GitHub label from `status:plan-review` to `status:plan-approved`
-2. create `.planning/plan-approved/<issue>.md`
-3. commit the marker by itself with a small commit message
-4. only then launch implementation Claude prompt
+After planning and adversarial review, proceed under the task request or established standing authority without a separate user plan-approval checkpoint, `status:plan-approved` label or local approval marker.
 
-Example commit:
+1. Verify task scope, plan revision, review findings, dependencies and required domain decisions.
+2. Preserve explicit planning-only requests; implement only when implementation is within existing authority.
+3. Record the scope and validation path in the issue/delegation prompt.
+4. Launch implementation with isolated owned paths and TDD.
 
-```bash
-git add .planning/plan-approved/2104.md
-git commit -m "chore(planning): approve issue #2104 for execution"
-```
+Existing owner-controlled approval records remain history. Do not self-label approval or fabricate an approval marker. Consequential actions outside current authority require matching explicit authorization.
 
 ## Implementation prompt design
 
 Every implementation prompt should include:
-- approved issue number and plan path
+- authorized issue number, task/standing authority and reviewed plan path
 - review artifact paths
 - owned implementation paths only
 - explicit forbidden paths
 - instruction to stage only owned files, never `git add .`
-- exact success criteria from the approved plan
+- exact success criteria from the reviewed plan
 - exact verification checklist
 - GitHub closeout instructions
 
 ## When a planned issue should split further
 
-If an approved plan still mixes multiple concerns, split into child implementation issues before coding.
+If a reviewed plan still mixes multiple concerns, split into child implementation issues before coding.
 
 A reusable example from this session:
 - source registration + initial indexing/dedup
@@ -154,7 +150,7 @@ Minimal fix used:
 STAGED=$(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null | grep -E "$HARNESS_PATTERN" | grep -v '^knowledge/wikis/' || true)
 ```
 
-Apply this only if the user approves a hook fix.
+Apply a hook fix only within the task request or standing authority. If it expands scope or changes security/access controls, obtain matching explicit authorization; do not weaken controls merely to unblock execution.
 
 ## Verification/cleanup discipline
 
@@ -166,7 +162,7 @@ After implementation completes:
 
 ## Pitfalls
 
-- launching implementation without both label and `.planning/plan-approved/*.md` marker committed
+- launching implementation outside task/standing authority, with unresolved domain decisions or blocking review findings, or contrary to an explicit planning-only request
 - letting one implementation prompt touch broad/unowned paths in a dirty worktree
 - assuming a watch-pattern hit means the process has finished; always wait for exit
 - closing an issue when a known residual edit is still only in working tree

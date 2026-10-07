@@ -85,7 +85,7 @@ The user dispatches R1-R4 in parallel across accounts. Account 1 handles R5 (aft
 2. **LinkedIn = marketing surface only:** Per `feedback_llm_wiki_concept_pages_need_public_references`, never import LinkedIn content as primary technical source. R4 is for outreach tracking, NOT technical extraction.
 3. **Sequential issue creation:** Per `feedback_parallel_gh_issue_create_reverses_numbers`, don't bake cross-refs at create-time when parallelizing.
 4. **Inline issue refs:** Per `feedback_inline_gh_issue_url`, render `#NNNN` as Markdown hyperlink in chat output.
-5. **No self-approval:** Per `feedback_never_offer_to_self_label_plan_approved`, never self-approve. Implementation gaps spawned by R6 still need user approval before code work begins.
+5. **No self-approval:** Per `feedback_never_offer_to_self_label_plan_approved`, never self-approve. Implementation gaps spawned by R6 need reviewed issue scope within task authority; no separate plan approval is required.
 
 ## Domain queue
 

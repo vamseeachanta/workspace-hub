@@ -1,6 +1,6 @@
 ---
 name: agent-team-prompt-generation
-description: Create self-contained execution prompts that define multi-role workflows for Codex sessions without external dependencies
+description: Create self-contained execution prompts that define multi-role workflows for Claude sessions without external dependencies
 version: 1.1.0
 source: updated-from-use
 updated: 2026-04-11
@@ -13,15 +13,15 @@ metadata:
 Use this when handing a GitHub issue or tightly scoped workstream to Codex in one self-contained prompt, especially after planning is complete and you want Codex to operate like an internal agent team in a single run.
 
 ## When to use
-- A parent issue or child issue is already planned and needs an execution-ready Codex prompt
-- The repo has workflow gates and Codex needs all constraints in one place
-- You want one Codex session to simulate multiple roles (Planner, Architect/Implementer, Reviewer, Integrator)
+- A parent issue or child issue is already planned and needs an execution-ready Claude prompt
+- The repo has workflow gates and Claude needs all constraints in one place
+- You want one Claude session to simulate multiple roles (Planner, Architect/Implementer, Reviewer, Integrator)
 - You need strict write-path ownership and zero scope creep
 - You want a reusable handoff artifact committed into `docs/plans/`
 
 ## Core pattern
 
-Write one markdown prompt file that gives Codex:
+Write one markdown prompt file that gives Claude:
 1. exact repo path
 2. exact issue number + title + URL
 3. parent/child issue relationships
@@ -43,7 +43,7 @@ Start the prompt with an internal team definition like:
 - Adversarial Reviewer
 - Integrator
 
-This reliably pushes Codex to:
+This reliably pushes Claude to:
 - inspect current state first
 - draft or revise the main artifact
 - critique its own result
@@ -65,10 +65,10 @@ Explicitly state:
 - whether this run is architecture-only, planning-only, or implementation-ready
 - what must NOT be redefined from the parent issue
 
-This prevents Codex from silently broadening scope.
+This prevents Claude from silently broadening scope.
 
 ### 3. Artifact grounding
-List the exact authoritative files Codex must read first.
+List the exact authoritative files Claude must read first.
 Example categories:
 - parent operating-model docs
 - current plan file
@@ -89,7 +89,7 @@ This is the most reusable high-value pattern from the session.
 Rules:
 - allowed write paths should be exact files or tightly bounded directories
 - forbidden paths should include sibling issue territories
-- if the worktree is dirty outside allowed paths, instruct Codex not to touch unrelated files
+- if the worktree is dirty outside allowed paths, instruct Claude not to touch unrelated files
 
 ### 5. Success condition
 Give one explicit paragraph describing what must exist by the end of the run.
@@ -130,7 +130,7 @@ This makes later orchestration and artifact roundup much easier.
 ## Recommended template skeleton
 
 ```md
-# Codex agent-team prompt: <issue>
+# Claude agent-team prompt: <issue>
 
 We are in `<repo-path>`.
 
@@ -184,8 +184,8 @@ Output requirements:
 When the prompt targets a GitHub issue:
 - include the exact issue URL
 - include child issue URLs if the work must stay inside one child issue’s scope
-- tell Codex whether to post a summary comment
-- tell Codex whether label changes are allowed
+- tell Claude whether to post a summary comment
+- tell Claude whether label changes are allowed
 - explicitly forbid changing labels if that should remain orchestrator-owned
 
 ## Parent/child issue execution pattern
@@ -195,7 +195,7 @@ For issue trees, use this division:
 - child issue prompt: specialized contract or implementation under the approved parent model
 
 Important lesson:
-- tell Codex exactly what the child issue must not redefine from the parent
+- tell Claude exactly what the child issue must not redefine from the parent
 - otherwise it may re-open already-settled architecture decisions
 
 ## Dirty-worktree safety pattern
@@ -208,15 +208,15 @@ Add this clause whenever the repo may already be dirty:
 This is especially important in shared orchestration repos.
 
 ## Best-fit examples from use
-- planning/architecture issue handoff where Codex must finish a normative operating model and only move to `status:plan-review` if review clears
-- child contract issue handoff where Codex must write one normative spec document under an already-approved parent model
-- validation issue handoff where Codex must create conformance-check design without redefining architecture
+- planning/architecture issue handoff where Claude must finish a normative operating model and only move to `status:plan-review` if review clears
+- child contract issue handoff where Claude must write one normative spec document under an already-approved parent model
+- validation issue handoff where Claude must create conformance-check design without redefining architecture
 
 ## Pitfalls
 - vague allowed paths like “relevant files”
 - no forbidden-path block
-- not telling Codex whether the issue is planning-only vs execution-ready
-- asking Codex to both define parent architecture and implement child details in one run
+- not telling Claude whether the issue is planning-only vs execution-ready
+- asking Claude to both define parent architecture and implement child details in one run
 - missing final return format
 - no explicit rule for when GitHub labels/comments should or should not change
 
@@ -229,4 +229,4 @@ This is especially important in shared orchestration repos.
 - Is there a conditional state-transition rule?
 - Is the final return format explicit?
 
-If yes, the prompt is usually robust enough for one-go Codex handoff.
+If yes, the prompt is usually robust enough for one-go Claude handoff.

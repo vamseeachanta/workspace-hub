@@ -2,7 +2,7 @@
 name: planning-lane-cross-review-permission-fallback
 description: Handle overnight planning-only lanes where plan revision/editing works but real cross-provider review dispatch is permission-blocked.
 triggers:
-  - Overnight/planning-only Codex lane can edit plan files and post issue comments
+  - Overnight/planning-only Claude lane can edit plan files and post issue comments
   - cross-review dispatch is blocked by sandbox/permission policy
   - Worker is tempted to substitute self-review for true cross-provider review
 ---
@@ -19,7 +19,7 @@ Observed in the 2026-04-21 CI batch for workspace-hub issues #2441, #2443, and #
 - the worker could post GitHub comments
 - but permission policy blocked `scripts/review/cross-review.sh`
 
-That means the worker can produce review-shaped artifacts, but not actual Codex/Gemini/Codex cross-provider evidence.
+That means the worker can produce review-shaped artifacts, but not actual Codex/Gemini/Claude cross-provider evidence.
 
 ## Required response
 
@@ -33,7 +33,7 @@ That means the worker can produce review-shaped artifacts, but not actual Codex/
 ## Minimum provenance language
 
 Use wording equivalent to:
-- "Provenance note: this artifact is a Codex-authored single-author adversarial self-review because `scripts/review/cross-review.sh` was permission-blocked in this session. It is interim signal, not real cross-provider review evidence."
+- "Provenance note: this artifact is a Claude-authored single-author adversarial self-review because `scripts/review/cross-review.sh` was permission-blocked in this session. It is interim signal, not real cross-provider review evidence."
 
 ## What counts as acceptable output
 

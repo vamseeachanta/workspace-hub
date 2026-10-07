@@ -51,9 +51,9 @@ The ACE workspace spans 4 physical/logical mount points containing **3.6M+ files
 | `client-c/` | Client archives | varies | varies | 50+ project folders (legacy + active) |
 | `Production/` | Production eng | 960 MB | varies | ESP, EOR, GIS, Halliburton, training materials |
 | `2H/` | Riser engineering | varies | varies | 15+ riser/wellhead projects (31057-31290) |
-| `lng-a/` | Floating systems | varies | varies | FPSO projects (Zama, Lakach, SESA), OrcaFlex models |
+| `lng-a/` | Floating systems | varies | varies | FPSO projects (Zama, Mexico gas field A, SESA), OrcaFlex models |
 | `client-a/` | Deepwater eng | varies | varies | Agent-OS enabled repo, deepwater analysis |
-| `client-d/` | EPC/installation | varies | varies | Yellowtail project, admin |
+| `client-d/` | EPC/installation | varies | varies | Guyana field A project, admin |
 | `data/` | Datasets | varies | varies | document-index, osi-datasets, legacy HDD archives |
 | `.ace-knowledge/` | Knowledge DB | 1.2 GB | 2 | SQLite index.db for cross-drive search |
 | `scripts/` | Maintenance | small | 3 | build-manifest.py + tests |
@@ -90,7 +90,7 @@ Key subdirectories within workspace-hub:
 | `Literature/Oil and Gas/` | O&G literature | 80+ | Reservoir eng, peak oil, pipeline, SPE papers |
 | `0000 O&G/` | Standards (legacy) | 1000+ | OLDER standards collection — 36 org dirs (includes ASME, ASCE, AWS, NACE, IEC not in /mnt/ace) |
 | `0000 O&G/0000 Codes & Standards/` | Codes DB | varies | Has `Codes & Standards Database.xls` master index |
-| `Orcaflex/` | OrcaFlex models | varies | Drilling riser development, Shell Stones, Mecor S-Lay |
+| `Orcaflex/` | OrcaFlex models | varies | Drilling riser development, Shell Stones, the pipelay client S-Lay |
 | `g-drive/` | Google Drive export | 30+ | AceEngineer financials, document registers, idea logs, invoices |
 | `o-drive/` | OneDrive archive | 15+ | FFS assessments (018), ODA drilling (017), offshore data |
 | `dropbox_contents/` | Dropbox archive | varies | Engineering projects (0145-0197), Python support, references |

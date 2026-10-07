@@ -451,7 +451,7 @@
       "readability_pypdfium2": "machine"
     },
     {
-      "file": "BSEE-2011-macondo-blowout-final-report.pdf",
+      "file": "BSEE-2011-gom-well-a-blowout-final-report.pdf",
       "size_bytes": 2167253,
       "pdftotext_seconds": 1.068012,
       "pypdfium2_seconds": 0.854081,

@@ -89,7 +89,7 @@ Entry point:  python process-queue.py [--repo-root PATH] [--dry-run]
 
 ```powershell
 # Must be run as Administrator
-$RepoRoot = "D:\workspace-hub"
+$RepoRoot = "<workspace-root>\workspace-hub"
 $PythonExe = (& uv python find)
 $ScriptPath = "$RepoRoot\scripts\solver\process-queue.py"
 $Action = New-ScheduledTaskAction -Execute $PythonExe -Argument $ScriptPath -WorkingDirectory $RepoRoot
@@ -140,7 +140,7 @@ echo "Job submitted: ${JOBID}"
 Run the full issue verification block from PowerShell (as Administrator):
 
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull origin main
 python --version
 python -c "import OrcFxAPI; print(f'OrcFxAPI DLL: {OrcFxAPI.DLLVersion()}')"

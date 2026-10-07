@@ -12,8 +12,8 @@ scripts_exempt: true
 ## References to Remove
 
 
-- [ ] `.agent-os/` - consolidated to `.Codex/`
-- [ ] `.ai/` - consolidated to `.Codex/`
+- [ ] `.agent-os/` - consolidated to `.claude/`
+- [ ] `.ai/` - consolidated to `.claude/`
 - [ ] `.drcode/` - deleted (legacy)
-- [ ] `.slash-commands/` - consolidated to `.Codex/docs/commands/`
+- [ ] `.slash-commands/` - consolidated to `.claude/docs/commands/`
 - [ ] `.git-commands/` - consolidated to `scripts/git/`

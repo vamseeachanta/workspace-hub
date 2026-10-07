@@ -60,7 +60,7 @@ himalaya --account ace envelope list --folder "Sent" --output json | \
 import json, sys
 msgs = json.load(sys.stdin)
 for m in msgs:
-    if 'target@email.com' in m.get('to',''):
+    if 'target@example.com' in m.get('to',''):
         print(f\"{m['date']} — {m['subject']}\")
         break
 "
@@ -117,7 +117,7 @@ Please let me know if you need anything from our side.
 
 Best regards,
 SKEstates Inc
-skestatesinc@gmail.com
+info@example.org
 ```
 
 ### Step 4: Queue for approval
@@ -132,14 +132,14 @@ NEVER send touchbase emails automatically. Always:
 After sending:
 ```bash
 # Log the touchbase
-echo "target@email.com,FirstName LastName,ace,quarterly,$(date +%Y-%m-%d),$(date -d '+3 months' +%Y-%m-%d)" >> ~/.hermes/email-logs/touchbase-tracker.csv
+echo "target@example.com,FirstName LastName,ace,quarterly,$(date +%Y-%m-%d),$(date -d '+3 months' +%Y-%m-%d)" >> ~/.hermes/email-logs/touchbase-tracker.csv
 ```
 
 ## Touchbase Candidates by Account
 
 ### ace — Engineering Network
 Priority contacts:
-- Former colleagues at lng-a, McDermott, Trendsetter, etc.
+- Former colleagues at lng-a, an installation contractor, Trendsetter, etc.
 - GTM prospect pipeline (link to aceengineer-strategy/)
 - SPE/OTC conference connections
 - Cadence: monthly for active prospects, quarterly for network

@@ -19,7 +19,7 @@ Use this when `scripts/review/plan-review-fanout.sh` or related cross-review too
   - `unexpected argument '--no-interactive' found`
 - Gemini reports repo files do not exist even though they exist under `/mnt/local-analysis/workspace-hub`.
 - Gemini was invoked from `/tmp` and cannot access repo-relative paths or mounted workspace paths.
-- Codex/Gemini artifacts are zero bytes or contain only tail/status text without an explicit `## Verdict` block.
+- Claude/Gemini artifacts are zero bytes or contain only tail/status text without an explicit `## Verdict` block.
 - Review artifacts are dated differently from the plan header / Artifact Map because local date and UTC date differ.
 
 ## Recovery workflow
@@ -113,7 +113,7 @@ After any rerun, verify the actual artifacts before posting an issue update or c
 PLAN=docs/plans/YYYY-MM-DD-issue-<issue>-<slug>.md
 PLAN_SHA=$(sha256sum "$PLAN" | awk '{print $1}')
 find scripts/review/results -maxdepth 1 -name '*<issue>*' -print | sort
-for f in scripts/review/results/YYYY-MM-DD-plan-<issue>-{Codex,codex,gemini}.md; do
+for f in scripts/review/results/YYYY-MM-DD-plan-<issue>-{claude,codex,gemini}.md; do
   printf '%s\t' "$f"
   test -f "$f" && wc -c < "$f" || echo MISSING
   test -f "$f" && sed -n '1,20p' "$f"
@@ -135,14 +135,14 @@ If the fanout appears hung with no output, inspect child processes before killin
 ```bash
 ps -o pid,ppid,etime,stat,cmd --forest -p <fanout-pid> --ppid <fanout-pid> || true
 pgrep -P <child-pid> -a || true
-ps -ef | grep -E 'Codex|codex|gemini' | grep -v grep | tail -n 20 || true
+ps -ef | grep -E 'claude|codex|gemini' | grep -v grep | tail -n 20 || true
 ```
 
-A single provider leg (often Codex print-mode) can keep the fanout alive after other providers have finished. Preserve any real provider artifacts, but do not convert a hung/no-artifact run into approval evidence.
+A single provider leg (often Claude print-mode) can keep the fanout alive after other providers have finished. Preserve any real provider artifacts, but do not convert a hung/no-artifact run into approval evidence.
 
 ## Post-reboot / interrupted fanout salvage
 
-Use a separate reconciliation worktree when the primary checkout may have active Hermes/Codex/Git writers or dirty user work. Preserve primary dirty state first (diff/stash/status snapshots), then run review recovery from the safe worktree.
+Use a separate reconciliation worktree when the primary checkout may have active Hermes/Claude/Git writers or dirty user work. Preserve primary dirty state first (diff/stash/status snapshots), then run review recovery from the safe worktree.
 
 When a fanout is interrupted by reboot or context loss:
 
@@ -150,7 +150,7 @@ When a fanout is interrupted by reboot or context loss:
 
 ```bash
 ps -eo pid,ppid,pgid,stat,comm,args \
-  | awk '$0 ~ /wave_review_runner|plan-review-fanout|Codex -p|codex exec|gemini -p|gemini exec/ && $0 !~ /awk/ {print}'
+  | awk '$0 ~ /wave_review_runner|plan-review-fanout|claude -p|codex exec|gemini -p|gemini exec/ && $0 !~ /awk/ {print}'
 ```
 
 2. Stop only exact PIDs or process groups. Avoid `pkill -f 'long pattern from this shell command'` because the pattern can match and terminate the invoking shell/session.
@@ -184,7 +184,7 @@ kill -KILL -<pgid> 2>/dev/null || true
 
 When the root cause is the fanout wrapper itself, harden the wrapper before rerunning broad review waves:
 
-- Add a bounded per-provider timeout knob (for example `PLAN_REVIEW_PROVIDER_TIMEOUT_SEC`) so one hung Codex/Codex/Gemini leg cannot stall the whole fanout indefinitely.
+- Add a bounded per-provider timeout knob (for example `PLAN_REVIEW_PROVIDER_TIMEOUT_SEC`) so one hung Claude/Codex/Gemini leg cannot stall the whole fanout indefinitely.
 - Keep Codex non-interactive invocation on the known-safe path: pass the combined prompt/plan body as argv and close stdin with `</dev/null`; avoid `codex exec -` stdin-sentinel patterns because they can hang in some Codex CLI versions.
 - For Gemini CLI trust failures, set the approved trust environment (for example `GEMINI_CLI_TRUST_WORKSPACE=true`) and run from a cwd that avoids local `.gemini/agents/*.md` permission-mode bugs when appropriate.
 - Normalize every provider slot into a canonical artifact:

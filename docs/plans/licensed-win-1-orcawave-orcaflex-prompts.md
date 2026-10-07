@@ -2,13 +2,13 @@
 
 Generated: 2026-04-02
 Machine: licensed-win-1 (Windows, OrcaFlex + ANSYS licenses, Git Bash / MINGW64)
-Workspace: D:\workspace-hub
+Workspace: <workspace-root>\workspace-hub
 Traceability: docs/reports/digitalmodel-orcawave-orcaflex-issue-reconciliation.md
 
 ## Prerequisites (run once before starting any prompt)
 
 ```
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull origin main
 pip install OrcFxAPI   # if not already installed
 pip install pyyaml openpyxl   # support deps
@@ -29,14 +29,14 @@ Dependencies: none.
 
 ```
 You are an engineering automation agent on licensed-win-1 (Windows).
-Your workspace is D:\workspace-hub. Use python (not uv run) for commands.
+Your workspace is <workspace-root>\workspace-hub. Use python (not uv run) for commands.
 OrcFxAPI is available. Git Bash is available.
 
 TASK: Validate the solver queue infrastructure and run the WAMIT validation
 batch to prove the queue works end-to-end.
 
 STEP 1: Pull latest and verify queue health
-  cd D:\workspace-hub
+  cd <workspace-root>\workspace-hub
   git pull origin main
   dir queue\pending
   dir queue\completed
@@ -114,7 +114,7 @@ Dependencies: none.
 
 ```
 You are an engineering automation agent on licensed-win-1 (Windows).
-Your workspace is D:\workspace-hub. OrcFxAPI is available.
+Your workspace is <workspace-root>\workspace-hub. OrcFxAPI is available.
 
 TASK: Create a minimal OrcaFlex .sim fixture file that can be committed
 to the repo for use in integration tests on dev-primary.
@@ -223,7 +223,7 @@ Dependencies: Prompt 1 should succeed first (proves queue works).
 
 ```
 You are an engineering automation agent on licensed-win-1 (Windows).
-Your workspace is D:\workspace-hub. OrcFxAPI is available.
+Your workspace is <workspace-root>\workspace-hub. OrcFxAPI is available.
 
 TASK: Run OrcaWave on a simple test case and commit the .owr result file
 as a fixture for RAO extraction development on dev-primary.
@@ -297,7 +297,7 @@ Dependencies: Prompt 2 (proves OrcaFlex execution works).
 
 ```
 You are an engineering automation agent on licensed-win-1 (Windows).
-Your workspace is D:\workspace-hub. OrcFxAPI is available.
+Your workspace is <workspace-root>\workspace-hub. OrcFxAPI is available.
 
 TASK: Run an existing OrcaFlex mooring model to produce a .sim result file
 that demonstrates the OrcaWave-to-OrcaFlex import path works.
@@ -371,7 +371,7 @@ After all 4 complete, dev-primary can:
 
 ## Machine notes
 
-- licensed-win-1 workspace: D:\workspace-hub
+- licensed-win-1 workspace: <workspace-root>\workspace-hub
 - No SSH — physical or GUI access only
 - Git Bash (MINGW64) available for shell commands
 - Use `python` not `uv run` (Windows, no uv expected)

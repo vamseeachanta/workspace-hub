@@ -14,8 +14,8 @@ scripts_exempt: true
 
 | Folder | Description | Action |
 |--------|-------------|--------|
-| `.agent-os/` | Legacy agent OS framework | Consolidate to `.Codex/` |
-| `.ai/` | Legacy AI configuration | Consolidate to `.Codex/` |
+| `.agent-os/` | Legacy agent OS framework | Consolidate to `.claude/` |
+| `.ai/` | Legacy AI configuration | Consolidate to `.claude/` |
 | `.agent-runtime/` | Runtime symlinks (often dead) | Delete if dead links |
 | `.common/` | Orphaned utility scripts | Delete or relocate to `scripts/` |
 | `.specify/` | Stale specification templates | Delete if unused |
@@ -33,7 +33,7 @@ du -sh .*/ 2>/dev/null | grep -v "^\./\.git"
 find .agent-runtime -type l ! -exec test -e {} \; -print 2>/dev/null
 
 # Count files in each hidden directory
-for dir in .Codex .agent-os .ai .common .specify; do
+for dir in .claude .agent-os .ai .common .specify; do
   if [ -d "$dir" ]; then
     count=$(find "$dir" -type f | wc -l)
     echo "$dir: $count files"

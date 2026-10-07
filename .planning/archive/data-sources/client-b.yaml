@@ -571,8 +571,8 @@ calc_examples:
     description: TJG pipelay analysis — hand calc reference matching OrcaFlex S-lay models
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/0611-CAL-0004-01 Mecor Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
-    description: Mecor pipeline checks — installation load case reference for Mecor OrcaFlex models
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Wall Thickness Sizing/<document-number> the pipelay client Pipeline Installation Pipe Checks (Dnv-OS-F101).xlsx
+    description: the pipelay client pipeline checks — installation load case reference for the pipelay client OrcaFlex models
     type: xlsx
     host: dev-primary
 
@@ -581,11 +581,11 @@ calc_examples:
   description: >
     Pipeline upheaval buckling and weight data referenced in OrcaFlex installation models.
   files:
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/00_inbox/611 Mecor Pipeline Installation Analysis/Analysis/Pipeline Weights/Weight Matching.xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/00_inbox/611 the pipelay client Pipeline Installation Analysis/Analysis/Pipeline Weights/Weight Matching.xlsx
     description: Pipeline weight matching — submerged weight inputs for OrcaFlex hydrodynamic load model
     type: xlsx
     host: dev-primary
-  - path: /mnt/ace/docs/disciplines/production/projects/611_mecor_pipeline_installation_analysis/06_review/611 Mecor Pipeline Installation Analysis/Weight Verification/0611-Cal-0001-01 (Weight Verification).xlsx
+  - path: /mnt/ace/docs/disciplines/production/projects/611_pipelay_client_pipeline_installation_analysis/06_review/611 the pipelay client Pipeline Installation Analysis/Weight Verification/<document-number> (Weight Verification).xlsx
     description: Weight verification — validates submerged weight used in OrcaFlex pipelay models
     type: xlsx
     host: dev-primary

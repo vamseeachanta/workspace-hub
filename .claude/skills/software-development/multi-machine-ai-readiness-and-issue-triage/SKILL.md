@@ -289,7 +289,7 @@ But if the nightly pipeline never runs `git add .claude/state/corrections/`, tho
 - **Tier 3 (regenerable)**: Caches, plugins, debug logs. No backup needed.
 
 ### Legal gate
-ALL agent memory snapshots must pass `legal-sanity-scan.sh` before commit. Memory files and correction records routinely contain file paths, commands, or project names that reference client work.
+Repository identifier gates are retired. Preserve independent secret checks for agent memory snapshots; verify final outgoing reports under `docs/standards/FINAL_REPORT_VERIFICATION.md`.
 
 ## Pitfalls
 - Don't optimize repo-local issues before hub blockers that affect every session

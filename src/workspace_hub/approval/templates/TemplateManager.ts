@@ -981,7 +981,7 @@ export class TemplateManager extends EventEmitter {
     const systemUser: User = {
       id: 'system',
       username: 'system',
-      email: 'system@system.local',
+      email: 'system@example.local',
       fullName: 'System',
       role: 'admin' as UserRole,
       permissions: [],

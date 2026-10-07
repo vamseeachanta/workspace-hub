@@ -1,12 +1,12 @@
 ---
 name: session-corpus-audit
-description: Analyze orchestrator session JSONL logs across Codex/Hermes/Codex to produce cross-agent baselines, tool/file frequency analysis, and skill gap detection. Use when auditing agent activity patterns or identifying skill gaps from session data.
+description: Analyze orchestrator session JSONL logs across Claude/Hermes/Codex to produce cross-agent baselines, tool/file frequency analysis, and skill gap detection. Use when auditing agent activity patterns or identifying skill gaps from session data.
 version: 1.0.0
 author: Hermes Agent
 metadata:
   hermes:
     tags: [analysis, session-logs, skill-gaps, cross-agent, frequency, orchestrator]
-    related_skills: [Codex-reflect, skill-eval, repo-architecture-analysis]
+    related_skills: [claude-reflect, skill-eval, repo-architecture-analysis]
 prerequisites:
   commands: [python3]
 ---
@@ -17,7 +17,7 @@ Analyze orchestrator session JSONL logs across multiple AI agents to produce cro
 
 ## When to Use
 
-- Auditing agent activity patterns across Codex, Hermes, and Codex
+- Auditing agent activity patterns across Claude, Hermes, and Codex
 - Identifying skill gaps from repeated manual workflows
 - Producing tool/file frequency baselines for planning
 - Assessing skill-to-work alignment (are hot skills actually being used?)
@@ -25,8 +25,8 @@ Analyze orchestrator session JSONL logs across multiple AI agents to produce cro
 
 ## Data Sources
 
-### 1. Codex Orchestrator Logs
-- Location: `logs/orchestrator/Codex/session_*.jsonl`
+### 1. Claude Orchestrator Logs
+- Location: `logs/orchestrator/claude/session_*.jsonl`
 - Format: `{"ts":"...","hook":"post","tool":"Bash","project":"...","repo":"...","cmd":"..."}`
 - Tool field: Bash, Read, Edit, Write, Grep, Glob, Agent, Skill, WebFetch, Task
 - `cmd` present for Bash, `file` present for Read/Edit/Write
@@ -36,7 +36,7 @@ Analyze orchestrator session JSONL logs across multiple AI agents to produce cro
 - Location: `logs/orchestrator/hermes/session_*.jsonl`
 - Format: `{"ts":"...","hook":"post","tool":"Bash","hermes_tool":"terminal","project":"...","cmd":"..."}`
 - Has `hermes_tool` field with native names: terminal, read_file, search_files, write_file, patch, skill_view, skills_list, skill_manage
-- Also has `model` field (e.g. "gpt-5.4", "Codex-opus-4-6")
+- Also has `model` field (e.g. "gpt-5.4", "claude-opus-4-6")
 - **IMPORTANT**: Filter `hook == "post"` only
 
 ### 3. Codex Orchestrator Logs
@@ -47,7 +47,7 @@ Analyze orchestrator session JSONL logs across multiple AI agents to produce cro
 - Codex is primarily a review bot; exclude from file-frequency and command analyses
 
 ### 4. Skill Scores
-- Location: `.Codex/state/skill-scores.yaml`
+- Location: `.claude/state/skill-scores.yaml`
 - Structure: `skills:` key containing entries with `tier`, `calls_in_period`, `baseline_usage_rate`, `reference_count`, `path`
 - **Tiers are: hot, warm, cold, dead** (NOT active/inactive)
 
@@ -60,7 +60,7 @@ Analyze orchestrator session JSONL logs across multiple AI agents to produce cro
 3. **Top 20 bash commands** — per agent, normalized (strip paths/args, cluster similar)
 4. **Tool call distribution** — per agent: {tool: count, pct}
 5. **Temporal pattern** — tool calls per day per agent
-6. **Repo distribution** — Codex uses `repo` field; Hermes infer from file/cmd paths
+6. **Repo distribution** — Claude uses `repo` field; Hermes infer from file/cmd paths
 7. **Co-occurrence matrix** — which modules are always worked together in same session
 
 ### File Path Normalization
@@ -80,12 +80,12 @@ def normalize_file_path(path):
 
 ## Prompt-Focused Analysis Addendum
 
-When the task is specifically about **Codex session prompts** rather than general session frequency, add this focused pass before Phase B.
+When the task is specifically about **Claude session prompts** rather than general session frequency, add this focused pass before Phase B.
 
 ### Prompt Inventory
 
-From Codex JSONL logs, filter `hook == "post"` and `tool == "Read"`, then classify prompt-like paths into:
-- `stage_prompt` — `.Codex/work-queue/assets/<WRK>/stage-N-prompt.md`
+From Claude JSONL logs, filter `hook == "post"` and `tool == "Read"`, then classify prompt-like paths into:
+- `stage_prompt` — `.claude/work-queue/assets/<WRK>/stage-N-prompt.md`
 - `planning_template` — `scripts/planning/prompts/*.md`
 - `review_template` — `scripts/review/prompts/*.md`
 - `plugin_prompt` — plugin cache prompt assets (for example subagent prompt files)
@@ -100,14 +100,14 @@ Useful metrics:
 ### What prompt adjacency usually reveals
 
 Prompt reads are most useful when interpreted together with nearby artifacts. Common supporting reads/calls to look for:
-- work item markdown under `.Codex/work-queue/working/` or `pending/`
+- work item markdown under `.claude/work-queue/working/` or `pending/`
 - plan artifacts such as `plan.md` or `plan_claude.md`
-- evidence files under `.Codex/work-queue/assets/<WRK>/evidence/`
+- evidence files under `.claude/work-queue/assets/<WRK>/evidence/`
 - checkpoint / routing yaml files
 - current governance / verification / cross-review surfaces that replaced legacy stage-exit tooling
-- skill reads under `.Codex/skills/.../SKILL.md`
+- skill reads under `.claude/skills/.../SKILL.md`
 
-### Practical migration pattern discovered in historical Codex corpus
+### Practical migration pattern discovered in historical Claude corpus
 
 When the corpus shows very hot reads of paths that no longer exist in the current checkout, do NOT immediately recreate the deleted files. First classify each hot path into one of four buckets:
 1. **Replaced by current docs/hooks/governance** — fix with a redirect/index document
@@ -115,7 +115,7 @@ When the corpus shows very hot reads of paths that no longer exist in the curren
 3. **Bootstrap-safe / intentionally minimal** — leave alone unless policy explicitly changes
 4. **Historical noise only** — document and ignore
 
-A high-leverage concrete output is a **legacy reference map** document that translates stale Codex-session paths to current repo surfaces. This is often better than compatibility shims because old workflow executables may have been intentionally removed.
+A high-leverage concrete output is a **legacy reference map** document that translates stale Claude-session paths to current repo surfaces. This is often better than compatibility shims because old workflow executables may have been intentionally removed.
 
 For command-policy drift (for example `python3` vs `uv run ... python`), separate targets into:
 - **active automation surfaces** — patch first
@@ -126,7 +126,7 @@ For command-policy drift (for example `python3` vs `uv run ... python`), separat
 Interpretation pattern:
 - prompt + evidence + exit script => prompts are acting as workflow contracts, not free-form instructions
 - heavy Stage 2 / Stage 4 concentration => planning and resource-intelligence dominate the workflow
-- cross-provider prompt templates (`Codex-*`, `codex-*`, `gemini-*`) => model-role specialization is deliberate and should be preserved
+- cross-provider prompt templates (`claude-*`, `codex-*`, `gemini-*`) => model-role specialization is deliberate and should be preserved
 
 ### Reconstructing stage meaning when prompt files are gone
 
@@ -137,7 +137,7 @@ A recurring real-world issue: historical session logs often reference prompt pac
 
 Do NOT assume missing prompt files mean the workflow was unimportant; often they were generated artifacts or existed in an earlier repo state.
 
-### Ecosystem strengthening follow-through for Codex corpus audits
+### Ecosystem strengthening follow-through for Claude corpus audits
 
 When the analysis shows many hot reads to deleted workflow files, treat this as a repo-ecosystem drift problem, not just a historical curiosity.
 
@@ -203,11 +203,11 @@ Deduplicate by domain prefix, sort descending.
 
 When cataloging skills across repos, scan these locations:
 ```
-.Codex/skills/           (workspace-hub, exclude _archive/_internal/_runtime/_core/session-logs)
-CAD-DEVELOPMENTS/.Codex/skills/
-worldenergydata/.Codex/skills/
-achantas-data/.Codex/skills/
-assetutilities/.Codex/skills/
+.claude/skills/           (workspace-hub, exclude _archive/_internal/_runtime/_core/session-logs)
+CAD-DEVELOPMENTS/.claude/skills/
+worldenergydata/.claude/skills/
+achantas-data/.claude/skills/
+assetutilities/.claude/skills/
 ~/.hermes/skills/         (Hermes local skills)
 ```
 
@@ -218,8 +218,8 @@ Extract metadata from YAML frontmatter (name, description, triggers) and domain 
 Classify all skills by tier, find unscored/orphaned/phantom skills, and detect cross-repo overlaps.
 
 ### Data Sources
-- `skill-scores.yaml`: `.Codex/state/skill-scores.yaml` — YAML with `skills:` key, each entry has `tier`, `path`
-- Skill inventory: `find <repo>/.Codex/skills/ -name "SKILL.md"` across all repos, excluding `_archive/_internal/_runtime/_core/session-logs`
+- `skill-scores.yaml`: `.claude/state/skill-scores.yaml` — YAML with `skills:` key, each entry has `tier`, `path`
+- Skill inventory: `find <repo>/.claude/skills/ -name "SKILL.md"` across all repos, excluding `_archive/_internal/_runtime/_core/session-logs`
 - Git log for domain activity: `git log --since=<90d> --name-only`
 - Hermes skills: `~/.hermes/skills/`
 
@@ -243,7 +243,7 @@ Classify all skills by tier, find unscored/orphaned/phantom skills, and detect c
 
 ## Phase D: Correction Hotspot Analysis
 
-Mine `.Codex/state/corrections/*.jsonl` for quality improvement targets.
+Mine `.claude/state/corrections/*.jsonl` for quality improvement targets.
 
 ### Data Source
 - Format: `{"timestamp":"...","file":"...","basename":"...","tool":"Edit|Write","correction_gap_seconds":N,"type":"correction"}`
@@ -261,7 +261,7 @@ Mine `.Codex/state/corrections/*.jsonl` for quality improvement targets.
    - `src/pkg/module.py` → `tests/pkg/test_module.py`
    - `scripts/dir/script.py` → `scripts/dir/tests/test_script.py`
    - Check `test -f` for each
-7. **Cross-agent overlap** — compare file sets between Codex corrections and Hermes logs (note: Hermes currently lacks correction tracking)
+7. **Cross-agent overlap** — compare file sets between Claude corrections and Hermes logs (note: Hermes currently lacks correction tracking)
 
 ### Pitfall: Hermes Has No Correction Tracking
 Hermes orchestrator logs record tool invocations but NOT file-level corrections. Cross-agent comparison requires implementing Hermes correction hooks first.
@@ -272,8 +272,8 @@ Compare knowledge stored across all agent memory systems.
 
 ### Data Sources
 - Hermes: `~/.hermes/memories/MEMORY.md` and `USER.md` (§-separated entries)
-- Codex: `~/.Codex/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md` (structured with sections + linked .md files)
-- Codex state: `.Codex/state/cc-user-insights.yaml`, `.Codex/state/learned-patterns.json`
+- Claude: `~/.claude/projects/-mnt-local-analysis-workspace-hub/memory/MEMORY.md` (structured with sections + linked .md files)
+- Claude state: `.claude/state/cc-user-insights.yaml`, `.claude/state/learned-patterns.json`
 - Codex: `~/.codex/rules/default.rules` (prefix_rule patterns), `~/.codex/config.toml`
 - AGENTS.md: `find <workspace> -maxdepth 2 -name AGENTS.md`
 - AGENTS.md: `find <workspace> -maxdepth 2 -name AGENTS.md`
@@ -307,7 +307,7 @@ Subrepo AGENTS.md files are NOT tracked in workspace-hub git — they live in th
 5. **Path normalization**: Strip `/mnt/local-analysis/workspace-hub/` prefix for clean display
 6. **Workflow window overlap**: Sliding windows produce massive candidate counts (82K+). Deduplicate by (tool_sequence, dir_prefix) and keep longest patterns.
 7. **Git push with unstaged changes**: `git pull --rebase` fails with unstaged changes. Commit first, then push. If remote rejects, stash → pull rebase → stash pop.
-8. **Historical-log metrics do NOT improve just because you patched the repo**: a refreshed audit over the same Codex session corpus will usually show the same missing-path counts and python3 counts, because those metrics are properties of historical logs. Use the audit to identify current remediation targets, then search the live repo for still-active references to those missing paths.
+8. **Historical-log metrics do NOT improve just because you patched the repo**: a refreshed audit over the same Claude session corpus will usually show the same missing-path counts and python3 counts, because those metrics are properties of historical logs. Use the audit to identify current remediation targets, then search the live repo for still-active references to those missing paths.
 9. **Best remediation for hot missing paths is often a compatibility redirect, not file resurrection**: when a legacy path is still referenced by current entrypoints, add a thin stub/wrapper that fails clearly or redirects to canonical docs/workflows. This reduces future agent confusion without reviving obsolete workflow semantics.
 
 9. **Git push with unstaged changes**: `git pull --rebase` fails with unstaged changes. Commit first, then push. If remote rejects, stash → pull rebase → stash pop.
@@ -319,7 +319,7 @@ Analyze per-agent domain affinity, tool profiles, task complexity, and cross-rev
 ### Data Collection Pattern
 Write separate `/tmp/phase_e_*.py` scripts (one per agent) rather than inline python — JSONL parsing of 150K+ records times out with inline `uv run python3 -c "..."`. Always use `uv run python /tmp/script.py` from the workspace dir.
 
-### Codex Analysis (session_*.jsonl)
+### Claude Analysis (session_*.jsonl)
 - Filter `hook == "post"` only
 - Extract: tool distribution, repo field, file paths (normalize to top-level dir)
 - Classify sessions by read/write/exec/delegation percentages
@@ -328,7 +328,7 @@ Write separate `/tmp/phase_e_*.py` scripts (one per agent) rather than inline py
 ### Hermes Analysis (session_*.jsonl)
 - Same post-hook filter, but also has `hermes_tool` and `model` fields
 - Track skill engagement: skill_view + skill_manage + skills_list per session
-- Hermes uses skills ~18x more intensively per session than Codex
+- Hermes uses skills ~18x more intensively per session than Claude
 
 ### Codex/Gemini Analysis (WRK-*.log + unknown-*.log)
 - WRK files: JSON with `verdict`, `issues_found[]`, `suggestions[]`
@@ -345,11 +345,11 @@ Compare observed agent behavior against `config/agents/routing-config.yaml` and 
 
 ## Phase G: Per-Repo Ecosystem Audit
 
-Scan all repos with `.Codex/` directories for ecosystem health.
+Scan all repos with `.claude/` directories for ecosystem health.
 
 ### Scan Script Pattern
 Write `/tmp/phase_g_scan.py` that outputs JSON array with per-repo:
-- skills_count, commands_count, docs_count (from .Codex/ subdirs)
+- skills_count, commands_count, docs_count (from .claude/ subdirs)
 - memory/state/rules/work_queue existence and counts
 - AGENTS.md: exists, lines, is_pointer, has_entry_points, has_test_command, has_depends_on
 - AGENTS.md: exists, lines, last_modified, references_wrk, has_repo_overrides
@@ -390,18 +390,18 @@ Compare skills in nested repos (CAD-DEVELOPMENTS, worldenergydata, achantas-data
 11. **gh issue create with nonexistent labels**: `gh issue create --label "chore,skills"` will FAIL SILENTLY (no issue created) if those labels don't exist on the repo. Always create issues WITHOUT labels first, then add labels separately if needed: `gh issue create --title "..." --body "..."`.
 12. **AGENTS.md merge conflicts**: Check ALL subrepo AGENTS.md files for `<<<<<<<` markers. This is a recurring problem — auto-sync scripts create conflicts that go unresolved because the files are gitignored in workspace-hub.
 
-## Lightweight Codex-Only Drift Audit
+## Lightweight Claude-Only Drift Audit
 
-When the task is specifically: "review Codex work session logs and strengthen the repo ecosystem," a full multi-phase corpus audit may be overkill. Use the lightweight path first:
+When the task is specifically: "review Claude work session logs and strengthen the repo ecosystem," a full multi-phase corpus audit may be overkill. Use the lightweight path first:
 
-1. Run a focused Codex-only audit against `logs/orchestrator/Codex/session_*.jsonl`
+1. Run a focused Claude-only audit against `logs/orchestrator/claude/session_*.jsonl`
 2. Compare `tool == Read` file paths against the current checkout
 3. Split missing reads into:
    - repo-local missing paths (deleted/renamed scripts, skills, work-queue assets)
    - external missing paths (`/tmp`, other mount points, plugin cache)
 4. Count prompt-like reads and missing stage-prompt assets
 5. Count Bash calls using bare `python3` vs `uv run ... python`
-6. Build a stage-prompt package index by work item from `.Codex/work-queue/assets/<WRK>/` that records:
+6. Build a stage-prompt package index by work item from `.claude/work-queue/assets/<WRK>/` that records:
    - stages referenced in historical logs
    - prompt file paths and whether they still exist
    - associated evidence files under `evidence/`
@@ -415,19 +415,19 @@ Recommended command:
 
 ```bash
 uv run python scripts/analysis/claude_session_ecosystem_audit.py \
-  --output-md docs/reports/Codex-session-ecosystem-audit-$(date +%F).md \
-  --output-json analysis/Codex-session-ecosystem-audit-$(date +%F).json
+  --output-md docs/reports/claude-session-ecosystem-audit-$(date +%F).md \
+  --output-json analysis/claude-session-ecosystem-audit-$(date +%F).json
 ```
 
 What this lightweight audit is good at surfacing:
 - hot legacy references after repo refactors (for example `scripts/work-queue/*` paths that no longer exist)
-- missing prompt/stage assets that were important in historical Codex workflow
+- missing prompt/stage assets that were important in historical Claude workflow
 - which specific WRK/workspace-hub prompt packages have surviving evidence artifacts but missing prompt files
-- policy drift where Codex Bash calls still use bare `python3`
+- policy drift where Claude Bash calls still use bare `python3`
 
 Additional practical follow-through learned from implementation:
 - add the stage-prompt package index directly into the markdown report, not only JSON, so humans can triage missing prompt assets quickly
-- do not assume state artifacts are machine-local just because they live under `.Codex/state/`; verify `.gitignore` and tracked-file status first. In this repo, `.Codex/state/portfolio-signals.yaml` is intentionally tracked shared state and tests should assert tracked+not-ignored behavior rather than the opposite.
+- do not assume state artifacts are machine-local just because they live under `.claude/state/`; verify `.gitignore` and tracked-file status first. In this repo, `.claude/state/portfolio-signals.yaml` is intentionally tracked shared state and tests should assert tracked+not-ignored behavior rather than the opposite.
 
 Use this lightweight pass before the full Phase A/B/C/F/G process when the user wants fast ecosystem-strengthening recommendations rather than the full cross-agent program.
 

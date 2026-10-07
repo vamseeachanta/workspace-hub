@@ -8,6 +8,6 @@ metadata:
   tags: [acceptance-criteria, domain-conversion, plan-review]
 ---
 
-Ballymore-to-OrcaFlex plan reviews found recurring gap: acceptance criteria assert structure (counts, keys, nesting) but not semantics (values derived from source, not hardcoded) or fidelity (distinct input variants produce distinct outputs, or reuse explicitly justified). Count-only assertions ("27 rows exist") let converters emit placeholder values that pass tests. Future spec-conversion plan reviews should verify acceptance covers all three dimensions.
+gom-tieback-a-to-OrcaFlex plan reviews found recurring gap: acceptance criteria assert structure (counts, keys, nesting) but not semantics (values derived from source, not hardcoded) or fidelity (distinct input variants produce distinct outputs, or reuse explicitly justified). Count-only assertions ("27 rows exist") let converters emit placeholder values that pass tests. Future spec-conversion plan reviews should verify acceptance covers all three dimensions.
 
 *(Distilled from codex sessions by bridge-providers-to-dream; the Claude dream consolidates and prunes these.)*

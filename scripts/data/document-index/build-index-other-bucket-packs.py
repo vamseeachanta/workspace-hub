@@ -94,8 +94,8 @@ ACTIONABLE_PACK_SPECS = (
     PackSpec(
         pack_id="ace-project-drilling-3824-calculation-allowlist",
         path_prefix=(
-            "disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/"
-            "00_inbox/3824 - BP Macondo Containment Riser Analysis/CAL"
+            "disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/"
+            "00_inbox/3824 - BP GoM well A Containment Riser Analysis/CAL"
         ),
         allowed_doc_classes=("calculation", "spreadsheet"),
         proposed_domain="drilling",
@@ -103,7 +103,7 @@ ACTIONABLE_PACK_SPECS = (
         triage_action="reclassify_now",
         priority=2,
         rationale=(
-            "Macondo containment riser calculation workbooks are tightly clustered "
+            "GoM well A containment riser calculation workbooks are tightly clustered "
             "under the CAL subtree and represent a clean drilling-domain allowlist."
         ),
     ),
@@ -152,8 +152,8 @@ ACTIONABLE_PACK_SPECS = (
     PackSpec(
         pack_id="ace-project-misc-2100-package-engineering-calcs",
         path_prefix=(
-            "disciplines/misc/projects/2100_blk31_slor_design/"
-            "00_inbox/2100 BLK31 SLOR Design/300 Package Engineering"
+            "disciplines/misc/projects/2100_wa_block_a_slor_design/"
+            "00_inbox/2100 West Africa block A SLOR Design/300 Package Engineering"
         ),
         allowed_doc_classes=("calculation", "spreadsheet", "report"),
         proposed_domain="installation",
@@ -168,8 +168,8 @@ ACTIONABLE_PACK_SPECS = (
     PackSpec(
         pack_id="ace-project-drilling-3824-component-data-summarize-first",
         path_prefix=(
-            "disciplines/drilling/projects/3824_bp_macondo_containment_riser_analysis/"
-            "05_reports/3824 - BP Macondo Containment Riser Analysis/Component Data"
+            "disciplines/drilling/projects/3824_bp_gom_well_a_containment_riser_analysis/"
+            "05_reports/3824 - BP GoM well A Containment Riser Analysis/Component Data"
         ),
         allowed_doc_classes=(
             "pdf-doc",
@@ -192,8 +192,8 @@ ACTIONABLE_PACK_SPECS = (
     PackSpec(
         pack_id="ace-project-misc-2100-bp-documents-summarize-first",
         path_prefix=(
-            "disciplines/misc/projects/2100_blk31_slor_design/"
-            "05_reports/2100 BLK31 SLOR Design/BP Documents"
+            "disciplines/misc/projects/2100_wa_block_a_slor_design/"
+            "05_reports/2100 West Africa block A SLOR Design/BP Documents"
         ),
         allowed_doc_classes=("pdf-doc", "specification", "report", "word-doc", "plan"),
         proposed_domain="installation",

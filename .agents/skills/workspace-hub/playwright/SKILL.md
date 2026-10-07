@@ -3,7 +3,7 @@ name: playwright
 version: 1.0.0
 category: workspace-hub
 applies-to:
-- Codex
+- claude
 - codex
 - gemini
 invocation: /playwright
