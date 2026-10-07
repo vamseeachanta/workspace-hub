@@ -16,6 +16,9 @@ tags: [planning, adversarial-review, codex, gemini, governance, git-contention]
 
 # Plan Review Rerun: CLI Drift + Governance Hygiene + Git Contention
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use this when hardening a `status:plan-review` issue through repeated adversarial review waves, especially when provider dispatch partially fails or another agent/process is actively using git.
 
 ## Trigger conditions
@@ -30,7 +33,7 @@ Use this when hardening a `status:plan-review` issue through repeated adversaria
 1. Revalidate live state before editing.
    - `gh issue view <issue> --json labels,state,comments,url`
    - Read the plan header, `## Adversarial Review Summary`, and `docs/plans/README.md` row.
-   - Check local approval marker only after live labels: `.planning/plan-approved/<issue>.md`.
+   - Preserve any historical marker, but verify current task authority, reviewed scope and genuine blockers; do not require a marker.
 
 2. Treat provider wrapper failure as a tool problem, not review signal.
    - Current Codex CLI may reject `codex exec --no-interactive` with rc=2.

@@ -96,9 +96,8 @@ fi
 
 # R-PRECOMMIT remediation
 if grep -A3 "R-PRECOMMIT:" "$REPORT" 2>/dev/null | grep -q "status: fail"; then
-  echo "R-PRECOMMIT FAIL: tier-1 repos missing pre-commit config or legal scan entry"
+  echo "R-PRECOMMIT FAIL: tier-1 repos missing pre-commit config"
   echo "  Fix: copy .pre-commit-config.yaml from digitalmodel to the failing repo"
-  echo "       ensure 'legal-sanity-scan' entry is present"
   echo ""
   found=1
 fi

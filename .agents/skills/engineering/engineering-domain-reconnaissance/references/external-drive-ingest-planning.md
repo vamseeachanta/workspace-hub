@@ -28,6 +28,9 @@ related_skills:
 
 # External Drive Ingest Planning
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use this when planning a safe ingest from an external drive into `/mnt/ace` or another persistent data mount. The class of task is not just "mount the drive"; it is **source-preserving, provenance-tracked data migration with staged copy and dedupe/merge risk controls**.
 
 ## Class-first trigger
@@ -42,7 +45,7 @@ A drive or mounted folder contains legacy/project/reference data that must be ma
 4. **Stage first, merge later.** Copy into `_from_<source-label>/` staging folders; dedupe-merge into the parent only as a second reviewed phase.
 5. **Manifest before copy.** Capture source file/size inventory and bounded checksums before rsync.
 6. **Cross-link prior art.** Existing layout/dedupe/inventory issues are part of resource intelligence, not optional context.
-7. **No self-approval.** For plan-gated repos, create issues/plans/reviews and stop at `status:plan-review` until the user approves.
+7. **No self-approval.** Create issues/plans/reviews; proceed within verified task authority after blockers are resolved, while honoring explicit planning-only and source-rights limits.
 
 ## Step-by-step workflow
 
@@ -215,10 +218,10 @@ Each destination bucket should record provenance:
 If the repo enforces planning:
 
 ```text
-Issue → Resource Intel → Plan → Adversarial Review → status:plan-review → USER APPROVES → status:plan-approved → Execute
+Issue → Resource Intel → Plan → Adversarial Review → Verify task authority and source/domain prerequisites → Execute
 ```
 
-Do not mount/copy/rsync as implementation until the approved plan gate is satisfied if the task has been scoped as execution work. Discovery commands like `lsblk` are fine; source mutation and destination writes are not.
+Before mount/copy/rsync operations, verify task scope, reviewed data handling and destination/action authority; a separate plan-approval gate is not required. Discovery commands like `lsblk` are fine; source mutation and destination writes are not.
 
 ### 9. Dedupe-merge assessment phase after staged copy
 

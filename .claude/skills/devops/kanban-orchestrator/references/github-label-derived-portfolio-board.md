@@ -1,5 +1,8 @@
 # GitHub-label-derived portfolio board pattern
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use when a workspace has many existing GitHub issues across tier-1 repos and the user wants Hermes/Kanban to map execution work without creating a separate manual queue.
 
 ## Session-proven pattern
@@ -43,7 +46,7 @@ Use when a workspace has many existing GitHub issues across tier-1 repos and the
 ## Pitfalls
 
 - Broad base64-like secret regexes produce false positives on embedded JSON/HTML dashboards. Use targeted credential scans for token/private-key/assignment patterns, and report the exact scan classes.
-- Do not launch workers from a label-only `status:plan-approved` issue. Check plan evidence, approval marker evidence, local branch/worktree hygiene, and `status:working` first.
+- Do not launch workers from a label-only `status:plan-approved` issue. Check task authority, reviewed plan, active claims and branch/worktree hygiene; preserve historical markers without requiring them.
 - Do not flatten the board into one queue. Separate execution, governance repair, planning factory, working-state audit, blocked, and done-review lanes.
 - When reporting board counts, distinguish candidate domain/category routes in the full JSON from domain Markdown files actually written. A generator may select only top/explicit domains for human review; reconcile this explicitly to avoid claiming missing files.
 - Markdown review boards may cap long lanes for readability. Make that explicit and point to the JSON/HTML dashboard as the uncapped source of truth.

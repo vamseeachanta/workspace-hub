@@ -5,6 +5,9 @@ description: Weekly governance workflow for keeping an llm-wiki repository curre
 
 # LLM Wiki Cadence Governance
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use this skill when reviewing an llm-wiki repository, comparing it against current LLM/AI engineering concepts, or opening issues to keep the wiki useful for code development and repo architecture decisions.
 
 ## Trigger Conditions
@@ -35,7 +38,7 @@ Treat llm-wiki as a development leverage system, not a passive knowledge base. E
 4. **Issue portfolio creation**
    - Open de-duplicated GitHub issues only after checking existing issues and plan state.
    - Prefer issue clusters by class: freshness pipeline, graph/index quality, source/citation governance, domain pages, code integration guides, eval/readiness scorecards.
-   - Keep implementation gated by the workspace issue workflow: plan → adversarial review → user approval → TDD implementation.
+   - Keep implementation gated by the workspace issue workflow: plan → adversarial review → verify task authority → TDD implementation.
 
 5. **Validation and closeout**
    - Run the repo's available tests/validators for graph manifests, schemas, docs, and legal/public-safety gates before claiming readiness.

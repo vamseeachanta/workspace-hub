@@ -37,7 +37,7 @@ Create a parent planning issue plus targeted follow-ups instead of one overloade
 - Include the exact commands or files that produced the evidence.
 - Use placeholders such as `<PARENT_ISSUE>` only in temporary body files; render them before `gh issue create`.
 - Verify each created issue has `unresolved_placeholder=false` by re-querying the body.
-- Keep gate language explicit: new issues start as intake/planning (`status:needs-plan`); no implementation occurs until plan, adversarial review, and user approval.
+- Keep gate language explicit: new issues start as intake/planning (`status:needs-plan`); implementation requires a plan, adversarial review and task authority; consequential scheduler actions retain specific scope authorization.
 
 ## Useful labels
 

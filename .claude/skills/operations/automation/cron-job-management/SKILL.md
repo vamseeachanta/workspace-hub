@@ -202,13 +202,10 @@ gh label create "X" --description "..." --color "..." 2>/dev/null || true
 ```
 Without this, `gh issue create` fails with `could not add label: 'X' not found` and the issue is silently not created.
 
-### Legal Scan vs Learning Pipeline
-The comprehensive-learning pipeline can be blocked by legal-sanity-scan when session JSONL logs contain client names that match deny-list patterns. Session logs are append-only operational data, not source code. Watch for this pattern:
-- `RESULT: FAIL — N block violation(s) found` in learning logs
-- `WARNING: learning artifact commit failed — changes remain local`
-- Changes accumulate uncommitted across multiple runs
-
-Either exclude the log directory from the legal scan, or use `--diff-only` for the learning pipeline's commit path.
+### Identifier gate retirement
+Identifier-only scanner blocking is retired under workspace-hub issue 3936.
+Do not reinstall the old gate to remediate cron health. Preserve independent
+secret checks and verify final reports under `docs/standards/FINAL_REPORT_VERIFICATION.md`.
 
 ## Health Review Workflow
 

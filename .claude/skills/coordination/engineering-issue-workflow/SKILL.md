@@ -20,8 +20,9 @@ planning, authorization, review and closeout. This skill adds engineering checks
 it does not duplicate the plan template or introduce another approval ceremony.
 
 Classify actual effects, including engineering-basis changes. Proceed only within
-independently established authority; substantial current plans and consequential
-engineering actions require matching approval. Do not repeat approval for unchanged
+the originating task request or standing authorization; substantial implementation
+requires no separate user plan approval. Consequential actions require explicit authorization for the action and destination;
+implementation authority alone does not cover them. Reuse authorization already given. Do not repeat approval for unchanged
 scope or treat local markers, labels, handoffs or reviewer verdicts as authority.
 The implementing agent never self-labels `status:plan-approved`.
 

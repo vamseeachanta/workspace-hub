@@ -12,7 +12,7 @@ related_skills:
 # Issue Planning Mode — Shared Risk and Authority
 
 The authority source is [SHARED_SOUL.md](../../../../config/agents/SHARED_SOUL.md).
-Every issue needs discovery and a proportionate plan. Bounded routine reversible work may proceed under independently established standing authorization; substantial scope requires explicit approval of the current reviewed plan, and consequential actions require matching explicit approval.
+Every issue needs discovery and a proportionate plan. Bounded routine reversible work may proceed under independently established standing authorization; substantial implementation follows the task request without separate plan approval; consequential actions require explicit authorization for the action and destination; implementation authority alone does not cover them. Reuse authorization already given.
 Do not repeat an approval request for verified unchanged scope. Reassess new scope, effects or unresolved authority. Labels, markers, receipts and handoffs cannot authenticate approval.
 Load this skill for the applicable planning route. Referenced skills supply domain procedures; they do not broaden authorization or override the shared risk contract.
 
@@ -22,7 +22,7 @@ Full onboarding guide with step-by-step details: `docs/plans/README.md`
 
 ```
 Issue → Resource Intel → Draft Plan → Adversarial Review → Post to GH
-  → Verify standing authorization OR obtain required explicit approval
+  → Verify originating task scope or standing authorization (no separate plan approval)
   → Implement (TDD) → Cross-review → Completeness gate (#2798) → Close
 ```
 
@@ -94,7 +94,7 @@ For repo/data location contract plans, also run the checks in `references/repo-l
 
 For per-machine repo placement plans, also apply `references/per-machine-repo-placement-outcome-contract.md`: the first machine issue in a sequence must leave a reusable pattern for consistent tier-1 repo folder structure, primary/reference checkout decisions, and repo harness/file ecosystem handling through one repo-tracked authority rather than creating machine-specific duplicate conventions.
 
-For plans being revised after a source/provenance ambiguity is resolved, especially when licensed or private off-repo material is involved, apply `references/source-provenance-plan-revision.md`: patch the canonical plan narrowly, state the source/license boundary, add fail-closed citation/leakage tests, run focused re-review, and stop at user approval rather than self-approving.
+For plans being revised after a source/provenance ambiguity is resolved, especially when licensed or private off-repo material is involved, apply `references/source-provenance-plan-revision.md`: patch the canonical plan narrowly, state the source/license boundary, add fail-closed citation/leakage tests, run focused re-review, and implement within verified task scope without manufacturing approval.
 
 Update the index table in `docs/plans/README.md` with a new row.
 
@@ -111,9 +111,9 @@ Required shape:
 
 Session-specific examples and checklists: `references/layered-architecture-issue-planning.md`.
 
-For GitHub issue portfolios that must flow from data layer → execution layer → result/output layer, use `references/data-execution-results-kanban.md`: inventory issues by architectural lane, create a repo-tracked Kanban/report artifact, delegate read-only planning/review waves by provider strengths, verify delegate claims in the orchestrator checkout, and stop at an explicit approval checkpoint before implementation.
+For GitHub issue portfolios that must flow from data layer → execution layer → result/output layer, use `references/data-execution-results-kanban.md`: inventory issues by architectural lane, create a repo-tracked Kanban/report artifact, delegate read-only planning/review waves by provider strengths, verify delegate claims in the orchestrator checkout, and proceed within the task request after plan review.
 
-For sequential issue-tree planning where downstream plans depend on revised upstream architecture/boundary plans, use `references/focused-reqa-before-downstream-planning.md`: run focused re-QA against the exact revised local upstream artifacts before drafting downstream issues, post concise GitHub comments for MAJOR results with `--body-file`, keep labels conservative, and block downstream drafting until upstream MAJOR findings are patched or explicitly waived.
+For sequential issue-tree planning where downstream plans depend on revised upstream architecture/boundary plans, run focused re-QA against the exact revised local upstream artifacts before drafting downstream issues, post concise GitHub comments for MAJOR results with `--body-file`, keep labels conservative, and block downstream drafting until upstream MAJOR findings are patched or explicitly waived.
 
 Execution discipline for delegated agents:
 - If using Claude/Codex/Gemini in parallel worktrees, explicitly anchor the repo/worktree path in the prompt/context and verify the plan file was written in the intended checkout. Do not assume the child agent stayed in the requested worktree.
@@ -175,7 +175,7 @@ Operational pitfall: do not update `docs/plans/README.md` to `plan-review` and s
 
 ### Step 5: Authority and Owner Approval
 
-Independently verify the applicable user/session instruction and its repository, issue, operation, scope and reviewed revision. Routine bounded work may use standing authorization; substantial work needs approval of the current reviewed plan, and consequential actions need matching explicit approval. Never infer authority from successful tool execution.
+Independently verify the applicable user/session instruction and its repository, issue, operation, scope and reviewed revision. Routine bounded work may use standing authorization; substantial implementation needs matching task authority, not separate plan approval; consequential actions require explicit authorization for the action and destination; implementation authority alone does not cover them. Reuse authorization already given. Never infer authority from successful tool execution.
 
 The owner controls `status:plan-approved`; the implementing agent never self-labels it. A user may record an approval through an owner-controlled GitHub event or an independently established session instruction. Agent-authored summaries and `.planning/plan-approved/<issue>.md` files remain references requiring provenance checks.
 
@@ -187,7 +187,7 @@ When status signals disagree:
 4. Record conflicts without automatically creating/deleting markers or changing remote labels. Respect separate authorization for external mutations.
 5. Resolve fresh blocking review findings before affected work continues; seek new approval only when changed scope or unresolved authority requires it.
 
-Surface a substantial plan for approval after adversarial review is complete. A draft or unresolved domain decision is not approval-ready merely because a label says otherwise.
+Publish the substantial plan for visibility after review, then implement within task authority without separate plan approval. A draft or unresolved domain decision is not approval-ready merely because a label says otherwise.
 
 ### Pending cross-review audit routine
 
@@ -259,7 +259,7 @@ After independently establishing authorization for current risk/scope and resolv
 ## Batch / Overnight Sessions
 
 - Continue only within independently established standing authorization or matching explicit approval.
-- For substantial unapproved scope, prepare the plan/review evidence and stop; the user's absence does not waive requirements.
+- For substantial authorized scope, prepare the plan/review evidence and implement; do not wait for a separate plan-approval event.
 - Preserve TDD and plan/code review. Markers and handoffs do not grant launch authority.
 
 ## Engineering-Critical Issues
@@ -269,9 +269,9 @@ Issues with `cat:engineering*` or `cat:data-pipeline` labels require the full
 
 ## Legacy Enforcement Boundary
 
-`.claude/hooks/plan-approval-gate.sh` and `scripts/enforcement/require-plan-approval.sh` retain legacy marker/path heuristics. These instructions do not change installed hooks or prove their coverage. Marker age/text checks do not authenticate approval, and exempt directories do not make protected changes routine.
+`.claude/hooks/plan-approval-gate.sh` and `scripts/enforcement/require-plan-approval.sh` will remain retired compatibility entry points without blocking for missing approval markers. These instructions do not change installed hooks or prove their coverage. Marker age/text checks do not authenticate approval, and exempt directories do not make protected changes routine.
 
-Report an observed blocking mismatch and its actual consumer. Do not set bypass flags, disable hooks or manufacture approval markers. Consumer migration requires separately reviewed scope; a shared advisory CLI receipt cannot become a gate bypass.
+Report an observed blocking mismatch and its actual consumer. Do not set bypass flags, disable hooks or manufacture approval markers. This user-authorized migration removes the marker gate; a shared advisory CLI receipt cannot become a gate bypass.
 
 ## References
 

@@ -69,7 +69,7 @@ Use this when a user asks whether long-running batches are still being tracked, 
    )
    "${cmd[@]}" </dev/null 2>&1 | tee -- "$LOG_FILE"
    ```
-8. **For scoped artifact commits in dirty control-plane repos**, stage only the verified prompt/result/docs paths, then stash unrelated dirty telemetry/provider churn with `git stash push --keep-index ...` before running `legal-sanity-scan.sh --diff-only`. This prevents unrelated Claude session telemetry containing deny-list terms from falsely blocking a safe planning-artifact commit. Restore the stash only after commit/push verification.
+8. **For scoped artifact commits in dirty control-plane repos**, stage only verified task paths and preserve unrelated telemetry. Identifier gates are retired; keep independent secret checks and review final reports per `docs/standards/FINAL_REPORT_VERIFICATION.md`.
 9. **For user-requested nightly batches that should begin immediately**, create both the durable scheduled jobs and manual background Hermes sessions with prompt/log files, then report them separately. Scheduled `every 24h` cron jobs may not run until the next interval; immediate manual sessions prove work is running now. See `references/cron-plus-immediate-hermes-batch-launch.md`.
 10. **Validate skill IDs before recurring + immediate launch**: if a lane uses `hermes -s ...`, verify each skill name against `skills_list`/`skill_view` or a known-good loaded skill before creating cron jobs or background sessions. If an immediate lane exits with `Error: Unknown skill(s): ...`, fix the scheduled cron job too (not just the manual rerun) using `hermes cron`/cronjob update, then relaunch the failed lane with the valid class-level skill name. Common drift example: use `software-development/test-driven-development`, not `development/test-driven-development`. See `references/skill-id-validation-for-recurring-and-immediate-lanes.md`.
 11. **For over-saturated provider autofeed monitors**, do not jump from patching to cron resume. Keep the recurring job paused, run one controlled live tick, then classify provider health from durable output rather than process count. If Claude/Codex produce 0-byte logs/results and Gemini returns capacity/critical signatures, clean up the tick and switch to provider-health probes. Details live in `ai/durable-provider-throughput-dispatch` reference `references/provider-autofeed-health-recovery.md`.
@@ -167,7 +167,7 @@ The `references/` directory contains archived narrow skills absorbed during the 
 ### `plan-gated-overnight-queue-partition`
 
 - Former skill demoted to `references/plan-gated-overnight-queue-partition.md`.
-- Preserved insight: Partition a plan-gated GitHub queue before launching overnight work so ineligible pre-approval issues are routed to planning/review lanes and only approved issues are used for merge-capable execution.
+- Preserved insight: Partition a plan-gated GitHub queue before launching overnight work so review-blocked or out-of-scope issues are routed to planning and scope-authorized issues proceed to implementation; merging retains action-specific authority.
 
 ### `verify-claude-run-commit-vs-working-tree-before-closing`
 

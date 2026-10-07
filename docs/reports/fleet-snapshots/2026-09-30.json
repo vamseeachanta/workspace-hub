@@ -47,12 +47,12 @@
       "dirty": 3
     },
     {
-      "name": "acma-ws014",
+      "name": "ace-win-2",
       "reachable": false,
       "note": "ssh_unreachable"
     },
     {
-      "name": "acma-hou-rds02",
+      "name": "redacted-hostname",
       "reachable": false,
       "note": "ssh_unreachable"
     },

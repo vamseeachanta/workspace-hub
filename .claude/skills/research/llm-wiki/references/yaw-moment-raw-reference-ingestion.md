@@ -1,5 +1,8 @@
 # Yaw Moment Raw-Reference Ingestion Pattern
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Session learning from workspace-hub issue #2564: before implementing an engineering calculation, the user asked to mine `/mnt/ace` raw references and preserve all relevant context into the LLM wiki so implementation would not lose source rationale.
 
 ## When to use
@@ -7,12 +10,12 @@ Session learning from workspace-hub issue #2564: before implementing an engineer
 Use this as a concrete example when:
 - the task is an engineering-critical calculation or methodology issue;
 - relevant standards/textbooks/PDFs live outside git under `/mnt/ace`;
-- implementation is still blocked by plan-review/user-approval; and
+- implementation is limited by the explicit reference-preservation request or unresolved review/domain decisions; and
 - the user asks to preserve raw data/context in LLM wikis before coding.
 
 ## Successful sequence
 
-1. Keep implementation blocked; do not touch calculation code while issue remains `status:plan-review`.
+1. Honor an explicit reference-preservation/planning-only request and unresolved engineering decisions; an issue review label alone does not block scope-authorized implementation.
 2. Orient in the target domain wiki:
    - `knowledge/wikis/<domain>/CLAUDE.md`
    - `knowledge/wikis/<domain>/wiki/index.md`

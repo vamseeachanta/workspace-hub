@@ -274,18 +274,12 @@ T9() {
 }
 T9
 
-# ── T10: pre-commit missing legal entry → R-PRECOMMIT FAIL ───────────────────
+# ── T10: pre-commit configuration presence, without an identifier gate ───────
 T10() {
-  if ! grep -q "check_r_precommit\|R-PRECOMMIT" "${READINESS_SCRIPT}" 2>/dev/null; then
-    echo "  SKIP  T10: R-PRECOMMIT not yet implemented"
-    return
-  fi
+  local ws ws_parent output
   ws=$(mk_ws)
-  # R-PRECOMMIT checks ${WORKSPACE_HUB}/../${repo}; place assetutilities as a sibling
-  local ws_parent
   ws_parent=$(dirname "$ws")
   mkdir -p "${ws_parent}/assetutilities"
-  # pre-commit config present but no legal scan entry
   cat > "${ws_parent}/assetutilities/.pre-commit-config.yaml" << 'EOF'
 repos:
   - repo: local
@@ -295,13 +289,30 @@ repos:
         entry: black
         language: python
 EOF
-  local output
-  output=$(PATH="${ws}/bin:${PATH}" WORKSPACE_HUB="${ws}" bash "${READINESS_SCRIPT}" 2>&1 || true)
-  rm -rf "${ws_parent}/assetutilities"
-  if echo "$output" | grep -q "R-PRECOMMIT.*FAIL\|FAIL.*R-PRECOMMIT"; then
-    ok "T10: R-PRECOMMIT FAIL on missing legal-sanity-scan entry"
+  # Execute only the pure R-PRECOMMIT check against the isolated fixture.
+  # Never launch live readiness checks, plugin discovery, or report writers.
+  precommit_fixture_check() (
+    WORKSPACE_HUB="$ws"
+    HARNESS_CONFIG="${ws}/scripts/readiness/harness-config.yaml"
+    _hc_list() { printf '%s\n' assetutilities; }
+    log_pass() { printf 'PASS %s\n' "$*"; }
+    log_fail() { printf 'FAIL %s\n' "$*"; }
+    eval "$(sed -n '/^check_r_precommit() {/,/^} ; check_r_precommit/p' \
+      "$READINESS_SCRIPT" | sed '$s/} ; check_r_precommit.*$/}/')"
+    check_r_precommit
+  )
+  output=$(precommit_fixture_check)
+  if [[ "$output" == PASS* && "$output" != *FAIL* ]]; then
+    ok "T10: R-PRECOMMIT accepts config without retired identifier scanner"
   else
-    fail "T10: expected R-PRECOMMIT FAIL — got: $(echo "$output" | grep -i precommit | head -2)"
+    fail "T10: expected config-only PASS — got: $output"
+  fi
+  rm -f "${ws_parent}/assetutilities/.pre-commit-config.yaml"
+  output=$(precommit_fixture_check)
+  if [[ "$output" == FAIL* && "$output" == *'.pre-commit-config.yaml missing'* ]]; then
+    ok "T10: R-PRECOMMIT still fails for missing config"
+  else
+    fail "T10: expected missing-config FAIL — got: $output"
   fi
   rm_ws "$ws"
 }

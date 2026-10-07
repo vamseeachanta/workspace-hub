@@ -385,15 +385,12 @@ def test_plan_blob_matches_revision_compares_head_and_revision_blobs(monkeypatch
     assert gate.plan_blob_matches_revision("vamseeachanta/workspace-hub", SHA, "8" * 40, PLAN) is False
 
 
-def test_enforcement_workflow_runs_new_gate_then_legacy_gate_with_captured_rc():
+def test_enforcement_workflow_retains_check_name_without_plan_approval_gate():
     text = (REPO / ".github" / "workflows" / "enforcement-gate.yml").read_text()
-    new_gate = "uv run python scripts/workflow/plan_approval_gate_check.py"
-    capture = "PLAN_APPROVAL_LABEL_GATE_RC=$?"
+    new_gate = "python3 scripts/workflow/plan_approval_gate_check.py"
     legacy = "scripts/enforcement/require-plan-approval.sh --strict"
-    final_exit = 'exit "$PLAN_APPROVAL_LABEL_GATE_RC"'
     assert new_gate in text
-    assert "PLAN_APPROVAL_GATE_ENABLED=1 is intentionally blocking" in text
-    assert capture in text
+    assert "name: Plan Approval Check" in text
+    assert "PLAN_APPROVAL_GATE_ENABLED=1 is intentionally blocking" not in text
     assert legacy in text
-    assert final_exit in text
-    assert text.index(capture) < text.index(legacy) < text.index(final_exit)
+    assert "Separate plan approval retired" in text

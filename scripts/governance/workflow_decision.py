@@ -73,8 +73,9 @@ def _operation(request, paths, effects, reference):
         result.update(risk_class="consequential", action_boundary="approval-required",
                       reason_codes=reasons + ["CONSEQUENTIAL_EFFECT", "APPROVAL_REQUIRED"])
     elif issue_class in INELIGIBLE_CLASSES or "substantial-change" in effects:
-        result.update(risk_class="substantial", action_boundary="approval-required",
-                      reason_codes=reasons + ["APPROVAL_REQUIRED"]
+        result.update(risk_class="substantial",
+                      action_boundary="verify-task-authority" if reference else "needs-context",
+                      reason_codes=reasons + ["TASK_AUTHORITY_REQUIRED"]
                       + (["PROTECTED_CHANGE"] if issue_class in INELIGIBLE_CLASSES else []))
     elif kind == "edit" and effects == {"local-reversible"} and issue_class in ELIGIBLE_CLASSES:
         result.update(risk_class="routine-reversible",

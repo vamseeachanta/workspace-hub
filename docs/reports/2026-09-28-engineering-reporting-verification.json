@@ -1,0 +1,18 @@
+{
+  "checked_at": "2026-09-28T10:56:33.692730+00:00",
+  "sha256": "90e54779942a28e0388a5517c340c3b7bd253724148b356197db01f99c5e0ed2",
+  "html_parser": "stdlib HTMLParser; structural inspection, not rendered validation",
+  "headings_h1": 1,
+  "headings_h2": 11,
+  "tables": 2,
+  "captions": 2,
+  "external_assets": [],
+  "errors": [],
+  "rendered_visual_check": "BLOCKED: browser URL policy disallowed local-file navigation; no workaround attempted",
+  "register_check": "4 files checked;0 violations",
+  "review_availability": {
+    "codex": "completed; findings dispositioned inline",
+    "agy": "completed MAJOR; findings individually dispositioned, no consensus claim",
+    "claude": "UNAVAILABLE: 240-second initial and150-second retry timeouts"
+  }
+}

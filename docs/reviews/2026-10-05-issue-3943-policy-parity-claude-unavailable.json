@@ -1,0 +1,17 @@
+{
+  "issue": "https://github.com/vamseeachanta/workspace-hub/issues/3943",
+  "review_stage": "code/artifact canonical policy parity",
+  "provider": "Claude CLI",
+  "state": "UNAVAILABLE",
+  "requested_verdict": "Default non-APPROVE; hunt concrete defects",
+  "timeout_seconds": 180,
+  "input_scope": "Canonical changes only; native duplicates excluded. Input captured before later inline categorical-gate corrections.",
+  "input_bytes": 196633,
+  "input_sha256": "7c779d96383caa6fdd6a1cc533089548db0677933b005a3e75ed9dcb5fa0ea45",
+  "result": "No completed verdict or raw output recovered. Windows descendant held output pipes after launcher timeout; only verified task-owned processes were stopped.",
+  "consensus": false,
+  "ci_review": "CI Claude job for implementation checkpoint completed successfully; no substantive verdict retrieved from job/PR records. New evidence/index head CI awaits push and verification.",
+  "implementation_checkpoint": "cd00619704747acff5b8dbec8bb933d37683cbeb",
+  "input_base_head": "ee50066c3",
+  "ci_job": "https://github.com/vamseeachanta/workspace-hub/actions/runs/37394269168/job/112046380090"
+}

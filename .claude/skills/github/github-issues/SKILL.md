@@ -9,6 +9,10 @@ metadata:
     tags: [GitHub, Issues, Project-Management, Bug-Tracking, Triage]
     related_skills: [github-auth, github-pr-workflow]
 ---
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided. Preserve owner-controlled approval history without self-labeling.
+
 
 # GitHub Issues Management
 
@@ -269,9 +273,9 @@ When an issue-scoped plan has been written and adversarial-reviewed, close the p
 2. Post a GitHub issue comment with plan path, review artifact paths, verdict summary, validation commands, and pushed commit hash.
 3. Move labels from the planning intake state to `status:plan-review`.
 4. Re-query the issue and verify the expected label and comment URL.
-5. State explicitly that `status:plan-review` is not implementation approval; implementation remains blocked until the user applies `status:plan-approved`.
+5. State that labels record visibility; task/standing authority authorizes implementation without separate approval, after review and required domain decisions. Preserve planning-only scope limits.
 
-If adversarial reviewers return `MAJOR` findings but the user explicitly asked to post/re-post the plans for their review, it is still valid to label the issues `status:plan-review` after the reviews complete. Do not soften the verdicts. The issue comment and plan summary must say that the plans are awaiting user decision, are not approved, and that implementation remains blocked until explicit user approval.
+If adversarial reviewers return `MAJOR` findings but the user explicitly asked to post/re-post the plans for their review, it is still valid to label the issues `status:plan-review` after the reviews complete. Do not soften the verdicts. The issue comment and plan summary must say that the plans have unresolved blocking findings or domain decisions. Stop affected implementation until those are resolved; task/standing authority covers subsequent implementation without a separate plan-approval step.
 
 For multi-issue re-review batches, use one consistent issue comment shape across all issues: review command/date, provider list, per-provider artifact paths and verdicts, consolidated disagreement artifact, gate state, and pushed commit hash. This makes the user-review queue scannable and prevents one issue from silently drifting from the others.
 
@@ -297,11 +301,11 @@ When the user explicitly approves a `status:plan-review` issue but includes corr
 1. Update the plan artifact first so the user's corrections are durable in the implementation contract.
 2. Commit and push the plan update before changing gate labels.
 3. Post an issue comment recording the exact approval notes, plan path, and commit hash.
-4. Only after that, replace `status:plan-review` with `status:plan-approved`.
+4. Preserve the verified owner approval event as history; do not self-label `status:plan-approved`. No approval-label transition is required for implementation.
 5. Re-query the issue and verify title, URL, open state, and final labels before reporting success.
 6. Keep the user-correction notes scoped to the implementation plan; do not silently mutate repository layout, move data, or delete aliases unless the approved plan explicitly includes that execution step.
 
-This is the one valid case where the agent may apply `status:plan-approved`: the user has explicitly approved the plan in chat or via an equivalent review signal. Never infer approval from reviewer `APPROVE` verdicts alone.
+Owner-controlled approval records remain authentic history. Agents never self-label `status:plan-approved`; reviewer APPROVE resolves review findings but grants no new task authority.
 
 ### Add/Remove Labels
 

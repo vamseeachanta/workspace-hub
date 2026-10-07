@@ -44,7 +44,6 @@ KNOWN_SCRIPTS: dict[str, str] = {
     "whats-next":       "scripts/work-queue/whats-next.sh",
     "infer-category":   "scripts/work-queue/infer-category.py",
     "identify-script":  "scripts/skills/identify-script-candidates.sh",
-    "legal-scan":       "scripts/legal/legal-sanity-scan.sh",
 }
 
 
