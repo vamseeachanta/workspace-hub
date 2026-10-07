@@ -1,6 +1,6 @@
 # HTML review: select-to-comment layer for reports and decision boards
 
-Tracking issue: #3920. The layer lets a reviewer comment directly on any local HTML report or decision board. The comments come back as a JSON file that an agent picks up and applies.
+Tracking issue: [3920](https://github.com/vamseeachanta/workspace-hub/issues/3920). The layer lets a reviewer comment directly on any local HTML report or decision board. The comments come back as a JSON file that an agent picks up and applies.
 
 ## Use
 
@@ -28,6 +28,8 @@ python tools/html-review/make_review_copy.py SRC.html OUT-review.html STORAGE_KE
 Each saved file records:
 - `page`, `report_version` (source SHA-256 prefix and modification time), `report_folder` and `exported_at`;
 - for every comment: `quote`, `section` (nearest heading), `data_src` (for traced values), `comment` and `at`.
+
+Comments also carry a stable `id`; `deleted_ids` retains deletion records. Save, Load and folder merge all merge rather than replace: current edits win, deletion records are combined, and deleted comments are not restored. They require the same page and report revision. Browser storage is kept per revision (`KEY|revision`); the bare `KEY` entry (a legacy array or another revision's record) is read once, adopted only if it matches this revision, and never overwritten. Legacy exported files with matching revision metadata are accepted. A download request does not establish that the file was saved: confirm its location and existence.
 
 ## Ideas for comments (shown in the GIFs)
 
@@ -62,6 +64,14 @@ Requirements:
 - The native folder dialog and the real Windows voice toolbar cannot be recorded headless. The scripts stub the folder with an in-memory handle and draw a neutral "listening" overlay, labelled as an illustration.
 
 ## Test
+
+Offline integrity regressions require Python and Node:
+
+```bash
+python -m unittest discover -s tools/html-review/tests -p test_integrity.py -v
+```
+
+These tests cover revision rejection, edit/deletion preservation, imported-text escaping, parameter encoding and source overwrite rejection.
 
 ```bash
 python -m pytest tools/html-review/tests -q
