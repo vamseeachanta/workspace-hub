@@ -1,6 +1,6 @@
 # Mcp Candidates
 *Updated by session-analysis.sh — do not edit manually*
-*Last run: 2026-10-06T07:35:23Z*
+*Last run: 2026-10-07T07:36:18Z*
 
 ## Candidates
 
