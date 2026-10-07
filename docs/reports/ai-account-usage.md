@@ -1,17 +1,17 @@
 # AI account usage (fleet)
 
-Generated 2026-10-07T16:13:38+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
+Generated 2026-10-07T17:13:43+00:00 by fleet-collector collect_account_usage_fleet. Percentages are USED; headroom = 100 - weekly used. Source of truth: `config/ai-tools/account-usage-latest.json`.
 
 ## Recommendation
 
-- **claude**: `claude-owner` (91.0% weekly headroom) on ace-linux-1, ace-linux-2, gpu-claw
+- **claude**: `claude-owner` (91.0% weekly headroom) on ace-linux-1, ace-linux-2
 - **codex**: `codex-professional` (100.0% weekly headroom) on ace-win-1, ace-win-2 -- within 15 pts of codex-owner: stay on whichever host you are on
 
 ## Accounts
 
 | account | provider | holder | 5h used | week used | headroom | resets | sampled on | source |
 |---|---|---|---|---|---|---|---|---|
-| claude-owner | claude | owner | 4% | 9% | 91% | 2026-10-10T13:59:59.508831+00:00 | ace-linux-2 | oauth-api |
+| claude-owner | claude | owner | 4% | 9% | 91% | 2026-10-10T14:00:00.249179+00:00 | ace-linux-2 | oauth-api |
 | claude-professional | claude | colleague |  |  |  |  |  | unavailable |
 | codex-owner | codex | owner |  | 2% | 98% | 2026-10-14T04:04:15+00:00 | fleet-collector | app-server-live |
 | codex-professional | codex | colleague |  | 0% | 100% | 2026-10-14T14:37:24+00:00 | ace-win-1 | app-server-live |
@@ -22,7 +22,7 @@ Generated 2026-10-07T16:13:38+00:00 by fleet-collector collect_account_usage_fle
 |---|---|---|---|---|
 | ace-linux-1 | yes | claude-owner | codex-owner |  |
 | ace-linux-2 | yes | claude-owner | codex-owner |  |
-| gpu-claw | yes | claude-owner | codex-owner | claude: credentials file has no accessToken |
+| gpu-claw | no | claude-owner | codex-owner | exit 255 |
 | ace-win-2 | yes | claude-professional | codex-professional |  |
 | ace-win-1 | yes | claude-professional | codex-professional |  |
 | fleet-collector | yes |  | codex-owner | claude: credentials file has no accessToken |
@@ -30,7 +30,6 @@ Generated 2026-10-07T16:13:38+00:00 by fleet-collector collect_account_usage_fle
 ## Warnings
 
 - ace-linux-2: codex sample's weekly window reset at 2026-08-21T11:50:27+00:00; ignored
-- gpu-claw: codex sample's weekly window reset at 2026-09-19T11:46:38+00:00; ignored
 - ace-win-2: claude fingerprint 78d7e174f2d1 differs from claude-professional (c0c130b8018b)
 - ace-win-2: codex fingerprint 78d7e174f2d1 differs from codex-professional (c0c130b8018b)
 - ace-win-1: claude fingerprint 78d7e174f2d1 differs from claude-professional (c0c130b8018b)
