@@ -7,6 +7,11 @@ tags: [hermes, workflow, audit, cross-review, document-intelligence, session-gov
 
 # Hermes Workflow Audit Pattern
 
+## Current task authority
+
+The originating task request or established standing authority authorizes implementation within scope, including substantial work, after proportionate planning, TDD and adversarial review. No separate plan approval, approval label or local marker is required. Honor planning-only requests and unresolved domain decisions. Publication, deployment, access changes, destructive actions and outreach retain their action-specific authority. Preserve historical approval records; do not self-label owner approval.
+
+
 ## When to Use
 
 - User asks "what's going on with our workflow?" or "are reviews happening?"
@@ -108,9 +113,9 @@ tail -20 ~/.hermes/logs/errors.log 2>/dev/null | grep -iE "429|401|403|error"
 - Hermes gateway may show "not running" even when PID is active — check with `ps aux | grep hermes`
 - `hermes --yolo` bypasses ALL dangerous command prompts — common but risky
 - Cross-review scripts exist but default to WARNING not BLOCKING — the existence of scripts doesn't mean enforcement
-- Hard-stop policy at docs/standards/HARD-STOP-POLICY.md gates ONLY engineering-critical issues (cat:engineering*, cat:data-pipeline). Non-critical issues skip gate.
+- Apply docs/standards/HARD-STOP-POLICY.md to actual scope and effects; complexity increases scrutiny, not a second plan-approval ceremony.
 - CRITICAL: `python3` in audit scripts should be `uv run python` — user corrected this pattern
-- Gate order: Issue → Plan → USER APPROVES → Implement → Cross-review → Close (plan review BEFORE implementation, not after)
+- Gate order: Issue → Plan → Adversarial plan review → Verify task authority → Implement → Cross-review → Close (plan review BEFORE implementation, not after)
 - 542 commits went through with ZERO reviews between Mar 24 and Apr 5 — this is the gap to detect
 - Cron-health can produce false greens if a job fails without one of its scanned error strings. Example: a log containing `/bin/sh: 1: uv: not found` may still be marked `OK` because the checker looks for `command not found`, `ERROR:`, `Traceback`, etc. Verify suspiciously healthy jobs by opening the latest log, not just the summary.
 - Cron-health can also produce false missing results when the scheduled task `log:` glob does not match the artifact the script actually writes. Example: weekly parity wrote `logs/weekly-parity/parity-review-YYYY-MM-DD.md` while schedule health expected `logs/weekly-parity/cron-*.log`. When a task is marked `MISSING`, compare `schedule-tasks.yaml` log patterns against the wrapper script's real output paths before assuming the job never ran.

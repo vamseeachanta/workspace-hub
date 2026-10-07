@@ -129,7 +129,7 @@ This makes recovery easy if context ends before the background lanes finish.
 ## Governance rules
 
 - Planning lanes draft plan artifacts only.
-- Do not implement any fix while the issue is still only a follow-up needing approval.
+- Honor explicitly planning-only scope; implement a follow-up only after reviewed scope and task authority are established, without separate plan approval.
 - Do not add or change `status:*` labels from the planning lane unless the user explicitly asked.
 - Avoid shared-file contention by forbidding edits to `docs/plans/README.md` during parallel drafting; reconcile index updates centrally afterward.
 - Use `gh issue comment --body-file` for all progress comments.

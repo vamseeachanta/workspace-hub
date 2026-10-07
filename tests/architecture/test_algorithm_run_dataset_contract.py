@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import shutil
-import subprocess
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -342,35 +340,6 @@ def test_html_manual_matches_contract_structurally() -> None:
     assert "{hf_org}/digitalmodel-runs" in " ".join(parser.text)
     for url in CHILDREN.values():
         assert url in parser.links
-
-
-def test_legal_scan_passes_on_nonempty_artifact_set(tmp_path: Path) -> None:
-    sandbox = tmp_path / "repo"
-    legal_dir = sandbox / "scripts/legal"
-    legal_dir.mkdir(parents=True)
-    shutil.copy2(ROOT / "scripts/legal/legal-sanity-scan.sh", legal_dir)
-    shutil.copy2(ROOT / ".legal-deny-list.yaml", sandbox)
-    subprocess.run(["git", "init", "-q"], cwd=sandbox, check=True)
-    subprocess.run(["git", "add", "."], cwd=sandbox, check=True)
-    subprocess.run(["git", "-c", "user.name=contract-test", "-c", "user.email=test@example.invalid", "commit", "-qm", "baseline"], cwd=sandbox, check=True)
-    expected = set()
-    for source in REVIEWED_ARTIFACTS:
-        relative = source.relative_to(ROOT)
-        destination = sandbox / "reviewed" / relative
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, destination)
-        expected.add((Path("reviewed") / relative).as_posix())
-    subprocess.run(["git", "add", "-N", "reviewed"], cwd=sandbox, check=True)
-    changed = subprocess.check_output(["git", "diff", "--name-only", "HEAD"], cwd=sandbox, text=True).splitlines()
-    assert set(changed) == expected and changed
-    completed = subprocess.run([str(legal_dir / "legal-sanity-scan.sh"), "--diff-only", "--quiet"], cwd=sandbox, capture_output=True, text=True, check=False)
-    assert completed.returncode == 0, completed.stdout + completed.stderr
-
-
-def test_targeted_absolute_path_guard_passes() -> None:
-    paths = [str(path.relative_to(ROOT)) for path in REVIEWED_ARTIFACTS]
-    completed = subprocess.run([str(ROOT / "scripts/enforcement/check-no-abs-paths.sh"), *paths], cwd=ROOT, capture_output=True, text=True, check=False)
-    assert completed.returncode == 0, completed.stdout + completed.stderr
 
 
 def test_visual_inspection_evidence_is_bound_to_manual() -> None:

@@ -458,8 +458,8 @@ class TestPlanApprovalGate:
         approval_dir = os.path.join(REPO_ROOT, ".planning", "plan-approved")
         assert os.path.isdir(approval_dir), f"Missing: {approval_dir}"
 
-    def test_hook_blocks_impl_without_marker(self):
-        """Hook blocks Write to implementation path when no marker exists."""
+    def test_retired_hook_allows_impl_without_marker(self):
+        """Task-scoped implementation does not need a historical marker."""
         import subprocess
         import tempfile
 
@@ -472,9 +472,8 @@ class TestPlanApprovalGate:
                 input=input_json, capture_output=True, text=True, timeout=10,
                 env={**os.environ, "WORKSPACE_HUB": tmpdir},
             )
-            # Hook should emit block decision on stdout
-            assert "block" in result.stdout.lower() or "block" in result.stderr.lower(), (
-                f"Expected block, got stdout={result.stdout!r} stderr={result.stderr!r}"
+            assert result.returncode == 0 and "retired" in result.stderr.lower(), (
+                f"Expected retired hook, got stdout={result.stdout!r} stderr={result.stderr!r}"
             )
 
     def test_hook_allows_safe_paths_without_marker(self):
@@ -575,8 +574,8 @@ class TestPlanApprovalGate:
             )
             assert result.returncode == 0
 
-    def test_hook_still_blocks_by_default_strict(self):
-        """Default (no env override) must still block writes without approval (#2127)."""
+    def test_retired_hook_ignores_old_default_strict(self):
+        """Old strict mode cannot reinstate the retired marker prerequisite."""
         import subprocess
         import tempfile
 
@@ -588,8 +587,8 @@ class TestPlanApprovalGate:
                 input=input_json, capture_output=True, text=True, timeout=10,
                 env=self._clean_gate_env(WORKSPACE_HUB=tmpdir),
             )
-            assert '"decision":"block"' in result.stdout or '"decision": "block"' in result.stdout, (
-                f"Default strict mode should block, got stdout={result.stdout!r}"
+            assert result.returncode == 0 and "retired" in result.stderr.lower(), (
+                f"Expected retired hook, got stdout={result.stdout!r} stderr={result.stderr!r}"
             )
 
 

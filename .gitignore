@@ -648,3 +648,8 @@ data/drive-index-search/metrics/*.jsonl
 /docs/reports/*-orca-kanban-data.json
 /docs/reports/kanban/*-kanban.md
 /docs/reports/kanban/*-board-index.md
+# Issue 3943: preserve exact review receipts, not the generated results tree.
+!scripts/review/results/
+scripts/review/results/*
+!scripts/review/results/2026-10-05-3943-claude-raw.txt
+!scripts/review/results/2026-10-05-3943-agy-unavailable.md

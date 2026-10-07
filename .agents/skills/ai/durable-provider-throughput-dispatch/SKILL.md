@@ -12,6 +12,9 @@ related_skills:
 
 # Durable Provider Throughput Dispatch
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 ## When to Use
 
 Use this when the user explicitly wants to maximize AI-agent usage availability, burn weekly provider capacity, or continue useful overnight/background work even if provider credits may run out near reset.
@@ -38,8 +41,9 @@ When the user states that provider credits are not the bottleneck, switch from c
    - Check provider CLI availability/auth where relevant.
 
 2. **Partition work by gate state**
-   - `status:plan-review` or draft issues: planning/review hardening only.
-   - `status:plan-approved` plus required local markers: eligible for implementation lanes.
+   - Planning-only requests, missing current review, unresolved blocking findings or required domain decisions: planning/review hardening only.
+   - Labels such as `status:plan-review` and `draft` do not determine execution readiness; verify scope authority and current review evidence.
+   - reviewed scope within originating task authority: eligible for implementation lanes; no marker is required.
    - Unknown/stale state: audit-only until verified.
 
 3. **Route by provider fit**
@@ -66,7 +70,7 @@ When the user states that provider credits are not the bottleneck, switch from c
    - Replan provider routing from fresh capacity telemetry about every 6 hours; see `references/capacity-aware-provider-routing.md` for the current capacity-aware Claude/Codex/Gemini policy.
    - When the machine is already saturated or an autofeed cron is launching overlapping waves, **pause the recurring feeder first**, then reconcile run directories before any replacement launches. Useful provider throughput requires completed artifacts, not raw process count.
    - Watch for known non-consuming stall signatures: Codex logs stuck at `Reading additional input from stdin...`, Codex sandbox startup failures such as `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`, Gemini startup validation errors from repo-local `.gemini/agents`, Gemini capacity failures (`429 RESOURCE_EXHAUSTED` / `No capacity available`), Claude `stream-json requires --verbose`, and Hermes/worker lanes exiting `143` after worktree-command timeouts. See `references/provider-stall-recovery-autofeed.md`.
-   - Do not let monitors stop at passive reporting when the user's goal is continuous throughput. After primary lanes complete, run a safe auto-feed decision: `draft -> adversarial review`, `review MAJOR -> plan patch lane`, `review APPROVE/MINOR -> status:plan-review command/comment pack`, `blocked -> blocker-prep packet`, `approval candidates -> synthesis table`. Keep unsafe transitions gated: no `status:plan-approved`, no outreach, and no unapproved implementation without explicit user approval.
+   - Do not let monitors stop at passive reporting when the user's goal is continuous throughput. After primary lanes complete, run a safe auto-feed decision: `draft -> adversarial review`, `review MAJOR -> plan patch lane`, `review APPROVE/MINOR -> status:plan-review command/comment pack`, `blocked -> blocker-prep packet`, `approval candidates -> synthesis table`. Keep unsafe transitions gated: no `status:plan-approved`, no outreach, and no implementation outside originating task/standing authority; labels and local markers are not prerequisites.
    - Limit each auto-feed tick to a small bounded number of new lanes (for example 1-2), require unique prompt/log/result paths, and write the generated follow-up prompt under the same repo-owned prompt pack (`generated/`) before launching it.
    - For anti-idle recovery, create both immediate direct provider lanes and a recurring autofeed monitor (for example every 30 minutes for the current work window) so completed/stalled lanes are replaced without a multi-hour gap. For over-saturation recovery, keep the monitor paused until stale/orphan lanes are classified and launcher rules are patched/dry-run verified.
    - After patching an over-saturated autofeed monitor, do **not** resume recurring cron immediately. Run exactly one controlled live tick while the cron remains paused, then inspect log/result mtimes, result sizes, failure signatures, and child-process duplication. If the live tick produces zero durable useful outputs or only provider-capacity/sandbox/no-output signatures, clean up that tick and switch to provider-health probes instead of restarting the feeder. See `references/provider-autofeed-health-recovery.md`.
@@ -76,7 +80,7 @@ When the user states that provider credits are not the bottleneck, switch from c
 
 Even in spend-forward mode:
 
-- Do not implement issues before plan approval.
+- Do not implement outside task authority or while required review/domain decisions remain blocked.
 - Do not mutate GitHub labels/comments/closures from worker lanes unless explicitly authorized.
 - Do not publish or promote raw/client/standards/GTM artifacts without source, provenance, license, privacy, and IP checks.
 - Do not preserve or output secrets; redact credentials.

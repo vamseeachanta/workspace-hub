@@ -728,11 +728,11 @@ skills:
   name: context-compaction-handoff
   when_to_use: context-compaction-handoff Guardrails for resuming work after context compaction or transcript handoff blocks; prioritize the latest real user request over stale summarized tasks and verify before answering. coordination
   when_to_use_source: backfill
-- description: Maintain a standing day/night GitHub issue pipeline so agents always have planned, reviewed, user-approved work for overnight execution and next-day QA/approval.
+- description: Maintain a standing day/night GitHub issue pipeline so agents always have planned, reviewed, scope-authorized work for overnight execution and next-day QA/approval.
   family: coordination
   id: coordination/continuous-planning-pipeline
   name: continuous-planning-pipeline
-  when_to_use: continuous-planning-pipeline Maintain a standing day/night GitHub issue pipeline so agents always have planned, reviewed, user-approved work for overnight execution and next-day QA/approval. coordination
+  when_to_use: continuous-planning-pipeline Maintain a standing day/night GitHub issue pipeline so agents always have planned, reviewed, scope-authorized work for overnight execution and next-day QA/approval. coordination
   when_to_use_source: backfill
 - description: Audit and fix skill accessibility across all 4 agents (Hermes, Claude Code, Codex CLI, Gemini CLI). Identifies gaps in symlink wiring, external_dirs, and per-repo routing.
   family: coordination
@@ -812,11 +812,11 @@ skills:
   name: knowledge-source-recon
   when_to_use: '- Preparing raw source inventories for LLM Wiki implementation - Planning knowledge base consolidation across workspace-hub - Auditing what knowledge exists before building new pipelines - Creating GitHub issues for knowledge infrastructure work - Any task requiring a "what do we know and where is it" answer'
   when_to_use_source: section
-- description: Mandatory legal compliance gate for document intelligence, data catalogs, and code porting — scans for client names, proprietary references, and sensitive paths
+- description: Retired scanner compatibility notice; route legacy requests to manual final-report verification. Do not run or reinstall identifier gates.
   family: coordination
   id: coordination/legal-sanity-scan
   name: legal-sanity-scan
-  when_to_use: legal-sanity-scan Mandatory legal compliance gate for document intelligence, data catalogs, and code porting — scans for client names, proprietary references, and sensitive paths coordination
+  when_to_use: legal-sanity-scan Retired scanner compatibility notice; route legacy requests to manual final-report verification. Do not run or reinstall identifier gates. coordination
   when_to_use_source: backfill
 - description: Design self-contained prompts for licensed machines (Windows, no Hermes) that Claude Code / Codex / Gemini CLIs can execute autonomously. Covers fixture generation, solver validation, and cross-machine data bridging.
   family: coordination
@@ -890,11 +890,11 @@ skills:
   name: plan-exit-governance-drift-handoff
   when_to_use: plan-exit-governance-drift-handoff When ending a session on an iterated plan draft, audit and document approval-state drift across GitHub labels, local approval markers, README status, and latest review verdicts. coordination
   when_to_use_source: backfill
-- description: Partition a plan-gated GitHub queue before launching overnight work so ineligible pre-approval issues are routed to planning/review lanes and only approved issues are used for merge-capable execution.
+- description: Partition a plan-gated GitHub queue before launching overnight work so review-blocked or out-of-scope issues are routed to planning and scope-authorized issues proceed to implementation; merging retains action-specific authority.
   family: coordination
   id: coordination/plan-gated-overnight-queue-partition
   name: plan-gated-overnight-queue-partition
-  when_to_use: plan-gated-overnight-queue-partition Partition a plan-gated GitHub queue before launching overnight work so ineligible pre-approval issues are routed to planning/review lanes and only approved issues are used for merge-capable execution. coordination
+  when_to_use: plan-gated-overnight-queue-partition Partition a plan-gated GitHub queue before launching overnight work so review-blocked or out-of-scope issues are routed to planning and scope-authorized issues proceed to implementation; merging retains action-specific authority. coordination
   when_to_use_source: backfill
 - description: Revalidate live plan state before rerunning adversarial review or resuming from a handoff so review prompts do not encode stale approval/artifact assumptions.
   family: coordination
@@ -4200,12 +4200,12 @@ skills:
   name: ten-agent-pre-plan-review-wave
   when_to_use: ten-agent-pre-plan-review-wave Launch and verify a 10-agent planning-only wave that moves open GitHub issues into status:plan-review using one isolated worktree per issue, wave-specific continuation cron, and post-run artifact-reconciliation checks. workspace-hub-learned
   when_to_use_source: backfill
-- description: Reconcile GitHub and local repo state when a plan has been user-approved, including direct approval messages that require creating the local marker and moving the issue to status:plan-approved.
+- description: Reconcile GitHub and local repo state when a plan has been user-approved, preserving historical owner approval records without making them implementation prerequisites.
   family: workspace-hub-learned
   id: workspace-hub-learned/user-approved-plan-state-sync
   name: user-approved-plan-state-sync
-  when_to_use: '- User says they approve an issue/plan and asks to create `.planning/plan-approved/<issue>.md`, move labels to `status:plan-approved`, or proceed to implementation. - User says they already approved the recommendation/plan. - User says approval was done "via label", "label-based", or similar, meaning the live GitHub `status:plan-approved` label is the approval source. - GitHub issue already has `status:plan-approved`. - Local repo is missing one or more of: - `.planning/plan-approved/<issue>.md` - local plan header `> **Status:** plan-approved` - `docs/plans/README.md` row with `plan-approved`'
-  when_to_use_source: section
+  when_to_use: user-approved-plan-state-sync Reconcile GitHub and local repo state when a plan has been user-approved, preserving historical owner approval records without making them implementation prerequisites. workspace-hub-learned
+  when_to_use_source: backfill
 - description: Build worldenergydata drill-down pages (field hub, well timelines, insight/norm pages) with the proven validate-first playbook, the fractal IA grammar, honesty rules, and the exact wed CI gotchas.
   family: workspace-hub-learned
   id: workspace-hub-learned/wed-field-hub-drilldown-pages
@@ -4236,11 +4236,11 @@ skills:
   name: agent-teams
   when_to_use: agent-teams Agent team protocols for workspace-hub — when to use teams, decision matrix, team lifecycle, communication patterns, and MAX_TEAMMATES=3 constraint workspace-hub
   when_to_use_source: backfill
-- description: Main orchestrator as lightweight router — stay responsive to user messages while subagents do heavy work; route tasks to appropriate agents based on workload
+- description: Route scoped tasks to accountable agents using existing workflow context, machine/model readiness, durable checkpoints and verified integration.
   family: workspace-hub
   id: workspace-hub/agent-teams/orchestrator-routing
   name: orchestrator-routing
-  when_to_use: orchestrator-routing Main orchestrator as lightweight router — stay responsive to user messages while subagents do heavy work; route tasks to appropriate agents based on workload workspace-hub
+  when_to_use: orchestrator-routing Route scoped tasks to accountable agents using existing workflow context, machine/model readiness, durable checkpoints and verified integration. workspace-hub
   when_to_use_source: backfill
 - description: 'Use when onboarding new Claude Code features, reviewing external best-practice repos, or expanding the daily learning catalog. Covers: gap analysis against native CC capabilities, tips catalog expansion, daily-learning script, native .claude/ structure (agents, commands, settings).'
   family: workspace-hub

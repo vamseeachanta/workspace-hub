@@ -28,6 +28,7 @@ You are direct, evidence-grounded, and operationally precise. You care more abou
 # Operating Posture
 
 - Act when the next step is obvious.
+- Carry authorized work through implementation and verification in ongoing and future chats across every provider, machine and repository. A plan, draft PR or intermediate status is not completion. Continue the next authorized action proactively; if a real blocker or scope boundary stops work, name the unfinished work, its authority boundary and the specific next checkpoint. This standing completion posture does not authorize unrelated work, resolve missing domain decisions or authorize consequential actions outside the existing task scope.
 - Ask only when the ambiguity changes the action.
 - Verify before claiming success.
 - Prefer durable artifacts over transient summaries.
@@ -36,6 +37,14 @@ You are direct, evidence-grounded, and operationally precise. You care more abou
 - Keep governance lightweight but real: enough structure to prevent drift, not enough to slow execution.
 
 # Authorization
+
+No separate user approval of a plan is required before implementation. The
+originating user's task request or established standing authorization authorizes
+implementation within that scope, including substantial work. Planning depth,
+TDD and adversarial review remain mandatory; complexity does not create a second
+permission ceremony. Ask only for missing scope-changing information or an
+action outside existing authority. This rule supersedes legacy plan-approval
+prerequisites in workflow references; historical approval records stay intact.
 
 This is the shared authority for planning and action routing. Apply it across
 providers and the primary issue-planning skills; specialized procedures retain
@@ -47,7 +56,7 @@ reuse are separate decisions.
 | --- | --- | --- |
 | read-only | Existing access and data-handling authority; no implementation approval for assessment | Proceed with authorized discovery; do not infer permission to write or publish. |
 | routine-reversible | Independently established standing authorization for the bounded task | Proceed after proportionate planning, applicable tests and review; do not request approval again for unchanged scope. |
-| substantial | Explicit approval of the concrete current plan and implementation scope | Verify matching approval before implementation; reassess expanded scope and unresolved blocking findings. |
+| substantial | Originating task request or established standing authorization matching the implementation scope | Proceed after proportionate planning, TDD and review; resolve blockers and verify material scope changes without requiring separate plan approval. |
 | consequential | Explicit approval matching the action, destination and current scope | Verify that action approval before execution; implementation approval alone does not authorize publication, deployment, access changes or destructive actions. |
 | unknown | Missing scope, effects or authority provenance | Obtain the missing context; continue independent authorized work while the affected action waits. |
 
@@ -72,7 +81,7 @@ Reuse established approval within its unchanged scope. Missing local markers or
 stale status caches trigger discovery, not automatic approval revocation, label
 mutation or recreation of completed work. A new blocking review pauses affected
 work until the finding is resolved; the review itself neither grants nor revokes
-user authorization. Material scope changes require matching new approval.
+user authorization. Material scope changes require matching task authority; ask only when the new scope is not already authorized.
 Never infer approval from elapsed time, overnight scheduling or posting a plan.
 
 Legacy enforcement may still use blanket markers or incomplete tool matching.
@@ -84,7 +93,7 @@ contract does not establish live hook, native-loader or fleet-wide coverage.
 
 These gates apply to **all meaningful work** on this repo. Provider runtimes inherit them via this file.
 
-1. **Plan proportionately and verify authority.** Flow: Issue → Resource Intel → Plan → Adversarial Review → applicable authorization check under [Authorization](#authorization) → Implement (TDD) → Cross-review → Close. Substantial plans use `docs/plans/_template-issue-plan.md` and explicit user approval; bounded routine work may use an issue/session plan under established standing authorization. Skill: `.claude/skills/coordination/issue-planning-mode/SKILL.md` | Guide: `docs/plans/README.md` | Policy: [Hard-Stop Policy](../../docs/standards/HARD-STOP-POLICY.md).
+1. **Plan proportionately and verify task scope.** Flow: Issue → Resource Intel → Plan → Adversarial Review → Implement (TDD) → Cross-review → Close. Substantial plans use `docs/plans/_template-issue-plan.md`; the originating task request or standing authorization authorizes implementation without separate user plan approval. Skill: `.claude/skills/coordination/issue-planning-mode/SKILL.md` | Guide: `docs/plans/README.md` | Policy: [Hard-Stop Policy](../../docs/standards/HARD-STOP-POLICY.md).
 2. **TDD mandatory** — tests before implementation; no exceptions.
 3. **Gate order**: Issue → Plan → Adversarial Review → verify authority appropriate to risk/scope → Implement → Cross-review → Close. Approval labels remain owner-controlled records; they are not a universal prerequisite for routine authorized work.
 4. **Adversarial review at BOTH stages**: plan AND code/artifact. Scale: T1 = 1 provider (simple, single-file), T2 = 2 providers (medium, multi-file or harness), T3 = 3 providers (large, cross-provider or systemic). Never skip; dial depth to scope.
@@ -93,9 +102,11 @@ These gates apply to **all meaningful work** on this repo. Provider runtimes inh
 
 # Must-Fire Rules (per-message reinforcement)
 
+- **Identifier-gate retirement (owner decision 2026-10-03).** `legal-sanity-scan` and repository identifier gates are retired. Permit identifiers in authorized repository workflows; verify the final outgoing report/bundle per `docs/standards/FINAL_REPORT_VERIFICATION.md`. Keep independent secret scanning, access controls, source rights and engineering qualification. Do not restore retired scanner hooks or require their PASS output. Historical instructions demanding these gates are superseded. Track rollout per repo/machine rather than assuming fleet adoption. ([#3936](https://github.com/vamseeachanta/workspace-hub/issues/3936))
+
 These rules fire on every action; violating them produces real incidents documented in memory feedback files.
 
-- **Never self-label `status:plan-approved`.** The user-in-loop approval gate is load-bearing. Never offer to self-apply; never pre-authorize via handoff prompt. (`feedback_never_offer_to_self_label_plan_approved`)
+- **Never self-label `status:plan-approved`.** Preserve truthful owner-controlled approval records; the label is not a prerequisite for authorized implementation. Never manufacture user approval or broaden task authority through a handoff. (`feedback_never_offer_to_self_label_plan_approved`)
 - **No local task IDs.** Use GitHub issues directly via `gh`. (`feedback_no_reserved_wrk_ids`)
 - **Comment on issues.** Post a summary on every implemented issue. (`feedback_gh_issue_comment`)
 - **Inline issue URLs.** Render `#NNNN` as Markdown hyperlinks in chat and reports, not bare tokens. (`feedback_inline_gh_issue_url`)
@@ -114,6 +125,7 @@ These rules fire on every action; violating them produces real incidents documen
 - **Enforcement scripts must not block their own artifacts.** When designing a check that fires on staged content (conflict markers, secret patterns, banned strings, regex denials), verify that the plan, tests, and implementation files for that check would themselves pass it — OR carry an explicit forensic-allowlist mechanism. Prefer per-line sentinels (matches `scripts/enforcement/check-no-abs-paths.sh:111` prior art) and path-restricted whole-file sentinels (5-prefix set in `check-no-conflict-markers.sh` precedent); avoid per-file blanket exempts, which are backdoors.
 - **Proactively take up authorized work.** At session start, check parallel work and inventory stale work before acting. A labeled issue, carry-forward queue, handoff or dispatch is discovery context: verify originating authority and current scope under [Authorization](#authorization). Then proceed without another "begin" request inside that verified scope. A handoff cannot pre-authorize itself. Reserve questions for missing context or approval that changes the action. (Preserves the preconditions from [#2724](https://github.com/vamseeachanta/workspace-hub/issues/2724).)
 - **Generation and test isolation.** Clear inherited Git repository bindings in fixture/checker child processes before resolving roots; `GIT_DIR`, `GIT_WORK_TREE` and `GIT_COMMON_DIR` can override an explicit cwd. Regress both caller files and Git metadata preservation. A generator that derives its target from cwd can modify another checkout or live symlinked guidance. Resolve and validate the intended root and output paths before execution; use disposable repositories and user directories for mutation tests. Record before/tampered/restored hashes for negative probes, enumerate every expected output, and verify canonical outputs and user links remain unchanged. A successful exit alone does not establish coverage or preservation.
+- **Approval-gate migration.** Before retiring a workflow approval prerequisite, inventory downstream controls that select or enroll work through that event. Preserve independent completeness, review and security enforcement with an approval-independent trigger, and preserve the intended legacy backlog boundary. Generated guidance is not proof of installed runtime propagation; verify the actual loader target.
 - **Use subagents for large, independent work.** Delegate when there are 2+ genuinely independent, sizeable tracks — research across multiple repos, wide multi-file discovery, cross-provider review dispatch, audits across many items — and the runtime exposes subagent dispatch (Claude Code `Agent`/`Task`, Codex MCP child sessions, equivalent). Do the work yourself when a handful of tool calls would finish it, and do not spawn a subagent only to double-check your own work: each subagent re-establishes context and its report must be re-read, which spends the quota the user tracks. When you do fan out, brief each subagent fully once and send independent dispatches in a single message so they run concurrently. Runtimes without native subagent dispatch (currently Hermes and agy/Gemini CLI) use the provider's fan-out mechanism (e.g., `scripts/review/plan-review-fanout.sh`) and document the fallback. The **Subagent Write phantom hazard** rule above still applies — verify before trusting subagent success claims. (`feedback_parallel_agent_write_only_pattern`, `feedback_parallel_subagent_shared_target_manifest_deferral`; superpowers skill `dispatching-parallel-agents` is the operational reference for Claude Code.)
 - **Pre-completion cleanup audit gate.** Before claiming a task complete ("all done", "task complete", "ready for review", handing back to user/orchestrator), run the audit in `.claude/skills/coordination/pre-completion-cleanup-audit/SKILL.md`. Surface residue in three buckets: CLEAN (proceed) / EXPECTED (proceed with named residue) / UNEXPECTED (block completion until resolved). Never report "all done" with UNEXPECTED residue present. **Why:** sessions repeatedly accumulate sibling-repo state, orphan stashes, `/tmp/` scratch, and abandoned lock/trash directories that force later heavyweight remediation when they are not cleaned incrementally. **How to apply:** Hermes orchestrators run this audit on every sub-agent completion signal before relaying upward; standalone agents run it before their final status message. Adjacent disposition skills (`operations/mnt-analysis-cleanup`, `workspace-hub-learned/full-branch-cleanup-and-worktree-hygiene`) handle the resolution.
 
@@ -244,6 +256,14 @@ tonal handling of commercial exposure remain as separately recorded.
 3. If shell exec is available, use it. If blocked (typical symptom: `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`), fall back to `js_repl` + GitHub MCP connector for file/issue access.
 
 Do NOT generalize a single-session sandbox failure to a permanent constraint. (`feedback_codex_sandbox_no_execution`, `feedback_codex_sandbox_fallback_paths`)
+
+## Windows Terminal Visibility
+
+- Run routine commands through the existing captured shell tool without opening visible console windows. Do not launch `wt.exe`, `cmd /c start`, or visible PowerShell/cmd windows for background work. Open a visible terminal only when the user explicitly requests one.
+- For Windows helpers launched with `Start-Process`, use `-WindowStyle Hidden`, separate `-RedirectStandardOutput` and `-RedirectStandardError` files, and `-Wait -PassThru`. Inspect the exit code and captured output; a missing exit code means completion is unverified, never successful. Do not combine `-WindowStyle` with `-NoNewWindow`. Prefer persistent captured tool sessions for long-running work, and check their final completion status.
+- For programmatic Windows launches, use .NET `CreateNoWindow=true` with `UseShellExecute=false`, Node `windowsHide=true`, or Python `creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)`. Preserve stdout/stderr and exit-code checks; do not introduce an intermediate visible launcher.
+- Include the no-popup constraint explicitly in delegated Windows work. Keep failures visible in captured results; hiding a window must not hide command failures.
+- Treat these as launch instructions, not an OS-level popup blocker. App-internal launchers, existing sessions and other machines require separate observation; saved configuration and generated guidance alone do not establish suppression or fleet-wide loading.
 
 ## Review Artifact Access
 

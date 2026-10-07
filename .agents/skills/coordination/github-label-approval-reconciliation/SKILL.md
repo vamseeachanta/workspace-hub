@@ -32,6 +32,8 @@ Class of task: live GitHub approval-state reconciliation across labels, local ap
    - Live GitHub `status:plan-approved` is authoritative evidence of user approval.
    - If local `.planning/plan-approved/NNN.md` is missing, treat that as execution-prep governance cleanup, not as more user input.
    - Do not resurface those issues as needing approval once the live label is verified.
+   - Make approval transitions idempotent: if the user says an issue is approved but live GitHub already has `status:plan-approved`, do not treat absent `status:plan-review` as an error or blocker. Verify the current labels, then proceed to local marker/plan-status reconciliation.
+   - For combined requests like “show gh #NNN” plus “approved GH #NNN”, satisfy both: display the live issue link/state and reconcile the approval state in the same pass.
 
 3. **Separate queues in the response**
    - Remaining user approval needed: open issues still labeled `status:plan-review`.
@@ -48,8 +50,27 @@ Class of task: live GitHub approval-state reconciliation across labels, local ap
    - If the user approves an umbrella and child issues together, execute the child issues as the concrete units unless the umbrella plan has standalone deliverables.
    - Use the umbrella for coordination, rollup comments, and closing only after children are complete or explicitly scoped.
 
+## Exit-closeout after approval
+
+When the user approves issues and immediately asks to "document and prepare to exit":
+
+1. Verify live `status:plan-approved` labels for the named issues with `gh issue view`.
+2. Reconcile local governance surfaces before writing the handoff:
+   - update plan frontmatter and gate text from `plan-review` to `plan-approved`;
+   - update `docs/plans/README.md` status rows;
+   - create `.planning/plan-approved/<issue>.md` markers that cite the live label/user approval;
+   - remove stale `.planning/plan-review/<issue>.md` pointers.
+3. Run the repo's targeted governance/plan validators and the narrow tests that cover planning artifacts.
+4. Write a durable handoff under `docs/session-handoffs/` that states the issues are approved but not implemented, plus the public-safety/no-external-action boundary.
+5. Commit, push, fetch, and prove `HEAD == origin/<branch>` in the same closeout window.
+6. Post concise GitHub issue comments using `--body-file` to record the approval reconciliation and validation evidence.
+7. Do not implement or close the issues during this exit-only pass unless the user explicitly asked for execution/closure.
+
+This pattern prevents the next session from seeing contradictory live labels (`status:plan-approved`) and local files (`plan-review`) while preserving the implementation gate.
+
 ## Pitfalls
 
+- Do not leave stale `.planning/plan-review/<issue>.md` files after creating `.planning/plan-approved/<issue>.md`; mixed local markers create approval drift for the next operator.
 - Do not say an issue still needs user approval merely because its local approval marker is missing after the user applied the GitHub label.
 - Do not treat `status:needs-data` as solved by `status:plan-approved`; data/assumption questions still need user input.
 - Do not self-approve or create approval markers before verifying the live GitHub label or explicit user approval.
@@ -57,10 +78,20 @@ Class of task: live GitHub approval-state reconciliation across labels, local ap
 
 ## Output pattern
 
+When the user asks for approval links, do a live `gh issue view`/`gh issue list` check immediately and return concise clickable GitHub URLs. Do not include implementation planning, review history, or extra narrative unless asked.
+
 Use a short table:
 
 | Bucket | Issue | State | Action |
 |---|---|---|---|
-| Approval needed | `#NNN` | `status:plan-review` | User may promote to `status:plan-approved` |
-| Needs data | `#NNN` | `status:plan-approved`, `status:needs-data` | User/data decision still required |
-| Approved / execution-prep | `#NNN` | `status:plan-approved`, marker missing | Create local marker before implementation |
+| Approval needed | [`#NNN`](https://github.com/OWNER/REPO/issues/NNN) | `status:plan-review` | User may promote to `status:plan-approved` |
+| Needs data | [`#NNN`](https://github.com/OWNER/REPO/issues/NNN) | `status:plan-approved`, `status:needs-data` | User/data decision still required |
+| Approved / execution-prep | [`#NNN`](https://github.com/OWNER/REPO/issues/NNN) | `status:plan-approved`, marker missing | Verify task authority/review; preserve optional history without requiring a marker |
+
+For a narrow request like “show gh issue links for user approval,” a reduced table is preferred:
+
+| Issue | Title | Link |
+|---:|---|---|
+| #NNN | <title> | https://github.com/OWNER/REPO/issues/NNN |
+
+End with one sentence confirming the live labels/state checked (for example: “All listed issues are open and labeled `status:plan-review`.”).

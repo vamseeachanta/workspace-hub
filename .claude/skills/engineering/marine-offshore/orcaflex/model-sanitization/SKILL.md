@@ -101,7 +101,7 @@ Categories: `jumper/`, `installation/`, `mooring/`, `training/`, `regional/`, `v
 
 ### Step 6: Legal Scan Gate
 ```bash
-bash scripts/legal/legal-sanity-scan.sh --repo=digitalmodel
+# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
 # Must exit 0 before proceeding to spec extraction
 ```
 
@@ -160,7 +160,7 @@ uv run python scripts/sanitize_s7_models.py \
 grep -ri "ClientProject\|VesselName" docs/modules/orcaflex/
 
 # Run legal scan
-bash scripts/legal/legal-sanity-scan.sh --repo=digitalmodel
+# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
 ```
 
 ## Audit Output
@@ -192,7 +192,7 @@ The sanitization script generates `sanitization_audit.json`:
 ```
 
 ## Related Skills
-- `/legal-sanity-scan` — Legal compliance scanning
+- `docs/standards/FINAL_REPORT_VERIFICATION.md` — Manual final-report verification
 - `/orcaflex-file-conversion` — Format conversion (.dat ↔ .yml)
 - `/orcaflex-monolithic-to-modular` — Monolithic → modular conversion
 - `/orcaflex-jumper-analysis` — Jumper-specific modelling concepts

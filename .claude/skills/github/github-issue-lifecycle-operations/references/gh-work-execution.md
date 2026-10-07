@@ -21,14 +21,14 @@ tags: [execution, github, issue-workflow, tdd, review, verification]
 
 # GH Work Execution
 
-This is the canonical execution route for approved GitHub issue work.
+This is the canonical execution route for task-authorized GitHub issue work.
 
-Use it only after planning is complete and the issue is approved.
+Use it after planning and review are complete within the originating task scope.
 
 ## Route summary
 
 Canonical path:
-Issue -> Plan -> User approves -> TDD implementation -> adversarial review -> commit/push -> comment/close issue
+Issue -> Plan -> adversarial plan review -> verify task/standing authority -> TDD implementation -> adversarial code review -> authorized commit/push -> comment/close issue
 
 ## GitHub posting rule
 
@@ -208,19 +208,18 @@ Runtime / machine-availability blocker rule:
 
 ## Entry condition
 
-Only start execution when the issue is already labeled `status:plan-approved`.
-If the issue is still unplanned or only in `status:plan-review`, route back to `gh-work-planning` first.
+Start execution within the task request or established standing authority after proportionate planning and adversarial review. No separate user plan approval, approval label or local marker is required. If the issue is unplanned, complete planning first; a `status:plan-review` label alone does not block reviewed, authorized implementation.
 
 Treat execution entry as a hard gate, not a soft preference.
 Before any code change, branch creation, or delegation package, confirm all of the following:
-1. approval/authz: the issue has explicit plan approval and you are authorized to execute in this repo/worktree/environment
-2. scope: the approved plan and acceptance target are identifiable enough to verify against
+1. authorization: the task request or standing authority covers execution in this repo/worktree/environment; honor explicit planning-only limits
+2. scope: the reviewed plan and acceptance target are identifiable enough to verify against, with blocking reviews and required domain decisions resolved
 3. workspace readiness: the intended repo/worktree, branch context, and required policy files are known
 4. validation readiness: you know the primary test/validation path or know that closure will rely on deterministic inspection evidence
 5. GitHub readiness: you can post the required execution/check-in/closure updates, or the orchestrator for doing so is explicitly defined
 
 Entry decisions:
-- if approval is missing, stop and route back to planning/approval
+- if task/standing authority is missing or the request is planning-only, stop affected implementation and report the scope boundary; seek explicit authorization for consequential actions outside current scope
 - if authorization or execution environment is not safe/available, stop and post a blocker or hand back to the orchestrator
 - if validation cannot yet be identified, stay in central recon until a verification path exists
 - if the issue appears already satisfied, do not begin implementation; follow the already-done pre-check to a verification-first closeout decision
@@ -229,42 +228,13 @@ GitHub check-in at entry:
 - when execution is allowed to proceed, post a concise start note with scope boundary, execution mode if already known, and immediate validation intent
 - when execution cannot proceed, post the stop reason and next route (`planning`, `blocker`, or `orchestrator decision`)
 
-### Local plan-marker gate in worktrees
-### Local plan-marker gate in any checkout
+### Local authorization evidence in any checkout
 
-In workspace-hub-style repos, a GitHub `status:plan-approved` label may still be insufficient for implementation if local hooks enforce `.planning/plan-approved/` markers.
+Record the issue, task request or standing authority, reviewed plan revision, scope and validation path in the checkout used for implementation. No `status:plan-approved` label or `.planning/plan-approved/` marker is required before implementation.
 
-Before launching implementation in the current checkout (main checkout or fresh worktree), verify all of the following in that same checkout:
-- `.planning/plan-approved/<issue>.md` exists locally
-- the marker text uses neutral/operator approval wording (not `Worker session`, `auto-approved`, or `self-approved`)
-- the marker is committed in that checkout before write-capable Claude/Codex execution begins
+Preserve existing owner-controlled approval records without inventing an approval event. A legacy hook that still demands a marker is a policy-alignment defect: inspect and repair it only within authorized scope; do not fabricate a marker or disable unrelated controls to bypass it.
 
-Safe sequence for approved issue execution:
-1. ensure you are in the exact checkout that will perform the writes
-2. if `.planning/plan-approved/<issue>.md` is missing locally, create it there with neutral approval wording tied to the real user approval signal
-3. commit the marker locally in that same checkout
-4. only then launch implementation
-
-Worktree example:
-1. create the worktree from `main`
-2. write `.planning/plan-approved/<issue>.md` inside the worktree
-3. commit the marker locally in that worktree
-4. only then launch Claude/Codex for implementation
-
-Main-checkout example:
-- even if the issue is already `status:plan-approved` on GitHub and the user explicitly says to continue, create/commit the local `.planning/plan-approved/<issue>.md` in the active checkout before implementation if it is missing there
-
-Why this matters:
-- the plan-approval hook evaluates the local checkout state, not just GitHub labels
-- a marker created only in another checkout, or created but not committed yet, may still be treated as missing or self-approved
-- committing the marker first avoids the implementation session getting blocked mid-run by the local plan gate
-- committing the marker first avoids Claude getting blocked mid-run by the local plan gate
-
-Practical pre-commit check before your first implementation commit:
-1. confirm `.planning/plan-approved/<issue>.md` exists
-2. confirm it is newer than `.planning/STATE.md` in the current checkout
-3. if not, refresh or recreate the marker with the same user-approved content before staging implementation files
-4. then retry the commit
+Respect explicit planning-only requests and unresolved domain decisions. Consequential actions outside current authority require matching explicit authorization.
 
 ## Applies to
 
@@ -585,7 +555,7 @@ Use a compact pattern:
 ### Inventory/report prerequisite slices in nested repos
 For approved umbrella/decomposition issues where the first executable slice is a durable inventory or evidence artifact, do not jump directly to source remediation.
 Use this pattern:
-1. Confirm the parent issue is `status:plan-approved` and the local approval marker exists in the executing checkout.
+1. Confirm task/standing authority covers the parent slice, the reviewed plan is current, and required domain decisions and blocking review findings are resolved. No approval label or local marker is required.
 2. Post an execution-start comment that explicitly limits the first pass to the inventory/report artifact and says source remediation remains in child issues.
 3. In the nested target repo, run the exact failing command from the approved plan and capture raw output to a transient path (for example `/tmp/...`). Treat a non-zero exit as expected when inventorying known debt.
 4. Generate a checked-in report under the nested repo with: exact command provenance, exit code, parsed finding count, grouped rule-family counts, dominant outlier classification, non-outlier counts, representative findings, and an explicit note that `/tmp` raw output is transient/non-durable.

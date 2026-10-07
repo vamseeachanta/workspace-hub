@@ -1,5 +1,8 @@
 # Provider-unavailable plan-review holding pattern
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use this reference when an engineering-critical plan is otherwise ready for user visibility but Codex/Claude/Gemini review fanout returns only provider/tooling failures.
 
 ## Session pattern captured
@@ -23,4 +26,4 @@ Use this reference when an engineering-critical plan is otherwise ready for user
 - Remote HEAD contains the intended plan/index/review artifacts.
 - The issue has `status:plan-review`.
 - The issue comment links the plan and states provider review was unavailable.
-- The comment states implementation remains blocked until explicit user approval / `status:plan-approved`.
+- The comment states that unavailable mandatory review remains a blocker until valid review or an authorized policy exception, without requiring a new plan-approval label.

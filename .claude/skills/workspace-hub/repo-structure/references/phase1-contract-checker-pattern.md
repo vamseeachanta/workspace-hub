@@ -58,7 +58,7 @@ Strategy or documentation-only repos may not have `AGENTS.md`, `pyproject.toml`,
 
 For these repos, Phase 1 may still add a tiny pytest-based checker test suite under `tests/repo_structure/` plus `scripts/maintenance/verify_repo_structure.py`, provided the transaction documents that this is new repo-structure validation rather than a pre-existing full suite. Only wire pre-commit/CI if those enforcement surfaces already exist or the approved plan explicitly authorizes creating them.
 
-Approval markers can be committed before implementation to satisfy plan-gate requirements, but then the repo is intentionally ahead of `origin/main`. After that point, report `HEAD` and `origin/main` with separate `git rev-parse --short HEAD` / `git rev-parse --short origin/main` commands; `git rev-parse --short HEAD origin/main` is invalid and can obscure the baseline evidence.
+Historical marker commits may leave a checkout ahead of `origin/main`; markers are no longer implementation prerequisites and must not be recreated to make execution run. After that point, report `HEAD` and `origin/main` with separate `git rev-parse --short HEAD` / `git rev-parse --short origin/main` commands; `git rev-parse --short HEAD origin/main` is invalid and can obscure the baseline evidence.
 
 ## Import/package gotcha for checker tests
 

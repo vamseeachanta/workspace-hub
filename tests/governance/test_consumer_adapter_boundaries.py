@@ -171,7 +171,7 @@ def test_legacy_clean_index_misses_nonempty_committed_branch_diff(repository):
     result = subprocess.run([bash_executable(), str(script), "--strict", "--require-issue", "3615"],
                             cwd=repo, env=env, capture_output=True, text=True, timeout=15)
     assert result.returncode == 0, result.stdout + result.stderr
-    assert "No implementation changes or low-risk files only" in result.stdout
+    assert "RETIRED" in result.stdout
     assert not (repo / ".planning").exists()
 
 
@@ -262,6 +262,9 @@ def test_windows_junction_resolution_is_only_harness_evidence(tmp_path):
 
 
 def bash_executable():
+    native = Path(os.environ.get("ProgramFiles", "")) / "Git/bin/bash.exe"
+    if sys.platform == "win32" and native.is_file():
+        return str(native)
     local = Path(os.environ.get("LOCALAPPDATA", "")) / "Programs/Git/usr/bin/bash.exe"
     result = str(local) if local.is_file() else shutil.which("bash")
     assert result, "UNAVAILABLE: Bash required for legacy fixture observation"
@@ -287,19 +290,16 @@ def legacy_hook(repository, payload):
     if supplied:
         assert (repo / supplied).resolve().is_relative_to(repo.resolve())
     assert (repo / ".planning/plan-approved").resolve().is_relative_to(repo.resolve())
-    capability = subprocess.run([bash_executable(), "-c", "command -v jq"], env=local,
-                                capture_output=True, text=True, timeout=10)
-    assert capability.returncode == 0, "UNAVAILABLE: jq required for actual legacy parsing"
     result = subprocess.run([bash_executable(), str(script)], input=json.dumps(payload),
                             cwd=repo, env=local, capture_output=True, text=True, timeout=15)
     assert result.returncode == 0, result.stderr
     return result
 
 
-def test_unrelated_old_marker_satisfies_legacy_but_not_authority(repository):
+def test_retired_marker_gate_does_not_authenticate_authority(repository):
     repo, _ = repository
     payload = {"tool_name": "Write", "tool_input": {"file_path": "./src/module.py"}}
-    assert json.loads(legacy_hook(repository, payload).stdout)["decision"] == "block"
+    assert "RETIRED" in legacy_hook(repository, payload).stderr
     marker = repo / ".planning/plan-approved/999999.md"
     marker.parent.mkdir(parents=True)
     marker.write_text("Synthetic unrelated issue reference\n", encoding="utf-8")
@@ -307,7 +307,7 @@ def test_unrelated_old_marker_satisfies_legacy_but_not_authority(repository):
     os.utime(marker, (old, old))
     assert legacy_hook(repository, payload).stdout == ""
     result = evaluate(fixture_case("protected-policy"))
-    assert result["assessment_result"]["action_boundary"] == "approval-required"
+    assert result["assessment_result"]["action_boundary"] == "verify-task-authority"
 
 
 def test_protected_governance_path_is_legacy_exempt(repository):

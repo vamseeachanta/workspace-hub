@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Deckhand information briefing: exit handoff</title>
+<style>body{font:16px/1.55 system-ui;max-width:1000px;margin:2rem auto;padding:1rem}pre{white-space:pre-wrap;background:#f3f4f6;padding:1rem}td,th{border:1px solid #aaa;padding:.5rem}table{border-collapse:collapse}</style>
+<h1>Deckhand information briefing: exit handoff</h1>
+<p>Inspection: 2026-10-06. Tracking: <a href="https://github.com/vamseeachanta/workspace-hub/issues/3936">issue 3936</a>. This checkpoint updates the PR-status snapshot in the <a href="2026-10-05-3936-deckhand-data-and-gate-retirement.html">previous exit handoff</a>. The <a href="2026-10-05-3936-recovery-checkpoint.html">recovery checkpoint</a> records intervening corrections and the merge hold.</p>
+<h2>Information request</h2>
+<p>Two paste-ready Deckhand prompts were supplied in conversation. The reusable version below references the owning catalogs and private access guide. Neither prompt was sent to the Dot during these drafting or exit turns. The earlier October 3 handoff was acknowledged by the existing Dot. The second-account Dot remains uncreated per the owner's direction.</p>
+<h2>Verified remote state</h2>
+<table><tr><th>PR</th><th>Inspected revision</th><th>State</th></tr>
+<tr><td><a href="https://github.com/vamseeachanta/workspace-hub/pull/3937">workspace-hub 3937</a></td><td>de830452c</td><td>OPEN</td></tr>
+<tr><td><a href="https://github.com/vamseeachanta/worldenergydata/pull/1143">worldenergydata 1143</a></td><td>27893cb2</td><td>OPEN</td></tr>
+<tr><td><a href="https://github.com/vamseeachanta/assetutilities/pull/128">assetutilities 128</a></td><td>e1cfb85f</td><td>OPEN</td></tr>
+<tr><td><a href="https://github.com/vamseeachanta/digitalmodel/pull/2283">digitalmodel 2283</a></td><td>60bacf49</td><td>OPEN</td></tr>
+<tr><td><a href="https://github.com/vamseeachanta/llm-wiki/pull/929">llm-wiki 929</a></td><td>a39ed4c6</td><td>OPEN</td></tr>
+<tr><td><a href="https://github.com/vamseeachanta/raw-to-knowledge-playbook/pull/73">raw-to-knowledge-playbook 73</a></td><td>62ce751</td><td>OPEN</td></tr>
+<tr><td><a href="https://github.com/vamseeachanta/deckhand/pull/597">deckhand 597</a></td><td>c529f4f</td><td>OPEN</td></tr></table>
+<p>Table 1. All seven retirement PRs report no failing or pending checks at these revisions. LLM-wiki reports only GitGuardian. This does not establish review completeness, merge authority or fleet deployment. A new documentation commit may trigger another hub CI run.</p>
+<p><a href="https://github.com/vamseeachanta/deckhand/pull/596">HSE documentation PR596</a> merged at 2026-10-05T23:25:57Z, merge commit <code>47d94071ad69f9e4a5913e95d32e01428c0f5502</code>. Its guide is <code>docs/deckhand/runbooks/hse-data-access.html</code>. Previously reported lint, Deckhand tests and hub review failures are no longer current CI blockers at the inspected retirement heads. The recovery record retains a removal/merge hold; this exit turn does not reinterpret separate-session authority or merge the PRs.</p>
+<h2>Reusable information prompt</h2>
+<pre>Deckhand, map the databases, raw sources, LLM wikis and repository architecture accessible to this existing first-account Dot. Do not create or configure a second-account Dot.
+
+Start with llm-wiki/data/data-source-catalog.yml, llm-wiki/data/domain-database-index.yml and workspace-hub/docs/architecture/agent-data-handling-contract.md. Read the merged private deckhand guide docs/deckhand/runbooks/hse-data-access.html for the HSE database, ace-linux-1 access route and /mnt/ace raw-source locations. Reverify observations dated October 3, 2026.
+
+Verify repository responsibilities: workspace-hub coordination; worldenergydata source datasets; digitalmodel engineering workflows; digitalmodel-data reusable solver results; llm-wiki curated knowledge and catalogs; assetutilities shared utilities; raw-to-knowledge-playbook ingestion and verification; deckhand operational runbooks.
+
+Return Resource | Owner repository | Exact location | Contents/format | Access route | Verification date | Freshness/readiness | Usage instructions. Include HSE, marine safety, available domain databases and wiki collections. Resolve or flag the two marine-safety database locations described in the guide; do not choose authority by filename alone.
+
+Use catalog-led discovery and bounded directory inspection. Distinguish repository visibility from verified host access, file existence from validated contents, indexed knowledge from engineering-ready data, and proposed content from merged configuration. Identify missing access, unresolved ownership, duplicates and the next verification needed. Reuse existing catalogs rather than creating competing registries.
+
+This is read-only discovery and reporting through existing authorized connections. Do not copy datasets, modify permissions, merge PRs, deploy changes or publish private content. Report findings within this authorized conversation and identify access blockers.</pre>
+<h2>Next checkpoint</h2>
+<ol><li>Provide the prompt to the existing first-account Dot when an updated inventory is required.</li><li>For retirement integration, verify originating authority and current merge rules, resolve the recorded hold, and recheck exact PR heads and checks. Issue3936 remains open.</li><li>Check parallel policy work before editing hub/wiki guidance. Verify actual machine deployment after authorized integration; branch publication is not rollout.</li></ol>
+<h2>Cleanup audit</h2>
+<p><strong>CLEAN:</strong> all eight task branches compared 0 ahead/0 behind their recorded upstreams before this handoff. Five task worktrees had no changes. No child agent was running. No cleanup lock/trash marker or issue3936 file was found in the bounded first-level workspace/temp inspection.</p>
+<p><strong>EXPECTED:</strong> eight worktrees are retained for open PRs and merged HSE evidence. Raw Python caches remain under scripts, scripts/security and tests; six pre-existing hub stashes remain. The hub retirement worktree has 181 pre-existing status entries, predominantly parallel policy/skill edits. The wiki retirement worktree has an existing AGENTS.md modification. These are preserved outside this handoff commit. Screenshot, PR manifest and provider logs remain retained. No branch, worktree, cache or interactive session was deleted or terminated.</p>
+<p><strong>UNEXPECTED:</strong> no new unexplained task-created residue was identified. Shared worktrees are not globally clean; parallel changes remain for their originating sessions. This bounded audit is not a fleet cleanup claim.</p>
+<h2>Exit boundary</h2>
+<p>This turn documents status and the prompt. No new Dot communication, merge, deployment, data copy, access change or source-data mutation was performed. Dataset contents and freshness were not revalidated. A combined write-and-publish command was rejected by automatic approval review as blocked by policy; the handoff was subsequently saved using a file-scoped edit. Publication must be verified separately.</p>
+</html>
