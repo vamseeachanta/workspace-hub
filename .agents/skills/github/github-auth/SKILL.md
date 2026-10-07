@@ -135,7 +135,7 @@ Tell the user to add the public key at: **https://github.com/settings/keys**
 **Step 3: Test the connection**
 
 ```bash
-ssh -T git@github.com
+ssh -T git@github.com  # identifier-gate: example
 # Expected: "Hi <username>! You've successfully authenticated..."
 ```
 

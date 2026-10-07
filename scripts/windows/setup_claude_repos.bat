@@ -15,31 +15,31 @@ for %%r in (%repos%) do (
     echo Configuring repository: %%r
     
     REM Check if repository exists
-    if exist "C:\Users\vamseea\github\%%r\.git" (
+    if exist "%USERPROFILE%\github\%%r\.git" (
         echo Repository %%r found
         
         REM Check if CLAUDE.md already exists
-        if not exist "C:\Users\vamseea\github\%%r\CLAUDE.md" (
+        if not exist "%USERPROFILE%\github\%%r\CLAUDE.md" (
             echo Creating CLAUDE.md for %%r
             
             REM Create basic CLAUDE.md
-            echo # Claude Code Configuration for %%r > "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo. >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo ## Repository Overview >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo This repository contains project files and documentation for %%r. >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo. >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo ## Development Environment >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo - Use Git Bash terminal in VS Code >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo - Python environment managed via conda >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo - Follow existing code patterns and conventions >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo. >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo ## Project Structure >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo See README.md for detailed project structure and setup instructions. >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo. >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo ## Notes >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo - Always check existing patterns before making changes >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo - Use appropriate tools based on repository content >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
-            echo - Maintain consistent formatting and documentation >> "C:\Users\vamseea\github\%%r\CLAUDE.md"
+            echo # Claude Code Configuration for %%r > "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo. >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo ## Repository Overview >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo This repository contains project files and documentation for %%r. >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo. >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo ## Development Environment >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo - Use Git Bash terminal in VS Code >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo - Python environment managed via conda >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo - Follow existing code patterns and conventions >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo. >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo ## Project Structure >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo See README.md for detailed project structure and setup instructions. >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo. >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo ## Notes >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo - Always check existing patterns before making changes >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo - Use appropriate tools based on repository content >> "%USERPROFILE%\github\%%r\CLAUDE.md"
+            echo - Maintain consistent formatting and documentation >> "%USERPROFILE%\github\%%r\CLAUDE.md"
             
             echo CLAUDE.md created for %%r
         ) else (

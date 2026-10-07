@@ -1044,6 +1044,29 @@ domains:
           detailed MoorDyn dynamic analysis. Apache license allows
           unrestricted use.
 
+      - name: CableDyn
+        url: https://github.com/SMI-Lab-Inha/CableDyn
+        project_url: https://cabledyn.readthedocs.io/en/latest/
+        license: "Apache-2.0"
+        maturity: experimental
+        python_api: bindings
+        community: small
+        capabilities:
+          - "Finite-element mooring statics and dynamics"
+          - "Bending-sensitive dynamic power cables (lazy-wave)"
+          - "Standalone, C interface and Python tooling"
+          - "OpenFAST coupling via patched build (CompMooring=5)"
+        relevance_to_ace: >
+          Bending and curvature response of dynamic power cables and
+          moorings for floating offshore wind; complements MoorDyn and
+          MoorPy for cable-specific checks. Registered under
+          workspace-hub issue 3931.
+        integration_notes: >
+          Fortran solver, first public release v0.1.0 (2026-09-30).
+          Python runs require a built solver executable; stock OpenFAST
+          does not include it. Reference only: no local installation,
+          execution or qualification yet.
+
       - name: MAP++
         url: https://github.com/old-NWTC/MAP
         project_url: https://www.nrel.gov/wind/nwtc/map-plus-plus
@@ -1389,7 +1412,7 @@ domains:
 # Summary statistics
 # =============================================================================
 summary:
-  total_libraries: 57
+  total_libraries: 58
   by_domain:
     fea_structural: 8
     cfd: 6
@@ -1397,24 +1420,24 @@ summary:
     cad_geometry: 6
     gis_geospatial: 7
     data_science: 8
-    marine_offshore: 6
+    marine_offshore: 7
     hydrodynamics: 6
     pipeline_flow_assurance: 3
     visualization: 2
   by_license_family:
-    permissive: 32  # MIT, BSD, Apache
+    permissive: 33  # MIT, BSD, Apache
     weak_copyleft: 9  # LGPL
     strong_copyleft: 14  # GPL, AGPL
     other: 2  # Academic Public License, mixed
   by_python_api:
     native: 36
-    bindings: 11
+    bindings: 12
     cli_only: 5
     none: 5
   by_maturity:
     stable: 42
     maturing: 14
-    experimental: 1
+    experimental: 2
   ace_priority_recommendations:
     tier_1_immediate:
       - "Capytaine — BEM hydrodynamic coefficients for floating structures"

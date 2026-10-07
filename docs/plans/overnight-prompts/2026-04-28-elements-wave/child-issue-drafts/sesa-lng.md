@@ -46,7 +46,7 @@ Predecessors [#2535](https://github.com/vamseeachanta/workspace-hub/issues/2535)
 - Any write under `/mnt/ace/**` — source drive is immutable for this work
 - Any write under `knowledge/wikis/**/raw/` or `knowledge/wikis/**/sources/` beyond the existing Elements page
 - Any persisted full-text dump under `.planning/`, `docs/`, or `knowledge/`
-- Any cross-stream artifact path (lng-a University, lng-a Codes, Woodfibre)
+- Any cross-stream artifact path (lng-a University, lng-a Codes, LNG terminal A)
 
 ## Deliverable (planning artifact, not raw extraction)
 
@@ -62,7 +62,7 @@ Predecessors [#2535](https://github.com/vamseeachanta/workspace-hub/issues/2535)
 - [ ] Plan file populates the resource-intelligence section per `docs/plans/_template-issue-plan.md`
 - [ ] SESA client / project-owner clearance gate is explicit in the plan
 - [ ] Vendor / TBE rows carry an explicit risk note (no leak of bidder confidentiality)
-- [ ] Plan flags the `lng-projects` index/log shared-write contention with the Woodfibre stream
+- [ ] Plan flags the `lng-projects` index/log shared-write contention with the LNG terminal A stream
 - [ ] Issue ends with `status:plan-review` (no `status:plan-approved`)
 
 ## Hard rules

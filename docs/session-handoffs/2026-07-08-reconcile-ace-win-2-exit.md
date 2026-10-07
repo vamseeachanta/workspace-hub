@@ -18,9 +18,9 @@ Continue the ace-win-2 machine-equivalence/readiness reconciliation, then docume
   - [#3397](https://github.com/vamseeachanta/workspace-hub/issues/3397)
   - [#3398](https://github.com/vamseeachanta/workspace-hub/issues/3398)
 - Updated local Claude trust config for the `C:/ws` repo ecosystem after user authorization.
-  - Config: `C:/Users/vamseea/.claude.json`
-  - Backup: `C:/Users/vamseea/.claude.json.bak-20260707110409`
-  - Trusted paths verified: `C:/ws`, `aceengineer-admin`, `assetutilities`, `deckhand`, `deckhand-licensed-runs-queue`, `digitalmodel`, `llm-wiki`, `llm-wiki-acma`, `raw-to-knowledge-playbook`, `workspace-hub`, `worldenergydata`, `worldenergydata-wiki`
+  - Config: `C:/Users/<user>/.claude.json`
+  - Backup: `C:/Users/<user>/.claude.json.bak-20260707110409`
+  - Trusted paths verified: `C:/ws`, `aceengineer-admin`, `assetutilities`, `deckhand`, `deckhand-licensed-runs-queue`, `digitalmodel`, `llm-wiki`, `llm-wiki-<client>`, `raw-to-knowledge-playbook`, `workspace-hub`, `worldenergydata`, `worldenergydata-wiki`
 - Verified Claude safe mode can run non-interactively:
   - `claude --safe-mode --print 'Return exactly TRUST_OK.'`
   - Result: `TRUST_OK`
@@ -51,7 +51,7 @@ Continue the ace-win-2 machine-equivalence/readiness reconciliation, then docume
 ## Verified repo state before this handoff
 
 - `workspace-hub`: `## main...origin/main`
-- `llm-wiki-acma`: `## main...origin/main`
+- `llm-wiki-<client>`: `## main...origin/main`
 - `raw-to-knowledge-playbook`: `## main...origin/main`
 - `assetutilities`: `## main...origin/main`
 - `worldenergydata`: `## main...origin/main`
@@ -61,11 +61,11 @@ No stashes were present in those repos at the last cleanup audit.
 ## Expected local residue
 
 - Local Claude config backups:
-  - `C:/Users/vamseea/.claude.json.bak-20260707110409`
+  - `C:/Users/<user>/.claude.json.bak-20260707110409`
   - earlier failed-attempt backups from the same authorized edit window may also remain.
 - Two locked Windows temp files from runtime activity:
-  - `C:/Users/vamseea/AppData/Local/Temp/90662731-000f-405f-9d8a-2532ba1071b2.tmp`
-  - `C:/Users/vamseea/AppData/Local/Temp/9dd4754d-91bd-4ccf-ae25-2f08d9701e10.tmp`
+  - `C:/Users/<user>/AppData/Local/Temp/90662731-000f-405f-9d8a-2532ba1071b2.tmp`
+  - `C:/Users/<user>/AppData/Local/Temp/9dd4754d-91bd-4ccf-ae25-2f08d9701e10.tmp`
 - Ignored review artifacts under `scripts/review/results/` for [#3397](https://github.com/vamseeachanta/workspace-hub/issues/3397) and [#3398](https://github.com/vamseeachanta/workspace-hub/issues/3398).
 
 ## Blockers

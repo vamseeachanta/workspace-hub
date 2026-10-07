@@ -1,8 +1,8 @@
 ---
 name: overnight-worktree-verification-fallback
-description: Verify overnight multi-worktree Codex batches when auto-sync, duplicate-lane convergence, and sandbox-blocked review create misleading local state or review provenance.
+description: Verify overnight multi-worktree Claude batches when auto-sync, duplicate-lane convergence, and sandbox-blocked review create misleading local state or review provenance.
 triggers:
-  - Overnight Codex batch uses fresh worktrees plus auto-sync or hook-driven push behavior
+  - Overnight Claude batch uses fresh worktrees plus auto-sync or hook-driven push behavior
   - Morning verification shows local worktree HEAD disagrees with origin/main
   - Two lanes may have converged on the same deterministic implementation
   - Planning-only worker produced review artifacts but could not run real cross-provider review
@@ -10,7 +10,7 @@ triggers:
 
 # Overnight worktree verification fallback
 
-Use this after overnight parallel Codex runs in workspace-hub-style repos.
+Use this after overnight parallel Claude runs in workspace-hub-style repos.
 
 ## Core problems this skill handles
 1. A worker lands a commit on `origin/main`, but the isolated worktree remains at an older local `HEAD`.
@@ -86,7 +86,7 @@ Acceptable fallback output:
 - issue comment summarizing what appears retired vs what still needs real review
 
 Not acceptable:
-- claiming Codex/Gemini/Codex review happened when only one author reviewed
+- claiming Codex/Gemini/Claude review happened when only one author reviewed
 - treating self-review artifacts as approval-equivalent
 
 ## Morning scoreboard template

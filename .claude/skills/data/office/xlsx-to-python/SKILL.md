@@ -76,7 +76,7 @@ The `client-c` repo is the transfer vehicle to Windows. Workbooks are scattered 
 ```bash
 # Use rsync -- preserve directory tree, copy ONLY xlsx/xls/xlsm
 rsync -av --include='*/' --include='*.xlsx' --include='*.xls' --include='*.xlsm' --exclude='*' \
-  /mnt/ace/client-b/s7/ballymore/ client-c/engineering_workbooks/ballymore/
+  /mnt/ace/client-b/s7/gom-tieback-a/ client-c/engineering_workbooks/gom-tieback-a/
 ```
 
 Key findings:
@@ -89,7 +89,7 @@ Key findings:
 
 Run legal compliance before committing:
 ```bash
-bash scripts/legal/legal-sanity-scan.sh  # from workspace-hub root
+# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
 ```
 
 ### Step 3: Commit and Push
@@ -103,7 +103,7 @@ git push
 
 ### Step 3b: Quality Validation After Conversion
 
-After each batch is converted on Windows (ws014), validate before accepting:
+After each batch is converted on Windows (ace-win-2), validate before accepting:
 
 1. **Pull the converted code** from `client-c` repo back to Linux
 2. **Run the full test suite** — all tests must pass (zero failures)
@@ -121,12 +121,12 @@ Maintain two docs in `docs/document-intelligence/`:
 
 ### Step 5: Transfer to Windows Machine
 
-The **execution machine is ws014** (Windows). Transfer via:
+The **execution machine is ace-win-2** (Windows). Transfer via:
 ```bash
-git clone git@github.com:vamseeachanta/client-c.git  # on ws014
+git clone git@github.com:vamseeachanta/client-c.git  # on ace-win-2
 ```
 
-**The conversion prompt runs in Claude Code on ws014** — NOT the Copilot in Excel add-in and NOT Cowork. Copilot in Excel can only read cell values and explain formulas; it cannot write Python files, create tests, or organize code into repos. Claude Code has full filesystem access and can use openpyxl to read Excel files, extract formula logic, write Python modules, and create PRs.
+**The conversion prompt runs in Claude Code on ace-win-2** — NOT the Copilot in Excel add-in and NOT Cowork. Copilot in Excel can only read cell values and explain formulas; it cannot write Python files, create tests, or organize code into repos. Claude Code has full filesystem access and can use openpyxl to read Excel files, extract formula logic, write Python modules, and create PRs.
 
 ### Step 5b: Large File Bypass (if needed)
 
@@ -147,7 +147,7 @@ Once workbooks are converted to Python:
 
 ## Conversion Quality Requirements
 
-Established quality bar from first conversion (Ballymore Jumper, 7 sheets, 2.3MB):
+Established quality bar from first conversion (GoM tieback A Jumper, 7 sheets, 2.3MB):
 
 ### Minimum Bar (must achieve per workbook)
 
@@ -165,22 +165,22 @@ Established quality bar from first conversion (Ballymore Jumper, 7 sheets, 2.3MB
 
 | Aspect | Windows Claude Code | Linux openpyxl |
 |--------|-------------------|----------------|
-| Completeness | Typically more thorough (24 functions vs 7 for Ballymore) | Adequate but may miss edge cases |
-| Test coverage | Higher test count (81 vs 53 for Ballymore) | Solid but less comprehensive |
+| Completeness | Typically more thorough (24 functions vs 7 for GoM tieback A) | Adequate but may miss edge cases |
+| Test coverage | Higher test count (81 vs 53 for GoM tieback A) | Solid but less comprehensive |
 | Documentation | Includes architecture diagrams, data flow graphs | Basic README |
 | OrcaFlex output | Produces full line-type section breakdown | May skip |
 | COG calculations | Both insulated + uninsulated variants | Often skipped |
 | Code quality | More bugs (5-16 of 81 tests fail before fixes) | Cleaner on first run |
 | Usability | Code may be trapped in Excel cells, needs extraction | Immediately runnable .py files |
 
-**Recommendation**: Run conversion on ws014 (Windows) using Claude Desktop cowork.
+**Recommendation**: Run conversion on ace-win-2 (Windows) using Claude Desktop cowork.
 The quality advantage (24 vs 7 functions, 81 vs 53 tests, COG, full OrcaFlex breakdown)
 outweighs the 10-20% failure rate which is fixable with the known bug list below.
 Linux gives clean but less complete code.
 
 ### Known Bugs in Windows Cowork Output (fix before accepting)
 
-Buggy pattern #1 — most common (16/81 failures in Ballymore):
+Buggy pattern #1 — most common (16/81 failures in GoM tieback A):
 ```python
 def compute_buoyancy(props=None):
     if props is None:
@@ -276,11 +276,11 @@ For multi-workbook conversion campaigns, create a parent feature issue + child i
 
 ```bash
 # Parent feature: overall scope, budget, checklist
-gh issue create --title "FEATURE: Excel-to-Code Conversion Pipeline — N workbooks via ws014" \
+gh issue create --title "FEATURE: Excel-to-Code Conversion Pipeline — N workbooks via ace-win-2" \
   --label "cat:engineering" --label "cat:data-pipeline"
 
-# Child issues: one per domain (e.g. Ballymore, FDAS, Talos Venice)
-gh issue create --title "Batch 1: Ballymore Jumper — 10 workbooks" \
+# Child issues: one per domain (e.g. GoM tieback A, FDAS, umbilical project A)
+gh issue create --title "Batch 1: GoM tieback A Jumper — 10 workbooks" \
   --add-label "cat:engineering,cat:data-pipeline,domain:document-intelligence"
 ```
 

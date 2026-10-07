@@ -21,7 +21,7 @@ This document is **planning-only**. No PNG/SVG/PDF assets are emitted by this ar
 | Path | Provides | Disclosure |
 |---|---|---|
 | `digitalmodel/examples/demos/gtm/data/pipelay_vessels.json` | Large PLV (Castorone/Seven Navica representative class), Shallow Water Barge (DLB representative class): tensioner capacity, stinger length/angle, water-depth range, pipe-size range, sea-state limits | Header: "representative of real vessel classes" |
-| `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json` | Large CSV (Aegir/Borealis representative class), Medium CSV (Normand Maximus/Seven Arctic representative class): crane SWL curve, RAO peaks, lift operability limits | Header: "representative of real vessel classes but are not exact specifications of any named vessel" |
+| `digitalmodel/examples/demos/gtm/data/csv_hlv_vessels.json` | Large CSV (Aegir/Borealis representative class), Medium CSV (Normand Maximus/construction-vessel-a representative class): crane SWL curve, RAO peaks, lift operability limits | Header: "representative of real vessel classes but are not exact specifications of any named vessel" |
 | `digitalmodel/examples/demos/gtm/results/vessel_comparison_matrix.json` | Cross-demo go/no-go matrix across 4 vessels (mudmat, jumper, shallow pipelay), pass-rates, head-to-head narratives | Computed from above two sources via demos 3/4/5 |
 | `digitalmodel/examples/demos/gtm/results/structure_comparison_matrix.json` | By-vessel crane utilisation values at 1500 m for mudmat S/M/L | Computed feed |
 | Standards inherited (citations) | DNV-ST-F101, DNV-RP-H103, DNV-ST-N001, DNV-OS-H101, API RP 1111 | Cited in `_references` arrays of the JSON inputs |

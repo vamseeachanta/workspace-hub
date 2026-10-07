@@ -86,7 +86,7 @@ When the user asks for "all candidates", "all N", "one by one", or otherwise wan
    - `status:needs-plan` plus priority/category/domain labels that already exist in the repo taxonomy.
 4. Keep the work explicitly planning-only. Do not start code changes from architecture-review issue creation.
 5. Verify every created issue after creation: `OPEN` state, title, URL, labels, and `status:needs-plan`.
-6. If there is a parent/portfolio issue, post one sequencing comment that lists recommended order and states that implementation remains blocked until each issue completes plan review and user approval.
+6. If there is a parent/portfolio issue, post one sequencing comment that lists recommended order and states that implementation follows task authority after each issue completes review and required domain decisions; no separate plan approval is required.
 7. Write a temp TSV or markdown index of created issue numbers/titles/URLs for restart-safe handoff; keep it outside repos unless the user asks for a tracked artifact.
 
 ### 2B. If the issue set becomes a staged plan wave

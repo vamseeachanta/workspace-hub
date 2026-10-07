@@ -10,7 +10,6 @@ Usage:
 import argparse
 import json
 import logging
-import subprocess
 import sys
 from collections import defaultdict
 from datetime import datetime
@@ -29,7 +28,6 @@ logger = logging.getLogger(__name__)
 SCRIPT_DIR = Path(__file__).resolve().parent
 HUB_ROOT = SCRIPT_DIR.parents[2]
 DEFAULT_CONFIG = SCRIPT_DIR / "config.yaml"
-LEGAL_SCAN = HUB_ROOT / "scripts" / "legal" / "legal-sanity-scan.sh"
 
 
 def load_config(config_path: Path) -> Dict[str, Any]:
@@ -126,33 +124,15 @@ def build_registry(
     return registry
 
 
-def run_legal_scan(file_path: Path) -> bool:
-    """Run legal-sanity-scan.sh on registry file."""
-    if not LEGAL_SCAN.exists():
-        logger.warning("Legal scan script not found: %s", LEGAL_SCAN)
-        return True
-    try:
-        result = subprocess.run(
-            ["bash", str(LEGAL_SCAN), str(file_path)],
-            capture_output=True, text=True, timeout=60,
-        )
-        if result.returncode != 0:
-            logger.error("Legal scan FAILED:\n%s", result.stdout or result.stderr)
-            return False
-        logger.info("Legal scan passed for %s", file_path)
-        return True
-    except (subprocess.TimeoutExpired, OSError) as e:
-        logger.warning("Legal scan error: %s", e)
-        return True
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Phase E: Master registry (WRK-309)"
     )
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
-    parser.add_argument("--skip-legal", action="store_true", help="Skip legal scan")
+    parser.add_argument("--skip-legal", action="store_true", help="Deprecated compatibility flag; ignored (scanner retired)")
     args = parser.parse_args()
+    if args.skip_legal:
+        logger.warning("--skip-legal is ignored; the scanner is retired")
 
     cfg = load_config(args.config)
     index_path = HUB_ROOT / cfg["output"]["index_path"]
@@ -176,11 +156,6 @@ def main() -> int:
     with open(registry_path, "w") as f:
         yaml.dump(registry, f, default_flow_style=False, sort_keys=False, width=120)
     logger.info("Wrote registry: %s", registry_path)
-
-    if not args.skip_legal:
-        if not run_legal_scan(registry_path):
-            logger.error("Registry failed legal scan. Fix before committing.")
-            return 1
 
     logger.info("Phase E complete: %d total documents registered", registry["total_docs"])
     return 0

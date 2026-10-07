@@ -31,7 +31,7 @@ Deep extraction follow-up: [workspace-hub#2536](https://github.com/vamseeachanta
 | 5 | `lng-a-62092-sesa` | `lng-projects` | `/mnt/ace/lng-a/62092_sesa` | 418 | 1,465,267,463 | medium | missing=0, size_mismatch=0, not_hardlinked=0 |
 | 6 | `lng-a-university` | `engineering` | `/mnt/ace/lng-a/training` | 564 | 11,060,962,662 | medium | missing=0, size_mismatch=0, not_hardlinked=0 |
 | 7 | `lng-a-codes-specs` | `engineering-standards` | `/mnt/ace/lng-a/codes` | 35,197 | 26,411,658,490 | metadata-only | missing=0, size_mismatch=0, not_hardlinked=0 |
-| 8 | `mkt-a-31522-woodfibre` | `lng-projects` | `/mnt/ace/mkt-a/31522-woodfibre-lng` | 5,364 | 1,879,405,139,855 | metadata-only | missing=0, size_mismatch=0, not_hardlinked=0 |
+| 8 | `mkt-a-31522-lng-terminal-a` | `lng-projects` | `/mnt/ace/mkt-a/31522-lng-terminal-a` | 5,364 | 1,879,405,139,855 | metadata-only | missing=0, size_mismatch=0, not_hardlinked=0 |
 
 ## Wiki validation
 

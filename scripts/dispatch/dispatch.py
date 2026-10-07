@@ -29,6 +29,32 @@ except ImportError:
 ROOT = route.ROOT
 DISPATCH_DIR = ROOT / ".claude/dispatch"
 
+# ---------------------------------------------------------------------------
+# Issue titles are NOT written to the queue files.
+#
+# These files are git-tracked in a PUBLIC repo, and the routed set spans
+# workspace-hub, digitalmodel and deckhand — repos whose issue titles carry
+# client identifiers. CI's Client-PII Gate blocks on exactly that (PR #3765:
+# ten-plus hits in dev-primary.yaml, two in multi.yaml). The values are withheld
+# from the public log by design, so the fix cannot be "redact the ones we can
+# see"; the generator has to stop emitting the field.
+#
+# route.py still FETCHES titles — they feed `--detail` and `--json`, which are
+# local and ephemeral, never tracked. The boundary is serialisation, not
+# retrieval. (#3763/#3767 had just repaired that fetch after every card shipped
+# titleless; narrowing it here would re-break them.)
+#
+# OMITTED rather than blanked: #3763's failure mode was 1341/1341 cards with
+# `title: ""`. A blank or a "<redacted>" stand-in would make a deliberately
+# redacted queue byte-identical to that outage. The payload declares the
+# omission once instead, so absence reads as policy rather than breakage.
+#
+# A card stays identifiable via gh/repo/url/domain/provider/routed_by; a
+# draining session fetches the title from GitHub at drain time.
+# ---------------------------------------------------------------------------
+
+TITLE_POLICY = "omitted: issue titles are not written to a public tracked file"
+
 
 def get_proposals(repo=None):
     args = types.SimpleNamespace(repo=repo)
@@ -47,13 +73,80 @@ def build_queues(proposals):
             "repo": p["repo"],
             "domain": p["domain"],
             "provider": p["provider"],
-            "title": p["title"],
+            # No `title` — see TITLE_POLICY above.
             "url": p["url"],
             "dispatch_status": "ready",
             "wip_eligible": p["slot"] == "active-eligible",
             "routed_by": p["routed_by"],
         })
     return queues
+
+
+# ---------------------------------------------------------------------------
+# Queue staleness.
+#
+# A queue file is a SNAPSHOT of a routing decision, and routing inputs change
+# constantly — labels get corrected, machines retired, capability claims fixed.
+# On 2026-07-31 ~300 labels changed, silently invalidating queue files built the
+# day before. Nothing in the file said so.
+#
+# reachability.py (same week) already writes `observed_at` plus an explicit TTL
+# "so consumers warn on stale data rather than trusting it as static routing
+# truth". Dispatch queues are equally time-varying and had neither. An undated
+# snapshot does not look stale — it looks authoritative.
+#
+# Deliberately VISIBLE, not blocking: a stale queue beats no queue, and hard
+# failing a drain over a clock would push people to delete the field rather than
+# regenerate the file.
+# ---------------------------------------------------------------------------
+
+QUEUE_TTL_HOURS = 24
+
+
+def _utcnow():
+    from datetime import datetime, timezone
+    return datetime.now(timezone.utc)
+
+
+def queue_payload(machine: str, cards: list, now=None) -> dict:
+    """The serialised queue file, carrying its own age."""
+    stamp = (now or _utcnow)()
+    return {
+        "machine": machine,
+        "generated_by": "dispatch.py",
+        "generated_at": stamp.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "ttl_hours": QUEUE_TTL_HOURS,
+        # Declared once per file, not per card: 1300+ repetitions of the same
+        # string would bloat a tracked artifact to say one thing.
+        "title_policy": TITLE_POLICY,
+        "cards": cards,
+    }
+
+
+def queue_age_hours(payload: dict, now=None) -> float | None:
+    """Hours since generation, or None when the file predates the field."""
+    from datetime import datetime, timezone
+    raw = (payload or {}).get("generated_at")
+    if not raw:
+        return None
+    try:
+        gen = datetime.strptime(raw, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+    return ((now or _utcnow)() - gen).total_seconds() / 3600.0
+
+
+def queue_is_stale(payload: dict, now=None) -> bool:
+    """Unknown age resolves to STALE, never fresh.
+
+    Every queue file on main before 2026-07-31 lacks `generated_at`; treating
+    "I cannot tell" as "it is fine" would be the same defect this field exists
+    to close, self-inflicted.
+    """
+    age = queue_age_hours(payload, now=now)
+    if age is None:
+        return True
+    return age > (payload.get("ttl_hours") or QUEUE_TTL_HOURS)
 
 
 def cmd_build(write: bool):
@@ -67,10 +160,27 @@ def cmd_build(write: bool):
         print(f"  {machine:<16} {len(cards):>4} backlog  ({elig} wip-eligible now)")
         if write:
             DISPATCH_DIR.mkdir(parents=True, exist_ok=True)
-            payload = {"machine": machine, "generated_by": "dispatch.py",
-                       "cards": cards}
+            payload = queue_payload(machine, cards)
             with open(DISPATCH_DIR / f"{machine}.yaml", "w") as f:
                 yaml.safe_dump(payload, f, sort_keys=False, width=100)
+    # Report the age of what is ALREADY on disk, so a dry run tells you whether
+    # the live queues are worth regenerating rather than only what would change.
+    if DISPATCH_DIR.is_dir():
+        stale = []
+        for f in sorted(DISPATCH_DIR.glob("*.yaml")):
+            if f.name.startswith("_"):
+                continue
+            try:
+                data = yaml.safe_load(f.read_text()) or {}
+            except Exception:       # noqa: BLE001 — a corrupt queue is "unknown age"
+                data = {}
+            if queue_is_stale(data):
+                age = queue_age_hours(data)
+                stale.append(f"{f.stem} ({'no timestamp' if age is None else f'{age:.0f}h old'})")
+        if stale:
+            print(f"\n  \033[33mSTALE on disk ({len(stale)}):\033[0m {', '.join(stale)}")
+            print("  \033[2mRegenerate with --write; routing inputs change daily.\033[0m")
+
     if not write:
         print("\n\033[2mDRY-RUN — no files written. Re-run with --write (Phase B).\033[0m")
     else:

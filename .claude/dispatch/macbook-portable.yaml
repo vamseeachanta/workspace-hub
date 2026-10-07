@@ -1,11 +1,13 @@
 machine: macbook-portable
 generated_by: dispatch.py
+generated_at: '2026-08-02T03:34:51Z'
+ttl_hours: 24
+title_policy: 'omitted: issue titles are not written to a public tracked file'
 cards:
 - gh: vamseeachanta/workspace-hub#1508
   repo: vamseeachanta/workspace-hub
-  domain: ai-orchestration
+  domain: workstations
   provider: claude
-  title: 'Verify Claude Desktop install: macbook-portable'
   url: https://github.com/vamseeachanta/workspace-hub/issues/1508
   dispatch_status: ready
   wip_eligible: false

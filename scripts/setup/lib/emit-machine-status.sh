@@ -70,7 +70,16 @@ check_dimension_soul_contracts()        { [[ -f "${REPO_ROOT:-.}/config/agents/S
 check_dimension_skills()                { [[ -d "${REPO_ROOT:-.}/.claude/skills" ]] && echo PASS || echo FAIL; }
 check_dimension_rules()                 { [[ -d "${REPO_ROOT:-.}/.claude/rules" ]] && echo PASS || echo FAIL; }
 check_dimension_bridged_memory()        { [[ -d "${REPO_ROOT:-.}/.claude/memory" ]] && echo PASS || echo FAIL; }
-check_dimension_claude_global_pointer() { [[ -f "${HOME}/.claude/CLAUDE.md" ]] && echo PASS || echo FAIL; }
+check_dimension_claude_global_pointer() {
+    local state
+    if state="$(uv run --no-project python "${REPO_ROOT:-.}/scripts/agents/claude_runtime_state.py" \
+        --repo "${REPO_ROOT:-.}" --home "${HOME}" --format state)"; then
+        # A valid legacy link is installed evidence, not native loading evidence.
+        if [[ "$state" == "NATIVE_VERIFIED" ]]; then echo PASS; else echo WARN; fi
+    else
+        echo FAIL
+    fi
+}
 check_dimension_codex_agents_symlink()  { [[ -L "${HOME}/.codex/AGENTS.md" ]] && echo PASS || echo WARN; }
 check_dimension_hermes_soul_symlink()   { [[ -L "${HOME}/.hermes/SOUL.md" ]] && echo PASS || echo WARN; }
 check_dimension_claude_cli_auth()       { [[ -f "${HOME}/.claude/.credentials.json" ]] && echo PASS || echo WARN; }

@@ -120,7 +120,7 @@ tmpdir=$(mktemp -d)
 trap 'rm -rf "$tmpdir"' EXIT
 
 git init "$tmpdir" -q
-git -C "$tmpdir" config user.email "test@test.com"
+git -C "$tmpdir" config user.email "test@example.com"
 git -C "$tmpdir" config user.name "Test"
 touch "$tmpdir/file.txt"
 git -C "$tmpdir" add .

@@ -94,4 +94,4 @@ AGENT ASSIGNMENT
 4. If data is messy (80%+ uncategorized), plan normalization BEFORE workflows
 5. External repos may be in separate git clones or submodules — commit changes from within each repo
 6. Don't block all work on the hardest-to-set-up component — run parallel work on data/prep
-7. For skills: write-back to both ~/.hermes/skills/ AND .Codex/skills/ in repo (per WRITE-BACK RULE)
+7. For skills: write-back to both ~/.hermes/skills/ AND .claude/skills/ in repo (per WRITE-BACK RULE)

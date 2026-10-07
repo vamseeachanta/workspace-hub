@@ -2,12 +2,12 @@
 name: content-strategy
 description: Content marketing strategy with brand voice, editorial calendar, and
   content frameworks. Use for blog planning, content creation pipelines, and brand
-  consistency. Based on alirezarezvani/Codex-skills.
+  consistency. Based on alirezarezvani/claude-skills.
 type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03
-source: https://github.com/alirezarezvani/Codex-skills
+source: https://github.com/alirezarezvani/claude-skills
 related_skills:
 - seo-optimizer
 - social-media
@@ -50,7 +50,7 @@ This skill provides comprehensive content marketing capabilities including brand
 ## Version History
 
 - **1.1.0** (2026-02-03): Merged content type templates, writing best practices, headline formulas, CTA best practices, SEO fundamentals, voice attributes, tone adaptation, and terminology management from anthropics/knowledge-work-plugins
-- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/Codex-skills
+- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/claude-skills
 
 ## Sub-Skills
 

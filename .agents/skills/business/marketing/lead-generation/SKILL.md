@@ -2,12 +2,12 @@
 name: lead-generation
 description: B2B demand generation with CAC optimization, multi-channel strategies,
   and lead qualification frameworks. Use for lead acquisition, nurture campaigns,
-  and conversion optimization. Based on alirezarezvani/Codex-skills.
+  and conversion optimization. Based on alirezarezvani/claude-skills.
 type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-01-19
-source: https://github.com/alirezarezvani/Codex-skills
+source: https://github.com/alirezarezvani/claude-skills
 related_skills:
 - content-strategy
 - seo-optimizer
@@ -50,7 +50,7 @@ This skill provides comprehensive B2B demand generation capabilities including m
 
 ## Version History
 
-- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/Codex-skills
+- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/claude-skills
 
 ## Sub-Skills
 

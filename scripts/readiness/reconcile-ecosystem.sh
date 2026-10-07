@@ -32,6 +32,7 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
+case "${OSTYPE:-}" in msys*|mingw*|cygwin*) SCRIPT_DIR="$(cygpath -m "$SCRIPT_DIR")" || exit 2 ;; esac
 REPO_ROOT="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel 2>/dev/null || (cd "$SCRIPT_DIR/../.." && pwd))"
 GUARD="${REPO_ROOT}/scripts/lib/worktree_guard.py"
 BUILD_MATRIX="${REPO_ROOT}/scripts/readiness/build-equality-matrix.py"
@@ -213,6 +214,32 @@ scan_repo() {
 }
 
 # ── equality remediation mapping (this machine's column) ─────────────────────
+skills_repair_advice() {
+  local state rc root_q probe_q guard_q cmd providers=".gemini/skills"
+  local probe="$REPO_ROOT/scripts/skills/native_skill_root.py"
+  state=$(uv run --no-project --quiet python -B "$probe" "$REPO_ROOT" 2>/dev/null); rc=$?
+  case "$rc:$state" in
+    0:absent) providers=".codex/skills .gemini/skills" ;;
+    0:native) state="native skills preserved" ;;
+    *) state="blocked Codex classification" ;;
+  esac
+  printf -v root_q '%q' "$REPO_ROOT"
+  printf -v probe_q '%q' "$probe"
+  printf -v guard_q '%q' "$REPO_ROOT/scripts/lib/reparse_guard.sh"
+  cmd="(cd -- $root_q || exit 2; . $guard_q || exit 2; "
+  if [[ "$providers" == .codex/* ]]; then
+    cmd+="state=\$(uv run --no-project --quiet python -B $probe_q $root_q) || exit 2; [[ \"\$state\" == absent ]] || exit 2; "
+  fi
+  # Refuse unsafe adapter nodes before removing anything (incident 3571).
+  cmd+="for s in $providers; do is_reparse_point \"\$s\"; [[ \$? == 1 && ! -d \"\$s\" ]] || exit 2; done; "
+  cmd+="for s in $providers; do "
+  if [[ "$providers" == .codex/* ]]; then
+    cmd+="if [[ \"\$s\" == .codex/skills ]]; then state=\$(uv run --no-project --quiet python -B $probe_q $root_q) || exit 2; [[ \"\$state\" == absent ]] || exit 2; fi; "
+  fi
+  cmd+="git config --local core.symlinks true || exit 2; rm -f -- \"\$s\" && git checkout -- \"\$s\" || exit 2; done)"
+  add NEEDS-APPROVAL "$MACHINE" "[skills] $state; review tracked adapter restoration; junction/reparse nodes excluded (incident 3571)" "$cmd"
+}
+
 equality_plan() {
   command -v uv >/dev/null 2>&1 || { add OPERATOR-ONLY "$MACHINE" "uv missing — cannot read equality verdicts" "install uv"; return; }
   local json verdicts; json=$(uv run --script "$BUILD_MATRIX" --json --machine "$MACHINE" 2>/dev/null </dev/null) || return
@@ -247,8 +274,7 @@ equality_plan() {
         esac ;;
       DIVERGES|NO-MAJORITY)
         case "$dim" in
-          skills) add NEEDS-APPROVAL "$MACHINE" "[skills] likely tracked-symlink-materialized-as-text — repair (rm+checkout tracked paths); FIRST check LinkType: if the path is a Junction, do NOT run this (it would follow the reparse point — #3571 incident); leave junctions to the link tooling" \
-                    "git -C '$REPO_ROOT' config core.symlinks true; for s in .codex/skills .gemini/skills; do rm -f \"\$s\" && git -C '$REPO_ROOT' checkout -- \"\$s\"; done" ;;
+          skills) skills_repair_advice ;;
           harness|behavior) add NEEDS-APPROVAL "$MACHINE" "[$dim] runtime/config drift — rebuild soul runtime + re-collect" \
                     "bash scripts/agents/build-soul-runtime.sh && bash scripts/agents/install-soul-runtime.sh && ${CRON_CMD_PREFIX}bash '$CRON'" ;;
           scheduler) add NEEDS-APPROVAL "$MACHINE" "[scheduler] cron drift — reconcile jobs then re-collect" \

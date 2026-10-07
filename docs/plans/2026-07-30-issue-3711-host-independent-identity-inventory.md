@@ -57,7 +57,7 @@ that produced it. `[mac]` = `macbook-portable`, Darwin 25.5.0, `/Users/krishna/D
   | `dev-secondary` | linux | `/mnt/local-analysis/workspace-hub` |
   | `gpu-claw` | linux | `/home/undi/ws/workspace-hub` |
   | `gali-linux-compute-1` | linux | `None` |
-  | `ace-win-1` / `ace-win-2` | windows | `D:\workspace-hub` |
+  | `ace-win-1` / `ace-win-2` | windows | `<workspace-root>\workspace-hub` |
   | `macbook-portable` | macos | `/Users/krishna/Developer/ws/workspace-hub` |
 
   Only the four `os: linux` rows reach the inventory (`build-cron-identity-inventory.py:70`).
@@ -677,7 +677,7 @@ plan will make.
 | # | Risk | Likelihood | Mitigation |
 |---|---|---|---|
 | R-1 | Changing `workspace_hub_path`'s return type from `Path` to `PurePosixPath` breaks a caller that needs a concrete path. | Low | Measured: exactly two references exist in the repo, and the only consumer stores `str(hub)` and does `hub / FULL_VARIANT_LOG`. Byte-identical regeneration on both hosts is the proof. The no-override branch still returns `REPO_ROOT` (a real `Path`). Row 4 and the existing suites will catch a regression. |
-| R-2 | A future `registry.yaml` edit introduces a Windows `workspace_root` on an `os: linux` row, and the guard renders `D:\…` as a POSIX path. | Low | The guard rejects any root not starting with `/`, which covers `D:\workspace-hub`. Windows rows are separately excluded at `build-cron-identity-inventory.py:70`. |
+| R-2 | A future `registry.yaml` edit introduces a Windows `workspace_root` on an `os: linux` row, and the guard renders `D:\…` as a POSIX path. | Low | The guard rejects any root not starting with `/`, which covers `<workspace-root>\workspace-hub`. Windows rows are separately excluded at `build-cron-identity-inventory.py:70`. |
 | R-3 | The contents check makes the enforcement gate fail for an unrelated reason (e.g. a config edit committed without regenerating), producing gate noise. | Medium | That is the intended behaviour — it is the same class of failure `_validate_inventory_digest` already produces for the same edits, and the error message will name the differing field. Row 11 pins that a clean `main` is accepted, so a check that fails universally is caught. |
 | R-4 | The checker imports builder code from the **worktree**, so worktree/index divergence could in principle influence the verdict. | Low | Argued above: all five executed modules are digest sources, and `build()`'s worktree-derived `input_digest` versus the checker's index-derived digest means divergence trips the existing digest error first — closed, not open. Pre-existing (`scheduler_mutation_delegation.py:89-91`) and recorded as residue, not claimed resolved. |
 | R-5 | An implementer treats the AST tripwire (row 7) as the guard and weakens the contents check. | Low | The plan states explicitly that row 7 is secondary and defeated by aliasing, and row 9 is the guard. The rejected-alternatives table records why. |

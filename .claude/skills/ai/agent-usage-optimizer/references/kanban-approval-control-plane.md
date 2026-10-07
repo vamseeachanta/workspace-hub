@@ -1,5 +1,8 @@
 # Kanban approval control plane for provider-credit utilization
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use this pattern when provider credits are being wasted because there is no ready queue or low-friction approval surface.
 
 ## Core principle
@@ -16,7 +19,7 @@ If no implementation-ready issue exists, spend provider capacity on planning, ad
 
 1. Planning feedstock — open issues needing resource intelligence or plan drafting.
 2. Plan review / approval candidates — canonical plan exists and review is complete or pending.
-3. Execution-ready — `status:plan-approved` plus committed approval marker exists.
+3. Execution-ready — reviewed scope, task authority and no unresolved required decisions.
 4. Running / leased — dispatched to a provider with owner, lease, machine, and expected artifact.
 5. QA / closeout — output exists and needs tests, review, clean-state proof, and issue closeout.
 
@@ -27,9 +30,9 @@ A dashboard/HTML surface may show hover summaries and buttons, but the button mu
 1. verify live GitHub issue is open;
 2. verify canonical plan exists under `docs/plans/`;
 3. verify latest review artifacts have no `MAJOR`, `FAIL`, `UNAVAILABLE`, or pending verdicts;
-4. write or require `.planning/plan-approved/<issue>.md`;
-5. update labels from `status:plan-review` to `status:plan-approved`;
-6. add a GitHub comment with plan path, review summary, approval marker, and refreshed queue timestamp;
+4. verify originating task/standing authority for the current implementation scope;
+5. refresh factual review/readiness state without self-labeling owner approval;
+6. add a GitHub comment with plan path, review summary, task-authority provenance and refreshed queue timestamp;
 7. refresh provider work queue before dispatch.
 
 Do not treat GitHub issue-body HTML as the dashboard. GitHub strips active HTML/JS; use a separate rendered dashboard or local web artifact.
@@ -63,7 +66,7 @@ A practical utilization target is sustained high use with clean closeout, not bl
 - Claude: architecture, long-context synthesis, plan/adversarial review, high-complexity implementation.
 - Gemini: batched research, recon, risk scans, standards/competitor/source scans.
 
-Implementation dispatch requires the approval lane. Planning/review/recon packets may run when approval-ready implementation work is unavailable, but must be labeled as non-implementation work.
+Implementation dispatch requires reviewed scope within originating task authority, not an approval lane or marker. Planning/review/recon packets may run when approval-ready implementation work is unavailable, but must be labeled as non-implementation work.
 
 Running jobs need a lease/idempotency key so the same issue is not double-dispatched.
 
@@ -76,7 +79,7 @@ Recommended methods:
 1. Queue feeder
    - Refresh issue state, provider telemetry, and work queues on a fixed cadence.
    - Select the next card from the highest safe lane: execution-ready first, then QA/closeout, then plan-review hardening, then planning/recon.
-   - Do not select unapproved implementation work just because provider quota remains.
+   - Do not select implementation outside verified task/standing authority or with unresolved blockers just because provider quota remains.
 
 2. Provider-specific worker loop
    - Codex loop: bounded implementation/test/refactor packets with exact issue, plan path, allowed files, expected tests, and stop condition.

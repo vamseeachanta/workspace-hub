@@ -37,7 +37,7 @@ pip install git+https://github.com/stanfordnlp/dspy.git
 
 # With specific LM providers
 pip install dspy[openai]        # OpenAI
-pip install dspy[anthropic]     # Anthropic Codex
+pip install dspy[anthropic]     # Anthropic Claude
 pip install dspy[all]           # All providers
 ```
 
@@ -49,7 +49,7 @@ pip install dspy[all]           # All providers
 import dspy
 
 # Configure your language model
-lm = dspy.Codex(model="Codex-sonnet-4-5-20250929")
+lm = dspy.Claude(model="claude-sonnet-4-6")
 dspy.settings.configure(lm=lm)
 
 # Define a signature (input → output)
@@ -71,7 +71,7 @@ print(response.answer)  # "Paris"
 ```python
 import dspy
 
-lm = dspy.Codex(model="Codex-sonnet-4-5-20250929")
+lm = dspy.Claude(model="claude-sonnet-4-6")
 dspy.settings.configure(lm=lm)
 
 # Use ChainOfThought for better reasoning
@@ -286,13 +286,13 @@ optimized_rag = optimizer.compile(rag, trainset=trainset)
 
 ## LM Provider Configuration
 
-### Anthropic Codex
+### Anthropic Claude
 
 ```python
 import dspy
 
-lm = dspy.Codex(
-    model="Codex-sonnet-4-5-20250929",
+lm = dspy.Claude(
+    model="claude-sonnet-4-6",
     api_key="your-api-key",  # Or set ANTHROPIC_API_KEY env var
     max_tokens=1000,
     temperature=0.7
@@ -326,7 +326,7 @@ dspy.settings.configure(lm=lm)
 ```python
 # Different models for different tasks
 cheap_lm = dspy.OpenAI(model="gpt-3.5-turbo")
-strong_lm = dspy.Codex(model="Codex-sonnet-4-5-20250929")
+strong_lm = dspy.Claude(model="claude-sonnet-4-6")
 
 # Use cheap model for retrieval, strong model for reasoning
 with dspy.settings.context(lm=cheap_lm):

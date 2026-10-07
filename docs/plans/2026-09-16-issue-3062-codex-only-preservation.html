@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Issue 3062: Codex-only native preservation</title>
+<style>body{max-width:960px;margin:2.5rem auto;padding:0 1rem;font:16px/1.55 system-ui;color:#202124}code{background:#f4f4f4;padding:.1rem .25rem}table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbb;padding:.5rem;text-align:left}caption{caption-side:bottom;text-align:left;margin-top:.5rem;color:#555}</style></head><body>
+<main><h1>Codex-only native preservation</h1>
+<p><strong>Issue:</strong> <a href="https://github.com/vamseeachanta/workspace-hub/issues/3062">workspace-hub 3062</a> · <strong>Parent:</strong> <a href="https://github.com/vamseeachanta/workspace-hub/issues/3815">initiative 3815</a> · <strong>Class:</strong> T2 · <strong>Date:</strong> 2026-09-16.</p>
+<p>The propagator will gain an opt-in operation that will verify and preserve one repository's recognized native Codex skill root. This operation will allow a later bounded persistence trial to avoid shared Claude-skill and Gemini-adapter mutations. It will not install skills, change a native root, run a live rollout, or claim provider readiness.</p>
+
+<h2>Resource intelligence</h2>
+<table><thead><tr><th>Source</th><th>Finding used by this plan</th></tr></thead><tbody>
+<tr><td><a href="https://github.com/vamseeachanta/workspace-hub/issues/3062">Issue 3062</a></td><td>The existing skill-sprawl and retrieval scope owns the bounded propagator correction.</td></tr>
+<tr><td><code>scripts/propagate-ecosystem.sh</code> at <code>bc78c6de0074255692fa1c6f1435d053401b541c</code></td><td>The provider loop already calls the native classifier, but shared-skill propagation, ignore/index updates and the Gemini loop run before or beside that branch.</td></tr>
+<tr><td><code>scripts/skills/native_skill_root.py</code> at the same revision</td><td>The existing classifier will remain the sole ownership decision. Recognized <code>native</code> will preserve the adapter; absent, blocked or malformed results will fail this operation.</td></tr>
+<tr><td><code>scripts/skills/tests/test_resync_skill_links.sh</code></td><td>The disposable copied-propagator fixtures already cover native preservation and default adapter behavior, so the new cases will extend this harness.</td></tr>
+<tr><td><code>docs/plans/2026-09-11-issue-3606-agent-foundation-pilot.html</code></td><td>The foundation pilot separates native discovery, payload installation and machine readiness; this selector will establish only preservation behavior.</td></tr>
+</tbody><caption>Table 1. Repository and issue sources define the implementation boundary.</caption></table>
+<p>No external dataset or engineering standard will govern this shell-selection change. Runtime host evidence and private persistence captures will remain outside this public plan.</p>
+
+<h2>Proposed behavior</h2>
+<ul>
+<li><code>--codex-only</code> will require exactly one <code>--only &lt;repository-basename&gt;</code>. Missing, empty, option-like, repeated, path-valued, unmatched or multiply matched selections will fail before propagation.</li>
+<li><code>--hooks-only</code> will be incompatible in either argument order. <code>--skills-only</code>, <code>--dry-run</code> and <code>--verbose</code> will remain compatible.</li>
+<li>Repository discovery will retain its current nested-and-sibling enumeration and eligibility rules. The selected operation will require exactly one eligible basename match.</li>
+<li>The operation will call the existing native classifier. A recognized native root will emit one target-specific preservation message and return success.</li>
+<li>Missing helpers, failed execution, malformed output, blocked metadata and absent native ownership will fail without creating a legacy Codex bridge.</li>
+<li>The selected operation will return before hooks, permissions, shared Claude skills, ignore/index updates and Gemini handling. It will bypass the shared <code>_internal</code> template precondition because that template is not an input to this operation.</li>
+<li>Invocations without <code>--codex-only</code> will retain existing behavior.</li>
+</ul>
+
+<h2>Write boundary and verification</h2>
+<table><thead><tr><th>Path</th><th>Planned change</th></tr></thead><tbody>
+<tr><td><code>scripts/propagate-ecosystem.sh</code></td><td>Add the selector, validation and a small wrapper around the existing classifier.</td></tr>
+<tr><td><code>scripts/skills/tests/test_resync_skill_links.sh</code></td><td>Add tests before production edits for positive preservation, selection failures, classifier failures and default regressions.</td></tr>
+<tr><td><code>docs/plans/2026-09-16-issue-3062-codex-only-preservation.html</code></td><td>Retain this public, machine-neutral plan.</td></tr>
+<tr><td><code>docs/plans/README.md</code></td><td>Add the plan-index entry.</td></tr>
+</tbody><caption>Table 2. Four tracked paths bound the change.</caption></table>
+<p>The tests will use disposable repositories and copied scripts. Ordinary and dry-run cases will preserve six native payload sentinels, a parked Codex bridge, stale Gemini state, Claude settings, Git index state and an unrelated eligible sibling. Cases will include a parent path containing spaces and a foreign invocation directory. Existing default native, absent-root, Gemini and shared-propagation regressions will run where the platform supports their filesystem fixtures.</p>
+
+<h2>Stop conditions and limits</h2>
+<p>The change will stop for an owning-source mismatch, a new classifier, expanded discovery, a default-behavior regression, a write outside the four paths, or a test fixture that touches a real sibling repository. Legal positive controls, whitespace checks and independent Claude and Codex artifact reviews will be required before publication. Windows inability to construct a Unix dangling-symlink fixture will be reported as a platform limitation rather than counted as a pass.</p>
+<p>A passing fixture will establish selector behavior only. Source integration, installation on another machine, actual generator execution, persistence readback, plugin or settings changes, and fleet-readiness claims will remain separately gated.</p>
+</main></body></html>

@@ -148,7 +148,7 @@ def test_enforcement_workflow_is_active_and_failure_propagating():
     checkout = next(step for step in steps if step.get("uses") == "actions/checkout@v4")
     assert checkout["with"]["fetch-depth"] == "0"
     assert any(step.get("uses") == "actions/setup-python@v5" for step in steps)
-    assert any(step.get("uses") == "astral-sh/setup-uv@v4" for step in steps)
+    assert any(step.get("uses", "").startswith("astral-sh/setup-uv@") for step in steps)
     runs = [step for step in steps if CHECKER.name in step.get("run", "")]
     assert len(runs) == 2
     assert any("--check-html" not in step["run"] for step in runs)
@@ -174,7 +174,7 @@ def test_main_push_scheduler_workflow_is_fail_closed():
     assert checkout["with"]["fetch-depth"] == "0"
     python = next(step for step in steps if step.get("uses") == "actions/setup-python@v5")
     assert python["with"]["python-version"] == "3.12"
-    assert any(step.get("uses") == "astral-sh/setup-uv@v4" for step in steps)
+    assert any(step.get("uses", "").startswith("astral-sh/setup-uv@") for step in steps)
 
     expected_commands = {
         "uv run python scripts/enforcement/check-scheduler-mutation-surfaces.py",

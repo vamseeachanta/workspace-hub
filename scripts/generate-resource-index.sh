@@ -118,7 +118,7 @@ HEADER
 | Query AI quota | `./scripts/ai/assessment/query-quota.sh` |
 | Sync usage | `./scripts/ai/assessment/auto-sync-usage.sh` |
 | Log usage | `./scripts/ai/assessment/log-usage.sh` |
-| Legal scan | `./scripts/legal/legal-sanity-scan.sh --repo=<name>` |
+| Final report review | `docs/standards/FINAL_REPORT_VERIFICATION.md` (manual; identifier gates retired) |
 | Repo sync | `./scripts/repository_sync` |
 | Work queue index (legacy compat) | `uv run --no-project python .claude/work-queue/scripts/generate-index.py` |
 | Canonical queue refresh | `uv run scripts/refresh-agent-work-queue.py` |

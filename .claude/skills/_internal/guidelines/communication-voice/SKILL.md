@@ -51,7 +51,7 @@ setpoints and spacing") are fine; verdicts on their operation are not.
 
 | Hedged — outcomes, and anything about them | Unhedged — facts, terms, capability, own limits |
 |---|---|
-| "can potentially make", "roughly +30 BOPD", "usually", "may be able to", "I think" | "I have worked at Occidental for over 5 years." "I will spend next 1 month creating value on my own time." "I am currently on a 3 week family emergency trip." |
+| "can potentially make", "roughly +30 BOPD", "usually", "may be able to", "I think" | "I have worked at a major E&P operator for over 5 years." "I will spend next 1 month creating value on my own time." "I am currently on a 3 week family emergency trip." |
 
 **4. Volunteer the limits of your own analysis before being asked.**
 "…and **where I think the numbers can't yet support a conclusion**."
@@ -59,7 +59,7 @@ setpoints and spacing") are fine; verdicts on their operation are not.
 against labelled field data**."
 
 **5. Credentials get one clause, then drop it.**
-The entire credential is: *"I have worked at Occidental for over 5 years and on real-time
+The entire credential is: *"I have worked at a major E&P operator for over 5 years and on real-time
 production and drilling analytics."* No title, no achievements, never "expert" or "specialist".
 Competence is carried by **knowing what to name** — "fillage on plunger stroke, spacing, SPM,
 unit balance"; "rod-on-tubing wear, corrosion, scale, solids". The reader infers it.

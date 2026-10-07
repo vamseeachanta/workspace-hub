@@ -1,6 +1,6 @@
 ---
 name: inventory-readiness-provider-dispatch
-description: Build and operate a computable readiness matrix that connects raw-data-to-GTM package stages with Codex/Codex/Gemini dispatch lanes and weekly credit pacing.
+description: Build and operate a computable readiness matrix that connects raw-data-to-GTM package stages with Claude/Codex/Gemini dispatch lanes and weekly credit pacing.
 version: 1.0.0
 category: ai
 type: workflow
@@ -19,7 +19,10 @@ related_skills:
 
 # Inventory Readiness Provider Dispatch
 
-Use this when the user wants to optimize Codex/Codex/Gemini usage around a staged GitHub work pipeline, especially:
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
+Use this when the user wants to optimize Claude/Codex/Gemini usage around a staged GitHub work pipeline, especially:
 
 `raw data -> inventory -> llm-wiki -> calculation code -> parametric outputs -> website/GTM`
 
@@ -40,17 +43,17 @@ The Markdown report should be generated from YAML, not hand-authored as the sour
 
 All packages surfaced by the matrix must follow:
 
-`plan -> adversarial plan review -> user approval -> implementation -> adversarial implementation review -> closeout`
+`plan -> adversarial plan review -> verify task authority -> implementation -> adversarial implementation review -> closeout`
 
 Do not execute downstream issue candidates just because they appear in the matrix. Keep them as references/candidates/dependencies unless explicitly approved for execution.
 
 ## Provider Fit
 
 - Gemini: raw data discovery, source inventory, standards/competitor/GTM scouting, gap discovery.
-- Codex: plan synthesis, adversarial plan review, governance/architecture decisions, implementation review.
+- Claude: plan synthesis, adversarial plan review, governance/architecture decisions, implementation review.
 - Codex: calculation code, validators, tests, CI fixes, bounded implementation/refactors, deterministic report generation.
 
-Avoid burning Codex on mechanical coding when Codex has credits and the task is bounded.
+Avoid burning Claude on mechanical coding when Codex has credits and the task is bounded.
 
 ## Weekly Credit Pacing Policy
 
@@ -69,7 +72,7 @@ Each package family should include:
 2. readiness status per stage, e.g. `READY`, `PARTIAL`, `BLOCKED`, `MISSING`, `STALE`
 3. evidence for every non-ready stage
 4. downstream issue references with role/approval state
-5. provider dispatch lanes for Codex/Gemini/Codex
+5. provider dispatch lanes for Codex/Gemini/Claude
 6. dependency issues needed to make the lane executable
 7. explicit boundary text for downstream/reference-only work
 

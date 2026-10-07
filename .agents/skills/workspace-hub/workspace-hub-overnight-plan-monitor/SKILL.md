@@ -2,8 +2,8 @@
 name: workspace-hub-overnight-plan-monitor
 description: Monitor and reconcile workspace-hub overnight planning or implementation batches, including process status, result artifacts, issue/commit verification, and controlled failed-lane recovery.
 triggers:
-  - Monitor Codex/Codex/Gemini overnight planning runs in workspace-hub
-  - Monitor parallel Codex implementation batches launched by Hermes background process sessions
+  - Monitor Claude/Codex/Gemini overnight planning runs in workspace-hub
+  - Monitor parallel Claude implementation batches launched by Hermes background process sessions
   - Count completed dossiers under docs/plans/overnight-prompts/*/results or /mnt/local-analysis/overnight-batch-*/results
   - Check which batch terminal processes are still alive from logs/*.pid or Hermes process session IDs
   - Summarize final recommendations from dossier markdown files or implementation lane summaries
@@ -88,7 +88,7 @@ A few practical quirks showed up during monitoring:
 from pathlib import Path
 import os, re
 
-pid_dir = Path('/mnt/local-analysis/workspace-hub/logs/Codex-2026-04-09-10pack')
+pid_dir = Path('/mnt/local-analysis/workspace-hub/logs/claude-2026-04-09-10pack')
 result_dir = Path('/mnt/local-analysis/workspace-hub/docs/plans/overnight-prompts/2026-04-09-10claude/results')
 
 result_files = sorted(result_dir.glob('*.md'))

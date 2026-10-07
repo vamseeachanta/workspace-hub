@@ -19,7 +19,7 @@ Audit whether agents are following established workflows (plan review, cross-rev
 | Area | What to Check | Evidence Sources |
 |------|-------------|------------------|
 | **Cross-Review** | Are engineering commits getting reviewed? | `scripts/review/results/`, git log |
-| **Plan Review** | Are plans written and approved before implementation? | Issue comments, `.planning/` files |
+| **Plan Review** | Are proportionate plans reviewed and task authority verified before implementation? | Issue comments, `.planning/` files |
 | **TDD Compliance** | Are tests written before implementation? | Commit order, test file timestamps |
 | **Doc Intelligence** | Is the document index healthy and current? | `data/document-index/index.jsonl`, `standards-transfer-ledger.yaml` |
 | **Resource Intelligence** | Is the resource maturity tracker being updated? | `data/document-index/resource-intelligence-maturity.yaml` |
@@ -97,8 +97,8 @@ Compliance rate: ~0.2%
 
 ## Pitfalls
 
-- **Session signals directory**: `.Codex/state/session-signals/` may have stale data. The `check_claude_usage.sh` script may never have run, so generated log files don't exist.
-- **Hermes sessions**: Not tracked in the same way as Codex sessions. Check `~/.hermes/sessions/` for Hermes-specific data.
+- **Session signals directory**: `.claude/state/session-signals/` may have stale data. The `check_claude_usage.sh` script may never have run, so generated log files don't exist.
+- **Hermes sessions**: Not tracked in the same way as Claude sessions. Check `~/.hermes/sessions/` for Hermes-specific data.
 - **Auto-sync noise**: `chore(sync): auto-sync` commits inflate total commit counts. Filter these out.
 - **Review artifacts vs review execution**: Having review files in `scripts/review/results/` doesn't mean the review was performed — check file sizes and content. Some artifacts are empty or contain only error messages.
 - **Document index vs registry**: The index.jsonl is NOT the same as the online-resource-registry.yaml or standards-transfer-ledger.yaml. The index tracks all documents (647K+), while registries track specific collections.

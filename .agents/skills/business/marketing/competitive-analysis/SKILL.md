@@ -2,12 +2,12 @@
 name: competitive-analysis
 description: Competitive intelligence with positioning analysis, battlecards, and
   market monitoring. Use for competitor tracking, differentiation strategy, and win/loss
-  analysis. Based on alirezarezvani/Codex-skills.
+  analysis. Based on alirezarezvani/claude-skills.
 type: reference
 version: 1.0.0
 category: business
 last_updated: 2026-02-03
-source: https://github.com/alirezarezvani/Codex-skills
+source: https://github.com/alirezarezvani/claude-skills
 related_skills:
 - content-strategy
 - lead-generation
@@ -56,7 +56,7 @@ This skill provides comprehensive competitive intelligence capabilities includin
 ## Version History
 
 - **1.1.0** (2026-02-03): Merged competitive research methodology, messaging comparison frameworks, and content gap analysis from anthropics/knowledge-work-plugins
-- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/Codex-skills
+- **1.0.0** (2026-01-19): Initial release adapted from alirezarezvani/claude-skills
 
 ## Sub-Skills
 

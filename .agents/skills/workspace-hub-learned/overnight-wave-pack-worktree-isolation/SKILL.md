@@ -21,7 +21,7 @@ Reusable approach
 2. If main is dirty or shared planning files are in prompt scope, create one fresh worktree per terminal from the current HEAD.
 3. Copy the master overnight pack and prompt files into each worktree.
 4. Rewrite absolute repo paths inside each copied prompt from the original checkout path to that worktree path.
-5. Launch Codex from inside each worktree with the copied prompt file loaded into a shell variable.
+5. Launch Claude from inside each worktree with the copied prompt file loaded into a shell variable.
 6. Point logs and expected result artifacts to the worktree-local paths.
 7. If a morning monitor job already exists, update it to inspect the worktree result paths instead of the original checkout.
 
@@ -35,7 +35,7 @@ perl -0pi -e 's#/mnt/local-analysis/workspace-hub#/mnt/local-analysis/worktrees/
   /mnt/local-analysis/worktrees/ws-foo-t1/docs/plans/master-pack.md
 cd /mnt/local-analysis/worktrees/ws-foo-t1
 PROMPT=$(< docs/plans/overnight-prompts/foo/terminal-1.md)
-Codex -p --permission-mode acceptEdits --no-session-persistence --output-format text --max-budget-usd 20 \
+claude -p --permission-mode acceptEdits --no-session-persistence --output-format text --max-budget-usd 20 \
   "$PROMPT" </dev/null > logs/terminal-1.log 2>&1
 ```
 

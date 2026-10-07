@@ -17,7 +17,7 @@ Use this skill when the task involves any of:
 ## Operating contract
 1. **Treat this as planning/governance unless the user has approved implementation.**
    - For GitHub issue work, follow the local repo's planning gates.
-   - Do not jump from gap discovery directly into implementation unless the relevant issue is already plan-approved.
+   - Do not jump from gap discovery directly into implementation without reviewed scope and task authority; an approval label is not required.
 2. **Keep the wiki public-safe by default.**
    - No private/raw archives, credentials, local absolute paths, vendor/client material, dotfiles, symlink escapes, connection strings, or machine-specific manifests.
    - Prefer committed markdown and deterministic generated metadata over local runtime state.

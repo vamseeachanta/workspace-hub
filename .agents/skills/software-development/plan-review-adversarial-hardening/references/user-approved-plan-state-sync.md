@@ -1,3 +1,9 @@
+Current routing: use the active optional owner-history skill at
+`.claude/skills/workspace-hub-learned/user-approved-plan-state-sync/SKILL.md`.
+The archived recipe below documents the retired marker gate; it is historical,
+not an implementation prerequisite. Current task authority, review and domain
+decisions govern execution; do not fabricate labels/markers from this recipe.
+
 # Archived Skill: `user-approved-plan-state-sync`
 
 Original path: `/home/vamsee/.hermes/skills/workspace-hub-learned/user-approved-plan-state-sync`

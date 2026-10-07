@@ -1,5 +1,8 @@
 # Telegram/Hermes control-surface issue-tree decomposition
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use this reference when a multi-machine Telegram/Hermes audit concludes that dispatch is not ready and the user wants to persevere toward a working control-surface machine. The durable pattern is to convert readiness blockers into a plan-gated GitHub issue tree rather than starting ad hoc operational changes.
 
 ## Trigger
@@ -26,7 +29,7 @@ Keep this tree operationally sequenced: coordinator hardening gates worker promo
 
 - Use existing repo taxonomy; do not invent labels if matching `cat:*`, `domain:*`, `priority:*`, and `status:*` labels already exist.
 - Start all implementation-affecting issues at `status:needs-plan`.
-- Embed the hard gate in every issue body: resource intel → plan document → adversarial review → `status:plan-review` → user approval → `status:plan-approved` → TDD implementation → code review/verification → close.
+- Embed the hard gate in every issue body: resource intel → plan document → adversarial review → verify task authority → TDD implementation → code review/verification → close.
 - Link prior closed design issues as context, but create a new operational issue tree when the old issue was design/planning-only and the current work is live enablement.
 
 ## Verification checklist after issue creation

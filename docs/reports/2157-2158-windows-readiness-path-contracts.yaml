@@ -94,7 +94,7 @@ issues:
     proposed_validation_commands:
       - "uv run pytest tests/workstations/test_machine_path_resolver.py -q"
       - "uv run pytest tests/workstations/test_windows_readiness_launcher.py -q"
-      - "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/windows/windows-readiness-launcher.ps1 -DryRun -WorkspaceRoot 'D:\\workspace-hub'"
+      - "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/windows/windows-readiness-launcher.ps1 -DryRun -WorkspaceRoot '<workspace-root>\\workspace-hub'"
 
 shared_anchors:
   existing_paths:

@@ -1,5 +1,10 @@
 # Weekly cadence issue wave pattern
 
+## Current task authority
+
+The originating task request or established standing authority authorizes implementation within scope, including substantial work, after proportionate planning, TDD and adversarial review. No separate plan approval, approval label or local marker is required. Honor planning-only requests and unresolved domain decisions. Publication, deployment, access changes, destructive actions and outreach retain their action-specific authority. Preserve historical approval records; do not self-label owner approval.
+
+
 Use this reference when the user asks to keep `llm-wiki` current on a recurring cadence and turn the review into GitHub issues.
 
 ## Session-derived pattern
@@ -15,9 +20,9 @@ Defer heavier second-wave work until the first-wave contracts land:
 - RAG/retrieval evaluation benchmark,
 - CLI/MCP query surfaces.
 
-## Approval-sync requirement
+## Task-scope verification
 
-When the user approves only a subset of reviewed issues, synchronize all approval surfaces before implementation:
+When the user authorizes only a subset of reviewed issues, verify that scope before implementation. These approval surfaces are historical records, not prerequisites:
 
 - live GitHub label: `status:plan-approved`,
 - plan frontmatter: `status: plan-approved`,
@@ -33,7 +38,7 @@ Weekly cadence artifacts should default to public-safe, repo-local, deterministi
 
 ## Recommended sequencing
 
-For implementation after approval, prefer:
+For reviewed implementation within task authority, prefer:
 
 1. agent entrypoint manifests,
 2. freshness control loop,
@@ -43,9 +48,9 @@ This order gives later automation a stable navigation contract and lowers recurr
 
 When the agent-entrypoint manifest issue is already landed/closed, the next logical step is the **freshness control loop** before the OSS/concept watchlist. The freshness loop is the cadence substrate: it defines stale-page detection, report/schema outputs, broken-link checks, and recommendation routing that later watchlist/retrieval work should feed.
 
-For "next logical step" follow-ups, do not re-open broad strategy. Re-check live issue labels and local approval markers, then give a concise priority recommendation:
-- execute the first `status:plan-approved` substrate issue that unblocks the cadence;
-- keep `status:plan-review` siblings out of execution until explicit user approval;
+For "next logical step" follow-ups, do not re-open broad strategy. Re-check live issue state, reviewed plan and originating task authority, then give a concise priority recommendation:
+- execute the first reviewed, scope-authorized substrate issue that unblocks the cadence;
+- execute reviewed siblings within the same task authority; defer unrelated scope and unresolved domain decisions;
 - name the evidence checked: clean/synced repo state, issue URL, labels, and local `.planning/plan-approved/<issue>.md` marker when relevant.
 
 ## Agent entrypoint manifest implementation lessons

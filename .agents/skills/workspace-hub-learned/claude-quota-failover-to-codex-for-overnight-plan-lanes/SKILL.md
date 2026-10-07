@@ -1,21 +1,21 @@
 ---
-name: Codex-quota-failover-to-codex-for-overnight-plan-lanes
-description: Recover an overnight multi-worktree planning wave when some Codex lanes hit quota by relaunching only the failed lanes with Codex in the same isolated worktrees and prompt files.
+name: claude-quota-failover-to-codex-for-overnight-plan-lanes
+description: Recover an overnight multi-worktree planning wave when some Claude lanes hit quota by relaunching only the failed lanes with Codex in the same isolated worktrees and prompt files.
 version: 1.0.0
 author: Hermes Agent
 ---
 
-# Codex quota failover to Codex for overnight plan lanes
+# Claude quota failover to Codex for overnight plan lanes
 
 Use when:
-- you launched a large overnight planning-only wave with `Codex -p`
+- you launched a large overnight planning-only wave with `claude -p`
 - some lanes fail with `You've hit your limit · resets ...`
 - other lanes are still healthy and should not be restarted
 - each lane already has its own isolated worktree and committed prompt file
 
 ## Why this exists
 
-In the 2026-04-23 10-agent pre-plan-review wave, several Codex workers exited due to quota exhaustion while other workers were still making progress. Restarting the entire batch would have wasted work and increased git contention risk. The reliable recovery was lane-by-lane failover to Codex, reusing the exact same worktree and prompt file.
+In the 2026-04-23 10-agent pre-plan-review wave, several Claude workers exited due to quota exhaustion while other workers were still making progress. Restarting the entire batch would have wasted work and increased git contention risk. The reliable recovery was lane-by-lane failover to Codex, reusing the exact same worktree and prompt file.
 
 ## Preconditions
 
@@ -27,7 +27,7 @@ In the 2026-04-23 10-agent pre-plan-review wave, several Codex workers exited du
 Verify:
 - `which codex`
 - `codex --version`
-- the failed Codex lane's prompt file still exists
+- the failed Claude lane's prompt file still exists
 - the failed lane's worktree path is correct
 
 ## Recovery pattern
@@ -36,7 +36,7 @@ Verify:
    Typical signal:
    - `You've hit your limit · resets 2pm (America/Chicago)`
 
-2. Do **not** stop the healthy Codex lanes.
+2. Do **not** stop the healthy Claude lanes.
    Keep all still-running lanes alive.
 
 3. Relaunch only the failed lane with Codex in the same worktree using the same prompt file.
@@ -53,18 +53,18 @@ codex exec \
   "$PROMPT" </dev/null | tee /mnt/local-analysis/worktrees/ws-<issue>-planwave10/logs/overnight-plan-wave/worker-codex.log
 ```
 
-4. Record the new process/session id and continue monitoring both the surviving Codex lanes and the Codex recovery lanes.
+4. Record the new process/session id and continue monitoring both the surviving Claude lanes and the Codex recovery lanes.
 
 5. When reporting status, distinguish:
-- healthy original Codex lanes
-- failed Codex lanes
+- healthy original Claude lanes
+- failed Claude lanes
 - Codex backfill lanes now running in recovery
 
 ## Why this works
 
 - preserves zero git contention because the worktree ownership does not change
 - preserves auditability because the prompt file does not change
-- avoids redoing successful Codex work
+- avoids redoing successful Claude work
 - keeps the overnight batch moving despite provider-specific quota exhaustion
 
 ## Operational notes
@@ -72,7 +72,7 @@ codex exec \
 - use this as lane-level failover, not as a reason to switch the entire batch provider midstream
 - prefer Codex only for the failed lanes; avoid introducing unnecessary provider churn in healthy lanes
 - store Codex output in separate `worker-codex.log` and `worker-codex-last.txt` files so provenance remains clear
-- if a lane had already partially advanced GitHub state before Codex failed, verify the live issue labels/comments before relaunching to avoid duplicate label flips or duplicate summary comments
+- if a lane had already partially advanced GitHub state before Claude failed, verify the live issue labels/comments before relaunching to avoid duplicate label flips or duplicate summary comments
 
 ## Best fit
 
@@ -98,18 +98,18 @@ Recovered this way during the 2026-04-23 waves:
 - #2449
 - #2452
 
-These were backfilled with Codex while other Codex planning lanes continued running.
+These were backfilled with Codex while other Claude planning lanes continued running.
 
 ## Additional lessons from the same run
 
-- The failover can be repeated lane-by-lane many times in the same wave; you do not need to wait for all Codex lanes to fail before switching the affected subset.
+- The failover can be repeated lane-by-lane many times in the same wave; you do not need to wait for all Claude lanes to fail before switching the affected subset.
 - Process notifications from background workers are enough to trigger the failover loop; you can read the quota-hit message from the completed process output and relaunch immediately.
 - Keep the same per-lane log convention when switching providers:
-  - `logs/overnight-plan-wave/worker.log` for the original Codex lane
+  - `logs/overnight-plan-wave/worker.log` for the original Claude lane
   - `logs/overnight-plan-wave/worker-codex.log` and `worker-codex-last.txt` for the Codex recovery lane
 - When running a larger replacement wave (for example 10 isolated worktrees after a smaller 4-lane wave), pause any older continuation cron that targets overlapping pre-plan-review queues before creating the new continuation cron. This avoids duplicate relaunches and conflicting orchestration.
 - The practical pattern becomes:
-  1. launch the batch with Codex in isolated worktrees
+  1. launch the batch with Claude in isolated worktrees
   2. watch for quota-hit completions
   3. relaunch only the failed lanes with `codex exec` in the same worktrees
   4. keep all healthy lanes untouched
@@ -117,7 +117,7 @@ These were backfilled with Codex while other Codex planning lanes continued runn
 
 ## New lesson: Codex failover is not guaranteed to be healthy
 
-The 2026-04-23 10-agent wave showed that Codex→Codex failover can itself degrade under sandbox/runtime constraints.
+The 2026-04-23 10-agent wave showed that Claude→Codex failover can itself degrade under sandbox/runtime constraints.
 
 Observed failure signals on Codex recovery lanes:
 - `bwrap: loopback: Failed RTM_NEWADDR: Operation not permitted`

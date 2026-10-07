@@ -1,0 +1,30 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Consumer adapter fixture contract v1</title>
+<style>body{max-width:920px;margin:3rem auto;font:17px/1.55 system-ui;padding:0 1rem}code{background:#eee}td,th{padding:.5rem;border:1px solid #bbb}table{border-collapse:collapse}</style>
+<h1>Consumer adapter fixture contract v1</h1>
+<p>Scope: <a href="https://github.com/vamseeachanta/workspace-hub/issues/3615">issue 3615</a>. This isolated prototype maps synthetic event envelopes into existing advisory workflow requests. It does not implement native hook ingress, authenticate approval, establish filesystem containment, or install enforcement.</p>
+<h2>Input and output</h2>
+<p><code>normalize_event(event, context)</code> accepts raw UTF-8 JSON bytes or text. The existing receipt parser rejects duplicate keys and non-finite values and bounds input to 1 MiB, depth 64 and 100,000 nodes. Context is a bounded canonical-JSON object using existing workflow request fields.</p>
+<p>The exact event envelope contains <code>schema_version</code> ("1"), <code>provider</code> (claude or codex), <code>event_kind</code>, <code>payload</code>, and a nonempty inert <code>evidence_reference</code>. Provider labels identify fixtures; they do not attest origin. References are never dereferenced.</p>
+<table><tr><th>Fixture event</th><th>Payload and disposition</th></tr>
+<tr><td>file.write / file.edit</td><td>Exact path field containing one owner-relative path.</td></tr>
+<tr><td>file.patch</td><td>Exact changes field containing a nonempty list of paths or exact old_path/new_path pairs. Both rename endpoints participate.</td></tr>
+<tr><td>shell.exec</td><td>Object payload remains opaque; mapping requires additional context regardless of caller claims.</td></tr></table>
+<p>Table 1. These names define conjectural fixtures, not provider-native schemas.</p>
+<p>The result contains exactly <code>mapping_status</code>, <code>request</code>, and sorted unique <code>reason_codes</code>. A mapped request is a detached copy. Unsupported or incomplete inputs return a null request. The harness calls the unchanged <code>workflow_decision.assess</code> separately only for mapped requests, retaining separate adapter_result and assessment_result records.</p>
+<h2>Binding and authority</h2>
+<p>Context shall provide the existing version, provider, edit operation, bounded repository/task/operation scope, changed paths, and effects. Event and context path sets shall agree after the existing lexical normalization. Absolute paths, drive-qualified paths and traversal fail binding. Lexical agreement does not establish real filesystem ownership: symlinks, junctions and nonexistent destinations require a future trusted ingress.</p>
+<p>Structured edits require local-reversible effect and reject a conflicting read-only claim. Additional substantial or consequential effects are retained. A mapped request is not an authorization: the existing assessor determines advisory disposition, and caller references do not authenticate approval. Metrics and reuse references remain unverified inputs under the existing assessor contract.</p>
+<table><tr><th>Condition</th><th>Disposition</th></tr>
+<tr><td>Malformed raw JSON, field sets or types</td><td>unsupported / MALFORMED_EVENT</td></tr>
+<tr><td>Unknown version, provider or event kind</td><td>unsupported / UNSUPPORTED_EVENT</td></tr>
+<tr><td>Missing required context or unbounded scope</td><td>needs-context / MISSING_CONTEXT</td></tr>
+<tr><td>Opaque shell or conflicting provider/operation/effects</td><td>needs-context / INCOMPLETE_EFFECTS</td></tr>
+<tr><td>Invalid lexical paths or unequal normalized sets</td><td>needs-context / PATH_BINDING_MISMATCH</td></tr></table>
+<p>Table 2. The rows categorize outcomes, not execution precedence. Validation proceeds through raw parsing, envelope fields/types, envelope identity, context validation, then mapping. Shell mapping stops as incomplete. Structured mapping checks payload shape, path binding, then provider/operation/effect coherence. Context validation can return missing-context before checking later present fields.</p>
+<h2>Purity and evidence</h2>
+<p>The normalizer performs no file, network, subprocess or locator access and does not mutate context. Resource exhaustion beyond the parser bounds is not represented as a universal deterministic-error guarantee. Fixtures shall retain raw JSON where duplicate keys matter. Conjectural examples shall never be relabeled captured. Native evidence requires original bytes, digest, runtime version and actual event binding; a model transcript alone does not satisfy this criterion.</p>
+<p>Duplicate-key rejection applies to the raw event only. The harness supplies parsed context and owns any prior context parsing; duplicate keys lost by a caller parser cannot be recovered here. MALFORMED_EVENT is the frozen v1 label for malformed input on either side. Python object inputs are ordinary harness data, not an isolation boundary against hostile Python classes.</p>
+<p>Backslashes fold to forward slashes under the shared lexical normalizer. A POSIX filename containing a literal backslash can therefore alias a Windows-separated path; trusted ingress shall reject or platform-qualify that ambiguity. A nonempty unverified authorization reference moves an otherwise routine assessment from needs-context to conditional-routine; this remains conditional on independently established authority. The mapping wrapper shall retain source event digests beside results; the three-field mapping API itself is not a standalone provenance receipt.</p>
+<p>Native deployment requires a separately verified ingress that establishes owner roots, event authenticity, full effects and approval provenance. Successful file edits during a trial do not establish hook coverage. The pure module contains no installation or settings mutation operations. Saved machine settings were not snapshotted before native trials, so preservation across those trials is not established.</p>
+<p>Evidence: <a href="../reports/2026-09-13-issue-3615-consumer-adapter-fixtures.html">fixture report</a>.</p>
+</html>

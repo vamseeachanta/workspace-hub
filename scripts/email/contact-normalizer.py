@@ -10,6 +10,7 @@ in aceengineer-admin/admin/contacts/. Re-run after updating domain mappings.
 
 import csv
 import re
+import sys
 from pathlib import Path
 from collections import Counter
 
@@ -17,12 +18,12 @@ from collections import Counter
 # CONFIG
 # ============================================================
 ACE_CLIENT_DOMAINS = {
-    "ril.com", "lng-agroup.com", "mcdermott.com", "shell.com",
+    "ril.com", "lng-agroup.com", "shell.com",
     "kbr.com", "technip.com", "technipfmc.com", "subsea7.com",
     "nov.com", "aker.com", "bp.com", "awilcodrilling.com",
     "eagle.org", "vulcanoffshore.com", "boptechnologies.com",
     "risersinc.com", "sandsig.com", "engineeredcustomsolutions.com",
-    "mecorparada.com.ve", "applied.com",
+    "applied.com",
 }
 ACE_COLLEAGUE_DOMAINS = {
     "trendsetterengineering.com", "spire-engineers.com",
@@ -58,7 +59,7 @@ SPAM_NAME_PARTS = [
 
 DOMAIN_COMPANY = {
     "ril.com": "Reliance Industries", "lng-agroup.com": "lng-a",
-    "mcdermott.com": "McDermott", "shell.com": "Shell",
+    "shell.com": "Shell",
     "kbr.com": "KBR", "bp.com": "BP",
     "technip.com": "TechnipFMC", "technipfmc.com": "TechnipFMC",
     "subsea7.com": "Subsea7", "nov.com": "NOV",
@@ -88,9 +89,34 @@ DOMAIN_COMPANY = {
     "acematrix.com": "AceMatrix", "aaa-texas.com": "AAA Texas",
     "colehealth.com": "Cole Health", "harkandgroup.com": "Harkand Group",
     "flooranddecor.com": "Floor & Decor",
-    "mecorparada.com.ve": "MECOR Parada C.A.",
     "indianeagle.com": "Indian Eagle",
 }
+
+
+
+def _apply_private_overlay():
+    """Merge owner-private client domains and company names (C19).
+
+    A client's corporate domain reveals the engagement, so it is not listed in
+    this public file. Source: scripts/lib/private_overlay.py
+    (~/.config/workspace-hub/private-lists.json). Absent file -> public lists
+    only; malformed file -> PrivateOverlayError.
+    """
+    import sys
+    repo_root = str(Path(__file__).resolve().parents[2])
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+    from scripts.lib import private_overlay
+
+    overlay = private_overlay.load()
+    ACE_CLIENT_DOMAINS.update(
+        d.strip().lower() for d in private_overlay.get_list(overlay, "email.client_domains")
+    )
+    DOMAIN_COMPANY.update(private_overlay.get_mapping(overlay, "email.domain_company"))
+
+
+_apply_private_overlay()
+
 
 TOUCHBASE_CADENCE = {
     "client": "quarterly", "colleague": "quarterly", "prospect": "monthly",
@@ -154,6 +180,49 @@ def infer_company(domain):
     if "@" in domain:
         domain = domain.split("@")[-1]
     return DOMAIN_COMPANY.get(domain, domain)
+
+
+DEDUP_REPORT_DIR = Path(__file__).resolve().parents[2] / "reports" / "email"
+
+
+def write_dedup_report(ace_emails, personal_emails, generated=None, out_dir=None):
+    """Write the cross-file de-duplication summary and return its path.
+
+    The report carries counts and domains only, never an address, and is passed
+    through the identifier gate's redactor before it is written (owner decision
+    S01). The classified contact files, which hold addresses, stay in the
+    private admin repository.
+    """
+    import datetime as _dt
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "_cn_public_redaction",
+        Path(__file__).resolve().parents[1] / "legal" / "public_redaction.py")
+    redaction = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(redaction)
+    redactor = redaction.load_redactor()
+
+    out_dir = Path(out_dir) if out_dir else DEDUP_REPORT_DIR
+    out_dir.mkdir(parents=True, exist_ok=True)
+    ace_set, per_set = set(ace_emails), set(personal_emails)
+    overlap = ace_set & per_set
+    by_domain = Counter(e.split("@")[-1].lower() for e in overlap if "@" in e)
+    when = generated or _dt.date.today().isoformat()
+    lines = [
+        "# Contact Deduplication Report",
+        f"**Generated:** {when}",
+        "",
+        f"**Before dedup:** Ace={len(ace_set)}, Personal={len(per_set)}, Overlap={len(overlap)}",
+        "",
+        "## Overlap by Domain",
+        "| Domain | Count |",
+        "|--------|-------|",
+    ]
+    lines += [f"| {d} | {n} |" for d, n in by_domain.most_common()]
+    path = out_dir / "contact-dedup-report.md"
+    path.write_text(redactor.redact("\n".join(lines) + "\n"), encoding="utf-8")
+    return path
 
 
 def process_account(account, input_path, output_path):
@@ -279,3 +348,5 @@ if __name__ == "__main__":
 
     overlap = ace_set & per_set
     print(f"\nCross-file overlap: {len(overlap)} emails")
+    # S01: counts and domains only, redacted, under reports/email/.
+    print(f"Report: {write_dedup_report(ace_set, per_set)}")

@@ -89,7 +89,7 @@ def configure_line_sections(
 
 - OrcaFlex Help: Line Setup Wizard
 - OrcFxAPI Documentation: Model.InvokeLineSetupWizard()
-- Source: `src/digitalmodel/modules/orcaflex/orcaflex_model_linesetup_wizard.py`
+- Source: `src/digitalmodel/solvers/orcaflex/orcaflex_model_linesetup_wizard.py`
 
 ## Sub-Skills
 

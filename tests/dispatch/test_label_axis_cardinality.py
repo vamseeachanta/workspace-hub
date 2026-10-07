@@ -257,7 +257,14 @@ def test_propose_excludes_an_ambiguous_card(monkeypatch, capsys):
           "idempotency_key": "owner/name#2", "title": "clean"}),
     ]
     monkeypatch.setattr(R, "load_rules", lambda: cfg)
-    monkeypatch.setattr(R, "iter_cards", lambda: [(board, c) for c in cards])
+    # Live-issue source since workspace-hub#3736 — patching iter_cards would now
+    # be a no-op that also let this test reach the network.
+    monkeypatch.setattr(R, "fetch_issues_for_coverage", lambda repo: [
+        {"number": 1, "state": "OPEN", "title": "ambiguous",
+         "labels": [{"name": "lane:claude"}, {"name": "lane:codex"}]},
+        {"number": 2, "state": "OPEN", "title": "clean",
+         "labels": [{"name": "lane:codex"}]},
+    ])
 
     class _Args:
         repo = None

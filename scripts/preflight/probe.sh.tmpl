@@ -42,3 +42,6 @@ for c in openfoam gmsh paraview calculix orcaflex; do
     echo "engineering.${c}.version=$("$c" --version 2>&1 | sed -n '1p' || true)"
   fi
 done
+if command -v mystran >/dev/null 2>&1; then
+  echo "engineering.mystran.path=$(command -v mystran)"
+fi

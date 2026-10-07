@@ -20,7 +20,9 @@ tags: []
 
 ## Overview
 
-This skill enables creation of distinctive, production-grade web interfaces that prioritize high design quality and avoid generic aesthetics. It applies to components, pages, dashboards, and full applications.
+This skill enables creation of distinctive, production-grade web interfaces that prioritize high design quality. It applies to components, pages, dashboards, and full applications.
+
+Unless the brief asks for them, avoid these default patterns: a cream or off-white background, italic accent words in headlines, numbered "01/02/03" section labels, monospace labels, and pill-shaped buttons. After the first render, review the result for any other default styles it fell back on and revise them before delivering.
 
 ## When to Use
 

@@ -34,7 +34,7 @@ Hard-rule compliance:
   * Rule 5 — optional ``--publish`` to the ``hermes-pattern-candidate-state`` ref is OFF by default
     and bounded by a 90s subprocess timeout, fail-soft.
   * No pyyaml dependency — the bridge launches bare ``python3`` / ``uv run --no-project python``;
-    the deny-list is parsed by a dependency-free regex.
+    independent credential patterns require only the standard library.
 """
 from __future__ import annotations
 
@@ -189,8 +189,13 @@ def is_already_canonical(cand: dict, canonical_slugs: set[str], skill_slugs: set
 
 
 def is_sensitive(text: str, deny_patterns: list[str]) -> bool:
-    """PURE fail-closed scrub: True if any deny-list pattern matches (case-insensitive, broader)."""
-    return any(re.search(p, text, re.I) for p in deny_patterns)
+    """Reject credentials, not names/paths; legacy identifier patterns are unused."""
+    credential_patterns = (
+        r'\b(?:password|api[_-]?key|api[_-]?token|access[_-]?token|secret)\s*[:=]\s*["\']?[A-Za-z0-9_./+=-]{8,}',
+        r'\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-(?:proj-)?[A-Za-z0-9_-]{20,}|AKIA[A-Z0-9]{16})\b',
+        r'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----',
+    )
+    return any(re.search(pattern, text, re.I) for pattern in credential_patterns)
 
 
 def candidate_signature(cands: list[dict]) -> str:
@@ -201,7 +206,7 @@ def candidate_signature(cands: list[dict]) -> str:
 def evaluate(patterns, canonical_slugs, skill_slugs, deny_patterns, last_seen, *, now_iso) -> dict:
     """Decide which patterns are fresh candidates + whether to alert. PURE — no IO/clock.
 
-    De-dups against canonical/skills, drops PII matches (fail-closed), and fires a single ``pass``
+    De-dups against canonical/skills, drops credentials, and fires a single ``pass``
     alert only on a transition into / change-of the candidate set (last-seen spam suppression).
     """
     fresh: list[dict] = []
@@ -354,7 +359,7 @@ def run_cli(args: argparse.Namespace, notify_fn: Callable[[dict], None] = _defau
 
     canonical = canonical_text_index()             # bridge-block-stripped canonical CONTENT
     skills = skill_text_index()
-    deny = load_deny_patterns(DENY_LIST)
+    deny = []  # Identifier gates retired; credential checks remain independent.
     last = _read_json(_last_seen_path(machine))
     r = evaluate(patterns, canonical, skills, deny, last, now_iso=_now())
 

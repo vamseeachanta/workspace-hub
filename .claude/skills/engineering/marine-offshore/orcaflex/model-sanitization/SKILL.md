@@ -72,7 +72,7 @@ for key in sorted_keys:
     text = text.replace(key, replacement)
 ```
 
-**Critical: Sort by length descending** — prevents "Seven Arctic" from being partially matched by "Seven".
+**Critical: Sort by length descending** — prevents "construction vessel A" from being partially matched by "Seven".
 
 ### Step 4: Strip OrcaFlex Metadata
 Remove embedded user/machine/file path lines:
@@ -101,7 +101,7 @@ Categories: `jumper/`, `installation/`, `mooring/`, `training/`, `regional/`, `v
 
 ### Step 6: Legal Scan Gate
 ```bash
-bash scripts/legal/legal-sanity-scan.sh --repo=digitalmodel
+# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
 # Must exit 0 before proceeding to spec extraction
 ```
 
@@ -160,7 +160,7 @@ uv run python scripts/sanitize_s7_models.py \
 grep -ri "ClientProject\|VesselName" docs/modules/orcaflex/
 
 # Run legal scan
-bash scripts/legal/legal-sanity-scan.sh --repo=digitalmodel
+# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
 ```
 
 ## Audit Output
@@ -181,10 +181,10 @@ The sanitization script generates `sanitization_audit.json`:
   },
   "transformations": [
     {
-      "source": "s7/ballymore/Jumper_Manifold to PLET/SZ.yml",
+      "source": "s7/gom-tieback-a/Jumper_Manifold to PLET/SZ.yml",
       "target": "docs/modules/orcaflex/jumper/manifold_to_plet/monolithic/SZ.yml",
       "hash": "sha256:abc123...",
-      "replacements": ["Ballymore→deepwater_field_a", "Candies→installation_vessel_01"],
+      "replacements": ["GoM tieback A→deepwater_field_a", "Candies→installation_vessel_01"],
       "size_bytes": 245000
     }
   ]
@@ -192,7 +192,7 @@ The sanitization script generates `sanitization_audit.json`:
 ```
 
 ## Related Skills
-- `/legal-sanity-scan` — Legal compliance scanning
+- `docs/standards/FINAL_REPORT_VERIFICATION.md` — Manual final-report verification
 - `/orcaflex-file-conversion` — Format conversion (.dat ↔ .yml)
 - `/orcaflex-monolithic-to-modular` — Monolithic → modular conversion
 - `/orcaflex-jumper-analysis` — Jumper-specific modelling concepts

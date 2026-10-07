@@ -429,8 +429,8 @@ def main() -> int:
 
     DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
     HTML_PATH.parent.mkdir(parents=True, exist_ok=True)
-    DATA_PATH.write_text(json.dumps(data, indent=2, sort_keys=True))
-    HTML_PATH.write_text(render_html(data))
+    DATA_PATH.write_text(json.dumps(data, indent=2, sort_keys=True), encoding="utf-8")
+    HTML_PATH.write_text(render_html(data), encoding="utf-8")
 
     print(f"\nWrote: {DATA_PATH.relative_to(WORKSPACE_HUB)}")
     print(f"Wrote: {HTML_PATH.relative_to(WORKSPACE_HUB)}")

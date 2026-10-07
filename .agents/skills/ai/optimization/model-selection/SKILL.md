@@ -16,7 +16,7 @@ scripts_exempt: true
 
 > Version: 1.0.0
 > Category: Optimization
-> Triggers: Starting tasks, choosing Codex model, usage optimization
+> Triggers: Starting tasks, choosing Claude model, usage optimization
 
 ## Quick Reference
 
@@ -89,7 +89,7 @@ NEW TASK
 
 ## Usage Monitoring
 
-**Check before starting work:** https://Codex.ai/settings/usage
+**Check before starting work:** https://claude.ai/settings/usage
 
 **Alert Thresholds:**
 - Sonnet >70% → Switch to Opus/Haiku

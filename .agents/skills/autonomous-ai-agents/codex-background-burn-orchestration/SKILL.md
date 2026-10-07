@@ -38,9 +38,14 @@ Class of task: quota-aware Codex lane orchestration that converts available Code
 
 2. Select useful lanes, not synthetic burn
    - Prefer `provider-work-queue.json -> provider_queues.codex.top_issues`.
-   - Favor open issues with `status:plan-approved` and bounded implementation/test/refactor/documentation scope.
+   - Favor open issues with verified task/standing authority, current reviewed scope and no unresolved blockers for bounded implementation/test/refactor/documentation work; approval labels are history, not prerequisites.
    - Respect existing `agent:*` labels and avoid issues already `status:working` unless recovering a known stalled lane.
+   - When the user asks for ecosystem-aware or ambition-aware burn planning, combine the generated queue with live per-repo issue scans and recent-session/history signals; use `references/workspace-ecosystem-lane-selection.md` for the lane-selection checklist and avoid-list.
+   - For repeated judge/checklist prompts after terminal-but-incomplete runs, use `references/checklist-crosswalk-generator-pattern.md` to write fresh crosswalk evidence instead of relaunching or only restating blockers.
    - Keep about 3-5 concurrent Codex lanes; top up periodically rather than launching too many at once.
+   - For short burn windows where the goal is high useful throughput, bundle 2-4 tightly related approved issues from the same repo into one Codex lane/worktree only when they share validation setup and can land as separate commits or clearly scoped blocker notes; see `references/multi-issue-bundle-closeout.md`.
+   - Before launching an overnight/12-hour burn, produce a compact launch manifest, per-lane PID/session/log paths, exit-code/status artifacts, and autonomous-vs-human-in-loop exclusions; use `references/autonomous-burn-launch-closeout.md` for the launch, closeout, checklist-grade continuation audit, supplemental-audit, and evidence-redaction shape. Treat missing PID/exit/status launch evidence as unrecoverable later rather than backfilling guesses.
+   - When all requested Codex bundles are terminal but the operation is not successful, write a judge-ready incomplete closeout instead of implying success; use `references/judge-ready-incomplete-closeout.md` for terminal-vs-success classification, blocked-partial bundles, refined secret scans, hashes, and concise user-facing closeout.
 
 3. Isolate each lane
    - Create one worktree or clone per issue under a run directory, e.g.:
@@ -66,7 +71,7 @@ Class of task: quota-aware Codex lane orchestration that converts available Code
    - issue URL and number
    - branch/worktree path
    - approved plan artifact paths
-   - hard gates: verify issue open + `status:plan-approved`, TDD, validation, adversarial self-review
+   - hard gates: verify issue open, task/standing authority, current reviewed scope, no unresolved blockers, TDD, validation and adversarial review; approval labels and markers are not prerequisites
    - commit/push/comment requirements
    - explicit forbidden paths and no force-push
    - close only if landed/allowed by policy
@@ -142,11 +147,13 @@ Do not let the controller recursively schedule more cron jobs.
 
 ## Verification before claiming success
 
-Before reporting that a lane landed:
-- inspect process output
+Before reporting that a lane landed or a burn wave is complete/incomplete:
+- inspect process output and capture Codex-reported token usage when available
 - check `git -C <worktree> status --short`
 - check `git -C <worktree> log --oneline -3`
 - verify pushed branch or main ancestry
 - verify GitHub comment/closure state
+- remove any temporary `status:working` label from closed or explicitly blocked issues that are no longer actively running
+- when the user supplies a judge/checklist-style continuation, use `references/autonomous-burn-launch-closeout.md` to emit evidence artifacts and a checklist crosswalk instead of self-marking boxes or merely restating blockers; if the checklist says “work on unchecked items” but provides no new bundle IDs or override decisions, refresh live/process/git/GitHub evidence, write `checklist-crosswalk-evidence-*` artifacts, set `new_launches_this_turn=0`, and stop on explicit user/governance input rather than inventing a continuation lane
 
-Report "running" or "blocked" rather than claiming completion when the process is only launched.
+Report "running" or "blocked" rather than claiming completion when the process is only launched. For partial bundles, close only issues with landed/verified scope and leave blockers open with an evidence comment naming the missing prerequisite or approval gap.

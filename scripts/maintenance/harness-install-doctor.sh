@@ -43,7 +43,15 @@ set -uo pipefail
 # cryptic "unbound variable" before any report. Fail early and legibly instead.
 : "${HOME:?HOME must be set}"
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "${WORKSPACE_HUB:-/mnt/local-analysis/workspace-hub}")"
+# Self-locating, NOT cwd- or $WORKSPACE_HUB-derived (#3752). This runs from cron /
+# Task Scheduler with a non-login shell, which does not source ~/.bashrc — so
+# ${WORKSPACE_HUB} is often empty, the catalog's `cd $WORKSPACE_HUB` becomes a bare
+# `cd` to $HOME with rc 0, and `git rev-parse` then resolves whatever repo happens to
+# be there (or the hardcoded Linux fallback). Deriving the root from this script's own
+# path is the only form that cannot silently target the wrong tree. Precedent:
+# scripts/cron/harness-update-windows.sh:13-14.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 DRY="${DOCTOR_DRY_RUN:-0}"
 TS="$(date -u +%Y%m%dT%H%M%SZ)"
 
@@ -81,7 +89,27 @@ if [[ -x "${installer}" || -f "${installer}" ]]; then
     else
         if out="$(bash "${installer}" 2>&1)"; then
             summary="$(printf '%s\n' "${out}" | grep -i '^Summary:' || echo 'ran')"
-            record OK "soul-runtime-symlinks" "${summary}"
+            # Exit 0 is NOT sufficient evidence of a repair (#3752). The installer
+            # returns 0 for every SKIP — missing source artifact, absent provider
+            # dir, wrong repo root — and only `failed` reaches its exit gate. So a
+            # run that linked NOTHING previously reported OK, making a silently
+            # broken box indistinguishable from a healthy one. Inspect the summary
+            # we already captured: if nothing was created AND nothing was already
+            # correct, the repair arm did not repair.
+            created="$(printf '%s\n' "${summary}" | sed -n 's/.*Summary: \([0-9]\{1,\}\) created.*/\1/p')"
+            unchanged="$(printf '%s\n' "${summary}" | sed -n 's/.*, \([0-9]\{1,\}\) unchanged.*/\1/p')"
+            if [[ -z "${created}" || -z "${unchanged}" ]]; then
+                # Summary absent or in an unexpected shape — do not assume success.
+                record NEEDS-ATTENTION "soul-runtime-symlinks" \
+                    "installer exited 0 but its summary was unparseable: ${summary}"
+                printf '%s\n' "${out}" | sed 's/^/      /'
+            elif (( created + unchanged == 0 )); then
+                record NEEDS-ATTENTION "soul-runtime-symlinks" \
+                    "no-op run — 0 created, 0 unchanged (${summary})"
+                printf '%s\n' "${out}" | sed 's/^/      /'
+            else
+                record OK "soul-runtime-symlinks" "${summary}"
+            fi
         else
             record NEEDS-ATTENTION "soul-runtime-symlinks" "install-soul-runtime.sh failed — see output"
             printf '%s\n' "${out}" | sed 's/^/      /'

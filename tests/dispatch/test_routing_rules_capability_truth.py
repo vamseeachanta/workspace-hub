@@ -92,25 +92,23 @@ def test_every_licensed_capability_claim_carries_an_attestation(machines):
     assert not unbacked, "unbacked licensed-capability claims: " + "; ".join(unbacked)
 
 
-def test_licence_verified_is_false_or_a_dated_attestation(machines):
-    """`licence_verified` must be `false`, or a dict carrying who and when.
+def test_licence_verified_is_per_solver_and_dated(machines):
+    """Licence is PER SOLVER, not per host (fleet handover 2026-07-31).
 
-    A bare `true` is exactly the shape that rotted here — it records a
-    conclusion and discards the evidence, so nobody can tell whether it was
-    checked yesterday or inherited from a machine that no longer exists.
+    A bare `true` discards the evidence; a host-level flag discards WHICH solver.
+    AQWA is licensed and idle on the heavy node while OrcaFlex is unavailable
+    there — one boolean cannot say that. Shape:
+    `licence_verified: {<capability>: {at, by, how}}`.
     """
     for name, spec in machines.items():
-        if "licence_verified" not in spec:
+        v = spec.get("licence_verified")
+        if v is False or v is None:
             continue
-        value = spec["licence_verified"]
-        if value is False:
-            continue
-        assert isinstance(value, dict), (
-            f"{name}: licence_verified must be false or a dated attestation dict, "
-            f"got {value!r} — a bare true discards the evidence"
-        )
-        for field in ("at", "by", "how"):
-            assert value.get(field), f"{name}: licence_verified.{field} is required"
+        assert isinstance(v, dict), f"{name}: licence_verified must be false or a per-solver map"
+        for cap, att in v.items():
+            assert isinstance(att, dict), f"{name}.licence_verified.{cap} must be a dated attestation"
+            for field in ("at", "by", "how"):
+                assert att.get(field), f"{name}.licence_verified.{cap}.{field} is required"
 
 
 # --------------------------------------------------------------------------
@@ -119,7 +117,17 @@ def test_licence_verified_is_false_or_a_dated_attestation(machines):
 
 
 def _licence_proven(spec: dict) -> bool:
-    return isinstance(spec.get("licence_verified"), dict)
+    """At least one licensed capability on this host carries a dated attestation.
+
+    Per-solver since 2026-07-31: `licence_verified` maps capability -> {at,by,how}.
+    A host with AQWA attested and OrcaFlex blocked counts as proven HERE — the
+    per-capability question ("can this host run THIS solver?") is answered by
+    `licence_verified[cap]` at dispatch time, not by this coarse check.
+    """
+    verified = spec.get("licence_verified")
+    return isinstance(verified, dict) and bool(
+        set(verified) & LICENSED_CAPABILITIES
+    )
 
 
 def test_no_rule_routes_licensed_work_to_an_unproven_host(rules, machines):

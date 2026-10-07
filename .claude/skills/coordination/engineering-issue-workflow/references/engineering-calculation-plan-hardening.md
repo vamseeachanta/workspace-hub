@@ -117,5 +117,5 @@ Plan-review readiness for engineering calculations should require:
 - review artifacts exist under `scripts/review/results/`;
 - at least two substantive reviews plus synthesis, unless a documented waiver exists;
 - no unresolved MAJOR findings;
-- issue is `status:plan-review` only, not implementation-approved;
-- `.planning/plan-approved/<issue>.md` and `status:plan-approved` are synchronized before implementation starts.
+- issue status reflects actual review state; labels do not determine implementation authority;
+- Current task authority, reviewed engineering basis and required domain decisions are verified before implementation; historical labels/markers are not prerequisites.

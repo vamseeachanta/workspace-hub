@@ -1,7 +1,7 @@
 ---
 name: hidden-folder-audit
 description: Audit and consolidate hidden folders in a repository. Identifies duplicates,
-  dead directories, and consolidation opportunities for .agent-os/, .ai/, .Codex/,
+  dead directories, and consolidation opportunities for .agent-os/, .ai/, .claude/,
   and other hidden folders.
 version: 1.2.0
 updated: 2026-01-20
@@ -18,7 +18,7 @@ see_also:
 - hidden-folder-audit-step-1-inventory-all-hidden-folders
 - hidden-folder-audit-common-hidden-folders-reference
 - hidden-folder-audit-specsarchive
-- hidden-folder-audit-migrate-agent-os-to-Codex
+- hidden-folder-audit-migrate-agent-os-to-claude
 - hidden-folder-audit-pre-audit
 - hidden-folder-audit-verify-hidden-folder-state
 ---
@@ -28,7 +28,7 @@ see_also:
 ## When to Use
 
 - Repository has accumulated multiple hidden folders over time
-- Multiple AI/agent configuration directories exist (`.agent-os/`, `.ai/`, `.Codex/`)
+- Multiple AI/agent configuration directories exist (`.agent-os/`, `.ai/`, `.claude/`)
 - Symlinks point to non-existent targets
 - Unclear which configuration is authoritative
 - Preparing for repository restructure or cleanup
@@ -60,7 +60,7 @@ see_also:
 - **1.1.0** (2026-01-20): Updated reference table and added verification commands
   - Updated Common Hidden Folders Reference table with verified recommendations
   - Added .drcode/ as DELETE (confirmed legacy AI config)
-  - Added .slash-commands/ as CONSOLIDATE to .Codex/docs/commands/
+  - Added .slash-commands/ as CONSOLIDATE to .claude/docs/commands/
   - Added .git-commands/ as CONSOLIDATE to scripts/git/
   - Added .benchmarks/ as DELETE (usually empty)
   - Added .githooks/ as KEEP (standard location)
@@ -82,6 +82,6 @@ see_also:
 - [Step 1: Inventory All Hidden Folders (+4)](step-1-inventory-all-hidden-folders/SKILL.md)
 - [Common Hidden Folders Reference](common-hidden-folders-reference/SKILL.md)
 - [specs/archive/ (+1)](specsarchive/SKILL.md)
-- [Migrate .agent-os to .Codex (+4)](migrate-agent-os-to-Codex/SKILL.md)
+- [Migrate .agent-os to .claude (+4)](migrate-agent-os-to-claude/SKILL.md)
 - [Pre-Audit (+6)](pre-audit/SKILL.md)
 - [Verify Hidden Folder State (+3)](verify-hidden-folder-state/SKILL.md)

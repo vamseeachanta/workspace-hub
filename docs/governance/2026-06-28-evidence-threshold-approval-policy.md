@@ -7,7 +7,32 @@
 - **Evaluator:** `scripts/governance/evidence_threshold_eligibility.py` (pure, fail-closed, **shadow-mode only**).
 - **Ledger:** `docs/governance/evidence-threshold/` (append-only JSON audit records).
 
-## Context
+## September 12 scope clarification: shared workflow Stage A
+
+The June record below remains the historical proposal for metric-based graduation.
+The current user-selected operating model permits authorized routine reversible
+work under standing session authorization, with explicit approval for substantial
+unapproved scope and consequential actions. Historical metric thresholds do not
+grant authority or revoke that standing authorization.
+
+The [shared workflow plan](../plans/2026-09-12-issue-3615-shared-risk-workflow.html)
+defines an isolated advisory implementation under
+[#3615](https://github.com/vamseeachanta/workspace-hub/issues/3615).
+`scripts/governance/workflow_decision.py` separates risk, reported authorization,
+historical metric advice and verification-evidence candidates. Its JSON input
+cannot authenticate a session or owner. Even a supplied approval reference remains
+`unverified-reference`; substantial and consequential decisions remain
+`approval-required` until the orchestrator independently verifies matching authority.
+No output grants permission, applies a label or executes an operation.
+
+The [CLI and receipt contract](evidence-threshold/README.md#shared-workflow-assessment)
+defines this new surface separately from the unchanged historical ledger.
+Stage A does not install the skill or change live hooks, repository checks,
+shared instructions or generated provider runtimes. Those consumer migrations
+remain later reviewed stages. Existing blanket instructions and hook heuristics
+therefore remain an identified migration gap, not a claim of seamless enforcement.
+
+## Context (historical June proposal)
 
 `agents.md` records the owner intent: *"hard gates remain in force until metrics prove agent rigor is consistently safe; over time, shift routine plan/review/execution/verification cycles from user-managed approval to evidence-threshold approval so the owner focuses on ideas, GTM throughput, and customer/prospect artifacts."*
 

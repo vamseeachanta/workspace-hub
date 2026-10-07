@@ -44,20 +44,29 @@ def test_old_identifiers_preserved_as_aliases():
     machines = _machines()
     aliases1 = machines["ace-win-1"].get("hostname_aliases") or []
     aliases2 = machines["ace-win-2"].get("hostname_aliases") or []
-    # The old logical name + the real Windows computer names survive as aliases.
+    # The old LOGICAL names survive as aliases.
     assert "licensed-win-1" in aliases1
-    assert "ACMA-ANSYS05" in aliases1 and "acma-ansys05" in aliases1
     assert "licensed-win-2" in aliases2
-    assert "acma-ws014" in aliases2
+    # Real Windows computer names may also be declared here (that is what lets host
+    # detection resolve a box reporting its own OS hostname), but which ones are
+    # declared is registry.yaml's call — this test asserts the resolution contract
+    # (below), not a second copy of the alias list.
 
 
 def test_old_identifiers_resolve_to_new_entry():
     machines = _machines()
     # Back-compat: any old reference still routes to the renamed canonical entry.
     assert _resolve(machines, "licensed-win-1") == "ace-win-1"
-    assert _resolve(machines, "ACMA-ANSYS05") == "ace-win-1"
     assert _resolve(machines, "licensed-win-2") == "ace-win-2"
-    assert _resolve(machines, "acma-ws014") == "ace-win-2"
+    # Property: EVERY declared alias resolves to its machine, in any case — Windows
+    # reports hostnames upper-case, so a case-sensitive resolver would silently fail.
+    for mid in ("ace-win-1", "ace-win-2"):
+        aliases = machines[mid].get("hostname_aliases") or []
+        assert aliases, f"{mid} must declare at least one back-compat alias"
+        for alias in aliases:
+            assert _resolve(machines, alias) == mid
+            assert _resolve(machines, str(alias).upper()) == mid
+            assert _resolve(machines, str(alias).lower()) == mid
     # And the new names resolve to themselves.
     assert _resolve(machines, "ace-win-1") == "ace-win-1"
     assert _resolve(machines, "ace-win-2") == "ace-win-2"

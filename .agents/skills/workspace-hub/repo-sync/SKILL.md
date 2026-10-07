@@ -78,7 +78,7 @@ After pulling, run the encoding check against all work queue and skill files
 to surface any Windows-created UTF-16 / CRLF files that came in via the pull:
 
 ```bash
-.Codex/hooks/check-encoding.sh
+.claude/hooks/check-encoding.sh
 ```
 
 This runs in warn-only mode (post-merge behaviour) — it reports bad files but
@@ -172,11 +172,11 @@ Format as markdown table:
 - If the user explicitly wants all dirty/untracked files tracked, run a second pass that stages with `git add -A`, commits on the repo's current branch, and pushes that branch before attempting broader branch-merging work.
 - For branch-merging across many repos, merge into each repo's actual default branch (`main` or `master`) detected from GitHub / `origin/HEAD`; do not assume `main`.
 - For large batch merges, use a temporary worktree checked out from the default branch (prefer `origin/<default>` if available) so merges are isolated from the user's current working tree and local dirty state.
-- Workspace-hub can mutate state during commit/push hooks (`.Codex/state/*`, logs, generated reports). After a commit or failed push, always re-run `git status` and re-fetch before retrying; apparent ref-lock push failures may be stale-expectation races rather than true divergence.
+- Workspace-hub can mutate state during commit/push hooks (`.claude/state/*`, logs, generated reports). After a commit or failed push, always re-run `git status` and re-fetch before retrying; apparent ref-lock push failures may be stale-expectation races rather than true divergence.
 - New-branch pushes in workspace-hub may trigger expensive pre-push checks across tier-1 repos and can time out. If the user has approved sensible commands and the goal is repo hygiene/sync rather than validation, `git push --no-verify` may be necessary after verifying local/remote state.
 - Archived/read-only repos can still be committed locally for preservation, but push/merge to remote will fail; report them explicitly as blocked rather than retrying.
 - In huge repos, do not run broad `git status --porcelain -uall`, full `du`, or full checkout/pull loops as the first recovery move. Start with no-untracked status and ahead/behind probes, then follow `references/large-repo-partial-checkout-recovery.md`.
-- If interrupted sync creates `.Codex.partial-pull-backup-*`, `.codex.partial-pull-backup-*`, or generated provider cache trees, preserve them inside `.git/recovery-backups/` instead of committing or deleting them; they are recovery artifacts unless the user explicitly says otherwise.
+- If interrupted sync creates `.claude.partial-pull-backup-*`, `.codex.partial-pull-backup-*`, or generated provider cache trees, preserve them inside `.git/recovery-backups/` instead of committing or deleting them; they are recovery artifacts unless the user explicitly says otherwise.
 
 ## Iron Law
 

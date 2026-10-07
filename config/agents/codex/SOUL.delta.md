@@ -15,12 +15,21 @@
 
 Do NOT generalize a single-session sandbox failure to a permanent constraint. (`feedback_codex_sandbox_no_execution`, `feedback_codex_sandbox_fallback_paths`)
 
-## Pre-Exec Pushed-Artifact Requirement
+## Windows Terminal Visibility
 
-Codex `exec` (and the Codex GitHub connector) cannot read local files outside the sandbox. Before invoking `codex exec` on a plan or artifact:
+- Run routine commands through the existing captured shell tool without opening visible console windows. Do not launch `wt.exe`, `cmd /c start`, or visible PowerShell/cmd windows for background work. Open a visible terminal only when the user explicitly requests one.
+- For Windows helpers launched with `Start-Process`, use `-WindowStyle Hidden`, separate `-RedirectStandardOutput` and `-RedirectStandardError` files, and `-Wait -PassThru`. Inspect the exit code and captured output; a missing exit code means completion is unverified, never successful. Do not combine `-WindowStyle` with `-NoNewWindow`. Prefer persistent captured tool sessions for long-running work, and check their final completion status.
+- For programmatic Windows launches, use .NET `CreateNoWindow=true` with `UseShellExecute=false`, Node `windowsHide=true`, or Python `creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)`. Preserve stdout/stderr and exit-code checks; do not introduce an intermediate visible launcher.
+- Include the no-popup constraint explicitly in delegated Windows work. Keep failures visible in captured results; hiding a window must not hide command failures.
+- Treat these as launch instructions, not an OS-level popup blocker. App-internal launchers, existing sessions and other machines require separate observation; saved configuration and generated guidance alone do not establish suppression or fleet-wide loading.
 
-- **Push the plan/issue to GitHub first.** Codex's GH connector can fetch tracked content; local-only files are invisible. (`feedback_codex_needs_pushed_artifact`)
-- For inline-prompt review, the prompt body itself may be passed via `codex exec "$PROMPT"`; this works without push.
+## Review Artifact Access
+
+Choose artifact transport from the reviewer session's verified capabilities. Use an accessible local file or a bounded inline prompt when supported; local-only artifacts are not inherently invisible to Codex.
+
+When local access is blocked, an available GitHub connector may read repository content that is already published. Publish additional content only when the selected remote review requires it and the user has authorized that destination. A review request does not grant publication authority. Verify connector-derived findings against the owning checkout when available.
+
+The historical `feedback_codex_needs_pushed_artifact` entry describes a restricted session, not a universal push prerequisite.
 
 ## Authentication and Quota
 
@@ -41,7 +50,10 @@ Codex `exec` (and the Codex GitHub connector) cannot read local files outside th
 
 ## Skill Loader
 
-- `~/.codex/skills/` is currently empty on this machine; `.codex/skills/` symlinks to `.claude/skills/` (workspace-hub canonical).
+- Codex supports native skill discovery. Repository discovery uses `.agents/skills` from the working directory to the repository root; user/admin/system and plugin skills can also be present. Verify the installed version and effective roots before diagnosing a missing skill.
+- `.claude/skills/` remains the workspace's canonical authored source. This ownership convention does not override Codex discovery precedence. Inspect copies and resolved links before claiming parity; a text file containing a target path is not a filesystem link.
+- Preserve native .system skills, installed plugins and unrelated user settings. Task profiles will select canonical skills for thin provider adapters; the isolated foundation profile is `config/skills/profiles/foundation.yaml`, not an installed loader configuration.
+- Current discovery reference: [OpenAI skill documentation](https://learn.chatgpt.com/docs/build-skills). Record observed runtime/version evidence separately from portable guidance.
 - Codex roles vs skills mapping: `.claude/docs/codex-roles-vs-skills.md`.
 - Parity audit: `specs/architecture/work-queue-codex-parity.md`.
 
@@ -49,9 +61,9 @@ Codex `exec` (and the Codex GitHub connector) cannot read local files outside th
 
 At the start of a session, read **`config/agents/codex/MEMORY.runtime.md`** (repo-tracked, relative to the workspace root). It is a curated, budget-capped slice of the consolidated cross-provider memory (the Claude "dream" — durable learnings distilled from Codex/Gemini/Hermes/Claude sessions). It is **machine-invariant and auto-generated** by `scripts/memory/bridge-hermes-claude.sh` (#2841) — do not hand-edit. Treat its entries as durable workspace conventions/learnings; they complement (do not replace) the SHARED_SOUL gates above.
 
-## Skills (no native loader — use the Skill index)
+## Skills (native discovery and source index)
 
-Codex has no native skill loader. The **Skill index** at the bottom of `AGENTS.runtime.md` lists every workspace skill family (`.claude/skills/<family>/`) with a count + an `ls` command to enumerate a family's skills. Consult it and **use** the relevant skill rather than improvising; workspace `.claude/skills/` wins over `.agents/skills/` and `~/.claude/plugins/`. Mandatory lifecycle skills: `coordination/issue-planning-mode` and `coordination/pre-completion-cleanup-audit`.
+Use native discovery for available skills; the task profile identifies intended skills and does not configure discovery. The **Skill index** at the bottom of `AGENTS.runtime.md` is a fallback map to canonical source families, not proof that those skills are installed or loaded. Read the relevant source when native discovery is unavailable, and report that fallback. Do not load every family or recursively activate related skills. Existing lifecycle requirements remain in the shared contract; a profile does not grant authority to change installed roots or policy gates.
 
 ## Required Gates (Codex-specific extensions to SHARED_SOUL Hard Gates)
 
@@ -60,10 +72,12 @@ Beyond the SHARED_SOUL.md Hard Gates, Codex sessions additionally enforce:
 1. **Every implementation task maps to a WRK-* in `.claude/work-queue/`** OR a GitHub issue per the broader workspace `feedback_no_reserved_wrk_ids` rule. Codex's `submit-to-codex.sh` Stage-5 gate validates WRK evidence when `--wrk-id` is supplied.
 2. **Workflow lifecycle skills are mandatory**: `.claude/skills/workspace-hub/work-queue-workflow/SKILL.md` + `.claude/skills/workspace-hub/workflow-gatepass/SKILL.md` for WRK-mode work.
 3. **Coding style guardrails**: max 400 lines/file, max 50 lines/function, snake_case Python, camelCase JS — see `.claude/rules/coding-style.md`.
-4. **Git workflow**: conventional commits, branch prefixes (`feature/`, `bugfix/`, `chore/`) — see `.claude/rules/git-workflow.md`.
+4. **Git workflow**: conventional commits, branch prefixes (`feature/`, `bugfix/`, `chore/`). Merges are governed by [`.claude/rules/merge-authorization.md`](../../../.claude/rules/merge-authorization.md) and [`merge-cleanup.md`](../../../.claude/rules/merge-cleanup.md).
 
-## Bootstrap Hazard — `~/.codex/AGENTS.md` Untracked Generator
+## Runtime Link Maintenance
 
-`~/.codex/AGENTS.md` on this machine contains a `sed`-derived copy of `~/.claude/CLAUDE.md` with `s/claude/Codex/g` substitutions (broken — should have been `s/claude/codex/g`). Resulting `.Codex/memory/` path is wrong (capital C). The generator is NOT in any tracked script. (`feedback_codex_bootstrap_untracked_sed_origin` — write-time pending)
+Inspect the current type and resolved target of `~/.codex/AGENTS.md` before repair. The canonical target is `config/agents/codex/AGENTS.runtime.md`; preserve a correct link and its repo-owned source.
 
-The fix is `scripts/agents/install-soul-runtime.sh` (per [#2719](https://github.com/vamseeachanta/workspace-hub/issues/2719) Phase 4) which symlinks `~/.codex/AGENTS.md` to the committed `config/agents/codex/AGENTS.runtime.md` artifact, bypassing the broken sed pattern entirely.
+A historical bootstrap generated a broken sed-derived copy with a `.Codex/memory/` path (`feedback_codex_bootstrap_untracked_sed_origin`). This is an incident record, not current-machine state. Do not recreate that generator or infer that every installation needs repair.
+
+For a verified mismatch within authorized installation scope, use `scripts/agents/install-soul-runtime.sh`, then verify the resulting link. Edit this delta and rebuild runtimes through `scripts/agents/build-soul-runtime.sh`; never hand-edit generated runtime artifacts.

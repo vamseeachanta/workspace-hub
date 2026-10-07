@@ -1,6 +1,6 @@
 ---
 name: gh-work-execution
-description: Canonical GitHub issue execution route after plan approval — strengthened resource intelligence, TDD-first implementation, targeted validation, adversarial review, delegation controls for Codex agent teams, GitHub progress posting, future-issue capture, and commit/push with closeout discipline.
+description: Canonical GitHub issue execution route after plan approval — strengthened resource intelligence, TDD-first implementation, targeted validation, adversarial review, delegation controls for Claude agent teams, GitHub progress posting, future-issue capture, and commit/push with closeout discipline.
 version: 1.4.0
 author: Hermes Agent
 category: software-development
@@ -10,17 +10,21 @@ related_skills:
   - github-pr-workflow
 tags: [execution, github, issue-workflow, tdd, review, verification]
 ---
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided. Preserve owner-controlled approval history without self-labeling.
+
 
 # GH Work Execution
 
 This is the canonical execution route for approved GitHub issue work.
 
-Use it only after planning is complete and the issue is approved.
+Use it after planning/review is complete and task/standing authority covers the implementation scope.
 
 ## Route summary
 
 Canonical path:
-Issue -> Plan -> User approves -> TDD implementation -> adversarial review -> commit/push -> comment/close issue
+Issue -> Plan -> adversarial plan review -> task/standing authority -> TDD implementation -> adversarial code review -> authorized commit/push -> comment/close issue
 
 ## GitHub posting rule
 
@@ -42,9 +46,9 @@ Keep updates concise and cumulative. Prefer fewer structured updates over noisy 
 During execution, if you discover additional work that should not be silently absorbed into the current issue, capture it as a future GitHub issue.
 Create it now when the split is clear, or mark it as a candidate when the orchestrator must decide timing or batching.
 
-## Codex agent-team prompt packaging rule
+## Claude agent-team prompt packaging rule
 
-When execution is best handled by multiple agents, multiple terminals, or licensed/external machines, use Codex to package the work into a self-contained prompt pack for agent team(s).
+When execution is best handled by multiple agents, multiple terminals, or licensed/external machines, use Claude to package the work into a self-contained prompt pack for agent team(s).
 Use this when:
 - work splits cleanly into non-overlapping streams
 - separate agents need explicit write boundaries
@@ -200,19 +204,19 @@ Runtime / machine-availability blocker rule:
 
 ## Entry condition
 
-Only start execution when the issue is already labeled `status:plan-approved`.
-If the issue is still unplanned or only in `status:plan-review`, route back to `gh-work-planning` first.
+Start reviewed implementation within task/standing authority; no separate approval label or marker is required.
+If the issue is unplanned, complete planning/review first; plan-review is a visibility state, not a mandatory human wait.
 
 Treat execution entry as a hard gate, not a soft preference.
 Before any code change, branch creation, or delegation package, confirm all of the following:
-1. approval/authz: the issue has explicit plan approval and you are authorized to execute in this repo/worktree/environment
-2. scope: the approved plan and acceptance target are identifiable enough to verify against
+1. authorization: task/standing authority covers this repo/worktree/environment; preserve planning-only limits and required domain decisions
+2. scope: the reviewed task-authorized plan and acceptance target are identifiable enough to verify against
 3. workspace readiness: the intended repo/worktree, branch context, and required policy files are known
 4. validation readiness: you know the primary test/validation path or know that closure will rely on deterministic inspection evidence
 5. GitHub readiness: you can post the required execution/check-in/closure updates, or the orchestrator for doing so is explicitly defined
 
 Entry decisions:
-- if approval is missing, stop and route back to planning/approval
+- if task/standing authority is missing, stop affected execution and report the scope boundary
 - if authorization or execution environment is not safe/available, stop and post a blocker or hand back to the orchestrator
 - if validation cannot yet be identified, stay in central recon until a verification path exists
 - if the issue appears already satisfied, do not begin implementation; follow the already-done pre-check to a verification-first closeout decision
@@ -221,42 +225,9 @@ GitHub check-in at entry:
 - when execution is allowed to proceed, post a concise start note with scope boundary, execution mode if already known, and immediate validation intent
 - when execution cannot proceed, post the stop reason and next route (`planning`, `blocker`, or `orchestrator decision`)
 
-### Local plan-marker gate in worktrees
-### Local plan-marker gate in any checkout
+### Local authority evidence
 
-In workspace-hub-style repos, a GitHub `status:plan-approved` label may still be insufficient for implementation if local hooks enforce `.planning/plan-approved/` markers.
-
-Before launching implementation in the current checkout (main checkout or fresh worktree), verify all of the following in that same checkout:
-- `.planning/plan-approved/<issue>.md` exists locally
-- the marker text uses neutral/operator approval wording (not `Worker session`, `auto-approved`, or `self-approved`)
-- the marker is committed in that checkout before write-capable Codex/Codex execution begins
-
-Safe sequence for approved issue execution:
-1. ensure you are in the exact checkout that will perform the writes
-2. if `.planning/plan-approved/<issue>.md` is missing locally, create it there with neutral approval wording tied to the real user approval signal
-3. commit the marker locally in that same checkout
-4. only then launch implementation
-
-Worktree example:
-1. create the worktree from `main`
-2. write `.planning/plan-approved/<issue>.md` inside the worktree
-3. commit the marker locally in that worktree
-4. only then launch Codex/Codex for implementation
-
-Main-checkout example:
-- even if the issue is already `status:plan-approved` on GitHub and the user explicitly says to continue, create/commit the local `.planning/plan-approved/<issue>.md` in the active checkout before implementation if it is missing there
-
-Why this matters:
-- the plan-approval hook evaluates the local checkout state, not just GitHub labels
-- a marker created only in another checkout, or created but not committed yet, may still be treated as missing or self-approved
-- committing the marker first avoids the implementation session getting blocked mid-run by the local plan gate
-- committing the marker first avoids Codex getting blocked mid-run by the local plan gate
-
-Practical pre-commit check before your first implementation commit:
-1. confirm `.planning/plan-approved/<issue>.md` exists
-2. confirm it is newer than `.planning/STATE.md` in the current checkout
-3. if not, refresh or recreate the marker with the same user-approved content before staging implementation files
-4. then retry the commit
+Record task/standing authority, reviewed scope and validation path in the executing checkout. No approval marker or label is required. Preserve existing owner-controlled approval history; report and repair stale hooks within authorized scope rather than fabricate approvals or weaken unrelated controls.
 
 ## Applies to
 
@@ -552,7 +523,7 @@ Do not combine unrelated issues just to reduce commit count.
 For broader waves:
 1. finish the active issue cleanly
 2. use read-only recon for next candidates if needed
-3. decide whether to implement centrally or package as Codex prompts for agent team(s)
+3. decide whether to implement centrally or package as Claude prompts for agent team(s)
 4. if packaged to agent teams, enforce zero git contention with explicit owned/read-only/forbidden path boundaries
 5. close false positives directly when evidence supports it
 6. create future issues instead of letting discoveries disappear between waves
@@ -577,7 +548,7 @@ Use a compact pattern:
 ### Inventory/report prerequisite slices in nested repos
 For approved umbrella/decomposition issues where the first executable slice is a durable inventory or evidence artifact, do not jump directly to source remediation.
 Use this pattern:
-1. Confirm the parent issue is `status:plan-approved` and the local approval marker exists in the executing checkout.
+1. Confirm task/standing authority covers the reviewed parent slice and blocking findings/domain decisions are resolved.
 2. Post an execution-start comment that explicitly limits the first pass to the inventory/report artifact and says source remediation remains in child issues.
 3. In the nested target repo, run the exact failing command from the approved plan and capture raw output to a transient path (for example `/tmp/...`). Treat a non-zero exit as expected when inventorying known debt.
 4. Generate a checked-in report under the nested repo with: exact command provenance, exit code, parsed finding count, grouped rule-family counts, dominant outlier classification, non-outlier counts, representative findings, and an explicit note that `/tmp` raw output is transient/non-durable.

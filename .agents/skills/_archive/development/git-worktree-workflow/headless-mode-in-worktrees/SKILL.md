@@ -18,7 +18,7 @@ WORKTREE="../project-auto-$(date +%s)"
 git worktree add -b auto-task "$WORKTREE" main
 
 cd "$WORKTREE"
-Codex -p "Complete the task in task.md" --output result.md
+codex -p "Complete the task in task.md" --output result.md
 
 # Collect results
 cp result.md ../results/

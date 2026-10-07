@@ -131,7 +131,7 @@ uv run pytest tests/ -v && git status
 | Phase | Commit Message Pattern |
 |-------|------------------------|
 | 1 | `refactor: Reorganize to module-based 5-layer architecture` |
-| 2 | `refactor: Consolidate <folders> into .Codex (N files)` |
+| 2 | `refactor: Consolidate <folders> into .claude (N files)` |
 | 3 | `chore: Delete legacy config and consolidate scripts` |
 | 4 | `docs: Update README structure and skill documentation` |
 

@@ -25,7 +25,7 @@ scripts_exempt: true
 | Approach | Rating | Time Saved |
 |----------|--------|------------|
 | Script + AI Input + AI Command | ⭐⭐⭐⭐⭐ | 90% |
-| Git Operations (Codex) | ⭐⭐⭐⭐⭐ | 80% |
+| Git Operations (Claude) | ⭐⭐⭐⭐⭐ | 80% |
 | Script + Input File | ⭐⭐⭐⭐ | 70% |
 | Preparing Input Files | ⭐⭐⭐⭐ | 75% |
 | Script Only (no input) | ⭐⭐⭐ | 40% |
@@ -59,7 +59,7 @@ scripts_exempt: true
    └─ Review output and results
    └─ Version control any changes
 
-4. ⭐⭐⭐⭐⭐ Use Codex for git operations
+4. ⭐⭐⭐⭐⭐ Use Claude for git operations
    └─ Commit results
    └─ Create meaningful commit messages
    └─ Manage branches and PRs
@@ -153,7 +153,7 @@ GOOD: "Should we use JWT, sessions, or OAuth?"
 ## Daily Checklist
 
 **Before Starting Work:**
-- [ ] Check usage at https://Codex.ai/settings/usage
+- [ ] Check usage at https://claude.ai/settings/usage
 - [ ] Note Sonnet percentage
 - [ ] Plan model distribution for session
 - [ ] Batch similar tasks together

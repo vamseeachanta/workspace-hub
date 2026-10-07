@@ -36,7 +36,7 @@ analysis against its local logs, commit derived state, and let ace-linux-1 do th
 cross-machine compilation.</p>
 <h2>Design</h2>
 <p>Each workstation runs its own comprehensive-learning analysis:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">ace</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="mi">1</span><span class="w">              </span><span class="n">ace</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="mi">2</span><span class="w">              </span><span class="n">mkt-a</span><span class="o">-</span><span class="n">ansys05</span><span class="w"> </span><span class="p">(</span><span class="n">Windows</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">ace</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="mi">1</span><span class="w">              </span><span class="n">ace</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="mi">2</span><span class="w">              </span><span class="n">ace-win-1</span><span class="w"> </span><span class="p">(</span><span class="n">Windows</span><span class="p">)</span>
 <span class="n">logs</span><span class="o">/</span><span class="n">orchestrator</span><span class="o">/</span><span class="w">       </span><span class="n">logs</span><span class="o">/</span><span class="n">orchestrator</span><span class="o">/</span><span class="w">       </span><span class="n">logs</span><span class="o">/</span><span class="n">orchestrator</span><span class="o">/</span>
 <span class="err">├──</span><span class="w"> </span><span class="n">claude</span><span class="o">/*.</span><span class="n">jsonl</span><span class="w">       </span><span class="err">├──</span><span class="w"> </span><span class="n">claude</span><span class="o">/*.</span><span class="n">jsonl</span><span class="w">       </span><span class="err">├──</span><span class="w"> </span><span class="n">claude</span><span class="o">/*.</span><span class="n">jsonl</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="n">used</span><span class="p">)</span>
 <span class="err">├──</span><span class="w"> </span><span class="n">codex</span><span class="o">/*.</span><span class="n">log</span><span class="w">          </span><span class="err">├──</span><span class="w"> </span><span class="n">codex</span><span class="o">/*.</span><span class="n">log</span><span class="w">          </span><span class="err">├──</span><span class="w"> </span><span class="n">codex</span><span class="o">/*.</span><span class="n">log</span>
@@ -74,7 +74,7 @@ cross-machine compilation.</p>
 <ul>
 <li>Update <code>cron_variants</code> for each machine to include <code>comprehensive-learning</code> as a
   per-machine nightly step</li>
-<li>acma-ansys05: note Windows Task Scheduler equivalent; logs/orchestrator/ path may
+<li>ace-win-1: note Windows Task Scheduler equivalent; logs/orchestrator/ path may
   differ from Linux convention</li>
 </ul>
 <h3>4. <code>logs/orchestrator/README.md</code> (EDIT)</h3>
@@ -134,14 +134,14 @@ Run once per machine; output captured as close evidence. Tests:</p>
 <li>[x] Any machine can run <code>comprehensive-learning</code> and produce valid local derived state — mode-based routing (case/esac) replaces hard guard</li>
 <li>[x] ace-linux-1 <code>git pull</code> picks up all three machines' committed state — Phase 10a documented</li>
 <li>[x] ace-linux-1 produces a cross-machine compilation report — Phase 10a compilation step added</li>
-<li>[x] <code>workstations</code> SKILL.md shows <code>comprehensive-learning</code> in cron for all 3 machines — integration table updated; acma-ansys05 → <code>contribute</code></li>
-<li>[x] acma-ansys05 Windows path handling documented — AI CLI row fixed (yes/yes/yes); cron_variant + install_method added</li>
+<li>[x] <code>workstations</code> SKILL.md shows <code>comprehensive-learning</code> in cron for all 3 machines — integration table updated; ace-win-1 → <code>contribute</code></li>
+<li>[x] ace-win-1 Windows path handling documented — AI CLI row fixed (yes/yes/yes); cron_variant + install_method added</li>
 <li>[x] <code>verify-log-presence.sh</code> passes on ace-linux-1 — PASS (claude 2 files 57/57 valid JSON; codex native 302 sessions; gemini native 772 sessions)</li>
 <li>[ ] <code>verify-log-presence.sh</code> passes on ace-linux-2 — pending SSH run</li>
-<li>[ ] <code>verify-log-presence.sh</code> passes on acma-ansys05 — pending Git Bash run</li>
+<li>[ ] <code>verify-log-presence.sh</code> passes on ace-win-1 — pending Git Bash run</li>
 <li>[x] <code>test_wrk687_lifecycle.sh</code> PASS on ace-linux-1 — Stage A PASS, Stage B PASS, Stage C PASS, Stage D PASS — OVERALL: PASS</li>
 <li>[ ] <code>test_wrk687_lifecycle.sh</code> PASS on ace-linux-2 — pending SSH run</li>
-<li>[ ] <code>test_wrk687_lifecycle.sh</code> PASS on acma-ansys05 — pending Git Bash run</li>
+<li>[ ] <code>test_wrk687_lifecycle.sh</code> PASS on ace-win-1 — pending Git Bash run</li>
 </ul>
 <h2>Implementation Evidence (ace-linux-1, 2026-03-03)</h2>
 <h3>Files Changed</h3>
@@ -161,7 +161,7 @@ Run once per machine; output captured as close evidence. Tests:</p>
 </tr>
 <tr>
 <td><code>.claude/skills/workspace-hub/workstations/SKILL.md</code></td>
-<td>EDIT — acma-ansys05 yes/yes/yes, cron_variant→contribute, integration table</td>
+<td>EDIT — ace-win-1 yes/yes/yes, cron_variant→contribute, integration table</td>
 <td>1e866a5d</td>
 </tr>
 <tr>
@@ -222,11 +222,11 @@ OVERALL: PASS
 </table>
 <h2>Notes</h2>
 <ul>
-<li>acma-ansys05 is Windows; <code>logs/orchestrator/</code> path and cron → Windows Task Scheduler</li>
-<li>acma-ansys05 has Claude CLI — all three agents (claude + codex + gemini) active</li>
+<li>ace-win-1 is Windows; <code>logs/orchestrator/</code> path and cron → Windows Task Scheduler</li>
+<li>ace-win-1 has Claude CLI — all three agents (claude + codex + gemini) active</li>
 <li>The <code>session-signals/</code> gitignore-exception already exists — no .gitignore changes needed</li>
 <li>WRK-683 must be done first (provides <code>logs/orchestrator/</code> infrastructure)</li>
-<li>Log presence check on acma-ansys05 can use Git Bash or PowerShell equivalent of the script</li>
+<li>Log presence check on ace-win-1 can use Git Bash or PowerShell equivalent of the script</li>
 </ul>
     </div>
 

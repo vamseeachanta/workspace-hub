@@ -10,12 +10,12 @@ append_codex_agents_extras() {
         echo "---"
         echo
         echo "## Skill index"
-        echo "> Codex has no native skill loader — enumerate + USE these. Indexed by FAMILY (top-level \`.claude/skills/<family>/\`); run \`ls .claude/skills/<family>/*/SKILL.md\` to list a family's skills. Workspace \`.claude/skills/\` wins over \`.agents/skills/\` and \`~/.claude/plugins/\`. Mandatory lifecycle skills: \`coordination/issue-planning-mode\`, \`coordination/pre-completion-cleanup-audit\`. Auto-generated — do not hand-edit."
+        echo "> Canonical source map, not an installed-skill inventory. Codex supports native skill discovery through its effective roots, including repository \`.agents/skills\`. Use the active task profile; consult \`.claude/skills/<family>/\` only for relevant source lookup when needed. Source ownership does not set loader precedence. Preserve native .system skills and unrelated plugins/settings. Do not recursively activate this index. Auto-generated — do not hand-edit."
         echo
         if [[ -d "${skills_root}" ]]; then
             # FAMILY-level index (~50 lines) — NOT one line per nested SKILL.md (1000+),
             # and archive dirs excluded, so the always-loaded artifact stays compact.
-            for fam in "${skills_root}"/*/; do
+            while IFS= read -r -d '' fam; do
                 [[ -d "${fam}" ]] || continue
                 local famname ds cnt
                 famname=$(basename "${fam}")
@@ -28,7 +28,7 @@ append_codex_agents_extras() {
                     cnt=$(find "${fam}" -name SKILL.md -not -path '*_archive*' 2>/dev/null | wc -l | tr -d ' ')
                     echo "- **${famname}/** — ${cnt} skill(s); \`ls .claude/skills/${famname}/*/SKILL.md\` to enumerate"
                 fi
-            done
+            done < <(printf '%s\0' "${skills_root}"/*/ | LC_ALL=C sort -z)
         fi
         echo
         echo "## Universal rules (inlined for Codex)"

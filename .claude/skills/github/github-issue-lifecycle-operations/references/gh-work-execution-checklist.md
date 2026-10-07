@@ -28,7 +28,7 @@ Compact companion skill for live execution.
 ## Trigger notes
 
 Use when:
-- the issue is already planned and approved
+- the issue is planned, reviewed and within task/standing authority
 - you need a fast execution checklist while working
 - you want to keep GitHub updates, validation, and closeout disciplined
 
@@ -37,11 +37,11 @@ Do not use this instead of the canonical route when scope, delegation, policy, o
 ## Live checklist
 
 1. Entry gate
-- Confirm the issue is approved for execution.
+- Confirm task/standing authority covers execution; no separate plan approval, label or local marker is required. Honor planning-only requests and unresolved domain decisions.
 - Confirm repo/worktree/policy context is known.
 - Confirm you know the intended validation path.
 - Post a concise execution-start note if execution is proceeding.
-- If approval, authz, environment, or validation path is missing: stop and route back per `gh-work-execution`.
+- If task/standing authority, environment, required decisions, review clearance or validation path is missing: stop and route back per `gh-work-execution`.
 
 2. Already-done check first
 - Inspect the deliverable surface before changing code.
@@ -76,7 +76,7 @@ Do not use this instead of the canonical route when scope, delegation, policy, o
 - If non-trivial concerns remain, fix them and re-run validation.
 
 7. Commit/push gate
-- Confirm the diff matches approved scope.
+- Confirm the diff matches the reviewed scope and task/standing authority; consequential actions outside authority require explicit authorization.
 - Confirm tests/validators used as evidence are still green.
 - Commit with a message tied to the landed work.
 - Push only after validation and review are complete.

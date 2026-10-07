@@ -153,7 +153,7 @@ build_brochure(capability_summary, charts_2555, proofs):
     ]
     enforce: every numeric claim cites a repo path or public source
     enforce: no client-identifying content
-    enforce: zero contact details on the brochure cover (only info@aceengineer.com)
+    enforce: zero contact details on the brochure cover (only info@example.com)
     render to PDF via pandoc or md-to-pdf skill
 
 build_outbound_copy_variants(templates, tier):

@@ -149,7 +149,7 @@ These 6 plans all produce **concept pages**, NOT standards pages. The wikis alre
 ### #2612 W5-C lng-projects
 - Plan: `docs/plans/2026-05-03-issue-2612-llm-wiki-W5C-lng-projects-expansion.md`
 - Output: 8 pages — concepts + entities at `knowledge/wikis/lng-projects/wiki/concepts/` and `wiki/entities/`
-- **Routing**: lng-projects NOT in routing-principle scope; stays in concepts/+entities/. Reservation regex blocks SESA/Woodfibre/mkt-a-31522/lng-a-62092 noun-phrases (per plan).
+- **Routing**: lng-projects NOT in routing-principle scope; stays in concepts/+entities/. Reservation regex blocks SESA/lng-terminal-a/mkt-a-31522/lng-a-62092 noun-phrases (per plan).
 
 ---
 

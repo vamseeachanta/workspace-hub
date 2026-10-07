@@ -236,29 +236,10 @@ if $DO_COMMIT && [ "$total_copied" -gt 0 ]; then
       continue
     fi
 
-    echo "$(date '+%H:%M:%S') [backfill] [$label] Running legal-sanity-scan..."
-    legal_scan="$WS_HUB/scripts/legal/legal-sanity-scan.sh"
-    scan_pass=true
-    if [ -x "$legal_scan" ]; then
-      if bash "$legal_scan" --diff-only 2>&1 | grep -q "RESULT: FAIL"; then
-        echo "$(date '+%H:%M:%S') [backfill] [$label] WARN: legal scan found violations (likely false positives in docs)"
-        scan_pass=false
-      fi
-    fi
-
-    if $scan_pass; then
-      git commit -m "hermes: backfill $count skills to .claude/skills/
+    git commit -m "hermes: backfill $count skills to .claude/skills/
 
 Auto-detected and copied $count new/updated skills from ~/.hermes/skills/
 via backfill-skills-to-repo.sh (per-repo routing). Target: $label" 2>&1 | tail -1
-    else
-      git commit --no-verify -m "hermes: backfill $count skills to .claude/skills/
-
-Auto-detected and copied $count new/updated skills from ~/.hermes/skills/
-via backfill-skills-to-repo.sh (per-repo routing). Target: $label
-
-Legal scan: false positives in skill documentation examples." 2>&1 | tail -1
-    fi
 
     echo "$(date '+%H:%M:%S') [backfill] [$label] Pushing..."
     git pull --rebase --autostash 2>/dev/null || true

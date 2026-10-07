@@ -214,7 +214,7 @@ memory:
 ```powershell
 cd C:\workspace-hub
 git config user.name "Your Name"
-git config user.email "your@email.com"
+git config user.email "you@example.com"
 git config core.autocrlf true
 git config core.eol crlf
 
@@ -324,7 +324,7 @@ When using Claude Code directly on a Windows machine inside the workspace-hub ec
 
 ### Repo-side caveats to check
 
-- `scripts/readiness/harness-config.yaml` may still have `ace-win-1.ws_hub_path: null`. Set the actual Windows workspace path (for example `D:\\workspace-hub`) when hardening a real machine.
+- `scripts/readiness/harness-config.yaml` may still have `ace-win-1.ws_hub_path: null`. Set the actual Windows workspace path (for example `<workspace-root>\\workspace-hub`) when hardening a real machine.
 - A tracked readiness proof file should exist after setup: `.claude/state/harness-readiness-ace-win-1.yaml`.
 - Windows write-back parity is still incomplete if issue `#1918` (Windows auto-memory sync back to repo) is still open. Windows can consume shared context now, but may not automatically publish all new learnings back into the ecosystem.
 - Treat Windows as **repo-parity first**: Claude Code reads `.claude/` directly, so you retain most Hermes advantages even without installing Hermes locally.
@@ -425,7 +425,8 @@ Notes:
 - The Windows deny subset (`format`, `del /f /s /q`, `rd /s`, `reg delete`, `diskpart`, …) comes from
   `_base.deny_required_os.windows` in `config/workstations/harness-roles.yaml`, selected by the
   machine's `os: windows`; the Linux-only entries (`crontab`/`systemctl`/`sudo`/…) are NOT applied.
-- Host detection resolves the real Windows computer name (e.g. `ACMA-ANSYS05`) via the registry
-  `hostname_aliases`, so `--machine` is usually unnecessary.
+- Host detection reads the machine's Windows computer name from the registry and resolves it to the
+  box's canonical role alias (e.g. `ace-win-1`) through `hostname_aliases`, so `--machine` is usually
+  unnecessary.
 - The write only touches `settings.json` — it never interacts with OrcaFlex/AQWA/ANSYS processes, so
   it is safe to run while solvers are idle.

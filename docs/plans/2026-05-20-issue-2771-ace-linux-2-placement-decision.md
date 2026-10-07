@@ -1,3 +1,12 @@
+---
+compass:
+  parent: .claude/skills/coordination/issue-planning-mode/references/per-machine-repo-placement-outcome-contract.md
+  prev: docs/plans/2026-05-20-issue-2770-ace-linux-1-placement-decision.md
+  next: docs/plans/2026-05-20-issue-2772-licensed-win-1-placement-decision.md
+  friends:
+    - docs/plans/2026-05-20-issue-2770-ace-linux-1-placement-decision.md
+---
+
 # Plan for #2771: decision(workstations): choose tier-1 repo placement for ace-linux-2
 
 > **Status:** draft — decision recorded; adversarial review not yet run; no implementation approval

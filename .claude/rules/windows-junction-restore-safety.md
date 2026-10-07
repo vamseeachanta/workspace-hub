@@ -1,6 +1,6 @@
 # Windows junction restore safety — agent rule (#3571)
 
-**When to apply:** any restore, checkout, or deletion touching `.codex/skills`, `.gemini/skills`, `.claude/skills`, or any shared-skill link path in a D:\ws-style Windows checkout — including running a remediation command that a runbook, preflight, or reconcile output hands you.
+**When to apply:** any restore, checkout, or deletion touching `.codex/skills`, `.gemini/skills`, `.claude/skills`, or any shared-skill link path in a drive-rooted (`<workspace-root>`) Windows checkout — including running a remediation command that a runbook, preflight, or reconcile output hands you.
 
 **Why:** live incident 2026-07-16 (ace-win-1). The skills-link tooling materializes shared-skill paths as **NTFS junctions targeting `workspace-hub/.claude/skills`**. A `git restore .codex/skills .gemini/skills` executed per a preflight instruction replaced such a junction — git's child-enumerating directory removal **followed the reparse point and emptied the canonical tree** (4,215 tracked files deleted; four scheduled-task failures downstream). Recovery was lossless only because the deletions were unstaged.
 

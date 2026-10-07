@@ -24,7 +24,7 @@ Start with smallest/lowest-risk buckets, then large/overlapping buckets:
 5. `lng-a-62092-sesa` — 418 files / 1,465,267,463 bytes; likely overlap
 6. `lng-a-university` — 564 files / 11,060,962,662 bytes
 7. `lng-a-codes-specs` — 35,197 files / 26,411,658,490 bytes; high file-count overlap risk
-8. `mkt-a-31522-woodfibre` — 5,364 files / 1,879,405,139,855 bytes; very large, treat as separate reviewed merge
+8. `mkt-a-31522-lng-terminal-a` — 5,364 files / 1,879,405,139,855 bytes; very large, treat as separate reviewed merge
 
 ## Per-bucket assessment pattern
 

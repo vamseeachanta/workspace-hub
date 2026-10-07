@@ -1,8 +1,9 @@
 # licensed-run — ace-win-2 go-live helpers
 
 Reusable scripts for bringing the Deckhand licensed-run lane live on **ace-win-2**
-(the Windows / OrcaFlex-licensed host) for scope **acma**
-(`vamseeachanta/llm-wiki-acma`, workflow `orcaflex-strength-post`).
+(the Windows / OrcaFlex-licensed host) for one private client scope
+(workflow `orcaflex-strength-post`). The scope id and its private checkout are
+not named here; they come from the environment (see below).
 
 Authoritative runbook: `deckhand/docs/deckhand/licensed-run-go-live-ace-win-2.md`.
 
@@ -17,6 +18,14 @@ Authoritative runbook: `deckhand/docs/deckhand/licensed-run-go-live-ace-win-2.md
 - `policy.host-local.yml` — copy of `deckhand` policy with `execution_enabled: true` (host-local override; NOT committed to the shared deckhand repo).
 - `licensed-run.verified.json` — the verify marker (agent runs only when this + `execution_enabled` are both present).
 - `agent_poll.log` — poller heartbeat + run output.
+
+## Environment the operator sets (private; never committed)
+- `LICENSED_RUN_SCOPE` — the Deckhand scope id the agent serves.
+- `LICENSED_RUN_SCOPE_REPO` — absolute path of that scope's private checkout.
+
+The scripts no longer check for them up front (owner decision S01); an unset
+variable surfaces as the called tool's own path error. `build_strength_sim.py`
+takes the target path as its second argument instead.
 
 ## Environment the scripts set
 - `VIRTUAL_ENV=C:\ws\digitalmodel\.venv` — the env carrying `digitalmodel` + `assetutilities` + the OrcaFlex 11.6 `OrcFxAPI` binding (added via a `.pth`). `uv run` honours it.
