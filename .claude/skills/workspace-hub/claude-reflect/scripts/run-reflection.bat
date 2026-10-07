@@ -5,10 +5,10 @@ REM Usage:
 REM   1. Open Task Scheduler
 REM   2. Create new task with trigger: Daily at 5:00 AM
 REM   3. Action: Start a program
-REM      Program: D:\workspace-hub\.claude\skills\workspace-hub\claude-reflect\scripts\run-reflection.bat
+REM      Program: <workspace-root>\workspace-hub\.claude\skills\workspace-hub\claude-reflect\scripts\run-reflection.bat
 REM
 
-SET WORKSPACE_HUB=D:\workspace-hub
+SET WORKSPACE_HUB=%~dp0..\..\..\..\..
 SET GIT_BASH=C:\Program Files\Git\bin\bash.exe
 
 REM Check if Git Bash exists

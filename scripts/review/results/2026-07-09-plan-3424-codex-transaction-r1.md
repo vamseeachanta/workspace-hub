@@ -5,8 +5,8 @@ MAJOR
 ## Retrieval
 
 - Read the draft plan.
-- Cross-checked llm-wiki-acma #209 code-review rounds 1–4.
-- Cross-checked the llm-wiki-acma #216 plan and its convention, TDD, workflow, and code-review artifacts.
+- Cross-checked llm-wiki-mkt-a #209 code-review rounds 1–4.
+- Cross-checked the llm-wiki-mkt-a #216 plan and its convention, TDD, workflow, and code-review artifacts.
 - Inspected the #216 inventory, hashing, validation, Git verification, and candidate-install modules.
 
 ## Findings

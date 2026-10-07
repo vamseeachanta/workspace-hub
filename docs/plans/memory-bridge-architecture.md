@@ -8,7 +8,7 @@ Three memory silos exist:
 
 1. **Hermes Memory** (`~/.hermes/memories/`) — written by Hermes agent on ace-linux-1. Only exists on that machine.
 2. **Claude Code Auto-Memory** (`~/.claude/projects/*/memory/`) — 39 topic-specific `.md` files per project. Written automatically by Claude Code sessions. Non-portable — stuck on each machine.
-3. **Licensed-Win-1** (`D:\workspace-hub`) — has neither Hermes nor any Claude memory. Zero context.
+3. **Licensed-Win-1** (`<workspace-root>\workspace-hub`) — has neither Hermes nor any Claude memory. Zero context.
 
 No bridge between any of them.
 

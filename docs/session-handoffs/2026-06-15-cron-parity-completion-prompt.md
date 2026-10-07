@@ -11,7 +11,7 @@ Three items remain.
 On each box, in an **Administrator** PowerShell:
 
 ```powershell
-cd D:\workspace-hub
+cd <workspace-root>\workspace-hub
 git pull --rebase --autostash
 powershell -ExecutionPolicy Bypass -File scripts\windows\setup-scheduler-tasks.ps1 -WhatIf   # preview
 powershell -ExecutionPolicy Bypass -File scripts\windows\setup-scheduler-tasks.ps1            # apply
@@ -20,7 +20,7 @@ Get-ScheduledTask -TaskPath "\Claude\" | Format-Table TaskName,State            
 
 Idempotent; auto-detects host (canonical role ids `ace-win-1`, `ace-win-2`);
 `WorkspaceRoot` auto-resolves; Git Bash at `C:\Program Files\Git\bin\bash.exe`. `-Remove` to undo.
-Prereqs: repo at `D:\workspace-hub`, `gh` authed, Tailscale up. Confirm the boxes are online first
+Prereqs: repo at `<workspace-root>\workspace-hub`, `gh` authed, Tailscale up. Confirm the boxes are online first
 (they were unreachable from ace-linux-2 — no Tailscale Windows peers).
 
 ## 2. Re-land the cron allowlist (sanitized)

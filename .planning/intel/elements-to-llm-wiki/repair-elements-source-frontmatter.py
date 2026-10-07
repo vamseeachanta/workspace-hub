@@ -10,7 +10,7 @@ PAGES = [
     ("knowledge/wikis/engineering/wiki/sources/elements-digitalmodel-qgis.md", "/mnt/ace/digitalmodel/tools/qgis"),
     ("knowledge/wikis/engineering/wiki/sources/elements-lng-a-university.md", "/mnt/ace/lng-a/training"),
     ("knowledge/wikis/engineering-standards/wiki/sources/elements-lng-a-codes-specs.md", "/mnt/ace/lng-a/codes"),
-    ("knowledge/wikis/lng-projects/wiki/sources/elements-mkt-a-31522-woodfibre.md", "/mnt/ace/mkt-a/31522-woodfibre-lng"),
+    ("knowledge/wikis/lng-projects/wiki/sources/elements-mkt-a-31522-lng-terminal-a.md", "/mnt/ace/mkt-a/31522-lng-terminal-a"),
     ("knowledge/wikis/lng-projects/wiki/sources/elements-lng-a-62092-sesa.md", "/mnt/ace/lng-a/62092_sesa"),
     ("knowledge/wikis/marine-engineering/wiki/sources/elements-digitalmodel-riser-toolbox.md", "/mnt/ace/digitalmodel/references/riser-toolbox"),
     ("knowledge/wikis/marine-engineering/wiki/sources/elements-digitalmodel-suction-pile-sizing.md", "/mnt/ace/digitalmodel/references/suction-pile-sizing"),

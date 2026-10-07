@@ -35,7 +35,7 @@ python -c "import OrcFxAPI; print(OrcFxAPI.DLLVersion())"  # OrcaFlex must be in
 
 ```powershell
 # 1. Clone or pull the repo
-cd D:\workspace-hub          # adjust path as needed
+cd <workspace-root>\workspace-hub          # adjust path as needed
 git pull origin main
 
 # 2. Create the Task Scheduler job (run as Administrator)

@@ -86,7 +86,7 @@ Use a short table:
 |---|---|---|---|
 | Approval needed | [`#NNN`](https://github.com/OWNER/REPO/issues/NNN) | `status:plan-review` | User may promote to `status:plan-approved` |
 | Needs data | [`#NNN`](https://github.com/OWNER/REPO/issues/NNN) | `status:plan-approved`, `status:needs-data` | User/data decision still required |
-| Approved / execution-prep | [`#NNN`](https://github.com/OWNER/REPO/issues/NNN) | `status:plan-approved`, marker missing | Create local marker before implementation |
+| Approved / execution-prep | [`#NNN`](https://github.com/OWNER/REPO/issues/NNN) | `status:plan-approved`, marker missing | Verify task authority/review; preserve optional history without requiring a marker |
 
 For a narrow request like “show gh issue links for user approval,” a reduced table is preferred:
 

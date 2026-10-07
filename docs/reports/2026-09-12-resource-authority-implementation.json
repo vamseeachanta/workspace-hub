@@ -14,7 +14,7 @@
       "config/schemas/resource-descriptor-v1.schema.json": null,
       "tests/architecture/test_resource_authority_contract.py": null
     },
-    "worktree": "D:\\ws\\_worktrees\\3606-resource-authority",
+    "worktree": "<workspace-root>\\_worktrees\\3606-resource-authority",
     "started_at": "2026-09-12T16:51:19.675992+00:00"
   },
   "snapshot": {
@@ -221,7 +221,7 @@
   },
   "integration": {
     "authorization": "User: yes. approved",
-    "manifest": "D:\\ws\\_pilot-fixtures\\3606\\resource-authority\\integration-20260912\\manifest.json",
+    "manifest": "<workspace-root>\\_pilot-fixtures\\3606\\resource-authority\\integration-20260912\\manifest.json",
     "verified_at": "2026-09-12T18:42:16.887342+00:00",
     "tests": {
       "command": [

@@ -1,8 +1,8 @@
 Subject: Clayton Park POA Account Setup and Statement Information for 15645 Westpark Dr, Houston, TX 77082
 
-To: Account.Services@fscommercial.com
-Cc: accountsreceivable.tx@fsresidential.com
-From: skestatesinc@gmail.com
+To: [email removed]
+Cc: [email removed]
+From: owner.realestate@example.com
 
 Dear FS Commercial Account Services,
 
@@ -24,5 +24,5 @@ Sincerely,
 Vamsee Achanta
 VP of Operations
 Sabitha & Krishna Estates Incorporated
-skestatesinc@gmail.com
+owner.realestate@example.com
 +1 713-306-9029

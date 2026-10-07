@@ -200,11 +200,11 @@ def test_needs_plan_approval_paths_matches_legacy_scope():
     assert gate.needs_plan_approval_paths({"scripts/workflow/gate.py", "tests/test_gate.py"}) is False
 
 
-def test_enforcement_workflow_falls_back_when_uv_is_absent():
+def test_retired_enforcement_entry_point_uses_runner_python():
     text = (Path(__file__).resolve().parents[2] / ".github" / "workflows" /
             "enforcement-gate.yml").read_text()
-    assert "command -v uv" in text
     assert "python3 scripts/workflow/plan_approval_gate_check.py" in text
+    assert "Separate plan approval retired" in text
 
 
 def test_latest_authorized_binding_ignores_later_unauthorized_attempt():

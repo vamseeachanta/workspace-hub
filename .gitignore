@@ -225,6 +225,11 @@ reports/*
 !reports/test-summary/
 !reports/test-summary/.gitkeep
 !reports/test-summary/baseline-summary.json
+# S01: the contact de-duplication report is counts and domains only, written
+# redacted; only that file is tracked. Address files never land here.
+!reports/email/
+reports/email/*
+!reports/email/contact-dedup-report.md
 src/workspace_hub/reports/
 test-framework-integrations/
 _organized_non_repo_files/
@@ -512,7 +517,7 @@ config/data/pipeline-state/*.json
 data/document-index/index.jsonl.pre-merge-bak
 
 # Oversized generated test files (>10MB)
-knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/tests/test_cc-23-6h-flowback-calculator-4.py
+knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-c/tests/test_removed_workbook_extraction_c.py
 
 # Wikis spun out to vamseeachanta/llm-wiki on 2026-05-05 — workspace-hub retains
 # only health-reports/ (ops surface), personal/ (private notes), and
@@ -613,3 +618,38 @@ docs/reports/sessions/payloads/
 # local-only (session ids + query hashes); committed counts-only weekly
 # aggregates live in data/drive-index-search/metrics/weekly/ (NOT ignored)
 data/drive-index-search/metrics/*.jsonl
+
+# C20/S01: archive-drive indexes carry client names and real archive paths that
+# later steps read. Their builders write them here as local working files; they
+# are never committed (redacting them would break the paths the pipeline reads).
+/data/content_index.json
+/docs/CONTENT_INDEX.md
+/data/document-index/conference-index-batch.jsonl
+/data/document-index/conference-index.jsonl
+/data/document-index/conference-phase-a-results.jsonl
+/data/document-index/cross-drive-dedup-report.json
+
+# S01 (2026-09-27): generated boards are local only. Their builders
+# (scripts/kanban/reconcile.py, scripts/ai/provider-work-queue.py,
+# scripts/ai/provider-kanban.py, scripts/ai/build-orca-kanban.py) stay runnable
+# and write here; nothing publishes them. ecosystem.yaml is authored, not generated.
+/.claude/memory/kanban/boards/*
+!/.claude/memory/kanban/boards/ecosystem.yaml
+/config/ai-tools/provider-work-queue.json
+/config/ai-tools/provider-kanban.json
+/docs/reports/provider-work-queue.md
+/docs/reports/provider-kanban-dashboard.md
+/docs/reports/provider-kanban-dashboard.html
+/docs/dashboards/*-tier1-gh-issue-kanban.html
+/docs/dashboards/*-orca-kanban.html
+/docs/reports/*-tier1-gh-issue-kanban-*
+/docs/reports/*-tier1-kanban-board-data.json
+/docs/reports/*-tier1-board-index.md
+/docs/reports/*-orca-kanban-data.json
+/docs/reports/kanban/*-kanban.md
+/docs/reports/kanban/*-board-index.md
+# Issue 3943: preserve exact review receipts, not the generated results tree.
+!scripts/review/results/
+scripts/review/results/*
+!scripts/review/results/2026-10-05-3943-claude-raw.txt
+!scripts/review/results/2026-10-05-3943-agy-unavailable.md

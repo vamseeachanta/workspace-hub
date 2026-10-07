@@ -17,7 +17,7 @@ This checklist verifies operator ergonomics only. Dispatch authority remains wit
 ## Windows licensed hosts
 
 - [ ] Host appears as `desktop-status-only` unless a separate approved implementation enables unattended execution.
-- [ ] Paths are rendered as Windows paths, e.g. `D:\workspace-hub`, not Linux translations.
+- [ ] Paths are rendered as Windows paths, e.g. `<workspace-root>\workspace-hub`, not Linux translations.
 - [ ] Solver/license status can be summarized without exposing license server secrets.
 - [ ] Dispatch attempts to Windows hosts return `host_status_only` unless dispatch is explicitly enabled in the registry.
 

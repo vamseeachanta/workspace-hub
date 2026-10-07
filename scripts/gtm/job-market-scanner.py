@@ -16,7 +16,11 @@ Usage:
     python scripts/gtm/job-market-scanner.py [--keywords KEY1,KEY2] [--limit N]
     python scripts/gtm/job-market-scanner.py --refresh   # weekly refresh mode
 
-Output:
+Output (owner decision S01): every file is passed through the identifier gate's
+redactor (scripts/legal/public_redaction.py) after the run, so no client or
+vendor name on the lists reaches this public repository. ``--output-dir``
+overrides the directory.
+
     docs/strategy/gtm/job-market-scan/raw-results/YYYY-MM-DD.json
     docs/strategy/gtm/job-market-scan/cumulative-index.json    (all-time seen jobs)
     docs/strategy/gtm/job-market-scan/new-this-week.md         (delta from last scan)
@@ -50,11 +54,9 @@ from bs4 import BeautifulSoup
 # ---------------------------------------------------------------------------
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
-OUTPUT_DIR = REPO_ROOT / "docs" / "strategy" / "gtm" / "job-market-scan"
-RAW_DIR = OUTPUT_DIR / "raw-results"
-ARCHIVE_DIR = OUTPUT_DIR / "archive"
-KEYWORD_DIR = OUTPUT_DIR / "keyword-results"
-PROFILE_DIR = OUTPUT_DIR / "company-profiles"
+DEFAULT_OUTPUT_DIR = REPO_ROOT / "docs" / "strategy" / "gtm" / "job-market-scan"
+# Set by configure_output_dir() below.
+OUTPUT_DIR = RAW_DIR = ARCHIVE_DIR = KEYWORD_DIR = PROFILE_DIR = CUMULATIVE_PATH = None
 RAW_RETENTION_WEEKS = 12
 HISTORY_RETENTION_MONTHS = 6
 
@@ -103,11 +105,11 @@ for i, kw in enumerate(KEYWORDS):
 # Known target companies for priority scoring
 PRIORITY_COMPANIES = {
     # Tier 1 — EPIC / Installation
-    "subsea7", "technipfmc", "client-d", "mcdermott", "allseas", "heerema",
+    "subsea7", "technipfmc", "client-d", "allseas", "heerema",
     "boskalis", "van oord", "deme",
     # Tier 2 — Operators
     "energy transfer", "crescent energy", "shell", "bp", "chevron",
-    "exxonmobil", "talos energy", "murphy oil", "kosmos energy",
+    "exxonmobil", "murphy oil", "kosmos energy",
     "eog resources", "devon energy", "diamondback", "hess",
     # Tier 3 — Consultancies
     "2h offshore", "stress engineering", "zentech", "sofec", "intermoor",
@@ -491,7 +493,6 @@ COMPANY_CAREER_URLS = {
     "Cheniere Energy": "https://www.cheniere.com/careers",
     "SBM Offshore": "https://www.sbmoffshore.com/careers",
     "Heerema": "https://heerema.com/careers",
-    "McDermott": "https://careers.mcdermott.com/",
     "Wood": "https://www.woodplc.com/careers",
     "Worley": "https://www.worley.com/en/careers",
     "ABS": "https://ww2.eagle.org/en/careers.html",
@@ -510,9 +511,73 @@ COMPANY_CAREER_URLS = {
     "Orsted": "https://orsted.com/en/careers",
     "Equinor": "https://www.equinor.com/careers",
     "Vineyard Wind": "https://www.vineyardwind.com/careers",
-    "Talos Energy": "https://www.talosenergy.com/careers",
     "Shell": "https://www.shell.com/careers",
 }
+
+
+def _apply_private_overlay() -> None:
+    """Merge owner-private priority companies and career pages (C19).
+
+    Names of companies with an engagement relationship are not listed in this
+    public file. Source: scripts/lib/private_overlay.py
+    (~/.config/workspace-hub/private-lists.json). Absent file -> public lists
+    only; malformed file -> PrivateOverlayError.
+    """
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
+    from scripts.lib import private_overlay
+
+    # Absent overlay: priority ranking degrades to the public list, with one
+    # warning line on stderr.
+    private_overlay.warn_if_absent("job-market priority")
+    overlay = private_overlay.load()
+    PRIORITY_COMPANIES.update(
+        name.strip().lower()
+        for name in private_overlay.get_list(overlay, "job_market.priority_companies")
+    )
+    COMPANY_CAREER_URLS.update(private_overlay.get_mapping(overlay, "job_market.career_urls"))
+
+
+_apply_private_overlay()
+
+
+def configure_output_dir(output_dir: Path) -> None:
+    """Point every output location at ``output_dir``."""
+    global OUTPUT_DIR, RAW_DIR, ARCHIVE_DIR, KEYWORD_DIR, PROFILE_DIR, CUMULATIVE_PATH
+    OUTPUT_DIR = Path(output_dir)
+    RAW_DIR = OUTPUT_DIR / "raw-results"
+    ARCHIVE_DIR = OUTPUT_DIR / "archive"
+    KEYWORD_DIR = OUTPUT_DIR / "keyword-results"
+    PROFILE_DIR = OUTPUT_DIR / "company-profiles"
+    CUMULATIVE_PATH = OUTPUT_DIR / "cumulative-index.json"
+
+
+configure_output_dir(DEFAULT_OUTPUT_DIR)
+
+
+def load_output_redactor():
+    """The identifier gate's redaction module and redactor (S01). The private deny
+    list extends it when the host has one; a named list that is missing raises."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "_jms_public_redaction", REPO_ROOT / "scripts" / "legal" / "public_redaction.py")
+    redaction = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(redaction)
+    return redaction, redaction.load_redactor()
+
+
+def redact_outputs(output_dir: Path, loaded=None) -> None:
+    """Redact every JSON and Markdown file under ``output_dir`` in place with the
+    identifier gate's redactor (S01)."""
+    redaction, redactor = loaded or load_output_redactor()
+    for path in sorted(Path(output_dir).rglob("*")):
+        if path.suffix not in (".json", ".md") or not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        new = redaction.redact_file_text(text, path.suffix, redactor)
+        if new != text:
+            path.write_text(new, encoding="utf-8")
 
 
 def scan_career_page(company: str, url: str, search_terms: list[str] | None = None) -> list[dict]:
@@ -906,7 +971,7 @@ def generate_priority_targets(result: dict, date_str: str):
 # History Tracking & Cumulative Index
 # ---------------------------------------------------------------------------
 
-CUMULATIVE_PATH = OUTPUT_DIR / "cumulative-index.json"
+# CUMULATIVE_PATH is set by configure_output_dir() (see Configuration).
 
 
 def enforce_retention_policy(date_str: str) -> dict:
@@ -1252,7 +1317,7 @@ def main():
     parser.add_argument("--skip-career-pages", action="store_true",
                        help="Skip company career page scanning")
     parser.add_argument("--output-dir", type=str, default=None,
-                       help="Override output directory")
+                       help=f"Output directory (default: {DEFAULT_OUTPUT_DIR.relative_to(REPO_ROOT).as_posix()})")
     parser.add_argument("--refresh", action="store_true",
                        help="Weekly refresh mode — runs full scan with history tracking")
 
@@ -1263,25 +1328,27 @@ def main():
         keywords = [k.strip() for k in args.keywords.split(",")]
 
     if args.output_dir:
-        global OUTPUT_DIR, RAW_DIR, KEYWORD_DIR, PROFILE_DIR, CUMULATIVE_PATH
-        OUTPUT_DIR = Path(args.output_dir)
-        RAW_DIR = OUTPUT_DIR / "raw-results"
-        KEYWORD_DIR = OUTPUT_DIR / "keyword-results"
-        PROFILE_DIR = OUTPUT_DIR / "company-profiles"
-        CUMULATIVE_PATH = OUTPUT_DIR / "cumulative-index.json"
+        configure_output_dir(Path(args.output_dir))
 
-    result = run_scan(
-        keywords=keywords,
-        limit=args.limit,
-        skip_career_pages=args.skip_career_pages,
-    )
+    # Load the redactor before anything is written, so a missing named list stops
+    # the run with no output; then redact on every exit path, including a failure
+    # part-way through, so raw outputs never remain in the tracked scan directory.
+    redaction = load_output_redactor()
+    try:
+        result = run_scan(
+            keywords=keywords,
+            limit=args.limit,
+            skip_career_pages=args.skip_career_pages,
+        )
 
-    # Always update cumulative index and generate delta reports
-    date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    history = update_cumulative_index(result, date_str)
-    retention = enforce_retention_policy(date_str)
-    generate_new_this_week(history["new_jobs"], date_str)
-    generate_trend_report(history["cumulative"], date_str)
+        # Always update cumulative index and generate delta reports
+        date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        history = update_cumulative_index(result, date_str)
+        retention = enforce_retention_policy(date_str)
+        generate_new_this_week(history["new_jobs"], date_str)
+        generate_trend_report(history["cumulative"], date_str)
+    finally:
+        redact_outputs(OUTPUT_DIR, redaction)
 
     print(f"  Raw archives moved: {retention['archived_raw_results']}")
 

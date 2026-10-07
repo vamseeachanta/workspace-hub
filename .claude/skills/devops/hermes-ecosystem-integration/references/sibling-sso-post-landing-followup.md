@@ -1,5 +1,8 @@
 # Sibling SSoT Post-Landing Follow-Up
 
+Current authority: implementation follows the originating task request or established standing authority after proportionate planning, TDD and adversarial review; no separate plan approval, approval label or local marker is required. Planning-only limits, unresolved domain decisions and action-specific authorization for publication, deployment, access changes, destructive actions and outreach remain binding. Historical approval records stay intact and must not be fabricated or self-labeled.
+
+
 Use after a sibling SSoT implementation closes with the core memory/skills/tools path fixed but residual repo-contract failures remain.
 
 ## Trigger
@@ -30,7 +33,7 @@ Use after a sibling SSoT implementation closes with the core memory/skills/tools
 
 5. **Stay inside the plan gate**
    - If the follow-up issue is `status:needs-plan`, draft the plan and run adversarial review.
-   - Do not implement until user approval moves the issue to `status:plan-approved` and the local approval marker exists.
+   - Implement reviewed changes within verified task authority; SSO/access changes require their specific authorized destination and effects, not an approval label or marker.
 
 ## Reporting Template
 
@@ -44,5 +47,5 @@ Why:
 
 Guardrail:
 - current checkout is <clean/dirty/diverged>; use <clean worktree/reconcile first>
-- issue is <status>; stop at <plan-review/user approval> before implementation
+- issue is <status>; verify <task authority/review/domain decisions> before implementation; access changes retain their specific authority
 ```

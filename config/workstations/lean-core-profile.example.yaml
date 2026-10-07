@@ -1,0 +1,65 @@
+schema_version: 1
+profile_id: example-replace-with-reviewed-local-evidence
+membership_machine: dev-primary
+budget_bytes: 3000000000
+repositories:
+  workspace-hub:
+    revision: '0000000000000000000000000000000000000000'
+    origin_url_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+    clone_policy: new_destination
+    include_directories:
+    - src
+    required_paths:
+    - README.md
+    required_digests:
+      README.md: '0000000000000000000000000000000000000000000000000000000000000000'
+  digitalmodel:
+    revision: '0000000000000000000000000000000000000000'
+    origin_url_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+    clone_policy: sanitized_existing_only
+    include_directories:
+    - src
+    required_paths:
+    - README.md
+    required_digests:
+      README.md: '0000000000000000000000000000000000000000000000000000000000000000'
+  assetutilities:
+    revision: '0000000000000000000000000000000000000000'
+    origin_url_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+    clone_policy: new_destination
+    include_directories:
+    - src
+    required_paths:
+    - README.md
+    required_digests:
+      README.md: '0000000000000000000000000000000000000000000000000000000000000000'
+  worldenergydata:
+    revision: '0000000000000000000000000000000000000000'
+    origin_url_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+    clone_policy: new_destination
+    include_directories:
+    - src
+    required_paths:
+    - README.md
+    required_digests:
+      README.md: '0000000000000000000000000000000000000000000000000000000000000000'
+  llm-wiki:
+    revision: '0000000000000000000000000000000000000000'
+    origin_url_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+    clone_policy: new_destination
+    include_directories:
+    - src
+    required_paths:
+    - README.md
+    required_digests:
+      README.md: '0000000000000000000000000000000000000000000000000000000000000000'
+  assethold:
+    revision: '0000000000000000000000000000000000000000'
+    origin_url_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+    clone_policy: new_destination
+    include_directories:
+    - src
+    required_paths:
+    - README.md
+    required_digests:
+      README.md: '0000000000000000000000000000000000000000000000000000000000000000'

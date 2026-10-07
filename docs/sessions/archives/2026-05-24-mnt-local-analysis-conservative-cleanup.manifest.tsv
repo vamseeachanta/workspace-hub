@@ -3543,22 +3543,22 @@ d	0	1777316431.7997681000	ace2-codex-work/issue-2464/knowledge/_archive
 d	0	1777316431.8001493000	ace2-codex-work/issue-2464/knowledge/_archive/wikis
 d	0	1777316431.8006000000	ace2-codex-work/issue-2464/knowledge/_archive/wikis/engineering
 d	0	1777316431.8012218000	ace2-codex-work/issue-2464/knowledge/_archive/wikis/engineering/concepts
-d	0	1777316431.8231731000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1
-d	0	1777316432.0563648000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/31126-cal-0001-1-conductor-length-assessment--va-checked
+d	0	1777316431.8231731000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-a
+d	0	1777316432.0563648000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-b
 d	0	1777316432.5044385000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-archive-sn-workbook-extraction
 d	0	1777316433.2412733000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/c---k-flow-rate-calculation
-d	0	1777316433.5689332000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/cc-23-6h-flowback-calculator-4
+d	0	1777316433.5689332000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-c
 d	0	1777316433.6398543000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/spotfire-formulas-for-calc-variables
 d	0	1777316433.6411387000	ace2-codex-work/issue-2464/knowledge/dark-intelligence
-d	0	1777316433.6426348000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1
-d	0	1777316433.6429946000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/tests
-d	0	1777316433.6568545000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked
-d	0	1777316433.6601217000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/tests
+d	0	1777316433.6426348000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-a
+d	0	1777316433.6429946000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-a/tests
+d	0	1777316433.6568545000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b
+d	0	1777316433.6601217000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b/tests
 d	0	1777316433.6912924000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-archive-sn-workbook-extraction
 d	0	1777316433.6933254000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-archive-sn-workbook-extraction/tests
 d	0	1777316433.7080905000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/c---k-flow-rate-calculation
 d	0	1777316433.7084014000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/c---k-flow-rate-calculation/tests
-d	0	1777316433.7090943000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4
+d	0	1777316433.7090943000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-c
 d	0	1777316433.7113085000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/spotfire-formulas-for-calc-variables
 d	0	1777316433.7116964000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/spotfire-formulas-for-calc-variables/tests
 d	0	1777316433.7172493000	ace2-codex-work/issue-2464/knowledge
@@ -7699,7 +7699,7 @@ f	1609	1777316420.3494581000	ace2-codex-work/issue-2464/.claude/skills/_archive/
 f	16092	1777316431.7197894000	ace2-codex-work/issue-2464/examples/reporting/calculix-beam-validation-wrk-1341.yaml
 f	16104	1777316429.4929131000	ace2-codex-work/issue-2464/docs/plans/2026-04-23-issue-2475-licensed-load-run-proof-protocol.md
 f	16105	1777317299.5078124000	ace2-worker-reports/issue-2464-final.md
-f	161115	1777316433.6596541000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/tests/test_31126-cal-0001-1-conductor-length-assessment--va-checked.py
+f	161115	1777316433.6596541000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b/tests/test_removed_workbook_extraction_b.py
 f	161	1777316816.6578544000	ace2-codex-work/issue-2464/tests/__pycache__/__init__.cpython-312.pyc
 f	1612	1777316424.5994436000	ace2-codex-work/issue-2464/.codex/get-shit-done/references/phase-argument-parsing.md
 f	16122	1777316447.2273241000	ace2-codex-work/issue-2464/scripts/data/research-literature/download_and_catalog.py
@@ -8634,7 +8634,7 @@ f	19373	1777316447.3916710000	ace2-codex-work/issue-2464/scripts/knowledge/valid
 f	1938	1777316418.2316459000	ace2-codex-work/issue-2464/.claude/cron/ecosystem-sync.sh
 f	1938	1777316431.1807103000	ace2-codex-work/issue-2464/examples/claude-code-course/uigen/src/components/chat/MessageInput.tsx
 f	1938	1777316451.9585673000	ace2-codex-work/issue-2464/tests/promoted/naval-architecture/test_introductiontonavalarchitecturetupper1996_examples.py
-f	19386923	1777316432.2801572000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/31126-cal-0001-1-conductor-length-assessment--va-checked/test_calculations.py
+f	19386923	1777316432.2801572000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-b/test_calculations.py
 f	19398	1777316451.7622136000	ace2-codex-work/issue-2464/terminal-2-impl.diff
 f	1940	1777317082.1569372000	ace2-codex-work/issue-2464/tests/docs/__pycache__/test_banned_stale_references.cpython-312-pytest-9.0.2.pyc
 f	1941	1777316426.5701701000	ace2-codex-work/issue-2464/.planning/quick/review-2312-gemini-r3.out
@@ -11470,7 +11470,7 @@ f	3092	1777316424.6246412000	ace2-codex-work/issue-2464/.codex/get-shit-done/tem
 f	3092	1777316424.8226865000	ace2-codex-work/issue-2464/.gemini/get-shit-done/templates/research-project/STACK.md
 f	3094	1777316419.4070527000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/productivity/todoist-api/7-sync-api/SKILL.md
 f	3095	1777316447.8913714000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-20-v3-plan-2367-codex.md
-f	309605	1777316431.8356384000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/31126-cal-0001-1-conductor-length-assessment--va-checked/calculations.py
+f	309605	1777316431.8356384000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-b/calculations.py
 f	309708	1777316444.8561575000	ace2-codex-work/issue-2464/logs/orchestrator/codex/session_20260421.jsonl
 f	3099	1777316420.3228187000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/financial-analysis/financial-markets-and-instruments/SKILL.md
 f	3100	1777316421.2243995000	ace2-codex-work/issue-2464/.claude/skills/_core/bash/interactive-menu-builder/5-confirmation-dialogs/SKILL.md
@@ -11960,7 +11960,7 @@ f	3337	1777316447.7660405000	ace2-codex-work/issue-2464/scripts/review/results/2
 f	3337	1777316452.0550826000	ace2-codex-work/issue-2464/tests/stryker.conf.js
 f	3340	1777316427.4852300000	ace2-codex-work/issue-2464/config/sync-items.json
 f	3341	1777316446.8694603000	ace2-codex-work/issue-2464/scripts/data/doc-intelligence/diagnose-cid-manifests.py
-f	334168	1777316431.8289387000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/31126-cal-0001-1-conductor-length-assessment--va-checked/calc-report.html
+f	334168	1777316431.8289387000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-b/calc-report.html
 f	334	1777316419.2293659000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/marketing/lead-generation/metrics-per-email/SKILL.md
 f	334	1777316419.3597732000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/productivity/obsidian/tasks-due-this-week/SKILL.md
 f	33429	1777316426.6890062000	ace2-codex-work/issue-2464/.planning/quick/review-2460-r5-codex.out
@@ -12434,7 +12434,7 @@ f	3627	1777316418.2594359000	ace2-codex-work/issue-2464/.claude/docs/mcp-servers
 f	3627	1777316451.7521817000	ace2-codex-work/issue-2464/templates/html/DATA_DRILLDOWN_TEMPLATE_README.md
 f	3627	1777316815.6271002000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/PIL/ImageEnhance.py
 f	3628	1777316422.0779823000	ace2-codex-work/issue-2464/.claude/skills/eng/hull-library-lookup.md
-f	3628	1777316431.8233076000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/test_calculations.py
+f	3628	1777316431.8233076000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-a/test_calculations.py
 f	36287	1777316815.7010990000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/PIL/ImageDraw.py
 f	3629	1777316451.2752196000	ace2-codex-work/issue-2464/scripts/skills/audit-word-count.py
 f	3630	1777316423.2379499000	ace2-codex-work/issue-2464/.claude/skills/workspace-hub/mixed-ops-vs-repo-fix-plan-boundary/SKILL.md
@@ -14637,7 +14637,7 @@ f	513	1777316422.4187379000	ace2-codex-work/issue-2464/.claude/skills/github/git
 f	5132	1777316447.8786075000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-20-v2-plan-2367-codex.md
 f	5139	1777316418.9663426000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/communication/teams-api/6-meeting-automation/SKILL.md
 f	514	1777316427.4173228000	ace2-codex-work/issue-2464/config/agents/hermes/SOUL.md
-f	514	1777316433.6430871000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/tests/test_0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1.py
+f	514	1777316433.6430871000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-a/tests/test_removed_workbook_extraction_a.py
 f	514	1777316446.1079510000	ace2-codex-work/issue-2464/monitoring-dashboard/backend/tsconfig.json
 f	514	1777316815.5907143000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/cryptography/hazmat/bindings/_rust/openssl/ed448.pyi
 f	5142057	1777316815.3965750000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/pillow.libs/libavif-01e67780.so.16.3.0
@@ -15018,7 +15018,7 @@ f	5215	1777316430.0469703000	ace2-codex-work/issue-2464/docs/reports/skill-promo
 f	5216	1777316446.2520519000	ace2-codex-work/issue-2464/pylib/youtube_transcript_api-1.2.4.dist-info/RECORD
 f	5216	1777316451.2806012000	ace2-codex-work/issue-2464/scripts/skills/ecosystem-eval-report.sh
 f	5218	1777316429.2943699000	ace2-codex-work/issue-2464/docs/plans/2026-04-09-10-claude-planning-pack.md
-f	5221	1777316433.6602945000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/tests/test_parametric_conductor.py
+f	5221	1777316433.6602945000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b/tests/test_parametric_conductor.py
 f	522	1777316419.3865446000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/productivity/today/daily-review-process/SKILL.md
 f	522	1777316420.0786397000	ace2-codex-work/issue-2464/.claude/skills/_archive/development/sparc/sparc-architecture/error-handling/SKILL.md
 f	522	1777316420.5040277000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/orcaflex-extreme-analysis/error-handling/SKILL.md
@@ -20973,7 +20973,7 @@ f	579	1777316437.0306923000	ace2-codex-work/issue-2464/knowledge/wikis/marine-en
 f	579	1777316437.3447937000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/chaudhury-6.md
 f	57920	1777316815.6369460000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/greenlet/tests/_test_extension_cpp.cpython-311-x86_64-linux-gnu.so
 f	5793	1777316426.0253842000	ace2-codex-work/issue-2464/.planning/heavy-batch-prompts.md
-f	5793336	1777316433.6365400000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/cc-23-6h-flowback-calculator-4/test_calculations.py
+f	5793336	1777316433.6365400000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-c/test_calculations.py
 f	5795	1777316421.6713327000	ace2-codex-work/issue-2464/.claude/skills/creative/architecture-diagram/SKILL.md
 f	5796	1777316451.2822128000	ace2-codex-work/issue-2464/scripts/skills/fix-coverage-gaps.py
 f	5798	1777316447.4639556000	ace2-codex-work/issue-2464/scripts/operations/monitoring/suggest_model.sh
@@ -35595,7 +35595,7 @@ f	733	1777316437.7405374000	ace2-codex-work/issue-2464/knowledge/wikis/marine-en
 f	733	1777316437.7411840000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/inspection-methods-equipmen.md
 f	733	1777316437.7448203000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/internal-weld-scanning-its.md
 f	733	1777316437.8258835000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/omae2001-fatigue-crack-growth-behavior.md
-f	733	1777316444.2395127000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/shell-perdido-installation.md
+f	733	1777316444.2395127000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/shell-gom-spar-a-installation.md
 f	733	1777316444.3936054000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/subsea-tree-system-developme.md
 f	733	1777316444.5457314000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/wireless-riser-monitoring-us.md
 f	7332	1777316424.5526002000	ace2-codex-work/issue-2464/.codex/agents/gsd-research-synthesizer.md
@@ -35851,7 +35851,7 @@ f	75423	1777316446.1518015000	ace2-codex-work/issue-2464/output/orcaflex_validat
 f	7543	1777316446.2586586000	ace2-codex-work/issue-2464/pylib/youtube_transcript_api/proxies.py
 f	7544	1777316448.6008815000	ace2-codex-work/issue-2464/scripts/review/results/20260420T224645Z-2026-04-20-issue-2017-plan.md-plan-claude.md
 f	7546	1777316421.7324219000	ace2-codex-work/issue-2464/.claude/skills/creative/pixel-art/SKILL.md
-f	7546	1777316433.7092512000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/cc-23-6h-flowback-calculator-4/report.html
+f	7546	1777316433.7092512000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-c/report.html
 f	7547	1777316446.2357772000	ace2-codex-work/issue-2464/pylib/urllib3/contrib/socks.py
 f	754729	1777316815.4188118000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/pillow.libs/libtiff-295fd75c.so.6.2.0
 f	7549	1777316815.0073657000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/bs4/_typing.py
@@ -35940,7 +35940,7 @@ f	7637	1777316446.2581371000	ace2-codex-work/issue-2464/pylib/youtube_transcript
 f	76389	1777316424.2772967000	ace2-codex-work/issue-2464/.claude/state/session-signals/2026-04-20.jsonl
 f	764	1777316418.8977069000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/communication/internal-comms/common-issues/SKILL.md
 f	7644	1777316447.0840662000	ace2-codex-work/issue-2464/scripts/data/llm-wiki/search-wiki.py
-f	7645062	1777316433.3401510000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/cc-23-6h-flowback-calculator-4/calculations.py
+f	7645062	1777316433.3401510000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-c/calculations.py
 f	7647	1777316447.6928709000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-11-issue-2206-final-review.md
 f	7648	1777316426.9075675000	ace2-codex-work/issue-2464/_archive/modules/documentation/CREATE_MODULE_AGENT_GUIDE.md
 f	7650	1777316424.6001207000	ace2-codex-work/issue-2464/.codex/get-shit-done/references/planning-config.md
@@ -36045,7 +36045,7 @@ f	776	1777316420.8302168000	ace2-codex-work/issue-2464/.claude/skills/_archive/e
 f	776	1777316421.6986497000	ace2-codex-work/issue-2464/.claude/skills/creative/baoyu-infographic/references/layouts/dashboard.md
 f	776	1777316433.8291780000	ace2-codex-work/issue-2464/knowledge/wikis/engineering/raw/papers/dashboard.md
 f	776	1777316437.3684513000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/deepwater-gulf-of-mexico-challenges-floatec.md
-f	776	1777316444.2048154000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/session-7-rajeev-bansal-ongc-1.md
+f	776	1777316444.2048154000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/session-7-rajeev-bansal-india-operator-1.md
 f	776	1777316444.4884865000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/tahiti-sour-service-testing-riser-omae2008-57059.md
 f	776	1777316447.3973873000	ace2-codex-work/issue-2464/scripts/launch-claude-finalization-pack.sh
 f	7768	1777316429.7387221000	ace2-codex-work/issue-2464/docs/reports/2026-04-17-issue-2305-conference-batch-baseline.md
@@ -36222,7 +36222,7 @@ f	7942	1777316421.6537426000	ace2-codex-work/issue-2464/.claude/skills/coordinat
 f	7946	1777316815.7819548000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/PIL/ImageChops.py
 f	7947	1777316815.7092671000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/greenlet/tests/test_greenlet_trash.py
 f	795	1777316418.7155246000	ace2-codex-work/issue-2464/.claude/skills/_archive/ai/prompting/prompt-engineering/3-provide-context/SKILL.md
-f	795	1777316444.2053184000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/session-8-a-sen-j-ray-mcdermott-1.md
+f	795	1777316444.2053184000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/session-8-a-sen-j-ray-installation-contractor-1.md
 f	795	1777316447.4046096000	ace2-codex-work/issue-2464/scripts/lib/python-resolver.sh
 f	7953	1777316863.1280890000	ace2-codex-work/issue-2464/scripts/search/build_content_index.py
 f	7954	1777316429.3097202000	ace2-codex-work/issue-2464/docs/plans/2026-04-11-claude-agent-team-prompt-2104-canonical-entry-points-planning.md
@@ -36395,7 +36395,7 @@ f	816	1777316815.1753053000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site
 f	8163	1777316429.7355292000	ace2-codex-work/issue-2464/docs/reports/2026-04-16-issue-1878-diagnosis.md
 f	8165	1777316430.0644430000	ace2-codex-work/issue-2464/docs/research/bemrosetta-eval.md
 f	8166	1777316424.6122095000	ace2-codex-work/issue-2464/.codex/get-shit-done/templates/codebase/structure.md
-f	8167	1777316433.6421662000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/report.html
+f	8167	1777316433.6421662000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-a/report.html
 f	8169	1777316424.8098667000	ace2-codex-work/issue-2464/.gemini/get-shit-done/templates/codebase/structure.md
 f	817	1777316427.3323121000	ace2-codex-work/issue-2464/assets/WRK-684/variation-test-results.md
 f	817	1777316437.7795034000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/kees-jan-vermeulen-jumbo-offshore.md
@@ -36841,7 +36841,7 @@ f	8627	1777316448.3013026000	ace2-codex-work/issue-2464/scripts/review/results/2
 f	863	1777316420.3118982000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/drilling/drillbotics/open-source-building-blocks/SKILL.md
 f	863	1777316420.5750560000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/orcaflex-modeling/command-line-interface/SKILL.md
 f	863	1777316420.7263679000	ace2-codex-work/issue-2464/.claude/skills/_archive/engineering/marine-offshore/orcawave-damping-sweep/damping-sweep-configuration/SKILL.md
-f	863	1777316444.1430704000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/patton-legal-environment-post-macondo.md
+f	863	1777316444.1430704000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/patton-legal-environment-post-gom-well-a.md
 f	863	1777316447.5527583000	ace2-codex-work/issue-2464/scripts/planning/prompts/codex-plan-draft.md
 f	86360	1777316423.3836343000	ace2-codex-work/issue-2464/.claude/state/corrections/session_20260219.jsonl
 f	8637	1777316448.0330466000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-23-plan-2460-claude-self-review.md
@@ -36924,7 +36924,7 @@ f	8748	1777316815.9677714000	ace2-codex-work/issue-2464/.venv/lib/python3.11/sit
 f	875	1777316418.1294014000	ace2-codex-work/issue-2464/.claude/commands/data/md-to-pdf.md
 f	875	1777316421.1385914000	ace2-codex-work/issue-2464/.claude/skills/_archive/science/bio-research/scientific-problem-selection/key-design-principles/SKILL.md
 f	875	1777316423.2314933000	ace2-codex-work/issue-2464/.claude/skills/workspace-hub/learned/tdd-verification-and-adversarial-review/SKILL.md
-f	875	1777316431.8225668000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/calculations.py
+f	875	1777316431.8225668000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-a/calculations.py
 f	87540	1777316424.2700750000	ace2-codex-work/issue-2464/.claude/state/session-signals/2026-04-17.jsonl
 f	8756	1777316423.3004457000	ace2-codex-work/issue-2464/.claude/state/corrections/session_20260125.jsonl
 f	8759	1777316447.1384736000	ace2-codex-work/issue-2464/scripts/data/og-standards/consolidate.py
@@ -36936,7 +36936,7 @@ f	8765	1777316452.0647021000	ace2-codex-work/issue-2464/tests/testing/test-gener
 f	8770	1777316429.5837571000	ace2-codex-work/issue-2464/docs/plans/claude-ops-2026-04-09/results/plan-review-command-pack.md
 f	8771	1777316424.5603031000	ace2-codex-work/issue-2464/.codex/agents/gsd-user-profiler.md
 f	877	1777316425.5215066000	ace2-codex-work/issue-2464/.planning/archive/modules/hardware-inventory/manifests/licensed-win-1.yml
-f	877	1777316437.3859130000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/enabling-ultra-deepwater-dry-tree-production-j-ray-mcdermott.md
+f	877	1777316437.3859130000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/enabling-ultra-deepwater-dry-tree-production-j-ray-installation-contractor.md
 f	877	1777316437.7659290000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/j-williams-rio-riser-presentation-4-10-12-final.md
 f	877	1777316447.8551817000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-20-plan-2397-claude.md
 f	877	1777316447.9613519000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-22-plan-2289-gemini-v10.md
@@ -37294,7 +37294,7 @@ f	9236	1777316816.0376785000	ace2-codex-work/issue-2464/.venv/lib/python3.11/sit
 f	9238	1777316448.6984161000	ace2-codex-work/issue-2464/scripts/review/results/20260422T111358Z-2026-04-22-issue-2451-worldenergydata-test-followup.md-plan-claude.md
 f	924	1777316423.1535240000	ace2-codex-work/issue-2464/.claude/skills/workspace-hub/learned/financial-data-export-workflow/SKILL.md
 f	9243	1777316447.9928499000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-23-plan-2105-claude.md
-f	9248	1777316431.8216887000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/0163-cal-0001-01-surface-wellhead-sitp-calculations-draft1/calc-report.html
+f	9248	1777316431.8216887000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc-v2/removed-workbook-extraction-a/calc-report.html
 f	9249	1777316816.1346906000	ace2-codex-work/issue-2464/.venv/lib/python3.11/site-packages/sqlalchemy/orm/identity.py
 f	925	1777316418.1949703000	ace2-codex-work/issue-2464/.claude/commands/sparc/swarm-coordinator.md
 f	925	1777316418.7777818000	ace2-codex-work/issue-2464/.claude/skills/_archive/business/admin/quantification-metrics/revenue-impact/SKILL.md
@@ -37378,7 +37378,7 @@ f	935	1777316437.3936893000	ace2-codex-work/issue-2464/knowledge/wikis/marine-en
 f	935	1777316437.4140458000	ace2-codex-work/issue-2464/knowledge/wikis/marine-engineering/wiki/sources/high-revenue-the-ultimate-challenge-of-upstream-companies.md
 f	935	1777316447.7492212000	ace2-codex-work/issue-2464/scripts/review/results/2026-04-15-implementation-2290-claude.md
 f	93520	1777316428.7828332000	ace2-codex-work/issue-2464/docs/dashboards/doc-freshness-dashboard.md
-f	935409	1777316433.6563891000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/31126-cal-0001-1-conductor-length-assessment--va-checked/report.html
+f	935409	1777316433.6563891000	ace2-codex-work/issue-2464/knowledge/dark-intelligence/xlsx-poc/removed-workbook-extraction-b/report.html
 f	9354	1777316448.7623964000	ace2-codex-work/issue-2464/scripts/review/results/20260425T032315Z-plan-2126-v5.md-plan-claude.md
 f	936	1777316418.1889993000	ace2-codex-work/issue-2464/.claude/commands/sparc/coder.md
 f	936	1777316418.1922393000	ace2-codex-work/issue-2464/.claude/commands/sparc/optimizer.md

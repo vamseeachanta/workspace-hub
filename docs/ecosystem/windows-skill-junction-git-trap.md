@@ -21,7 +21,7 @@ contents are machine-local and must stay untracked:
 Git does not treat NTFS junctions as symlinks. `git add -A` (or `git add .`)
 follows the junction and stages every target file as a regular file.
 
-2026-09-22 (ACMA-HOU-RDS02): this vendored 8,375 skill files (~1M insertions) into
+2026-09-22 (ace-win-1): this vendored 8,375 skill files (~1M insertions) into
 `codex/3524-rdp-mic-plan` in a single commit. Caught in verification the same day;
 the commit was rebuilt without the vendored files and the branch force-pushed
 (it was minutes old and lease-protected).

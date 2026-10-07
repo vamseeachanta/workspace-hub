@@ -1,6 +1,6 @@
 # workspace-hub#2962: warn-only guard that the ecosystem `domain:` label
 # invariant (exactly one taxonomy-known domain per open issue) does not rot.
-# Companion to the */20 kanban-reconcile cron — same App-token mechanism for
+# Uses the kanban-reconcile GitHub App token mechanism for
 # cross-repo issue reads, plus contents:read to fetch the deckhand taxonomy SoT.
 # Reports to the run summary; never mutates anything.
 name: domain-coverage

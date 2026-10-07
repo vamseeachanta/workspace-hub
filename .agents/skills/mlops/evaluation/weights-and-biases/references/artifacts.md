@@ -514,7 +514,7 @@ model_artifact = wandb.Artifact(
 
         # Business context
         'use_case': 'e-commerce product classification',
-        'owner': 'ml-team@company.com',
+        'owner': 'ml-team@example.com',
         'approved_by': 'data-science-lead'
     }
 )

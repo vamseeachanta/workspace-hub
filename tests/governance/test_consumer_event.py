@@ -60,7 +60,7 @@ def test_normalized_paths_include_both_rename_endpoints(normalizer):
 
 
 @pytest.mark.parametrize("path", ["/tmp/file", "C:/file", "C:file", "../file", "docs/../file",
-                                  "//host/share", "\\\\host\\share", "docs/file. ", "docs//file", ""])
+                                  "//host/share", "\\\\host\\share", "docs/file. ", "docs//file", ""])  # identifier-gate: example
 def test_invalid_paths_remain_unmapped(normalizer, path):
     assert call(normalizer, envelope(payload={"path": path})) == rejected("needs-context", "PATH_BINDING_MISMATCH")
 
@@ -165,7 +165,8 @@ def test_additional_consequential_effects_are_preserved(normalizer, effect):
     result = call(normalizer, supplied=supplied)
     assert result["mapping_status"] == "mapped"
     assert result["request"]["effects"] == supplied["effects"]
-    assert workflow_decision.assess(result["request"])["action_boundary"] == "approval-required"
+    assert workflow_decision.assess(result["request"])["action_boundary"] == (
+        "verify-task-authority" if effect == "substantial-change" else "approval-required")
 
 
 def test_no_authority_minted_and_assessment_contract_unchanged(normalizer):

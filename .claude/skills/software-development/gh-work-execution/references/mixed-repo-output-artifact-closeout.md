@@ -5,7 +5,7 @@ Use when an approved issue changes implementation in one sibling repo but must a
 ## Trigger
 
 - Implementation files live in a tier-1 sibling repo such as `/mnt/local-analysis/digitalmodel`.
-- Final deliverables must land in a different checkout or embedded output path, for example `/mnt/local-analysis/workspace-hub/mkt-a/B1528/output`.
+- Final deliverables must land in a different checkout or embedded output path, for example `/mnt/local-analysis/workspace-hub/mkt-a/proj-a/output`.
 - The orchestration repo is dirty, ahead/behind, or contains unrelated generated state.
 
 ## Pattern

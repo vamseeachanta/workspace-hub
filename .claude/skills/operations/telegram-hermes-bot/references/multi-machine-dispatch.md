@@ -124,7 +124,7 @@ For GitHub planning issues in this class, explicitly include:
 - The phrase that Telegram is the control plane and git/GitHub/repo artifacts are the sync layer.
 - Cross-OS Telegram Desktop requirement when the operator intends to use Windows and Linux clients.
 - Acceptance criteria that force answers about routing, sync verification, canonical state, duplicate prevention, rollback, token rotation, registry integration, and readiness path convergence.
-- A no-implementation-until-`status:plan-approved` statement when the plan is still in review.
+- A statement of task authority, review/domain blockers and action-specific access/dispatch limits; no plan-approved label prerequisite.
 
 ## Verification checklist for a plan in this class
 

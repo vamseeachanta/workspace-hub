@@ -8,42 +8,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 
 
-def test_reusable_workflow_is_secret_owner_and_caller_is_pinned():
-    reusable = (ROOT / ".github/workflows/legal-rule-authority-reusable.yml").read_text(
-        encoding="utf-8"
-    )
-    caller = (ROOT / ".github/workflows/legal-rule-authority-gate.yml").read_text(
-        encoding="utf-8"
-    )
-    assert "environment: legal-rule-authority" in reusable
-    assert "LEGAL_SCAN_AUTH_CURRENT" in reusable
-    assert "pull_request_target" not in reusable + caller
-    assert re.search(
-        r"uses: vamseeachanta/workspace-hub/.github/workflows/legal-rule-authority-reusable.yml@[0-9a-f]{40}",
-        caller,
-    )
-    assert "secrets: inherit" not in caller
-    assert "TOOL_SHA: ${{ job.workflow_sha }}" in reusable
-    assert "ref: ${{ job.workflow_sha }}" in reusable
-    assert "github.job_workflow_sha" not in reusable
-    assert "inputs.tool_sha" not in reusable
-    assert "audit-tree" in reusable and "verify" in reusable
-    assert "inputs.head_oid" not in reusable
-    assert "inputs.is_fork" not in reusable
-    assert "github.event.pull_request.head.sha" in reusable
-    assert "github.event_name" in reusable
-    assert "github.repository" in reusable
-
-
-def test_fork_path_is_constant_and_precedes_private_scan():
-    caller = (ROOT / ".github/workflows/legal-rule-authority-gate.yml").read_text(
-        encoding="utf-8"
-    )
-    assert "owner review required" in caller
-    assert (
-        "github.event.pull_request.head.repo.full_name != github.repository" in caller
-    )
-    assert "environment: legal-rule-authority" not in caller
+def test_automatic_rule_authority_workflows_are_retired():
+    for name in ("legal-rule-authority-gate.yml", "legal-rule-authority-reusable.yml"):
+        assert not (ROOT / ".github/workflows" / name).exists()
 
 
 def test_trust_boundary_paths_are_codeowned_and_preview_is_exact():

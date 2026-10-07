@@ -122,6 +122,23 @@ For each candidate issue:
 - Use live counts in the issue body when they justify prioritization.
 - If an adjacent issue already exists but only covers a neighboring layer, create the new issue only if the ownership concern is clearly different.
 
+## Weekly-cadence / code-utility roadmap pattern
+
+When the user asks how to keep an LLM wiki continuously up to date on a weekly cadence and make it more useful for code development, do not only propose more ingest. Treat the wiki as an operational engineering substrate.
+
+Use `references/weekly-cadence-code-utility-roadmap.md` for the detailed issue-family pattern. After drafting the related plans and running adversarial reviews, use `references/weekly-cadence-plan-review-hardening.md` to patch MINOR/MAJOR findings, create a cross-issue synthesis report, push the plan artifacts, post issue comments, and move issues to `status:plan-review` before surfacing approval choices. After a weekly-cadence plan is approved and implemented, use `references/weekly-freshness-implementation-closeout.md` for the durable artifact shape and validation/closeout checklist. For the weekly OSS/concept watchlist tranche specifically, use `references/weekly-oss-watchlist-implementation.md`; it captures the durable manifest/report/state shape, the `slug -> signal_type -> recommendation_action -> default` routing precedence trap, previous-state fixture shape, route-state validation after issue closeout, public-safety validation, and closeout evidence checklist. For the RAG/query evaluation tranche, use `references/rag-query-evaluation-implementation.md`; it captures fixture shape, deterministic scoring, weekly regression comparison, public-safety constraints, and the key trap that the benchmark must test task-relevant retrieval quality for coding agents rather than simple page existence. For public-safe knowledge graph manifest generator/validator work, use `references/public-graph-manifest-validation.md`; it captures fail-closed high-risk relation evidence rules, curated link-map allowlisting/scope decisions, node/evidence-path scope validation, deterministic `edge_id` recomputation, artifact freshness checks, report-summary consistency checks, non-markdown link filtering, and the required validation/re-review closeout sequence.
+
+The durable issue family is:
+
+1. Weekly freshness control loop.
+2. Agent-facing entrypoints and domain manifests (`llms.txt`-style surfaces).
+3. Public-safe knowledge graph manifests.
+4. RAG/query evaluation benchmark suite.
+5. Weekly OSS / concept watchlist.
+6. CLI/MCP query surface over stable manifests/graph.
+
+Sequencing heuristic: freshness → manifests → graph → evals → watchlist → CLI/MCP. Keep each as a separately planned GitHub issue with a linked plan artifact and complete plan review and verify task authority and domain prerequisites before implementation; no separate plan approval is required.
+
 ## Additional proven issue themes from deeper recommendation sweeps
 
 After the first gap-to-issues pass, the following additional themes also produced strong, non-duplicate issues when validated with parallel subagents:

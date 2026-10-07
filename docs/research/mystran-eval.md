@@ -116,8 +116,16 @@ rename to `mystran.exe`, put on PATH (or set `MYSTRAN_EXE`). SHA-256 of the
 **Linux (ace-linux-2 / dev-secondary):** no official Linux binary yet; build from
 source with `scripts/setup/mystran-build-linux.sh` (gfortran + CMake + Ninja +
 OpenBLAS, installs to `~/.local/bin`, runs the CBAR smoke test). Also wired into
-`engineering-suite-install.sh --fea`. Not yet executed on ace-linux-2 as of this
-writing — SSH from the authoring session was blocked at the client side.
+`engineering-suite-install.sh --fea`. Verified on ace-linux-2 on 2026-09-26
+(Ubuntu 24.04, gfortran 13.3): SMOKE PASS, and the digitalmodel
+`tests/solvers/mystran` suite passes there (89 passed, 1 skipped).
+
+- Do **not** configure with `CMAKE_BUILD_TYPE=Release`. It passes `-DNDEBUG` to the
+  Fortran preprocessor, which rewrites MYSTRAN's `NDEBUG` parameter and breaks the
+  build ("Invalid character in name"). The script omits the build type, as
+  upstream's BUILD.md does; the project sets `-O3` itself.
+- `~/.local/bin` is on the login PATH only. Non-interactive ssh commands need
+  `PATH=$HOME/.local/bin:$PATH` or `MYSTRAN_EXE`.
 
 **Python:** `uv sync --extra nastran` in digitalmodel pulls pyNastran 1.4.x.
 Python 3.11 confirmed; pyNastran 1.4.1 declares >=3.9.
@@ -146,13 +154,15 @@ into `MystranChain.load_mesh`.
 
 ## Recommendation and Next Steps
 
-- **Adopt.** Catalog entries added for MYSTRAN and pyNastran.
-- Build MYSTRAN on ace-linux-2 with the script above and add `mystran` to the
-  dev-secondary tool list in `config/workstations/registry.yaml` once verified.
-- Follow-ups worth an issue each: CQUAD4 shell validation (plate bending),
-  modal analysis (SOL 103) wrapper, gmsh -> MYSTRAN plate-with-hole Kt check
-  against the CalculiX result, and an ANSYS APDL -> BDF converter spike for the
-  in-house APDL macro library.
+- **Adopted.** Solver chain in digitalmodel (#2169), evaluation and build script
+  here (#3888, #3908). Runs on Windows workstations and on ace-linux-2.
+- Open: register `mystran` for dev-secondary in `config/workstations/registry.yaml`
+  (#3909). That file is a digest input to the #3475 scheduler disposition, so the
+  edit needs the identity inventory regenerated and the digest re-attested.
+- Follow-ups worth an issue each: CQUAD4 shell validation (plate bending), a modal
+  analysis (SOL 103) wrapper, a gmsh -> MYSTRAN plate-with-hole Kt check against
+  the CalculiX result, and an ANSYS APDL -> BDF converter spike for the in-house
+  APDL macro library.
 
 Sources: [MYSTRAN](https://github.com/MYSTRANsolver/MYSTRAN),
 [MYSTRAN releases](https://github.com/MYSTRANsolver/MYSTRAN/releases),

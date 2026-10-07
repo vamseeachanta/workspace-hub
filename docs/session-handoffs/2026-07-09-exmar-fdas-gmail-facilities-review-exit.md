@@ -29,7 +29,7 @@ This was a research/review/documentation session. File-writing side effects are 
   - Gmail thread `19cb13ae2febcf37`, subject: `2026 whitepaper draft`.
 - Parsed the Dec. 2025 attached DOCX from Gmail in memory only; no attachment was written to the repo.
 - Cross-checked local structured offshore-facility data under `gdrive-extraction/staging/worldenergydata-seed/og-website-db/`.
-- Searched public web sources for Exmar OPTI, Who Dat, Delta House, and Horn Mountain process/payload benchmarks.
+- Searched public web sources for Exmar OPTI, Who Dat, Delta House, and GoM field H process/payload benchmarks.
 - Routed the detailed FDAS/Exmar technical basis to the private `llm-wiki-fdas` repo after the user's routing correction.
 - Created private wiki page: `llm-wiki-fdas/pages/exmar-fdas-topsides-process-basis-2026.md`.
 
@@ -96,29 +96,29 @@ Public sources:
   - Audubon says water depth approximately 5,000 ft and design capabilities 80,000 BOPD / 200 MMSCFD / 40,000 BWPD: https://auduboncompanies.com/project/delta-house-fps/
   - AOGR says nameplate 80,000 bbl/d oil / 200 MMcf/d gas / 40,000 bbl/d water, with peak 100,000 bbl/d oil and 240 MMcf/d gas: https://www.aogr.com/magazine/sneak-peek-preview/standardized-fps-design-key-to-fast-track-success-at-delta-house
   - Offshore Technology repeats 80,000 bopd / 200 MMcfd: https://www.offshore-technology.com/projects/delta-house-field-gulf-mexico/
-- Horn Mountain:
+- GoM field H:
   - SPE Gulf Coast event page says platform nameplate 65,000 BOPD / 70 MMscfd / 40,000 BPD water injection: https://www.spegcs.org/events/254/
-  - Offshore Technology says Horn Mountain peaked above 65,000 bpd and 68 MMcf/d: https://www.offshore-technology.com/projects/horn/
+  - Offshore Technology says GoM field H peaked above 65,000 bpd and 68 MMcf/d: https://www.offshore-technology.com/projects/horn/
 
 Local source rows:
 
 - `gdrive-extraction/staging/worldenergydata-seed/og-website-db/og_host.csv`
   - OPTI-EX row: line 192.
-  - Horn Mountain row: line 210.
+  - GoM field H row: line 210.
   - Na Kika row: line 154.
   - Atlantis row: line 171.
   - Thunder Horse row: line 183.
   - Independence Hub row: line 201.
 - `gdrive-extraction/staging/worldenergydata-seed/og-website-db/og_pfdata.csv`
-  - Horn Mountain SPAR Platform row has water depth 1,653 m / 5,455 ft.
+  - GoM field H SPAR Platform row has water depth 1,653 m / 5,455 ft.
 - `gdrive-extraction/staging/worldenergydata-seed/og-website-db/og_ongfields.csv`
-  - Horn Mountain field row has production start and water depth.
+  - GoM field H field row has production start and water depth.
 
 FDAS local knowledge-base sources:
 
 - `llm-wiki-fdas/pages/total-engagement-emails-2017.md`
   - Lines 79-99 summarize prior FDAS/TOTAL capacity discussion.
-  - Lines 84-86: Horn Mountain topsides basis, 65,000 bbl oil + 80 MMcf gas/day with water injection. Reconcile the 80 MMcf/d internal note against public 68-70 MMcf/d sources before external use.
+  - Lines 84-86: GoM field H topsides basis, 65,000 bbl oil + 80 MMcf gas/day with water injection. Reconcile the 80 MMcf/d internal note against public 68-70 MMcf/d sources before external use.
 - `llm-wiki-fdas/pages/total-fdas-technical-decks.md`
   - Lines 67-83: VAM TTR / Q-125 riser and stress-joint context.
   - Lines 112+ mention 6,000 ft OrcaFlex FDAS vessel analysis.
@@ -133,7 +133,7 @@ Prepare a one-page "basis matrix" for internal review first:
 
 1. Water-depth columns: 6,000 / 8,000 / 10,000 ft.
 2. Process cases:
-   - Horn Mountain-class dry-tree process basis.
+   - gom-field-h-class dry-tree process basis.
    - Delta House-class hub process basis.
 3. Riser architecture:
    - Freestanding riser case with no permanent topside tensioner payload.
@@ -146,7 +146,7 @@ Prepare a one-page "basis matrix" for internal review first:
 
 Suggested external framing if replying before a full matrix is ready:
 
-> We are collecting the basis as a range rather than a single number. The current FDAS concept treats the production risers as freestanding/self-tensioned, so the host payload question should separate process + drilling + wellbay structural/interface loads from conventional top-tensioner payload. We can compare Horn Mountain-class and Delta House-class process cases against OPTI-X/OPTI payload envelopes, then review drilling-module and CG assumptions with your team.
+> We are collecting the basis as a range rather than a single number. The current FDAS concept treats the production risers as freestanding/self-tensioned, so the host payload question should separate process + drilling + wellbay structural/interface loads from conventional top-tensioner payload. We can compare gom-field-h-class and Delta House-class process cases against OPTI-X/OPTI payload envelopes, then review drilling-module and CG assumptions with your team.
 
 ## Repo / Issue State
 

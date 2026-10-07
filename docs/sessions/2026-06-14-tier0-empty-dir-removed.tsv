@@ -16,7 +16,7 @@ assethold	business/	2026-06-14T10:58:55-05:00
 assethold	src\assethold\tests\test_data\analysis\Portfolio\results\Data/	2026-06-14T10:58:55-05:00
 digitalmodel	.agents/	2026-06-14T10:58:55-05:00
 digitalmodel	.benchmarks/	2026-06-14T10:58:55-05:00
-digitalmodel	D:\workspace-hub\digitalmodel\docs\charts\phase2\ocimf/	2026-06-14T10:58:55-05:00
+digitalmodel	<workspace-root>\workspace-hub\digitalmodel\docs\charts\phase2\ocimf/	2026-06-14T10:58:55-05:00
 hobbies	.benchmarks/	2026-06-14T10:58:55-05:00
 hobbies	.claude/checkpoints/	2026-06-14T10:58:55-05:00
 hobbies	modules/reporting/examples/	2026-06-14T10:58:55-05:00

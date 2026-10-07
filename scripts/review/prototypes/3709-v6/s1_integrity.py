@@ -189,13 +189,13 @@ MUTANTS = {
         "import pytest\n", "import pytest\npytestmark = pytest.mark.xfail(reason='disabled')\n", 1),
     "s1_per_test_skip_decorator": REFERENCE.replace(
         '@pytest.mark.parametrize("scenario", SCENARIOS)\n',
-        '@pytest.mark.skip(reason="disabled")\n@pytest.mark.parametrize("scenario", SCENARIOS)\n', 1),
+        '@pytest.mark.skip(reason="disabled")\n' '@pytest.mark.parametrize("scenario", SCENARIOS)\n', 1),
     "s1_per_test_skipif_decorator": REFERENCE.replace(
         '@pytest.mark.parametrize("scenario", SCENARIOS)\n',
-        '@pytest.mark.skipif(True, reason="disabled")\n@pytest.mark.parametrize("scenario", SCENARIOS)\n', 1),
+        '@pytest.mark.skipif(True, reason="disabled")\n' '@pytest.mark.parametrize("scenario", SCENARIOS)\n', 1),
     "s1_per_test_xfail_decorator": REFERENCE.replace(
         '@pytest.mark.parametrize("scenario", SCENARIOS)\n',
-        '@pytest.mark.xfail(reason="disabled")\n@pytest.mark.parametrize("scenario", SCENARIOS)\n', 1),
+        '@pytest.mark.xfail(reason="disabled")\n' '@pytest.mark.parametrize("scenario", SCENARIOS)\n', 1),
     "s1_body_pytest_skip": REFERENCE.replace(
         'def test_plan_cutover_never_loses_a_live_line_without_aborting(scenario):\n',
         'def test_plan_cutover_never_loses_a_live_line_without_aborting(scenario):\n    pytest.skip("disabled")\n', 1),

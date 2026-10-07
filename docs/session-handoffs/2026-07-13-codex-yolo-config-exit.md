@@ -8,7 +8,7 @@ without command-approval prompts.
 ## Outcome
 
 The machine-wide user configuration was already correct; no configuration edit
-was required. `C:\Users\vamseea\.codex\config.toml` contains:
+was required. `C:\Users\<user>\.codex\config.toml` contains:
 
 ```toml
 approval_policy = "never"
@@ -24,7 +24,7 @@ policy `never`.
 - Read the active user config and confirmed the two top-level values above.
 - Enumerated `C:\ws` for project `.codex/config.toml` files that could override
   the defaults; none were present.
-- Enumerated `C:\Users\vamseea\.codex\*.config.toml` profile layers; none were
+- Enumerated `C:\Users\<user>\.codex\*.config.toml` profile layers; none were
   present.
 - Checked the installed CLI help and official Codex configuration reference.
   The documented values are `approval_policy = "never"` and

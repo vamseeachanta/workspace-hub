@@ -129,7 +129,7 @@ Three reference project directories plus `energy_integrity/` (15+ sub-projects, 
 | **C-scan percentage** | 80-120% of nominal from vendor tool | `K2 West_rev1.xlsx` (C-scans sheets) | Multiply by `DataCorrectionFactor` (typically 0.833) to get absolute |
 | **Absolute thickness** | Direct inches from UT probe | `Gas export area 1 grid_UT.xlsx` | Use directly |
 | **Simple indexed grid** | Integer row/col indices (0,1,2...) | `K2_P14_SignalFFS_Benchmark.xlsx` | Map to physical coords via spacing |
-| **Physical coordinate grid** | Row/col headers in inches or degrees | `talos_10_in_cml28.xlsx` (1.5" spacing) | Use directly as spatial reference |
+| **Physical coordinate grid** | Row/col headers in inches or degrees | `gom_operator_10_in_cml28.xlsx` (1.5" spacing) | Use directly as spatial reference |
 
 ### C-Scan Sheet Structure (Vendor Format)
 

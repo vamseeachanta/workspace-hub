@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-10-05T11:13:25.884797+00:00",
+  "generated_by": "muse-vm fleet-daily-collector",
+  "date": "2026-10-05",
+  "origin_main": "0249121e0",
+  "fleet_size": 8,
+  "reporting": 3,
+  "report": {
+    "latest_snapshot": "2026-10-04",
+    "stale_days": 1
+  },
+  "machines": [
+    {
+      "name": "muse-vm",
+      "reachable": true,
+      "branch": "main",
+      "head": "15754c3f2",
+      "behind": 27,
+      "ahead": 0,
+      "dirty": 0
+    },
+    {
+      "name": "ace-linux-1",
+      "reachable": true,
+      "branch": "main",
+      "head": "84c963725",
+      "behind": 278,
+      "ahead": 3,
+      "dirty": 131
+    },
+    {
+      "name": "ace-linux-2",
+      "reachable": true,
+      "branch": "main",
+      "head": "5328e112e",
+      "behind": 277,
+      "ahead": 0,
+      "dirty": 0
+    },
+    {
+      "name": "gpu-claw",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    },
+    {
+      "name": "ace-win-2",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    },
+    {
+      "name": "ace-win-1",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    },
+    {
+      "name": "macbook-air",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    },
+    {
+      "name": "spark-a681",
+      "reachable": false,
+      "note": "ssh_unreachable"
+    }
+  ]
+}

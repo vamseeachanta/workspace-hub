@@ -115,7 +115,7 @@ Use only language permitted by the locked messaging file (scope guardrails above
 ### Step 4 — Legal/PII gate on proposed public copy (blocking)
 
 ```bash
-bash scripts/legal/legal-sanity-scan.sh --diff-only
+# Identifier gates retired; review final report via docs/standards/FINAL_REPORT_VERIFICATION.md
 ```
 
 Run against the staged/proposed public copy in each repo. **Block on failure** — do not

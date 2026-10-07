@@ -6,6 +6,10 @@ author: Hermes Agent
 category: workspace-hub-learned
 tags: [overnight, github, planning, worktrees, parallel, status-plan-review]
 ---
+## Implementation authority
+
+The task request or standing authority authorizes implementation, including substantial work; no separate user plan approval, approval label or local marker is required. Complete planning, TDD and adversarial review, and resolve required domain decisions and blocking findings. Honor explicit planning-only requests. Consequential actions outside existing authority require matching explicit authorization. Implementation authority alone does not authorize publication, deployment, access changes or destructive actions; verify action/destination authority and reuse it when already provided. Preserve owner-controlled approval history without self-labeling.
+
 
 # Ten-Agent Pre-Plan-Review Wave
 
@@ -83,7 +87,7 @@ After the reconciliation artifact is written, advance issues one at a time in pr
 2. If review findings are concrete, revise the plan and any dependent child issue bodies first; do not label `status:plan-review` while the latest valid finding is `REQUEST_CHANGES`, `REJECT`, or `MAJOR`.
 3. Run a focused re-review against the fully inlined/local latest plan. If a provider wrapper fails or times out, record that explicitly; do not let a failed wrapper overwrite a valid artifact.
 4. If the only remaining finding is stale live GitHub wording (for example the issue body contradicts the updated plan), post a superseding comment using `gh issue comment --body-file` before applying `status:plan-review`. Do not rely on the local plan alone to override the visible GitHub thread.
-5. Only then sync the plan header, README row, review artifacts, GitHub comment, and label. The issue is still not implementation-ready until explicit user approval moves it to `status:plan-approved`.
+5. Only then sync the plan header, README row, review artifacts, GitHub comment, and label. Implementation may continue within task/standing authority once required domain decisions and blocking review findings are resolved; no approval label or marker is required.
 6. If fresh review finds new structural blockers (for example an implementation plan misses the real build/deploy source-of-truth), revise the local plan, post a concise planning update, leave the issue in draft, and move to a fresh re-review later.
 
 Example outcomes from planwave10 recovery:

@@ -45,7 +45,7 @@ Do not use this as a substitute for the full planning route.
 - First response shape: issue link, current known decisions, unresolved prompts grouped in the order the user should comment, and explicit implementation block status.
 - Keep resource intelligence read-only and bounded; avoid launching broad code/doc/test reads in the same turn if the user only asked for the issue/commenting surface.
 - After each user comment batch, update the issue-plan assumptions and unresolved-blockers list before continuing resource intelligence.
-- See `references/interactive-review-thread-mode.md` for an example pattern from the B1528 proj-a force-calculation planning thread.
+- See `references/interactive-review-thread-mode.md` for an example pattern from the proj-a force-calculation planning thread.
 
 2. Resource intelligence
 - Stay read-only.
@@ -114,13 +114,13 @@ Do not use this as a substitute for the full planning route.
 - Before stopping: save the plan, update planning index if used, ensure follow-up issues are created or called out, post final plan comment, add `status:plan-review`, remove stale conflicting labels.
 - For batch-created planning issues, run an explicit verification pass before summarizing approvals: view each issue live, confirm title/URL/state/labels, confirm required body sections (`## Summary`, `## Acceptance criteria`, and approval/`status:plan-review` gate language), and patch any missing gate text immediately before reporting success.
 - If context or tool-call budget is running low, prioritize transactional posting/label/commit verification over additional polish; do not leave the plan in an unposted draft state after review is already complete unless a blocker is explicit.
-- Final plan comment should include deliverable, scope boundaries, likely files/tests, review synthesis, residual risk, future issues, and explicit approval request.
-- Hard stop: do not implement while awaiting approval.
-- On approve: move to `status:plan-approved` and hand off execution package.
+- Final plan comment should include deliverable, scope boundaries, likely files/tests, review synthesis, residual risk, future issues, and any unresolved decisions or action-specific authorization needed.
+- Honor explicit planning-only requests and unresolved required domain decisions; otherwise reviewed implementation follows task authority without separate plan approval.
+- Optional owner approval history may be recorded by the owner; never self-label `status:plan-approved`. Hand off reviewed execution within existing task authority.
 - On revise/reject/hold: keep execution blocked and follow the canonical route.
 
 ## One-screen reminder
 
-Issue -> Intake -> Intelligence -> Plan -> Review -> Plan Comment -> `status:plan-review` -> Wait for approval -> Execute only after approval.
+Issue -> Intake -> Intelligence -> Plan -> Review -> Plan Comment -> Verify task scope and unresolved blockers -> Implement with TDD and artifact review.
 
 Canonical authority: `gh-work-planning`.

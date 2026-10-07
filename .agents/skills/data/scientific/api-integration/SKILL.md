@@ -119,7 +119,7 @@ def multi_tool_analysis_workflow(
 
 - **Documentation**: OrcFxAPI Python documentation (in OrcaFlex installation)
 - **Examples**: OrcaFlex → Examples → Python folder
-- **Support**: support@orcina.com
+- **Support**: Orcina technical support (via orcina.com)
 ### ANSYS AQWA
 
 - **ANSYS ACT**: Application Customization Toolkit for scripting

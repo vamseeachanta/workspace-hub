@@ -24,10 +24,12 @@ echo "=== GTM Weekly Scan Refresh ==="
 echo "Date: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
 echo "Repo: $REPO_ROOT"
 
-# 1. Ensure we're on main and up to date
+# 1. Ensure we're on main and up to date. Stop if either fails: the job must
+#    never commit onto another branch or push a stale main.
 cd "$REPO_ROOT"
-git checkout main 2>/dev/null || true
-git pull --ff-only origin main 2>/dev/null || true
+SCAN_DIR="docs/strategy/gtm/job-market-scan"
+git checkout main || { echo "ERROR: cannot check out main; stopping"; exit 1; }
+git pull --ff-only origin main || { echo "ERROR: cannot update main from origin; stopping"; exit 1; }
 
 # 2. Create log directory
 mkdir -p "$REPO_ROOT/logs/gtm"
@@ -77,7 +79,7 @@ git add \
     docs/strategy/gtm/job-market-scan/cumulative-index.json \
     2>/dev/null || true
 
-if git diff --staged --quiet; then
+if git diff --staged --quiet -- "$SCAN_DIR"; then
     echo "No changes to commit (identical results to last scan)"
 else
     DATE_STR=$(date -u +'%Y-%m-%d')
@@ -90,9 +92,12 @@ else
     git commit -m "chore(gtm): weekly job market scan refresh $DATE_STR
 
 Scan: $TOTAL jobs across $COMPANIES companies
-Related: #1671"
+Related: #1671" -- "$SCAN_DIR"
 
-    git push origin main
+    # Commit only the scan directory (pathspec) so anything else staged in this
+    # checkout stays out; push the commit just made, on main.
+    [ "$(git rev-parse --abbrev-ref HEAD)" = "main" ] || { echo "ERROR: not on main; stopping"; exit 1; }
+    git push origin HEAD:main
     echo "✓ Pushed to main"
 fi
 

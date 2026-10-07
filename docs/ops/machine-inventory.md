@@ -193,7 +193,7 @@ The placeholders used throughout this doc resolve as follows. These are the only
 
 ```yaml
 linux-workspace-root: /mnt/local-analysis/workspace-hub  # abs-path-allowed
-windows-workspace-root: 'D:\workspace-hub'  # abs-path-allowed
+windows-workspace-root: '<workspace-root>\workspace-hub'  # abs-path-allowed
 macos-workspace-root: /Users/krishna/workspace-hub  # abs-path-allowed
 ace-knowledge-root: /mnt/ace  # abs-path-allowed
 ace-knowledge-root-from-secondary: /mnt/remote/ace-linux-1/ace  # abs-path-allowed

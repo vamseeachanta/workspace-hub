@@ -17,8 +17,8 @@
 
 ### Existing repo code
 - Found: `vamseeachanta/mkt-a` — PRIVATE GitHub remote, ~2 GB on GH, **not archived**, last pushed 2026-05-05; default branch `main`; description "Share high level project data and action lists"
-- Found: `/mnt/ace/mkt-a/` — 73 GB git-tracked local working copy; remote = origin = `vamseeachanta/mkt-a`; HEAD at `105c9ce8 chore(B1528): add proj-a moored-current PDF report` per session-start fetch
-- Found: `/mnt/ace/mkt-a.preexisting-before-repo-move-20260520-075928/` — 1.8 TB pre-move backup created today; contains `31522-woodfibre-lng/` and likely other client project subdirectories (full inventory deferred)
+- Found: `/mnt/ace/mkt-a/` — 73 GB git-tracked local working copy; remote = origin = `vamseeachanta/mkt-a`; HEAD at `105c9ce8 chore(proj-a): add proj-a moored-current PDF report` per session-start fetch
+- Found: `/mnt/ace/mkt-a.preexisting-before-repo-move-20260520-075928/` — 1.8 TB pre-move backup created today; contains `31522-lng-terminal-a/` and likely other client project subdirectories (full inventory deferred)
 - Found: `gh repo archive` subcommand available (confirmed by `gh --help` 2026-05-20)
 - Gap: no `STATUS-FROZEN.md` exists in `/mnt/ace/mkt-a/` to declare frozen posture
 - Gap: no formal freeze documentation on the working copy
@@ -56,9 +56,9 @@ No relevant pages.
 - visibility: PRIVATE; isArchived: false; pushedAt: 2026-05-05T10:08:38Z; diskUsage: 2048971 KB
 
 **Local repo state** (`git log --oneline -3` in `/mnt/ace/mkt-a/` 2026-05-20T18:30Z):
-- `105c9ce8 chore(B1528): add proj-a moored-current PDF report`
-- `99cd4072 chore(B1528): refresh proj-a time-trace PDF (regenerated 2026-05-04)`
-- `cf4d5a62 chore(sync): track durable agent/codex configs and B1528 proj-a PDF`
+- `105c9ce8 chore(proj-a): add proj-a moored-current PDF report`
+- `99cd4072 chore(proj-a): refresh proj-a time-trace PDF (regenerated 2026-05-04)`
+- `cf4d5a62 chore(sync): track durable agent/codex configs and proj-a PDF`
 
 **Backup directory state** (`du -sh` 2026-05-20T12:50Z):
 - `/mnt/ace/mkt-a.preexisting-before-repo-move-20260520-075928/`: 1.8 TB
