@@ -323,3 +323,10 @@ def test_unmapped_hostname_shape_in_branch_fails_closed(env):
     assert r.returncode == 2
     assert snap.read_bytes() == before
     assert "77-parked" not in r.stdout + r.stderr
+
+def test_no_committed_snapshot_carries_a_hostname_shaped_name():
+    """#3944: dated snapshots bypass the labeller on the collector VM; none may
+    carry a Windows-hostname-shaped fragment once committed."""
+    for path in sorted(SNAPSHOT_DIR.glob("*.json")):
+        text = path.read_text(encoding="utf-8")
+        assert not fsl.HOSTNAME_SHAPE_RE.search(text), path.name
